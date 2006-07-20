@@ -1,0 +1,16 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class(safe,
+      "java.awt.GradientPaint",
+      statics(method("run(float, float, Color, float, float, Color)"),
+              method(suppress, "run(Point2D, Color, Point2D, Color)"),
+              method("run(float, float, Color, float, float, Color, boolean)"),
+              method(suppress, "run(Point2D, Color, Point2D, Color, boolean)")),
+      methods(method("getPoint1()"),
+              method("getColor1()"),
+              method("getPoint2()"),
+              method("getColor2()"),
+              method("isCyclic()"),
+              method("createContext(ColorModel, Rectangle, Rectangle2D, AffineTransform, RenderingHints)"),
+              method("getTransparency()")))

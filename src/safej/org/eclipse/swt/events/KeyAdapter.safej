@@ -1,0 +1,4 @@
+class("org.eclipse.swt.events.KeyAdapter",
+           statics(method(suppress, "run()")),
+           methods(method(suppress, "keyPressed(KeyEvent)"),
+                   method(suppress, "keyReleased(KeyEvent)"))) 

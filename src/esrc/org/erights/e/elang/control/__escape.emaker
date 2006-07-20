@@ -1,0 +1,37 @@
+#!/usr/bin/env rune
+
+# Copyright 2005 Mark S. Miller, under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+pragma.enable("easy-return")
+pragma.enable("explicit-result-guard")
+pragma.enable("lambda-args")
+
+/**
+ * Unlike many of the other example controls, this one is implemented in terms
+ * of its corresponding special form.
+ */
+def __escape0 {
+    to fn__control_1(tryFn) :any {
+        def escapeControl {
+            to run__control() :any {
+                return escape ejector {
+                    tryFn(ejector)
+                }
+            }
+            to catch__control_1(handlerFn) :any {
+                def escapeCatchControl {
+                    to run__control() :any {
+                        return escape ejector {
+                            tryFn(ejector)
+                        } catch problem {
+                            handlerFn(problem)
+                        }
+                    }
+                }
+                return escapeCatchControl
+            }
+        }
+        return escapeControl
+    }
+}

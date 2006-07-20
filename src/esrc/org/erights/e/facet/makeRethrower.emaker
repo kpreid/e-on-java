@@ -1,0 +1,30 @@
+#!/usr/bin/env rune
+
+# Copyright 2005 Mark S. Miller, under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+/**
+ * A mostly transparent forwarder for the underlying, but which catches thrown
+ * exceptions and rethrows them eventually in their own separate turn.
+ * <p>
+ * This strange abstraction was introduced to work around a strange bug in
+ * SWT's drag-n-drop support: If a (Drag|Drop)Listener throws an exception
+ * while being notified, this crashes SWT or something. By rethrowing the
+ * exception in a separate turn, it still gets logged to the tracelog.
+ * <p>
+ * If the rethrow case, this will now return a promise that will eventually be
+ * broken once the exception is rethrown. As used by SWT, this should have no
+ * effect, but may be useful to other clients.
+ */
+def makeRethrower(underlying) :any {
+    def rethrower {
+        match [verb, args] {
+            try {
+                E.call(underlying, verb, args)
+            } catch ex {
+                throw <- run(ex)
+            }
+        }
+    }
+    return rethrower
+}

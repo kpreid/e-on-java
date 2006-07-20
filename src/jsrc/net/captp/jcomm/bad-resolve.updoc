@@ -1,0 +1,216 @@
+#!/usr/bin/env rune
+
+# Copyright 2004 Hewlett Packard, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+?? in new vat CarolVat
+
+Exports 'carol' as a server. 'carolState' is a server variable clients can
+get and set.
+
+    ? (introducer.onTheAir()
+    > var carolState := null
+    > def carol {
+    >     to run()      :void { println("foo") }
+    >     to setX(newX) :void { carolState := newX }
+    >     to getX()      :any { carolState }
+    > }
+    > def sr := makeSturdyRef.temp(carol, timer.now() + 3_600_000)
+    > def uri := introducer.sturdyToURI(sr)
+    > <file:~/Desktop/carol.cap>.setText(uri); uri)
+    -# match: "captp://*/*/*/*"
+
+    ? carolState == null
+    # value: true
+
+?? in new vat BobVat
+
+Exports 'bob' as a server. 'bobState' is a server variable clients can
+get and set.
+
+    ? (introducer.onTheAir()
+    > var bobState := null
+    > def bob {
+    >     to run()      :void { println("bar") }
+    >     to setX(newX) :void { bobState := newX }
+    >     to getX()      :any { bobState }
+    > }
+    > def sr := makeSturdyRef.temp(bob, timer.now() + 3_600_000)
+    > def uri := introducer.sturdyToURI(sr)
+    > <file:~/Desktop/bob.cap>.setText(uri); uri)
+    -# match: "captp://*/*/*/*"
+
+    ? bobState == null
+    # value: true
+
+?? in new vat AliceVat
+
+Import a remote reference to the 'carol' server
+
+    ? (introducer.onTheAir()
+    > def uri := <file:~/Desktop/carol.cap>.getText().trim()
+    > def sr := introducer.sturdyFromURI(uri)
+    > uri)
+    -# match: "captp://*/*/*/*"
+
+    ? def farCarol := sr.getRcvr()
+    # value: <Remote Promise>
+
+    ? def result := farCarol <- run()
+    # value: <Remote Promise>
+
+Wait until the result is resolved before continuing the
+test script.
+
+    ? interp.waitAtTop(result)
+
+    ? result == null
+    # value: true
+
+?? in vat CarolVat
+
+    ?
+    # stdout: foo
+    #
+    ? carolState == null
+    # value: true
+
+?? in vat AliceVat
+
+Import a remote reference to the 'bob' server
+
+    ? (introducer.onTheAir()
+    > def uri := <file:~/Desktop/bob.cap>.getText().trim()
+    > def sr := introducer.sturdyFromURI(uri)
+    > uri)
+    -# match: "captp://*/*/*/*"
+
+    ? def farBob := sr.getRcvr()
+    # value: <Remote Promise>
+
+    ? def result := farBob <- run()
+    # value: <Remote Promise>
+
+Wait until the result is resolved before continuing the
+test script.
+
+    ? interp.waitAtTop(result)
+
+    ? result == null
+    # value: true
+
+?? in vat BobVat
+
+    ?
+    # stdout: bar
+    #
+    ? bobState == null
+    # value: true
+
+
+***NEW STUFF***
+
+?? in vat AliceVat
+
+    ? interp.waitAtTop(farCarol <- setX(farBob))
+
+?? in vat CarolVat
+
+    ? def farBob := carolState
+    # value: <Remote Promise>
+
+    ? interp.waitAtTop(farBob)
+    ? farBob
+    # value: <Far ref>
+
+?? in vat AliceVat
+
+    ? def alice() :any { return farCarol }
+
+    ? interp.waitAtTop(farBob <- setX(makeSturdyRef.temp(alice)))
+
+?? in vat BobVat
+
+    ? bobState
+    # value: <a SturdyRef>
+
+    ? def farAlice := bobState.getRcvr()
+    # value: <Remote Promise>
+
+    ? def farCarol := farAlice <- run()
+    # value: <Remote Promise>
+
+    ? interp.waitAtTop(farCarol)
+    ? farCarol
+    # value: <Far ref>
+
+
+********
+
+?? in vat AliceVat
+
+Export an unresolved LocalPromise
+
+    ? def [p,r] := Ref.promise()
+    # value: [<Promise>, <Resolver>]
+
+    ? interp.waitAtTop(farCarol <- setX(p))
+
+?? in vat CarolVat
+
+    ? carolState
+    # value: <Remote Promise>
+
+Send a message to an unresolved imported RemotePromise
+
+    ? def y := carolState <- add(3)
+    # value: <Remote Promise>
+
+?? in vat AliceVat
+
+Resolve the exported LocalPromise
+
+    ? r.resolve(2)
+
+?? in vat CarolVat
+
+Check that the RemotePromise resolved
+
+    ? interp.waitAtTop(carolState)
+
+    ? carolState
+    # value: 2
+
+Check that the pending message was processed.
+
+    ? interp.waitAtTop(y)
+
+    ? y
+    # value: 5
+
+?? in vat AliceVat
+
+Sending an imported reference as argument...
+
+    ? def res2 := farCarol <- setX(farCarol)
+    # value: <Remote Promise>
+
+    ? interp.waitAtTop(res2)
+
+    ? res2 == null
+    # value: true
+
+?? in vat CarolVat
+
+    ? carolState
+    # value: <carol>
+
+...the argument as received is the same as what was exported
+
+    ? carol == carolState
+    # value: true
+
+
+
+
+

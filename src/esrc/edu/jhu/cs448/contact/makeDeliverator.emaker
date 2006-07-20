@@ -1,0 +1,70 @@
+#!/usr/bin/env rune
+
+# Copyright 2004 Mark S. Miller, under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+# Based on a design by Christian Scheideler
+
+# A Ticket is any integer (without bound) starting at 0
+def Ticket := int >= 0
+
+/**
+ * @param ackTable A mapping from a committerID (a swissNumbers associated with
+ *                 a committer) to the highest ticket seen so far as "from"
+ *                 that committerID.
+ * @param status An aliased variable (like a pass-by-var in Pascal or a
+ *               reference in C++) whose value is "THAWED", "FREEZING",
+ *               "FROZEN", or "HALTED". This variable is aliased, so that all
+ *               faces of the same Actor can share it.
+ * @param face A facet of the Actor. ("facet" is a reserved keyword in E.)
+ *             Besides getting the messages sent to corresponding anycasters,
+ *             This will also be sent "<- noticeSkip(numSkipped)" to notify it
+ *             of messages that are locally missing, presumably because another
+ *             provider of the same abstract service has already acknowledged
+ *             those intermediate messages.
+ */
+def makeDeliverator(var ackTable :Map[int, Ticket],
+                    &status,
+                    face :near) :near {
+
+    ackTable := ackTable.diverge()
+
+    def deliverator {
+
+        /**
+         *
+         */
+        to deliver(verb :String,
+                   args :List,
+                   committer,
+                   committerID :int,
+                   ticket :Ticket) :void {
+
+            if (status == "THAWED") {
+                def lastAck := ackTable.fetch(committerID, thunk{-1})
+                def numSkipped := ticket - (lastAck +1)
+                if (numSkipped < 0) {
+                    # redundant resend, drop it on the floor
+                } else {
+                    if (numSkipped > 0) {
+                        face <- noticeSkipped(numSkipped)
+                    }
+                    ackTable[committerID] := ticket
+                    def result := E.send(face, verb, args)
+                    when (face) -> done(_) :void {
+                        # Happens only after all messages already sent to face
+                        # have been delivered. Note that we do
+                        # not 'when (result) ->', since result might not be
+                        # resolved.
+                        committer.commit(ticket, result)
+                    } catch problem {
+                        throw("Can't happen")
+                    }
+                }
+            } else {
+                throw("Un-THAWED status not yet implemented")
+            }
+        }
+    }
+    return deliverator
+}

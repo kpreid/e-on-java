@@ -1,0 +1,74 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def makeTextWriter := <elib:oldeio.makeTextWriter>
+
+def Scope := <type:org.erights.e.elang.scope.Scope>
+def StringBuffer := <type:java.lang.StringBuffer>
+def BufferedReader := <type:java.io.BufferedReader>
+
+def makeEvalContextAuthor(auths,
+                          options,
+                          replVat,
+                          isConfined :boolean,
+                          isExplicit :boolean) :near {
+
+    def makeScope(altout, alterr, props, cmdLoop) :near {
+        def fqnPrefix := options.fetch("--fqnPrefix", thunk{"__main$"})
+        def makeScopeSetup := auths["makeScopeSetup"]
+        if (isConfined) {
+            makeScopeSetup.safeScope(fqnPrefix)
+        } else {
+            makeScopeSetup.privileged(fqnPrefix,
+                                      altout,
+                                      alterr,
+                                      props,
+                                      cmdLoop,
+                                      replVat)
+        }
+    }
+
+    def makeImplicitEvalContext(props, cmdLoop) :near {
+        def topScope := makeScope(auths["metaout"],
+                                  auths["metaerr"],
+                                  props,
+                                  cmdLoop)
+        def evalContext {
+            to getTopScope() :Scope {
+                topScope
+            }
+            to getOptAltoutBuf() :nullOk[StringBuffer] {
+                null
+            }
+            to getOptAlterrBuf() :nullOk[StringBuffer] {
+                null
+            }
+        }
+    }
+
+    def makeExplicitEvalContext(props, cmdLoop) :near {
+        def [altout, altoutBuf] := makeTextWriter.makeBufferingPair()
+        def [alterr, alterrBuf] := makeTextWriter.makeBufferingPair()
+        def topScope := makeScope(altout,
+                                  alterr,
+                                  props,
+                                  cmdLoop)
+        def evalContext {
+            to getTopScope() :Scope {
+                topScope
+            }
+            to getOptAltoutBuf() :nullOk[StringBuffer] {
+                altoutBuf
+            }
+            to getOptAlterrBuf() :nullOk[StringBuffer] {
+                alterrBuf
+            }
+        }
+    }
+
+    def makeEvalContext := if (isExplicit) {
+        makeExplicitEvalContext
+    } else {
+        makeImplicitEvalContext
+    }
+}

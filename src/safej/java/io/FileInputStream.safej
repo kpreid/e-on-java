@@ -1,0 +1,4 @@
+class(safe,
+      "java.io.FileInputStream",
+      statics(method("run(File)")),
+      methods())

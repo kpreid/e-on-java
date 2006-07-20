@@ -1,0 +1,280 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def withoutSuffix := <import:org.erights.e.tools.text.withoutSuffix>
+
+def getOptFirstSpan(str :Twine) :near {
+    if (str.getOptSpan() =~ span :notNull) { return span }
+    for part in str.getParts() {
+        if (part.getOptSpan() =~ span :notNull) { return span }
+    }
+    return null
+}
+
+/**
+ * <tt>printBlock</tt>
+ *
+ * @param keyword
+ * @param str
+ * @param out
+ */
+def printBlock(keyword, str, out) :void {
+    # "+ 2" for the colon and space
+    def prefix := " " * (keyword.size() + 2)
+    def shortStr := withoutSuffix(str, "\n")
+    out.indent(prefix).print(`$keyword: $shortStr`)
+    # blank line for removed newline
+    out.println()
+}
+
+/**
+ * @author Terry Stanley
+ * @author Mark S. Miller
+ */
+def updocScriptMaker {
+
+    /**
+     * <tt>makeScript</tt>
+     *
+     * @param vatNames
+     * @param sequences
+     * @return
+     */
+    to makeScript(vatNames :List[String], sequences) :near {
+
+        def script {
+
+            /**
+             * <tt>__printOn</tt>
+             *
+             * @param
+             */
+            to __printOn(out :TextWriter) :void {
+                for sequence in sequences {
+                    out.print(sequence)
+                }
+            }
+
+            /**
+             * <tt>getVatNames</tt>
+             *
+             * @return
+             */
+            to getVatNames() :List[String] {
+                vatNames
+            }
+
+            /**
+             * <tt>getSequences</tt>
+             *
+             * @return
+             */
+            to getSequences() :near {
+                sequences
+            }
+
+            /**
+             * Was there any updoc code in there?
+             */
+            to isEmpty() :boolean {
+                sequences.size() == 0
+            }
+        }
+    }
+
+    /**
+     * <tt>makeVatDirective</tt>
+     *
+     * @param name
+     * @return
+     */
+    to makeVatDirective(name) :near {
+        def vatDirective {
+
+            /**
+             * <tt>__printOn</tt>
+             *
+             * @param
+             */
+            to __printOn(out :TextWriter) :void {
+                out.lnPrint(`?? in vat $name`)
+                out.println()
+            }
+
+            /**
+             * <tt>getVatName</tt>
+             *
+             * @return
+             */
+            to getVatName() :String {
+                name
+            }
+        }
+    }
+
+    /**
+     * <tt>makeSequence</tt>
+     *
+     * @param directive
+     * @param testcases
+     * @return
+     */
+    to makeSequence(directive, testcases) :near {
+
+        def sequence {
+
+            /**
+             * <tt>__printOn</tt>
+             *
+             * @param
+             */
+            to __printOn(out :TextWriter) :void {
+                out.print(directive)
+                for tc in testcases {
+                    out.print(tc)
+                }
+            }
+
+            /**
+             * <tt>getVatDirective</tt>
+             *
+             * @return
+             */
+            to getVatDirective() :near {
+                directive
+            }
+
+            /**
+             * <tt>getTestcases</tt>
+             *
+             * @return <tt>ConstList</tt> of <tt>testcase</tt> objects
+             */
+            to getTestcases() :near {
+                testcases
+            }
+        }
+    }
+
+    /**
+     * <tt>makeTestcase</tt>
+     *
+     * @param expr
+     * @param answers
+     * @return A <tt>testcase</tt> object
+     */
+    to makeTestcase(expr :Twine, answers) :near {
+
+        /**
+         * <tt>printExpr</tt>
+         *
+         * @param expr
+         * @param out
+         */
+        def printExpr(expr, out) :void {
+            # remove last newline so indent does not print it
+            def shortExpr := withoutSuffix(expr, "\n")
+            out.indent("    > ").print(`    ? $shortExpr`)
+            # blank line for removed newline
+            out.println()
+        }
+
+        /**
+         * <tt>printAnswers</tt>
+         *
+         * @param answers
+         * @param out
+         */
+        def printAnswers(answers, out) :void {
+            for keyword => answer in answers {
+                # remove last newline so indent does not print it
+                def shortAnswer := withoutSuffix(answer, "\n")
+                def spaces := keyword.size() + 3
+                def prefix := " " * spaces
+                out.indent(`    #$prefix`).print(`    # $keyword: $shortAnswer`)
+                # blank line for removed newline
+                out.println()
+                # blank line after answer block
+                out.println()
+            }
+        }
+
+        def testcase {
+
+            /**
+             * <tt>__printOn</tt>
+             *
+             * @param out
+             */
+            to __printOn(out :TextWriter) :void {
+                printExpr(expr, out)
+                printAnswers(answers, out)
+            }
+
+            /**
+             * <tt>getExpr</tt>
+             *
+             * @return
+             */
+            to getExpr() :Twine {
+                expr
+            }
+
+            /**
+             * <tt>printDiffsOn</tt>
+             *
+             * @param newAnswers
+             * @param out
+             */
+            to printDiffsOn(newAnswers, out) :void {
+                # Only prints the first time
+                var exprPrinted := false
+                def printExprOnce(expr, out) :void {
+                    if (! exprPrinted) {
+                        out.println()
+                        if (getOptFirstSpan(expr) =~ span :notNull) {
+                            printBlock("at",
+                                       `$span$\n`,
+                                       out)
+                        }
+                        printBlock("expr", expr, out)
+                        exprPrinted := true
+                    }
+                }
+                for keyword => answer in answers {
+                    def optNewAnswer := newAnswers.fetch(keyword, thunk{})
+                    if (optNewAnswer == null) {
+                        # missing new case
+                        printExprOnce(expr, out)
+                        out.println(`missing new $keyword`)
+                        printBlock(`original $keyword`, answer, out)
+                    } else if (! (answer <=> optNewAnswer)) {
+                        # show differences
+                        printExprOnce(expr, out)
+                        out.println(`original and new $keyword differ`)
+                        printBlock(`original $keyword`,
+                                   answers[keyword],
+                                   out)
+                        printBlock(`     new $keyword`,
+                                   newAnswers[keyword],
+                                   out)
+                    }
+                }
+                for keyword => answer in newAnswers {
+                    if (! (answers.maps(keyword))) {
+                        if (keyword != "value" && keyword != "stdout") {
+                            # missing old case
+                            printExprOnce(expr, out)
+                            out.println(`missing original $keyword`)
+                            printBlock(`new $keyword`, answer, out)
+                        }
+                    }
+                }
+                if (! exprPrinted) {
+                    # success
+                    out.print(".")
+                }
+            }
+        }
+    }
+}
+

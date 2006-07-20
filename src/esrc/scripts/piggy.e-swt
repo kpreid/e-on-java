@@ -1,0 +1,230 @@
+#!/usr/bin/env rune
+
+# Copyright 2005 Mark S. Miller, under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def Text := <type:org.eclipse.swt.widgets.Text>
+def SWT := <swt:makeSWT>
+def <widgets> := <swt:widgets.*>
+def <dnd> := <swt:dnd.*>
+def <swttools> := <import:org.erights.e.ui.swt.*>
+def <sky> := <import:com.skyhunter.*>
+def disposablesKit := <sky:swt.disposablesKitAuthor>(currentDisplay)
+
+def dndKit := <swttools:dndKitAuthor>(<dnd>,
+                                      currentDisplay,
+                                      <file>,
+                                      introducer,
+                                      makeSturdyRef)
+def makeTableTree := <swttools:makeTableTreeAuthor>(disposablesKit)
+
+def RIGHT := SWT.getRIGHT()
+
+def Slot := <type:org.erights.e.elib.slot.Slot>
+def EverReporter := <type:org.erights.e.elib.slot.EverReporter>
+def EverReactor := <type:org.erights.e.elib.slot.EverReactor>
+def Throwable := <type:java.lang.Throwable>
+def makeLamportSlot := <elib:slot.makeLamportSlot>
+def whenever := <elib:slot.whenever>
+
+def accountMgr
+
+def &assets :=
+  makeLamportSlot.localShadow("???", accountMgr <- getAssetsReporter())
+def &assetsStr := whenever([&assets], thunk{"$"+`$assets`})
+
+def &liabilities :=
+  makeLamportSlot.localShadow("???", accountMgr <- getLiabilitiesReporter())
+def &liabilitiesStr := whenever([&liabilities], thunk{"-$"+`$liabilities`})
+
+def &balance :=
+  makeLamportSlot.localShadow("???", accountMgr <- getBalanceReporter())
+def &balanceStr := whenever([&balance], thunk{"$"+`$balance`})
+
+def &deposited := makeLamportSlot(0)
+def &depositedStr := whenever([&deposited], thunk{"+$"+`$deposited`})
+
+
+def piggyShell := <widgets:makeShell>(currentDisplay)
+
+piggyShell.setText("Piggybank")
+def piggyImage := disposablesKit.makeImage(
+    <resource:org/erights/e/icons/piggy.jpg>)
+piggyShell.setImage(piggyImage)
+
+def winDisposeListener {
+    to widgetDisposed(event) :void {
+        interp.exitAtTop()
+    }
+}
+piggyShell.addDisposeListener(winDisposeListener)
+
+def WHITE  := disposablesKit.makeColor(255,255,255)
+def PINK   := disposablesKit.makeColor(255,196,196)
+def ALMOND := disposablesKit.makeColor(255,255,196)
+
+def setColor(control, color) :void {
+    if (control !~ _ :Text) {
+        control.setBackground(color)
+    }
+    if (control.__respondsTo("getChildren", 0)) {
+        for child in control.getChildren() {
+            setColor(child, color)
+        }
+    }
+}
+
+def piggyTarget := <widgets:makeLabel>(piggyShell, SWT.getSHADOW_OUT())
+piggyTarget.setImage(piggyImage)
+var piggySet := false
+def piggySlot {
+    to getValue() :any {
+        return accountMgr
+    }
+    to setValue(newAcctMgr) :void {
+        if (!piggySet) {
+            bind accountMgr := newAcctMgr
+            piggySet := true
+        }
+    }
+    to isFinal() :boolean {
+        return piggySet
+    }
+}
+dndKit.makeDragSource(piggyTarget, piggySlot)
+dndKit.makeDropTarget(piggyTarget, piggySlot)
+piggyTarget.setToolTipText("Drop or right-click-paste an account to start")
+
+Ref.whenBrokenOnly(accountMgr, def reactor(_) :void {
+    setColor(piggyShell, PINK)
+})
+when (accountMgr <- getBrand() <- getNickName()) -> done(nn) :void {
+    piggyShell.setText(`$nn Piggybank`)
+    setColor(piggyShell, ALMOND)
+} catch ex {
+    throw(ex)
+}
+
+def makeControl(arg) :any {
+    return swtGrid__quasiParser.makeControl(piggyShell, arg)
+}
+
+def assetsLabel      := makeControl([&assetsStr, RIGHT])
+assetsLabel.setToolTipText(
+    "On deposit: Total of settled transactions")
+
+def liabilitiesLabel := makeControl([&liabilitiesStr, RIGHT])
+liabilitiesLabel.setToolTipText("Outstanding payments")
+def balanceLabel     := makeControl([&balanceStr, RIGHT])
+def mouseListener {
+    to mouseDoubleClick(e) :void {
+        def columnNames := accountMgr <- getTableTreeColumns()
+        def tableData := accountMgr <- getTableTreeData()
+        when (columnNames, tableData) -> done(_,_) :void {
+            def ledgerWindow := <widgets:makeShell>(currentDisplay)
+            ledgerWindow.setText("Ledger")
+            ledgerWindow.setImage(piggyImage)
+            def tableTree := makeTableTree(ledgerWindow,
+                                           columnNames,
+                                           tableData)
+            swtGrid`$ledgerWindow:
+                    ${"(Mockup -- not yet live)"}
+                    $tableTree.X.Y`
+            ledgerWindow.pack(true)
+            ledgerWindow.open()
+        } catch ex {
+            throw(ex)
+        }
+    }
+    match _ {}
+}
+balanceLabel.addMouseListener(mouseListener)
+balanceLabel.setToolTipText(
+    "Available now.\n"+
+      "Double click to see your ledger.")
+
+def offerSource   := makeControl(["-$", RIGHT])
+offerSource.setToolTipText(
+    "Drag or right-click-copy to draft a payment.\n"+
+      "But first, fill in the amount of the payment,\n"+
+      "  and the category you'd like to file it under.")
+def offerField    := <widgets:makeText>(piggyShell, SWT.getSINGLE() | RIGHT)
+def offerCatField := <widgets:makeText>(piggyShell, SWT.getSINGLE())
+offerCatField.setText("petty cash")
+def offerSlot {
+    to getValue() :any {
+        def amount := __makeInt(offerField.getText().trim())
+        def category := offerCatField.getText().trim()
+        offerField.setText("")
+        return accountMgr <- makePayment(amount, category)
+    }
+}
+dndKit.makeDragSource(offerSource, offerSlot)
+
+def bullseyeImage   := disposablesKit.makeImage(
+    <resource:org/erights/e/icons/bullseye.jpg>)
+def depositTarget   := <widgets:makeLabel>(piggyShell, 0)
+depositTarget.setImage(bullseyeImage)
+depositTarget.setToolTipText(
+    "Drop or right-click-paste to deposit a payment.\n"+
+      "But first, fill in the category you'd like to file it under.")
+
+def depositLabel    := makeControl([&depositedStr, RIGHT])
+depositLabel.setToolTipText("The amount of the last attempted deposit.")
+
+def depositCatField := <widgets:makeText>(piggyShell, SWT.getSINGLE())
+depositCatField.setText("petty cash")
+def depositSlot {
+    to setValue(payment) :void {
+        deposited := "???"
+        def category := depositCatField.getText().trim()
+        when (payment) -> d1(p) :void {
+            when (accountMgr <- deposit(p, category)) -> done(amount) :void {
+                deposited := amount
+            } catch ex {
+                deposited := "XXX"
+                throw(ex)
+            }
+        } catch ex {
+            deposited := "XXX"
+            throw(ex)
+        }
+    }
+    to isFinal() :boolean { return false }
+}
+dndKit.makeDropTarget(depositTarget, depositSlot)
+
+swtGrid`$piggyShell:
+        $piggyTarget   $assetsLabel.X             ${" assets"}      >
+        V              $liabilitiesLabel.X        ${" liabilities"} >
+        ${""}          ${["----------", RIGHT]}.X ${""}             >
+        V              $balanceLabel.X            ${" balance"}     >
+        ${""}.X.Y
+        $offerSource   $offerField.X       ${" from "} $offerCatField.X
+        $depositTarget $depositLabel.X     ${" into "} $depositCatField.X`
+
+if (interp.getProps().fetch("e.osdir", thunk{}) == "linux-motif") {
+    println("skipping font adjustment on linux-motif to avoid bug")
+} else {
+    def setFont(control, font) :void {
+        control.setFont(font)
+        if (control.__respondsTo("getChildren", 0)) {
+            for child in control.getChildren() {
+                setFont(child, font)
+            }
+        }
+    }
+    def fontData := piggyShell.getFont().getFontData()[0]
+    fontData.setHeight(fontData.getHeight() + 4)
+    def font := disposablesKit.makeFont(fontData)
+    setFont(piggyShell, font)
+}
+
+setColor(piggyShell, PINK)
+
+piggyShell.pack(true)
+piggyShell.open()
+introducer.onTheAir()
+interp.blockAtTop()
+
+# rune(["~/e/src/esrc/scripts/piggy.e-swt"])

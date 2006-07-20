@@ -1,0 +1,87 @@
+#!/usr/bin/env rune
+
+# Copyright 2004 Mark S. Miller, under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+/**
+ * A "once" of a function is a use-once version of that function. 
+ * <p>
+ * "once(func)" returns an object that will forward no more than one "run" 
+ * message to "func". The two argument form "once(verb, target)" is a 
+ * generalization which will forward no more than one "verb" message to the 
+ * target.
+ * <p>
+ * For the Miranda Methods, the result of the once (the forwarder below) must 
+ * make good decisions about whether to override them and possibly forward 
+ * them, or not override them and let them default to methods on the 
+ * forwarder. For non-Miranda methods other than the suppressed method, they 
+ * are simply forwarded.
+ */
+def once {
+    to run(verb, target) :any {
+        var used := false
+        def forwarder {
+
+            /**
+             * forward __getAllegedType/0, though one could argue that, once
+             * used up, the type shouldn't include the supressed verb
+             */
+            to __getAllegedType() :any {
+                return target.__getAllegedType()
+            }
+
+            /**
+             * forward __respondsTo, though one could argue that, once
+             * used up, the type shouldn't include the supressed verb
+             */
+            to __respondsTo(verb2, arity) :boolean {
+                return target.__respondsTo(verb2, arity)
+            }
+
+            /** forward __printOn/1 */
+            to __printOn(out :TextWriter) :void {
+                target.__printOn(out) 
+            }
+
+            /** forward __reactToLostClient */
+            to __reactToLostClient(problem) :void {
+                target.__reactToLostClient(problem)
+            }
+
+            # handle all other messages
+            match [verb2, args] {
+                if (verb == verb2) {
+                    if (used) {
+                        throw("used up")
+                    }
+                    used := true
+                }
+                E.call(target, verb2, args)
+            }
+        }
+        return forwarder
+    }
+
+    # default to suppressing "run"
+    to run(target) :any { 
+        return once("run", target) 
+    }
+}
+
+# printOnce is a println that gets used up:
+
+    ? def once := <import:org.erights.e.facet.once>
+
+    ? def printOnce := once(println)
+    # value: <println>
+
+    ? printOnce(3)
+    # stdout: 3
+    #
+
+    ? printOnce(4)
+    # problem: used up
+
+# rune(["~/e/src/esrc/scripts/updoc.e", 
+#       "~/e/src/esrc/org/erights/e/facet/once.emaker"])
+

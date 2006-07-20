@@ -1,0 +1,16 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class(safe,
+      "javax.swing.text.InternationalFormatter",
+      statics(method("run()"),
+              method("run(Format)")),
+      methods(method("setFormat(Format)"),
+              method("getFormat()"),
+              method("setMinimum(Comparable)"),
+              method("getMinimum()"),
+              method("setMaximum(Comparable)"),
+              method("getMaximum()"),
+              method(suppress, "valueToString(Object)"),
+              method(suppress, "stringToValue(String)"),
+              method("getFields(int)")))

@@ -1,0 +1,7 @@
+class(safe,
+           "org.eclipse.swt.custom.TreeEditor",
+           statics(method("run(Tree)")),
+           methods(method("dispose()"),
+                   method("getItem()"),
+                   method("setItem(TreeItem)"),
+                   method("setEditor(Control, TreeItem)"))) 

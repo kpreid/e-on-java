@@ -1,0 +1,8 @@
+Useful part of original EC Habitats install:
+
+"Check the following options ONLY if you have been asked to do so by
+EC Tech Support:
+
+[] Install debug version to allow for thread dumps
+[] Delete old avatar and save files
+"

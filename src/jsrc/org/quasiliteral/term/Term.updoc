@@ -1,0 +1,419 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+    ? def <qq> := <unsafe:org.quasiliteral.*>
+    # value: <unsafe:org.quasiliteral.*>
+
+    ? def dom := sml`<tag>text<foo>x@@z</foo>y</tag>`
+    # value: sml`<tag>
+    #                text
+    #                <foo>
+    #                    x@@z
+    #                </foo>
+    #                y
+    #            </tag>`
+
+    ? def miniSchema := <astro:BaseSchema>.new("mini", [
+    >     "tag",
+    >     ".char.",
+    >     ".int.",
+    >     ".float64.",
+    >     ".String."])
+    # value: <Schema for mini>
+
+    ? def miniBuilder := <term:TermBuilder>.new(miniSchema)
+    # value: <building Term trees for mini>
+
+    ? def term := dom.build(miniBuilder)
+    # value: term`tag("text",
+    #                 foo("x@@z"),
+    #                 "y")`
+
+    ? def safejSchema := <qq:astro.BaseSchema>.new("safej", [
+    >     ".char.",
+    >     ".int.",
+    >     ".float64.",
+    >     ".String.",
+    >
+    >     "class",
+    >     "name",
+    >     "method",
+    >     "static",
+    >     "signature",
+    >     "suppress",
+    >     "comment",
+    >     "byproxy",
+    >     "selfless",
+    >     "byconstruction",
+    >     "persistent",
+    >     "safe"])
+    # value: <Schema for safej>
+
+    ? def safejBuilder := <qq:term.TermBuilder>.new(safejSchema)
+    # value: <building Term trees for safej>
+
+    ? def testSmlFile :=
+    >   <c: "/Documents and Settings/Administrator/Desktop/marcs/safej/tamings/java.awt.AWTPermission.txt">
+    # value: <file:c:/Documents and Settings/Administrator/Desktop/marcs/safej/tamings/java.awt.AWTPermission.txt>
+
+    ? def dom := sml__quasiParser.valueMaker(testSmlFile.getText().trim()).substitute([]); null
+    ? dom.minimize()
+    # value: sml`<class>
+    #                <name>
+    #                    java.awt.AWTPermission
+    #                </name>
+    #                <method>
+    #                    <static>
+    #                        true
+    #                    </static>
+    #                    <signature>
+    #                        new(String)
+    #                    </signature>
+    #                    <suppress>
+    #                        true
+    #                    </suppress>
+    #                    <comment>
+    #                    </comment>
+    #                </method>
+    #                <method>
+    #                    <static>
+    #                        true
+    #                    </static>
+    #                    <signature>
+    #                        new(String, String)
+    #                    </signature>
+    #                    <suppress>
+    #                        true
+    #                    </suppress>
+    #                    <comment>
+    #                    </comment>
+    #                </method>
+    #                <byproxy>
+    #                </byproxy>
+    #                <selfless>
+    #                </selfless>
+    #                <byconstruction>
+    #                </byconstruction>
+    #                <persistent>
+    #                </persistent>
+    #                <safe>
+    #                    false
+    #                </safe>
+    #                <comment>
+    #                </comment>
+    #            </class>`
+
+    ?
+    ?
+    ?
+    ? def qsml2term(qsmlSrc) :any {
+    >     def dom := sml__quasiParser.valueMaker(qsmlSrc.trim()).substitute([]).minimize()
+    >     dom.build(safejBuilder)
+    > }
+    # value: <qsml2term>
+
+    ? def tree := qsml2term(testSmlFile.getText())
+    # value: term`class(name("java.awt.AWTPermission"),
+    #                   method(static("true"),
+    #                          signature("new(String)"),
+    #                          suppress("true"),
+    #                          comment),
+    #                   method(static("true"),
+    #                          signature("new(String, String)"),
+    #                          suppress("true"),
+    #                          comment),
+    #                   byproxy,
+    #                   selfless,
+    #                   byconstruction,
+    #                   persistent,
+    #                   safe("false"),
+    #                   comment)`
+
+    ? def optArgs(tree, tagName) :any {
+    >     if (tree.getTag().getTagName() <=> tagName) {
+    >         tree.getArgs()
+    >     } else {
+    >         null
+    >     }
+    > }
+    # value: <optArgs>
+
+    ? def fqn(tree) :any {
+    >     optArgs(tree, "class") =~ [x ? (optArgs(x, "name") =~ [result])] + _
+    >     result.getOptString()
+    > }
+    # value: <fqn>
+
+    ? def name := fqn(tree)
+    # value: "java.awt.AWTPermission"
+
+    ? name.split(".")
+    # value: ["java", "awt", "AWTPermission"]
+
+    ?
+    ? def path(fqname) :any {
+    >     def parts := fqname.split(".")
+    >     var sep := "/"
+    >     var result := ""
+    >     for part in parts {
+    >         result += sep + part
+    >         if (! (part <=> part.toLowerCase())) {
+    >             # If it has any upper case in it, assume it's a class
+    >             # so all further steps are nested classes
+    >             sep := "$"
+    >         }
+    >     }
+    >     # get rid of initial "$"
+    >     result(1, result.size()) + ".safej"
+    > }
+    # value: <path>
+
+    ? path(name)
+    # value: "java/awt/AWTPermission.safej"
+
+    ? path("foo.bar.Baz.zip.Glorp")
+    # value: "foo/bar/Baz$zip$Glorp.safej"
+
+    ? def traceline(str) :void {
+    >     stderr.println(str)
+    > }
+    # value: <traceline>
+
+    ? def openForWriting(dir, path) :any {
+    >     def i := path.lastStartOf("/")
+    >     def parentPath := path(0, i+1)
+    >     dir[parentPath].mkdirs(null)
+    >     dir[path].textWriter()
+    > }
+    # value: <openForWriting>
+
+    ?
+    ?
+    ? def convert(smlFiledir, safejRootDir) :void {
+    >     if (smlFiledir.isDirectory()) {
+    >         for sub in smlFiledir {
+    >             convert(sub, safejRootDir)
+    >         }
+    >     } else if (smlFiledir.getName() =~ `@_.txt`) {
+    >         def tree := qsml2term(smlFiledir.getText())
+    >         def fqname := fqn(tree)
+    >         def pathName := path(fqname)
+    >         def out := openForWriting(safejRootDir, pathName)
+    >         try {
+    >             tree.prettyPrintOn(out, false)
+    >         } finally {
+    >             out.close()
+    >         }
+    >         traceline(pathName)
+    >     }
+    > }
+    # value: <convert>
+
+    ? convert(testSmlFile, <c:/e/src/safej>)
+    java/awt/AWTPermission.safej
+    ?
+
+    ? fqn
+    # value: term`"java.awt.AWTPermission"`
+
+    ?
+    # value: [term`name("java.awt.AWTPermission")`, term`method(static("true"),
+    #                    signature("new(String)"),
+    #                    suppress("true"),
+    #                    comment)`, term`method(static("true"),
+    #                    signature("new(String, String)"),
+    #                    suppress("true"),
+    #                    comment)`, term`byproxy`, term`selfless`, term`byconstruction`, term`persistent`, term`safe("false")`, term`comment`]
+
+    ?
+
+    ?
+    ? def TermParserMaker := <term:TermParser>
+    # value: <unsafe:org.quasiliteral.term.TermParser>
+
+    ? def term := TermParserMaker("foo(3, x(3, 'x'), zip)")
+    # value: term`foo(3,
+    #                 x(3, 'x'),
+    #                 zip)`
+
+
+
+
+    ? def t1 := term`"foo"`
+    # value: term`"foo"`
+
+    ? def tx := term`bar(3, "x", zip(zap, 'x', 2.3))`
+    # value: term`bar(3,
+    #                 "x",
+    #                 zip(zap, 'x', 2.3))`
+
+    ? def t2 := term`$t1(4)`
+    # value: term`"foo"(4)`
+
+    ? def t3 := term`$t1(bar, $t2)`
+    # value: term`"foo"(bar,
+    #                   "foo"(4))`
+
+    ? def term`LiteralString@x` := t3
+    # value: term`"foo"(bar,
+    #                   "foo"(4))`
+
+    ? x
+    # value: term`"foo"(bar,
+    #                   "foo"(4))`
+
+    ? def term`LiteralInteger@f(@a1, @a2)` := t3
+    # problem: such-that expression was false
+    #
+    #   <interactive interp> evalPrint(e`def q_3 :any ? (term__quasiParser matchMaker("LiteralInteger@{0}(@{1},...") matchBind(__makeList run(), q_3) =~ [f :any, a1 :any, a2 :any]) := t3`)
+
+    ? f
+    # value: <ref broken by problem: <NullPointerException: must be a EList rather than null>>
+
+    ? def term`LiteralString@f(@a1, @a2)` := t3
+    # value: term`"foo"(bar,
+    #                   "foo"(4))`
+
+    ? f
+    # value: term`"foo"`
+
+    ? a1
+    # value: term`bar`
+
+    ? a2
+    # value: term`"foo"(4)`
+
+    ?
+
+
+
+    ? def args := [term`foo`, term`bar(3)`]
+    # value: [term`foo`, term`bar(3)`]
+
+    ? def t4 := term`zip($args*)`
+    # value: term`zip(foo,
+    #                 bar(3))`
+
+    ? term`zip($args?)`
+    # problem: <Internal: Improper quantity: 2 vs ?>
+    #
+    #   term`zip(${0}?)` substitute([[term`foo`, term`bar(3)`]])
+    #   <interactive interp> evalPrint(e`term__quasiParser valueMaker("zip(${0}?)") substitute(__makeList run(args))`)
+
+    ? term`zip($args+)`
+    # value: term`zip(foo,
+    #                 bar(3))`
+
+    ? term`zip(${[]}+)`
+    # problem: <Internal: Improper quantity: 0 vs +>
+    #
+    #   term`zip(${0}+)` substitute([[]])
+    #   <interactive interp> evalPrint(e`term__quasiParser valueMaker("zip(${0}+)") substitute(__makeList run(__makeList run()))`)
+
+    ? term`zip(${[]}*)`
+    # value: term`zip`
+
+    ?
+
+
+    ?
+    ? def term`LiteralString(@args*)` := t3
+    # problem: XXX not yet implemented
+    #
+    #   org.quasiliteral.quasiterm.QBuilder@ff1fcedf matchMaker("LiteralString(@{0}*)")
+    #   <interactive interp> evalPrint(e`def q_5 :any ? (term__quasiParser matchMaker("LiteralString(@{0}*)") matchBind(__makeList run(), q_5) =~ [args :any]) := t3`)
+
+    ?
+    ?
+    ? def ta := term`foo(bar, bar(3), zip(zap))`
+    # value: term`foo(bar,
+    #                 bar(3),
+    #                 zip(zap))`
+
+    ? def term`foo(bar@bars*, zip@z)` := ta
+    # value: term`foo(bar,
+    #                 bar(3),
+    #                 zip(zap))`
+
+    ? bars
+    # value: [term`bar`, term`bar(3)`]
+
+    ? z
+    # value: term`zip(zap)`
+
+    ?
+    ?
+    ?
+
+    ? term`foo(3, x(3, 'x'), zip)`
+    # value: term`foo(3,
+    #                 x(3, 'x'),
+    #                 zip)`
+
+    ?
+    ?
+    ?
+    ? def TermParserMaker := <term:TermParser>
+    # value: <unsafe:org.quasiliteral.term.TermParser>
+
+    ? def term := TermParserMaker(<file:~/Desktop/termtest.txt>.getText())
+    # problem: <ClassCastException: org.quasiliteral.term.Term>
+    #
+    #   <unsafe:org.quasiliteral.term.TermParser>("foo(3, x(3, \'x\'), zip)\n\ ")
+    #   <interactive interp> evalPrint(e`def term :any := TermParserMaker run(<file> get("~/Desktop/termtest.txt") getText())`)
+
+    ? term.getFunctor()
+    # value: foo
+
+    ? term.getArgs()
+    # value: [term`3`, term`x(3, 'x')`, term`zip`]
+
+    ? def SimpleTermBuilder := <term:SimpleTermBuilder>.getTHE_ONE()
+    # value: <SimpleTermBuilder>
+
+    ? def term2 := term.build(SimpleTermBuilder)
+    # value: term`foo(3,
+    #                 x(3, 'x'),
+    #                 zip)`
+
+    ? def f := TermParserMaker("foo:3")
+    # value: term`foo:3`
+
+    ? f.build(SimpleTermBuilder)
+    # value: term`foo:3`
+
+    ?
+
+
+    ? def <astro> := <unsafe:org.quasiliteral.astro.*>
+    # value: <unsafe:org.quasiliteral.astro.*>
+
+    ? def TermTreeMaker := <astro:TermTree>
+    # value: <unsafe:org.quasiliteral.astro.TermTree>
+
+    ? def FunctorMaker := <astro:Functor>
+    # value: <unsafe:org.quasiliteral.astro.Functor>
+
+    ? def foo := FunctorMaker("id", "foo$@`x", null)
+    # value: id:"foo$@`x"
+
+    ? def tree1 := TermTreeMaker(foo, [])
+    # value: ast`id:"foo$$@@``x"`
+
+    ? def tree2 := TermTreeMaker(foo, [tree1, tree1])
+    # value: ast`id:"foo$$@@``x"(id:"foo$$@@``x", id:"foo$$@@``x")`
+
+    ? def tree3 := TermTreeMaker(foo, [tree2, tree1, tree2])
+    # value: ast`id:"foo$$@@``x"(id:"foo$$@@``x"(id:"foo$$@@``x", id:"foo$$@@``x"),
+    #                            id:"foo$$@@``x",
+    #                            id:"foo$$@@``x"(id:"foo$$@@``x", id:"foo$$@@``x"))`
+
+    ? def ast3 := tree3.asAST(["id" => 2])
+    # value: foo$@`x
+
+    ? def tree4 := TermTreeMaker.fromAST(ast3, "file:what-me-worry.txt", ["huh?", "what", "wow", "zippy"])
+    # value: ast`wow:"foo$$@@``x"(wow:"foo$$@@``x"(wow:"foo$$@@``x", wow:"foo$$@@``x"),
+    #                             wow:"foo$$@@``x",
+    #                             wow:"foo$$@@``x"(wow:"foo$$@@``x", wow:"foo$$@@``x"))`
+
+    ?

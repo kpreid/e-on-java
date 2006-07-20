@@ -1,0 +1,22 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class("javax.swing.text.Keymap",
+      statics,
+      methods(method(suppress,
+                     "getName()",
+                     comment("names unused and unusable in E world")),
+              method("getDefaultAction()"),
+              method("setDefaultAction(Action)"),
+              method(suppress, "getAction(KeyStroke)"),
+              method("getBoundKeyStrokes()"),
+              method("getBoundActions()"),
+              method("getKeyStrokesForAction(Action)"),
+              method("isLocallyDefined(KeyStroke)"),
+              method("addActionForKeyStroke(KeyStroke, Action)"),
+              method("removeKeyStrokeBinding(KeyStroke)"),
+              method("removeBindings()"),
+              method(suppress,
+                     "getResolveParent()",
+                     comment("security breach: could return the mutable global root keymap")),
+              method("setResolveParent(Keymap)")))

@@ -1,0 +1,12 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class("javax.swing.event.MouseInputAdapter",
+      statics(method(suppress, "run()")),
+      methods(method(suppress, "mouseClicked(MouseEvent)"),
+              method(suppress, "mousePressed(MouseEvent)"),
+              method(suppress, "mouseReleased(MouseEvent)"),
+              method(suppress, "mouseEntered(MouseEvent)"),
+              method(suppress, "mouseExited(MouseEvent)"),
+              method(suppress, "mouseDragged(MouseEvent)"),
+              method(suppress, "mouseMoved(MouseEvent)")))

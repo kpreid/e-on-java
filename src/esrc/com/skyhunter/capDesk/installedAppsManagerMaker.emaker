@@ -1,0 +1,72 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def installedAppsManagerMaker (appsXMLFile, traceline) :near {
+    def domTreeKit := <import:com.skyhunter.e.util.domTreeKit>
+    var appMapsBySourcePath := [].asKeys().diverge()
+    var appMapsByPetExtension := [].asKeys().diverge()
+    var appMapsByPetName := [].asKeys().diverge()
+    def addAppMap(map) :void {
+        appMapsBySourcePath[map["SourcePath"]] := map
+        if (map.maps ("Suffix")) {appMapsByPetExtension[map["Suffix"]] := map}
+        if (map.maps ("Name")) {appMapsByPetName[map["Name"]] := map}
+    }
+    def loadApps() :void {
+        appMapsBySourcePath := [].asKeys().diverge()
+        appMapsByPetExtension := [].asKeys().diverge()
+        appMapsByPetName := [].asKeys().diverge()
+        #traceline("about to get domm tree in appsManager loadapps: " + appsXMLFile.getText())
+        def appsTree := domTreeKit.domFromText(appsXMLFile.getText())
+        #traceline("got dom tree in appsManager loadapps: " + appsTree)
+        #traceline("apps from tree: " + domTreeKit extractChildNodes("app", appsTree[0]))
+        for each in domTreeKit.extractChildNodes("app", appsTree[0]) {
+            def nextAppMap := domTreeKit.mapDomText(each)
+            addAppMap(nextAppMap)
+        }
+        traceline(`got app map in apps manager: $appMapsBySourcePath`)
+    }
+    def saveApps() :void {
+        traceline("into saveApps in appsManager, appMaps: " + appMapsBySourcePath)
+        var xml := "<installed>\n"
+        for each in appMapsBySourcePath {
+            xml+= `<app>${"\n"}${domTreeKit.xmlFromMap(each)}</app>`
+        }
+        xml += "</installed>"
+        appsXMLFile.setText(xml)
+        traceline("just set appsxmlfile text: " + xml)
+        traceline("the appsxmlfile is: " + appsXMLFile.getCanonicalPath())
+    }
+    loadApps()
+    def installedAppsManager {
+        to getAppBySourcePath(path) :near {
+            traceline("getAppBySource: " + path)
+            #traceline("from appMaps: " + appMapsBySourcePath)
+            #appMapsBySourcePath[path]
+            appMapsBySourcePath[path]
+        }
+        to optAppBySourcePath(path) :near {
+            appMapsBySourcePath.fetch(path, thunk{})
+        }
+        to getAppPetNames() :pbc {
+            def names := [].diverge()
+            for each => value in appMapsByPetName {
+                names.push(each)
+            }
+            names.snapshot()
+        }
+        to optAppByPetName(name) :near {
+            traceline("optAppByPetname name: " + name)
+            appMapsByPetName.fetch(name, thunk{})
+        }
+        to optAppByPetSuffix(suffix) :near {
+            appMapsByPetExtension.fetch(suffix, thunk{})
+        }
+        to reload() :void {loadApps()}
+        to save() :void {saveApps()}
+        to addApp(appMap) :void {
+            addAppMap(appMap)
+            saveApps()
+        }
+        to removeAppBySourcePath(sourcePath) :void {}
+    }
+}

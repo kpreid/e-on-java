@@ -1,0 +1,10 @@
+class("org.eclipse.swt.events.VerifyEvent",
+           statics(method(suppress, "run(Event)")),
+           methods(method("getStart()"),
+                   method(suppress, "setStart(int)"),
+                   method("getEnd()"),
+                   method(suppress, "setEnd(int)"),
+                   method("getText()"),
+                   method("setText(String)"),
+                   method("getDoit()"),
+                   method("setDoit(boolean)")))

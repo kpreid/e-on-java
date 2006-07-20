@@ -1,0 +1,15 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class(safe,
+      "java.awt.dnd.DragGestureRecognizer",
+      statics,
+      methods(method("getDragSource()"),
+              method(suppress, "getComponent()"),
+              method(suppress, "setComponent(Component)"),
+              method("getSourceActions()"),
+              method("setSourceActions(int)"),
+              method(suppress, "getTriggerEvent()"),
+              method("resetRecognizer()"),
+              method("addDragGestureListener(DragGestureListener)"),
+              method("removeDragGestureListener(DragGestureListener)")))

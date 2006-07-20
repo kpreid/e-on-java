@@ -1,0 +1,70 @@
+
+    ? /**
+    >  * Would Euclid approve?
+    >  */
+    > interface Point guards PointStamp {
+    >
+    >     /** abscissa */
+    >     to getX() :near
+    >
+    >     /** ordinate */
+    >     to getY() :near
+    > }
+    # value: Point
+
+    ? def makePoint(x :int, y :int) :Point {
+    >     def point implements PointStamp {
+    >         to getX() :int {x}
+    >         to getY() :int {y}
+    >     }
+    > }
+    # value: <makePoint>
+
+    ? def pt1 := makePoint(3, 4)
+    # value: <point>
+
+    ? pt1.getX()
+    # value: 3
+
+    ? var pt2 :Point := pt1
+    # value: <point>
+
+    ? pt2.getX()
+    # value: 3
+
+    ? pt2 := null
+    # problem: couldn't coerce to: Point
+    #
+    #   assigning pt2
+    #   <interactive interp> evalPrint(e`pt2 := null`)
+
+    ? interface Foo {}
+    # value: Foo
+
+    ? def f :Foo := pt1
+    # problem: unrecognized brand: Foo
+    #
+    #   <interactive interp> evalPrint(e`def f :Foo := pt1`)
+
+    ? def f2 implements Foo {}
+    # value: <f2>
+
+    ? def f3 :Foo := f2
+    # value: <f2>
+
+    ? def [XStamp, X] := <elib:sealing.makeBrand>.pair("X")
+    # value: [<X sealer>, <X unsealer>]
+
+    ? def x implements XStamp {}
+    # value: <x>
+
+    ? var xVar :X := x
+    # value: <x>
+
+    ? xVar := 3
+    # problem: couldn't coerce to: X
+    #
+    #   assigning xVar
+    #   <interactive interp> evalPrint(e`xVar := 3`)
+
+    ?

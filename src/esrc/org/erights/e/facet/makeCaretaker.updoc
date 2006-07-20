@@ -1,0 +1,47 @@
+#!/usr/bin/env rune
+
+Copyright 2004 Hewlett Packard, Inc. under the terms of the MIT X license
+found at http://www.opensource.org/licenses/mit-license.html ..................
+
+? def <facet> := <import:org.erights.e.facet.*>
+# value: <import:org.erights.e.facet.*>
+
+? def mct := <facet:makeCaretaker>
+# value: <makeCaretaker>
+
+? def [f,r] := mct(<file:.>)
+# value: [<<file:c:/Documents and Settings/MILLERM1/e/src/>>, <revoker>]
+
+? f.exists()
+# value: true
+
+? f.__respondsTo("exists", 0)
+# value: true
+
+? r.revoke("foo")
+? f
+# value: <<ref broken by problem: foo>>
+
+? f.exists()
+# problem: foo
+
+? f.__respondsTo("exists", 0)
+# value: false
+
+? help(f)
+# value: an org.erights.e.elang.evm.EImplByProxy
+#        /**
+#         * Forwards all non-Miranda methods, so this pattern should
+#         * only be used if 'underlying' is known not to have any
+#         * protocol that gives itself away.
+#         * <p>
+#         * Therefore, this is only for 'Cooperative (with the underlying)
+#         * revocability'. Uncooperative revocability requires the Membrane pattern,
+#         * for which we eventually expect to provide a library.
+#         * <p>
+#         * Besides non-Miranda methods, this also forwards the Miranda methods
+#         * __printOn/1 (sort of) and __reactToLostClient/1.
+#         */
+#        interface "org.erights.e.facet.makeCaretaker$makeCaretaker__C$forwarder__C" {
+#        }
+#

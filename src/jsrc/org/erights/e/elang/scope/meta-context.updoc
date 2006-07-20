@@ -1,0 +1,59 @@
+#!/usr/bin/env rune
+
+? pragma.enable("meta-scope")
+? interp.setExpand(true)
+
+? def foo():any{[meta.getState(),meta.context()]}
+# expansion: def foo := def "__main$foo__C" {
+#
+#                /**
+#                 * Invoke as a function
+#                 */
+#                method run() :any {
+#                    escape __return {
+#                        __makeList.run(meta.getState(), meta.context())
+#                    }
+#                }
+#            }
+
+# value: <foo>
+
+? def [s,c] := foo()
+# expansion: def [s, c] := foo.run()
+
+# value: [["&__makeList" => <& <import:org.erights.e.elib.tables.ConstList>>, \
+#          "&any" => <& <any>>, \
+#          "&__return" => <& <__return: disabled Ejector>>], \
+#         <StaticContext>]
+
+? c.getSource()
+# expansion: c.getSource()
+
+# value: e`def "__main$foo__C" {
+#
+#            /**
+#             * Invoke as a function
+#             */
+#            method run() :any {
+#                escape __return {
+#                    __makeList.run(meta.getState(), meta.context())
+#                }
+#            }
+#        }`
+
+? c.getSynEnv()
+# expansion: c.getSynEnv()
+
+# value: ["__makeList" => epatt`__makeList`, \
+#         "any" => epatt`any`, \
+#         "__return" => epatt`__return`]
+
+? c.getSource().getSynEnv()
+# expansion: c.getSource().getSynEnv()
+
+# value: ["__makeList" => epatt`__makeList`, "any" => epatt`any`]
+
+? c.getFQNPrefix()
+# expansion: c.getFQNPrefix()
+
+# value: "__main$foo__C$"

@@ -1,0 +1,48 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http:# www.opensource.org/licenses/mit-license.html ................
+
+    ? def makeTextWriter := <elib:oldeio.makeTextWriter>
+    # value: <import:org.erights.e.elib.oldeio.makeTextWriter>
+
+    ? def cmdMakerMaker := <elang:cmd.cmdMakerMaker>
+    # value: <cmdMakerMaker>
+
+    ? def SystemGC {
+    >     to gc() :void {
+    >         println("System.gc()")
+    >         <unsafe:java.lang.System>.gc()
+    >     }
+    > }
+    # value: <SystemGC>
+
+    ? def cmdLoopMaker := <elang:cmd.cmdLoopMakerAuthor>(SystemGC)
+    # value: <cmdLoopMaker>
+
+    ? def ScopeSetup := <unsafe:org.erights.e.elang.interp.ScopeSetup>
+    # value: <unsafe:org.erights.e.elang.interp.ScopeSetup>
+
+    ? def [altout, altoutBuf] := makeTextWriter.makeBufferingPair()
+    # value: [<TextWriter>, ]
+
+    ? def [alterr, alterrBuf] := makeTextWriter.makeBufferingPair()
+    # value: [<TextWriter>, ]
+
+    ? def cmdLoop
+    # value: <Promise>
+
+    ? def props := interp.getProps(); null
+    ? def privileged := ScopeSetup.privileged("__main$",
+    >                                         altout,
+    >                                         alterr,
+    >                                         props,
+    >                                         cmdLoop,
+    >                                         currentVat)
+    # value: org.erights.e.elang.scope.MutableScope@366999
+
+    ? bind cmdLoop := cmdLoopMaker(["a", "b"], props, privileged)
+    # value: <cmdLoop>
+
+    ? def cmdMaker := cmdMakerMaker(cmdLoop, altoutBuf, alterrBuf)
+    # value: <cmdMaker>
+
+    ?

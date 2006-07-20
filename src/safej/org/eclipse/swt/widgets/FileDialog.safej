@@ -1,0 +1,13 @@
+class("org.eclipse.swt.widgets.FileDialog",
+           statics(method("run(Shell)"),
+                   method("run(Shell, int)")),
+           methods(method("getFileName()"),
+                   method("getFileNames()"),
+                   method("getFilterExtensions()"),
+                   method("getFilterNames()"),
+                   method("getFilterPath()"),
+                   method("open()"),
+                   method("setFileName(String)"),
+                   method("setFilterExtensions(String[])"),
+                   method("setFilterNames(String[])"),
+                   method("setFilterPath(String)"))) 

@@ -1,0 +1,96 @@
+#!/usr/bin/env rune
+
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def runeAuthor := <elang:cmd.runeAuthor>
+
+/**
+ *
+ */
+def __versionLauncherAuthor {
+
+    /**
+     *
+     */
+    to getHelp(_) :String {
+        return `$\
+    $$ rune --version          Obtain version info for this E and its jvm.
+    $$ rune --version.<ext>    Obtain version info for <ext>'s launcher.
+
+For help on an individual extension, use "$$ rune --help.<ext>"`
+    }
+
+    /**
+     * Given props assumed to correspond to {@link System#getProperties()},
+     * return a multi-line string with version information about the
+     * installation of E we are running on.
+     */
+    to getOptVersionText(props) :String {
+        def prop(propName) :String { props.fetch(propName, thunk{"??"}) }
+        def javaHome := prop("java.home").replaceAll("\\", "/")
+        def osName := prop("os.name")
+        def osVer := prop("os.version")
+        def arch := prop("os.arch")
+        def osdir := prop("e.osdir")
+        def machdir := prop("e.machdir")
+
+        var extra := ""
+        if (props.maps("e.swtVersion")) {
+            # XXX Even if these are set in the System properties, we are
+            # currently still missing them in props, and so won't see these.
+            def swtVer := prop("e.swtVersion")
+            def swtRev := prop("e.swtRevision")
+            def swtPlat := prop("e.swtPlatform")
+            extra := `
+on SWT $swtVer.$swtRev for $swtPlat`
+        }
+
+        return `E version: ${prop("e.version")} at ${prop("e.home")}
+on Java version: ${prop("java.version")} at $javaHome$extra
+on OS: $osName version: $osVer on $arch ($osdir/$machdir)
+for ${prop("user.name")} in ${props.fetch("user.region",
+                                          thunk{prop("user.country")})}`
+    }
+
+    /**
+     *
+     */
+    to run(auths) :near {
+
+        def metaout := auths["metaout"]
+
+        /**
+         *
+         */
+        def __versionLauncher {
+
+            /**
+             *
+             */
+            to run(props, options, _, args) :vow[boolean] {
+                return __versionLauncher.interpret(props, options, "", args)
+            }
+
+            /**
+             *
+             */
+            to interpret(props, var options, _, args) :vow[boolean] {
+                var versionText :=
+                  __versionLauncherAuthor.getOptVersionText(props)
+                def optExt := args[0]
+                if (optExt != null) {
+                    def launcherAuthorName :=
+                      runeAuthor.getLauncherAuthorName(optExt)
+                    def optMore :=
+                      <import>[launcherAuthorName].getOptVersionText(props)
+                    if (null != optMore) {
+                        versionText := `$optMore$\n$versionText`
+                    }
+                }
+                metaout.println(versionText)
+                return true
+            }
+        }
+    }
+}

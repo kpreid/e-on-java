@@ -1,0 +1,340 @@
+# Copyright 2003 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+/**
+ * Controls persistence of a vat by using a
+ * {@link makeTransplanterAuthor Transplanter}.
+ * <p>
+ * Saves and/or revives a subgraph of a Vat to a *.vat file. The subgraph is
+ * defined by starting at the persistent roots, traversing persistent pointers,
+ * and stopping whenever the unscope is reached. All objects within
+ * this subgraph are "persistently reachable objects". All persistent state
+ * within these objects is "persistently reachable state".
+ * <p>
+ * A given TimeMachine should either be used to initialize a new checkpoint or
+ * to revive from an existing one. (Normally a TimeMachine is associated with
+ * an {@link net.captp.jcomm.Introducer}, in which case further restrictions
+ * apply, as explained below.)
+ * <p>
+ * A TimeMachine isn't itself Persistent, but the relevant instance is expected
+ * to be one of its own unscope-keys, so a persistent object holding a
+ * persistent pointer to that TimeMachine will likely revive holding instead an
+ * appropriate substitute TimeMachine.
+ * <p>
+ * A TimeMachine has three states: "Ephemeral", "Forming", and "Saved".
+ * It starts in the Ephemeral state. If this is the first incarnation of this
+ * vat, then, in order to start accumulating state to be saved, the TimeMachine
+ * must be put into the "Forming" state. Once it takes its first checkpoint, it
+ * is then in the Saved state. If it deletes its checkpoint, then it's
+ * in the Forming state.
+ * <p>
+ * Alternatively, a TimeMachine in the Ephemeral state can be told to revive
+ * from a checkpoint, in which case it moves immediately to the Saved
+ * state. Only a TimeMachine in the Ephemeral state can be revived, and a
+ * TimeMachine cannot be put back into the Ephemeral state from another state.
+ * <p>
+ * An Introducer has three states: Unidentified, Identified, and onTheAir.
+ * When a TimeMachine is associated with an Introducer, then an Identified
+ * Introducer has persistent state, so therefore a TimeMachine is only
+ * considered Ephemeral so long as the associated Introducer is Unidentified.
+ * Therefore, once an Introducer is Identified, this TimeMachine will only be
+ * able to save, not revive, from a checkpoint.
+ * <p>
+ * Putting the TimeMachine into the Forming state will cause an associated
+ * Introducer to become Identified. XXX Currently, it must be the TimeMachine
+ * that causes the Introducer to become identified. If you cause the Introducer
+ * to be identified by other means (such as onTheAir()) while the TimeMachine
+ * is still Ephemeral, then the TimeMachine will be broken and can neither
+ * checkpoint nor revive.
+ * <p>
+ * When reviving, an associated Introducer becomes Identified. But revival
+ * leaves the Introducer off-the-air even if the original Introducer was
+ * checkpointed while onTheAir.
+ * <p>
+ * Checkpointing a TimeMachine will not cause an Introducer to go onTheAir(),
+ * but you should consider doing so yourself, since this causes the NetConfig
+ * that gets checkpointed to capture information that helps a revived vat
+ * become more easily visible to its old clients -- by trying to reclaim the
+ * old TCP/IP ports.
+ * <p>
+ * It's good hygiene for your application to invoke the saving or reviving
+ * operations when there's no persistence-relevant stack state. This is most
+ * easily done by requesting these operations with an eventual send ("&lt;-")
+ * as that will cause the operation to happen in its own turn. Be sure to
+ * check whether the returned promise breaks!
+ *
+ * @param makeTransplanter A function of an atomic file that returns a
+ *        transplanter.
+ * @author Mark S. Miller
+ */
+def makeTimeMachineAuthor(makeTransplanter) :near {
+
+    /**
+     *
+     */
+    def makeTimeMachine(optIntroducer, optMakeSturdyRef) :near {
+
+        # We save everything from myOptRoots (a FlexList) until the
+        # unscope-keys.
+        # <p>
+        # While we're in the "Ephemeral" state, this is null.
+        # <p>
+        # On transitioning to the "Forming" state, this is torn off from the
+        # optMakeSturdyRef. On a revive, the tear-off is used to set it into
+        # optMakeSturdyRef.
+        var myOptRoots := null
+
+        # On transitioning to the "Forming" state, this is obtained from
+        # the Introducer. On revive, this is set into the Introducer.
+        var myOptKeyPair := null
+
+        # Used to save or restore the subgraph to its atomic file.
+        # <p>
+        # While we're in the "Ephemeral" or "Forming" states, this is null.
+        var myOptTransplanter := null
+
+        # Used so others can wait until the current state is saved.
+        # Cannot be used in the ephemeral state.
+        def [var myNextSaveVow, var myNextSaveResolver] := Ref.promise()
+
+        /**
+         * Resolves the current myNextSaveVow to saveAck, and make a new
+         * (myNextSaveVow, myNextSaveResolver) pair.
+         * <p>
+         * saveAck should be either null or a broken reference
+         */
+        def report(saveAck) :void {
+            myNextSaveResolver.resolve(saveAck)
+            def [p,r] := Ref.promise()
+            myNextSaveVow := p
+            myNextSaveResolver := r
+        }
+
+        /**
+         *
+         */
+        def timeMachine {
+
+            to isEphemeral() :boolean {
+                if (null != myOptRoots) {
+                    false
+                } else if (null == optIntroducer) {
+                    true
+                } else if (optIntroducer.hasIdentity()) {
+                    # See the doc-comment on makeTimeMachineAuthor.
+                    throw("Introducer prematurely identified")
+                } else {
+                    true
+                }
+            }
+            to isSaved() :boolean { null != myOptTransplanter }
+            to isForming() :boolean {
+                !timeMachine.isEphemeral() && !timeMachine.isSaved()
+            }
+
+            /**
+             * Transitions from Ephemeral to Forming.
+             * <p>
+             * Once you've done this, you can never do a revive on this
+             * TimeMachine. In other words, this operation commits you to
+             * making this a new incarnation rather than a reincarnation.
+             */
+            to new() :void {
+                require(timeMachine.isEphemeral(), thunk{"Must be ephemeral"})
+
+                myOptRoots := optMakeSturdyRef.tearOffRoots(null, timeMachine)
+                if (null != optIntroducer && null == myOptKeyPair) {
+                    # This only happens the first time.
+                    # If we go Forming (via delete()) and then Saved
+                    # again, this step isn't redone, since we already
+                    # have an vatIdentity.
+                    myOptKeyPair := optIntroducer.newVatIdentity()
+                }
+            }
+
+            /**
+             * Used for first saving this persistent state to the specified
+             * checkpoint file.
+             * <p>
+             * This TimeMachine must be in an Forming state, and the
+             * checkpoint file must not yet exist.
+             * <p>
+             * This operation puts the TimeMachine in the "Saved" state.
+             */
+            to createAs(atomicFile) :void {
+                require(timeMachine.isForming(), thunk{"Must be forming"})
+                require(! atomicFile.exists(), thunk{
+                    `Delete $atomicFile first`
+                })
+                myOptTransplanter := makeTransplanter(atomicFile)
+                timeMachine.save()
+            }
+
+            /**
+             * Returns a vow which will resolve the next time this timeMachine
+             * is told to {@link #save}.
+             * <p>
+             * You may only whenSaved() a TimeMachine that's not Ephemeral
+             * (XXX for now).
+             * <p>
+             *
+             */
+            to whenSaved() :vow[nullOk] {
+                require(!timeMachine.isEphemeral(), thunk{
+                    "Must not be ephemeral"
+                })
+
+                return myNextSaveVow
+            }
+
+            /**
+             * Saves a new snapshot to the current checkpoint file.
+             * <p>
+             * You may only save() a TimeMachine which is in the Saved state.
+             * <p>
+             * To ensure that you're saving consistent state, we recommend that
+             * you do a
+             * <pre>    when (timeMachine &lt;- save()) -&gt; ...</pre>
+             * and then do post-checkpoint actions in the done closure (the
+             * part of the when-catch after the -&gt;).
+             */
+            to save() :void {
+                try {
+                    require(timeMachine.isSaved(), thunk{"Must be saved"})
+
+                    var state := ["root" => myOptRoots,
+                                  "vatIdentity" => myOptKeyPair]
+                    if (null != optIntroducer) {
+                        state with= ("netConfig", optIntroducer.getNetConfig())
+                    }
+
+                    # XXX commit the SwissDBs
+                    myOptTransplanter.save(state)
+
+                    report(null)
+                } catch prob {
+                    report(Ref.broken(prob))
+                    throw(prob)
+                }
+            }
+
+            /**
+             * Used to save persistent state to the specified checkpoint file
+             * from now on, leaving the current checkpoint file behind.
+             * <p>
+             * The TimeMachine must be in a Saved state, and the new
+             * checkpoint file must not exist.
+             * <p>
+             * This operation leaves behind the old checkpoint as a
+             * backup. In the typical case, where the TimeMachine is associated
+             * with an Introducer, both checkpoints will have the same vat
+             * identity, so only one should ever be considered "real", and only
+             * one of these at a time should ever be running. To avoid the
+             * danger of this confusion, consider using renameTo(..)
+             * instead.
+             */
+            to saveAs(atomicFile) :void {
+                require(timeMachine.isSaved(), thunk{"Must be saved"})
+                require(! atomicFile.exists(), thunk{
+                    `Delete $atomicFile first`
+                })
+                myOptTransplanter := makeTransplanter(atomicFile)
+                timeMachine.save()
+            }
+
+            /**
+             * Moves the checkpoint to the new location, and remembers to
+             * continue checkpointing to there from now on.
+             * <p>
+             * The TimeMachine must be in a Saved state, and the new
+             * checkpoint file must not exist.
+             */
+            to renameAtomicFileTo(atomicFile) :void {
+                require(timeMachine.isSaved(), thunk{"Must be saved"})
+
+                myOptTransplanter.renameAtomicFileTo(atomicFile)
+            }
+
+            /**
+             * Used to restore persistent state from a checkpoint.
+             * <p>
+             * Only a TimeMachine that's still in an "Ephemeral" state may be
+             * revived. If this TimeMachine is associated with an Introducer
+             * (as it typically will be), this means the revive must also be
+             * done before the Introducer has an identity.
+             * <p>
+             * This operation puts the TimeMachine in the "Saved" state.
+             */
+            to revive(atomicFile) :void {
+                require(timeMachine.isEphemeral(), thunk{"Must be ephemeral"})
+
+                myOptTransplanter := makeTransplanter(atomicFile)
+                def state := myOptTransplanter.restore()
+
+                def optNetConfig := state.fetch("netConfig", thunk{})
+                myOptKeyPair := state.fetch("vatIdentity", thunk{})
+                if (null != optIntroducer) {
+                    if (null != optNetConfig) {
+                        optIntroducer.setNetConfig(optNetConfig)
+                    }
+                    if (null != myOptKeyPair) {
+                        optIntroducer.setVatIdentity(myOptKeyPair)
+                    }
+                }
+
+                myOptRoots := state["root"]
+                optMakeSturdyRef.tearOffRoots(myOptRoots, timeMachine)
+            }
+
+            /**
+             * Deletes the checkpoint file (be careful!) and makes this
+             * TimeMachine become Forming again.
+             * <p>
+             * The TimeMachine must be in a Saved state.
+             */
+            to delete() :void {
+                require(timeMachine.isSaved(), thunk{"Must be saved"})
+
+                myOptTransplanter.delete()
+                myOptTransplanter := null
+            }
+
+            /**
+             * mustBeSettled defaults to false
+             */
+            to addExit(value, exitName :String) :void {
+                timeMachine.addExit(value, exitName, false)
+            }
+
+            /**
+             *
+             */
+            to addExit(value, exitName :String, mustBeSettled :boolean) :void {
+                makeTransplanter.addExit(value, exitName, mustBeSettled)
+            }
+            
+            /**
+             *
+             */
+            to getPrintFunc() :near {
+                var surgeon := makeTransplanter.getSurgeon()
+                surgeon := surgeon.snapshot().diverge()
+                surgeon.beForgiving()
+                return surgeon.getSubgraphRecognizer().getPrintFunc()
+            }
+
+            /**
+             *
+             */
+            to __printOn(out :TextWriter) :void {
+                if (null == myOptRoots) {
+                    out.print("<ephemeral>")
+                } else if (null == myOptTransplanter) {
+                    out.print("<forming>")
+                } else {
+                    out.print(`<timeMachine $myOptTransplanter>`)
+                }
+            }
+        }
+    }
+}

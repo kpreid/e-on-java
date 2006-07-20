@@ -1,0 +1,20 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class(safe,
+      "javax.swing.SpringLayout",
+      statics(method("run()")),
+      methods(method("addLayoutComponent(String, Component)"),
+              method("removeLayoutComponent(Component)"),
+              method("minimumLayoutSize(Container)"),
+              method("preferredLayoutSize(Container)"),
+              method("maximumLayoutSize(Container)"),
+              method("addLayoutComponent(Component, Object)"),
+              method("getLayoutAlignmentX(Container)"),
+              method("getLayoutAlignmentY(Container)"),
+              method(suppress, "invalidateLayout(Container)"),
+              method("putConstraint(String, Component, int, String, Component)"),
+              method("putConstraint(String, Component, Spring, String, Component)"),
+              method("getConstraints(Component)"),
+              method("getConstraint(String, Component)"),
+              method("layoutContainer(Container)")))

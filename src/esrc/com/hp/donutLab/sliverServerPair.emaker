@@ -1,0 +1,221 @@
+#!/usr/bin/env rune
+
+# Copyright 2004 Hewlett Packard, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+pragma.disable("explicit-result-guard")
+
+def Timer := <type:org.erights.e.extern.timer.Timer>
+
+def makeSliverServerPairAuthor(traceRcvr,
+                               timer :Timer,
+                               makeBootServer,
+                               introducer) :near {
+
+    def makeSliverServerPair(nickName :String,
+                             account,
+                             kiosk,
+                             serverDir) :near {
+
+        def traceLine(message) {
+            traceRcvr <- run(`$nickName reports: $message`)
+        }
+
+        def sliverDirName := "slivers"
+        if (!serverDir[sliverDirName].exists()) {
+            serverDir[sliverDirName].mkdir(null)
+        }
+        traceLine("serverDir: " + serverDir)
+
+        def vowTransfer(offerVow, acceptorVow) :vow[int] {
+            return when (offerVow, acceptorVow, account) ->
+              holdsReady(offer, acceptor, acct) :vow[int]{
+                acct <- transfer(offer, acceptor)
+                return acceptor <- refund()
+            } catch prob {
+                traceLine("payment failed" + prob)
+                throw (prob)
+            }
+        }
+
+        /**
+         * collectPayment grabs all the money in the payHold
+         *
+         * @return a vow for the amount of money collected. If
+         *        collection fails, the vow is smashed
+         */
+        def collectPayment(payHold :rcvr) :vow[int] {
+            def acceptor := account <- accept()
+            return vowTransfer(payHold, acceptor)
+            #def paidAmount := account <- transfer(payHold, acceptor)
+            #acceptor <- refund()
+            #return paidAmount
+        }
+
+        def getFarPower(env, power :String) :rcvr {
+            return env <- get(`&$power`) <- getValue()
+        }
+
+        /**
+         * setupShutdown meters time and messages from the sliver and
+         * deducts credit until the credit reaches zero, at which time
+         * the sliverBoss kills the vat and all its connections.
+         * The sliverBoss is also the fellow in charge of starting up the
+         * sliver's introducer, and other initialization as required.
+         *
+         * setupShutdown has some important security properties. Notably,
+         * if anything goes wrong with the sliverBoss, it must shut down
+         * the vat, since without the Boss, there is no one to deduct
+         * credit and determine a correct shutdown time.
+         *
+         * @param paidAmount the starting amount of credit
+         * @param sliverVat the vat it will control
+         * @param sliverPower all the powers over the sliver local
+         *        environment
+         */
+        def setupShutdown(paidAmount,
+                          sliverVat,
+                          sliverEnv,
+                          sliverVatFileName ) {
+            def kill() {
+                sliverVat.orderlyShutdown("No More Credit")
+                serverDir[sliverVatFileName].delete(null)
+                serverDir[sliverVatFileName + "-bak"].delete(null)
+                traceLine("sliverVat killed")
+            }
+            try {
+                var credit := paidAmount
+                # set up timer, 1 second for 1 unit money, 30 credits
+                # gives 30 minutes set up reference monitor, 1 unit
+                # deducted for each message sent if during reference
+                # monitor deduction, credit goes to zero, kill vat
+                timer.whenAlarm(
+                    timer.now() + 100000*paidAmount,
+                    kill)
+                def bootImporter := getFarPower(sliverEnv,
+                                                "import__uriGetter")
+                def bootMBRM := bootImporter <- get(
+                    "com.hp.donutLab.makeBudgetingRefMon")
+                def bootIntroducer := getFarPower(sliverEnv, "introducer")
+                def bootPrintln := getFarPower(sliverEnv, "println")
+                def bootBRM := bootMBRM <- run(paidAmount,
+                                            sliverVat,
+                                            bootPrintln)
+                bootIntroducer <- setReferenceMonitor(bootBRM)
+            } catch prob {
+                kill()
+                traceLine ("setupShutdown died unexpectedly: " + prob)
+            }
+            return null
+        }
+
+        var currentSliverID := 0
+        def makeSliverVatFileName () :String {
+            currentSliverID += 1
+            return `Sliver$currentSliverID.vat`
+        }
+
+        def sliverServer {
+            /**
+             * @param payment must be an offered hold from the same mint
+             *        as the sliverserver's account
+             *        The payment is immediately transferred to the
+             *        sliverserver's account, and a credit line is
+             *        established for the object that is then evaluated
+             *        to form the sliver.
+             *        Credit is deducted for each message sent
+             *        and for clock time of operation
+             * @return the liveref to an object derived from the
+             *        sourceCode using the following algorithm:
+             *        The sourceCode is evaluated in
+             *        in universalScope (fully confined scope) in
+             *        a separate vat on a separate thread. This evaluation
+             *        creates a maker object. The maker object must
+             *        have one method,
+             *        "runSliver(makeSturdyRef, timeMachine) :near"
+             *        This runSliver method is invoked to create an
+             *        object that has the power to persist itself. A
+             *        liveRef to this persistable object is returned
+             */
+            to makeSliver(sourceCode :String, payment :rcvr) :rcvr {
+                def sliver := when (collectPayment(payment)) ->
+                  gotPaid(paidAmount) :rcvr {
+
+                    if (paidAmount <= 0) {
+                        throw("More pay required" + paidAmount)
+                    }
+                    traceLine("got paid")
+                    def sliverVatFileName := makeSliverVatFileName()
+                    def [sliverMaker, sliverEnv, sliverVat] :=
+                      makeBootServer(sourceCode)
+                    traceLine("ss made server")
+                    setupShutdown(paidAmount,
+                                  sliverVat,
+                                  sliverEnv,
+                                  sliverVatFileName)
+                    traceLine("setupShutdown")
+                    def bootMakeSturdyRef := getFarPower(sliverEnv,
+                                                         "makeSturdyRef")
+                    def bootTimeMachine := getFarPower(sliverEnv,
+                                                       "timeMachine")
+                    def bootFileGetter := getFarPower(sliverEnv,
+                                                      "file__uriGetter")
+                    def bootDir :=
+                      bootFileGetter <- get("./" + sliverDirName)
+                    def bootImporter := getFarPower(sliverEnv,
+                                                    "import__uriGetter")
+                    def bootMakeAtomicFile := bootImporter <- get(
+                        "org.erights.e.extern.persist.makeAtomicFile")
+                    def bootVatFile :=
+                      bootMakeAtomicFile <- run(bootDir, sliverVatFileName)
+                    def bootIntroducer := getFarPower(sliverEnv,
+                                                      "introducer")
+                    def bootSliver :=
+                      sliverMaker <- runSliver(bootMakeSturdyRef,
+                                               bootTimeMachine)
+                    bootTimeMachine <- new()
+                    when (bootVatFile) -> done(_) :any {
+                        bootTimeMachine <- createAs(bootVatFile)
+                        bootIntroducer <- onTheAir()
+                        bootTimeMachine <- save()
+
+                        def bootSR := bootMakeSturdyRef <- temp(bootSliver)
+                        return when (bootIntroducer <-
+                                       sturdyToURI(bootSR)) ->
+                          done(uri) :any {
+                            return introducer.sturdyFromURI(uri).getRcvr()
+                        } catch prob {
+                            throw(prob)
+                        }
+                    } catch prob {
+                        throw(prob)
+                    }
+
+                } catch prob {
+                    traceLine("makeSliver failed: " + prob)
+                    throw(prob)
+                }
+                return sliver
+            }
+        }
+
+        def sliverServerBoss{}
+
+        def advertise() {
+            def kiosks :rcvr := kiosk <- getAdvertisedServers("kiosk")
+            when (kiosks) -> goodList(k) {
+                for each in kiosks.with(kiosk) {
+                    each <- postAdvertisement("sliverServer",
+                                              account <- offer(1),
+                                              600,
+                                              sliverServer)
+                }
+            } catch noKiosks {traceLine("no kiosks: " + noKiosks)}
+        }
+        advertise()
+        traceLine("sliver server evaluation about to return ss, sb")
+        return [sliverServer, sliverServerBoss]
+    }
+    traceRcvr <- run("about to return makeSliverServerPair")
+    return makeSliverServerPair
+}

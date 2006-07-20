@@ -1,0 +1,196 @@
+#!/usr/bin/env rune
+
+# Copyright 2004 Hewlett Packard, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def <quasi> := <import:org.quasiliteral.*>
+def <quasiType> := <type:org.quasiliteral.*>
+
+def QuasiBuilder := <quasiType:term.QuasiBuilder>
+def Term := <quasiType:term.Term>
+def Termish := <quasiType:term.Termish>
+
+def makeTermBuilder := <quasi:term.makeTermBuilder>
+
+
+def toList(functor :Term, specimen :Term) :List[Term] {
+    switch (specimen) {
+        match term`empty`            { return [] }
+        match term`$functor(@args*)` { return args }
+        match _                      { return [specimen] }
+    }
+}
+
+def assoc(functor :Term, left :Term, right :Term) :Term {
+    return term`$functor(${toList(functor, left) +
+                             toList(functor, right)}*)`
+}
+
+def tagName(term :Term) :Term {
+    return term`.String.${term.getTag().getTagName()}`
+}
+
+def quasiMetaBuilder extends
+  makeTermBuilder.getFOR_TERMS() implements QuasiBuilder {
+
+    to doesQuasis() :boolean { return true }
+
+    to some(var optSub :nullOk[Term], quant :char) :Termish {
+        if (null == optSub) {
+            optSub := quasiMetaBuilder.any()
+        }
+        switch (quant) {
+            match =='?' {
+                return term`optional($optSub)`
+            }
+            match =='+' {
+                return term`oneOrMore($optSub)`
+            }
+            match == '*' {
+                return term`zeroOrMore($optSub)`
+            }
+        }
+    }
+
+    to some(var optSub :nullOk[Term], quant :char, sep :Term) :Termish {
+        if (null == optSub) {
+            optSub := quasiMetaBuilder.any()
+        }
+        switch (quant) {
+            match =='+' {
+                return term`oneOrMore($optSub, $sep)`
+            }
+            match == '*' {
+                return term`zeroOrMore($optSub, $sep)`
+            }
+        }
+    }
+
+    to term(functor :Term, args :Term) :Term {
+        return term`term(${quasiMetaBuilder.term(functor)}, $args)`
+    }
+
+    to term(functor :Term) :Term {
+        def optData := functor.getOptData()
+        if (null == optData) {
+            # XXX the following test works for the wrong reasons
+            if (functor.getArgs().size() == 0) {
+                # undo the TermParser#untag operation
+                return term`tag(${tagName(functor)})`
+            } else {
+                # It happens to be one of ours, but this was the wrong way
+                # to determine that
+                return functor
+            }
+        } else {
+            return super.composite(term`data`.getTag(),
+                                   optData,
+                                   functor.getOptSpan())
+        }
+    }
+
+    to tuple(args :Term) :Term {
+        return term`term(tag(".tuple."), $args)`
+    }
+
+    to bag(args :Term) :Term {
+        return term`term(tag(".bag."), $args)`
+    }
+
+    to attr(functor :Term, value :Term) :Term {
+        return term`term(tag(".attr."), term($functor, $value))`
+    }
+
+    to empty() :Term {
+        return term`empty`
+    }
+
+    to seq(first, second, third) :Term {
+        return quasiMetaBuilder.seq(quasiMetaBuilder.seq(first, second),
+                                    third)
+    }
+
+    to seq(first, second, third, fourth) :Term {
+        return quasiMetaBuilder.seq(quasiMetaBuilder.seq(first, second, third),
+                                    fourth)
+    }
+
+    to unpack(term`LiteralChars(@{str :String})`) :Term {
+        var result := term`empty`
+        for c in str {
+            result := quasiMetaBuilder.seq(result, term`data($c)`)
+        }
+        return result
+    }
+
+    to anyOf(litString :Term) :Term {
+        def str := litString.getOptString()
+        var result := term`empty`
+        for c in str {
+            result := quasiMetaBuilder.onlyChoice(result, term`data($c)`)
+        }
+        return result
+    }
+
+    to taggedHole(ident :Term, functorHole :Term) :Term {
+        return term`tag(${tagName(ident)}, $functorHole)`
+    }
+
+    to seq(left :Term, right :Term) :Term {
+        return assoc(term`seq`, left, right)
+    }
+
+    to onlyChoice(left :Term, right :Term) :Term {
+        return assoc(term`onlyChoice`, left, right)
+    }
+
+    to firstChoice(left :Term, right :Term) :Term {
+        return assoc(term`firstChoice`, left, right)
+    }
+
+    to interleave(left :Term, right :Term) :Term {
+        return assoc(term`interleave`, left, right)
+    }
+
+    to range(left :Term, right :Term) :Term {
+        return term`range($left, $right)`
+    }
+
+    to not(test :Term) :Term {
+        return term`not($test)`
+    }
+
+    to action(left, right) :Term {
+        return term`action($left, $right)`
+    }
+
+    to any() :Term {
+        return term`any`
+    }
+
+    to dollarHole(litInt :Term) :Term {
+        def lit := if (litInt.getOptData() =~ data :notNull) {
+            litInt
+        } else {
+            tagName(litInt)
+        }
+        return term`dollarHole($lit)`
+    }
+
+    to atHole(litInt :Term) :Term {
+        def lit := if (litInt.getOptData() =~ data :notNull) {
+            litInt
+        } else {
+            tagName(litInt)
+        }
+        return term`atHole($lit)`
+    }
+
+    to production(lhs :Term, rhs :Term) :Term {
+        return term`production(${quasiMetaBuilder.term(lhs)}, $rhs)`
+    }
+
+    to schema(productions) :Term {
+        return term`schema(${toList(term`seq`, productions)}*)`
+    }
+}

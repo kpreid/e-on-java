@@ -1,0 +1,14 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class("javax.swing.InputMap",
+      statics(method(suppress, "run()")),
+      methods(method(suppress, "setParent(InputMap)"),
+              method(suppress, "getParent()"),
+              method(suppress, "put(KeyStroke, Object)"),
+              method(suppress, "get(KeyStroke)"),
+              method(suppress, "remove(KeyStroke)"),
+              method(suppress, "clear()"),
+              method(suppress, "keys()"),
+              method(suppress, "size()"),
+              method(suppress, "allKeys()")))

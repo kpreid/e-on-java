@@ -1,0 +1,455 @@
+#!/usr/bin/env rune
+
+# Copyright 2004 Hewlett Packard, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+pragma.enable("easy-return")
+pragma.enable("explicit-result-guard")
+
+def QuasiExprParser := <type:org.quasiliteral.base.QuasiExprParser>
+def QuasiPatternParser := <type:org.quasiliteral.base.QuasiPatternParser>
+def ValueMaker := <type:org.quasiliteral.base.ValueMaker>
+def MatchMaker := <type:org.quasiliteral.base.MatchMaker>
+def FlexList := <type:org.erights.e.elib.tables.FlexList>
+
+def convertHoles := <import:org.quasiliteral.text.convertHoles>
+
+def makeArgGrabber(index :int) :ValueMaker {
+    def argGrabber implements ValueMaker {
+        to substitute(args :List) :any {
+            return args[index]
+        }
+        to __printOn(out :TextWriter) :void {
+            out.print("${", index, "}")
+        }
+    }
+    return argGrabber
+}
+
+def makeLiteral(value) :ValueMaker {
+    def literal implements ValueMaker {
+        to substitute(_) :any {
+            return value
+        }
+        to __printOn(out :TextWriter) :void {
+            out.print(value.replaceAll("$", "$$").replaceAll("@","@@"))
+        }
+    }
+    return literal
+}
+
+/**
+ *
+ * @param template The returned substituter is for template(start,bound).
+ * @param start
+ * @param bound
+ * @param dlrHoles The returned substituter is for dlrHoles starting at the
+ *                 current dlrHoles[dlrHoleNum] so long as these are less than
+ *                 bound.
+ * @param dlrHoleNum
+ * @return
+ */
+def makeSubstituter(template :Twine,
+                    var start :int,
+                    bound :int,
+                    dlrHoles :List[int],
+                    &dlrHoleNum) :ValueMaker {
+    var valueMakers := []
+    while (dlrHoleNum < dlrHoles.size() &&
+             dlrHoles[dlrHoleNum] =~ dlrHole :(start..!bound)) {
+
+        if (dlrHole < start) {
+            throw("dollar-holes not in order: " + dlrHoles)
+        }
+        if (dlrHole > start) {
+            valueMakers += [makeLiteral(template(start, dlrHole))]
+        }
+        if (template[dlrHole] != '$') {
+            throw("dollar-hole not marked: " +
+                    template(0,dlrHole) +
+                    ">>" + template[dlrHole] + "<<" +
+                    template(dlrHole+1, template.size()))
+        }
+        valueMakers += [makeArgGrabber(dlrHoleNum)]
+        start := dlrHole + 1
+        dlrHoleNum += 1
+    }
+    if (start < bound) {
+        valueMakers += [makeLiteral(template(start, bound))]
+    }
+
+    def substituter implements ValueMaker {
+
+        to substitute(args :List) :Twine {
+            var result := ""
+            for valueMaker in valueMakers {
+                result += valueMaker.substitute(args)
+            }
+            return result
+        }
+        to __printOn(out :TextWriter) :void {
+            out.print("twine`")
+            for valueMaker in valueMakers {
+                out.print(valueMaker)
+            }
+            out.print("`")
+        }
+    }
+    return substituter
+}
+
+/**
+ * Represents the internal notion of the rest of a twine MatchMaker.
+ */
+interface TwineMatcher {
+
+    /**
+     * Matches this rest-of-a-matcher against the specimen starting at
+     * start.
+     * <p>
+     * If the match succeeds, returns the list of bindings for the at-holes
+     * in this rest-of-a-matcher. These bindings have relative position.
+     */
+    to matchAt(args :List, specimen :Twine, start :int, optEjector) :List[Twine]
+
+    /**
+     * Makes a new TwineMatcher in front of this TwineMatcher, i.e., whose
+     * "rest" is this TwineMatcher.
+     * <p>
+     * The new TwineMatcher represents the previous holeNum.
+     */
+    to makeAtHoleMatcher() :TwineMatcher
+
+    /**
+     * Makes a new TwineMatcher in front of this TwineMatcher, i.e., whose
+     * "rest" is this TwineMatcher.
+     * <p>
+     * The new TwineMatcher represents a quasi-literal segment, consisting
+     * only of consecutive literal strings and dollar-holes.
+     * <p>
+     * Since all consecutive literalMatcher elements should already be
+     * gathered up in one makeLiteralMatcher request, you may not request
+     * two consecutive literalMatchers.
+     */
+    to makeLiteralMatcher(substituter :ValueMaker) :TwineMatcher
+}
+
+def makeLiteralMatcher
+
+def makeEmptyHoleMatcher(rest :TwineMatcher) :TwineMatcher {
+    def emptyHoleMatcher implements TwineMatcher {
+
+        /**
+         * Always locally matches, eating nothing.
+         */
+        to matchAt(args :List,
+                   specimen :Twine,
+                   start :int,
+                   optEjector) :List[Twine] {
+            return [""] + rest.matchAt(args, specimen, start, optEjector)
+        }
+        to makeAtHoleMatcher() :TwineMatcher {
+            return makeEmptyHoleMatcher(emptyHoleMatcher)
+        }
+        to makeLiteralMatcher(substituter :ValueMaker) :TwineMatcher {
+            return makeLiteralMatcher(substituter, emptyHoleMatcher)
+        }
+        to __printOn(out :TextWriter) :void {
+            out.print("@{-}", rest)
+        }
+    }
+    return emptyHoleMatcher
+}
+
+def makeSlackHoleMatcher(substituter :ValueMaker,
+                         restRest :TwineMatcher) :TwineMatcher {
+    def slackHoleMatcher implements TwineMatcher {
+
+        /**
+         * Eats everything until the text produced by the substituter
+         */
+        to matchAt(args :List,
+                   specimen :Twine,
+                   start :int,
+                   optEjector) :List[Twine] {
+            def text := substituter.substitute(args).bare()
+            def next := specimen.bare().startOf(text, start)
+            if (next <= -1) {
+                throw.eject(optEjector,
+                            `"$text" not found in "${
+                        specimen(start, specimen.size())}`)
+            }
+            def after := next + text.size()
+            return [specimen(start,next)] +
+              restRest.matchAt(args, specimen, after, optEjector)
+        }
+        to makeAtHoleMatcher() :TwineMatcher {
+            return makeEmptyHoleMatcher(slackHoleMatcher)
+        }
+        to makeLiteralMatcher(substituter :ValueMaker) :TwineMatcher {
+            return makeLiteralMatcher(substituter, slackHoleMatcher)
+        }
+        to __printOn(out :TextWriter) :void {
+            out.print("@{", substituter, "}", restRest)
+        }
+    }
+    return slackHoleMatcher
+}
+
+bind makeLiteralMatcher(substituter :ValueMaker,
+                        rest :TwineMatcher) :TwineMatcher {
+    def literalMatcher implements TwineMatcher {
+
+        /**
+         * Eats the text produced by the substituter
+         */
+        to matchAt(args :List,
+                   specimen :Twine,
+                   start :int,
+                   optEjector) :List[Twine] {
+            def text := substituter.substitute(args).bare()
+            if (specimen.bare().startsWith(text, start)) {
+                return rest.matchAt(args,
+                                    specimen,
+                                    start + text.size(),
+                                    optEjector)
+            } else {
+                throw.eject(optEjector,
+                            `"$text" not at $start`)
+            }
+        }
+        to makeAtHoleMatcher() :TwineMatcher {
+            return makeSlackHoleMatcher(substituter, rest)
+        }
+        to makeLiteralMatcher(substituter :ValueMaker) :TwineMatcher {
+            throw("internal: consecutive literal matchers" +
+                    substituter + ", " + literalMatcher)
+        }
+        to __printOn(out :TextWriter) :void {
+            out.print("{", substituter, "}", rest)
+        }
+    }
+    return literalMatcher
+}
+
+/**
+ *
+ */
+def endMatcher implements TwineMatcher {
+
+    /**
+     * Matches only at the end of the specimen.
+     */
+    to matchAt(_, specimen :Twine, start :int, optEjector) :List[Twine] {
+        if (start != specimen.size()) {
+            throw.eject(optEjector,
+                        `Not at end of "$specimen"`)
+        }
+        return []
+    }
+    to makeAtHoleMatcher() :TwineMatcher {
+        def lastHoleMatcher implements TwineMatcher {
+
+            /**
+             * If we've gotten to the end, an atHole at the end always
+             * matches, and soaks up everything left.
+             */
+            to matchAt(_, specimen :Twine, start :int, _) :List[Twine] {
+                return [specimen(start, specimen.size())]
+            }
+            to makeAtHoleMatcher() :TwineMatcher {
+                return makeEmptyHoleMatcher(lastHoleMatcher)
+            }
+            to makeLiteralMatcher(substituter :ValueMaker) :TwineMatcher {
+                return makeLiteralMatcher(substituter, lastHoleMatcher)
+            }
+            to __printOn(out :TextWriter) :void {
+                out.print("@{$}")
+            }
+        }
+        return lastHoleMatcher
+    }
+    to makeLiteralMatcher(substituter :ValueMaker) :TwineMatcher {
+        def lastLiteralMatcher implements TwineMatcher {
+
+            /**
+             * Matches iff the last quasi-literal segment (possibly including
+             * dollar-holes, but no at-holes) matches the rest of the specimen.
+             */
+            to matchAt(args :List,
+                       specimen :Twine,
+                       start :int,
+                       optEjector) :List[Twine] {
+                def text := substituter.substitute(args).bare()
+                def suffix := specimen(start, specimen.size())
+                if (text <=> suffix) {
+                    return [suffix]
+                } else {
+                    throw.eject(optEjector,
+                                "Mismatch: " + text + " vs " + suffix)
+                }
+            }
+            to makeAtHoleMatcher() :TwineMatcher {
+                # XXX This is wrong.
+                return makeSlackHoleMatcher(substituter, endMatcher)
+            }
+            to makeLiteralMatcher(substituter :ValueMaker) :TwineMatcher {
+                throw("internal: consecutive literal matchers" +
+                        substituter + ", " + lastLiteralMatcher)
+            }
+            to __printOn(out :TextWriter) :void {
+                out.print("{", substituter, "$}")
+            }
+        }
+        return lastLiteralMatcher
+    }
+}
+
+def makeMatcher(template :Twine,
+                start :int,
+                dlrHoles :List[int],
+                dlrHoleNum :int,
+                atHoles :List[int],
+                atHoleNum :int) :TwineMatcher {
+    if (start >= template.size()) {
+        return endMatcher
+
+    }
+    def atHole := atHoles.fetch(atHoleNum, thunk{template.size()})
+    if (atHole < start) {
+        throw("at-holes not in order: " + dlrHoles)
+    }
+    if (atHole <=> start) {
+        if (template[start] != '@') {
+            throw("at-hole not marked: " +
+                    template(0,start) +
+                    ">>" + template[start] + "<<" +
+                    template(start+1, template.size()))
+        }
+        def rest := makeMatcher(template,
+                                start +1,
+                                dlrHoles,
+                                dlrHoleNum,
+                                atHoles,
+                                atHoleNum +1)
+        return rest.makeAtHoleMatcher()
+
+    } else { #atHole > start
+        var restDlrHoleNum := dlrHoleNum
+        def substituter := makeSubstituter(template,
+                                           start,
+                                           atHole,
+                                           dlrHoles,
+                                           &restDlrHoleNum)
+        def rest := makeMatcher(template,
+                                atHole,
+                                dlrHoles,
+                                restDlrHoleNum,
+                                atHoles,
+                                atHoleNum)
+        return rest.makeLiteralMatcher(substituter)
+    }
+}
+
+/**
+ * Given a TwineMatcher representing an entire match, wrap it to give it
+ * MatchMaker protocol.
+ */
+def makeTwineMatchMaker(matcher :TwineMatcher) :MatchMaker {
+    def twineMatchMaker implements MatchMaker {
+        to matchBind(args :List, specimen :Twine, optEjector) :List[Twine] {
+            return matcher.matchAt(args, specimen, 0, optEjector)
+        }
+        to __printOn(out :TextWriter) :void {
+            out.print("twine`", matcher, "`")
+        }
+    }
+    return twineMatchMaker
+}
+
+# XXX should be finite size cache
+def makerCache := [].asMap().diverge()
+
+
+/**
+ * Like the simple__quasiParser, but preserves twine annotations.
+ * <p>
+ * Should probably reimplement the simple__quasiParser as a simple wrapping
+ * of this one that coerces Twine to String (i.e, strips the Twine of
+ * annotations, leaving bare Twine).
+ *
+ * @author Mark S. Miller
+ * @author adapted from SimpleQuasiParser.e by Dean Tribble
+ */
+def twine__quasiParser0 implements QuasiExprParser, QuasiPatternParser {
+# XXX Must refactor the implementation
+
+    to valueMaker(oldTemplate :Twine) :ValueMaker {
+        def key := [oldTemplate, "value"]
+        if (makerCache.fetch(key, thunk{}) =~ result :notNull) {
+            return result
+        }
+        def [newTemplate, dlrHoles, atHoles] := convertHoles(oldTemplate)
+        if (atHoles !~ []) {
+            throw("No at-holes allowed in expr context: " + oldTemplate)
+        }
+        var dlrHoleNum :int := 0
+        def result := makeSubstituter(newTemplate,
+                                      0,
+                                      newTemplate.size(),
+                                      dlrHoles,
+                                      &dlrHoleNum)
+        if (dlrHoleNum != dlrHoles.size()) {
+            throw("Excess dollar holes: " + dlrHoles)
+        }
+        return makerCache[key] := result
+    }
+
+    to valueMaker(newTemplate :Twine, dlrHoles :List[int]) :ValueMaker {
+        def key := [newTemplate, dlrHoles]
+        if (makerCache.fetch(key, thunk{}) =~ result :notNull) {
+            return result
+        }
+        var dlrHoleNum :int := 0
+        def result := makeSubstituter(newTemplate,
+                                      0,
+                                      newTemplate.size(),
+                                      dlrHoles,
+                                      &dlrHoleNum)
+        if (dlrHoleNum != dlrHoles.size()) {
+            throw("Excess dollar holes: " + dlrHoles)
+        }
+        return makerCache[key] := result
+    }
+
+    to matchMaker(oldTemplate :String) :MatchMaker {
+        def key := [oldTemplate, "match"]
+        if (makerCache.fetch(key, thunk{}) =~ result :notNull) {
+            return result
+        }
+        def [newTemplate, dlrHoles, atHoles] := convertHoles(oldTemplate)
+        def matcher := makeMatcher(newTemplate,
+                                   0,
+                                   dlrHoles,
+                                   0,
+                                   atHoles,
+                                   0)
+        return makerCache[key] := makeTwineMatchMaker(matcher)
+    }
+
+    to matchMaker(newTemplate :Twine,
+                  dlrHoles :List[int],
+                  atHoles :List[int]) :MatchMaker {
+        def key := [newTemplate, dlrHoles, atHoles]
+        if (makerCache.fetch(key, thunk{}) =~ result :notNull) {
+            return result
+        }
+        def matcher := makeMatcher(newTemplate,
+                                   0,
+                                   dlrHoles,
+                                   0,
+                                   atHoles,
+                                   0)
+        return makerCache[key] := makeTwineMatchMaker(matcher)
+    }
+}

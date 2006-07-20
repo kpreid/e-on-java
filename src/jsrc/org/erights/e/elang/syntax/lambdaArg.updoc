@@ -1,0 +1,286 @@
+#!/usr/bin/env rune
+
+# Copyright 2005 Mark S. Miller, under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+# rune(["~/e/src/jsrc/org/erights/e/elang/syntax/lambdaArg.updoc"])
+
+Note: be sure to read this message in a font where () and {} are
+clearly distinct.
+
+
+                The Problem Statement
+
+
+Starting with release 0.8.33g, E has a new syntactic experiment born of
+frustration. Smalltalk, by providing a lightweight syntax for lambda
+abstraction, succeeded at enabling programmers to build a variety of
+control abstractions for themselves, and to *easily and pleasantly*
+use them. E was meant to provide similar power. The following
+snippets...
+
+
+Alan Karp wrote:
+>> Second, the syntax
+>>     __when(foo,thunk{...})
+>> looks OK on one line, but I had to read the sugar free version
+>> 3 times before I could figure out what went with what.
+
+Andreas Raab wrote:
+> Yup, seconded. There is something in the graphical patters which (at
+> least for me) when confronted with a line like:
+>    def fileRcvr := __when(optFileRcvr, thunk {
+> makes me actually see
+>    def fileRcvr := __when(optFileRcvr, thunk )
+
+David Hopwood wrote:
+> Perhaps something like (for a 'while' loop):
+>     while (cond) -> {e} catch prob {ec} finally {ef}
+
+
+.. and many others indicate that E's current syntax fails at this,
+even though E's semantics supports it perfectly well. This is
+especially tragic for us, because promise-pipelined event-loop
+programming is a new paradigm that needs its own high quality control
+flow abstractions. This will only happen if the language users can
+easily experiment with new abstractions, like David's suggestion
+above. So long as each new control abstraction is a change to the
+language syntax, experimentation bottlenecks through me, and our
+paradigm will grow too slowly.
+
+
+               Needed: Lightweight Lambda Expressions
+
+
+Dean pointed at the way out when he wrote:
+> [...] If we could figure out a better general syntax for lightweight
+> functions, then you could start to use [that] in place of sugar,  [...]
+
+It turns out that the pieces of such an answer were to be found in
+fossils of old syntax experiments in the e.y file (the yacc grammar
+for E), which I've now dusted off. As of this release, if the pragma
+switches "anon-lambda" and "lambda-args" are enabled, the production
+defining the parenthesized list of arguments in a call is effectively:
+
+# XXX The following description is now stale and needs to be fixed.
+
+    parenArgs:
+            '(' argList ')'
+     |      parenArgs lambdaArg
+     ;
+
+    lambdaArg:
+            sepWord paramList body
+     ;
+
+    sepWord:
+            ID | reserved
+     |      CATCH | ELSE | ESCAPE | FINALLY | GUARDS | TRY
+     |      '->'
+     ;
+
+This means that additional lambda expression arguments can be provided
+to a call by placing lambdaArgs after the close paren. (There are some
+other experimental cases also enabled by these switches, but I'll
+ignore those for now.)
+
+
+                 The Expansion
+
+# XXX Need to document the new expansion
+
+
+              POLA Considerations in Control Flow
+
+
+Ignoring the particulars of the expansion, the semantics it
+implements purposely creates two seeming security hazards:
+
+1) the implicitly created functions are of indefinite extent, even
+   though this exceeds the least authority needed for many of their
+   uses.
+
+2) the implicitly created functions, like the existing thunk syntax,
+   implicitly return the value of the last expression evaluated in
+   their body, with no explicit return, and with no place to put a
+   result guard. This also exceeds the least authority needed for many
+   of their uses.
+
+   Further, because these functions need to be usable as if they were
+   inline blocks of built-in control flow constructs, they don't bind
+   "return". "return" remains bound to whatever it was bound to in the
+   enclosing context. (e.g., a "return" in the thenExpr of an if
+   doesn't exit the then-block, it exits the enclosing
+   method-or-whatever.)
+
+As explained in the previous note, we will attempt to express the
+needed limits in the control-flow abstractions themselves. Please try
+to spot any weaknesses that result. Below, the top level functions
+whose names begin with "__..." are the ones we're relying on. (I'm not
+suggesting this as a general convention, but we need some distinction
+for now.)
+
+
+             The Test Drive
+
+
+To see how close this gets us to the power Smalltalk programmers are
+used to, let's first see how close we can get to defining the existing
+control flow sugars as functions:
+
+    ? pragma.enable("lambda-args")
+
+    ? def __escape := <elang:control.__escape>
+    ? def __for := <elang:control.__for>
+    ? def __if := <elang:control.__if>
+    ? def __try := <elang:control.__try>
+    ? def __when := <elang:control.__when>
+    ? def __while := <elang:control.__while>
+
+__if relies on boolean. (the guard on the test parameter below)
+
+    ? __if (3 == 4) then {
+    >     println("foo")
+    > } else {
+    >     println("bar")
+    > }
+    # stdout: bar
+    #
+
+__while relies on __if.
+
+    ? var i := 0
+    # value: 0
+
+    ? __while (i < 5) do {
+    >     println(i)
+    >     i += 1
+    > }
+    # stdout: 0
+    #         1
+    #         2
+    #         3
+    #         4
+    #
+
+Of course, this doesn't capture all the power of the existing
+while-loop: it can't support break and continue.
+
+The __for loop is the first interesting experiment, because at some
+point it turns control over to the collection's iterate method. What
+POLA assurances can it enforce without relying on the proper behavior
+of the collection? Can it avoid the hazards identified at
+<https://bugs.sieve.net/bugs/?func=detailbug&bug_id=125606&group_id=16380>?
+
+    ? __for ('a'..'d') each k,v {
+    >     println(`$k => $v`)
+    > }
+    # stdout: 0 => a
+    #         1 => b
+    #         2 => c
+    #         3 => d
+    #
+
+Again, this doesn't capture all the power of the existing for-loop. But when
+you need something that doesn't quite fit the built in sugars, this shows that
+you can spin your own, and have the result be usable by yourself and others.
+
+
+# XXX The following depends on the old expansion, and so should be fixed.
+
+Here's an implementation of David's suggested eventual-while loop, where this
+implementation uses no built-in control flow sugars. In particular, it uses
+the three argument form '__when' MarcS suggested, rather than the built-in
+'when' sugar.
+
+__whenWhile relies on __when and __if.
+
+    ? def __whenWhile(`test`,    testThunk,
+    >                 `->`,      bodyThunk,
+    >                 `catch`,   handlerClosure,
+    >                 `finally`, finallyThunk) :void {
+    >     def theLoop () :void {
+    >         __when (def t := testThunk()) -> {
+    >             __if (t) then {
+    >                 bodyThunk()
+    >                 theLoop()
+    >             } else {
+    >                 finallyThunk()
+    >             }
+    >         } catch prob {
+    >             handlerClosure(prob)
+    >             finallyThunk()
+    >         }
+    >     }
+    >     theLoop()
+    > }
+    # value: <__whenWhile>
+
+
+David's originally suggested sugar syntax, with realistic indentation
+
+       while (cond) -> {
+           e
+       } catch prob {
+           ec
+       } finally {
+           ef
+       }
+
+would instead be
+
+       __whenWhile () test {cond} -> {
+           e
+       } catch prob {
+           ec
+       } finally {
+           ev
+       }
+
+None of the awkward revocation shown in David's latter message,
+<http://www.eros-os.org/pipermail/e-lang/2004-December/010326.html> is
+needed, or would do any good. Since David's revocation logic is within
+the whenWhile, the program is relying on it to anyway. The program can
+and should instead simply rely on __whenWhile not to abuse its
+arguments, or give anything else (outside the understood reliance set)
+access to these arguments. I believe the above __whenWhile is reliable
+in this sense.
+
+
+Finally, here's the last example at
+<http://www.erights.org/elang/examples/when-examples.e.html> recoded
+in this new style, using just __when:
+
+     def myCurrency := account <- getCurrency()
+     def servCurrency := service <- getCurrency()
+     def price := service <- getPrice()
+
+     def payment := __when(myCurrency, servCurrency]) -> {
+         if (servCurrency == myCurrency) {
+             account <- makeOffer(price)
+         } else {
+             def option :=
+               combio <- makeOption(myCurrency, servCurrency, price)
+             option <- exercise(account <- makeOffer(option <- getPrice()))
+         }
+     } catch prob {
+         println("service failed: " + prob)
+     }
+     service <- perform(payment)
+
+
+Please take this syntax out for a spin and see how it flies.
+Enjoy 0.8.33g!
+
+--
+Text by me above is hereby placed in the public domain
+
+     Cheers,
+     --MarkM
+
+_______________________________________________
+e-lang mailing list
+e-lang@mail.eros-os.org
+http://www.eros-os.org/mailman/listinfo/e-lang
+
+

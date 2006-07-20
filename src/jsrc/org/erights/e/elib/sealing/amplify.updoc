@@ -1,0 +1,34 @@
+#!/usr/bin/env rune
+
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+? def makeBrand := <elib:sealing.makeBrand>
+# value: <elib:sealing.makeBrand>
+
+? def [xSealer,xUnsealer] := makeBrand("X")
+# value: [<X sealer>, <X unsealer>]
+
+? def forXsEyesOnly {
+>     to __optSealedDispatch(brand) :near {
+>         if (xSealer.getBrand() == brand) {
+>             xSealer.seal([3, "add", [4]])
+>         } else {
+>             null
+>         }
+>     }
+> }
+# value: <forXsEyesOnly>
+
+? xUnsealer.amplify(forXsEyesOnly)
+# value: [[3, "add", [4]]]
+
+? def makeUncall := <elib:serial.makeUncall>
+# value: <makeUncall>
+
+? def uncall := makeUncall([<import>], xUnsealer)
+# value: <uncall>
+
+? uncall(forXsEyesOnly)
+# value: [3, "add", [4]]
+

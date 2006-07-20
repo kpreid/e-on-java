@@ -1,0 +1,89 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def Throwable := <type:java.lang.Throwable>
+def StringBuffer := <type:java.lang.StringBuffer>
+
+/**
+ * Makes an answerer as a wrapper on a TextWriter that know how to
+ * print certain forms of output onto the TextWriter.
+ * <p>
+ * The forms of output are those produced by the E command line interpreter,
+ * which are primarily updoc <i>answers</i>.
+ */
+def makeAnswerer(out :TextWriter) :near {
+
+    /**
+     *
+     */
+    def answerer {
+
+        /**
+         * outputs prefix & returns indented TextWriter
+         */
+        to indent(keyword :String) :TextWriter {
+            def prefix := `# $keyword: `
+            out.print(prefix)
+            out.indent("#" + (" " * (prefix.size() -1)))
+        }
+
+        /**
+         * Prints value (using {@link TextWriter#quote/1}) as a
+         * '# keyword: ...' block.
+         * <p>
+         * Does nothing if value == null
+         *
+         * @param printFunc See {@link CmdLoop#getPrintFunc}
+         * @param value The value to be printed.
+         */
+        to reportValue(keyword :String, printFunc, value :any) :void {
+            if (Ref.isEventual(value) || value != null) {
+                def indented := answerer.indent(keyword)
+                try {
+                    printFunc(value, indented)
+                } catch problem {
+                    throw.breakpoint([value, problem])
+                    indented.print("*** Can't print***")
+                }
+                out.println()
+                out.println()
+            }
+        }
+
+        /**
+         * Takes the current string from buf and reports it unquoted.
+         */
+        to takeBuf(keyword :String, optBuf :nullOk[StringBuffer]) :void {
+            if (null != optBuf) {
+                def str :String := optBuf.snapshot()
+                if (str.size() >= 1) {
+                    optBuf.setLength(0)
+                    answerer.indent(keyword).print(str)
+                    out.println()
+                    out.println()
+                }
+            }
+        }
+
+        /**
+         *
+         */
+        to reportProblem(problem :Throwable,
+                         showsJStack :boolean,
+                         showsEStack :boolean) :void {
+            def leaf := problem.leaf()
+            out.indent("# ").print("# ", leaf)
+            if (showsJStack || showsEStack) {
+                out.lnPrint("#")
+            }
+            if (showsJStack) {
+                out.indent("#   ").lnPrint(leaf.javaStack())
+            }
+            if (showsEStack) {
+                out.indent("#   ").print(problem.eStack())
+            }
+            out.println()
+            out.println()
+        }
+    }
+}

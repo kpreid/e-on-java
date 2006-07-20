@@ -1,0 +1,52 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+/**
+ * powerGranter must have optCap()
+ * getRENDER_PANE()
+ * getTRACELN()
+ */
+def rendererMaker (powerGranter, <awt>, <swing>) :near {
+    def renderer
+    def traceline := powerGranter.optCap(powerGranter.getTRACELN())
+    def viewPane := <swing:makeJEditorPane>()
+    viewPane.setEditable(false)
+    viewPane.setContentType("text/html")
+    viewPane.setText("<html><head></head><body>
+            <h1>DarpaBrowser</h1>
+           <p>version 0.1</p></body></html>")
+    viewPane.setMaximumSize(<awt:makeDimension>(600, 600))
+    viewPane.setPreferredSize(<awt:makeDimension>(600, 600))
+    def mainPane := powerGranter.optCap(powerGranter.getRENDER_PANE())
+    def hyperListener {
+        to hyperlinkUpdate(event) :void {
+            if (event.getEventType() ==
+                  <swing:event.HyperlinkEvent$makeEventType>.getACTIVATED()) {
+                # XXX must change when getURL is replaced with getURLString
+                #traceline("hyperlink activated, event: " + event)
+                #def toUrlString := event getURL() toExternalForm()
+                traceline(`url description: ${event.getDescription()}`)
+                powerGranter.gotoUrl(event.getDescription())
+            }
+        }
+    }
+    viewPane.addHyperlinkListener(hyperListener)
+    mainPane.setLayout(<awt:makeBorderLayout>())
+    mainPane.add(viewPane, "Center")
+
+    def bind renderer {
+        to reactToURL(url) :void {
+            traceline(`made it to reactToURL: $url`)
+            E.call(viewPane, "setPage(URL)",[url])
+        }
+        to reactToPageText(text) :void {
+            traceline("made it to reactToPageText" + text)
+            viewPane.setText(text)
+        }
+        to reactToCopy() :near {
+            def selection := viewPane.getSelectedText()
+            traceline("copy in benign: " + selection)
+            selection
+        }
+    }
+}

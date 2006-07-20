@@ -1,0 +1,65 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class(safe,
+      "java.awt.Color",
+      statics(method("getWhite()",
+                     comment("XXX Is a Color truly client-immutable?  I (MarkM)
+                              checked all the instance variables of the JDK1.3
+                              implementation of Color (but not subclasses). The problematic
+                              one seems to be \"cs\", but this seems to be simply state that\'s
+                              initialized lazily. In any case, a casual skim of the API
+                              doesn\'t reveal any public access whose intention is to mutate
+                              a Color instance.
+                              ")),
+              method("getBlack()"),
+              method("getBlue()"),
+              method("getCyan()"),
+              method("getDarkGray()"),
+              method("getGray()"),
+              method("getGreen()"),
+              method("getLightGray()"),
+              method("getMagenta()"),
+              method("getOrange()"),
+              method("getPink()"),
+              method("getRed()",
+                     comment("The safej mechanism should not confuse this
+                              with the instance method 'getRed()'.")),
+              method("getYellow()"),
+              method("decode(String)"),
+              method("getColor(String)"),
+              method("getColor(String, Color)"),
+              method("getColor(String, int)"),
+              method("HSBtoRGB(float, float, float)"),
+              method(suppress, "RGBtoHSB(int, int, int, float[])",
+                     comment("Use HSBtoRGB/3 instead")),
+              method("getHSBColor(float, float, float)"),
+              method("run(int, int, int)"),
+              method("run(int, int, int, int)"),
+              method("run(int)"),
+              method("run(int, boolean)"),
+              method("run(float, float, float)"),
+              method("run(float, float, float, float)"),
+              method("run(ColorSpace, float[], float)")),
+      methods(method("getRed()"),
+              method("getGreen()"),
+              method("getBlue()"),
+              method("getAlpha()"),
+              method("getRGB()"),
+              method("brighter()"),
+              method("darker()"),
+              method(suppress, "getRGBComponents(float[])",
+                     comment("Use getRGBComponents/0 instead")),
+              method(suppress, "getRGBColorComponents(float[])",
+                     comment("Use getRGBColorComponents/0 instead")),
+              method(suppress, "getComponents(float[])",
+                     comment("Use getComponents/0 instead")),
+              method(suppress, "getColorComponents(float[])",
+                     comment("Use getColorComponents/0 instead")),
+              method(suppress, "getComponents(ColorSpace, float[])",
+                     comment("Use getComponents/1 instead")),
+              method(suppress, "getColorComponents(ColorSpace, float[])",
+                     comment("Use getColorComponents/1 instead")),
+              method("getColorSpace()"),
+              method("createContext(ColorModel, Rectangle, Rectangle2D, AffineTransform, RenderingHints)"),
+              method("getTransparency()")))

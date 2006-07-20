@@ -1,0 +1,37 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+/**
+ * Given a addCommandCmd, make and return an addCommand procedure
+ * for adding a menu item to the right button menu associated with a
+ * registry type, and therefore probably a file extension.
+ *
+ * @param addCommandCmd a Command for executing add_command.exe as made by
+ *                      makeCommand
+ *
+ * @author Mark S. Miller
+ */
+def addCommandMaker(addCommandCmd) :any {
+    def addCommand {
+        
+        /**
+         * @param regType A Registry type (and therefore probably a
+         *                file extension as well).
+         * @param commandList A list of Strings to be exec'ed
+         * @param menuEntry Name to appear in right button menu
+         * @param isDefault If so, the commandList is also exec'ed
+         *                  when the icon is double-left-clicked on.
+         */
+        to run(regType :Twine,
+               commandList,
+               menuEntry :Twine,
+               isDefault :boolean) :void {
+            def defaultOption := if (isDefault) { ["-default"] } else { [] }
+            
+            E.call(addCommandCmd, "run",
+                   defaultOption +
+                     [regType, menuEntry] +
+                     commandList)
+        }
+    }
+}

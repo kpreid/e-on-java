@@ -1,0 +1,120 @@
+# Copyright 2003 Dean Tribble under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html
+
+# @author Dean Tribble
+
+pragma.enable("easy-return")
+pragma.disable("explicit-result-guard")
+
+def subConvert
+
+def convertList(term) {
+    def args := [].diverge()
+    for a in term.getArgs() { args.push(subConvert(a)) }
+    return args.snapshot()
+}
+# TODO this suppresses duplicates
+def convertBag(term) {
+    def args := [].diverge()
+    for a in term.getArgs() { args.push(subConvert(a)) }
+    return args.snapshot().asSet()
+}
+
+#    ".int." => makeInt,
+#    ".float64." => makeFloat,
+#    ".char." => makeChar,
+#    ".String." => makeString,
+
+def direct := [
+    ".tuple." => convertList,
+    ".bag." => convertBag
+]
+
+def TypeDesc := null.__getAllegedType().__getAllegedType()
+
+def makeTagType(name) {
+    def typeDesc {
+        # to __conformTo(_) :any
+        to __getAllegedType() { return TypeDesc }
+        #to accepts(_) :Boolean
+        #to and(_)
+        #to asClass()
+        #to audit(_, _) :Boolean
+        #to butNot(_)
+        #to coerce(_) :any
+        #to coerce(_, _) :any
+        #to get()
+        #to get(_ :int32) :any
+        #to getAuditors()
+        #to getDocComment()
+        #to getFQName()
+        #to getMessageTypes()
+        to getSupers() { return [] }
+        # to not()
+        # to or(_)
+        # to prettyPrintOn(_ :Boolean, _) :void
+        to __printOn(oo :TextWriter) {
+            oo.print(name)
+        }
+        # to show()
+        # to subCoerce(_, _) :any
+        # to xor(_)
+
+    }
+    return typeDesc
+}
+
+def makeTerm(tag, args) {
+    def term {
+        to __getAllegedType() {
+            return makeTagType(tag)
+        }
+        to getArgs() {
+            return args
+        }
+        # index the arguments for convenience
+        to get(i) { return args[i] }
+        to __printOn(oo :TextWriter) {
+            oo.print(tag)
+            if (args.size() > 0) {
+                var sep := "("
+                def nest := oo.indent()
+                for a in args {
+                    nest.print(sep, a)
+                    sep := ", "
+                }
+                nest.print(")")
+            }
+        }
+    }
+    return term
+}
+
+# this is just an outer wrapper that will support the quasi methods. Their
+# behavior will be implemented with a recursive external visitor.
+
+def makeQuasiTerm(term) {
+    #def quasiTerm {
+    #    to matchBind(args, specimen, optEjector) { optEjector("TODO") }
+    #}
+    # TODO not implemented yet
+    return term
+}
+
+bind subConvert(term) {
+    def tag := term.getTag()
+    def tagType := tag.getOptDataType()
+    if (tagType != null) { return term.getOptData() }
+    def optConvert := direct.get(tag.getTagName(), null)
+    if (optConvert == null) {
+        def args := [].diverge()
+        for a in term.getArgs() { args.push(subConvert(a)) }
+        return makeTerm(tag.getTagName(), args.snapshot())
+    } else {
+        return optConvert(term)
+    }
+}
+
+def convert(term) {
+    return makeQuasiTerm(subConvert(term))
+}

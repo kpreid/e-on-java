@@ -1,0 +1,19 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class(safe,
+      "javax.swing.text.Segment",
+      statics(method("run()"),
+              method("run(char[], int, int)")),
+      methods(method("setPartialReturn(boolean)"),
+              method("isPartialReturn()"),
+              method("first()"),
+              method("last()"),
+              method("current()"),
+              method("next()"),
+              method("previous()"),
+              method("setIndex(int)"),
+              method("getBeginIndex()"),
+              method("getEndIndex()"),
+              method("getIndex()"),
+              method("clone()")))

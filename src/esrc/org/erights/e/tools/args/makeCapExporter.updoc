@@ -1,0 +1,62 @@
+    ? def makeCapExporter := <import:org.erights.e.tools.args.makeCapExporter>
+    # value: <makeCapExporter>
+
+    ? def uriGetters := [
+    >     "file" => <file>,
+    >     "http" => <http>,
+    >     "ftp"  => <ftp>]
+    # value: ["file" => <a FileGetter>, \
+    #         "http" => http__uriGetter, \
+    #         "ftp" => ftp__uriGetter]
+
+    ? def exportCap := makeCapExporter(introducer, <file>, uriGetters)
+    # value: <exportCap>
+
+    ? introducer.onTheAir()
+    # value: ["3DES_SDH_M2", "3DES_SDH_M"]
+
+    ? def sr := makeSturdyRef(3)
+    # value: <SturdyRef>
+
+    ? exportCap(sr, "c:/foo.cap")
+    ? var bletch := null
+    ?
+    ? def connector {
+    >     to connect(ref :SturdyRef) :void {
+    >         bletch := ref.getRcvr()
+    >         println(`got $bletch`)
+    >     }
+    > }
+    # value: <connector>
+
+    ? bletch
+    ? exportCap(sr, introducer.sturdyToURI(makeSturdyRef(connector)))
+    # value: <Promise>
+
+    ?
+    got 3
+    ? bletch
+    # value: 3
+
+    ? def makeCapImporter := <import:org.erights.e.tools.args.makeCapImporter>
+    # value: <makeCapImporter>
+
+    ? def importCap := makeCapImporter(introducer, <file>, uriGetters)
+    # value: <importCap>
+
+    ? def sr2 := importCap("@c:/foo.cap")
+    # value: <SturdyRef>
+
+    ? sr == sr2
+    # value: true
+
+    ? def x := sr2.getRcvr()
+    # value: 3
+
+    ? def sr3 := importCap("@file:c:/foo.cap")
+    # value: <SturdyRef>
+
+    ? sr3.getRcvr()
+    # value: 3
+
+    ?

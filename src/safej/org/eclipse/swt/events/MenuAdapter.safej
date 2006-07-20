@@ -1,0 +1,4 @@
+class("org.eclipse.swt.events.MenuAdapter",
+           statics(method(suppress, "run()")),
+           methods(method(suppress, "menuHidden(MenuEvent)"),
+                   method(suppress, "menuShown(MenuEvent)"))) 

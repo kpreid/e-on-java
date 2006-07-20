@@ -1,0 +1,24 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class(safe,
+      "javax.swing.text.DefaultStyledDocument",
+      statics(method("run(AbstractDocument.Content, StyleContext)"),
+              method("run(StyleContext)"),
+              method("run()")),
+      methods(method("getDefaultRootElement()"),
+              method("addStyle(String, Style)"),
+              method("removeStyle(String)"),
+              method("getStyle(String)"),
+              method("getStyleNames()"),
+              method("setLogicalStyle(int, Style)"),
+              method("getLogicalStyle(int)"),
+              method("setCharacterAttributes(int, int, AttributeSet, boolean)"),
+              method("setParagraphAttributes(int, int, AttributeSet, boolean)"),
+              method("getParagraphElement(int)"),
+              method("getCharacterElement(int)"),
+              method("getForeground(AttributeSet)"),
+              method("getBackground(AttributeSet)"),
+              method("getFont(AttributeSet)"),
+              method("addDocumentListener(DocumentListener)"),
+              method("removeDocumentListener(DocumentListener)")))

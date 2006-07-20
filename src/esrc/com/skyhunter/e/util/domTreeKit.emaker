@@ -1,0 +1,53 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def domTreeKit {
+    to domFromText(text) :near {
+        sml__quasiParser.valueMaker(text).substitute([])
+    }
+    to extractChildNodes(tag, node) :near {
+        def nodes := [].diverge()
+        for each in node {
+            if (each.getNodeType() == 1 &&
+                each.getTagName() == tag) {
+                nodes.push(each)
+            }
+        }
+        nodes.snapshot()
+    }
+
+    /**
+     * returns a map with key=tag and value=textOfTheTag,
+     * where the first character of the key is always capitalized
+     * (so a tag "foo" would yield a key "Foo")
+     */
+    to mapDomText(domTextNodes) :any {
+        def table := [].asKeys().diverge()
+        def nodeText(list) :String {
+            if (list.size() == 1) {
+                list[0].getData()
+            } else if (list.size() ==0 ) {
+                ""
+            } else {
+                # badData, no way to inform
+            }
+        }
+        def visitor {
+            match [`visit@theKey`, [arg]] {
+                table[theKey] := nodeText(arg)
+            }
+            match _ {}
+        }
+        for each in domTextNodes {each.welcome(visitor)}
+        table.snapshot()
+    }
+    to xmlFromMap(map) :String {
+        var xml := ""
+        for key => value in map {
+            xml := `$xml<$key>$value</$key>${"\n"}`
+        }
+        xml
+    }
+}
+
+

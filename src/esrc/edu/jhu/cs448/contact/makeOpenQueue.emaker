@@ -1,0 +1,222 @@
+#!/usr/bin/env rune
+
+# Copyright 2004 Mark S. Miller, under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+# Based on a design by Christian Scheideler
+
+# A Ticket is any integer (without bound) starting at 0
+def Ticket := int >= 0
+
+/**
+ * Like a cons-cell for eventual proper lists, useful for stream processing.
+ * <p>
+ * (Useful for the "difference list" technique from logic programming.)
+ */
+def makePair(item, optNext) :any {
+    def pair {
+        to getItem()    :any { return item }
+        to getOptNext() :any { return optNext }
+    }
+}
+
+/**
+ * Makes a new empty queue which starts with the given nextTicket
+ *
+ * @param nextTicket ticket number taken by next item to be enqueued
+ */
+def makeOpenQueue(var nextTicket :Ticket) :any {
+
+    # queue is the difference list: qHead - qTail
+    def [var qHead, var qTail] := Ref.promise()
+
+    # ticket number of the next item that will be served
+    var nextServing :Ticket := nextTicket
+
+    /**
+     * An unbounded queue, in which the enqueued items may be inspected
+     * without dequeuing them.
+     * <p>
+     * Each enqueuing of an item is associated with the next ticket number.
+     * The items can be speculatively served in order without dequeuing
+     * them. Such speculation is committed to by stating the highest ticket
+     * number served, such that all items associated with earlier tickets have
+     * already been served. This dequeues those items.
+     */
+    def enqueuer {
+
+        /**
+         *
+         */
+        to getNextTicket() :Ticket { return nextTicket }
+
+        /**
+         * Takes the next ticket, for enqueuing item to be served.
+         */
+        to enqueue(item) :Ticket {
+            require(!qTail.isDone(),
+                    thunk{`Already closed`})
+            def result := nextTicket
+            nextTicket += 1
+            def [nextHead, nextTail] := Ref.promise()
+            def nextPair := makePair(item, nextHead)
+            qTail.resolve(nextPair)
+            qTail := nextTail
+            return result
+        }
+
+        /**
+         * Prevents any more items from being enqueued.
+         *
+         * @return the Ticket number that would have been taken by the next
+         *         item to be enqueued.
+         */
+        to close() :Ticket {
+            qTail.resolve(null)
+            return nextTicket
+        }
+
+        to __printOn(out :TextWriter) :void {
+            out.print(`<enqueuer $nextServing..!$nextTicket>`)
+        }
+    }
+
+    /**
+     *
+     */
+    def dequeuer {
+
+        /**
+         *
+         */
+        to getNextServing() :Ticket { return nextServing }
+
+        /**
+         * The currently enqueued items are accessed by iterating the
+         * OpenQueue, for example, using a for-loop.
+         */
+        to iterate(func) :void {
+            var pair := qHead
+            for tix in nextServing..!nextTicket {
+                func(tix, pair.getItem())
+                pair := pair.getOptNext()
+            }
+        }
+
+        /**
+         * An OpenQueue is done when it's closed and all its items have been
+         * served.
+         */
+        to isDone() :boolean {
+            return Ref.isResolved(qHead) && qHead == null
+        }
+
+        /**
+         * All items holding tickets <= served have now been served, and so are
+         * dequeued.
+         *
+         * @deprecated Use dequeue() repeatedly instead
+         */
+        to commit(served :Ticket) :void {
+            require(served < nextTicket,
+                    thunk{`Can't serve items before they're enqueued`})
+            while (served >= nextServing) {
+                qHead := qHead.getOptNext()
+                nextServing += 1
+            }
+        }
+
+        /**
+         * Dequeue and return the next item to be served.
+         */
+        to dequeue() :any {
+            require(nextServing < nextTicket,
+                    thunk{`Can't serve items before they're enqueued`})
+            def result := qHead.getItem()
+            qHead := qHead.getOptNext()
+            nextServing += 1
+            return result
+        }
+
+        to __printOn(out :TextWriter) :void {
+            out.print(`<dequeuer $nextServing..!$nextTicket>`)
+        }
+    }
+
+    return [enqueuer, dequeuer]
+}
+
+# MarkM's note to self:
+# rune(["~/e/src/esrc/scripts/updoc.e",
+#       "resource:edu/jhu/cs448/contact/makeOpenQueue.emaker"])
+
+    ? def <contact> := <import:edu.jhu.cs448.contact.*>
+    # value: <import:edu.jhu.cs448.contact.*>
+
+    ? def makeOpenQueue := <contact:makeOpenQueue>
+    # value: <makeOpenQueue>
+
+    ? def [enq, deq] := makeOpenQueue(0)
+    # value: [<enqueuer 0..!0>, <dequeuer 0..!0>]
+
+    ? deq.isDone()
+    # value: false
+
+    ? enq.enqueue('a')
+    # value: 0
+
+    ? enq.enqueue('b')
+    # value: 1
+
+    ? enq.enqueue('c')
+    # value: 2
+
+    ? deq
+    # value: <dequeuer 0..!3>
+
+    ? deq.commit(4)
+    # problem: Can't serve items before they're enqueued
+
+    ? for t => i in deq {
+    >     println(`$t => $i`)
+    > }
+    # stdout: 0 => a
+    #         1 => b
+    #         2 => c
+    #
+
+    ? deq.commit(1)
+
+    ? deq
+    # value: <dequeuer 2..!3>
+
+    ? enq
+    # value: <enqueuer 2..!3>
+
+    ? for t => i in deq { println(`$t => $i`) }
+    # stdout: 2 => c
+    #
+
+    ? enq.close()
+    # value: 3
+
+    ? deq
+    # value: <dequeuer 2..!3>
+
+    ? deq.isDone()
+    # value: false
+
+    ? for t => i in deq { println(`$t => $i`) }
+    # stdout: 2 => c
+    #
+
+    ? deq.commit(2)
+
+    ? deq
+    # value: <dequeuer 3..!3>
+
+    ? deq.isDone()
+    # value: true
+
+    ? for t => i in deq { println(`$t => $i`) }
+    ?

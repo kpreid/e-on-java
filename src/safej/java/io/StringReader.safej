@@ -1,0 +1,4 @@
+class(safe,
+      "java.io.StringReader",
+      statics(method("run(String)")),
+      methods())

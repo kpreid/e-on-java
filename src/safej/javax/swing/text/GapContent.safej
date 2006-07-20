@@ -1,0 +1,13 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class(safe,
+      "javax.swing.text.GapContent",
+      statics(method("run()"),
+              method("run(int)")),
+      methods(method("length()"),
+              method("insertString(int, String)"),
+              method("remove(int, int)"),
+              method("getString(int, int)"),
+              method("getChars(int, int, Segment)"),
+              method("createPosition(int)")))

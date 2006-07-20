@@ -1,0 +1,6 @@
+# XXX Should be declared safe, but it currently exhibits a weird bug
+# (with possible bad security consequences) of capturing a snapshot of
+# the previous screen bitmap as the initial background.
+
+class("com.zooko.tray.EPainter",
+      statics(method("run(IPaint)")))

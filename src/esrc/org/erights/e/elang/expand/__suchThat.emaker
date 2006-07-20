@@ -1,0 +1,53 @@
+# Copyright 2005 Mark S. Miller under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+pragma.enable("easy-return")
+
+/**
+ * Defines the builtin '__suchThat' via function and via function template.
+ * <p>
+ * __suchThat is provided only to support the deprecated such-that pattern.
+ * 'p ? e' expands to 'via (__suchThat) [p, via (__suchThat(e)) _]'
+ *
+ * @author Mark S. Miller
+ */
+def suchThat0 {
+
+    to run(specimen, optEjector) :any { return [specimen, null] }
+
+    to run(flag :boolean) :any {
+        def suchThatFunc(_, optEjector) :void {
+            if (!flag) {
+                throw.eject(optEjector,
+                            "such-that expression was false")
+            }
+            # doesn't need to return anything
+        }
+        return suchThatFunc
+    }
+}
+
+? interp.setExpand(true)
+
+? def foo(G1, G2, x :G1 ? (x =~ y :G2)) :any { return [x, y] }
+# expansion: def foo := def "__main$foo__C" {
+#
+#                method run(G1,
+#                           G2,
+#                           via (__suchThat)
+#                             [x :G1,
+#                              via (__suchThat.run(x =~ y :G2)) _]) :any {
+#                    escape __return {
+#                        __return.run(__makeList.run(x, y))
+#                    }
+#                }
+#            }
+
+# value: <foo>
+
+? interp.setExpand(false)
+
+? def Add1 { to coerce(specimen, _) :any { return specimen +1 }}
+
+? foo(float64, Add1, 3)
+# value: [3.0, 4.0]

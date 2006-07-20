@@ -1,0 +1,40 @@
+    ? def reverse := <import:org.erights.e.tools.collect.reverse>
+    # value: <reverse>
+
+    ? /**
+    >  * For testing the logic of findCommentBounds in
+    >  * makeUpgradeComments.emaker
+    >  *
+    >  * @return a pair of last nonblank index (in upside-down order)
+    >  * and first nonblank index (in upside down order) in the comment.
+    >  */
+    > def bounds(str :String) :pbc {
+    >     def lines := str.split("\n")
+    >     var top := lines.size()
+    >     var bottom := -1
+    >     for i => each in reverse(lines) {
+    >         if (each.size() >= 1) {
+    >             bottom max= (i)
+    >             top min= (i)
+    >         } else if (bottom != -1) {
+    >             # blank line above non-black lines ends comment block
+    >             break
+    >         }
+    >     }
+    >     [bottom, top]
+    > }
+    # value: <bounds>
+
+    ? bounds("")
+    # value: [-1, 1]
+
+    ? bounds("
+    >
+    > x
+    >
+    > y
+    > z
+    > ")
+    # value: [5, 4]
+
+    ?

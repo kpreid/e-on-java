@@ -1,0 +1,81 @@
+.2 binary linux executable library
+.JPG binary graphic
+.MF text Java archive manifest
+.a binary library archive
+.am sinjdoc
+.bash text executable bash script
+.bat text executable windows batch script
+.bmp binary windows graphic
+.c text C source
+.cap text capability
+.cap-account text capability
+.cap-acct text capability
+.cap-acctboss text capability
+.cap-kiosk text capability
+.cap-kioskboss text capability
+.cap-ss text capability
+.cap-ssboss text capability
+.caplet text executable E caplet source
+.cgi text web script
+.class binary jvm library
+.cpp text C++ source
+.css text html style-sheet source
+.cup text cup grammar source
+.cvsignore text cvs directive
+.data binary Java serialization
+.db binary windows cache
+.dll binary windows wince executable library
+.doc binary Word document
+.dtd text xml header source
+.dwt text Dreamweaver html template
+.e text executable E headless script source
+.e-awt text executable E awt script source
+.e-swt text executable E swt script source
+.el text emacs elisp library source
+.emaker text executable E library source
+.exe binary executable windows program
+.fm binary framemaker document
+.g text ANTLR grammar source
+.gif binary graphic
+.grammar text E grammar source
+.gz binary gzip archive
+.h text C C++ header source
+.htaccess text web directive
+.htm text web html source
+.html text web html source
+.ico binary windows graphic
+.idw binary intellidraw graphic
+.iml text sinjdoc xml
+.in sinjdoc
+.jar binary Java archive
+.java text Java source
+.jnilib binary ppc library
+.jpg binary graphic
+.lbi text
+.mk text makefile source
+.pdf binary pdf document
+.png binary graphic
+.ppt binary powerpoint presentation
+.ps binary postscript document
+.rtf binary Word document
+.safej text E term source
+.schema text E schema source
+.sdd binary openoffice presentation
+.sdr binary Smartdraw graphic
+.sh text shell script source
+.sl binary hpux executable library
+.so binary linux unix executable library
+.sxd binary openoffice graphics
+.sxi binary openoffice presentation
+.sxw binary openoffice document
+.tmp text making temp
+.txt text
+.updoc text executable E test scipt source
+.vsd binary visio graphic
+.wbk binary Word 
+.xcf binary gimp graphic
+.xml text xml source
+.y text yacc grammar
+.zip binary zip archive
+Makefile text makefile source
+makeout text making temp

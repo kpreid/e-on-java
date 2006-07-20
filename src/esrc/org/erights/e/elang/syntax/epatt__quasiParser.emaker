@@ -1,0 +1,20 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+
+def epatt__quasiParser0 {
+    to valueMaker(template :Twine, dlrHoles :List[int]) :any {
+        return e__quasiParser.valueMaker(`=~ $template`, dlrHoles)
+    }
+    to valueMaker(str) :any {
+        return e__quasiParser.valueMaker(`=~ $str`)
+    }
+    to matchMaker(template :Twine,
+                  dlrHoles :List[int],
+                  atHoles :List[int]) :any {
+        return e__quasiParser.matchMaker(`=~ $template`, dlrHoles, atHoles)
+    }
+    to matchMaker(str) :any {
+        return e__quasiParser.matchMaker(`=~ $str`)
+    }
+}

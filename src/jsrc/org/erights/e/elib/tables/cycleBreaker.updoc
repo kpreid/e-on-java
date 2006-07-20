@@ -1,0 +1,51 @@
+#!/usr/bin/env rune
+
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+    ? def makeTraversalKey := <unsafe:org.erights.e.elib.tables.TraversalKey>
+    # value: <unsafe:org.erights.e.elib.tables.TraversalKey>
+
+    ? def cb := makeTraversalKey()
+    # value: <TraversalKey>
+
+    ? def [p1,r1] := Ref.promise()
+    # value: [<Promise>, <Open Resolver>]
+
+    ? def [p2,r2] := Ref.promise()
+    # value: [<Promise>, <Open Resolver>]
+
+    ? cb["foo"] := 3
+    # value: 3
+
+    ? cb[p1] := 4
+    # value: 4
+
+    ? cb[p1]
+    # value: 4
+
+    ? def x := ["foo", "bar"]
+    # value: ["foo", "bar"]
+
+    ? cb[x] := 5
+    # value: 5
+
+    ? cb[[p1,p2]] := 6
+    # value: 6
+
+    ? cb[[p1,p2]]
+    # problem: <IndexOutOfBoundsException: not found: \
+    #           [<Promise>, <Promise>]>
+
+    ? r1.resolve("foo")
+    ? cb[p1]
+    # value: 3
+
+    ? cb[[p1,p2]]
+    # problem: <IndexOutOfBoundsException: not found: ["foo", <Promise>]>
+
+    ? r2.resolve("bar")
+    ? cb[[p1,p2]]
+    # value: 5
+
+    ?

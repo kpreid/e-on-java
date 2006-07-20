@@ -1,0 +1,17 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class("java.awt.FileDialog",
+      statics(method("run(Frame)"),
+              method("run(Frame, String)"),
+              method("run(Frame, String, int)")),
+      methods(method(suppress, "addNotify()"),
+              method("getMode()"),
+              method("setMode(int)"),
+              method("getDirectory()"),
+              method("setDirectory(String)"),
+              method("getFile()"),
+              method("setFile(String)"),
+              method("getFilenameFilter()"),
+              method("setFilenameFilter(FilenameFilter)")),
+      comment("Enabled because the JFileDialog is so terrible"))

@@ -1,0 +1,18 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class("javax.swing.ProgressMonitor",
+      statics(method("run(Component, Object, String, int, int)")),
+      methods(method("setProgress(int)"),
+              method("close()"),
+              method("getMinimum()"),
+              method("setMinimum(int)"),
+              method("getMaximum()"),
+              method("setMaximum(int)"),
+              method("isCanceled()"),
+              method("setMillisToDecideToPopup(int)"),
+              method("getMillisToDecideToPopup()"),
+              method("setMillisToPopup(int)"),
+              method("getMillisToPopup()"),
+              method("setNote(String)"),
+              method("getNote()")))

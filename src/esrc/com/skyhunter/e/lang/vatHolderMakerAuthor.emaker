@@ -1,0 +1,85 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+/**
+ * Reads the current contents of the buffer, and resets the buffer.
+ * <p>
+ * Repeated calls act like successive reads from a stream
+ *
+ * @author Mark S. Miller
+ * @author Terry Stanley
+ */
+def readBuffer(stringBuffer) :String {
+    def result := stringBuffer.snapshot()
+    stringBuffer.setLength(0)
+    result
+}
+
+/**
+ * For making vats.
+ * <p>
+ * This is a very early draft of the concept, and is expected to change
+ * radically in non-upwards compatible ways.
+ *
+ * @author Marc Stiegler
+ * @author Mark S. Miller
+ * @author Terry Stanley
+ */
+def vatHolderMakerAuthor(<unsafe>, introducer, traceline) :near {
+
+    /**
+     * XXX Kludge: The sourceCode expression must not print to stdout or
+     * stderr when it's evaluated, although the objects it spawns may do
+     * so later
+     */
+    def makeVatHolder(sourceCode, args, props, vatName) :near {
+        def <io> := <unsafe:java.io.*>
+        def vatMaker := <unsafe:org.erights.e.elib.vat.Vat>
+        def InterpMaker := <unsafe:org.erights.e.elang.interp.Interp>
+        def StringWriterMaker := <io:StringWriter>
+        def TextWriterMaker := <unsafe:org.erights.e.elib.oldeio.TextWriter>
+        def TwineFeederMaker := <unsafe:org.quasiliteral.syntax.TwineFeeder>
+
+        def altoutWriter := StringWriterMaker()
+        def altoutBuffer := altoutWriter.getBuffer()
+        def altout := TextWriterMaker(altoutWriter)
+
+        def alterrWriter := StringWriterMaker()
+        def alterrBuffer := alterrWriter.getBuffer()
+        def alterr := TextWriterMaker(alterrWriter)
+
+        def vat := vatMaker.make("headless", vatName)
+        def sacrificial := TwineFeederMaker("")
+        def altInterp := InterpMaker.make(
+            null,        # optLineFeeder
+            vat,
+            null,        # optTopScope, null implies privilegedScope
+
+            args,
+            props,
+            altout,
+            alterr)
+
+        traceline("made interp")
+        def wrappedSource := `
+introducer onTheAir()
+println(introducer sturdyToURI(makeSturdyRef($sourceCode)))
+`
+        altInterp.setSource(wrappedSource)
+        def optProblem := altInterp.interpret() # beware: 2 vat blocking op
+        require(optProblem == null, thunk{`while spawning: $optProblem`})
+        def errString := alterrBuffer.snapshot().trim()
+        require(errString == "", thunk{`errors while spawning: $errString`})
+
+        def uri := readBuffer(altoutBuffer).trim()
+        def sr := introducer.sturdyFromURI(uri)
+        def primordialObjPromise := sr.getRcvr()
+        def vatHolder {
+            to promisePrimordialObj() :any {primordialObjPromise}
+            to getInterp()           :near {altInterp}
+            to getVat()              :near {vat}
+            to readStdout()        :String {readBuffer(altoutBuffer)}
+            to readStderr()        :String {readBuffer(alterrBuffer)}
+        }
+    }
+}

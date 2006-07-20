@@ -1,0 +1,23 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class("javax.swing.RepaintManager",
+      statics(method(suppress, "run()")),
+      methods(method(suppress, "currentManager(Component)"),
+              method(suppress, "currentManager(JComponent)"),
+              method(suppress, "setCurrentManager(RepaintManager)"),
+              method(suppress, "addInvalidComponent(JComponent)"),
+              method(suppress, "removeInvalidComponent(JComponent)"),
+              method(suppress, "addDirtyRegion(JComponent, int, int, int, int)"),
+              method(suppress, "getDirtyRegion(JComponent)"),
+              method(suppress, "markCompletelyDirty(JComponent)"),
+              method(suppress, "markCompletelyClean(JComponent)"),
+              method(suppress, "isCompletelyDirty(JComponent)"),
+              method(suppress, "validateInvalidComponents()"),
+              method(suppress, "paintDirtyRegions()"),
+              method(suppress, "getOffscreenBuffer(Component, int, int)"),
+              method(suppress, "getVolatileOffscreenBuffer(Component, int, int)"),
+              method(suppress, "setDoubleBufferMaximumSize(Dimension)"),
+              method(suppress, "getDoubleBufferMaximumSize()"),
+              method(suppress, "setDoubleBufferingEnabled(boolean)"),
+              method(suppress, "isDoubleBufferingEnabled()")))

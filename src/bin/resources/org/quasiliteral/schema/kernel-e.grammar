@@ -1,0 +1,44 @@
+# Copyright 2006 Hewlett Packard, under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+# ? def makeSchema := <import:org.quasiliteral.schema.makeSchema>
+# ? def <schema> := <resource:org/quasiliteral/schema/>
+# ? makeSchema.parseGrammar(<schema:kernel-e.grammar>.getTwine())
+
+e ::=
+     (.char.=1 | .int.=1 | .float64.=1 | .String.=1)            -> quote
+  |  e=1 "." verb=2 "(" e=3**"," ")"                            -> call
+  |  e=1 ";" e=2                                                -> seq
+  |  noun=1                                                     -> noun
+  |  "&" noun=1                                                 -> slot
+  |  "def" p=1 ("exit" e=2)? ":=" e=3                           -> def
+  |  "{" e=1 "}"                                                -> hide
+  |  "if" "(" e=1 ")" "{" e=2 "}" "else" "{" e=3 "}"            -> if
+  |  "try" "{" e=1 "}" "catch" p=2 "{" e=3 "}"                  -> catch
+  |  "try" "{" e=1 "}" "finally" "{" e=2 "}"                    -> finally
+  |  "escape" p=1 "{" e=2 "}" ("catch" p=3 "{" e=4 "}")?        -> escape
+  |  comment=1 "def" oname=2 ("implements" e=3++",")? script=4  -> object
+  |  "meta" "." "context" "(" ")"                               -> metaContext
+  |  "meta" "." "getState" "(" ")"                              -> metaState;
+
+p ::=
+     oname=1 (":" e=2)?                                         -> guardedPatt
+  |  "[" e=1**"," "]"                                           -> listPatt
+  |  "via" "(" e=1 ")" p=2                                      -> via;
+oname ::=
+     noun=1                                                     -> defFinal
+  |  "var" noun=1                                               -> defVar
+  |  "&" noun=1                                                 -> defSlot
+  |  "_"                                                        -> ignore;
+
+script ::=
+     matcher
+  |  "{" method=1* matcher=2* "}"                               -> script;
+method ::=
+     comment=1
+     "method" verb=2 "(" p=3**"," ")" (":" e=4)? "{" e=5 "}"    -> method;
+matcher ::= "match" p=1 "{" e=2 "}"                             -> matcher;
+
+verb ::= <Ident>=1 | .String.=1;
+noun ::= <Ident>=1 | "::" .String.=1;
+comment ::= <Comment>=1?;

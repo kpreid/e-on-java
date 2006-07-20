@@ -1,0 +1,123 @@
+#!/usr/bin/env rune
+
+# Copyright 2004 Mark S. Miller, under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+pragma.enable("easy-return")
+pragma.enable("explicit-result-guard")
+pragma.enable("lambda-args")
+pragma.enable("anon-lambda")
+
+def promiseAllResolved := <elang:interp.promiseAllResolved>
+
+def makeWhenControl(refFn) :any {
+    def whenControl {
+
+        /** Does the accumulated control. */
+        to run__control() :any {
+            return refFn()
+        }
+
+        /** __when ... resolved {resolvedExpr} ... */
+        to resolved__control_0(resolvedFn) :any {
+            def whenResolvedFn() :any {
+                def ref := refFn()
+                return Ref.whenResolved(ref, fn _{resolvedFn()})
+            }
+            return makeWhenControl(whenResolvedFn)
+        }
+
+        /** __when ... -> {fulfilledExpr} ... */
+        to "->__control_0"(fulfilledFn) :any {
+            def whenFulfilledFn() :any {
+                def ref := refFn()
+                return Ref.whenResolved(ref, fn _{
+                    # If ref is broken, throw the problem
+                    if (Ref.optProblem(ref) =~ problem :notNull) {
+                        throw(problem)
+                    }
+                    fulfilledFn()
+                })
+            }
+            return makeWhenControl(whenFulfilledFn)
+        }
+
+        /**
+         * __when ... catch problem {handlerExpr} ...
+         */
+        to catch__control_1(handlerFn) :any {
+            throw("XXX '__when .. catch ...' not yet implemented")
+        }
+
+        /**
+         * __when ... finally {finallyExpr} ...
+         */
+        to finally__control_0(finallyFn) :any {
+            throw("XXX '__when ... finally ...' not yet implemented")
+        }
+
+        /**
+         * __when ... broken problem {handlerExpr} ...
+         * <p>
+         * This syntactically resembles
+         * <pre>    __when  ... broken problem {...} ...</pre>
+         * but is otherwise quite different.
+         *
+         * @see Ref#whenBroken/2
+         */
+        to broken__control_1(handlerFn) :any {
+            def whenBrokenFn() :any {
+                def ref := refFn()
+                return Ref.whenBroken(ref, fn _ {handlerFn()})
+            }
+            return makeWhenControl(whenBrokenFn)
+        }
+    }
+    return whenControl
+}
+
+def __when0 {
+    /** when (refExpr) resolved {resExpr} ... */
+    to resolved__control_1_0(compoundFn) :any {
+        # XXX Violating our normal design rule for controls, and calling
+        # the argument before run__control()
+        def [[ref], resolvedFn] := compoundFn()
+        return makeWhenControl(fn{ref}).resolved__control_0(resolvedFn)
+    }
+
+    /** when (refExpr) -&gt {fulfilledExpr} ... */
+    to "->__control_1_0"(compoundFn) :any {
+        # XXX Violating our normal design rule for controls, and calling
+        # the argument before run__control()
+        def [[ref], fulfilledFn] := compoundFn()
+        return makeWhenControl(fn{ref})."->__control_0"(fulfilledFn)
+    }
+
+    /** when (refExpr) broken problem {handlerExpr} ... */
+    to "broken__control_1_1"(compoundFn) :any {
+        # XXX Violating our normal design rule for controls, and calling
+        # the argument before run__control()
+        def [[ref], handlerFn] := compoundFn()
+        return makeWhenControl(fn{ref}).broken__control_1(handlerFn)
+    }
+
+    match [`resolved__control_@{_}_0`, [compoundFn]] {
+        # XXX Violating our normal design rule for controls, and calling
+        # the argument before run__control()
+        def [refs, resolvedFn] := compoundFn()
+        def ref := promiseAllResolved(refs)
+        makeWhenControl(fn{ref}).resolved__control_0(resolvedFn)
+    }
+    match [`__respondsTo`, [`resolved__control_@{_}_0`, ==1]] { true }
+
+    match [`->__control_@{_}_0`, [compoundFn]] {
+        # XXX Violating our normal design rule for controls, and calling
+        # the argument before run__control()
+        def [refs, fulfilledFn] := compoundFn()
+        def ref := promiseAllFulfilled(refs)
+        makeWhenControl(fn{ref})."->__control_0"(fulfilledFn)
+    }
+    match [`__respondsTo`, [`->__control_@{_}_0`, ==1]] { true }
+}
+
+

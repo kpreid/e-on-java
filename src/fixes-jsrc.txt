@@ -1,0 +1,169 @@
+def p := rune(["~/e/src/esrc/scripts/srccheck-post.e"])
+
+term`changes(change("src/jsrc/com/zooko/tray/EPainter.updoc", 2, 47, 54, ">.black"),
+             change("src/jsrc/com/zooko/tray/EPainter.updoc", 7, 29, 32, ") :void {"),
+             change("src/jsrc/com/zooko/tray/EPainter.updoc", 9, 14, 24, "g.setColor"),
+             change("src/jsrc/com/zooko/tray/EPainter.updoc", 10, 14, 20, "E.call"),
+             change("src/jsrc/com/zooko/tray/EPainter.updoc", 11, 14, 24, "g.fillOval"),
+             change("src/jsrc/com/zooko/tray/EPainter.updoc", 18, 10, 21, "p.setOpaque"),
+             change("src/jsrc/com/zooko/tray/EPainter.updoc", 19, 10, 26, "f.setContentPane"),
+             change("src/jsrc/com/zooko/tray/EPainter.updoc", 20, 10, 19, "f.setSize"),
+             change("src/jsrc/com/zooko/tray/EPainter.updoc", 21, 10, 22, "f.setVisible"),
+             change("src/jsrc/net/captp/jcomm/multi-test.updoc", 9, 16, 26, "r.onTheAir"),
+             change("src/jsrc/net/captp/jcomm/multi-test.updoc", 12, 17, 20, ") :void {"),
+             change("src/jsrc/net/captp/jcomm/multi-test.updoc", 16, 41, 46, "r.now"),
+             change("src/jsrc/net/captp/jcomm/multi-test.updoc", 17, 26, 39, "r.sturdyToURI"),
+             change("src/jsrc/net/captp/jcomm/multi-test.updoc", 18, 31, 40, ">.setText"),
+             change("src/jsrc/net/captp/jcomm/multi-test.updoc", 27, 16, 26, "r.onTheAir"),
+             change("src/jsrc/net/captp/jcomm/multi-test.updoc", 28, 42, 51, ">.getText"),
+             change("src/jsrc/net/captp/jcomm/multi-test.updoc", 28, 52, 58, ").trim"),
+             change("src/jsrc/net/captp/jcomm/multi-test.updoc", 29, 25, 40, "r.sturdyFromURI"),
+             change("src/jsrc/net/captp/jcomm/multi-test.updoc", 33, 23, 32, "r.getRcvr"),
+             change("src/jsrc/net/captp/jcomm/multi-test.updoc", 42, 11, 22, "p.waitAtTop"),
+             change("src/jsrc/net/captp/jcomm/multi-test.updoc", 78, 6, 15, "r.resolve"),
+             change("src/jsrc/net/captp/jcomm/multi-test.updoc", 84, 11, 22, "p.waitAtTop"),
+             change("src/jsrc/net/captp/jcomm/multi-test.updoc", 91, 11, 22, "p.waitAtTop"),
+             change("src/jsrc/net/captp/jcomm/multi-test.updoc", 103, 11, 22, "p.waitAtTop"),
+             change("src/jsrc/net/captp/tables/AnswersTable.updoc", 15, 8, 14, "1.size"),
+             change("src/jsrc/net/captp/tables/AnswersTable.updoc", 18, 18, 23, "1.put"),
+             change("src/jsrc/net/captp/tables/AnswersTable.updoc", 26, 8, 14, "1.size"),
+             change("src/jsrc/net/captp/tables/AnswersTable.updoc", 29, 18, 23, "1.put"),
+             change("src/jsrc/net/captp/tables/AnswersTable.updoc", 38, 8, 14, "1.free"),
+             change("src/jsrc/net/captp/tables/AnswersTable.updoc", 44, 8, 13, "1.get"),
+             change("src/jsrc/net/captp/tables/AnswersTable.updoc", 56, 8, 20, "1.mustBeFree"),
+             change("src/jsrc/net/captp/tables/AnswersTable.updoc", 57, 8, 20, "1.mustBeFree"),
+             change("src/jsrc/net/captp/tables/AnswersTable.updoc", 63, 8, 23, "1.mustBeAlloced"),
+             change("src/jsrc/net/captp/tables/AnswersTable.updoc", 69, 8, 23, "1.mustBeAlloced"),
+             change("src/jsrc/net/captp/tables/AnswersTable.updoc", 75, 8, 14, "1.incr"),
+             change("src/jsrc/net/captp/tables/AnswersTable.updoc", 76, 8, 14, "1.incr"),
+             change("src/jsrc/net/captp/tables/AnswersTable.updoc", 77, 8, 14, "1.incr"),
+             change("src/jsrc/net/captp/tables/AnswersTable.updoc", 88, 8, 14, "1.decr"),
+             change("src/jsrc/net/captp/tables/AnswersTable.updoc", 91, 8, 14, "1.decr"),
+             change("src/jsrc/net/captp/tables/AnswersTable.updoc", 94, 8, 14, "1.decr"),
+             change("src/jsrc/net/captp/tables/AnswersTable.updoc", 101, 8, 13, "1.put"),
+             change("src/jsrc/net/captp/tables/AnswersTable.updoc", 105, 40, 43, ") :void {"),
+             change("src/jsrc/net/captp/tables/AnswersTable.updoc", 108, 26, 29, ") :void {"),
+             change("src/jsrc/net/captp/tables/AnswersTable.updoc", 109, 16, 23, "t.print"),
+             change("src/jsrc/net/captp/tables/AnswersTable.updoc", 114, 8, 13, "1.put"),
+             change("src/jsrc/net/captp/tables/AnswersTable.updoc", 123, 55, 60, ">.new"),
+             change("src/jsrc/net/captp/tables/AnswersTable.updoc", 126, 8, 15, "1.smash"),
+             change("src/jsrc/net/captp/tables/AnswersTable.updoc", 141, 8, 13, "1.put"),
+             change("src/jsrc/org/erights/e/elang/scope/meta-scope.updoc", 10, 11, 19, "a.enable"),
+             change("src/jsrc/org/erights/e/elib/sealing/point.updoc", 2, 11, 19, "a.enable"),
+             change("src/jsrc/org/quasiliteral/term/Term.updoc", 16, 41, 46, ">.new"),
+             change("src/jsrc/org/quasiliteral/term/Term.updoc", 24, 42, 47, ">.new"),
+             change("src/jsrc/org/quasiliteral/term/Term.updoc", 27, 20, 27, "m.build"),
+             change("src/jsrc/org/quasiliteral/term/Term.updoc", 32, 45, 50, ">.new"),
+             change("src/jsrc/org/quasiliteral/term/Term.updoc", 52, 46, 51, ">.new"),
+             change("src/jsrc/org/quasiliteral/term/Term.updoc", 58, 32, 44, "r.valueMaker"),
+             change("src/jsrc/org/quasiliteral/term/Term.updoc", 58, 55, 64, "e.getText"),
+             change("src/jsrc/org/quasiliteral/term/Term.updoc", 58, 65, 71, ").trim"),
+             change("src/jsrc/org/quasiliteral/term/Term.updoc", 58, 73, 85, ").substitute"),
+             change("src/jsrc/org/quasiliteral/term/Term.updoc", 59, 8, 18, "m.minimize"),
+             change("src/jsrc/org/quasiliteral/term/Term.updoc", 109, 36, 48, "r.valueMaker"),
+             change("src/jsrc/org/quasiliteral/term/Term.updoc", 109, 55, 61, "c.trim"),
+             change("src/jsrc/org/quasiliteral/term/Term.updoc", 109, 63, 75, ").substitute"),
+             change("src/jsrc/org/quasiliteral/term/Term.updoc", 109, 78, 88, ").minimize"),
+             change("src/jsrc/org/quasiliteral/term/Term.updoc", 110, 12, 19, "m.build"),
+             change("src/jsrc/org/quasiliteral/term/Term.updoc", 114, 38, 47, "e.getText"),
+             change("src/jsrc/org/quasiliteral/term/Term.updoc", 132, 17, 25, "e.getTag"),
+             change("src/jsrc/org/quasiliteral/term/Term.updoc", 132, 26, 38, ").getTagName"),
+             change("src/jsrc/org/quasiliteral/term/Term.updoc", 133, 17, 26, "e.getArgs"),
+             change("src/jsrc/org/quasiliteral/term/Term.updoc", 142, 15, 29, "t.getOptString"),
+             change("src/jsrc/org/quasiliteral/term/Term.updoc", 149, 9, 16, "e.split"),
+             change("src/jsrc/org/quasiliteral/term/Term.updoc", 154, 28, 35, "e.split"),
+             change("src/jsrc/org/quasiliteral/term/Term.updoc", 159, 33, 46, "t.toLowerCase"),
+             change("src/jsrc/org/quasiliteral/term/Term.updoc", 166, 25, 31, "t.size"),
+             change("src/jsrc/org/quasiliteral/term/Term.updoc", 176, 23, 26, ") :void {"),
+             change("src/jsrc/org/quasiliteral/term/Term.updoc", 177, 15, 24, "r.println"),
+             change("src/jsrc/org/quasiliteral/term/Term.updoc", 182, 22, 35, "h.lastStartOf"),
+             change("src/jsrc/org/quasiliteral/term/Term.updoc", 184, 24, 32, "].mkdirs"),
+             change("src/jsrc/org/quasiliteral/term/Term.updoc", 185, 18, 30, "].textWriter"),
+             change("src/jsrc/org/quasiliteral/term/Term.updoc", 191, 42, 45, ") :void {"),
+             change("src/jsrc/org/quasiliteral/term/Term.updoc", 192, 23, 36, "r.isDirectory"),
+             change("src/jsrc/org/quasiliteral/term/Term.updoc", 196, 30, 39, "r.getName"),
+             change("src/jsrc/org/quasiliteral/term/Term.updoc", 197, 45, 54, "r.getText"),
+             change("src/jsrc/org/quasiliteral/term/Term.updoc", 202, 21, 36, "e.prettyPrintOn"),
+             change("src/jsrc/org/quasiliteral/term/Term.updoc", 204, 20, 27, "t.close"))`
+~/efoo/src/jsrc/com/zooko/tray/EPainter.updoc:1:0:    ? (def makeJFrame := <unsafe:javax.swing.JFrame>
+~/efoo/src/jsrc/com/zooko/tray/EPainter.updoc:2:54:    >  def ColorBlack := <unsafe:java.awt.Color>.black()
+~/efoo/src/jsrc/com/zooko/tray/EPainter.updoc:7:32:    >     to paintComponent(g) :void {
+~/efoo/src/jsrc/com/zooko/tray/EPainter.updoc:9:24:    >         g.setColor(ColorBlack)
+~/efoo/src/jsrc/com/zooko/tray/EPainter.updoc:10:20:    >         E.call(g, "drawString(String, int, int)", ["hello", 10, 10])
+~/efoo/src/jsrc/com/zooko/tray/EPainter.updoc:11:24:    >         g.fillOval(10, 10, 100, 100)
+~/efoo/src/jsrc/com/zooko/tray/EPainter.updoc:18:21:    >  myep.setOpaque(false)
+~/efoo/src/jsrc/com/zooko/tray/EPainter.updoc:19:26:    >  myjf.setContentPane(myep)
+~/efoo/src/jsrc/com/zooko/tray/EPainter.updoc:20:19:    >  myjf.setSize(256, 256)
+~/efoo/src/jsrc/com/zooko/tray/EPainter.updoc:21:22:    >  myjf.setVisible(true))
+~/efoo/src/jsrc/net/captp/jcomm/multi-test.updoc:1:0:# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+~/efoo/src/jsrc/net/captp/jcomm/multi-test.updoc:9:26:    ? (introducer.onTheAir()
+~/efoo/src/jsrc/net/captp/jcomm/multi-test.updoc:12:20:    >     to run() :void { println("foo") }
+~/efoo/src/jsrc/net/captp/jcomm/multi-test.updoc:16:46:    > def sr := makeSturdyRef(thing, timer.now() + 3_600_000)
+~/efoo/src/jsrc/net/captp/jcomm/multi-test.updoc:17:39:    > def uri := introducer.sturdyToURI(sr)
+~/efoo/src/jsrc/net/captp/jcomm/multi-test.updoc:18:40:    > <file:~/Desktop/thing.cap>.setText(uri); uri)
+~/efoo/src/jsrc/net/captp/jcomm/multi-test.updoc:27:26:    ? (introducer.onTheAir()
+~/efoo/src/jsrc/net/captp/jcomm/multi-test.updoc:28:58:    > def uri := <file:~/Desktop/thing.cap>.getText().trim()
+~/efoo/src/jsrc/net/captp/jcomm/multi-test.updoc:29:40:    > def sr := introducer.sturdyFromURI(uri)
+~/efoo/src/jsrc/net/captp/jcomm/multi-test.updoc:33:32:    ? def farThing := sr.getRcvr()
+~/efoo/src/jsrc/net/captp/jcomm/multi-test.updoc:42:22:    ? interp.waitAtTop(result)
+~/efoo/src/jsrc/net/captp/jcomm/multi-test.updoc:78:15:    ? r.resolve(2)
+~/efoo/src/jsrc/net/captp/jcomm/multi-test.updoc:84:22:    ? interp.waitAtTop(x)
+~/efoo/src/jsrc/net/captp/jcomm/multi-test.updoc:91:22:    ? interp.waitAtTop(y)
+~/efoo/src/jsrc/net/captp/jcomm/multi-test.updoc:103:22:    ? interp.waitAtTop(res2)
+~/efoo/src/jsrc/net/captp/tables/AnswersTable.updoc:1:0:# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+~/efoo/src/jsrc/net/captp/tables/AnswersTable.updoc:15:14:    ? at1.size()
+~/efoo/src/jsrc/net/captp/tables/AnswersTable.updoc:18:23:    ? def i1 := at1.put("foo")
+~/efoo/src/jsrc/net/captp/tables/AnswersTable.updoc:26:14:    ? at1.size()
+~/efoo/src/jsrc/net/captp/tables/AnswersTable.updoc:29:23:    ? def i2 := at1.put("bar")
+~/efoo/src/jsrc/net/captp/tables/AnswersTable.updoc:38:14:    ? at1.free(i1)
+~/efoo/src/jsrc/net/captp/tables/AnswersTable.updoc:44:13:    ? at1.get(i2)
+~/efoo/src/jsrc/net/captp/tables/AnswersTable.updoc:56:20:    ? at1.mustBeFree(i1)
+~/efoo/src/jsrc/net/captp/tables/AnswersTable.updoc:57:20:    ? at1.mustBeFree(i2)
+~/efoo/src/jsrc/net/captp/tables/AnswersTable.updoc:63:23:    ? at1.mustBeAlloced(i1)
+~/efoo/src/jsrc/net/captp/tables/AnswersTable.updoc:69:23:    ? at1.mustBeAlloced(i2)
+~/efoo/src/jsrc/net/captp/tables/AnswersTable.updoc:75:14:    ? at1.incr(i2)
+~/efoo/src/jsrc/net/captp/tables/AnswersTable.updoc:76:14:    ? at1.incr(i2)
+~/efoo/src/jsrc/net/captp/tables/AnswersTable.updoc:77:14:    ? at1.incr(i1)
+~/efoo/src/jsrc/net/captp/tables/AnswersTable.updoc:88:14:    ? at1.decr(i2, 1)
+~/efoo/src/jsrc/net/captp/tables/AnswersTable.updoc:91:14:    ? at1.decr(i2, 1)
+~/efoo/src/jsrc/net/captp/tables/AnswersTable.updoc:94:14:    ? at1.decr(i2, 1)
+~/efoo/src/jsrc/net/captp/tables/AnswersTable.updoc:101:13:    ? at1.put("zippy")
+~/efoo/src/jsrc/net/captp/tables/AnswersTable.updoc:105:43:    >     to __reactToLostClient(problem) :void {
+~/efoo/src/jsrc/net/captp/tables/AnswersTable.updoc:108:29:    >     to __printOn(out) :void {
+~/efoo/src/jsrc/net/captp/tables/AnswersTable.updoc:109:23:    >         out.print("Dead Man Switch")
+~/efoo/src/jsrc/net/captp/tables/AnswersTable.updoc:114:13:    ? at1.put(dms)
+~/efoo/src/jsrc/net/captp/tables/AnswersTable.updoc:123:60:    ? def problem := <unsafe:java.lang.RuntimeException>.new("fooey")
+~/efoo/src/jsrc/net/captp/tables/AnswersTable.updoc:126:15:    ? at1.smash(problem)
+~/efoo/src/jsrc/net/captp/tables/AnswersTable.updoc:141:13:    ? at1.put("glorp")
+~/efoo/src/jsrc/org/erights/e/elang/scope/meta-scope.updoc:1:0:# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+~/efoo/src/jsrc/org/erights/e/elang/scope/meta-scope.updoc:10:19:    ? pragma.enable("meta-scope")
+~/efoo/src/jsrc/org/erights/e/elib/sealing/point.updoc:1:0:
+~/efoo/src/jsrc/org/erights/e/elib/sealing/point.updoc:2:19:    ? pragma.enable("typedef")
+~/efoo/src/jsrc/org/quasiliteral/term/Term.updoc:1:0:# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+~/efoo/src/jsrc/org/quasiliteral/term/Term.updoc:16:46:    ? def miniSchema := <astro:BaseSchema>.new("mini", [
+~/efoo/src/jsrc/org/quasiliteral/term/Term.updoc:24:47:    ? def miniBuilder := <term:TermBuilder>.new(miniSchema)
+~/efoo/src/jsrc/org/quasiliteral/term/Term.updoc:27:27:    ? def term := dom.build(miniBuilder)
+~/efoo/src/jsrc/org/quasiliteral/term/Term.updoc:32:50:    ? def safejSchema := <qq:astro.BaseSchema>.new("safej", [
+~/efoo/src/jsrc/org/quasiliteral/term/Term.updoc:52:51:    ? def safejBuilder := <qq:term.TermBuilder>.new(safejSchema)
+~/efoo/src/jsrc/org/quasiliteral/term/Term.updoc:58:85:    ? def dom := sml__quasiParser.valueMaker(testSmlFile.getText().trim()).substitute([]); null
+~/efoo/src/jsrc/org/quasiliteral/term/Term.updoc:59:18:    ? dom.minimize()
+~/efoo/src/jsrc/org/quasiliteral/term/Term.updoc:109:88:    >     def dom := sml__quasiParser.valueMaker(qsmlSrc.trim()).substitute([]).minimize()
+~/efoo/src/jsrc/org/quasiliteral/term/Term.updoc:110:19:    >     dom.build(safejBuilder)
+~/efoo/src/jsrc/org/quasiliteral/term/Term.updoc:114:47:    ? def tree := qsml2term(testSmlFile.getText())
+~/efoo/src/jsrc/org/quasiliteral/term/Term.updoc:132:38:    >     if (tree.getTag().getTagName() <=> tagName) {
+~/efoo/src/jsrc/org/quasiliteral/term/Term.updoc:133:26:    >         tree.getArgs()
+~/efoo/src/jsrc/org/quasiliteral/term/Term.updoc:142:29:    >     result.getOptString()
+~/efoo/src/jsrc/org/quasiliteral/term/Term.updoc:149:16:    ? name.split(".")
+~/efoo/src/jsrc/org/quasiliteral/term/Term.updoc:154:35:    >     def parts := fqname.split(".")
+~/efoo/src/jsrc/org/quasiliteral/term/Term.updoc:159:46:    >         if (! (part <=> part.toLowerCase())) {
+~/efoo/src/jsrc/org/quasiliteral/term/Term.updoc:166:31:    >     result(1, result.size()) + ".safej"
+~/efoo/src/jsrc/org/quasiliteral/term/Term.updoc:176:26:    ? def traceline(str) :void {
+~/efoo/src/jsrc/org/quasiliteral/term/Term.updoc:177:24:    >     stderr.println(str)
+~/efoo/src/jsrc/org/quasiliteral/term/Term.updoc:182:35:    >     def i := path.lastStartOf("/")
+~/efoo/src/jsrc/org/quasiliteral/term/Term.updoc:184:32:    >     dir[parentPath].mkdirs()
+~/efoo/src/jsrc/org/quasiliteral/term/Term.updoc:185:30:    >     dir[path].textWriter()
+~/efoo/src/jsrc/org/quasiliteral/term/Term.updoc:191:45:    ? def convert(smlFiledir, safejRootDir) :void {
+~/efoo/src/jsrc/org/quasiliteral/term/Term.updoc:192:36:    >     if (smlFiledir.isDirectory()) {
+~/efoo/src/jsrc/org/quasiliteral/term/Term.updoc:196:39:    >     } else if (smlFiledir.getName() =~ `@_.txt`) {
+~/efoo/src/jsrc/org/quasiliteral/term/Term.updoc:197:54:    >         def tree := qsml2term(smlFiledir.getText())
+~/efoo/src/jsrc/org/quasiliteral/term/Term.updoc:202:36:    >             tree.prettyPrintOn(out, false)

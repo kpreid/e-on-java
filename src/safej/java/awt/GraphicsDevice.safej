@@ -1,0 +1,17 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class("java.awt.GraphicsDevice",
+      statics,
+      methods(method(suppress, "getType()"),
+              method(suppress, "getIDstring()"),
+              method(suppress, "getConfigurations()"),
+              method(suppress, "getDefaultConfiguration()"),
+              method(suppress, "getBestConfiguration(GraphicsConfigTemplate)"),
+              method(suppress, "isFullScreenSupported()"),
+              method(suppress, "setFullScreenWindow(Window)"),
+              method(suppress, "getFullScreenWindow()"),
+              method(suppress, "isDisplayChangeSupported()"),
+              method(suppress, "setDisplayMode(DisplayMode)"),
+              method(suppress, "getDisplayMode()"),
+              method(suppress, "getDisplayModes()")))

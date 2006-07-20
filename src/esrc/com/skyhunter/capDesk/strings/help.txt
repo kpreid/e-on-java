@@ -1,0 +1,9 @@
+<html>
+<b><center>capDesk Help</center></b><p>
+<b>Window Layout</b><p>
+The left pane contains the list of subfolders in the current folder;<br>
+the right pane contains the list of files in the current folder.<br>
+Right-clicking in either pane pops up a menu of operations<br>
+including New, Copy, and Paste.
+
+</html>

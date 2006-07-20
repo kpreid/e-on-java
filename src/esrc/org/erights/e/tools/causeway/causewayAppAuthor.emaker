@@ -1,0 +1,664 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def swt__uriGetter := <import:org.eclipse.swt.*>
+def widget__uriGetter := <swt:widgets.*>
+def custom__uriGetter := <swt:custom.*>
+def SWT := <swt:makeSWT>
+
+def <swttools> := <import:org.erights.e.ui.swt.*>
+def swtGrid__quasiParser := <swttools:swtGridQParserMaker>()
+
+def stackWalkerAuthor :=
+  <import:org.erights.e.tools.causeway.stackWalkerAuthor>
+
+def makePrunedCausalityTree:=
+  <import:org.erights.e.tools.causeway.makePrunedCausalityTree>
+
+def getLine(file, first :int) :String {
+    def source := file.getText()
+    def lines := source.split("\n")
+    lines[first -1].trim()
+}
+
+def getRelevance(cause, edge, traceline) :String {
+
+    def effect := edge.getTarget()
+
+    def stack := edge.getContext()[1]
+    if (stack != []) {
+        def [pathname, [[first, fo], [last, lo]]] := stack[0]
+
+        if (pathname =~ `@{_}org/erights/e/elang@_`) {
+            return "skip"
+        }
+    }
+    if (effect.getIncomingCount() > 1) {
+        def isSCmsg := edge.getContext()[0] == "SCmsg"
+        if (effect.getMessage() =~ `@_<- __whenMoreResolved@_`) {
+            if (isSCmsg) {
+                return "clip"
+            } else {
+                # return "keep when-catch"
+            }
+        } else {
+            if (isSCmsg) {
+                return "keep message send"
+            } else {
+                return "skip"
+            }
+        }
+    }
+    if (stack == []) {
+        return "skip"
+    } else if (effect.getMessage() =~ `@_--gced--@_`) {
+        return "skip"
+    } else {
+        return "keep non-empty stack"
+    }
+}
+
+def expandItemOnDiagonal(item) :void {
+    if (item.getItemCount() == 1) {
+        item.setExpanded(true)
+        def next := item.getItems()
+        expandItemOnDiagonal(next[0])
+    }
+}
+
+def expandTreeOnDiagonal(tree) :void {
+    def items := tree.getItems()
+    if (items.size() > 0) {
+        for i in items {
+            expandItemOnDiagonal(i)
+        }
+    }
+}
+
+def expandItem(item) :void {
+    item.setExpanded(true)
+    if (item.getItemCount() > 0) {
+        def next := item.getItems()
+        for n in next {
+            expandItem(n)
+        }
+    }
+}
+
+def expandTree(tree) :void {
+    def items := tree.getItems()
+    if (items.size() > 0) {
+        for i in items {
+            expandItem(i)
+        }
+    }
+}
+
+def ceMap := [].asMap().diverge()
+
+def see(c, e) :any {
+    ceMap[[c, e]] := [c, e]
+}
+
+def hasBeenSeen(c, e) :boolean {
+    if (ceMap.fetch([c, e], thunk{}) == null) {
+        return false
+    } else {
+        return true
+    }
+}
+
+def itemToModelMap := [].asMap().diverge()
+def modelToItemMap := [].asMap().diverge()
+
+def buildTree(treeParent,
+              edge,
+              vatMap,
+              lastEdge,
+              palette,
+              traceline) :void {
+
+    if (hasBeenSeen(edge.getOrigin(), edge.getTarget())) {
+        return;
+    }
+    see(edge.getOrigin(), edge.getTarget())
+
+    def item := <widget:makeTreeItem>(treeParent, 0)
+    itemToModelMap.put(item, edge, true)
+    modelToItemMap.put(edge, item, true)
+
+    def effect := edge.getTarget()
+    if (effect.getIncomingCount() > 1) {
+        item.setImage(palette.getImage("multiples"))
+    }
+
+    def [path, vat, turn] := effect.getID()
+
+    def attr := vatMap.fetchDisplayAttributes(path, vat)
+    item.setForeground(attr[1])
+    def why
+    if (edge.tellWhy() != "") {
+        bind why := `# ${edge.tellWhy()}`
+    } else {
+        bind why := ""
+    }
+
+    item.setText(`[${attr[0]}:$turn] ${effect.getMessage()} $why`)
+
+    def le := lastEdge.fetch(effect, thunk {})
+
+    #if (lastEdge[effect] == edge) {
+
+    if (le == null || le == edge) {
+        for ge => _ in effect.outs() {
+            buildTree(item, ge, vatMap, lastEdge, palette, traceline)
+        }
+    } else {
+        if (le != null) {
+            #traceline(`do not expand kids for: ${attr[0]}:$turn`)
+        }
+    }
+}
+
+def buildOrderedList(olist,
+                     model,
+                     vatMap,
+                     lastEdge,
+                     palette,
+                     traceline) :void {
+
+    var min := 256
+    var max := 0
+    var tally := 0
+
+    for o in model {
+        if (o != null) {
+            def [path, vat, turn] := o.getTarget().getID()
+            def [name, color] := vatMap.fetchDisplayAttributes(path, vat)
+            def len := `[$name:$turn]`.size()
+            if (len < min) {
+                min := len
+            }
+            if (len > max) {
+                max := len
+            }
+            tally += len
+        }
+    }
+    def avg := tally // model.size()
+
+    for o in model {
+        if (o != null) {
+            lastEdge[o.getTarget()] := o
+            var prefix := ""
+            def [path, vat, turn] := o.getTarget().getID()
+            def [name, color] := vatMap.fetchDisplayAttributes(path, vat)
+            def id := `[$name:$turn]`
+            var n := max - id.size()
+            n += 1
+            for i in 0 ..! n {
+                prefix := prefix + " "
+            }
+
+            def str := `$prefix$id ${o.getTarget().getMessage()}`
+            olist.add(str)
+        }
+    }
+}
+
+def makeOListPane(folder, model, path, vatMap, lastEdge, palette, traceline) :near {
+
+    def pane := <widget:makeComposite>(folder, 0)
+    def olist := <widget:makeList>(pane,
+                               SWT.getSINGLE() |
+                                 (SWT.getH_SCROLL() | SWT.getV_SCROLL()))
+
+    def folp := palette.makeFOListPalette()
+
+    olist.setForeground(folp.getFg())
+    olist.setBackground(folp.getBg())
+    olist.setFont(folp.getFont())
+
+    buildOrderedList(olist, model, vatMap, lastEdge, palette, traceline)
+
+    var firstTime := true
+    var isActive := false
+
+    def olistPane {
+
+        to getPane() :near { return pane }
+
+        to getWidget() :near { return olist }
+
+        to getModel() :near { return model }
+
+        to getPath() :near { return path }
+
+        to selectAndShow(ndx) :void {
+            olist.setSelection(ndx)
+            olist.showSelection()
+        }
+
+        to deselect() :void {
+            def ndx := olist.getSelectionIndex()
+            if (ndx != -1) {
+                olist.deselect(ndx)
+            }
+        }
+
+        to syncSelect(selection) :void {
+            for i in 0 ..! model.size() {
+                if (model[i] == selection) {
+                    olistPane.selectAndShow(i)
+
+                    return
+                }
+            }
+            olistPane.deselect()
+        }
+
+        to activate() :void {
+            if (firstTime) {
+                firstTime := false
+                olistPane.selectAndShow(0)
+            }
+            isActive := true
+        }
+
+        to deactivate() :void {
+            isActive := false
+        }
+
+        to layout() :void {
+
+            swtGrid`${pane}:
+                    ${olist}.X.Y`
+
+            pane.getLayout().setMarginWidth(0)
+            pane.getLayout().setMarginHeight(0)
+            pane.getLayout().setHorizontalSpacing(0)
+            pane.getLayout().setVerticalSpacing(0)
+
+            firstTime := true
+        }
+    }
+
+    return olistPane
+}
+
+def makeTreePane(folder, top, vatMap, lastEdge, palette, traceline) :near {
+
+    def pane := <widget:makeComposite>(folder, 0)
+    def tree := <widget:makeTree>(pane,
+                              SWT.getSINGLE() |
+                                (SWT.getH_SCROLL() | SWT.getV_SCROLL()))
+
+    def tp := palette.makeCausalityTreePalette()
+
+    tree.setForeground(tp.getFg())
+    tree.setBackground(tp.getBg())
+    tree.setFont(tp.getFont())
+
+    for  edge => _ in top.outs() {
+        buildTree(tree, edge, vatMap, lastEdge, tp, traceline)
+    }
+
+    expandTree(tree)
+
+    var firstTime := true
+    var isActive := false
+
+    def treePane {
+
+        to getPane() :near { return pane }
+
+        to getWidget() :near { return tree }
+
+        to getPath() :near { return "" }
+
+        to selectAndShow(item) :void {
+            def selection := [].diverge()
+            selection.push(item)
+            tree.setSelection(selection.snapshot())
+            tree.showItem(item)
+        }
+
+        to deselect() :void {
+            if (tree.getSelectionCount() > 0) {
+                tree.deselectAll()
+            }
+        }
+
+        to syncSelect(selection) :void {
+            def item := modelToItemMap.fetch(selection, thunk{})
+            if (item != null) {
+                treePane.selectAndShow(item)
+
+                return
+            }
+            treePane.deselect()
+        }
+
+        to activate() :void {
+            if (firstTime) {
+                firstTime := false
+                def items := tree.getItems()
+                if (items.size() > 0) {
+                    treePane.selectAndShow(items[0])
+                }
+            }
+            isActive := true
+        }
+
+        to deactivate() :void {
+            isActive := false
+        }
+
+        to layout() :void {
+
+            swtGrid`${pane}:
+                    ${tree}.X.Y`
+
+            pane.getLayout().setMarginWidth(0)
+            pane.getLayout().setMarginHeight(0)
+            pane.getLayout().setHorizontalSpacing(0)
+            pane.getLayout().setVerticalSpacing(0)
+
+            firstTime := true
+        }
+    }
+
+    return treePane
+}
+
+def getUniqueName(name, names) :String {
+
+    if (!names.maps(name)) { return name }
+
+    for i in 1 .. 10 {
+        def next := name + "(" +i + ")"
+        if (!names.maps(next)) { return next }
+    }
+    return name + "(*)"
+}
+
+def makeVatMap(causalityTree, palette, traceline) :near {
+    def attributes := [].asMap().diverge()
+    def names := [].asMap().diverge()
+
+    def traces := causalityTree.getTraces()
+    for pathname in traces {
+        def vats := causalityTree.getVatSet(pathname)
+        # unique vat name & vat color
+        for v in vats {
+            def unique := getUniqueName(v, names)
+            names.put(unique, unique, true)
+
+            def vc := palette.getVatColor(names.size() -1)
+            attributes.put([pathname, v],[unique, vc], true)
+        }
+    }
+    def vatMap {
+        to fetchDisplayAttributes(path, vat) :near {
+            return attributes.fetch([path, vat], thunk{
+                [vat, palette.getDefaultVatColor()]
+            })
+        }
+    }
+    return vatMap
+}
+
+def makeFolderGroup(folder, shell, palette, traceline) :near {
+
+    def initialSelection := [].diverge()
+    def tabKeeper := [].diverge()
+
+    def folderGroup {
+
+        to add(tabbedPane, label, selected) :void {
+            def tab := <widget:makeTabItem>(folder, 0)
+
+            tab.setControl(tabbedPane.getPane())
+            tab.setText(label)
+            tabKeeper.push([tab, tabbedPane])
+
+            if (selected == true) {
+                initialSelection.push(tab)
+            }
+        }
+
+        to syncSelect(path) :near {
+            for [tab, tabbedPane] in tabKeeper {
+                if (tabbedPane.getPath() == path) {
+                    def ndx := folder.indexOf(tab)
+                    if (ndx != -1 ) {
+                        folder.setSelection(ndx)
+                        return tabbedPane
+                    }
+                }
+            }
+            return null
+        }
+
+        to layout() :void {
+            for [_, tabbedPane] in tabKeeper {
+                tabbedPane.layout()
+            }
+        }
+
+        to open() :void {
+            def ndx := folder.indexOf(initialSelection[0])
+            if (ndx != -1 ) {
+                folder.setSelection(ndx)
+            }
+            for t in tabKeeper {
+                def [tab, tabbedPane] := t
+                if (tab == initialSelection[0]) {
+                    tabbedPane.activate()
+                    return
+                }
+            }
+        }
+    }
+    return folderGroup
+}
+
+/**
+ */
+def causewayAppAuthor(<file>, <jar>, makers, shell, tcr, traceline) :near {
+
+    /**
+     * Returns either a java.io.File or a java.net.URL
+     */
+    def getFile(pathname) :any {
+        switch (pathname) {
+            match `file:@body` {
+                return <file>[body]
+            }
+            match `jar:@body` {
+                return <jar>[body]
+            }
+            match _ {
+                return <file>[pathname]
+            }
+        }
+    }
+
+    def splice(me) :void {
+        if (me.getMessage() =~ `@{_}<- __whenMoreResolved@_`) {
+            def no := me.getNextOut()
+            if (no != me) {
+                def stack := no.getContext()[1]
+                if (stack.size() >= 1) {
+                    def [pathname, [[first, _], [_, _]]] := stack[stack.size()-1]
+
+                    var line := getLine(getFile(pathname), first)
+                    if (line =~ `@_->@rest`) {
+                        line := `->$rest`
+                    } else {
+                        line := `when: $line`
+                    }
+                    me.setMessage(line)
+                }
+            }
+        }
+        # XXX Should suppress multiple walks. Should iterate over table instead.
+        for nextMe in me.outs() {
+            splice(nextMe)
+        }
+    }
+
+
+    def makeCausewayApp(parent, palette) :near {
+
+        def topToBottom := <custom:makeSashForm>(parent, SWT.getVERTICAL())
+
+        def sideToSide := <custom:makeSashForm>(topToBottom, SWT.getHORIZONTAL())
+
+        def olistFolder := <widget:makeTabFolder>(sideToSide, 0)
+
+        def olistFolderGroup := makeFolderGroup(olistFolder,
+                                                shell, palette, traceline)
+
+        def treeFolder := <widget:makeTabFolder>(sideToSide, 0)
+
+        def treeFolderGroup := makeFolderGroup(treeFolder,
+                                               shell, palette, traceline)
+
+        def makeStackWalker := stackWalkerAuthor(<file>, <jar>, traceline)
+
+        def [vatMapVow,vatMapResolver] := Ref.promise()
+        def stackWalker := makeStackWalker(topToBottom,
+                                           makers, shell,
+                                           palette, vatMapVow)
+
+        topToBottom.setWeights([50, 50])
+
+        sideToSide.setWeights([25, 75])
+
+        def listenerForStackWalker {
+            to widgetSelected(event) :void {
+                def item := event.getItem()
+                def edge := itemToModelMap[item]
+                def cause := edge.getOrigin().getID()
+                def effect := edge.getTarget().getID()
+                def [_, stack] := edge.getContext()
+                stackWalker.showStackFrame(cause, effect, stack)
+            }
+            to widgetDefaultSelected(event) :void {}
+        }
+
+        def listenerForGroup {
+            to widgetSelected(event) :void {
+                def item := event.getItem()
+                def edge := itemToModelMap.fetch(item, thunk{})
+                if (edge != null) {
+                    def [path, _, _] := edge.getTarget().getID()
+                    def pane := olistFolderGroup.syncSelect(path)
+                    if (pane != null) {
+                        pane.syncSelect(edge)
+                    }
+                }
+            }
+            to widgetDefaultSelected(event) :void {}
+        }
+
+        def causewayApp {
+
+            to getTopLevelPane() :near { return topToBottom }
+
+            to open() :void {
+                olistFolderGroup.open()
+                treeFolderGroup.open()
+                stackWalker.open()
+            }
+
+            to layout() :void {
+                olistFolderGroup.layout()
+                treeFolderGroup.layout()
+                stackWalker.layout()
+            }
+
+            to setCausalityTree(causalityTree) :any {
+
+                vatMapResolver.resolve(makeVatMap(causalityTree,
+                                                  palette, traceline))
+
+                def tfiles := causalityTree.getTraces()
+
+                def loops := [].diverge()
+                def lastEdge := [].asMap().diverge()
+                for i in 0 ..! tfiles.size() {
+                    def messages := causalityTree.getOrdered(tfiles[i])
+                    if (messages.size() > 0) {
+
+                        def opane := makeOListPane(olistFolder,
+                                                   messages, tfiles[i],
+                                                   vatMapVow,
+                                                   lastEdge,
+                                                   palette, traceline)
+                        loops.push(opane)
+
+                        def short := tfiles[i].split("/").last().trim()
+
+                        olistFolderGroup.add(opane, short, i == 0)
+                    }
+                }
+
+                def top := causalityTree.getTop()
+
+                def cpane := makeTreePane(treeFolder, top, vatMapVow,
+                                          lastEdge, palette, traceline)
+                cpane.getWidget().addSelectionListener(listenerForStackWalker)
+                cpane.getWidget().addSelectionListener(listenerForGroup)
+
+                treeFolderGroup.add(cpane, "Causality Tree", true)
+                def prunedCausalityTree :=
+                  makePrunedCausalityTree(top, getRelevance, traceline)
+                def po := prunedCausalityTree.getOrdered()
+                for pe in po {
+                    def pt := pe.getTarget()
+                    lastEdge[pt] := pe
+                }
+
+                def ptop := prunedCausalityTree.getTop()
+                splice(ptop)
+
+                def ppane := makeTreePane(treeFolder, ptop, vatMapVow,
+                                          lastEdge, palette, traceline)
+                ppane.getWidget().addSelectionListener(listenerForStackWalker)
+                #ppane.getWidget().addSelectionListener(listenerForGroup)
+
+                treeFolderGroup.add(ppane, "Pruned Causality Tree", false)
+
+                for op in loops {
+                    op.getWidget().addSelectionListener(def swl {
+                        to widgetSelected(event) :void {
+                            def i := op.getWidget().getSelectionIndex()
+                            if (i >= 0) {
+                                def edge := op.getModel()[i]
+                                def cause := edge.getOrigin().getID()
+                                def effect := edge.getTarget().getID()
+                                def [_, stack] := edge.getContext()
+                                stackWalker.showStackFrame(cause, effect, stack)
+                            }
+                        }
+                        to widgetDefaultSelected(event) :void {}
+                    })
+
+                    op.getWidget().addSelectionListener(def listenerForTree {
+                        to widgetSelected(event) :void {
+                            def i := op.getWidget().getSelectionIndex()
+                            if (i >= 0) {
+                                cpane.syncSelect(op.getModel()[i])
+                            }
+                        }
+                        to widgetDefaultSelected(event) :void {}
+                    })
+                }
+
+            }
+        }
+        return causewayApp
+    }
+}

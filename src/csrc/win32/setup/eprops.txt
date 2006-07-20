@@ -1,0 +1,47 @@
+# E Configuration File
+
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+# For example, 0.8.9
+#
+$(e.version)
+
+# Where E is installed. Commented out because it's supplied by the
+# "rune" driver.
+#
+# e.home=/usr/local/e
+
+# The command to be used to invoke Java. This is typically "java".
+# The command invoked must support the "-cp" option
+#
+e.javacmd=java
+
+# When E wrappers are launched from the desktop, where should their
+# current directory be?  Under Linux currently, this option does
+# nothing.
+#
+e.launch.dir=~/Desktop
+
+# Where does trace data go?
+#
+TraceLog_dir=~/.etrace
+
+# Where are copies of the "rune" executable placed?  Currently ignored.
+#
+e.put.exe.path=/usr/local/bin
+
+# Where are copies of the E & Elmer wrappers placed?  Currently
+# ignored under Linux
+#
+e.put.shortcut.path=
+
+# Should .e, .emaker, .updoc, and .cap be associated with mime types &
+# launching programs?  Currently ignored under Linux.
+#
+e.GrabExtensions=true
+
+
+e.vendor=ERights.org
+e.vendor.url=http://www.erights.org
+

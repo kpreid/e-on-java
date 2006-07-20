@@ -1,0 +1,66 @@
+    ? def traceline(str) :void { stderr.println(str) }
+    # value: <traceline>
+
+    ? def upgradeComments := <import:com.skyhunter.convertForEDoc.makeUpgradeComments>(traceline)
+    # value: <upgradeComments>
+
+    ? def source := "
+    > #copyright
+    > # x
+    > #
+    > #
+    >
+    > #
+    > #license
+    >
+    > def m1() {
+    >     #c1
+    >     def a := 1
+    >     var b := 2
+    >     #convert2
+    >     def m2() {
+    >         #convert3
+    >         # convert4
+    >         to m3 {}
+    >         to m4 {}
+    >
+    >         to m5 {}
+    >     #c5
+    >     }
+    > }
+    > #c6"; null
+    ? println(upgradeComments(source))
+
+    #copyright
+    # x
+    #
+    #
+
+    /**
+     *
+     * license
+     */
+    def m1() {
+        #c1
+        def a := 1
+        var b := 2
+
+        /**
+         * convert2
+         */
+        def m2() {
+
+            /**
+             * convert3
+             * convert4
+             */
+            to m3 {}
+            to m4 {}
+
+            to m5 {}
+        #c5
+        }
+    }
+    #c6
+
+    ?

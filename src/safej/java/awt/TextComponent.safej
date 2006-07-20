@@ -1,0 +1,28 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class("java.awt.TextComponent",
+      statics,
+      methods(method(suppress, "enableInputMethods(boolean)"),
+              method(suppress, "addNotify()"),
+              method(suppress, "removeNotify()"),
+              method(suppress, "setText(String)"),
+              method(suppress, "getText()"),
+              method(suppress, "getSelectedText()"),
+              method(suppress, "isEditable()"),
+              method(suppress, "setEditable(boolean)"),
+              method(suppress, "getBackground()"),
+              method(suppress, "setBackground(Color)"),
+              method(suppress, "getSelectionStart()"),
+              method(suppress, "setSelectionStart(int)"),
+              method(suppress, "getSelectionEnd()"),
+              method(suppress, "setSelectionEnd(int)"),
+              method(suppress, "select(int, int)"),
+              method(suppress, "selectAll()"),
+              method(suppress, "setCaretPosition(int)"),
+              method(suppress, "getCaretPosition()"),
+              method(suppress, "addTextListener(TextListener)"),
+              method(suppress, "removeTextListener(TextListener)"),
+              method(suppress, "getTextListeners()"),
+              method(suppress, "getListeners(Class)"),
+              method(suppress, "getAccessibleContext()")))

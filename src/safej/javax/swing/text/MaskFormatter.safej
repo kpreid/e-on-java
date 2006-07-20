@@ -1,0 +1,22 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class(safe,
+      "javax.swing.text.MaskFormatter",
+      statics(method("run()"),
+              method("run(String)")),
+      methods(method("setMask(String)"),
+              method("getMask()"),
+              method("setValidCharacters(String)"),
+              method("getValidCharacters()"),
+              method("setInvalidCharacters(String)"),
+              method("getInvalidCharacters()"),
+              method("setPlaceholder(String)"),
+              method("getPlaceholder()"),
+              method("setPlaceholderCharacter(char)"),
+              method("getPlaceholderCharacter()"),
+              method("setValueContainsLiteralCharacters(boolean)"),
+              method("getValueContainsLiteralCharacters()"),
+              method("stringToValue(String)"),
+              method("valueToString(Object)"),
+              method("install(JFormattedTextField)")))

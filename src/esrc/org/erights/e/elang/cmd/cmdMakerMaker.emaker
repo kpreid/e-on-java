@@ -1,0 +1,218 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+pragma.enable("anon-lambda")
+
+def EExpr := <type:org.erights.e.elang.evm.EExpr>
+def Term := <type:org.quasiliteral.term.Term>
+def Expr := any[EExpr, Twine, Term]
+def Throwable := <type:java.lang.Throwable>
+def StringBuffer := <type:java.lang.StringBuffer>
+def Runnable := <type:java.lang.Runnable>
+
+def makeTextWriter := <elib:oldeio.makeTextWriter>
+def makeUnQuote := <elib:oldeio.makeUnQuote>
+def makeELexer := <elang:syntax.makeELexer>
+def makeEParser := <elang:syntax.makeEParser>
+def makeAnswerer := <elang:cmd.makeAnswerer>
+def makeVerifyEVisitor := <elang:visitors.makeVerifyEVisitor>
+
+def substs := [
+    e`interp.getResult(0)`,
+    e`interp.getResult(1)`,
+    e`interp.getResult(2)`,
+    e`interp.getResult(3)`,
+    e`interp.getResult(4)`,
+    e`interp.getResult(5)`,
+    e`interp.getResult(6)`,
+    e`interp.getResult(7)`,
+    e`interp.getResult(8)`,
+    e`interp.getResult(9)`
+]
+
+def cmdMakerMaker(cmdLoop,
+                  optAltoutBuf :nullOk[StringBuffer],
+                  optAlterrBuf :nullOk[StringBuffer],
+                  metaout :TextWriter,
+                  metaerr :TextWriter) :any {
+
+    # XXX should make the lexer and parser lazily, or should split cases
+    # somehow. One must be made per cmdMaker, since the parser is stateful.
+    def lexer := makeELexer(null,           # optLineFeeder
+                            false,          # partialFlag
+                            false)          # noTabsFlag
+    def parser := makeEParser.make(null,    # optProps
+                                   lexer,
+                                   metaerr, # warning
+                                   false,   # debugFlag
+                                   false)   # onlyOneExprFlag
+    /**
+     * @param expr is either a Twine (source code to be parsed) or represents
+     *             an Expanded-E parse tree.
+     */
+    def parse(expr :Expr) :EExpr {
+        switch (expr) {
+            match result :EExpr {
+                return result
+            }
+            match srcStr :Twine {
+                parser.setSource(srcStr)
+                return parser.parse()
+            }
+            match term :Term {
+                throw("E Exprs as Term trees XXX not yet implemented")
+            }
+        }
+    }
+
+    def outAnswerer := makeAnswerer(metaout)
+    def errAnswerer := makeAnswerer(metaerr)
+
+    def cmdMaker {
+
+        /**
+         *
+         */
+        to reportProblem(problem :Throwable) :void {
+            errAnswerer.reportProblem(problem,
+                                      cmdLoop.getShowJStack(),
+                                      cmdLoop.getShowEStack())
+        }
+
+        /**
+         * Makes a command that will evaluate an expression and reveal the
+         * outcome values.
+         *
+         * @param expr is either a Twine (source code to be parsed) or
+         *             represents an Expanded-E parse tree.
+         * @return a pair of a vow for the command's outcome report and the
+         *         command itself. It is up to the caller to arrange for
+         *         the command to eventually be run. The outcome report is
+         *         a pair of a result and a success flag.
+         */
+        to makeCmdValuer(expr :Expr) :Tuple[vow[Tuple[any, boolean]],
+                                            Runnable] {
+            def [outcomeVow, outcomeRes] := Ref.promise()
+            def cmdValuer() :void {
+                def scope := cmdLoop.getTopScope()
+                var success := true
+                def result
+                def interactive :boolean := cmdLoop.getInteractive()
+                try {
+                    var eExpr := parse(expr)
+                    if (interactive) {
+                        eExpr := eExpr.substitute(substs)
+                    }
+                    if (cmdLoop.getExpand()) {
+                        def layout := scope.getScopeLayout()
+                        def vev := makeVerifyEVisitor(layout)
+                        def expansion := try {
+                            vev.xformEExpr(eExpr).asText()
+                        } catch _ {
+                            # XXX kludge
+# See https://bugs.sieve.net/bugs/?func=detailbug&bug_id=125633&group_id=16380
+                            eExpr.asText()
+                        }
+
+                        outAnswerer.reportValue("expansion",
+                                                cmdLoop.getPrintFunc(),
+                                                makeUnQuote(expansion))
+                    }
+                    def [bind result, newScope] := eExpr.evalToPair(scope)
+                    if (interactive) {
+                        cmdLoop.setTopScope(newScope.nestOuter())
+                    } else {
+                        cmdLoop.setTopScope(newScope)
+                    }
+                } catch problem {
+                    success := false
+                    bind result := Ref.broken(problem)
+                }
+                cmdLoop.pushResult(result)
+                # in order to distinguish a successfully returned broken
+                # ref from a thrown problem for a disconnect. Also, to enable
+                # detection of a successfully returned unresolved reference
+                outcomeRes.resolve([result, success])
+            }
+            [outcomeVow, cmdValuer]
+        }
+
+        /**
+         * Makes a command that will evaluate an expression, format the
+         * outcome as <i>answers</i>, and reveal an exit status flag saying
+         * whether the repl should continue.
+         *
+         * @param expr is either a Twine (source code to be parsed) or
+         *             represents an Expanded-E parse tree.
+         * @return a pair of a vow for the command's exit-status flag and the
+         *         command itself. It is up to the caller to arrange for
+         *         the command to eventually be run. The flag resolves only
+         *         once the command executes. The flag resolves to one of</ul>
+         *         <li>false, meaning the program isn't done, so the repl
+         *             should continue.
+         *         <li>true, meaning the program voluntarily terminated with
+         *             success, and the repl should also terminate indicating
+         *             success.
+         *         <li>A broken reference, meaning either that the program
+         *             voluntarily indicated failure with the ref's problem,
+         *             or that an unrecoverable eval problem happened. In
+         *             either case, the repl should fail indicating this
+         *             problem as the reason.
+         *         </ul>
+         */
+        to makeCmdAnswerer(expr :Expr) :Tuple[vow[boolean], Runnable] {
+            def [exitStatusVow, exitStatusRes] := Ref.promise()
+            def [outcomeVow, cmdValuer] := cmdMaker.makeCmdValuer(expr)
+            def cmdAnswerer() :void {
+                # XXX Seems kludgy to use cmdValuer in this way.
+                # Should refactor, and make the common logic into an
+                # internal function.
+                cmdValuer()
+                outAnswerer.takeBuf("stdout", optAltoutBuf)
+                errAnswerer.takeBuf("stderr", optAlterrBuf)
+                def interactive :boolean := cmdLoop.getInteractive()
+                switch (outcomeVow) {
+                    match [result, successFlag :boolean] {
+                        if (successFlag) {
+                            if (interactive) {
+                                # non-interactive success is silent
+                                outAnswerer.reportValue("value",
+                                                        cmdLoop.getPrintFunc(),
+                                                        result)
+                            }
+                        } else {
+                            def problem :Throwable := Ref.optProblem(result)
+
+                            if (interactive) {
+                                # failure is always noisy, so report it when
+                                # we might not be exiting
+                                cmdMaker.reportProblem(problem)
+                            } else {
+                                # non-interactive failure is fatal
+                                cmdLoop.exitAtTop(problem)
+                            }
+                        }
+                    }
+                    match broke ? (Ref.isBroken(broke)) {
+                        def problem :Throwable :=
+                          cmdLoop.exitAtTop(Ref.optProblem(broke))
+                    }
+                    match _ {
+                        def problem :=
+                          `unrecognized outcome case: $outcomeVow`
+                        cmdLoop.exitAtTop(problem)
+                    }
+                }
+                def exitStatus := cmdLoop.getNextExitStatus()
+                def optProblem := Ref.optProblem(exitStatus)
+                if (optProblem != null) {
+                    # failure is always noisy
+                    cmdMaker.reportProblem(optProblem)
+                }
+                exitStatusRes.resolve(exitStatus)
+            }
+            [exitStatusVow, cmdAnswerer]
+        }
+    }
+}
+

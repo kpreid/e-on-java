@@ -1,0 +1,7 @@
+class("org.eclipse.swt.events.ShellAdapter",
+           statics(method(suppress, "run()")),
+           methods(method(suppress, "shellActivated(ShellEvent)"),
+                   method(suppress, "shellClosed(ShellEvent)"),
+                   method(suppress, "shellDeactivated(ShellEvent)"),
+                   method(suppress, "shellDeiconified(ShellEvent)"),
+                   method(suppress, "shellIconified(ShellEvent)"))) 

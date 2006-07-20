@@ -1,0 +1,8 @@
+class("org.eclipse.swt.custom.TableTreeEditor",
+           statics(method("run(TableTree)")),
+           methods(method("dispose()"),
+                   method("getColumn()"),
+                   method("setColumn(int)"),
+                   method("getItem()"),
+                   method("setItem(TableTreeItem)"),
+                   method("setEditor(Control, TableTreeItem, int)"))) 

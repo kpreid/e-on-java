@@ -1,0 +1,11 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class(safe,
+      "javax.swing.ViewportLayout",
+      statics(method("run()")),
+      methods(method(suppress, "addLayoutComponent(String, Component)"),
+              method(suppress, "removeLayoutComponent(Component)"),
+              method("preferredLayoutSize(Container)"),
+              method("minimumLayoutSize(Container)"),
+              method(suppress, "layoutContainer(Container)")))

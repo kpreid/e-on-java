@@ -1,0 +1,102 @@
+#!/usr/bin/env rune
+
+# Copyright 2004 Hewlett Packard, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def Vat := <type:org.erights.e.elib.vat.Vat>
+
+# XXX For now it's a FlexMap, so we use a permissive guard
+# def Env := Map[String, any]
+def Env := any
+
+def runeAuthor := <elang:cmd.runeAuthor>
+def seedVatAuthor := <elang:interp.seedVatAuthor>
+
+/**
+ * Makes a makeServer function, for seeding (possibly remote) vats in a
+ * POLA-safe manner.
+ *
+ * @author Mark S. Miller
+ */
+def makeServerAuthor {
+
+    /**
+     * Makes a default kind of makeServer function, which makes local vats and
+     * hands out remote CatTP references.
+     * <p>
+     * Use boot/1 or explicit/2 to make a makeServer function which uses the
+     * boot-comm system rather than CapTP.
+     */
+    to run(<unsafe>, introducer) :near {
+        def auths := runeAuthor.defaultAuths(<unsafe>)
+        def makeVat := auths["makeVat"]
+        def seedVat := seedVatAuthor(<unsafe>)
+        return makeServerAuthor.explicit(makeVat,
+                                         seedVat.virtualize(introducer))
+    }
+
+    /**
+     * Makes a makeServer function, which makes local vats and
+     * hands out remote boot-comm references.
+     * <p>
+     * Use explicit/2 for even more explicit control.
+     */
+    to boot(<unsafe>) :near {
+        def auths := runeAuthor.defaultAuths(<unsafe>)
+        def makeVat := auths["makeVat"]
+        def seedVat := seedVatAuthor(<unsafe>)
+        return makeServerAuthor.explicit(makeVat, seedVat)
+    }
+
+    /**
+     * Use this authorization method for more control: you can pass in a
+     * base or virtualized seedVat function, depending on whether you want
+     * to be using the boot-comm system or CapTP respectively.
+     * <p>
+     * Also, you can pass in a remote (makeVat,seedVat) pair if you wish.
+     */
+    to explicit(makeVat :rcvr, seedVat :rcvr) :near {
+        def makeServer {
+
+            /**
+             * Like seedVat.run/2, but evaluates authString in the safeScope
+             * and returns a pair of the resulting value (presumably an author)
+             * and the map representing the state of a privilegedScope.
+             * <p>
+             * This map holds authorities local to that author, that should be
+             * provided to that author according to POLA.
+             */
+            to run(vat :rcvr[Vat], authSrc :String) :Tuple[rcvr, rcvr[Env]] {
+                def starter := seedVat <- run(vat, `
+
+                    # XXX For now it's a FlexMap, so we use a permissive guard
+                    # def Env := Map[String, any]
+                    def Env := any
+
+                    def eParser := <elang:syntax.makeEParser>
+                    def starter {
+                        to start(authSrc :String) :Tuple[any, Env] {
+                            def authExpr := eParser(authSrc)
+                            # XXX The following '.diverge()' is arguably a
+                            # kludge
+                            return [authExpr.eval(safeScope),
+                                    privilegedScope.getState().diverge()]
+                        }
+                    }
+                `)
+                def pairVow := starter <- start(authSrc)
+                return [pairVow <- get(0), pairVow <- get(1)]
+            }
+
+            /**
+             * Like run/2, but makes and returns a fresh vat as the third
+             * element of the returned tuple.
+             */
+            to run(authSrc :String) :Tuple[rcvr, rcvr[Env], rcvr[Vat]] {
+                def vat := makeVat <- make("headless", "newServerVat")
+                return makeServer(vat, authSrc) + [vat]
+            }
+        }
+        return makeServer
+    }
+}

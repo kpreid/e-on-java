@@ -1,0 +1,63 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+/**
+ *
+ *
+ * @author Mark S. Miller
+ */
+def makeStoneCast(underlying, face) :near {
+
+    def myMessageTypes := face.getMessageTypes().getKeys().asSet()
+
+    /**
+     * Forwards all non-Miranda methods, so this pattern should
+     * only be used if 'underlying' is known not to have any
+     * protocol that gives itself away.
+     * <p>
+     * Therefore, this is only for 'Cooperative (with the underlying)
+     * revocability'. Uncooperative revocability requires the Membrane pattern,
+     * for which we eventually expect to provide a library.
+     * <p>
+     * Besides non-Miranda methods, this also forwards the Miranda method
+     * __reactToLostClient/1, and treats the Miranda method __printOn/1
+     * specially
+     */
+    def stoneCast {
+
+        /**
+         *
+         */
+        to __printOn(out :TextWriter) :void {
+            out.print("makeStoneCast(", underlying, ", ", face, ")")
+        }
+
+        /**
+         * Miranda methods other than __printOn and __reactToLostClient
+         * generally shouldn't be transparently forwarded to the underlying.
+         */
+        to __reactToLostClient(problem) :void {
+            underlying.__reactToLostClient(problem)
+        }
+
+        match [`__respondsTo`, [verb, arity]] {
+            def mVerb := `$verb/$arity`
+            myMessageTypes.contains(mVerb) &&
+              underlying.__respondsTo(verb, arity)
+        }
+        match [`__getAllegedType`, []] {
+            # XXX Should be intersection of face and
+            # underlying.__getAllegedType()
+            face
+        }
+        match [verb, args] {
+            def mVerb := `$verb/${args.size()}`
+            if (myMessageTypes.contains(mVerb)) {
+                E.call(underlying, verb, args)
+            } else {
+                throw(`not allowed: $mVerb`)
+            }
+        }
+    }
+    return stoneCast
+}

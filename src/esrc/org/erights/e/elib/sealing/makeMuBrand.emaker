@@ -1,0 +1,125 @@
+#!/usr/bin/env rune
+
+# Copyright 2004 Hewlett Packard, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+
+# In order to avoid a potential layering problem, and to keep amplification
+# issues independent, the type checking provided by the interfaces below are
+# used only for clarity. These could be removed without hurting the security
+# properties implemented by makeBrand below.
+
+/**
+ * Used to identify Sealer/Unsealer pair uniquely.
+ */
+interface Brand {
+
+    /**
+     * A non-unique name, used by the creator of the brand to label it, usually
+     * for debugging purposes.
+     */
+    to getNickName() :String
+}
+
+/**
+ * Carries a reference, but reveals it only to one who has this
+ * Brand's Unsealer.
+ */
+interface SealedBox {
+
+    /**
+     * The Brand of the {@link Sealer} that sealed this box,
+     * and therefore the Brand of the {@link Unsealer} required to
+     * obtain my contents.
+     */
+    to getBrand() :Brand
+}
+
+/**
+ * Corresponds to an encrypting or signing key.
+ */
+interface Sealer {
+    to getBrand() :Brand
+
+    /**
+     * @return a SealedBox containing contents that can only be
+     * unsealed with the {@link Unsealer} of this Brand.
+     */
+    to seal(contents) :SealedBox
+}
+
+/**
+ * Corresponds to a decrypting or signature-verifying key
+ */
+interface Unsealer {
+    to getBrand() :Brand
+
+    /**
+     * If box was sealed by the Sealer of the same Brand, return its
+     * contents. Otherwise throw.
+     */
+    to unseal(box :SealedBox) :any
+
+    # Leaving out optUnseal/2 and amplify/1 for now, as they are not
+    # fundamental.
+}
+
+
+/**
+ * Returns a Sealer/Unsealer pair identified with a new unique
+ * Brand of the specified (non-unique) name.
+ * <p>
+ * Now that the builtin Brand is accesses by importing "makeBrand", since these
+ * have subtly different semantics -- this one uses MarcS' private mutable
+ * variable trick, and so can't be DeepFrozen -- this one is renamed to
+ * makeMuBrand.
+ */
+def makeMuBrand(nickName :String) :Tuple[Sealer,Unsealer] {
+
+    var myTempContents := def none{}
+
+    def brand implements Brand {
+        to __printOn(out :TextWriter) :void { out.print(nickName) }
+        to getNickName()            :String { return nickName }
+    }
+
+    def sealer implements Sealer {
+        to __printOn(out :TextWriter) :void {
+            out.print(`<$nickName sealer>`)
+        }
+        to getBrand() :Brand { return brand }
+        to seal(contents) :SealedBox {
+            def box implements SealedBox {
+                to getBrand() :Brand { return brand }
+                /**
+                 * Though this is not declared in the interface, it is
+                 * publicly accessible. This should make no difference.
+                 */
+                to offerContent() :void {
+                    myTempContents := contents
+                }
+            }
+            return box
+        }
+    }
+
+    def unsealer implements Unsealer {
+        to __printOn(out :TextWriter) :void {
+            out.print(`<$nickName unsealer>`)
+        }
+        to getBrand() :Brand { return brand }
+        to unseal(box :SealedBox) :any {
+            myTempContents := none
+            try {
+                box.offerContent()
+                require(myTempContents != none, thunk{
+                    `$unsealer can't unseal $box`
+                })
+                return myTempContents
+            } finally {
+                myTempContents := none
+            }
+        }
+    }
+    return [sealer, unsealer]
+}

@@ -1,0 +1,277 @@
+
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def JPanel__quasiParser := <import:org.erights.ex.swing.JPanel__quasiParser>
+
+def agreedCapsPetsVowMakerAuthor(<unsafe>, <file>) :any {
+    def <swing> := <unsafe:javax.swing.*>
+    def <awt> := <unsafe:java.awt.*>
+    def stringDataKit := <import:com.skyhunter.installer.stringDataKit>
+    def uiTools := <import:com.skyhunter.ex.swing.uiToolsAuthor>.run(<awt>, <swing>)
+    def traceErr := <unsafe:java.lang.makeSystem>.getErr()
+    def trace(text) :void {E.call(traceErr, "print(Object)", [text])}
+    def traceline(text) :void {trace(text + "\n")}
+#    def winImage := <swing:makeImageIcon>(
+#        <resource:com/skyhunter/capDesk/icons/cap-desk-on-white.gif>).getImage()
+    def winImage := <swing:makeImageIcon>(
+        <resource:com/skyhunter/capDesk/icons/POLAbear5Tiny.gif>).getImage()
+    def lbl(contents) :near { <swing:makeJLabel>(contents)}
+
+    def mapDomText := <import:com.skyhunter.e.util.mapDomText>
+
+    def capsPetsMaker(capsXML,petMap) :near {
+        def capsPets {
+            to getCapsXML() :String {capsXML}
+            to getPetMap() :near {petMap}
+        }
+    }
+
+#    def validUrlProtocols := ["http","https", "ftp","mailto"] asKeys()
+
+    /** */
+    def agreedCapsPetsVowMaker(requestsXML, baseDirPath) :any {
+        def [capsPromise, capsSolver] := Ref.promise()
+        traceline("about to get requestsTree")
+        def requestsTree := sml__quasiParser.valueMaker(requestsXML).substitute([])
+        traceline("got requestsTree")
+        def agreedUrlProtocols := [].asKeys().diverge()
+        def urlProtocolsListPanel := <swing:makeBox>(1)
+        def serverListPanel := <swing:makeBox> (1)
+        var serverSocketGranted := false
+        var runIndependentGranted := false
+        var portField := null
+        def petFieldsMap := [].asKeys().diverge()
+        var petNameLabel := lbl(" ")
+        var petNameField := lbl(" ")
+        var petSuffixLabel := lbl(" ")
+        var petSuffixField := lbl(" ")
+        var petIconLabel := lbl(" ")
+        var petIconField := lbl(" ")
+        #petListPanel setLayout(<awt:makeGridLayout>(3,2))
+        def capTabsPane := <swing:makeJTabbedPane>()
+
+        def buildPetIconSelectionPane(defaultsTable) :near {
+            def tempPath := baseDirPath + defaultsTable["Icon"]
+            var iconPath := <file>[tempPath].getCanonicalPath()
+            traceline("iconPath: " + iconPath)
+            def pathLabel := <swing:makeJLabel>(iconPath)
+            petFieldsMap["Icon"] := pathLabel
+            def icon := <swing:makeImageIcon>(
+                #    <unsafe:java.net.makeURL>("file:" + iconPath))
+                <file>[iconPath])
+            def iconLabel := <swing:makeJLabel>(icon)
+            def changeIconFunc() :void {
+                def dialog := <awt:makeFileDialog>(<swing:makeJFrame>(),
+                                               "Select Icon For This Caplet",
+                                               0)
+                dialog.show()
+                def fileName := dialog.getFile()
+                if (fileName != null && fileName.size() > 0 ) {
+                    iconPath := dialog.getDirectory() + fileName
+                    pathLabel.setText(iconPath)
+                    def newIcon := <swing:makeImageIcon>(
+                        #    <unsafe:java.net.makeURL>("file:" + iconPath))
+                        <file>[iconPath])
+                    iconLabel.setIcon(newIcon)
+                }
+
+            }
+            def newIconB := uiTools.newButton("Change Icons",changeIconFunc)
+            traceline("about to build JPanel")
+            JPanel`$iconLabel $pathLabel    >
+                   V          $newIconB     ${lbl(" ")}.X  `
+        }
+
+        def protocolsVisitor {
+            to visitProtocol(subnodes) :void {
+                def table := mapDomText(subnodes)
+                traceline("table: " + table)
+                #if (validUrlProtocols maps(table["Name"])) {
+                def protocolCheck := <swing:makeJCheckBox>(table["Name"])
+                def whyLabel := <swing:makeJLabel>(table["Why"])
+                def protocolPane := JPanel`$protocolCheck $whyLabel.X`
+                def clickedRunner() :void {
+                    traceline("into clickedRunner")
+                    if (protocolCheck.isEnabled()) {
+                        agreedUrlProtocols[table["Name"]] := null
+                    } else {
+                        agreedUrlProtocols.removeKey(table["Name"])
+                    }
+                    traceline("did clickedRunner: " + agreedUrlProtocols)
+                }
+                uiTools.attachAction(protocolCheck, clickedRunner)
+                urlProtocolsListPanel.add(protocolPane)
+                #} else {traceline("invalid protocol: " + table["Name"])}
+            }
+            to viewText(text) :void {}
+        }
+
+        def serverVisitor {
+            to visitServersocket(subnodes) :void {
+                def table := mapDomText(subnodes)
+                traceline("table: " + table)
+                def socketAuthorizeBox := <swing:makeJCheckBox>("Server Socket, Port:")
+                portField := <swing:makeJTextField>(table["Port"] + "   ")
+                def whyLabel := <swing:makeJLabel>(table["Why"])
+                def socketPane := JPanel`$socketAuthorizeBox $portField $whyLabel.X`
+                def clickedRunner() :void {
+                    traceline("doing clickedRunner on serversocket: " + portField.getText())
+                    serverSocketGranted := socketAuthorizeBox.isEnabled()
+                }
+                uiTools.attachAction(socketAuthorizeBox, clickedRunner)
+                serverListPanel.add(socketPane)
+            }
+            to visitIndependent(subNodes) :void {
+                def table := mapDomText(subNodes)
+                def whyLabel := <swing:makeJLabel>(table.fetch("Why", thunk{""}))
+                def runIndependentBox := <swing:makeJCheckBox> ("Run apart from CapDesk")
+                def clickedRunner2() :void {
+                    runIndependentGranted := runIndependentBox.isEnabled()
+                }
+                uiTools.attachAction(runIndependentBox, clickedRunner2)
+                def independentPane := JPanel`$runIndependentBox $whyLabel.X`
+                serverListPanel.add(independentPane)
+            }
+            to viewText(text) :void {}
+            match [verb, args] {traceline("warning: unknown server request:" + verb)}
+        }
+
+        def requestsVisitor {
+            to visitUrlProtocols(subnodes) :void {
+                for each in subnodes {each.welcome(protocolsVisitor)}
+                def helpLabel := <swing:makeJLabel>(stringDataKit.getUrlProtocolHelp())
+                def urlProtocolsMainPanel :=
+                  JPanel`$urlProtocolsListPanel
+                         $helpLabel.Y`
+                urlProtocolsMainPanel.setName("Web")
+                capTabsPane.add(urlProtocolsMainPanel)
+            }
+            to visitServer(subnodes) :void {
+                for each in subnodes {each.welcome(serverVisitor)}
+                def helpLabel := <swing:makeJLabel>(stringDataKit.getServerHelp())
+                def serverMainPanel :=
+                  JPanel`$serverListPanel
+                         $helpLabel.Y`
+                serverMainPanel.setName("Server")
+                capTabsPane.add(serverMainPanel)
+            }
+            to visitPet(subnodes) :void {
+                var petTabNeeded := false
+                def panels := [].diverge()
+                def table := mapDomText(subnodes)
+                traceline("table: " + table)
+                #def insertLabelFieldPair(label, defaultKey) {
+                #    def field := <swing:makeJTextField>(table[defaultKey])
+                #    petFieldsMap[defaultKey] := field
+                #    petListPanel add(<swing:makeJLabel>(label))
+                #    petListPanel add(field)
+                #}
+                if (table.maps("Name")) {
+                    #insertLabelFieldPair("Pet Name:", "Name")
+                    petNameLabel := lbl("Pet Name: ")
+                    petNameField := <swing:makeJTextField>(table["Name"])
+                    petFieldsMap["Name"] := petNameField
+                    petTabNeeded := true
+                }
+                if (table.maps("Suffix")) {
+                    #insertLabelFieldPair("Default File Extension: ", "Suffix")
+                    petSuffixLabel  := lbl("Default File Extension: ")
+                    petSuffixField  := <swing:makeJTextField>(table["Suffix"])
+                    petFieldsMap["Suffix"] := petSuffixField
+                    petTabNeeded := true
+                }
+                if (table.maps("Icon")) {
+                    #insertLabelFieldPair("Icon Path:", "Icon")
+                    #def iconLabel :=
+                    petIconLabel  := <swing:makeJLabel>("Pet Icon")
+                    petIconField  := buildPetIconSelectionPane(table)
+                    traceline("addedIconpanel to pet list panel")
+                    petTabNeeded := true
+                }
+                if (petTabNeeded) {
+                    def helpLabel := <swing:makeJLabel>(stringDataKit.getPetHelp())
+                    def petListPanel :=
+                      JPanel`$petNameLabel    $petNameField.X
+                             ${lbl(" ")}      ${lbl(" ")}
+                             $petSuffixLabel  $petSuffixField
+                             ${lbl(" ")}      ${lbl(" ")}
+                             $petIconLabel    $petIconField`
+                    def petMainPanel :=
+                      JPanel`$petListPanel
+                             $helpLabel.Y`
+                    petMainPanel.setName("Pet Data")
+                    capTabsPane.add(petMainPanel)
+                }
+            }
+            to viewText(text) :void {}
+            match [verb, args] {traceline("warning: unknown cap request:" + verb)}
+        }
+
+        def topVisitor {
+            to visitRequests(subnodes) :void {
+                for each in subnodes {each.welcome (requestsVisitor)}
+            }
+            to visitPet(subnodes) :void {requestsVisitor.visitPet(subnodes)}
+            to visitUrlProtocols(subnodes) :void { requestsVisitor.visitUrlProtocols(subnodes)}
+            to visitServer(subnodes) :void {requestsVisitor.visitServer(subnodes)}
+            to viewText(blah) :void {}
+        }
+        for each in requestsTree {each.welcome(topVisitor)}
+        if (capTabsPane.getComponentCount() > 0) {
+            def frame := <swing:makeJFrame>()
+            frame.setIconImage(winImage)
+            frame.setTitle(`CapDesk - Installing $baseDirPath`)
+            def windowListener {
+                to windowClosing(event) :void {
+                    capsSolver.smash("Grants not made")
+                    frame.dispose()
+                }
+                match [verb, args] {}
+            }
+            frame.addWindowListener(windowListener)
+            def grantFunc() :void {
+                traceline("into grantfunc: " )
+                frame.dispose()
+                var xmlOut := "<caps>"
+                if (agreedUrlProtocols.size() > 0) {
+                    xmlOut += "<urlProtocols>"
+                    for each => dummy in agreedUrlProtocols {
+                        xmlOut += `<protocol>$each</protocol>`
+                    }
+                    xmlOut += "</urlProtocols>"
+                }
+                if (serverSocketGranted ||  runIndependentGranted) {
+                    xmlOut += `<server>`
+                    if (serverSocketGranted) {
+                        xmlOut += `<serversocket><port>${portField.getText()}</port></serversocket>$\n`
+                    }
+                    if (runIndependentGranted) {
+                        xmlOut += `<independent>true</independent>`
+                    }
+                    xmlOut += `</server>$\n`
+                }
+                xmlOut += "</caps>"
+                def petData := [].asKeys().diverge()
+                for key => value in petFieldsMap {
+                    petData[key] := value.getText()
+                }
+                capsSolver.resolve(capsPetsMaker(xmlOut,petData.snapshot() ) )
+            }
+            def grantButton := uiTools.newButton("Finish Installation", grantFunc)
+            def spacer := <swing:makeJLabel>(" ")
+            def realPane :=
+              JPanel`$capTabsPane.Y
+                     $spacer
+                     $grantButton `
+            frame.getContentPane().add(realPane)
+            frame.pack()
+            frame.setSize(600,600)
+            frame.show()
+        } else {
+            capsSolver.resolve(capsPetsMaker("<caps></caps>", [].asMap()))
+        }
+        capsPromise
+
+    }
+}

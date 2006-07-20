@@ -1,0 +1,14 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class("javax.swing.event.SwingPropertyChangeSupport",
+      statics(method(suppress, "run(Object)")),
+      methods(method(suppress, "addPropertyChangeListener(PropertyChangeListener)"),
+              method(suppress, "removePropertyChangeListener(PropertyChangeListener)"),
+              method(suppress, "getPropertyChangeListeners()"),
+              method(suppress, "addPropertyChangeListener(String, PropertyChangeListener)"),
+              method(suppress, "removePropertyChangeListener(String, PropertyChangeListener)"),
+              method(suppress, "getPropertyChangeListeners(String)"),
+              method(suppress, "firePropertyChange(String, Object, Object)"),
+              method(suppress, "firePropertyChange(PropertyChangeEvent)"),
+              method(suppress, "hasListeners(String)")))

@@ -1,0 +1,9 @@
+[[[][..[]..][.[.][*.*.]][..[.][..].]][[[[]..........]][[[.]]][[[]...........[......].][...][[[...]][][...][.....][..][.......]][.[]......][[.....[[[]]].]][....][.....]]][[[[........]][[....]]]][[[[[............][.....][..][.............][.........][[..
+c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/scope/test/leakage.emaker
+problem: <NoSuchMethodException: <a Scope>.bindOuter/2>
+]][..][....]][[..][.][..][..........][.....][[...# tab at 2240 from: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/tables/graph/templateVertex.emaker#:span::76:8::76:8>
+
+.].]][[....]][[.....]][..
+c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/facet/makeGrantMgrAuthor.emaker
+problem: Failed: org.erights.e.facet.:makeCaretaker not found
+....][.[.][.....]][[......][.......][......][..][...][.][....][.][.......]][[...][.......]]][[...]]][[.][..][..]]][.........[[...........][..][...][...][...][...]]..............................[..[....]......[.....]]..[.*.*.*..].]]

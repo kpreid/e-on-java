@@ -1,0 +1,7 @@
+class(safe,
+      "java.io.FileOutputStream",
+      statics(method("run(File)")),
+      methods(method("close()"),
+              method("write(byte[])"),
+              method("write(byte[], int, int)"),
+              method("write(int)")))

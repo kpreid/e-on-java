@@ -1,0 +1,28 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class("javax.swing.JRootPane",
+      statics(method(suppress, "run()")),
+      methods(method(suppress, "getWindowDecorationStyle()"),
+              method(suppress, "setWindowDecorationStyle(int)"),
+              method(suppress, "getUI()"),
+              method(suppress, "setUI(RootPaneUI)"),
+              method(suppress, "updateUI()"),
+              method(suppress, "getUIClassID()"),
+              method(suppress, "setJMenuBar(JMenuBar)"),
+              method(suppress, "setMenuBar(JMenuBar)"),
+              method(suppress, "getJMenuBar()"),
+              method(suppress, "getMenuBar()"),
+              method(suppress, "setContentPane(Container)"),
+              method(suppress, "getContentPane()"),
+              method(suppress, "setLayeredPane(JLayeredPane)"),
+              method(suppress, "getLayeredPane()"),
+              method(suppress, "setGlassPane(Component)"),
+              method(suppress, "getGlassPane()"),
+              method(suppress, "isValidateRoot()"),
+              method(suppress, "isOptimizedDrawingEnabled()"),
+              method(suppress, "addNotify()"),
+              method(suppress, "removeNotify()"),
+              method(suppress, "setDefaultButton(JButton)"),
+              method(suppress, "getDefaultButton()"),
+              method(suppress, "getAccessibleContext()")))

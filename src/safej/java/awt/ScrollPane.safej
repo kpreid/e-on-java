@@ -1,0 +1,25 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class("java.awt.ScrollPane",
+      statics(method(suppress, "run()"),
+              method(suppress, "run(int)")),
+      methods(method(suppress, "getScrollbarDisplayPolicy()"),
+              method(suppress, "getViewportSize()"),
+              method(suppress, "getHScrollbarHeight()"),
+              method(suppress, "getVScrollbarWidth()"),
+              method(suppress, "getVAdjustable()"),
+              method(suppress, "getHAdjustable()"),
+              method(suppress, "setScrollPosition(int, int)"),
+              method(suppress, "setScrollPosition(Point)"),
+              method(suppress, "getScrollPosition()"),
+              method(suppress, "setLayout(LayoutManager)"),
+              method(suppress, "doLayout()"),
+              method(suppress, "layout()"),
+              method(suppress, "printComponents(Graphics)"),
+              method(suppress, "addNotify()"),
+              method(suppress, "paramString()"),
+              method(suppress, "setWheelScrollingEnabled(boolean)"),
+              method(suppress, "isWheelScrollingEnabled()"),
+              method(suppress, "getAccessibleContext()")),
+      comment("Replaced by JScrollPane"))

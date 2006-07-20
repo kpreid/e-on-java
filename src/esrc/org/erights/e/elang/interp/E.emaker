@@ -1,0 +1,102 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def ELib := <elib:prim.makeE>
+def Throwable := <type:java.lang.Throwable>
+
+/**
+ * Implements the object known as "E" in the initial namespace
+ *
+ * @deprecated Use E4E instead.
+ */
+def E0 {
+
+    /**
+     * Generic synchronous call
+     */
+    to call(receiver, verb, args) :any {
+        ELib.callAll(receiver, verb, args)
+    }
+
+    /**
+     * Generic asynchronous send
+     */
+    to send(receiver, verb, args) :any {
+        ELib.sendAll(receiver, verb, args)
+    }
+
+    /**
+     * Generic asynchronous send without an outcome report.
+     */
+    to sendOnly(receiver, verb, args) :void {
+        ELib.sendAllOnly(receiver, verb, args)
+    }
+
+    /**
+     * A value as it's printed by the command-line interpreter
+     */
+    to toQuote(value) :any {
+        ELib.toQuote(value)
+    }
+
+    /**
+     * A value as it's printed according to value's __printOn methods
+     */
+    to toString(value) :any {
+        ELib.toString(value)
+    }
+
+    /**
+     * Assuming the two references eventually designate the *same*
+     * object, returns a promise for that object.
+     * <p>
+     * Messages sent to the promise will only be delivered to the jointly
+     * designated object via a reference that's a valid interpretation of what
+     * "a" meant to designate, and what "b" meant to designate. If
+     * this isn't possible, the returned promise will become broken, and
+     * no messages sent to it will be delivered.
+     * <p>
+     * See <a href=
+     * "http://www.erights.org/elib/equality/grant-matcher/index.html"
+     * >The Grant Matcher Puzzle</a>
+     */
+    to join(a, b) :any {
+        def [result, resolver] := Ref.promise()
+        var hasLeft := false
+        var left := null
+        var hasRight := false
+        var right := null
+
+        var reduce := null
+        reduce := def realReduce() :void {
+            def done(answer) :void {
+                resolver.resolve(answer)
+                reduce := def noop() :void {}
+            }
+            if (Ref.isBroken(left)) {
+                done(left)
+            } else if (Ref.isBroken(right)) {
+                done(right)
+            } else if (hasLeft && hasRight) {
+                # Eventual equality bottoms out in immediate equality
+                if (left == right) {
+                    done(left)
+                } else {
+                    done(Ref.broken("No join found"))
+                }
+            }
+        }
+
+        Ref.whenResolved(a, def reduceA(aa) :void {
+            hasLeft := true
+            left := aa
+            reduce()
+        })
+        Ref.whenResolved(b, def reduceB(bb) :void {
+            hasRight := true
+            right := bb
+            reduce()
+        })
+        result
+    }
+}

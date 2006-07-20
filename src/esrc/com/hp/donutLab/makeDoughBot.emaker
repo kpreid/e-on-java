@@ -1,0 +1,85 @@
+#!/usr/bin/env rune
+
+# Copyright 2004 Hewlett Packard, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+pragma.disable("explicit-result-guard")
+
+def doughBot {
+    to makeSlice(<unsafe>,
+                 account :rcvr,
+                 kiosk :rcvr,
+                 source :String,
+                 tracer :rcvr) :near {
+
+        def traceSlice(message) {
+            tracer <- run("DoughBot SliceBoss reports: " + message)
+        }
+        def makeDoughBitTraceLine(bitID) :near {
+            def bitTracer(message) {
+                traceSlice(`DoughBit $bitID reports: $message`)
+            }
+            return bitTracer
+        }
+
+        def kiosks := kiosk <- getAdvertisedServers("kiosk")
+        def sliverServers := kiosk <- getAdvertisedServers("sliverServer")
+        def availableBalance := account <- getBalance()
+        when (sliverServers, availableBalance, kiosks) -> alReady(ss, bal, k) {
+            def payPerSliver := availableBalance // sliverServers.size()
+            for index => each in sliverServers {
+                def doughBit :=
+                  each <- makeSliver(source,
+                                     account <- offer(payPerSliver))
+                doughBit <- setTracer(makeDoughBitTraceLine(index))
+                doughBit <- attack(kiosks[index %% kiosks.size()])
+                #when doughBit refBroken, report
+            }
+
+        } catch ssProb {traceSlice(`no sliverservers: $ssProb`)}
+        return null
+    }
+
+    to runSliver(makeSturdyRef, timeMachine) :near {
+        def tracer
+        def traceLine(message) {tracer <- run(message)}
+        def attacksPerEvent := 25
+
+        #this is a really pathetic attack
+        #empower it when the message metering works in slivers
+        def attack(kiosk, kioskName) {
+            var hits := 0
+            var misses := 0
+            for i in 1..attacksPerEvent {
+                def hit := kiosk <- getAdvertisedServers("test area")
+                when (hit) -> doneHit(h) {
+                    hits += 1
+                } catch prob {
+                    misses += 1
+                } finally {
+                    if (hits + misses >= attacksPerEvent) {
+                        traceLine(
+                            `Attack event completed. Hits: ${
+                                    hits} Misses: $misses`)
+                    }
+                }
+            }
+            traceLine(`sent $attacksPerEvent attacks at $kioskName`)
+            when (kiosk <- getAdvertisedServers("kiosk")) ->
+              finalHit(lastHit) {
+
+                attack <- run(kiosk, kioskName)
+            } catch prob {traceLine(`last hit didn't work: $prob`)}
+        }
+
+        def doughBit {
+            to setTracer(newTracer) {bind tracer := newTracer}
+            to attack(kiosk) {
+                when (kiosk <- getNickName()) -> gotName(kioskName) {
+                    attack(kiosk, kioskName)
+                } catch nameProb {traceLine(`no kiosk name: $nameProb`)}
+            }
+        }
+        return doughBit
+    }
+}

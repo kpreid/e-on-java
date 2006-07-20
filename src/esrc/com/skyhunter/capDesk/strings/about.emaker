@@ -1,0 +1,5 @@
+term`text("\n    ",b("CapDesk"),
+"\n\n",
+"  Copyright 2002 Combex, Inc. under the terms of the MIT X license\n\n",
+"  found at:\n","   http://www.opensource.org/licenses/mit-license.html"
+)`

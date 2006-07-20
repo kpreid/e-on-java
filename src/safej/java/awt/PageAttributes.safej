@@ -1,0 +1,28 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class("java.awt.PageAttributes",
+      statics(method("run()"),
+              method(suppress, "run(PageAttributes)"),
+              method("run(PageAttributes.ColorType, PageAttributes.MediaType, PageAttributes.OrientationRequestedType, PageAttributes.OriginType, PageAttributes.PrintQualityType, int[])")),
+      methods(method("clone()"),
+              method("set(PageAttributes)"),
+              method("getColor()"),
+              method("setColor(PageAttributes.ColorType)"),
+              method("getMedia()"),
+              method("setMedia(PageAttributes.MediaType)"),
+              method("setMediaToDefault()"),
+              method("getOrientationRequested()"),
+              method("setOrientationRequested(PageAttributes.OrientationRequestedType)"),
+              method("setOrientationRequested(int)"),
+              method("setOrientationRequestedToDefault()"),
+              method("getOrigin()"),
+              method("setOrigin(PageAttributes.OriginType)"),
+              method("getPrintQuality()"),
+              method("setPrintQuality(PageAttributes.PrintQualityType)"),
+              method("setPrintQuality(int)"),
+              method("setPrintQualityToDefault()"),
+              method("getPrinterResolution()"),
+              method("setPrinterResolution(int[])"),
+              method("setPrinterResolution(int)"),
+              method("setPrinterResolutionToDefault()")))

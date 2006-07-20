@@ -1,0 +1,11 @@
+class(safe,
+           "org.eclipse.swt.graphics.FontMetrics",
+           statics,
+           methods(method(suppress, "equals(Object)"),
+                   method("getAscent()"),
+                   method("getAverageCharWidth()"),
+                   method("getDescent()"),
+                   method("getHeight()"),
+                   method("getLeading()"),
+                   method(suppress, "hashCode()"),
+                   method(suppress, "motif_new(int, int, int, int, int)"))) 

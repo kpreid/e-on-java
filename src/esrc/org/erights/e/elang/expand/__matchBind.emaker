@@ -1,0 +1,37 @@
+# Copyright 2005 Mark S. Miller under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+pragma.enable("easy-return")
+
+/**
+ * Defines the builtin '__matchBind' via function template for expanding
+ * quasi-literal patterns.
+ * <p>
+ * Used to expand the pattern  'foo`$x@y`'  to
+ * 'via (__matchBind(foo__quasiParser.matchMaker("${0}@{0}"), [x])) [y]'
+ *
+ * @author Mark S. Miller
+ */
+def matchBind(matchMaker, args) :any {
+    def matchBinder(specimen, optEjector) :List {
+        return matchMaker.matchBind(args, specimen, optEjector)
+    }
+    return matchBinder
+}
+
+? def d := "."
+# value: "."
+
+? interp.setExpand(true)
+
+? def `@x$d@y` := "ab.de"
+# expansion: def via (__matchBind.run(simple__quasiParser. \
+#              matchMaker("@{0}${0}@{1}"), __makeList.run(d))) [x, y] := \
+#              "ab.de"
+
+# value: "ab.de"
+
+? interp.setExpand(false)
+
+? [x,y]
+# value: ["ab", "de"]

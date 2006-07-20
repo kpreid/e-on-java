@@ -1,0 +1,60 @@
+# E Configuration File
+
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+# For example, 0.8.9
+
+${e.version}
+
+
+# Where E is installed. This isn't actually used, since the "rune"
+# driver needs to already know this in order to find this very
+# eprops.txt file
+
+${e.home}
+
+
+# When E wrappers are launched from the desktop, where should their
+# current directory be?  Under Linux currently, this option does
+# nothing. On Windows, this option records the install-time decision,
+# but changing this option doesn't change the decision. Instead, you
+# need to modify the shortcuts.
+
+${e.launch.dir}
+
+
+# Where does trace data go?  This directory will accumulate
+# debugging information provided by running E programs in order to
+# facilitate a post-mortem analysis of problems. The trace system
+# treats the directory as a large circular buffer giving a finite
+# window into the past in exchange for a finite memory burden.
+
+${TraceLog_dir}
+
+
+# Where are copies of the "rune" executable placed?  Currently ignored.
+
+${e.put.exe.path}
+
+
+# Where are copies of the E & Elmer wrappers placed?  Currently
+# ignored.
+
+${e.put.shortcut.path}
+
+
+# Should .e, .emaker, .updoc, and .cap be associated with mime types &
+# launching programs?  Currently ignored.
+
+${e.GrabExtensions}
+
+
+# Name of vendor providing this E implementation (eg, ERights.org)
+
+${e.vendor}
+
+
+# URL of vendor's website (eg, http://www.erights.org/)
+
+${e.vendor.url}

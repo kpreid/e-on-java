@@ -1,0 +1,20 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class("java.awt.dnd.DragSource",
+      statics(method("run()"),
+              method("getDefaultCopyDrop()"),
+              method("getDefaultCopyNoDrop()"),
+              method("getDefaultLinkDrop()"),
+              method("getDefaultLinkNoDrop()"),
+              method("getDefaultMoveDrop()"),
+              method("getDefaultDragSource()"),
+              method("getDefaultMoveNoDrop()")),
+      methods(method("isDragImageSupported()"),
+              method("startDrag(DragGestureEvent, Cursor, Image, Point, Transferable, DragSourceListener, FlavorMap)"),
+              method("startDrag(DragGestureEvent, Cursor, Transferable, DragSourceListener, FlavorMap)"),
+              method("startDrag(DragGestureEvent, Cursor, Image, Point, Transferable, DragSourceListener)"),
+              method("startDrag(DragGestureEvent, Cursor, Transferable, DragSourceListener)"),
+              method("getFlavorMap()"),
+              method("createDragGestureRecognizer(Class, Component, int, DragGestureListener)"),
+              method("createDefaultDragGestureRecognizer(Component, int, DragGestureListener)")))

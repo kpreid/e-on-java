@@ -1,0 +1,55 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def htmlTokenizer := <import:org.erights.e.tools.html.htmlTokenizer>
+def html2txt := <import:org.erights.e.tools.html.html2txt>
+
+def findTag(tokens, TAG) :int {
+    for i => token in tokens {
+        if (token =~ `<$TAG @_>`) {
+            return i
+        }
+    }
+    -1
+}
+
+def html2updoc(var html) :Twine {
+    var result := ""
+    var tokens := htmlTokenizer(html)
+    while (true) {
+        def open := findTag(tokens, "PRE")
+        def close := findTag(tokens, "/PRE")
+        if (open >= 0 && close > open) {
+            def section := tokens(open +1, close)
+            var text := html2txt.fromTokens(section)
+            if (text =~ twine`# E sample$\n@rest`) {
+                text := "? " + rest.replaceAll("\n", "\n> ")
+            }
+            result += text + "\n\n"
+            tokens := tokens(close +1, tokens.size())
+        } else {
+            return result
+        }
+    }
+}
+
+    ? def html2updoc := <import:org.erights.e.tools.html.html2updoc>
+    # value: <html2updoc>
+
+    ? html2updoc("foo<pre>bar</pre>baz")
+    # value: "bar
+    #
+    #        "
+
+    ? html2updoc("foo<b>bar")
+    # value: ""
+
+    ? html2updoc("foo<pre># E sample
+    > bar\nxx</pre>baz")
+    # value: "? bar
+    #        > xx
+    #
+    #        "
+
+    ?
+

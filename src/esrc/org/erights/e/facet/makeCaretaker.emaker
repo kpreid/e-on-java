@@ -1,0 +1,104 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+/**
+ * From the <a href="http://mumble.net/e/faq.html#2-6">E FAQ</a>.
+ * <p>
+ * In one sense, the forwarder and revoker can be seen as foreseen facets of a
+ * "revocable forwarder" composite. In another sense, they can be seen as
+ * additional unforseen facets of the underlying.
+ *
+ * @return A pair of a forwarder (which starts out forwarding to the
+ *         underlying) and a revoker, which prevents the forwarder from
+ *         continuing to forward.
+ *
+ * @see <a href="http://mumble.net/e/faq.html#2-6">E FAQ</a>
+ * @see <a href="http://www.erights.org/elib/capability/deadman.html"
+ *      >Dead-Man Switch</a>
+ * @author Mark S. Miller
+ * @author The E FAQ is hosted and maintained by Jonathan Rees
+ */
+def makeCaretaker(var underlying) :Tuple[near, near] {
+
+    /**
+     * Forwards all non-Miranda methods, so this pattern should
+     * only be used if 'underlying' is known not to have any
+     * protocol that gives itself away.
+     * <p>
+     * Therefore, this is only for 'Cooperative (with the underlying)
+     * revocability'. Uncooperative revocability requires the Membrane pattern,
+     * for which we eventually expect to provide a library.
+     * <p>
+     * Besides non-Miranda methods, this also forwards the Miranda methods
+     * __printOn/1 (sort of) and __reactToLostClient/1.
+     */
+    def forwarder {
+
+        /**
+         * Miranda methods other than __printOn/1 and __reactToLostClient/1
+         * generally shouldn't be transparently forwarded to the underlying.
+         */
+        to __printOn(out :TextWriter) :void {
+            out.print("<", underlying, ">")
+        }
+
+        /**
+         * @see __printOn/1
+         */
+        to __reactToLostClient(problem) :void {
+            underlying.__reactToLostClient(problem)
+        }
+
+        # Forwards all non-Miranda methods to the underlying.
+        match [`__respondsTo`, [verb, arity]] {
+            if (Ref.isBroken(underlying)) {
+                false
+            } else {
+                underlying.__respondsTo(verb, arity)
+            }
+        }
+        match [`__getAllegedType`, []] {
+            if (Ref.isBroken(underlying)) {
+                null
+            } else {
+                underlying.__getAllegedType()
+            }
+        }
+        match [verb, args] {
+            E.call(underlying, verb, args)
+        }
+    }
+
+    /**
+     *
+     */
+    def revoker {
+
+        /**
+         * Causes the forwarder to stop forwarding to the underlying.
+         * <p>
+         * All messages that would have gone to the underlying instead go to a
+         * reference broken by this problem.
+         */
+        to revoke(problem) :void {
+            try {
+                underlying.__reactToLostClient(problem)
+            } finally {
+                underlying := Ref.broken(problem)
+            }
+        }
+
+        /**
+         * Dead-man switch: if a holder of the revoking facet is lost
+         * (due to a network partition), then we can no longer locally
+         * know that they don't wish to revoke, so revoke just in case.
+         * <p>
+         * This is costly, but fails safe.
+         */
+        to __reactToLostClient(problem) :void {
+            revoker.revoke(problem)
+        }
+    }
+
+    return [forwarder, revoker]
+}

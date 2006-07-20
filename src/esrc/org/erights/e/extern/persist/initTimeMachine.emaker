@@ -1,0 +1,54 @@
+# Copyright 2003 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def makeSurgeon := <elib:serial.makeSurgeon>
+def propUtils := <import:org.erights.e.tools.collect.propUtils>
+
+def <persist> := <import:org.erights.e.extern.persist.*>
+def makeTransplanterAuthor := <persist:makeTransplanterAuthor>
+def makeTimeMachineAuthor := <persist:makeTimeMachineAuthor>
+
+/**
+ *
+ * @author Mark S. Miller
+ */
+def initTimeMachine(privScope) :near {
+
+    def interp := privScope["interp"]
+    def props := interp.getProps()
+    def <unsafe> := privScope["unsafe__uriGetter"]
+
+    def prefix := "#!/usr/bin/env rune\n"
+
+    # XXX rather than use the deSrcKit directly this way, we should
+    # be streaming directly into or out of the file.
+    def surgeon := makeSurgeon.withSrcKit(prefix).diverge()
+
+    # XXX should do this lazily somehow
+    surgeon.addFromPrivScope(privScope)
+
+    def makePersistentKeyHolder :=
+      <unsafe:org.erights.e.elib.serial.PersistentKeyHolder>
+    def pBrand    := makePersistentKeyHolder.getTHE_BRAND()
+    def pUnsealer := makePersistentKeyHolder.getTHE_UNSEALER()
+    def persistUncaller {
+        to optUncall(obj) :near {
+            if (Ref.isNear(obj) &&
+                  obj.__optSealedDispatch(pBrand) =~ box :notNull) {
+
+                return pUnsealer.unseal(box)
+            } else {
+                return null
+            }
+        }
+    }
+    surgeon.addUncaller(persistUncaller)
+
+    def makeTransplanter := makeTransplanterAuthor(surgeon)
+
+    def makeTimeMachine := makeTimeMachineAuthor(makeTransplanter)
+    def result := makeTimeMachine(privScope["introducer"],
+                                  privScope["makeSturdyRef"])
+    surgeon.addExit(result, "timeMachine", true)
+    return result
+}

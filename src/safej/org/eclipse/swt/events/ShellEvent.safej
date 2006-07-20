@@ -1,0 +1,4 @@
+class("org.eclipse.swt.events.ShellEvent",
+      statics(method(suppress, "run(Event)")),
+      methods(method("getDoit()"),
+              method("setDoit(boolean)")))

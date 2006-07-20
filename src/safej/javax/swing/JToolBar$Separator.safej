@@ -1,0 +1,13 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class(safe,
+      "javax.swing.JToolBar.Separator",
+      statics(method("run()"),
+              method("run(Dimension)")),
+      methods(method(suppress, "getUIClassID()"),
+              method("setSeparatorSize(Dimension)"),
+              method("getSeparatorSize()"),
+              method("getMinimumSize()"),
+              method("getMaximumSize()"),
+              method("getPreferredSize()")))

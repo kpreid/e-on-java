@@ -1,0 +1,248 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def <swt> := <import:org.eclipse.swt.*>
+def <widget> := <swt:widgets.*>
+def SWT := <swt:makeSWT>
+
+def makeCharacter := <import:java.lang.makeCharacter>
+
+/**
+ * Is c legal as part of an E identifier, and not ignorable?
+ * <p>
+ * This is true exactly when c is legal as part of a Java identifier, is not
+ * ignorable, and is not a '$'.
+ */
+def isIdPart(c :char) :boolean {
+    makeCharacter.isJavaIdentifierPart(c) &&
+      c != '$' &&
+      ! makeCharacter.isIdentifierIgnorable(c)
+}
+
+/**
+ * Convert the menu label string to the suffix of reactor verbs.
+ * <p>
+ * This means stripping out all non-identifier characters and prefixing with
+ * "do".
+ */
+def makeVerb(label) :String {
+    var result := "do"
+    for c in label {
+        if (isIdPart(c)) {
+            result += `$c`
+        }
+    }
+    result
+}
+
+/**
+ * Attaches reactor to item using the "do" reactor verb derived from label.
+ * <p>
+ * Attaches a SelectionListener to item that will invoke the
+ * reactor using, for example, "doSaveAs()".
+ */
+def setAction(label, item, reactor) :void {
+    def doVerb := makeVerb(label)
+    def listener {
+        to widgetSelected(_) :void {
+            E.call(reactor, doVerb, [])
+        }
+        match _{}
+    }
+    item.addSelectionListener(listener)
+}
+
+
+def controlKeyMap := [
+    "CTRL"  => SWT.getCTRL(),
+    "SHIFT" => SWT.getSHIFT(),
+    "ALT"   => SWT.getALT()
+]
+
+# character names of non-printing characters not listed in SWT
+def unlistedCharMap := [
+    "TAB" => '\t'
+]
+
+def accelerate(var description :String) :int {
+    var result := 0
+    while (description =~ `@prefix+@rest`) {
+        result |= controlKeyMap[prefix.toUpperCase()]
+        description := rest
+    }
+    if (description.size() == 1) {
+        result |= description[0].asInteger()
+    } else if (description.size() >= 2) {
+        description := description.toUpperCase()
+        def code := if (unlistedCharMap.maps(description)) {
+            unlistedCharMap[description]
+        } else {
+            E.call(SWT, `get$description`, [])
+        }
+        if (code =~ ch :char) {
+            result |= ch.asInteger()
+        } else {
+            # XXX Bug: If the description is "Foo" and SWT has a
+            # "getFoo()", then its value will be used even if it doesn't
+            # represent a character.
+            def intCode :int := code
+            result |= intCode
+        }
+    }
+    result
+}
+
+/**
+ * Convert the description of the accelerator key to an
+ * accelerator key
+ *
+ * @param description Text with optional control key (Ctrl, Shift, or Alt)
+ *        followed by a "+" followed by a single character or name of
+ *        character (according to {@link SWT}). If the
+ *        text does not match an expected description, no accelerator
+ *        is attached to the item.
+ * @param item The menu item to attach the accelerator to
+ */
+def setAccelerator(description, item) :void {
+    def code := accelerate(description)
+    if (code != 0) {
+        item.setAccelerator(code)
+    }
+}
+
+
+
+/**
+ * buildMenu builds menubars and popup menus based on data
+ * that can be depicted with visual clarity using a term tree.
+ * <p>
+ * A very simple example of an appropriate term tree is
+ *
+ * <pre>
+ * term`bar(menu("&File",
+ *               item("&Save",    "Ctrl+S"),
+ *               sep,
+ *               item("&Open...", "Ctrl+O")),
+ *          menu("Format",
+ *               check("Wrap",    "Alt+W"),
+ *               menu("Column",
+ *                    check("Number", select),
+ *                    check("Image"))))`
+ * </pre>
+ *
+ * Valid root tags are bar and popup. The valid non-root tags are menu, item,
+ * check, and sep. Items and checks have a first subterm string -- the label --
+ * and then some number of modifiers. An ampersand in the label is used as an
+ * alt-key menu mnemonic on windows; its behavior on other platforms is not
+ * known at this time. When a modifier is a string, it is an accelerator
+ * descriptor.
+ * <p>
+ * When a menubar is created, the bar automatically replaces the existing bar.
+ * The old bar is not disposed by buildMenu. Similarly, when a popup is
+ * created, it is automatically attached to the panel, the old one is
+ * not disposed.
+ *
+ * @param panel The SWT control or shell for which the built menu will be used.
+ *        If used to create a menubar, the panel must be a Decorations; if
+ *        it is used to create a popup, the panel must be a Control
+ * @param reactor The object with reaction methods for each action that may
+ *        be invoked by the menu. Reaction method names are derived from the
+ *        menu item names: "&Save", for example, invokes the verb doSave()
+ *        on the reactor.
+ * @param menuTree A term tree using the tags described above for constructing
+ *        a menubar or a popup menu
+ * @return a map of all the submenus and items placed in the root menu
+ *        with the label for each element being the key and the element itself
+ *        being the value. The root menu itself is returned in the map with
+ *        the key "bar" or "popup" depending on which kind of menu was created.
+ *        The value element for a menu object is not the menu itself but rather
+ *        the cascade style menu item that is the menu's parent and holds the
+ *        label; the menu itself can be retrieved from the cascade item with
+ *        getMenu().
+ */
+def buildMenu(panel, reactor, menuTree, traceline) :pbc {
+
+    # A map from label strings to item.
+    # <p>
+    # A snapshot of this is returned.
+    def itemMap := [].asMap().diverge()
+
+    def buildMenuItem(item, labelNode, modifierNodes) :void {
+        def label := labelNode.getOptData()
+        item.setText(label)
+        #traceline("item labeled: " + label)
+        itemMap[label] := item
+        setAction(label, item, reactor)
+
+        for modifierNode in modifierNodes {
+            switch (modifierNode) {
+                match term`.String.` {
+                    def accelDesc := modifierNode.getOptData()
+                    item.setText(`$label$\t$accelDesc`)
+                    setAccelerator(accelDesc, item)
+                }
+                match term`select` {
+                    # The default state for checks in not selected (unchecked).
+                    # This sets their initial state to selected (checked).
+                    item.setSelection(true)
+                }
+            }
+        }
+        #traceline("made item: " + item)
+    }
+
+    /**
+     *
+     */
+    def processNode(node, parentMenu) :void {
+        switch (node) {
+            match term`menu(@labelNode, @subNodes*)` {
+                def cascader := <widget:makeMenuItem>(parentMenu, SWT.getCASCADE())
+                def label := labelNode.getOptData()
+                cascader.setText(label)
+                itemMap[label] := cascader
+                def menu := <widget:makeMenu>(cascader)
+                cascader.setMenu(menu)
+                for subNode in subNodes {
+                    processNode(subNode, menu)
+                }
+            }
+            match term`item(@labelNode, @modifierNodes*)` {
+                def item := <widget:makeMenuItem>(parentMenu, SWT.getNULL())
+                # traceline("item defined, parent: " + parentMenu)
+                buildMenuItem(item, labelNode, modifierNodes)
+            }
+            match term`check(@labelNode, @modifierNodes*)` {
+                def item := <widget:makeMenuItem>(parentMenu, SWT.getCHECK())
+                # traceline("check defined, parent: " + parentMenu)
+                buildMenuItem(item, labelNode, modifierNodes)
+            }
+            match term`sep` {
+                <widget:makeMenuItem>(parentMenu, SWT.getSEPARATOR())
+            }
+        }
+    }
+
+    /**
+     *
+     */
+    def processRoot(node) :void {
+        switch (node) {
+            match term`bar(@subNodes*)` {
+                def root := <widget:makeMenu>(panel, SWT.getBAR())
+                itemMap["bar"] := root
+                for each in subNodes { processNode(each, root) }
+                panel.setMenuBar(root)
+            }
+            match term`popup(@subNodes*)` {
+                def root := <widget:makeMenu>(panel)
+                itemMap["popup"] := root
+                for each in subNodes { processNode(each, root) }
+                panel.setMenu(root)
+            }
+        }
+    }
+
+    processRoot(menuTree)
+    itemMap.snapshot()
+}

@@ -1,0 +1,41 @@
+#!/usr/bin/env rune
+
+# Copyright 2005 Mark S. Miller, under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def QAstro    := <type:org.quasiliteral.quasiterm.QAstro>
+def QAstroArg := <type:org.quasiliteral.quasiterm.QAstroArg>
+
+/**
+ * Turns a term into a quasi-term which will rebuild it, except that hole
+ * descriptions in the original term are turned into holes in the quasi-term.
+ * <p>
+ * Decorates the term__quasiParser (the canonical QBuilder) to intercept the 
+ * construction of quasi-terms from terms of the form 
+ * <tt>term`.DollarHole.(1)`</tt> and <tt>term`.AtHole.(1)`</tt>, it order to
+ * turn these into quasi-terms representing the described holes, rather than
+ * quasi-terms that will rebuild the original terms.
+ * <p>
+ * Given a term possibly containing such hole descriptions, you build a
+ * corresponding quasi-term by saying
+ * <pre>    term.build(holePuncher)</pre>.
+ *
+ * @see makeConvertENode2Term
+ * @see termE__quasiParser
+ */
+def holePuncher extends term__quasiParser {
+
+    to term(functor :QAstro, args :QAstroArg) :QAstroArg {
+        switch (functor.getTag().getTagName()) {
+            match `.DollarHole.` {
+                return super.dollarHole(args)
+            }
+            match `.AtHole.` {
+                return super.atHole(args)
+            }
+            match _ {
+                return super.term(functor, args)
+            }
+        }
+    }
+}

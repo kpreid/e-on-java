@@ -1,0 +1,128 @@
+#!/usr/bin/env rune
+
+# Copyright 2004 Hewlett Packard, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+pragma.enable("easy-return")
+pragma.enable("explicit-result-guard")
+
+def first__quasiParser := <import:org.erights.e.tools.text.first__quasiParser>
+
+/**
+ * Converts between old-style and new-style post-extraction quasi string
+ * encodings, preserving twine annotations.
+ *
+ * @author Mark S. Miller
+ */
+def convertHoles {
+
+    /**
+     * Converts from the new style quasi-triple to the old style where the
+     * holes were encoded in the quasi.
+     */
+    to run(newTemplate, dlrHoles :List[int], atHoles :List[int]) :Twine {
+        def after := newTemplate.size()
+        var dlrHoleNum := 0
+        var atHoleNum := 0
+        var result := ""
+        var start := 0 # position in newTemplate
+        def appendSegment(bound) :void {
+            def seg := newTemplate(start,bound)
+            result += seg.replaceAll("$","$$").replaceAll("@","@@")
+        }
+        while (start < after) {
+            def dlrHole := dlrHoles.fetch(dlrHoleNum, thunk{after})
+            require(dlrHole >= start,
+                    "Out of order dollar-hole")
+            def atHole := atHoles.fetch(atHoleNum, thunk{after})
+            require(atHole >= start,
+                    "Out of order at-hole")
+            if (dlrHole < atHole) {
+                def marker := newTemplate(dlrHole,dlrHole+1)
+                require(marker[0] == '$',
+                        "Missing dollar-hole")
+                if (start < dlrHole) {
+                    appendSegment(dlrHole)
+                }
+                result += marker + "{" + dlrHoleNum + "}"
+                dlrHoleNum += 1
+                start := dlrHole + 1
+            } else if (atHole < dlrHole) {
+                def marker := newTemplate(atHole,atHole+1)
+                require(marker[0] == '@',
+                        "Missing at-hole")
+                if (start < atHole) {
+                    appendSegment(atHole)
+                }
+                result += marker + "{" + atHoleNum + "}"
+                atHoleNum += 1
+                start := atHole + 1
+            } else {
+                require(atHole == after)
+                require(atHoleNum == atHoles.size())
+                require(dlrHoleNum == dlrHoles.size())
+                if (start < after) {
+                    appendSegment(after)
+                }
+                start := after
+            }
+        }
+        return result
+    }
+
+    /**
+     * Converts from the old style quasi-template string to the new style
+     * triple of a template string, a list of dlrHole positions, and a list of
+     * atHole positions.
+     */
+    to run(var oldTemplate :Twine) :Tuple[Twine, List[int], List[int]] {
+        var newTemplate := ""
+        var dlrHoles := []
+        var atHoles := []
+        while (oldTemplate =~ first`@left[@@$$]@right`) {
+            newTemplate += left
+            switch (right) {
+                match [chr] {
+                    # single character at end is accepted literally
+                    newTemplate += right
+                    oldTemplate := ""
+                }
+                match [chr, ==chr] + rest {
+                    # doubled character is taken literally
+                    newTemplate += right(0,1)
+                    oldTemplate := rest
+                }
+                match [=='$', =='{'] + rest {
+                    # dollar hole
+                    def closer := rest.startOf("}")
+                    if (closer < 0) {
+                        throw("Bad dollar hole: " + right)
+                    }
+                    def num := __makeInt(rest(0,closer))
+                    if (dlrHoles.size() != num) {
+                        throw("Out of order dollar-hole: " + right)
+                    }
+                    dlrHoles += [newTemplate.size()]
+                    newTemplate += right(0,1)
+                    oldTemplate := rest(closer+1, rest.size())
+                }
+                match [=='@', =='{'] + rest {
+                    # at hole
+                    def closer := rest.startOf("}")
+                    if (closer < 0) {
+                        throw("Bad at hole: " + right)
+                    }
+                    def num := __makeInt(rest(0,closer))
+                    if (atHoles.size() != num) {
+                        throw("Out of order at-hole: " + right)
+                    }
+                    atHoles += [newTemplate.size()]
+                    newTemplate += right(0,1)
+                    oldTemplate := rest(closer+1, rest.size())
+                }
+            }
+        }
+        newTemplate += oldTemplate
+        return [newTemplate, dlrHoles, atHoles]
+    }
+}

@@ -1,0 +1,4 @@
+class("org.eclipse.swt.custom.BusyIndicator",
+           statics(method(suppress, "run()")),
+           methods(method(suppress, "showWhile(Display, Runnable)")),
+           comment("would the busy indicator spawn a thread and cause trouble with vats? probably not, shut it off for now")) 

@@ -1,0 +1,6 @@
+class("org.eclipse.swt.widgets.FontDialog",
+           statics(method("run(Shell)"),
+                   method("run(Shell, int)")),
+           methods(method("getFontData()"),
+                   method("open()"),
+                   method("setFontData(FontData)"))) 

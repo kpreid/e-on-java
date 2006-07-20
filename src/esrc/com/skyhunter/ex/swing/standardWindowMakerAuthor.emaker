@@ -1,0 +1,33 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def standardWindowMakerAuthor(interp, frameMaker) :near {
+    # close whole app when windowset returns to zero size
+    def windowSet := [].asKeys().diverge()
+    def standardWindowMaker (title, windowClosingHandler) :near {
+        #var undisposed := true
+        def mainFrame := frameMaker(title)
+        windowSet[mainFrame] := mainFrame
+        def windowListener {
+            to windowClosing(event) :void {
+                windowClosingHandler.windowClosing()
+            }
+            to windowClosed(event) :void {
+                windowSet.removeKey(mainFrame)
+                #if (undisposed) {
+                #    mainFrame dispose()
+                #    undisposed := false
+                #}
+                if (windowSet.size() == 0) {
+                    interp.continueAtTop()
+                }
+            }
+            match _ {}
+        }
+        mainFrame.addWindowListener(windowListener)
+        mainFrame
+    }
+}
+
+
+

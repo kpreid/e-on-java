@@ -1,0 +1,31 @@
+#!/usr/bin/env rune
+
+# Copyright 2006 Hewlett Packard, under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+/**
+ * Defines the builtin '__Test' guard.
+ * <p>
+ * __Test is a non-transforming guard -- when it succeeds, the result is the
+ * same as the specimen.
+ * <p>
+ * If the specimen is true, return it. If it's false, eject to the ejector.
+ * Otherwise, throw a complaint that it's not a boolean. Note that a
+ * non-boolean causes a throw, <i>not</i> a match-failure.
+ *
+ * @author Mark S. Miller
+ */
+def __Test0 implements Guard {
+    to coerce(specimen, optEjector) :any {
+        if (specimen) {
+            return specimen
+        } else {
+            throw.eject(optEjector, "condition was false")
+        }
+    }
+
+    /**
+     * Prints `__Test`
+     */
+    to __printOn(out :TextWriter) :void { out.print("__Test") }
+}

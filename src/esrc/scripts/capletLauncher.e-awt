@@ -1,0 +1,155 @@
+#!/usr/bin/env rune
+
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+/**
+ * set up tracing; stub out all the printing for operational version
+ */
+def traceline(str) :void { stderr.println(str) }
+traceline("started")
+
+def frameMakerMaker(iconURL) :near {
+    def image := <swing:makeImageIcon>(iconURL).getImage()
+    def frameMaker {
+        to run(title) :near {
+            def frame := <swing:makeJFrame>(title)
+            frame.setIconImage(image)
+            frame
+        }
+        to run() :near {
+            frameMaker("")
+        }
+    }
+}
+traceline("compiled maker maker")
+def eFrameMaker := frameMakerMaker(
+    <resource:org/erights/e/icons/green-e-on-white-16.gif>)
+def strangerFrameMaker := frameMakerMaker(
+    <resource:com/skyhunter/capDesk/icons/stranger.gif>)
+# def superFrameMaker := frameMakerMaker(
+#     <resource:com/skyhunter/capDesk/icons/cap-desk-on-white.gif>)
+def superFrameMaker := frameMakerMaker(
+    <resource:com/skyhunter/capDesk/icons/POLAbear5Tiny.gif>)
+
+traceline("got frame makers")
+
+def resolveAllVow := <import:com.skyhunter.e.net.resolveAllVow>
+def uriTools := <import:com.skyhunter.e.net.uriToolsAuthor>(introducer,
+                                                            makeSturdyRef)
+def uiTools := <import:com.skyhunter.ex.swing.uiToolsAuthor>(<awt>,
+                                                             <swing>)
+def dialogVowMaker := <import:com.skyhunter.ex.swing.dialogVowMakerAuthor>(
+    <awt>,
+    <swing>,
+    superFrameMaker)
+
+
+def capDeskHomePath := "~/capData/capDeskPrivate/"
+# XXX use these dir and file text strings from resources ubiquitously
+def appsDirPath :=  capDeskHomePath +
+  <resource:com/skyhunter/capDesk/strings/installedAppsDir.txt>.getText().trim()
+traceline("appsDirPath: " + appsDirPath)
+def appsDir := <file>[appsDirPath]
+if (! (appsDir.exists())) {appsDir.mkdirs(null)}
+def appsDescPath :=  appsDirPath + <resource:com/skyhunter/capDesk/strings/appsDescFile.txt>.getText().trim()
+traceline("appsDescPath: " + appsDescPath)
+def appsDescFile := <file>[appsDescPath]
+if (! (appsDescFile.exists())) {appsDescFile.setText("<installed></installed>" )}
+def installedAppsManager := <import:com.skyhunter.capDesk.installedAppsManagerMaker>(
+    appsDescFile, traceline )
+
+traceline(`did appsManager: $installedAppsManager`)
+
+/**
+ * runCaplet returns the powerboxController used to launch the caplet.
+ * it installs a reactor that will continueAtTop when exit is requested
+ * XXX someday, reconcile this runCaplet with the runCaplet in CapDesk
+ * XXX probably split into composePowerboxController.emaker and separate launch line
+ * XXX then requestExit handling is externalized.
+ */
+def runCaplet{
+    to run(sourceFile, docRcvrs) :near {
+        def powerboxControllerMaker := <import:com.skyhunter.e.security.powerboxControllerMakerAuthor>(
+            <unsafe>,
+            <file>,
+            interp,
+            introducer,
+            traceline,
+            true)
+        traceline("made powerboxMaker")
+        var appDesc := installedAppsManager.optAppBySourcePath(sourceFile.getCanonicalPath())
+        if (appDesc == null) {appDesc := [].asMap()}
+        traceline(`got appDesc: $appDesc`)
+        def findImage() :near {
+            var image := null
+            if (appDesc.maps("Icon")) {
+                def path := appDesc["Icon"]
+                traceline("appDesc maps Icon: " + path )
+                var iconfile := <file>[sourceFile.getParent()][path]
+                if (! (iconfile.exists())) {
+                    iconfile := <file>[appDesc["Icon"]]
+                }
+                if (iconfile.exists()) {
+                    image := <swing:makeImageIcon>(<fileURL>[iconfile.getCanonicalPath()]).getImage()
+                }
+            }
+            traceline(`returning image: $image`)
+            image
+        }
+
+        def image := findImage()
+        def canonicalPath := sourceFile.getCanonicalPath()
+        traceline("runcaplet/2 got canonical: " + canonicalPath)
+        var capsXml := "<caps></caps>"
+        if (appDesc.maps("RunPath")) {
+            capsXml := <file>[appDesc["RunPath"]].getText()
+        }
+        traceline("runcaplet/2 got capsXml")
+        def powerboxController := powerboxControllerMaker(
+            appDesc.fetch("Name", thunk{canonicalPath}),
+            image, capsXml)
+        traceline(`got pcontroller: $powerboxController`)
+        def box := powerboxController.getPowerbox()
+        traceline(`got pbox: $box`)
+        powerboxController.setCap(box.getDOC_SUFFIX(),
+                                  appDesc.fetch("Suffix", thunk{}))
+        traceline("set doc suffix cap")
+        powerboxController.setCap(box.getINITIAL_DOC_RCVRS(), docRcvrs)
+        powerboxController.addPowerboxReactor( def obs{
+            to reactToExitRequest() :void {
+                interp.continueAtTop()
+            }
+        })
+        traceline("about to launch file")
+        powerboxController.launchFile(sourceFile)
+        traceline("launch initiated")
+        powerboxController
+    }
+}
+
+def commandArgs := interp.getArgs()
+if (commandArgs.size() == 0) {
+    def finishVow := dialogVowMaker(
+        "No caplet specified",
+        "Must specify caplet on command line",
+        null,
+        ["OK"])
+    when (finishVow) -> done(finish) :void {
+        interp.continueAtTop()
+    } catch prob {
+        traceline("prob in finish dialog" + prob)
+    }
+} else {
+    def sourceFile := <file>[commandArgs[0]]
+    traceline(`sourceFile: $sourceFile`)
+    var docs := []
+    for each in 1..commandArgs.size() -1 {
+        docs += [<file>[commandArgs[each]]]
+    }
+    traceline(`docs: $docs`)
+    runCaplet(sourceFile, docs)
+
+}
+
+interp.blockAtTop()

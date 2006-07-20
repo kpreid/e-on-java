@@ -1,0 +1,134 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+/**
+ * @param makeFrame A function that makes SWT shells. The function must take no arguments
+ * @param disposablesKit A Kit that implements the contract of com.skyhunter.swt.disposablesKit
+ *        It must be suitable for passing on to a StyledText widget
+ */
+def makeDialogVowAuthor (disposablesKit, makeFrame, traceline) :near  {
+
+    def fillStyledText := <import:com.skyhunter.swt.fillStyledTextAuthor>(
+        disposablesKit, traceline)
+    def <swt> := <import:org.eclipse.swt.*>
+    def SWT := <swt:makeSWT>
+    def <widget> := <swt:widgets.*>
+    def gridData := <swt:layout.makeGridData>
+
+    /**
+     * makeDialogVow pops a dialog for the user, gets the answer,
+     * and fulfills its vow with the object from which the answer can
+     * be retrieved.
+     * <p> Garbage Collection: All disposables created via SWT
+     * are collected when the dialog box is closed.
+     *
+     * @param title The text to go in the title line of the dialog
+     * @param labelTree Either a simple text string or a TTML term tree.
+
+     *        THis term tree must be suitable for use with the
+     *        fillStyledText function, that describes the styled text for the
+     *        main body of the dialog
+     * @param optDefaultValue The text to initially be placed in the input field
+     *        If null, no input field will be presented, the only interaction
+     *        the user will have is by pressing a button.
+     * @param buttonNames A list of names for the buttons at the bottom of the dialog
+     * @return A vow that is fulfilled with the filled-in dialog when the user
+     *         clicks a button or otherwise closes the window
+     *
+     */
+    def makeDialogVow (title, labelTree, optDefaultValue, buttonNames) :any {
+        var myClickedButton := null
+        var userEnteredText := ""
+        def [finishedDialogPromise, resolver] := Ref.promise()
+        def dialog
+        def myTextField
+
+        #make the window
+        def myWin := makeFrame()
+        myWin.setText(title)
+        var undisposed := true
+        def disposeListener {
+            to widgetDisposed(event) :void {
+                resolver.resolve(dialog)
+            }
+        }
+
+        myWin.addDisposeListener(disposeListener)
+        if (optDefaultValue != null) {
+            def closeListener {
+                to shellClosed(event) :void {
+                    userEnteredText := myTextField.getText()
+                    traceline("got shell closed: " + userEnteredText)
+                }
+                match [verb, args] {}
+            }
+            myWin.addShellListener(closeListener)
+        }
+        myWin.setBounds(300, 300, 400, 400)
+        myWin.setLayout(<swt:layout.makeGridLayout>())
+        myWin.getLayout().setNumColumns(1)
+        traceline("added window listener")
+
+        #make the label
+        def labelPane := <swt:custom.makeStyledText>(
+            myWin, (SWT.getMULTI() | SWT.getWRAP()) | SWT.getV_SCROLL() )
+        if (labelTree =~ str :String) {
+            labelPane.setText(labelTree)
+            traceline("dialog made with text")
+        } else {fillStyledText(labelPane, labelTree)}
+        labelPane.setEditable(false)
+        labelPane.setBackground(myWin.getBackground() )
+
+        #make the text field
+        if (optDefaultValue == null) {
+            bind myTextField := <widget:makeLabel>(myWin, 0)
+        } else {
+            bind myTextField := <widget:makeText>(myWin, SWT.getSINGLE() | SWT.getBORDER())
+            myTextField.setText(optDefaultValue)
+        }
+
+        #make the button panel
+        def buttonPane := <widget:makeComposite>(myWin, 0)
+        buttonPane.setLayout(<swt:layout.makeFillLayout>())
+
+        #make buttons
+        def makeClickListener(buttonIndex) :near {
+            def clickListener {
+                to widgetSelected(event) :void {
+                    myClickedButton := buttonNames[buttonIndex]
+                    myWin.close()
+                }
+            }
+        }
+        def buttons := [].diverge()
+        for index => name in buttonNames {
+            def button := <widget:makeButton>(buttonPane, SWT.getPUSH())
+            button.setText(name)
+            button.addSelectionListener(makeClickListener(index))
+            buttons.push(button)
+        }
+
+        #setup layout
+        labelPane.setLayoutData(gridData(gridData.getFILL_BOTH()))
+        myTextField.setLayoutData(gridData(gridData.getFILL_HORIZONTAL()))
+        buttonPane.setLayoutData(gridData(gridData.getFILL_HORIZONTAL()))
+
+        myWin.open()
+
+        #create the fulfilled dialog object
+        bind dialog {
+            to optEnteredText() :any {
+                var answer := null
+                if (myClickedButton != null && optDefaultValue != null) {
+                    answer := userEnteredText
+                }
+                answer
+            }
+            to optClickedButton() :any  {myClickedButton}
+        }
+        finishedDialogPromise
+    }
+}
+
+#def promiser := dialogVowMakerAuthor (<awt>, <swing>, <swing:makeJFrame>)
+#promiser("test", "test text", null, ["OK"])

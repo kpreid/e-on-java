@@ -1,0 +1,140 @@
+#!/usr/bin/env rune
+
+# Copyright 2005 Mark S. Miller, under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def SWT := <swt:makeSWT>
+def <widgets> := <swt:widgets.*>
+def <dnd> := <swt:dnd.*>
+def <swttools> := <import:org.erights.e.ui.swt.*>
+def <sky> := <import:com.skyhunter.*>
+def disposablesKit := <sky:swt.disposablesKitAuthor>(currentDisplay)
+
+def dndKit := <swttools:dndKitAuthor>(<dnd>,
+                                      currentDisplay,
+                                      <file>,
+                                      introducer,
+                                      makeSturdyRef)
+def makeTableTree := <swttools:makeTableTreeAuthor>(disposablesKit)
+
+def RIGHT := SWT.getRIGHT()
+
+def Slot := <type:org.erights.e.elib.slot.Slot>
+def EverReporter := <type:org.erights.e.elib.slot.EverReporter>
+def EverReactor := <type:org.erights.e.elib.slot.EverReactor>
+def Throwable := <type:java.lang.Throwable>
+def makeLamportSlot := <elib:slot.makeLamportSlot>
+def whenever := <elib:slot.whenever>
+
+def NICK_NAME := "Sugar"
+def piggyIssuer :=
+  <import:com.hp.donutLab.makeIOUIssuerAuthor>(timer)(NICK_NAME)
+
+def &supply :=
+  makeLamportSlot.localShadow("???", piggyIssuer <- getSupplyReporter())
+def &supplyStr := whenever([&supply], thunk{"$"+`$supply`})
+
+def piggyShell := <widgets:makeShell>(currentDisplay)
+
+piggyShell.setText(`$NICK_NAME Issuer`)
+def illuminatiImage := disposablesKit.makeImage(
+    <resource:org/erights/e/icons/illuminati.jpg>)
+def piggyImage := disposablesKit.makeImage(
+    <resource:org/erights/e/icons/piggy.jpg>)
+piggyShell.setImage(illuminatiImage)
+
+def winDisposeListener {
+    to widgetDisposed(event) :void {
+        interp.exitAtTop()
+    }
+}
+piggyShell.addDisposeListener(winDisposeListener)
+
+def makeControl(arg) :any {
+    return swtGrid__quasiParser.makeControl(piggyShell, arg)
+}
+
+def issuerSource := makeControl(["", RIGHT])
+issuerSource.setImage(illuminatiImage)
+dndKit.makeDragSource(issuerSource, &piggyIssuer)
+issuerSource.setToolTipText(`The issuer of $NICK_NAME`)
+
+def supplyLabel  := makeControl([&supplyStr, RIGHT])
+def mouseListener {
+    to mouseDoubleClick(e) :void {
+        def columnNames := piggyIssuer <- getTableTreeColumns()
+        def tableData := piggyIssuer <- getTableTreeData()
+        when (columnNames, tableData) -> done(_,_) :void {
+            def accountWindow := <widgets:makeShell>(currentDisplay)
+            accountWindow.setText("Accounts")
+            accountWindow.setImage(illuminatiImage)
+            def tableTree := makeTableTree(accountWindow,
+                                           columnNames,
+                                           tableData)
+            swtGrid`$accountWindow:
+                    ${"(Mockup -- not yet live)"}
+                    $tableTree.X.Y`
+            accountWindow.pack(true)
+            accountWindow.open()
+        } catch ex {
+            throw(ex)
+        }
+    }
+    match _ {}
+}
+supplyLabel.addMouseListener(mouseListener)
+supplyLabel.setToolTipText(
+    `The number of outstanding units of $NICK_NAME.$\n` +
+    "Double click to see the accounts.")
+
+def acctSource   := makeControl(["-$", RIGHT])
+acctSource.setImage(piggyImage)
+acctSource.setToolTipText(
+    "Drag or right-click-copy to make a new account.\n"+
+    "But first, fill in the initial balance,\n"+
+    "  and your petname for the account's owner")
+
+def amountField  := <widgets:makeText>(piggyShell, SWT.getSINGLE() | RIGHT)
+def petnameField := <widgets:makeText>(piggyShell, SWT.getSINGLE())
+petnameField.setText("anon")
+
+def acctSlot {
+    to getValue() :any {
+        def initBalance := __makeInt(amountField.getText().trim())
+        def petname := petnameField.getText().trim()
+        petnameField.setText("anon")
+        amountField.setText("")
+        return piggyIssuer <- makeAccountMgr(initBalance, petname)
+    }
+}
+dndKit.makeDragSource(acctSource, acctSlot)
+
+swtGrid`$piggyShell:
+        $issuerSource $supplyLabel         ${` total quantity of $NICK_NAME`}
+        ${""}.X.Y
+        ${""}         ${"initial balance"} ${" for "}
+        $acctSource   $amountField.X       $petnameField.X`
+
+if (interp.getProps().fetch("e.osdir", thunk{}) == "linux-motif") {
+    println("skipping font adjustment on linux-motif to avoid bug")
+} else {
+    def setFont(control, font) :void {
+        control.setFont(font)
+        if (control.__respondsTo("getChildren", 0)) {
+            for child in control.getChildren() {
+                setFont(child, font)
+            }
+        }
+    }
+    def fontData := piggyShell.getFont().getFontData()[0]
+    fontData.setHeight(fontData.getHeight() + 4)
+    def font := disposablesKit.makeFont(fontData)
+    setFont(piggyShell, font)
+}
+
+piggyShell.pack(true)
+piggyShell.open()
+introducer.onTheAir()
+interp.blockAtTop()
+
+# rune(["~/e/src/esrc/scripts/piggyIssuer.e-swt"])

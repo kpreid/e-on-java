@@ -1,0 +1,131 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+? introducer.onTheAir()
+# value: ["3DES_SDH_M2", "3DES_SDH_M"]
+
+? def sr := <captp://192.168.0.21:1043/5UmFAqXbepvCOwuSHCEGHt5V1wC/Ray1=9hgEHkC8i_DRs5WKfsLnji>
+# value: <a SturdyRef>
+
+? def evalServerRcvr := sr.getRcvr()
+# value: <Remote Promise>
+
+? evalServerRcvr
+# value: <Remote Promise>
+
+? def seRcvr1 := evalServerRcvr <- newScriptEvaluator(["se1", "arg"])
+# value: <Remote Promise>
+
+? def r1 := seRcvr1 <- evalCmdReportVow("2 + 3")
+# value: <Remote Promise>
+
+? r1
+# value: "# value: 5
+#
+#        "
+
+? println(r1)
+# value: 5
+
+
+? def v1 := seRcvr1 <- evalCmdValueVow("2 + 3")
+# value: <Remote Promise>
+
+? v1
+# value: [5, true]
+
+?
+? def r2 := sePass1 <- evalCmdVow(`println("Hello world")`)
+# value: <Promise>
+
+? r2
+# value: "# stdout: Hello world
+#        #
+#
+#        "
+
+? println(r2)
+# stdout: Hello world
+#
+
+
+? def cmdLoopPass := sePass1 <- getCmdLoop()
+# value: <Promise>
+
+? def reactor {
+>     match [verb, args] {
+>         println(`$verb$args`)
+>     }
+> }
+# value: <reactor>
+
+? cmdLoopPass <- addStatusReactor(reactor)
+# value: <Promise>
+
+? def r3 := sePass1 <- evalCmdVow("3 // 0")
+# value: <Promise>
+
+? r3
+reactToEnqueue[3]
+reactToSuccess[3, false]
+reactToQueueEmpty[3]
+# value: "# problem: <ArithmeticException: BigInteger divide by zero>
+#
+#        "
+
+? def r4 := sePass1 <- evalCmdVow("interp getArgs()")
+# value: <Promise>
+
+? r4
+reactToEnqueue[4]
+reactToSuccess[4, false]
+reactToQueueEmpty[4]
+# value: "# valuex: [\"bogus\", \"args\"]
+#
+#        "
+
+? def r5 := sePass1 <- evalCmdVow("interp blockAtTop()")
+# value: <Promise>
+
+? r5
+reactToEnqueue[5]
+reactToSuccess[5, true]
+# value: ""
+
+? def r6 := sePass1 <- evalCmdVow("4 * 3")
+# value: <Promise>
+
+? r6
+reactToEnqueue[6]
+# value: <Promise>
+
+? cmdLoopPass <- continueAtTop()
+# value: <Promise>
+
+? r6
+reactToSuccess[6, false]
+reactToQueueEmpty[6]
+# value: "# valuex: 12
+#
+#        "
+
+? def never := evalServerPass <- shutdown()
+# value: <Promise>
+
+? never
+? sePass1
+# value: <Promise>
+
+? Ref.isResolved(sePass1)
+# value: true
+
+? Ref.isResolved(evalServerPass)
+# value: true
+
+? evalServerPass
+# value: <ref broken by problem: <SocketException: Connection reset by peer: JVM_recv in socket input stream read>>
+
+? sePass1
+# value: <Promise>
+
+?

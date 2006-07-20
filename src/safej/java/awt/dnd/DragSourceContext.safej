@@ -1,0 +1,21 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class(safe,
+      "java.awt.dnd.DragSourceContext",
+      statics(method(suppress, "run(DragSourceContextPeer, DragGestureEvent, Cursor, Image, Point, Transferable, DragSourceListener)")),
+      methods(method("getDragSource()"),
+              method(suppress, "getComponent()"),
+              method("getTrigger()"),
+              method("getSourceActions()"),
+              method("setCursor(Cursor)"),
+              method("getCursor()"),
+              method("addDragSourceListener(DragSourceListener)"),
+              method("removeDragSourceListener(DragSourceListener)"),
+              method("transferablesFlavorsChanged()"),
+              method("dragEnter(DragSourceDragEvent)"),
+              method("dragOver(DragSourceDragEvent)"),
+              method("dragExit(DragSourceEvent)"),
+              method("dropActionChanged(DragSourceDragEvent)"),
+              method("dragDropEnd(DragSourceDropEvent)"),
+              method("getTransferable()")))

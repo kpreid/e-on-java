@@ -1,0 +1,14 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class(safe,
+      "java.awt.Dimension",
+      statics(method("run()"),
+              method(suppress, "run(Dimension)"),
+              method("run(int, int)")),
+      methods(method("getWidth()"),
+              method("getHeight()"),
+              method("setSize(double, double)"),
+              method("getSize()"),
+              method(suppress, "setSize(Dimension)"),
+              method("setSize(int, int)")))

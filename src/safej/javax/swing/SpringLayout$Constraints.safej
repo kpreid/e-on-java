@@ -1,0 +1,18 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class(safe,
+      "javax.swing.SpringLayout.Constraints",
+      statics(method("run()"),
+              method("run(Spring, Spring)"),
+              method("run(Spring, Spring, Spring, Spring)")),
+      methods(method("setX(Spring)"),
+              method("getX()"),
+              method("setY(Spring)"),
+              method("getY()"),
+              method("setWidth(Spring)"),
+              method("getWidth()"),
+              method("setHeight(Spring)"),
+              method("getHeight()"),
+              method("setConstraint(String, Spring)"),
+              method("getConstraint(String)")))

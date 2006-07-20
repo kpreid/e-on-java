@@ -1,0 +1,9 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class(safe,
+      "java.awt.event.PaintEvent",
+      statics(method(suppress, "run(Component, int, Rectangle)")),
+      methods(method("getUpdateRect()"),
+              method(suppress, "setUpdateRect(Rectangle)"),
+              method(suppress, "paramString()")))

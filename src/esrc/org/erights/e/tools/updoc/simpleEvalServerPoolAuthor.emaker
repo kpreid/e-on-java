@@ -1,0 +1,85 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def seedVatAuthor := <elang:interp.seedVatAuthor>
+
+def simpleEvalServerPoolAuthor(<unsafe>) :near {
+
+    def seedVat := seedVatAuthor(<unsafe>)
+
+    def makeVat := <unsafe:org.erights.e.elib.vat.makeVat>
+
+    def simpleEvalServerPool {
+
+        /**
+         * <tt>requestEvalServerSet</tt> tries to satisfy a request for
+         * access to multiple eval servers.
+         * <p>
+         * It returns a vow for the set and if the request is successful,
+         * the vow resolves to a list of makeEvaluator function rcvrs for
+         * the eval servers' services. This is an all-or-nothing request.
+         * If a problem occurs the vow becomes broken with the problem and
+         * the client is responsible for rescheduling the request.
+         *
+         * @param vatNames Names of vats for eval servers requested.
+         * @return A vow for the set of eval servers requested.
+         */
+        to requestEvalServerSet(vatNames :List[String]) :vow {
+            var result := []
+            for i => vatName in vatNames {
+                def runnerKind := switch (vatName) {
+                    match `@_.e-awt` { "awt" }
+                    match `@_.e-swt` { "swt" }
+                    match _          { "headless" }
+                }
+                def vat := makeVat.make(runnerKind, vatName)
+                def makeEvaluator :rcvr := seedVat(vat, `
+
+def makeEvaluatorAuthor :=
+  <import:org.erights.e.tools.updoc.makeEvaluatorAuthor>
+def runeAuthor := <elang:cmd.runeAuthor>
+def auths := runeAuthor.defaultAuths(<unsafe>)
+
+makeEvaluatorAuthor(auths["systemGC"],
+                    auths,
+                    [].asMap(),
+                    currentVat)
+
+                    `)
+                result += [makeEvaluator]
+            }
+            result
+        }
+
+        /**
+         * <tt>requestEvalServer</tt> tries to satisfy a request for
+         * access to a single eval server.
+         * <p>
+         * It returns a vow which, if the request is successful, resolves
+         * to a single makeEvaluator function rcvr for the eval server's
+         * services. If a problem occurs the vow is broken with the
+         * problem.
+         *
+         * @return A vow for access to a single eval server.
+         */
+        to requestEvalServer(vatName :String) :vow {
+            simpleEvalServerPool.requestEvalServerSet([vatName]) <- get(0)
+        }
+
+        /**
+         * <tt>releaseEvalServer</tt> releases the service provided by
+         * the makeEvaluator function rcvr.
+         * <p>
+         * The eval server that granted access to the service is now
+         * available for requests.
+         *
+         * @param makeEvaluator The makeEvaluator function rcvr returned
+         *                      by the request for access to an eval
+         *                      server.
+         */
+        to releaseEvalServer(makeEvaluator :rcvr) :void {
+            makeEvaluator <- shutdown()
+        }
+    }
+}
+

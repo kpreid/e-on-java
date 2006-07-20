@@ -1,0 +1,35 @@
+
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def sourceRunnerAuthor(<unsafe>, interp, traceline) :near {
+    def makeScopeSetup := <unsafe:org.erights.e.elang.interp.makeScopeSetup>
+    def runSource(sourceText) :near {
+        def interpret() :any {
+            traceline("starting run prep")
+            def outerScope := makeScopeSetup.safeScope("__confinedMain.")
+#            def subInterp extends interp {
+#                to blockAtTop() {
+#                    # ignored
+#                }
+#                to continueAtTop() {
+#                    # ignored
+#                }
+#            }
+#            # XXX What is subInterp for?
+#            outerScope.bindFinal("interp", subInterp)
+            traceline("made scope 2")
+            try {
+                def tree := e__quasiParser(sourceText)
+                def result := tree.eval(outerScope)
+                traceline(`$\n# value: $result`)
+                traceline("shown")
+                result
+            } catch problem {
+                traceline(`$\n# problem: $problem`)
+                traceline("problem shown")
+            }
+        }
+        interpret()
+    }
+}

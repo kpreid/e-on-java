@@ -1,0 +1,16 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class(safe,
+      "javax.swing.Spring",
+      statics,
+      methods(method("getMinimumValue()"),
+              method("getPreferredValue()"),
+              method("getMaximumValue()"),
+              method("getValue()"),
+              method("setValue(int)"),
+              method("constant(int)"),
+              method("constant(int, int, int)"),
+              method("minus(Spring)"),
+              method("sum(Spring, Spring)"),
+              method("max(Spring, Spring)")))

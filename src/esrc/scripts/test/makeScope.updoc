@@ -1,0 +1,37 @@
+#!/usr/bin/env rune
+
+# Copyright 2004 Hewlett Packard, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+From http://www.eros-os.org/pipermail/e-lang/2004-January/009423.html
+# @author Kevin Reid
+
+  ? def uc_construct {}
+  # value: <uc_construct>
+
+  ? def demoScope := <unsafe:org.erights.e.elang.scope.Scope>.make(
+  >   __makeMap.fromColumns(
+  >     ["y", "any", "x", "__makeList", "&uc_construct"],
+  >     [6, any, 5, __makeList, __makeFinalSlot(uc_construct)]
+  >   ),
+  >   "__main$makePoint__C$point__C$",
+  >   false
+  > )
+  # value: <a Scope>
+
+  ? for k => v in demoScope { println(k, " ", v) }
+  # stdout: &y <& 6>
+  #         &any <& <any>>
+  #         &x <& 5>
+  #         &__makeList <& <import:org.erights.e.elib.tables.ConstList>>
+  #         &uc_construct <& <uc_construct>>
+  #
+
+  ? e`any`.eval(demoScope)
+  # value: <any>
+
+  ? e`uc_construct`.eval(demoScope)
+  # value: <uc_construct>
+
+  ? demoScope["uc_construct"]
+  # value: <uc_construct>

@@ -1,0 +1,9 @@
+class(safe,
+           "org.eclipse.swt.custom.StackLayout",
+           statics(method("run()")),
+           methods(method("getMarginWidth()"),
+                   method("setMarginWidth(int)"),
+                   method("getMarginHeight()"),
+                   method("setMarginHeight(int)"),
+                   method("getTopControl()"),
+                   method("setTopControl(Control)")))

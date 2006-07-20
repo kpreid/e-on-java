@@ -1,0 +1,11 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class(safe,
+      "javax.swing.Box.Filler",
+      statics(method("run(Dimension, Dimension, Dimension)")),
+      methods(method("changeShape(Dimension, Dimension, Dimension)"),
+              method("getMinimumSize()"),
+              method("getPreferredSize()"),
+              method("getMaximumSize()"),
+              method(suppress, "getAccessibleContext()")))

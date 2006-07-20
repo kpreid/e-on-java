@@ -1,0 +1,23 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class(safe,
+      "javax.swing.text.BoxView",
+      statics(method("run(Element, int)")),
+      methods(method("getAxis()"),
+              method("setAxis(int)"),
+              method(suppress, "layoutChanged(int)"),
+              method("replace(int, int, View[])"),
+              method(suppress, "preferenceChanged(View, boolean, boolean)"),
+              method("getResizeWeight(int)"),
+              method("setSize(float, float)"),
+              method(suppress, "paint(Graphics, Shape)"),
+              method("getChildAllocation(int, Shape)"),
+              method("modelToView(int, Shape, Position.Bias)"),
+              method("viewToModel(float, float, Shape, Position.Bias[])"),
+              method("getAlignment(int)"),
+              method("getPreferredSpan(int)"),
+              method("getMinimumSpan(int)"),
+              method("getMaximumSpan(int)"),
+              method("getWidth()"),
+              method("getHeight()")))

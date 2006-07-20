@@ -1,0 +1,47 @@
+#!/usr/bin/env rune
+
+# Copyright 2004 Hewlett Packard, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+pragma.disable("explicit-result-guard")
+
+def Vat := <type:org.erights.e.elib.vat.Vat>
+
+def makeBudgetingRefMon(var budget :int, vat :rcvr[Vat], traceLine) :near {
+    throw.breakpoint(budget)
+    var recur := false
+    def consume() :boolean {
+        budget -= 1
+        if (budget >= 1) {
+            return true
+        } else {
+            throw.breakpoint("budget exceeded on comm")
+            traceLine("budget exceeded on comm")
+            vat <- orderlyShutdown("budget exceeded on comm")
+            return false
+        }
+    }
+    def budgetingRefMon {
+        to wrap(underlying) :any {
+#            throw.breakpoint(underlying)
+            def wrapper extends underlying {
+                to handleSendAll(verb, args) :any {
+                    if (consume()) {
+                        throw.breakpoint([verb, args])
+                        return super.handleSendAll(verb, args)
+                    } else {
+                        return Ref.broken("budget exceeded on comm")
+                    }
+                }
+                to handleSendAllOnly(verb, args) :void {
+                    if (consume()) {
+                        throw.breakpoint([verb, args])
+                        super.handleSendAllOnly(verb, args)
+                    }
+                }
+            }
+            return wrapper
+        }
+    }
+    return budgetingRefMon
+}

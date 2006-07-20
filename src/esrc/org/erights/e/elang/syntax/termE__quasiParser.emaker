@@ -1,0 +1,76 @@
+#!/usr/bin/env rune
+
+# Copyright 2005 Mark S. Miller, under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def ENode              := <type:org.erights.e.elang.evm.ENode>
+def Term               := <type:org.quasiliteral.term.Term>
+def QuasiExprParser    := <type:org.quasiliteral.base.QuasiExprParser>
+def QuasiPatternParser := <type:org.quasiliteral.base.QuasiPatternParser>
+def QAstroArg          := <type:org.quasiliteral.quasiterm.QAstroArg>
+
+def convert := <elang:visitors.makeConvertENode2Term>()
+def holePuncher := <import:org.quasiliteral.quasiterm.holePuncher>
+
+/**
+ * A quasiParser that quasi-parses E source into term-trees.
+ *
+ * @see makeConvertENode2Term
+ * @see holePuncher
+ */
+def termE__quasiParser implements QuasiExprParser, QuasiPatternParser {
+    to valueMaker(template :Twine, dlrHoles :List[int]) :QAstroArg {
+        throw("XXX new quasi valueMaker API not yet implemented")
+    }
+    to valueMaker(template :Twine) :QAstroArg {
+        def enode :ENode := e__quasiParser(template)
+        def term :Term := convert(enode)
+        return term.build(holePuncher)
+    }
+    to matchMaker(template :Twine,
+                  dlrHoles :List[int],
+                  atHoles :List[int]) :QAstroArg {
+        throw("XXX new quasi matchMaker API not yet implemented")
+    }
+    to matchMaker(template :Twine) :QAstroArg {
+        return termE__quasiParser.valueMaker(template)
+    }
+}
+
+
+
+? def termE__quasiParser := <elang:syntax.termE__quasiParser>
+# value: <termE__quasiParser>
+
+? def x := termE`a + b`
+# value: term`CallExpr(NounExpr("a"),
+#                      "add",
+#                      NounExpr("b"))`
+
+? def y := termE`c * $x * d`
+# value: term`CallExpr(CallExpr(NounExpr("c"),
+#                               "multiply",
+#                               CallExpr(NounExpr("a"),
+#                                        "add",
+#                                        NounExpr("b"))),
+#                      "multiply",
+#                      NounExpr("d"))`
+
+? def termE`@w * @z` := y
+# value: term`CallExpr(CallExpr(NounExpr("c"),
+#                               "multiply",
+#                               CallExpr(NounExpr("a"),
+#                                        "add",
+#                                        NounExpr("b"))),
+#                      "multiply",
+#                      NounExpr("d"))`
+
+? w
+# value: term`CallExpr(NounExpr("c"),
+#                      "multiply",
+#                      CallExpr(NounExpr("a"),
+#                               "add",
+#                               NounExpr("b")))`
+
+? z
+# value: term`NounExpr("d")`

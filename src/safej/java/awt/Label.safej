@@ -1,0 +1,13 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class("java.awt.Label",
+      statics(method(suppress, "run()"),
+              method(suppress, "run(String)"),
+              method(suppress, "run(String, int)")),
+      methods(method(suppress, "addNotify()"),
+              method(suppress, "getAlignment()"),
+              method(suppress, "setAlignment(int)"),
+              method(suppress, "getText()"),
+              method(suppress, "setText(String)"),
+              method(suppress, "getAccessibleContext()")))

@@ -1,0 +1,14 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class(safe,
+      "javax.swing.JEditorPane.JEditorPaneAccessibleHypertextSupport.HTMLLink",
+      statics(method("run(JEditorPane.JEditorPaneAccessibleHypertextSupport, Element)")),
+      methods(method("isValid()"),
+              method("getAccessibleActionCount()"),
+              method("doAccessibleAction(int)"),
+              method("getAccessibleActionDescription(int)"),
+              method("getAccessibleActionObject(int)"),
+              method("getAccessibleActionAnchor(int)"),
+              method("getStartIndex()"),
+              method("getEndIndex()")))

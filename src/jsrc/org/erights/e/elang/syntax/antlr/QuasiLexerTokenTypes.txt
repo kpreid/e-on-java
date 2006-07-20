@@ -1,0 +1,17 @@
+// $ANTLR 2.7.5rc2 (2005-01-08): quasi.g -> QuasiLexerTokenTypes.txt$
+QuasiLexer    // output token vocab name
+QUASIOPEN=4
+QUASICLOSE=5
+QUASIBODY=6
+QuasiContent=7
+RCURLY="}"=8
+DOLLARHOLE=9
+ATHOLE=10
+DOLLARCURLY=11
+ATCURLY=12
+DOLLARESC=13
+QUASIn=14
+QUASI1=15
+IDENT=16
+ESC=17
+HEX_DIGIT=18

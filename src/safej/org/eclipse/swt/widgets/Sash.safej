@@ -1,0 +1,7 @@
+class(safe,
+           "org.eclipse.swt.widgets.Sash",
+           statics(method("run(Composite, int)")),
+           methods(method("addSelectionListener(SelectionListener)"),
+                   method("computeSize(int, int, boolean)"),
+                   method("removeSelectionListener(SelectionListener)"),
+                   method(suppress, "setFocus()"))) 

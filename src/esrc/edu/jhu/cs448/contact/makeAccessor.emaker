@@ -1,0 +1,79 @@
+#!/usr/bin/env rune
+
+# Copyright 2004 Mark S. Miller, under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def PublicKey := <type:java.security.PublicKey>
+
+# The info needed to access an abstract service:
+# 0) The fingerprint of the PublicKey used to authenticate the service
+# 1) The list of captp: URI strings for the rendezvous servers where this
+#    service is thought to register
+# 2) A swiss number (an unguessable, apparently random number, revealed to
+#    an authentic service provider, to establish a right to use the service.
+def AccessInfo := Tuple[int, List[String], int]
+
+def verifier := <elib:sealing.crypto.makeVerifier>
+
+def makeAccessor(introducer, accessInfo :AccessInfo) :any {
+    def [fingerprint, rURIs, swissNum] := accessInfo
+    var rendezvousSturdyRefs := []
+    for rURI in rURIs {
+        rendezvousSturdyRefs with= introducer.sturdyFromURI(rURI)
+    }
+
+    var liveRefCache := Ref.broken("none yet")
+    def accessor {
+        to getRcvr() :any {
+            if (!Ref.isBroken(liveRefCache)) {
+                return liveRefCache
+            }
+            def [result, resolver] := Ref.promise()
+            liveRefCache := result
+            var count := 0
+            def incr(delta :int, excuse) :void {
+                count += delta
+                if (count <= 0) {
+                    resolver.smash(excuse)
+                }
+            }
+            incr(rURIs.size(), "Empty rendezvous list")
+            for rendezvousSturdyRef in rendezvousSturdyRefs {
+                def r := rendezvousSturdyRef.getRcvr()
+                when (r <- lookup(fingerprint)) -> done1(entries) :void {
+                    if (resolver.isDone()) {
+                        return
+                    }
+                    incr(entries.size() -1, "No providers registered")
+                    for entry in entries {
+                        def [publicKey :PublicKey,
+                             location :String,
+                             signature :int] := entry
+
+                        if (fingerprint != publicKey.getFingerprint()) {
+                            incr(-1, "Public key doesn't match fingerprint")
+
+                        } else if (!verifier.verify(publicKey,
+                                                    location,
+                                                    signature)) {
+                            incr(-1, `Bad signature on $location`)
+                        } else {
+                            def swissChecker :=
+                              introducer.sturdyFromURI(location).getRcvr()
+                            def pVow := swissChecker <- getProvider(swissNum)
+                            when (pVow) -> done2(provider) :void {
+                                resolver.resolve(provider)
+                            } catch excuse {
+                                incr(-1, excuse)
+                            }
+                        }
+                    }
+                } catch excuse {
+                    incr(-1, excuse)
+                }
+            }
+            return result
+        }
+    }
+    return accessor
+}

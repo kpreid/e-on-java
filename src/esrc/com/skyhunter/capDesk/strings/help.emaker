@@ -1,0 +1,9 @@
+term`text(
+b("\n        CapDesk Help"), "\n\n",
+b("    Window Layout\n\n"),
+"Click on a folder to see its contents in the next panel to the right.\n",
+"Double Click on a folder to see a folder's contents in the current panel.\n",
+"Right-clicking on docs or folders pops up a menu of operations\n",
+"including New, Copy, and Paste."
+)`
+

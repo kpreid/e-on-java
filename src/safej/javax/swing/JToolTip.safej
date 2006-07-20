@@ -1,0 +1,14 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class(safe,
+      "javax.swing.JToolTip",
+      statics(method("run()")),
+      methods(method(suppress, "getUI()"),
+              method(suppress, "updateUI()"),
+              method(suppress, "getUIClassID()"),
+              method("setTipText(String)"),
+              method("getTipText()"),
+              method("setComponent(JComponent)"),
+              method(suppress, "getComponent()"),
+              method(suppress, "getAccessibleContext()")))

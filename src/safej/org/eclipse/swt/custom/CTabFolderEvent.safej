@@ -1,0 +1,10 @@
+class("org.eclipse.swt.custom.CTabFolderEvent",
+           statics,
+           methods(method(suppress, "item()"),
+                   method(suppress, "item(org.eclipse.swt.widgets.Widget)"),
+                   method(suppress, "getItem()"),
+                   method(suppress, "setItem(org.eclipse.swt.widgets.Widget)"),
+                   method(suppress, "doit()"),
+                   method(suppress, "doit(boolean)"),
+                   method(suppress, "getDoit()"),
+                   method(suppress, "setDoit(boolean)"))) 

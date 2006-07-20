@@ -1,0 +1,74 @@
+#!/usr/bin/env rune
+
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def eLauncherAuthor := <elang:launcher.eLauncherAuthor>
+
+/**
+ *
+ */
+def emakerLauncherAuthor {
+
+    /**
+     *
+     */
+    to getHelp(_) :String {
+        return `$\
+The <fname> specifies a *.emaker file -- source code for an E module.
+    -.emaker                  Read (non-interactively by default) from standard
+                              input.
+    <fbase>.emaker            Read (non-interactively by default) from the
+                              named file.
+    --src.emaker <src>        Read (non-interactively by default) from the
+                              <src> text.
+The script will be run in the invoking Runner, in a confining scope.
+
+E flag options (default to false; option without value sets flag to true):
+    --interact                Interactive mode prompts, prints each result, and
+                              survives top-level thrown exceptions.
+    --explicitIO              Output sent to stdout and stderr is gathered and
+                              shown in answer blocks like "# stdout: foo".
+Other E options:
+    --fqnPrefix=<fqnPrefix>   The "package" context for naming behaviors in the
+                              script.
+`
+    }
+
+    /**
+     * @return null
+     */
+    to getOptVersionText(props) :void { return null }
+
+    /**
+     *
+     */
+    to run(auths) :near {
+
+        def eLauncher := eLauncherAuthor(auths)
+
+        /**
+         *
+         */
+        def emakerLauncher {
+
+            /**
+             *
+             */
+            to run(props, var options, fname, args) :vow[boolean] {
+                # XXX todo: If non-interactive, just evaluate all at once.
+                options with= ("--confine", true)
+                return eLauncher(props, options, fname, args)
+            }
+
+            /**
+             *
+             */
+            to interpret(props, var options, src, args) :vow[boolean] {
+                # XXX todo: If non-interactive, just evaluate all at once.
+                options with= ("--confine", true)
+                return eLauncher.interpret(props, options, src, args)
+            }
+        }
+    }
+}

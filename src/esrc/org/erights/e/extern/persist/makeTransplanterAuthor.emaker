@@ -1,0 +1,102 @@
+# Copyright 2003 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+/**
+ *
+ * @param surgeon
+ * @author Mark S. Miller
+ */
+def makeTransplanterAuthor(surgeon) :near {
+    
+    /**
+     *
+     */
+    def makeTransplanter {
+        
+        /**
+         * mustBeSettled defaults to false
+         */
+        to addExit(value, exitName :String) :void {
+            makeTransplanter.addExit(value, exitName, false)
+        }
+        
+        /**
+         *
+         */
+        to addExit(value, exitName :String, mustBeSettled :boolean) :void {
+            surgeon.addExit(value, exitName, mustBeSettled)
+        }
+        
+        /**
+         *
+         */
+        to getSurgeon() :near {
+            return surgeon
+        }
+        
+        /**
+         *
+         * @param atomicFile Where to save or restore the subgraph from
+         */
+        to run(var atomicFile) :near {
+            
+            /**
+             *
+             */
+            def transplanter {
+                
+                /**
+                 * Used for saving the subgraph starting at 'root' to the
+                 * atomic file.
+                 */
+                to save(root) :void {
+                    def src := surgeon.serialize(root)
+                    atomicFile.getNextFile().setText(src)
+                    atomicFile.commit()
+                }
+                
+                /**
+                 * Moves the checkpoint to the new location, and remembers to
+                 * use the new atomic file from now on.
+                 * <p>
+                 * The TimeMachine must be in a Saved state, and the new
+                 * atomic file must not yet exist.
+                 */
+                to renameAtomicFileTo(newAtomicFile) :void {
+                    atomicFile.renameTo(newAtomicFile, null)
+                    atomicFile := newAtomicFile
+                }
+                
+                /**
+                 * Used to restore a subgraph from an atomic file.
+                 *
+                 * @return The root of the restored copy of the subgraph.
+                 */
+                to restore() :any {
+                    require(atomicFile.exists(), thunk {
+                        `Not found: $atomicFile`
+                    })
+                    def src := atomicFile.getNowFile().getText()
+                    surgeon.unserialize(src)
+                }
+                
+                /**
+                 * Deletes the atomic file (be careful!).
+                 * <p>
+                 * We still remember this atomic file as our atomic file. It's
+                 * data has simply been deleted from the filesystem.
+                 */
+                to delete() :void {
+                    atomicFile.delete()
+                }
+                
+                /**
+                 *
+                 */
+                to __printOn(out :TextWriter) :void {
+                    out.print(`<saves to ${atomicFile.getNowFile()}>`)
+                }
+            }
+        }
+    }
+}

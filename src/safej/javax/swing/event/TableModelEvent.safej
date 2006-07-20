@@ -1,0 +1,14 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class(safe,
+      "javax.swing.event.TableModelEvent",
+      statics(method(suppress, "run(TableModel)"),
+              method(suppress, "run(TableModel, int)"),
+              method(suppress, "run(TableModel, int, int)"),
+              method(suppress, "run(TableModel, int, int, int)"),
+              method(suppress, "run(TableModel, int, int, int, int)")),
+      methods(method("getFirstRow()"),
+              method("getLastRow()"),
+              method("getColumn()"),
+              method("getType()")))

@@ -1,0 +1,290 @@
+
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def makeDiskNavigatorAuthor(MessageDigest, traceline) :near {
+
+    def versionNumber := "0.7"
+    def byte := <import:java.lang.makeByte>.getTYPE()
+    traceline("made byte type")
+    def <io> := <import:java.io.*>
+
+    def fileHash(file, numBytesToHash) :any {
+        def MDMaker := MessageDigest
+        var blockSize := 100000
+        var hashedBytes := 0
+        def openFile(file) :any {
+            <io:FileInputStream>(file)
+        }
+        def sha := MDMaker.getInstance("SHA")
+        def inStream := openFile(file)
+        var result := []
+        if (numBytesToHash <= file.length()) {
+            while (hashedBytes < numBytesToHash) {
+                if (numBytesToHash - hashedBytes < blockSize) {
+                    blockSize := numBytesToHash - hashedBytes
+                }
+                def buf := inStream.readAvailable(blockSize)
+                sha.update(buf, 0, buf.size())
+                hashedBytes := hashedBytes + blockSize
+            }
+            result := sha.digest()
+        }
+        inStream.close()
+        traceline("hashed: " + result)
+        result
+    }
+
+    def fromFileCopierMaker (myFile) :any {
+        def fileCopier {
+            to sendByteBlocks(farRecipient, startIndex) :void {
+                traceline("send bytes recipient:" + farRecipient)
+                farRecipient <- amountBeingSent(myFile.length() - startIndex)
+                def inStream := <io:FileInputStream>(myFile)
+                inStream.skip (startIndex)
+                var blockSize := 50000
+                def sendRemainingBlocks() :void {
+                    def bytesAvailable := inStream.available()
+                    if (bytesAvailable > 0) {
+                        if (bytesAvailable < blockSize) {
+                            blockSize := bytesAvailable
+                        }
+                        def bytes := inStream.readAvailable(blockSize)
+                        traceline("about to send receiveByteBlock for" + (myFile.getAbsolutePath()))
+                        def sentPromise := farRecipient <- receiveByteBlock(bytes.size(),bytes)
+                        when (sentPromise) -> done(sent) :void {
+                            traceline("fromCopier got acknowledgement of sent block")
+                            sendRemainingBlocks()
+                        } catch err {traceline("lost connection transferrring file: " + err)}
+                    } else {
+                        traceline("fromCopier about to tell toCopier, all bytes sent")
+
+                        inStream.close()
+                        farRecipient <- allBytesSent()
+                    }
+                }
+                sendRemainingBlocks ()
+            }
+            to sendByteBlocks(farRecipient) :void {fileCopier.sendByteBlocks(farRecipient, 0)}
+            to sendToExistingFile(farRecipient, farSize, farHash) :void {
+                if (myFile.length() == farSize && fileHash(myFile, myFile.length()) == farHash ) {
+                    traceline("copy file is duplicate")
+                    farRecipient <- existingFileIsFine()
+                } else {
+                    traceline("copy file is not duplicate")
+                    fileCopier.sendByteBlocks(farRecipient)
+                }
+            }
+            to sendToPartialFile(farRecipient, farSize, farHash) :void {
+                if (myFile.length() >=  farSize && fileHash(myFile, farSize) == farHash ) {
+                    traceline("partial file is good:" + farSize + "my size" +myFile.length())
+                    farRecipient <- partialFileIsFine()
+                    fileCopier.sendByteBlocks(farRecipient, farSize)
+                } else {
+                    traceline("partial file is not duplicate")
+                    fileCopier.sendByteBlocks(farRecipient)
+                }
+            }
+        }
+    }
+
+    /**
+     * DiskNavigator
+     */
+    def diskNavigatorMaker (myHomeDirectoryCanonicalPath, myStorageNickName, root) :any {
+
+        traceline("into making disk navigator")
+        def makeParentedDir := <import:com.skyhunter.capDesk.makeCapDirAuthor>(root, traceline)
+
+
+        var myCurrentDir := makeParentedDir.fromFullPath(myHomeDirectoryCanonicalPath)
+        def homeDir := myCurrentDir
+
+        def toFileCopierMaker(myFile) :any {
+            def myCopyDir := myCurrentDir
+            var myOutputStream := null
+            var myTempFile := null
+            var myRemoteProgressObserver := null
+            def [copyPromise,resolver] := Ref.promise()
+            def fileCopier {
+                to copyEventually(fromCopier, farProgressObserver,
+                                  farLastResortForwarderToSelf, farLastResortForwarderToFromCopier) :any {
+                    traceline("into copy eventually" + farProgressObserver)
+                    myTempFile := myCopyDir[myFile.getName() + ".tmp"]
+                    traceline("did temp file creation")
+                    def sendBytesRequest(fromCopier,toCopier) :any {
+                        var fileVow := null
+                        if (myTempFile.exists()) {
+                            traceline("temp file exists")
+                            def hash := fileHash(myTempFile, myTempFile.length())
+                            fileVow := fromCopier <- sendToPartialFile(toCopier, myTempFile.length(), hash)
+                        } else if (myFile.exists()) {
+                            traceline("about to hash in file copier")
+                            def hash := fileHash(myFile, myFile.length())
+                            fileVow := fromCopier <- sendToExistingFile(toCopier, myFile.length(), hash)
+                        } else {
+                            fileVow := fromCopier <- sendByteBlocks(toCopier)
+                        }
+                        fileVow
+                    }
+                    # XXX when 3-vat com works right, this should use the actual fromCopier and toCopier,
+                    # not the last resort forwarders
+                    def fp := sendBytesRequest(farLastResortForwarderToFromCopier, farLastResortForwarderToSelf)
+                    traceline("fp: " + fp)
+                    when (fp) -> done1(connection) :void {
+                        Ref.whenBroken(fromCopier, def doBreak(err) :void {
+                            resolver.smash("lost file copy connection: " + err)
+                            farProgressObserver.copyFailed()
+                        })
+                    } catch err {
+                        sendBytesRequest (farLastResortForwarderToFromCopier, farLastResortForwarderToSelf)
+                        traceline("using forwarders to copy file")
+                        Ref.whenBroken(farLastResortForwarderToFromCopier, def breaker(p2) :void {
+                            resolver.smash("lost forwarded file copy connection" + p2)
+                            farProgressObserver.copyFailed()
+                        })
+                    }
+                    myRemoteProgressObserver := farProgressObserver
+                    copyPromise
+                }
+                to amountBeingSent(amount) :void {myRemoteProgressObserver <-setFileSize(amount)}
+                to receiveByteBlock(count,bytes) :void {
+                    if (myOutputStream == null) {
+                        myOutputStream := <io:FileOutputStream>(myTempFile)
+                        traceline("receiveBytes made stream")
+                    }
+                    traceline("receiving bytes")
+                    myOutputStream.write(bytes,0,count)
+                    try {myOutputStream.flush()} catch e{}
+                    myRemoteProgressObserver <- updateCount(count)
+                }
+                to existingFileIsFine() :void {
+                    myRemoteProgressObserver <- completed()
+                    resolver.resolve(true)
+                }
+                to partialFileIsFine() :void {
+                    traceline("in partialIsFine")
+                    myOutputStream := <io:RandomAccessFile>(myTempFile,"rw")
+                    myOutputStream.skipBytes(myTempFile.length())
+                    traceline("should have skipped by now")
+                }
+                to allBytesSent() :void {
+                    traceline("recipient fromCopier has been told, allBytesSent")
+                    #if output stream does not exist, file transferred was 0 length
+                    if (myOutputStream != null) {
+                        myOutputStream.close()
+                    } else if (! (myTempFile.exists())) {myTempFile.setText("")}
+                    if (myFile.exists()) {myFile.delete(null)}
+                    traceline("about to rename tmp file to real filename")
+                    myTempFile.renameTo(myFile, null)
+                    myRemoteProgressObserver <- completed()
+                    resolver.resolve(true)
+                }
+            }
+        }
+
+        /**
+         * FileModel
+         */
+        def fileModelMaker(myFile) :any {
+            def fileModel extends myFile {
+                to getFromCopier() :any {fromFileCopierMaker(myFile) }
+                to getToCopier() :any {toFileCopierMaker(myFile)}
+            }
+        }
+
+
+        traceline("making navigator")
+
+        /** */
+        def diskNavigator {
+
+            /**
+             * offers MakeAnotherNavigator(homeDirname) returns the navigator uri
+             */
+            to dupNavigator(): any {
+                traceline("into dupnavigator")
+                def newNav := diskNavigatorMaker(myHomeDirectoryCanonicalPath, myStorageNickName, root)
+                newNav.changeToDirectory (myCurrentDir.getCanonicalPath())
+                newNav
+            }
+            to getStorageName(): any {myStorageNickName}
+            to versionNumber(): any {versionNumber}
+            to getCurrentPath (): any {
+                myCurrentDir.getCanonicalPath()
+            }
+            to getParentPath(): any {myCurrentDir.getParentCapDir().getCanonicalPath()}
+            to newFile(name) :void {
+                def theFile := myCurrentDir[name]
+                if (! (theFile.exists())) {
+                    theFile.setText("")
+                }
+            }
+            to makeDir(dirName) :void {
+                myCurrentDir[dirName].mkdir(null)
+            }
+            to gotoHome() :void {
+                myCurrentDir := homeDir
+            }
+            to changeToDirectory(fullPathName) :void {
+                #traceline("change to directory: " + fullPathName)
+                myCurrentDir := makeParentedDir.fromFullPath(fullPathName)
+            }
+            to changeToSubdirectory(name) :void {
+                myCurrentDir := myCurrentDir.getChildCapDir(name)
+                traceline("diskNav changed to subdir: " + myCurrentDir.getRelPath())
+            }
+            to goUp() :void {myCurrentDir := myCurrentDir.getParentCapDir()}
+            to listCurrentSubdirectoriesAndFiles(): any {
+                def fileobjNames := myCurrentDir.list()
+                def dirTuple := [].diverge()
+                def fileTuple := [].diverge()
+                #traceline("into list subs, count:" + fileobjNames size())
+                for next in fileobjNames {
+                    if (myCurrentDir[next].isDirectory()) {
+                        dirTuple.push(next)
+                    } else {
+                        fileTuple.push(next)
+                    }
+                }
+                [dirTuple.sort().snapshot(), fileTuple.sort().snapshot()]
+            }
+            to getFileNamed(name) :any {
+                fileModelMaker(myCurrentDir[name])
+            }
+            to rename(fileName,newName) :void {
+                myCurrentDir[fileName].renameTo(myCurrentDir[newName], null)
+            }
+            to currentDirExists() :boolean {myCurrentDir.exists()}
+            to deleteFileObject(fileName) :void {
+                def fileObj := diskNavigator.getFileNamed(fileName)
+                escape ignoreProblem {
+                    fileObj.delete(ignoreProblem)
+                }
+                if (fileObj.exists() && fileObj.isDirectory()) {
+                    traceline("found undeleted dir")
+                    for each in fileObj {
+                        if (each.isFile()) {
+                            escape cantDelete {
+                                each.delete(cantDelete)
+                            } catch e2{
+                                traceline("no file delete" + e2)
+                            }
+                        } else {
+                            def subNavigator := diskNavigator.dupNavigator()
+                            traceline("got sub navigator for delete")
+                            subNavigator.changeToSubdirectory (fileName)
+                            traceline("about to del dir "+ each.getName())
+                            subNavigator.deleteFileObject(each.getName())
+                        }
+                    }
+                    escape cantDelete {
+                        fileObj.delete(cantDelete)
+                    } catch e3 {
+                        traceline("delete folder try 2 failed" + e3)
+                    }
+                }
+            }
+        }
+    }
+}

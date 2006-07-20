@@ -1,0 +1,25 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class("javax.swing.ListSelectionModel",
+      statics,
+      methods(method("setSelectionInterval(int, int)"),
+              method("addSelectionInterval(int, int)"),
+              method("removeSelectionInterval(int, int)"),
+              method("getMinSelectionIndex()"),
+              method("getMaxSelectionIndex()"),
+              method("isSelectedIndex(int)"),
+              method("getAnchorSelectionIndex()"),
+              method("setAnchorSelectionIndex(int)"),
+              method("getLeadSelectionIndex()"),
+              method("setLeadSelectionIndex(int)"),
+              method("clearSelection()"),
+              method("isSelectionEmpty()"),
+              method("insertIndexInterval(int, int, boolean)"),
+              method("removeIndexInterval(int, int)"),
+              method("setValueIsAdjusting(boolean)"),
+              method("getValueIsAdjusting()"),
+              method("setSelectionMode(int)"),
+              method("getSelectionMode()"),
+              method("addListSelectionListener(ListSelectionListener)"),
+              method("removeListSelectionListener(ListSelectionListener)")))

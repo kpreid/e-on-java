@@ -1,0 +1,152 @@
+#!/usr/bin/env rune
+
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def runeAuthor := <elang:cmd.runeAuthor>
+
+def HELP_STR := `$\
+Rune, used to Run E, can be invoked in several ways:
+
+1) From an external shell, using the bash driver script "rune":
+      $$ rune <s-opt>* --? (<fname> <arg>*)?
+2) From an external shell, using the e.jar file as an SWT-less java driver:
+      $$ java -jar <j-opt>* <ehome>/e.jar --rune <m-opts> --? (<fname> <arg>*)?
+      # For more on using the e.jar as a command, do
+      $$ java -jar <j-opt>* <ehome>/e.jar --help
+3) From an external shell, by invoking "java" directly:
+      $$ java <j-opt>* <j-stuff> <m-opts> --? (<fname> <arg>*)?
+4) From inside E using the "rune" function, to run in the same jvm process:
+      ${"?"} rune([<r-opt>*, "--"?, (<fname>, <arg>*)?])
+5) From inside E, to run in a spawned jvm process:
+      # XXX Not yet implemented:
+      ${"?"} rune.spawn([<s-opt>*, "--"?, (<fname>, <arg>*)?])
+
+<j-stuff> is the argument sequence:
+    -cp <classpath>     # Include at least e.jar and swt.jar
+    -De.home=<ehome>    # Where E is installed
+    -Djava.library.path=<native-library-directory>
+    org.erights.e.elang.interp.Rune
+
+Each <arg> can be anything, including, in case #4 above, non-strings.
+In case #4, <fname> can also be a non-string, in which case it will be directly
+invoked as the launcher.
+
+The various options are defined by
+  <prop>  ::= -D<propName>=<value>    Defines a property.
+  <e-opt> ::= --<optionName>=<value>  Defines an E option.
+          |   --<optionName>          Defines this E option to be true.
+    Where <optionName> is not a <specialOp>. See below.
+    If the "--show" E option is true, then show what would have been run.
+  <r-opt> ::= <prop> | <e-opt>        Properties apply only to this invocation.
+  <m-opts> ::= <prop>* <r-opt>*       Initial properties applied jvm-wide
+                                      but only after jvm launch.
+  <j-opt> ::= Any option accepted by the "java" command.
+  <s-opt> ::= <prop>                  Passed as an option to "java" command.
+          |   -J<j-opt>               <j-opt> passed as option to "java".
+                    For example, "$$ rune -J-version" shows the Java version.
+          |   -cpa <afterpath>        Adds to end of classpath.
+          |   -cpb <beforepath>       Adds to beginning of classpath.
+          |   -show                   Shows the java command line, rather
+                                      than executing it.
+          |   <e-opt>                 Defines an E option.
+
+<fname> says what to launch, and determines what launcher to use to launch it.
+  <fname> ::= A non-string            <fname> is used directly as the launcher.
+          |   <fbase>.<ext>           Normally interpreted as a filename.
+                                      <fbase> is any string not starting with
+                                      "-", or anything if the previous argument
+                                      was a "--".
+                                      <ext> (the text after the last ".") is
+                                      mangled to name the launcher.
+          |   -.<ext>                 Normally interpreted as standard input.
+          |   -                       Short for "-.e".
+          |   --<specialOp>           Use "$$ rune --help --<specialOp>" for
+                                      help on using that specialOp.
+          |   --<specialOp>.<ext>     Use specialOp as specialized for that
+                                      extension.
+  If <fname> is absent, it defaults to "-.e" and defaults the "--interact"
+  option to true.
+<specialOp> ::= "help" | "version" | "src"
+
+To learn more, say:
+    $$ rune --help --help              Help on using "--help".
+    $$ rune --help.<ext>               How to run programs with that extension.
+`
+
+
+/**
+ *
+ */
+def __helpLauncherAuthor {
+
+    /**
+     *
+     */
+    to getHelp(_) :String {
+        `$\
+    $$ rune --help.<ext>            How to run programs with that extension.
+    For example:
+        $$ rune --help.e            On how to run *.e files.
+
+    $$ rune --help --<specialOp>    Help on using that <specialOp>.
+    For example:
+        $$ rune --help --help       Prints this help
+        $$ rune --help --version    Help on using "--version"
+        $$ rune --help --src        Help on using "--src"
+`
+    }
+
+    /**
+     * @return null
+     */
+    to getOptVersionText(props) :void { return null }
+
+    /**
+     *
+     */
+    to run(auths) :near {
+
+        def metaout := auths["metaout"]
+
+        /**
+         *
+         */
+        def __helpLauncher {
+
+            /**
+             *
+             */
+            to run(props, options, _, args) :vow[boolean] {
+                return __helpLauncher.interpret(props, options, "", args)
+            }
+
+            /**
+             *
+             */
+            to interpret(props, var options, _, args) :vow[boolean] {
+                def optExt
+                def restArgs
+                switch (args) {
+                    match [==null, bind optExt] + bind restArgs {}
+                    match [bind optExt] + bind restArgs {}
+                }
+                def helpText := if (null == optExt) {
+                    HELP_STR
+                } else {
+                    def launcherAuthorName :=
+                      runeAuthor.getLauncherAuthorName(optExt)
+                    def launcherAuthor := <import>[launcherAuthorName]
+                    def subText := launcherAuthor.getHelp(restArgs)
+                    `$\
+Help on "$optExt":
+
+$subText
+For general Rune help, use "$$ rune --help"`
+                }
+                metaout.println(helpText)
+                return true
+            }
+        }
+    }
+}

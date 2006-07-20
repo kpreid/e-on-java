@@ -1,0 +1,238 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def <tools> := <import:org.erights.e.tools.*>
+def updocScriptMaker := <tools:updoc.updocScriptMaker>
+# def trimLines := <tools:text.trimLines>
+
+# def foldLines(lines) :any { trimLines(lines).replaceAll("\\\n", "") }
+
+/**
+ * Parses an updoc script into a script object as made by updocScriptMaker.
+ *
+ * @deprecated Use makeUpdocParser, which returns a term-tree rather than a
+ *             custom kind of object tree.
+ * @author Terry Stanley
+ * @author Mark S. Miller
+ */
+def makeOldUpdocParser(source) :any {
+    def lines := source.split("\n")
+    var index := 0
+
+    def vatNames := [].diverge()
+
+    /**
+     * <tt>readExpr</tt> reads a single or multi-line expression.
+     * <p>
+     * It expects the formats shown below.
+     * <pre>
+     *     ? x := 2 + 3
+     * </pre>
+     * or
+     * <pre>
+     *     ? if (answers != null) {
+     *     >     printAnswers(answers, out)
+     *     > }
+     * </pre>
+     *
+     * @return The expression as a <tt>String</tt>.
+     *         The result includes newlines after each
+     *         line of the expression. All <tt>Updoc</tt> syntax
+     *         and optional spaces are excluded.
+     */
+    def readExpr() :Twine {
+        var result := ""
+        var current := lines[index].trim()
+        while (true) {
+            # skip "?" (or ">") and (optional) space
+            current := current(1, current.size())
+            if (current =~ twine` @rest`) {
+                current := rest
+            }
+            # put back newline removed by split
+            result += current + "\n"
+
+            index += 1
+            if (index >= lines.size()) {
+                break
+            }
+            current := lines[index].trim()
+
+            if (! (current.startsWith(">"))) {
+                break
+            }
+        }
+        result
+    }
+
+    /**
+     * <tt>readOptAnswer</tt> reads an optional single or multi-line answer.
+     * <p>
+     * It expects the formats shown below,
+     * <pre>
+     *     # value: 5
+     * </pre>
+     * or
+     * <pre>
+     *     # value: "foo
+     *     #        bar"
+     * </pre>
+     * For answers with the keyword "problem" the stack trace is skipped.
+     *
+     * @return The answer as a <tt>ConstList</tt> or <tt>null</tt>.
+     *         The result includes the key-value pair with all
+     *         <tt>Updoc</tt> syntax and optional spaces excluded.
+     */
+    def readOptAnswer() :any {
+        var keyword := null
+        var answer := ""
+        if (index >= lines.size()) {
+            return null
+        }
+        if (lines[index].trim() =~ `#@prefix:@text`) {
+            keyword := prefix.trim()
+            # put back newline removed by split
+            answer += text.trim() + "\n"
+            index += 1
+            while (index < lines.size() &&
+                     lines[index].trim() =~ `#@rest`) {
+                # multi-line answer block
+                def nextLine := rest.trim()
+                # skip over the stack trace which can vary from run to run
+                if (nextLine =~ `` && keyword =~ `problem`) {
+                    index += 1
+                    while (index < lines.size() &&
+                             lines[index].trim() =~ `#@_`) {
+                        index += 1
+                    }
+                    break
+                }
+                answer += nextLine + "\n"
+                index += 1
+            }
+            answer := answer.replaceAll("\\\n", "")
+            require(answer.endsWith("\n"), thunk{
+                `${E.toQuote(answer)} must end with a newline`
+            })
+            return [keyword.bare(), answer]
+        } else {
+            return null
+        }
+    }
+
+    /**
+     * <tt>readBlankLine</tt> tests for a blank line and skips over it.
+     */
+    def readBlankLine() :void {
+        if (index < lines.size() && lines[index].trim() == "") {
+            index += 1
+        }
+    }
+
+    /**
+     * <tt>readAnswers</tt>
+     *
+     * @return The answers as a <tt>ConstMap</tt> mapping keywords to answers.
+     */
+    def readAnswers() :any {
+        def answers := [].asMap().diverge()
+        while (readOptAnswer() =~ [keyword, answer]) {
+            answers[keyword] := answer
+            # blank line follows answer block
+            readBlankLine()
+        }
+        answers.snapshot()
+    }
+
+    /**
+     * <tt>readDirective</tt> reads an <tt>Updoc</tt> directive. Currently,
+     * only vat directives are recognized. Use these directives to create
+     * and switch vats in multi-vat tests.
+     * <p>
+     * To create a new vat named client:
+     * <pre>
+     *     ?? in new vat client
+     * </pre>
+     * To switch to the vat named cient:
+     * <pre>
+     *     ?? in vat client
+     * </pre>
+     *
+     * @return The directive as a <tt>vatDirective</tt>.
+     */
+    def readDirective() :any {
+        def current := lines[index].trim()
+        switch (current) {
+            match `?? in new vat @name` {
+                index += 1
+                vatNames.push(name)
+                updocScriptMaker.makeVatDirective(name)
+            }
+            match `?? in vat @name` {
+                index += 1
+                updocScriptMaker.makeVatDirective(name)
+            }
+            match `?@_` {
+                vatNames.push("home")
+                updocScriptMaker.makeVatDirective("home")
+            }
+        }
+    }
+
+    /**
+     * <tt>readSequence</tt> reads a directive and one or more test cases.
+     *
+     * @return A <tt>sequence</tt>object.
+     */
+    def readSequence() :any {
+        def current := lines[index].trim()
+        def directive := readDirective()
+        def cases := [].diverge()
+        while (index < lines.size()) {
+            def current := lines[index].trim()
+            if (current.startsWith("??")) {
+                break
+            } else if (current.startsWith("?")) {
+                def expr := readExpr()
+                def answers := readAnswers()
+                cases.push(updocScriptMaker.makeTestcase(expr, answers))
+            } else {
+                index += 1
+            }
+        }
+        updocScriptMaker.makeSequence(directive, cases.snapshot())
+    }
+
+    def oldUpdocParser {
+
+        /**
+         * <tt>readAnswers</tt>
+         *
+         * @return The answers as a <tt>ConstMap</tt> mapping keywords to
+         *         answers.
+         */
+        to readAnswers() :near {
+            readAnswers()
+        }
+
+        /**
+         * <tt>readScript</tt> reads an <tt>Updoc</tt> script.
+         *
+         * @return A <tt>script</tt> object.
+         */
+        to readScript() :near {
+            def sequences := [].diverge()
+            while (index < lines.size()) {
+                def current := lines[index].trim()
+                if (current.startsWith("?")) {
+                    sequences.push(readSequence())
+                } else {
+                    index += 1
+                }
+            }
+            updocScriptMaker.makeScript(vatNames.snapshot(),
+                                        sequences.snapshot())
+        }
+    }
+}
+

@@ -1,0 +1,146 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def makeCausalityGraph:= <import:org.erights.e.tools.causeway.makeCausalityGraph>
+
+def ceMap := [].asMap().diverge()
+
+def see(c, e) :any {
+    ceMap[[c, e]] := [c, e]
+}
+
+def hasBeenSeen(c, e) :boolean {
+    if (ceMap.fetch([c, e], thunk{}) == null) {
+        return false
+    } else {
+        return true
+    }
+}
+
+def pruneGraph(cause, effectEdge, getRelevance, result :near, ordered, traceline) :void {
+    
+    def effect := effectEdge.getTarget()
+    
+    if (hasBeenSeen(cause, effect)) {
+        return
+    }
+    see(cause, effect)
+    
+    def [_, vid, _] := effect.getID()
+    if (vid == "ether") {
+        for ge => ne in effect.outs() {
+            for gge => nne in ne.outs() {
+                
+                def [sc, _] := gge.getContext()
+                if (sc == "SCsend") {
+                    
+                    def origin
+                    if (result.optGet(cause.getID()) =~ origin2 :notNull) {
+                        bind origin := origin2
+                    } else {
+                        bind origin := result.makeMessageEvent(cause.getID(), cause.getMessage())
+                        result.addMessageEvent(origin)
+                    }
+                    
+                    def target
+                    if (result.optGet(nne.getID()) =~ target2 :notNull) {
+                        bind target := target2
+                    } else {
+                        bind target := result.makeMessageEvent(nne.getID(), nne.getMessage())
+                        result.addMessageEvent(target)
+                    }
+                    def [_, stack] := effectEdge.getContext()
+                    result.makeMessageContext(origin, target, ["SCsend", stack])
+                    
+                } else {
+                    pruneGraph(ne, gge, getRelevance, result, ordered, traceline)
+                }
+                
+                for edge => _ in nne.outs() {
+                    pruneGraph(nne, edge, getRelevance, result, ordered, traceline)
+                }
+            }
+        }
+    } else {
+        
+        switch (getRelevance(cause, effectEdge, traceline)) {
+            match `clip` {}
+            match `skip` {
+                for grandEdge => _ in effect.outs() {
+                    pruneGraph(cause, grandEdge, getRelevance, result, ordered, traceline)
+                }
+            }
+            match `keep@why`{
+                
+                def origin
+                if (result.optGet(cause.getID()) =~ origin2 :notNull) {
+                    bind origin := origin2
+                } else {
+                    bind origin := result.makeMessageEvent(cause.getID(), cause.getMessage())
+                    result.addMessageEvent(origin)
+                }
+                
+                def target
+                if (result.optGet(effect.getID()) =~ target2 :notNull) {
+                    bind target := target2
+                } else {
+                    bind target := result.makeMessageEvent(effect.getID(), effect.getMessage())
+                    result.addMessageEvent(target)
+                }
+                
+                def mc := result.makeMessageContext(origin, target, effectEdge.getContext())
+                ordered.push(mc)
+                
+                mc.rememberWhy(why)
+                
+                for grandEdge => _ in effect.outs() {
+                    pruneGraph(effect, grandEdge, getRelevance, result, ordered, traceline)
+                }
+            }
+        }
+    }
+}
+
+
+/**
+ * <tt></tt>
+ * <p>
+ *
+ */
+def makePrunedCausalityTree(firstCause, getRelevance, traceline) :near {
+    
+    def pruned := makeCausalityGraph(traceline)
+    def ordered := [].diverge()
+    
+    for edge => _ in firstCause.outs() {
+        pruneGraph(firstCause, edge, getRelevance, pruned, ordered, traceline)
+    }
+    
+    def prunedCausalityTree {
+        
+        to getTop() :near {
+            def roots := pruned.getRoots()
+            if (roots.size()== 1) {
+                return roots[0]
+            }
+            def top := pruned.makeMessageEvent(["pruned", "pruned", "pruned"], "top")
+            pruned.addMessageEvent(top)
+            for r in roots {
+                pruned.makeMessageContext(top, r, ["", []])
+            }
+            return top
+        }
+        to getOrdered() :near {
+            return ordered
+        }
+    }
+    
+    return prunedCausalityTree
+}
+
+
+
+
+
+
+

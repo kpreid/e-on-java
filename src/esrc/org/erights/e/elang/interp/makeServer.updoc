@@ -1,0 +1,45 @@
+#!/usr/bin/env rune
+
+# Copyright 2004 Hewlett Packard, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+? def makeServer := <elang:interp.makeServerAuthor>(<unsafe>, introducer)
+# value: <makeServer>
+
+? introducer.onTheAir()
+# value: ["3DES_SDH_M2", "3DES_SDH_M"]
+
+? def [server, env, vat] := makeServer(`
+>   def caller(targ, verb, args) :any { return E.call(targ, verb, args) }`)
+# value: [<Promise>, <Promise>, <Promise>]
+
+? interp.waitAtTop(promiseAllFulfilled([server, env, vat]))
+
+? server
+# value: <Far ref>
+
+? env.size()
+# value: 105
+
+? vat
+# value: <Vat newServerVat in <runs in newServerVat>>
+
+? def farPrintlnSlot := env["&println"]
+# value: <Far ref>
+
+? def farPrintln := farPrintlnSlot <- getValue()
+# value: <Remote Promise>
+
+? interp.waitAtTop(farPrintln)
+
+? farPrintln
+# value: <Far ref>
+
+? def x := server <- run(farPrintln, "run", ["Foo!!"])
+# value: <Remote Promise>
+
+Foo!!
+
+? interp.waitAtTop(x)
+? x == null
+# value: true

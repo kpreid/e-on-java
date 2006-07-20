@@ -1,0 +1,49 @@
+# Copyright 2005 Mark S. Miller under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+pragma.enable("easy-return")
+
+/**
+ * Defines the builtin '__Empty' guard, which checks if the specimen's size()
+ * was 0 <b>at the time is was coerced</b>.
+ * <p>
+ * Used in the expansion of a map-pattern that has no rest pattern. The
+ * expanded rest pattern is simply ':__Empty'.
+ * <p>
+ * This guard is less useful than you may expect, as demonstrated by the updoc
+ * script at the end of __Empty.emaker. That's why it's considered internal
+ * and prefixed with "__".
+ *
+ * @see __extract
+ * @author Mark S. Miller
+ */
+def Empty implements Guard {
+
+    /**
+     * Empty is a non-transforming guard -- when it succeeds, the
+     * result is the same as the specimen.
+     */
+    to coerce(specimen, optEjector) :any {
+        if (specimen.size().isZero()) {
+            return specimen
+        } else {
+            throw.eject(optEjector, `Not empty: $specimen`)
+        }
+    }
+
+    /**
+     * Prints "__Empty"
+     */
+    to __printOn(out :TextWriter) :void { out.print("__Empty") }
+}
+
+? var x :__Empty := [].diverge()
+# value: [].diverge()
+
+? x.push(3)
+
+? x
+# value: [3].diverge()
+
+? x := x
+# problem: Not empty: [3].diverge()

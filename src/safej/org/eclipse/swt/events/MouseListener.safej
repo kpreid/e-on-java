@@ -1,0 +1,5 @@
+class("org.eclipse.swt.events.MouseListener",
+           statics,
+           methods(method(suppress, "mouseDoubleClick(MouseEvent)"),
+                   method(suppress, "mouseDown(MouseEvent)"),
+                   method(suppress, "mouseUp(MouseEvent)"))) 

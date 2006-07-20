@@ -1,0 +1,27 @@
+#!/usr/bin/env rune
+
+# Copyright 2004 Mark S. Miller, under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+pragma.enable("easy-return")
+pragma.enable("explicit-result-guard")
+pragma.enable("lambda-args")
+pragma.enable("anon-lambda")
+pragma.enable("one-method-object")
+
+
+def __if0.then__control_1_0(compoundFn) :any {
+    def thenControl {
+        to else__control_0(elseFn) :any {
+            def elseControl.run__control() :any {
+                def [[test :boolean], thenFn] := compoundFn()
+                return test.pick(thenFn, elseFn)()
+            }
+            return elseControl
+        }
+        to run__control() :any {
+            return thenControl.else__control_0(fn{null}).run__control()
+        }
+    }
+    return thenControl
+}

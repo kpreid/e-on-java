@@ -1,0 +1,56 @@
+#!/usr/bin/env rune
+
+# Copyright 2004 Mark S. Miller, under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+pragma.enable("easy-return")
+pragma.enable("explicit-result-guard")
+pragma.enable("lambda-args")
+pragma.enable("anon-lambda")
+pragma.enable("one-method-object")
+
+def makeSeries := <elang:control.makeSeries>
+
+/**
+ * Just handles some simple one-level for-loop-like cases.
+ * <p>
+ * If you want to do something complex, use makeSeries instead, or as the
+ * collection argument of a __for
+ */
+def __for0 {
+    to each__control_1_2(compoundFn) :any {
+        def each2Control.run__control() :void {
+            def [[coll], assocFn] := compoundFn()
+            makeSeries(coll).each2(assocFn)
+        }
+        return each2Control
+    }
+    to each__control_1_1(compoundFn) :any {
+        def each1Control.run__control() :void {
+            def [[coll], each1Fn] := compoundFn()
+            makeSeries(coll).each(each1Fn)
+        }
+        return each1Control
+    }
+    to map__control_1_2(compoundFn) :any {
+        def map2Control.run__control() :List {
+            def [[coll], map2Fn] := compoundFn()
+            return makeSeries(coll).map2(map2Fn).asList()
+        }
+        return map2Control
+    }
+    to map__control_1_1(compoundFn) :any {
+        def map1Control.run__control() :List {
+            def [[coll], map1Fn] := compoundFn()
+            return makeSeries(coll).map(map1Fn).asList()
+        }
+        return map1Control
+    }
+    to fold__control_2_2(compoundFn) :any {
+        def foldControl.run__control() :any {
+            def [[seed,coll], fold2Fn] := compoundFn()
+            return makeSeries(coll).fold(seed, fold2Fn)
+        }
+        return foldControl
+    }
+}

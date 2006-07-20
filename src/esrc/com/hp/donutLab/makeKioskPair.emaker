@@ -1,0 +1,180 @@
+#!/usr/bin/env rune
+
+# Copyright 2004 Hewlett Packard, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+pragma.disable("explicit-result-guard")
+
+/**
+ * The Kiosk is the place where services can advertise their
+ * availability.
+ * @param account This is an IOUMint account to be used by this kiosk
+ * @param optBaseKiosk If the optBaseKiosk exists, the new kiosk will
+ *        load its serviceDescs from it, and will use the list of
+ *        other kiosks retrieved therefrom to post itself as a
+ *        kiosk service everywhere.
+ *
+ */
+def makeKioskPair (account :rcvr,
+                   optBaseKiosk :rcvr,
+                   nickName :String,
+                   traceRcvr :rcvr) :near {
+    def traceLine(message) {
+        traceRcvr <- run(`Kiosk $nickName reports: $message`)
+    }
+
+    # kioskDesc is the serviceDescription for kiosks
+    def kioskDesc := "kiosk"
+    def serverMap := [].asMap().diverge()
+
+    def makeLocatableServer(server :rcvr, payment :int, duration :int) :near {
+        def rating := 0.0 - (payment / duration)
+        def locatableServer {
+            to getServer() :rcvr {return server}
+            to getRating() :float64 {return rating}
+            to op__cmp(otherLocatable) :near {
+                return rating.op__cmp(otherLocatable.getRating())
+            }
+        }
+    }
+
+    def vowTransfer(offerVow, acceptorVow) :vow[int] {
+        return when (offerVow, acceptorVow, account) ->
+          holdsReady(offer, acceptor, acct) :vow[int]{
+            acct <- transfer(offer, acceptor)
+            return acceptor <- refund()
+        } catch prob {
+            traceLine("payment failed" + prob)
+            throw (prob)
+        }
+    }
+
+    def validateServiceDesc(serviceDesc :String) {
+        if (!(serverMap.maps(serviceDesc))) {
+            serverMap[serviceDesc] := [].diverge()
+            traceLine("now have service description: " + serviceDesc)
+        }
+    }
+
+    def crossAdvertise(service, amountPaid, minutesToExpiration, kiosk) {
+        traceLine(`into crossAdvertising`)
+        def knownKiosks := serverMap.fetch(kioskDesc, thunk{[]})
+        var alreadyKnown := false
+        for each in knownKiosks {
+            if (each.getServer() == service) {alreadyKnown := true}
+        }
+        if (!alreadyKnown) {
+            traceLine("new kiosk, post my self-kiosk to it")
+            service <- postAdvertisement(kioskDesc,
+                                         account <- offer(amountPaid),
+                                         minutesToExpiration*2,
+                                         kiosk)
+        }
+    }
+
+
+    def kiosk {
+        to getNickName() :String {return nickName}
+        /**
+         * @param serviceDesc This is the description of the service
+         *        being advertised. If this is just a string, the
+         *        description is treated as the key in the map of
+         *        service lists (one list for each service description).
+         *        Currently, if the description is not just a string
+         *        the method throws an exception.
+         *
+         * @param payment This is an offer (a hold) created by an account
+         *        on the same mint as the kiosk's account. The size of the
+         *        payment (which must be >0) impacts where in the list of ads
+         *        list this ad for this service will be placed.
+         *
+         * @param minutesToExpiration specifies the duration of the
+         *        advertisement. The location of the ad in the list of ads for
+         *        services with the same service description is, the payment
+         *        is divided by the minutesToExpiration to establish burn
+         *        rate. Servers are listed by burn rate in descending order.
+         *
+         * @param service is the liveref to the server whose services are
+         *        being advertised
+         *
+         * @return true if the ad is posted
+         */
+        to postAdvertisement(serviceDesc,
+                             payment :rcvr,
+                             minutesToExpiration :(int>0),
+                             service :rcvr) :vow {
+
+            def hold := account <- accept()
+            def amountPaid := vowTransfer(payment, hold)
+            def result := when (amountPaid) -> reallyPaid(rp) :boolean {
+                traceLine("really paid: " + amountPaid)
+                if (amountPaid > 0) {
+                    validateServiceDesc(serviceDesc)
+                    traceLine("validated service desc")
+                    if (serviceDesc == kioskDesc) {
+                        crossAdvertise(service,
+                                       amountPaid,
+                                       minutesToExpiration,
+                                       kiosk)
+                    }
+                    traceLine("about to get map entry: " + serviceDesc)
+                    def adList := serverMap[serviceDesc]
+                    traceLine("got map entry: " + serviceDesc)
+                    adList.push(makeLocatableServer(service,
+                                                    amountPaid,
+                                                    minutesToExpiration))
+                    adList.sort()
+                    return true
+                } else {
+                    traceLine("no money")
+                    return false
+                }
+            } catch prob {
+                traceLine("payment failed: " + prob)
+                return false
+            }
+            return result
+        }
+
+        /**
+         * @param serviceDesc If the serviceDesc is a string, it is
+         *        treated as the key in a map. Currently it is an
+         *        error to use a non-string serviceDesc
+         * @return Returns a list of servers that match the serviceDesc
+         *         The servers are listed in order of the financial burn
+         *        rate for the server: the server that paid the most money
+         *        for the shortest duration is listed first
+         */
+        to getAdvertisedServers(serviceDesc ) :near {
+            def serverList := [].diverge()
+            if (serviceDesc =~ sd :String) {
+                traceLine("into getAdvertisedServers for: " + serviceDesc)
+                for each in serverMap.fetch(serviceDesc, thunk{[]}) {
+                    serverList.push(each.getServer())
+                }
+            }
+            return serverList.snapshot()
+        }
+    }
+    def bossFacet {}
+
+    def advertiseThisKiosk() {
+        when (optBaseKiosk <- getAdvertisedServers(kioskDesc)) ->
+          gotServers(servers) {
+
+            for each in (servers.with(optBaseKiosk)) {
+                each <- postAdvertisement(kioskDesc,
+                                          account <-offer (1),
+                                          600,
+                                          kiosk)
+                traceLine("posted to another kiosk")
+            }
+        } catch kioskErr {}
+    }
+    traceLine("will now start advertiseThisKiosk")
+    advertiseThisKiosk()
+
+    return [kiosk, bossFacet]
+
+}
+

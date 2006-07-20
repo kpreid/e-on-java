@@ -1,0 +1,27 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class("java.awt.Dialog",
+      statics(method(suppress, "run(Frame)"),
+              method(suppress, "run(Frame, boolean)"),
+              method(suppress, "run(Frame, String)"),
+              method(suppress, "run(Frame, String, boolean)"),
+              method(suppress, "run(Frame, String, boolean, GraphicsConfiguration)"),
+              method(suppress, "run(Dialog)"),
+              method(suppress, "run(Dialog, String)"),
+              method(suppress, "run(Dialog, String, boolean)"),
+              method(suppress, "run(Dialog, String, boolean, GraphicsConfiguration)")),
+      methods(method(suppress, "addNotify()"),
+              method(suppress, "isModal()"),
+              method(suppress, "setModal(boolean)"),
+              method(suppress, "getTitle()"),
+              method("setTitle(String)"),
+              method("show()"),
+              method(reject, "hide()"),
+              method("dispose()"),
+              method(suppress, "isResizable()"),
+              method(suppress, "setResizable(boolean)"),
+              method(suppress, "setUndecorated(boolean)"),
+              method(suppress, "isUndecorated()"),
+              method(suppress, "getAccessibleContext()")),
+      comment("Replaced by eDialogPromiser to avoid vat blocking. Some features enabled for continued use of FileDialog till replacement available"))

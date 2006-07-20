@@ -1,0 +1,78 @@
+[fully] constant (or immutable)
+[fully] transparent
+[fully] selfless
+fully deterministic
+fully confined
+
+
+
+near auditor, near object
+-------------------------
+
+def near_object : near_auditor {
+    ...
+}
+
+near_auditor audit(near_ast, near_env)
+-> near_object adds near_auditor to its myAuditors
+
+audited(near_auditor, near_object)
+-> look up near_auditor in near_object's myAuditors
+
+
+far auditor, near object
+------------------------
+
+def near_object : far_auditor {
+    ...
+}
+
+far_auditor audit(near_ast, near_env)
+-> near_object adds far_auditor to its myAuditors
+
+audited(far_auditor, near_object)
+-> look up far_auditor in near_object's myAuditors
+
+
+near auditor (on A), far object (on B)
+--------------------------------------
+
+on B:
+def near_object : far_auditor {
+    ...
+}
+
+on B:
+far_auditor audit(near_ast, near_env)
+
+on A:
+audited(near_auditor, far_object)
+
+
+
+far auditor (on B), far object (on C)
+-------------------------------------
+
+on C:
+def near_object : far_auditor {
+    ...
+}
+
+on C:
+far_auditor audit(near_ast, near_env)
+
+on A:
+audited(far_auditor, far_object)
+
+audited(far_auditor, far_object)
+
+
+
+
+
+can we ever know for sure that a far object satisfies a near auditor?
+what if a proxy decides to forward __optSealedDispatch but not any other
+methods?
+
+
+we can only audit an object if we have a local copy with complete source

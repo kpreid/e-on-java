@@ -1,0 +1,33 @@
+# Copyright 2003 Hewlett Packard, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def templateGraphElement := <elib:tables.graph.templateGraphElement>
+
+/**
+ * <tt>templateEdge</tt> makes an edge object for a directed graph.
+ *
+ * @param self A derived edge object.
+ * @param origin The vertex this edge originates from.
+ * @param target The vertex this edge terminates in.
+ * @return A base edge object.
+ * @author Terry Stanley
+ * @author Mark S. Miller
+ */
+def templateEdge(self, origin, target) :near {
+    
+    def originNextOut := origin.getNextOut()
+    def targetNextIn := target.getNextIn()
+    
+    def baseEdge extends
+      templateGraphElement(self, target, targetNextIn, origin, originNextOut) {
+        
+        to getOrigin() :any { return origin }
+        to getTarget() :any { return target }
+    }
+    originNextOut.setPrevOut(self)
+    origin.setNextOut(self)
+    targetNextIn.setPrevIn(self)
+    target.setNextIn(self)
+    
+    return baseEdge
+}

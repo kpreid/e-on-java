@@ -1,0 +1,136 @@
+#!/usr/bin/env rune
+
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def Throwable := <type:java.lang.Throwable>
+
+def EExpr := <type:org.erights.e.elang.evm.EExpr>
+def Expr := any[EExpr, Twine, <type:org.quasiliteral.term.Term>]
+
+/**
+ * Reader eventually reads from some input the next expression to be evaluated
+ * and printed.
+ * <p>
+ * Terminology note: We use the term "reveal" as it's used in Joule (thanks,
+ * Dave Krieger): To say "function <tt>f</tt> <i>reveals</i> <tt>3</tt>" is to
+ * say that it returns a reference that will eventually resolve to a
+ * <tt>3</tt>. It is the asynchronous analog to the conventional phrase
+ * "function <tt>f</tt> <i>returns</i> <tt>3</tt>" used to describe
+ * synchronous computation.
+ * <p>
+ * The Reader reveals one of
+ * <ul>
+ * <li>an Expr, which is of a type acceptable to the EvalPrinter we
+ *     are feeding. Typically, this will either be a Twine or an AST
+ *     of some sort, like an EExpr or Term-tree.
+ * <li><tt>null</tt>, indicating that the input was exhausted (reached
+ *     end-of-file), so the repl should exit indicating success.
+ * <li>If the returned vow instead resolves to broken, then the problem with
+ *     which it's broken indicates a read-time problem, such as a
+ *     {@link SyntaxException}. Our EvalPrinter will then be asked to report
+ *     the problem, and to determine how to proceed from there.
+ * </ul>
+ */
+interface Reader() :vow[nullOk[Expr]]
+
+/**
+ * Eventually handles each successive output from a Reader, and indicates how
+ * the repl should proceed from there.
+ */
+interface EvalPrinter {
+
+    /**
+     * evalPrint eventually both evaluates and prints expr, and then reveals a
+     * boolean exit-status to indicate whether we're done and can stop the
+     * repl:<ul>
+     * <li><tt>false</tt> means we're not done, and should proceed.
+     * <li><tt>true</tt> means the program voluntarily exited indicating
+     *     success, so the repl should likewise exit indicating success.
+     * <li>If the returned vow instead resolves to broken, this means either
+     *     the program voluntarily exited indicating the broken reference's
+     *     problem as the reason for failure, or that the evaluation itself
+     *     had an unrecoverable problem. In either case, the repl should exit
+     *     indicating this problem as its reason for failure.
+     * </ul>
+     * The last two cases are <i>final exit statuses</i>.
+     */
+    to evalPrint(expr :Expr) :vow[boolean]
+
+    /**
+     * When our Reader indicates a read-time problem, the evalPrinter is asked
+     * to eventually report the problem as it likes, and then to indicate how
+     * to proceed by revealing an exit status (see {@link #evalPrint/1}).
+     */
+    to reportReadProblem(readProblem :Throwable) :vow[boolean]
+}
+
+
+/**
+ * Invoked to set the read-eval-print loop in motion.
+ * <p>
+ * When the loop is done, a Repl will reveal a final exit status:<ul>
+ * <li><tt>true</tt> to indicate that it completed successfully, or
+ * <li>a broken reference to indicate that it failed. The broken reference's
+ *     problem explains the alleged reason for failure.
+ * </ul>
+ */
+interface Repl() :vow[boolean]
+
+/**
+ * Makes a REPL -- a Read-Eval-Print loop.
+ *
+ * @param reader a rcvr[{@link Reader}]. We don't declare the type of the
+ *               parameter that way because we haven't yet resolved the module
+ *               vs interface scoping conflict. This parameter is a rcvr to a
+ *               Reader (a possibly eventual reference to a Reader) to allow
+ *               for a reader which blocks on its input, as with an interactive
+ *               command line, and which therefore needs to be placed in a
+ *               separate vat.
+ * @param evalPrinter an {@link EvalPrinter}, but not declared that way for the
+ *                    same reason.
+ * @return a {@link Repl} function that, when called, sets the loop in motion.
+ */
+def makeRepl(reader :rcvr, evalPrinter) :Repl {
+
+    def repl implements Repl {
+        to run() :vow[boolean] {
+            def [result, resolver] := Ref.promise()
+            def loop
+            def proceed(exitStatusVow :vow[boolean]) :void {
+                when (exitStatusVow) -> done(exitStatus :boolean) :void {
+                    if (exitStatus) {
+                        # program volutarily terminated with success,
+                        # so we terminate with success
+                        resolver.resolve(true)
+                    } else {
+                        # not done, keep going
+                        loop()
+                    }
+                } catch evalProblem {
+                    # Either the program voluntarily terminated indicating this
+                    # problem, or the evalPrinter encounter this as an
+                    # unrecoverable problem. In either case, the repl reports
+                    # that it failed because of this problem.
+                    resolver.smash(evalProblem)
+                }
+            }
+            bind loop := {def loop() :void {
+                when (reader <- run()) ->
+                  done1(var optExpr :nullOk[Expr]) :void {
+
+                    if (optExpr == null) {
+                        # input reached end-of-file, terminate with success
+                        resolver.resolve(true)
+                    } else {
+                        proceed(evalPrinter.evalPrint(optExpr))
+                    }
+                } catch readProblem {
+                    proceed(evalPrinter.reportReadProblem(readProblem))
+                }
+            }}
+            loop()
+            result
+        }
+    }
+}

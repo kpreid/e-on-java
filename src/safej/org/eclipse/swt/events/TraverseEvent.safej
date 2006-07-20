@@ -1,0 +1,6 @@
+class("org.eclipse.swt.events.TraverseEvent",
+           statics(method(suppress, "run(Event)")),
+           methods(method("getDetail()"),
+                   method("setDetail(int)"),
+                   method("getDoit()"),
+                   method("setDoit(boolean)")))

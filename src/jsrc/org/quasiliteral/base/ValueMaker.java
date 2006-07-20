@@ -1,0 +1,33 @@
+package org.quasiliteral.base;
+
+import org.erights.e.elib.tables.ConstList;
+
+// Copyright 2002 Combex, Inc. under the terms of the MIT X license
+// found at http://www.opensource.org/licenses/mit-license.html ...............
+
+/**
+ * Represents a template of a value (a quasi literal value) to be filled in
+ * by args to make an actual value.
+ *
+ * @author Mark S. Miller
+ */
+public interface ValueMaker {
+
+    /**
+     * Each each arg to fill in the corresponding hole, and return the
+     * resulting value.
+     * <p/>
+     * It is often appropriate to think of <ul>
+     * <li>a ValueMaker as an expression,
+     * <li>substitution as expression evaluation,
+     * <li>the 'args' array as the environment,
+     * <li>dollar-holes as variable names (actually numbers) to be looked up
+     * in the environment, and
+     * <li>the result as the value the expression evaluated to.
+     * </ul>
+     * In this sense, we can think of E's quasiliteral framework as an means
+     * for the non-privileged extension of the expression evaluation
+     * machinery.
+     */
+    Object substitute(ConstList args);
+}

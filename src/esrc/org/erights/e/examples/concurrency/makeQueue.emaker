@@ -1,0 +1,70 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+/**
+ * 
+ */
+def makeQueue() :near {
+    def [var qhead, var qtail] := Ref.promise()
+    def cons(elem, next) :near {
+        def pair {
+            to getElem() :any { return elem }
+            to getNext() :any { return next }
+        }
+        return pair
+    }
+    def enqueue(elem) :void {
+        def [nextHead, nextTail] := Ref.promise()
+        qtail.resolve(cons(elem, nextHead))
+        qtail := nextTail
+    }
+    def dequeue() :any {
+        def result := qhead <- getElem()
+        qhead := qhead <- getNext()
+        return result
+    }
+    return [enqueue, dequeue]
+}
+
+
+
+    ? def makeQueue := <import:org.erights.e.examples.concurrency.makeQueue>
+    # value: <makeQueue>
+
+    ? def [enq, deq] := makeQueue()
+    # value: [<enqueue>, <dequeue>]
+
+    ? enq(3)
+    ? def x := deq()
+    # value: <Promise>
+
+# Wait a moment
+
+    ? x
+    # value: 3
+
+    ? def y := deq()
+    # value: <Promise>
+
+# Wait a moment
+
+    ? y
+    # value: <Promise>
+
+# Yup, still unresolved
+
+# Messages to promises build up future dependency chains in a natural way:
+
+    ? def z := y <- add(7)
+    # value: <Promise>
+
+    ? enq(4)
+
+# Wait a moment
+
+    ? y
+    # value: 4
+
+    ? z
+    # value: 11
+

@@ -1,0 +1,14 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class(safe,
+      "java.awt.event.WindowEvent",
+      statics(method(suppress, "run(Window, int, Window, int, int)"),
+              method(suppress, "run(Window, int, Window)"),
+              method(suppress, "run(Window, int, int, int)"),
+              method(suppress, "run(Window, int)")),
+      methods(method(suppress, "getWindow()"),
+              method(suppress, "getOppositeWindow()"),
+              method("getOldState()"),
+              method("getNewState()"),
+              method(suppress, "paramString()")))

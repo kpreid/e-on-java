@@ -1,0 +1,384 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def <sswt> := <import:org.eclipse.swt.*>
+def SWT := <sswt:makeSWT>
+def SWT_DEFAULT := SWT.getDEFAULT()
+def makeGridData := <sswt:layout.makeGridData>
+def GridData := <type:org.eclipse.swt.layout.GridData>
+def makeGridLayout := <sswt:layout.makeGridLayout>
+def GridLayout :=  <type:org.eclipse.swt.layout.GridLayout>
+def EverReporter := <type:org.erights.e.elib.slot.EverReporter>
+def whenever := <elib:slot.whenever>
+
+def BOTH_ALIGN_FILL := makeGridData.getHORIZONTAL_ALIGN_FILL() |
+  makeGridData.getVERTICAL_ALIGN_FILL()
+
+/**
+ * Makes a gridDataBuilder, which is used to build GridData objects
+ *
+ * @author Mark S. Miller
+ */
+def makeGridDataBuilder(myX :int, myY :int) :any {
+    var myStyle :int := BOTH_ALIGN_FILL
+    var myXSpan :int := 1
+    var myYSpan :int := 1
+
+    /**
+     * A gridDataBuilder accumulates, during a quasi-parse, the info
+     * needed to build a GridData. We don't use the GridData itself,
+     * since this object is captured in the valueMaker, in order to be
+     * reused by each evaluation of this quasiliteral expression.
+     *
+     * @author Mark S. Miller
+     */
+    def gridDataBuilder {
+
+        /**
+         * Makes the cell wide enough to grab excessive horizontal
+         * space
+         */
+        to grabX() :void { myStyle |= makeGridData.getGRAB_HORIZONTAL() }
+
+        /**
+         * Makes the cell wide enough to grab excessive vertical
+         * space
+         */
+        to grabY() :void { myStyle |= makeGridData.getGRAB_VERTICAL() }
+
+        /**
+         * Ensures that this cell is wide enough to cover column x
+         */
+        to coverX(x :int) :void { myXSpan max= 1 + x - myX }
+
+        /**
+         * Ensures that this cell is tall enough to cover row y
+         */
+        to coverY(y :int) :void { myYSpan max= 1 + y - myY }
+
+        /**
+         * Returns a new GridData built according to my current state.
+         */
+        to buildGridData() :GridData {
+            def result := makeGridData(myStyle)
+            result.setHorizontalSpan(myXSpan)
+            result.setVerticalSpan(myYSpan)
+            result
+        }
+    }
+}
+
+/**
+ * @return a pair of a list of gridDataBuilders and a number of columns
+ *
+ * @author Mark S. Miller
+ */
+def parseTemplate(template) :any {
+    def table := [].diverge()
+    var row := [].diverge()
+    def raster := [].diverge()
+
+    def len :int := template.size()
+    var pos :int := 0
+    var myChar :nullOk[char] := null
+
+    /**
+     * Advances to the next character.
+     * <p>
+     * @return the new myChar, which is null on end of input
+     */
+    def next() :nullOk[char] {
+        if (pos < len) {
+            myChar := template[pos]
+            pos += 1
+            myChar
+        } else {
+            myChar := null
+        }
+    }
+    next() # To initialize myChar and pos
+
+    /**
+     * Like next(), but first requires the current myChar to be c
+     */
+    def expect(c :char) :nullOk[char] {
+        require(myChar == c,
+                thunk{`'$c' expected, not '$myChar'`})
+        next()
+    }
+
+    /**
+     * Skips white space according to <pre>
+     *     ws ::= (" " | "\t")*
+     * </pre>
+     * Note that newlines are not considered whitespace in this
+     * grammar.
+     *
+     * @return the new myChar -- the first non-whitespace character
+     */
+    def ws() :nullOk[char] {
+        while (myChar == ' ' || myChar == '\t') {
+            next()
+        }
+        myChar
+    }
+
+    /**
+     * If myChar is a digit, return the corresponding number,
+     * else null.
+     * <p>
+     * If a digit was seen, we advance to the next() character.
+     * XXX Currently, only accepts base10 digits.
+     * XXX Should be enhanced to allow any Unicode digit character.
+     */
+    def digit(base) :nullOk[int] {
+        require(base==10,
+                thunk{`Base $base not yet implemented`})
+        if (myChar != null && '0' <= myChar && myChar <= '9') {
+            def result := myChar - '0'
+            next()
+            result
+        } else {
+            null
+        }
+    }
+
+    /**
+     * Parses a base10 whole number (a non-negative int) starting with
+     * myChar according to <pre>
+     *     wholeNumber ::= base10
+     *     base10 ::= "0" | [1-9][0-9]*
+     * </pre>
+     * We use the above productions in order to leave open the future
+     * possibility of accepting octal and hex numbers.
+     */
+    def wholeNumber() :int {
+        var result := digit(10)
+        require(result != null,
+                thunk{`number expected: '$myChar'`})
+        var next := digit(10)
+        if (result == 0) {
+            require(next == null,
+                    thunk{`Octal not yet implemented: '$myChar'`})
+        }
+        while (next != null) {
+            result := result * 10 + next
+            next := digit(10)
+        }
+        result
+    }
+
+    /**
+     * Parses a quasi-literal post-extraction dollar hole according to <pre>
+     *     dollarHole ::= "${" wholeNumber "}"
+     * </pre>
+     * returns the dollar-hole-index, and advances to just after the "}"
+     */
+    def dollarHole() :int {
+        expect('$')
+        expect('{')
+        def result := wholeNumber()
+        expect('}')
+        result
+    }
+
+    /**
+     * Like dollarHole, but requires a specific index number.
+     */
+    def expectDollarHole(index :int) :void {
+        def num := dollarHole()
+        require(index == num,
+                thunk{`Expected dollar-hole number $index, not $num`})
+    }
+
+    ws()
+    expectDollarHole(0)
+    ws()
+    expect(':')
+
+    while (ws() != null) {
+        if (myChar == '$') {
+            expectDollarHole(raster.size() +1)
+            def gdb := makeGridDataBuilder(row.size(), table.size());
+            while (myChar == '.') {
+                next()
+                switch (myChar) {
+                    match =='X' {
+                        next()
+                        gdb.grabX()
+                    }
+                    match =='Y' {
+                        next()
+                        gdb.grabY()
+                    }
+                }
+            }
+            raster.push(gdb)
+            row.push(gdb)
+
+        } else if (myChar == '\n') {
+            next()
+            if (row.size() >= 1) {
+                # ignore blank lines
+                table.push(row.snapshot())
+                row := [].diverge()
+            }
+
+        } else if (myChar == '>') {
+            next()
+            def gdb := row[row.size() -1]
+            gdb.coverX(row.size())
+            row.push(gdb)
+
+        } else if (myChar == 'V') {
+            next()
+            def gdb := table[table.size() -1][row.size()]
+            gdb.coverY(table.size())
+            row.push(gdb)
+
+        } else {
+            throw(`unrecognized: $myChar`)
+        }
+    }
+    if (row.size() >= 1) {
+        table.push(row.snapshot())
+    }
+    var numColumns := 0
+    for row in table {
+        numColumns max= row.size()
+    }
+    for row in table {
+        row[row.size() -1].coverX(numColumns-1)
+    }
+    [raster.snapshot(), numColumns]
+}
+
+def packUp(control) :boolean {
+    def oldSize := control.getSize()
+    def prefSize := control.computeSize(SWT_DEFAULT, SWT_DEFAULT, true)
+    def width := oldSize.getX().max(prefSize.getX())
+    def height := oldSize.getY().max(prefSize.getY())
+    if (width == oldSize.getX() && height == oldSize.getY()) {
+        return false
+    } else {
+        control.setSize(width, height)
+        return true
+    }
+}
+
+/**
+ * Used to implement expressions of the form<pre>
+ *     swtGrid`$parent:
+ *             $a.X $b >
+ *             V    $c $d`
+ * </pre>where a, b, c, and d are {@link org.eclipse.swt.widgets.Control
+ * Control}s and parent is their parent
+ * {@link org.eclipse.swt.widget.Composite Composite}. This expression will
+ * set the layout of the parent to a {@link org.eclipse.swt.layout.GridLayout
+ * GridLayout} with the right number of columns, will set the layoutData
+ * of the controls to GridData objects so that they will lay out according
+ * to the quasiliteral string, and will use {@link
+ * org.erights.e.meta.org.eclipse.swt.widgets.CompositeSugar#moveBelow(
+ * Composite, Control, Control) moveBelow/2} to order them according to the
+ * quasiliteral string.
+ * <p>
+ * Parses according to the grammar <pre>
+ *     start  ::= parent (row "\n")* row?
+ *     parent ::= ws dollarHole(0) ws ":"
+ *     row    ::= ws (child ws)*
+ *     child  ::= dollarHole(i++) (".X"? & ".Y"?) | "&gt;" | "V"
+ *
+ *     dollarHole ::= "${" wholeNumber "}"
+ *     wholeNumber ::= base10
+ *     base10 ::= "0" | [1-9][0-9]*
+ *
+ *     ws ::= (" " | "\t")*
+ * </pre>
+ * By 'dollarHole(0)', we mean text accepted by the dollarHole production, in
+ * which the hole-number is zero. By 'dollarHole(i++)', we mean that each
+ * successive dollarHole accepted must have ascending hole-numbers.
+ * <p>
+ * Note that the 'ws' production doesn't include '\n'.
+ * <p>
+ * '(".X"? & ".Y")' means an optional ".X" and an optional ".Y" in any order.
+ * (The "&" operator is the <i>interleave</i> operator from Relax-NG.)  The
+ * current implementation instead accepts '(".X" | ".Y")*'.
+ * <p>
+ * This should use BaseLexer and our general lexing framework, so that syntax
+ * errors can be reported in terms of the <i>original</i> (pre-extraction)
+ * source text.
+ * <p>
+ * We expect to extend the 'child' production to accept string literals, which
+ * will turn into Label widgets. This should wait until we convert to our
+ * general lexing framework.
+ * <p>
+ * As the input language is extended to do more usefull things, a future
+ * version may also evaluate to something useful. (The current version does a
+ * void return.)
+ *
+ * @author Mark S. Miller
+ * @author Adapted from a spec by Marc Stiegler
+ */
+def swtGridQParserMaker() :any {
+    def cache := [].asMap().diverge()
+    def swtGridQParser {
+        to valueMaker(template) :any {
+            if (cache.maps(template)) {
+                return cache[template]
+            } else {
+                def [raster, numColumns] := parseTemplate(template)
+                def valueMaker {
+                    to substitute([parent] + args) :any {
+                        var optPrevControl := null
+                        for i => arg in args {
+                            def control :=
+                              swtGridQParser.makeControl(parent, arg)
+                            def gd := raster[i].buildGridData()
+                            control.setLayoutData(gd)
+                            parent.moveBelow(control, optPrevControl)
+                            optPrevControl := control
+                        }
+                        parent.setLayout(makeGridLayout(numColumns, false))
+                        return parent
+                    }
+                }
+                return cache[template] := valueMaker
+            }
+        }
+        to makeControl(parent, arg) :any {
+            switch (arg) {
+                match [str :String, style :int] {
+                    def label := <sswt:widgets.makeLabel>(parent, style)
+                    label.setText(str)
+                    label.pack(true)
+                    return label
+                }
+                match str :String {
+                    return swtGridQParser.makeControl(parent, [str, 0])
+                }
+                match [reporter :EverReporter, style :int] {
+                    def &watched := reporter
+                    def label :=
+                      swtGridQParser.makeControl(parent, [watched, style])
+                    whenever([&watched], thunk{
+                        if (!label.isDisposed()) {
+                            label.setText(watched)
+                            if (packUp(label)) {
+                                packUp(parent)
+                            }
+                            label.redraw()
+                        }
+                    }, thunk{ !label.isDisposed() })
+                    return label
+                }
+                match reporter :EverReporter {
+                    return swtGridQParser.makeControl(parent, [reporter, 0])
+                }
+                match _ {
+                    return arg
+                }
+            }
+        }
+    }
+    return swtGridQParser
+}

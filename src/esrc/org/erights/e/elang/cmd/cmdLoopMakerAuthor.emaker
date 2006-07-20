@@ -1,0 +1,150 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def propUtils := <import:org.erights.e.tools.collect.propUtils>
+def controlLoopMaker := <elang:cmd.controlLoopMaker>
+
+def cmdLoopMakerAuthor(systemGC) :any {
+
+    def cmdLoopMaker(args :List,
+                     props :Map[String,String],
+                     var topScope,
+                     isInteractive :boolean) :any {
+
+        var expandFlag :boolean :=
+          propUtils.testProp(props, "e.interp.expand")
+        var showTransformedFlag :boolean :=
+          propUtils.testProp(props, "e.interp.show-transformed")
+        var showJStackFlag :boolean :=
+          propUtils.testProp(props, "e.interp.show-j-stack")
+        var showEStackFlag :boolean :=
+          propUtils.testProp(props, "e.interp.show-e-stack")
+
+        def defaultPrintFunc(value, out :TextWriter) :void {
+            out.quote(value)
+        }
+
+        var printFunc := defaultPrintFunc
+
+        def results := [].diverge()
+
+        def cmdLoop extends controlLoopMaker() {
+
+            /**
+             * A list of Strings that's assumed to be the command line args
+             */
+            to getArgs()  :any { args }
+
+            /**
+             * A map from String (property names) to Strings (property values)
+             * that's assumed to reflect System.getProperties(),
+             * org/erights/e/elang/syntax/syntax-props-default.txt, the
+             * eprops.txt file, the optional ~/.e/user-eprops.txt file, and any
+             * -Dprop=value command line arguments.
+             */
+            to getProps() :any { props }
+
+            /**
+             * Should an input expression be echoed as expanded to Kernel-E as
+             * well as evaluated?
+             * <p>
+             * If so, the expanded form will be shown in a "# expand: ..."
+             * block
+             */
+            to getExpand()          :boolean { expandFlag }
+
+            /**
+             * Implementation specific internal diagnostic tool: Should we show
+             * the implementation's expansion to Transformed-E?
+             */
+            to getShowTransformed() :boolean { showTransformedFlag }
+
+            /**
+             * Should problem reports show their Java stack trace as well as
+             * their E stack trace?
+             * <p>
+             * This switch only makes sense while we're interpreting parse
+             * trees, rather than compiling E to jvm byte codes. While we're
+             * interpreting, the Java stack trace tends to large and
+             * uninformative. Once we're compiling, the Java stack trace
+             * should be all there is, and should do both jobs well. So, at
+             * that time, this flag will be ignored.
+             */
+            to getShowJStack()      :boolean { showJStackFlag }
+
+            /**
+             * When a problem is thrown, should we show the E stack trace?
+             */
+            to getShowEStack()      :boolean { showEStackFlag }
+
+            /**
+             * A function of a value and a TextWriter that prints the value by
+             * writing
+             * onto the TextWriter.
+             * <p>
+             * The default printFunc is:
+             * <pre>    def printFunc(value, out :TextWriter) :void {
+             *         out.quote(value)
+             *     }</pre>
+             * <p>
+             * Note that the printFunc itself may throw an execption. It is up
+             * to the caller of the printFunc to protect itself from this
+             * possibility.
+             * <p>
+             * XXX We should define an interface to represent the result type.
+             */
+            to getPrintFunc()          :near { printFunc }
+
+            /**
+             * Is this a read-eval-print loop for an interactive command line?
+             * <p>
+             * If so, then the top scope should be mutable, each outcome should
+             * be reported, prompts should be generated, and evaluation should
+             * continue after errors.
+             * <p>
+             * "interactive" is an immutable property, since it's too hard to
+             * change.
+             */
+            to getInteractive()     :boolean { isInteractive }
+
+            to setExpand(newFlag)      :void { expandFlag := newFlag }
+            to setShowTransformed(newFlag) :void {
+                showTransformedFlag := newFlag
+            }
+            to setShowJStack(newFlag)  :void { showJStackFlag := newFlag }
+            to setShowEStack(newFlag)  :void { showEStackFlag := newFlag }
+            to setPrintFunc(newPF)     :void { printFunc := newPF }
+
+            /**
+             * What scope are top-level expressions evaluated in?
+             */
+            to getTopScope()            :any { topScope }
+            to setTopScope(newScope)   :void { topScope := newScope }
+
+            /**
+             * Returns the result of evaluating i'th most recent command (top
+             * level expression).
+             * <p>
+             * We may move this so that it's only available in an interactive
+             * interp.
+             */
+            to getResult(i)             :any { results[i] }
+
+            to pushResult(result) :void {
+                results(0,0) := [result]
+                if (results.size() > 10) {
+                    results.setSize(10)
+                }
+            }
+
+            /**
+             * First clears temporary state (such as results), then does a
+             * System.gc()
+             */
+            to gc() :void {
+                results.setSize(0)
+                systemGC.gc()
+            }
+        }
+    }
+}

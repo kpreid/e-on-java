@@ -1,0 +1,52 @@
+#!/usr/bin/env rune
+
+# Copyright 2005 Terry Stanley, Mark S. Miller, under the terms of the MIT X
+# license found at http://www.opensource.org/licenses/mit-license.html ........
+
+# Adapted from
+# http://www.java2s.com/ExampleCode/SWT-JFace-Eclipse/DemonstratesTableTree.htm
+
+def <swt> := <import:org.eclipse.swt.*>
+def SWT := <swt:makeSWT>
+def <widget> := <swt:widgets.*>
+def <custom> := <swt:custom.*>
+
+def Row := Tuple[Map[String, String], List[Row]]
+
+def makeTableTreeAuthor(disposablesKit) :any {
+    def makeTableTree(parent,
+                      columnNames :List[String],
+                      tableData :Row) :any {
+        def tableTree := <custom:makeTableTree>(parent, SWT.getNONE())
+        def table := tableTree.getTable()
+        table.setHeaderVisible(true)
+        table.setLinesVisible(false)
+
+        def [map, rows] := tableData
+
+        for col => name in columnNames {
+            def tc := <widget:makeTableColumn>(table, SWT.getLEFT())
+            tc.setText(map[name])
+        }
+
+        def addRows(parent, rows :List[Row], level :int) :void {
+            def bright := 255 - (level * 32)
+            def color := disposablesKit.makeColor(bright, bright, bright)
+            for [map, children] in rows {
+                def item := <custom:makeTableTreeItem>(parent, SWT.getNONE())
+                for col => name in columnNames {
+                    item.setText(col, map[name])
+                }
+                addRows(item, children, level+1)
+                item.setExpanded(true)
+                item.setBackground(color)
+            }
+        }
+        addRows(tableTree, rows, 0)
+
+        for tc in table.getColumns() { tc.pack() }
+        tableTree.pack(true)
+        return tableTree
+    }
+    return makeTableTree
+}

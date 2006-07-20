@@ -1,0 +1,81 @@
+#!/usr/bin/env rune
+
+Toy grammar definition from Dean to test out the grammar.y parser.
+
+rune(["~/e/src/esrc/scripts/updoc.e",
+      "~/e/src/jsrc/org/quasiliteral/term/toy-grammar.updoc"])
+
+? def x := `
+> Top ::= e:E EOF -> e;
+> E ::= n:N                 -> n
+>     / "(" a:E "+" b:E ")" -> add a b
+>     / "(" E "-" E ")"     -> subtract a b;
+> N ::= d:D n:N             -> withDigit n d
+>     /   d:D               -> d;
+> D ::= c:("0" / "1" / "2" / "3" / "4" / "5" / "6" / "7" / "8" / "9") 
+>                           -> toDigit c;`
+
+? def makeSchema := <import:org.quasiliteral.schema.makeSchema>
+# value: <makeSchema>
+
+? makeSchema.parseGrammar(x)
+# value: term`schema(production(tag("Top"),
+#                               action(seq(term(tag(".attr."),
+#                                               term(e,
+#                                                    tag("E"))),
+#                                          tag("EOF")),
+#                                      tag("e"))),
+#                    production(tag("E"),
+#                               firstChoice(action(term(tag(".attr."),
+#                                                       term(n,
+#                                                            tag("N"))),
+#                                                  tag("n")),
+#                                           action(seq(data("("),
+#                                                      term(tag(".attr."),
+#                                                           term(a,
+#                                                                tag("E"))),
+#                                                      data("+"),
+#                                                      term(tag(".attr."),
+#                                                           term(b,
+#                                                                tag("E"))),
+#                                                      data(")")),
+#                                                  seq(tag("add"),
+#                                                      tag("a"),
+#                                                      tag("b"))),
+#                                           action(seq(data("("),
+#                                                      tag("E"),
+#                                                      data("-"),
+#                                                      tag("E"),
+#                                                      data(")")),
+#                                                  seq(tag("subtract"),
+#                                                      tag("a"),
+#                                                      tag("b"))))),
+#                    production(tag("N"),
+#                               firstChoice(action(seq(term(tag(".attr."),
+#                                                           term(d,
+#                                                                tag("D"))),
+#                                                      term(tag(".attr."),
+#                                                           term(n,
+#                                                                tag("N")))),
+#                                                  seq(tag("withDigit"),
+#                                                      tag("n"),
+#                                                      tag("d"))),
+#                                           action(term(tag(".attr."),
+#                                                       term(d,
+#                                                            tag("D"))),
+#                                                  tag("d")))),
+#                    production(tag("D"),
+#                               action(term(tag(".attr."),
+#                                           term(c,
+#                                                firstChoice(data("0"),
+#                                                            data("1"),
+#                                                            data("2"),
+#                                                            data("3"),
+#                                                            data("4"),
+#                                                            data("5"),
+#                                                            data("6"),
+#                                                            data("7"),
+#                                                            data("8"),
+#                                                            data("9")))),
+#                                      seq(tag("toDigit"),
+#                                          tag("c")))))`

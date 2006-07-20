@@ -1,0 +1,24 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class("javax.swing.JLayeredPane",
+      statics(method(suppress, "run()")),
+      methods(method(suppress, "remove(int)"),
+              method(suppress, "isOptimizedDrawingEnabled()"),
+              method(suppress, "putLayer(JComponent, int)"),
+              method(suppress, "getLayer(JComponent)"),
+              method(suppress, "getLayeredPaneAbove(Component)"),
+              method(suppress, "setLayer(Component, int)"),
+              method(suppress, "setLayer(Component, int, int)"),
+              method(suppress, "getLayer(Component)"),
+              method(suppress, "getIndexOf(Component)"),
+              method(suppress, "moveToFront(Component)"),
+              method(suppress, "moveToBack(Component)"),
+              method(suppress, "setPosition(Component, int)"),
+              method(suppress, "getPosition(Component)"),
+              method(suppress, "highestLayer()"),
+              method(suppress, "lowestLayer()"),
+              method(suppress, "getComponentCountInLayer(int)"),
+              method(suppress, "getComponentsInLayer(int)"),
+              method(suppress, "paint(Graphics)"),
+              method(suppress, "getAccessibleContext()")))

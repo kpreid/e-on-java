@@ -1,0 +1,67 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def JPanel__quasiParser := <import:org.erights.ex.swing.JPanel__quasiParser>
+
+def formVowMakerAuthor(<awt>, <swing>, frameMaker) :near {
+    #def uiTools := <import:com.skyhunter.ex.swing.uiToolsAuthor> (<awt>, <swing>)
+
+    /**
+     * formVowMaker returns a promise for a completed form.
+     * <p>
+     * See the commented out example at the bottom of this source for an example of
+     *    a layout in which the visual appearance of the form is reflected in
+     *    the code layout
+     *
+     * @param title The string to place in the title
+     * @param header String (interpreted as HTML) to be placed at the top of the form
+     * @param formElements A list of elements. Each element is itself a list of 3 items:
+     *        [fieldName, fieldType, initial(default) value]
+     *        The fieldName is the label for the field when the form is brought up, and
+     *        is also the key to access the field value in the fulfilled completed form
+     *        FieldTypes at this time include "text", "check", and "list"
+     *        The initial value of a textfield is a string,
+     *        The initial value of a check is a boolean,
+     *        The initial value of a list is a list of strings
+     * @param footer String (interpreted as HTML) to be placed at the bottom of the form
+     * @param buttonNames List of strings which are the names of the buttons at the bottom of the form
+     *        When the user clicks any button, the form window is closed and the formVow is fulfilled.
+     *        If the user clicks the close box to close the form, null is returned for the clicked button.
+     *        The completed form can be queried to ascertain which button was pressed
+     *        to close the form.
+     */
+    def formVowMaker(title, header, formFields, footer, buttonNames) :any {
+        def [formVow, solver] := Ref.promise()
+        def frame := frameMaker(title)
+        def completeForm {
+            to getField(key) :pbc {}
+            to optClickedButtonName() :pbc {}
+        }
+        def frameListener {
+            to windowClosing(event) :void {
+                frame.dispose()
+            }
+        }
+        frame.show()
+
+        formVow
+    }
+}
+
+
+##### Sample Usage
+
+# def formVow := formVowMaker(
+#    "Personal Info",
+#    "<html><h1><center>Personal</center></h1></html>"
+#    [["Last Name", "text", ""]
+#     ["Gender",    "list", ["Male",
+#                            "Female",
+#                            "Other"],
+#     [Vegetarian", "check", true]],
+#    "<html>All data held in strict privacy"</html>",
+#    ["Submit", "Cancel"]
+# )
+
+# formVowMakerAuthor(<awt>, <swing>, <swing:makeJFrame>)("test", "", [], "", [""])
+

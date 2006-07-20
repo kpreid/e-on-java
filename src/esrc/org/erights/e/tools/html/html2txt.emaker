@@ -1,0 +1,123 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def first__quasiParser := <import:org.erights.e.tools.text.first__quasiParser>
+def htmlTokenizer := <import:org.erights.e.tools.html.htmlTokenizer>
+
+def entity2txt(entity) :Twine {
+    def result := switch (entity) {
+        match `lt`    { entity.infect("<") }
+        match `gt`    { entity.infect(">") }
+        match `quot`  { entity.infect("\"") }
+        match `amp`   { entity.infect("&") }
+
+        # there is a unicode non-breaking space character,
+        # but we use ascii space instead. This means our
+        # transformation isn't reversible
+        match `nbsp`  { entity.infect(" ") }
+
+        # does html accept other radii?
+        match rx`^#(@digits[0-9]+)$$` {
+            entity.infect(`${__makeInt(digits).asChar()}`)
+        }
+        match _       { twine`&$entity;` }
+    }
+    return result
+}
+
+# Taken from the HTML4.0 definition + "BR"
+def blockElements := [
+    "ADDRESS",
+    "BLOCKQUOTE",
+    "CENTER",
+    "DIR",
+    "DIV",
+    "DL",
+    "FIELDSET",
+    "FORM",
+    "H1",
+    "H2",
+    "H3",
+    "H4",
+    "H5",
+    "H6",
+    "HR",
+    "ISINDEX",
+    "MENU",
+    "NOFRAMES",
+    "NOSCRIPT",
+    "OL",
+    "P",
+    "PRE",
+    "TABLE",
+    "UL",
+
+    "DD",
+    "DT",
+    "FRAMESET",
+    "LI",
+    "TBODY",
+    "TD",
+    "TFOOT",
+    "TH",
+    "THEAD",
+    "TR",
+
+    "BR"
+].asKeys()
+
+def firstWhiteSpace := first__quasiParser.matchMaker("@{0}[ \t\n]@{1}")
+
+def html2txt {
+    to fromTokens(tokens) :Twine {
+        var result := ""
+        for token in tokens {
+            switch (token) {
+                match `<@TAG @_>` {
+                    if (blockElements.maps(TAG)) {
+                        # If the tag starts a block element, then output a
+                        # newline.
+                        result += "\n"
+                    }
+                }
+                match twine`&@entity;` {
+                    result += entity2txt(entity)
+                }
+                match _ {
+                    result += token
+                }
+            }
+        }
+        return result
+    }
+    to run(var html) :Twine {
+        def tokens := htmlTokenizer(html)
+        return html2txt.fromTokens(tokens)
+    }
+}
+
+    ? def html2txt := <import:org.erights.e.tools.html.html2txt>
+    # value: <html2txt>
+
+    ? html2txt("foo<pre>bar")
+    # value: "foo
+    #        bar"
+
+    ? html2txt("foo<b>bar")
+    # value: "foobar"
+
+    ? html2txt("3 < 4")
+    # value: "3 < 4"
+
+    ? html2txt("3 < 4<b>5")
+    # problem: "< 4<b>" isn't really a tag
+    #
+    #   throw("\"< 4<b>\" isn\'t really a tag")
+    #   <e object>()
+    #   org.erights.e.elang.interp.Loop@3914b3(<e object>)
+    #   <html2txt>("3 < 4<b>5")
+    #   <interp> evalPrint(e`html2txt run("3 < 4<b>5")`)
+
+    ?
+
+

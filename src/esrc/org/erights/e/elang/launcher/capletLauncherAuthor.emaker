@@ -1,0 +1,64 @@
+#!/usr/bin/env rune
+
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def eLauncherAuthor := <elang:launcher.eLauncherAuthor>
+
+/**
+ *
+ */
+def capletLauncherAuthor {
+
+    /**
+     *
+     */
+    to getHelp(_) :String {
+        return `$\
+    $$ rune <fbase>.caplet    Runs a caplet in its own confining
+                             caplet-launcher.
+                             Currently, "<fbase>.caplet" must be a filename.
+`
+    }
+
+    /**
+     * @return null
+     */
+    to getOptVersionText(props) :void { return null }
+
+    /**
+     *
+     */
+    to run(auths) :near {
+
+        def eLauncher := eLauncherAuthor(auths)
+
+        /**
+         *
+         */
+        def capletLauncher {
+
+            /**
+             *
+             */
+            to run(props, var options, fname, args) :vow[boolean] {
+                var eHome := props["e.home"]
+                if (eHome.endsWith("/")) {
+                    eHome := eHome(0, eHome.size() -1)
+                }
+                options with= ("--runnerKind", "awt")
+                return eLauncher(props,
+                                 options,
+                                 `$eHome/scripts/capletLauncher.e-awt`,
+                                 [fname] + args)
+            }
+
+            /**
+             *
+             */
+            to interpret(props, options, src, args) :vow[boolean] {
+                throw(`XXX "--src.caplet <src> <arg>*" not yet implemented`)
+            }
+        }
+    }
+}

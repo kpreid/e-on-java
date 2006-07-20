@@ -1,0 +1,122 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+
+/**
+ * @param display The SWT Display object for this thread
+ *
+ */
+def fillStyledTextAuthor(disposablesKit, traceline) :near{
+    def <swt> := <import:org.eclipse.swt.*>
+    def SWT := <swt:makeSWT>
+
+    /**
+     * Given a styledText panel and a term tree description of styled text,
+     * fillStyledText fills the panel with the styled text.
+     * <p>
+     * Garbage collection: this function produces Color objects as needed to
+     * build the StyleRange objects. These Color objects are hooked up with a
+     * listener on the panel so that, when the panel is disposed, so are the colors.
+     * For many applications this will work quite well. However, if you intend
+     * to re-use a single panel over and over, with new texts with color, these
+     * color objects can accumulate. In that case, you need a more sophisticated
+     * solution, such as assigning a different disposablesKit to each usage of
+     * of fillStyledText, then disposeAll() in the disposablesKit
+     * when the styled text is replaced.
+     * <p>
+     * @param styledPanel The StyledText widget which is to be filled with styled text
+     * @param styleTree   A term tree loaded with styled text descriptions. An example
+     *  of the term tree is the result of evaluating<p>
+     *  term`text(color(255, 0, 0, style(b, "Text is bold and red"))) <p>
+     *  The available tags are <br>
+     *  --color sets foreground color<br>. First 3 subterms are RGB integers
+     *  --bkg   sets background color<br>. First 3 subterms are RGB integers
+     *  --style specifies a font style bold or italic<br>. First subterm is b or i
+     *  --b     bold font style<br>
+     *  This set of tags effectively maps one-to-one into the range of styles
+     *  that can be created with the swt.custom.StyleRange descriptor
+     */
+    def fillStyledText(styledPanel, styleTree) :void {
+        traceline("into fill")
+
+        def computeColor(subNodes) :near {
+            if (subNodes.size() < 4) {throw("coloration with too few args")}
+            def r := subNodes[0].getOptData()
+            def g := subNodes[1].getOptData()
+            def b := subNodes[2].getOptData()
+            def newColor := disposablesKit.makeColor(r, g, b)
+            def disposer { to widgetDisposed(event) :void {newColor.dispose()}}
+            styledPanel.addDisposeListener(disposer)
+            newColor
+        }
+        def bkgs := [].diverge()
+        def colors := [].diverge()
+        def boldStates := [].diverge()
+        def italicStates := [].diverge()
+        var text := ""
+        def ranges := [].diverge()
+
+        var lastEventBeforeFailure := ""
+        def lastTrace(text) :void {
+            traceline(text)
+            lastEventBeforeFailure := text
+        }
+
+        def updateRangesAndText(addedText) :near {
+            def range := <swt:custom.makeStyleRange>()
+            range.setStart(text.size())
+            range.setLength(addedText.size())
+            if (boldStates.size() > 0 && boldStates[boldStates.size() -1]) {
+                range.setFontStyle(SWT.getBOLD())
+            }
+            if (colors.size() > 0) {range.setForeground(colors[colors.size() -1])}
+            if (bkgs.size() > 0) {range.setBackground(bkgs[bkgs.size() -1])}
+            ranges.push(range)
+            text += addedText
+        }
+
+        def buildStyleRanges(term) :void {
+            def tag := term.getTag().getTagName()
+            traceline("got tag: " + tag)
+            def data := term.getOptData()
+            def subNodes := term.getArgs()
+            def recurse() :void {for each in subNodes {buildStyleRanges(each)}}
+            if (tag == "text") {
+                lastTrace("got text term")
+                recurse()
+            } else if (data != null) {
+                lastTrace("processed " + data)
+                updateRangesAndText(data)
+            } else if (tag == "b") {
+                lastTrace("bold tag")
+                boldStates.push(true)
+                recurse()
+                boldStates.pop()
+            } else if (tag == "style") {
+                recurse()
+            } else if (tag == "color") {
+                lastTrace("color tag")
+                colors.push(computeColor(subNodes))
+                for i => each in subNodes {
+                    if (i > 2) {buildStyleRanges(each) }
+                }
+                colors.pop()
+            } else if (tag == "bkg") {
+                lastTrace("background tag")
+                bkgs.push(computeColor(subNodes) )
+                for i => each in subNodes {
+                    if (i > 2) {buildStyleRanges(each) }
+                }
+                bkgs.pop()
+            }
+        }
+        try {
+            buildStyleRanges(styleTree)
+            traceline ("parsed text: " + text)
+            styledPanel.setText(text)
+            traceline (`parsed styles: $ranges`)
+            styledPanel.setStyleRanges(ranges.snapshot())
+        } catch prob {traceline("fillStyledText Failed after: " + lastEventBeforeFailure + prob )}
+        #traceline("made styled text: " + text)
+    }
+}

@@ -1,0 +1,16 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class("java.awt.Button",
+      statics(method(suppress, "run()"),
+              method(suppress, "run(String)")),
+      methods(method(suppress, "addNotify()"),
+              method(suppress, "getLabel()"),
+              method(suppress, "setLabel(String)"),
+              method(suppress, "setActionCommand(String)"),
+              method(suppress, "getActionCommand()"),
+              method(suppress, "addActionListener(ActionListener)"),
+              method(suppress, "removeActionListener(ActionListener)"),
+              method(suppress, "getActionListeners()"),
+              method(suppress, "getListeners(Class)"),
+              method(suppress, "getAccessibleContext()")))

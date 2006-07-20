@@ -1,0 +1,13 @@
+class(safe,
+      "java.nio.charset.CoderResult",
+      statics(method("getUNDERFLOW()"),
+              method("getOVERFLOW()"),
+              method("malformedForLength(int)"),
+              method("unmappableForLength(int)")),
+      methods(method("isUnderflow()"),
+              method("isOverflow()"),
+              method("isError()"),
+              method("isMalformed()"),
+              method("isUnmappable()"),
+              method("length()"),
+              method("throwException()")))

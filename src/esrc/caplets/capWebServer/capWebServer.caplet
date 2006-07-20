@@ -1,0 +1,108 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def JPanel__quasiParser := <import:org.erights.ex.swing.JPanel__quasiParser>
+
+def capWebServerAuthor {
+    to getRequestedCaps() :near {
+        "<requests>
+<pet>
+<name>CapWebServer</name>
+<suffix>web-server</suffix>
+<icon>data/lightning.gif</icon>
+</pet>
+<server>
+<serversocket>
+<port>80</port>
+<why>80 is the default port for web servers</why>
+</serversocket>
+<independent><why>needs to run on separate jvm to compensate for java api
+                  blocking protocols</why></independent>
+</server>
+</requests>"
+    }
+    to run(powerbox) :near {
+        def <awt> := <import:java.awt.*>
+        def <swing> := <import:javax.swing.*>
+        def traceline := powerbox.optCap(powerbox.getTRACELN())
+        traceline("made it to capwebserver traceline")
+        def frameMaker := powerbox.optCap(powerbox.getFRAME_MAKER())
+        def <local> := powerbox.optCap(powerbox.getLOCAL__URIGETTER())
+        def serverSocket := powerbox.optCap(powerbox.getSERVER_SOCKET())
+        def uiTools := <import:com.skyhunter.ex.swing.uiToolsAuthor>(<awt>, <swing>)
+        def dialogVowMaker := <import:com.skyhunter.ex.swing.dialogVowMakerAuthor> (
+            <awt>, <swing>, frameMaker)
+
+
+        def dieWithoutSocket() :void {
+            def dialogVow := dialogVowMaker(
+                "No Socket Available",
+                "<html>During installation, you must endow this web server
+                with a serversocket on the Server tab of the installation dialog.
+                </html>",
+                null, ["Exit Web Server"])
+            when (dialogVow) -> done1(dialog) :void {
+                powerbox.requestExit()
+            } catch prob {traceline("died requestingExit")}
+        }
+
+        def dieWithBadDocRoot() :void {
+            def dialogVow := dialogVowMaker(
+                "No Documents to Serve",
+                "<html>You must start this web server by right-clicking
+                on a folder that is the document root for the web pages
+                to be served </html>",
+                null, ["Exit Web Server"])
+            when (dialogVow) -> done2(dialog) :void {
+                powerbox.requestExit()
+            } catch prob {traceline("died saying no docroot")}
+        }
+
+        traceline("capwebserver about to def docroot")
+        #XXX fix: assuming, contrary to spec, that the initial docs are local
+        def docRoot
+        def initialDocs := powerbox.optCap(powerbox.getINITIAL_DOC_RCVRS())
+        traceline(`initialDocs: $initialDocs`)
+        if (initialDocs.size() > 0) {
+            bind docRoot := initialDocs[0]
+        }else {bind docRoot := null}
+        if (serverSocket == null) {
+            dieWithoutSocket()
+        } else {
+            when (docRoot <- isDirectory()) -> doneDir(isDir) :void {
+                if (! isDir) {
+                    dieWithBadDocRoot()
+                } else {
+                    traceline(`capwebserver docroot: $docRoot`)
+                    def serverAuthorSource := <local:data/webServerAuthor.emaker>.getTwine()
+                    def webServerAuthor := powerbox.runSource(serverAuthorSource)
+                    traceline(`made webServerAuthor $webServerAuthor`)
+                    def webServer := webServerAuthor(serverSocket,
+                                                     docRoot,
+                                                     traceline)
+                    traceline(`webserver made: $webServer`)
+                    #  XXX Terminate does not work well enough, can't get past the block
+                    #  XXX on serverSocket accept() Correct answer: serversocket is placed
+                    #  XXX in separate privileged be vat, but requires 3-vat comm to hand
+                    #  XXX reference to the server
+                    def dialogVow := dialogVowMaker("Running",
+                                                    "<html>Web Server Now running. Click to terminate</html>",
+                                                    null,
+                                                    ["Terminate"])
+                    when (dialogVow) -> done3(dialog) :void {
+                        webServer.shutdown()
+                        serverSocket.close()
+                        powerbox.requestExit()
+                        throw("kill me")
+                    } catch prob {traceline(`prob in terminate dialog: $prob`)}
+                    traceline("about to eventually initiate webserver from capWebServer")
+                    webServer <- run()
+                }
+            } catch prob {
+                traceline(`docroot failed isDir: $prob`)
+                dieWithBadDocRoot()
+            }
+        }
+    }
+}
+

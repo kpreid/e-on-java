@@ -1,0 +1,79 @@
+#!/usr/local/bin/e
+
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def JPanel__quasiParser := <import:org.erights.ex.swing.JPanel__quasiParser>
+
+def serverDescVowAuthor(<unsafe>, <awt>, <swing>, frameMaker, traceline) :any {
+
+    def resolveAllVow := <import:com.skyhunter.e.net.resolveAllVow>
+    #def uriTools := <import:com.skyhunter.e.net.uriToolsAuthor>(introducer,
+    #                                                            makeSturdyRef)
+    def uiSet := <import:com.skyhunter.ex.swing.uiToolsAuthor>(<awt>,
+                                                             <swing>)
+    def dialogVowMaker := <import:com.skyhunter.ex.swing.dialogVowMakerAuthor>(
+        <awt>,
+        <swing>,
+        frameMaker)
+
+    /**
+     * int32 string converter
+     */
+    def toInt(numString) :near {(<unsafe:java.lang.makeInteger>(numString)).intValue()}
+
+    #****** Configurator Specific Code ***********
+
+    def mainFrame := frameMaker()
+    def [configVow, configSolver] := Ref.promise()
+    def configReady
+    def windowTitleField := <swing:makeJTextField>("My capDesk Server")
+    def rootPathField := <swing:makeJTextField>()
+    def homePathField := <swing:makeJTextField>("c:\\windows\\desktop")
+    def capFileField := <swing:makeJTextField>("capDeskServer.capdesk-cap")
+    def serverOnlyBox := <swing:makeJCheckBox>()
+    serverOnlyBox.setText("Server Only")
+    serverOnlyBox.setSelected(false)
+    def isReadOnlyBox := <swing:makeJCheckBox>()
+    isReadOnlyBox.setText("Read Only")
+    isReadOnlyBox.setSelected(true)
+    def okButton := uiSet.newButton("OK",configReady)
+    def l(text) :near {<swing:makeJLabel>(text)}
+    def formPane :=
+      JPanel`${l("Browser-Window Title")}        $windowTitleField.X
+             ${l("Home Path")}                   $homePathField.X
+             $serverOnlyBox                      >
+             ${l("   Write Capability To")}      $capFileField.X
+             ${l(" ")}                           >
+             ${l("    Security Configuration")}  >
+             $isReadOnlyBox                      >
+             ${l("Top Accessible Directory")}    $rootPathField.X
+             $okButton                           > `
+
+    traceline("config form about to make window")
+    #create form window
+    def mainPane := mainFrame.getContentPane()
+    mainFrame.setDefaultCloseOperation(<swing:makeWindowConstants>.getDISPOSE_ON_CLOSE())
+    mainPane.add(formPane)
+    mainFrame.setTitle("Configure CapDesk")
+    mainFrame.pack()
+    #mainFrame setSize(400,200)
+    mainFrame.show()
+
+    bind configReady() :void {
+        #traceline("made it")
+        configSolver.resolve (`
+            <serverDesc>
+            <windowTitle>${windowTitleField.getText()}</windowTitle>
+            <home>${homePathField.getText()}</home>
+            <serverOnly>${if (serverOnlyBox.isSelected()) { "true"} else {"false"}}</serverOnly>
+            <capabilityFile>${capFileField.getText()}</capabilityFile>
+            <isReadOnly>${if (isReadOnlyBox.isSelected()) {"true"} else {"false"}}<isReadOnly>
+            <virtualRoot>${rootPathField.getText()}</virtualRoot>
+            </serverDesc>
+            `)
+        mainFrame.dispose()
+    }
+
+    configVow
+}

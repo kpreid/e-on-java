@@ -1,0 +1,6 @@
+class("org.eclipse.swt.widgets.ColorDialog",
+           statics(method("run(Shell)"),
+                   method("run(Shell, int)")),
+           methods(method("getRGB()"),
+                   method("open()"),
+                   method("setRGB(RGB)"))) 

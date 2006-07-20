@@ -1,0 +1,94 @@
+# Copyright 2005 Mark S. Miller under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+pragma.enable("easy-return")
+pragma.enable("anon-lambda")
+
+/**
+ * Defines the builtin '__extract' via function template.
+ * <p>
+ * This supports the following expansions: <pre>
+ * '["k" => p            ] | r'  to  'via (__extract("k")) [p, r]'
+ * '["k" => p default {e}] | r'  to  'via (__extract("k", fn {e})) [p, r]'
+ * '["k" => p       := e ] | r'  to  'via (__extract.depr("k", e)) [p, r]'
+ * </pre>
+ * Note that the ':=' syntax for default values is deprecated. Should this be
+ * removed, the depr/2 method may be removed as well.
+ * <p>
+ * XXX At some future time, it may be worth making the expansion more
+ * complex in order to handle an entire map-pattern all at once.
+ *
+ * @author Mark S. Miller
+ */
+def extract {
+    to run(key) :any {
+        def extractor1(specimen, optEjector) :any {
+            def value := specimen.fetch(key, thunk {
+                throw.eject(optEjector, `$key not found`)
+            })
+            return [value, specimen.without(key)]
+        }
+        return extractor1
+    }
+
+    to run(key, insteadThunk) :any {
+        def extractor2(specimen, _) :any {
+            def value := specimen.fetch(key, thunk {
+                return [insteadThunk(), specimen]
+            })
+            return [value, specimen.without(key)]
+        }
+        return extractor2
+    }
+
+    /**
+     * What should this method be named?
+     * <p>
+     * @deprecated. Use get/2 instead.
+     */
+    to depr(key, instead) :any {
+        return extract(key, fn {instead})
+    }
+}
+
+
+? def [a,b] := [1,2]
+# value: [1, 2]
+
+? interp.setExpand(true)
+
+? def [=>x, "y" => y, => z := 3] := ["x"=>a, "y"=> b]
+# expansion: def via (__extract.run("x"))
+#              [x, via (__extract.run("y"))
+#                [y, via (__extract.depr("z", 3))
+#                  [z, :__Empty]]] :=
+#              __makeMap.fromPairs(__makeList.run(__makeList.run("x", a),
+#                                  __makeList.run("y", b)))
+
+# value: ["x" => 1, "y" => 2]
+
+? interp.setExpand(false)
+# expansion: interp.setExpand(false)
+
+? [x,y,z]
+# value: [1, 2, 3]
+
+? def [=>w] := ["w"=>a, =>b]
+# problem: Not empty: ["b" => 2]
+
+? interp.setExpand(true)
+
+? def ["i" => j, (j) => k] := ["i" => "foo", "foo" => "bar"]
+# expansion: def via (__extract.run("i"))
+#              [j, via (__extract.run(j))
+#                [k, :__Empty]] :=
+#              __makeMap.fromPairs(__makeList.run(__makeList.run("i", "foo"),
+#                                                __makeList.run("foo", "bar")))
+
+# value: ["i" => "foo", "foo" => "bar"]
+
+? interp.setExpand(false)
+# expansion: interp.setExpand(false)
+
+? [j,k]
+# value: ["foo", "bar"]

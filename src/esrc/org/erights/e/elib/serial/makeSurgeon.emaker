@@ -1,0 +1,433 @@
+#!/usr/bin/env rune
+
+# Copyright 2003 Hewlett Packard, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def deSubgraphKit := <elib:serial.deSubgraphKit>
+def deASTKit := <elib:serial.deASTKit>
+def deBytecodeKit := <elib:serial.deBytecodeKit>
+def deSrcKit := <elib:serial.deSrcKit>
+
+/**
+ *
+ */
+def argValue(optArg, func) :any {
+    if (null == optArg) {
+        return func()
+    } else {
+        return optArg
+    }
+}
+
+/**
+ * Makes a map like the argument, but which returns a broken reference rather
+ * than throwing an exception on an <tt>m[key]</tt> when the key is not
+ * found.
+ */
+def makeForgivingMap(map) :near {
+    def forgivingMap extends map {
+        to get(key) :any {
+            if (super.maps(key)) {
+                return super[key]
+            } else {
+                return Ref.broken(`There is no $key`)
+            }
+        }
+        to snapshot() :near { return makeForgivingMap(super.snapshot()) }
+        to diverge()  :near { return makeForgivingMap(super.diverge()) }
+        to readOnly() :near { return makeForgivingMap(super.readOnly()) }
+    }
+    return forgivingMap
+}
+
+/**
+ *
+ *
+ * @author Mark S. Miller
+ */
+def makeSurgeon {
+
+    /**
+     * Note: Non-upwards compatible change. This now returns a const-surgeon.
+     * If you want the effect of the original, you must .digerge() the result.
+     */
+    to withSrcKit(optPrefix :nullOk[String]) :near {
+        return makeSurgeon(["depictionBuilderMaker" => deSrcKit,
+                            => optPrefix,
+                            "depictionRecognizer" => deSrcKit]).snapshot()
+    }
+
+    /**
+     * Note: Non-upwards compatible change. This no longer accepts nulls
+     * for arguments other than optPrefix.
+     *
+     * @deprecated Use the name-based run/1 instead (or run/0, if you want to
+     *             let everything default).
+     * @param uncallers The search path used to find a portrayal for
+     *                  traversing each node of the subgraph.
+     * @param unscope Cuts off outgoing references, replacing them with
+     *                named exit points to be reconnected.
+     * @param depictionBuilderMaker Defaults to deBytecodeKit.
+     *                              Used to make the builder which will make
+     *                              the depiction.
+     * @param optPrefix If non-null, then the
+     *                  depictionBuilderMaker and depictionRecognizer
+     *                  must be for depictions which are strings.
+     *                  If provided, then it is prepended to the depiction to
+     *                  create the serialized form, and is stripped from the
+     *                  beginning of the depiction prior to serialization.
+     * @param depictionRecognizer Used to recognize the depiction built
+     *                            according to optDepictionBuilderMaker.
+     * @param scope Used to reconnect the named exit points.
+     */
+    to run(uncallers :notNull,
+           unscope :notNull,
+           depictionBuilderMaker :notNull,
+
+           optPrefix :nullOk[String],
+
+           depictionRecognizer :notNull,
+           scope :notNull) :near {
+        return makeSurgeon([=> uncallers,
+                            => unscope,
+                            => depictionBuilderMaker,
+                            => optPrefix,
+                            => depictionRecognizer,
+                            => scope])
+    }
+
+    /**
+     * Everything defaults.
+     * <p>
+     * Note: Non-upwards compatible change. The various collection arguments
+     * now default to const-collections. If you want the effect of the
+     * original, you must .digerge() the result.
+     */
+    to run() :near {
+        makeSurgeon([].asMap())
+    }
+
+    /**
+     *
+     *
+     * @param uncallers Defaults to deSubgraphKit.getDefaultUncallers().
+     *                  The search path used to find a portrayal for
+     *                  traversing each node of the subgraph.
+     * @param unscope Defaults to deSubgraphKit.getDefaultUnscope().
+     *                Cuts off outgoing references, replacing them with
+     *                named exit points to be reconnected.
+     * @param depictionBuilderMaker Defaults to deBytecodeKit.
+     *                              Used to make the builder which will make
+     *                              the depiction.
+     * @param optPrefix Defaults to null. If non-null, then the
+     *                  optDepictionBuilderMaker and optDepictionRecognizer
+     *                  must be for depictions which are strings.
+     *                  If provided, then it is prepended to the depiction to
+     *                  create the serialized form, and is stripped from the
+     *                  beginning of the depiction prior to serialization.
+     * @param depictionRecognizer Defaults to deBytecodeKit.
+     *                            Used to recognize the depiction built
+     *                            according to optDepictionBuilderMaker.
+     * @param scope Defaults to deSubgraphKit.getDefaultScope().
+     *              Used to reconnect the named exit points.
+     * @param caller Defaults to E.
+     *               Used to perform a Data-E call expression during
+     *               unserialization.
+     */
+    to run([=> uncallers := deSubgraphKit.getDefaultUncallers(),
+            => unscope := deSubgraphKit.getDefaultUnscope(),
+            => depictionBuilderMaker := deBytecodeKit,
+
+            => optPrefix :nullOk[String] := null,
+
+            => depictionRecognizer := deBytecodeKit,
+            => var scope := deSubgraphKit.getDefaultScope(),
+            => caller := E]) :near {
+
+        def subgraphRecognizer := deSubgraphKit.makeRecognizer(uncallers,
+                                                               unscope)
+
+        def readOnlySurgeon {
+            to makeDepictionBuilder()   :near {
+                depictionBuilderMaker.makeBuilder()
+            }
+            to getOptPrefix() :nullOk[String] { optPrefix }
+            to getDepictionRecognizer() :near { depictionRecognizer }
+            to getSubgraphRecognizer()  :near { subgraphRecognizer }
+            to makeSubgraphBuilder()    :near {
+                deSubgraphKit.makeBuilder(scope.snapshot(), caller)
+            }
+
+            to snapshot() :near {
+                return makeSurgeon(["uncallers" => uncallers.snapshot(),
+                                    "unscope" => unscope.snapshot(),
+                                    => depictionBuilderMaker,
+                                    => optPrefix,
+                                    => depictionRecognizer,
+                                    "scope" => scope.snapshot(),
+                                    => caller]).readOnly()
+            }
+
+            to diverge() :near {
+                makeSurgeon(["uncallers" => uncallers.diverge(),
+                             "unscope" => unscope.diverge(),
+                             => depictionBuilderMaker,
+                             => optPrefix,
+                             => depictionRecognizer,
+                             "scope" => scope.diverge(),
+                             => caller])
+            }
+
+            to readOnly() :near {
+                return readOnlySurgeon
+            }
+
+            to serialize(root) :any {
+                def ast := subgraphRecognizer.recognize(root,
+                                                        deASTKit.makeBuilder())
+                def depictionBuilder := readOnlySurgeon.makeDepictionBuilder()
+                def depiction := deASTKit.recognize(ast, depictionBuilder)
+                if (null == optPrefix) {
+                    depiction
+                } else {
+                    optPrefix + depiction
+                }
+            }
+
+            to unserialize(var depiction) :any {
+                if (null != optPrefix) {
+                    def `$optPrefix@rest` := depiction
+                    depiction := rest
+                }
+                def subgraphBuilder := readOnlySurgeon.makeSubgraphBuilder()
+                depictionRecognizer.recognize(depiction, subgraphBuilder)
+            }
+        }
+
+        def surgeon extends readOnlySurgeon {
+
+            /**
+             * mustBeSettled defaults to false
+             */
+            to addExit(value, exitName :String) :void {
+                unscope[value] := exitName
+                scope[exitName] := value
+            }
+
+            to addExit(value, exitName :String, mustBeSettled :boolean) :void {
+                if (mustBeSettled) {
+                    require(Ref.isSettled(value), thunk{
+                        `Must be settled: $value => $exitName`})
+                }
+                surgeon.addExit(value, exitName)
+            }
+
+            to addUncaller(uncaller) :void {
+                uncallers(0,0) := [uncaller]
+            }
+
+            to addLastUncaller(uncaller) :void {
+                uncallers.push(uncaller)
+            }
+
+            /**
+             * mustBeSettled defaults to false
+             */
+            to addLoader(loader, exitName :String) :void {
+                surgeon.addLoader(loader, exitName, false)
+            }
+
+            to addLoader(loader,
+                         exitName :String,
+                         mustBeSettled :boolean) :void {
+                surgeon.addExit(loader, exitName, mustBeSettled)
+                surgeon.addUncaller(loader)
+            }
+
+            to beForgiving() :void {
+                surgeon.addExit(<opaque>, "opaque__uriGetter", true)
+                # Add at end instead of beginning
+                surgeon.addLastUncaller(<opaque>)
+                scope := makeForgivingMap(scope)
+            }
+
+            /**
+             * Names which either aren't found, map to null, or aren't settled
+             * aren't added.
+             */
+            to addFromScope(otherScope, exitNames, loaderNames) :void {
+                for name in exitNames {
+                    if (otherScope.fetch(name, thunk{}) =~ value :notNull) {
+                        surgeon.addExit(value, name, true)
+                    } else {
+                        throw.breakpoint(`no exit: $name`)
+                    }
+                }
+                for name in loaderNames {
+                    if (otherScope.fetch(name, thunk{}) =~ value :notNull) {
+                        surgeon.addLoader(value, name, true)
+                    } else {
+                        throw.breakpoint(`no loader: $name`)
+                    }
+                }
+            }
+
+            /**
+             * The defaultScope / defaultUnscope already has bindings for
+             * "null", "false", "true", "NaN", "Infinity", "__makeList",
+             * "__identityFunc", "__makeInt", and "import__uriGetter", so
+             * addFromSafeScope() assumes these are already present and does
+             * not add them. Similarly, the defaultUncallers already has the
+             * import__uriGetter, so this is not added as a loader.
+             * <p>
+             * For different reasons, the opaque__uriGetter is not added by
+             * addFromSafeScope() -- we leave its addition as a separate policy
+             * decision, especially since it needs to be added to the end,
+             * not the beginning, of the uncallers list.
+             */
+            to addFromSafeScope() :void {
+                surgeon.addFromScope(safeScope, [
+
+                    # Keep the following lists in the same order as in
+                    # ScopeSetup.java, and maintain these lists jointly.
+
+                    # "null", already in default scope / unscope
+                    # "false", already in default scope / unscope
+                    # "true", already in default scope / unscope
+                    "throw", # A strange but useful thing to include, so a
+                    #          depiction can force unserialization to fail.
+                    "__loop", # Probably not useful
+
+                    # "__makeList", already in default scope / unscope
+                    "__makeMap",
+                    "__makeProtocolDesc",
+                    "__makeMessageDesc",
+                    "__makeParamDesc",
+
+                    "__makeFinalSlot",
+                    "any",
+                    "void",
+
+                    "boolean",
+                    "__makeOrderedSpace",
+
+                    # "NaN", already in default scope / unscope
+                    # "Infinity", already in default scope / unscope
+                    # "__identityFunc", already in default scope / unscope
+                    # "__makeInt", already in default scope / unscope
+
+                    "__makeTwine",
+                    "__makeSourceSpan",
+
+                    "Guard",
+                    "__auditedBy",
+                    "near",
+                    "pbc",
+                    "PassByCopy",
+                    "DeepFrozen",
+                    "DeepPassByCopy",
+                    "Persistent",
+
+                    "int",
+                    "float64",
+                    "char",
+
+                    "String",
+                    "Twine",
+                    "TextWriter",
+
+                    "require",
+
+                    "nullOk",
+                    "vow",
+                    "rcvr",
+                    "SturdyRef",
+                    "simple__quasiParser",
+                    "rx__quasiParser",
+                    "e__quasiParser",
+                    "sml__quasiParser",
+                    "term__quasiParser",
+
+                    # universals above. Below is only safe.
+
+                    "__equalizer",
+                    "__comparer",
+                    "Ref",
+
+                    "E",
+                    "promiseAllFulfilled",
+
+                    "EIO",
+                    "help",
+                    "safeScope",
+
+                    "resource__uriGetter" # Should be in other list
+                ], [
+                    # "resource__uriGetter", Uncalling not yet implemented
+
+                    "type__uriGetter",
+                    # "import__uriGetter", already in default scope, unscope
+                    #                      and uncallers
+                    "elib__uriGetter",
+                    "elang__uriGetter"
+                    # "opaque__uriGetter" separate policy decision to include
+                ])
+            }
+
+            /**
+             * Starts by doing an addFromSafeScope()
+             */
+            to addFromPrivScope(privScope) :void {
+                surgeon.addFromSafeScope()
+                surgeon.addFromScope(privScope, [
+                    "makeCommand",
+
+                    "stdout",
+                    "stderr",
+                    "print",
+                    "println",
+                    "interp",
+
+                    "entropy",
+                    "timer",
+                    "introducer",
+                    "identityMgr",
+
+                    "makeSturdyRef",
+                    # "timeMachine", Too early. Must add it after timeMachine
+                    #                is made.
+
+                    "currentVat",
+                    "rune",
+
+                    # "awt__uriGetter", validity is runner dependent
+                    # "swing__uriGetter", validity is runner dependent
+                    # "JPanel__quasiParser", validity is runner dependent
+
+                    # "swt__uriGetter", validity is runner dependent
+                    # "currentDisplay", validity is runner dependent
+                    # "swtGrid__quasiParser", validity is runner dependent
+
+                    "privilegedScope",
+
+                    "unsafe__uriGetter" # it's a loader, but special
+                ], [
+                    # "unsafe__uriGetter", as loader, handled separately below
+
+                    "file__uriGetter",
+                    "fileURL__uriGetter",
+                    "http__uriGetter",
+                    "ftp__uriGetter",
+                    "gopher__uriGetter",
+                    "news__uriGetter",
+
+                    "captp__uriGetter"
+                ])
+
+                # Insert after the import__uriGetter, so it has lower priority
+                def i := uncallers.indexOf1(<import>) + 1
+                uncallers(i,i) := [privScope["unsafe__uriGetter"]]
+            }
+        }
+    }
+}

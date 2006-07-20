@@ -1,0 +1,127 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+    ? def controlLoopMaker := <elang:cmd.controlLoopMaker>
+    # value: <controlLoopMaker>
+
+    ? def reactor {
+    >     match [verb, args] {
+    >         println(`$verb$args`)
+    >     }
+    > }
+    # value: <reactor>
+
+    ? def ctrl := controlLoopMaker()
+    # value: <controlLoop_7>
+
+    ? ctrl.addStatusReactor(reactor)
+    ? ctrl.enqueue(thunk{println("foo")})
+    ?
+    foo
+    reactToEnqueue[1]
+    reactToSuccess[1, false]
+    reactToQueueEmpty[1]
+    ? (ctrl.enqueue(thunk{println("bar")})
+    >  ctrl.blockAtTop()
+    >  ctrl.enqueue(thunk{println("baz")})
+    > )
+    ?
+    reactToEnqueue[2]
+    reactToEnqueue[3]
+    reactToBlock[1]
+    ? ctrl.continueAtTop()
+    ?
+    bar
+    reactToSuccess[2, false]
+    baz
+    reactToSuccess[3, false]
+    reactToQueueEmpty[3]
+    ? def [p,r] := Ref.promise()
+    # value: [<Promise>, <Resolver>]
+
+    ? def event() :void {
+    >     println("before")
+    >     println("after")
+    >     ctrl.enqueue(thunk{println("next")})
+    >     ctrl.waitAtTop(p)
+    > }
+    # value: <event>
+
+    ? ctrl.enqueue(event)
+    ?
+    before
+    after
+    reactToEnqueue[4]
+    reactToEnqueue[5]
+    reactToSuccess[4, true]
+    reactToBlock[4]
+    ?
+    ? r.resolve(3)
+    ?
+    next
+    reactToSuccess[5, false]
+    reactToQueueEmpty[5]
+    ? def exitPairVow := ctrl.getExitPairVow()
+    # value: <Promise>
+
+    ? exitPairVow
+    # value: <Promise>
+
+    ? def event2() :void {
+    >     ctrl.exitAtTop()
+    >     println(`exit: ${ctrl.getExitPairVow()}`)
+    >     ctrl.enqueue(thunk{println("already dead")})
+    > }
+    # value: <event2>
+
+    ? ctrl.enqueue(event2)
+    ?
+    exit: <Promise>
+    reactToEnqueue[6]
+    reactToEnqueue[7]
+    reactToSuccess[6, false]
+    reactToExit[6, 0, null]
+    ?
+    ? exitPairVow
+    # value: [0, null]
+
+    ? def ctrl3
+    # value: <Resolver>
+
+    ? def event3() :void {
+    >     println("before")
+    >     println("after")
+    >     ctrl3.enqueue(thunk{println("next")})
+    >     ctrl3.blockAtTop()
+    > }
+    # value: <event3>
+
+    ? bind ctrl3 := controlLoopMaker()
+    # value: <controlLoop_7>
+
+    ? ctrl3.addStatusReactor(reactor)
+    ? ctrl3.enqueue(event3)
+    ?
+    before
+    after
+    reactToEnqueue[1]
+    reactToEnqueue[2]
+    reactToSuccess[1, true]
+    reactToBlock[1]
+    ? def exitPairVow3 := ctrl3.getExitPairVow()
+    # value: <Promise>
+
+    ? exitPairVow3
+    # value: <Promise>
+
+    ? ctrl3.exitAtTop()
+    ?
+    reactToExit[1, 0, null]
+    ?
+    ? exitPairVow3
+    # value: [0, null]
+
+    ?
+
+
+

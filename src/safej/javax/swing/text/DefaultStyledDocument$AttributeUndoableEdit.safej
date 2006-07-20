@@ -1,0 +1,8 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class(safe,
+      "javax.swing.text.DefaultStyledDocument.AttributeUndoableEdit",
+      statics(method("run(Element, AttributeSet, boolean)")),
+      methods(method("redo()"),
+              method("undo()")))

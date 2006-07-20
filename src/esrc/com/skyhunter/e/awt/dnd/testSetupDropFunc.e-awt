@@ -1,0 +1,27 @@
+#!/usr/bin/env rune
+
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def setupDropFuncAuthor := <import:com.skyhunter.e.awt.dnd.setupDropFuncAuthor>
+
+def frame := <swing:makeJFrame>()
+def right := <swing:makeJLabel>()
+right.setText("right")
+frame.getContentPane().add(right, "East")
+
+def reactToFiles(files) :void {
+    println("dropped object: " + files)
+    println("array size: " + files.size())
+    for i in 0..(files.size() - 1) {
+        println("text: " + files[i].getText())
+    }
+}
+def dataFlavor := <awt:datatransfer.makeDataFlavor>
+def setupFileDrop := setupDropFuncAuthor(<awt:dnd.makeDropTarget>, println)
+setupFileDrop(right, [dataFlavor.getJavaFileListFlavor() => reactToFiles])
+
+frame.pack()
+frame.show()
+println("compiled")
+interp.blockAtTop()

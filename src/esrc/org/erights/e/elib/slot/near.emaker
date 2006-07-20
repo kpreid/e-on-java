@@ -1,0 +1,84 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+/**
+ * Defined the Guard bound to "near" in the universal scope.
+ * <p>
+ * This guard only allows NEAR values.
+ */
+def near0 implements Guard {
+
+    to coerce(specimen, optEjector) :any {
+        if (Ref.isNear(specimen)) {
+            specimen
+        } else {
+            throw.eject(optEjector, "must be near")
+        }
+    }
+
+    /**
+     * Prints "near"
+     */
+    to __printOn(out :TextWriter) :void { out.print("near") }
+}
+
+    ? def nr := <elib:slot.near>
+    # value: <near>
+
+    ? def x :nr := 3
+    # value: 3
+
+    ? x := 4
+    # value: 4
+
+    ? def [p,r] := Ref.promise()
+    # value: [<Promise>, <Unresolved Resolver>]
+
+    ? x := p
+    # problem: not near
+    #
+    #   <statics of org.erights.e.elang.interp.Thrower>(not near)
+    #   <require0>(false, not near)
+    #   <near> coerce(<Promise>)
+    #   <& 4> setValue(<Promise>)
+    #   <interp> evalPrint(e`e`x` := p`)
+
+    ? x := r
+    # value: <Unresolved Resolver>
+
+    ? r.resolve(44)
+    ? x := p
+    # value: 44
+
+    ? def y := null
+    ? def foo() :nr { y }
+    # value: <foo>
+
+    ? foo()
+    ? y := 3
+    # value: 3
+
+    ? foo()
+    # value: 3
+
+    ? def [p2,r2] := Ref.promise()
+    # value: [<Promise>, <Unresolved Resolver>]
+
+    ? y := p2
+    # value: <Promise>
+
+    ? foo()
+    # problem: not near
+    #
+    #   <statics of org.erights.e.elang.interp.Thrower>(not near)
+    #   <require0>(false, not near)
+    #   <near> coerce(<Promise>)
+    #   <foo>()
+    #   <interp> evalPrint(e`foo run`)
+
+    ? r2.resolve(77)
+    ? foo()
+    # value: 77
+
+    ?
+

@@ -1,0 +1,13 @@
+class(safe,
+           "org.eclipse.swt.widgets.ToolBar",
+           statics(method("run(Composite, int)")),
+           methods(method("computeSize(int, int, boolean)"),
+                   method("getItem(int)"),
+                   method("getItem(Point)"),
+                   method("getItemCount()"),
+                   method("getItems()"),
+                   method("getRowCount()"),
+                   method("indexOf(ToolItem)"),
+                   method("setBounds(int, int, int, int)"),
+                   method("setRedraw(boolean)"),
+                   method("setSize(int, int)"))) 

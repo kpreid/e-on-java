@@ -1,0 +1,22 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class("javax.swing.text.Document",
+      statics,
+      methods(method("getLength()"),
+              method("addDocumentListener(DocumentListener)"),
+              method("removeDocumentListener(DocumentListener)"),
+              method("addUndoableEditListener(UndoableEditListener)"),
+              method("removeUndoableEditListener(UndoableEditListener)"),
+              method(suppress, "getProperty(Object)"),
+              method(suppress, "putProperty(Object, Object)"),
+              method("remove(int, int)"),
+              method("insertString(int, String, AttributeSet)"),
+              method("getText(int, int)"),
+              method("getText(int, int, Segment)"),
+              method("getStartPosition()"),
+              method("getEndPosition()"),
+              method("createPosition(int)"),
+              method("getRootElements()"),
+              method("getDefaultRootElement()"),
+              method(suppress, "render(Runnable)")))

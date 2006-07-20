@@ -1,0 +1,510 @@
+#!/usr/bin/env rune
+
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+/**
+ * set up tracing; stub out all the printing for operational version
+ */
+def traceline(str) :void { stderr.println(str) }
+traceline("started")
+def versionNumber := "0.7"
+def capDeskHomePath :=
+  <resource:com/skyhunter/capDesk/strings/capDeskHomePath.txt>.getText().trim()
+
+def initialNavWindow
+
+def makeFileNavigator := <import:com.skyhunter.capDesk.makeFileNavigatorAuthor>(
+    <unsafe:java.security.makeMessageDigest>, traceline)
+def <ser> := <unsafe:org.erights.e.elib.serial.*>
+def SerializationStreamMaker := <ser:SerializationStream>
+def UnserializationStreamMaker := <ser:UnserializationStream>
+
+
+def resolveAllVow := <import:com.skyhunter.e.net.resolveAllVow>
+def uriTools := <import:com.skyhunter.e.net.uriToolsAuthor>(introducer,
+                                                            makeSturdyRef)
+def sendValveMaker := <import:com.skyhunter.e.net.sendValveMaker>
+
+def vowsMonitorMaker(): any {
+    def [bundlePromise,resolver] := Ref.promise()
+    def bundle := [].diverge()
+    def vowsMonitor {
+        to add (thePromise) :void {bundle.push(thePromise)}
+        to finishAll() :void {resolver.resolve(resolveAllVow(bundle))}
+        to promiseFinish() :any {bundlePromise}
+    }
+}
+
+def forwarderMaker(target) :any {
+    def forwarder  {
+        match [`__respondsTo`, [_, _]] { false }
+        match [`__getAllegedType`, []] { null }
+        match [verb,args] {
+            def [resultVow, solver] := Ref.promise()
+            when (E.send(target,verb,args)) -> done(answer) :void {
+                solver.resolve(answer)
+            } catch prob {
+                traceline("prob in forwarder: " + prob)
+                solver.smash(`forwarder failed: $prob`)
+            }
+            resultVow
+        }
+    }
+}
+
+traceline("about to def installer")
+def installer
+def bindInstaller() :void {
+    bind installer := <import:com.skyhunter.installer.persistentInstallerAuthor>.run(
+        <unsafe>,
+        <file>,
+        interp,
+        introducer,
+        interp.getProps(),
+        traceline)
+}
+
+def powerboxControllerMaker
+def bindPowerboxControllerMaker() :void {
+    bind powerboxControllerMaker := <import:com.skyhunter.e.security.powerboxControllerMakerAuthor>.run(
+        <unsafe>, <file>, interp, introducer, traceline, false)
+}
+
+def navigatorWindowMaker
+def bindNavigatorWindowMaker() :void {
+    bind navigatorWindowMaker := <import:com.skyhunter.capDesk.makeNavShellAuthor>(
+        currentDisplay,
+        <unsafe>,
+        <file>,
+        installer,
+        powerboxControllerMaker,
+        interp,
+        swtGrid__quasiParser,
+        traceline)
+}
+
+
+
+def revokableConnectionMaker (myFtController) :any {
+    def revokableConnection {
+        to getANavigator(): any {
+            myFtController.getANavigator()
+        }
+        to versionNumber(): any {versionNumber}
+    }
+}
+
+
+traceline("about to compile copyAction")
+
+def copyAction(farFromFile,farToFile,fileName ) :any {
+    def fromCopier := farFromFile <- getFromCopier()
+    def toCopier := farToFile <- getToCopier()
+    def fromCopierForwarder := forwarderMaker(fromCopier)
+    def toCopierForwarder := forwarderMaker(toCopier)
+    #XXX copyEventually should get fromCoper, not forwarder, in final version
+    #XXX altered for testing 3 vat forwarding
+    def copiedVow := toCopier <- copyEventually(fromCopierForwarder,
+                                                initialNavWindow.makeFileProgressObserver("Copying " + fileName, farToFile),
+                                                toCopierForwarder, fromCopierForwarder)
+    when (copiedVow) -> done(result) :void {
+        traceline("copyaction success: " + result)
+    } catch prob {
+        traceline("copyaction failure: " + prob + prob.eStack())
+    }
+    copiedVow
+}
+
+
+# Sequencer of file copies to limit the number of progress windows and the number
+#  of big fromFile copy buffers in existence at any one time
+def copySequencer := sendValveMaker (5)
+
+def copyFiles(fromNavigator, toNavigator, overwriteAnswerer) :any {
+    traceline("into copyFiles" + fromNavigator+toNavigator + overwriteAnswerer)
+    def copyVows := vowsMonitorMaker()
+    def copyBase(farFromFile, farToFile, fileName) :void {
+        copyVows.add(copySequencer.makeActionVow([copyAction, "run", [farFromFile, farToFile, fileName]]))
+    }
+    def filesDirsPromise := fromNavigator <- listCurrentSubdirectoriesAndFiles()
+    when (filesDirsPromise) -> done(filesDirs) :void {
+        def fileNames := filesDirs[1]
+        for each in fileNames {
+            def nextFromFile := fromNavigator <- getFileNamed(each)
+            def nextToFile := toNavigator <- getFileNamed(each)
+            when (nextToFile <- exists()) -> doneNext(doesExist) :void {
+                if ( doesExist) {
+                    def shouldCopy := overwriteAnswerer.promiseOverwriteAnswer(each)
+                    when (shouldCopy) -> doneCopy(copyFulfilled) :void {
+                        if (shouldCopy) {
+                            copyBase(nextFromFile, nextToFile, each)
+                        }
+                    } catch err {}
+                } else {
+                    copyBase(nextFromFile, nextToFile, each)
+                }
+            } catch err{}
+        }
+        copyVows.finishAll()
+    } catch err {traceline("error not caught in old version getting filesDirs: " + err)}
+    copyVows.promiseFinish()
+}
+def marshalledDirPromiser(farOuterNavigator, farDir) :any {
+    traceline("make marshall" + farOuterNavigator + farDir)
+    def [marshalledDirPromise, resolver] := Ref.promise()
+    var farDirNavigator := null
+    var dirExists := farDir <- exists()
+    def dirName := farDir <- getName()
+    def dirCanonicalPath := farDir <- getCanonicalPath()
+    def dirPath := farDir <- getPath()
+    def fillWhenDirExists() :void {
+        farDirNavigator := farOuterNavigator <- dupNavigator()
+        farDirNavigator <- changeToSubdirectory (dirName)
+        dirExists := true
+    }
+    def marshalledDir := {
+        when (dirPath) -> done(dirPathR) :void {
+            if (dirExists) {fillWhenDirExists()}
+            resolver.resolve(marshalledDir)
+            traceline("dir paths: " + dirCanonicalPath + " :" + dirPath)
+        } catch err {
+            resolver.smash("dead dir: "+ err)
+        }
+        def marshalledDir {
+            to getDir() :any {farDir}
+            to getOuterNavigator() :any {farOuterNavigator}
+            to getDirNavigator() :any {farDirNavigator}
+            to exists() :any {dirExists}
+            to getName() :any {dirName}
+            to promiseMarshalledSubDir(subName) :any {
+                def farSubdir := farDirNavigator <- getFileNamed(subName)
+                marshalledDirPromiser(farDirNavigator,farSubdir)
+            }
+            to makeSelf() :any {
+                var dirPromise := null
+                if (! dirExists) {
+                    dirPromise := farDir <- mkdir(null)
+                    fillWhenDirExists()
+                }
+                dirPromise
+            }
+            to isProperSubDir() :any {dirCanonicalPath.toLowerCase() == dirPath.toLowerCase()}
+            to getCanonicalPath() :any {dirCanonicalPath}
+            to getPath() :any {dirPath}
+        }
+    }
+    marshalledDirPromise
+}
+
+traceline("got up to paster")
+
+/**
+ * paster
+ */
+def paster {
+    to paste(farFromFiles, fromDiskNavigator, initialToDiskNavigator, toNavigatorWindow) :void {
+        traceline("into paster paste:" + farFromFiles + fromDiskNavigator + toNavigatorWindow)
+        def toDiskNavigator := initialToDiskNavigator <- dupNavigator()
+        def allDone := vowsMonitorMaker()
+        def myOverwriter := toNavigatorWindow.makeOverwriteAnswerer()
+        for each in farFromFiles {
+            traceline("got each file" + each)
+            def isDir := each <- isDirectory()
+            def [nextCopyPromise, nextResolver] := Ref.promise()
+            allDone.add(nextCopyPromise)
+            when (isDir) -> done1(isDirR) :void {
+                if (isDirR) {
+                    def nextPromise := paster.copyDirBegin(each,
+                                                           fromDiskNavigator, toDiskNavigator, myOverwriter)
+                    nextResolver.resolve(nextPromise)
+                }else{
+                    def nextPromise := paster.pasteFile(each,
+                                                        toDiskNavigator)
+                    nextResolver.resolve(nextPromise)
+                }
+            } catch err {}
+        }
+        allDone.finishAll()
+        when (allDone.promiseFinish()) -> done3(p) :void {
+            traceline("about to refresh after pasting files")
+            toNavigatorWindow.refresh()
+        } catch err {
+            toNavigatorWindow.refresh()
+            initialNavWindow.connectionWarning("Some files may not have been copy/pasted.\n" + err)
+        }
+    }
+    to pasteFile(fromFilePromise, toDiskNavigator) :any {
+        traceline("into pasteFile")
+        def  [finishPromise,resolver] := Ref.promise()
+        def startCopyTo(target,fromName) :void {
+            traceline("about to copy in pastefile")
+            def finalPromise := copySequencer.makeActionVow(
+                [copyAction, "run", [fromFilePromise, target, fromName]])
+            traceline("about to start resolver in pastefile")
+            when (finalPromise) -> done4(p) :void {
+                traceline("about to resolve in pastefile: " + p)
+                resolver.resolve(p)
+            } catch err{traceline("err in pasteFile finalpromise: " + err)}
+        }
+        def fromNamePromise := fromFilePromise <- getName()
+        when (fromNamePromise) -> done5(fromName) :void {
+            traceline("paste is getting target " + fromName)
+            var target := toDiskNavigator <- getFileNamed(fromName)
+            traceline("paste target eventually requested")
+            when (target <- exists()) -> done2(fileExists) :void {
+                traceline("resolved target exists")
+                if (fileExists) {
+                    traceline("file exists: " + fromName)
+                    def confirmText := "Save with Specified Name"
+                    def box := initialNavWindow.makeDialogVow("File " + fromName  + " already exists",
+                        "\n  Confirm or change name, or cancel",
+                        fromName,
+                        [confirmText, "Cancel"])
+                    when (box <- optClickedButton(),
+                        box <- optEnteredText()) -> doneFilename(buttonText, enteredText) :void {
+                        if (buttonText == confirmText && enteredText.size() > 0) {
+                            if (enteredText != fromName) {
+                                target := toDiskNavigator <- getFileNamed(enteredText)
+                            }
+                            startCopyTo(target, fromName)
+                        } else {resolver.resolve("user canceled")}
+                    } catch prob {traceline("file name box prob: " + prob)}
+                } else {
+                    traceline("about to copyeventually")
+                    startCopyTo(target,fromName)
+                }
+            } catch err2 {
+                traceline("err getting fileExists " + err2)
+            }
+        } catch err {initialNavWindow.connectionWarning(err)}
+        finishPromise
+    }
+    to copyDirCautiously(marshalledFromDir, marshalledToDir, createdDirPaths, overwriteAnswerer) :any {
+        traceline("in copyDirCautiously" + marshalledFromDir + " :" +marshalledToDir)
+        # only continue copying if the fromDir is not something we just
+        #  created as a todir(indicating we are copying a dir into its own subdir)
+        # and if the fromdir is not a symlink running off to someplace odd)
+        traceline("is proper subdir " + (marshalledFromDir.isProperSubDir()))
+        def copyVows := vowsMonitorMaker()
+        if ((! (createdDirPaths.contains(marshalledFromDir.getCanonicalPath()))) && marshalledFromDir.isProperSubDir()) {
+            traceline("continuing copying in cautiously")
+            if (! (marshalledToDir.exists())) {
+                marshalledToDir.makeSelf()
+                traceline("made dir")
+                createdDirPaths.push(marshalledToDir.getCanonicalPath())
+            }
+            copyVows.add(copyFiles(marshalledFromDir.getDirNavigator(), marshalledToDir.getDirNavigator(),overwriteAnswerer))
+            def filesDirsPromise := marshalledFromDir.getDirNavigator() <- listCurrentSubdirectoriesAndFiles()
+            when (filesDirsPromise) -> done6(filesDirs) :void {
+                def dirs := filesDirs[0]
+                for each in dirs {
+                    traceline("copying dir: " + each)
+                    def [subDirPromise,subDirResolver] := Ref.promise()
+                    copyVows.add(subDirPromise)
+                    def fromSubNavigator := marshalledFromDir.getDirNavigator()
+                    def marshalledFromSubDir := marshalledDirPromiser(fromSubNavigator, fromSubNavigator <- getFileNamed(each))
+                    def toSubNavigator := marshalledToDir.getDirNavigator()
+                    def marshalledToSubDir := marshalledDirPromiser(toSubNavigator, toSubNavigator <- getFileNamed(each))
+                    def dirsReadyVow := resolveAllVow([marshalledToSubDir, marshalledFromSubDir])
+                    when (dirsReadyVow) -> done7(dirsReady) :void {
+                        subDirResolver.resolve(paster.copyDirCautiously (marshalledFromSubDir,  marshalledToSubDir, createdDirPaths, overwriteAnswerer))
+                    } catch e {
+                        initialNavWindow.connectionWarning(e)
+                        subDirResolver.smash("Couldn't connect to directory: " + e)
+                    }
+                }
+                copyVows.finishAll()
+            } catch err {}
+        } else {copyVows.finishAll()}
+        copyVows.promiseFinish()
+    }
+    to copyDirBegin(farFromDir, farFromDisk, toDiskNavigator, overwriteAnswerer) :any {
+        def farToDisk := toDiskNavigator <- dupNavigator()
+        def fromDir := marshalledDirPromiser(farFromDisk,farFromDir)
+        def createdDirPaths := [].diverge()
+        def [dirCopyCompletePromise, dirCopyCompleteResolver] := Ref.promise()
+        when (fromDir) -> done8(fromDirR) :void {
+            def farToDir := farToDisk <- getFileNamed(fromDir.getName())
+            def toDir := marshalledDirPromiser(farToDisk, farToDir)
+            when (toDir) -> done9(toDirR) :void {
+                def copyPromise := paster.copyDirCautiously (fromDir, toDir, createdDirPaths, overwriteAnswerer)
+                dirCopyCompleteResolver.resolve(copyPromise)
+            }catch err2 {
+                dirCopyCompleteResolver.smash("Lost connection: " +err2)
+                initialNavWindow.connectionWarning(err2)
+            }
+        } catch err {}
+        dirCopyCompletePromise
+    }
+}
+
+def makeDefaultConfigMap() :near {
+    def map := [].asKeys().diverge()
+    map["windowTitle"] := "My capDesk"
+    if (<file:~/Desktop>.exists()) {
+        map["home"] := <file:~/Desktop>.getCanonicalPath()
+    } else {
+        map["home"] := <file:~/>.getCanonicalPath()
+    }
+    map["serverOnly"] := false
+    map["capabilityFile"] := null
+    map["virtualRoot"] := <file>
+    map
+}
+
+/**
+ * assumes it is getting a default config, modifying from there
+ */
+def setConfigFromCommandLine(configMap) :void {
+    def commandArgs := interp.getArgs()
+    configMap["windowTitle"] := commandArgs[0]
+    configMap["serverOnly"] := commandArgs[1] != "gui"
+    configMap["home"] := commandArgs[2]
+    if (commandArgs.size() > 3) {configMap["capabilityFile"] := commandArgs[3]}
+    if (commandArgs.size() >4) {
+        configMap["virtualRoot"] := <file>[commandArgs[4]]
+    }
+    if (commandArgs.size() > 5 && commandArgs[5] != "write") {
+        traceline("Read Only File System")
+        configMap["virtualRoot"] := configMap["virtualRoot"].deepReadOnly()
+    }
+}
+
+traceline("about to compile setconfig from file")
+
+/**
+ * assumes it is getting a default config, modifying from there
+ * XXX this is obsolete, rewrite to use term trees and capabilities someday
+ */
+def setConfigFromFile(configFile,configMap) :void {
+    if (configFile.exists()) {
+        for each in configFile {
+            if (each =~ `@keyword=@value${"\n"}`) {
+                if (keyword == "isReadOnly" && value=="true") {
+                } else if (keyword == "serverOnly") {
+                    configMap[keyword] := value == "true"
+                } else {configMap[keyword] := value }
+            }
+        }
+    }
+}
+
+
+
+traceline("about to compile ftControllerMaker")
+
+/**
+ * ftController
+ *
+ * @author Marc Stiegler
+ */
+def ftControllerMaker(): any {
+    def  ftController
+    var copyBuffer := null
+    var copyBufferDiskNavigator := null
+    var configMap := makeDefaultConfigMap()
+    def commandArgs := interp.getArgs()
+    traceline("command arguments" + commandArgs)
+    if (commandArgs.size() > 1) {setConfigFromCommandLine(configMap)}
+    if (commandArgs.size() < 1) {setConfigFromFile(<file:capdesk.conf>, configMap)}
+    if (commandArgs.size() == 1) {setConfigFromFile(<file>[commandArgs[0]], configMap)}
+    def myHomeNavigator := makeFileNavigator (configMap["home"],
+                                              configMap["windowTitle"], configMap["virtualRoot"])
+    if (configMap["serverOnly"]) {
+        def identityFilePath := capDeskHomePath + configMap["windowTitle"] + ".capdesk-private"
+        def identityFile := <file>[identityFilePath]
+        def conn := revokableConnectionMaker(ftController)
+        def sturdyConn
+        traceline("server only")
+        if (! (identityFile.exists())) {
+            traceline("first incarnation")
+            def keyPair := introducer.newVatIdentity()
+            introducer.onTheAir()
+            def netConfig := introducer.getNetConfig()
+            def [bind sturdyConn, _, swissBase] :=
+              identityMgr.makeKnown(conn)
+            SerializationStreamMaker.recordFile(identityFile,
+                                                [netConfig,
+                                                 keyPair,
+                                                 swissBase])
+        } else {
+            traceline("reincarnation")
+            def [netConfig, keyPair, swissBase] :=
+              UnserializationStreamMaker.playFile(identityFile)
+            introducer.setNetConfig(netConfig)
+            introducer.setVatIdentity(keyPair)
+            introducer.onTheAir()
+            traceline("on the air in reincarnation")
+            def [bind sturdyConn, _] :=
+              identityMgr.makeKnownAs(conn, swissBase)
+        }
+        def capFile := <file>[configMap["capabilityFile"]]
+        def cap := introducer.sturdyToURI(sturdyConn)
+        traceline("made cap: " + cap)
+        capFile.setText(cap)
+        println("Disk Navigator Operational")
+    } else {
+        # XXX convert installer and powerbox to swt later
+        #bindInstaller()
+        #bindPowerboxControllerMaker()
+        bindNavigatorWindowMaker()
+        bind initialNavWindow :=
+          navigatorWindowMaker(ftController, myHomeNavigator)
+        introducer.onTheAir()
+    }
+
+
+    def buildNavWindow(uri) :void {
+        traceline("in buildnavwin, uri:" + uri)
+        def connector:= uriTools.promiseObject(uri)
+        traceline("connector is" + connector)
+        def navigator := connector <- getANavigator()
+        def versionPromise := connector <-versionNumber()
+        when (versionPromise) -> done(version) :void {
+            traceline("ha! resolved promise")
+            if (version == versionNumber) {
+                navigatorWindowMaker(ftController,  navigator)
+            } else {
+                initialNavWindow.connectionWarning("Wrong Version")
+            }
+        } catch err {
+            initialNavWindow.connectionWarning("Remote Navigator Not Acquired\n"  + err)
+            traceline("connection failure" + err)
+        }
+    }
+    def bind ftController  {
+        to copyFrom(fromFilePromises,fromDiskNavigator) :void {
+            copyBuffer := fromFilePromises
+            copyBufferDiskNavigator := fromDiskNavigator <- dupNavigator()
+            traceline("copyFrom: " + fromFilePromises + copyBufferDiskNavigator)
+        }
+        to paste(toDiskNavigator, navigatorWindow) :void {
+            traceline("paste started with: " + copyBuffer + copyBufferDiskNavigator)
+            paster.paste(copyBuffer, copyBufferDiskNavigator, toDiskNavigator, navigatorWindow)
+        }
+        to getANavigator(): any {
+            makeFileNavigator (configMap["home"], configMap["windowTitle"],
+                               configMap["virtualRoot"])
+        }
+        to openRemote() :void {
+            def uri := initialNavWindow.getRemoteConnectionURI()
+            if (uri != null) {
+                buildNavWindow(uri)
+            }
+        }
+        to openEdesk(filePromise) :void {
+            def uri := filePromise <- getText()
+            when (uri) -> done(uriR) :void {
+                buildNavWindow(uri)
+            } catch err {
+                initialNavWindow.connectionWarning("No Edesk server")
+            }
+        }
+    }
+}
+
+traceline("about to make controller")
+def baseController := ftControllerMaker()
+interp.blockAtTop()
+

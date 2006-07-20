@@ -1,0 +1,25 @@
+    ? (def makeJFrame := <unsafe:javax.swing.JFrame>
+    >  def ColorBlack := <unsafe:java.awt.Color>.black()
+    >  def makeEPainter := <unsafe:com.zooko.tray.EPainter>)
+    # value: <unsafe:com.zooko.tray.EPainter>
+    
+    ? def helloer {
+    >     to paintComponent(g) :void {
+    >         println("mubmle\n")
+    >         g.setColor(ColorBlack)
+    >         E.call(g, "drawString(String, int, int)", ["hello", 10, 10])
+    >         g.fillOval(10, 10, 100, 100)
+    >     }
+    > }
+    # value: <helloer>
+    
+    ? (def myep := makeEPainter(helloer)
+    >  def myjf := makeJFrame()
+    >  myep.setOpaque(false)
+    >  myjf.setContentPane(myep)
+    >  myjf.setSize(256, 256)
+    >  myjf.setVisible(true))
+    ? 
+    mubmle
+    
+    ? 

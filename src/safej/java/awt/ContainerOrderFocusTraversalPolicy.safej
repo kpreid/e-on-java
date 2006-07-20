@@ -1,0 +1,19 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class("java.awt.ContainerOrderFocusTraversalPolicy",
+      statics(method(suppress, "run()")),
+      methods(method(suppress,
+                     "getComponentAfter(Container, Component)",
+                     comment("if following component is outside this object\'s field of action, this is a breach")),
+              method(suppress,
+                     "getComponentBefore(Container, Component)",
+                     comment("if preceding component is outside this object\'s field of action, this is a breach")),
+              method(suppress,
+                     "getFirstComponent(Container)",
+                     comment("possible breach")),
+              method(suppress, "getLastComponent(Container)"),
+              method(suppress, "getDefaultComponent(Container)"),
+              method(suppress, "setImplicitDownCycleTraversal(boolean)"),
+              method(suppress, "getImplicitDownCycleTraversal()")),
+      comment("REVIEW This class is a big breacher for giving away outside components. All suppressed, needs review, may be made unsafe with all methods turned on. "))

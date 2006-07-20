@@ -1,0 +1,318 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def Slot := <type:org.erights.e.elib.slot.Slot>
+def EverReporter := <type:org.erights.e.elib.slot.EverReporter>
+def EverReactor := <type:org.erights.e.elib.slot.EverReactor>
+
+
+/**
+ * A lamportSlot is a <b>port</b> (really, a presence) of a distributed
+ * <b>L</b>atency <b>A</b>ccommodating <b>M</b>emory cell.
+ * <p>
+ * It is also based on an idea of Leslie Lamport's. An individual
+ * lamportSlot by itself behaves as a normal settable Slot, in which
+ * getValue() returns the argument of the most recent setValue(arg).
+ * When hooked together as presences of a distributed Lamport Cell, the
+ * vat-independent contract is looser: A getValue() must only return a
+ * value that was setValue()ed (or an initial value), and the more
+ * recent the better. When things are idle, and in the absence of
+ * partition, and given an expression of local interest, then getValue() must
+ * eventually converge on returning the
+ * most recently setValue(). In the spirit of E's partial ordering
+ * semantics, we further require that a sequence of setValue()s at a
+ * particular presence not be seen out of order by a sequence of
+ * getValue()s at any other presence.
+ * <p>
+ * Once we support PassByConstruction from E, the lamportSlot/Lamport Cell
+ * will be the primary example of presence/unum. It will pass itself by
+ * making a new Slot at
+ * the new location, and hooking the new Slot up to the Slot being
+ * passed so that they update each other appropriately. When this is
+ * supported, this presence creation should also follow the reference
+ * forking semantics of E's partially ordered messages.
+ *
+ * @author Mark S. Miller (with help from Dean Tribble and Steve
+ *         Jenson)
+ */
+def makeLamportSlot {
+
+    /**
+     * <tt>makeLamportSlot(initValue)</tt> is equivalent to
+     * <tt>makeLamportSlot(any, initValue)</tt>
+     */
+    to run(initValue) :Slot {
+        return makeLamportSlot(any, initValue)
+    }
+
+    /**
+     * Makes a new lamportSlot.
+     *
+     * @param subGuard All newly set values, or values updated by reports, are
+     *                 first coerced through this subGuard.
+     * @param value The initial value of the Slot, which is assumed to already
+     *              be coerced.
+     */
+    to run(subGuard :Guard, var value) :Slot {
+
+        # This says how current 'value' is, for coordinating with my
+        # reactors.
+        var myGeneration :int := 0
+
+        # Those downstream and subscribed to me.
+        var optReactors := null
+
+        # The EverReporters upstream from this one, ie, the one from
+        # which the most recent report was received. null if no one
+        # is upstream, or if we've already sent in our subscription request.
+        var optSource := null
+
+        # Says how recent value is by my source's generation
+        # numbering. Only meaningful when optSource != null
+        var srcGen :int := 0
+
+        # For debugging purposes
+        var debugName :String := "lamport"
+
+        # For debugging purposes
+        var tracer := def defaultTracer(thnk) :void {
+            # ignored by default
+        }
+
+        def lamportSlot
+
+        /**
+         * Trigger any delayed reregistration with my source
+         */
+        def localInterest() :void {
+            if (optSource == null) {
+                tracer(thunk {"localInterest() ignored"})
+            } else {
+                tracer(thunk{`localInterest() $srcGen`})
+                optSource <- whenUpdated(lamportSlot, srcGen)
+                optSource := null
+            }
+        }
+
+        /**
+         * A semantically read-only facet of the lamportSlot, which
+         * just contains the semantically read-only subset of the
+         * lamportSlot messages. We're careful to say "semantically"
+         * above because these reading operations are also an
+         * expression of interest in having a more accurate value, and
+         * so cause data structure changes and network activity.
+         */
+        def lamportReporter implements EverReporter {
+
+            /**
+             * For debugging purposes
+             */
+            to __printOn(out :TextWriter) :void {
+                out.print(`<ro-$debugName $value as of $myGeneration>`)
+            }
+
+            /**
+             * Synchronously return the locally stored value, but also
+             * trigger any delayed registration with source, since
+             * someone's now locally interested in the value.
+             */
+            to getValue() :any {
+                localInterest()
+                value
+            }
+
+            /**
+             * This is how a downstream Reactor subscribes to this Slot
+             * as an upstream Reporter. This Slot is being told "'reactor'
+             * has a value that's current as of 'lastGeneration'. When
+             * you have more recent news, let him know."
+             */
+            to whenUpdated(reactor :EverReactor, lastGeneration :int) :void {
+                tracer(thunk{
+                    `lamportReporter whenUpdated($reactor, $lastGeneration)`
+                })
+
+                # Like getValue(), whenUpdated() is a demonstration of
+                # local interest.
+                localInterest()
+                tracer(thunk{`$lastGeneration < $myGeneration`})
+                if (lastGeneration < myGeneration) {
+                    # We have more recent news right now, so notify
+                    # reactor without registering him. When we
+                    # generally take this branch, we effectively have
+                    # a polling protocol.
+                    reactor <- reactToUpdate(value,
+                                             myGeneration,
+                                             lamportReporter)
+                } else {
+                    # We don't yet have more recent news, so remember
+                    # reactor so we can notify him later. When we
+                    # generally take this branch, we effectively have an
+                    # event notification protocol.
+                    if (optReactors == null) {
+                        optReactors := [].diverge()
+                    }
+                    optReactors.push(reactor)
+                }
+            }
+
+            /**
+             * Use for initial connectivity
+             */
+            to whenUpdated(reactor :EverReactor) :void {
+                lamportReporter.whenUpdated(reactor, -1)
+            }
+
+            /**
+             * Returns a read-only facet of the Slot
+             */
+            to readOnly() :Slot {
+                lamportReporter
+            }
+
+            /** Returns false, since read-only does not imply final. */
+            to isFinal() :boolean { return false }
+        }
+
+        /**
+         * The read-write facet of the lamportSlot.
+         */
+        bind lamportSlot extends lamportReporter implements EverReactor, Slot {
+
+            /**
+             * For debugging purposes
+             */
+            to __printOn(out :TextWriter) :void {
+                out.print(`<$debugName $value as of $myGeneration>`)
+            }
+
+            /**
+             *
+             */
+            to setDebugName(newDebugName :String) :void {
+                debugName := newDebugName
+            }
+
+            /**
+             *
+             */
+            to setTracer(newTracer) :void {
+                tracer := newTracer
+            }
+
+            /**
+             * Synchronously sets the local value (so local getValue()s
+             * are immediately accurate), and also report to all Reactors
+             * subscribed to this Slot. One should only setValue() an
+             * authoritative lamportSlot -- one that has no slots upstream from
+             * it.
+             */
+            to setValue(newValue) :void {
+                lamportSlot.reactToUpdate(newValue, 0, null)
+            }
+
+            /**
+             * Receive a report from an EverReporter that's presumably upstream
+             * of this one (ie, that we've subscribed to).
+             * <p>
+             * This Slot synchronously updates itself, reports to those
+             * Reactors downstream from it, and remembers the upstream Reporter
+             * so that it can re-subscribe to it if there's an expression of
+             * local interest.
+             * <p>
+             * When this Slot updates those downstream of it, it gives
+             * them the readOnly Reporter facet on this Slot as the source and
+             * drops their registration. This forces them to
+             * re-subscribe if they're still interested.
+             */
+            to reactToUpdate(newValue :subGuard,
+                             newReporterGen :int,
+                             optNewSource :nullOk[EverReporter]) :void {
+                tracer(thunk{
+                    `$lamportSlot reactToUpdate($newValue,
+                                                $newReporterGen,
+                                                $optNewSource)`
+                })
+                value := newValue
+                srcGen := newReporterGen
+                optSource := optNewSource
+                myGeneration += 1
+                if (optReactors != null) {
+                    tracer(thunk{"spread the news"})
+                    for reactor in optReactors {
+                        reactor <- reactToUpdate(value,
+                                                 myGeneration,
+                                                 lamportSlot.readOnly())
+                    }
+                    optReactors := null
+                    # The fact that we had downstream reactors to
+                    # notify is sufficient demonstration of interest
+                    # for us to reregister with our source.
+                    localInterest()
+                }
+            }
+        }
+        return lamportSlot
+    }
+
+    /**
+     *
+     */
+    to localShadow(initValue, farReporter :rcvr[EverReporter]) :EverReporter {
+        def &x := makeLamportSlot(initValue)
+        farReporter <- whenUpdated(&x)
+        return (&x).readOnly()
+    }
+
+    /**
+     * While being watched, report a change every delayMillis, whether or not
+     * the slot itself is ever assigned to.
+     */
+    to fromSlot(slot :Slot, timer, delayMillis :int) :EverReporter {
+        def reporter extends slot implements EverReporter {
+            to whenUpdated(reactor) :void { reporter.whenUpdated(reactor, -1) }
+            to whenUpdated(reactor, lastGen) :void {
+                def absMillis := timer.now() + delayMillis
+                timer.whenPast(absMillis, reactor, "reactToUpdate", [
+                    slot.getValue(),
+                    lastGen+1,
+                    reporter
+                ])
+            }
+
+            /**
+             * Returns a read-only facet of the Slot
+             */
+            to readOnly() :Slot {
+                reporter
+            }
+
+            /**
+             * Even if the original slot is final, this returns false, since
+             * the reporter has a behavior distinct from a FinalSlot on its
+             * value.
+             */
+            to isFinal() :boolean { return false }
+        }
+        if (slot.isFinal()) {
+            # Since final implies read-only
+            return reporter
+        }
+        def reactor extends reporter implements EverReactor, Slot {
+
+            to setValue(newValue) :void {
+                slot.setValue(newValue)
+            }
+
+            to reactToUpdate(newValue,
+                             newReporterGen :int,
+                             optNewSource :nullOk[EverReporter]) :void {
+                slot.setValue(newValue)
+                if (optNewSource != null) {
+                    optNewSource <- whenUpdated(reactor, newReporterGen)
+                }
+            }
+        }
+        return reactor
+    }
+}

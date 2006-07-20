@@ -1,0 +1,12 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class("java.awt.FocusTraversalPolicy",
+      statics(method(suppress, "run()")),
+      methods(method(suppress, "getComponentAfter(Container, Component)"),
+              method(suppress, "getComponentBefore(Container, Component)"),
+              method(suppress, "getFirstComponent(Container)"),
+              method(suppress, "getLastComponent(Container)"),
+              method(suppress, "getDefaultComponent(Container)"),
+              method(suppress, "getInitialComponent(Window)")),
+      comment("REVIEW This class is a big breacher for giving away outside components. All suppressed, needs review, may be made unsafe with all methods turned on. "))

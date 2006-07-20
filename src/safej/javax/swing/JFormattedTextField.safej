@@ -1,0 +1,23 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class(safe,
+      "javax.swing.JFormattedTextField",
+      statics(method("run()"),
+              method("run(Object)"),
+              method("run(Format)"),
+              method(suppress, "run(JFormattedTextField.AbstractFormatter)"),
+              method(suppress, "run(JFormattedTextField.AbstractFormatterFactory)"),
+              method(suppress, "run(JFormattedTextField.AbstractFormatterFactory, Object)")),
+      methods(method("setFocusLostBehavior(int)"),
+              method("getFocusLostBehavior()"),
+              method(suppress, "setFormatterFactory(JFormattedTextField.AbstractFormatterFactory)"),
+              method(suppress, "getFormatterFactory()"),
+              method(suppress, "getFormatter()"),
+              method("setValue(Object)"),
+              method("getValue()"),
+              method("commitEdit()"),
+              method("isEditValid()"),
+              method(suppress, "getActions()"),
+              method(suppress, "getUIClassID()"),
+              method("setDocument(Document)")))

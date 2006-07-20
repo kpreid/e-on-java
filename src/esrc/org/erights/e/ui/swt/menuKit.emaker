@@ -1,0 +1,108 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def <swt> := <import:org.eclipse.swt.*>
+def <widget> := <swt:widgets.*>
+def SWT := <swt:makeSWT>
+
+def <swtType> := <type:org.eclipse.swt.*>
+def <widgetType> := <swtType:widgets.*>
+def Shell    := <widgetType:Shell>
+def Control  := <widgetType:Control>
+def Menu     := <widgetType:Menu>
+def MenuItem := <widgetType:MenuItem>
+def ToolBar  := <widgetType:ToolBar>
+def ToolItem := <widgetType:ToolItem>
+
+def menuKit {
+
+    /**
+     * For making MenuBars
+     */
+    to bar(menuItemActions) :near {
+        def barAction {
+            to makeMenu(parent :Shell, menuMap) :Menu {
+                def result := <widget:makeMenu>(parent, SWT.getBAR())
+                menuMap[barAction] := result
+                parent.setMenuBar(result)
+                for menuItemAction in menuItemActions {
+                    menuItemAction.makeMenuItem(result, menuMap)
+                }
+                result
+            }
+            to getItemActions() :near { menuItemActions }
+        }
+    }
+
+    /**
+     * For making Menus within a MenuItem or Control.
+     * <p>
+     * If the parent is a Control, then the style will be popup. If it already
+     * has a menu, this will extend it.
+     */
+    to menu(menuItemActions) :near {
+        def menuAction {
+            to makeMenu(parent, menuMap) :Menu {
+                def result
+                if (parent.getMenu() =~ menu :notNull) {
+                    bind result := menu
+                } else {
+                    bind result := <widget:makeMenu>(parent)
+                    menuMap[menuAction] := result
+                    parent.setMenu(result)
+                }
+                for menuItemAction in menuItemActions {
+                    menuItemAction.makeMenuItem(result, menuMap)
+                }
+                result
+            }
+            to getItemActions() :near { menuItemActions }
+        }
+    }
+
+    /**
+     * For making a MenuItem containing a cascaded menu
+     */
+    to nest(label :String, menuAction) :near {
+        def cascadeAction {
+            to makeMenuItem(parent :Menu, menuMap) :MenuItem {
+                def result := <widget:makeMenuItem>(parent, SWT.getCASCADE())
+                result.setText(label)
+                menuMap[cascadeAction] := result
+                def menu := menuAction.makeMenu(result, menuMap)
+                result.setMenu(menu)
+                result
+            }
+            to makeToolItem(parent :ToolBar, toolMap) :ToolItem {
+                throw("XXX menus on toolbars not yet implemented")
+            }
+            to getLabel() :String { label }
+            to getMenuAction() :near { menuAction }
+        }
+    }
+
+    /**
+     * For making a MenuItem and its contained cascaded menu
+     */
+    to menu(label :String, menuItemActions) :near {
+        menuKit.nest(label, menuKit.menu(menuItemActions))
+    }
+
+    /**
+     * For making separators
+     */
+    to sep() :near {
+        def sepAction {
+            to makeMenuItem(parent :Menu, menuMap) :MenuItem {
+                def result := <widget:makeMenuItem>(parent, SWT.getSEPARATOR())
+                menuMap[sepAction] := result
+                result
+            }
+            to makeToolItem(parent :ToolBar, toolMap) :ToolItem {
+                def result := <widget:makeToolItem>(parent, SWT.getSEPARATOR())
+                toolMap[sepAction] := result
+                result
+            }
+        }
+    }
+}

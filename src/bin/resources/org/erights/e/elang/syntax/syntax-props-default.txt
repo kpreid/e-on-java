@@ -1,0 +1,479 @@
+# Copyright 2004, Hewlett Packard, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+# XXX documentation obsolete. Should be rewritten to de-emphasize versions
+# per se, and instead mostly talk groups of switch settings.
+
+# Settings of syntactic properties for a particular form of E. The
+# expansion of E to Kernel-E depends upon these switches. Nothing else
+# should.
+
+# The settings of these switches that support a particular version of
+# E are given by first reading the resource file
+# 'syntax-props-default.txt', and then reading the shadowing
+# definitions in 'syntax-props-<version>.txt', where the <version>
+# string of is just the numeric part of the version with the parts
+# separated by hyphens. For example, the <version> string "0-8-25"
+# would represent the canonical version of the 0.8.25* sequence, which
+# happens to be "0.8.25n". This means that the description of a
+# particular version isn't settled until the minor letter settles. As
+# of this writing, 0.8.25n is the earliest version of the language to
+# be described by these mechanisms.
+
+# These files are in the classpath and accessible by E expressions
+# like
+#
+#     <resource:org/erights/e/elang/syntax/syntax-props-<version>.txt>
+#
+# where the appropriate text is substituted for <version>.
+#
+# An individual E compilation unit can declare itself to be written in
+# a particular version of E by saying, for example:
+#
+#     pragma.syntax("0-8-25")
+#
+# This has exactly the effect of loading the definitions corresponding
+# that version of E, in order to effect the parsing and expansion of
+# the remainder of this compilation unit. (XXX We should insist that
+# this directive occur as a top-level expression, to avoid ambiguity
+# as to when it starts to apply. We don't enforce this yet, but you
+# should follow this practice.) This directive does *not* cause any
+# further attempts to be compatible with that version beyond the
+# changes caused by these switch settings.
+
+# Over time, the switches used to describe each version may change in
+# order to, as closely as possible, continue to support that old
+# version of the language in the context of the new language
+# implementation. The first priority is to ensure that, *if a program
+# is accepted*, then its meaning is adequately preserved. When the old
+# meaning of old constructs is no longer supported, the settings of
+# these switches should disallow those constructs, causing programs
+# using these constructs to be statically rejected.
+
+# As the language changes, the default settings are likely to get more
+# restrictive over time, so that a program which does not declare its
+# version is likely to be restricted to that subset of the language
+# which means the same thing in all the versions of the language since
+# 0.8.25n.
+
+
+# To ease the transition to the new restricted syntax, you can set
+# some of the switches below to 'warn' or 'true'.
+
+# This syntax switch mechanism was originally added to allow
+# experimentation. All these features were added for reasons that
+# seemed good at the time. If you feel a particular feature's revival
+# (making it again part of official E) is a good idea, please try it
+# out and if you still think it would be a good idea, please speak up
+# and explain why.
+
+
+# If e.enable.anon-lambda is set to 'true', E accepts the
+# " 'fn' params... '{' eExpr '}' lambda shorthand. To turn a program
+# using this feature into a proper
+# modern E program, this form should be prefixed by 'def' and the
+# method body should be explicitly declared with 'method' rather than
+# 'to', since an anon-lambda doesn't bind '__return'.
+
+e.enable.anon-lambda=true
+
+
+# Accept the 'eExpr::bar' shorthand as a representation of the . 'eExpr::bar'
+# as an expression expands to 'eExpr.__getPropertySlot("bar").getValue()'. If
+# the Miranda __getPropertySlot/1 is not overridden, this will be equivalent to
+# 'eExpr.getBar()'. 'eExpr1::bar := eExpr2' expands (approximately) to
+# 'eExpr.__getPropertySlot("bar").setValue(eExpr2)', which, when using the
+# Miranda behavior, will be equivalent to 'eExpr1.setBar(eExpr2)'. Finally,
+# 'eExpr::&bar' expands to 'eExpr.__getPropertySlot("bar")'. The Miranda
+# behavior of this synthesizes a Slot whose getValue/0, setValue/1 accesses
+# eExpr's getBar/0, setBar/1.
+#
+# We say "(approximately)" above, since the value of the assignment expression
+# will be the value expr2 evaluates to.
+
+e.enable.dot-props=allow
+
+
+# Accept the experimental 'meta.getState()' expression, which reifies
+# the current lexical environment into a ConstMap. The semantics of
+# this construct only has the scope within an object include those
+# variables defined outside the object that are used freely within the
+# object -- the instance variables. This is currently a kernel
+# construct, but will likely get redefined as syntactic shorthand that
+# expands to a collection-definition expression.
+#
+# Also controls other experimental meta constructs in the same
+# category, which, until 0.8.25e, included 'meta.context()'.
+# ('meta.context()' is now an official part of the language, since it is used
+# by the expansion of 'interface'.
+
+e.enable.meta-scope=true
+
+
+# Accept the " 'def' name.verb(params...) {...}" definition
+# shorthand. Instead, the explicit object definition syntax should be
+# used, where this method is an explicit method.
+
+e.enable.one-method-object=allow
+
+
+# Accept the experimental
+# " 'def' name 'match' pattern '{' eExpr '}' "
+# kernel construct. This is not a shorthand, so if you need it
+# there's nothing to do instead.
+
+e.enable.plumbing=true
+
+
+# Once upon a time, there was general agreement that a tab character
+# in a plain text file took you to the next tab stop, which was every
+# 8 characters. The Microsoft blight has not only screwed up the
+# newline conventions and the filepath separator conventions (of which
+# the Mac is equally guilty), but also screwed up the meaning of the
+# tab key. The best path to sanity is to simply avoid the presence of
+# tab characters in text files, with the one unfortunate exception of
+# "Makefile"s and "*.mk" files.
+#
+# Unfortunately, because so many text editors put tabs into files in a
+# way that's hard to turn off, E must, by default, accept tabs as a
+# valid whitespace character. However, to help you prevent yourself
+# from including tabs, we provide the "notabs" switch, which defaults
+# to "false". If you set it to true, the tab character will not be
+# considered valid whitespace.
+
+e.enable.notabs=allow
+
+
+# Enables syntax such as 'require (cond) else {str}' to be accepted
+# and be equivalent of
+# <pre>    require.else__control(fn{[[cond],fn{str}]}).run__control()</pre>
+
+e.enable.lambda-args=allow
+
+
+# Enable the deprecated 'delegate' syntax, which has been superceded by
+# 'extends'.
+
+e.enable.delegate-clause=allow
+
+
+################ New as of 0.8.20 #######################
+
+
+# Allows the expression syntax '[..., => foo, ...]' as shorthand for
+# '[..., "foo" => foo, ...]'
+
+e.enable.exporter=true
+
+
+# Allows the pattern syntax '[..., => foo, ...]' as shorthand for
+# '[..., "foo" => foo, ...]'
+
+e.enable.importer=true
+
+
+# In the context of a map-pattern, whether the explicit one or the one
+# using the above importer syntax, e.enable.pattern-default enables a
+# value-pattern position to also include an optional default value, so
+# that
+# <pre>    map =~ [..., "foo" => foo := expr, ...]</pre>
+# or
+# <pre>    map =~ [..., => foo := expr, ...]</pre>
+# will succeed even if <tt>map</tt> contains no mapping for
+# <tt>"foo"</tt>, in which case <tt>foo</tt> will be bound to the
+# value of the expr.
+#
+# Note: the above proposed syntax sucks, but the semantics seems
+# good. What would be a better syntax?
+
+e.enable.pattern-default=true
+
+
+# In reaction to the bug "<a href=
+# "http://bugs.sieve.net/bugs/?func=detailbug&bug_id=125519&group_id=16380"
+# >need type guard on data from renderer</a>", these three switches
+# exist so an individual module may elect to enable them for itself,
+# forcing itself to be more explicit. Such per-module enabling can be
+# done with, for example, a
+# <tt>pragma.enable("explicit-final-guard")<tt>.
+# <p>
+# When off ('false' or 'allow'), the corresponding guard declarations
+# may be ommitted, in which case a default guard is provided. When on
+# ('true'), those guard declarations must always be explicitly
+# provided. The official E language allows all these kinds of guards
+# to be ommitted, and therefore these switches must not be 'true' by
+# default.
+# <p>
+# Note that the definition of an object name in an object definition
+# expression does not allow a guard, so none of these switches will
+# cause one to be required there.
+# <p>
+# As with all pragmas, these pragma swicthes are not part of the
+# official E language. In fact, we expect to retire these swicthes
+# and migrate the ability to ask for this extra check into an advisory
+# static checker.
+#
+# e.enable.explicit-slot-guard added as of 0.8.23g
+
+e.enable.explicit-final-guard=allow
+e.enable.explicit-var-guard=allow
+e.enable.explicit-slot-guard=allow
+e.enable.explicit-result-guard=true
+
+# Allows the new "accumulator" syntax that has most of the advantages
+# of list comprehension (from Haskell and Python), but is more
+# E-like. For example, with this property enabled, one can write:
+# <pre>
+#     accum [] for i in 1..5 { + i**2 }
+# </pre>
+# to accumulate the list [ 1, 4, 9, 16, 25 ]. This expands into
+# <pre>
+# {
+#     var accum_n := []
+#     for i in 1..5 {
+#         accum_n += { i**2 }
+#     }
+#     accum_n
+# }
+# </pre>
+# Note that this is more flexible but more verbose than a list
+# comprehension, and less flexible and comparably verbose to a
+# Smalltalk injection.
+
+e.enable.accumulator=allow
+
+
+# Turns on the unary prefix '*' operator.
+# <pre>
+#     *x</pre>
+# expands to<pre>
+#     x.getValue()</pre>
+# so, by the normal assignment rules,<pre>
+#     *x := y</pre>
+# expands approximately to<pre>
+#     x.setValue(y)</pre>
+# except that the expansion also arranges for the value of the
+# expression to be the value of y.
+
+e.enable.unary-star=allow
+
+
+################ New as of 0.8.23g #######################
+
+# e.enable.explicit-slot-guard added as of 0.8.23g, but it appears
+# above because it's part of a group.
+
+# Has two related effects. It makes a left out method result guard
+# default to the equivalent of :any (internally represented with a
+# null), and it changes the expansion of 'to' methods into primitive
+# methods so that an explicit return is required to return a non-null
+# value.
+# <pre>
+# to foo() { ... } ===> method foo() :void { escape __return { ... } }</pre>
+# to <pre>
+# to foo() { ... } ===> method foo() { escape __return { ...; null } }</pre>
+
+e.enable.easy-return=allow
+
+################ New as of 0.8.24c #######################
+
+# Allows the 'escape' expression, and the loop expressions which build
+# on it -- 'while', 'for' -- to be optionally followed by an
+# escape-handler. As of the 0.8.24c release, the optional
+# escape-handler is written with the same syntax as the catch-clause
+# of a try-catch block: 'catch' pattern '{' expression '}'.
+#
+# An escape expression with an escape-handler is therefore written as<pre>
+#     escape ejector-pattern {
+#         body-expression
+#     } catch handler-pattern {
+#         handler-expression
+#     }
+# </pre>
+# If such an escape expression, if the ejector is invoked during the
+# execution of body-expression, body-expression is terminated, the
+# handler-pattern is matched against the argument to the ejector, and
+# the handler-expression is evaluated in the resulting scope.
+#
+# In a while-loop or for-loop with a escape-handler, if the break
+# ejector is called, the loop is exited and the argument to break is
+# passed to the handler.
+
+e.enable.escape-handler=true
+
+################ New as of 0.8.25h #######################
+
+# Allows the syntax (ignoring precedence)
+# <pre>    expr ::= specimen-expr ':' guard-expr</pre>
+# which expands to
+# <pre>
+#     Guard.coerce(guard-expr, null).coerce(specimen-expr, null)
+# </pre>
+
+e.enable.cast=true
+
+
+################ New as of 0.8.25h #######################
+
+# Allows the use of unary prefix '^' as a synonym for 'return'.
+
+e.enable.smalltalk-return=warn
+
+################ New as of 0.8.25h #######################
+
+# Allows a literal string anywhere an identifier would be accepted as a verb
+
+e.enable.verb-string=true
+
+################ New as of 0.8.30b #######################
+
+# Allows 'foo.bar' to expand to
+# '__makeVerbFacet.curryCall(foo, "bar")', so that '(foo.bar)(x,y)' can
+# have the same effect as 'foo.bar(x,y)'.
+#
+# Likewise, allows 'foo <- bar' to expand to
+# '__makeVerbFacet.currySend(foo, "bar")', so that '(foo <- bar)(x,y)' can
+# have the same effect as 'foo <- bar(x,y)'.
+#
+# The result should be a function which responds to "run" with any number
+# of arguments by calling (or sending) the corresponding "bar" method on the
+# "foo" object. Inspired by the <a href="http://www.waterken.com"
+# >web-calculus</a>, this is a cheap notation for forming a bar-only
+# unforseen-facet (a filtering forwarder, sort-of) on the "foo" object.
+
+e.enable.verb-curry=allow
+
+################ New as of 0.8.32f #######################
+
+# Enables various short forms of the when-catch construct, as discussed in the
+# thread starting at
+# http://www.eros-os.org/pipermail/e-lang/2004-December/010242.html
+
+e.enable.easy-when=true
+
+# Enables '->'s to be chained, forming what this thread refers to as an
+# "event sequence". (Dean points out that "when sequence" is less ambiguous,
+# since E has many event sequences.)
+
+e.enable.when-sequence=allow
+
+################ New as of 0.8.33o #######################
+
+# Allows a literal string anywhere an identifier would be accepted as a noun
+
+e.enable.noun-string=allow
+
+################ New as of 0.8.34p #######################
+
+# Used to allow the syntax
+#     "def" pattern ":=" "(" rValueExpr "," optEjectorExpr ")"
+# As of 0.8.36s, allows the syntax
+#     "def" pattern "exit" optEjectorExpr ":=" rValueExpr
+
+e.enable.trinary-define=allow
+
+################ Discontinued Switches ####################
+
+
+# The e.enable.bind switch has been retired, since 'bind' is now
+# considered an official part of the language.
+
+# The e.enable.meta-object switch has been retired, since 'meta(name)'
+# is no longer supported, even as an experimetal feature.
+
+# The e.enable.sub-object switch has been retired, since the 'extends'
+# syntax is now considered an official part of the language.
+
+# The e.enable.define switch has been retired, since we are now
+# committed to spelling this keyword only as 'def'.
+
+# The e.enable.no-paren-call switch has been retired, since no-parens
+# following a dot are now an object-property access, and no-dot-calls
+# are now deprecated.
+
+# The e.enable.no-paren-method switch has been retired, since it makes
+# little sense without the availability of e.enable.no-paren-call.
+
+# in 0.8.18 and 0.8.19, the e.enable.explicit-*-guard switches were
+# instead named e.enable.implicit-*-guard, and had the opposite
+# sense. This was switched to preserve the property that the official
+# language as of any release is defined by the behavior when all
+# e.enable.* switches are off.
+
+#### Discontinued as of 0.8.20 ####
+
+# e.enable.typedef, as the interface shorthand for creating a
+# rubber-stamping auditor/guard is now an official part of the
+# language/
+
+# e.enable.auditors, as the 'implements' syntax for requiring auditor
+# approval is now an official part of E and Kernel-E. (thanks Ping!)
+
+# e.enable.new-constructor is now retired. Its documentation used to
+# say:
+#
+# Constructors in E are now mapped to the 'run' method name. They
+# used to be mapped to the 'new' method name instead. When this flag
+# is turned on, constructors are mapped to the 'new' method name in
+# addition to the 'run' mapping. This applies in two contexts:
+# 1) To the expansion of the E language 'class' expression. This is
+# done on a per-emaker basis controllable by the usual
+# 'pragma enable(..)' and 'pragma disable(..)', and is only relevent
+# in contexts where e.enable.class-expr is also true.
+# 2) To the binding of a Java class constructor to an E method name.
+# This done only on a per-JVM basis. Per-vat or per-emaker settings
+# of these flags have no further effect.
+
+#### Discontinued as of 0.8.23j ####
+
+# Enable the deprecated 'class' syntax, which has been superceded by
+# 'extends'.
+#
+# e.enable.class-expr=allow
+
+#### Discontinued as of 0.8.26d ####
+
+# e.enable.no-dot-call is now retired. Rather than the old
+# 'bob foo(carol)', one must now write 'bob.foo(carol)'.
+
+# e.enable.when-clauses is now retired. This alternate when-catch
+# syntax was never used and would have been a bad idea.
+
+#### Discontinued as of 0.8.30c ####
+
+# e.enable.synthetic-slot=allow used to enable a particular expansion of
+# unary prefix '&' applied to a non-noun lValue expression.
+
+# e.enable.access-slot=allow was to allow another expansion of
+# unary prefix '&' applied to a non-noun lValue expression.
+
+#### Discontinued as of 0.8.36e ####
+
+# Enables an argument list to end with a sequence of map associations
+# without needing to surround them with square brackets. Likewise, it
+# enables a parameter list to end with a sequence of map association
+# patterns. This makes name-based parameters seem first class.
+
+# e.enable.map-tail=true
+
+#### Discontinued as of 0.8.36s ####
+
+# Allows the syntax "given" rValueExpr "=~" pattern
+# e.enable.given=allow
+
+# Allows the syntax "given" "(" rValueExpr "," optEjectorExpr ")" "=~" pattern
+# e.enable.trinary-given=allow
+
+# Allows the syntax rValueExpr "into" pattern
+# e.enable.into=allow
+
+# Allows the syntax rValueExpr "into" "^" "(" optEjectorExpr ")" pattern
+# e.enable.trinary-into=allow
+
+#### Discontinued as of 0.8.37a ####
+
+# Allows the use of a literal string as an object-expr's qualified or
+# fully-qualified name.
+
+# e.enable.literal-oname=allow
+

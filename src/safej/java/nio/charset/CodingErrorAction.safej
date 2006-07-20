@@ -1,0 +1,6 @@
+class(safe,
+      "java.nio.charset.CodingErrorAction",
+      statics(method("getIGNORE()"),
+              method("getREPLACE()"),
+              method("getREPORT()")),
+      methods)

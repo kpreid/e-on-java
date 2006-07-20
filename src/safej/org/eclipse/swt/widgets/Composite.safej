@@ -1,0 +1,12 @@
+class(safe,
+           "org.eclipse.swt.widgets.Composite",
+           statics(method("run(Composite, int)")),
+           methods(method("computeSize(int, int, boolean)"),
+                   method(suppress, "forceFocus()"),
+                   method("getChildren()"),
+                   method("getLayout()"),
+                   method("getTabList()"),
+                   method("layout()"),
+                   method("layout(boolean)"),
+                   method("setLayout(Layout)"),
+                   method("setTabList(Control[])"))) 

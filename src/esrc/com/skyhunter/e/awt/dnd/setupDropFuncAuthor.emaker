@@ -1,0 +1,54 @@
+
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def setupDropFuncAuthor(javaAwtDndDropTarget, traceline) :near {
+
+    /**
+     * FlavorReactorMap, key is a flavor, value is a one-parameter function
+     * the parameter is the object that was dropped
+     */
+    def setupDrop(component, flavorReactorMap) :void {
+        def dropTargetListener {
+            to drop (dropTargetDropEvent) :void {
+                traceline("drop event started")
+                dropTargetDropEvent.acceptDrop(
+                    dropTargetDropEvent.getDropAction())
+                var completedDrop := false
+                try {
+                    def findFlavor() :near {
+                        var flavor := null
+                        for each => value in flavorReactorMap {
+                            if (dropTargetDropEvent.isDataFlavorSupported(each)) {
+                                flavor := each
+                                traceline(`found flavor match: $each`)
+                                break
+                            }
+                        }
+                        flavor
+                    }
+                    def flavor := findFlavor()
+                    if (flavor != null) {
+                        def obj := dropTargetDropEvent.getTransferable().getTransferData(flavor)
+                        flavorReactorMap[flavor].run(obj)
+                        completedDrop := true
+                    }
+                } catch err {traceline ("getTransfer err: " + err)}
+                dropTargetDropEvent.dropComplete(true)
+            }
+            to dragEnter(dropTargetDragEvent) :void {
+                traceline("drop target sees dragEnter")
+                dropTargetDragEvent.acceptDrag(dropTargetDragEvent.getDropAction())
+            }
+            to dragOver(dropTargetDragEvent) :void {
+                #dropTargetDragEvent acceptDrag(dropTargetDragEvent getDropAction())
+
+            }
+            match [verb,args] {
+                #traceline("on match drop target sees: " + verb)
+            }
+        }
+        component.setDropTarget(
+            javaAwtDndDropTarget(component, dropTargetListener))
+    }
+}

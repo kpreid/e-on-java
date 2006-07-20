@@ -1,0 +1,13 @@
+class(safe,
+           "org.eclipse.swt.widgets.TabItem",
+           statics(method("run(TabFolder, int)"),
+                   method("run(TabFolder, int, int)")),
+           methods(method("dispose()"),
+                   method("getControl()"),
+                   method(suppress, "getDisplay()"),
+                   method(suppress, "getParent()"),
+                   method("getToolTipText()"),
+                   method("setControl(Control)"),
+                   method("setImage(Image)"),
+                   method("setText(String)"),
+                   method("setToolTipText(String)"))) 

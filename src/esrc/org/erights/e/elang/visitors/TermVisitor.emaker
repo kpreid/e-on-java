@@ -1,0 +1,95 @@
+# Copyright 2003 Dean Tribble under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+# @author Dean Tribble
+
+pragma.enable("easy-return")
+pragma.disable("explicit-result-guard")
+
+# not used
+def makeMultiDispatch(verb, arity) {
+    def multiDispatch(visitor, node, args) {
+        def argsSize := args.size()
+        def newArgs := if (argsSize == arity - 1) {
+            [node] + args
+        } else if (argsSize >= arity) {
+            def direct := arity -2
+            [node] + args(0,direct) + [args(direct, argsSize)]
+        } else {
+            throw(`Send of $verb/$arity failed. Expected at least ${
+                    arity-1} args, but got $argsSize`)
+        }
+        return E.call(visitor, verb, newArgs)
+    }
+    return multiDispatch
+}
+
+def makeManyDispatch(verb, arity) {
+    def manyDispatch(visitor, node, args) {
+        def argsSize := args.size()
+        require (argsSize == arity - 1, thunk{
+            `Send of $verb/$arity failed. Expected ${
+                    arity-1} args, but got $argsSize`
+        })
+        return E.call(visitor, verb, [node] + args)
+    }
+    return manyDispatch
+}
+
+def makeOneDispatch(verb) {
+    def oneDispatch(visitor, node, args) {
+        return E.call(visitor, verb, [node])
+    }
+    return oneDispatch
+}
+
+def makeDispatch(mType) {
+    def verb := mType.getVerb()
+    def arity := mType.getParams().size()
+    switch (arity) {
+        match ==0 {
+            def zeroDispatch(visitor, node, args) {
+                return E.call(visitor, verb)
+            }
+            return zeroDispatch
+        }
+        match ==1 {
+            return makeOneDispatch(verb)
+        }
+        match _ {
+            return makeManyDispatch(verb, arity)
+#            return makeMultiDispatch(verb, arity)
+        }
+    }
+}
+
+def VISIT_OTHER := makeOneDispatch("visitOther")
+
+def templateTermVisitor(self) {
+
+    def visits := [].asMap().diverge()
+
+    def termVisitor {
+        to visit(node) {
+            def tag := node.getTag()
+            def tagName := tag.getTagName()
+            if (visits.size() == 0) {
+                def typeDesc := self.__getAllegedType()
+                for `visit_@verb/@arity` => mType in
+                  typeDesc.getMessageTypes() {
+
+                    visits[verb] := makeDispatch(mType)
+                }
+            }
+            def dispatcher := visits.fetch(tagName, thunk{VISIT_OTHER})
+            return dispatcher(self, node, node.getArgs())
+        }
+        to visitAll(nodes) {
+            def res := [].diverge()
+            for n in nodes { res.push(self.visit(n)) }
+#            return res # XXX Really?
+            return res.snapshot()
+        }
+    }
+    return termVisitor
+}

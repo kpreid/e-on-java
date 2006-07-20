@@ -1,0 +1,6 @@
+class(safe,
+           "org.eclipse.swt.widgets.Canvas",
+           statics(method("run(Composite, int)")),
+           methods(method("getCaret()"),
+                   method("scroll(int, int, int, int, int, int, boolean)"),
+                   method("setCaret(Caret)"))) 

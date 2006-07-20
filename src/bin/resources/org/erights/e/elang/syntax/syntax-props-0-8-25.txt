@@ -1,0 +1,18 @@
+# Copyright 2004, Hewlett Packard, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+# Settings of syntactic properties for a particular form of E.
+# See syntax-props-default.txt for the purpose of these files.
+
+e.enable.explicit-result-guard=warn
+e.enable.smalltalk-return=warn
+
+e.enable.meta-scope=allow
+e.enable.plumbing=allow
+e.enable.exporter=allow
+e.enable.importer=allow
+e.enable.pattern-default=allow
+e.enable.map-tail=allow
+e.enable.escape-handler=allow
+e.enable.cast=allow
+e.enable.verb-string=allow

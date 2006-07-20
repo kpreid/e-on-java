@@ -1,0 +1,8 @@
+class("org.eclipse.swt.events.KeyEvent",
+           statics(method(suppress, "run(Event)")),
+           methods(method("getCharacter()"),
+                   method(suppress, "setCharacter(char)"),
+                   method("getKeyCode()"),
+                   method(suppress, "setKeyCode(int)"),
+                   method("getStateMask()"),
+                   method(suppress, "setStateMask(int)"))) 

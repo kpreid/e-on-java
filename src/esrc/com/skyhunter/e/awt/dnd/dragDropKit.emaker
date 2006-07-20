@@ -1,0 +1,79 @@
+
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def dragDropKitAuthor(<awt>, traceline) :near {
+    def dragDropKit {
+
+        /**
+         * uses class java.awt.dnd.DropTargetEvent in specifying
+         * dataflavor only so there is a concrete class for the
+         * dataflavor (java.lang.Object does not work!).
+         * <p>
+         * Users of the E dnd system must specify a reactor
+         * <pre>
+         * to mimeType := DataFlavor getJavaJVMLocalObjectMimeType() +
+         *              "; class=java.awt.dnd.DropTargetEvent"
+         * to transfer eobjects
+         * </pre>
+         */
+        to makeTransferableLocalEObject(eObject) :near {
+            def DataFlavor := <awt:datatransfer.makeDataFlavor>
+                    def mimeType := DataFlavor.getJavaJVMLocalObjectMimeType() +
+                      "; class=java.awt.dnd.DropTargetEvent"
+            def transferable {
+                to getTransferData(flavor) :near {
+                    eObject
+                }
+                to getTransferDataFlavors() :any {
+                    traceline("getting transfer flavors")
+                    def flavors := [DataFlavor(mimeType)]
+                    traceline(`transfer flavors: $flavors`)
+                    flavors
+                }
+                to isDataFlavorSupported(flavor) :boolean {
+                    flavor.isMimeTypeEqual(mimeType)
+                }
+                match [verb, args] {
+                    traceline("BAD: transfer got surprise message: " + verb)
+                }
+            }
+        }
+        to setupLocalDragSource(component, localEObjectFunc) :void {
+            def dragSourceListener {
+                to dragDropEnd(blah1) :void {traceline("drag source sees dragdropend")}
+                to dragEnter(blah2) :void {traceline("drag source sees dragenter")}
+                to dragExit(blah3) :void {traceline("drag source sees dragexit")}
+                to dragOver (blah4) :void {
+                    #traceline("drag source sees dragover")
+                }
+                to dropActionChanged(blah) :void {traceline("dropactionchanged")}
+                match [verb,args] {traceline("dragsource says: " + verb)}
+            }
+            def dragGestureListener {
+                to dragGestureRecognized(dragEvent) :void {
+                    def eObject := localEObjectFunc()
+                    def objCarrier := dragDropKit.makeTransferableLocalEObject(eObject)
+                    traceline(`dragging object: $eObject`)
+                    traceline(`dragEvent: $dragEvent`)
+                    traceline (`sourcel: $dragSourceListener`)
+                    def cursor := <awt:dnd.makeDragSource>.getDefaultMoveDrop()
+                    traceline(`cursor: $cursor`)
+                    try {
+                        dragEvent.startDrag(
+                            cursor,
+                            objCarrier,
+                            dragSourceListener)
+                    } catch err {traceline("dragevent err: " + err)}
+                    traceline ("started drag")
+                }
+                match [verb,args] {traceline("gesturer heard: " + verb)}
+            }
+            def dragSource := <awt:dnd.makeDragSource>.getDefaultDragSource()
+            dragSource.createDefaultDragGestureRecognizer(
+                component,
+                <awt:dnd.makeDnDConstants>.getACTION_COPY_OR_MOVE(),
+                dragGestureListener)
+        }
+    }
+}

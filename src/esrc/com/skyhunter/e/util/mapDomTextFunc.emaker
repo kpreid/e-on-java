@@ -1,0 +1,23 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def mapDomText(domTextNodes) :any {
+    def table := [].asKeys().diverge()
+    def nodeText(list) :String {
+        if (list.size() == 1) {
+            list[0].getData()
+        } else if (list.size() ==0 ) {
+            ""
+        } else {
+            # badData, no way to inform
+        }
+    }
+    def visitor {
+        match [`visit@theKey`, [arg]] {
+            table[theKey] := nodeText(arg)
+        }
+        match _ {}
+    }
+    for each in domTextNodes {each.welcome(visitor)}
+    table.snapshot()
+}

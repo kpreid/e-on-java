@@ -1,0 +1,57 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def queueMaker := <import:com.skyhunter.e.util.queueMaker>
+
+/**
+ * sendValve -- if you have numerous eventual sends to initiate,
+ * but initiating them all at once would consume vast resources
+ * and/or would actually slow down processing, queue the actions
+ * through a valve.
+ * <p>
+ * An ActionTrio is the list of [obj,"verb",[arguments]]
+ * that can be used in an E send()
+ * <p>
+ * The actions are guaranteed to be initiated in the sequence in
+ * which they are placed in the valve, though of course there is
+ * no guarantee as to which will terminate first (unless you have
+ * special knowledge of such sequencing outside the valve).
+ * <p>
+ * The numSimultaneousAllowed is the number of actions that can
+ * be run concurrently through this valve.
+ */
+def valveMaker (numSimultaneousAllowed) :near {
+    var max := numSimultaneousAllowed
+    var actionQueue := queueMaker()
+    var numRunning := 0
+    def startNext() :void {
+        if (actionQueue.hasMoreElements() && numRunning < max) {
+            def [actionTrio, resolver] := actionQueue.getNext()
+            numRunning += 1
+            def vowCompletion := E.send(actionTrio[0],actionTrio[1],actionTrio[2])
+            resolver.resolve(vowCompletion)
+            when (vowCompletion) -> done(complete) :void {
+            } catch prob {
+            } finally {
+                numRunning -= 1
+                startNext()
+            }
+        }
+    }
+    def  valve {
+        to makeActionVow(actionTrio) :any {
+            def [completionPromise, resolver] := Ref.promise()
+            actionQueue.add([actionTrio, resolver])
+            startNext()
+            completionPromise
+        }
+        to setVolume(newMax) :void {
+            max:= newMax
+            startNext()
+        }
+    }
+}
+
+#def valve := valveMaker(10)
+
+

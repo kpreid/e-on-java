@@ -1,0 +1,80 @@
+# Copyright 2004 Hewlett Packard, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+# ? def makeSchema := <import:org.quasiliteral.schema.makeSchema>
+# ? def <schema> := <resource:org/quasiliteral/schema/>
+# ? makeSchema.parseSchema(<schema:schema.schema>.getTwine())
+
+# The schema corresponding to term.y as processed by the quasiMetaBuilder.
+# <p>
+# This describes AST info describing the result of parsing input in the
+# grammar defined by term.y. Various other interesting schemas are subsets
+# of the schema presented here:
+# <p>
+# Schemas themselves, such as this one, are written in the subset of this
+# schema without <tt>action</tt> or <tt>&lt;hole&gt;</tt>.
+# <p>
+# Most schemas are written in the context-free subset of that, without
+# <tt>firstChoice</tt>, <tt>not</tt>, or <tt>interleave</tt>. <ul>
+# <li><tt>firstChoice</tt> is <i>prioritized choice</i> from Parsing Expression
+#     Grammars.
+# <li><tt>not</tt> forms a <i>syntactic predicate</i> from Parsing Expression
+#     Grammars.
+# <li><tt>interleave</tt> is an unordered analog of <tt>seq</tt>, from
+#     Relax-NG
+# </ul>
+# <p>
+# Grammars are the subset of schemas meant for processing sequences of symbols
+# rather than trees of symbols. They can be written in the language of
+# grammar.y. When processed by the quasiMetaBuilder, they are described by the
+# subset of this schema where <tt>&lt;term&gt; ::= &lt;functor&gt;;</tt>.
+# The syntax of the grammar.y language is essentially the corresponding
+# subset of the term.y language, with the additional changes that it uses
+# juxtaposition where term.y uses ',', and that juxtaposition binds much more
+# tightly than ','.
+# <p>
+# Actual grammar definitions may use holes and actions to express the
+# transformation of a low-level syntax into "semantics", i.e., a high level
+# syntax.
+# <p>
+# The actual output of the quasiMetaBuilder is a term tree, which is itself
+# in a small subset of the term.y language, and therefore corresponds to a
+# small subset of this schema, which we list separately in term.schema.
+# <p>
+# The language in which term-tree quasiliterals are expressed is the variant of
+# this grammar whose start symbol is <tt>&lt;rhs&gt;</tt> rather than
+# <tt>&lt;schema&gt;</tt>. It therefore does not include
+# <tt>&lt;schema&gt;</tt>, <tt>&lt;production&gt;</tt>, or
+# <tt>&lt;lhs&gt;</tt>, since they are not reachable starting at
+# <tt>&lt;rhs&gt;</tt>. Of the reachable elements, some are not yet
+# implemented (such as <tt>interleave</tt>), and may never be.
+
+# @author Mark S. Miller
+
+<schema>     ::= schema(<production>+);
+<production> ::= production(<lhs>, <rhs>);      # <lhs> ::= <rhs>;
+<lhs>        ::= tag(.String.);
+<rhs>        ::= <term>
+             |   onlyChoice(<rhs>, <rhs>+)      # <rhs> | <rhs> | ...
+             |   firstChoice(<rhs>, <rhs>+)     # <rhs> / <rhs> / ...
+             |   not(<rhs>)                     # !<rhs>
+             |   optional(<rhs>)                # <rhs>?
+             |   oneOrMore(<rhs>)               # <rhs>+
+             |   oneOrMore(<rhs>,<rhs>)         # <rhs>++<rhs>
+             |   zeroOrMore(<rhs>)              # <rhs>*
+             |   zeroOrMore(<rhs>,<rhs>)        # <rhs>**<rhs>
+             |   any                            # .
+             |   interleave(<rhs>, <rhs>+)      # <rhs> & <rhs> & ...
+             |   seq(<rhs>, <rhs>+)             # <rhs> , <rhs> , ...
+             |   action(<rhs>, <rhs>)           # <rhs> -> <rhs>
+             |   empty;                         # ()
+<term>       ::= term(<functor>, <rhs>)         # <functor>(<rhs>)
+             |   <functor>;
+<functor>    ::= tag(.String.)                  # foo
+             |   tag(.String., <hole>)          # foo@x
+             |   <hole>                         # @x
+             |   data(<literal>)                # "foo"
+             |   range(<literal>, <literal>);   # 'a'..'z'
+<hole>       ::= dollarHole(.int. | .String.)   # $x | ${3}
+             |   atHole(.int. | .String.);      # @x | @{3}
+<literal>    ::= .char. | .int. | .float64. | .String.;

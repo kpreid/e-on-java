@@ -1,0 +1,14 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class("javax.swing.text.AsyncBoxView.ChildState",
+      statics(method(suppress, "run(AsyncBoxView, View)")),
+      methods(method(suppress, "getChildView()"),
+              method(suppress, "run()"),
+              method(suppress, "getMinorSpan()"),
+              method(suppress, "getMinorOffset()"),
+              method(suppress, "getMajorSpan()"),
+              method(suppress, "getMajorOffset()"),
+              method(suppress, "setMajorOffset(float)"),
+              method(suppress, "preferenceChanged(boolean, boolean)"),
+              method(suppress, "isLayoutValid()")))

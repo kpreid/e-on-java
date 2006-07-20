@@ -1,0 +1,13 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def trimLines(str) :any {
+    def lines := str.split("\n")
+    var result := ""
+    for line in lines {
+        result += line.trim() + "\n"
+    }
+    # drop last newline
+    result.run(0, result.size() -1)
+}
+

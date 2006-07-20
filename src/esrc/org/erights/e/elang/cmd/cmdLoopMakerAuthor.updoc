@@ -1,0 +1,73 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+    ? def SystemGC {
+    >     to gc() :void {
+    >         println("System.gc()")
+    >         <unsafe:java.lang.System>.gc()
+    >     }
+    > }
+    # value: <SystemGC>
+
+    ? def cmdLoopMaker := <elang:cmd.cmdLoopMakerAuthor>(SystemGC)
+    # value: <cmdLoopMaker>
+
+    ? def ScopeImplMaker := <unsafe:org.erights.e.elang.scope.ScopeImpl>
+    # value: <unsafe:org.erights.e.elang.scope.ScopeImpl>
+
+    ? def scope := ScopeImplMaker([])
+    # value: org.erights.e.elang.scope.ScopeImpl@38b82
+
+    ? scope.asMap()
+    # value: [] asMap
+
+    ? def cmdLoop := cmdLoopMaker(["a", "b"],
+    >                             interp.getProps(),
+    >                             scope)
+    # value: <cmdLoop>
+
+    ? cmdLoop.getArgs()
+    # value: ["a", "b"]
+
+    ? cmdLoop.getProps().size()
+    # value: 78
+
+    ? cmdLoop.getExpand()
+    # value: false
+
+    ? cmdLoop.setExpand(true)
+    ? cmdLoop.getExpand()
+    # value: true
+
+    ? cmdLoop.pushResult("x")
+    ? cmdLoop.pushResult("y")
+    ? cmdLoop.getResult(0)
+    # value: "y"
+
+    ? cmdLoop.getResult(1)
+    # value: "x"
+
+    ? cmdLoop.getResult(2)
+    # problem: <IndexOutOfBoundsException: 2 must be below 2>
+    #
+    #   ["y", "x"] diverge get(2)
+    #   <cmdLoop> getResult(2)
+    #   <interactive interp> evalPrint(e`cmdLoop getResult(2)`)
+
+    ? cmdLoop.pushResult("z")
+    ? cmdLoop.getResult(0)
+    # value: "z"
+
+    ? cmdLoop.getResult(2)
+    # value: "x"
+
+    ? cmdLoop.gc()
+    System.gc()
+    ? cmdLoop.getResult(0)
+    # problem: <IndexOutOfBoundsException: 0 must be below 0>
+    #
+    #   [] diverge get(0)
+    #   <cmdLoop> getResult(0)
+    #   <interactive interp> evalPrint(e`cmdLoop getResult(0)`)
+
+    ?

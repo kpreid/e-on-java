@@ -1,0 +1,129 @@
+#!/usr/bin/env rune
+
+# Copyright 2004 Hewlett Packard, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+# derived from JPanelQuasiParserMaker.emaker
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def makeGridBagConstraints := <import:java.awt.makeGridBagConstraints>
+
+def lexPanel(GBCMaker, str) :any {
+    def table := [].diverge()
+    var row := [].diverge()
+    def constraints := [].diverge()
+    def len := str.size()
+    var pos := 0
+    var myChar := null
+    def next() :any {
+        myChar := str[pos]
+        pos += 1
+        myChar
+    }
+    while (pos < len) {
+        next()
+        if (" \t".contains(myChar)) {
+            # do nothing
+
+        } else if (myChar == '$') {
+            require(next() == '{',
+                    thunk{`$myChar should have been '{'`})
+            var index := 0
+            next()
+            while ('0' <= myChar && myChar <= '9') {
+                index := index * 10 + (myChar - '0')
+                next()
+            }
+            require(myChar == '}',
+                    thunk{`$myChar should have been '}'`})
+            require(index == constraints.size(),
+                    thunk{"Must be in order"})
+            def constraint := GBCMaker()
+            constraint.setFill(GBCMaker.getBOTH())
+            constraint.setWeightx(0.000001)
+            constraint.setWeighty(0.000001)
+            constraint.setGridx(row.size())
+            constraint.setGridy(table.size())
+            while(pos < len && str[pos] == '.') {
+                next()
+                switch (next()) {
+                    match =='X' {
+                        constraint.setWeightx(1.0)
+                    }
+                    match =='Y' {
+                        constraint.setWeighty(1.0)
+                    }
+                }
+            }
+            constraints.push(constraint)
+            row.push(constraint)
+
+        } else if (myChar == '\n') {
+            if (row.size() >= 1) { # ignore blank lines
+                row[row.size() -1].setGridwidth(GBCMaker.getREMAINDER())
+                table.push(row.snapshot())
+            }
+            row := [].diverge()
+
+        } else if (myChar == '>') {
+            def constraint := row[row.size() -1]
+            constraint.setGridwidth(constraint.getGridwidth().max(
+                1 + row.size() - constraint.getGridx()))
+            row.push(constraint)
+
+        } else if (myChar == 'V') {
+            def constraint := table[table.size() -1][row.size()]
+            constraint.setGridheight(constraint.getGridheight().max(
+                1 + table.size() - constraint.getGridy()))
+            row.push(constraint)
+
+        } else {
+            throw(`unrecognized: $myChar`)
+        }
+    }
+    if (row.size() >= 1) {
+        row[row.size() -1].setGridwidth(GBCMaker.getREMAINDER())
+        table.push(row.snapshot())
+    }
+    constraints.snapshot()
+}
+
+def cache := [].asMap().diverge()
+
+def JPanel__quasiParser {
+    to valueMaker(template) :any {
+        if (cache.maps(template)) {
+            cache[template]
+        } else {
+            def constraints := lexPanel(makeGridBagConstraints, template)
+            def ValueMaker {
+                to substitute(args) :any {
+                    def result := <import:javax.swing.makeJPanel>()
+                    result.setLayout(<import:java.awt.makeGridBagLayout>())
+                    for i => arg in args {
+                        # A genuinely ambiguous overload
+                        result.add(arg, constraints[i])
+                    }
+                    result
+                }
+            }
+            cache[template] := ValueMaker
+        }
+    }
+}
+
+
+    ? def fr := <import:javax.swing.makeJFrame>(); null
+    ? fr.setSize(300,300)
+    ? fr.show()
+    ? def button(name) :any { <import:javax.swing.makeJButton>(name) }
+    # value: <button>
+
+    ? def [a,b,c,d,e] := [button("a"), button("b"), button("c"),
+    >                     button("d"), button("e")]; null
+    ? fr.getContentPane().add(JPanel`$a $b >
+    >                                V  $c $d
+    >                                $e >  V`); null
+    ? fr.invalidate()
+    ? fr.validate()
+    ?

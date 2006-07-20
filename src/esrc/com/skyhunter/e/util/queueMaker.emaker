@@ -1,0 +1,75 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def queueMaker {
+    to run(blockSize) :any {
+        var nextEmptyBlockIndex := 0
+        var nextEmptyElementIndex := 0
+        # note retrieving elements always occurs in block zero
+        # if all of block zero is gotten, shift all blocks forward
+        var nextFullElementIndex := 0
+        def newBlock() :any {
+            def new := [].diverge()
+            new.setSize(blockSize + 1)
+            new
+        }
+        def blockList := [newBlock()].diverge()
+        def shiftBlocks() :void {
+            for i in 1..(blockList.size()) - 1 {
+                blockList[i - 1] := blockList[i]
+            }
+            nextFullElementIndex := 0
+            nextEmptyBlockIndex -= 1
+            blockList.pop()
+        }
+        def queue {
+            to add(element) :void {
+                blockList[nextEmptyBlockIndex][nextEmptyElementIndex] := element
+                nextEmptyElementIndex += 1
+                if (nextEmptyElementIndex >= blockSize) {
+                    blockList.push(newBlock())
+                    nextEmptyBlockIndex += 1
+                    nextEmptyElementIndex := 0
+                }
+            }
+            to getNext() :any {
+                var answer := null
+                if (nextEmptyBlockIndex == 0 && nextFullElementIndex >= nextEmptyElementIndex) {
+                    throw ("Retrieve on Empty Queue")
+                } else {
+                    answer := blockList[0][nextFullElementIndex]
+                    nextFullElementIndex += 1
+                    if (nextFullElementIndex >= blockSize) {
+                        shiftBlocks()
+                    }
+
+                }
+                answer
+            }
+            to hasMoreElements() :any {
+                nextEmptyBlockIndex > 0 || nextEmptyElementIndex > nextFullElementIndex
+            }
+            to size() :any {
+                (nextEmptyBlockIndex * blockSize) + nextEmptyElementIndex - nextFullElementIndex
+            }
+            to iterate(func) :void {
+                for i in 0..(queue.size() - 1) {
+                    func(i, queue.getNext())
+                }
+            }
+        }
+    }
+    to run() :any {queueMaker(100)}
+}
+
+def queueTest() :void {
+    def queue := queueMaker()
+    queue.add(1)
+    queue.add("abc")
+    #println(`queue size = ${queue size()}`)
+    for each in queue {
+        #println(`next element ${each}`)
+    }
+}
+#queueTest()
+queueMaker

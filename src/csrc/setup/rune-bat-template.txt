@@ -1,0 +1,18 @@
+@echo off
+
+:: Copyright 2004 Mark S. Miller under the terms of the MIT X license
+:: found at http://www.opensource.org/licenses/mit-license.html ...............
+
+:: Based on rune-template.txt. See that file for documentation.
+
+:: Currently, this should not end in a slash. Instead XXX, like
+:: rune-template, this should canonicalize either case to one of them.
+SET EHOME=${{e.home}}
+
+SET JCMD=${{e.javacmd}}
+
+SET OSDIR=${{e.osdir}}
+
+SET MACHDIR=${{e.machdir}}
+
+"%JCMD%" -cp "%EHOME%/e.jar;%EHOME%/bin/%OSDIR%/swt.jar" "-De.home=%EHOME%" "-Djava.library.path=%EHOME%/bin/%OSDIR%/%MACHDIR%" org.erights.e.elang.interp.Rune

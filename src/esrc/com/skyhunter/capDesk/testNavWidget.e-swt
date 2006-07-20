@@ -1,0 +1,36 @@
+#!/usr/bin/env rune
+
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def testNavigator {
+    to listCurrentSubdirectoriesAndFiles() :pbc {[["dir1", "dir2"],["file1","f2.txt"]]}
+    to getCurrentPath() :pbc {"path1/path2"}
+}
+
+def disposablesKit := <import:com.skyhunter.swt.disposablesKitAuthor>(currentDisplay, println)
+def frame := <swt:widgets.makeShell>(currentDisplay)
+frame.setText("test nav panel")
+def navMaker := <import:com.skyhunter.capDesk.navWidgetControllerMakerAuthor> (
+    <unsafe>,
+    <import:com.skyhunter.swt.disposablesKitAuthor>(currentDisplay, println),
+    println)
+
+def suffixMapper := <import:com.skyhunter.capDesk.installedAppsManagerMaker>(
+    <file:~/capData/capDeskPrivate/installedApps/installedApps.desc>, println)
+def winController {match [verb, args] {println("winController requested to: " + verb)}}
+def navWidgetController := navMaker(frame, null, null, suffixMapper, winController)
+
+navWidgetController.setDiskNavRcvr(testNavigator)
+
+swtGrid`$frame: ${navWidgetController.getMainPanel()}.X.Y`
+
+def disposer {
+    to widgetDisposed(event) :void {
+        disposablesKit.disposeAll()
+        println("disposed everything")
+    }
+}
+frame.addDisposeListener(disposer)
+frame.open()
+interp.blockAtTop()

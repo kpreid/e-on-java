@@ -1,0 +1,23 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class("javax.swing.Timer",
+      statics(method(suppress, "run(int, ActionListener)")),
+      methods(method(suppress, "addActionListener(ActionListener)"),
+              method(suppress, "removeActionListener(ActionListener)"),
+              method(suppress, "getActionListeners()"),
+              method(suppress, "getListeners(Class)"),
+              method(suppress, "setLogTimers(boolean)"),
+              method(suppress, "getLogTimers()"),
+              method(suppress, "setDelay(int)"),
+              method(suppress, "getDelay()"),
+              method(suppress, "setInitialDelay(int)"),
+              method(suppress, "getInitialDelay()"),
+              method(suppress, "setRepeats(boolean)"),
+              method(suppress, "isRepeats()"),
+              method(suppress, "setCoalesce(boolean)"),
+              method(suppress, "isCoalesce()"),
+              method(suppress, "start()"),
+              method(suppress, "isRunning()"),
+              method(suppress, "stop()"),
+              method(suppress, "restart()")))

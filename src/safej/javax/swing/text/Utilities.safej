@@ -1,0 +1,21 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class(safe,
+      "javax.swing.text.Utilities",
+      statics(method("run()"),
+              method("drawTabbedText(Segment, int, int, Graphics, TabExpander, int)"),
+              method("getTabbedTextWidth(Segment, FontMetrics, int, TabExpander, int)"),
+              method("getTabbedTextOffset(Segment, FontMetrics, int, int, TabExpander, int)"),
+              method("getTabbedTextOffset(Segment, FontMetrics, int, int, TabExpander, int, boolean)"),
+              method("getBreakLocation(Segment, FontMetrics, int, int, TabExpander, int)"),
+              method("getRowStart(JTextComponent, int)"),
+              method("getRowEnd(JTextComponent, int)"),
+              method("getPositionAbove(JTextComponent, int, int)"),
+              method("getPositionBelow(JTextComponent, int, int)"),
+              method("getWordStart(JTextComponent, int)"),
+              method("getWordEnd(JTextComponent, int)"),
+              method("getNextWord(JTextComponent, int)"),
+              method("getPreviousWord(JTextComponent, int)"),
+              method("getParagraphElement(JTextComponent, int)")),
+      methods)

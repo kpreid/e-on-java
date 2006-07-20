@@ -1,0 +1,159 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+This file is for testing the AnswersTable. First we obtain the maker:
+
+    ? def AnswersTableMaker := <unsafe:net.captp.tables.AnswersTable>
+    # value: <unsafe:net.captp.tables.AnswersTable>
+
+Then we make an instance:
+
+    ? def at1 := AnswersTableMaker()
+    # value: <AnswersTable[
+    #        ], free: [ 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15]>
+
+    ? at1.size()
+    # value: 0
+
+    ? def i1 := at1.put("foo")
+    # value: 1
+
+    ? at1
+    # value: <AnswersTable[
+    #          1:foo
+    #        ], free: [ 2 3 4 5 6 7 8 9 10 11 12 13 14 15]>
+
+    ? at1.size()
+    # value: 1
+
+    ? def i2 := at1.put("bar")
+    # value: 2
+
+    ? at1
+    # value: <AnswersTable[
+    #          1:foo
+    #          2:bar
+    #        ], free: [ 3 4 5 6 7 8 9 10 11 12 13 14 15]>
+
+    ? at1.free(i1)
+    ? at1
+    # value: <AnswersTable[
+    #          2:bar
+    #        ], free: [ 1 3 4 5 6 7 8 9 10 11 12 13 14 15]>
+
+    ? at1.get(i2)
+    # value: "bar"
+
+    ? at1[i2]
+    # value: "bar"
+
+    ? at1[i1]
+    # problem: <IllegalArgumentException: not alloced: 1>
+    #
+    #   <AnswersTable[   2:bar ], fr... 6 7 8 9 10 11 12 13 14 15]> get(1)
+    #   <interp> evalPrint(e`at1 get(i1)`)
+
+    ? at1.mustBeFree(i1)
+    ? at1.mustBeFree(i2)
+    # problem: <IllegalArgumentException: not free: 2>
+    #
+    #   <AnswersTable[   2:bar ], fr... 6 7 8 9 10 11 12 13 14 15]>.\
+    #   mustBeFree(2)
+    #   <interp> evalPrint(e`at1 mustBeFree(i2)`)
+
+    ? at1.mustBeAlloced(i1)
+    # problem: <IllegalArgumentException: not alloced: 1>
+    #
+    #   <AnswersTable[   2:bar ], fr... 6 7 8 9 10 11 12 13 14 15]>.
+    #   mustBeAlloced(1)
+    #   <interp> evalPrint(e`at1 mustBeAlloced(i1)`)
+
+    ? at1.mustBeAlloced(i2)
+    ? at1
+    # value: <AnswersTable[
+    #          2:bar
+    #        ], free: [ 1 3 4 5 6 7 8 9 10 11 12 13 14 15]>
+
+    ? at1.incr(i2)
+    ? at1.incr(i2)
+    ? at1.incr(i1)
+    # problem: <IllegalArgumentException: not alloced: 1>
+    #
+    #   <AnswersTable[   2:bar ], fr... 6 7 8 9 10 11 12 13 14 15]> incr(1)
+    #   <interp> evalPrint(e`at1 incr(i1)`)
+
+    ? at1
+    # value: <AnswersTable[
+    #          2:bar
+    #        ], free: [ 1 3 4 5 6 7 8 9 10 11 12 13 14 15]>
+
+    ? at1.decr(i2, 1)
+    # value: false
+
+    ? at1.decr(i2, 1)
+    # value: false
+
+    ? at1.decr(i2, 1)
+    # value: true
+
+    ? at1
+    # value: <AnswersTable[
+    #        ], free: [ 2 1 3 4 5 6 7 8 9 10 11 12 13 14 15]>
+
+    ? at1.put("zippy")
+    # value: 2
+
+    ? def dms {
+    >     to __reactToLostClient(problem) :void {
+    >         println(`client gone because $problem`)
+    >     }
+    >     to __printOn(out :TextWriter) :void {
+    >         out.print("Dead Man Switch")
+    >     }
+    > }
+    # value: Dead Man Switch
+
+    ? at1.put(dms)
+    # value: 1
+
+    ? at1
+    # value: <AnswersTable[
+    #          1:Dead Man Switch
+    #          2:zippy
+    #        ], free: [ 3 4 5 6 7 8 9 10 11 12 13 14 15]>
+
+    ? def problem := <unsafe:java.lang.RuntimeException>.new("fooey")
+    # value: <RuntimeException: fooey>
+
+    ? at1.smash(problem)
+    ?
+    client gone because <RuntimeException: fooey>
+    ? at1[i2]
+    # problem: <IllegalArgumentException: not alloced: 2>
+    #
+    #   ....
+    #   <interp> evalPrint(e`at1 get(i2)`)
+
+    ? at1[i1]
+    # problem: <IllegalArgumentException: not alloced: 1>
+    #
+    #   ....
+    #   <interp> evalPrint(e`at1 get(i1)`)
+
+    ? at1.put("glorp")
+    # problem: <NullPointerException>
+    #
+    #   ....
+    #   <interp> evalPrint(e`at1 put("glorp")`)
+
+    ? (for i in 1..3 {
+    >     println(`i: $i`)
+    > }
+    > 44)
+    # stdout: i: 1
+    #         i: 2
+    #         i: 3
+
+    # value: 44
+
+    ?

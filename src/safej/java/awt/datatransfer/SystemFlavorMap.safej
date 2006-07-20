@@ -1,0 +1,20 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class(safe,
+      "java.awt.datatransfer.SystemFlavorMap",
+      statics,
+      methods(method("getDefaultFlavorMap()"),
+              method("getNativesForFlavor(DataFlavor)"),
+              method("getFlavorsForNative(String)"),
+              method("getNativesForFlavors(DataFlavor[])"),
+              method(suppress, "getFlavorsForNatives(String[])"),
+              method(suppress, "addUnencodedNativeForFlavor(DataFlavor, String)"),
+              method(suppress, "setNativesForFlavor(DataFlavor, String[])"),
+              method(suppress, "addFlavorForUnencodedNative(String, DataFlavor)"),
+              method(suppress, "setFlavorsForNative(String, DataFlavor[])"),
+              method(suppress, "encodeJavaMIMEType(String)"),
+              method(suppress, "encodeDataFlavor(DataFlavor)"),
+              method(suppress, "isJavaMIMEType(String)"),
+              method(suppress, "decodeJavaMIMEType(String)"),
+              method(suppress, "decodeDataFlavor(String)")))

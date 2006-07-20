@@ -1,0 +1,15 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class(safe,
+      "javax.swing.text.PlainView",
+      statics(method("run(Element)")),
+      methods(method("getPreferredSpan(int)"),
+              method(suppress, "paint(Graphics, Shape)"),
+              method("modelToView(int, Shape, Position.Bias)"),
+              method("viewToModel(float, float, Shape, Position.Bias[])"),
+              method("insertUpdate(DocumentEvent, Shape, ViewFactory)"),
+              method("removeUpdate(DocumentEvent, Shape, ViewFactory)"),
+              method(suppress, "changedUpdate(DocumentEvent, Shape, ViewFactory)"),
+              method("setSize(float, float)"),
+              method("nextTabStop(float, int)")))

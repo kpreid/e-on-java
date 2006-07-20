@@ -1,0 +1,177 @@
+# Copyright 2003 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+/**
+ * Manages a set of three related files for the purpose of simulating one
+ * reliable file.
+ * <p>
+ * Let's call the three files nextFile, nowFile, and prevFile.
+ * Writing operations are performed on nextFile, and aren't "real" until
+ * committed. Commitment renames nextFile to nowFile, making the state of
+ * nextFile "real".
+ * <p>
+ * Since rename will unfortunately not rename to a file which already exists,
+ * in order to commit by renaming nextFile to nowFile, we first need to rename
+ * the current nowFile to prevFile. (Btw, we do require that rename to be
+ * reliably atomic and all-or-nothing on all platforms.)
+ * <p>
+ * In order to rename nowFile to prevFile, we first need to delete
+ * prevFile. If we crash after the delete, no problem; nowFile still
+ * exists. If we crash after renaming nowFile to prevFile but before
+ * renaming nextFile to nowFile, then we leave behind our precious state
+ * in prevFile.
+ * <p>
+ * Except during this window of non-redundancy, there will usually be both a
+ * nowFile and a prevFile. If the state committed to nowFile isn't good, you
+ * should be able to revert back to the previous state by manually deleting
+ * nowFile (or, to be on the safe side, renaming it to something unrelated).
+ * <p>
+ * When creating an AtomicFile, if nowFile doesn't exist but
+ * prevFile does, then makeAtomicFile first renames prevFile to nowFile in
+ * order to recover from the above crash scenario.
+ *
+ * @author Mark S. Miller
+ */
+def makeAtomicFile {
+
+    /**
+     * If this file is named "path/foo.txt", then nextFile will be named
+     * "path/#foo.txt#" and prevFile will be named "path/foo.txt~".
+     *
+     * @param parent A File on the immediately containing directory.
+     * @param child The name of the nowFile within this directory.
+     */
+    to run(parent, child :String) :near {
+        makeAtomicFile(parent[`$child-draft`],
+                       parent[child],
+                       parent[`$child-bak`])
+    }
+
+    /**
+     * Allows all three to be explicitly named however you want.
+     */
+    to run(nextFile, nowFile, prevFile) :near {
+
+        if (! nowFile.exists() && prevFile.exists()) {
+            prevFile.renameTo(nowFile, null)
+        }
+        if (nowFile.exists())  { nowFile.setReadOnly(null) }
+        if (prevFile.exists()) { prevFile.setReadOnly(null) }
+
+        def atomicFile {
+
+            /**
+             * Direct write operations to nextFile, and then commit them when
+             * you're done.
+             * <p>
+             * Please close streams first before committing.
+             * <p>
+             * Note that AtomicFiles don't create the nextFile for you, so you
+             * have to create it yourself when writing changes 1) the first
+             * time, or 2) the first time after a commit (since the commit
+             * renames the one you had created).
+             */
+            to getNextFile() :near { nextFile }
+
+            /**
+             * Read the current (committed) state from nowFile.
+             */
+            to getNowFile() :near { nowFile }
+
+            /**
+             * If you commit to a state that you then realize is corrupt, this
+             * contains the previously committed state.
+             */
+            to getPrevFile() :near { prevFile }
+
+            /**
+             * Commits the changes written to nextFile.
+             *
+             * @return Whether there was a nextFile to commit. OTOH, if there
+             *         was and we fail to do the rename, we throw a complaint
+             *         rather than returning false.
+             */
+            to commit() :boolean {
+                if (! nextFile.exists()) {
+                    return false
+                }
+                # If nowFile doesn't exist, we don't want to lose prevFile.
+                if (nowFile.exists()) {
+                    # It's ok if we can't delete prevFile, so long as the
+                    # rename works.
+                    escape ignore { prevFile.delete(ignore) }
+                    nowFile.renameTo(prevFile, null)
+                }
+                nextFile.renameTo(nowFile, null)
+                nowFile.setReadOnly(null)
+                true
+            }
+
+            /**
+             * An AtomicFile exists if either its nowFile exists or its
+             * prevFile exists.
+             * <p>
+             * Its nextFile doesn't count, since it's not assumed to be in a
+             * consistent state.
+             */
+            to exists() :boolean {
+                nowFile.exists() || prevFile.exists()
+            }
+
+            /**
+             * If it succeeds, then the state of this atomicFile has become the
+             * state of other (another AtomicFile).
+             * <p>
+             * As with the underlying {@link File#renameTo/1}, the other
+             * shouldn't exist before this operation.
+             * <p>
+             * If this operation fails, the current checkpoint should still be
+             * valid, but nextFile and prevFile may or may not have been
+             * renamed. It is therefore recommended that this operation not be
+             * performed while there's a nextFile outstanding.
+             */
+            to renameTo(other) :void {
+                require(! other.exists(), thunk {
+                    `Can't rename $atomicFile because $other exists`
+                })
+                require(atomicFile.exists(), thunk {
+                    `Can't rename non-existent $atomicFile to $other`
+                })
+
+                if (nextFile.exists()) {
+                    nextFile.renameTo(other.getNextFile(), null)
+                } else {
+                    other.getNextFile().delete(null)
+                }
+
+                if (prevFile.exists()) {
+                    prevFile.renameTo(other.getPrevFile(), null)
+                }
+                if (nowFile.exists()) {
+                    nowFile.renameTo(other.getNowFile(), null)
+                }
+            }
+
+            /**
+             * Deletes this whole AtomicFile (its three constituent parts) or
+             * dies trying.
+             * <p>
+             * If this operation fails, the current checkpoint should still be
+             * valid, but nextFile and prevFile may or may not have been
+             * deleted.
+             */
+            to delete() :void {
+                if (nextFile.exists()) { nextFile.delete(null) }
+                if (prevFile.exists()) { prevFile.delete(null) }
+                if (nowFile.exists())  { nowFile.delete(null) }
+            }
+
+            /**
+             *
+             */
+            to __printOn(out :TextWriter) :void {
+                out.print(`<atomic: $nowFile>`)
+            }
+        }
+    }
+}

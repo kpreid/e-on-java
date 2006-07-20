@@ -1,0 +1,13 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class(safe,
+      "java.awt.dnd.MouseDragGestureRecognizer",
+      statics,
+      methods(method("mouseClicked(MouseEvent)"),
+              method("mousePressed(MouseEvent)"),
+              method("mouseReleased(MouseEvent)"),
+              method("mouseEntered(MouseEvent)"),
+              method("mouseExited(MouseEvent)"),
+              method("mouseDragged(MouseEvent)"),
+              method("mouseMoved(MouseEvent)")))

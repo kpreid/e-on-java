@@ -1,0 +1,22 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class(safe,
+      "javax.swing.DefaultBoundedRangeModel",
+      statics(method("run()"),
+              method("run(int, int, int, int)")),
+      methods(method("getValue()"),
+              method("getExtent()"),
+              method("getMinimum()"),
+              method("getMaximum()"),
+              method("setValue(int)"),
+              method("setExtent(int)"),
+              method("setMinimum(int)"),
+              method("setMaximum(int)"),
+              method("setValueIsAdjusting(boolean)"),
+              method("getValueIsAdjusting()"),
+              method("setRangeProperties(int, int, int, int, boolean)"),
+              method("addChangeListener(ChangeListener)"),
+              method("removeChangeListener(ChangeListener)"),
+              method(suppress, "getChangeListeners()"),
+              method(suppress, "getListeners(Class)")))

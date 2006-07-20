@@ -1,0 +1,18 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class(safe,
+      "java.awt.BasicStroke",
+      statics(method("run(float, int, int, float, float[], float)"),
+              method("run(float, int, int, float)"),
+              method("run(float, int, int)"),
+              method("run(float)"),
+              method("run()")),
+      methods(method("createStrokedShape(Shape)"),
+              method("getLineWidth()"),
+              method("getEndCap()"),
+              method("getLineJoin()"),
+              method("getMiterLimit()"),
+              method("getDashArray()"),
+              method("getDashPhase()")),
+      comment("REVIEW should probably be pass by copy"))

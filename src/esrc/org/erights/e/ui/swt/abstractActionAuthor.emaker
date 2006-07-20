@@ -1,0 +1,380 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def <swt> := <import:org.eclipse.swt.*>
+def <widget> := <swt:widgets.*>
+def SWT := <swt:makeSWT>
+
+def <swtType> := <type:org.eclipse.swt.*>
+def <widgetType> := <swtType:widgets.*>
+def Menu     := <widgetType:Menu>
+def MenuItem := <widgetType:MenuItem>
+def ToolBar  := <widgetType:ToolBar>
+def ToolItem := <widgetType:ToolItem>
+def Image    := <swtType:graphics.Image>
+
+def EverReporter := <type:org.erights.e.elib.slot.EverReporter>
+def whenever := <elib:slot.whenever>
+
+
+def controlKeyMap := [
+    "CTRL"  => SWT.getCTRL(),
+    "SHIFT" => SWT.getSHIFT(),
+    "ALT"   => SWT.getALT()
+]
+
+# character names of non-printing characters not listed in SWT
+def unlistedCharMap := [
+    "TAB" => '\t'
+]
+
+def accelerate(var description :String) :int {
+    var result := 0
+    while (description =~ `@prefix+@rest`) {
+        result |= controlKeyMap[prefix.toUpperCase()]
+        description := rest
+    }
+    if (description.size() == 1) {
+        result |= description[0].asInteger()
+    } else if (description.size() >= 2) {
+        description := description.toUpperCase()
+        def code := if (unlistedCharMap.maps(description)) {
+            unlistedCharMap[description]
+        } else {
+            E.call(SWT, `get$description`, [])
+        }
+        if (code =~ ch :char) {
+            result |= ch.asInteger()
+        } else {
+            # XXX Bug: If the description is "Foo" and SWT has a
+            # "getFoo()", then its value will be used even if it doesn't
+            # represent a character.
+            def intCode :int := code
+            result |= intCode
+        }
+    }
+    result
+}
+
+/**
+ * For making a superAction (a action super-object built to be extended).
+ */
+def abstractActionAuthor(disposablesKit) :near {
+
+    /**
+     * <tt>self</tt> is the sub-object that should be extending superAction.
+     * <p>
+     * <tt>self</tt> may override any of superAction's methods. In addition,
+     * superAction depends on self to implement:<ul>
+     * <li><tt>self.getLabel() :String</tt>, for the menuItem's
+     *     text and the default toolItem toolTip if none is provided.
+     * <li><tt>self()</tt>, for the actual selection action.
+     * </ul>
+     */
+    def abstractAction(self) :near {
+
+        # This should be declared transient or something.
+        var optImageCache :nullOk[Image] := null
+
+        def superAction {
+
+            /**
+             * As a menu item, what style of menu item?
+             * <p>
+             * Defaults to <tt>SWT.getNONE()</tt>, but overridden to
+             * create, for example, a checkbox (by returning
+             * <tt>SWT.getCHECK()</tt>).
+             */
+            to getMenuItemStyle() :int {
+                SWT.getNONE()
+            }
+
+            /**
+             * As a ToolBar item, what style of ToolItem?
+             * <p>
+             * Defaults to returning what <tt>self.getMenuItemStyle()</tt>
+             * returns, except that when <tt>self.getMenuItemStyle()</tt>
+             * returns <tt>SWT.getNONE()</tt>, the default
+             * <tt>getToolItemStyle()</tt> will instead return
+             * <tt>SWT.getPUSH()</tt>
+             */
+            to getToolItemStyle() :int {
+                def result := self.getMenuItemStyle()
+                if (result == SWT.getNONE()) {
+                    SWT.getPUSH()
+                } else {
+                    result
+                }
+            }
+
+            /**
+             * Describes the accelerator key, such as "Ctrl+S".
+             * <p>
+             * Defaults to null giving no acceleration.
+             */
+            to getOptMenuAccelDesc() :nullOk[String] {
+                null
+            }
+
+            /**
+             * The tooltip text that will be shown when hovering over this
+             * action as a ToolItem (an icon on a ToolBar).
+             * <p>
+             * Defaults to <tt>self.getLabel()</tt>
+             */
+            to getOptTip() :nullOk[String] {
+                self.getLabel().replaceAll("&","")
+            }
+
+            /**
+             * The fully qualified name of the image icon resource.
+             * <p>
+             * Defaults to null. Used only by the default
+             * getOptIconImage().
+             */
+            to getOptIconFQName() :nullOk[String] {
+                null
+            }
+
+            /**
+             * Gets the Image for the icon.
+             * <p>
+             * Defaults to asking getOptIconFQName() for a name, fetching
+             * that resource, making an Image from those bits using the
+             * authorized disposablesKit, and caching the result.
+             * This caching allows the same Image object to be used both
+             * for making MenuItems and ToolItems.
+             */
+            to getOptIconImage() :nullOk[Image] {
+                if (optImageCache == null) {
+                    def optIconFQName := self.getOptIconFQName()
+                    if (optIconFQName != null) {
+                        def iconURI := <resource>[optIconFQName]
+                        optImageCache := disposablesKit.makeImage(iconURI)
+                    }
+                }
+                optImageCache
+            }
+
+            /**
+             * Gets the ever-formula for "perpetually" calculating
+             * whether this action is enabled.
+             * <p>
+             * Defaults to an everFormula which is always <tt>&true</tt>,
+             * meaning always enabled.
+             *
+             * @return A EverReporter whose value is a boolean. XXX we should
+             *         be able to declare this as
+             *         <pre>   :EverReporter[boolean]</pre>
+             *         but can't yet.
+             */
+            to everEnabledReporter() :EverReporter {
+                whenever([], thunk{true})
+            }
+
+            /**
+             * Gets the optional ever-formula for "perpetually" calculating
+             * whether this action's check-mark should be on (ie, whether
+             * it is "selected").
+             * <p>
+             * Defaults to <tt>null</tt>, meaning the item determines its own
+             * checked state (ie, one that toggles as it's selected).
+             *
+             * @return A optional Slot (typically an EverReporter) whose value
+             *         is a boolean. XXX we should be able to declare this
+             *         as
+             *         <pre>   :nullOk[EverReporter[boolean]]</pre>
+             *         but can't yet.
+             */
+            to optEverCheckedReporter() :nullOk[EverReporter] {
+                null
+            }
+
+            /**
+             * Makes a menu item under parent based on this action.
+             * <p>
+             * The style used is that returned by
+             * {@link #getMenuItemStyle()}.
+             * <p>
+             * The menu item's text (or label) is that returned by
+             * self's getLabel(), for which there's no default.
+             * <p>
+             * The accelerator key is that described by
+             * {@link #getOptMenuAccelDesc()}
+             * <p>
+             * The selection action is to invoke <tt>self()</tt>, for which
+             * there's no default.
+             * <p>
+             * The icon image is provided by self.getOptIconImage(), which
+             * defaults to null.
+             * <p>
+             * The enabled and checked state are kept in synch according
+             * to self.everEnabledReporter() and
+             * self.optEverCheckedReporter(), which default to an
+             * always-<tt>&true</tt> reporter and to <tt>null</tt>
+             * respectively.
+             * <p>
+             * The association between this action and the new item is
+             * placed in the menuMap.
+             */
+            to makeMenuItem(parent :Menu, menuMap) :MenuItem {
+                def result := <widget:makeMenuItem>(parent,
+                                                self.getMenuItemStyle())
+
+                # sets the label and the acceleration.
+                def label :String := self.getLabel()
+                def optAccelDesc := self.getOptMenuAccelDesc()
+                if (optAccelDesc == null) {
+                    result.setText(label)
+                } else {
+                    result.setText(`$label$\t$optAccelDesc`)
+                    def code := accelerate(optAccelDesc)
+                    if (code != 0) {
+                        result.setAccelerator(code)
+                    }
+                }
+
+                # hooks up the action
+                def menuSelectionListener {
+                    to widgetSelected(_) :void {
+                        self()
+                    }
+                    match _ {}
+                }
+                result.addSelectionListener(menuSelectionListener)
+
+                # adds the icon
+                def optIconImage := self.getOptIconImage()
+                if (optIconImage != null) {
+                    result.setImage(optIconImage)
+                }
+
+                # arranges for the enabled state to be updated
+                def &everEnabled := self.everEnabledReporter()
+                whenever([&everEnabled], thunk{
+                    if (! result.isDisposed()) {
+                        result.setEnabled(everEnabled)
+                    }
+                }, thunk{
+                    ! result.isDisposed()
+                })
+
+                # arranges for the checked ("selected") state to be
+                # updated. This is currently only meaningful for checkboxes
+                # and radiobuttons.
+                def optChecker := self.optEverCheckedReporter()
+                if (optChecker != null) {
+                    def &everChecked := optChecker
+                    whenever([&everChecked], thunk{
+                        if (! result.isDisposed()) {
+                            result.setSelection(everChecked)
+                        }
+                    }, thunk{
+                        ! result.isDisposed()
+                    })
+                }
+
+                menuMap[self] := result
+                result
+            }
+
+            /**
+             * Makes a ToolBar item under a parent ToolBar based on this
+             * action.
+             * <p>
+             * The style used is that returned by
+             * {@link #getMenuItemStyle()}.
+             * <p>
+             * The menu item's text (or label) is that returned by
+             * self's getLabel(), for which there's no default. The "&" are
+             * stripped first, to prevent these from interfering with
+             * Alt-selection of top level menus.
+             * <p>
+             * The tool-tip-text is according to {@link #getOptTip()}
+             * annotated with the acceleration key as described by
+             * {@link #getOptMenuAccelDesc()}.
+             * <p>
+             * The selection action is to invoke <tt>self()</tt>, for which
+             * there's no default.
+             * <p>
+             * The icon image is provided by self.getOptIconImage(), which
+             * defaults to null.
+             * <p>
+             * The enabled and checked state are kept in synch according
+             * to self.everEnabledReporter() and
+             * self.optEverCheckedReporter(), which default to an
+             * always-<tt>&true</tt> reporter and to <tt>null</tt>
+             * respectively.
+             * <p>
+             * The association between this action and the new item is
+             * placed in the toolMap.
+             */
+            to makeToolItem(parent :ToolBar, toolMap) :ToolItem {
+                def result := <widget:makeToolItem>(parent,
+                                                self.getToolItemStyle())
+
+                # sets the label and the acceleration.
+                def label :String := self.getLabel()
+                # result.setText(label.replaceAll("&",""))
+
+                def optTip := self.getOptTip()
+                def optAccelDesc := self.getOptMenuAccelDesc()
+                if (optAccelDesc == null) {
+                    if (optTip != null) {
+                        result.setToolTipText(optTip)
+                    }
+                } else {
+                    if (optTip == null) {
+                        result.setToolTipText(optAccelDesc)
+                    } else {
+                        result.setToolTipText(`$optTip   $optAccelDesc`)
+                    }
+                }
+
+                # hooks up the action
+                def toolSelectionListener {
+                    to widgetSelected(_) :void {
+                        self()
+                    }
+                    match _ {}
+                }
+                result.addSelectionListener(toolSelectionListener)
+
+                # adds the icon
+                def optIconImage := self.getOptIconImage()
+                if (optIconImage != null) {
+                    result.setImage(optIconImage)
+                    result.setHotImage(optIconImage)
+                }
+
+                # arranges for the enabled state to be updated
+                def &everEnabled := self.everEnabledReporter()
+                whenever([&everEnabled], thunk{
+                    if (! result.isDisposed()) {
+                        result.setEnabled(everEnabled)
+                    }
+                }, thunk{
+                    ! result.isDisposed()
+                })
+
+                # arranges for the checked ("selected") state to be
+                # updated. This is currently only meaningful for checkboxes
+                # and radiobuttons.
+                def optChecker := self.optEverCheckedReporter()
+                if (optChecker != null) {
+                    def &everChecked := optChecker
+                    whenever([&everChecked], thunk{
+                        if (! result.isDisposed()) {
+                            result.setSelection(everChecked)
+                        }
+                    }, thunk{
+                        ! result.isDisposed()
+                    })
+                }
+
+                toolMap[self] := result
+                result
+            }
+        }
+    }
+}

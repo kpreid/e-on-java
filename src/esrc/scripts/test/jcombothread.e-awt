@@ -1,0 +1,55 @@
+#!/usr/bin/env rune
+
+# Derived from Kevin Reid's message at
+# http://www.eros-os.org/pipermail/e-lang/2004-April/009766.html
+
+# See also
+# https://bugs.sieve.net/bugs/?func=detailbug&bug_id=125634&group_id=16380
+# https://bugs.sieve.net/bugs/?func=detailbug&bug_id=125635&group_id=16380
+
+pragma.enable("explicit-result-guard")
+pragma.disable("easy-return")
+
+def Callback := <type:org.erights.e.elib.deflect.Callback>
+
+def bigProblem
+
+def row {
+   to __printOn(out :TextWriter) :void {
+     try {
+
+       def x :near := "row"
+       # or anything else that cares about the current vat
+
+       out.print(x)
+
+     } catch bind bigProblem {}
+   }
+}
+
+def w := <swing:makeJFrame>("Test")
+w.setContentPane({
+   def comboBox := <import:javax.swing.makeJComboBox>()
+   comboBox.addItem(row :Callback)
+   comboBox
+})
+
+w.pack()
+w.setVisible(true)
+
+def check() :any {
+   when (timer.whenPast(timer.now() + 1_000, thunk{})) -> done(_) :any {
+     if (Ref.isResolved(bigProblem)) {
+       stdout.println(bigProblem)
+       stdout.println(bigProblem.eStack())
+       stdout.println(bigProblem.javaStack())
+       null
+     } else {
+       check()
+     }
+   } catch p {
+     throw(p)
+   }
+}
+interp.waitAtTop(check())
+

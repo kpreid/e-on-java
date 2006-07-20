@@ -1,0 +1,15 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class(safe,
+      "javax.swing.text.DefaultEditorKit",
+      statics(method("run()")),
+      methods(method("getContentType()"),
+              method("getViewFactory()"),
+              method(suppress, "getActions()"),
+              method("createCaret()"),
+              method("createDefaultDocument()"),
+              method("read(InputStream, Document, int)"),
+              method("write(OutputStream, Document, int, int)"),
+              method("read(Reader, Document, int)"),
+              method("write(Writer, Document, int, int)")))

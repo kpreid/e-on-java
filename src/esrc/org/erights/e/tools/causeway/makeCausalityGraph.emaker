@@ -1,0 +1,168 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def templateVertex := <elib:tables.graph.templateVertex>
+def templateEdge := <elib:tables.graph.templateEdge>
+
+def makeDirectedGraph := <elib:tables.graph.makeDirectedGraph>
+
+
+# XXX The following type definitions are disturbingly redundant with those in
+# makeCausalityGraph
+
+# [[start-line, start-col], [end-line, end-col]]
+def SourceSpan := Tuple[Tuple[int,int], Tuple[int, int]]
+
+# A [source-file-name, source-span]
+def StackEntry := Tuple[String, SourceSpan]
+
+# top-to-bottom list of stack entries
+def Stack := StackEntry[]
+
+# trace-file file-name
+def TraceName := String
+
+def VatName := String
+
+def Turn := String
+
+def UTurn := Tuple[TraceName, VatName, Turn]
+
+# one of "SCnow", ...
+def SendingContext := String
+
+def SenderID := Tuple[UTurn, SendingContext]
+
+def Sender := Tuple[UTurn, SendingContext, Stack]
+
+def RxrID := UTurn
+
+def Message := String
+
+
+
+def ceMap := [].asMap().diverge()
+
+def see(c, e) :any {
+    ceMap[[c, e]] := [c, e]
+}
+
+def hasBeenSeen(c, e) :boolean {
+    if (ceMap.fetch([c, e], thunk{}) == null) {
+        return false
+    } else {
+        return true
+    }
+}
+
+def walk(cause, edge, level, traceline) :void {
+    
+    def effect := edge.getTarget()
+    
+    if (hasBeenSeen(cause, effect)) { return }
+    see(cause, effect)
+    
+    def who := cause.getID()
+    def [cname, cturn] := who
+    
+    def what := effect.getMessage()
+    
+    def toWhom := effect.getID()
+    def [ename, eturn] := toWhom
+    
+    traceline(`message send from [$cname:$cturn] to [$ename:$eturn]`)
+    traceline(`$what`)
+    traceline(``)
+    
+    for grandEdge => _ in effect.outs() {
+        walk(effect, grandEdge, level + 1, traceline)
+    }
+}
+
+/**
+ * <tt>makeCausalityGraph</tt>
+ * <p>
+ *
+ */
+def makeCausalityGraph(traceline) :near {
+    
+    def dag := makeDirectedGraph(traceline)
+    
+    def mkMessageEvent(id :UTurn, var message :Message) :near {
+        var leafStack :Stack := []
+        def messageEvent extends templateVertex(messageEvent, id) {
+            to getMessage() :Message { message }
+            to setMessage(newMessage :Message) :void { message := newMessage }
+            
+            to hasLeafStack() :boolean { leafStack != [] }
+            
+            to getLeafStack() :Stack { leafStack }
+            to setLeafStack(stack :Stack) :any { leafStack := stack }
+            
+            to getVatName() :VatName {
+                id =~ [_, name, _]
+                return name
+            }
+            
+            to __printOn(out :TextWriter) :void {
+                out.print(id)
+            }
+        }
+    }
+    
+    def mkMessageContext(origin :near,
+                         target :near,
+                         var context :Tuple[SendingContext, Stack]) :near {
+        var why :String := ""
+        def messageContext extends templateEdge(messageContext,
+                                                origin,
+                                                target) {
+            to getContext() :Tuple[SendingContext, Stack] {
+                return context
+            }
+            to setContext(ctx :Tuple[SendingContext, Stack]) :void {
+                context := ctx
+            }
+            to rememberWhy(reason :String) :void {
+                why := reason
+            }
+            to tellWhy() :String {
+                return why
+            }
+        }
+    }
+    
+    
+    def causalityGraph {
+        
+        to addMessageEvent(me) :void {
+            dag.addVertex(me)
+        }
+        
+        to makeMessageEvent(id :UTurn, message :Message) :near {
+            return mkMessageEvent(id, message)
+        }
+        
+        to makeMessageContext(origin :near,
+                              target :near,
+                              context :Tuple[SendingContext, Stack]) :near {
+            return mkMessageContext(origin, target, context)
+        }
+        
+        to optGet(id) :any { return dag.optGet(id) }
+        
+        to getRoots() :any { return dag.getRoots() }
+        
+        to getSize() :any { return dag.getSize() }
+        
+        to walkRelations(root, level, traceline) :void {
+            for edge => _ in root.outs() {
+                def cause := edge.getTarget()
+                for grandEdge => _ in cause.outs() {
+                    walk(cause, grandEdge, level, traceline)
+                }
+            }
+        }
+    }
+    return causalityGraph
+}

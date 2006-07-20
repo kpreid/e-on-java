@@ -1,0 +1,8 @@
+class("org.eclipse.swt.custom.ExtendedModifyEvent",
+           statics(method(suppress, "run(StyledTextEvent)")),
+           methods(method("getStart()"),
+                   method(suppress, "setStart(int)"),
+                   method("getLength()"),
+                   method(suppress, "setLength(int)"),
+                   method("getReplacedText()"),
+                   method(suppress, "setReplacedText(String)"))) 

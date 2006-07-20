@@ -1,0 +1,11 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class("javax.swing.SingleSelectionModel",
+      statics,
+      methods(method("getSelectedIndex()"),
+              method("setSelectedIndex(int)"),
+              method("clearSelection()"),
+              method("isSelected()"),
+              method("addChangeListener(ChangeListener)"),
+              method("removeChangeListener(ChangeListener)")))

@@ -1,0 +1,52 @@
+# Copyright 2005 Mark S. Miller under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+pragma.enable("easy-return")
+pragma.enable("trinary-define")
+
+def EList := <type:org.erights.e.elib.tables.EList>
+
+/**
+ * Defines the builtin '__splitList' via function template.
+ * <p>
+ * This is used to expand the pattern '[p0, ..., pn_1] + r' to
+ * 'via (__splitList(n)) [p0, ..., pn_1, r]'.
+ *
+ * @author Mark S. Miller
+ */
+def splitList(cut :int) :any {
+    def listSplitter(specimen, optEjector) :any {
+        def list :EList exit optEjector := specimen
+        def llen := list.size()
+        if (llen < cut) {
+            throw.eject(optEjector, `$\
+a $llen size list doesn't match a >= $cut size list pattern`)
+        }
+        return list(0,cut).with(list(cut,llen))
+    }
+    return listSplitter
+}
+
+# The following elegant example is from Kevin Reid
+
+? pragma.enable("trinary-define")
+
+? def Termish {
+>     to coerce(specimen, optEjector) :any {
+>         def [tag :String] + elements :List[Termish] exit optEjector :=
+>           specimen
+>         return [tag] + elements
+>     }
+> }
+
+? var x :Termish := ["foo", ["bar"]]
+# value: ["foo", ["bar"]]
+
+? x
+# value: ["foo", ["bar"]]
+
+? x := "foo"
+# problem: <ClassCastException: Character doesn't coerce to a String
+
+? x := []
+# problem: a 0 size list doesn't match a >= 1 size list pattern

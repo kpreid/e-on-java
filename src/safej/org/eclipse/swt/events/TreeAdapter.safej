@@ -1,0 +1,4 @@
+class("org.eclipse.swt.events.TreeAdapter",
+           statics(method(suppress, "run()")),
+           methods(method(suppress, "treeCollapsed(TreeEvent)"),
+                   method(suppress, "treeExpanded(TreeEvent)"))) 

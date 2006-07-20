@@ -1,0 +1,76 @@
+#!/usr/bin/env rune
+
+# Copyright 2005 Mark S. Miller, under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def defaultMakeCaretaker := <import:org.erights.e.facet.:makeCaretaker>
+
+def Throwable := <type:java.lang.Throwable>
+
+def GrantMgrOf {
+    to get(K :Guard, T :Guard) :any {
+        interface GrantMgr {
+            to getKeys() :K[]
+            to makeForwarder(key :K, underlying :T) :any
+            to revokeAll(problem :Throwable) :void
+            to revoke(problem :Throwable, key :K) :void
+        }
+        return GrantMgr
+    }
+}
+def GrantMgr := GrantMgrOf[any,any]
+
+def makeGrantMgrAuthor(makeWeakPtr) :any {
+    def makeGrantMgr {
+        to run() :any {
+            return makeGrantMgr(defaultMakeCaretaker, any, any)
+        }
+        to run(makeCaretaker,
+               K :Guard,
+               T :Guard) :(def GM := GrantMgrOf[K,T]) {
+
+            # Each association maps from a K to a set of revokers
+            def grantRecords := [].asMap().diverge()
+
+            def revokeOne(problem :Throwable, key :K, revoker) :void {
+                revoker.revoke(problem)
+                def oldSet := grantRecords.fetch(key, thunk{return})
+                def newSet := oldSet.without(revoker)
+                if (newSet.size() >= 1) {
+                    grantRecords[key] := newSet
+                } else {
+                    grantRecords.removeKey(key)
+                }
+            }
+            def grantMgr implements GM {
+                to getKeys() :K[] { return grantRecords.getKeys() }
+                to makeForwarder(key :K, underlying :T) :any {
+                    def [forwarder, revoker] := makeCaretaker(underlying)
+                    def oldSet := grantRecords.fetch(key, thunk{[].asSet()})
+                    grantRecords[key] := oldSet.with(revoker)
+                    makeWeakPtr(forwarder,
+                                revokeOne,
+                                "run",
+                                ["forwarder gc'ed", key, revoker])
+                    return forwarder
+                }
+                to revokeAll(problem :Throwable) :void {
+                    for key => revokers in grantRecords {
+                        for revoker in revokers {
+                            revoker.revoke(problem)
+                        }
+                    }
+                    grantRecords.removeAll()
+                }
+                to revoke(problem :Throwable, key :K) :void {
+                    for revoker in grantRecords.fetch(key, thunk{return}) {
+                        revoker.revoke(problem)
+                    }
+                    grantRecords.removeKey(key)
+                }
+            }
+            return grantMgr
+        }
+    }
+    return makeGrantMgr
+}

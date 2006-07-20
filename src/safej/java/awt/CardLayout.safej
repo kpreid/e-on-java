@@ -1,0 +1,26 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class(safe,
+      "java.awt.CardLayout",
+      statics(method("run()"),
+              method("run(int, int)")),
+      methods(method("getHgap()"),
+              method("setHgap(int)"),
+              method("getVgap()"),
+              method("setVgap(int)"),
+              method("addLayoutComponent(Component, Object)"),
+              method("addLayoutComponent(String, Component)"),
+              method("removeLayoutComponent(Component)"),
+              method("preferredLayoutSize(Container)"),
+              method("minimumLayoutSize(Container)"),
+              method("maximumLayoutSize(Container)"),
+              method("getLayoutAlignmentX(Container)"),
+              method("getLayoutAlignmentY(Container)"),
+              method("invalidateLayout(Container)"),
+              method("layoutContainer(Container)"),
+              method("first(Container)"),
+              method("next(Container)"),
+              method("previous(Container)"),
+              method("last(Container)"),
+              method("show(Container, String)")))

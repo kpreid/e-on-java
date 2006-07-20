@@ -1,0 +1,15 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class(safe,
+      "javax.swing.text.AbstractDocument.LeafElement",
+      statics(method("run(AbstractDocument, Element, AttributeSet, int, int)")),
+      methods(method("getStartOffset()"),
+              method("getEndOffset()"),
+              method("getName()"),
+              method("getElementIndex(int)"),
+              method("getElement(int)"),
+              method("getElementCount()"),
+              method("isLeaf()"),
+              method("getAllowsChildren()"),
+              method("children()")))

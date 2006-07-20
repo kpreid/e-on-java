@@ -1,0 +1,15 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class(safe,
+      "javax.swing.ActionMap",
+      statics(method("run()")),
+      methods(method("setParent(ActionMap)"),
+              method(suppress, "getParent()"),
+              method("put(Object, Action)"),
+              method("get(Object)"),
+              method("remove(Object)"),
+              method("clear()"),
+              method("keys()"),
+              method("size()"),
+              method(suppress, "allKeys()")))

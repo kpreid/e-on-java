@@ -1,0 +1,56 @@
+# Copyright 2004 Hewlett Packard, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+# ? def makeSchema := <import:org.quasiliteral.schema.makeSchema>
+# ? def <schema> := <resource:org/quasiliteral/schema/>
+# ? makeSchema.parseGrammar(<schema:common-tokens.grammar>.getTwine())
+
+####################### Character classes ############################
+# When the last choice below names a java predicate, then the
+# preceding choices are intended to list the full Ascii subset of that
+# character class.
+
+<space>         ::= <hspace> | '\n';
+# Horizontal whitespace doesn't include newline.
+<hspace>        ::= ' ' | '\t'
+                /   <java.lang.Character#isWhitespace>;
+
+<digit10>       ::= '0'..'9'
+                /   <java.lang.Character#isDigit>;
+<digit8>        ::= '0'..'7'
+                /   <java.lang.Character#isDigit>;
+<digit16>       ::= '0'..'9' | 'a'..'f' | 'A'..'F'
+                /   <java.lang.Character#isDigit>;
+
+# <uric> must include the uric characters defined by
+# <a href="http://www.ics.uci.edu/pub/ietf/uri/rfc2396.txt">IETF-URICs</a>.
+
+<uric>          ::= '0'..'9'            # rfc2396 digit
+                | 'A'..'Z' | 'a'..'z'   # rfc2396 alpha
+                | ^";/?:@@&=+$$,"       # rfc2396 reserved
+                | ^"-_.!~*'()"          # rfc2396 mark
+                | '%'                   # for rfc2396 escaped
+                | '\\' -> '/'           # to convert MSDOS filenames
+                | '|'  -> ':'           # to convert IE file-urls
+                | '#';                  # for fragments
+
+####################### Token Types ############################
+
+<Integer>       ::= '-'? '0x' <digit16>+
+                |   '-'? '0'  <digit8>*             # not yet implemented
+                /   '-'?      <digit10>+;
+
+<wholePart>     ::= '-'? <digit10>+;
+<fraction>      ::= '.' <digit10>+;
+<exponent>      ::= ('e' | 'E') '-'? <digit10>+;
+<Float64>       ::= <wholePart> <fraction> <exponent>?
+                /   <wholePart> <fraction>? <exponent>;
+
+<charConst>     ::= '\\' ^"btnfr\"'\\"
+                |   '\\' 'x' <digit16> <digit16>    # not yet implemented
+                |   !^"\"'\\\t" .;
+<Char>          ::= '\'' (<charConst> | '"') '\'';
+
+<String>        ::= '"' (<charConst> | '\'' | ('\\' '\n'))* '"';
+
+<uri>           ::= '<' <uric>* '>';

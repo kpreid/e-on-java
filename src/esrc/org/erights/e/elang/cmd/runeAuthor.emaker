@@ -1,0 +1,177 @@
+#!/usr/bin/env rune
+
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+pragma.enable("anon-lambda")
+
+def makeConstMap := <elib:tables.makeConstMap>
+def makeTextWriter := <elib:oldeio.makeTextWriter>
+def argParser := <import:org.erights.e.tools.args.argParser>
+
+def ConstMap := <type:org.erights.e.elib.tables.ConstMap>
+
+
+def specialOps := ["--help",
+                   "--version",
+                   "--src"].asSet()
+
+/**
+ *
+ */
+def runeAuthor {
+
+    /**
+     *
+     */
+    to getLauncherAuthorName(fname :String) :String {
+        var ext := argParser.getExtension(fname)
+        if (ext =~ `.@rest`) {
+            ext := rest
+        }
+        ext := ext.replaceAll("-", "_")
+        `org.erights.e.elang.launcher.${ext}LauncherAuthor`
+    }
+
+    /**
+     * Extracts default values from the unsafe__uriGetter for calling run/1.
+     * <p>
+     * Replace those you wish and call run/1 with the result. This is all an
+     * experiment in programming with name-based authorization parameters.
+     */
+    to defaultAuths(<unsafe>) :ConstMap {
+
+        def <ue> := <unsafe:org.erights.e.*>
+        def makePrintStreamWriter :=
+          <ue:develop.exception.makePrintStreamWriter>
+
+        def metain := makePrintStreamWriter.stdin()
+        def metaout := makeTextWriter(makePrintStreamWriter.stdout(), true)
+        def metaerr := makeTextWriter(makePrintStreamWriter.stderr(), true)
+        def makeVat := <ue:elib.vat.makeVat>
+        def makeELexer := <ue:elang.syntax.makeELexer>
+        def makeFileFeeder := <unsafe:org.quasiliteral.syntax.makeFileFeeder>
+        def makeScopeSetup := <ue:elang.interp.makeScopeSetup>
+        def <file> := <ue:meta.java.io.makeFileGetter>.getTHE_ONE()
+        def systemGC {
+            to gc() :void {
+                <unsafe:java.lang.makeSystem>.gc()
+            }
+        }
+        def sysProps := <unsafe:java.lang.makeSystem>.getProperties()
+        def defaultProps := makeConstMap.fromProperties(sysProps)
+
+        ["metain"          => metain,
+         "metaout"         => metaout,
+         "metaerr"         => metaerr,
+
+         "makeVat"         => makeVat,
+         "makeELexer"      => makeELexer,
+         "makeFileFeeder"  => makeFileFeeder,
+         "makeScopeSetup"  => makeScopeSetup,
+         "file__uriGetter" => <file>,
+         "systemGC"        => systemGC,
+         "defaultProps"    => defaultProps]
+    }
+
+    /**
+     * Makes a <tt>rune</tt> function which acts much like the <tt>rune</tt>
+     * shell command -- for running E programs according to an argument list.
+     * <p>
+     * Sometimes strict adherence to POLA causes a lot of authorization
+     * arguments to be passed. This method accepts these using name-based
+     * parameters rather than positional parameters. To make this convenient,
+     * we are using the experimental "importer" syntax, enabled by a pragma
+     * above. See the documentation on "e.enable.importer" in
+     * org/erights/e/elang/syntax/syntax-props-default.txt. We also provide
+     * the {@link #defaultAuths} method for composing a default set of
+     * authorization arguments you can then override as you wish.
+     *
+     * @param auths A map from conventional names to authorities of
+     *              conventional types, as returned by {@link #defaultAuths}.
+     */
+    to run(auths) :near {
+
+        /**
+         *
+         */
+        def rune {
+
+            /**
+             * props defaults to defaultProps (which therefore must have
+             * been provided)
+             */
+            to run(args :List) :vow[boolean] {
+                rune(auths["defaultProps"], args)
+            }
+
+            /**
+             * Takes props and arguments and invokes the appropriate launcher
+             * for that extension or specialOp (--help or --version).
+             * <p>
+             * Alternatively, if the "--show" option is on, then it prints a
+             * debugging string explaining what would have been launched.
+             *
+             * @return a vow for a final exit status. This should resolve to
+             *         true on success, or a broken reference on failure.
+             */
+            to run(var props :ConstMap, var args :List) :vow[boolean] {
+
+                def [newProps, var options, optFname, newArgs] :=
+                  argParser(specialOps, args)
+                # newProps occlude old props
+                props := newProps | props
+                args := newArgs
+
+
+                def fname := switch (optFname) {
+                    match ==null {
+                        # If no fname is provided, it's like '-.e', but
+                        # defaults to interactive
+                        # Since the left occludes the right, this sets
+                        # "--interact" to <tt>true</tt> only if it isn't
+                        # already set.
+                        options |= ["--interact" => true]
+                        "-.e"
+                    }
+                    match x ? (x !~ :String) {
+                        # XXX kludgy way to say "doesn't coerce to a string"
+                        if (argParser.getFlag("--show", options, false)) {
+                            auths["metaout"].println(`$\
+$optFname($props,
+          $options,
+          $optFname,
+          $args)`)
+                            return true
+                        } else {
+                            return optFname(props, options, optFname, args)
+                        }
+                    }
+                    match `-` {
+                        "-.e"
+                    }
+                    match _ {
+                        # normalize
+                        def <file> := auths["file__uriGetter"]
+                        <file>[optFname].getPath()
+                    }
+                }
+                def launcherAuthorName :=
+                  runeAuthor.getLauncherAuthorName(fname)
+
+                if (argParser.getFlag("--show", options, false)) {
+                    auths["metaout"].println(`$\
+$launcherAuthorName(..)($props,
+                        $options,
+                        $fname,
+                        $args)`)
+                    true
+                } else {
+                    def launcherAuthor := <import>[launcherAuthorName]
+                    def launcher := launcherAuthor(auths)
+                    launcher(props, options, fname, args)
+                }
+            }
+        }
+    }
+}

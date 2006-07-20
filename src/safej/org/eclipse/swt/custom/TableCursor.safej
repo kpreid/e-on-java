@@ -1,0 +1,9 @@
+class(safe,
+           "org.eclipse.swt.custom.TableCursor",
+           statics(method(suppress, "run(Table, int)")),
+           methods(method("addSelectionListener(SelectionListener)"),
+                   method("setVisible(boolean)"),
+                   method("getColumn()"),
+                   method("getRow()"),
+                   method("setSelection(int, int)"),
+                   method("setSelection(TableItem, int)"))) 

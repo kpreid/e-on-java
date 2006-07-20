@@ -1,0 +1,46 @@
+#!/usr/bin/env rune
+
+# Copyright 2004 Hewlett Packard, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+? timeMachine.new()
+? def p := timeMachine.whenSaved()
+# value: <Promise>
+
+? introducer.onTheAir()
+# value: ["3DES_SDH_M2", "3DES_SDH_M"]
+
+? p
+# value: <Promise>
+
+? def sr := makeSturdyRef.vow(3)
+# value: <Promise>
+
+? sr
+# value: <Promise>
+
+? def makeAtomicFile := <import:org.erights.e.extern.persist.makeAtomicFile>
+# value: <makeAtomicFile>
+
+? def vatFile := makeAtomicFile(<file:~/Desktop>, "foo.vat")
+# value: <atomic: <file:C:/Documents and Settings/MILLERM1/Desktop/foo.vat>>
+
+? if (vatFile.exists()) { vatFile.delete(null) }
+
+? [p,sr]
+# value: [<Promise>, <Promise>]
+
+? timeMachine.createAs(vatFile)
+? [p,sr]
+# value: [null, <a SturdyRef>]
+
+? def makeBootServer := <elang:interp.makeServerAuthor>.boot(<unsafe>)
+# value: <makeServer>
+
+? def [s,e,v] := makeBootServer("def adder(x,y):any{return x+y}")
+# value: [<Promise>, <Promise>, <Promise>]
+
+? interp.waitAtTop(promiseAllFulfilled([s,e,v]))
+
+? [s,e,v]
+# value: [<Far ref>, <Far ref>, <Vat newServerVat in <runs in newServerVat>>]

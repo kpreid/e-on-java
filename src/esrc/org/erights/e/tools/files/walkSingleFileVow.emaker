@@ -1,0 +1,21 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def oneAtATimeVow := <import:org.erights.e.tools.collect.oneAtATimeVow>
+
+/**
+ * <tt>walkSingleFileVow</tt> walks a directory structure and
+ * passes each (non-directory) file to the function parameter.
+ *
+ * @author Terry Stanley
+ * @author Mark S. Miller
+ */
+def walkSingleFileVow(filedir, func) :any {
+    if (filedir.isDirectory()) {
+        oneAtATimeVow(filedir.list(), def assoc(_, name) :any {
+            walkSingleFileVow(filedir[name], func)
+        })
+    } else {
+        func(filedir)
+    }
+}

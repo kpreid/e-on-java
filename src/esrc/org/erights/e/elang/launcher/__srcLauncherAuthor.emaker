@@ -1,0 +1,96 @@
+#!/usr/bin/env rune
+
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def runeAuthor := <elang:cmd.runeAuthor>
+
+/**
+ *
+ */
+def __srcLauncherAuthor {
+
+    /**
+     *
+     */
+    to getHelp(_) :String {
+        `$\
+    $$ rune --src.<ext> <src> <arg>*    Interprets <src> as if from a file
+                                       ending in ".<ext>".
+    $$ rune --src       <src> <arg>*    Equivalent to "--src.e <src> <arg>*".
+
+For example, in a bash shell:
+
+    $$ rune --src 'println(interp.getArgs())' foo bar
+    ["foo", "bar"]
+
+    $$ rune --src 'println(help)'       For E command line help.
+
+For help on an individual extension, use "$$ rune --help.<ext>"`
+    }
+
+    /**
+     * Given props assumed to correspond to {@link System#getProperties()},
+     * return a multi-line string with version information about the
+     * installation of E we are running on.
+     */
+    to getOptVersionText(props) :String { return null }
+
+    /**
+     *
+     */
+    to run(auths) :near {
+
+        def metaout := auths["metaout"]
+
+        /**
+         *
+         */
+        def __srcLauncher {
+
+            /**
+             *
+             */
+            to run(props, options, _, args) :vow[boolean] {
+                return __srcLauncher.interpret(props, options, "", args)
+            }
+
+            /**
+             *
+             */
+            to interpret(props, var options, _, var args) :vow[boolean] {
+                def ext
+                def src
+                def [arg0] + restArgs := args
+                switch (arg0) {
+                    match ==null {
+                        bind ext := "e"
+                        if (restArgs =~ [bind src] + rest) {
+                            args := rest
+                        } else {
+                            throw("missing source string")
+                        }
+                    }
+                    match `.@{bind ext}=@{bind src}` {
+                        args := restArgs
+                    }
+                    match `=@{bind src}` {
+                        bind ext := "e"
+                        args := restArgs
+                    }
+                    match `.@{bind ext}` {
+                        if (restArgs =~ [bind src] + rest) {
+                            args := rest
+                        } else {
+                            throw("missing source string")
+                        }
+                    }
+                }
+                def launcherAuthorName := runeAuthor.getLauncherAuthorName(ext)
+                def launcherAuthor := <import>[launcherAuthorName]
+                def launcher := launcherAuthor(auths)
+                return launcher.interpret(props, options, src, args)
+            }
+        }
+    }
+}

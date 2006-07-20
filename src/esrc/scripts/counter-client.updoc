@@ -1,0 +1,19 @@
+    ? introducer.onTheAir()
+    # value: ["3DES_SDH_M2", "3DES_SDH_M"]
+
+    ? def uri := "captp://213.130.163.34:4451/0Bg1bGDtCQCmpMvfBJ8wvl6dmRHH/08tjK7_p7d8G8u7OfaVHFr6quSvx"
+    # value: "captp://213.130.163.34:4451/0Bg1bGDtCQCmpMvfBJ8wvl6dmRHH/08tjK7_p7d8G8u7OfaVHFr6quSvx"
+
+    ? def sr := introducer.sturdyFromURI(uri)
+    # value: <a SturdyRef>
+
+    ? def remote := sr.getRcvr()
+    # value: <Promise>
+
+    ? def val1 := remote <- incr()
+    # value: <Promise>
+
+    ? val1
+    # value: 1
+
+    ?

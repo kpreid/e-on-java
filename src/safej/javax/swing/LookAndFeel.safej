@@ -1,0 +1,25 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class("javax.swing.LookAndFeel",
+      statics(method(suppress, "run()")),
+      methods(method(suppress, "installColors(JComponent, String, String)"),
+              method(suppress, "installColorsAndFont(JComponent, String, String, String)"),
+              method(suppress, "installBorder(JComponent, String)"),
+              method(suppress, "uninstallBorder(JComponent)"),
+              method(suppress, "makeKeyBindings(Object[])"),
+              method(suppress, "makeInputMap(Object[])"),
+              method(suppress, "makeComponentInputMap(JComponent, Object[])"),
+              method(suppress, "loadKeyBindings(InputMap, Object[])"),
+              method(suppress, "makeIcon(Class, String)"),
+              method(suppress, "provideErrorFeedback(Component)"),
+              method(suppress, "getDesktopPropertyValue(String, Object)"),
+              method(suppress, "getName()"),
+              method(suppress, "getID()"),
+              method(suppress, "getDescription()"),
+              method(suppress, "getSupportsWindowDecorations()"),
+              method(suppress, "isNativeLookAndFeel()"),
+              method(suppress, "isSupportedLookAndFeel()"),
+              method(suppress, "initialize()"),
+              method(suppress, "uninitialize()"),
+              method(suppress, "getDefaults()")))

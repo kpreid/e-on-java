@@ -1,0 +1,270 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def makeOldUpdocParser := <import:org.erights.e.tools.updoc.makeOldUpdocParser>
+
+/**
+ * <tt>makeVatSwitcher</tt>
+ *
+ * @param name The vat's local name as a <tt>String</tt>
+ * @return A <tt>vatSwitcher</tt> object
+ */
+def makeVatSwitcher(name) :near {
+
+    def vatSwitcher {
+
+        /**
+         * <tt>getEvaluator</tt>
+         *
+         * @param vatMap A <tt>ConstMap</tt> mapping from vat names
+         *               to <tt>evaluator</tt> objects.
+         * @return A <tt>rcvr</tt> to an <tt>evaluator</tt> object.
+         */
+        to getEvaluator(vatMap) :rcvr {
+            vatMap[name]
+        }
+    }
+}
+
+/**
+ * <tt>makeTestcasePlayer</tt>
+ *
+ * @param testcase A <tt>testcase</tt> object containing the expression
+ *                 and original answers
+ * @return A <tt>testcasePlayer</tt> object
+ */
+def makeTestcasePlayer(testcase) :near {
+    var report := null
+
+    def testcasePlayer {
+
+        /**
+         * <tt>reportResults</tt>
+         *
+         * @param out
+         */
+        to reportResults(out) :void {
+            def parser := makeOldUpdocParser(report)
+            def newAnswers := parser.readAnswers()
+            testcase.printDiffsOn(newAnswers, out)
+        }
+
+        /**
+         * <tt>replay</tt>
+         *
+         * @param evaluator The <tt>evaluator</tt> object for this testcase
+         * @return A <tt>vow</tt> that becomes <tt>null</tt> on success
+         *         or becomes broken with a problem.
+         */
+        to replay(evaluator :rcvr) :vow {
+            def expr := testcase.getExpr()
+            # when-catch construct returns a promise
+            # for the value of the done function
+            when (evaluator <- evaluateForReport(expr)) ->
+              done([newReport, status]) :any {
+                # XXX look at status
+                report := newReport
+            } catch problem {
+                Ref.broken(problem)
+            }
+        }
+    }
+}
+
+/**
+ * <tt>makeSequencePlayer</tt>
+ *
+ * @param sequence
+ * @return A <tt>sequencePlayer</tt> object
+ */
+def makeSequencePlayer(sequence) :any {
+    def players := [].diverge()
+
+    def sequencePlayer {
+
+        /**
+         * <tt>reportResults</tt>
+         *
+         * @param out
+         */
+        to reportResults(out) :void {
+            for p in players {
+                p.reportResults(out)
+            }
+        }
+
+        /**
+         * <tt>replaySequence</tt>
+         *
+         * @param vatSwitcher A <tt>vatSwitcher</tt> object that switches
+         *                    to the <tt>evaluator</tt> for this sequence.
+         * @param vatMap A <tt>ConstMap</tt> mapping from vat names
+         *               to <tt>evaluator</tt> objects.
+         * @return A <tt>vow</tt> that becomes <tt>null</tt> on success
+         *         or becomes broken with a problem.
+         */
+        to replaySequence(vatSwitcher, vatMap) :vow {
+            def [resultVow, resolver] := Ref.promise()
+
+            def testcases := sequence.getTestcases()
+            for tc in testcases {
+                players.push(makeTestcasePlayer(tc))
+            }
+
+            def evaluator := vatSwitcher.getEvaluator(vatMap)
+
+            def doReplay(i) :void {
+                if (i < players.size()) {
+                    when (players[i].replay(evaluator)) -> done(_) :void {
+                        doReplay(i + 1)
+                    } catch problem {
+                        resolver.smash(problem)
+                    }
+                } else {
+                    resolver.resolve(null)
+                }
+            }
+            doReplay(0)
+            resultVow
+        }
+
+        /**
+         * <tt>replay</tt>
+         *
+         * @param vatMap A <tt>ConstMap</tt> mapping from vat names
+         *               to <tt>evaluator</tt> objects.
+         * @return A <tt>vow</tt> that becomes <tt>null</tt> on success
+         *         or becomes broken with a problem.
+         */
+        to replay(vatMap) :vow {
+
+            def vatName := sequence.getVatDirective().getVatName()
+            def switcher := makeVatSwitcher(vatName)
+
+            sequencePlayer.replaySequence(switcher, vatMap)
+        }
+    }
+}
+
+/**
+ * <tt>makeScriptPlayer</tt>
+ *
+ * @param script
+ * @return A <tt>scriptPlayer</tt> object
+ * @author Terry Stanley
+ * @author Mark S. Miller
+ */
+def makeScriptPlayer(script) :any {
+    def players := [].diverge()
+
+    def scriptPlayer {
+
+        /**
+         * <tt>reportResults</tt>
+         *
+         * @param out
+         */
+        to reportResults(out) :void {
+            for p in players {
+                p.reportResults(out)
+            }
+        }
+
+        /**
+         * <tt>replayScript</tt>
+         *
+         * @param vatMap A <tt>ConstMap</tt> mapping from vat names
+         *               to <tt>evaluator</tt> objects.
+         * @return A <tt>vow</tt> that becomes <tt>null</tt> on success or
+         *         becomes broken with a problem.
+         */
+        to replayScript(vatMap) :vow {
+            def [resultVow, resolver] := Ref.promise()
+
+            def sequences := script.getSequences()
+            for s in sequences {
+                players.push(makeSequencePlayer(s))
+            }
+
+            def doReplay(i) :void {
+                if (i < players.size()) {
+                    when (players[i].replay(vatMap)) -> done(_) :void {
+                        doReplay(i + 1)
+                    } catch problem {
+                        resolver.smash(problem)
+                    }
+                } else {
+                    resolver.resolve(null)
+                }
+            }
+            doReplay(0)
+            resultVow
+        }
+
+        /**
+         * <tt>replay</tt>
+         *
+         * @param evalServerPool
+         * @param args
+         * @param props
+         * @param out
+         * @return A <tt>vow</tt> that becomes <tt>null</tt> on success or
+         *         becomes broken with a problem.
+         */
+        to replay(evalServerPool, args, props, out) :vow {
+            def [resultVow, resolver] := Ref.promise()
+
+            def vatNames :List[String] := script.getVatNames()
+
+            when (evalServerPool <-
+                   requestEvalServerSet(vatNames)) ->
+                   done(var makers) :void {
+                def release() :boolean {
+                    if (makers != null) {
+                        for m in makers {
+                            evalServerPool <- releaseEvalServer(m)
+                        }
+                        makers := null
+                        true
+                    } else {
+                        false
+                    }
+                }
+                def vatMap := [].asMap().diverge()
+                for i => name in vatNames {
+                    def makerRcvr := makers[i]
+                    def evaluator := makerRcvr <- run(args, props)
+                    vatMap.put(name, evaluator, true)
+
+                    Ref.whenBroken(makerRcvr, def rewind(_) :void {
+                        if (release()) {
+                            def player := makeScriptPlayer(script)
+                            def tryAgainVow :=
+                              player.replay(evalServerPool, args, props, out)
+                            resolver.resolve(tryAgainVow)
+                        }
+                    })
+                }
+
+                when (scriptPlayer.replayScript(vatMap)) -> done(_) :void {
+                    if (release()) {
+                        try {
+                            scriptPlayer.reportResults(out)
+                            resolver.resolve(null)
+                        } catch problem {
+                            resolver.smash(problem)
+                        }
+                    }
+                } catch problem {
+                    if (release()) {
+                        resolver.smash(problem)
+                    }
+                }
+            } catch problem {
+                resolver.smash(problem)
+            }
+            resultVow
+        }
+    }
+}
+

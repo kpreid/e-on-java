@@ -1,0 +1,27 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def moreRecentVowFuncMaker() :near {
+    def obsoleteError := "Obsolete Data"
+    var mostRecentlyFulfilledIndex := 0
+    var nextPromiseIndex := 1
+    def moreRecentVow(nextPromise) :any {
+        def [onlyMoreRecentPromise,resolver] := Ref.promise()
+        def thisPromiseIndex := nextPromiseIndex
+        nextPromiseIndex += 1
+        when (nextPromise) -> done(resolution) :void {
+            if (thisPromiseIndex > mostRecentlyFulfilledIndex) {
+                resolver.resolve(resolution)
+                mostRecentlyFulfilledIndex := thisPromiseIndex
+            } else { resolver.smash(obsoleteError) }
+        } catch e {
+            if (thisPromiseIndex > mostRecentlyFulfilledIndex) {
+                mostRecentlyFulfilledIndex := thisPromiseIndex
+                resolver.smash(e)
+            } else { resolver.smash(obsoleteError) }
+        }
+        onlyMoreRecentPromise
+    }
+}
+
+

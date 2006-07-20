@@ -1,0 +1,9 @@
+class(safe,
+           "org.eclipse.swt.custom.TableEditor",
+           statics(method("run(Table)")),
+           methods(method("dispose()"),
+                   method("getColumn()"),
+                   method("getItem()"),
+                   method("setColumn(int)"),
+                   method("setItem(TableItem)"),
+                   method("setEditor(Control, TableItem, int)"))) 

@@ -1,0 +1,12 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class("java.awt.Event",
+      statics(method(suppress, "run(Object, long, int, int, int, int, int, Object)"),
+              method(suppress, "run(Object, long, int, int, int, int, int)"),
+              method(suppress, "run(Object, int, Object)")),
+      methods(method(suppress, "translate(int, int)"),
+              method(suppress, "shiftDown()"),
+              method(suppress, "controlDown()"),
+              method(suppress, "metaDown()")),
+      comment("All obsolete"))

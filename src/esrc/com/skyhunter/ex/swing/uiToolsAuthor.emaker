@@ -1,0 +1,106 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def uiToolsAuthor(<awt>,<swing>) :any {
+
+    def uiTools {
+        to fontMetrics(component) :any {component.getFontMetrics(component.getFont())}
+        to attachAction(component,runnable) :void {
+            def listener {
+                to actionPerformed(event) :void {
+                    runnable <- run()
+                }
+            }
+            component.addActionListener(listener)
+        }
+        to newButton(labelText, runnable) :any {
+            def button := <swing:makeJButton>(labelText)
+            button.setDefaultCapable(false)
+            button.setBackground (<awt:makeSystemColor>.getControl());
+            uiTools.attachAction(button,runnable)
+            button
+        }
+        to newToolButton(imageURI, tipText, runnable) :any {
+            var edgesDrawn := false
+            def gray := <awt:makeColor>.getDarkGray()
+            def white := <awt:makeColor>.getWhite()
+            def baseIcon := <swing:makeImageIcon>(imageURI)
+            def baseImage := baseIcon.getImage()
+            def flatIcon := baseIcon
+            def width := baseImage.getWidth()
+            def button := <swing:makeJButton>(flatIcon)
+            button.setDefaultCapable(false)
+            uiTools.attachAction(button, runnable)
+            button.setToolTipText(tipText)
+            button.setBackground(<awt:makeSystemColor>.getControl())
+            button.setBorder (<swing:makeBorderFactory>.createEmptyBorder(0,0,0,0))
+
+    #         button setMaximumSize(<awt:makeDimension>(width,width))
+
+            /** */
+            def drawEdging() :void {
+                def edge(g, leftColor, rightColor) :void {
+                    def farEdge := width - 1
+                    g.setColor(leftColor)
+                    g.drawLine(0,0, 0,farEdge)
+                    g.drawLine(0,0, farEdge,0)
+                    g.setColor(rightColor)
+                    g.drawLine(farEdge,farEdge, 0,farEdge)
+                    g.drawLine(farEdge, farEdge, farEdge, 0)
+                }
+                def raisedImage := button.createImage(width, width)
+                def gRaised := raisedImage.createGraphics()
+                gRaised.setBackground(<awt:makeSystemColor>.getControl())
+                gRaised.drawImage(baseImage,0,0,button)
+                edge(gRaised, white, gray)
+                def raisedIcon := <swing:makeImageIcon>(raisedImage)
+                def loweredImage := button.createImage(width, width)
+                def gLowered := loweredImage.createGraphics()
+                gLowered.drawImage(baseImage,1,1,button)
+                edge(gLowered, gray, white)
+                def loweredIcon := <swing:makeImageIcon>(loweredImage)
+                button.setRolloverEnabled(true)
+                button.setRolloverIcon(raisedIcon)
+                button.setPressedIcon(loweredIcon)
+                edgesDrawn := true
+            }
+            def componentListener {
+                to componentShown(event) :void {
+                    if (! edgesDrawn) {drawEdging()}
+                }
+                to componentResized(event) :void {
+                    componentListener.componentShown(event)
+                }
+                match [verb,args] {}
+            }
+            button.addComponentListener(componentListener)
+            button
+        }
+        to label(text) :near { <swing:makeJLabel>(text) }
+        to labelIcon(iconUrl) :near {
+            def icon := <swing:makeImageIcon>(iconUrl)
+            <swing:makeJLabel>(icon)
+        }
+        to addMenuItem(menu,labelText, runnable) :void {
+            def item := <swing:makeJMenuItem>(labelText)
+            uiTools.attachAction(item, runnable)
+            E.call(menu, "add(JMenuItem)", [item])
+        }
+        to makeGridRow(paneList) :any {
+            def grid := <swing:makeJPanel>()
+            grid.setLayout(<awt:makeGridLayout>(1,paneList.size()))
+            for i => each in paneList {
+                grid.add(each)
+            }
+            grid
+        }
+        to makeGridColumn(paneList) :any {
+            def grid := <swing:makeJPanel>()
+            grid.setLayout(<awt:makeGridLayout>(paneList.size(),1))
+            for i => each in paneList {
+                grid.add(each)
+            }
+            grid
+        }
+    }
+}

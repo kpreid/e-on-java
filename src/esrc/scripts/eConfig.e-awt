@@ -1,0 +1,105 @@
+#!/usr/bin/env rune
+
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def HocusFocusMaker := <unsafe:org.erights.e.ui.awt.HocusFocus>
+
+# This script gets launched to complete the setup process, and when
+# the user wishes to change their E configuration. It manipulates the
+# following property variables (shown with corresponding example
+# values). Many of these properties are defined by analogy to
+# corresponding "java." properties.
+
+# e.version                     0.8.9
+# e.vendor                      ERights.org
+# e.vendor.url                  http://www.erights.org
+# e.home                        C:/Program Files/erights.org
+# e.javacmd                     java
+# e.more.path.option            -cp
+# e.more.path                   C:/.../e.jar;...
+# e.launch.dir                  C:/Windows/Desktop
+
+# e.put.exe.path                c:/usr/local/bin;C:/WINDOWS
+# e.put.shortcut.path           C:/WINDOWS/Desktop;\
+#                               C:/.../Start Menu/.../erights.org
+# e.GrabExtensions              true
+
+
+# These should be renamed from "TraceLog_*" to "e.traceLog.*"
+#
+# TraceLog_dir                  c:/Windows/Temp/etrace
+# TraceLog_write                true
+# TraceLog_tag                  joe (== user.name)
+
+
+# This group must get configured before eConfig.e-awt can be successfully
+# launched.
+#
+#    e.home                  c:/Program Groups/erights.org/
+#    e.java.cmd              d:/jdk1.3/bin/java.exe
+#    e.more.path.option      -cp
+#    e.more.path             # calculated classpath additions
+
+/**
+ * set up tracing; stub out all the printing for operational version
+ */
+def traceline(str) :void { stderr.println(str) }
+
+println("Starting E")
+def System := <unsafe:java.lang.makeSystem>
+def SysProps := System.getProperties()
+def ehomeDir := <file>[(SysProps["e.home"])]
+println(`Installed at $ehomeDir on Java ${SysProps["java.version"]}`)
+
+try {
+    <unsafe:java.lang.ref.makeReference>
+} catch problem {
+    println(`*** Problem importing java.lang.ref.Reference: $problem`)
+    println(`Please select a Java Command for a Java >= 1.2`)
+    println(`though we strongly recommend a Java >= 1.3.`)
+    System."exit"(-1)
+}
+
+def welcome := `Welcome to E ${SysProps["e.version"]}`
+
+if (SysProps.getProperty("e.swingLnF",null) == "none") {
+    println("(We seem to be headless.)\n")
+    println(welcome)
+    System."exit"(0)
+}
+
+def root := <swing:makeJFrame>(welcome)
+root.addWindowListener(def closeListener {
+    to windowClosing(_) :void {
+        interp.continueAtTop()
+    }
+    match _ {}
+})
+
+def okButton := <swing:makeJButton>("Ok")
+okButton.setBackground(<awt:makeColor>.getWhite())
+
+okButton.addActionListener(def okListener {
+    to actionPerformed(_) :void {
+        interp.continueAtTop()
+    }
+})
+
+def label := <swing:makeJLabel>("E is installed.",
+                            <swing:makeSwingConstants>.getCENTER())
+
+root.getContentPane().add(JPanel`$label.Y
+                                 ${JPanel``} $okButton ${JPanel``}`)
+
+def ClassLoader := <unsafe:java.lang.makeClassLoader>
+def iconURL := <resource:org/erights/e/icons/carrot2.gif>
+def iconImage := <swing:makeImageIcon>(iconURL).getImage()
+root.setIconImage(iconImage)
+
+
+root.pack()
+root.setBounds(120, 100, 300, 100)
+root.show()
+HocusFocusMaker.requestFocus(okButton)
+interp.blockAtTop()

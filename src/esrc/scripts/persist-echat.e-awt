@@ -1,0 +1,339 @@
+#!/usr/bin/env rune
+
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+/**
+ * set up tracing; stub out all the printing for operational version
+ */
+def traceline(str) :void {
+    stderr.println(str)
+}
+
+# Ensure the user knows if he's using a clear, unencrypted connection
+traceline(introducer.negotiable())
+
+#def Title := if (introducer negotiable() == ["3DES_SDH_M"]) {
+#    "Secure EChat"
+#} else {
+#    <swing:makeJOptionPane> showMessageDialog(
+#        null,
+#        "You are using DaffE, so you'll be chatting in the clear.
+#To be secure, use E instead.",
+#        "Unencrypted DaffE Session",
+#        <swing:makeJOptionPane> WARNING_MESSAGE())
+#    "EChat"
+#}
+def Title := "eChat"
+
+
+/**
+ * return the object represented by the URI
+ */
+def getObjectFromURI(uri) :any {
+    introducer.sturdyFromURI(uri).getRcvr()
+}
+
+/**
+ * return the friend file
+ */
+def findFriendFile(chatWin) :any {
+    def dialog := <awt:makeFileDialog>(chatWin, "Select a Friend")
+    dialog.show()
+    var path := dialog.getFile()
+    if (path != null) {
+        path := dialog.getDirectory() + path
+    }
+    <file>[path]
+}
+
+/**
+ * return a file to be saved
+ */
+def requestSaveFile(chatWin) :any {
+    def dialog := <awt:makeFileDialog>(chatWin,
+                                   "Save File with Your Name",
+                                   <awt:makeFileDialog>.getSAVE())
+    dialog.show()
+    var addressName := dialog.getFile()
+    if (addressName != null) {
+        addressName := dialog.getDirectory() + addressName
+    }
+    <file>[addressName]
+}
+
+/**
+ * method that writes out the URI for your echat system's communication
+ * interface
+ */
+def offerMyAddress(file, uri) :void {
+    traceline(`$file setText("$uri")`)
+    file.setText(uri)
+}
+
+def set1LineComponentParameters(component) :void {
+    component.setPreferredSize(<awt:makeDimension>(150,25))
+    component.setMaximumSize(<awt:makeDimension>(1000,25))
+    component.setAlignmentX(0.5)
+}
+
+def chatUIMaker(chatController) :any {
+    # Lay out the chat window, create its components
+    def chatWin := <swing:makeJFrame>(Title)
+    def chatPane := chatWin.getContentPane()
+    def border := <swing:makeBoxLayout>(chatPane,1)
+    chatPane.setLayout(border)
+    traceline("p1 ui made");
+    def windowListener {
+        to windowClosing(event) :void {
+            chatController.leave()
+            traceline("trying to exit")
+            interp.continueAtTop()
+        }
+        match _ {}
+    }
+    chatWin.addWindowListener(windowListener)
+    traceline("p2 ui made");
+
+    /**
+     * make a button that calls the chatController
+     */
+    def newButton(labelText, verb) :any {
+        # def button := <swing:makeJButton>(labelText)
+        def button := <swing:makeJButton>(labelText)
+        traceline("made button")
+        set1LineComponentParameters(button)
+        def buttonListener {
+            to actionPerformed(event) :void {
+                E.call(chatController, verb, [])
+            }
+        }
+        button.addActionListener(buttonListener)
+        traceline("button being returned")
+        button
+    }
+
+    # setNameButton
+    def setNameButton := newButton("Set Your Name", "setMyName")
+
+    # offerChatButton
+    def offerChatButton := newButton("Offer Chat", "offerSelf")
+    offerChatButton.setEnabled(false)
+
+    # findFriendButton
+    def findFriendButton := newButton("Find Friend", "findFriend")
+    findFriendButton.setEnabled(false)
+
+    # chatScroller that holds chatTextArea
+    def chatScroller := <swing:makeJScrollPane>()
+    chatScroller.setMaximumSize(<awt:makeDimension>(2000,1000))
+    chatScroller.setPreferredSize(<awt:makeDimension>(250,80))
+
+    # chatTextArea
+    def chatTextArea := <swing:makeJTextArea>()
+    chatTextArea.setLineWrap(true)
+    chatScroller.getViewport().add(chatTextArea)
+
+    # nextMessageBox
+    def nextMessageBox := <swing:makeJTextField>("Type your message here",30)
+    set1LineComponentParameters(nextMessageBox)
+    chatPane.add(nextMessageBox)
+    traceline("p3 ui buildt");
+
+    # sendMessageButton
+    def sendMessageButton := newButton("Send", "send")
+    sendMessageButton.setEnabled(false)
+
+    chatPane.add(JPanel`$setNameButton
+                        $offerChatButton $findFriendButton
+                        $chatScroller.Y
+                        $nextMessageBox
+                        $sendMessageButton`)
+
+    chatWin.pack()
+    chatWin.show()
+
+    def chatUI {
+        to getChatWin()           :any { chatWin }
+        to getNameButton()        :any { setNameButton }
+        to getOfferChatButton()   :any { offerChatButton }
+        to getFindFriendButton()  :any { findFriendButton }
+        to getChatTextArea()      :any { chatTextArea }
+        to getNextMessageBox()    :any { nextMessageBox }
+        to getSendMessageButton() :any { sendMessageButton }
+    }
+}
+
+/**
+ * facet of chatController sent to other chatter with only appropriate
+ * messages
+ */
+def chatReceiverMaker(var chatController) :any {
+    def chatReceiver {
+        to receive(message) :void { chatController.receive(message) }
+        to receiveFriend(friend, name) :any {
+            chatController.receiveFriend(friend, name)
+        }
+        to friendIsLeaving() :void { chatController.friendIsLeaving() }
+        to revoke() :void { chatController := null }
+    }
+}
+
+/**
+ * @author Marc Stiegler
+ */
+def chatControllerMaker() :any {
+    def chatController := {
+        def chatUI := chatUIMaker(chatController)
+        def myChatReceiver := chatReceiverMaker(chatController)
+        var myName := null
+        var myFriend := null
+        var myFriendName := null
+        var myAddressFile := null
+        traceline("initialized chatController");
+        def showMessage(senderName, message) :void {
+            chatUI.getChatTextArea().append(
+                senderName +" says:\t"+ message + "\n")
+        }
+        def showDebug(message) :void {
+            # chatUI getChatTextArea() append("Debug: " + message + "\n")
+        }
+        def chatController {
+
+            to getChatReceiver() :near { myChatReceiver }
+
+            /**
+             * transmitting functions
+             */
+            to send() :void {
+                def nextMsgBox := chatUI.getNextMessageBox()
+                def nextMessage := nextMsgBox.getText()
+                nextMsgBox.setText("")
+                traceline("next message" + nextMessage)
+                myFriend <- receive(nextMessage)
+                showMessage(myName, nextMessage)
+            }
+            to setMyName() :void {
+                myName := <swing:makeJOptionPane>.showInputDialog(
+                    "Please give me your name for this chat session")
+                traceline(`name: $myName`)
+                if (myName != null) {
+                    chatUI.getNameButton().setLabel(myName)
+                    chatUI.getNameButton().setEnabled(false)
+                    chatUI.getOfferChatButton().setEnabled(true)
+                    chatUI.getFindFriendButton().setEnabled(true)
+                }
+            }
+            to offerSelf() :void {
+                myAddressFile := requestSaveFile(chatUI.getChatWin())
+                if (myAddressFile != null) {
+                    def sturdyChatReceiver := makeSturdyRef(myChatReceiver)
+                    if (timeMachine.isSaved()) {
+                        timeMachine.save()
+                    }
+                    def uri := introducer.sturdyToURI(sturdyChatReceiver)
+                    offerMyAddress(myAddressFile, uri)
+                }
+            }
+            to leave() :void {
+                if (myAddressFile != null) {
+                    # myAddressFile delete(null)
+                }
+                myFriend <- friendIsLeaving()
+                chatController.disconnect("is being left")
+            }
+            to receive(message) :void {
+                showMessage(myFriendName, message)
+            }
+            to receiveFriend(friend, name) :any {
+                traceline("receiveFriend")
+                myFriend := friend
+                myFriendName := name
+                chatUI.getSendMessageButton().setEnabled(true)
+                chatUI.getOfferChatButton().setEnabled(false)
+                chatUI.getFindFriendButton().setEnabled(false)
+                chatUI.getChatTextArea().append(`$myFriendName has arrived$\n`)
+                Ref.whenBroken(friend, def observer(prom) :void {
+                    chatController.disconnect("disconnected")
+                })
+                traceline("received")
+                myName
+            }
+            to findFriend() :void {
+                def file := findFriendFile(chatUI.getChatWin())
+                if (file != null) {
+                    def friendURI := file.getText()
+                    showDebug("uri " + friendURI)
+                    def friend := getObjectFromURI(friendURI)
+                    showDebug("obj " + friend)
+
+                    when (friend <- receiveFriend(myChatReceiver, myName)) ->
+                      done(friendName) :void {
+
+                        showDebug("won against all odds")
+                        chatController.receiveFriend(friend, friendName)
+                    } catch problem {
+                        showDebug("clobbered: " + problem)
+                        chatController.disconnect("is unreachable")
+                    }
+
+                    showDebug("sent me")
+                }
+            }
+            to friendIsLeaving() :void {
+                chatController.disconnect("is leaving")
+            }
+            to disconnect(desc) :void {
+                chatUI.getSendMessageButton().setEnabled(false)
+                if (myFriendName == null) {
+                    myFriendName := "the friend"
+                }
+                chatUI.getChatTextArea().append(
+                    myFriendName + " " + desc + "\n")
+                myFriend := null
+                myFriendName := null
+                myChatReceiver.revoke()
+            }
+        }
+    }
+}
+
+def controller := chatControllerMaker()
+def chatReceiver := controller.getChatReceiver()
+
+def makeAtomicFile := <import:org.erights.e.extern.persist.makeAtomicFile>
+
+def makeVatFile(filename :String) :near {
+    def file := <file>[filename]
+    makeAtomicFile(<file>[file.getParent()], file.getName())
+}
+
+timeMachine.addExit(chatReceiver, "chatReceiver", true)
+
+if (interp.getArgs() =~ [`-save`, filename]) {
+    traceline(`first incarnation as $filename`)
+
+    timeMachine.new()
+    def vatFile := makeVatFile(filename)
+    timeMachine.createAs(vatFile)
+
+} else if (interp.getArgs() =~ [`-restore`, filename]) {
+    traceline(`reincarnation from $filename`)
+
+    def vatFile := makeVatFile(filename)
+    timeMachine.revive(vatFile)
+
+} else {
+    traceline("New unnamed incarnation")
+
+    timeMachine.new()
+}
+
+introducer.onTheAir()
+traceline(introducer)
+traceline(`vatID: ${introducer.getVatID()}`)
+traceline(`netConfig: ${introducer.getNetConfig()}`)
+
+traceline(interp.getArgs())
+interp.blockAtTop()
+

@@ -1,0 +1,43 @@
+# Copyright 2005 Mark S. Miller under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+pragma.enable("easy-return")
+
+/**
+ * Defines the builtin '__bind' via function template.
+ * <p>
+ * This is used to expand the pattern
+ * 'bind foo' to 'via (__bind(foo__Resolver)) _'.
+ *
+ * @author Mark S. Miller
+ */
+def bind0 {
+    to (resolver) :any {
+        def viaFunc1(specimen, optEjector) :void {
+            resolver.resolve(specimen)
+        }
+        return viaFunc1
+    }
+    to (resolver, guard :Guard) :any {
+        def viaFunc2(specimen, optEjector) :void {
+            resolver.resolve(guard.coerce(specimen, optEjector))
+        }
+        return viaFunc2
+    }
+}
+
+? def x
+# expansion: def [x, x__Resolver] := Ref.promise()
+#            x__Resolver
+
+# value: <Resolver>
+
+? bind x := 3
+# expansion: def via (__bind.run(x__Resolver)) _ := 3
+
+# value: 3
+
+? interp.setExpand(false)
+
+? x
+# value: 3

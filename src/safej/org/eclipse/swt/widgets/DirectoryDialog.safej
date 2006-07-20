@@ -1,0 +1,8 @@
+class("org.eclipse.swt.widgets.DirectoryDialog",
+           statics(method("run(Shell)"),
+                   method("run(Shell, int)")),
+           methods(method("getFilterPath()"),
+                   method("getMessage()"),
+                   method("open()"),
+                   method("setFilterPath(String)"),
+                   method("setMessage(String)"))) 

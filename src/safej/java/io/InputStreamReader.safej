@@ -1,0 +1,4 @@
+class(safe,
+      "java.io.InputStreamReader",
+      statics(method("run(InputStream)")),
+      methods(method("getEncoding()")))

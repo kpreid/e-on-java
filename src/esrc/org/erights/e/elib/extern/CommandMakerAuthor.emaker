@@ -1,0 +1,170 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+
+def CmdResult := Tuple[int, String, String]
+def Vat := <type:org.erights.e.elib.vat.Vat>
+def Process := <type:java.lang.Process>
+
+def ExecResult := Tuple[vow[CmdResult], Vat, Process]
+
+def File := <type:java.io.File>
+
+
+/**
+ * For running executable commands on the external operating system.
+ * <p>
+ * Being an emaker, the CommandMakerAuthor itself has no authority.
+ * The authority you need to provide it is *the* instance of
+ * java.lang.Runtime, or its moral equivalent, which it uses to
+ * authorize the makeCommand it creates. It returns the only
+ * reference to this makeCommand, which can be used to make Commands.
+ */
+def CommandMakerAuthor(TheRuntime) :any {
+
+    /**
+     * A makeCommand is used to make a command.
+     * <p>
+     * A command is for executing an individual executable command file.
+     */
+    def makeCommand {
+
+        /**
+         * Given the pathname of an executable command file, this returns
+         * a command, which will execute this command file with given args,
+         * environment, etc...
+         */
+        to run(executablePath) :any {
+
+            /**
+             * For executing a particular executable on the
+             * underlying OS, providing it inputs, and obtaining
+             * its outputs
+             */
+            def command {
+
+                to __printOn(out :TextWriter) :void {
+                    out.print(`<exec $executablePath args...>`)
+                }
+
+                /**
+                 * This should be used only on prompt transformational
+                 * commands.
+                 * <p>
+                 * A *prompt* command is one that will execute in a
+                 * sufficiently short period of time
+                 * that you are willing to block the vat waiting
+                 * for it to complete -- just as if  you were doing
+                 * an immediate call on a near object. A
+                 * *transformational* command is one whose inputs
+                 * do not depend on its outputs, like a filter in a
+                 * Unix pipeline. Therefore, the inputs can exist
+                 * before the command is run. Once a
+                 * transformational command has promptly
+                 * terminated, all the outputs can be assumed to be
+                 * complete.
+                 *
+                 * @param args A list of Strings as command arguments
+                 * @param optEnv null, or an array of environment strings.
+                 * @param optCwd null, or the path for the process's
+                 *               working directory
+                 * @param optStdinStr If non-null, this string will be
+                 *                    fed to the command's stdin.
+                 * @return A triple of the exitCode, the text sent to
+                 *         stdout as a String, and the text sent to
+                 *         stderr as a String.
+                 */
+                to doNow(args :List[String],
+                         optEnv :nullOk[List[String]],
+                         optCwd :nullOk[File],
+                         optStdinStr :nullOk[String]) :CmdResult {
+
+                    def process := TheRuntime.exec([executablePath] + args,
+                                                   optEnv,
+                                                   optCwd)
+                    if (optStdinStr != null) {
+                        def stdin := process.getStdin()
+                        stdin.print(optStdinStr)
+                        stdin.close()
+                    }
+                    return process.results()
+                }
+
+                /**
+                 * Like {@link #doNow/4}, but may be used on non-prompt and
+                 * non-transformational commands.
+                 *
+                 * @param args A list of Strings as command arguments
+                 * @param optEnv null, or an array of environment strings.
+                 * @param optCwd null, or the path for the process's
+                 *               working directory
+                 * @param optStdinStr If non-null, this string will be
+                 *                    fed to the command's stdin.
+                 * @return A triple of <ul>
+                 *         <li>a vow for the results that would eventually have
+                 *             been returned by {@link #doNow/4},
+                 *         <li>the vat in which that process will be waitedFor,
+                 *         <li>the {@link Process} object itself.
+                 */
+                to exec(args :List[String],
+                        optEnv :nullOk[List[String]],
+                        optCwd :nullOk[File],
+                        optStdinStr :nullOk[String]) :ExecResult {
+                    def process := TheRuntime.exec([executablePath] + args,
+                                                   optEnv,
+                                                   optCwd)
+                    if (optStdinStr != null) {
+                        def stdin := process.getStdin()
+                        stdin.print(optStdinStr)
+                        stdin.close()
+                    }
+                    return process.resultsVow() + [process]
+                }
+
+                /** left out args default to null */
+                to exec(args :List[String],
+                        optEnv :nullOk[List[String]],
+                        optCwd :nullOk[File]) :ExecResult {
+                    return command.exec(args, optEnv, optCwd, null)
+                }
+
+                /** left out args default to null */
+                to exec(args :List[String],
+                        optEnv :nullOk[List[String]]) :ExecResult {
+                    return command.exec(args, optEnv, null, null)
+                }
+
+                /** left out args default to null */
+                to exec(args :List[String]) :ExecResult {
+                    return command.exec(args, null, null, null)
+                }
+
+                # command can be invoked as a function with an arbitrary
+                # number of arguments. These get turned into the args
+                # argument of a doNow(). The other doNow arguments
+                # default to null.
+                # <p>
+                # Unlike doNow(), on success (exitCode == 0), this returns a
+                # pair of the text sent to stdout as a String, and the text
+                # sent to stderr as a String. On a non-zero exitCode, this
+                # throws an exception containing the exitCode and these
+                # strings.
+
+                match [`run`, args] {
+                    def [exitCode, strout, strerr] :=
+                      command.doNow(args, null, null, null)
+                    if (exitCode == 0) {
+                        [strout, strerr]
+                    } else {
+                        throw(`$executablePath failed with($exitCode,$\
+                                                           $strout,$\
+                                                           $strerr)`)
+                    }
+                }
+                match [`__respondsTo`, [`run`, _]] {
+                    true
+                }
+            }
+        }
+    }
+}

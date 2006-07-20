@@ -1,0 +1,33 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+    ? def echo := makeCommand("c:/cygwin/bin/echo.exe")
+    # value: <exec c:/cygwin/bin/echo.exe args...>
+
+    ? def [outp, errp] := echo("-n", "foo", "bar")
+    # value: ["foo bar", ""]
+
+    ? echo("foo", "bar")
+    # value: ["foo bar
+    #        ", ""]
+
+    ? def bash := makeCommand("c:/cygwin/bin/bash.exe")
+    # value: <exec c:/cygwin/bin/bash.exe args...>
+
+    ? bash("-c", "type echo")
+    # value: ["echo is a shell builtin
+    #        ", ""]
+
+    ? bash("-c", "cygpath -w `type -p echo.exe`")
+    # problem: c:/cygwin/bin/bash.exe failed with(127,,/usr/bin/bash: \
+    # cygpath: command not found
+    #          )
+    #
+    #   <elang:interp.Thrower>("c:/cygwin/bin/bash.exe failed with(...sh: \
+    #   cygpath: command not found\n\ )")
+    #   <exec c:/cygwin/bin/bash.exe args...>("-c", \
+    #   "cygpath -w `type -p echo.exe`")
+    #   <interp> evalPrint(e`bash run("-c", "cygpath -w `type -p echo.exe`")`)
+
+    ?
+

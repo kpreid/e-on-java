@@ -1,0 +1,362 @@
+#!/usr/bin/env rune
+
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def traceline(text) :void { stderr.println(text) }
+
+def attachAction(component,target,verb) :void {
+    def listener {
+        to actionPerformed(event) :void {
+            E.call(target, verb, [])
+        }
+    }
+    component.addActionListener(listener)
+}
+
+def newButton(labelText, verb, target) :any {
+    def button := <swing:makeJButton>(labelText)
+    button.setBackground(<awt:makeSystemColor>.getControl())
+    attachAction(button,target,verb)
+    button
+}
+
+def abs(number) :pbc {if (number >= 0) {number} else {-number}}
+
+def makeCoord(x,y) :near {
+    def coord {
+        to getX() :any {x}
+        to getY() :any {y}
+        to __printOn(writer :TextWriter) :void {
+            writer.print("coord:" + x + "," + y)
+        }
+        to samePlace(coord2) :boolean {x == coord2.getX() && y == coord2.getY()}
+
+        /**
+         * The "add" method is the underlying function for the "+" operator.
+         * <p>
+         * Here, by writing an "add" method, we make coordinates work with "+"
+         */
+        to add(coord2) :near {makeCoord(x + coord2.getX(),y + coord2.getY())}
+
+        /**
+         * The "subtract" method is the underlying function for the "-"
+         * operator
+         */
+        to subtract(coord2) :near {makeCoord(x - coord2.getX(),y - coord2.getY())}
+    }
+}
+
+def makeInstrumentPanel(car) :near {
+    def makeIndicator(speed,positiveText,negativeText):pbc {
+        var answer := ""
+        var direction := positiveText
+        if (speed < 0) {direction := negativeText}
+        for i in 1..abs(speed) {answer := answer + direction}
+        if (speed == 0) {answer := "0"}
+        answer
+    }
+    def makeXIndicator(speed) :pbc {makeIndicator(speed,">","<")}
+    def makeYIndicator(speed) :pbc {makeIndicator(speed,"^\n","V\n")}
+    def frame := <swing:makeJFrame>("Car " + car.getName() + " Instrument Panel")
+    def lbl(text) :near {<swing:makeJLabel>(text)}
+    def xLabel := lbl("Horizontal Speed:")
+    def xIndicator := <swing:makeJTextArea>()
+    xIndicator.setText("0")
+    def yLabel := <swing:makeJTextArea>("V \ne\nr\nt\ni\nc\na\nl")
+    yLabel.setBackground(<awt:makeSystemColor>.getControl())
+    def yIndicator := <swing:makeJTextArea>()
+    yIndicator.setText("0")
+    def statusPane := lbl("Running...")
+    def instrumentPanel
+    def btn(name,action) :near {newButton(name,action,instrumentPanel)}
+    def submitButton := btn("Submit","submit")
+    var acceleration := makeCoord(0,0)
+    def realPane :=
+      JPanel`${lbl("")}  $xLabel         >                       >                  >
+        V                  $xIndicator   >                       >                  >
+        $yLabel.Y          $yIndicator   ${btn("\\","upLeft")}   ${btn("^","up")}   ${btn("/","upRight")}
+        V                  V             ${btn("<","left")}      ${btn("0","zero")} ${btn(">","right")}
+        V                  V             ${btn("/","downLeft")}  ${btn("V","down")} ${btn("\\","downRight")}
+        V                  V             $submitButton.X         >                  >
+        $statusPane        >             >                       >                  >`
+    frame.setDefaultCloseOperation(<swing:makeWindowConstants>.getDO_NOTHING_ON_CLOSE())
+    frame.getContentPane().add(realPane)
+    frame.pack()
+    frame.show()
+    def bind instrumentPanel {
+        to submit() :void {
+            submitButton.setEnabled(false)
+            car.accelerate(acceleration)
+        }
+        to prepareForNextTurn() :void {
+            xIndicator.setText(makeXIndicator(car.getVelocity().getX()))
+            yIndicator.setText(makeYIndicator(-(car.getVelocity().getY())))
+            acceleration := makeCoord(0,0)
+            submitButton.setEnabled(true)
+            #Note, static public transferFocus on awt Component is not Java API, added in E environment
+            <awt:makeComponent>.transferFocus([frame.getContentPane()], statusPane)
+            #statusPane requestFocus()
+        }
+        to setStatus(status) :void {statusPane.setText(status)}
+        to upLeft() :void {acceleration := makeCoord(-1,-1)}
+        to up() :void {acceleration := makeCoord(0,-1)}
+        to upRight() :void {acceleration := makeCoord(1,-1)}
+        to left() :void {acceleration := makeCoord(-1,0)}
+        to zero() :void {acceleration := makeCoord(0,0)}
+        to right() :void {acceleration := makeCoord(1,0)}
+        to downLeft() :void {acceleration := makeCoord(-1,1)}
+        to down() :void {acceleration := makeCoord(0,1)}
+        to downRight() :void {acceleration := makeCoord(1,1)}
+    }
+}
+
+def makeCar(name,startLocation,raceMap) :near {
+    var location := startLocation
+    var acceleration := makeCoord(0,0)
+    var velocity := makeCoord(0,0)
+    var hasCrashed := false
+    var hasFinished := false
+    def instrumentPanel
+    def sign(x) :(-1..1) {
+        if (x > 0) {
+            1
+        } else if (x < 0) {
+            -1
+        } else {0}
+    }
+
+    def accelReactors := [].asMap().diverge()
+
+    /**
+     * Compute the path the car will take from the location at the
+     * beginning of this turn to the end; return the result
+     * as a list of coords
+     */
+    def computeIntermediateLocations(start,finish) :near {
+        def locations := [].diverge()
+        def slope := (finish.getY() - start.getY()) / (finish.getX() - start.getX())
+        def computeRemainingLocations(current) :void {
+            var nextX := current.getX()
+            var nextY := current.getY()
+            var distToGo := 0
+            #if the car is traveling faster in the x direction than
+            #in the y direction, increment x position by one along
+            #the path and compute the new y
+            if (slope < 1.0 && slope > -1.0) {
+                distToGo := finish.getX() - current.getX()
+                nextX += sign(distToGo)
+                def distTraveled := nextX - start.getX()
+                nextY := start.getY() + ((slope * distTraveled) + 0.5) //1
+                #if the car is traveling faster in the y direction than
+                #in the x direction, increment y position by one along
+                #the path and compute new x
+            } else {
+                distToGo := finish.getY() - current.getY()
+                nextY += sign(distToGo)
+                def distTraveled := nextY - start.getY()
+                nextX := start.getX() + ((distTraveled/slope) + 0.5) //1
+            }
+            def next := makeCoord(nextX,nextY)
+            locations.push(next)
+            if (! (next.samePlace(finish))) {
+                computeRemainingLocations(next)
+            }
+        }
+        computeRemainingLocations(start)
+        locations
+    }
+    def car {
+        to accelerate(accel) :void {
+            traceline("accelerating car " + name)
+            acceleration := accel
+            for each in accelReactors {
+                each.reactToAccel(car)
+            }
+        }
+        to move() :void {
+            traceline("into move")
+            velocity += acceleration
+            def newLocation := location + velocity
+            traceline("got newlocation")
+            def path := computeIntermediateLocations(location,newLocation)
+            location := newLocation
+            traceline("assigned  location")
+            hasCrashed := hasCrashed || raceMap.causesCrash(path)
+            hasFinished := hasFinished || raceMap.causesFinish(path)
+            traceline("got crash finish")
+            if (hasCrashed) {
+                instrumentPanel.setStatus("Crashed")
+            } else if (hasFinished) {instrumentPanel.setStatus("Finished")}
+            traceline("out of move")
+        }
+        to getLocation() :near {location}
+        to getVelocity() :near {velocity}
+        to hasCrashed() :pbc {hasCrashed}
+        to hasFinished() :pbc {hasFinished}
+        to getName() :pbc {name}
+        to prepareForNextTurn() :void {instrumentPanel.prepareForNextTurn()}
+        to addAccelReactor(reactor) :void {accelReactors[reactor] := reactor}
+        to removeAccelReactor(reactor) :void {accelReactors.remove(reactor)}
+    }
+    bind instrumentPanel := makeInstrumentPanel(car)
+    car
+}
+
+def makeTrackViewer(initialTextMap) :near {
+    def frame := <swing:makeJFrame>("Track View")
+    def mapPane := <swing:makeJTextArea>(initialTextMap)
+    def statusPane := <swing:makeJLabel>(" ")
+    def realPane :=
+      JPanel`$mapPane.Y
+             $statusPane`
+    frame.getContentPane().add(realPane)
+    def windowListener {
+        to windowClosing(event) :void {
+            interp.continueAtTop()
+        }
+        match [verb,args] {}
+    }
+    frame.addWindowListener(windowListener)
+    frame.pack()
+    frame.show()
+    def trackViewer {
+        to refresh(textMap) :void {mapPane.setText(textMap)}
+        to showStatus(status) :void {statusPane.setText(status)}
+    }
+}
+
+def makeRaceMap() :near {
+    def baseMap := [
+        "..........W...............",
+        "..........W...........FFFF",
+        "......W...WW..............",
+        "......W....W..............",
+        "......W....WWW............",
+        "......W........W..........",
+        "......W.....W.............",
+        "......W.....W.............",
+        "......W...................",
+        "......W..................."]
+
+    def isWall(coord) :boolean {baseMap[coord.getY()] [coord.getX()] == 'W' }
+    def isFinish(coord) :boolean {baseMap[coord.getY()] [coord.getX()] == 'F'}
+    def pointCrash(coord) :boolean {
+        var result := false
+        if (coord.getX() < 0 || coord.getY() < 0 ||
+              coord.getX() >= baseMap[0].size() || coord.getY() >= baseMap.size()) {
+            result := true
+        } else if (isWall(coord)) {
+            result := true
+        }
+        result
+    }
+    def raceMap {
+        to getAsTextWithCars(cars) :pbc {
+            def embedCarsInLine(index,line) :pbc {
+                def inBounds(xLoc) :boolean {xLoc >= 0 && xLoc < line.size()}
+                var result := line
+                for each in cars {
+                    if (each.getLocation().getY() == index &&
+                          inBounds(each.getLocation().getX())) {
+                        def editable := result.diverge(char)
+                        editable[each.getLocation().getX()] := (each.getName())[0]
+                        result := editable.snapshot()
+                    }
+                }
+                result
+            }
+            var result := ""
+            for i => each in baseMap {
+                result := result + embedCarsInLine(i,each) + "\n"
+            }
+            result
+        }
+        to causesCrash(path) :boolean {
+            var result := false
+            for each in path {
+                if (pointCrash(each)) {
+                    result := true
+                    break
+                }
+            }
+            result
+        }
+        to causesFinish(path) :boolean {
+            var result := false
+            for each in path {
+                if (pointCrash(each)) {
+                    break
+                } else if (isFinish(each)) {
+                    result := true
+                    break
+                }
+            }
+            result
+        }
+    }
+}
+
+/**
+ * create the cars, place them in a flex map to be used as a set
+ */
+def makeCars(raceMap) :near {
+    def carList := [
+        makeCar("1",makeCoord(1,9),raceMap),
+        makeCar("2",makeCoord(2,9),raceMap),
+        makeCar("3",makeCoord(3,9),raceMap)]
+    def carSet := [].asMap().diverge()
+    for each in carList {carSet[each] := each}
+    carSet
+}
+
+/**
+ * @author Marc Stiegler
+ */
+def makeRaceTrack() :near {
+    def raceMap := makeRaceMap()
+    def cars := makeCars(raceMap)
+    var carsReadyToMove  := [].asMap().diverge()
+    def mapViewer := makeTrackViewer(raceMap.getAsTextWithCars(cars))
+    def raceTrack {
+        to reactToAccel(car) :void {
+            traceline("racetrack reacting to accel")
+            carsReadyToMove[car] := car
+            if (carsReadyToMove.size() >= cars.size()) {
+                raceTrack.completeNextTurn()
+            }
+        }
+        to completeNextTurn() :void {
+            def winners := [].diverge()
+            for each in cars {
+                each.move()
+                if (each.hasCrashed()) {
+                    cars.removeKey(each)
+                } else if (each.hasFinished()) {
+                    winners.push(each)
+                }
+            }
+            mapViewer.refresh(raceMap.getAsTextWithCars(cars) )
+            if (winners.size() == 1) {
+                mapViewer.showStatus("Car " + winners[0].getName() + " has won!")
+            } else if (winners.size() > 1) {
+                mapViewer.showStatus("It's a tie!")
+            } else if (cars.size() == 0) {
+                mapViewer.showStatus("Everyone's dead!")
+            } else {raceTrack.prepareForNextTurn()}
+        }
+        to prepareForNextTurn() :void {
+            traceline("into prepare for next turn")
+            carsReadyToMove := [].asMap().diverge()
+            for each in cars {
+                each.prepareForNextTurn()
+            }
+        }
+    }
+    for each in cars {each.addAccelReactor(raceTrack)}
+    raceTrack
+}
+
+makeRaceTrack()
+interp.blockAtTop()
+

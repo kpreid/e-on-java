@@ -1,0 +1,41 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+/**
+ * Given the timer, BenchAuthor makes a simple benchmarking function.
+ *
+ * @author Mark S. Miller
+ */
+def BenchAuthor(timer) :any {
+    def Bench {
+
+        /**
+         * given a thunk (the param 'func') and a number of reps, call func()
+         * that many times, and (after factoring out testing overhead) return
+         * how many milliseconds func() takes on average.
+         */
+        to run(func, reps :int) :float64 {
+            def doNothing() :void {}
+            def t1 := timer.now()
+            for _ in 0..reps {
+                doNothing()
+            }
+            def t2 := timer.now()
+            for _ in 0..reps {
+                func()
+            }
+            def t3 := timer.now()
+            def overhead := t2 - t1
+            def duration := t3 - t2
+            # println(`$t1, $t2, $t3, $overhead, $duration`)
+            (duration - overhead) / reps
+        }
+
+        /**
+         * reps defaults to 1000
+         */
+        to run(func) :float64 {
+            Bench(func, 1000)
+        }
+    }
+}

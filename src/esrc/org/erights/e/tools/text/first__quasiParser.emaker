@@ -1,0 +1,38 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def makeFirstCharSplitter :=
+  <import:org.quasiliteral.text.makeFirstCharSplitter>
+
+# XXX should be finite size cache
+def mmCache := [].asMap().diverge()
+
+/**
+ * A quasi-pattern-parser for splitting a string at the first occurrence of
+ * any of a set of characters
+ */
+def first__quasiParser {
+    to matchMaker(template :String) :any {
+        if (mmCache.fetch(template, thunk{}) =~ result :notNull) {
+            return result
+        } else {
+            # XXX special case for now
+            # XXX should do this without using simple__quasiParser to allow
+            # relayering of quasiParsers.
+            def `@@{0}[@specials]@@{1}` := template
+            def splitter := makeFirstCharSplitter(specials)
+            def firstCharMatchMaker {
+                to matchBind([], specimen :Twine, optEjector) :List[Twine] {
+                    def index := splitter.findIn(specimen)
+                    if (index <= -1) {
+                        throw.eject(optEjector,
+                                    `None of "$specials" found in "$specimen"`)
+                    }
+                    return [specimen(0, index),
+                            specimen(index, specimen.size())]
+                }
+            }
+            return mmCache[template] := firstCharMatchMaker
+        }
+    }
+}

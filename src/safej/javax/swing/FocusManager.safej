@@ -1,0 +1,9 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class("javax.swing.FocusManager",
+      statics(method(suppress, "run()")),
+      methods(method(suppress, "getCurrentManager()"),
+              method(suppress, "setCurrentManager(FocusManager)"),
+              method(suppress, "disableSwingFocusManager()"),
+              method(suppress, "isFocusManagerEnabled()")))

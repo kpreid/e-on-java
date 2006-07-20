@@ -1,0 +1,52 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+/**
+ * Makes an importCap function, which will import a capability from a
+ * place described by an argument string.
+ *
+ * @param introducer Used to convert between SturdyRefs and "captp://..."
+ *                   URI strings.
+ * @param file__uriGetter Used when the argument string is a filename.
+ * @param uriGetters A table mapping protocol names to urlGetters.
+ *                   When the argument string is a URL
+ * @author Mark S. Miller
+ */
+def makeCapImporter(introducer,
+                    <file>,
+                    uriGetters) :near {
+
+    /**
+     * Obtains a SturdyRef from the place described by arg.
+     * <p>
+     * @param arg If it's a<ul>
+     *            <li>"captp://..." string, then this is the URI to be
+     *                converted to a SturdyRef.
+     *            <li>"@<prot>:<urlname>.cap", where <prot> is one of
+     *                "http", "ftp", or "file", then this URL should
+     *                be read to obtain the URI to be converted to a
+     *                SturdyRef.
+     *            <li>"@<filename>.cap", then this file should be read
+     *                to obtain the URI to be converted to a
+     *                SturdyRef.
+     *            </ul>
+     * @return The SturdyRef obtained from arg.
+     */
+    def importCap(var arg :String) :SturdyRef {
+        arg := arg.trim()
+        switch (arg) {
+            match `captp:@body` {
+                introducer.sturdyFromURI(arg)
+            }
+            match `@@@prot:@urlname.cap` ? (prot.size() >= 2) {
+                def <prot> := uriGetters[prot.bare()]
+                def uri := <prot>[`$urlname.cap`].getText()
+                introducer.sturdyFromURI(uri)
+            }
+            match `@@@filename.cap` {
+                def uri := <file>[`$filename.cap`].getText()
+                introducer.sturdyFromURI(uri)
+            }
+        }
+    }
+}

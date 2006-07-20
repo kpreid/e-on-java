@@ -1,0 +1,56 @@
+# Copyright 2005 Hao Chen, Mark S. Miller under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+pragma.enable("easy-return")
+
+/**
+ * The Chen-Miller only-one access-control abstraction.
+ * <p>
+ * For example, if Alice has pair = [rightToReadSecret, rightToSpeakOnNet],
+ * Alice can choose to give Bob the result of makeOnlyOne(pair). Bob can
+ * now employ either one, but whichever one he uses first precludes him from
+ * ever using the others.
+ *
+ * @author Hao Chen
+ * @author Mark S. Miller
+ */
+def makeOnlyOne(baseCaps :List) :List {
+    var optWhich :nullOk[int] := null
+    var result := []
+    for i => baseCap in baseCaps {
+        def wrapper {
+            to __printOn(out :TextWriter) :void {
+                if (i == optWhich) {
+                    baseCap.__printOn(out)
+                } else {
+                    out.print(`<wrapper $i>`)
+                }
+            }
+            match [`__respondsTo`, [verb, arity]] {
+                if (i == optWhich) {
+                    baseCap.__respondsTo(verb, arity)
+                } else {
+                    false
+                }
+            }
+            match [`__getAllegedType`, []] {
+                if (i == optWhich) {
+                    baseCap.__getAllegedType()
+                } else {
+                    null
+                }
+            }
+            match [verb, args] {
+                if (null == optWhich) {
+                    optWhich := i
+                }
+                if (i != optWhich) {
+                    throw(`choice $i precluded`)
+                }
+                E.call(baseCap, verb, args)
+            }
+        }
+        result with= wrapper
+    }
+    return result
+}

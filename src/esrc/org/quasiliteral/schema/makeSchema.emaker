@@ -1,0 +1,124 @@
+#!/usr/bin/env rune
+
+# Copyright 2004 Hewlett Packard, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+# XXX This file is not yet meaningful
+
+pragma.enable("easy-return")
+pragma.enable("explicit-result-guard")
+
+def <quasi> := <import:org.quasiliteral.*>
+
+def quasiMetaBuilder := <quasi:schema.quasiMetaBuilder>
+
+def parseTerm := <quasi:term.makeTermParser>
+def parseGrammar := <quasi:term.makeGrammarParser>
+
+def metaSchemaSrc := <resource:org/quasiliteral/schema/schema.schema>.getText()
+
+def metaSchemaTerm := parseTerm(metaSchemaSrc, quasiMetaBuilder)
+
+def makeSchema {
+    to getMetaSchemaSrc() :String { return metaSchemaSrc }
+    to parseSchema(schemaSrc) :near {
+        return parseTerm(schemaSrc, quasiMetaBuilder)
+    }
+    to parseGrammar(grammarSrc) :near {
+        return parseGrammar(grammarSrc, quasiMetaBuilder)
+    }
+}
+
+    ? def <quasi> := <import:org.quasiliteral.*>
+    # value: <import:org.quasiliteral.*>
+
+    ? def makeSchema := <quasi:schema.makeSchema>
+    # value: <makeSchema>
+
+    ? makeSchema.parseSchema("@{1},${2}")
+    # value: term`seq(atHole(1),
+    #                 dollarHole(2))`
+
+    ? makeSchema.parseGrammar(`
+    >     <expr> ::= <id> | <expr> "+" <expr> | "-" <expr> | <expr> "-" <expr>;
+    > `)
+    # value: term`schema(production(tag("<expr>"),
+    #                               seq(onlyChoice(tag("<id>"),
+    #                                              tag("<expr>")),
+    #                                   data("+"),
+    #                                   onlyChoice(tag("<expr>"),
+    #                                              data("-")),
+    #                                   onlyChoice(tag("<expr>"),
+    #                                              tag("<expr>")),
+    #                                   data("-"),
+    #                                   tag("<expr>"))))`
+
+
+? makeSchema.parseSchema(makeSchema.getMetaSchemaSrc())
+# value: term`schema(production(tag("<schema>"),
+#                               term(tag("schema"),
+#                                    oneOrMore(tag("<production>")))),
+#                    production(tag("<production>"),
+#                               term(tag("production"),
+#                                    seq(tag("<lhs>"),
+#                                        tag("<rhs>")))),
+#                    production(tag("<lhs>"),
+#                               term(tag("tag"),
+#                                    tag(".String."))),
+#                    production(tag("<rhs>"),
+#                               onlyChoice(tag("<term>"),
+#                                          term(tag("onlyChoice"),
+#                                               seq(tag("<rhs>"),
+#                                                   oneOrMore(tag("<rhs>")))),
+#                                          term(tag("firstChoice"),
+#                                               seq(tag("<rhs>"),
+#                                                   oneOrMore(tag("<rhs>")))),
+#                                          term(tag("not"),
+#                                               tag("<rhs>")),
+#                                          term(tag("optional"),
+#                                               tag("<rhs>")),
+#                                          term(tag("oneOrMore"),
+#                                               tag("<rhs>")),
+#                                          term(tag("zeroOrMore"),
+#                                               tag("<rhs>")),
+#                                          tag("any"),
+#                                          term(tag("interleave"),
+#                                               seq(tag("<rhs>"),
+#                                                   oneOrMore(tag("<rhs>")))),
+#                                          term(tag("seq"),
+#                                               seq(tag("<rhs>"),
+#                                                   oneOrMore(tag("<rhs>")))),
+#                                          term(tag("action"),
+#                                               seq(tag("<rhs>"),
+#                                                   tag("<rhs>"))),
+#                                          tag("empty"))),
+#                    production(tag("<term>"),
+#                               onlyChoice(term(tag("term"),
+#                                               seq(tag("<functor>"),
+#                                                   tag("<rhs>"))),
+#                                          tag("<functor>"))),
+#                    production(tag("<functor>"),
+#                               onlyChoice(term(tag("tag"),
+#                                               tag(".String.")),
+#                                          term(tag("tag"),
+#                                               seq(tag(".String."),
+#                                                   tag("<hole>"))),
+#                                          tag("<hole>"),
+#                                          term(tag("data"),
+#                                               tag("<literal>")),
+#                                          term(tag("range"),
+#                                               seq(tag("<literal>"),
+#                                                   tag("<literal>"))))),
+#                    production(tag("<hole>"),
+#                               onlyChoice(term(tag("dollarHole"),
+#                                               onlyChoice(tag(".int."),
+#                                                          tag(".String."))),
+#                                          term(tag("atHole"),
+#                                               onlyChoice(tag(".int."),
+#                                                          tag(".String."))))),
+#                    production(tag("<literal>"),
+#                               onlyChoice(tag(".char."),
+#                                          tag(".int."),
+#                                          tag(".float64."),
+#                                          tag(".String."))))`
+

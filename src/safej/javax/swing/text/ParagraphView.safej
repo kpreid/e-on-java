@@ -1,0 +1,14 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class(safe,
+      "javax.swing.text.ParagraphView",
+      statics(method("run(Element)")),
+      methods(method("getFlowSpan(int)"),
+              method("getFlowStart(int)"),
+              method("nextTabStop(float, int)"),
+              method(suppress, "paint(Graphics, Shape)"),
+              method("getAlignment(int)"),
+              method("breakView(int, float, Shape)"),
+              method("getBreakWeight(int, float)"),
+              method(suppress, "changedUpdate(DocumentEvent, Shape, ViewFactory)")))

@@ -1,0 +1,13 @@
+class(safe,
+           "org.eclipse.swt.layout.RowData",
+           statics(method("run()"),
+                   method("run(int, int)"),
+                   method("run(Point)")),
+           methods(method("width()"),
+                   method("width(int)"),
+                   method("getWidth()"),
+                   method("setWidth(int)"),
+                   method("height()"),
+                   method("height(int)"),
+                   method("getHeight()"),
+                   method("setHeight(int)"))) 

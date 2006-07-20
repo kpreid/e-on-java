@@ -1,0 +1,11 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class("javax.swing.TransferHandler",
+      statics(method(suppress, "run(String)")),
+      methods(method(suppress, "exportAsDrag(JComponent, InputEvent, int)"),
+              method(suppress, "exportToClipboard(JComponent, Clipboard, int)"),
+              method(suppress, "importData(JComponent, Transferable)"),
+              method(suppress, "canImport(JComponent, DataFlavor[])"),
+              method(suppress, "getSourceActions(JComponent)"),
+              method(suppress, "getVisualRepresentation(Transferable)")))

@@ -1,0 +1,219 @@
+#!/usr/bin/env rune
+
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def makeRepl := <elang:cmd.makeRepl>
+def makeEvalPrinterAuthor := <elang:cmd.makeEvalPrinterAuthor>
+def makeEvalContextAuthor := <elang:cmd.makeEvalContextAuthor>
+
+def makeParseFuncAuthor := <elang:cmd.makeParseFuncAuthor>
+def argParser := <import:org.erights.e.tools.args.argParser>
+
+def Scope := <type:org.erights.e.elang.scope.Scope>
+def StringBuffer := <type:java.lang.StringBuffer>
+def BufferedReader := <type:java.io.BufferedReader>
+
+def makeTwineFeeder := <import:org.quasiliteral.syntax.makeTwineFeeder>
+
+/**
+ *
+ */
+def eLauncherAuthor {
+
+    /**
+     *
+     */
+    to getHelp(_) :String {
+        return `$\
+The optional <fname> specifies source code in the E language
+    - | -.e                    Read (non-interactively by default) from
+                               standard input.
+    <fbase>.e                  Read (non-interactively by default) from the
+                               named file.
+    --src <src> | --src.e <src>
+                               Read (non-interactively by default) from the
+                               <src> text.
+If <fname> is absent, it defaults to "-.e" but with the --interact option
+turned on.
+
+E flag options (default to false; option without value sets flag to true):
+    --interact                 Interactive mode prompts, prints each result,
+                               and survives top-level thrown exceptions.
+    --confine                  Each top level expr is evaluated in the safe
+                               scope rather than the privileged scope, just as
+                               *.emaker files are.
+    --explicitIO               Output sent to stdout and stderr is gathered and
+                               shown in answer blocks like "# stdout: foo".
+Other E options:
+    --runnerKind=<runnerKind>  The script is run in what kind of Runner?
+    Where <runnerKind> is:
+        headless                  A normal new Vat in a normal new Runner.
+        awt                       A runner in the AWT event-loop, for AWT apps.
+        swt                       A runner in the SWT event-loop, for SWT apps.
+        (absent)                  defaults to running in the current Vat.
+    --fqnPrefix=<fqnPrefix>    The "package" context for naming behaviors in
+                               the script.
+`
+    }
+
+    /**
+     * @return null
+     */
+    to getOptVersionText(props) :void {}
+
+    /**
+     *
+     */
+    to run(auths) :near {
+
+        /**
+         *
+         */
+        def eLauncher {
+
+            /**
+             *
+             */
+            to run(props, options, fname, args) :vow[boolean] {
+                # XXX Remove redundancy between this and interpret/4
+
+                def isInteractive :=
+                  argParser.getFlag("--interact", options, false)
+                def isConfined :=
+                  argParser.getFlag("--confine", options, false)
+                def isExplicit :=
+                  argParser.getFlag("--explicitIO", options, false)
+                def optRunnerKind := options.fetch("--runnerKind", thunk{})
+
+                def makeVat := auths["makeVat"]
+                def name := fname.split("/").last()
+                def parserVat := makeVat.make("headless", `parsing $name`)
+
+                def makeParseFunc :=
+                  makeParseFuncAuthor(auths["makeELexer"])
+
+                def parseFunc :rcvr := parserVat.seed(thunk {
+
+                    def input := if (fname =~ `-` || fname.startsWith("-.")) {
+                        auths["metain"]
+                    } else {
+                        def <file> := auths["file__uriGetter"]
+                        <file>[fname].textReader()
+                    }
+
+                    def optPromptOut := if (isInteractive) {
+                        auths["metaout"]
+                    } else {
+                        null
+                    }
+
+                    def lineFeeder := auths["makeFileFeeder"](fname,
+                                                              input,
+                                                              optPromptOut)
+
+                    makeParseFunc(lineFeeder, props, auths["metaerr"])
+                })
+
+                def replVat := if (optRunnerKind == null) {
+                    makeVat.getCurrentVat()
+                } else {
+                    makeVat.make(optRunnerKind, `evaling $name`)
+                }
+
+                def makeEvalContext := makeEvalContextAuthor(auths,
+                                                             options,
+                                                             replVat,
+                                                             isConfined,
+                                                             isExplicit)
+
+                def startReplRcvr := replVat.seed(thunk{
+
+                    def startRepl(receivedArgs) :vow[boolean] {
+
+                        def makeEvalPrinter :=
+                          makeEvalPrinterAuthor(auths["systemGC"],
+                                                auths["metaout"],
+                                                auths["metaerr"])
+
+                        def evalPrinter := makeEvalPrinter(makeEvalContext,
+                                                           receivedArgs,
+                                                           props,
+                                                           isInteractive)
+
+                        def repl := makeRepl(parseFunc, evalPrinter)
+
+                        repl()
+                    }
+                })
+                return startReplRcvr <- run(args)
+            }
+
+            /**
+             *
+             */
+            to interpret(props, options, src, args) :vow[boolean] {
+
+                def isInteractive :=
+                  argParser.getFlag("--interact", options, false)
+                def isConfined :=
+                  argParser.getFlag("--confine", options, false)
+                def isExplicit :=
+                  argParser.getFlag("--explicitIO", options, false)
+                def optRunnerKind := options.fetch("--runnerKind", thunk{})
+
+                def makeVat := auths["makeVat"]
+                def parserVat := makeVat.make("headless", `parsing source`)
+
+                def makeParseFunc :=
+                  makeParseFuncAuthor(auths["makeELexer"])
+
+                def parseFunc :rcvr := parserVat.seed(thunk {
+
+                    def optPromptOut := if (isInteractive) {
+                        auths["metaout"]
+                    } else {
+                        null
+                    }
+
+                    def lineFeeder := makeTwineFeeder(src)
+
+                    makeParseFunc(lineFeeder, props, auths["metaerr"])
+                })
+
+                def replVat := if (optRunnerKind == null) {
+                    makeVat.getCurrentVat()
+                } else {
+                    makeVat.make(optRunnerKind, `evaling source`)
+                }
+
+                def makeEvalContext := makeEvalContextAuthor(auths,
+                                                             options,
+                                                             replVat,
+                                                             isConfined,
+                                                             isExplicit)
+
+                def startReplRcvr := replVat.seed(thunk{
+
+                    def startRepl(receivedArgs) :vow[boolean] {
+
+                        def makeEvalPrinter :=
+                          makeEvalPrinterAuthor(auths["systemGC"],
+                                                auths["metaout"],
+                                                auths["metaerr"])
+
+                        def evalPrinter := makeEvalPrinter(makeEvalContext,
+                                                           receivedArgs,
+                                                           props,
+                                                           isInteractive)
+
+                        def repl := makeRepl(parseFunc, evalPrinter)
+
+                        repl()
+                    }
+                })
+                return startReplRcvr <- run(args)
+            }
+        }
+    }
+}

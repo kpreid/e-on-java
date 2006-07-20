@@ -1,0 +1,19 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class("java.awt.MenuBar",
+      statics(method(suppress, "run()")),
+      methods(method(suppress, "addNotify()"),
+              method(suppress, "removeNotify()"),
+              method(suppress, "getHelpMenu()"),
+              method(suppress, "setHelpMenu(Menu)"),
+              method(suppress, "add(Menu)"),
+              method(suppress, "remove(int)"),
+              method(suppress, "remove(MenuComponent)"),
+              method(suppress, "getMenuCount()"),
+              method(suppress, "countMenus()"),
+              method(suppress, "getMenu(int)"),
+              method(suppress, "shortcuts()"),
+              method(suppress, "getShortcutMenuItem(MenuShortcut)"),
+              method(suppress, "deleteShortcut(MenuShortcut)"),
+              method(suppress, "getAccessibleContext()")))

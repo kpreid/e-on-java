@@ -1,0 +1,7 @@
+class("org.eclipse.swt.widgets.Dialog",
+           statics(method("run(Shell)"),
+                   method("run(Shell, int)")),
+           methods(method(suppress, "getParent()"),
+                   method("getStyle()"),
+                   method("getText()"),
+                   method("setText(String)"))) 

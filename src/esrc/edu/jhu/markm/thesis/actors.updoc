@@ -1,0 +1,27 @@
+#!/usr/bin/env rune
+
+# Copyright 2005 Mark S. Miller, under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+# rune(["~/e/src/esrc/scripts/updoc.e",
+#       "~/e/src/esrc/edu/jhu/markm/thesis/actors.updoc"])
+
+? pragma.enable("easy-return")
+? pragma.disable("explicit-result-guard")
+? pragma.enable("lambda-args")
+? def <thesis> := <import:edu.jhu.markm.thesis.*>
+? def act := <thesis:makeAct>()
+? def makeMailbox := <thesis:makeMailboxAuthor>(
+>     <unsafe:org.erights.e.elib.ref.EProxyResolver>)
+? def pc := <thesis:makePrintContinuation>(stdout, stderr)
+
+? act.send(3, "add", [4], pc)
+?
+# stdout: Value is: 7
+#
+
+? act.send(pc, "resolve", ["foo"], pc)
+?
+# stdout: Value is: foo
+#         Value is: null
+#

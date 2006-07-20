@@ -1,0 +1,45 @@
+# Copyright 2004, Hewlett Packard, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+# Settings of syntactic properties for a particular form of E.
+# See syntax-props-default.txt for the purpose of these files.
+
+# The "experimental" settings turns on all the features which are realistic
+# candidates for continued future support, so we may gain experience playing
+# with them. Of course, programs which depend on these may stop working as
+# we retire some of these candidates.
+
+
+# This group represents changes likely to be adopted in E's near future.
+e.enable.easy-return=true
+e.enable.smalltalk-return=false
+e.enable.noun-string=true
+e.enable.lambda-args=true
+e.enable.anon-lambda=true
+e.enable.easy-when=true
+
+
+# This group supports a more C-like generalization of the slot access syntax.
+e.enable.unary-star=true
+
+
+# Mostly, this group is to be conrolled separately. However, we do set
+# the result-guard back to being optional.
+e.enable.explicit-result-guard=allow
+# e.enable.explicit-final-guard=allow
+# e.enable.explicit-slot-guard=allow
+# e.enable.explicit-var-guard=allow
+
+
+# Although these may not be adopted in their current form, they represent an
+# attempt at something potentially valuable, so we should play with them.
+# Perhaps we will someday adopt something like them.
+
+e.enable.accumulator=allow
+# e.enable.delegate-clause=allow
+e.enable.dot-props=true
+e.enable.verb-curry=true
+# e.enable.notabs=allow
+e.enable.one-method-object=true
+# e.enable.when-sequence=true
+e.enable.trinary-define=true

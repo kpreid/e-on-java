@@ -1,0 +1,39 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+/**
+ * Keeps a cache of ints (typically cryptoHashes) of things we wish to remember
+ * have some property we'd rather not recompute.
+ * <p>
+ * The motivating example is html files which contain no updoc source. We'd
+ * especially like to skip redoing the expensive html2updoc conversion step.
+ * <p>
+ * XXX As a cache, this should be finite in size and implement some vague
+ * approximation of LRU.
+ *
+ * @author Terry Stanley
+ * @author Mark S. Miller
+ */
+def makeHashCache(optCacheFile) :any {
+    def myCache := [].asSet().diverge(int)
+
+    if (optCacheFile != null && optCacheFile.exists()) {
+        for line in optCacheFile {
+            myCache.addElement(__makeInt.fromString64(line))
+        }
+    }
+    def hashCache {
+        to has(hash :int) :boolean { myCache.contains(hash) }
+        to put(hash :int)    :void { myCache.addElement(hash) }
+        to checkpoint() :void {
+            if (optCacheFile != null) {
+                def buf := "".diverge(char)
+                for hash in myCache {
+                    buf.append(hash.toString64())
+                    buf.push('\n')
+                }
+                optCacheFile.setText(buf.snapshot())
+            }
+        }
+    }
+}

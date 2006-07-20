@@ -1,0 +1,39 @@
+#!/usr/bin/env rune
+
+# Copyright 2005 Mark S. Miller, under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+
+# $ scp markm@donut1.cs.jhu.edu:uml-images/fed-root/sliverServerMgr.cap .
+
+
+def a := rune(["~/e/src/esrc/scripts/piggyIssuer.e-swt"])
+def b := rune(["~/e/src/esrc/scripts/piggy.e-swt"])
+def c := rune(["~/e/src/esrc/scripts/piggy.e-swt"])
+
+def d := rune([
+    "~/e/src/esrc/scripts/donutServices/donutScripts/sliverServer.e-swt"])
+def e := rune([
+    "~/e/src/esrc/scripts/donutServices/donutScripts/sliverServerMgr.e-swt"])
+rune(["~/e/src/esrc/scripts/donutServices/donutScripts/sliverServerMgr.e"])
+
+when(a,b,c,d,e) -> done(_,_,_,_,_) :void {
+    interp.exitAtTop()
+} catch ex {
+    println(ex)
+}
+
+interp.blockAtTop()
+
+# introducer.onTheAir(); 
+# var sliver := null; swtWatch(&sliver, "sliver")
+# var linuxFile := null; swtWatch(&linuxFile, "linuxFile")
+# def umlProc := sliver <- launch()
+# def uc := sliver <- getUserConsole()
+# uc <- getVersion()
+# 
+# sliver <- command("./hello") <- resultsVow()
+# sliver <- writeGuestFile(linuxFile, "hello") <- resultsVow()
+# sliver <- command("chmod a+x hello") <- resultsVow()
+# sliver <- command("./hello") <- resultsVow()
+# 

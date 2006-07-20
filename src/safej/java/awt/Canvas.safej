@@ -1,0 +1,14 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class("java.awt.Canvas",
+      statics(method(suppress, "run()"),
+              method(suppress, "run(GraphicsConfiguration)")),
+      methods(method(suppress, "addNotify()"),
+              method(suppress, "paint(Graphics)"),
+              method(suppress, "update(Graphics)"),
+              method(suppress, "createBufferStrategy(int)"),
+              method(suppress, "createBufferStrategy(int, BufferCapabilities)"),
+              method(suppress, "getBufferStrategy()"),
+              method(suppress, "getAccessibleContext()")),
+      comment("Replaced by JPanel"))

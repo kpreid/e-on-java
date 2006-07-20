@@ -1,0 +1,157 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+pragma.enable("meta-scope")
+
+def <assault>
+def assaultStatusString
+
+if (meta.getState() =~ metaState &&
+      metaState.fetch("&unsafe__uriGetter", thunk{}) =~ slot :notNull) {
+
+    bind <assault> := slot.getValue()
+    bind assaultStatusString := "<b>Winix standard privileges acquired!</b><p><b> Preparing for full exploitation</b>"
+} else {
+    bind <assault> := <import>
+    bind assaultStatusString :="Running Confined. Preparing to attempt confinement breach"
+}
+
+/**
+ * powerGranter must have optCap()
+ * getRENDER_PANE()
+ * getTRACELN()
+ */
+def rendererMaker (powerGranter, <awt>, <swing>) :near {
+    var currentPage := "<html>
+            <h1>Evil, Malicious Renderer</h1>
+            version 0.2"
+    def renderer
+    def readExploit
+    def fileExploit
+    def httpExploit
+    def socketExploit
+    def conclusions
+    def traceline := powerGranter.optCap(powerGranter.getTRACELN())
+    def viewPane := <swing:makeJLabel>()
+    viewPane.setVerticalAlignment(<swing:makeSwingConstants>.getTOP())
+    #def viewPane := <swing:makeJEditorPane>()
+    #viewPane setEditable(false)
+    #viewPane setContentType("text/html")
+    viewPane.setText(currentPage + "</html>")
+    #viewPane setMaximumSize(<awt:makeDimension>(600, 600))
+    viewPane.setPreferredSize(<awt:makeDimension>(600, 600))
+    def mainPane := powerGranter.optCap(powerGranter.getRENDER_PANE())
+    mainPane.setLayout(<awt:makeBorderLayout>())
+    mainPane.add(viewPane, "Center")
+
+    def append(text) :void {
+        currentPage += "\n<p>\n" + text
+        viewPane.setText(currentPage + "</html>")
+    }
+    def appendEnter() :void {append("Click to Continue")}
+
+    var currentExploit := readExploit
+
+    append(assaultStatusString )
+    appendEnter()
+
+    def mouseListener {
+        to mouseClicked(_) :void {
+            currentExploit()
+        }
+        match [verb, args] {}
+    }
+
+    def bind readExploit() :void {
+        append("Trying to read directory system.")
+        try {
+            def <file> := <assault:org.erights.e.meta.java.io.makeFileGetter>.getTHE_ONE()
+            if (<file:c:/winnt>.exists()) {
+                append("Windows NT directory system detected.")
+            } else if (<file:c:/windows>.exists()) {
+                append("Windows directory system detected.")
+            } else {
+                append("Home directory readable. Probable Unix OS.")
+            }
+            append("<b>Ready to read all confidential documents and email.</b>")
+        } catch prob1 {
+            append("Failed. ")
+            traceline(`readExploit failure with: $prob1`)
+        }
+        currentExploit := fileExploit
+        appendEnter()
+    }
+
+    def bind fileExploit() :void {
+        append("Trying to edit file system")
+        try {
+            def <file> := <assault:org.erights.e.meta.java.io.makeFileGetter>.getTHE_ONE()
+            def writer := <file:c:/eviloutput.txt>
+            escape ignore { writer.createNewFile(ignore) }
+            writer.setText("gotcha")
+            append ("<b>File System Editable</b>")
+            append ("<b>Ready to load trojan horses into startup profile</b>")
+            append ("<b>Full Identity Theft operations ready to be initiated</b>")
+        } catch prob1 {
+            append("Failed. ")
+            traceline(`failure with: $prob1`)
+        }
+        currentExploit := socketExploit
+        appendEnter()
+    }
+
+    bind socketExploit() :void {
+        append("Trying to get socket authorization")
+        try {
+            def socket := <assault:java.net.makeServerSocket>(1999)
+            append ("Socket acquired")
+            append ("<b>Ready to transmit copies of myself</b>")
+            append ("<b>All host friends now targeted via email</b>")
+        } catch prob1 {
+            append("Failed. ")
+            traceline(`failure with: $prob1`)
+        }
+        currentExploit := conclusions
+        appendEnter()
+    }
+
+    def bind httpExploit() :void {
+        append("Trying to get HTTP connection ...")
+        try {
+            def url := <assault:java.net.URL>("http://www.skyhunter.com")
+            append(`Got url: $url`)
+            append("<b>Gotcha!</b>")
+        } catch prob2 {
+            append("Failed. ")
+            traceline(`failure with: $prob2`)
+        } finally {
+            currentExploit := conclusions
+        }
+    }
+
+    def bind conclusions() :void {
+        append ("<b>Assault Complete.</b>")
+        currentExploit := def _() :void {}
+    }
+
+    viewPane.addMouseListener(mouseListener)
+
+    def bind renderer {
+        to reactToURL(url) :void {
+            traceline("made it to reactToURL in evil renderer")
+        }
+        to reactToURL(url, treeVow) :void {
+            traceline("made it to reactToURL in evil renderer using captree interface")
+        }
+        to reactToPageText(text) :void {}
+        to reactToCopy() :near {
+            def selection := viewPane.getSelectedText()
+            traceline("copy in malicious: " + selection)
+            "<Malicious>" + selection + "</Malicious>"
+        }
+    }
+}
+
+
+
+

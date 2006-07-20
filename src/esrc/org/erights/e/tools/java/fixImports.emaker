@@ -1,0 +1,68 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def makeIdentifiers := <import:org.quasiliteral.text.Identifiers>
+
+def lastIdent(fqname) :any {
+    def afterLastDot := 1 + fqname.lastIndexOf(".")
+    fqname(afterLastDot, fqname.size())
+}
+
+def importedIdents(var text) :any {
+    def result := [].asMap().diverge()
+    while (text =~ `@left
+import @fqname;@right`) {
+        def ident := lastIdent(fqname)
+        if (ident != "*") {
+            result[ident] := false
+        }
+        text := right
+    }
+    result.snapshot()
+}
+
+def identCounts(file) :any {
+    def result := [].asMap().diverge()
+    def idents := makeIdentifiers.fromFile(file)
+    for ident in idents {
+        result[ident] := 1 + result.fetch(ident, thunk{0})
+    }
+    result.snapshot()
+}
+
+def stripped(var text, imports) :any {
+    def result := "".diverge(char)
+    while (text =~ `@left
+import @fqname;@right`) {
+        result.append(left)
+        def ident := lastIdent(fqname)
+        def count := imports[ident]
+        if (count > 1) {
+            result.append(`
+import $fqname;`)
+        }
+        text := right
+    }
+    result.append(text)
+    result.snapshot()
+}
+
+def fixFile(file) :void {
+    var imports := importedIdents(file.getText())
+    def counts := identCounts(file)
+    imports := counts & imports
+    imports := imports.with("*", 2)
+    file.setText(stripped(file.getText(), imports))
+}
+
+def fixImports(filedir) :void {
+    if (filedir.isDirectory()) {
+        for sub in filedir { fixImports(sub) }
+    } else if (filedir.getName() =~ `@_.java`) {
+        fixFile(filedir)
+    }
+}
+
+? def fixImports := <import:org.erights.e.tools.java.fixImports>
+? fixImports(<d:/e/src/jsrc>)
+

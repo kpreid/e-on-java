@@ -1,0 +1,6 @@
+class("org.eclipse.swt.widgets.MessageBox",
+           statics(method("run(Shell)"),
+                   method("run(Shell, int)")),
+           methods(method("getMessage()"),
+                   method("open()"),
+                   method("setMessage(String)"))) 

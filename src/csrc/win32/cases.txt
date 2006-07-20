@@ -1,0 +1,148 @@
+markm:
+
+  Windows  C:\WINDOWS
+  System   C:\WINDOWS\SYSTEM
+  Current  C:\e\src\csrc\win32
+
+             ALTSTARTUP - not
+                APPDATA   C:\WINDOWS\Profiles\markm\Application Data
+              BITBUCKET - not
+      COMMON_ALTSTARTUP - not
+COMMON_DESKTOPDIRECTORY - not
+       COMMON_FAVORITES - not
+        COMMON_PROGRAMS - not
+       COMMON_STARTMENU - not
+         COMMON_STARTUP - not
+               CONTROLS - not
+                COOKIES   C:\WINDOWS\Profiles\markm\Cookies
+                DESKTOP   C:\WINDOWS\Desktop
+       DESKTOPDIRECTORY   C:\WINDOWS\Desktop
+                 DRIVES - not
+              FAVORITES   C:\WINDOWS\Favorites
+                  FONTS   C:\WINDOWS\FONTS
+                HISTORY   C:\WINDOWS\Profiles\markm\History
+               INTERNET - not
+         INTERNET_CACHE   C:\WINDOWS\Temporary Internet Files
+                NETHOOD   C:\WINDOWS\NetHood
+                NETWORK - not
+               PERSONAL   C:\My Documents
+               PRINTERS - not
+              PRINTHOOD   C:\WINDOWS\PrintHood
+               PROGRAMS   C:\WINDOWS\Start Menu\Programs
+                 RECENT   C:\WINDOWS\Recent
+                 SENDTO   C:\WINDOWS\SendTo
+              STARTMENU   C:\WINDOWS\Start Menu
+                STARTUP   C:\WINDOWS\Start Menu\Programs\StartUp
+              TEMPLATES   C:\WINDOWS\ShellNew
+
+alice:
+
+  Windows  C:\WINDOWS
+  System   C:\WINDOWS\SYSTEM
+  Current  C:\e\src\csrc\win32
+
+             ALTSTARTUP - not
+                APPDATA   C:\WINDOWS\Profiles\alice\Application Data
+              BITBUCKET - not
+      COMMON_ALTSTARTUP - not
+COMMON_DESKTOPDIRECTORY - not
+       COMMON_FAVORITES - not
+        COMMON_PROGRAMS - not
+       COMMON_STARTMENU - not
+         COMMON_STARTUP - not
+               CONTROLS - not
+                COOKIES   C:\WINDOWS\Profiles\alice\Cookies
+                DESKTOP   C:\WINDOWS\Desktop
+       DESKTOPDIRECTORY   C:\WINDOWS\Desktop
+                 DRIVES - not
+              FAVORITES   C:\WINDOWS\Favorites
+                  FONTS   C:\WINDOWS\FONTS
+                HISTORY   C:\WINDOWS\Profiles\alice\History
+               INTERNET - not
+         INTERNET_CACHE   C:\WINDOWS\Temporary Internet Files
+                NETHOOD   C:\WINDOWS\NetHood
+                NETWORK - not
+               PERSONAL   C:\My Documents
+               PRINTERS - not
+              PRINTHOOD   C:\WINDOWS\PrintHood
+               PROGRAMS   C:\WINDOWS\Start Menu\Programs
+                 RECENT   C:\WINDOWS\Recent
+                 SENDTO   C:\WINDOWS\SendTo
+              STARTMENU   C:\WINDOWS\Start Menu
+                STARTUP   C:\WINDOWS\Start Menu\Programs\StartUp
+              TEMPLATES   C:\WINDOWS\ShellNew
+
+bob:
+
+  Windows  C:\WINDOWS
+  System   C:\WINDOWS\SYSTEM
+  Current  C:\e\src\csrc\win32
+
+             ALTSTARTUP - not
+                APPDATA   C:\WINDOWS\Profiles\bob\Application Data
+              BITBUCKET - not
+      COMMON_ALTSTARTUP - not
+COMMON_DESKTOPDIRECTORY - not
+       COMMON_FAVORITES - not
+        COMMON_PROGRAMS - not
+       COMMON_STARTMENU - not
+         COMMON_STARTUP - not
+               CONTROLS - not
+                COOKIES   C:\WINDOWS\Profiles\bob\Cookies
+                DESKTOP   C:\WINDOWS\Profiles\bob\Desktop
+       DESKTOPDIRECTORY   C:\WINDOWS\Profiles\bob\Desktop
+                 DRIVES - not
+              FAVORITES   C:\WINDOWS\Profiles\bob\Favorites
+                  FONTS   C:\WINDOWS\FONTS
+                HISTORY   C:\WINDOWS\Profiles\bob\History
+               INTERNET - not
+         INTERNET_CACHE   C:\WINDOWS\Temporary Internet Files
+                NETHOOD   C:\WINDOWS\Profiles\bob\NetHood
+                NETWORK - not
+               PERSONAL   C:\WINDOWS\Profiles\bob\My Documents
+               PRINTERS - not
+              PRINTHOOD   C:\WINDOWS\PrintHood
+               PROGRAMS   C:\WINDOWS\Profiles\bob\Start Menu\Programs
+                 RECENT   C:\WINDOWS\Profiles\bob\Recent
+                 SENDTO   C:\WINDOWS\SendTo
+              STARTMENU   C:\WINDOWS\Profiles\bob\Start Menu
+                STARTUP   C:\WINDOWS\Profiles\bob\Start Menu\Programs\StartUp
+              TEMPLATES   C:\WINDOWS\ShellNew
+
+carol:
+
+  Windows  C:\WINDOWS
+  System   C:\WINDOWS\SYSTEM
+  Current  C:\e\src\csrc\win32
+
+             ALTSTARTUP - not
+                APPDATA   C:\WINDOWS\Profiles\carol\Application Data
+              BITBUCKET - not
+      COMMON_ALTSTARTUP - not
+COMMON_DESKTOPDIRECTORY - not
+       COMMON_FAVORITES - not
+        COMMON_PROGRAMS - not
+       COMMON_STARTMENU - not
+         COMMON_STARTUP - not
+               CONTROLS - not
+                COOKIES   C:\WINDOWS\Profiles\carol\Cookies
+                DESKTOP   C:\WINDOWS\Profiles\carol\Desktop
+       DESKTOPDIRECTORY   C:\WINDOWS\Profiles\carol\Desktop
+                 DRIVES - not
+              FAVORITES   C:\WINDOWS\Profiles\carol\Favorites
+                  FONTS   C:\WINDOWS\FONTS
+                HISTORY   C:\WINDOWS\Profiles\carol\History
+               INTERNET - not
+         INTERNET_CACHE   C:\WINDOWS\Temporary Internet Files
+                NETHOOD   C:\WINDOWS\Profiles\carol\NetHood
+                NETWORK - not
+               PERSONAL   C:\WINDOWS\Profiles\carol\My Documents
+               PRINTERS - not
+              PRINTHOOD   C:\WINDOWS\PrintHood
+               PROGRAMS   C:\WINDOWS\Profiles\carol\Start Menu\Programs
+                 RECENT   C:\WINDOWS\Profiles\carol\Recent
+                 SENDTO   C:\WINDOWS\SendTo
+              STARTMENU   C:\WINDOWS\Profiles\carol\Start Menu
+                STARTUP   C:\WINDOWS\Profiles\carol\Start Menu\Programs\Startup
+              TEMPLATES   C:\WINDOWS\ShellNew
+

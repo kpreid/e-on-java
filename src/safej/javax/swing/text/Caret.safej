@@ -1,0 +1,22 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class("javax.swing.text.Caret",
+      statics,
+      methods(method(suppress, "install(JTextComponent)"),
+              method(suppress, "deinstall(JTextComponent)"),
+              method(suppress, "paint(Graphics)"),
+              method("addChangeListener(ChangeListener)"),
+              method("removeChangeListener(ChangeListener)"),
+              method("isVisible()"),
+              method(suppress, "setVisible(boolean)"),
+              method("isSelectionVisible()"),
+              method("setSelectionVisible(boolean)"),
+              method(suppress, "setMagicCaretPosition(Point)"),
+              method("getMagicCaretPosition()"),
+              method(suppress, "setBlinkRate(int)"),
+              method("getBlinkRate()"),
+              method("getDot()"),
+              method("getMark()"),
+              method("setDot(int)"),
+              method("moveDot(int)")))

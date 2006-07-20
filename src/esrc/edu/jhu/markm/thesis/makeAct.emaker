@@ -1,0 +1,28 @@
+#!/usr/bin/env rune
+
+# Copyright 2005 Mark S. Miller, under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+pragma.enable("easy-return")
+pragma.enable("lambda-args")
+
+def makeAct() :any {
+    def act {
+        to send(receiver, verb, args, continuation) :void {
+            def p := E.send(receiver, verb, args)
+            when (p) -> done(result) :void {
+                continuation.resolve(result)
+            } catch ex {
+                continuation.smash(ex)
+            }
+        }
+        to sendOnly(receiver, verb, args) :void {
+            E.sendOnly(receiver, verb, args)
+        }
+        to run(`callCC`, oneArgFunc) :any {
+            oneArgFunc(def result)
+            return result
+        }
+    }
+    return act
+}

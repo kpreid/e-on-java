@@ -1,0 +1,20 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class("javax.swing.DesktopManager",
+      statics,
+      methods(method(suppress, "openFrame(JInternalFrame)"),
+              method(suppress, "closeFrame(JInternalFrame)"),
+              method(suppress, "maximizeFrame(JInternalFrame)"),
+              method(suppress, "minimizeFrame(JInternalFrame)"),
+              method(suppress, "iconifyFrame(JInternalFrame)"),
+              method(suppress, "deiconifyFrame(JInternalFrame)"),
+              method(suppress, "activateFrame(JInternalFrame)"),
+              method(suppress, "deactivateFrame(JInternalFrame)"),
+              method(suppress, "beginDraggingFrame(JComponent)"),
+              method(suppress, "dragFrame(JComponent, int, int)"),
+              method(suppress, "endDraggingFrame(JComponent)"),
+              method(suppress, "beginResizingFrame(JComponent, int)"),
+              method(suppress, "resizeFrame(JComponent, int, int, int, int)"),
+              method(suppress, "endResizingFrame(JComponent)"),
+              method(suppress, "setBoundsForFrame(JComponent, int, int, int, int)")))

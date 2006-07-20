@@ -1,0 +1,8 @@
+class(safe,
+           "org.eclipse.swt.widgets.Item",
+           statics(method("run(Widget, int)"),
+                   method("run(Widget, int, int)")),
+           methods(method("getImage()"),
+                   method("getText()"),
+                   method("setImage(Image)"),
+                   method("setText(String)"))) 

@@ -1,0 +1,74 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+/**
+ * Makes an exportCap function, which will export a capability to a
+ * place described by an argument string.
+ *
+ * @param introducer Used to convert between SturdyRefs and "captp://..."
+ *                   URI strings.
+ * @param file__uriGetter Used when the argument string is a filename.
+ * @param uriGetters A table mapping protocol names to urlGetters.
+ *                   When the argument string is a URL
+ * @param out A textual output stream to print the URI to.
+ *
+ * @author Mark S. Miller
+ */
+def makeCapExporter(introducer,
+                    <file>,
+                    uriGetters,
+                    out :TextWriter) :near {
+
+    /**
+     * Communicates ref to the place described by arg.
+     * <p>
+     * @param ref a SturdyRef to the object to be made available.
+     * @param arg If it's a<ul>
+     *            <li>"captp://..." string, then this is the URI of a
+     *                connector to send this ref to in a
+     *                '&lt;- connect(ref)' message.
+     *            <li>"@<prot>:<urlname>.cap", where <prot> is one of
+     *                "http", "ftp", or "file", then this URL should
+     *                be read to obtain the URI of the connector to
+     *                send this ref to.
+     *            <li>"@<filename>.cap", then this file should be read
+     *                to obtain the URI of the connector to send this
+     *                ref to.
+     *            <li>"<filename>.cap", then a URI for ref should be
+     *                written to this file.
+     *            <li>"-", then print this URI to the <tt>out</tt> stream
+     *                (Presumably, stdout).
+     *            </ul>
+     * @return null for immediate success. throws for immediate failure.
+     *         or a now that resolves to null or broken for eventual
+     *         success or failure.
+     */
+    def exportCap(ref :SturdyRef, var arg :String) :vow {
+        arg := arg.trim()
+        switch (arg) {
+            match `captp:@body` {
+                def connector :rcvr := introducer.sturdyFromURI(arg).getRcvr()
+                connector <- connect(ref)
+            }
+            match `@@@prot:@urlname.cap` ? (prot.size() >= 2) {
+                def <prot> := uriGetters[prot.bare()]
+                def uri := <prot>[`$urlname.cap`].getText()
+                exportCap(ref, uri)
+            }
+            match `@@@filename.cap` {
+                def uri := <file>[`$filename.cap`].getText()
+                exportCap(ref, uri)
+            }
+            match `@filename.cap` {
+                def refURI := introducer.sturdyToURI(ref)
+                <file>[`$filename.cap`].setText(refURI)
+                null
+            }
+            match `-` {
+                def refURI := introducer.sturdyToURI(ref)
+                out.print(refURI)
+                null
+            }
+        }
+    }
+}

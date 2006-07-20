@@ -1,0 +1,80 @@
+#!/usr/bin/env rune
+
+#eChat with minimalist user interface
+pragma.enable("easy-return")
+pragma.disable("explicit-result-guard")
+def <widget> := <swt:widgets.*>
+def SWT := <swt:makeSWT>
+introducer.onTheAir()
+# return the object represented by the URI
+def getObjectFromURI(uri)  {return introducer.sturdyFromURI(uri).getRcvr()}
+
+def makeURIFromObject(obj) :String {
+    # This implementation assumes a non-persistent single incarnation
+    def [sr, _, _] := identityMgr.makeKnown(obj)
+    #XXX not a uri if bracketed, bug, markm?
+    def bracketed := introducer.sturdyToURI(sr)
+    if (bracketed =~ `<@uri>`) {return uri}
+    return bracketed
+}
+
+def chatController
+def chatArea
+def chatUI {
+    to show() {
+        def frame := <widget:makeShell>(currentDisplay)
+        frame.setText("eChat"); frame.setBounds(30, 30, 600, 300)
+        def winDisposeListener {to widgetDisposed(event) {interp.continueAtTop()}}
+
+        frame.addDisposeListener(winDisposeListener)
+        bind chatArea := <widget:makeText>(frame,
+            (SWT.getMULTI() | SWT.getWRAP()) | (SWT.getBORDER() | SWT.getV_SCROLL()))
+        def commandLine := <widget:makeText>(frame, SWT.getSINGLE() | SWT.getBORDER())
+        def enterKeyListener {
+            to keyPressed (event) {
+                if (event.getKeyCode() == 27) {
+                    if (commandLine.getText() =~ `@command @argument`) {
+                        commandLine.setText("")
+                        switch (command) {
+                            match == "save" {chatController.save(<file>[argument])}
+                            match == "load" {chatController.load(<file>[argument])}
+                            match == "send" {chatController.send(argument)}
+                            match _ {commandLine.setText("Error. Try save load, or send")}
+                        }
+                    } else {commandLine.setText("Error. Try save, load, or send")}
+                }
+            }
+            match [verb, args] {}
+        }
+        commandLine.addKeyListener(enterKeyListener)
+
+        def label := <widget:makeLabel>(frame, SWT.getLEFT())
+        label.setText("save, load, send. No quotes for path. Use Escape to start operation. ")
+        swtGrid`$frame: $chatArea.X.Y
+                        $label.X
+                        $commandLine.X`
+        frame.open()
+    }
+    to showMessage(initiator, text) {chatArea.append(`$initiator: $text $\n`)}
+}
+
+def friend
+bind chatController {
+    to send(message) {
+        when (friend<-receive(message)) -> done(gotAnswer) {
+            chatUI.showMessage("self", message)
+        } catch prob {chatUI.showMessage("system", "connection lost")}
+    }
+    to receive(message) {chatUI.showMessage("friend", message)}
+    to receiveFriend(friendRcvr) {
+        bind friend := friendRcvr
+        chatUI.showMessage("system", "friend has arrived")
+    }
+    to save(file) {file.setText(makeURIFromObject(chatController))}
+    to load(file) {
+        bind friend := getObjectFromURI(file.getText())
+        friend <- receiveFriend(chatController)
+    }
+}
+chatUI.show()
+interp.blockAtTop()

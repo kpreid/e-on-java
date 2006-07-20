@@ -1,0 +1,1412 @@
+#!/usr/bin/env rune
+
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+# def x := rune(["~/e/src/esrc/scripts/eBrowser.e-swt",
+#                "resource:scripts/eBrowser.e-swt"])
+
+/**
+ * set up tracing; stub out all the printing for operational version
+ */
+def traceline(str) :void { stderr.println(str) }
+
+def traceErr := <import:com.skyhunter.e.util.stackTraceFunc>
+traceline("started")
+
+
+def traceMem := {
+    def runtime := <unsafe:java.lang.makeRuntime>.getRuntime()
+    def traceMem() :void {
+        #runtime gc()
+        def free := runtime.freeMemory()
+        def total := runtime.totalMemory()
+        traceline(`used  memory: ${(total - free)/1000000}`)
+    }
+}
+
+def elex := <unsafe:org.erights.e.elang.syntax.makeELexer>
+# XXX update hocus focus
+def HocusFocusMaker := <unsafe:org.erights.e.ui.awt.makeHocusFocus>
+
+def SWT := <swt:makeSWT>
+def <widget> := <swt:widgets.*>
+def GRIDDATA := <swt:layout.makeGridData>
+def DND := <swt:dnd.makeDND>
+def buildMenu := <import:com.skyhunter.swt.buildMenu>
+def makeEText := <import:com.skyhunter.swt.makeETextAuthor>(
+    <swt:custom.makeStyledText>, traceline)
+
+def display := currentDisplay
+def disposablesKit := <import:com.skyhunter.swt.disposablesKitAuthor>(
+    display, traceline)
+def white := disposablesKit.makeColor(255, 255, 255)
+def almond := disposablesKit.makeColor(255, 255, 196)
+
+# XXX fonts are not disposed when no longer used,
+# XXX no current way to tell if windows with it are open
+var currentFont := disposablesKit.makeFont("Courier New", 10, SWT.getNORMAL())
+
+# close whole app when windowSet returns to zero size
+def windowSet := [].asMap().diverge()
+
+def eLogoURL := <resource:org/erights/e/icons/green-e-on-white-16.gif>
+def eLogoImage := disposablesKit.makeImage(eLogoURL.openStream())
+traceline(`got logo image: $eLogoImage`)
+
+def makeShell {
+    to run(title) :any {
+        def result := <widget:makeShell>(display)
+        result.setText(title)
+        result.setImage(eLogoImage)
+        result
+    }
+    to run() :any {makeShell("")}
+}
+
+def resolveAllVow := <import:com.skyhunter.e.net.resolveAllVow>
+
+def fillStyledText := <import:com.skyhunter.swt.fillStyledTextAuthor>(
+    disposablesKit, traceline)
+def makeDialogVow := <import:com.skyhunter.swt.makeDialogVowAuthor> (
+    disposablesKit, makeShell, traceline)
+
+def __versionLauncherAuthor := <elang:launcher.__versionLauncherAuthor>
+def versionNumber := "0.5"
+
+def StringReaderMaker := <unsafe:java.io.makeStringReader>
+# XXX fix textSelectorMaker
+def textSelectorMaker := <import:com.skyhunter.eBrowser.textSelectorMaker>
+
+def abbrev := <import:org.erights.e.tools.text.abbrev>
+def SyntaxException :=
+  <type:org.quasiliteral.syntax.SyntaxException>
+def PrettyFeeder := <unsafe:org.erights.e.elang.syntax.makePrettyFeeder>
+def outlineSyncFuncMaker :=
+  <import:com.skyhunter.eBrowser.makeSwtSyncerAuthor>(makeDialogVow, traceline)
+
+# create the persistent storage for the eBrowser, its homeDir and
+# optImportsRoot where the root of the directory subtree is to search for
+# imported emakers
+def optImportedFile := <import:com.skyhunter.eBrowser.optImportedFileSWT>
+def homeDir := <file:~/capData/eBrowser>
+if (! (homeDir.exists())) {homeDir.mkdirs(null)}
+def importsRootDirConf := homeDir["importsRoot.conf"]
+if (! (importsRootDirConf.exists())) {importsRootDirConf.setText("")}
+var optImportsRoot := null
+def setOptImportsRoot() :void {
+    optImportsRoot := null
+    def importsRootDirPath := importsRootDirConf.getText().trim()
+    if (importsRootDirPath.size() > 0) {
+        optImportsRoot := <file>[importsRootDirPath]
+    }
+    traceline(`importsRootDir: $optImportsRoot`)
+}
+setOptImportsRoot()
+
+
+
+def makeVat := <unsafe:org.erights.e.elib.vat.makeVat>
+
+def syncVat := makeVat.make("headless", "Sync Server")
+syncVat.setPriority(1)
+
+def farBrowseServerMaker :rcvr := syncVat.seed(thunk{
+    <import:com.skyhunter.eBrowser.syncServerMakerAuthor>(traceline)
+})
+
+
+
+def standardWindow(title, windowClosingHandler) :any {
+    def mainFrame := makeShell(title)
+    windowSet[mainFrame] := mainFrame
+    # windowClosingHandler must always manually close the
+    # standard window by sending a dispose message,
+    # standard windows never close on simple shellClosed
+    def shellListener {
+        to shellClosed(event) :void {
+            event.setDoit(false)
+            windowClosingHandler.windowClosing()
+        }
+        match _ {}
+    }
+    mainFrame.addShellListener(shellListener)
+    def disposeListener {
+        to widgetDisposed(event) :void {
+            windowSet.removeKey(mainFrame)
+            if (windowSet.size() <1) {interp.continueAtTop()}
+        }
+    }
+    mainFrame.addDisposeListener(disposeListener)
+    mainFrame
+}
+
+/**
+ * text replacer function that highlights the inserted text and positions the
+ * cursor at the end of the replacement text, unlike the simple
+ * replaceSelection method
+ */
+def replaceSelectionHilite(mainFrame, textPane, replacement) :void {
+    def location := textPane.getSelection().getX()
+    textPane.insert(replacement)
+    textPane.setSelection(location, location + replacement.size())
+    <widget:makeControl>.transferFocus([mainFrame], textPane)
+}
+
+def popAboutBox() :void {
+    # XXX This props logic should be put somewhere useful
+    def makeConstMap := <elib:tables.makeConstMap>
+    def sysProps := <unsafe:java.lang.makeSystem>.getProperties()
+    def props := makeConstMap.fromProperties(sysProps)
+#    def props := interp.getProps()
+    def versionText :=
+      __versionLauncherAuthor.getOptVersionText(props)
+    def text := `For Help with eBrowser, see
+http://www.skyhunter.com/marcs/eBrowserIndex.html
+
+Copyright 2002 Combex, Inc. under the terms of the MIT X license
+found at http://www.opensource.org/licenses/mit-license.html
+
+eBrowser version $versionNumber
+$versionText`
+    def textTerm := term`text(.String.$text)`
+    makeDialogVow ("About eBrowser", textTerm, null, ["OK"])
+}
+
+def buildScriptList(folder, suffix) :any {
+    def runnables := [].diverge()
+    if (folder.exists()) {
+        for each in folder {
+            if (each.getName() =~ `@menuLabel.$suffix`) {
+                runnables.push(`$menuLabel.$suffix`)
+            }
+        }
+    }
+    runnables.snapshot()
+}
+
+def openFiles := [].asMap().diverge()
+
+/**
+ * TextModel
+ */
+def textModelMaker(optBrowseFile) :any {
+    def dummyFile {
+        to getName() :any {"Untitled"}
+        to getCanonicalPath() :any {"Untitled"}
+        to lastModified() :any {0}
+        to getText() :any {""}
+        to setText() :any {throw ("Dummy File Set Text")}
+    }
+    var browseFile := dummyFile
+    if (optBrowseFile != null) {browseFile := optBrowseFile}
+    def funcsChangedAlertList := [].asMap().diverge()
+    def current() :any {<unsafe:java.lang.makeSystem>.currentTimeMillis()}
+    var myText := browseFile.getText()
+    var myTimeLastTextMod := current()
+    var myTimeLastSaved := browseFile.lastModified()
+    var myOutline := []
+    var myOutlineIndices := []
+    var myVarLines := []
+    var myVarLineIndices := []
+    var myTimeLastSync := 0
+    def textModel {
+        to getFileName()  :any {
+            browseFile.getName()
+        }
+        to getFilePath() :near {
+            browseFile.getCanonicalPath()
+        }
+        to getText()      :any {myText}
+        to getTextDate()  :any {myTimeLastTextMod}
+        to addFuncsChangedAlertRecipient(vowRecipient) :void {
+            when (vowRecipient) -> done(recipient) :void {
+                funcsChangedAlertList[recipient] := recipient
+            } catch e {println("broken recipient in textmodel!")}
+        }
+        to removeFuncsChangedAlertRecipient(recipient) :void {
+            funcsChangedAlertList.removeKey(recipient)
+        }
+        to setText(newText) :void {
+            myText := newText
+            myTimeLastTextMod := current()
+        }
+        to setLines(outlineList,
+                    outlineIndices,
+                    varLineList,
+                    varLineIndices) :void {
+            myOutline := outlineList
+            myOutlineIndices := outlineIndices
+            myVarLines := varLineList
+            myVarLineIndices := varLineIndices
+            for each in funcsChangedAlertList {each.linesChanged()}
+        }
+        to getVarLineList() :any {myVarLines}
+        to getVarLineIndices() :any {myVarLineIndices}
+        to getOutlineList() :any {myOutline}
+        to getOutlineIndices() :any {myOutlineIndices}
+        to saveFileIsSet() :boolean {browseFile != dummyFile}
+
+        /**
+         * save assumes there is a file!
+         */
+        to save() :void {
+            browseFile.setText(myText)
+            myTimeLastSaved := browseFile.lastModified()
+        }
+        to saveAs(filePath) :void {
+            if (browseFile != dummyFile) {
+                openFiles.removeKey(browseFile.getCanonicalPath())
+            }
+            browseFile := <file>[filePath]
+            textModel.save()
+        }
+        to replaceStubFile(replacementFile) :void {
+            if (browseFile == dummyFile) {
+                browseFile := replacementFile
+            }
+        }
+        to storedVersionIsNewer() :any {
+            myTimeLastSaved < browseFile.lastModified()
+        }
+        to reload() :any {
+            myText := browseFile.getText()
+            myTimeLastSaved := browseFile.lastModified()
+            myTimeLastTextMod := myTimeLastSaved
+            myText
+        }
+        to resetSaveTimeNoReload() :void {
+            myTimeLastSaved := browseFile.lastModified()
+        }
+        to close() :void {
+            if (browseFile != dummyFile) {
+                openFiles.removeKey(browseFile.getCanonicalPath())
+            }
+        }
+    }
+}
+
+traceline("no elmer to prep yet")
+# XXX no elmer till elmer is swt'd too
+# elmer scratchpad
+#def eui__uriGetter := <unsafe:org.erights.e.ui.*>
+#def EditGroupMaker := <eui:jed.EditGroup>
+#def ElmerMainMaker := <eui:elmer.ElmerMain>
+#def EInterpAdapterMaker := <eui:elmer.EInterpAdapter>
+#def group := EditGroupMaker(thunk{})
+#def elmer() {
+#    def first := ElmerMainMaker(group, EInterpAdapterMaker)
+#    first setVisible(true)
+#}
+
+traceline("no elmer to prep in first generation swt")
+
+def confinedRunner(sourceTwine, resultPane) :any {
+    resultPane.setText("Executing...")
+    traceline("in confined runner, about to interpret")
+    def interpret() :any {
+        var result := null
+        traceline("ready")
+        def makeScopeSetup := <unsafe:org.erights.e.elang.interp.ScopeSetup>
+        traceline("made scoper")
+        def scope1 := makeScopeSetup.safeScope("__mainInBrowser.")
+        traceline("made scope1")
+        try {
+            def tree := e__quasiParser(sourceTwine)
+            traceline("made tree")
+            result := tree.eval(scope1)
+            traceline("confined Interpretation done")
+            resultPane.append("\n# value: " + result)
+            traceline("confined shown")
+        } catch problem {
+            resultPane.append(`Error: ${"\n"}$problem`)
+        }
+        result
+    }
+    interpret()
+}
+
+
+def problemReporterMaker(textSelector, resultPane, statusPane) :any {
+    def problemReporter(problem) :void {
+        # resultPane.setText(("\n" + problem).replaceAll("\n", "\n# "))
+        var msg := `$problem`.split("\n")[0].trim()
+        if (msg.endsWith(":")) {
+            msg := msg(0, msg.size() -1)
+        }
+        statusPane.setText(msg)
+        if (problem.leaf() =~ sex :SyntaxException) {
+            textSelector.selectSpan(sex.optDamage())
+        } else {
+            #    def stacktrace := "\n\n" + problem.eStack() + "\n\n" +
+            #      problem.leaf().javaStack()
+            #    resultPane.append(stacktrace.replaceAll("\n", "\n# "))
+        }
+    }
+}
+
+
+def programRunner(sourceTwine, textPane, textModel, resultPane, statusPane) :void {
+    resultPane.setText("Executing...")
+    statusPane.setText("Executing...")
+    traceline("in runner, about to interpret")
+    def path := textModel.getFilePath()
+    def textSelector := textSelectorMaker(textPane, `file:$path`)
+    def problemReporter := problemReporterMaker(textSelector,
+                                                resultPane,
+                                                statusPane)
+    def interpret() :void {
+        traceline("ready")
+        def subInterp extends interp {
+            to blockAtTop() :void {
+                # ignored
+            }
+            to continueAtTop() :void {
+                # ignored
+            }
+            to getArgs() :any {
+                # XXX put settable args here
+                []
+            }
+        }
+        traceline("made subInterp")
+        def makeScopeSetup := <unsafe:org.erights.e.elang.interp.ScopeSetup>
+        traceline("made scoper")
+        def scope := makeScopeSetup.privileged("__main$",
+                                               stdout,
+                                               stderr,
+                                               subInterp)
+        traceline("made scope")
+        try {
+            def tree := e__quasiParser(sourceTwine)
+            traceline("made tree")
+            def result := tree.eval(scope)
+            traceline("Interpretation done")
+            resultPane.setText("Execution ended:\n# value: " + result)
+            statusPane.setText("Execution ended")
+            traceline("shown")
+
+        } catch problem {
+            problemReporter(problem)
+        }
+
+    }
+    interpret <- run()
+}
+
+/**
+ * Compare the selection in a listpane to the items in a list
+ * see if there is a sensible match, return -1 if no match found,
+ * return index of the match in the list to the listpane selection
+ * if there is a sensible match
+ */
+def determineBestMatch(listPane,list) :int {
+    def extractElement(line) :any {
+        if (line =~ `* @{body}`) {
+            body.trim()
+        } else {
+            null
+        }
+    }
+
+    var answer := -1
+    def currentIndex := listPane.getSelectionIndex()
+    if (currentIndex >= 0) {
+        def newIndex := null
+        def currentFunc := extractElement((listPane.getSelection())[0])
+        def isMatch(listIndex) :pbc {
+            if (listIndex > 0 && listIndex < list.size()) {
+                extractElement(list[listIndex]) == currentFunc
+            } else {false}
+        }
+        for i in 0..10 {
+            if (answer == -1) {
+                if (isMatch(currentIndex + i)) {
+                    answer := currentIndex + i
+                } else if (isMatch(currentIndex - i)) {
+                    answer := currentIndex - i
+                }
+            }
+        }
+    }
+    answer
+}
+
+
+/**
+ * @param textPane must be a custom.StyledText widget
+ */
+def buildKeymap(mainFrame,textPane) :void {
+    var shiftTabBeingProcessed := false
+    def lineDelimiter := textPane.getLineDelimiter()
+    def tabValue := "    "
+    def doTab(event) :void {
+        def location := textPane.getSelection().getX()
+        #traceline("position: " + location)
+        textPane.insert(tabValue)
+        textPane.setSelection(location + tabValue.size())
+        #textPane update(textPane getGraphics())
+    }
+    def doShiftTab(event) :void {
+        def caretPosition := textPane.getCaretOffset()
+        var canUndent := true
+        def tabSize := tabValue.size()
+        traceline("in shift tab runner, selection: " +
+                    textPane.getSelectionText())
+        if (textPane.getSelectionText() == "" && caretPosition >= tabSize ) {
+            #traceline("selection zero, caretPosition high enough")
+            def text := textPane.getTextRange(caretPosition - tabSize, tabSize)
+            for each in text {
+                if (each != ' ') {canUndent := false}
+            }
+            if (canUndent) {
+                textPane.replaceTextRange(caretPosition -tabSize, tabSize, "")
+                #traceline("setting caret offset after shift-tab")
+                textPane.setCaretOffset(caretPosition - tabSize)
+                #textPane update(textPane getGraphics())
+            }
+        }
+    }
+
+    def doEnter(event) :void {
+        def caretPosition := textPane.getCaretOffset()
+        def insertIndented(indentation) :void {
+            def location := textPane.getSelection().getX()
+            #textPane insert(lineDelimiter + indentation)
+            #textPane setCaretOffset(location + indentation size() + 1)
+            event.setText("\n" + indentation)
+        }
+        def lineNumFromZero := textPane.getLineAtOffset(caretPosition)
+        def lineIndex := textPane.getOffsetAtLine(lineNumFromZero)
+        def currentLine := textPane.getTextRange(lineIndex,
+                                                 caretPosition - lineIndex)
+        def trimmed := currentLine.trim()
+        if (trimmed.size() == 0) {
+            insertIndented(currentLine)
+        } else if (currentLine =~ `@indentation$trimmed@pad`) {
+            insertIndented(indentation)
+        }
+    }
+
+    def verifyListener {
+        to verifyText(event) :void {
+            def text := event.getText()
+            #traceline("processing shift tab: " + shiftTabBeingProcessed )
+            if ( text == "\t") {
+                event.setDoit(false)
+                if ( !shiftTabBeingProcessed) {
+                    #traceline("caught tab, statemask: " + event.getStateMask())
+                    if (event.getStateMask() == SWT.getSHIFT()) {
+                        doShiftTab(event)
+                    } else {
+                        doTab(event)
+                    }
+                }
+                shiftTabBeingProcessed := false
+                # with EText discarding \r chars, we do not know if
+                # on windows we get the enter key data before or after
+                # the discard, so check for both line delimiter and
+                # line delimiter stripped to \n
+            } else if (text == lineDelimiter || text == "\n" ) {
+                #traceline("got newline char")
+                doEnter(event)
+            }
+        }
+        match [verb, args] {}
+    }
+
+    textPane.addVerifyListener(verifyListener)
+    # to catch shift-tab, must catch traversal operation
+    def traverseListener {
+        to keyTraversed(event) :void {
+            if (event.getDetail() == SWT.getTRAVERSE_TAB_PREVIOUS()) {
+                event.setDoit(false)
+                shiftTabBeingProcessed := true
+                doShiftTab(event)
+            }
+        }
+        match _{}
+    }
+    textPane.addTraverseListener(traverseListener)
+}
+
+def configureUpdatedListPane(listPane,list) :void {
+    def listChanged() :boolean {
+        def current := listPane.getItems()
+        var changed := false
+        if (current.size() != list.size()) {
+            changed := true
+        } else {
+            for i in 0..current.size()-1 {
+                if (current[i] != list[i]) {
+                    changed := true
+                    break
+                }
+            }
+        }
+        changed
+    }
+    if (listChanged()) {
+        def selectedIndex := determineBestMatch(listPane,list)
+        E.call(listPane,"setItems(String[])",[list.snapshot()])
+        if (selectedIndex >= 0) {
+            listPane.setSelection(selectedIndex)
+            listPane.showSelection()
+        }
+    }
+}
+
+/**
+ * eBrowser
+ *
+ * @author Marc Stiegler
+ */
+def eBrowserMaker(textModel) :any {
+
+    def eBrowser
+    textModel.addFuncsChangedAlertRecipient(eBrowser)
+    var closingInProcess := false
+    def mainFrame := standardWindow("",eBrowser)
+
+    def setTitle {
+        to run(isDirty) :void {
+
+            # XXX true case is not yet used
+            def marker := if (isDirty) { "*" } else { "" }
+            mainFrame.setText("eBrowser - " + textModel.getFileName() +
+                                " @ " + textModel.getFilePath())
+        }
+        to run() :void {setTitle(false)}
+    }
+
+
+    # Prevent the frame from ever closing because of user action;
+    # allow close only on programmatic dispose
+    def noCloseListener {
+        to shellClosed(event) :void {
+            event.setDoit(false)
+        }
+        match [verb, args] {}
+    }
+    mainFrame.addShellListener(noCloseListener)
+
+    #set the layout for the main frame
+    def layout := <swt:layout.makeGridLayout>()
+    layout.setNumColumns(1)
+    layout.setMarginHeight(0)
+    layout.setVerticalSpacing(0)
+    layout.setMarginWidth(0)
+    layout.setHorizontalSpacing(0)
+    mainFrame.setLayout(layout)
+
+    #create the composite tool area for toolbar buttons and the searchField
+    def toolArea := <widget:makeGroup>(mainFrame, SWT.getNULL())
+    def toolAreaLayout := <swt:layout.makeGridLayout>()
+    toolAreaLayout.setNumColumns(2)
+    toolAreaLayout.setMarginHeight(0)
+    toolAreaLayout.setVerticalSpacing(0)
+    toolAreaLayout.setMarginWidth(0)
+    toolAreaLayout.setHorizontalSpacing(0)
+    toolArea.setLayout(toolAreaLayout)
+    def taGridData := GRIDDATA(GRIDDATA.getFILL_HORIZONTAL())
+    #taGridData heightHint(20)
+    toolArea.setLayoutData(taGridData)
+
+    #create toolbar buttons in tool area
+    def toolbar := <widget:makeToolBar>(toolArea, (SWT.getHORIZONTAL() | SWT.getFLAT()))
+    toolbar.setLayoutData(GRIDDATA())
+    # XXX Create all the images at start, reuse them for all browser windows
+    def newToolButton(uri, tipText, operation, target) :near {
+        def listener {
+            to widgetSelected(event) :void {
+                E.call(target, operation, [])
+            }
+            match [verb, args] {}
+        }
+        def button := <widget:makeToolItem> (toolbar, SWT.getPUSH())
+        def image := disposablesKit.makeImage(uri.openStream())
+        button.setImage(image)
+        button.setHotImage(image)
+        button.setToolTipText(tipText)
+        button.addSelectionListener(listener)
+        button
+    }
+
+    def <icons> {
+        to get(name) :any {
+            <resource>[`com/skyhunter/e/icons/$name`]
+        }
+    }
+
+    def separate() :void {
+        def sep := <widget:makeToolItem>(toolbar, SWT.getSEPARATOR())
+    }
+
+    def saveButton :=  newToolButton(
+        <icons:save16-16.gif>,
+        "Save File","save",eBrowser)
+    def openImportButton := newToolButton(
+        <resource:com/skyhunter/eBrowser/icons/openImport16-16.gif>,
+        "Open Clicked Import File", "openImport", eBrowser)
+    def reformatButton :=  newToolButton(
+        <icons:reformat16-16.gif>,
+        "Reformat","reformat",eBrowser)
+    separate()
+    def pasteUpdocButton :=  newToolButton(
+        <icons:paste16-16.gif>,
+        "Paste from Scratchpad","pasteUpdoc",eBrowser)
+    pasteUpdocButton.setEnabled(false)
+    def elmerButton :=  newToolButton(
+        <icons:elmer16-16.gif>,
+        "Scratchpad","scratchpad",eBrowser)
+    elmerButton.setEnabled(false)
+    separate()
+    # def aboutButton :=  newButton("About","about",eBrowser)
+    #def refreshFuncsButton :=  newToolButton(
+    #    <icons:sync.gif>,
+    #    "Sync Outline","refreshFuncs",eBrowser)
+    def runHiLiteButton :=  newToolButton(
+        <icons:runhilite16-16.gif>,
+        "Run HiLite","executeHiLite",eBrowser)
+    runHiLiteButton.setEnabled(false)
+    def runButton :=  newToolButton(
+        <icons:run16-16.gif>,
+        "Run","executeProgram",eBrowser)
+    runButton.setEnabled(false)
+    separate()
+    def gotoButton :=  newToolButton(
+        <icons:goto16-16.gif>,
+        "Goto Line", "goto",eBrowser)
+    def findButton :=  newToolButton(
+        <icons:find16-16.gif>,
+        "Find","find",eBrowser)
+
+    def searchField := makeEText(toolArea, SWT.getSINGLE() | SWT.getBORDER())
+    searchField.setLayoutData(GRIDDATA(GRIDDATA.getFILL_HORIZONTAL()))
+    searchField.setFont(currentFont)
+    searchField.setBackground(white)
+
+    #toolbar area complete, construct main work area
+    def outlineSplitter := <swt:custom.makeSashForm>(mainFrame, SWT.getHORIZONTAL())
+    outlineSplitter.setLayoutData(GRIDDATA(GRIDDATA.getFILL_BOTH()))
+
+    def funcListPane :=
+      <widget:makeList>(outlineSplitter,
+                    SWT.getBORDER() | (SWT.getV_SCROLL() | SWT.getH_SCROLL()))
+    funcListPane.setFont(currentFont)
+    funcListPane.setBackground(white)
+
+    funcListPane.setItems([])
+    #def outputSplitter := <swt:custom.makeSashForm>(outlineSplitter,
+    #                                            SWT.getVERTICAL())
+    #outputSplitter setLayoutData(GRIDDATA(GRIDDATA.getFILL_HORIZONTAL()))
+    def varLineSplitter := <swt:custom.makeSashForm>(outlineSplitter,
+                                                 SWT.getHORIZONTAL())
+    varLineSplitter.setLayoutData(GRIDDATA(GRIDDATA.getFILL_HORIZONTAL()))
+
+    # build text pane
+    def textPane := makeEText(varLineSplitter,
+                              SWT.getBORDER() | (SWT.getV_SCROLL() | SWT.getH_SCROLL()))
+    textPane.setFont(currentFont)
+    textPane.setBackground(white)
+    buildKeymap(mainFrame, textPane)
+    def requestTextPaneFocus() :void {
+        <widget:makeControl>.transferFocus([mainFrame], textPane)
+    }
+
+    def syncer := outlineSyncFuncMaker(farBrowseServerMaker <- run(),
+                                       textModel,
+                                       textPane)
+
+    def openFile(file) :void {
+        def path := file.getCanonicalPath()
+        #traceline(`current openFiles: $openFiles`)
+        if (openFiles.maps(path)) {
+            openFiles[path].bringToTop()
+        } else if (! (textModel.saveFileIsSet()) &&
+                     textPane.getText().trim().size() == 0) {
+            textModel.replaceStubFile(file)
+            openFiles [path] := eBrowser
+            setTitle()
+            textPane.setText(textModel.reload())
+            syncer()
+        } else {
+            def browser := eBrowserMaker(textModelMaker(file))
+            openFiles[path] := browser
+        }
+    }
+
+    /**
+     * set up handling of dropped files, with texpane as drop target
+     */
+    def reactToFilesDrop(files) :void {
+        for i in 0..(files.size() - 1) {
+            openFile(files[i])
+        }
+    }
+
+    # drag drop for file transfer
+    def FileTransfer := <swt:dnd.makeFileTransfer>.getInstance()
+    def textPaneDropTarget :=
+      <swt:dnd.makeDropTarget>(textPane,
+                           DND.getDROP_LINK() |
+                             (DND.getDROP_MOVE() | DND.getDROP_COPY()))
+    textPaneDropTarget.setTransfer([FileTransfer])
+    def fileDropListener {
+        to drop(event) :void {
+            traceline("got drop: " + event)
+            def data := event.getDropData()
+            for each in data {
+                openFile(<file>[each])
+            }
+        }
+        to dropAccept(event) :void {
+            traceline("into dropAccept: " + event)
+            try {
+                traceline("file trans current: " +
+                            FileTransfer.isSupportedType(
+                    event.currentDataType()))
+            }catch prob {traceline("prob setting data type: " + prob )}
+            traceline("set drop accept data type")
+        }
+        match _{}
+    }
+    textPaneDropTarget.addDropListener(fileDropListener)
+
+
+
+    # build variable list pane
+    def varListPane := <widget:makeList>(varLineSplitter,
+                                     SWT.getBORDER() | SWT.getV_SCROLL())
+    varListPane.setFont(currentFont)
+
+    varListPane.setItems([])
+    def varPopupReactor {
+        to doInsert() :void {eBrowser.insertVar()}
+        to doAlign() :void {eBrowser.alignVars()}
+    }
+    def varMenuTree := term`popup(
+item("Insert"),
+item("Align")
+)`
+    buildMenu(varListPane, varPopupReactor, varMenuTree, traceline)
+
+    def varListPaneListener {
+        to mouseDoubleClick(event) :void {
+            traceline("dclik n varlist")
+            def varLineIndices := textModel.getVarLineIndices()
+            def selectedLineNumFromZero :=
+              varLineIndices[varListPane.getSelectionIndex()]
+            def newPosition := textPane.getOffsetAtLine(selectedLineNumFromZero)
+            traceline("double clicked varpane position: " + newPosition)
+            def offset := textPane.getOffsetAtLine(selectedLineNumFromZero + 1)
+            textPane.setSelection(newPosition, offset - 1)
+            requestTextPaneFocus()
+        }
+        match [verb,args] {}
+    }
+    varListPane.addMouseListener(varListPaneListener)
+
+    # build function list pane
+    def funcPopupReactor {
+        to doInsert() :void {eBrowser.insertFunc()}
+        to doAlign() :void {eBrowser.alignFuncs()}
+    }
+    def funcMenuTree := term`popup(
+        item("Insert"),
+        item("Align")
+    )`
+    buildMenu(funcListPane, funcPopupReactor, funcMenuTree, traceline)
+
+    def funcListPaneListener {
+        to mouseDoubleClick(event) :void {
+            traceline("func pane dclick")
+            def outlineIndices := textModel.getOutlineIndices()
+            def selectedLineNumFromZero :=
+              outlineIndices[funcListPane.getSelectionIndex()]
+            traceline(`selected linenum: ${selectedLineNumFromZero}`)
+            def newPosition := textPane.getOffsetAtLine(selectedLineNumFromZero)
+            traceline(`newPostion: $newPosition`)
+            def newSelectionEnd :=
+              textPane.getOffsetAtLine(selectedLineNumFromZero + 1) - 1
+            textPane.setSelection(newPosition, newSelectionEnd)
+            requestTextPaneFocus()
+        }
+        match _ {}
+    }
+    funcListPane.addMouseListener(funcListPaneListener)
+
+    # build output viewpane
+    #def outputPane :=
+    #  makeEText(outputSplitter,
+    #            SWT.getBORDER() |(SWT.getV_SCROLL() | SWT.getH_SCROLL()))
+    #outputPane setText("Execution Output")
+    #outputPane setFont(currentFont)
+    #outputPane setBackground(almond)
+
+    # build status pane
+    def statusPane := <widget:makeLabel>(mainFrame, SWT.getBORDER())
+    statusPane.setText("   ")
+    statusPane.setLayoutData(GRIDDATA(GRIDDATA.getFILL_HORIZONTAL()))
+
+
+    #now that all splitter children setup, set weights
+    outlineSplitter.setWeights([1, 3])
+    varLineSplitter.setWeights([4, 1])
+    #outputSplitter setWeights([9, 1])
+
+    # real pane
+    #def buttonPane :=
+    #  JPanel`$saveButton $openImportButton $reformatButton $\
+    #    $s1 $pasteUpdocButton $elmerButton $\
+    #    $s2 $runHiLiteButton $runButton $\
+    #    $s3 $gotoButton $findButton  $searchField.X`
+    #def realPane :=
+    #  JPanel`$buttonPane
+    #         $outLineSplitter.X.Y
+    #         $statusPane  `
+
+
+
+    /**
+     * menubar
+     */
+    def newFileFunc() :void {
+        traceline("got to new file func")
+        eBrowserMaker(textModelMaker(null))
+    }
+    def openFunc() :void {
+        def fileDialog := <widget:makeFileDialog>(mainFrame, SWT.getOPEN())
+        fileDialog.setText("Pick File To Open")
+        fileDialog.open()
+        def fileName := fileDialog.getFileName()
+        traceline("fileName: " + fileName)
+        def path := fileDialog.getFilterPath()
+        traceline("filterpath: " + path)
+        if (fileName != null && fileName.size() > 0) {
+            #def localPath := `${fileDialog getDirectory()}$fileName`
+            #traceline(`path to new file: $localPath`)
+            def nextFile := <file>[path][fileName]
+            openFile(nextFile)
+        }
+    }
+    def saveFunc() :void {eBrowser.save()}
+    def saveAsFunc() :void {
+        def fileDialog := <widget:makeFileDialog>(mainFrame, SWT.getSAVE())
+        fileDialog.setText("Save File As")
+        fileDialog.open()
+        def fileName := fileDialog.getFileName()
+        if (fileName != null && fileName.size() > 0) {
+            def openFile := <file>[fileDialog.getFilterPath()][fileName]
+            traceline(`path to save file: $openFile`)
+            def path := openFile.getCanonicalPath()
+            #traceline(`current openFiles: $openFiles`)
+            if (openFiles.maps(path)) {
+                makeDialogVow("File Already Open",
+                              term`text("Cannot save as open file")`,
+                              null,
+                              ["OK"])
+            } else {
+                textModel.setText(textPane.getText())
+                textModel.saveAs(path)
+                openFiles[path] := eBrowser
+                setTitle()
+            }
+        }
+    }
+
+    def makeFontLarger() :void {
+        def fontData := (textPane.getFont().getFontData())[0]
+        fontData.setHeight(fontData.getHeight() + 2)
+        currentFont := disposablesKit.makeFont(fontData)
+        eBrowser.resetFont(currentFont)
+    }
+
+    def makeFontSmaller() :void {
+        def fontData := textPane.getFont().getFontData()[0]
+        fontData.setHeight(fontData.getHeight() - 2)
+        currentFont := disposablesKit.makeFont(fontData)
+        eBrowser.resetFont(currentFont)
+    }
+
+    # Option menu
+    var capScriptsMaySubstitute := false
+
+#    def substitutionAllowedMenuItem :=
+#      <swing:makeJCheckBoxMenuItem>("capScripts May Substitute")
+#    E call(optionMenu, "add(JMenuItem)", [substitutionAllowedMenuItem])
+#    def toggleSubstitution() {
+#        capScriptsMaySubstitute := substitutionAllowedMenuItem getState()
+#    }
+#    uiTools attachAction(substitutionAllowedMenuItem,toggleSubstitution)
+
+    /**
+     * capScript menu scriptEvaluator must be a single-argument receiver,
+     * receiving a source text
+     */
+    def buildScriptMenu(title, runnablesList, folder, scriptEvaluator) :any {
+        def actionListenerMaker(runnableName) :any {
+
+#            def selectionStart := textPane getSelectionStart()
+#            def selectionEnd := textPane getSelectionEnd()
+#            def textSize := textPane getText() size()
+
+            /** */
+            def action() :void {
+                eBrowser.setStatus(`Running script: $runnableName ...`)
+                try {
+                    def source := folder[runnableName].getText()
+                    def script := scriptEvaluator(source)
+                    def result := script(textPane.getSelectedText())
+                    if (capScriptsMaySubstitute &&
+                          script.requestsSubstitution()
+                       ) {
+                        replaceSelectionHilite(mainFrame, textPane, result)
+#                        outputPane append(
+#                            `$runnableName results placed in source.`)
+                    } else {
+#                        outputPane append(
+#                            `$runnableName results: ${"\n"}$result`)
+                    }
+                } catch err {
+#                    outputPane append("\n" + `Script error: $err`)
+                }
+                eBrowser.setStatus(`Script $runnableName completed.`)
+            }
+        }
+        # def scriptMenu := <swing:makeJMenu>(title)
+        for each in runnablesList {
+            # XXX be able to build menu when scripts re-enabled
+            #uiTools addMenuItem(scriptMenu,
+            #                    each,
+            #                    actionListenerMaker(each))
+        }
+        # scriptMenu
+    }
+
+#    def scriptFolder := <file:ebScripts>
+#    def capScriptMenu := buildScriptMenu(
+#        "capScripts",
+#        buildScriptList(scriptFolder, "emaker"),
+#        scriptFolder,
+#        def confiner(source) :any {confinedRunner(source, outputPane)})
+#    E call(menubar, "add(JMenu)", [capScriptMenu])
+
+#    def indentGroup := <swing:makeButtonGroup>()
+#    var defaultIndentItem := null
+
+    /** */
+    def menuReactor {
+        to doNew() :void {
+            traceline("in menureactor doNew")
+            newFileFunc()
+        }
+        to doOpen() :void {openFunc()}
+        to doSave() :void {saveFunc()}
+        to doSaveAs() :void {saveAsFunc()}
+
+#        to doUseTabs() {tabValue := "\t"}
+#        to doUseSpaces() {tabValue := "    "}
+
+        /** */
+        to doSmallerFont() :void {makeFontSmaller()}
+        to doLargerFont() :void {makeFontLarger()}
+        to doReformat() :void {eBrowser.reformat()}
+        to doSetImportsRoot() :void {
+            def pathDialogVow :=
+              makeDialogVow("Specify Import Root",
+                            term`
+text("Type the path to the folder that
+contains the tree of importable emakers")`,
+                            importsRootDirConf.getText().trim(),
+                            ["OK", "Cancel"])
+            when (pathDialogVow) -> done(pathDialog) :void {
+                if (pathDialog.optClickedButton() == "OK") {
+                    def trimmed := pathDialog.optEnteredText().trim()
+                    importsRootDirConf.setText(trimmed)
+                    setOptImportsRoot()
+                }
+            } catch prob {traceline("prob in importRoot dialog: " + prob)}
+        }
+        to doAbout() :void {eBrowser.about()}
+        match [verb,args] {traceline("menu hit for " + verb)}
+    }
+
+    #make the menus
+    def menuTree := term`bar(
+      menu("&File",
+           item("&New", "Ctrl+N"),
+           item("&Open", "Ctrl+O"),
+           item("&Save", "Ctrl+S"),
+           item("Save &As...")),
+      menu("For&mat",
+           item("Smaller Font", "Ctrl+["),
+           item("Larger Font", "Ctrl+]"),
+           item("Reformat", "Ctrl+B")),
+      menu("&Tools",
+           item("Set &Imports Root...")),
+      menu("&Help",
+           item("&About...")))`
+
+    buildMenu(mainFrame, menuReactor, menuTree, traceline)
+
+    #def menuBar := <widget:makeMenu>(mainFrame, SWT.getBAR())
+    #mainFrame setMenuBar(menuBar)
+    #def fileMenuNameItem := <widget:makeMenuItem>(menuBar, SWT.getCASCADE())
+    #fileMenuNameItem setText("File")
+    #def fileMenu := <widget:makeMenu>(mainFrame, SWT DROP_DOWN())
+    #fileMenuNameItem setMenu(fileMenu)
+    #addMenuItem(fileMenu, "New", "doNew", menuReactor)
+    #addMenuItem(fileMenu, "Open...", "doOpen", menuReactor)
+    #def newFileItem := <widget:makeMenuItem>(fileMenu, SWT.getPUSH())
+    #def newFileSelectionListener {
+    #    to widgetSelected(event) {
+    #        traceline("got new file request")
+    #    }
+    #    match _{}
+    #}
+    #newFileItem addSelectionListener(newFileSelectionListener)
+    #defaultIndentItem setSelected(true)
+    #mainFrame setJMenuBar(menuBar)
+
+    # configure and show window
+    setTitle()
+    textPane.setText(textModel.getText())
+    textPane.setCaretOffset(0)
+    #mainFrame pack()
+    mainFrame.setSize(1000,700)
+    mainFrame.setLocation(50 + entropy.nextInt() % 30,
+                          50 + entropy.nextInt() % 30)
+    #E call(outLineSplitter, "setDividerLocation(int)",[200])
+    #E call(outputSplitter, "setDividerLocation(double)",[0.9])
+    # def width := varLineSplitter getBounds() width()
+    #E call(varLineSplitter, "setDividerLocation(int)",[600])
+    mainFrame.open()
+
+    syncer()
+
+    # XXX This flag added by MarkM to suppress the multiple-activation bug he
+    # wasn't able to diagnose.
+    var optUpdateVow := null
+    def windowActiveListener {
+        to shellActivated(_) :void {
+            if (Ref.isNear(optUpdateVow) && # XXX is this correct?
+                  null == optUpdateVow &&
+                  textModel.storedVersionIsNewer()) {
+
+                var message := "\
+The file has been updated outside eBrowser. Would you like to reload the file?"
+                if (textPane.getText() != textModel.getText()) {
+                    message +=
+                      " Note, eBrowser has edited since last save too."
+                }
+                optUpdateVow :=
+                  makeDialogVow("File Updated Outside eBrowser",
+                                term`text("Do you want to update?")`,
+                                null,
+                                ["Yes", "No"])
+                when (optUpdateVow) -> doneUpdate(update) :void {
+                    if (update.optClickedButton() == "Yes") {
+                        textPane.setText(textModel.reload())
+                    } else {
+                        textModel.resetSaveTimeNoReload()
+                    }
+                } catch prob {
+                    traceline("vow broke for update dialog: " + prob)
+                } finally {
+                    optUpdateVow := null
+                }
+            }
+        }
+        match _ {}
+    }
+    mainFrame.addShellListener(windowActiveListener)
+
+
+
+    def path := textModel.getFilePath()
+    def textSelector := textSelectorMaker(textPane,
+                                          `file:$path`)
+    #def problemReporter := problemReporterMaker(textSelector,
+    #                                            outputPane,
+    #                                            statusPane)
+    def problemReporter := problemReporterMaker(textSelector,
+                                                null,
+                                                statusPane)
+
+    def getTwine() :Twine {
+        def reader := StringReaderMaker(textPane.getText())
+        reader.getTwine(`file:$path`)
+    }
+
+    var undisposed := true
+    def closeCleanly() :void {
+        traceline("into close cleanly")
+        textModel.close()
+        if (undisposed) {
+            traceline("about to dispose")
+            mainFrame.dispose()
+            undisposed := false
+        }
+
+    }
+
+    bind eBrowser {
+        to save() :void {
+            textModel.setText(textPane.getText())
+            if (textModel.saveFileIsSet()) {
+                try {
+                    textModel.save()
+                } catch prob {
+                    makeDialogVow("File Not Saved",
+                                  `Reason:$\n$prob`,
+                                  null,
+                                  ["OK"])
+                }
+                requestTextPaneFocus()
+            } else {saveAsFunc()}
+        }
+        to openImport() :void {
+            if (optImportsRoot != null) {
+                def selectedImport := optImportedFile(textPane,
+                                                      optImportsRoot,
+                                                      traceline)
+                if (selectedImport != null) {
+                    openFile(selectedImport)
+                } else {makeDialogVow("No import selected",
+                                      term`
+text("The cursor is not currently pointing at an import statement")`,
+                                      null,
+                                      ["OK"])
+                       }
+            } else {makeDialogVow("No import root selected",
+                                  term`
+text("The Imports Root Directory has not yet been configured")`,
+                                  null,
+                                  ["OK"])
+                   }
+        }
+        to bringToTop() :void {
+            # XXX Revisit once a safe form of toFront() is introduced.
+#            mainFrame toFront()
+        }
+        to setStatus(statusText) :void {
+            statusPane.setText(statusText)
+            #statusPane repaint()
+        }
+        to find() :void {
+            eBrowser.setStatus("Finding...")
+            def textSize := textPane.getText().size()
+            def startSearchIndex := textPane.getCaretOffset()
+            def searchArea := textPane.getText(startSearchIndex,
+                                               textSize - 1)
+            if (searchArea =~ `@{front}${searchField.getText()}@{tail}`) {
+                def startFoundIndex := front.size() + startSearchIndex
+                textPane.setSelectionRange(startFoundIndex,
+                                           searchField.getText().size())
+                textPane.setCaretOffset(startFoundIndex +
+                                          searchField.getText().size() )
+                eBrowser.setStatus("Found")
+                textPane.showSelection()
+                requestTextPaneFocus()
+            } else {eBrowser.setStatus("Not Found")}
+        }
+        to goto() :void {
+            def lineNumFromOne := __makeInt(searchField.getText())
+            traceline(`got line num $lineNumFromOne`)
+            def newPosition := textPane.getOffsetAtLine(lineNumFromOne-1)
+            println(`got position $newPosition`)
+            textPane.setCaretOffset(newPosition)
+            println(`set caret line $lineNumFromOne`)
+            def endPosition := textPane.getOffsetAtLine(lineNumFromOne) - 1
+            if (endPosition > newPosition) {
+                textPane.setSelection(newPosition, endPosition)
+            }
+            println(`moved caret to $newPosition..$endPosition`)
+            traceMem()
+            requestTextPaneFocus()
+        }
+        to about() :void {popAboutBox()}
+        # XXXput elmer back
+        #to scratchpad() {elmer()}
+        to executeHiLite() :void {
+#            outputPane setText("")
+            def selection := getTwine()(textPane.getSelection().getX(),
+                                        textPane.getSelection().getY())
+            traceline(`Selection: "$selection"`)
+#            programRunner(selection,
+#                          textPane,
+#                          textModel,
+#                          outputPane,
+#                          statusPane)
+            # programRunner(textPane getSelectedText(),"",outputPane)
+        }
+        to executeProgram() :void {
+#            outputPane setText("")
+#            programRunner(getTwine(),
+#                          textPane,
+#                          textModel,
+#                          outputPane,
+#                          statusPane)
+        }
+        to insertVar() :void {
+            def insert := `${(varListPane.getSelection())[0]}`
+            if (insert != null && insert.size() > 0) {
+                def insertVarTrimmed := insert.trim()
+                replaceSelectionHilite(mainFrame,
+                                       textPane,
+                                       insertVarTrimmed + " ")
+            }
+        }
+        to insertFunc() :void {
+            def insert := `${(funcListPane.getSelection())[0]}`
+            if (insert != null && insert.size() > 0) {
+                var insertSection := ""
+                # get the chunk of func following the "to" or "def"
+                if (insert =~ `@{leader} to @{tail}`) {
+                    insertSection := tail
+                } else if (insert =~ `@{leader} def @{tail}`) {
+                    insertSection := tail
+                } else if (insert =~ `@{leader} interface @{tail}`) {
+                    insertSection := tail
+                } else if (insert =~ `@{leader} bind @{tail}`) {
+                    insertSection := tail
+                } else {println(`non insertable func: $insert`)}
+                # strip the :any type if present
+                if (insertSection =~ `@{leader}:@{trailer}`) {
+                    insertSection := leader
+                }
+                insertSection := insertSection.trim()
+                replaceSelectionHilite(mainFrame,
+                                       textPane,
+                                       `$insertSection `)
+            }
+        }
+        to alignVars() :void {
+            def currentLine :=
+              textPane.getLineAtOffset(textPane.getCaretOffset())
+            var i := 0
+            def indices := textModel.getVarLineIndices()
+            if (indices != null && indices.size() > 0) {
+                while (i < indices.size() && indices[i] < currentLine) {
+                    i += 1
+                }
+                if (i > 0) {i := i - 1}
+                varListPane.setSelection(i)
+                varListPane.showSelection()
+            }
+            requestTextPaneFocus()
+        }
+        to alignFuncs() :void {
+            def currentLine :=
+              textPane.getLineAtOffset(textPane.getCaretOffset())
+            var i := 0
+            def indices := textModel.getOutlineIndices()
+            if (indices != null && indices.size() > 0) {
+                while (i < indices.size() && indices[i] < currentLine) {
+                    i += 1
+                }
+                if (i > 0) {i := i - 1}
+                funcListPane.setSelection(i)
+                funcListPane.showSelection()
+            }
+            requestTextPaneFocus()
+        }
+        to reformat() :void {
+            textPane.setEditable(false)
+            eBrowser.setStatus("Reformatting...")
+#            outputPane setText("Reformatting...")
+            def after() :void {
+                try {
+                    textPane.setText(PrettyFeeder.pretty(getTwine()))
+                    eBrowser.setStatus("Reformat Done.")
+#                    outputPane  setText("Reformat Done.")
+                } catch problem {
+                    problemReporter(problem)
+                } finally {textPane.setEditable(true)}
+            }
+            after ()
+        }
+        to linesChanged() :void {
+            configureUpdatedListPane(funcListPane, textModel.getOutlineList())
+            configureUpdatedListPane(varListPane, textModel.getVarLineList())
+        }
+        to resetFont(font) :void {
+            textPane.setFont(font)
+            funcListPane.setFont(font)
+#            outputPane setFont(font)
+            varListPane.setFont(font)
+        }
+        to pasteUpdoc() :void {
+            def getPasteString() :any {
+                var pastedString := ""
+                # get access to the system clipboard
+                def SysClip
+                #  <awt:makeToolkit> getDefaultToolkit() getSystemClipboard()
+                # get the transfer object containing the text
+                def transferObject := SysClip.getContents(null)
+                if (transferObject != null) {
+                    # def the flavor needed for extraction
+                    def stringFlavor
+                    #  <awt:datatransfer.makeDataFlavor>.getStringFlavor()
+                    # at last, get the string
+                    pastedString :=
+                      transferObject.getTransferData(stringFlavor)
+                }
+                pastedString
+            }
+            def rawcode := getPasteString()
+            var cleancode := ""
+            for each in rawcode.split("\n") {
+                if (each =~ `? @{cleanline}`) {
+                    cleancode := cleancode + cleanline
+                } else if (each =~ `> @{cleanline}`) {
+                    cleancode := cleancode + cleanline
+                } else {cleancode := cleancode + each}
+            }
+            replaceSelectionHilite(mainFrame, textPane, cleancode)
+        }
+        to windowClosing() :void {
+            if (! closingInProcess) {
+                closingInProcess := true
+                # def finalText:= textPane getText()
+                if (textPane.getText() == textModel.getText()) {
+                    closeCleanly()
+                } else {
+                    def saveDecision := makeDialogVow(
+                        "Modified File " + textModel.getFileName(),
+                        term`text("Save Before Exiting?")`,
+                        null,
+                        ["Save", "Exit", "Cancel"])
+                    when (saveDecision <- optClickedButton()) -> done(answer) :void {
+                        closingInProcess := false
+                        if (answer == null) {
+                            # answer := "Cancel"
+                        }
+                        if (answer =="Save") {
+                            traceline("into save")
+                            eBrowser.save()
+                            closeCleanly()
+                        } else if (answer == "Exit") {
+                            closeCleanly()
+                        }
+                    } catch err {println(`save dialog broken promise: $err`)}
+                }
+            }
+        }
+    }
+}
+
+
+var optBrowseFile := null
+def commandArgs := interp.getArgs()
+if (commandArgs.size() > 0) {
+    def name := commandArgs[0]
+    optBrowseFile := <file>[name]
+}
+def browser := eBrowserMaker(textModelMaker(optBrowseFile))
+if (optBrowseFile != null) {
+    openFiles[optBrowseFile.getCanonicalPath()] := browser
+}
+
+interp.blockAtTop()

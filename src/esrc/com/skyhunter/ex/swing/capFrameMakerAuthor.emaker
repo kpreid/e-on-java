@@ -1,0 +1,81 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def JPanel__quasiParser := <import:org.erights.ex.swing.JPanel__quasiParser>
+
+def capFrameMakerAuthor(powerboxController, JFrameMaker, appImage, appTitle, <swing>) :near {
+
+    def badWindowMethodsString :=
+        "getFocusOwner
+    getInputContext
+    getOwnedWindows
+    toFront
+    getOwner
+    getToolkit
+    addWindowListener
+    "
+
+    def badFrameMethodsString :=
+        "setIconImage
+    "
+
+    def badJFrameMethodsString :=
+        "setContentPane
+    setDesktopIcon
+    getDesktopPane
+    setFrameIcon
+    getGlassPane
+    setGlassPane
+    setIcon
+    setLayer
+    getLayeredPane
+    setLayeredPane
+    getRootPane
+    setSelected
+    moveToFront
+    toFront
+    "
+
+    def stringToMap(var parseString) :any {
+        def map := [].asMap().diverge()
+        while (parseString =~ `@nextKey${'\n'}@remainder`) {
+            map[nextKey.trim()] := null
+            parseString := remainder
+        }
+        map.snapshot()
+    }
+
+    def badMethods := stringToMap(badWindowMethodsString).diverge()
+    badMethods.putAll(stringToMap(badFrameMethodsString))
+    badMethods.putAll(stringToMap(badJFrameMethodsString ))
+
+    def capFrameMaker() :near {
+        def innerFrame := <swing:makeJFrame>()
+        if (appImage != null) {innerFrame.setIconImage(appImage)}
+        innerFrame.setTitle(appTitle)
+        def contentPane := <swing:makeJPanel>()
+        def powerPane := <swing:makeJPanel>()
+        def innerPane := JPanel`$contentPane.Y
+                                $powerPane`
+        innerFrame.getContentPane().add(innerPane)
+        powerboxController.reactToPowerbar(powerPane)
+        def capFrame {
+            to setTitle(titleSuffix) :void {
+                innerFrame.setTitle(`$appTitle - $titleSuffix`)
+            }
+            to getContentPane() :near {contentPane}
+            match [verb, args] {
+                if (badMethods.maps(verb)) {
+                    throw("no such capFrame method")
+                } else {
+                    E.call(innerFrame, verb, args)
+                }
+            }
+        }
+    }
+}
+
+#def powerbox {match [verb,arg] {}}
+#def maker := capFrameMakerAuthor(powerbox, <swing:makeJFrame>, null, "test")
+#def win := maker()
+#win show()

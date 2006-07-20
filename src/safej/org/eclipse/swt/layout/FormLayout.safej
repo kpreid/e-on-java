@@ -1,0 +1,7 @@
+class(safe,
+           "org.eclipse.swt.layout.FormLayout",
+           statics(method("run()")),
+           methods(method("getMarginWidth()"),
+                   method("setMarginWidth(int)"),
+                   method("getMarginHeight()"),
+                   method("setMarginHeight(int)")))

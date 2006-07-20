@@ -1,0 +1,59 @@
+# Copyright 2005 Mark S. Miller under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+pragma.enable("easy-return")
+
+/**
+ * Defines the builtin '__is' via function template.
+ * <p>
+ * Used to expand the pattern '==e' to 'via (__is(e)) _'.
+ * <p>
+ * '__is(a,b,...)' is equivalent to '__is.memberOf([a,b,...].asSet())'. This is
+ * useful for defining enums.
+ * <p>
+ * '__is.keyOf(map)' is equivalent to '__is.memberOf(map.domain())'.
+ *
+ * @author Mark S. Miller
+ */
+def is {
+
+    to run(standard) :any {
+        def isSameFunc(specimen, optEjector) :any {
+            if (standard == specimen) {
+                return specimen
+            } else {
+                throw.eject(optEjector, `$specimen isn't $standard`)
+            }
+        }
+        return isSameFunc
+    }
+
+    /**
+     * If the collection is an EMap, this method will consider the values
+     * of the EMap to be its members.
+     */
+    to memberOf(collection) :any {
+        def isMemberFunc(specimen, optEjector) :any {
+            if (collection.contains(specimen)) {
+                return specimen
+            } else {
+                throw.eject(optEjector, `$specimen isn't in $collection`)
+            }
+        }
+        return isMemberFunc
+    }
+
+    to keyOf(map) :any {
+        return is.memberOf(map.domain())
+    }
+
+    match [`get`, args] {
+        is.memberOf(args.asSet())
+    }
+}
+
+? interp.setExpand(true)
+? 3 =~ ==3
+# expansion: 3 =~ via (__is.run(3)) _
+
+# value: true

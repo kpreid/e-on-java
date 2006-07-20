@@ -1,0 +1,18 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class(safe,
+      "javax.swing.text.AbstractDocument.DefaultDocumentEvent",
+      statics(method(suppress, "run(AbstractDocument, int, int, DocumentEvent.EventType)")),
+      methods(method("addEdit(UndoableEdit)"),
+              method("redo()"),
+              method("undo()"),
+              method("isSignificant()"),
+              method("getPresentationName()"),
+              method(suppress, "getUndoPresentationName()"),
+              method("getRedoPresentationName()"),
+              method("getType()"),
+              method("getOffset()"),
+              method("getLength()"),
+              method("getDocument()"),
+              method(suppress, "getChange(Element)")))

@@ -1,0 +1,20 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class(safe,
+      "javax.swing.SpinnerNumberModel",
+      statics(method("run(Number, Comparable, Comparable, Number)"),
+              method("run(int, int, int, int)"),
+              method("run(double, double, double, double)"),
+              method("run()")),
+      methods(method("setMinimum(Comparable)"),
+              method("getMinimum()"),
+              method("setMaximum(Comparable)"),
+              method("getMaximum()"),
+              method("setStepSize(Number)"),
+              method("getStepSize()"),
+              method("getNextValue()"),
+              method("getPreviousValue()"),
+              method("getNumber()"),
+              method("getValue()"),
+              method("setValue(Object)")))

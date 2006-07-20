@@ -1,0 +1,28 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class(safe,
+      "javax.swing.JToolBar",
+      statics(method("run()"),
+              method("run(int)"),
+              method("run(String)"),
+              method("run(String, int)")),
+      methods(method(suppress, "getUI()"),
+              method(suppress, "setUI(ToolBarUI)"),
+              method(suppress, "updateUI()"),
+              method(suppress, "getUIClassID()"),
+              method("getComponentIndex(Component)"),
+              method("getComponentAtIndex(int)"),
+              method("setMargin(Insets)"),
+              method("getMargin()"),
+              method("isBorderPainted()"),
+              method("setBorderPainted(boolean)"),
+              method("isFloatable()"),
+              method("setFloatable(boolean)"),
+              method("getOrientation()"),
+              method("setOrientation(int)"),
+              method("addSeparator()"),
+              method("addSeparator(Dimension)"),
+              method("add(Action)"),
+              method("setLayout(LayoutManager)"),
+              method(suppress, "getAccessibleContext()")))

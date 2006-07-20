@@ -1,0 +1,119 @@
+#!/usr/bin/env rune
+
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+?? in new vat server
+
+Exports 'thing' as the server. 'x' is a server variable the
+client can get and set.
+
+    ? (introducer.onTheAir()
+    > var x := null
+    > def thing {
+    >     to run()      :void { println("foo") }
+    >     to setX(newX) :void { x := newX }
+    >     to getX()      :any { x }
+    > }
+    > def sr := makeSturdyRef.temp(thing, timer.now() + 3_600_000)
+    > def uri := introducer.sturdyToURI(sr)
+    > <file:~/Desktop/thing.cap>.setText(uri); uri)
+    -# match: "captp://*/*/*/*"
+
+    ? x == null
+    # value: true
+
+?? in new vat client
+
+Import a remote reference to the 'thing' server
+
+    ? (introducer.onTheAir()
+    > def uri := <file:~/Desktop/thing.cap>.getText().trim()
+    > def sr := introducer.sturdyFromURI(uri)
+    > uri)
+    -# match: "captp://*/*/*/*"
+
+    ? def farThing := sr.getRcvr()
+    # value: <Remote Promise>
+
+    ? def result := farThing <- run()
+    # value: <Remote Promise>
+
+Wait until the result is resolved before continuing the
+test script.
+
+    ? interp.waitAtTop(result)
+
+    ? result == null
+    # value: true
+
+?? in vat server
+
+    ?
+    # stdout: foo
+    #
+    ? x == null
+    # value: true
+
+?? in vat client
+
+Export an unresolved LocalPromise
+
+    ? def [p,r] := Ref.promise()
+    # value: [<Promise>, <Resolver>]
+
+    ? farThing <- setX(p)
+    # value: <Remote Promise>
+
+?? in vat server
+
+    ? x
+    # value: <Remote Promise>
+
+Send a message to an unresolved imported RemotePromise
+
+    ? def y := x <- add(3)
+    # value: <Remote Promise>
+
+?? in vat client
+
+Resolve the exported LocalPromise
+
+    ? r.resolve(2)
+
+?? in vat server
+
+Check that the RemotePromise resolved
+
+    ? interp.waitAtTop(x)
+
+    ? x
+    # value: 2
+
+Check that the pending message was processed.
+
+    ? interp.waitAtTop(y)
+
+    ? y
+    # value: 5
+
+?? in vat client
+
+Sending an imported reference as argument...
+
+    ? interp.waitAtTop(farThing <- setX(farThing))
+
+?? in vat server
+
+    ? x
+    # value: <thing>
+
+...the argument as received is the same as what was exported
+
+    ? thing == x
+    # value: true
+
+
+
+
+

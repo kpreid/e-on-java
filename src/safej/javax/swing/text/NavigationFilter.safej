@@ -1,0 +1,9 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class(safe,
+      "javax.swing.text.NavigationFilter",
+      statics(method("run()")),
+      methods(method("setDot(NavigationFilter.FilterBypass, int, Position.Bias)"),
+              method("moveDot(NavigationFilter.FilterBypass, int, Position.Bias)"),
+              method("getNextVisualPositionFrom(JTextComponent, int, Position.Bias, int, Position.Bias[])")))

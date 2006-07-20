@@ -1,0 +1,61 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+/**
+ * 'oneAtATimeVow' calls 'assocFuncVow' on each successive element
+ * of a list, each in its own separate turn, proceeding only after the
+ * previous call reports completion.
+ * <p>
+ * Like an {@link org.erights.e.elib.tables.AssocFunc}, an
+ * 'assocFuncVow' is a function of two arguments, a key and a
+ * value. Since the collection in question is a list, the keys will be
+ * indexes (integers), and the values will be the corresponding
+ * list elements.
+ * <p>
+ * Unlike an AssocFunc, an assocFuncVow returns a
+ * promise for reporting (by resolving this promise) that the requested
+ * operation is complete. 'oneAtATimeVow' itself returns such a
+ * promise, resolving to null only after all iterations have reported
+ * completion.
+ * <p>
+ * If an individual assocFuncVow call throws a problem, then no
+ * further iterations will happen and oneAtATimeVow's result promise
+ * will become broken with this problem. But if oneAtATimeVow instead
+ * returns a broken reference (or a promise which resolves to a broken
+ * reference), this is considered a normal report of completion, and
+ * we proceed on to the next iteration.
+ * <p>
+ * XXX The above is probably a bad design decision. We should instead
+ * probably treat a returned broken reference the same way we treat a thrown
+ * promise -- no further iterations, and the promise for the overall result is
+ * smashed with the same problem. Since this would be a non-upwards
+ * compatible change, if we do this, we'll introduce an alternate to
+ * <tt>oneAtATimeVow</tt> and deprecate <tt>oneAtATimeVow</tt>.
+ *
+ * @author Mark S. Miller
+ * @author derived from walkSingleFileVow by Terry Stanley
+ */
+def oneAtATimeVow(list, assocFuncVow) :vow {
+    def [result :vow, resolver] := Ref.promise()
+    def doWhen(i) :void {
+        if (i < list.size()) {
+            var ok := true
+            def next :vow := try {
+                assocFuncVow(i, list[i])
+            } catch problem {
+                resolver.smash(problem)
+                ok := false
+            }
+            if (ok) {
+                Ref.whenResolved(next, def _(_) :void {
+                    doWhen(i+1)
+                })
+            }
+        } else {
+            resolver.resolve(null)
+        }
+    }
+    doWhen(0)
+    result
+}
+

@@ -1,0 +1,11 @@
+class("org.eclipse.swt.events.TypedEvent",
+           statics(method(suppress, "run(Object)"),
+                   method(suppress, "run(Event)")),
+           methods(method(suppress, "getDisplay()"),
+                   method(suppress, "setDisplay(Display)"),
+                   method(suppress, "getWidget()"),
+                   method(suppress, "setWidget(Widget)"),
+                   method(suppress, "getTime()"),
+                   method(suppress, "setTime(int)"),
+                   method(suppress, "getData()"),
+                   method(suppress, "setData(Object)")))

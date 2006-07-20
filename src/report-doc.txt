@@ -1,0 +1,45 @@
+[[*.*.*.*.*.*.*.*.*.*.*.[]*.*.*.*.*.*.*.*.*.][[*.*.]*.[]*.*.*.*.][[*.*.*.*.*.*.*.*.]*.[]*.*.*.][*
+c:/Documents and Settings/millerm1/e/doc/elang/echat/index.html
+syntax error: The optional e.enable.explicit-result-guard feature (see org/erights/e/elang/syntax/syntax-props-default.txt) is currently on disallowing this construct.
+  def awt(className) {
+                     ^
+  @ <file:c:/Documents and Settings/millerm1/e/doc/elang/echat/index.html#:span::122:21::122:21>
+][*.[[c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/chen-tsang/fileClt.e-awt
+
+c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/chen-tsang/fileClt.e-awt
+First line should be "#!/usr/bin/env rune"
+c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/chen-tsang/fileSvr.e-awt
+
+c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/chen-tsang/fileSvr.e-awt
+First line should be "#!/usr/bin/env rune"
+.][.*..][......*..# tab at 654 from: <file:c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/exercises/pong-client.e#:span::23:0::23:0>
+
+....]*.]][*.*.*.*.*.*.*.*.*.*.][*.*.]*.*.[.*.*..*.*.*.*.*.][*.*.*.][*.[[]*.]*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.]*.[[*.]*.*.[*.]*.*.[*.]*.[*.*.*.*.][*.*.*.][*.*.][*.*.]]*.*.# tab at 1604 from: <file:c:/Documents and Settings/millerm1/e/doc/elang/report.txt#:span::34:0::34:0>
+
+.*# warning: The optional e.enable.smalltalk-return feature (see org/erights/e/elang/syntax/syntax-props-default.txt) is set to "warn".: <file:c:/Documents and Settings/millerm1/e/doc/elang/same-ref.html#:span::134:116::134:116>
+
+# warning: The optional e.enable.smalltalk-return feature (see org/erights/e/elang/syntax/syntax-props-default.txt) is set to "warn".: <file:c:/Documents and Settings/millerm1/e/doc/elang/same-ref.html#:span::135:116::135:116>
+
+# warning: The optional e.enable.smalltalk-return feature (see org/erights/e/elang/syntax/syntax-props-default.txt) is set to "warn".: <file:c:/Documents and Settings/millerm1/e/doc/elang/same-ref.html#:span::133:37::133:37>
+
+# warning: The optional e.enable.smalltalk-return feature (see org/erights/e/elang/syntax/syntax-props-default.txt) is set to "warn".: <file:c:/Documents and Settings/millerm1/e/doc/elang/same-ref.html#:span::178:116::178:116>
+
+# warning: The optional e.enable.smalltalk-return feature (see org/erights/e/elang/syntax/syntax-props-default.txt) is set to "warn".: <file:c:/Documents and Settings/millerm1/e/doc/elang/same-ref.html#:span::179:116::179:116>
+
+# warning: The optional e.enable.smalltalk-return feature (see org/erights/e/elang/syntax/syntax-props-default.txt) is set to "warn".: <file:c:/Documents and Settings/millerm1/e/doc/elang/same-ref.html#:span::181:45::181:45>
+
+# warning: The optional e.enable.smalltalk-return feature (see org/erights/e/elang/syntax/syntax-props-default.txt) is set to "warn".: <file:c:/Documents and Settings/millerm1/e/doc/elang/same-ref.html#:span::184:45::184:45>
+
+
+c:/Documents and Settings/millerm1/e/doc/elang/same-ref.html
+syntax error: The optional e.enable.explicit-result-guard feature (see org/erights/e/elang/syntax/syntax-props-default.txt) is currently on disallowing this construct.
+          to __printOn(out) {
+                            ^
+  @ <file:c:/Documents and Settings/millerm1/e/doc/elang/same-ref.html#:span::186:145::186:145>
+[*.*.*.*.*.][[*
+c:/Documents and Settings/millerm1/e/doc/elang/tools/causeway/causeway-intro.html
+problem: "<- question()</tt>" isn't really a tag
+[]*
+c:/Documents and Settings/millerm1/e/doc/elang/tools/causeway/index.html
+problem: "<- question()</tt>" isn't really a tag
+][[]*.]*.*.]]

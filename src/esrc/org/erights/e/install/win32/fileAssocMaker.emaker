@@ -1,0 +1,36 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+/**
+ * Given a fileAssocCmd, make and return a fileAssoc procedure
+ * for associating a file extension with a registry type, a registry
+ * type description, a mime types, and an icon.
+ *
+ * @param fileAssocCmd a Command for executing file_assoc.exe as
+ *                     made by makeCommand
+ *
+ * @author Mark S. Miller
+ */
+def fileAssocMaker(fileAssocCmd) :any {
+    def fileAssoc {
+        
+        /**
+         * @param ext file extension, such as ".e"
+         * @param regType Registry Type, such as "e-script"
+         * @param regDesc Registry Description, such as "E Script"
+         * @param mimeType Mime Type, such as "text/x-escript"
+         * @param icon Filename of file containing icon (at pos 0)
+         */
+        to run(ext :Twine,
+               regType :Twine,
+               regDesc :Twine,
+               mimeType :Twine,
+               icon :Twine) :void {
+            require(ext.startsWith("."),
+                    thunk{`$ext must start with "."`})
+            fileAssocCmd("-icon", icon, "0",
+                         # XXX "-quickView", "*",
+                         ext, regType, regDesc, mimeType)
+        }
+    }
+}

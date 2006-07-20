@@ -1,0 +1,66 @@
+def makeFileProgressObserverAuthor(makeFrame,
+                                   swtGrid__quasiParser,
+                                   traceline) :near {
+
+    def <swt> := <import:org.eclipse.swt.*>
+    def SWT := <swt:makeSWT>
+    def <widget> := <swt:widgets.*>
+
+    def makeProgressList := {
+        var progressWindow := null
+        var inProgressList := null
+        def makeProgressList() :near {
+            if (progressWindow == null) {
+                progressWindow := makeFrame()
+                progressWindow.setText("File Copy Progress Status")
+                progressWindow.setSize(200, 200)
+                inProgressList := <widget:makeList>(progressWindow, SWT.getBORDER() | SWT.getV_SCROLL())
+                swtGrid`$progressWindow: $inProgressList.X.Y`
+                def disposer {to widgetDisposed(ev) :void {progressWindow := null}}
+                progressWindow.addDisposeListener(disposer)
+                progressWindow.open()
+            }
+            inProgressList
+        }
+    }
+
+    def fileProgressObserverMaker(title, farFile) :any {
+        def myList := makeProgressList()
+        def size
+        var currentItem := "  0% " + title
+        myList.add(currentItem)
+        myList.setSelection(myList.getItemCount() - 1)
+        var listExists := true
+        def disposer {to widgetDisposed(ev) :void {listExists := false}}
+        myList.addDisposeListener(disposer)
+        var bytesSent := 0
+        def localFailed() :void {E.call(myList, "remove(String)", [currentItem])}
+        Ref.whenBroken(farFile, def breaker(p) :void {
+            localFailed()
+        })
+        def fileProgressObserver {
+            to completed() :void {
+                traceline("completed file transfer!")
+                E.call(myList, "remove(String)", [currentItem])
+                #myList remove(currentItem)
+            }
+            to setFileSize(theSize) :void {bind size := theSize}
+            to updateCount(countIncrement) :void {
+                bytesSent := bytesSent + countIncrement
+                def percent := (bytesSent/size * 100) // 1
+                if (listExists) {
+                    def itemIndex := myList.indexOf(currentItem)
+                    if (itemIndex >= 0) {
+                        currentItem := ` $percent% $title`
+                        myList.setItem(itemIndex, currentItem)
+                        myList.setSelection(itemIndex)
+                        myList.showSelection()
+                    } else {traceline("item disappeared from copy list!")}
+                }
+            }
+            to copyFailed() :void {
+                localFailed()
+            }
+        }
+    }
+}

@@ -1,0 +1,22 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class(safe,
+      "java.awt.RenderingHints",
+      statics(method("run(Map)"),
+              method("run(RenderingHints.Key, Object)")),
+      methods(method(reject, "size()"),
+              method(reject, "isEmpty()"),
+              method(reject, "containsKey(Object)"),
+              method(reject, "containsValue(Object)"),
+              method(reject, "get(Object)"),
+              method(reject, "put(Object, Object)"),
+              method(suppress, "add(RenderingHints)"),
+              method("clear()"),
+              method(reject, "remove(Object)"),
+              method(reject, "putAll(Map)"),
+              method(reject, "keySet()"),
+              method(reject, "values()"),
+              method(reject, "entrySet()"),
+              method("clone()")),
+      comment("Made safe by eliminating all ways to read the hints (which could work as a semi covert channel), but allowing setting of hints so rendering can be good. So this is a write-only system"))

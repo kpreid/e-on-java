@@ -1,0 +1,11 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class(safe,
+      "java.awt.event.MouseWheelEvent",
+      statics(method(suppress, "run(Component, int, long, int, int, int, int, boolean, int, int, int)")),
+      methods(method("getScrollType()"),
+              method("getScrollAmount()"),
+              method("getWheelRotation()"),
+              method("getUnitsToScroll()"),
+              method(suppress, "paramString()")))

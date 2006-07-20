@@ -1,0 +1,19 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class(safe,
+      "javax.swing.text.DefaultFormatterFactory",
+      statics(method("run()"),
+              method("run(JFormattedTextField.AbstractFormatter)"),
+              method("run(JFormattedTextField.AbstractFormatter, JFormattedTextField.AbstractFormatter)"),
+              method("run(JFormattedTextField.AbstractFormatter, JFormattedTextField.AbstractFormatter, JFormattedTextField.AbstractFormatter)"),
+              method("run(JFormattedTextField.AbstractFormatter, JFormattedTextField.AbstractFormatter, JFormattedTextField.AbstractFormatter, JFormattedTextField.AbstractFormatter)")),
+      methods(method("setDefaultFormatter(JFormattedTextField.AbstractFormatter)"),
+              method("getDefaultFormatter()"),
+              method("setDisplayFormatter(JFormattedTextField.AbstractFormatter)"),
+              method("getDisplayFormatter()"),
+              method("setEditFormatter(JFormattedTextField.AbstractFormatter)"),
+              method("getEditFormatter()"),
+              method("setNullFormatter(JFormattedTextField.AbstractFormatter)"),
+              method("getNullFormatter()"),
+              method("getFormatter(JFormattedTextField)")))

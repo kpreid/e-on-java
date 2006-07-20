@@ -1,0 +1,519 @@
+
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def JPanel__quasiParser := <import:org.erights.ex.swing.JPanel__quasiParser>
+
+/**
+ * Spins off a separate vat from which to create a separate java
+ * process and wait for it to exit.
+ * <p>
+ * Beware that this uses Vat.seed/3. The arguments provided to
+ * execCommandAuthor are all used from the other vat, and so all must
+ * be thread safe in the sense required by {@link Vat#seed/3}.
+ *
+ * @param makeVat Expected to be
+ *                <tt>&lt;unsafe:org.erights.e.elib.vat.Vat&gt;</tt>.
+ * @param runtime Expected to be
+ *                <tt>&lt;unsafe:java.lang.Runtime&gt;.getRuntime()</tt>.
+ * @param cwdDir A File object representing the directory that these commands
+ *               should see as their current working directory.
+ * @return A boot-ref (ie, a remote reference as provided by the
+ *         boot-comm-system) to an execCommand function
+ */
+def execCommandAuthor(makeVat, runtime, cwdDir, traceline) :rcvr {
+    def execVat := makeVat.make("headless", "exec")
+    execVat.seed(thunk{
+        def makeCommand :=
+          <elib:extern.CommandMakerAuthor>(runtime)
+        def command := makeCommand("java")
+
+        /**
+         * Invokes whatever "java" is on the PATH, providing it these
+         * command line arguments.
+         */
+        def execCommand(args) :void {
+            traceline("starting independent jvm spinoff")
+            traceline("about to doNow")
+            command.doNow(args, null, cwdDir, null)
+            traceline("did doNow")
+        }
+    })
+}
+
+def <sky> := <import:com.skyhunter.*>
+
+def powerboxControllerMakerAuthor {
+    to run(<unsafe>,
+           <file>,
+           interp,
+           introducer,
+           traceline) :near {
+        powerboxControllerMakerAuthor(<unsafe>,
+                                      <file>,
+                                      interp,
+                                      introducer,
+                                      traceline,
+                                      false)
+    }
+    to run(<unsafe>,
+           <file>,
+           interp,
+           introducer,
+           traceline,
+           isRunningIndependent) :near {
+        def <swing> := <unsafe:javax.swing.*>
+        def <awt> := <unsafe:java.awt.*>
+        def <java> := <unsafe:java.*>
+        def resolveAllVow := <sky:e.net.resolveAllVow>
+        def uiTools :=
+          <sky:ex.swing.uiToolsAuthor>(<awt>, <swing>)
+        def runSource :=
+          <sky:e.lang.runConfinedSourceFuncAuthor>(<unsafe>,
+                                                   interp,
+                                                   traceline)
+        def makeFrameAuthor := <sky:e.security.makeFrameAuthor>
+
+        def URL := <type:java.net.URL>
+        def InputStream := <type:java.io.InputStream>
+
+        def localURIGetterMaker(localDir) :near {
+            def uriGetter {
+                to get(relativePath :String) :near {
+                    # put this through the process of building a file, which
+                    # uses all the careful character handling of the
+                    # file__uriGetter so the caplet can't play games
+                    def theFile := localDir[relativePath]
+                    traceline(`getting local resource: $theFile`)
+                    <unsafe:java.net.makeURL>("file:" +
+                                            theFile.getCanonicalPath())
+                }
+            }
+        }
+
+        /**
+         * capletAuthorSource is optional so that the caplet can be
+         * manufactured either by the powerbox during normal
+         * operations, or externally to the powerbox when the caplet
+         * is better constructed externally, as in when debugging.
+         * <p>
+         * There is a one-to-one correspondence between caplets and
+         * powerbox/powerboxController pairs
+         */
+        def powerboxControllerMaker(capletName,
+                                    optCapletIconImage,
+                                    agreedCapsXml) :any  {
+            def powerbox
+            def caplet
+            def powersMap := [].asKeys().diverge()
+            var reactorsMap := [].asKeys()
+            def clipboard :=
+              <awt:makeToolkit>.getDefaultToolkit().getSystemClipboard()
+            var shouldRunIndependent := false
+
+            /**
+             * XXX document, when a caplet returns a copy or cut value, that
+             * XXX value must implement both transferable and ClipboardOwner
+             * XXX as does StringSelection
+             */
+            def spinoffCapletStream(stream :InputStream ) :void {
+                def <io> := <unsafe:java.io.*>
+                traceline("in powerbox spinoff caplet stream")
+                def readableStream :=
+                  <io:makeBufferedReader>(<io:makeInputStreamReader>(stream))
+                def sourceBuffer := <unsafe:java.lang.makeStringBuffer>()
+                while (true ) {
+                    def next := readableStream.readLine()
+                    if (next == null) {
+                        break
+                    } else {
+                        E.call(sourceBuffer, "append(String)", [next + "\n"])
+                    }
+                }
+                traceline("finished looping stream")
+                def capletAuthor := runSource(sourceBuffer.snapshot())
+
+                traceline(`ran source made caplet: $capletAuthor`)
+                def requests := capletAuthor.getRequestedCaps()
+                traceline("requests: " + requests)
+                def capsPetsVow :=
+                  <sky:installer.agreedCapsPetsVowMakerAuthor>(
+                    <unsafe>, <file>)(requests, "")
+                when (capsPetsVow) -> done(capsPets) :void {
+                    traceline("got capsxml for spinoff")
+                    def pets := capsPets.getPetMap()
+                    def spunPowerController :=
+                      powerboxControllerMaker(pets.fetch("Name",
+                                                         thunk{"Caplet"}),
+                                              pets.fetch("Icon", thunk{}),
+                                              capsPets.getCapsXML())
+                    traceline(`got spun power: $spunPowerController`)
+                    spunPowerController.startExternalCaplet(capletAuthor(spunPowerController.getPowerbox()))
+                } catch prob {
+                    traceline("incomplete installation of spinoff caplet" +
+                                prob)}
+            }
+
+            def powerbarControllerMaker(eFrame) :near {
+                def cutFunc() :void {
+                    traceline("about to do cut reaction")
+                    try {
+                        def contents := caplet.reactToCut(eFrame)
+                        clipboard.setContents(contents, contents)
+                    } catch prob {
+                        # No cut reaction
+                    }
+                }
+                def cutURL := <resource:com/skyhunter/e/icons/cut.gif>
+                def cutButton :=
+                  uiTools.newToolButton(<swing:makeImageIcon>(cutURL).getImage(),
+                                        "Global Cut",
+                                        cutFunc)
+                def copyFunc() :void {
+                    traceline("about to do copy reaction")
+                    try {
+                        def contents := caplet.reactToCopy(eFrame)
+                        traceline("pbox copy contents: " + contents)
+                        clipboard.setContents(contents, contents)
+                    } catch prob {
+                        #  No copy reaction
+                    }
+                }
+                def copyURL := <resource:com/skyhunter/e/icons/copy.gif>
+                def copyButton :=
+                  uiTools.newToolButton(<swing:makeImageIcon>(copyURL).getImage(),
+                                        "Global Copy",
+                                        copyFunc)
+                def pasteFunc() :void {
+                    traceline("about to do paste reaction")
+                    try {
+                        caplet.reactToPaste(eFrame, "dummy from-clipboard")
+                    } catch prob {
+                        traceline("paste prob: " + prob)
+                    }
+                }
+                def pasteURL := <resource:com/skyhunter/e/icons/paste.gif>
+                def pasteButton :=
+                  uiTools.newToolButton(<swing:makeImageIcon>(pasteURL).getImage(),
+                                        "Global Paste",
+                                        pasteFunc)
+                def spacer := <swing:makeJLabel>(" ")
+                def powerPanel := JPanel`
+                    $cutButton $copyButton $pasteButton $spacer.X`
+                powerPanel.setBorder(<swing:makeBorderFactory>.createRaisedBevelBorder())
+
+                /**
+                 * XXX is a powerbar controller needed?
+                 * <p>
+                 * XXX why does anyone ever
+                 * XXX need to talk to this, it just monitors the powerbar,
+                 * XXX it initiates talk, not the other way around
+                 */
+                def powerbarController {
+
+#                   to reactToPaste() {
+#                       caplet reactToPaste(eFrame,"dummyObject")
+#                   }
+
+                    /** */
+                    to getPowerPanel() :near {powerPanel}
+                }
+            }
+            def urlMakerMaker(agreedUrlsMap) :near {
+                def urlMaker {
+                    to run(urlString :String) :near {
+                        def url := <unsafe:java.net.makeURL>(urlString)
+                        if (agreedUrlsMap.maps(url.getProtocol())) {
+                            url
+                        } else {null}
+                    }
+
+                    /**
+                     * XXX give url a java type guard
+                     */
+                    to relative(url :URL, urlString :String) :near {
+                        if (agreedUrlsMap.maps (url.getProtocol())) {
+                            traceline("about to get relative url in powerbox")
+                            <unsafe:java.net.makeURL>(url, urlString)
+                        } else {null}
+                    }
+                    to get(urlString :String) :near {urlMaker(urlString)}
+                    to getAgreedProtocols() :near {agreedUrlsMap.snapshot()}
+                }
+            }
+
+            # capletIconImage is the image to place in the top left corner of
+            # the caplet's frames
+            def capletIconImage := if (optCapletIconImage != null) {
+                optCapletIconImage
+            } else {
+                <swing:makeImageIcon>(
+                    <resource:com/skyhunter/capDesk/icons/stranger.gif>).getImage()
+            }
+            def frameMaker := makeFrameAuthor(<swing:makeJFrame>,
+                                              powerbarControllerMaker,
+                                              capletIconImage,
+                                              capletName,
+                                              <awt>,
+                                              <swing>,
+                                              traceline)
+
+            def processCapsSml() :void {
+                traceline("made it into processcapssml")
+                powersMap[powerbox.getFRAME_MAKER()] := frameMaker
+                traceline("set framemaker")
+                powersMap[powerbox.getTRACELN()] := traceline
+                powersMap[powerbox.getDROP_TARGET()] := <awt:dnd.makeDropTarget>
+                powersMap[powerbox.getINITIAL_DOC_RCVRS()] := []
+                powersMap[powerbox.getPET_NAME()] := capletName
+                powersMap[powerbox.getPET_ICON()] := optCapletIconImage
+                def mapDomText := <sky:e.util.mapDomTextFunc>
+                def domFromText := <sky:e.util.domFromTextFunc>
+                def extractChildNodes := <sky:e.util.extractChildNodesFunc>
+                traceline("about to make dom tree")
+                def tree := domFromText(agreedCapsXml)
+                traceline(`made dom tree: $tree`)
+                def agreedUrlProtocols := [].asKeys().diverge()
+                var optServerSocketPort := null
+                def capsVisitor {
+                    to visitUrlProtocols(subNodes) :void {
+                        for each in subNodes {each.welcome (capsVisitor)}
+                    }
+                    to visitProtocol(subNodes) :void {
+                        traceline("getting Protocol in powerbox construction")
+                        agreedUrlProtocols[subNodes[0].getData()] := null
+                    }
+                    to visitServer(subNodes) :void {
+                        for each in subNodes {each.welcome(capsVisitor)}
+                    }
+                    to visitServersocket(subNodes) :void {
+                        traceline("in serversocket in powerbox construction")
+                        for each in subNodes {each.welcome(capsVisitor)}
+                    }
+                    # Note: serverSocket cannot be created until after
+                    # determining that this powerbox is doing local
+                    # launch, not remote launch
+                    to visitPort(subNodes) :void {
+                        def portString := subNodes[0].getData()
+                        traceline("got portString: ")
+                        traceline(portString)
+                        optServerSocketPort := __makeInt(portString.trim())
+                    }
+                    to visitIndependent(subNodes) :void {
+                        traceline("got independent authorization")
+                        shouldRunIndependent := true
+                    }
+                    to visitCaps(subNodes) :void {
+                        for each in subNodes { each.welcome(capsVisitor)}
+                    }
+                    match [verb, args] {
+                        traceline("capsVisitor unhandled: " + verb)
+                    }
+                }
+                for each in tree {
+                    each.welcome(capsVisitor)
+                }
+                traceline(`agreedUrlProtocols: $agreedUrlProtocols`)
+                powersMap[powerbox.getURL_MAKER()] :=
+                  urlMakerMaker(agreedUrlProtocols)
+                if (optServerSocketPort != null && (isRunningIndependent || !shouldRunIndependent)) {
+                    powersMap[powerbox.getSERVER_SOCKET()] :=
+                      <java:net.ServerSocket> (optServerSocketPort )
+                }
+            }
+            bind powerbox {
+                to requestExit() :void {
+                    for each => dummy in reactorsMap {
+                        each.reactToExitRequest()
+                    }
+                }
+                to subsetPowers(restrictedMap :pbc) :near {
+                    throw("XXX not yet implemented")
+                }
+
+                /**
+                 * Requests a vow for a ConstList of possibly remote files.
+                 <p>
+                 * XXX optFiler needs to be not pbc, but a java type
+                 */
+                to requestFileRcvrsVow(editable :boolean,
+                                       title :String,
+                                       justification :String,
+                                       startPathText :String,
+                                       optFilter :pbc) :vow {
+                    def [answerVow, solver] := Ref.promise()
+                    #def answer := [].diverge()
+                    def chooser := <swing:makeJFileChooser>()
+                    if (optFilter != null) {chooser.setFileFilter(optFilter)}
+                    if (startPathText != null && startPathText != "") {
+                        try {
+                            chooser.setCurrentDirectory(<file>[startPathText])
+                        } catch e {
+                            traceline("bad startPath: " + startPathText)
+                        }
+                    }
+                    chooser.setApproveButtonText("Grant")
+                    chooser.setMultiSelectionEnabled(false)
+                    def editableText() :any {
+                        if (editable) {
+                            "editable"
+                        }else {"read-only"}
+                    }
+                    def accessory := <swing:makeJLabel>()
+                    accessory.setText(`Justification: "$justification"`)
+                    chooser.setAccessory(accessory)
+                    # the chooser is configured. now put it inside a proper
+                    # window frame
+                    def frame := <swing:makeJFrame>()
+                    #frame.setBounds(30,630,30, 430)
+                    def iconURL := <resource:com/skyhunter/capDesk/icons/POLAbear5Tiny.gif>
+                    frame.setIconImage(<swing:makeImageIcon>(iconURL).getImage())
+                    frame.setTitle(`CapDesk - $capletName requests ${editableText()} file: $title`)
+                    frame.getContentPane().add(chooser)
+                    def choiceListener {
+                        to actionPerformed(blah) :void {frame.dispose()}
+                    }
+                    chooser.addActionListener(choiceListener)
+                    def winListener {
+                        to windowClosed(blah) :void {
+                            #XXX broken, only returns a single file at this time
+                            traceline("file selection made")
+                            var nextFile := chooser.getSelectedFile()
+                            if (nextFile == null) {
+                                solver.smash("no file selected")
+                            } else {
+                                if (! editable) {nextFile := nextFile.deepReadOnly()}
+                                solver.resolve([nextFile])
+                            }
+                        }
+                        match [verb, args] {}
+                    }
+                    frame.addWindowListener(winListener)
+                    frame.pack()
+                    frame.setVisible(true)
+                    #def approve0 := chooser.showOpenDialog(null)
+                    return answerVow
+                }
+                to requestUrlVow(urlString :String,
+                                 title :String,
+                                 justification :String) :vow {}
+                to requestCapVow(title :String, justification :String) :vow {
+                    throw("XXX requestCapPromise not yet implemented")
+                }
+                to optCap(capKey :String) :any {
+                    powersMap.fetch(capKey, thunk{})
+                }
+
+                /**
+                 * XXX remove runSource sometime, when capability-free
+                 * runconfined source emaker available
+                 */
+                to runSource(sourceText :Twine) :near {runSource(sourceText)}
+
+                /**
+                 * XXX give stream a java type guard
+                 */
+                to spinoffCapletStream(stream) :void {spinoffCapletStream(stream)}
+                to getCAP_TIMER() :any {"capTimer"}
+                to getFRAME_MAKER() :any {"frameMaker"}
+                to getTRACELN() :any {"traceline"}
+                to getURL_MAKER() :any {"urlMaker"}
+                to getINITIAL_DOC_RCVRS() :any {"initialDocRcvrs"}
+                to getLOCAL__URIGETTER() :any {"local__uriGetter"}
+                to getDOC_SUFFIX() :any {"docSuffix"}
+                to getPET_NAME() :any {"petName"}
+                to getPET_ICON() :any {"petIcon"}
+                to getDROP_TARGET() :any {"dropTarget"}
+                to getSERVER_SOCKET() :any {"serverSocket"}
+            }
+            traceline("about to process capsSml")
+            processCapsSml()
+            traceline(`shouldRunIndependent: $shouldRunIndependent`)
+            def powerboxController {
+                to getPowerbox() :near {powerbox}
+                #to forceExit() {interp continueAtTop()}
+                /**
+                 * currently, reactors only need a reactToExitRequest() method
+                 */
+                to addPowerboxReactor(reactor) :void {
+                    reactorsMap with= (reactor, null)
+                }
+                to getCaplet() :near {caplet}
+                to setCap(key, value) :void {powersMap[key] := value}
+                to launchSource(capletAuthorSource) :void {
+                    traceline("about to runSource in launchSource")
+                    def capletAuthor := runSource(capletAuthorSource)
+                    traceline("ranSource in LaunchSource")
+                    bind caplet := capletAuthor(powerbox)
+                }
+                /**
+                 * XXX Only caplets launched from a file can have
+                 * local resources or be spun off to run independently
+                 * in a separate vm, at this time
+                 */
+                to launchFile(capletFile) :void {
+                    traceline("launching file")
+                    traceline(`shouldRunIndependent: $shouldRunIndependent`)
+                    traceline(`isIndependent: $isRunningIndependent`)
+                    if (shouldRunIndependent && !isRunningIndependent) {
+                        # spin this off onto a separate jvm
+                        # XXX Only gets runtime file selections
+                        # correctly for local files
+                        def sourcePath := capletFile.getCanonicalPath()
+                        def ehome := (interp.getProps())["e.home"]
+                        traceline("ehome: " + ehome)
+                        def ejarPath :=
+                          <file>[ehome]["e.jar"].getPlatformPath()
+                        def launchPath :=
+                          `${ehome}scripts/capletLauncher.e-awt`
+                        var docNameVows := []
+                        for each in powerbox.optCap(powerbox.getINITIAL_DOC_RCVRS()) {
+                            docNameVows += [each <- getCanonicalPath()]
+                        }
+                        traceline("docNameVows: " + docNameVows)
+                        when (resolveAllVow(docNameVows)) -> doneNames(docNames) :void {
+                            traceline("docNames resolved")
+                            def args := ["-jar",
+                                         ejarPath,
+                                         launchPath,
+                                         sourcePath] + docNames
+                            traceline("made args: " + args)
+
+                            def makeVat := <unsafe:org.erights.e.elib.vat.Vat>
+                            def runtime :=
+                              <unsafe:java.lang.makeRuntime>.getRuntime()
+                            def cwdDir := <file>[ehome]
+
+                            def jvmLaunchRcvr := execCommandAuthor(makeVat,
+                                                                   runtime,
+                                                                   cwdDir,
+                                                                   traceline)
+                            traceline ("got primordial obj")
+                            jvmLaunchRcvr <- run(args, ehome)
+#                           def result :=
+#                             command doNow(args, null, <file: ehome>, null)
+                        } catch prob {
+                            traceline("failed in docNameVows resolution: " +
+                                        prob)
+                        }
+                    } else {
+                        def capletAuthorSource := capletFile.getTwine()
+                        def localPathIndex :=
+                          capletFile.getCanonicalPath().lastIndexOf("/")
+                        def localPath :=
+                          (capletFile.getCanonicalPath())(0,localPathIndex + 1)
+                        traceline("local resource path: " + localPath)
+                        def localDir := <file>[localPath]
+                        def localResources := localURIGetterMaker(localDir)
+                        powersMap[powerbox.getLOCAL__URIGETTER()] :=
+                          localResources
+                        powerboxController.launchSource(capletAuthorSource)
+                    }
+                }
+                to startExternalCaplet(theCaplet) :void {
+                    bind caplet := theCaplet
+                }
+            }
+        }
+    }
+}

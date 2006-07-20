@@ -1,0 +1,29 @@
+
+? def race := <import:org.erights.e.tools.concurrency.race>
+
+In this test, c is the winner of racing a and b:
+? def [a,ar] := Ref.promise()
+# value: [<Promise>, <Open Resolver>]
+ 
+? def [b,br] := Ref.promise()
+# value: [<Promise>, <Open Resolver>]
+ 
+? def c := race([a, b])
+# value: <Promise>
+ 
+? c
+# value: <Promise>
+ 
+? ar.resolve(3)
+? c
+# value: 3
+ 
+? a
+# value: 3
+ 
+? br.resolve(4)
+? b
+# value: 4
+ 
+? c
+# value: 3

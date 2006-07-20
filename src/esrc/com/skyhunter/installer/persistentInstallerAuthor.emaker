@@ -1,0 +1,87 @@
+
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def JPanel__quasiParser := <import:org.erights.ex.swing.JPanel__quasiParser>
+
+def persistentInstallerAuthor(<unsafe>, <file>, interp, introducer, eProps, traceline) :any {
+    def INSTALLED_APPS_DIR_NAME := "installedApps/"
+    def <swing> := <unsafe:javax.swing.*>
+    def <awt> := <unsafe:java.awt.*>
+
+    def frameMaker := <swing:makeJFrame>
+    def dialogVowMaker := <import:com.skyhunter.ex.swing.dialogVowMakerAuthor> (
+        <awt>, <swing>,
+        frameMaker)
+    #def makeVatHolder := <import:com.skyhunter.e.lang.vatHolderMakerAuthor> run(<unsafe>, introducer, traceline)
+    #XXX run caplet in separate vat some day
+    def runConfinedSource := <import:com.skyhunter.e.lang.runConfinedSourceFuncAuthor>(<unsafe>, interp, traceline)
+    def ehome := "~/capData/capDeskPrivate/"
+    def installedAppsDirPath := ehome + INSTALLED_APPS_DIR_NAME
+
+    def buildRunFileName(baseName) :String {
+        def moment := <unsafe:java.util.makeGregorianCalendar>()
+        def Calendar := <unsafe:java.util.makeCalendar>
+        `$installedAppsDirPath$baseName${moment[Calendar.getYEAR()]}_${
+            moment[Calendar.getMONTH()]}_${moment[Calendar.getDATE()]}_${
+            moment[Calendar.getHOUR()]}_${moment[Calendar.getMINUTE()]}.run`
+    }
+
+    /**
+     * format for the InstalledApps.xml.
+     * <p>
+     * This is probably out of date. For current version, see the xmlFormats
+     * <pre>
+     * &lt;installed&gt;
+     *     &lt;app&gt;
+     *         &lt;sourcePath&gt;c:/abc.../name.caplet&lt;/sourcePath&gt;
+     *         &lt;runPath&gt;c:/.../installedApps/name.run&lt;/runPath&gt;
+     *         &lt;petName&gt;AppName&lt;/petName&gt;
+     *         &lt;petIconPath&gt;c:/.../.../icon.gif&lt;/petIconPath&gt;
+     *         &lt;petExtension&gt;html&lt;/petExtension&gt;
+     *     &lt;/app&gt;
+     *     &lt;app&gt;...duplicate...&lt;/app&gt;
+     * &lt;/installed&gt;
+     * </pre>
+     */
+    def persistentInstaller {
+        to install(capletSourceFile, appsManager) :void {
+            def sourcePath := capletSourceFile.getCanonicalPath()
+            def capletNameRoot := capletSourceFile.getName()
+            def sourceDir := capletSourceFile.getParent()
+            def outFile := <file>[buildRunFileName(capletNameRoot)]
+            def capletAuthorRcvr := runConfinedSource(capletSourceFile.getText())
+            when (capletAuthorRcvr  <- getRequestedCaps() ) -> done(requestsXML) :void {
+                def agreedCapsVowMaker := <import:com.skyhunter.installer.agreedCapsPetsVowMakerAuthor>.run(
+                    <unsafe>, <file>)
+                def capsPetsVow := agreedCapsVowMaker(requestsXML, sourceDir)
+                when (capsPetsVow) -> done(capsPets) :void {
+                    traceline("outfile: " + outFile.getCanonicalPath())
+                    traceline("xml: " + capsPets.getCapsXML())
+                    outFile.setText(capsPets.getCapsXML() )
+                    def appMap := capsPets.getPetMap().diverge()
+                    traceline("new appMap in persistentInstaller: " + appMap)
+                    traceline("sourcepath: " + sourcePath)
+                    #appMap["SourcePath"] := capletSourceFile getCanonicalPath()
+                    appMap["SourcePath"] := sourcePath
+
+                    traceline("set source path")
+                    appMap["RunPath"] := outFile.getCanonicalPath()
+                    traceline("set source and run paths")
+                    appsManager.addApp(appMap )
+                    dialogVowMaker("Installation Complete",
+                                       `<html><center>Installation of <p>$capletNameRoot <p> succeeded</center>`, null, ["OK"])
+                } catch prob {
+                    traceline("capsPets lost: " + prob)
+                    dialogVowMaker("Installation Aborted",
+                                       "Caplet not installed", null, ["OK"])
+                }
+            } catch requestsProb {traceline("requests retrieval failed: " + requestsProb)}
+        }
+        to uninstall(capletSourceFile) :void {}
+    }
+}
+
+
+
+

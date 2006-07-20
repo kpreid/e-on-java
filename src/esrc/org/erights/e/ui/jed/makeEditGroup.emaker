@@ -1,0 +1,103 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def whenever := <elib:slot.whenever>
+def EverReporter := <type:org.erights.e.elib.slot.EverReporter>
+
+def makeEditGroup(makeEditor, activate, shutdown, traceline) :near {
+
+    def editors := [].diverge()
+
+    # input reporters are dynamic, and so are subscribed to manually above
+    def [&everAnyDirty, everAnyDirtyReactor] := whenever.makePair([], thunk{
+        var result := false;
+        for editor in editors {
+            def &everDirty := editor.getEverDirtyReporter()
+            result |= everDirty
+        }
+        result
+    }, thunk{
+        false
+    })
+
+    def editGroup {
+
+        /**
+         * optEditor defaults to null
+         */
+        to obtainEditor(optFile) :near {
+            editGroup.obtainEditor(optFile, null)
+        }
+
+        /**
+         * Finds of creates an editor that's editing optFile.
+         * <p>
+         * @param optFile If non-null, and if there's already an editor
+         *                editing that file, or if optEditor is available,
+         *                then return that existing editor. Otherwise, make
+         *                and register a new editor.
+         * @param optEditor If this editor is available, and if optFile isn't
+         *                  null but isn't already being edited, then use
+         *                  this one. We assume optEditor is already registered
+         *                  as an editor in this editor group.
+         */
+        to obtainEditor(optFile, optEditor) :near {
+            var optResult := if (optFile == null) {
+                null
+            } else {
+                def name :String := optFile.getAbsolutePath()
+                for editor in editors {
+                    if (editor.getOptName() == name) {
+                        break editor
+                    }
+                }
+            }
+            if (optResult == null &&
+                  optFile != null &&
+                  optEditor != null &&
+                  optEditor.isAvailable()) {
+
+                optResult := optEditor
+                optResult.setFile(optFile)
+            }
+            if (optResult == null) {
+                def editor := makeEditor(editor, editGroup)
+                editor.open(optFile)
+                optResult := editor
+
+                def disposeListener {
+                    to widgetDisposed(_) :void {
+                        def index := editors.indexOf1(optResult)
+                        require(index >= 0, thunk{`not found: $optResult`})
+
+                        editors.removeRun(index, index+1)
+                        # wake it up
+                        everAnyDirtyReactor.update()
+                        if (editors.size() == 0) {
+                            shutdown()
+                        }
+                    }
+                }
+                optResult.getShell().addDisposeListener(disposeListener)
+                editors.push(optResult)
+                # subscribe to a dynamic set
+                optResult.getEverDirtyReporter().
+                  whenUpdated(everAnyDirtyReactor)
+            }
+            activate(optResult.getShell())
+            optResult
+        }
+
+        /**
+         *
+         */
+        to getEverAnyDirtyReporter() :EverReporter { &everAnyDirty }
+
+        /**
+         *
+         */
+        to saveAll() :void {
+            for editor in editors { editor.save() }
+        }
+    }
+}

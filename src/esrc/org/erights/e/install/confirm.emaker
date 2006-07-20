@@ -1,0 +1,66 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def __versionLauncherAuthor := <elang:launcher.__versionLauncherAuthor>
+def JPanel__quasiParser := <import:org.erights.ex.swing.JPanel__quasiParser>
+
+/**
+ * If it puts up a confirm dialog box, it'll also "interp.blockAtTop()"
+ * and arrange for dismiss to "interp.continueAtTop()"
+ */
+def confirm(props,
+            interp,
+            stderr,
+            <awt>,
+            <swing>,
+            optIconImage,
+            HocusFocusMaker
+) :void {
+    def welcome := ` Welcome to E ${props["e.version"]}`
+    def exitIt() :void {
+        stderr.println()
+        stderr.println(__versionLauncherAuthor.getOptVersionText(props))
+        interp.continueAtTop()
+    }
+
+    if (props.fetch("e.swingLnF", thunk{}) == "none") {
+        stderr.println("(We seem to be headless.)\n")
+        stderr.println(welcome)
+
+    } else {
+        def root := <swing:makeJFrame>(welcome, null)
+        root.addWindowListener(def closeListener {
+            to windowClosing(_) :void {
+                exitIt()
+            }
+            match _ {}
+        })
+
+        def okButton := <swing:makeJButton>("Ok")
+        okButton.setBackground(<awt:makeColor>.getWhite())
+
+        okButton.addActionListener(def okListener {
+            to actionPerformed(_) :void {
+                exitIt()
+            }
+        })
+
+        def label := <swing:makeJLabel>("E is installed.",
+                                    <swing:makeSwingConstants>.getCENTER())
+
+        root.getContentPane().add(JPanel`$label.Y
+                                         ${JPanel``} $okButton ${JPanel``}`)
+        if (optIconImage != null) {
+            # optIconImage == null should never happen here, since optIconImage
+            # should only be null if we're headless, in which case the 'if' at
+            # the beginning of confirm(..) should just welcome instead.
+            root.setIconImage(optIconImage)
+        }
+
+        root.pack()
+        root.setBounds(120, 100, 300, 100)
+        root.show()
+        HocusFocusMaker.requestFocus(okButton)
+        interp.blockAtTop()
+    }
+}

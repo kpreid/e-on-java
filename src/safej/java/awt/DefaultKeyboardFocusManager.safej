@@ -1,0 +1,13 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class("java.awt.DefaultKeyboardFocusManager",
+      statics(method(suppress, "run()")),
+      methods(method(suppress, "dispatchEvent(AWTEvent)"),
+              method(suppress, "dispatchKeyEvent(KeyEvent)"),
+              method(suppress, "processKeyEvent(Component, KeyEvent)"),
+              method(suppress, "focusPreviousComponent(Component)"),
+              method(suppress, "focusNextComponent(Component)"),
+              method(suppress, "upFocusCycle(Component)"),
+              method(suppress, "downFocusCycle(Container)")),
+      comment("REVIEW I don\'t think Eprograms ever need this, my weak understanding suggests one might be able to stuff characters in keyboard with it, all suppressed till reviewed."))

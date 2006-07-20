@@ -1,0 +1,469 @@
+#!/usr/bin/env rune
+
+# Copyright 2004 Hewlett Packard, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+# Based on http://www.waterken.com/dev/IOU/Design/ by Tyler Close
+# Originally adapted to E by Marc Stiegler
+# Further mods by Mark S. Miller
+
+pragma.enable("explicit-result-guard")
+
+def Brand := <type:org.erights.e.elib.sealing.Brand>
+
+def Nat := (int >= 0)
+
+/** The authority to hold a particular brand of right. */
+interface Hold {
+
+    /** The brand of transferred right. */
+    to getBrand() :Brand
+}
+
+/** The authority to offer and accept a particular brand of right. */
+interface Account {
+
+    /** The brand of held right. */
+    to getBrand() :Brand
+
+    /** The number of held rights. */
+    to getBalance() :Nat
+
+    /** Spawns an empty child hold. */
+    to accept() :Hold
+
+    /**
+     * Withdraws a portion of the held rights.
+     *
+     * @return The child hold containing the withdrawal amount.
+     */
+    to offer(amount :Nat) :Hold
+
+    /**
+     * Destroys a child hold, refunding any held rights to this account.
+     *
+     * @return The number of rights added to this account.
+     * @throws NotMine The provided hold was not created by this account.
+     */
+    to refund(child :Hold) :Nat
+}
+
+/**
+ * The authority to transfer a particular brand of right.
+ */
+interface Terms {
+
+    /** The brand of transferred right. */
+    to getBrand() :Brand
+
+    /**
+     * Transfers all held rights in the source hold to the destination hold.
+     */
+    to transfer(src :Hold, dest :Hold) :Nat
+}
+
+def Slot := <type:org.erights.e.elib.slot.Slot>
+def EverReporter := <type:org.erights.e.elib.slot.EverReporter>
+def EverReactor := <type:org.erights.e.elib.slot.EverReactor>
+def Throwable := <type:java.lang.Throwable>
+
+def makeLamportSlot := <elib:slot.makeLamportSlot>
+def whenever := <elib:slot.whenever>
+
+def makeETimeFormat := <import:org.erights.e.develop.format.makeETimeFormat>
+def formatTime(time :nullOk[Nat]) :String {
+    if (time == null) { return "" }
+    def `@{date}T@tod.@{_}Z` := makeETimeFormat.formatTime(time)
+    return `$date $tod GMT`
+}
+/** Only for use in TableTrees, as its representation of zero is "". */
+def formatMoney(delta :int) :String {
+    if (delta < 0) {
+        return "-$" + `${-delta}`
+    } else if (delta > 0) {
+        return "$"  + `$delta`
+    } else {
+        return ""
+    }
+}
+
+
+/**
+ * Bundles together a Hold and an ability to notify the payor that we're done
+ * with his payment.
+ */
+interface Payment {
+    to getBrand() :Brand
+    to getHold() :Hold
+    to reactToDone() :void
+}
+
+# See makeTableTreeAuthor
+def Row := Tuple[Map[String, String], List[Row]]
+
+/**
+ * Bundles together Account & Terms authority, and adds some conveniences.
+ */
+interface AccountMgr {
+    to getBrand() :Brand
+    to getAccount() :Account
+    to getTerms() :Terms
+    to getAssetsReporter() :EverReporter
+    to getLiabilitiesReporter() :EverReporter
+    to getBalanceReporter() :EverReporter
+
+    to makePayment(amount :Nat, category :String) :Payment
+    to deposit(src :Payment, category :String) :Nat
+    to deposit(src :Payment, category :String, amount :Nat) :void
+    to revoke(problem :Throwable) :void
+
+    to getTableTreeColumns() :List[String]
+    to getTableTreeData() :Row
+}
+
+interface Issuer {
+    to getBrand() :Brand
+    to getSupplyReporter() :EverReporter
+    to makeAccountMgr(balance :Nat, acctPetname :String) :AccountMgr
+
+    to getTableTreeColumns() :List[String]
+    to getTableTreeData() :Row
+}
+
+def makeBrandPair := <elib:sealing.makeBrand>
+def SealedBox := <type:org.erights.e.elib.sealing.SealedBox>
+
+def requireNull(optProblem :nullOk[Throwable]) :void {
+    require(null == optProblem, optProblem)
+}
+
+/**
+ * iouIssuers are issuers that make accounts that follow the Waterken
+ * IOU protocol; this protocol can be found at
+ * http://www.waterken.com/dev/IOU/Design/
+ */
+def makeIOUIssuerAuthor(timer) :any {
+    def makeIOUIssuer(nickName :String) :Issuer {
+        def [sealer,unsealer] := makeBrandPair(nickName)
+        def brand := sealer.getBrand()
+        def &supply := makeLamportSlot(Nat, 0)
+
+        # Maps from AccountMgr => Tuple[petname, timeOfIssue]
+        def acctMgrs := [].asMap().diverge()
+
+        def issuer implements Issuer {
+            to __printOn(out :TextWriter) :void {
+                out.print(`<issues $nickName>`)
+            }
+            to getBrand() :Brand { return brand }
+            to getSupplyReporter() :EverReporter {
+                return (&supply).readOnly()
+            }
+
+            /** balance = assets - liabilities. liabilities start at 0 */
+            to makeAccountMgr(initialAssets :Nat,
+                              acctPetname :String) :AccountMgr {
+                supply += initialAssets
+                def &assets := makeLamportSlot(Nat, 0)
+                def &liabilities := makeLamportSlot(Nat, 0)
+                var optAcctProblem :nullOk[Throwable] := null
+
+                # Maps from holdMgr => category
+                def holdMgrs := [].asMap().diverge()
+
+                def requireValidAcct() :void {
+                    requireNull(optAcctProblem)
+                }
+                def account implements Account {
+                    to __printOn(out :TextWriter) :void {
+                        if (null == optAcctProblem) {
+                            out.print(
+                                `<has ($assets - $liabilities) $nickName>`)
+                        } else {
+                            out.print(`<revoked $nickName account>`)
+                        }
+                    }
+                    to getBrand() :Brand { return brand }
+                    to getBalance() :Nat {
+                        requireValidAcct()
+                        return assets - liabilities
+                    }
+                    to accept() :Hold { return account.offer(0) }
+                    to offer(initialAmount :(0..account.getBalance())) :Hold {
+                        requireValidAcct()
+                        var amount :Nat := initialAmount
+                        liabilities += initialAmount
+                        var optHoldProblem :nullOk[Throwable] := null
+
+                        def requireValidHold() :void {
+                            requireValidAcct()
+                            requireNull(optHoldProblem)
+                        }
+
+                        var deltaA :int := 0
+                        var written := timer.now()
+                        var optClosed := null
+
+                        /** Must be closely held inside this issuer */
+                        def holdMgr {
+                            to refundInto(allegedParent :Account) :Nat {
+                                requireValidHold()
+                                require(account == allegedParent, thunk{
+                                    `NotMine: not a child of this parent`})
+                                liabilities -= amount
+                                try {
+                                    return amount
+                                } finally {
+                                    amount := 0
+                                    optHoldProblem := "refunded"
+                                    optClosed := timer.now()
+                                }
+                            }
+                            to empty() :Nat {
+                                requireValidHold()
+                                liabilities -= amount
+                                assets -= amount
+                                deltaA -= amount
+                                try {
+                                    return amount
+                                } finally {
+                                    amount := 0
+                                }
+                            }
+                            to fill(extra :Nat) :void {
+                                requireValidHold()
+                                amount += extra
+                                liabilities += extra
+                                assets += extra
+                                deltaA += extra
+                            }
+                            /** kludge */
+                            to beStarter() :void {
+                                requireValidHold()
+                                assets += initialAssets
+                                deltaA += initialAssets
+                            }
+                            to getDeltaA() :int { return deltaA }
+                            to getDeltaL() :int { return -amount }
+                            to getWritten() :Nat { return written }
+                            to getOptClosed() :nullOk[Nat] { return optClosed }
+                        }
+                        # Typically overwritten
+                        holdMgrs[holdMgr] := "-"
+                        def hold implements Hold {
+                            to __printOn(out :TextWriter) :void {
+                                if (null == optAcctProblem &&
+                                      null == optHoldProblem) {
+                                    out.print(`<holds $amount $nickName>`)
+                                } else {
+                                    out.print(`<revoked $nickName hold>`)
+                                }
+                            }
+                            to __optSealedDispatch(br :Brand) :SealedBox {
+                                if (br == brand) {
+                                    return sealer.seal(holdMgr)
+                                } else {
+                                    return null
+                                }
+                            }
+                            to getBrand() :Brand { return brand }
+                        }
+                        return hold
+                    }
+                    to refund(child :Hold) :Nat {
+                        def [holdMgr] := unsealer.amplify(child)
+                        return holdMgr.refundInto(account)
+                    }
+                }
+                def hold := account.accept()
+                def [holdMgr] := unsealer.amplify(hold)
+                holdMgr.beStarter()
+                holdMgrs[holdMgr] := "initial balance"
+
+                def terms implements Terms {
+                    to __printOn(out :TextWriter) :void {
+                        if (null == optAcctProblem) {
+                            out.print(`<transfers $nickName>`)
+                        } else {
+                            out.print(`<revoked $nickName Terms>`)
+                        }
+                    }
+                    to getBrand() :Brand { return brand }
+                    to transfer(src :Hold, dest :Hold) :Nat {
+                        requireValidAcct()
+                        def [srcMgr] := unsealer.amplify(src)
+                        def [destMgr] := unsealer.amplify(dest)
+                        def result := srcMgr.empty()
+                        destMgr.fill(result)
+                        return result
+                    }
+                }
+                def accountMgr implements AccountMgr {
+                    to __printOn(out :TextWriter) :void {
+                        out.print(`<manages $account>`)
+                    }
+                    to getBrand() :Brand { return brand }
+                    to getAccount() :Account { return account }
+                    to getTerms() :Terms { return terms }
+                    to getAssetsReporter() :EverReporter {
+                        return (&assets).readOnly()
+                    }
+                    to getLiabilitiesReporter() :EverReporter {
+                        return (&liabilities).readOnly()
+                    }
+                    to getBalanceReporter() :EverReporter {
+                        return whenever([&assets, &liabilities], thunk{
+                            assets - liabilities
+                        })
+                    }
+                    to makePayment(amount :Nat, category :String) :Payment {
+                        def hold := account.offer(amount)
+                        def payment implements Payment {
+                            to __printOn(out :TextWriter) :void {
+                                out.print("<pays from ", hold, ">")
+                            }
+                            to getBrand() :Brand { return brand }
+                            to getHold() :Hold { return hold }
+                            to reactToDone() :void {
+                                if (account.refund(hold) != 0) {
+                                    # That should be of interest on the ui
+                                }
+                            }
+                        }
+                        def [holdMgr] := unsealer.amplify(hold)
+                        holdMgrs[holdMgr] := category
+                        return payment
+                    }
+                    to deposit(payment, category :String) :Nat {
+                        try {
+                            def src :Payment := payment
+                            def dest := account.accept()
+                            terms.transfer(src.getHold(), dest)
+                            def result := account.refund(dest)
+                            def [destMgr] := unsealer.amplify(dest)
+                            holdMgrs[destMgr] := category
+                            return result
+                        } finally {
+                            payment <- reactToDone()
+                        }
+                    }
+                    to deposit(payment, category :String, amount :Nat) :void {
+                        try {
+                            def src :Payment := payment
+                            def srcHold := src.getHold()
+                            def dest := account.accept()
+                            terms.transfer(srcHold, dest)
+                            def num := account.refund(dest)
+                            def [destMgr] := unsealer.amplify(dest)
+                            holdMgrs[destMgr] := category
+                            def reimburse(rebate :Nat) :void {
+                                def rHold := account.offer(rebate)
+                                def [rMgr] := unsealer.amplify(rHold)
+                                holdMgrs[rMgr] := category
+                                terms.transfer(rHold, srcHold)
+                                account.refund(rHold)
+                            }
+                            if (num < amount) {
+                                # At this point, I got num units, but it's
+                                # not enough, so I reimburse it and fail.
+                                reimburse(num)
+                                throw(`Need $amount: Got $num`)
+                            } else if (num > amount) {
+                                # I've been overpaid, so I reimburse the
+                                # remainder.
+                                reimburse(num - amount)
+                            }
+                        } finally {
+                            payment <- reactToDone()
+                        }
+                    }
+                    to revoke(problem :Throwable) :void {
+                        optAcctProblem := problem
+                        supply -= assets
+                        assets := 0
+                        liabilities := 0
+                    }
+                    to getTableTreeColumns() :List[String] {
+                        return ["category",
+                                "deltaA",
+                                "deltaL",
+                                "written",
+                                "closed"]
+                    }
+                    to getTableTreeData() :Row {
+                        def outerRows := [].diverge()
+                        def categories := [].asSet().diverge()
+                        for category in holdMgrs {
+                            categories.addElement(category)
+                        }
+                        var totalDeltaA := 0
+                        var totalDeltaL := 0
+                        for category in categories {
+                            def innerRows := [].diverge()
+                            var catDeltaA := 0
+                            var catDeltaL := 0
+                            for holdMgr => ==category in holdMgrs {
+                                def deltaA := holdMgr.getDeltaA()
+                                catDeltaA += deltaA
+                                totalDeltaA += deltaA
+                                def deltaL := holdMgr.getDeltaL()
+                                catDeltaL += deltaL
+                                totalDeltaL += deltaL
+                                def written := holdMgr.getWritten()
+                                def optClosed := holdMgr.getOptClosed()
+                                def map := ["category" => category,
+                                            "deltaA" => formatMoney(deltaA),
+                                            "deltaL" => formatMoney(deltaL),
+                                            "written" => formatTime(written),
+                                            "closed" => formatTime(optClosed)]
+                                innerRows.push([map, []])
+                            }
+                            if (innerRows.size() == 1) {
+                                outerRows.push(innerRows[0])
+                            } else {
+                                def map := ["category" => category,
+                                            "deltaA" => formatMoney(catDeltaA),
+                                            "deltaL" => formatMoney(catDeltaL),
+                                            "written" => "",
+                                            "closed" => ""]
+                                outerRows.push([map, innerRows.snapshot()])
+                            }
+                        }
+                        def map := ["category" => "all",
+                                    "deltaA" => formatMoney(totalDeltaA),
+                                    "deltaL" => formatMoney(totalDeltaL),
+                                    "written" => "",
+                                    "closed" => ""]
+                        return [["category" => "Category",
+                                 "deltaA" => "Assets",
+                                 "deltaL" => "Liabilities",
+                                 "written" => "When Written",
+                                 "closed" => "When Settled"],
+                                [[map, outerRows.snapshot()]]]
+                    }
+                }
+                acctMgrs[accountMgr] := [acctPetname, timer.now()]
+                return accountMgr
+            }
+            to getTableTreeColumns() :List[String] {
+                return ["name", "assets", "time"]
+            }
+            to getTableTreeData() :Row {
+                def rows := [].diverge()
+                for acctMgr => [name, time] in acctMgrs {
+                    def assets := acctMgr.getAssetsReporter().getValue()
+                    rows.push([["name" => name,
+                                "assets" => formatMoney(assets),
+                                "time" => formatTime(time)],
+                               []])
+                }
+                return [["name" => "Name",
+                         "assets" => "Assets",
+                         "time" => "Time of Issue"],
+                        rows.snapshot()]
+            }
+        }
+        return issuer
+    }
+    return makeIOUIssuer
+}

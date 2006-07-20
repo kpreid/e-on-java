@@ -1,0 +1,13 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class("javax.swing.KeyStroke",
+      statics(method("getKeyStroke(char)"),
+              method(suppress, "getKeyStroke(char, boolean)"),
+              method("getKeyStroke(Character, int)"),
+              method(suppress, "getKeyStroke(int, int, boolean)"),
+              method("getKeyStroke(int, int)"),
+              method("getKeyStrokeForEvent(KeyEvent)"),
+              method(suppress, "getKeyStroke(String)")),
+      methods,
+      comment("left unsafe in case it can be used to stuff keys into widgets"))

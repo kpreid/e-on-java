@@ -1,0 +1,105 @@
+# Copyright 2006 Hewlett Packard, under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+# ? def makeSchema := <import:org.quasiliteral.schema.makeSchema>
+# ? def <schema> := <resource:org/quasiliteral/schema/>
+# ? makeSchema.parseSchema(<schema:safej.schema>.getTwine())
+
+# <safej> describes the format of a *.safej file, which is a source file
+# recording taming decisions for a Java class. The class whose <fqn> (fully
+# qualified name) is "x.y.Foo" should be tamed by the file at
+# "src/safej/x/y/Foo.safej".
+
+<safej> ::= class(<classStatus>,
+                  <fqn>,
+
+                  # If present, the class comment should give the taming
+                  # decision rationale that should show up in online
+                  # documentation (such as enhanced Javadoc output). For
+                  # rationale intended only for someone editing the safej file,
+                  # use comments such as this instead.
+                  # XXX The class comment is currently unused.
+                  comment(.String.)? &
+
+                  # If present, names this class's MakerSugar class. The static
+                  # methods of the MakerSugar class are virtually added to the
+                  # static methods of this class.
+                  # XXX this sub-term currently has no effect, as the
+                  # MakerSugar relationship is currently stored in
+                  # StaticMaker#Sugarings
+                  makerSugaredBy(<fqn>)? &
+
+                  # If present, names this class's Sugar class. The static
+                  # methods of the Sugar class are virtually added to the
+                  # instance methods of this class. The first parameter of
+                  # the static methods of the Sugar class will be treated as a
+                  # 'self' parameter, and not appear as a parameter of the
+                  # virtually added method. This self parameter's type should
+                  # be compatible with this class's type.
+                  # XXX this sub-term currently has no effect, as the Sugar
+                  # relationships are currently stored in ScriptMaker#Sugarings
+                  sugaredBy(<fqn>)? &
+
+                  # Records extra subtyping relationships to be honored by the
+                  # overlay type system. XXX Does honorary subtyping imply
+                  # inheritance?
+                  # XXX this sub-term currently has no effect, as the honorary
+                  # relationships are currently stored in each honorary
+                  # supertype.
+                  honorary(<fqn>*)? &
+
+                  statics(<method>*)? &  # Classifies static methods
+                  methods(<method>*)?);  # Classifies instance methods
+
+# The maker for a 'safe' class is importable by '<import:...>'. The maker for
+# an 'unsafe' class is importable only by '<unsafe:...>'. An absent tag
+# defaults to 'unsafe'.
+# If there is no safej file for a given class, then, if the class is on the
+# SafeJ#ApprovedClassList, it is still considered safe. Otherwise it is either
+# considered unsafe or unimportable depending on a global property
+# configuration (See eprops-template.txt). In any of these cases, all methods
+# introduced by such a class are implicitly 'allow'ed.
+# XXX Untamed classes which pass the Joe-E verifier should be considered
+# implicitly safe, with all their methods allowed.
+# We should get rid of SafeJ#ApprovedClassList. For each of these classes,
+# they should either be made Joe-E safe or get their own safej file.
+<classStatus> ::= (safe | unsafe)?;
+
+# If present, the method comment should give the rationale for how this method
+# was tamed, to show up in online documentation.
+# XXX The method comment is currently unused.
+<method> ::= method(<methStatus>, <flatSig>, comment(.String.)?);
+
+# If the method's description is absent from the safej file, then the method
+# may be inherited but not added. An absent tag on a method description
+# defaults to 'allow'.
+# 'allow' means the method may be added or inherited. "allow" should only be
+# used where the method is introduced, or a warning will be traced. The method
+# should only be classified by subclasses of the introducing class in
+# order to 'reject' it.
+# 'suppress' means the method not may be added or inherited. 'suppress' should
+# only be used where the method is introduced, not where it is inherited, or a
+# warning
+# will be traced. In order to suppress the inheriting of a method
+# 'allow'ed by a supertype, use 'reject' instead.
+# 'reject' means the method not may be added, or inherited. "reject" should
+# only be used where the method is inherited, not where it is introduced, or a
+# warning will be traced. In order to suppress the introduction of a method,
+# one should use "suppress" instead.
+# XXX Some of the warnings above are not yet implemented.
+<methStatus> ::= (allow | suppress | reject)?;
+
+# A fully qualified Java class or interface name. For inner and nested classes,
+# our format follows the JVM rather than the Java language: Classes are
+# separated by "$" rather than ".".
+<fqn> ::= .String.;
+
+# We identify methods by the string that Javadoc calls their "flat signature".
+# The flat signature of a method is a string consisting of the method-name,
+# an open paren, then the flat-names of each parameter type separated by ", "
+# (comma-space), and a final close paren. The flat-name of a non-array type
+# is its unqualified name, i.e., the last identifier of its qualified name.
+# (Although flat-names are potentially ambiguous, so far this hasn't been a
+# problem in practice.) The flat-name of an array type is the flat-name of its
+# base type followed by "[]".
+<flatSig> ::= .String.;

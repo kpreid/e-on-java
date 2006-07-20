@@ -1,0 +1,4 @@
+class(safe,
+      "javax.swing.text.html.parser.ParserDelegator",
+      statics(method("run()")),
+      methods(method("parse(java.io.Reader, HTMLEditorKit.ParserCallback, boolean)")))

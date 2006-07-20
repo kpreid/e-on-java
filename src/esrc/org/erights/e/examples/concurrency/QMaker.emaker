@@ -1,0 +1,68 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+/**
+ * @deprecated Use makeQueue instead
+ */
+def QMaker() :near {
+    def [var qhead, var qtail] := Ref.promise()
+    def cons(elem, next) :any {
+        def pair {
+            to getElem() :any { elem }
+            to getNext() :any { next }
+        }
+    }
+    [def enqueue(elem) :void {
+        def [nextHead, nextTail] := Ref.promise()
+        qtail.resolve(cons(elem, nextHead))
+        qtail := nextTail
+    },
+    def dequeue() :any {
+        def result := qhead <- getElem()
+        qhead := qhead <- getNext()
+        result
+    }]
+}
+
+
+
+    ? def QMaker := <import:org.erights.e.examples.concurrency.QMaker>
+    # value: <QMaker>
+
+    ? def [enq, deq] := QMaker()
+    # value: [<enqueue>, <dequeue>]
+
+    ? enq(3)
+    ? def x := deq()
+    # value: <Promise>
+
+# Wait a moment
+
+    ? x
+    # value: 3
+
+    ? def y := deq()
+    # value: <Promise>
+
+# Wait a moment
+
+    ? y
+    # value: <Promise>
+
+# Yup, still unresolved
+
+# Messages to promises build up future dependency chains in a natural way:
+
+    ? def z := y <- add(7)
+    # value: <Promise>
+
+    ? enq(4)
+
+# Wait a moment
+
+    ? y
+    # value: 4
+
+    ? z
+    # value: 11
+

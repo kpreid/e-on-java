@@ -1,0 +1,12 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class("javax.swing.event.InternalFrameAdapter",
+      statics(method(suppress, "run()")),
+      methods(method(suppress, "internalFrameOpened(InternalFrameEvent)"),
+              method(suppress, "internalFrameClosing(InternalFrameEvent)"),
+              method(suppress, "internalFrameClosed(InternalFrameEvent)"),
+              method(suppress, "internalFrameIconified(InternalFrameEvent)"),
+              method(suppress, "internalFrameDeiconified(InternalFrameEvent)"),
+              method(suppress, "internalFrameActivated(InternalFrameEvent)"),
+              method(suppress, "internalFrameDeactivated(InternalFrameEvent)")))

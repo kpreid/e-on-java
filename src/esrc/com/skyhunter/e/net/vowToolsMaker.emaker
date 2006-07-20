@@ -1,0 +1,118 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+/**
+ * @deprecated Has probably gone stale
+ */
+def vowToolsMaker() :any {
+    def vowTools {
+
+        /**
+         * Send a list of promises, this will return a
+         * promise that will be fulfilled when all
+         * the promises in the list have resolved one
+         * way or the other.
+         * <p>
+         * If any break, the allDone
+         * promise is smashed, with a list of the error
+         * messages, else it returns true.
+         * Some day, this should return a list of all the
+         * resolutions, with a smash if any of the promises
+         * were broken on delivery.
+         */
+        to promiseAllDone(thePromiseList) :any {
+            # resolves after all in list resolved, returns true if all promises fulfilled
+            def  [resolutionPromise,resolver] := Ref.promise()
+            var promiseCount := thePromiseList.size()
+            var breakMessages := ""
+            if (promiseCount == 0) {resolver.resolve(true)}
+            for each in thePromiseList {
+                each <- __whenMoreResolved(def obs(result) :void {
+                    if (E.isBroken(result)) {breakMessages += " :" +result}
+                    promiseCount -= 1
+                    if (promiseCount == 0) {
+                        if (breakMessages.size() == 0) {
+                            resolver.resolve(true)
+                        } else {
+                            resolver.smash(breakMessages)
+                        }
+                    }
+                })
+            }
+            resolutionPromise
+        }
+
+        /**
+         * A vowsMonitor is an upscale promiseAllDone, collecting the
+         * promise list, the promise of completion, and the finishing
+         * process in a single object, making it convenient to pass
+         * around to various objects that must add a promise to the
+         * list and be informed when the list is finished.
+         * <p>
+         * Add the promises one at a time to the vowsMonitor,
+         * get the promise of the finish when you want it
+         * and initiate the monitoring for completion by requesting
+         * a finishAll. Adding promises after the finishAll has been
+         * requested is currently an undetected error.
+         */
+        to makeVowsMonitor() :any {
+            def [bundlePromise,resolver] := Ref.promise()
+            def bundle := [].diverge()
+            def vowsMonitor {
+                to add(thePromise) :void {bundle.push(thePromise)}
+                to finishAll() :void {
+                    resolver.resolve(vowTools.promiseAllDone(bundle))
+                }
+                to promiseFinish() :any {bundlePromise}
+            }
+        }
+
+        /**
+         * Only More Recent Manager:
+         * If you send out multiple requests over time,
+         * resulting in receiving multiple promises also strewn over time,
+         * and if you are only interested
+         * in the answer if the answer is more recent
+         * than the most recent of the already-fulfilled promises
+         * (i.e., only if
+         * the answer is newer than what you currently have),
+         * and if you are not absolutely sure that all the
+         * requests will move through a
+         * guaranteed sequence on a single vat,
+         * use an onlyMoreRecent object: add the promise
+         * to the onlyMoreRecent when you receive it, and use the promise
+         * returned from that operation in
+         * your when clause.
+         * <p>
+         * If a newer promise gets fulfilled before an older promise, the
+         * older promise is smashed with an "Obsolete Data" error when it
+         * finally resolves. If a newest promise returns smashed, the
+         * promise from onlyMostRecent also is returned smashed, but with the
+         * error object it got from the original promise.
+         */
+        to makeOnlyMoreRecentAcceptor() :any  {
+            def obsoleteError := "Obsolete Data"
+            var mostRecentlyFulfilledIndex := 0
+            var nextPromiseIndex := 1
+            def onlyMoreRecent {
+                to promiseMoreRecent(nextPromise) :any {
+                    def [onlyMoreRecentPromise,resolver] := Ref.promise()
+                    var thisPromiseIndex := nextPromiseIndex
+                    nextPromiseIndex += 1
+                    when (nextPromise) -> done(resolution) :void {
+                        if (thisPromiseIndex > mostRecentlyFulfilledIndex) {
+                            resolver.resolve(resolution)
+                            mostRecentlyFulfilledIndex := thisPromiseIndex
+                        } else { resolver.smash(obsoleteError) }
+                    } catch e {
+                        if (thisPromiseIndex > mostRecentlyFulfilledIndex) {
+                            resolver.smash(e)
+                            mostRecentlyFulfilledIndex := thisPromiseIndex
+                        } else { resolver.smash(obsoleteError) }
+                    }
+                    onlyMoreRecentPromise
+                }
+            }
+        }
+    }
+}

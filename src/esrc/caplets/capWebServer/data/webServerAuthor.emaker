@@ -1,0 +1,102 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def webServerAuthor(serverSocket,
+                    docRoot :rcvr,
+                    traceline) :near {
+
+    traceline("into webServerAuthor")
+    def header1 := "HTTP/1.0 200 OK
+Content-Type: "
+    def htmlMime := "text/html"
+    def contentLengthTag := "Content-Length: "
+    def crlf := "\r\n"
+    def badRequest := `HTTP/1.0 400 Not found$crlf`
+
+    def composeHeader(mimeType,length) :pbc {
+        traceline("composing header")
+        var header := header1 + mimeType
+        traceline(`made first header part: $header`)
+        if (length != null) {
+            header := header + crlf + contentLengthTag + length
+        }
+        header := header + crlf + crlf
+        traceline(`header: $header`)
+        header
+    }
+
+    def extractSuffix(path :String) :String {
+        def dotPieces := path.split(".")
+        if (dotPieces.size() > 1) {
+            dotPieces[dotPieces.size() -1]
+        } else {""}
+    }
+
+    serverSocket.setSoTimeout(1500)
+    var continueOperations := true
+
+    /**
+     *
+     * @author Marc Stiegler
+     */
+    def webServer {
+        to run() :void {
+            if (continueOperations) {
+                traceline("ready to accept requests")
+                try {
+                    def socket := serverSocket.accept()
+                    def outstream := socket.getOutputStream()
+                    traceline("got outstream")
+                    var instream := socket.getInputStream()
+                    instream := <import:java.io.makeInputStreamReader>(instream)
+                    instream := <import:java.io.makeBufferedReader>(instream)
+                    def action := instream.readLine()
+                    traceline(`action: $action`)
+                    #while (instream ready) {
+                    #    traceline(`discard: ${instream.readLine()}`)
+                    #}
+                    traceline("finished discards")
+                    var filePath := ""
+                    if (action =~ `GET /@{fileName} HTTP/1.@{trailer}`) {
+                        filePath := fileName
+                    }
+                    if (filePath == "") {filePath := "index.html"}
+                    traceline(`file to serve: $filePath`)
+                    def suffix := extractSuffix(filePath)
+                    def docVow := docRoot <- get(filePath)
+                    def existsVow := docVow <- exists()
+                    def dataVow := if (suffix == "gif") {
+                        docVow <- getBytes()
+                    } else {docVow <- getText()}
+                    when (existsVow, dataVow) -> done (exists, data) :void {
+                        if (! exists) {
+                            outstream.write(badRequest.getBytes())
+                        } else {
+                            if (suffix == "caplet") {
+                                outstream.write(composeHeader("text/plain", data.size()).getBytes())
+                                outstream.write(data.getBytes())
+                            } else if (suffix == "gif") {
+                                traceline("into writing gif")
+                                outstream.write(composeHeader("image/gif", data.size()).getBytes())
+                                outstream.write(data)
+                            } else {
+                                outstream.write(composeHeader(htmlMime, data.size()).getBytes())
+                                outstream.write(data.getBytes())
+                            }
+                            traceline("sent text")
+                        }
+                    } catch prob {
+                        traceline(`prob gettingText from far file: $prob`)
+                        outstream.write(badRequest.getBytes())
+                    } finally {
+                        socket.close()
+                        webServer <- run()
+                    }
+                }catch noSock {
+                    webServer <- run()
+                }
+            }
+        }
+        to shutdown() :void {continueOperations := false}
+    }
+}

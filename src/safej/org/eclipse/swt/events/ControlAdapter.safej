@@ -1,0 +1,4 @@
+class("org.eclipse.swt.events.ControlAdapter",
+           statics(method(suppress, "run()")),
+           methods(method(suppress, "controlMoved(ControlEvent)"),
+                   method(suppress, "controlResized(ControlEvent)"))) 

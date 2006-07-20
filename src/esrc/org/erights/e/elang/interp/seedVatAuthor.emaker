@@ -1,0 +1,122 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def Vat := <type:org.erights.e.elib.vat.Vat>
+def runeAuthor := <elang:cmd.runeAuthor>
+
+/**
+ *
+ */
+def virtualSeedVatAuthor(makeVat, seedVat, introducer) :near {
+
+    def virtualSeedVat {
+
+        /**
+         * Like seedVat.run/2, but returns a CapTP rcvr rather than a
+         * boot-comm rcvr.
+         */
+        to run(vat :Vat, privSrc :String) :rcvr {
+            def starter := seedVat <- run(vat, `
+                def eParser := <elang:syntax.makeEParser>
+                introducer.onTheAir()
+                def starter {
+                    to start(privSrc :String) :String {
+                        def privExpr := eParser(privSrc)
+                        def result := privExpr.eval(privilegedScope)
+                        def sr := makeSturdyRef.temp(result)
+                        return introducer.sturdyToURI(sr)
+                    }
+                }
+            `)
+            def uriVow := starter <- start(privSrc)
+            def sturdyVow := when (uriVow) -> done(uri :String) :SturdyRef {
+                return introducer.sturdyFromURI(uri)
+            } catch problem {
+                throw(problem)
+            }
+            return sturdyVow <- getRcvr()
+        }
+
+        /**
+         * Like run/2, but makes and returns a fresh vat.
+         */
+        to run(privSrc :String) :Tuple[rcvr, Vat] {
+            def vat := makeVat.make("headless", "newVirtualSeedVat")
+            return [virtualSeedVat(vat, privSrc), vat]
+        }
+    }
+    return virtualSeedVat
+}
+
+
+/**
+ * Makes a seedVat function, for seeding vats in a thread-safe manner
+ *
+ * @author Mark S. Miller
+ */
+def seedVatAuthor(<unsafe>) :near {
+
+    def auths := runeAuthor.defaultAuths(<unsafe>)
+    def makeVat := auths["makeVat"]
+
+    def seedVat {
+
+        /**
+         * Evaluates privSrc in a new privileged scope in the given vat.
+         * <p>
+         * The privSrc is evaluated as a single expression, not as a series of
+         * expressions. The <tt>interp</tt> it has in scope responds only to
+         * the getProps() message.
+         *
+         * @return A remote promise for the value of the expression.
+         *         This promise is an inter-vat reference using the
+         *         boot-comm-system. Therefore, the value should either be
+         *         PassByProxy or DeepPassByCopy, or an error will result in
+         *         trying to resolve the promise.
+         */
+        to run(vat :Vat, privSrc :String) :rcvr {
+
+            return vat.seed(thunk{
+                def eParser := <elang:syntax.makeEParser>
+                def makeScopeSetup :=
+                  <unsafe:org.erights.e.elang.interp.makeScopeSetup>
+
+                def props := auths["defaultProps"]
+                def bogusInterp {
+                    to getProps() :near {
+                        return props
+                    }
+                }
+                def privScope := makeScopeSetup.privileged("__main$",
+                                                           auths["metaout"],
+                                                           auths["metaerr"],
+                                                           props,
+                                                           bogusInterp,
+                                                           vat)
+                def privExpr := eParser(privSrc)
+                privExpr.eval(privScope)
+            })
+        }
+
+        /**
+         * Like run/2, but makes and returns a fresh vat.
+         */
+        to run(privSrc :String) :Tuple[rcvr, Vat] {
+            def vat := makeVat.make("headless", "newSeedVat")
+            return [seedVat(vat, privSrc), vat]
+        }
+
+        /**
+         * Returns a virtualized seedVat function that acts like seedVat, but
+         * returns remote CapTP references rather than remote boot-comm
+         * references.
+         * <p>
+         * We should pass in our own introducer, which should be on the air
+         * before run/1 or run/2 is called.
+         */
+        to virtualize(introducer) :near {
+            return virtualSeedVatAuthor(makeVat, seedVat, introducer)
+        }
+    }
+    return seedVat
+}

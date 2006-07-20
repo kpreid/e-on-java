@@ -1,0 +1,17 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class(safe,
+      "javax.swing.MenuSelectionManager",
+      statics(method("run()")),
+      methods(method(suppress, "defaultManager()"),
+              method("setSelectedPath(MenuElement[])"),
+              method("getSelectedPath()"),
+              method("clearSelectedPath()"),
+              method("addChangeListener(ChangeListener)"),
+              method("removeChangeListener(ChangeListener)"),
+              method(suppress, "getChangeListeners()"),
+              method(suppress, "processMouseEvent(MouseEvent)"),
+              method("componentForPoint(Component, Point)"),
+              method(suppress, "processKeyEvent(KeyEvent)"),
+              method("isComponentPartOfCurrentMenu(Component)")))

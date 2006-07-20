@@ -1,0 +1,169 @@
+# Copyright 2005 Terry Stanley, Mark S. Miller under the terms of the MIT X
+# license found at http://www.opensource.org/licenses/mit-license.html ........
+
+# Based on example code found at
+# http://www.eclipse.org/articles/Article-SWT-DND/DND-in-SWT.html
+
+def <swt> := <import:org.eclipse.swt.*>
+def SWT := <swt:makeSWT>
+def makeRethrower := <import:org.erights.e.facet.makeRethrower>
+
+def <swttools> := <import:org.erights.e.ui.swt.*>
+def abstractActionAuthor := <swttools:abstractActionAuthor>
+def M := <swttools:menuKit>
+
+def <sky> := <import:com.skyhunter.*>
+
+def dndKitAuthor(<dnd>,
+                 currentDisplay,
+                 <file>,
+                 introducer,
+                 makeSturdyRef) :any {
+    def DND := <dnd:makeDND>
+    def operations := DND.getDROP_MOVE() | DND.getDROP_COPY()
+    def textTransfer := <dnd:makeTextTransfer>.getInstance()
+    def fileTransfer := <dnd:makeFileTransfer>.getInstance()
+    def disposablesKit := <sky:swt.disposablesKitAuthor>(currentDisplay)
+    def abstractAction := abstractActionAuthor(disposablesKit)
+    def clipboard := <dnd:makeClipboard>(currentDisplay)
+
+    def dndKit {
+        to makeDragSource(widget, slot) :any {
+            def getURI() :String {
+                def sr := makeSturdyRef.temp(slot.getValue())
+                introducer.sturdyToURI(sr)
+            }
+
+            def source := <dnd:makeDragSource>(widget, operations)
+            source.setTransfer([textTransfer])
+            def dsl {
+                to dragStart(event) :void {
+                    event.setDoit(introducer.isOnTheAir())
+                }
+                to dragSetData(event) :void {
+                    event.setDragData(getURI())
+                }
+                to dragFinished(event) :void {
+                }
+            }
+            source.addDragListener(makeRethrower(dsl))
+
+            def doCopy extends abstractAction(doCopy) {
+                to run() :void {
+                    clipboard.setContents([getURI()], [textTransfer])
+                }
+                to getLabel()            :String { "&Copy" }
+#           to getOptMenuAccelDesc() :String { "Ctrl+C" }
+                to getOptTip()           :String {
+                    "Like a drag onto the clipboard"
+                }
+                to getOptIconFQName()    :String {
+                    "com/skyhunter/e/icons/copy16-16.gif"
+                }
+            }
+            def menuAction := M.menu([doCopy])
+            def menuMap := [].asMap().diverge()
+            menuAction.makeMenu(widget, menuMap)
+
+            return source
+        }
+
+        to makeDropTarget(widget, slot) :any {
+            def refuses() :boolean {
+                if (introducer.isOnTheAir()) {
+                    if (slot.isFinal()) {
+                        # XXX This really wants to test whether slot is
+                        # read-only rather than final; but there's not yet a
+                        # way to do that.
+                        return true
+                    } else {
+                        return false
+                    }
+                } else {
+                    return true
+                }
+            }
+            def setFromURI(uri :String) :void {
+                def sr := introducer.sturdyFromURI(uri)
+                slot.setValue(sr.getRcvr())
+            }
+            def setFromFilenames(filenames :List[String]) :void {
+                var values := []
+                for name in filenames {
+                    var value := <file>[name]
+                    if (name =~ `@_.cap`) {
+                        def uri := value.getText().trim()
+                        def sr := introducer.sturdyFromURI(uri)
+                        value := sr.getRcvr()
+                    }
+                    values with= value
+                }
+                if (values.size() == 1) {
+                    slot.setValue(values[0])
+                } else {
+                    slot.setValue(values)
+                }
+            }
+            def target := <dnd:makeDropTarget>(widget, operations)
+            target.setTransfer([textTransfer, fileTransfer])
+            def dtl {
+                to dragEnter(event) :void {
+                    if (refuses()) {
+                        event.setDetail(DND.getDROP_NONE())
+                    }
+                }
+                to dragOver(event) :void {
+                    if (refuses()) {
+                        event.setDetail(DND.getDROP_NONE())
+                    }
+                }
+                to dragOperationChanged(event) :void {
+                    if (refuses()) {
+                        event.setDetail(DND.getDROP_NONE())
+                    }
+                }
+                to dragLeave(event) :void {
+                }
+                to dropAccept(event) :void {
+                }
+                to drop(event) :void {
+                    if (refuses()) {
+                        return
+                    }
+                    def cdt := event.getCurrentDataType()
+                    if (textTransfer.isSupportedType(cdt)) {
+                        setFromURI(event.getDropData())
+                    } else if (fileTransfer.isSupportedType(cdt)) {
+                        setFromFilenames(event.getDropData())
+                    }
+                }
+            }
+            target.addDropListener(makeRethrower(dtl))
+
+            def doPaste extends abstractAction(doPaste) {
+                to run() :void {
+                    if (clipboard.getContents(textTransfer) =~ uri :String) {
+                        setFromURI(uri)
+                    } else {
+                        def filenames := clipboard.getContents(fileTransfer)
+                        setFromFilenames(filenames)
+                    }
+                }
+                to getLabel()            :String { "&Paste" }
+#               to getOptMenuAccelDesc() :String { "Ctrl+V" }
+                to getOptTip()           :String {
+                    "Like a drop from the clipboard"
+                }
+                to getOptIconFQName()    :String {
+                    "com/skyhunter/e/icons/paste16-16.gif"
+                }
+            }
+            def menuAction := M.menu([doPaste])
+            def menuMap := [].asMap().diverge()
+            menuAction.makeMenu(widget, menuMap)
+
+            return target
+        }
+    }
+    return dndKit
+}

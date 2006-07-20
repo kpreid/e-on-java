@@ -1,0 +1,11 @@
+#!/usr/bin/env rune
+
+# See http://www.eros-os.org/pipermail/e-lang/2003-November/009256.html
+
+
+if (safeScope.maps("leakage")) {
+    safeScope["leakage"] += 1
+} else {
+    safeScope.bindOuter("leakage", __makeVarSlot(1))
+}
+`Executed ${safeScope["leakage"]} times.`

@@ -1,0 +1,880 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def <swt> := <import:org.eclipse.swt.*>
+def <widget> := <swt:widgets.*>
+def SWT := <swt:makeSWT>
+
+def <swtType> := <type:org.eclipse.swt.*>
+def <widgetType> := <swtType:widgets.*>
+def Shell    := <widgetType:Shell>
+def Menu     := <widgetType:Menu>
+def MenuItem := <widgetType:MenuItem>
+def ToolBar  := <widgetType:ToolBar>
+def ToolItem := <widgetType:ToolItem>
+def Image    := <swtType:graphics.Image>
+
+def <sky> := <import:com.skyhunter.*>
+
+def makeLamportSlot := <elib:slot.makeLamportSlot>
+def whenever := <elib:slot.whenever>
+def EverReporter := <type:org.erights.e.elib.slot.EverReporter>
+
+def <swttools> := <import:org.erights.e.ui.swt.*>
+def swtGrid__quasiParser := <swttools:swtGridQParserMaker>()
+def abstractActionAuthor := <swttools:abstractActionAuthor>
+def M := <swttools:menuKit>
+def makeGCerAuthor := <swttools:makeGCerAuthor>
+
+def __versionLauncherAuthor := <elang:launcher.__versionLauncherAuthor>
+
+
+def setMargins(layout, marginSize) :void {
+    layout.setMarginWidth(marginSize)
+    layout.setMarginHeight(marginSize)
+    layout.setHorizontalSpacing(marginSize)
+    layout.setVerticalSpacing(marginSize)
+}
+
+
+/**
+ * Authors an abstractJed function
+ *
+ * @param display The current Display
+ * @param makeFrame No arguments function that makes and returns a new Shell
+ *                  labeled with an icon.
+ * @param openner A thunk that prompts the user for files, and returns a vow
+ *                for the files the user will select. This vow resolves
+ *                either to a possibly empty list of File objects.
+ *                XXX Currently, FileDialogs are modal, so the returned value
+ *                may already be so resolved.
+ */
+def abstractJedAuthor(display,
+                      makeFrame,
+                      openner,
+                      props,
+                      runtime,
+                      timer,
+                      traceline) :near {
+
+    def disposablesKit := <sky:swt.disposablesKitAuthor>(display, traceline)
+
+    def abstractAction := abstractActionAuthor(disposablesKit)
+
+    # def fillStyledText := <sky:swt.fillStyledTextAuthor>(disposablesKit,
+    #                                                      traceline)
+    def makeDialogVow := <sky:swt.makeDialogVowAuthor>(disposablesKit,
+                                                       makeFrame,
+                                                       traceline)
+    def makeGCer := makeGCerAuthor(runtime, timer, abstractAction)
+
+    def abstractJed(self, editGroup :near) :near {
+        def &everOptFile := makeLamportSlot(null)
+
+        def shell := makeFrame()
+
+        def toolArea := <widget:makeGroup>(shell, 0)
+        def toolBar :=
+          <widget:makeToolBar>(toolArea, SWT.getFLAT() | SWT.getHORIZONTAL())
+        def gCer := makeGCer(toolArea)
+        swtGrid`$toolArea:
+                $toolBar.X ${gCer.getLabel()} ${gCer.getToolBar()}`
+        setMargins(toolArea.getLayout(), 0)
+
+
+        def &everShowMainToolbar := makeLamportSlot(true)
+        whenever([&everShowMainToolbar], thunk{
+            toolArea.setVisible(everShowMainToolbar)
+        }, thunk{
+            ! toolArea.isDisposed()
+        })
+
+
+
+        def textPane := <swt:custom.makeStyledText>(shell,
+                                                    (SWT.getH_SCROLL() |
+                                                       SWT.getV_SCROLL()) |
+                                                      SWT.getBORDER())
+        # strip crs
+        textPane.addVerifyListener(def verifyListener {
+            to verifyText(event) :void {
+                event.setText(event.getText().canonical())
+            }
+        })
+
+        def &everDirty := makeLamportSlot(false)
+        textPane.addExtendedModifyListener(def eml {
+            to modifyText(_) :void { everDirty := true }
+        })
+        def &everWordWrap := makeLamportSlot(true)
+        whenever([&everWordWrap], thunk{
+            textPane.setWordWrap(everWordWrap)
+        }, thunk{
+            ! textPane.isDisposed()
+        })
+
+
+        def statusBar := <widget:makeLabel>(shell, 0)
+        def debugln(str) :void {
+            traceline(str)
+            statusBar.setText(str)
+        }
+        def &everShowStatusBar := makeLamportSlot(true)
+        whenever([&everShowStatusBar], thunk{
+            statusBar.setVisible(everShowStatusBar)
+        }, thunk{
+            ! statusBar.isDisposed()
+        })
+
+
+
+        # menuFile
+        [def doNew,
+         def doOpen,
+         def doClose,
+
+         def doSave,
+         def doSaveAs,
+         def doSaveAll,
+         def doRevert,
+
+         def doPageSetup,
+         def doPrint,
+
+         def doExit]
+
+        # menuEdit
+        [def doUndo,
+         def doRedo,
+
+         def doCut,
+         def doCopy,
+         def doPaste,
+         def doDelete,
+         def doSelectAll,
+
+         def doIndent,
+         def doOutdent]
+
+        # menuSearch
+        [def doFindReplace,
+         def doFindNext,
+         def doFindPrevious,
+
+         def doGoTo]
+
+        # menuView
+        [def doSmallerFont,
+         def doLargerFont,
+         # menuToolbars
+         [def doMainToolbar],
+         def doWordWrap,
+         def doStatusBar]
+
+        # menuTools
+        [def doConfigure,
+         def doOptions]
+
+        # menuWindows
+        [def doNextTab,
+         def doPreviousTab]
+
+        # menuHelp
+        [def doHelpTopics,
+
+         def doAbout]
+
+        /**
+         *
+         */
+        bind doNew extends abstractAction(doNew) {
+            to run() :void {
+                editGroup.obtainEditor(null)
+            }
+            to getLabel()            :String { "&New" }
+            to getOptMenuAccelDesc() :String { "Ctrl+N" }
+            to getOptTip()           :String { "Makes a new editor" }
+            to getOptIconFQName()    :String {
+                "com/skyhunter/e/icons/new_page16-16.gif"
+            }
+        }
+
+        /**
+         *
+         */
+        bind doOpen extends abstractAction(doOpen) {
+            to run() :void {
+                when (openner(shell)) -> done(files) :void {
+                    for file in files {
+                        editGroup.obtainEditor(file, self)
+                    }
+                } catch prob {
+                    debugln("What me worry...")
+                }
+            }
+            to getLabel()            :String { "&Open..." }
+            to getOptMenuAccelDesc() :String { "Ctrl+O" }
+            to getOptTip()           :String { "Open a file" }
+            to getOptIconFQName()    :String {
+                "com/skyhunter/e/icons/fileOpen.gif"
+            }
+        }
+
+        /**
+         *
+         */
+        bind doClose extends abstractAction(doClose) {
+            to run() :void {
+                debugln("doClose()")
+            }
+            to getLabel()            :String { "&Close" }
+            to getOptMenuAccelDesc() :String { "Ctrl+W" }
+            to getOptTip()           :String { "Closes the editor" }
+        }
+
+
+        /**
+         *
+         */
+        bind doSave extends abstractAction(doSave) {
+            to run() :void {
+                if (everOptFile == null) {
+                    doSaveAs()
+                } else {
+                    everOptFile.setText(textPane.getText())
+                    everDirty := false
+                }
+            }
+            to getLabel()            :String { "&Save" }
+            to getOptMenuAccelDesc() :String { "Ctrl+S" }
+            to getOptTip()           :String { "Saves the file" }
+            to getOptIconFQName()    :String {
+                "com/skyhunter/e/icons/save16-16.gif"
+            }
+            to everEnabledReporter() :EverReporter {
+                whenever([&everDirty, &everOptFile], thunk{
+                    everDirty | (everOptFile == null)
+                })
+            }
+        }
+
+        /**
+         *
+         */
+        bind doSaveAs extends abstractAction(doSaveAs) {
+            to run() :void {
+                debugln("doSaveAs()")
+            }
+            to getLabel()            :String { "Save &As..." }
+            to getOptTip()           :String {
+                "Saves a copy as a chosen file"
+            }
+            to getOptIconFQName()    :String {
+                "com/skyhunter/e/icons/saveas16-16.gif"
+            }
+        }
+
+        /**
+         *
+         */
+        bind doSaveAll extends abstractAction(doSaveAll) {
+            to run() :void {
+                editGroup.saveAll()
+            }
+            to getLabel()            :String { "Save A&ll" }
+            to getOptMenuAccelDesc() :String { "Alt+S" }
+            to getOptTip()           :String { "Save all files in this group" }
+            to getOptIconFQName()    :String {
+                "com/skyhunter/e/icons/saveall16-16.gif"
+            }
+            to everEnabledReporter() :EverReporter {
+                editGroup.getEverAnyDirtyReporter()
+            }
+        }
+
+        /**
+         *
+         */
+        bind doRevert extends abstractAction(doRevert) {
+            to run() :void {
+                debugln("doRevert()")
+            }
+            to getLabel()            :String { "&Revert" }
+            to getOptTip()           :String { "Revert to last saved version" }
+        }
+
+        /**
+         *
+         */
+        bind doPageSetup extends abstractAction(doPageSetup) {
+            to run() :void {
+                debugln("doPageSetup()")
+            }
+            to getLabel()            :String { "Page Set&up..." }
+            to getOptTip()           :String { "Printing preferences" }
+        }
+
+        /**
+         *
+         */
+        bind doPrint extends abstractAction(doPrint) {
+            to run() :void {
+                debugln("doPrint()")
+            }
+            to getLabel()            :String { "&Print..." }
+            to getOptMenuAccelDesc() :String { "Ctrl+P" }
+            to getOptTip()           :String { "Prints this file" }
+            to getOptIconFQName()    :String {
+                "com/skyhunter/e/icons/print16-16.gif"
+            }
+        }
+
+        /**
+         *
+         */
+        bind doExit extends abstractAction(doExit) {
+            to run() :void {
+                debugln("doExit()")
+            }
+            to getLabel()            :String { "E&xit" }
+            to getOptMenuAccelDesc() :String { "Ctrl+Q" }
+            to getOptTip()           :String { "Shuts down these editors" }
+        }
+
+        /**
+         *
+         */
+        bind doUndo extends abstractAction(doUndo) {
+            to run() :void {
+                debugln("doUndo()")
+            }
+            to getLabel()            :String { "&Undo" }
+            to getOptMenuAccelDesc() :String { "Ctrl+Z" }
+            to getOptTip()           :String { "Undo the last edit" }
+            to getOptIconFQName()    :String {
+                "com/skyhunter/e/icons/undo16-16.gif"
+            }
+        }
+
+        /**
+         *
+         */
+        bind doRedo extends abstractAction(doRedo) {
+            to run() :void {
+                debugln("doRedo()")
+            }
+            to getLabel()            :String { "&Redo" }
+            to getOptMenuAccelDesc() :String { "Shift+Ctrl+Z" }
+            to getOptTip()           :String {
+                "The last undone edit is redone"
+            }
+            to getOptIconFQName()    :String {
+                "com/skyhunter/e/icons/redo16-16.gif"
+            }
+        }
+
+        /**
+         *
+         */
+        bind doCut extends abstractAction(doCut) {
+            to run() :void {
+                debugln("doCut()")
+            }
+            to getLabel()            :String { "Cu&t" }
+            to getOptMenuAccelDesc() :String { "Ctrl+X" }
+            to getOptTip()           :String {
+                "Moves the selection to the clipboard"
+            }
+            to getOptIconFQName()    :String {
+                "com/skyhunter/e/icons/cut16-16.gif"
+            }
+        }
+
+        /**
+         *
+         */
+        bind doCopy extends abstractAction(doCopy) {
+            to run() :void {
+                debugln("doCopy()")
+            }
+            to getLabel()            :String { "&Copy" }
+            to getOptMenuAccelDesc() :String { "Ctrl+C" }
+            to getOptTip()           :String {
+                "Copies the selection to the clipboard"
+            }
+            to getOptIconFQName()    :String {
+                "com/skyhunter/e/icons/copy16-16.gif"
+            }
+        }
+
+        /**
+         *
+         */
+        bind doPaste extends abstractAction(doPaste) {
+            to run() :void {
+                debugln("doPaste()")
+            }
+            to getLabel()            :String { "&Paste" }
+            to getOptMenuAccelDesc() :String { "Ctrl+V" }
+            to getOptTip()           :String {
+                "Replaces the selection with a copy of the clipboard"
+            }
+            to getOptIconFQName()    :String {
+                "com/skyhunter/e/icons/paste16-16.gif"
+            }
+        }
+
+        /**
+         *
+         */
+        bind doDelete extends abstractAction(doDelete) {
+            to run() :void {
+                debugln("doDelete()")
+            }
+            to getLabel()            :String { "&Delete" }
+            to getOptMenuAccelDesc() :String { "Del" }
+            to getOptTip()           :String {
+                "Deletes the selection or next character"
+            }
+            to getOptIconFQName()    :String {
+                "com/skyhunter/e/icons/delete16-16.gif"
+            }
+        }
+
+        /**
+         *
+         */
+        bind doSelectAll extends abstractAction(doSelectAll) {
+            to run() :void {
+                textPane.selectAll()
+            }
+            to getLabel()            :String { "Select &All" }
+            to getOptMenuAccelDesc() :String { "Ctrl+A" }
+            to getOptTip()           :String { "Selects all the text" }
+        }
+
+        /**
+         *
+         */
+        bind doIndent extends abstractAction(doIndent) {
+            to run() :void {
+                debugln("doIndent()")
+                everDirty := true # XXX just for testing for now
+            }
+            to getLabel()            :String { "&Indent" }
+            to getOptMenuAccelDesc() :String { "Tab" }
+            to getOptTip()           :String {
+                "Indent the selection right to the next tab stop"
+            }
+            to getOptIconFQName()    :String {
+                "com/skyhunter/e/icons/indent16-16.gif"
+            }
+        }
+
+        /**
+         *
+         */
+        bind doOutdent extends abstractAction(doOutdent) {
+            to run() :void {
+                debugln("doOutdent()")
+            }
+            to getLabel()            :String { "&Outdent" }
+            to getOptMenuAccelDesc() :String { "Shift+Tab" }
+            to getOptTip()           :String {
+                "Outdent the selection left to the previous tab stop"
+            }
+            to getOptIconFQName()    :String {
+                "com/skyhunter/e/icons/outdent16-16.gif"
+            }
+        }
+
+
+        /**
+         *
+         */
+        bind doFindReplace extends abstractAction(doFindReplace) {
+            to run() :void {
+                debugln("doFindReplace()")
+            }
+            to getLabel()            :String { "Find/Replace..." }
+            to getOptMenuAccelDesc() :String { "Ctrl+F" }
+            to getOptTip()           :String {
+                "Find and possibly replace"
+            }
+            to getOptIconFQName()    :String {
+                "com/skyhunter/e/icons/find16-16.gif"
+            }
+        }
+
+
+        /**
+         *
+         */
+        bind doFindNext extends abstractAction(doFindNext) {
+            to run() :void {
+                debugln("doFindNext()")
+            }
+            to getLabel()            :String { "Find &Next" }
+            to getOptMenuAccelDesc() :String { "F3" }
+            to getOptTip()           :String { "Find the next one" }
+        }
+
+
+        /**
+         *
+         */
+        bind doFindPrevious extends abstractAction(doFindPrevious) {
+            to run() :void {
+                debugln("doFindPrevious()")
+            }
+            to getLabel()            :String { "Find &Previous" }
+            to getOptMenuAccelDesc() :String { "Shift+F3" }
+            to getOptTip()           :String { "Find the previous one" }
+        }
+
+
+        /**
+         *
+         */
+        bind doGoTo extends abstractAction(doGoTo) {
+            to run() :void {
+                debugln("doGoTo()")
+            }
+            to getLabel()            :String { "&Go To..." }
+            to getOptMenuAccelDesc() :String { "Ctrl+G" }
+            to getOptTip()           :String {
+                "Go to a line number"
+            }
+            to getOptIconFQName()    :String {
+                "com/skyhunter/e/icons/goto16-16.gif"
+            }
+        }
+
+
+        /**
+         *
+         */
+        bind doSmallerFont extends abstractAction(doSmallerFont) {
+            to run() :void {
+                debugln("doSmallerFont()")
+            }
+            to getLabel()            :String { "S&maller Font" }
+            to getOptMenuAccelDesc() :String { "Ctrl+[" }
+        }
+
+        /**
+         *
+         */
+        bind doLargerFont extends abstractAction(doLargerFont) {
+            to run() :void {
+                debugln("doLargerFont()")
+            }
+            to getLabel()            :String { "&Larger Font" }
+            to getOptMenuAccelDesc() :String { "Ctrl+]" }
+            to getOptIconFQName()    :String {
+                "com/skyhunter/e/icons/magnify.gif"
+            }
+        }
+
+        /**
+         *
+         */
+        bind doMainToolbar extends abstractAction(doMainToolbar) {
+            to run() :void {
+                everShowMainToolbar := ! everShowMainToolbar
+            }
+            to getLabel()             :String { "&Main Toolbar" }
+            to getMenuItemStyle()     :int    { SWT.getCHECK() }
+            to getOptTip()            :String {
+                "Toggle visibility of main toolbar"
+            }
+            to everEnabledReporter() :EverReporter {
+                whenever([], thunk{false})
+            }
+            to optEverCheckedReporter() :EverReporter { &everShowMainToolbar }
+        }
+
+        /**
+         *
+         */
+        bind doWordWrap extends abstractAction(doWordWrap) {
+            to run() :void {
+                everWordWrap := ! everWordWrap
+            }
+            to getLabel()             :String { "&Word Wrap" }
+            to getMenuItemStyle()     :int    { SWT.getCHECK() }
+            to getOptMenuAccelDesc()  :String { "Alt+W" }
+            to getOptTip()            :String { "Toggle word wrapping" }
+            to optEverCheckedReporter() :EverReporter { &everWordWrap }
+        }
+
+        /**
+         *
+         */
+        bind doStatusBar extends abstractAction(doStatusBar) {
+            to run() :void {
+                everShowStatusBar := ! everShowStatusBar
+            }
+            to getLabel()            :String  { "&Status Bar" }
+            to getMenuItemStyle()    :int     { SWT.getCHECK() }
+            to getOptTip()           :String  {
+                "Toggle visibility of status bar"
+            }
+            to everEnabledReporter() :EverReporter {
+                whenever([], thunk{false})
+            }
+            to optEverCheckedReporter() :EverReporter { &everShowStatusBar }
+        }
+
+        /**
+         *
+         */
+        bind doConfigure extends abstractAction(doConfigure) {
+            to run() :void {
+                debugln("doConfigure()")
+            }
+            to getLabel()            :String { "&Configure..." }
+            to getOptTip()           :String { "Move actions where you like" }
+        }
+
+        /**
+         *
+         */
+        bind doOptions extends abstractAction(doOptions) {
+            to run() :void {
+                debugln("doOptions()")
+            }
+            to getLabel()            :String { "&Options..." }
+            to getOptTip()           :String { "Set Preferences" }
+        }
+
+        /**
+         *
+         */
+        bind doNextTab extends abstractAction(doNextTab) {
+            to run() :void {
+                debugln("doNextTab()")
+            }
+            to getLabel()            :String { "&Next Tab" }
+            to getOptMenuAccelDesc() :String { "Ctrl+Tab" }
+            to getOptTip()           :String { "Bring next to top" }
+        }
+
+        /**
+         *
+         */
+        bind doPreviousTab extends abstractAction(doPreviousTab) {
+            to run() :void {
+                debugln("doPreviousTab()")
+            }
+            to getLabel()            :String { "&Previous Tab" }
+            to getOptMenuAccelDesc() :String { "Shift+Ctrl+Tab" }
+            to getOptTip()           :String { "Bring previous to top" }
+        }
+
+        /**
+         *
+         */
+        bind doHelpTopics extends abstractAction(doHelpTopics) {
+            to run() :void {
+                debugln("doHelpTopics()")
+            }
+            to getLabel()            :String { "Help Topics..." }
+            to getOptMenuAccelDesc() :String { "F1" }
+            to getOptTip()           :String { "Helps clear up all confusion" }
+            to getOptIconFQName()    :String {
+                "com/skyhunter/e/icons/help.gif"
+            }
+        }
+
+        /**
+         *
+         */
+        bind doAbout extends abstractAction(doAbout) {
+            to run() :void {
+                def appName := self.getAppName()
+                makeDialogVow(`About $appName`,
+                              term`text(b(.String.$appName),
+                                   "
+by Mark S. Miller and Marc Stiegler
+
+",
+                                   .String.${doAbout.getVersionString()})`,
+                              null,
+                              ["Ok"])
+            }
+            to getVersionString() :String {
+                __versionLauncherAuthor.getOptVersionText(props)
+            }
+            to getLabel()  :String { `&About ${self.getAppName()}...` }
+            to getOptTip() :String { "What program is this?" }
+        }
+
+
+        def barAction :=
+          M.bar([def menuFile :=
+                   M.menu("&File",
+                          [doNew,
+                           doOpen,
+                           doClose,
+                           M.sep(),
+                           doSave,
+                           doSaveAs,
+                           doSaveAll,
+                           doRevert,
+                           M.sep(),
+                           doPageSetup,
+                           doPrint,
+                           M.sep(),
+                           doExit]),
+                 def menuEdit :=
+                   M.menu("&Edit",
+                          [doUndo,
+                           doRedo,
+                           M.sep(),
+                           doCut,
+                           doCopy,
+                           doPaste,
+                           doDelete,
+                           doSelectAll,
+                           M.sep(),
+                           doIndent,
+                           doOutdent]),
+                 def menuSearch :=
+                   M.menu("Sea&rch",
+                          [doFindReplace,
+                           doFindNext,
+                           doFindPrevious,
+                           M.sep(),
+                           doGoTo]),
+                 def menuView :=
+                   M.menu("&View",
+                          [doSmallerFont,
+                           doLargerFont,
+                           M.sep(),
+                           M.menu("&Toolbars",
+                                  [doMainToolbar]),
+                           doWordWrap,
+                           doStatusBar]),
+                 def menuTools :=
+                   M.menu("&Tools",
+                          [gCer.getGCAction(),
+                           M.sep(),
+                           doConfigure,
+                           doOptions]),
+                 def menuWindow :=
+                   M.menu("&Window",
+                          [doNextTab,
+                           doPreviousTab]),
+                 def menuHelp :=
+                   M.menu("&Help",
+                          [doHelpTopics,
+                           M.sep(),
+                           doAbout])])
+
+
+        def toolActions :=
+          [doNew,
+           doOpen,
+           doSave,
+           doSaveAll,
+           M.sep(),
+           doPrint,
+           M.sep(),
+           doUndo,
+           doRedo,
+           M.sep(),
+           doCut,
+           doCopy,
+           doPaste,
+           M.sep(),
+           doFindReplace]
+
+
+        def menuMap := [].asMap().diverge()
+        def toolMap := [].asMap().diverge()
+
+        for action in toolActions {
+            action.makeToolItem(toolBar, toolMap)
+        }
+        toolMap.putAll(gCer.getToolMap(), true)
+
+        def jed {
+            to getAppName() :String { "Jed" }
+            to getOptName() :nullOk[String] {
+                if (everOptFile == null) {
+                    null
+                } else {
+                    everOptFile.getAbsolutePath()
+                }
+            }
+            to getShell()    :Shell { shell }
+            to getToolArea()  :near { toolArea }
+            to getTextPane()  :near { textPane }
+            to getStatusBar() :near { statusBar }
+
+            to getEverDirtyReporter() :EverReporter { &everDirty }
+
+            to isAvailable() :boolean {
+                everOptFile == null &&
+                  textPane.getText().size() == 0 &&
+                  ! everDirty
+            }
+
+            /**
+             *
+             */
+            to save() :void {
+                doSave()
+            }
+
+            /**
+             *
+             */
+            to setFile(newOptFile) :void {
+                everOptFile := newOptFile
+                if (everOptFile == null) {
+                    textPane.setText("")
+                } else {
+                    textPane.setText(everOptFile.getText())
+                }
+                everDirty := false
+            }
+
+            /**
+             * Initializes a new jed after construction.
+             */
+            to open(newOptFile) :void {
+                # XXX Needs to be broken up into separately overridable
+                # methods.
+                swtGrid`${self.getShell()}:
+                        ${self.getToolArea()}.X
+                        ${self.getTextPane()}.X.Y
+                        ${self.getStatusBar()}.X`
+                setMargins(self.getShell().getLayout(), 0)
+
+                def menuBar := barAction.makeMenu(shell, menuMap)
+                self.setFile(newOptFile)
+                shell.open()
+                <widget:makeControl>.transferFocus([shell], textPane)
+
+                whenever([&everOptFile, &everDirty], thunk{
+                    def appName := self.getAppName()
+                    def path := if (everOptFile == null) {
+                        "Untitled"
+                    } else {
+                        def fName := everOptFile.getName()
+                        def fPath := everOptFile.getAbsolutePath()
+                        `$fName @@ $fPath`
+                    }
+                    def marker := if (everDirty) { "*" } else { "" }
+                    shell.setText(`$appName - $path$marker`)
+                }, thunk{
+                    ! shell.isDisposed()
+                })
+            }
+        }
+
+        jed
+    }
+}

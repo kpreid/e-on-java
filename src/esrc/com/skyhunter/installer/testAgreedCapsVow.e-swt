@@ -1,0 +1,40 @@
+#!/usr/bin/env rune
+
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def capsPetsMaker := <import:com.skyhunter.installer.agreedCapsPetsVowMakerAuthor>.run(
+    <unsafe>, <file>)
+var capPetvow := capsPetsMaker("
+<requests>
+<urlProtocols>
+<protocol>
+<name>http</name>
+<why>Just Because</why>
+</protocol>
+<protocol>
+<name>ftp</name>
+<why>I need it!</why>
+</protocol>
+<protocol>
+<name>file</name>
+<why>I really need it!</why>
+</protocol>
+</urlProtocols>
+<pet>
+    <name>TestName</name>
+    <suffix>txt</suffix>
+    <icon>data/capEdit.gif</icon>
+</pet>
+</requests>",
+<c:/eProjects/capEdit/capEdit.caplet>.getParent())
+
+#capPetvow := capsPetsMaker("<requests></requests>")
+
+println(`capPet promise: $capPetvow`)
+when (capPetvow) -> done(capPet) :void {
+    println("got answer, xml: " + capPet.getCapsXML())
+    println("appMap: " + capPet.getPetMap())
+} catch prob {println("prob: " + prob)}
+
+interp.blockAtTop()

@@ -1,0 +1,13 @@
+# Copyright 2004, Hewlett Packard, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+# Settings of syntactic properties for a particular form of E.
+# See syntax-props-default.txt for the purpose of these files.
+
+# In E, guards (soft types) are normally optional. This group of settings makes
+# all guards required. 
+
+e.enable.explicit-final-guard=true
+e.enable.explicit-var-guard=true
+e.enable.explicit-slot-guard=true
+e.enable.explicit-result-guard=true

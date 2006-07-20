@@ -1,0 +1,16 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class(safe,
+      "javax.swing.text.GlyphView.GlyphPainter",
+      statics(method("run()")),
+      methods(method("getSpan(GlyphView, int, int, TabExpander, float)"),
+              method("getHeight(GlyphView)"),
+              method(suppress, "getAscent(GlyphView)"),
+              method("getDescent(GlyphView)"),
+              method(suppress, "paint(GlyphView, Graphics, Shape, int, int)"),
+              method("modelToView(GlyphView, int, Position.Bias, Shape)"),
+              method("viewToModel(GlyphView, float, float, Shape, Position.Bias[])"),
+              method(suppress, "getBoundedPosition(GlyphView, int, float, float)"),
+              method(suppress, "getPainter(GlyphView, int, int)"),
+              method("getNextVisualPositionFrom(GlyphView, int, Position.Bias, Shape, int, Position.Bias[])")))

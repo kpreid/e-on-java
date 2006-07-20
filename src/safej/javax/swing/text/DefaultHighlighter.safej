@@ -1,0 +1,17 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class(safe,
+      "javax.swing.text.DefaultHighlighter",
+      statics(method("run()")),
+      methods(method(suppress, "paint(Graphics)"),
+              method(suppress, "install(JTextComponent)"),
+              method(suppress, "deinstall(JTextComponent)"),
+              method("addHighlight(int, int, Highlighter.HighlightPainter)"),
+              method("removeHighlight(Object)"),
+              method("removeAllHighlights()"),
+              method("changeHighlight(Object, int, int)"),
+              method("getHighlights()"),
+              method(suppress, "paintLayeredHighlights(Graphics, int, int, Shape, JTextComponent, View)"),
+              method("setDrawsLayeredHighlights(boolean)"),
+              method("getDrawsLayeredHighlights()")))

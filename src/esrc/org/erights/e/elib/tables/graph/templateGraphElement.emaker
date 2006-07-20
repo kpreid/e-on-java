@@ -1,0 +1,32 @@
+# Copyright 2003 Hewlett Packard, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+/**
+ * <tt>templateGraphElement</tt> makes a base graph object.
+ *
+ * @param self A derived graph object.
+ * @return A base graph object.
+ * @author Terry Stanley
+ * @author Mark S. Miller
+ * @author Based on an idea of Gene Hughes
+ */
+def templateGraphElement {
+    to run(self) :near {
+        return templateGraphElement(self, self, self, self, self)
+    }
+    to run(self, var prevIn, var nextIn, var prevOut, var nextOut) :near {
+        
+        def baseGraphElement {
+            to getPrevIn()  :near { return prevIn }
+            to getNextIn()  :near { return nextIn }
+            to getPrevOut() :near { return prevOut }
+            to getNextOut() :near { return nextOut }
+            
+            to setPrevIn(prev)  :void { prevIn  := prev }
+            to setNextIn(next)  :void { nextIn  := next }
+            to setPrevOut(prev) :void { prevOut := prev }
+            to setNextOut(next) :void { nextOut := next }
+        }
+        return baseGraphElement
+    }
+}

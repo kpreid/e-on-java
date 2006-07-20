@@ -1,0 +1,363 @@
+# Copyright 2005 Mark S. Miller under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+pragma.enable("easy-return")
+pragma.enable("trinary-define")
+
+def Throwable     := <type:java.lang.Throwable>
+def AtomicExpr    := <type:org.erights.e.elang.evm.AtomicExpr>
+def EExpr         := <type:org.erights.e.elang.evm.EExpr>
+def EMatcher      := <type:org.erights.e.elang.evm.EMatcher>
+def EMethod       := <type:org.erights.e.elang.evm.EMethod>
+def ENode         := <type:org.erights.e.elang.evm.ENode>
+def EScript       := <type:org.erights.e.elang.evm.EScript>
+def ObjectExpr    := <type:org.erights.e.elang.evm.ObjectExpr>
+def Pattern       := <type:org.erights.e.elang.evm.Pattern>
+def ListPattern   := <type:org.erights.e.elang.evm.ListPattern>
+def NounPattern   := <type:org.erights.e.elang.evm.NounPattern>
+def FinalPattern  := <type:org.erights.e.elang.evm.FinalPattern>
+def SlotPattern   := <type:org.erights.e.elang.evm.SlotPattern>
+def StaticContext := <type:org.erights.e.elang.scope.StaticContext>
+def Auditor       := <type:org.erights.e.elib.slot.Auditor>
+def Slot          := <type:org.erights.e.elib.slot.Slot>
+def EList         := <type:org.erights.e.elib.tables.EList>
+def OneArgFunc    := <type:org.erights.e.elib.util.OneArgFunc>
+
+def Val := any
+def Env := Map[String, Slot]
+def Context := Tuple[Env, StaticContext]
+def EvalResult := Tuple[Val, Context]
+
+def getSlot(ctx :Context, name :String) :Slot {
+    def [env, _] := ctx
+    return env[`&$name`]
+}
+
+def withSlot(ctx :Context,
+             name :String,
+             slot :Slot,
+             nounPatt :NounPattern) :Context {
+    def [env, sc] := ctx
+    def e1 := env.with(`&$name`, slot)
+    def sc1 := sc.withBinding(name, nounPatt)
+    return [e1, sc1]
+}
+
+def makeMetaEval(AuditionStamp) :any {
+
+    def makeExprVisitor #(ctx :Context) :any
+
+
+    def eval(expr :EExpr, ctx :Context) :EvalResult {
+        def exprVisitor := makeExprVisitor(ctx)
+        return expr.welcome(exprVisitor)
+    }
+
+    def optEval(optExpr :nullOk[EExpr],
+                ctx :Context,
+                instead :Val) :EvalResult {
+        if (null == optExpr) {
+            return [instead, ctx]
+        } else {
+            return eval(optExpr, ctx)
+        }
+    }
+
+    def makePatternVisitor #(ctx :Context,
+#                            specimen :Val,
+#                            optEjector :nullOk[OneArgFunc]) :any
+
+    def testMatch(patt :Pattern,
+                  ctx :Context,
+                  specimen :Val,
+                  optEjector :nullOk[OneArgFunc]) :Context {
+        def patternVisitor := makePatternVisitor(ctx, specimen, optEjector)
+        return patt.welcome(patternVisitor)
+    }
+
+
+
+    /**
+     * A meta-circular evaluator for Kernel-E
+     *
+     * @author Mark S. Miller
+     */
+    bind makeExprVisitor(ctx :Context) :any {
+        def exprVisitor {
+
+            to visitLiteralExpr(_,
+                                data) :EvalResult {
+                # Delegate the question of what kinds of data can be
+                # represented literally to LiteralExpr
+                return [data, ctx]
+            }
+
+            to visitNounExpr(_,
+                             varName :String) :EvalResult {
+                def slot := getSlot(ctx, varName)
+                return [slot.getValue(), ctx]
+            }
+
+            to visitAssignExpr(_,
+                               noun :AtomicExpr,
+                               rValue :EExpr) :EvalResult {
+                def [v1, _] := def result := eval(rValue, ctx)
+                def slot := getSlot(ctx, noun.getName())
+                slot.setValue(v1)
+                return result
+            }
+
+            to visitSlotExpr(_,
+                             noun :AtomicExpr) :EvalResult {
+                return [getSlot(ctx, noun.getName()), ctx]
+            }
+
+            to visitCallExpr(_,
+                             recipExpr :EExpr,
+                             verb :String,
+                             argExprs :List[EExpr]) :EvalResult {
+                # Reifies left-to-right scoping & execution order.
+                # Absorbs applicative execution order.
+                # Absorbs application itself -- the meta-interpreter stops at
+                # object boundaries!
+                def [recip, var c1] := eval(recipExpr, ctx)
+                var args := []
+                for expr in argExprs {
+                    def [arg, c2] := eval(expr, c1)
+                    args with= arg
+                    c1 := c2
+                }
+                return [E.call(recip, verb, args), c1]
+            }
+
+            to visitSeqExpr(_,
+                            subs :List[EExpr]) :EvalResult {
+                # Reifies left-to-right scoping & execution order.
+                var v1 := null
+                var c1 := ctx
+                for sub in subs {
+                    def [v2, c2] := eval(sub, c1)
+                    v1 := v2
+                    c1 := c2
+                }
+                return [v1, c1]
+            }
+
+            to visitDefineExpr(_,
+                               patt :Pattern,
+                               optEjectorExpr :nullOk[EExpr],
+                               rValue :EExpr) :EvalResult {
+                # Reifies right-to-left scoping & execution order.
+                def [optEjector, c1] := optEval(optEjectorExpr, ctx, null)
+                def [v1, c2] := eval(rValue, c1)
+                return [v1, testMatch(patt, c2, v1, optEjector)]
+            }
+
+            to visitHideExpr(_,
+                             body :EExpr) :EvalResult {
+                return [eval(body, ctx)[0], ctx]
+            }
+
+            to visitIfExpr(_,
+                           test :EExpr,
+                           then :EExpr,
+                           els :EExpr) :EvalResult {
+                # Absorbs, for example, that 'if' will coerce 'flag' to a
+                # boolean. Absorbs choice. Reifies scope.
+                def [flag, c1] := eval(test, ctx)
+                if (flag) {
+                    return [eval(then, c1)[0], ctx]
+                } else {
+                    return [eval(els, ctx)[0], ctx]
+                }
+            }
+
+            to visitEscapeExpr(_,
+                               hatch :Pattern,
+                               body :EExpr,
+                               optArgPattern :nullOk[Pattern],
+                               optCatcher :nullOk[EExpr]) :EvalResult {
+                escape ejector {
+                    def c1 := testMatch(hatch, ctx, ejector, null)
+                    return [eval(body, c1)[0], ctx]
+                } catch arg {
+                    # Absorbs the disabling of the ejector
+                    if (null == optArgPattern) {
+                        return [arg, ctx]
+                    } else {
+                        def c2 := testMatch(optArgPattern, ctx, arg, null)
+                        return [eval(optCatcher, c2)[0], ctx]
+                    }
+                }
+            }
+
+            to visitCatchExpr(_,
+                              attempt :EExpr,
+                              patt :Pattern,
+                              catcher :EExpr) :EvalResult {
+                # Absorbs the relationship between what might be thrown
+                # and what might be caught.
+                try {
+                    return [eval(attempt, ctx)[0], ctx]
+                } catch problem {
+                    def c1 := testMatch(patt, ctx, problem, null)
+                    return [eval(catcher, c1)[0], ctx]
+                }
+            }
+
+            to visitFinallyExpr(_,
+                                attempt :EExpr,
+                                unwinder :EExpr) :EvalResult {
+                try {
+                    return [eval(attempt, ctx)[0], ctx]
+                } finally {
+                    eval(unwinder, ctx)
+                }
+            }
+
+            to visitObjectExpr(original :ObjectExpr,
+                               docComment :String,
+                               qualifiedName :String,
+                               auditorExprs :List[EExpr],
+                               eScript :EScript) :EvalResult {
+                var approvers := []
+                def audition implements AuditionStamp {
+                    to ask(auditor :Auditor) :void {
+                        if (auditor.audit(audition)) {
+                            approvers with= auditor
+                        }
+                    }
+                    to getSource() :ObjectExpr { return original }
+                }
+                var c1 := ctx
+                for auditorExpr in auditorExprs {
+                    def [auditor :Auditor, c2] := eval(auditorExpr, c1)
+                    c1 := c2
+                    audition.ask(auditor)
+                }
+                throw("XXX Not yet implemented")
+            }
+
+            to visitMetaStateExpr(_) :EvalResult {
+                # This depends on visitObjectExpr to restrict the environment
+                # to just the object's instance variables
+                def [env, _] := ctx
+                return [env, ctx]
+            }
+
+            to visitMetaContextExpr(_):EvalResult {
+                def [_, sc] := ctx
+                return [sc, ctx]
+            }
+        }
+        return exprVisitor
+    }
+
+    /**
+     * A meta-circular matcher for Kernel-E
+     */
+    bind makePatternVisitor(ctx :Context,
+                            specimen :Val,
+                            optEjector :nullOk[OneArgFunc]) :any {
+
+        def coercedSpecimen(optGuardExpr :nullOk[EExpr]) :EvalResult {
+            if (null == optGuardExpr) {
+                return [specimen, ctx]
+            } else {
+                # Absorbs any constraints on what values may serve as
+                # guards
+                def [guard, c1] := eval(optGuardExpr, ctx)
+                def v1 :guard exit optEjector := specimen
+                return [v1, c1]
+            }
+        }
+
+        def patternVisitor {
+
+            to visitFinalPattern(original :FinalPattern,
+                                 nounExpr :AtomicExpr,
+                                 optGuardExpr :nullOk[EExpr]) :Context {
+                def [val, c1] := coercedSpecimen(optGuardExpr)
+                return withSlot(c1, nounExpr.getName(), &val, original)
+            }
+
+            to visitVarPattern(original :SlotPattern,
+                               nounExpr :AtomicExpr,
+                               optGuardExpr :nullOk[EExpr]) :Context {
+                def [slot, c2] := if (null == optGuardExpr) {
+                    var v1 := specimen
+                    [&v1, ctx]
+                } else {
+                    def [guard, c1] := eval(optGuardExpr, ctx)
+                    var v2 :guard exit optEjector := specimen
+                    [&v2, c1]
+                }
+                return withSlot(c2, nounExpr.getName(), slot, original)
+            }
+
+            to visitSlotPattern(original :SlotPattern,
+                                nounExpr :AtomicExpr,
+                                optGuardExpr :nullOk[EExpr]) :Context {
+                def [slot, c1] := coercedSpecimen(optGuardExpr)
+                return withSlot(c1, nounExpr.getName(), slot, original)
+            }
+
+            to visitIgnorePattern(_,
+                                 optGuardExpr :nullOk[EExpr]) :Context {
+                def [_, c1] := coercedSpecimen(optGuardExpr)
+                return c1
+            }
+
+            to visitViaPattern(optOriginal :nullOk[ENode],
+                               viaExpr :EExpr,
+                               subPattern :Pattern) :Context {
+                # Absorbs any constraints on what values may serve as
+                # via functions
+                def [viaFunc, c1] := eval(viaExpr, ctx)
+                def via (viaFunc) v1 exit optEjector := specimen
+                return testMatch(subPattern, c1, v1, optEjector)
+            }
+
+            to visitListPattern(_,
+                                subs :List[Pattern]) :Context {
+                def list :EList exit optEjector := specimen
+                def llen := list.size()
+                def slen := subs.size()
+                if (llen != slen) {
+                    throw.eject(optEjector, `$\
+a $llen size list doesn't match a $slen size list pattern`)
+                }
+                var c1 := ctx
+                for i => patt in subs {
+                    c1 := testMatch(patt, c1, list[i], optEjector)
+                }
+                return c1
+            }
+        }
+        return patternVisitor
+    }
+    return eval
+}
+
+# rune(["~/e/src/esrc/scripts/updoc.e",
+#       "~/e/src/esrc/org/erights/e/elang/visitors/makeMetaEval.emaker"])
+
+? def ObjectExpr := <type:org.erights.e.elang.evm.ObjectExpr>
+? def Auditor    := <type:org.erights.e.elib.slot.Auditor>
+
+? interface Audition guards AuditionStamp {
+>     to ask(:Auditor) :void
+>     to getSource() :ObjectExpr
+> }
+
+? def eval := <elang:visitors.makeMetaEval>(AuditionStamp)
+# value: <eval>
+
+? def makeStaticContext := <elang:scope.makeStaticContext>
+# value: <makeStaticContext>
+
+? def sc := makeStaticContext("foo.", [].asMap(), null)
+# value: <static foo., 0>
+
+? eval(e`2+3`, [[].asMap(), sc])
+# value: [5, [[].asMap(), <static foo., 0>]]

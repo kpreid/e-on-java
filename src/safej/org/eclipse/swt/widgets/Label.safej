@@ -1,0 +1,11 @@
+class(safe,
+           "org.eclipse.swt.widgets.Label",
+           statics(method("run(Composite, int)")),
+           methods(method("computeSize(int, int, boolean)"),
+                   method("getAlignment()"),
+                   method("getImage()"),
+                   method("getText()"),
+                   method("setAlignment(int)"),
+                   method("setFont(Font)"),
+                   method("setImage(Image)"),
+                   method("setText(String)"))) 

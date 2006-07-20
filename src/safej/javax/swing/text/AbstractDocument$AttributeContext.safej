@@ -1,0 +1,12 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class("javax.swing.text.AbstractDocument.AttributeContext",
+      statics,
+      methods(method("addAttribute(AttributeSet, Object, Object)"),
+              method("addAttributes(AttributeSet, AttributeSet)"),
+              method("removeAttribute(AttributeSet, Object)"),
+              method("removeAttributes(AttributeSet, Enumeration)"),
+              method("removeAttributes(AttributeSet, AttributeSet)"),
+              method("getEmptySet()"),
+              method(suppress, "reclaim(AttributeSet)")))

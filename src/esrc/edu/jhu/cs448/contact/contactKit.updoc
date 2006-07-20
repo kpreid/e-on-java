@@ -1,0 +1,133 @@
+#!/usr/bin/env rune
+
+# Copyright 2004 Mark S. Miller, under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+# Based on a design by Christian Scheideler
+
+# MarkM's note to himself:
+# rune(["~/e/src/esrc/scripts/updoc.e",
+#       "resource:edu/jhu/cs448/contact/contactKit.updoc"])
+#
+# rune -J-Xmx400m resource:edu/jhu/cs448/contact/contactKit.updoc
+
+
+?? in new vat Rendezvous
+
+? introducer.onTheAir()
+# value: ["3DES_SDH_M2", "3DES_SDH_M"]
+
+? def <contact> := <import:edu.jhu.cs448.contact.*>
+# value: <import:edu.jhu.cs448.contact.*>
+
+? def r := <contact:makeRendezvous>()
+# value: <rendezvous>
+
+? def rURI := introducer.sturdyToURI(makeSturdyRef.temp(r))
+
+? <file:~/Desktop/rendezvous1.cap>.setText(rURI)
+
+
+?? in new vat Root
+
+? introducer.onTheAir()
+# value: ["3DES_SDH_M2", "3DES_SDH_M"]
+
+? def <contact> := <import:edu.jhu.cs448.contact.*>
+# value: <import:edu.jhu.cs448.contact.*>
+
+? def rURI := <file:~/Desktop/rendezvous1.cap>.getText().trim()
+
+? def contactKit :=
+>   <contact:contactKitAuthor>(entropy, introducer, makeSturdyRef, [rURI])
+# value: <contactKit>
+
+? def p1 := contactKit.newContact()
+
+? def p2 := contactKit.newContact()
+
+? <file:~/Desktop/p1.txt>.setText(p1)
+? <file:~/Desktop/a1.txt>.setText(contactKit.getAccessInfo(p1))
+? <file:~/Desktop/p2.txt>.setText(p2)
+? <file:~/Desktop/a2.txt>.setText(contactKit.getAccessInfo(p2))
+
+
+?? in new vat Ping
+
+? introducer.onTheAir()
+# value: ["3DES_SDH_M2", "3DES_SDH_M"]
+
+? def <contact> := <import:edu.jhu.cs448.contact.*>
+# value: <import:edu.jhu.cs448.contact.*>
+
+? def rURI := <file:~/Desktop/rendezvous1.cap>.getText().trim()
+
+? def contactKit :=
+>   <contact:contactKitAuthor>(entropy, introducer, makeSturdyRef, [rURI])
+# value: <contactKit>
+
+? def p1 := <file:~/Desktop/p1.txt>.getText()
+
+? def a2 := <file:~/Desktop/a2.txt>.getText()
+
+? def pongAccessor := contactKit.makeAccessor(a2)
+# value: <accessor>
+
+? var countDown := 10
+
+? def ping {
+>     to output(s :String) :void {
+>         throw.breakpoint(`Ping received "$s"`)
+>         if (countDown >= 1) {
+>             countDown -= 1
+>             pongAccessor.getRcvr() <- output("I am ping")
+>         }
+>     }
+> }
+# value: <ping>
+
+? interp.waitAtTop(contactKit.provide(p1, ping))
+
+
+?? in new vat Pong
+
+? introducer.onTheAir()
+# value: ["3DES_SDH_M2", "3DES_SDH_M"]
+
+? def <contact> := <import:edu.jhu.cs448.contact.*>
+# value: <import:edu.jhu.cs448.contact.*>
+
+? def rURI := <file:~/Desktop/rendezvous1.cap>.getText().trim()
+
+? def contactKit :=
+>   <contact:contactKitAuthor>(entropy, introducer, makeSturdyRef, [rURI])
+# value: <contactKit>
+
+? def p2 := <file:~/Desktop/p2.txt>.getText()
+
+? def a1 := <file:~/Desktop/a1.txt>.getText()
+
+? def pingAccessor := contactKit.makeAccessor(a1)
+# value: <accessor>
+
+? def pong {
+>     to output(s :String) :void {
+>         throw.breakpoint(`Pong received "$s"`)
+>         pingAccessor.getRcvr() <- output("I am pong")
+>     }
+> }
+# value: <pong>
+
+? interp.waitAtTop(contactKit.provide(p2, pong))
+
+
+?? in vat Ping
+
+? pongAccessor.getRcvr() <- output("I am Ping")
+
+? interp.waitAtTop(timer.whenPast(timer.now() + 5000, thunk{}))
+
+
+?? in vat Pong
+
+? 

@@ -1,0 +1,28 @@
+# Copyright 2005 Mark S. Miller under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+pragma.enable("easy-return")
+
+/**
+ * Defines the builtin '__MatchContext' guard.
+ * <p>
+ * __MatchContext is an always-transforming guard (need a name for this). It
+ * is therefore confusing if used as a guard in regular E code. It is provided
+ * only to support a legacy expansion, and will be probably be removed once
+ * this expansion is fixed.
+ *
+ * @deprecated.
+ * @author Mark S. Miller
+ */
+def MatchContext implements Guard {
+
+    /**
+     * Returns [specimen, optEjector]
+     */
+    to coerce(specimen, optEjector) :any { return [specimen, optEjector] }
+
+    /**
+     * Prints "__MatchContext"
+     */
+    to __printOn(out :TextWriter) :void { out.print("__MatchContext") }
+}

@@ -1,0 +1,47 @@
+
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+/**
+ * Looks at the current cursor location and determines if it is in the middle
+ * of an import:
+ * <p>
+ * If the cursor is in the middle of an import:, return the file of the
+ * import's source code. Assumes the import: statement is all on one line,
+ * and that the imported file is a hardwired file name, not a variable
+ * containing a name. If these assumptions are violated, the function returns
+ * null. Current implementation will not work properly with a second import:
+ * on a single line
+ *
+ * @param textPane the StyleText where the import: statement and cursor are
+ *                 found
+ * @param importRootDir the root directory of the subtree where emakers are
+ *                      stored
+ * @return file__uriGetter for the imported file, or null if the cursor is
+ *                         not in an import:
+ */
+def optImportedFile(textPane, importRootDir, traceline) :near {
+    def charLoc := textPane.getCaretOffset()
+    def  lineNum := textPane.getLineAtOffset(charLoc)
+    def endOfLine := textPane.getOffsetAtLine(lineNum+1) -1
+    def startOfLine := textPane.getOffsetAtLine(lineNum)
+    def line := textPane.getText(startOfLine, endOfLine)
+    traceline("importFileFinder on line: " + line)
+    def locInLine := charLoc - startOfLine
+    # return null from the "if" statement unless the cursor is in an import
+    if (line =~ `@lineFront<import:@emakerPath>@lineEnd`) {
+        #if the cursor is inside the import: brackets
+        if (locInLine > lineFront.size() && locInLine < (line.size() - lineEnd.size())) {
+            def pathParts := emakerPath.split(".")
+            var path := ""
+            for i => each in pathParts {
+                path := path + each
+                if (i < pathParts.size() - 1) {path := path + "/"}
+            }
+            path := path + ".emaker"
+            traceline("importFilePath: " + path + " or: " + importRootDir[path])
+            importRootDir[path]
+        }
+    }
+
+}

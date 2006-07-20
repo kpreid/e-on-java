@@ -1,0 +1,244 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def <install> := <import:org.erights.e.install.*>
+def installToRegistry := <install:win32.installToRegistry>
+def ConstMapMaker := <elib:tables.makeConstMap>
+def substFromProps := <install:props.substFromProps>
+def confirm := <install:confirm>
+
+
+/**
+ * Do MSWindows-specific installation.
+ * <p>
+ * XXX There is much non-MSWindows-specific logic in here that should be
+ * abstracted out.
+ */
+def setupWindows(var props,
+                 interp,
+                 stderr,
+                 <file>,
+                 ehomeDir,
+                 makeCommand,
+                 <awt>,
+                 <swing>,
+                 optIconImage,
+                 HocusFocusMaker
+                ) :void {
+
+    /**
+     * Iff 'props' has no entry for 'key', associate 'key' with the result
+     * of calling valueThunk().
+     * <p>
+     * This is named 'setDefault' since 'valueThunk' provides the default,
+     * ie, the value to use if one isn't already present.
+     */
+    def setDefault(props, key, valueThunk) :void {
+        if (! props.maps(key)) {
+            props[key] := valueThunk()
+        }
+    }
+
+    # User's home directory
+    def tilda := <file:~>.getPath()
+
+    /**
+     * Like E normalization, but removes unnecessary terminal slashes, and
+     * anti-normalizes "~" (i.e., puts it back in where we can).
+     */
+    def normalize(var filename :String) :String {
+        filename := <file>[filename].getPath()
+        if (filename.startsWith(tilda) && tilda.endsWith("/")) {
+            filename := "~/" + filename(tilda.size(), filename.size())
+        }
+        def len := filename.size()
+        if (filename.endsWith("/") &&
+              filename.startOf("/") =~ firstSlash &&
+              firstSlash < len -1) {
+            # Remove the terminal slash if it's not the first slash.
+            return filename(0, len -1)
+        } else {
+            return filename
+        }
+    }
+
+
+    /**
+     * Like setDefault, but assumes the value associated with 'key' is
+     * a filename, (independent of whether it is already there, or whether
+     * it comes from calling fileThunk()), and so is to be normalized.
+     */
+    def setDefaultFile(props, key, fileThunk) :void {
+        def optValue := props.fetch(key, fileThunk)
+        props[key] := normalize(optValue)
+    }
+
+    /**
+     * Like setDefault, but assumes the value associated with 'key' is
+     * a pathlist of filenames, (independent of whether it is already
+     * there, or whether it comes from calling pathlistThunk()), and
+     * so each filename is to be normalized.
+     */
+    def setDefaultPathlist(props, key, pathlistThunk) :void {
+        def optValue := props.fetch(key, pathlistThunk)
+        var pathlist := ""
+        for part in optValue.split(";") {
+            pathlist += ";" + normalize(part)
+        }
+        if (pathlist.size() >= 1) {
+            # drop the first semicolon
+            pathlist := pathlist(1, pathlist.size())
+        }
+        props[key] := pathlist
+    }
+
+
+    stderr.println("Installing E on Windows...")
+
+    # XXX The following "/x86" should actually be based on the value of
+    # the system property e.machdir, or, if that presents a bootstrapping
+    # problem, the value of the system property arch.name
+    def winfoCmd := makeCommand(ehomeDir["bin/win32/x86/winfo.exe"].getPath())
+
+    def winfoResult := winfoCmd()[0]
+
+    ehomeDir["winfo.txt"].setText(winfoResult)
+
+    props := props.diverge()
+
+    props.putAll(ConstMapMaker.fromPropertiesString(winfoResult), true)
+
+    # Load up with initial guesses
+
+    setDefault(props, "e.javacmd", def findJavacmd() :String{
+        for part in props["e.winfo.pathlist"].split(";") {
+            def javacmdFile := <file>[part]["java.exe"]
+            if (javacmdFile.exists()) {
+                return javacmdFile.getPath()
+            }
+        }
+        "java.exe" # in case we don't find one
+    })
+
+    setDefaultFile(props, "e.home", thunk{
+        ehomeDir.getPath()
+    })
+    setDefault(props, "e.osdir", thunk{
+        "win32"
+    })
+    setDefault(props, "e.machdir", thunk{
+        # XXX should verify this with the Java system property arch.name
+        "x86"
+    })
+    setDefaultFile(props, "e.launch.dir", thunk{
+        props["e.winfo.DESKTOP"]
+    })
+    setDefaultFile(props, "TraceLog_dir", thunk{
+        props["e.winfo.tempdir"] + "/etrace"
+    })
+
+    setDefaultPathlist(props, "e.put.bash.pathlist", thunk{
+        props["e.winfo.windowsdir"]
+    })
+    setDefaultPathlist(props, "e.put.shortcut.pathlist", thunk{
+        props["e.winfo.DESKTOP"] + ";" +
+          props["e.winfo.PROGRAMS"] + "/erights.org"
+    })
+
+    # XXX Should prompt here to see if the user wants to change
+    # anything. The rest of this function should instead be in
+    # callbacks from this dialog box
+
+    props := props.snapshot()
+
+    def ehome :String := props["e.home"]
+    def javacmd :String := props["e.javacmd"]
+    def launch :String := props["e.launch.dir"]
+    def userHome :String := props["user.home"]
+
+    # XXX Should double check whether ehome agrees with ehomeDir
+
+    def epropsTemplate := ehomeDir["eprops-template.txt"].getText()
+    def epropsFile := ehomeDir["eprops.txt"]
+    epropsFile.setText(substFromProps(epropsTemplate, props))
+
+    def runeTemplate := ehomeDir["rune-template.txt"].getText()
+    def runeFile := ehomeDir["rune"]
+    runeFile.setText(substFromProps(runeTemplate, props))
+
+    def devruneTemplate := ehomeDir["devrune-template.txt"].getText()
+    def devruneFile := ehomeDir["devrune"]
+    devruneFile.setText(substFromProps(devruneTemplate, props))
+
+    def runeBatTemplate := ehomeDir["rune-bat-template.txt"].getText()
+    def runeBatFile := ehomeDir["rune.bat"]
+    runeBatFile.setText(substFromProps(runeBatTemplate, props))
+
+    # XXX The following "/x86" should actually be based on the value of
+    # the system property e.machdir
+    def cmdDir := ehomeDir["bin/win32/x86"]
+
+    def makeShortcutCmd :=
+      makeCommand(cmdDir["make_shortcut.exe"].getPath())
+    def fileAssocCmd :=
+      makeCommand(cmdDir["file_assoc.exe"].getPath())
+    def addCommandCmd :=
+      makeCommand(cmdDir["add_command.exe"].getPath())
+
+    def shortDir := ehomeDir["bin/shortcuts"]
+    shortDir.mkdir(null)
+
+    installToRegistry(ehome,
+                      javacmd,
+                      launch,
+                      makeShortcutCmd,
+                      fileAssocCmd,
+                      addCommandCmd)
+
+    def TraceLog_dirName := props.fetch("TraceLog_dir", thunk{""})
+    if (TraceLog_dirName != "") {
+        <file>[TraceLog_dirName].mkdir(null)
+    }
+
+    /**
+     * Shows the copy
+     */
+    def copyFile(src, dest) :void {
+        stderr.println(`about to copy ${
+                E.toQuote(src.getPath())} to ${
+                E.toQuote(dest.getPath())}`)
+        src.copyTo(dest, null)
+    }
+
+    # Copy "rune" to where bash will find it
+    for dirName in props["e.put.bash.pathlist"].split(";") {
+        def destDir := <file>[dirName]
+        destDir.mkdirs(null)
+        copyFile(runeFile, destDir["rune"])
+    }
+
+    # Copy shortcuts to convenient places
+    for dirName in props["e.put.shortcut.pathlist"].split(";") {
+        def destDir := <file>[dirName]
+        destDir.mkdirs(null)
+        for `@name.lnk` => shortcut in shortDir {
+            copyFile(shortcut, destDir[`$name.lnk`])
+        }
+    }
+
+    def userHomeDir := <file>[userHome]
+
+    # Copy the caplets directory to ~/caplets
+    # XXX What to do about already installed caplets?
+    # XXX Should be something like "~/.e/caplets"
+    # XXX What about "scripts/donutServices"?
+    copyFile(ehomeDir["caplets"], userHomeDir["caplets"])
+
+    confirm(props,
+            interp,
+            stderr,
+            <awt>,
+            <swing>,
+            optIconImage,
+            HocusFocusMaker)
+}

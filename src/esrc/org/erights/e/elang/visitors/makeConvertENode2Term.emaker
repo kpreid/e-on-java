@@ -1,0 +1,268 @@
+# Copyright 2003 Hewlett Packard, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def AtomicExpr    := <type:org.erights.e.elang.evm.AtomicExpr>
+def EExpr         := <type:org.erights.e.elang.evm.EExpr>
+def EMatcher      := <type:org.erights.e.elang.evm.EMatcher>
+def EMethod       := <type:org.erights.e.elang.evm.EMethod>
+def ENode         := <type:org.erights.e.elang.evm.ENode>
+def EScript       := <type:org.erights.e.elang.evm.EScript>
+def ListPattern   := <type:org.erights.e.elang.evm.ListPattern>
+def ObjectExpr    := <type:org.erights.e.elang.evm.ObjectExpr>
+def Pattern       := <type:org.erights.e.elang.evm.Pattern>
+def StaticContext := <type:org.erights.e.elang.scope.StaticContext>
+def Term          := <type:org.quasiliteral.term.Term>
+
+/**
+ * Convert from the ENode form of an E AST to the corresponding term-tree.
+ * <p>
+ * If the original AST has quasi-holes, this will convert these to hole
+ * descriptions of the form expected by holePuncher. The termE__quasiParser
+ * makes use of this fact.
+ *
+ * @author Mark S. Miller
+ * @see holePuncher
+ * @see termE__quasiParser
+ */
+def makeConvertENode2Term() :any {
+
+    def convert
+
+    def visitor {
+
+        to visitAssignExpr(optOriginal :nullOk[ENode],
+                           noun :AtomicExpr,
+                           rValue :EExpr) :Term {
+            return term`AssignExpr(${convert(noun)},
+                                   ${convert(rValue)})`
+        }
+
+        to visitCallExpr(optOriginal :nullOk[ENode],
+                         recip :EExpr,
+                         verb :String,
+                         args :List[EExpr]) :Term {
+            return term`CallExpr(${convert(recip)},
+                                 .String.$verb,
+                                 [${convert(args)}*])`
+        }
+
+        to visitDefineExpr(optOriginal :nullOk[ENode]
+                           patt :Pattern,
+                           optEjectorExpr :nullOk[EExpr],
+                           rValue :EExpr,) :Term {
+            return term`DefineExpr(${convert(patt)},
+                                   ${convert(optEjectorExpr)},
+                                   ${convert(rValue)})`
+        }
+
+        to visitEscapeExpr(optOriginal :nullOk[ENode],
+                           hatch :Pattern,
+                           body :EExpr,
+                           optArgPattern :nullOk[Pattern],
+                           optCatcher :nullOk[EExpr]) :Term {
+            return term`EscapeExpr(${convert(hatch)},
+                                   ${convert(body)},
+                                   ${convert(optArgPattern)},
+                                   ${convert(optCatcher)})`
+        }
+
+        to visitHideExpr(optOriginal :nullOk[ENode],
+                         body :EExpr) :Term {
+            return term`HideExpr(${convert(body)})`
+        }
+
+        to visitIfExpr(optOriginal :nullOk[ENode],
+                       test :EExpr,
+                       then :EExpr,
+                       els :EExpr) :Term {
+            return term`IfExpr(${convert(test)},
+                               ${convert(then)},
+                               ${convert(els)})`
+        }
+
+        to visitLiteralExpr(optOriginal :nullOk[ENode],
+                            data) :Term {
+            def litData := if (data =~ str :String) {
+                term`.String.$data`
+            } else {
+                term`$data`
+            }
+            return term`LiteralExpr($litData)`
+        }
+
+        to visitNounExpr(optOriginal :nullOk[ENode],
+                         varName :String) :Term {
+            return term`NounExpr(.String.$varName)`
+        }
+
+
+        to visitObjectExpr(optOriginal :nullOk[ENode],
+                           docComment :String,
+                           qualifiedName :String,
+                           auditors :List[EExpr],
+                           eScript :EScript) :Term {
+            return term`ObjectExpr(.String.$docComment,
+                                   .String.$qualifiedName,
+                                   [${convert(auditors)}*],
+                                   ${convert(eScript)})`
+        }
+
+        to visitMetaStateExpr(optOriginal :nullOk[ENode]) :Term {
+            return term`MetaStateExpr`
+        }
+
+        to visitMetaContextExpr(optOriginal :nullOk[ENode]) :Term {
+            return term`MetaContextExpr`
+        }
+
+        to visitSeqExpr(optOriginal :nullOk[ENode],
+                        subs :List[EExpr]) :Term {
+            return term`SeqExpr([${convert(subs)}*])`
+        }
+
+        to visitSlotExpr(optOriginal :nullOk[ENode],
+                         noun :AtomicExpr) :Term {
+            return term`SlotExpr(${convert(noun)})`
+        }
+
+        to visitCatchExpr(optOriginal :nullOk[ENode],
+                          attempt :EExpr,
+                          patt :Pattern,
+                          catcher :EExpr) :Term {
+            return term`CatchExpr(${convert(attempt)},
+                                  ${convert(patt)},
+                                  ${convert(catcher)})`
+        }
+
+        to visitFinallyExpr(optOriginal :nullOk[ENode],
+                            attempt :EExpr,
+                            unwinder :EExpr) :Term {
+            return term`FinallyExpr(${convert(attempt)},
+                                    ${convert(unwinder)})`
+        }
+
+
+        to visitQuasiLiteralExpr(optOriginal :nullOk[ENode],
+                                 index :int) :Term {
+            return term`.DollarHole.($index)`
+        }
+
+        to visitQuasiPatternExpr(optOriginal :nullOk[ENode],
+                                 index :int) :Term {
+            return term`.AtHole.($index)`
+        }
+
+        /***************************** Patterns *************************/
+
+
+        to visitFinalPattern(optOriginal :nullOk[ENode],
+                             nounExpr :AtomicExpr,
+                             optGuardExpr :nullOk[EExpr]) :Term {
+            return term`FinalPattern(${convert(nounExpr)},
+                                     ${convert(optGuardExpr)})`
+        }
+
+        to visitVarPattern(optOriginal :nullOk[ENode],
+                           nounExpr :AtomicExpr,
+                           optGuardExpr :nullOk[EExpr]) :Term {
+            return term`VarPattern(${convert(nounExpr)},
+                                   ${convert(optGuardExpr)})`
+        }
+
+        to visitSlotPattern(optOriginal :nullOk[ENode],
+                            nounExpr :AtomicExpr,
+                            optGuardExpr :nullOk[EExpr]) :Term {
+            return term`SlotPattern(${convert(nounExpr)},
+                                    ${convert(optGuardExpr)})`
+        }
+
+        to visitIgnorePattern(optOriginal :nullOk[ENode],
+                              optGuardExpr :nullOk[EExpr]) :Term {
+            return term`IgnorePattern(${convert(optGuardExpr)})`
+        }
+
+        to visitViaPattern(optOriginal :nullOk[ENode],
+                           viaExpr :EExpr,
+                           subPattern :Pattern) :Term {
+            return term`ViaPattern(${convert(viaExpr)},
+                                   ${convert(subPattern)})`
+        }
+
+        to visitListPattern(optOriginal :nullOk[ENode],
+                            subs :List[Pattern]) :Term {
+            return term`ListPattern([${convert(subs)}*])`
+        }
+
+        to visitQuasiLiteralPatt(optOriginal :nullOk[ENode],
+                                 index :int) :Term {
+            return term`.DollarHole.($index)`
+        }
+
+        to visitQuasiPatternPatt(optOriginal :nullOk[ENode],
+                                 index :int) :Term {
+            return term`.AtHole.($index)`
+        }
+
+        /***************************** Other *************************/
+
+
+        to visitEScript(optOriginal :nullOk[ENode],
+                        optMethods :nullOk[EMethod[]],
+                        matchers :List[EMatcher]) :Term {
+            def meths := if (null == optMethods) {
+                term`null`
+            } else {
+                term`[${convert(optMethods)}*]`
+            }
+            return term`EScript($meths,
+                                [${convert(matchers)}*])`
+        }
+
+        to visitEMethod(optOriginal :nullOk[ENode],
+                        docComment :String,
+                        verb :String,
+                        patterns :List[Pattern],
+                        optResultGuard :nullOk[EExpr],
+                        body :EExpr) :Term {
+            return term`EMethod(.String.$docComment,
+                                .String.$verb,
+                                [${convert(patterns)}*],
+                                ${convert(optResultGuard)},
+                                ${convert(body)})`
+        }
+
+        to visitEMatcher(optOriginal :nullOk[ENode],
+                         pattern :Pattern,
+                         body :EExpr) :Term {
+            return term`EMatcher(${convert(pattern)},
+                                 ${convert(body)})`
+        }
+    }
+
+    /**
+     * Enables this visitor to be invoked as a convert function.
+     * <p><ul>
+     * <li>If optENode is null, return term`null`.
+     * <li>If optENode is an ENode, return a corresponding Term.
+     * <li>If optENode is an List[ENode], return a correspoding List[Term]
+     * </ul>
+     */
+    bind convert(optENode) :any {
+        switch (optENode) {
+            match ==null          { return term`null` }
+            match eNode :ENode    {
+                def result := eNode.welcome(visitor)
+                # XXX Should add eNode.getOptSpan() to the result
+                return result
+            }
+            match eNodes :List[ENode] {
+                var result := []
+                for eNode in eNodes {
+                    result with= (eNode.welcome(visitor))
+                }
+                return result
+            }
+        }
+    }
+    return convert
+}

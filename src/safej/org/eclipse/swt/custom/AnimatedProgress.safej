@@ -1,0 +1,7 @@
+class("org.eclipse.swt.custom.AnimatedProgress",
+           statics(method(suppress, "run(Composite, int)")),
+           methods(method(suppress, "clear()"),
+                   method(suppress, "computeSize(int, int, boolean)"),
+                   method(suppress, "start()"),
+                   method(suppress, "stop()")),
+           comment("problem with threads?")) 

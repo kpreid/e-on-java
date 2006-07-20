@@ -1,0 +1,50 @@
+# Copyright 2003 Hewlett Packard, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+/**
+ * The <tt>asyncAnd</tt> function keeps track of the asynchronous
+ * resolution of a list of promises-for-booleans, returning a promise that
+ * resolves to the conjunction (and) of these.
+ * <ul>
+ * <li>It resolves to true if each and every promise in the list resolves to
+ *     true.
+ * <li>If false is seen, it resolves to false.
+ * <li>If a broken promise is seen, it resolves to the broken promise.
+ * </ul>
+ * As with the logical and (<tt>&&</tt>) operator, it stops with the first
+ * false and it resolves to false (though this does not stop the computations
+ * that will resolve the other promises).
+ *
+ * @param promises A list of promises that resolve to boolean.
+ * @return A promise for the conjunction of the promises.
+ * @author Terry Stanley
+ * @author Mark S. Miller
+ */
+def asynchAnd(promises :List[vow[boolean]]) :vow[boolean] {
+    var countDown := promises.size()
+    if (countDown == 0) { return true }
+
+    # Since resolvers resolve only once, subsequent resolve messages fail
+    # silently.
+    def [result, resolver] := Ref.promise()
+
+    for p in promises {
+        # During this turn each conjunctDone function is registered
+        # to be called back in its own turn once its promise resolves.
+
+        when (p) -> conjunctDone(conjunct :boolean) :void {
+            if (conjunct) {
+                if ((countDown -= 1) <= 0) {
+                    resolver.resolve(true)
+                } else {
+                    resolver.gettingCloser()
+                }
+            } else {
+                resolver.resolve(false, false)
+            }
+        } catch excuse {
+            resolver.smash(excuse)
+        }
+    }
+    return result
+}

@@ -1,0 +1,87 @@
+#!/usr/bin/env rune
+
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def traceline(str) :void { stderr.println(str) }
+
+def <widget> := <swt:widgets.*>
+
+def SWT := <swt:makeSWT>
+
+def Shell := <type:org.eclipse.swt.widgets.Shell>
+
+def <sky> := <import:com.skyhunter.*>
+def disposablesKit := <sky:swt.disposablesKitAuthor>(currentDisplay)
+def logoURL := <resource:org/erights/e/icons/green-e-on-white-16.gif>
+
+def makeEditGroup := <import:org.erights.e.ui.jed.makeEditGroup>
+
+/**
+ * By "frame" we mean a Shell with an icon.
+ */
+def makeFrame() :Shell {
+    def result := <widget:makeShell>(currentDisplay)
+    result.setImage(disposablesKit.makeImage(logoURL))
+    result
+}
+
+def activate(shell :Shell) :void {
+    <widget:makeShell>.activate(shell)
+}
+
+def shutdown() :void {
+    interp.exitAtTop()
+}
+
+/**
+ * @param shell The parent.
+ * @return A vow for a list of Files that the user will select.
+ */
+def openner(shell :Shell) :vow {
+    def dialog := <widget:makeFileDialog>(shell, SWT.getMULTI() | SWT.getOPEN())
+    dialog.open()
+    var optNames := dialog.getFileNames()
+    def dir := <file>[dialog.getFilterPath()]
+    if (optNames == null) {
+        []
+    } else {
+        var result := []
+        for name in optNames {
+            result with= dir[name]
+        }
+        result
+    }
+}
+
+def runtime := <unsafe:java.lang.makeRuntime>.getRuntime()
+
+def abstractJed :=
+  <import:org.erights.e.ui.jed.abstractJedAuthor>(currentDisplay,
+                                                  makeFrame,
+                                                  openner,
+                                                  interp.getProps(),
+                                                  runtime,
+                                                  timer,
+                                                  traceline)
+
+def editGroup := makeEditGroup(abstractJed,
+                               activate,
+                               shutdown,
+                               traceline)
+
+
+def fNames := interp.getArgs()
+if (fNames =~ []) {
+    editGroup.obtainEditor(null)
+} else {
+    for fName in fNames {
+        editGroup.obtainEditor(<file>[fName])
+    }
+}
+
+if (interp.getProps().fetch("debug", thunk{}) == "rune") {
+    rune(["--interact", "-.e", editGroup])
+}
+
+interp.blockAtTop()

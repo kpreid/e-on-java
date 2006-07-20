@@ -1,0 +1,101 @@
+#!/usr/bin/env rune
+
+# Copyright 2004 Mark S. Miller, under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+pragma.enable("easy-return")
+pragma.enable("explicit-result-guard")
+
+/**
+ * A "__dynamicExtent" of a function is a version of that function that's
+ * passed to a context function, and can only be used until the context
+ * function returns.
+ * <p>
+ * "__dynamicExtent(func, context)" calls context, a one argument
+ * function, with an object that will forward "run" to func while it is
+ * enabled. The three argument form
+ * <pre>    __dynamicExtent(verb, func, context)</pre>
+ * is a generalization which will conditionally forward "verb" messages to
+ * func during context.
+ * <p>
+ * For the Miranda Methods, the forwarder below must make good decisions
+ * about whether to override them and possibly forward them, or not override
+ * them and let them default to methods on the forwarder. For non-Miranda
+ * methods other than the suppressed method, they are simply forwarded.
+ */
+def __dynamicExtent0 {
+    to run(verb, target, context) :any {
+        var enabled := true
+        def forwarder {
+            
+            /**
+             * forward __getAllegedType/0, though one could argue that, once
+             * disabled, the type shouldn't include the supressed verb
+             */
+            to __getAllegedType() :any {
+                return target.__getAllegedType()
+            }
+            
+            /**
+             * forward __respondsTo, though one could argue that, once
+             * disabled, the type shouldn't include the supressed verb
+             */
+            to __respondsTo(verb2, arity) :boolean {
+                return target.__respondsTo(verb2, arity)
+            }
+            
+            /** forward __printOn/1 */
+            to __printOn(out :TextWriter) :void { target.__printOn(out) }
+            
+            /** forward __reactToLostClient */
+            to __reactToLostClient(problem) :void {
+                target.__reactToLostClient(problem)
+            }
+            
+            # handle all other messages
+            match [verb2, args] {
+                if (verb == verb2) {
+                    if (!enabled) {
+                        throw("disabled")
+                    }
+                }
+                E.call(target, verb2, args)
+            }
+        }
+        try {
+            return context(forwarder)
+        } finally {
+            enabled := false
+        }
+    }
+    
+    # default to suppressing "run"
+    to run(target, context) :any {
+        return __dynamicExtent0("run", target, context)
+    }
+}
+
+# Give the thief the ability to print only until he returns
+
+? def __dynamicExtent := <elang:control.__dynamicExtent>
+
+? var loot := null
+
+? def thief(printlnFunc) :any {
+>     loot := printlnFunc
+>     printlnFunc("Hello")
+>     return 33
+> }
+# value: <thief>
+
+? __dynamicExtent(println, thief)
+# stdout: Hello
+#
+
+# value: 33
+
+? loot(" World")
+# problem: disabled
+
+# rune(["~/e/src/esrc/scripts/updoc.e",
+#       "~/e/src/esrc/org/erights/e/elang/control/__dynamicExtent.emaker"])

@@ -1,0 +1,32 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+/**
+ * Given a List of promises, when all the promises have been resolved,
+ * resolve the returned promise, either fulfilling it with the list of
+ * fulfillments (if all the promises were fulfilled) or by smashing the
+ * returned promise with one of the broken promises (if at least one
+ * promise was broken).
+ */
+def resolveAllVow(promises) :any {
+    var countDown := promises.size()
+    if (countDown == 0) { return promises }
+    def [result, resolver] := Ref.promise()
+    var resolution := promises
+    for prom in promises {
+        # using Ref.whenResolvedOnly directly because the catch/throw behavior
+        # of the 'when' construct is undesirable. (Thanks to Kevin Reid for
+        # the suggestion)
+        Ref.whenResolvedOnly(prom, def done(_) :void {
+            if (Ref.isBroken(prom)) {
+                resolution := prom
+            }
+            if ((countDown -= 1) <= 0) {
+                resolver.resolve(resolution)
+            } else {
+                resolver.gettingCloser()
+            }
+        })
+    }
+    return result
+}

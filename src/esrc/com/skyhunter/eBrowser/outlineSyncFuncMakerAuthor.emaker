@@ -1,0 +1,46 @@
+
+def outlineSyncFuncMakerAuthor(dialogVowMaker, traceline) :near {
+    var syncerCounter := 1
+
+    def traceErr := <import:com.skyhunter.e.util.stackTraceFunc>
+    def outlineSyncFuncMaker(farBrowseServer, textModel, textPane) :near {
+        var changeMadeSinceLastAnalysisStart := true
+        var analysisNowInProgress := false
+        def myNumber := syncerCounter
+        syncerCounter += 1
+        def syncer() :void {
+            #traceline("syncer started  for: " + myNumber)
+            def vowFuncs := farBrowseServer <- refreshFuncs(textPane.getText())
+            analysisNowInProgress := true
+            when (vowFuncs) -> done(funcs) :void {
+                if (funcs != null) {
+                    #traceline("syncer got change" + myNumber)
+                    textModel.setLines(funcs[0], funcs[1], funcs[2], funcs[3])
+                } else {
+                    #traceline("syncer got NO change" + myNumber)
+                }
+                if (changeMadeSinceLastAnalysisStart) {
+                    changeMadeSinceLastAnalysisStart := false
+                    syncer()
+                } else {analysisNowInProgress := false}
+            } catch e {
+                traceline("dead dead sync: " + e)
+                dialogVowMaker("Browse Server Lost",
+                                   `$\nError:$\n$\n $e$\n${traceErr(e)}`,
+                                   null,
+                                   ["OK"])
+            }
+        }
+        def keyListener {
+            to verifyText(event) :void {
+                changeMadeSinceLastAnalysisStart := true
+                if (! analysisNowInProgress) {syncer()}
+            }
+            match [verb,args] {traceline("Problem: outline syncer got verb: " + verb)}
+        }
+        # msm: MarcS, is this a mistake?  This is an swt method, not an awt
+        # or swing method.
+        # textPane addVerifyListener(keyListener)
+        syncer
+    }
+}

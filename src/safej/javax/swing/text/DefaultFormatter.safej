@@ -1,0 +1,18 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class(safe,
+      "javax.swing.text.DefaultFormatter",
+      statics(method("run()")),
+      methods(method("install(JFormattedTextField)"),
+              method("setCommitsOnValidEdit(boolean)"),
+              method("getCommitsOnValidEdit()"),
+              method("setOverwriteMode(boolean)"),
+              method("getOverwriteMode()"),
+              method("setAllowsInvalid(boolean)"),
+              method("getAllowsInvalid()"),
+              method(suppress, "setValueClass(Class)"),
+              method(suppress, "getValueClass()"),
+              method(suppress, "stringToValue(String)"),
+              method(suppress, "valueToString(Object)"),
+              method(suppress, "clone()")))

@@ -1,0 +1,340 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def Term := <type:org.quasiliteral.term.Term>
+def <tools> := <import:org.erights.e.tools.*>
+def html2updoc := <tools:html.html2updoc>
+def makeHashCache := <tools:updoc.makeHashCache>
+
+def EMPTY_SCRIPT := term`script(inVats("home"), [inVat("home",[])])`
+
+/**
+ * <tt>updocParser</tt> parses Updoc files into test cases that constitute a
+ * test script to run.
+ * <p>
+ * Each test case has an expression and the original answers to the
+ * evaluation of that expression.
+ * <p>
+ * For example, parsing the following Updoc source,
+ * <pre>
+ *     ? def x := 2 + 3
+ *     # value: 5
+ * </pre>
+ * results in a <tt>testcase</tt> object whose expression is
+ * <tt>"def x := 2 + 3"</tt> and whose answer has the key
+ * <tt>"value"</tt> and body <tt>"5"</tt>. Notice that the <tt>Updoc</tt>
+ * syntax ("?", ">", "#") is removed. Expressions can have multiple answers.
+ * <p>
+ * <tt>updocParser</tt> recognizes single line expressions and answers, such
+ * as,
+ * <pre>
+ *     ? def x := 2 + 5
+ *     # value: 5
+ * </pre>
+ * and multi-line expressions and answers in the format shown below.
+ * <pre>
+ *     ? if (text == null) {
+ *     >     "no text"
+ *     > } else {
+ *     >     text
+ *     > }
+ *     # value: "foo
+ *     #        bar"
+ * </pre>
+ * XXX define the form of the parsed result in some kind of formal term-tree
+ * schema language, like:<pre>
+ *     script ::= script(inVats($vatName+), [$sequence+])
+ *     vatName ::= .String.$Identifier
+ *     sequence ::= inVat($vatName, [$testCase*])
+ *     testCase ::= test(expr, {$answer*})
+ *     expr ::= .String.$EExpr
+ *     answer ::= $keyword=.String.$AnswerText
+ *     keyword ::= value | problem # | ... XXX more to be specified</pre>
+ * The first script above would parse into<pre>
+ *     term`script(inVats("home"),
+ *                 [inVat("home",
+ *                        [test("2 + 3\n",
+ *                         {value="5\n"}])])`</pre>
+ *
+ * @author Mark S. Miller
+ * @author based on makeOldUpdocParser by Terry Stanley
+ */
+def makeUpdocParserAuthor(optCacheFile) :near {
+    def hashCache := makeHashCache(optCacheFile)
+
+    def makeUpdocParser {
+
+        to parsePlain(src :Twine) :Term {
+            def bareHash := src.getBareCryptoHash()
+            if (hashCache.has(bareHash)) {
+                return EMPTY_SCRIPT
+            }
+            def result := makeUpdocParser(src).readScript()
+            if (result =~ term`$EMPTY_SCRIPT`) {
+                hashCache.put(bareHash)
+            }
+            return result
+        }
+
+        to parseHtml(htmlSrc :Twine) :Term {
+            def bareHash := htmlSrc.getBareCryptoHash()
+            if (hashCache.has(bareHash)) {
+                return EMPTY_SCRIPT
+            }
+            def src := html2updoc(htmlSrc)
+            def result := makeUpdocParser(src).readScript()
+            if (result =~ term`$EMPTY_SCRIPT`) {
+                hashCache.put(bareHash)
+            }
+            return result
+        }
+
+        to checkpoint() :void {
+            hashCache.checkpoint()
+        }
+
+        /**
+         *
+         * @source
+         */
+        to run(source :Twine) :near {
+            def lines := source.split("\n")
+            var index := 0
+
+            def vatNames := [].diverge()
+
+            /**
+             * <tt>readExpr</tt> reads a single or multi-line expression.
+             * <p>
+             * It expects the formats shown below.
+             * <pre>
+             *     ? x := 2 + 3
+             * </pre>
+             * or
+             * <pre>
+             *     ? if (answers != null) {
+             *     >     printAnswers(answers, out)
+             *     > }
+             * </pre>
+             *
+             * @return The expression as a literal twine term-leaf.
+             *         The result includes newlines after each
+             *         line of the expression.
+             */
+            def readExpr() :Term {
+                var result := ""
+                var current := lines[index].trim()
+                while (true) {
+                    # skip "?" (or ">") and (optional) space
+                    current := current(1, current.size())
+                    if (current =~ twine` @rest`) {
+                        current := rest
+                    }
+                    # put back newline removed by split
+                    result += current + "\n"
+
+                    index += 1
+                    if (index >= lines.size()) {
+                        break
+                    }
+                    current := lines[index].trim()
+
+                    if (! (current.startsWith(">"))) {
+                        break
+                    }
+                }
+                return term`.String.$result`
+            }
+
+            /**
+             * <tt>readOptAnswer</tt> reads an optional single or multi-line
+             * answer.
+             * <p>
+             * It expects the formats shown below,
+             * <pre>
+             *     # value: 5
+             * </pre>
+             * or
+             * <pre>
+             *     # value: "foo
+             *     #        bar"
+             * </pre>
+             * For answers with the keyword "problem" the stack trace is
+             * skipped.
+             *
+             * @return The answer as a term, or null. Since the answer keywords
+             *         are assumed to be keywords in updoc syntax, these are
+             *         turned into tags. The result, for example, is
+             *         term`value="5"`.
+             */
+            def readOptAnswer() :nullOk[Term] {
+                var keyword := null
+                var answer := ""
+                if (index >= lines.size()) {
+                    return null
+                }
+                if (lines[index].trim() =~ twine`#@prefix:@text`) {
+                    keyword := prefix.trim()
+                    # put back newline removed by split
+                    answer += text.trim() + "\n"
+                    index += 1
+                    while (index < lines.size() &&
+                             lines[index].trim() =~ twine`#@rest`) {
+                        # multi-line answer block
+                        def nextLine := rest.trim()
+                        # skip over the stack trace which can vary from run to
+                        # run
+                        if (nextLine =~ `` && keyword =~ `problem`) {
+                            index += 1
+                            while (index < lines.size() &&
+                                     lines[index].trim() =~ `#@_`) {
+                                index += 1
+                            }
+                            break
+                        }
+                        answer += nextLine + "\n"
+                        index += 1
+                    }
+                    answer := answer.replaceAll("\\\n", "")
+                    require(answer.endsWith("\n"), thunk{
+                        `${E.toQuote(answer)} must end with a newline`
+                    })
+                    return term`$keyword=.String.$answer`
+                } else {
+                    return null
+                }
+            }
+
+            /**
+             * Tests for a blank line and skips over it.
+             */
+            def readBlankLine() :void {
+                if (index < lines.size() && lines[index].trim() == "") {
+                    index += 1
+                }
+            }
+
+            /**
+             * Reads a sequence of answers.
+             *
+             * @return The answers as a list of answer terms.
+             */
+            def readAnswers() :List[Term] {
+                var result := []
+                while (readOptAnswer() =~ answer :notNull) {
+                    result with= answer
+                    # blank line follows answer block
+                    readBlankLine()
+                }
+                return result
+            }
+
+            /**
+             * Reads an Updoc directive.
+             * <p>
+             * Currently, only vat directives are recognized. Use these
+             * directives to create and switch vats in multi-vat tests.
+             * <p>
+             * To create a new vat named client:
+             * <pre>
+             *     ?? in new vat client
+             * </pre>
+             * To switch to the vat named cient:
+             * <pre>
+             *     ?? in vat client
+             * </pre>
+             *
+             * @return The directive as term`inVat("<vatName>")`
+             */
+            def readDirective() :Term {
+                def current := lines[index].trim()
+                switch (current) {
+                    match twine`?? in new vat @name` {
+                        if (vatNames.contains(name.bare())) {
+                            throw(`Vat $name already to be created`)
+                        }
+                        index += 1
+                        vatNames.push(name.bare())
+                        return term`inVat(.String.$name)`
+                    }
+                    match twine`?? in vat @name` {
+                        if (! vatNames.contains(name.bare())) {
+                            throw(`Vat $name not yet created`)
+                        }
+                        index += 1
+                        return term`inVat(.String.$name)`
+                    }
+                    match `?@_` {
+                        if (! vatNames.contains("home")) {
+                            vatNames.push("home")
+                        }
+                        return term`inVat("home")`
+                    }
+                }
+            }
+
+            /**
+             * Reads a directive and one or more test cases.
+             *
+             * @return A term representing an updoc sequence
+             */
+            def readSequence() :Term {
+                def current := lines[index].trim()
+                def directive :Term := readDirective()
+                var cases :List[Term] := []
+                while (index < lines.size()) {
+                    def current := lines[index].trim()
+                    if (current.startsWith("??")) {
+                        break
+                    } else if (current.startsWith("?")) {
+                        def expr :Term := readExpr()
+                        def answers :List[Term] := readAnswers()
+                        cases with= term`test($expr, {$answers*})`
+                    } else {
+                        index += 1
+                    }
+                }
+                if (directive =~ term`inVat(@vatName)`) {
+                    return term`inVat($vatName, [$cases*])`
+                } else {
+                    return term`sequence($directive, [$cases*])`
+                }
+            }
+
+            def updocParser {
+
+                /**
+                 * <tt>readAnswers</tt>
+                 *
+                 * @return The answers as a list of answer terms.
+                 */
+                to readAnswers() :List[Term] {
+                    return readAnswers()
+                }
+
+                /**
+                 * <tt>readScript</tt> reads an Updoc script.
+                 *
+                 * @return A term representing an updoc script
+                 */
+                to readScript() :Term {
+                    var sequences :List[Term] := []
+                    while (index < lines.size()) {
+                        def current := lines[index].trim()
+                        if (current.startsWith("?")) {
+                            sequences with= readSequence()
+                        } else {
+                            index += 1
+                        }
+                    }
+                    var nameTerms := []
+                    for vatName in vatNames {
+                        nameTerms with= term`.String.$vatName`
+                    }
+                    return term`script(inVats($nameTerms*), [$sequences*])`
+                }
+            }
+        }
+    }
+    return makeUpdocParser
+}

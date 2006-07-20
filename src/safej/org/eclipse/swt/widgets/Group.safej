@@ -1,0 +1,7 @@
+class(safe,
+           "org.eclipse.swt.widgets.Group",
+           statics(method("run(Composite, int)")),
+           methods(method("computeTrim(int, int, int, int)"),
+                   method("getClientArea()"),
+                   method("getText()"),
+                   method("setText(String)"))) 

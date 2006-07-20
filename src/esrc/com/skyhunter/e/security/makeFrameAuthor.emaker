@@ -1,0 +1,57 @@
+
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def JPanel__quasiParser := <import:org.erights.ex.swing.JPanel__quasiParser>
+
+def makeFrameAuthor(makeJFrame, powerbarControllerMaker, capletIconImage, capletName, <awt>, <swing>, traceline) :near {
+    def validNoArgVerbs := ["show",
+                            "pack",
+                            "dispose", "hide",
+                            "isShowing",
+                            "toBack",
+                            "getTitle",
+                            "isResizable",
+                            "getState",
+                             "getJMenuBar",
+                            "update" ].asSet()
+    def WindowListener := <type:java.awt.event.WindowListener>
+    def Cursor := <type:java.awt.Cursor>
+    def JMenuBar := <type:javax.swing.JMenuBar>
+    def makeFrame {
+        to run(title :String) :near {
+            def myJFrame := makeJFrame(`$capletName $title`)
+            myJFrame.setIconImage(capletIconImage)
+            def contentPane := <swing:makeJPanel>()
+            contentPane.setLayout(<awt:makeBorderLayout>())
+            traceline("setting outer content pane")
+            def frame {
+                to setTitle(title :String) :void {myJFrame.setTitle(`$capletName - $title`)}
+                to setState(state :boolean) :void {myJFrame.setState(state)}
+                to setResizable(state :boolean) :void {myJFrame.setResizable(state)}
+                to setJMenuBar(bar :JMenuBar) :void {myJFrame.setJMenuBar(bar)}
+                to setDefaultCloseOperation(op :int) :void {myJFrame.setDefaultCloseOperation(op)}
+                to addWindowListener(lis :WindowListener) :void {myJFrame.addWindowListener(lis)}
+                to removeWindowListener(lis :WindowListener) :void {myJFrame.removeWindowListener(lis)}
+                to setCursor(cursor :Cursor) :void {myJFrame.setCursor(cursor)}
+                to getContentPane() :near {
+                    traceline("contentPane requested")
+                    contentPane
+                }
+                match [via (__is.memberOf(validNoArgVerbs)) verb, []] {
+                    E.call(myJFrame, verb, [])
+                }
+                match _ {}
+            }
+            def powerbarController := powerbarControllerMaker(frame)
+            def outerContentPane :=
+              JPanel`$contentPane.X.Y
+                         ${powerbarController.getPowerPanel()}`
+            myJFrame.setContentPane(outerContentPane)
+            frame
+        }
+        to run() :near {
+            makeFrame("")
+        }
+    }
+}

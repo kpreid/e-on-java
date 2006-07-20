@@ -1,0 +1,4 @@
+class("org.eclipse.swt.events.SelectionListener",
+           statics,
+           methods(method(suppress, "widgetSelected(SelectionEvent)"),
+                   method(suppress, "widgetDefaultSelected(SelectionEvent)"))) 

@@ -1,0 +1,8 @@
+class(safe,
+           "org.eclipse.swt.layout.FillLayout",
+           statics(method("run()"),
+                   method("run(int)")),
+           methods(method("type()"),
+                   method("type(int)"),
+                   method("getType()"),
+                   method("setType(int)"))) 

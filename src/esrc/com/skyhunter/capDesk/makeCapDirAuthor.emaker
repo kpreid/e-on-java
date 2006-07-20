@@ -1,0 +1,123 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+/**
+ * Authorizes a capDir maker.
+ * @param root__uriGetter The root getter is typically either a
+ *        folder of type File, or the file__uriGetter.
+ */
+def makeCapDirAuthor(root, traceline) :near {
+
+    def throwTrace(text) :void {
+        traceline(text)
+        throw(text)
+    }
+
+    def stripPrefix(prefix, text) :String {
+        if (text =~ `$prefix@remainder`) {
+            remainder
+        } else {throwTrace("not a prefix")}
+    }
+
+    def makeDirNameStacks(relPath) :near {
+        var namesStack := relPath.trim().split("/")
+        #remove last element if the last char in path was a slash
+        #but do not remove the top entry which may be "" and may
+        #be root
+        if (namesStack.size() > 1 && namesStack[namesStack.size()-1] == "") {
+            def temp := namesStack.diverge()
+            temp.pop()
+            namesStack := temp.snapshot()
+        }
+        def dirStack := [].diverge()
+        var nextDir := root
+        for each in namesStack {
+            nextDir := nextDir[each]
+            dirStack.push(nextDir)
+        }
+        [dirStack.snapshot(), namesStack]
+    }
+
+    # If the root__uriGetter is a folder object, the rootPath is
+    # that folder's canonical path. Otherwise, it is a zero length string
+    def rootPath := if (root.__respondsTo("getCanonicalPath", 0)) {
+        root.getCanonicalPath()
+    } else {
+        ""
+    }
+
+    /**
+     * Makes a capability-based dir that supports getting a parent inside the context
+     * of the root specified during authorization. Is intentionally designed to
+     * throw exceptions if anything goes wrong, and allow the client to handle the
+     * problem. CapDirs are immutable, i.e., navigation returns new capdirs, the
+     * existing one is unaffected
+     */
+    def makeCapDir {
+        /**
+         * @return capDir at this full path. If this full path designates
+         *         a dir for which the maker has no authority, it
+         *         throws an exception
+         */
+        to fromFullPath(fullPath) :near {
+            try {
+                makeCapDir.fromRelPath(stripPrefix(rootPath, fullPath))
+            } catch prob {throwTrace("badly formed full path")}
+        }
+
+        /**
+         * @return a new capDir. If the relative path from the root
+         *         does not point at a valid directory, it throws an exception
+         */
+        to fromRelPath(relPath) :near {
+            def dir := root[relPath]
+            if (! (dir.exists())) {throwTrace("No directory at this relative path")}
+            def [dirStack, nameStack] := makeDirNameStacks(relPath)
+            makeCapDir.fromDirStack(dirStack, nameStack)
+        }
+
+        /**
+         * The core maker to which all other makers in makeCapDir refer
+         * @param dirStack the stack of dirs from the root to the current dir
+         * @param nameStack the stack of names from the root to the current dir.
+         *        It is crucial that the nameStack and dirStack line up together
+         */
+        to fromDirStack(dirStack :pbc, nameStack :pbc) :near {
+            if (dirStack.size() != nameStack.size()) {throwTrace("bad dir/name stack pair")}
+            traceline(`in fromDirStack: $nameStack`)
+            def dir := dirStack[dirStack.size() - 1]
+            def capDir extends dir {
+                to getParentCapDir() :near {
+                    def truncStack := dirStack.diverge()
+                    truncStack.pop()
+                    def truncNames := nameStack.diverge()
+                    truncNames.pop()
+                    #if the rootPath has not length, the root path is not a dir, probably
+                    #a file__uriGetter. If so, then a stack size of 0 is beyond the top
+                    #boundary of the dir system, i.e., getting the list of children
+                    #from the file__uriGetter will only end in tears
+                    if (rootPath == "" && truncStack.size() == 0) {throwTrace("Trying to go up past root")}
+                    makeCapDir.fromDirStack(truncStack.snapshot(), truncNames.snapshot())
+                }
+                /**
+                 * @return a capDir for the child directory. If no directory exists
+                 *         at the specified name, throw an exception
+                 */
+                to getChildCapDir(name) :near {
+                    traceline("into getChildCapDir")
+                    def subdir := dir[name]
+                    if (subdir.exists() && subdir.isDirectory()) {
+                        traceline("subdir exists")
+                        makeCapDir.fromDirStack(dirStack + [subdir], nameStack + [name])
+                    } else {throwTrace("no such directory")}
+                }
+                to getRelPath() :String {
+                    traceline(`making rel path: $nameStack`)
+                    var path := ""
+                    for each in nameStack {path := `$path$each/`}
+                    path
+                }
+            }
+        }
+    }
+}

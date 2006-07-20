@@ -1,0 +1,62 @@
+# Copyright 2004 Hewlett Packard, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+# XXX Bug: This file is broken, and in any case, needlessly redundant with
+# common-tokens.grammar.
+
+<term-tokens>   ::= <space>* (<token> <space>*);
+
+####################### Character classes ############################
+# When the last choice below names a java predicate, then the
+# preceding choices are intended to list the full Ascii subset of that
+# character class.
+
+# Unlike E, in the term-tree grammar, newline is just more whitespace.
+<space>         ::= ' ' | '\t' | '\n'
+                /   <java.lang.Character#isWhitespace>;
+
+<digit10>       ::= '0'..'9'
+                /   <java.lang.Character#isDigit>;
+<digit8>        ::= '0'..'7'
+                /   <java.lang.Character#isDigit>;
+<digit16>       ::= '0'..'9' | 'a'..'f' | 'A'..'F'
+                /   <java.lang.Character#isDigit>;
+
+<segStart>      ::= 'a'..'z' | 'A'..'Z' | '_' | '$'
+                /   <java.lang.Character#isJavaIdentifierStart>;
+<segPart>       ::= <segStart> | <digit10> | '.' | '-'
+                /   <java.lang.Character#isJavaIdentifierPart>
+                /   <http://www.w3.org/TR/REC-xml-names/#NT-NCNameChar>;
+
+# <uric> must include the uric characters defined by
+# <a href="http://www.ics.uci.edu/pub/ietf/uri/rfc2396.txt">IETF-URICs</a>.
+
+<uric>          ::= <segPart> | ~';/?:@&=+,!~*\'()%\\|#';
+
+####################### Token Types ############################
+
+<token>         ::= <Integer> | <Float64> | <Char> | <String> | <Tag>
+                |   ~'(),[]{}=';
+
+<Integer>       ::= '-'? '0' 'x' <digit16>+
+                |   '-'? '0'     <digit8>*       # not yet implemented
+                /   '-'?         <digit10>+;
+
+<wholePart>     ::= '-'? <digit10>+;
+<fraction>      ::= '.' <digit10>+;
+<exponent>      ::= ('e' | 'E') '-'? <digit10>+;
+<Float64>       ::= <wholePart> <fraction> <exponent>?
+                /   <wholePart> <fraction>? <exponent>
+                |   '%NaN' | '%Infinity' | '-%Infinity';
+
+<charConst>     ::= '\\' ~'btnfr"\'\\'
+                |   '\\' 'x' <digit16> <digit16> # not yet implemented
+                |   !~'"\'\\\t' .;
+<Char>          ::= '\'' (<charConst> | '"') '\'';
+<String>        ::= '"' (<charConst> | '\'' | '\\\n')* '"';
+
+<ident>         ::= <segStart> <segPart>*;
+<special>       ::= '.' <ident>;
+<uri>           ::= '<' <uric>* '>';
+<segment>       ::= <ident> | <special> | <uri>;
+<Tag>           ::= <segment> (':' <segment>)*;

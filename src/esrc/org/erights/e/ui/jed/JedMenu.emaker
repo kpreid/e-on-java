@@ -1,0 +1,55 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def JedMenu {
+    to run(mm, recip, appName) :any {
+        mm.menuBar([
+            mm.menu("&File", [
+                mm.action("&New",                 "Ctrl+N"),
+                mm.action("&Open",                "Ctrl+O"),
+                mm.action("&Close",               "Ctrl+W"),
+                "--",
+                mm.action("&Save",                "Ctrl+S"),
+                mm.action("Save &As..."),
+                mm.action("Save A&ll"),
+                mm.action("&Revert"),
+                "--",
+                mm.action("Print Set&up"),
+                mm.action("&Print...",            "Ctrl+P"),
+                "--",
+                mm.action("E&xit",                "Ctrl+Q")
+            ]),
+            mm.menu("&Edit", [
+                mm.action("&Undo",                "Ctrl+Z"),
+                "--",
+                mm.action("Cu&t",                 "Ctrl+X"),
+                mm.action("&Copy",                "Ctrl+C"),
+                mm.action("&Paste",               "Ctrl+V"),
+                mm.action("Delete",               "Delete"),
+                "--",
+                mm.action("&Select All",          "Ctrl+A"),
+                "--",
+                mm.menu("Pre&ferences", [
+                    mm.check(mm.action("&Auto Save?")),
+                    mm.check(mm.action("View &Status Bar?"))
+                ])
+            ]),
+            mm.menu("&Search", [
+                mm.action("&Find/Replace..",      "Ctrl+F"),
+                mm.action("Find &Next",           "F3"),
+                mm.action("Find &Previous",       "Shift+F3"),
+                mm.action("Replace &Again",       "Ctrl+R"),
+                "--",
+                mm.action("&Goto Line..",         "Ctrl+G")
+            ]),
+            mm.menu("&Help", [
+                mm.action("&Help Topics.."),
+                {
+                    def action := mm.action(`&About $appName...`)
+                    action.setAction(recip, "doAbout")
+                    action
+                }
+            ])
+        ])
+    }
+}

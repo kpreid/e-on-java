@@ -1,0 +1,84 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def JPanel__quasiParser := <import:org.erights.ex.swing.JPanel__quasiParser>
+
+/**
+ * XXX fix this author to require only jframe when capwt is working
+ */
+def dialogVowMakerAuthor(<awt>, <swing>, frameMaker) :near  {
+    def uiTools := <import:com.skyhunter.ex.swing.uiToolsAuthor> (<awt>, <swing>)
+
+    def dialogPromiser (title, label, textFieldDefaultValue, buttonNames) :any {
+        var myClickedButton := null
+        def [finishedDialogPromise, resolver] := Ref.promise()
+        def eDialog := {
+            def myWin := frameMaker(title)
+            var undisposed := true
+            def windowListener {
+                to windowClosing(event) :void {
+                    resolver.resolve(eDialog)
+                }
+                to windowClosed(event) :void {
+                    if (undisposed) {
+        myWin.dispose()
+        undisposed := false
+         }
+                }
+                match _ {}
+            }
+            myWin.addWindowListener(windowListener)
+            #traceline("added window listener")
+            def mainPane := myWin.getContentPane()
+            mainPane.setPreferredSize( <awt:makeDimension>(400,200))
+            def labelPane := <swing:makeJLabel>(label)
+            #labelPane setEditable(false)
+            labelPane.setBackground (<awt:makeSystemColor>.getControl());
+            def labelScrollPane := <swing:makeJScrollPane>(labelPane)
+            #mainPane add(labelScrollPane, "Center")
+            #make textfield an empty label, make editable if default is not null
+            var myTextField := <swing:makeJLabel>("   ")
+            #uiSet baseWidth(myTextField)
+            if (textFieldDefaultValue != null) {
+                myTextField := <swing:makeJTextField>(textFieldDefaultValue)
+                #uiSet baseWidth(myTextField)
+            }
+            def clickActionMaker(buttonIndex) :near {
+                def clickAction() :void {
+                    myClickedButton := buttonNames[buttonIndex]
+                    resolver.resolve(eDialog)
+                    myWin.dispose()
+                }
+            }
+            def buttons := [].diverge()
+            for index => name in buttonNames {
+                buttons.push(uiTools.newButton(name, clickActionMaker(index)))
+            }
+            def buttonPane := uiTools.makeGridRow(buttons)
+            def dialogPane :=
+              JPanel`$labelScrollPane.X.Y
+                     $myTextField
+                     $buttonPane `
+            #traceline("made buttons")
+            def border := <awt:makeBorderLayout>()
+            mainPane.setLayout(border)
+            mainPane.add(dialogPane, "Center")
+            myWin.pack()
+            myWin.show()
+            def eDialog {
+                to getEnteredText() :any {
+                    var answer := null
+                    if (myClickedButton != null && textFieldDefaultValue != null) {
+                        answer := myTextField.getText()
+                    }
+                    answer
+                }
+                to getClickedButton() :any  {myClickedButton}
+            }
+        }
+        finishedDialogPromise
+    }
+}
+
+#def promiser := dialogVowMakerAuthor (<awt>, <swing>, <swing:makeJFrame>)
+#promiser("test", "test text", null, ["OK"])

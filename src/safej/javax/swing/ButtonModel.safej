@@ -1,0 +1,26 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class("javax.swing.ButtonModel",
+      statics,
+      methods(method("isArmed()"),
+              method("isSelected()"),
+              method("isEnabled()"),
+              method("isPressed()"),
+              method("isRollover()"),
+              method("setArmed(boolean)"),
+              method("setSelected(boolean)"),
+              method("setEnabled(boolean)"),
+              method("setPressed(boolean)"),
+              method("setRollover(boolean)"),
+              method("setMnemonic(int)"),
+              method("getMnemonic()"),
+              method("setActionCommand(String)"),
+              method(suppress, "getActionCommand()"),
+              method("setGroup(ButtonGroup)"),
+              method("addActionListener(ActionListener)"),
+              method("removeActionListener(ActionListener)"),
+              method("addItemListener(ItemListener)"),
+              method("removeItemListener(ItemListener)"),
+              method("addChangeListener(ChangeListener)"),
+              method("removeChangeListener(ChangeListener)")))

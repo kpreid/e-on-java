@@ -1,0 +1,428 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def makeCausalityGraph :=
+  <import:org.erights.e.tools.causeway.makeCausalityGraph>
+
+def File := <type:java.io.File>
+
+# [[start-line, start-col], [end-line, end-col]]
+def SourceSpan := Tuple[Tuple[int,int], Tuple[int, int]]
+
+# A [source-file-name, source-span]
+def StackEntry := Tuple[String, SourceSpan]
+
+# top-to-bottom list of stack entries
+def Stack := StackEntry[]
+
+# trace-file file-name
+def TraceName := String
+
+def VatName := String
+
+def Turn := String
+
+def UTurn := Tuple[TraceName, VatName, Turn]
+
+# one of "SCnow", ...
+def SendingContext := String
+
+def SenderID := Tuple[UTurn, SendingContext]
+
+def Sender := Tuple[UTurn, SendingContext, Stack]
+
+def RxrID := UTurn
+
+def Message := String
+
+/**
+ * <tt>makeCausalityTree</tt>
+ * <p>
+ *
+ */
+def makeCausalityTree(traceFiles :List[File], traceline) :near {
+
+    def graph := makeCausalityGraph(traceline)
+
+    # TraceName[]; names of trace files
+    def traces := [].diverge()
+
+    # Map[TraceName, near[]]; named fully ordered lists message-contexts
+    def ordered := [].asMap().diverge()
+
+    # Map[TraceName, Set[VatName]]; named sets of vat names
+    def vats := [].asMap().diverge()
+
+    # Map[String, synthetic-message-event]
+    def xvatSplices := [].asMap().diverge()
+    def foFixups := [].asMap().diverge()
+
+    var etherCount := 0
+    def nextEther() :UTurn {
+        return ["ether", "ether", `${etherCount += 1}`]
+    }
+    def  d1:= graph.makeMessageEvent(nextEther(), "dummy")
+    graph.addMessageEvent(d1)
+    def  d2 := graph.makeMessageEvent(nextEther(), "dummy")
+    graph.addMessageEvent(d2)
+    def placeholder := graph.makeMessageContext(d1, d2, ["", []])
+
+    for tfile in traceFiles {
+
+        def path :TraceName := tfile.getPath()
+
+        def leaves := [].asMap().diverge()
+
+        # ordered-list of message-contexts
+        def foList := [].diverge()
+
+        # Set[VatName]; Set of vat-names in this file
+        # (XXX I don't think is being captured everywhere it needs to be.)
+        def vatSet := [].asSet().diverge()
+
+        def lines :List[String] := tfile.getText().split("\n")
+        var index :int := 0
+
+        /**
+         * The first stack line in the trace file corresponds to the
+         * active stack frame. Since it is read first, it's at stack[0].
+         */
+        def readStack() :Stack {
+
+            def stack := [].diverge()
+            while (index < lines.size() &&
+                     lines[index].trim().startsWith("---  @")) {
+                if (lines[index] =~ `@{_}<@sname#:@span>@_`) {
+
+                    span =~ `span::@first:@fo::@last:@lo`
+
+                    def i0 := __makeInt(first)
+                    def i1 := __makeInt(fo)
+                    def i2 := __makeInt(last)
+                    def i3 := __makeInt(lo)
+
+                    def item :StackEntry := [sname, [[i0, i1], [i2, i3]]]
+
+                    stack.push(item)
+                }
+                index += 1
+            }
+            return stack.snapshot()
+        }
+
+        /**
+         * @return The message as a <tt>String</tt>.
+         */
+        def readMessage() :Message {
+            var message := lines[index].trim()
+            index += 1
+            while (index < lines.size() && message.endsWith("\\")) {
+                message := message(0, message.size() -1) +
+                  lines[index].trim()
+                index += 1
+            }
+            return message
+        }
+
+        /**
+         * <tt>readSenderID</tt>
+         * <p>
+         *
+         * @return A list containing the vat name,
+         *         turn id and sending context.
+         */
+        def readSenderID() :SenderID {
+            if (lines[index].trim() =~
+                  `@{_}<Vat @name in @_:@turn(@sc)`) {
+                index += 1
+                return [[path, name.trim(), turn.trim()], sc.trim()]
+            }
+            [["", "", ""], ""]
+        }
+
+        /**
+         * <tt>readRxrID</tt>
+         * <p>
+         *
+         * @return A list containing the vat name and turn id.
+         */
+        def readRxrID() :RxrID {
+            if (lines[index].trim() =~
+                  `@{_}<Vat @name in @_:@turn`) {
+                index += 1
+                return [path, name.trim(), turn.trim()]
+            }
+            ["", "", ""]
+        }
+
+        /**
+         * <tt>readOptMessageSend</tt>
+         * <p>
+         *
+         * @return
+         */
+        def readOptMessageSend() :nullOk[Tuple[Message, List[Sender], RxrID]] {
+
+            def message := readMessage()
+
+            if (index >= lines.size()) { return null }
+
+            def rxr
+            if (lines[index] =~ `--- event:@_`) {
+                bind rxr :RxrID := readRxrID()
+            } else {
+                return null
+            }
+            require(rxr != ["", "", ""],
+                    thunk{`index: $index message: $message has no rxr`})
+
+            if (index >= lines.size()) { return null }
+
+            def senders := [].diverge()
+
+            while (index < lines.size() &&
+                     lines[index] =~ `--- sent by:@_`) {
+                def [[_, name, turn], sc] := readSenderID()
+                if (name != "" && turn != "") {
+                    def stack := readStack()
+                    senders.push([[path, name, turn], sc, stack])
+                }
+            }
+            if (senders.size() == 0) { return null }
+
+            return [message, senders.snapshot(), rxr]
+        }
+
+        /**
+         * <tt>readOptRun</tt>
+         * <p>
+         *
+         * @return
+         */
+        def readOptRun() :nullOk[String] {
+            if (lines[index] =~ `run:@_"@filename.e"@_`) {
+                def sansSlash := filename.split("/")
+                index += 1
+                return sansSlash.last().trim()+".e"
+            } else {
+                return null
+            }
+        }
+
+        /**
+         * <tt>readOptLeaf</tt>
+         * <p>
+         *
+         * @return
+         */
+        def readOptLeaf() :nullOk[Tuple[RxrID, Stack]] {
+            def rxr := readRxrID()
+            if (rxr != ["", "", ""]) {
+                def stack := readStack()
+                return [rxr, stack]
+            }
+            return null
+        }
+
+        /**
+         * @return If this is the sending side, return
+         *         the identifying (msg) key, the sender-side-sender's
+         *         UTurn, the SendingContext, and the stack.
+         *         If this is the exec side, return the identifying (msg)
+         *         key, the (SCnow) exec-side-sender's
+         *         UTurn, the SendingContext, and null.
+         */
+        def readOptXVatMessage() :nullOk[Tuple[String,
+                                               UTurn,
+                                               SendingContext,
+                                               Stack]] {
+            if (lines[index] =~ `@{_}comm: @fromVat -> @toVat #@msgNo`) {
+                def msg := `$fromVat -> $toVat #$msgNo`
+                index += 1
+                if (index < lines.size()) {
+
+                    if (lines[index] =~ `--- sent by:@_`) {
+
+                        def [uturn, sc] := readSenderID()
+
+                        if (sc.startsWith("SC_sendDeliver")) {
+                            def stack := readStack()
+                            return [msg, uturn, sc, stack]
+                        } else if (sc.startsWith("SC_execDeliver")) {
+                            return [msg, uturn, sc, []]
+                        }
+                    }
+                }
+                return null
+            }
+        }
+
+        def obtainMessageEvent(uturn :UTurn) :near {
+            if (graph.optGet(uturn) =~ me :notNull) {
+                return me
+            } else {
+                def me := graph.makeMessageEvent(uturn, "")
+                graph.addMessageEvent(me)
+                return me
+            }
+        }
+
+        while (index < lines.size()) {
+            if (lines[index].trim().startsWith("causality:  :")) {
+                index += 1
+                while (index < lines.size() &&
+                         lines[index].trim().size() == 0) {
+                    index += 1
+                }
+
+                def current := lines[index].trim()
+
+                if (current.startsWith("now:")) {
+                    index += 1
+
+                } else if (current.startsWith("run:")) {
+                    def dote := readOptRun()
+                    if (dote != null) {
+                        # XXX not yet implemented
+                    }
+
+                } else if (current.startsWith("--- leaf:")) {
+                    if (readOptLeaf() =~ [rxr, stack]) {
+                        def me := graph.optGet(rxr)
+                        if (me != null) {
+                            me.setLeafStack(stack)
+                            leaves[me] := me
+                        } else {
+                            #traceline(`leaf: $rxr was not in graph`)
+                        }
+                    }
+
+                } else if (current.startsWith("--- comm:") &&
+                             readOptXVatMessage() =~ [msg,
+                                                      uturn,
+                                                      sc,
+                                                      stack]) {
+                    def optEvent := xvatSplices.fetch(msg, thunk{})
+                    def origin := obtainMessageEvent(uturn)
+
+                    if (sc.startsWith("SC_sendDeliver")) {
+
+                        # send side of cross-vat message
+                        def ether := graph.makeMessageEvent(nextEther(),
+                                                            "captp")
+                        graph.addMessageEvent(ether)
+
+                        # the link between send-side & ether remembers
+                        # the sending context (mainly, the stack) and is
+                        # always made when the send is seen in the trace
+                        # file. push the link onto the fully-ordered list.
+                        def mc1 := graph.makeMessageContext(origin, ether, [sc, stack])
+                        foList.push(mc1)
+
+                        if (optEvent == null) {
+                            xvatSplices.put(msg, ether, true)
+                        } else {
+                            xvatSplices.removeKey(msg)
+
+                            def mc2 := graph.makeMessageContext(ether, optEvent, ["", []])
+
+                            def [xpath, xpos] := foFixups.fetch(optEvent, thunk{})
+                            foFixups.removeKey(optEvent)
+
+                            def xfo := ordered.fetch(xpath, thunk{})
+
+                            xfo[xpos] := mc2
+                        }
+                    } else {
+                        # exec side of cross-vat message
+                        if (optEvent == null) {
+                            xvatSplices.put(msg, origin, true)
+                            foFixups.put(origin, [path, foList.size()], true)
+
+                            # placeholder to fix up later
+                            foList.push(placeholder)
+                        } else {
+                            xvatSplices.removeKey(msg)
+                            def mc2 := graph.makeMessageContext(optEvent, origin, ["",[]])
+                            foList.push(mc2)
+                        }
+                    }
+
+                } else if (readOptMessageSend() =~ [message, senders, rxr]) {
+                    require(graph.optGet(rxr) == null,
+                            thunk{`duplicate: $rxr`})
+
+                    def [_, name, turn] := rxr
+                    vatSet.addElement(name)
+                    def target := graph.makeMessageEvent(rxr, message)
+                    graph.addMessageEvent(target)
+
+                    for sender in senders {
+                        def [uturn, sc, stack] := sender
+                        def origin := obtainMessageEvent(uturn)
+                        def mc
+                        if (origin.hasLeafStack() && sc == "SCresolve") {
+                            leaves.removeKey(origin)
+                            bind mc :=
+                              graph.makeMessageContext(origin,
+                                                       target,
+                                                       [sc,
+                                                        origin.getLeafStack()])
+                        } else {
+                            bind mc :=
+                              graph.makeMessageContext(origin,
+                                                       target,
+                                                       [sc, stack])
+                        }
+                        # add message to fully-ordered list
+                        foList.push(mc)
+                    }
+                } else {
+                    index += 1
+                }
+            } else {
+                index += 1
+            }
+        }
+
+
+        #graph.walkRelations(root, 0, traceline)
+
+        #ordered.put(path, foList.snapshot(), true)
+        ordered.put(path, foList, true)
+        vats.put(path, vatSet, true)
+        traces.push(path)
+        #traceline(`xvat: ${xvatSplices.size()}`)
+        #traceline(`fixups: ${foFixups.size()}`)
+    }
+
+    def causalityTree {
+
+        to getTop() :near {
+            def roots := graph.getRoots()
+            if (roots.size()== 1) {
+                return roots[0]
+            }
+            def top := graph.makeMessageEvent(["full", "full", "full"], "top")
+            graph.addMessageEvent(top)
+            for r in roots {
+                graph.makeMessageContext(top, r, ["", []])
+            }
+            return top
+        }
+        to getTraces() :TraceName[] {
+            return traces.snapshot()
+        }
+        to getVatSet(path :TraceName) :near {
+            return vats.fetch(path, thunk{[]})
+        }
+        to getOrdered(path :TraceName) :List {
+            def foList := ordered.fetch(path, thunk{[]})
+            return foList.snapshot()
+        }
+    }
+
+    return causalityTree
+}
+
+

@@ -1,0 +1,65 @@
+#!/usr/bin/env rune
+
+# Copyright 2003 Hewlett Packard, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+?? in new vat Alice
+
+? timeMachine
+# value: <ephemeral>
+
+-# ? def sr := makeSturdyRef(3)
+-# problem: Failed: TimeMachine must be made non-Ephemeral first
+
+? timeMachine.new()
+
+? timeMachine
+# value: <forming>
+
+-# ? def sr := makeSturdyRef(3)
+-# problem: <MalformedURLException: Search path must not be empty>
+
+? introducer.hasIdentity()
+# value: true
+
+? introducer.onTheAir()
+# value: ["3DES_SDH_M2", "3DES_SDH_M"]
+
+? def sr := makeSturdyRef(3)
+# value: <SturdyRef>
+
+? timeMachine.save()
+# problem: Must be saved
+
+? def makeAtomicFile := <import:org.erights.e.extern.persist.makeAtomicFile>
+# value: <makeAtomicFile>
+
+? def af := makeAtomicFile(<file:~/Desktop>, "foo.vat")
+# value: <atomic: <file:c:/Documents and Settings/MILLERM1/Desktop/foo.vat>>
+
+? timeMachine
+# value: <forming>
+
+? af.delete()
+
+? timeMachine.createAs(af)
+
+? <file:~/Desktop/foo.cap>.setText(introducer.sturdyToURI(sr))
+
+
+?? in new vat Bob
+
+? def makeAtomicFile := <import:org.erights.e.extern.persist.makeAtomicFile>
+# value: <makeAtomicFile>
+
+? def af := makeAtomicFile(<file:~/Desktop>, "foo.vat")
+# value: <atomic: <file:c:/Documents and Settings/MILLERM1/Desktop/foo.vat>>
+
+? timeMachine.revive(af)
+
+? def sr := introducer.sturdyFromURI(<file:~/Desktop/foo.cap>.getText())
+# value: <SturdyRef>
+
+? def survivor := sr.getRcvr()
+# value: 3
+

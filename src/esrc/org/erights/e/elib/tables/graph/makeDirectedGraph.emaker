@@ -1,0 +1,51 @@
+# Copyright 2003 Hewlett Packard, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+/**
+ * <tt>makeDirectedGraph</tt> makes a directed graph object.
+ *
+ * @return A directedGraph object.
+ * @author Terry Stanley
+ * @author Mark S. Miller
+ */
+def makeDirectedGraph(traceline) :near {
+    
+    def graph := [].asMap().diverge()
+    
+    def directedGraph {
+        
+        to addVertex(vertex) :any {
+            graph.put(vertex.getID(), vertex, true)
+        }
+        
+        to fetch(id, insteadThunk) :near {
+            return graph.fetch(id, insteadThunk)
+        }
+        
+        to optGet(id) :near {
+            return graph.fetch(id, thunk{})
+        }
+        
+        to get(id) :near {
+            return graph.get(id)
+        }
+        
+        to getSize() :int {
+            return graph.size()
+        }
+        
+        to getRoots() :near {
+            def roots := [].diverge()
+            if (graph.size() > 0) {
+                def values := graph.getValues()
+                for v in values {
+                    if (v.getPrevIn() == v && v.getNextIn() == v) {
+                        roots.push(v)
+                    }
+                }
+            }
+            return roots.snapshot()
+        }
+    }
+    return directedGraph
+}

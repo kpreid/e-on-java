@@ -1,0 +1,25 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class(safe,
+      "java.awt.MediaTracker",
+      statics(method("run(Component)")),
+      methods(method("addImage(Image, int)"),
+              method("addImage(Image, int, int, int)"),
+              method("checkAll()"),
+              method("checkAll(boolean)"),
+              method("isErrorAny()"),
+              method("getErrorsAny()"),
+              method("waitForAll()"),
+              method("waitForAll(long)"),
+              method("statusAll(boolean)"),
+              method("checkID(int)"),
+              method("checkID(int, boolean)"),
+              method("isErrorID(int)"),
+              method("getErrorsID(int)"),
+              method("waitForID(int)"),
+              method("waitForID(int, long)"),
+              method("statusID(int, boolean)"),
+              method("removeImage(Image)"),
+              method("removeImage(Image, int)"),
+              method("removeImage(Image, int, int, int)")))

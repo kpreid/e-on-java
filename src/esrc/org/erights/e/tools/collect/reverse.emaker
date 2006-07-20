@@ -1,0 +1,29 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def EList := <type:org.erights.e.elib.tables.EList>
+def Iteratable := near
+def AssocFunc := near
+
+/**
+ * The reverse of a list can be used as the collection of a <tt>for</tt> loop
+ * in order to enumerate the elements in reverse order.
+ *
+ * @author Mark S. Miller
+ */
+def reverse(list :EList) :Iteratable {
+
+    def iterand {
+        to iterate(func :AssocFunc) :void {
+            def last := list.size() -1
+            for i in 0..last {
+                func(last - i, list[last - i])
+            }
+        }
+    }
+}
+
+    ? for i => x in reverse(["a", "b", "c"]) { println(`$i => $x`) }
+    # stdout: 2 => c
+    #         1 => b
+    #         0 => a

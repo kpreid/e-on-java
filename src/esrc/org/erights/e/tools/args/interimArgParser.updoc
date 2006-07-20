@@ -1,0 +1,20 @@
+    ? def interimArgParser := <import:org.erights.e.tools.args.interimArgParser>
+    # value: <interimArgParser>
+    
+    ? def optionDescs := [
+    >     "foo" => term`option("foo", "the foo flag")`,
+    > #    "baz" => term`option("baz", "bazValue", one, "The baz")`,
+    >     "bar" => term`option("bar", "barValue", oneOrMore, "list of bars")`
+    > ]
+    # value: ["foo" => term`option("foo", "the foo flag")`, "bar" => term`option("bar", "barValue", oneOrMore, "list of bars")`]
+    
+    ? def [optionsMap, args] := interimArgParser(optionDescs, ["--bar", "--foo", "--bar", "baz", "--foo", "xx", "yy"])
+    # value: [["bar" => ["--foo", "baz"], "foo" => true], ["xx", "yy"]]
+    
+    ? optionsMap
+    # value: ["bar" => ["--foo", "baz"], "foo" => true]
+    
+    ? args
+    # value: ["xx", "yy"]
+    
+    ? 

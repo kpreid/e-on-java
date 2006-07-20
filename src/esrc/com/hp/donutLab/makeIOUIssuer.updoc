@@ -1,0 +1,51 @@
+#!/usr/bin/env rune
+
+Copyright 2004 Hewlett Packard, Inc. under the terms of the MIT X license
+found at http://www.opensource.org/licenses/mit-license.html ..................
+
+rune(["~/e/src/esrc/scripts/updoc.e",
+      "~/e/src/esrc/com/hp/donutLab/makeIOUIssuer.updoc"])
+
+? interp.waitAtTop(currentVat.morphInto("swt"))
+
+? def <donut> := <import:com.hp.donutLab.*>
+# value: <import:com.hp.donutLab.*>
+
+? def issuer := <donut:makeIOUIssuerAuthor>(timer)("Sugar")
+# value: <issues Sugar>
+
+? def &supply := issuer.getSupplyReporter()
+# value: <ro-lamport 0 as of 0>
+
+? swtWatch(&supply, "supply")
+# value: [Shell {watching - supply}, Label {0}]
+
+? def am1 := issuer.makeAccountMgr(33)
+# value: <manages <has (33 - 0) Sugar>>
+
+? supply
+# value: 33
+
+? swtWatch(&am1, "am1")
+
+? def am2 := issuer.makeAccountMgr(44)
+# value: [<purse <has (44 - 0) Sugar>>, <purseRevoker>]
+
+? supply
+# value: 77
+
+? swtWatch(&am2, "am2")
+# value: [Shell {watching - am2}, Label {<manages <has (44 - 0) Sugar>>}]
+
+? rune(["~/e/src/esrc/scripts/piggy.e-swt"])
+# value: <Remote Promise>
+
+? rune(["~/e/src/esrc/scripts/piggy.e-swt"])
+# value: <Remote Promise>
+
+? introducer.onTheAir()
+# value: ["3DES_SDH_M2", "3DES_SDH_M"]
+
+? timer.whenPast(timer.now() + 5000, thunk{interp.exitAtTop()})
+
+? interp.blockAtTop()

@@ -1,0 +1,19 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class(safe,
+      "javax.swing.DefaultListCellRenderer",
+      statics(method("run()")),
+      methods(method("getListCellRendererComponent(JList, Object, int, boolean, boolean)"),
+              method(suppress, "validate()"),
+              method(suppress, "revalidate()"),
+              method(suppress, "repaint(long, int, int, int, int)"),
+              method(suppress, "repaint(Rectangle)"),
+              method(suppress, "firePropertyChange(String, byte, byte)"),
+              method(suppress, "firePropertyChange(String, char, char)"),
+              method(suppress, "firePropertyChange(String, short, short)"),
+              method(suppress, "firePropertyChange(String, int, int)"),
+              method(suppress, "firePropertyChange(String, long, long)"),
+              method(suppress, "firePropertyChange(String, float, float)"),
+              method(suppress, "firePropertyChange(String, double, double)"),
+              method(suppress, "firePropertyChange(String, boolean, boolean)")))

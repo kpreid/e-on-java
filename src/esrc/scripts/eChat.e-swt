@@ -1,0 +1,342 @@
+#!/usr/bin/env rune
+
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+# set up tracing; sbut out all the printing for deployment
+def traceline(text) :void {println(text)}
+def stackTrace := <import:com.skyhunter.e.util.stackTraceFunc>
+
+# set up user SWT user interface imports
+def SWT := <swt:makeSWT>
+def <widget> := <swt:widgets.*>
+
+traceline("made imports")
+
+# Next, we put the introducer on the air so our connection
+# operations can come to life, and create a couple of utility
+# routines that convert URIs to and from live references.
+
+introducer.onTheAir()
+
+# return the object represented by the URI
+def getObjectFromURI(uri) :any {
+    introducer.sturdyFromURI(uri).getRcvr()
+}
+
+def makeURIFromObject(obj) :String {
+    # This implementation assumes a non-persistent single incarnation
+    def [sr, _, _] := identityMgr.makeKnown(obj)
+    introducer.sturdyToURI(sr)
+}
+
+traceline("made basic introducers")
+
+# return the friend file
+def findFriendFile(chatWin) :near {
+    def dialog := <widget:makeFileDialog>(chatWin, SWT.getOPEN())
+    dialog.setText("Pick the File containing a Chat Reference for a Friend")
+    def optPath := dialog.open()
+    if (optPath == null) {
+        null
+    } else {
+        def result := <file>[optPath]
+        traceline("friend reference path: " + result)
+        result
+    }
+}
+
+# return a file to be saved
+def requestSaveFile(chatWin) :near {
+    def dialog := <widget:makeFileDialog>(chatWin, SWT.getSAVE())
+    dialog.setText("Save Chat Reference File with Your Name")
+    def optPath := dialog.open()
+    if (optPath == null) {
+        null
+    } else {
+        def result := <file>[optPath]
+        traceline("address path: " + result)
+        result
+    }
+}
+
+# method that writes out the URI for your echat system's communication
+# interface
+def offerMyAddress(file, uri) :void {
+    file.setText(uri)
+}
+
+
+# make button utilities for creating the chat window
+def makeButton(parent, text) :near {
+    def button := <widget:makeButton>(parent, SWT.getPUSH())
+    button.setText(text)
+    button
+}
+
+traceline("about to make makeChatUI")
+
+/**
+ * The first of the two big classes in Echat is the chatUI class,
+ * which constructs the chat window, its buttons, and the listener
+ * objects.
+ * <p>
+ * Though there is a lot of code here, little of it is new;
+ * it is mostly just calls from E to the elements of the swt
+ * classes needed to construct a window. The flow of control
+ * is essentially identical to the flow one would build in Java to
+ * achieve the same purpose. In some situations it could make sense
+ * to use a Java GUI builder to create the window code in Java
+ * itself, and then hook it up to E with <tt>unsafe:</tt>. But
+ * since we wanted the chat window to be intelligently resizable, it
+ * was beyond the abilities of current Java GUI builders to provide
+ * it, and it turned out to be easier to construct such resizable
+ * windows in a directly-executable scripting language like E than
+ * in Java.
+ * <p>
+ * One element of makeChatUI that is worth examining is the
+ * definition of myWindowListener. In Java, WindowListener is an
+ * interface that defines several methods to respond to different
+ * (XXX This is not true for the current unintegrated version)
+ * events. We are only interested in one event, the windowClosing
+ * event, so our windowListener simply uses a
+ * <pre>match [verb, args] {}</pre>
+ * statement to intercept and ignore all the messages other than
+ * windowClosing. A Java programmer would achieve a similar, though
+ * still larger and more complex effect, by creating a subclass of
+ * the WindowAdapter class and overriding the one method that
+ * interested him.
+ * <p>
+ * The other interesting feature of myWindowListener is that,
+ * after telling the chatController to leave (i.e., to terminate the
+ * conversation), it tells the interpreter to continue at top. This
+ * undoes the blockAtTop initiated as the last line of the
+ * program that keeps the interpreter from rushing off to the end of
+ * the program and terminating everything before things have hardly
+ * started.
+ * <p>
+ * The one important feature of the chatUIMaker for the other
+ * components of the program is the chatUI object constructed at the
+ * end of the chatUIMaker. This object gives outside objects
+ * (notably the chatController object) access to the widgets which
+ * it must manipulate (for example by enabling and disabling the
+ * buttons, and putting new messages into the chatTextArea). The
+ * chatUIMaker must receive a chatController so that the Listeners
+ * can send appropriate messages to the chatController when the user
+ * interacts with the window; this requirement for the chatUI to
+ * have a reference to the chatController imposes interesting design
+ * considerations on the chatControllerMaker, as described in the
+ * preface to the chatControllerMaker following the chatUIMaker
+ * source:
+ */
+def makeChatUI(chatController) :near {
+    def chatWin := <widget:makeShell>(currentDisplay)
+    chatWin.setText("eChat")
+    chatWin.setBounds(30, 30, 600, 300)
+
+    def winDisposeListener {
+        to widgetDisposed(event) :void {
+            chatController.leave()
+            interp.continueAtTop()
+        }
+    }
+    chatWin.addDisposeListener(winDisposeListener)
+
+    # all button presses are referred to the the chatController
+    def attachAction(button, verb) :void {
+        def listener {
+            to widgetSelected(event) :void {E.call(chatController, verb, [])}
+        }
+        button.addSelectionListener(listener)
+    }
+
+    # Set Name Field
+    def setNameField := <widget:makeText>(chatWin, SWT.getSINGLE() | SWT.getBORDER())
+    setNameField.setText("Type Name and Set")
+
+    # set name button
+    def setNameButton := makeButton(chatWin, "Set Your Name")
+    attachAction(setNameButton, "setMyName")
+
+    # Offer Chat button
+    def offerChatButton := makeButton(chatWin, "Offer Chat")
+    attachAction(offerChatButton, "offerSelf")
+    offerChatButton.setEnabled(false)
+
+    # Find Friend Button
+    def findFriendButton := makeButton(chatWin, "Find Friend")
+    attachAction(findFriendButton, "findFriend")
+    findFriendButton.setEnabled(false)
+
+    # chat text area pane
+    def chatTextArea := <widget:makeText>(
+        chatWin, (SWT.getMULTI() | SWT.getWRAP()) | (SWT.getBORDER() | SWT.getV_SCROLL()))
+    chatTextArea.setEditable(false)
+    chatTextArea.setText("read conversation here")
+
+    # message pane
+    def nextMessageBox := <widget:makeText>(chatWin, SWT.getSINGLE() | SWT.getBORDER())
+    nextMessageBox.setText("type message here")
+
+    # Send Message button
+    def sendMessageButton := makeButton(chatWin, "Send Message")
+    attachAction(sendMessageButton, "send")
+    sendMessageButton.setEnabled(false)
+
+    swtGrid`$chatWin:
+            $setNameField.X    $setNameButton $offerChatButton $findFriendButton
+            $chatTextArea.Y    >              >                >
+            $nextMessageBox    >              >                >
+            $sendMessageButton >              >                >`
+
+
+    chatWin.open()
+    traceline("chatwin opened")
+
+    def chatUI {
+        to getChatWin() :near {chatWin}
+        to getNameButton() :near {setNameButton}
+        to getNameField() :near {setNameField}
+        to getOfferChatButton() :near {offerChatButton}
+        to getFindFriendButton() :near {findFriendButton}
+        to getChatTextArea() :near {chatTextArea}
+        to getNextMessageBox() :near {nextMessageBox}
+        to getSendMessageButton() :near {sendMessageButton}
+        to setButtonsForEstablishedConnection() :void {
+            sendMessageButton.setEnabled(true)
+            offerChatButton.setEnabled(false)
+            findFriendButton.setEnabled(false)
+        }
+    }
+}
+traceline("made makeChatUI")
+
+/**
+ * The chatController contains all the interesting concurrency
+ * behavior.
+ * <p>
+ * It is also the only object in Secureit-Echat that is
+ * exposed to another person's software. As such, it is the only
+ * object that gives other people any erights inside your computer,
+ * and thus the only object that must be inspected in this system
+ * for security issues. We discuss the security issues of the
+ * Secureit-Echat program later. For now, let's look at the
+ * interesting architectural features. First, note that there are 2
+ * definitions of chatController, one enclosed at the end of the
+ * definition of the other. Why?
+ * <p>
+ * As you recall from the chatUI discussion, to compose a chatUI
+ * object, you first need a chatController. However, to compose a
+ * chatController, you first need a chatUI object (note that the
+ * first thing done in the chatController is the definition of a
+ * chatUI). This is a classic case of 2 objects needing references
+ *  each other essentially as soon as they come to life, a problem
+ * that has plagued programmers ever since the invention of the
+ * object. Here we use the E technique of immediately using a
+ * variable's name inside the scope of the code block that defines
+ * the object: the chatController being defined is passed to the
+ * chatUIMaker as the first step in the chatController's definition.
+ * And since the second definition of chatController is the last
+ * step in the definition of the first chatController, at the end of
+ * the definition, the first chatController effectively becomes the
+ * second chatController, and everything works out cleanly.
+ * <p>
+ * Interesting methods in the chatController include
+ * <ul>
+ *     <li><tt>offerSelf</tt>, which creates the file containing
+ *         the chatController's URI.
+ *     <li><tt>findFriend</tt>, which creates a live reference
+ *         to a friend based on a URI found in a file, and sets up
+ *         the connection,
+ *     <li><tt>send</tt> and <tt>receive</tt>, which simply
+ *         pass messages across and are indeed as simple as their
+ *         job suggests--receive is just one line long, while send
+ *         is long enough to both send the message to the friend and
+ *         to post the message locally on the sender's chat window.
+ *         All the effort to encrypt and decrypt these messages are
+ *         performed invisibly by E for the programmer
+ * </ul>
+ */
+def makeChatController() :near {
+    def chatController
+    def chatUI := makeChatUI(chatController)
+    def myName
+    var myFriend := null
+    var myFriendName := null
+    var myAddressFile := null
+    traceline("initialized chatController");
+    def showMessage(senderName, message) :void {
+        chatUI.getChatTextArea().append(`$senderName says:    $message$\n$\n`)
+    }
+    bind chatController {
+        # transmitting functions
+        to send() :void {
+            def nextMessage := chatUI.getNextMessageBox().getText()
+            chatUI.getNextMessageBox().setText("")
+            traceline("next message" + nextMessage)
+            myFriend <- receive(nextMessage)
+            showMessage(myName, nextMessage)
+        }
+        to setMyName() :void {
+            chatUI.getNameButton().setEnabled(false)
+            chatUI.getOfferChatButton().setEnabled(true)
+            chatUI.getFindFriendButton().setEnabled(true)
+            chatUI.getNameField().setEditable(false)
+            bind myName := chatUI.getNameField().getText()
+        }
+        to offerSelf() :void {
+            myAddressFile := requestSaveFile(chatUI.getChatWin())
+            if (myAddressFile != null) {
+                offerMyAddress(myAddressFile,
+                               makeURIFromObject(chatController))
+            }
+        }
+        to leave() :void {
+            if (myAddressFile != null) {
+                myAddressFile.delete(null)
+            }
+        }
+        to receive(message) :void {
+            showMessage(myFriendName, message)
+        }
+        to receiveFriend(friend, name) :String {
+            traceline("receiveFriend:" + friend + name)
+            myFriend := friend
+            myFriendName := name
+            chatUI.setButtonsForEstablishedConnection()
+            chatUI.getChatTextArea().setText(myFriendName + " has arrived\n\n")
+            Ref.whenBroken(myFriend, def observer(prom) :void {
+                chatController.disconnect("disconnected")
+            })
+            traceline("received")
+            myName
+        }
+        to findFriend() :void {
+            def file := findFriendFile(chatUI.getChatWin())
+            if (file != null) {
+                def friendURI := file.getText()
+                def friend := getObjectFromURI(friendURI)
+                def nameVow := friend <- receiveFriend(chatController,
+                                                       myName)
+                when (nameVow) -> done(name) :void {
+                    chatController.receiveFriend(friend, name)
+                    chatUI.setButtonsForEstablishedConnection()
+                } catch prob {
+                    traceline("findFriend prob: " + prob + stackTrace(prob))
+                    chatController.disconnect("friend is unreachable")
+                }
+            }
+        }
+        to disconnect(desc) :void {
+            if (myFriendName == null) {
+                myFriendName := "the friend"
+            }
+            chatUI.getChatTextArea().append(`$myFriendName $desc$\n`)
+            myFriend := null
+            myFriendName := null
+        }
+    }
+}
+
+def controller := makeChatController()
+interp.blockAtTop()

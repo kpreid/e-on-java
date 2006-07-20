@@ -1,0 +1,174 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def reverse := <import:org.erights.e.tools.collect.reverse>
+
+def makeUpgradeComments(traceline) :near {
+
+    /**
+     * Analyzes source and returns version with ordinary comments in front of
+     * a function or object definition replaced with EDoc style /** comments.
+     *
+     * @param source The source to be converted to have EDoc
+     * @return modified copy of the source with well formatted EDoc
+     */
+    def upgradeComments(sourceText) :String {
+
+        def lines := sourceText.split("\n")
+        def currentOutputUpsideDown := [].diverge()
+        var currentCommentLines := [].diverge()
+
+        def generateOutput() :String {
+            def output := "".diverge(char)
+            while (currentOutputUpsideDown.size() > 0) {
+                output.append(currentOutputUpsideDown.pop() + "\n")
+            }
+            output.snapshot()
+        }
+
+        def makeStructuredComment(line) :near {
+            def trimmed := line.trim()
+            var commentChars := ""
+            def isEmpty := trimmed.size() == 0
+            var body := ""
+            var indent := ""
+            if (! isEmpty) {
+                def first := trimmed[0]
+                if (first == '#') {
+                    commentChars := "#"
+#               } else if (first == '/') {
+#                   commentChars := "//"
+#                } else {traceline("comment without # or /")}
+                } else {traceline("comment without #")}
+                if (line =~ `@header${commentChars}@trailer`) {
+                    indent := header
+                    body := trailer
+                    if (! (body.startsWith(" "))) {
+                        body := " " + body
+                    }
+                }
+            }
+            def structuredComment {
+                to isEmpty()        :boolean {isEmpty}
+                to getIndent()       :String {indent}
+                to getBody()         :String {body}
+                to getCommentChars() :String {commentChars}
+            }
+        }
+
+        /**
+         * @return a pair of last nonblank index (in upside-down order) and
+         *         first nonblank index (in upside down order) in the comment
+         */
+        def findCommentBounds() :pbc {
+            var top := currentCommentLines.size()
+            var bottom := -1
+            for i => each in currentCommentLines {
+                if (! (each.isEmpty())) {
+                    bottom max= (i)
+                    top min= (i)
+                }
+            }
+            [bottom, top]
+        }
+
+        /**
+         * turn the lines in the current comment into an EDoc comment.
+         * <p>
+         * Place that comment into the upside down output. Consume the
+         * current comment so that the next comment starts fresh.
+         */
+        def completeCurrentComment() :void {
+            def [beginNonEmptyArea, endNonEmptyArea] := findCommentBounds()
+            if (beginNonEmptyArea == -1) {
+                # If we only have blank lines, output that many blank lines
+                for each in currentCommentLines {
+                    currentOutputUpsideDown.push("")
+                }
+            } else if (currentCommentLines.size() >= 1) {
+                def indent := currentCommentLines[endNonEmptyArea].getIndent()
+                currentOutputUpsideDown.push(`$indent */`)
+                for i => each in currentCommentLines {
+                    if (! (each.isEmpty())) {
+                        currentOutputUpsideDown.push(`$indent *${each.getBody()}`)
+                    }
+                }
+                currentOutputUpsideDown.push(`$indent/**`)
+                currentOutputUpsideDown.push("")
+            }
+            currentCommentLines := [].diverge()
+        }
+
+        def isComment(trimmed) :boolean {
+            (trimmed =~ `#@_` || trimmed =~ `//@_`) &&
+              trimmed !~ `#!@_` &&
+              trimmed !~ `# Copyright@_` &&
+              trimmed !~ `# found at http://@_`
+        }
+
+        def isDefOrTo(trimmed) :boolean {
+            (trimmed =~ `def @signature{@tail`) ||
+              (trimmed =~ `to @s2{@t2`)
+        }
+
+        # One of "none", "def", "comment", "sep"
+        var isCurrentlyAbove := "none"
+
+        for each in reverse(lines) {
+            #work our way backwards, up through the lines, so we see if it is a function/object
+            # def before we work over the comments
+            def trimmed := each.trim()
+            def otherwise(str) :void {
+                completeCurrentComment()
+                currentOutputUpsideDown.push(each)
+                if (isDefOrTo(trimmed)) {
+                    isCurrentlyAbove := "def"
+                } else {
+                    isCurrentlyAbove := "none"
+                }
+            }
+            switch (isCurrentlyAbove) {
+                match `none` {
+                    otherwise(each)
+                }
+                match `def` {
+                    if (trimmed.size() == 0) {
+                        # blank lines between a def and a comment are pushed
+                        # and we're still above a def
+                        currentCommentLines.push(makeStructuredComment(each))
+                    } else if (isComment(trimmed)) {
+                        # the real docComment
+                        currentCommentLines.push(makeStructuredComment(each))
+                        isCurrentlyAbove := "comment"
+                    } else {
+                        # no comment seen
+                        otherwise(each)
+                    }
+                }
+                match `comment` {
+                    if (trimmed.size() == 0) {
+                        # blank lines above a docComment end the docComment and are not
+                        # themselves remembered
+                        completeCurrentComment()
+                        isCurrentlyAbove := "sep"
+                    } else if (isComment(trimmed)) {
+                        # continues the docComment
+                        currentCommentLines.push(makeStructuredComment(each))
+                    } else {
+                        # ends the docComment
+                        otherwise(each)
+                    }
+                }
+                match `sep` {
+                    if (trimmed.size() == 0) {
+                        # just more blank lines above the docComment to be ignored
+                    } else {
+                        otherwise(each)
+                    }
+                }
+            }
+        }
+        completeCurrentComment()
+        generateOutput()
+    }
+}

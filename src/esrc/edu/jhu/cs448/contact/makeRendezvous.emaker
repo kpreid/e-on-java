@@ -1,0 +1,51 @@
+#!/usr/bin/env rune
+
+# Copyright 2004 Mark S. Miller, under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+# Based on a design by Christian Scheideler
+
+def PublicKey := <type:java.security.PublicKey>
+
+def verifier := <elib:sealing.crypto.makeVerifier>
+
+def makeRendezvous() :near {
+    def table := [].asMap().diverge()
+    def rendezvous {
+
+        /**
+         * This public key is effectively saying that the object found at
+         * that location speaks for it.
+         * <p>
+         * TODO: These registrations should time out, and the registering
+         * clients should automatically refresh.
+         */
+        to register(publicKey :PublicKey,
+                    location :String,
+                    signature :int) :void {
+            require(verifier.verify(publicKey, location, signature),
+                    thunk{`signature on "$location" doesn't verify`})
+
+            def fingerprint := publicKey.getFingerprint()
+            def entry := [publicKey, location, signature]
+            table[fingerprint] :=
+              table.fetch(fingerprint, thunk{[].asSet()}).with(entry)
+        }
+
+        /**
+         * The set of registered [publicKey, location, signature] entries for
+         * the publicKey's fingerprint.
+         * <p>
+         * The caller should independently verify the signature, so as not
+         * to rely on the correctness of this rendezvous service.
+         * <p>
+         * TODO: We should add the ability to make an ongoing lookup request,
+         * where further answers are sent as more matching registrations
+         * happen.
+         */
+        to lookup(fingerprint :int) :near {
+            return table.fetch(fingerprint, thunk{[].asSet()})
+        }
+    }
+    return rendezvous
+}

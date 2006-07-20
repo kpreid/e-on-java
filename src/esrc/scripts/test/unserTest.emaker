@@ -1,0 +1,37 @@
+# def f() :any { <import:scripts.test.unserTest>.test() }
+
+def makeWorld {
+  to __optUncall() :any {
+    [<import>, "get", ["scripts.test.unserTest"]]
+  }
+
+  to test() :any {
+    def world := makeWorld([])
+    world.addMember(world.getOwner())
+
+    def surgeon := <elib:serial.makeSurgeon>()
+
+    surgeon.unserialize(surgeon.serialize(world))
+    #<elib:serial.makeSurgeon>.withSrcKit(null).serialize(world)
+  }
+
+  to run(var member) :any {
+    def world
+
+    def owner {
+      to __optUncall() :any { [world, "getOwner", []] }
+    }
+
+    bind world {
+      to __optUncall() :any {
+        [makeWorld, "run", [member]]
+      }
+
+      to addMember(new) :void {
+        member := new
+      }
+
+      to getOwner() :any { owner }
+    }
+  }
+}

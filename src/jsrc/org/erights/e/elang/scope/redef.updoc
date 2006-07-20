@@ -1,0 +1,29 @@
+#!/usr/bin/env rune
+
+# Copyright 2004 Hewlett Packard, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+# def x := rune(["~/e/src/jsrc/org/erights/e/elang/scope/redef.updoc"])
+
+    ? def a := 3
+    # value: 3
+
+    ? def f():any{return a}
+    # value: <f>
+
+    ? f()
+    # value: 3
+
+    ? def a := "foo"
+    # value: "foo"
+
+    ? f()
+    # value: 3
+
+----------
+
+    ? def i :int := 3
+    # value: 3
+
+    ? [i, var i :String := "foo", i := "bar", i]
+    # value: [3, "foo", "bar", "bar"]

@@ -1,0 +1,204 @@
+#!/usr/bin/env rune
+
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+pragma.enable("anon-lambda")
+
+def ConstSet := <type:org.erights.e.elib.tables.ConstSet>
+
+def Option := any[String, boolean, List[any[String, boolean]]]
+
+/**
+ * Parses a list of args that conform to a generic format.
+ * <p>
+ * That generic format is:
+ *  <pre>    <i>option</i>* [--] [<i>fname</i> <i>arg</i>*]</pre>
+ * where each <i>option</i> is<pre>
+ *     -D<i>propName</i>=<i>propValue</i>
+ *     --<i>optionName</i>
+ *     --<i>optionName</i>=<i>optionValue</i>
+ * </pre>
+ * <i>fname</i> is the first argument that<ul>
+ * <li>doesn't start with a "-"
+ * <li>"--<i>specialOp</i>", "--<i>specialOp</i>.<i>ext</i>", or
+ *     "--<i>specialOp</i>=<i>specialValue</i>"
+ *     (see param <tt>specialOps</tt> below)
+ * <li>isn't a string
+ * <li>occurs after the "--" marker, which marks the end of options
+ * <li>is "-"
+ * <li>is of the form "-.<i>ext</i>"
+ * </ul>
+ *
+ * @param specialOps Each member of this set is a "--<i>specialOp</i>", like
+ *                   "--help", that should be parsed as an fname rather than an
+ *                   option. A new first argument is then derived from this
+ *                   option and prepended to the argument list. If the
+ *                   specialOp appears as<ul>
+ *                   <li>--<i>specialOp</i>, then a <tt>null</tt> is prepended
+ *                       (the null value, not the string "null").
+ *                   <li>--<i>specialOp</i>.<i>ext</i>, then ".<i>ext</i>" is
+ *                       prepended.
+ *                   <li>--<i>specialOp</i>=<i>specialValue</i>, then
+ *                       "=<i>specialValue</i>" is prepended.
+ *                   <li>--<i>specialOp</i>.<i>ext</i>=<i>specialValue</i>,
+ *                       then ".<i>ext</i>=<i>specialValue</i>" is prepended.
+ *                   </ul>
+ *                   So, for example, ["--help.caplet"] expands to
+ *                   optFname:"--help", args:[".caplet"]
+ * @param args A ConstList of anything, but only strings are potential
+ *              options.
+ * @return A four-tuple of<ul>
+ *        <li><tt>props</tt>, a map from <i>propName</i>s to <i>propValue</i>s,
+ *            obtained by processing the <tt>-D...</tt> options.
+ *            Both <i>propName</i> and <i>propValue</i> are Strings.
+ *            The argParser requires that each <i>propName</i> be defined
+ *            at most once.
+ *        <li><tt>options</tt>, a map from "--<i>optionName</i>" to one of<ul>
+ *            <li><tt>true</tt>, the boolean, not the String, when no value is
+ *                supplied,
+ *            <li><i>optionValue</i>, a String, when a value is supplied,
+ *                or
+ *            <li>a list of <tt>true</tt>s and Strings, when the option occurs
+ *                more than once (with or without a value). In this case,
+ *                the list appears in the same sequence the options did.
+ *            </ul>
+ *        <li><tt>optFname</tt>, either the fname, a "--<i>specialOp</i>, or
+ *            null if there was no fname. optFname may be of any
+ *            type, so therefore one can't distinguish an absent fname from
+ *            one that was explicitly <tt>null</tt>.
+ *        <li><tt>args</tt> is a list of the remaining arguments, with
+ *            the prepended value extracted from the specialOp argument if
+ *            there was one.
+ *        </ul>
+ * @author Mark S. Miller
+ */
+def argParser {
+    to run(specialOps :ConstSet,
+           var args :List) :Tuple[Map[String, String],
+                                  Map[String, Option],
+                                  any,
+                                  List] {
+        var props := [].asMap().diverge()
+        # during the while loop, <tt>options</tt> maps from options to lists.
+        # Only afterwards are the singletons flattened out.
+        var options := [].asMap().diverge()
+        var optFname := null
+        while (args =~ [first] + rest) {
+            args := rest
+            switch (first) {
+                match x ? (x !~ :String) {
+                    # XXX An awkward way to say "doesn't coerce to a String"
+                    optFname := first
+                    break
+                }
+                match `-D@propName=@propValue` {
+                    props.put(propName, propValue, true)
+                }
+                match `--` {
+                    # we're done with options even if the next arg
+                    # looks like an option
+                    if (rest =~ [cadr] + cddr) {
+                        optFname := cadr
+                        args := cddr
+                    }
+                    break
+                }
+                match `--@optionName.@ext` ? (optionName !~ `@_=@_`) {
+                    # If optionName does contain a "=", then we should match
+                    # the next case instead.
+                    def op := `--$optionName`
+                    # Includes both the "--foo.bar" and the "--foo.bar=baz"
+                    # cases. In both case, the op is "--foo".
+                    if (specialOps.contains(op)) {
+                        optFname := op
+                        args := [`.$ext`] + args
+                        break
+                    }
+                    # Otherwise we complain. Should we instead treat this as a
+                    # regular option?
+                    throw(`"$first" isn't a specialOp, so shouldn't have an $\
+extension`)
+                }
+                match `--@optionName=@optionValue` {
+                    def op := `--$optionName`
+                    if (specialOps.contains(op)) {
+                        optFname := op
+                        args := [`=$optionValue`] + args
+                        break
+                    }
+                    def values := options.fetch(op, thunk{[]})
+                    options[op] := values + [optionValue]
+                }
+                match `--@optionName` {
+                    if (specialOps.contains(first)) {
+                        optFname := first
+                        args := [null] + args
+                        break
+                    }
+                    def values := options.fetch(first, thunk{[]})
+                    options[first] := values + [true]
+                }
+                match `-` {
+                    optFname := first
+                    break
+                }
+                match `-.@_` {
+                    optFname := first
+                    break
+                }
+                match f ? (f !~ `-@_`) {
+                    # XXX A kludgy way to say "doesn't start with '-'."
+                    optFname := first
+                    break
+                }
+                match _ {
+                    throw(`unrecognized option: "$first"`)
+                }
+            }
+        }
+        for optionName => values in options {
+            if (values =~ [value]) {
+                options[optionName] := value
+            }
+        }
+        [props.snapshot(), options.snapshot(), optFname, args]
+    }
+
+    /**
+     * Returns the extension (like ".txt") of a presumed filename (like
+     * "foo.txt").
+     * <p>
+     * If there's a dot and either there is no slash or the last dot's after
+     * the last slash, then the extension is everything <i>starting at</i> that
+     * last dot. Otherwise it's all of fname <i>after</i> the last slash. If
+     * there's no dot or slash, then return all of fname.
+     */
+    to getExtension(fname :String) :String {
+
+        def dot := fname.lastStartOf(".")
+        def slash := fname.lastStartOf("/")
+        if (dot > slash) {
+            return fname(dot, fname.size())
+        } else {
+            return fname(slash +1, fname.size())
+        }
+    }
+
+    /**
+     * For turning a flag option's value into a boolean
+     */
+    to getFlag(optionName :String, map :Map, defaultValue) :boolean {
+        def optionValue := map.fetch(optionName, thunk{defaultValue})
+        switch (optionValue) {
+            match ==true  { true }
+            match ==false { false }
+            match `true`  { true }
+            match `false` { false }
+            match _ {
+                throw(`"$optionName" must be "true" or "false" $\
+rather than "$optionValue"`)
+            }
+        }
+    }
+}

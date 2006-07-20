@@ -1,0 +1,19 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class(safe,
+      "java.lang.Number",
+      honorary("org.erights.e.elib.serial.PassByConstruction",
+               "org.erights.e.elib.serial.Persistent",
+               "org.erights.e.elib.tables.Selfless"),
+      statics(method("run()")),
+      methods(method(suppress,
+                     "floatValue()",
+                     comment("float32 (single precision) isn't supported")),
+              method(suppress, "doubleValue()", comment("Use asFloat64")),
+              method(suppress, "byteValue()",   comment("Use i & 0xFF")),
+              method(suppress, "shortValue()",  comment("Use i & 0xFFFF")),
+              method(suppress, "intValue()",    comment("Use i & 0xFFFFFFFF")),
+              method(suppress,
+                     "longValue()",
+                     comment("Use i & 0xFFFFFFFFFFFFFFFF"))))

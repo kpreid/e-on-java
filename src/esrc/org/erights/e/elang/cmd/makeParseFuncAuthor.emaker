@@ -1,0 +1,54 @@
+#!/usr/bin/env rune
+
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def makeEParser := <elang:syntax.makeEParser>
+
+def EExpr := <type:org.erights.e.elang.evm.EExpr>
+def Expr := any[EExpr, Twine, <type:org.quasiliteral.term.Term>]
+def LineFeeder := <type:org.quasiliteral.syntax.LineFeeder>
+
+/**
+ *
+ */
+def makeParseFuncAuthor(makeELexer) :near {
+
+    /**
+     *
+     */
+    def makeParseFunc(lineFeeder :LineFeeder,
+                      props :Map[String,String],
+                      warns :TextWriter) :near {
+
+        def lexer := makeELexer(lineFeeder,
+                                false,        # partialFlag
+                                false)        # noTabsFlag
+        def parser := makeEParser.make(props,
+                                       lexer,
+                                       warns,
+                                       false, # debugFlag
+                                       true)  # onlyOneExprFlag
+        /**
+         * Implements {@link makeRepl$Reader}, but not declared that
+         * way, since we haven't yet resolved the module vs
+         * interface scoping problem.
+         * <p>
+         * Each time it's called, it returns the next parse-tree
+         * from the input, representing the parse of the next
+         * top-level expression.
+         * <p>
+         * When the input reaches "end-of-file" (is exhausted),
+         * this returns null rather than a parse-tree.
+         * <p>
+         * SyntaxExceptions are thrown
+         */
+        def parseFunc() :nullOk[Expr] {
+            if (parser.isEndOfFile()) {
+                return null
+            } else {
+                return parser.parse()
+            }
+        }
+    }
+}

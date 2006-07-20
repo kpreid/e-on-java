@@ -1,0 +1,10 @@
+class(safe,
+           "org.eclipse.swt.widgets.ProgressBar",
+           statics(method("run(Composite, int)")),
+           methods(method("computeSize(int, int, boolean)"),
+                   method("getMaximum()"),
+                   method("getMinimum()"),
+                   method("getSelection()"),
+                   method("setMaximum(int)"),
+                   method("setMinimum(int)"),
+                   method("setSelection(int)"))) 

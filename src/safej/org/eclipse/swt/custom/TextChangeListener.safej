@@ -1,0 +1,5 @@
+class("org.eclipse.swt.custom.TextChangeListener",
+           statics,
+           methods(method(suppress, "textChanging(TextChangingEvent)"),
+                   method(suppress, "textChanged(TextChangedEvent)"),
+                   method(suppress, "textSet(TextChangedEvent)"))) 

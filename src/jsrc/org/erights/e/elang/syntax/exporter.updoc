@@ -1,0 +1,35 @@
+#!/usr/bin/env rune
+
+    ? pragma.enable("exporter")
+    ? pragma.enable("importer")
+    ? pragma.enable("pattern-default")
+    ? var x := 3
+    # value: 3
+    
+    ? var y := 5
+    # value: 5
+    
+    ? [=>x, =>&y]
+    # value: ["x" => 3, "&y" => <forwards to: <& 5>>]
+    
+    ? [=>x, =>&y]
+    
+    # value: ["x" => 3, "&y" => <forwards to: <& 5>>]
+    
+    ? def [=>a := 3, =>&b, "&y" => &c] := ["&b" => &x, =>&y]
+    # value: ["&b" => <forwards to: <& 3>>, "&y" => <forwards to: <& 5>>]
+    
+    ? x := 33
+    # value: 33
+    
+    ? y := 55
+    # value: 55
+    
+    ? a
+    # value: 3
+    
+    ? b
+    # value: 33
+    
+    ? c
+    # value: 55

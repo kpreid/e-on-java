@@ -1,0 +1,3 @@
+class(safe, "org.eclipse.swt.SWT",
+           statics,
+           methods)

@@ -1,0 +1,23 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class(safe,
+      "javax.swing.ScrollPaneLayout",
+      statics(method("run()")),
+      methods(method(suppress, "syncWithScrollPane(JScrollPane)"),
+              method(suppress, "addLayoutComponent(String, Component)"),
+              method("removeLayoutComponent(Component)"),
+              method("getVerticalScrollBarPolicy()"),
+              method("setVerticalScrollBarPolicy(int)"),
+              method("getHorizontalScrollBarPolicy()"),
+              method("setHorizontalScrollBarPolicy(int)"),
+              method("getViewport()"),
+              method("getHorizontalScrollBar()"),
+              method("getVerticalScrollBar()"),
+              method("getRowHeader()"),
+              method("getColumnHeader()"),
+              method("getCorner(String)"),
+              method("preferredLayoutSize(Container)"),
+              method("minimumLayoutSize(Container)"),
+              method("layoutContainer(Container)"),
+              method("getViewportBorderBounds(JScrollPane)")))

@@ -1,0 +1,15 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class(safe,
+      "javax.swing.text.ComponentView",
+      statics(method("run(Element)")),
+      methods(method("getComponent()"),
+              method(suppress, "paint(Graphics, Shape)"),
+              method("getPreferredSpan(int)"),
+              method("getMinimumSpan(int)"),
+              method("getMaximumSpan(int)"),
+              method("getAlignment(int)"),
+              method("setParent(View)"),
+              method("modelToView(int, Shape, Position.Bias)"),
+              method("viewToModel(float, float, Shape, Position.Bias[])")))

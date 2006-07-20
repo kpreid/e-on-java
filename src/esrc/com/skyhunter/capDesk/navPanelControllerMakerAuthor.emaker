@@ -1,0 +1,376 @@
+#!/usr/local/bin/e
+
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def JPanel__quasiParser := <import:org.erights.ex.swing.JPanel__quasiParser>
+
+def navPanelControllerMakerAuthor(<unsafe>,
+                                  <awt>,
+                                  <swing>,
+                                  traceline) :any {
+
+    def <file> :=
+      <unsafe:org.erights.e.meta.java.io.makeFileGetter>.getTHE_ONE()
+
+    def resolveAllVow := <import:com.skyhunter.e.net.resolveAllVow>
+    def uiTools := <import:com.skyhunter.ex.swing.uiToolsAuthor>(<awt>,
+                                                             <swing>)
+    def sendValveMaker := <import:com.skyhunter.e.net.sendValveMaker>
+
+    def dirIcon := <swing:makeImageIcon>(<resource:com/skyhunter/capDesk/icons/folder.gif>)
+    def unAssociatedIcon := <swing:makeImageIcon>(<resource:com/skyhunter/capDesk/icons/noLauncher.gif>)
+
+    def moreRecentVowFuncMaker := <import:com.skyhunter.e.net.moreRecentVowFuncMaker>
+
+    /**
+     * When a navPanelController is not pointing at an actual directory, it points to the diskNavStub for
+     * deciding what to render
+     */
+    def diskNavStub {
+        to dupNavigator() :near {diskNavStub}
+        to getStorageName() :String {""}
+        to versionNumber() :pbc {0}
+        to getCurrentPath() :String {""}
+        to getParentPath() :String {""}
+        to listCurrentSubdirectoriesAndFiles() :pbc {[[],[]]}
+        match [verb, args] {traceline("disknavstub got: " + verb)}
+    }
+
+    def cellRenderer {
+        to getListCellRendererComponent(listPanel, cell,
+                                        index, isSelected, cellHasFocus) :near {
+            def component := cell.composeComponent()
+            def label := cell.getLabel()
+            if (isSelected) {
+                label.setBackground(<awt:makeColor>.getCyan())
+            } else {
+                label.setBackground(<awt:makeColor>.getWhite())
+            }
+            component
+        }
+    }
+
+    def dirNameFromPath(path) :pbc {
+        traceline("path: " + path)
+        def parts := path.split("/")
+        if (parts.size() >= 2) {
+            parts[parts.size() - 2] + "/"
+        } else {""}
+    }
+
+    def computeSuffix(name) :near {
+        def parts := name.split(".")
+        def size := parts.size()
+        if (size == 1) {
+            ""
+        } else {
+            parts[size - 1]
+        }
+    }
+
+    def cellMaker(var name, isDir, suffixMapper) :near {
+        var component := null
+        var label := null
+        var icon := null
+        var iconPane := null
+        def cell {
+            to composeComponent() :near {
+                if (component != null) {
+                    component
+                } else {
+                    var icon := unAssociatedIcon
+                    if (isDir) {
+                        icon := dirIcon
+                    } else {
+                        def optApp := suffixMapper.optAppByPetSuffix(computeSuffix(name))
+                        if (optApp != null) {
+                            #traceline ("found suffix app: " + optApp)
+                            icon := <swing:makeImageIcon>(<file>[optApp["Icon"]])
+
+                            # XXX someday when lots of file types have their own icons, improve
+                            # XXX performance with an icon cache. For now, since the dir and stranger
+                            # icons are cached, it makes little difference
+                            #icon := iconGetter getIcon(optApp["Icon"])
+                        }
+                    }
+                    iconPane := <swing:makeJLabel>(icon)
+                    #iconPane := <swing:makeJLabel>(" ")
+                    #iconPane setIcon(icon)
+                    label := <swing:makeJTextField>(name)
+                    label.setBorder(<swing:makeBorderFactory>.createEmptyBorder(0,0,0,0))
+                    label.setEditable(false)
+                    component := JPanel`$iconPane $label.X`
+                }
+            }
+            to rename(newName) :void {
+                name := newName
+                component := null
+            }
+            to isDir() :pbc {isDir}
+            to getLabel() :near {label}
+            to getIconPane() :near {iconPane}
+        }
+    }
+
+    def composeCellArrayVow(dirsFiles, suffixMapper) :vow {
+        def valve := sendValveMaker(1)
+        var finalCompositionVow := null
+        def list := [].diverge()
+        def queueComposition(actionTrio) :void {
+            def compositionVow := valve.makeActionVow(actionTrio)
+            finalCompositionVow := compositionVow
+            when (compositionVow) -> done(composedCell) :void {
+                list.push(composedCell)
+            } catch prob {traceline("composeCellArrayVow failed: " + prob)}
+        }
+
+        for each in dirsFiles[0] {
+            queueComposition([cellMaker, "run", [each, true, suffixMapper]])
+        }
+        for each in dirsFiles[1] {
+            queueComposition([cellMaker, "run", [each, false, suffixMapper]])
+            #list push(cellMaker(each, false, suffixMapper))
+        }
+        def [result :vow, solver] := Ref.promise()
+        when (finalCompositionVow) -> done(allComposed) :void {
+            solver.resolve(list.snapshot())
+        } catch prob {traceline("final composition failed in nave pane" + prob)}
+        result
+    }
+
+    def navPanelControllerMaker(optHigherDirControllerVow, optLowerDirControllerVow, suffixMapper, windowController) :near {
+        def localReactor
+        var diskNavRcvr := diskNavStub
+        def recentPathVow := moreRecentVowFuncMaker()
+        def recentFilesListVow := moreRecentVowFuncMaker()
+        def recentCellArrayVow := moreRecentVowFuncMaker()
+        def listPanel := <swing:makeJList>()
+        listPanel.setCellRenderer(cellRenderer)
+        def listScroller := <swing:makeJScrollPane>(listPanel)
+        def locationLabel := <swing:makeJLabel>()
+        def refreshButton := uiTools.newToolButton(<resource:com/skyhunter/capDesk/icons/refresh.gif>,
+                                                 "Refresh",
+                                                 def act() :void {localReactor.reload()})
+        def mainPanel := JPanel`$refreshButton   $locationLabel.X
+                                $listScroller.Y  >  `
+
+        def navPanelController
+
+        def listPaneListener{
+            to mouseClicked(theEvent) :void {
+                #traceline("into mouseClicked")
+                def clickLocation := <unsafe:java.awt.makePoint>(theEvent.getX(), theEvent.getY())
+                def selectionIndex := listPanel.locationToIndex(clickLocation)
+                if (! (listPanel.isSelectedIndex(selectionIndex))) {
+                    listPanel.setSelectedIndex(selectionIndex)
+                }
+                if (theEvent.getClickCount() > 1) {
+                    def cell := listPanel.getSelectedValue()
+                    if (cell.isDir()) {
+                        traceline("double clicked on dir")
+                        navPanelController.openDir()
+                    } else {
+                        traceline("dclicked on doc in navpanelcontroller")
+                        windowController.doubleClickedDocument(navPanelController)
+                    }
+                } else if (theEvent.isPopupTrigger() ||
+                             <unsafe:javax.swing.makeSwingUtilities>.isRightMouseButton(theEvent)) {
+                    traceline("into is popup")
+                    windowController.showFilePopup(navPanelController, theEvent.getX(),
+                                                   theEvent.getY())
+                }
+
+            }
+            match _ {}
+        }
+        listPanel.addMouseListener(listPaneListener)
+
+        def traceMem := {
+            def runtime := <unsafe:java.lang.makeRuntime>.getRuntime()
+            def traceMem() :void {
+                #runtime gc()
+                def free := runtime.freeMemory()
+                def total := runtime.totalMemory()
+                traceline(`used  memory: ${(total - free)/1000000}`)
+            }
+        }
+
+        def bind localReactor {
+            to reload() :void {
+                locationLabel.setText("Refreshing...")
+                def currentPathVow := recentPathVow (diskNavRcvr <- getCurrentPath())
+                def dirsVow := recentFilesListVow (diskNavRcvr <- listCurrentSubdirectoriesAndFiles())
+                when (dirsVow, currentPathVow) -> done(dirsFilesTuple, currentPath) :void {
+                    def cellArrayVow := recentCellArrayVow(composeCellArrayVow(dirsFilesTuple, suffixMapper))
+                    when (cellArrayVow) -> done(cellArray) :void {
+                        listPanel.setListData(cellArray)
+                        locationLabel.setText(dirNameFromPath(currentPath))
+                        #windowController setStatus("Refresh done.")
+                        if (optLowerDirControllerVow ==null) {
+                            traceline("nav panel mem at bottom panel reload done:")
+                            traceMem()
+                        }
+                    } catch prob {traceline("cellArrayVow smashed, obsolete data ok: " + prob)}
+                } catch err {
+                    traceline("err in reload, obsolete data ok: " + err)
+                }
+            }
+        }
+
+        def navReactors := [].asMap().diverge()
+
+
+        def listSelectionListener {
+            to valueChanged(event) :void {
+                def onlyOne := listPanel.getSelectedValues().size() == 1
+                def selection := listPanel.getSelectedValue()
+                def isDir := selection != null && selection.isDir()
+                if (onlyOne && isDir) {
+                    for each => stub in navReactors {
+                        each.selectedDir(navPanelController)
+                    }
+                }
+            }
+        }
+        listPanel.addListSelectionListener(listSelectionListener)
+
+        def dragDropKit := <import:com.skyhunter.e.awt.dnd.dragDropKit> (<awt>, traceline)
+        def getFileRcvrs() :any {navPanelController.getSelectedFileRcvrs() }
+        dragDropKit.setupLocalDragSource(listPanel , getFileRcvrs )
+
+        def clear() :void {
+            for each => stub in navReactors {each.cleared(navPanelController)}
+            diskNavRcvr := diskNavStub
+            if (optLowerDirControllerVow ==null) {traceline("clearing in bottom panel")}
+            localReactor.reload()
+        }
+
+        def lowerPaneReactor {
+            to openingDir(controller) :void {
+                traceline("opening dir reached in lower listener")
+                def nextNavRcvr := controller.dupDiskNavRcvr()
+                for each => stub in navReactors {each.lowerDirOpening(navPanelController)}
+                diskNavRcvr := nextNavRcvr
+                localReactor.reload()
+                for each => stub in navReactors {each.openedDir(navPanelController)}
+            }
+            to lowerDirOpening(controller) :void {
+                lowerPaneReactor.openingDir(controller)
+            }
+            match [verb, args] {}
+        }
+        when (optLowerDirControllerVow) -> doneLower(lowerController) :void {
+            if (lowerController != null) {
+                lowerController <- addNavReactor(lowerPaneReactor)
+            }
+        } catch prob {traceline("disaster with lowerController: " + prob)}
+
+        def upperPaneReactor {
+            to goingUp(controller) :void {
+                for each => stub in navReactors {each.goingUp(navPanelController)}
+                diskNavRcvr := controller.dupDiskNavRcvr()
+                localReactor.reload()
+                for each => stub in navReactors {each.wentUp(navPanelController)}
+
+            }
+            to lowerDirOpening(controller) :void {}
+            to wentUp(controller) :void {}
+            to jumped(controller) :void {clear()}
+            to cleared(controller) :void {clear()}
+            to openingDir(controller) :void {
+                traceline("opening dir gotten through upperPaneReactor")
+                clear <- run()
+            }
+            to openedDir(controller) :void {}
+            to selectedDir(controller) :void {
+                def newSelection := (controller.getSelectedNames())[0]
+                diskNavRcvr := controller.dupDiskNavRcvr()
+                diskNavRcvr <- changeToSubdirectory(newSelection)
+                localReactor.reload()
+                for each => stub in navReactors {each.jumped(navPanelController)}
+            }
+            to deletionsMade(controller) :void {
+                when (diskNavRcvr <- currentDirExists()) -> done(exists) :void {
+                    if (! exists) {clear()}
+                } catch prob {traceline("deletionsmade prob: " + prob)}
+            }
+            match [verb, args] {traceline("Got verb in upperPaneReactor: " + verb)}
+        }
+
+        when (optHigherDirControllerVow) -> doneHigher(higherController) :void {
+            if (higherController != null) {
+                higherController <- addNavReactor(upperPaneReactor)
+            }
+        } catch prob {traceline("disaster with higherController: " + prob)}
+
+        def bind navPanelController {
+            to setDiskNavRcvr(newNavRcvr) :void {
+                diskNavRcvr := newNavRcvr
+                localReactor.reload()
+            }
+            to getDiskNavRcvr() :any {diskNavRcvr }
+            to dupDiskNavRcvr() :any {
+                if (diskNavRcvr == null) {
+                    null
+                } else {diskNavRcvr <- dupNavigator()}
+            }
+            to addNavReactor(reactor) :void {navReactors[reactor] := null}
+            to removeNavReactor(reactor) :void {navReactors.removeKey(reactor)}
+            to goto(path) :void {
+                diskNavRcvr <-changeToDirectory(path)
+                localReactor.reload()
+                for each => stub in navReactors {each.jumped(navPanelController)}
+            }
+            to gotoHome() :void {
+                diskNavRcvr <- gotoHome()
+                localReactor.reload()
+                for each => stub in navReactors {each.jumped(navPanelController)}
+            }
+            to reload() :void {localReactor.reload()}
+            to deletionsMade() :void {
+                localReactor.reload()
+                for each => stub in navReactors {each.deletionsMade(navPanelController)}
+            }
+            to getCellRenderer() :near {cellRenderer}
+            to getMainPanel() :near {mainPanel}
+            to getListPanel() :near {listPanel}
+            to goUp() :void {
+                for each => stub in navReactors { each.goingUp(navPanelController)}
+                diskNavRcvr <- goUp()
+                localReactor.reload()
+                for each => stub in navReactors { each.wentUp(navPanelController)}
+            }
+            to openDir() :void {
+                traceline("into open dir")
+                def newDirName := (navPanelController.getSelectedNames() )[0]
+                traceline("newDir: " + newDirName)
+                for each => stub in navReactors { each.openingDir(navPanelController)}
+                traceline("told reactors opening")
+                diskNavRcvr <- changeToSubdirectory(newDirName)
+                #listPanel  clearSelection()
+                traceline("about to change dir: " + diskNavRcvr)
+
+                localReactor.reload()
+                traceline("about to tell reactors opened")
+                for each => stub in navReactors { each.openedDir(navPanelController)}
+            }
+            to getSelectedNames() :pbc {
+                def names := [].diverge()
+                def cells := listPanel.getSelectedValues()
+                for each in cells {
+                    names.push(each.getLabel().getText())
+                }
+                names.snapshot()
+            }
+            to getSelectedFileRcvrs() :pbc {
+                def fileRcvrs := [].diverge()
+                for each in navPanelController.getSelectedNames() {
+                    fileRcvrs.push(diskNavRcvr <- getFileNamed(each))
+                }
+                fileRcvrs.snapshot()
+            }
+        }
+    }
+}
+

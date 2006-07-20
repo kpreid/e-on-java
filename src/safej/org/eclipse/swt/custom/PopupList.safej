@@ -1,0 +1,11 @@
+class(safe,
+           "org.eclipse.swt.custom.PopupList",
+           statics(method("run(Shell)")),
+           methods(method("getFont()"),
+                   method("getItems()"),
+                   method("getMinimumWidth()"),
+                   method("open(Rectangle)"),
+                   method("select(String)"),
+                   method("setFont(Font)"),
+                   method("setItems(String[])"),
+                   method("setMinimumWidth(int)"))) 

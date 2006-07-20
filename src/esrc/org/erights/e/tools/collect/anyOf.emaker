@@ -1,0 +1,14 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+/**
+ * Is the predicate true for any member of the list?
+ */
+def anyOf(list, pred) :boolean {
+    for v in list {
+        if (pred(v)) {
+            return true
+        }
+    }
+    false
+}

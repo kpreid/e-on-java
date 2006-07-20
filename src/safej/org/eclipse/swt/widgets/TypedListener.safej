@@ -1,0 +1,4 @@
+class("org.eclipse.swt.widgets.TypedListener",
+           statics(method(suppress, "run(SWTEventListener)")),
+           methods(method(suppress, "getEventListener()"),
+                   method(suppress, "handleEvent(Event)"))) 

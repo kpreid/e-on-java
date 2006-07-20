@@ -1,0 +1,301 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def JPanel__quasiParser := <import:org.erights.ex.swing.JPanel__quasiParser>
+
+def darpaBrowserCapletAuthor {
+    to getRequestedCaps() :near {
+        "<requests>
+    <pet>
+        <name>DarpaBrowser Memoryless</name>
+        <suffix>html</suffix>
+        <icon>data/darpa.gif</icon>
+    </pet>
+    <urlProtocols>
+        <protocol>
+            <name>http</name>
+            <why>Required for Web Browsing</why>
+        </protocol>
+        <protocol>
+            <name>file</name>
+            <why>Required for reading Web Books on Disk</why>
+        </protocol>
+    </urlProtocols>
+</requests>"
+    }
+    to run(powerbox) :near {
+        def <awt> := <import:java.awt.*>
+        def <swing> := <import:javax.swing.*>
+        def traceline := powerbox.optCap(powerbox.getTRACELN())
+        def frameMaker := powerbox.optCap(powerbox.getFRAME_MAKER())
+        def urlMaker := powerbox.optCap(powerbox.getURL_MAKER())
+        def <local> := powerbox.optCap(powerbox.getLOCAL__URIGETTER())
+        def uiTools := <import:com.skyhunter.ex.swing.uiToolsAuthor>(<awt>, <swing>)
+        def dialogVowMaker := <import:com.skyhunter.ex.swing.dialogVowMakerAuthor> (
+            <awt>, <swing>, frameMaker)
+        def makeParserCallback := <import:com.skyhunter.ex.swing.text.html.parser.EParserCallback>
+        def parserDelegator := <swing:text.html.parser.makeParserDelegator>()
+        traceline("imports done")
+
+        def errorPageHtml := "<html><h1>Page Not Found</h1></html>"
+        def treeBuilderSource := <local:data/makeHTMLTreeBuilderAuthor.emaker>.getTwine()
+        traceline(`treeBuilderSource size: ${treeBuilderSource.size()}`)
+        def makeHTMLTreeBuilderAuthor := powerbox.runSource(treeBuilderSource)
+        traceline(`builder: $makeHTMLTreeBuilderAuthor`)
+
+        /**
+         * fileSuffix returned with preceding "/", like the getFile() method
+         * in java api this is a good thing, it normalizes the final
+         * directory to end without slash
+         */
+        def computeFileSuffix(text) :String {
+            var result := ""
+            #if this is a directory with a slash at end
+            if (text.endsWith("/")) {
+                result := "/"
+                #else if this is not the home page of a site
+            } else if (text =~ `http://@host/@path`) {
+                def lastSlash := path.lastIndexOf("/")
+                #if this is a page not a directory
+                if (path.lastIndexOf(".") > lastSlash) {
+                    result := text(text.lastIndexOf("/"), text.size() )
+                } else {
+                    #this is a directory
+                    # return default ""
+                }
+            } else {
+                #this is home page with no slash, default "" is correct
+            }
+            result
+        }
+
+        def makeFullPath(currentPath, newPath) :String {
+            if (newPath =~ `@proto://@stuff`) {
+                newPath
+            } else {
+                traceline("about to do relative")
+                def result := urlMaker.relative(urlMaker(currentPath), newPath)
+                traceline(`relative url: $result`)
+                result.toExternalForm()
+            }
+        }
+
+        def makeContextSensitiveURLMaker(currentPath) :near {
+            def makeContextSensitiveURL(newPath) :near {
+                if (newPath =~ `@proto://@stuff`) {
+                    urlMaker(newPath)
+                } else {
+                    traceline("about to do relative")
+                    def result := urlMaker.relative(urlMaker(currentPath), newPath)
+                    traceline(`relative url: $result`)
+                    result
+                }
+            }
+        }
+
+        def capBrowser
+        var renderSource := <local:renderers/capTreeMemless.emaker>.getTwine()
+        var renderer := null
+        var renderPGranterController := null
+        var currentHTMLTree := null
+        #var currentPageText := ""
+        #def history := [] diverge()
+
+        /**
+         * build renderer powerGranter for renderer.
+         * <p>
+         * Note that when the powerGranter is revoked, the authority to write
+         * to the specified renderPane is not revoked; therefore, the
+         * renderPane must be discarded separately as part of revocation.
+         * The renderPGranter is given to the untrusted renderer.
+         * The controller and the urlRequestReactor are intended to be used
+         * by code within the same trust realm as the browser.
+         *
+         * @param renderPane The pane to which the renderer is allowed to
+         *                   write
+         */
+        def makeRenderPGranterController(renderPane) :near {
+            def renderPaneKey := "renderPane"
+            var revoked := false
+            var powerMap := [].asMap().diverge()
+            powerMap[powerbox.getTRACELN()] := traceline
+            powerMap[renderPaneKey ] := renderPane
+            def renderPGranter {
+                to optCap(capKey :String) :near {
+                    powerMap.fetch(capKey, thunk{})
+                }
+                to getRENDER_PANE() :String {renderPaneKey }
+                to getTRACELN() :String {powerbox.getTRACELN()}
+            }
+            def urlRequestReactor {
+
+                /**
+                 * XXX When the taming process has fully transitioned to
+                 * magic static methods on the class, do a type check on the
+                 * url being sent in here. If that were being done, it would
+                 * not be a disaster if the renderer got its hands on this
+                 * reactor by accident
+                 */
+                to goToURL(url) :void {
+                    if (! revoked) {capBrowser.gotoURL(url)}
+                }
+            }
+            def controller {
+                to getRenderPGranter() :near {renderPGranter}
+                to getUrlRequestReactor() :near {urlRequestReactor}
+                to revoke() :void {revoked := true}
+            }
+        }
+        traceline("made renderPGranterController maker")
+
+
+        def setupNewRenderPGranter(scrollPane) :void {
+            def renderPane := <swing:makeJPanel>()
+            renderPane.setLayout(<awt:makeBorderLayout>())
+            renderPane.setPreferredSize(<awt:makeDimension>(600, 60000))
+            scrollPane.setViewportView(renderPane)
+            renderPGranterController := makeRenderPGranterController(renderPane)
+        }
+
+        def setupRenderer(sourceText, scrollPane) :void {
+            def rendererMaker := powerbox.runSource(sourceText)
+            setupNewRenderPGranter(scrollPane)
+            renderer := rendererMaker(renderPGranterController.getRenderPGranter(),
+                                          <awt>,<swing>)
+            traceline("renderer replaced")
+        }
+
+        def urlField := <swing:makeJTextField>()
+        def enterKeyListener{
+            to keyPressed(theEvent) :void {
+                if (theEvent.getKeyCode() == <awt:event.makeKeyEvent>.getVK_ENTER()) {
+                    capBrowser.gotoURL()
+                }
+            }
+            match _ {}
+        }
+        urlField.addKeyListener(enterKeyListener)
+        def viewPane := <swing:makeJEditorPane>()
+        viewPane.setEditable(false)
+        viewPane.setContentType("text/html")
+        viewPane.setText("</html>
+            <h1>DarpaBrowser</h1>
+            version 0.1</html>")
+        def window := frameMaker()
+        window.setDefaultCloseOperation(<swing:makeWindowConstants>.getDISPOSE_ON_CLOSE())
+        def mainPane := window.getContentPane()
+        def scrollPane := <swing:makeJScrollPane>()
+        scrollPane.setVerticalScrollBarPolicy(
+            <swing:makeScrollPaneConstants>.getVERTICAL_SCROLLBAR_ALWAYS())
+        scrollPane.setPreferredSize(<awt:makeDimension>(600, 600))
+
+        def gotoRunner() :void {capBrowser.gotoURL()}
+        def gotoButton := uiTools.newButton("Go To: ", gotoRunner)
+        def pickRenderer() :void {
+            def renderFilesVow := powerbox.requestFileRcvrsVow(false, "Select Renderer", "", "", null)
+            when (renderFilesVow) -> done(renderFiles) :void {
+                if (renderFiles.size() > 0) {
+                    renderSource := renderFiles[0].getTwine()
+                    setupRenderer(renderSource, scrollPane)
+                    def urlText := urlField.getText()
+                    if (urlText.size() > 0) {capBrowser.gotoURL()}
+                }
+            } catch prob {traceline("problem getting render files: " + prob)}
+        }
+        def rendererButton := uiTools.newButton("Select Renderer", pickRenderer)
+        def memoryCheck := <swing:makeJCheckBox>("Disallow Memory")
+        def realPane :=
+          JPanel`$rendererButton $gotoButton  $urlField.X $memoryCheck
+                 $scrollPane.Y   >            >           >`
+        traceline("made realpane")
+        mainPane.setLayout(<awt:makeBorderLayout>())
+        mainPane.add(realPane, "Center")
+
+        window.pack()
+        window.setSize(600,400)
+        window.show()
+
+        setupRenderer(renderSource, scrollPane)
+        traceline("default renderer made")
+
+        def bind capBrowser {
+            to gotoURL() :void {
+                def urlString := urlField.getText()
+                #history push(urlString)
+                if (memoryCheck.isSelected()) {
+                    renderPGranterController.revoke()
+                    setupRenderer(renderSource, scrollPane)
+                }
+                try {
+                    def url := urlMaker(urlString)
+                    traceline("got url: " + url)
+                    if (urlString =~ `@{name}${".caplet"}`) {
+                        traceline("got caplet: " + name)
+                        def conn := url.openConnection()
+                        conn.connect()
+                        def urlStream := conn.getContent()
+                        traceline ("got urlStream: " + urlStream)
+                        powerbox.spinoffCapletStream(urlStream)
+                        #capBrowser goBack()
+                    }
+                    def makeContextSensitiveURL := makeContextSensitiveURLMaker(urlString)
+                    traceline("about to get htmlBuilder")
+                    def htmlBuilder :=  makeHTMLTreeBuilderAuthor(makeContextSensitiveURL,
+                        renderPGranterController.getUrlRequestReactor(),
+                        traceline)
+                    traceline("about to tell renderer to react to url")
+                    renderer.reactToURL(url, htmlBuilder.getTreeVow())
+                    traceline("about to parse html")
+                    def callback := makeParserCallback(htmlBuilder.getHandler())
+                    #def streamReader := <import:java.io.makeInputStreamReader>(url openStream())
+                    var text := url.getText()
+                    #deal with bug in java html parser that turns meta content type tag into end html tag
+                    while (text =~ `@head${"<META "}@tail`) {
+                        traceline("caught /html")
+                        text := head + "<blah" + tail
+                    }
+                    while (text =~ `@head${"<meta "}@tail`) {
+                        traceline("caught /html")
+                        text := head + "<blah" + tail
+                    }
+                    def stringReader := <import:java.io.makeStringReader>(text)
+                    try {
+                        parserDelegator.parse(stringReader, callback, false)
+                        #currentPageText := url getText()
+                    } catch prob {
+                        traceline("problem during parse: " + prob)
+                    } finally {
+                        #traceline("parsed html: " + htmlBuilder getTreeVow())
+                    }
+                } catch err {
+                    renderer.reactToPageText(errorPageHtml)
+                    dialogVowMaker("Could Not Find Page",
+                                       "Error: " + err ,
+                                       null, ["OK"])
+                }
+            }
+            to gotoURL(url) :void {
+                urlField.setText(url.toExternalForm())
+                capBrowser.gotoURL()
+            }
+
+#            to goBack() {
+#                history pop()
+#                if (history size() > 0) {capBrowser gotoURL(history pop())}
+#            }
+
+            /** */
+            to reactToCopy(eFrame) :near {
+                def text :String := renderer.reactToCopy()
+                def clipObject := <awt:datatransfer.StringSelection>(text)
+                traceline("clipobject in browser: " + clipObject)
+                clipObject
+            }
+            to reactToCut(eFrame) :near { capBrowser.reactToCopy(eFrame)}
+        }
+    }
+}
+
+
+
+

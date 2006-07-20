@@ -1,0 +1,16 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class(safe,
+      "javax.swing.text.CompositeView",
+      statics(method("run(Element)")),
+      methods(method(suppress, "setParent(View)"),
+              method("getViewCount()"),
+              method("getView(int)"),
+              method("replace(int, int, View[])"),
+              method("getChildAllocation(int, Shape)"),
+              method(suppress, "modelToView(int, Shape, Position.Bias)"),
+              method("modelToView(int, Position.Bias, int, Position.Bias, Shape)"),
+              method("viewToModel(float, float, Shape, Position.Bias[])"),
+              method(suppress, "getNextVisualPositionFrom(int, Position.Bias, Shape, int, Position.Bias[])"),
+              method("getViewIndex(int, Position.Bias)")))

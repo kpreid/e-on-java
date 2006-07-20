@@ -1,0 +1,13 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class(safe,
+      "javax.swing.AbstractCellEditor",
+      statics(method("run()")),
+      methods(method("isCellEditable(EventObject)"),
+              method("shouldSelectCell(EventObject)"),
+              method("stopCellEditing()"),
+              method("cancelCellEditing()"),
+              method("addCellEditorListener(CellEditorListener)"),
+              method("removeCellEditorListener(CellEditorListener)"),
+              method(suppress, "getCellEditorListeners()")))

@@ -1,0 +1,43 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+/**
+ * Given a makeShortcutCmd, make and return a makeShortcut procedure
+ * for making MSWindows shortcuts.
+ *
+ * @param makeShortcutCmd a Command for executing make_shortcut.exe as
+ *                        made by makeCommand
+ *
+ * @author Mark S. Miller
+ */
+def makeShortcutMaker(makeShortcutCmd) :near {
+    def makeShortcut {
+        
+        /**
+         * @param commandList A list of Strings to be exec'ed
+         * @param shortcut Filename of shortcut to make. Must end in ".lnk"
+         * @param cwd Current Working Directory in which to exec the
+         *            commandList
+         * @param icon Filename of file containing icon (at pos 0)
+         * @param showState eg, "SHOW" or "HIDE"
+         * @param comment A fly-over description
+         */
+        to run(commandList,
+               shortcut :String,
+               cwd :String,
+               icon :String,
+               showState :String,
+               comment :String) :void {
+            require(shortcut.endsWith(".lnk"),
+                    thunk{`$shortcut must end in ".lnk"`})
+            
+            E.call(makeShortcutCmd, "run",
+                   ["-cd",      cwd,
+                    "-icon",    icon, "0",
+                    "-show",    showState,
+                    "-comment", comment,
+                    shortcut] +
+                     commandList)
+        }
+    }
+}

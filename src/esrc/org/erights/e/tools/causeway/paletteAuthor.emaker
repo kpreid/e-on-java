@@ -1,0 +1,249 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def swt__uriGetter := <import:org.eclipse.swt.*>
+def widget__uriGetter := <swt:widgets.*>
+def custom__uriGetter := <swt:custom.*>
+
+def SWT := <swt:makeSWT>
+
+def swtType__uriGetter := <type:org.eclipse.swt.*>
+
+def Shell     := <swtType:widgets.Shell>
+def PopupList := <swtType:custom.PopupList>
+def Font      := <swtType:graphics.Font>
+
+def sky__uriGetter := <import:com.skyhunter.*>
+def logoURL := <resource:org/erights/e/icons/green-e-on-white-16.gif>
+
+def RGB := Tuple[int, int, int]
+
+def paletteAuthor(rezKit, makers, traceline) :near {
+
+    def colors := [].asMap().diverge()
+
+    colors.put("almostWhite", rezKit.makeColor(255, 255, 204), true)
+    colors.put("justWhite", rezKit.makeColor(255, 255, 255), true)
+    colors.put("almostBlack", rezKit.makeColor(0, 0, 51), true)
+    colors.put("justBlack", rezKit.makeColor(0, 0, 0), true)
+    colors.put("aGoodRed", rezKit.makeColor(204, 0, 51), true)
+    colors.put("aGoodGreen", rezKit.makeColor(0, 102, 0), true)
+    colors.put("aGoodBlue", rezKit.makeColor(0, 0, 255), true)
+    colors.put("aGoodOrange", rezKit.makeColor(234, 67, 19), true)
+    colors.put("aGoodPurple", rezKit.makeColor(156, 94, 183), true)
+
+    colors.put("EGreen", rezKit.makeColor(0, 153, 0), true)
+
+    colors.put("lightBlue", rezKit.makeColor(94, 81, 249), true)
+    colors.put("darkBlue", rezKit.makeColor(20, 7, 177), true)
+    colors.put("lightGreen", rezKit.makeColor(0, 166, 83), true)
+    colors.put("darkGreen", rezKit.makeColor(0, 83, 41), true)
+    colors.put("lightPurple", rezKit.makeColor(182, 143, 205), true)
+    colors.put("darkPurple", rezKit.makeColor(139, 75, 167), true)
+
+    colors.put("bgGray", rezKit.makeColor(236, 233, 216), true)
+
+    colors.put("lighterGray", rezKit.makeColor(229, 229, 229), true)
+    colors.put("lightGray", rezKit.makeColor(204, 204, 204), true)
+    colors.put("darkGray", rezKit.makeColor(128, 128, 128), true)
+
+    def vatColors := [].diverge()
+    vatColors[0] := colors.fetch("aGoodBlue", thunk{})
+    vatColors[1] := colors.fetch("EGreen", thunk{})
+    vatColors[2] := colors.fetch("aGoodOrange", thunk{})
+    vatColors[3] := colors.fetch("aGoodPurple", thunk{})
+    vatColors[4] := colors.fetch("lightBlue", thunk{})
+    vatColors[5] := colors.fetch("darkBlue", thunk{})
+    vatColors[6] := colors.fetch("lightGreen", thunk{})
+    vatColors[7] := colors.fetch("darkGreen", thunk{})
+    vatColors[8] := colors.fetch("lightPurple", thunk{})
+    vatColors[9] := colors.fetch("darkPurple", thunk{})
+
+    def fonts := [].asMap().diverge()
+
+    def normal := SWT.getNORMAL()
+    def bold := SWT.getBOLD()
+    def italic := SWT.getITALIC()
+
+    fonts.put(["Arial", "7", "normal"], rezKit.makeFont("Arial", 7, normal), true)
+    fonts.put(["Arial", "7", "bold"], rezKit.makeFont("Arial", 7, bold), true)
+    fonts.put(["Arial", "7", "italic"], rezKit.makeFont("Arial", 7, italic), true)
+
+    fonts.put(["Arial", "8", "normal"], rezKit.makeFont("Arial", 8, normal), true)
+    fonts.put(["Arial", "8", "bold"], rezKit.makeFont("Arial", 8, bold), true)
+    fonts.put(["Arial", "8", "italic"], rezKit.makeFont("Arial", 8, italic), true)
+
+    fonts.put(["Arial", "9", "normal"], rezKit.makeFont("Arial", 9, normal), true)
+    fonts.put(["Arial", "9", "bold"], rezKit.makeFont("Arial", 9, bold), true)
+    fonts.put(["Arial", "9", "italic"], rezKit.makeFont("Arial", 9, italic), true)
+
+    fonts.put(["Arial", "10", "normal"], rezKit.makeFont("Arial", 10, normal), true)
+    fonts.put(["Arial", "10", "bold"], rezKit.makeFont("Arial", 10, bold), true)
+    fonts.put(["Arial", "10", "italic"], rezKit.makeFont("Arial", 10, italic), true)
+
+    fonts.put(["Arial", "12", "normal"], rezKit.makeFont("Arial", 12, normal), true)
+    fonts.put(["Arial", "12", "bold"], rezKit.makeFont("Arial", 12, bold), true)
+    fonts.put(["Arial", "12", "italic"], rezKit.makeFont("Arial", 12, italic), true)
+
+    fonts.put(["Arial", "14", "normal"], rezKit.makeFont("Arial", 14, normal), true)
+    fonts.put(["Arial", "14", "bold"], rezKit.makeFont("Arial", 14, bold), true)
+    fonts.put(["Arial", "14", "italic"], rezKit.makeFont("Arial", 14, italic), true)
+
+    fonts.put(["Courier New", "7", "normal"], rezKit.makeFont("Courier New", 7, normal), true)
+    fonts.put(["Courier New", "7", "bold"], rezKit.makeFont("Courier New", 7, bold), true)
+    fonts.put(["Courier New", "7", "italic"], rezKit.makeFont("Courier New", 7, italic), true)
+
+    fonts.put(["Courier New", "8", "normal"], rezKit.makeFont("Courier New", 8, normal), true)
+    fonts.put(["Courier New", "8", "bold"], rezKit.makeFont("Courier New", 8, bold), true)
+    fonts.put(["Courier New", "8", "italic"], rezKit.makeFont("Courier New", 8, italic), true)
+
+    fonts.put(["Courier New", "9", "normal"], rezKit.makeFont("Courier New", 9, normal), true)
+    fonts.put(["Courier New", "9", "bold"], rezKit.makeFont("Courier New", 9, bold), true)
+    fonts.put(["Courier New", "9", "italic"], rezKit.makeFont("Courier New", 9, italic), true)
+
+    fonts.put(["Courier New", "10", "normal"], rezKit.makeFont("Courier New", 10, normal), true)
+    fonts.put(["Courier New", "10", "bold"], rezKit.makeFont("Courier New", 10, bold), true)
+    fonts.put(["Courier New", "10", "italic"], rezKit.makeFont("Courier New", 10, italic), true)
+
+    fonts.put(["Courier New", "12", "normal"], rezKit.makeFont("Courier New", 12, normal), true)
+    fonts.put(["Courier New", "12", "bold"], rezKit.makeFont("Courier New", 12, bold), true)
+    fonts.put(["Courier New", "12", "italic"], rezKit.makeFont("Courier New", 12, italic), true)
+
+    fonts.put(["Courier New", "14", "normal"], rezKit.makeFont("Courier New", 14, normal), true)
+    fonts.put(["Courier New", "14", "bold"], rezKit.makeFont("Courier New", 14, bold), true)
+    fonts.put(["Courier New", "14", "italic"], rezKit.makeFont("Courier New", 14, italic), true)
+
+    fonts.put(["Microsoft Sans Serif", "7", "normal"], rezKit.makeFont("Microsoft Sans Serif", 7, normal), true)
+    fonts.put(["Microsoft Sans Serif", "7", "bold"], rezKit.makeFont("Microsoft Sans Serif", 7, bold), true)
+    fonts.put(["Microsoft Sans Serif", "7", "italic"], rezKit.makeFont("Microsoft Sans Serif", 7, italic), true)
+
+    fonts.put(["Microsoft Sans Serif", "8", "normal"], rezKit.makeFont("Microsoft Sans Serif", 8, normal), true)
+    fonts.put(["Microsoft Sans Serif", "8", "bold"], rezKit.makeFont("Microsoft Sans Serif", 8, bold), true)
+    fonts.put(["Microsoft Sans Serif", "8", "italic"], rezKit.makeFont("Microsoft Sans Serif", 8, italic), true)
+
+    fonts.put(["Microsoft Sans Serif", "9", "normal"], rezKit.makeFont("Microsoft Sans Serif", 9, normal), true)
+    fonts.put(["Microsoft Sans Serif", "9", "bold"], rezKit.makeFont("Microsoft Sans Serif", 9, bold), true)
+    fonts.put(["Microsoft Sans Serif", "9", "italic"], rezKit.makeFont("Microsoft Sans Serif", 9, italic), true)
+
+    fonts.put(["Microsoft Sans Serif", "10", "normal"], rezKit.makeFont("Microsoft Sans Serif", 10, normal), true)
+    fonts.put(["Microsoft Sans Serif", "10", "bold"], rezKit.makeFont("Microsoft Sans Serif", 10, bold), true)
+    fonts.put(["Microsoft Sans Serif", "10", "italic"], rezKit.makeFont("Microsoft Sans Serif", 10, italic), true)
+
+    def metrics := [].asMap().diverge()
+
+    def images := [].asMap().diverge()
+
+    def multiplesURL := <resource:org/erights/e/tools/causeway/multiples.gif>
+
+    images.put("multiples", rezKit.makeImage(multiplesURL.openStream()))
+
+
+    def makeBasicPalette(fgName, bgName, fontName) :near {
+
+        def fg := colors.fetch(fgName, thunk{})
+        def bg := colors.fetch(bgName, thunk{})
+
+        def font := fonts.fetch(fontName, thunk{})
+
+        def basicPalette {
+            to getFg()   :near { return fg }
+            to getBg()   :near { return bg }
+            to getFont() :near { return font }
+            to getCharExtent() :near {
+                return metrics.fetch(fontName, thunk{})
+            }
+            to getImage(imageName :String) :near {
+                return images.fetch(imageName, thunk{})
+            }
+        }
+        return basicPalette
+    }
+
+    def makePalette() :near {
+
+        def palette {
+
+            to setMetrics(gc) :boolean {
+
+                if (metrics.size() > 0) { return true }
+
+                def keys := fonts.getKeys()
+
+                for k in keys {
+                    def value := fonts.get(k)
+                    gc.setFont(value)
+                    def fm := gc.getFontMetrics()
+                    def xe := fm.getAverageCharWidth()
+                    def ye := fm.getHeight()
+                    metrics.put(k, [xe, ye], true)
+                }
+
+                return true
+            }
+
+            to getDefaultVatColor() :near {
+                return colors.fetch("almostBlack", thunk{})
+            }
+
+            to getVatColor(i :int) :near {
+                return vatColors[i]
+            }
+
+            to makeFramePalette() :near {
+                return makeBasicPalette("justBlack",
+                                        "bgGray",
+                                        ["Arial", "12", "bold"])
+            }
+            to makeTitlePalette() :near {
+                return makeBasicPalette("justWhite",
+                                        "bgBlue",
+                                        ["Arial", "14", "bold"])
+            }
+            to makeFolderPalette() :near {
+                return makeBasicPalette("justBlack",
+                                        "bgGray",
+                                        ["Arial", "10", "bold"])
+            }
+            to makeTabPalette() :near {
+                return makeBasicPalette("justBlack",
+                                        "bgGray",
+                                        ["Arial", "10", "bold"])
+            }
+
+
+            to makeFOListPalette() :near {
+                return makeBasicPalette("justBlack",
+                                        "justWhite",
+                                        ["Courier New", "9", "normal"])
+            }
+            to makeCausalityTreePalette() :near {
+                return makeBasicPalette("justBlack",
+                                        "justWhite",
+                                        ["Microsoft Sans Serif", "10", "normal"])
+            }
+
+            to makeEStackPalette() :near {
+                return makeBasicPalette("justBlack",
+                                        "justWhite",
+                                        ["Courier New", "10", "normal"])
+            }
+            to makeECodePalette() :near {
+                return makeBasicPalette("justBlack",
+                                        "justWhite",
+                                        ["Courier New", "10", "normal"])
+            }
+            to makeFilenamePalette() :near {
+                return makeBasicPalette("justBlack",
+                                        "bgGray",
+                                        ["Arial", "10", "normal"])
+            }
+            to makeDescPalette() :near {
+                return makeBasicPalette("justBlack",
+                                        "bgGray",
+                                        ["Arial", "10", "normal"])
+            }
+        }
+
+        return palette
+    }
+}

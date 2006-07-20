@@ -1,0 +1,62 @@
+#!/usr/bin/env rune
+
+# Copyright 2004 Hewlett Packard, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def EProxyHandler := <type:org.erights.e.elib.ref.EProxyHandler>
+
+def makeLazyPromiseAuthor(makeProxyResolver) :any {
+    def makeLazyPromise(var delayedThunk) :any {
+        def proxy
+        def proxyResolver
+        def force() :void {
+            if (! proxyResolver.isDone()) {
+                proxyResolver.resolve(delayedThunk <- run())
+            }
+        }
+        def proxyHandler implements EProxyHandler {
+            to unwrap() :any { return proxyHandler }
+            to handleOptSealedDispatch(brand) :any { return null }
+            to handleSendAllOnly(verb, args) :void {
+                force()
+                E.sendOnly(proxy, verb, args)
+            }
+            to handleSendAll(verb, args) :any {
+                force()
+                return E.send(proxy, verb, args)
+            }
+            to handleResolution(newTarget) :void {}
+            to reactToGC() :void {}
+            to isFresh() :boolean { return true }
+            to sameConnection(other) :boolean { return false }
+        }
+        bind proxyResolver := makeProxyResolver(proxyHandler, null)
+        bind proxy := proxyResolver.getProxy()
+        return proxy
+    }
+}
+
+    ? def makeProxyResolver := <unsafe:org.erights.e.elib.ref.EProxyResolver>
+    # value: <unsafe:org.erights.e.elib.ref.EProxyResolver>
+
+    ? def makeLazyPromiseAuthor := <elib:ref.makeLazyPromiseAuthor>
+    # value: <makeLazyPromiseAuthor>
+
+    ? def makeLazyPromise := makeLazyPromiseAuthor(makeProxyResolver)
+    # value: <makeLazyPromise>
+
+    ? def p := makeLazyPromise(thunk{println("what me worry"); 3 + 4})
+    # value: <Remote Promise>
+
+    ? p
+    # value: <Remote Promise>
+
+    ? def q := p <- add(5)
+    # value: <Promise>
+
+    ?
+    # stdout: what me worry
+    #
+
+    ? [p,q]
+    # value: [7, 12]

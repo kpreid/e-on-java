@@ -1,0 +1,16 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class(safe,
+      "javax.swing.text.WrappedPlainView",
+      statics(method("run(Element)"),
+              method("run(Element, boolean)")),
+      methods(method("nextTabStop(float, int)"),
+              method(suppress, "paint(Graphics, Shape)"),
+              method("setSize(float, float)"),
+              method("getPreferredSpan(int)"),
+              method("getMinimumSpan(int)"),
+              method("getMaximumSpan(int)"),
+              method(suppress, "insertUpdate(DocumentEvent, Shape, ViewFactory)"),
+              method(suppress, "removeUpdate(DocumentEvent, Shape, ViewFactory)"),
+              method(suppress, "changedUpdate(DocumentEvent, Shape, ViewFactory)")))

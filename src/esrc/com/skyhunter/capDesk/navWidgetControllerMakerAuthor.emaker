@@ -1,0 +1,434 @@
+#!/usr/local/bin/e
+
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def <swttools> := <import:org.erights.e.ui.swt.*>
+def <swt> := <import:org.eclipse.swt.*>
+def <widget> := <swt:widgets.*>
+def SWT := <swt:makeSWT>
+def swtGrid__quasiParser := <swttools:swtGridQParserMaker>()
+
+/**
+ * Produces navWidgetControllers and navWidgets that display a list of files
+ * <p>
+ * Garbage Collection: This Author creates a small number of permanent disposables. The
+ * client must dispose of them via the disposablesKit when all navWidgets are disposed.
+ * All other disposables created in the navWidgetControllerMaker are disposed as their
+ * assigned widgets are disposed.
+ */
+def navWidgetControllerMakerAuthor(<unsafe>, disposablesKit, traceline) :any {
+
+    def <file> :=
+      <unsafe:org.erights.e.meta.java.io.FileGetter>.getTHE_ONE()
+
+    def resolveAllVow := <import:com.skyhunter.e.net.resolveAllVow>
+    def sendValveMaker := <import:com.skyhunter.e.net.sendValveMaker>
+    def moreRecentVowFuncMaker := <import:com.skyhunter.e.net.moreRecentVowFuncMaker>
+
+    def aqua := disposablesKit.makeColor(0,255, 255)
+    def white := disposablesKit.makeColor(255,255,255)
+
+    def dirIcon := disposablesKit.makeImage(<resource:com/skyhunter/capDesk/icons/folder.gif>.openStream())
+    def unAssociatedIcon := disposablesKit.makeImage(<resource:com/skyhunter/capDesk/icons/noLauncher.gif>.openStream())
+
+
+    /**
+     * When a navWidgetController is not pointing at an actual directory, it points to the diskNavStub for
+     * deciding what to render
+     */
+    def diskNavStub {
+        to dupNavigator() :near {diskNavStub}
+        to getStorageName() :String {""}
+        to versionNumber() :pbc {0}
+        to getCurrentPath() :String {""}
+        to getParentPath() :String {""}
+        to listCurrentSubdirectoriesAndFiles() :pbc {[[],[]]}
+        match [verb, args] {traceline("disknavstub got: " + verb)}
+    }
+
+    def dirNameFromPath(path) :pbc {
+        traceline("path: " + path)
+        def parts := path.split("/")
+        if (parts.size() >= 2) {
+            parts[parts.size() - 2] + "/"
+        } else {""}
+    }
+
+    def computeSuffix(name) :near {
+        def parts := name.split(".")
+        def size := parts.size()
+        if (size == 1) {
+            ""
+        } else {
+            parts[size - 1]
+        }
+    }
+
+    /**
+     * NavWidgets display lists of files from a capDesk server (possibly remote)
+     * and inform their reactors about user events performed on the files.
+     * NavWidgets and their controllers are designed so that they can be chained
+     * together, with a series of them showing a series of nested folders.
+     *
+     * @param parent The composite which contains the navWidget
+     * @param optHigherDirControllerVow Vow for navWidgetController in charge of
+     *        the directory above the one shown in this navWidget, if there is one
+     * @param optLowerDirControllerVow Vow for navWidgetController in charge of
+     *        the directory below the one shown in this navWidget, if there is one
+     * @param suffixMapper Object that can return the location of the image resource
+     *        for files with a given suffix (such as ".txt") if an image has been assigned
+     * @param windowController The object that must deal with double-clicking on a file,
+     *        and must create and perform the popup menu when a popup is requested.
+     */
+    def navWidgetControllerMaker(parent, optHigherDirControllerVow,
+                                 optLowerDirControllerVow, suffixMapper,
+                                 windowController) :near {
+        def localReactor
+        var diskNavRcvr := diskNavStub
+        def recentPathVow := moreRecentVowFuncMaker()
+        def recentFilesListVow := moreRecentVowFuncMaker()
+        def recentCellArrayVow := moreRecentVowFuncMaker()
+        def mainPanel := <widget:makeComposite>(parent, 0)
+        def listTable := <widget:makeTable>(mainPanel, SWT.getMULTI() | (SWT.getBORDER() | SWT.getV_SCROLL()) )
+
+        #build tool bar
+        def toolBar := <widget:makeToolBar>(mainPanel, SWT.getFLAT())
+        def refreshButton := <widget:makeToolItem>(toolBar, SWT.getPUSH())
+        def refreshImage := disposablesKit.makeImage(<resource:com/skyhunter/capDesk/icons/refresh16x16.png>.openStream())
+        refreshButton.setImage(refreshImage)
+        refreshButton.setToolTipText("Refresh")
+
+        def locationLabel := <widget:makeLabel>(mainPanel, 0)
+        swtGrid`$mainPanel:
+                $toolBar         $locationLabel.X
+                $listTable.Y     >  `
+        locationLabel.getLayoutData().setVerticalAlignment(<swt:layout.makeGridData>.getCENTER())
+
+
+        def makeFileView(fileModel) :near {
+            def item := <widget:makeTableItem>(listTable, 0)
+            var icon := unAssociatedIcon
+            if (fileModel.isDir()) {
+                icon := dirIcon
+            } else {
+                def optApp := suffixMapper.optAppByPetSuffix(computeSuffix(fileModel.getName()))
+                if (optApp != null) {
+                    #traceline ("found suffix app: " + optApp)
+                    icon := disposablesKit.makeImage(<file>[optApp["Icon"]].toURL().openStream())
+                    def disposer {
+                        to widgetDisposed(event) :void {
+                            icon.dispose()
+                        }
+                    }
+                    item.addDisposeListener(disposer)
+
+                    # XXX someday when lots of file types have their own icons, improve
+                    # XXX performance with an icon cache. For now, since the dir and stranger
+                    # icons are cached, it makes little difference
+                    #icon := iconGetter getIcon(optApp["Icon"])
+                }
+            }
+            item.setImage(icon)
+            item.setText(fileModel.getName())
+            #item setToolTipText(fileModel getName())
+            item
+        }
+
+        def makeFileModel(var name, isDir, suffixMapper) :near {
+            def fileModel {
+                to isDir() :boolean {isDir}
+                to getName() :String {name}
+                to rename(newName) :void {
+                    name := newName
+                }
+                to getSuffixMapper() :near {suffixMapper}
+            }
+        }
+
+        def listController := {
+            def fileModels := [].asMap().diverge()
+            def listController {
+                to removeFile(fileView) :void {
+                    fileModels.removeKey(fileView)
+                    fileView.dispose()
+                }
+                to addFile (fileModel) :void {
+                    def fileView := makeFileView(fileModel)
+                    fileModels[fileView] := fileModel
+                    def disposer {
+                        to widgetDisposed(event) :void {
+                            fileModels.removeKey(fileView)
+                        }
+                    }
+                    fileView.addDisposeListener(disposer)
+                }
+                to addFile(name, isDir, suffixMapper) :void {
+                    listController.addFile(makeFileModel(name, isDir, suffixMapper))
+                }
+                #  XXX this is broken: renaming a file
+                #  may also require an icon change
+                to renameFile(fileView, newName) :void {
+                    fileView.setText(newName)
+                    fileModels[fileView].rename(newName)
+                }
+                to getFile(fileView) :near {
+                    fileModels[fileView]
+                }
+            }
+        }
+
+        def composeFilledPanelVow(dirsFiles, suffixMapper) :vow {
+            listTable.setRedraw(false)
+            for each in listTable.getItems() {
+                listController.removeFile(each)
+            }
+            listTable.setRedraw(true)
+            def valve := sendValveMaker(1)
+            var finalCompositionVow := null
+            def queueComposition(actionTrio) :void {
+                # finalCompositionVow := valve makeActionVow(actionTrio)
+                # XXX some day make this unblock after each individual tableItem is
+                #  displayed
+                E.call(actionTrio[0], actionTrio[1], actionTrio[2])
+            }
+
+            for each in dirsFiles[0] {
+                queueComposition([listController, "addFile", [each, true, suffixMapper]])
+            }
+            for each in dirsFiles[1] {
+                #queueComposition([cellMaker, "run", [each, false, suffixMapper]])
+                queueComposition([listController, "addFile", [each, false, suffixMapper]])
+            }
+            def [result :vow, solver] := Ref.promise()
+            when (finalCompositionVow) -> done(allComposed) :void {
+                solver.resolve(true)
+            } catch prob {traceline("final composition failed in nave pane" + prob)}
+            result
+        }
+
+        def navWidgetController
+
+        def traceMem := {
+            def runtime := <unsafe:java.lang.makeRuntime>.getRuntime()
+            def traceMem() :void {
+                #runtime gc()
+                def free := runtime.freeMemory()
+                def total := runtime.totalMemory()
+                traceline("used  memory: " + ((total - free)/1000000))
+            }
+        }
+
+        def bind localReactor {
+            to reload() :void {
+                locationLabel.setText("Refreshing...")
+                def currentPathVow := recentPathVow (diskNavRcvr <- getCurrentPath())
+                def dirsVow := recentFilesListVow (diskNavRcvr <- listCurrentSubdirectoriesAndFiles())
+                when (dirsVow, currentPathVow) -> done(dirsFilesTuple, currentPath) :void {
+                    def composedPanelVow := recentCellArrayVow(composeFilledPanelVow(dirsFilesTuple, suffixMapper))
+                    when (composedPanelVow) -> done(composedPanel) :void {
+                        #listTable setListData(cellArray)
+                        locationLabel.setText(dirNameFromPath(currentPath))
+                        if (optLowerDirControllerVow ==null) {
+                            traceline("nav panel mem at bottom panel reload done:")
+                            traceMem()
+                        }
+                    } catch prob {traceline("cellArrayVow smashed, obsolete data ok: " + prob)}
+                } catch err {
+                    traceline("err in reload, obsolete data ok: " + err)
+                }
+            }
+        }
+
+        def navReactors := [].asMap().diverge()
+
+        def listSelectionListener {
+            to widgetSelected(event) :void {
+                def selections := listTable.getSelection()
+                traceline("selection occurred")
+                if (selections.size() == 1) {
+                    def selection := listController.getFile(selections[0])
+                    traceline("selection single item: " + selection)
+                    if (selection.isDir()) {
+                        traceline("selection is dir")
+                        for each => stub in navReactors {
+                            each.selectedDir(navWidgetController)
+                        }
+                    }
+                }
+            }
+            to widgetDefaultSelected(theEvent) :void {
+                traceline("got dclick")
+                def fileViews := listTable.getSelection()
+                if (fileViews.size() > 0) {
+                    def fileView1 := fileViews[0]
+                    if (listController.getFile(fileView1).isDir()) {
+                        traceline("double clicked on dir")
+                        navWidgetController.openDir()
+                    } else {
+                        traceline("dclicked on doc in navpanelcontroller")
+                        windowController.doubleClickedDocument(navWidgetController)
+                    }
+                }
+            }
+        }
+        listTable.addSelectionListener(listSelectionListener)
+
+        def popMenu := <widget:makeMenu>(listTable)
+        listTable.setMenu(popMenu)
+        def menuListener {
+            to menuShown(event) :void {
+                traceline("menu about to show")
+                windowController.showFilePopup(navWidgetController)
+            }
+            to menuHidden(event) :void {
+                for each in popMenu.getItems() {each <- dispose()}
+            }
+        }
+        popMenu.addMenuListener(menuListener)
+
+        # XXXdo drag drop later
+        #def dragDropKit := <import:com.skyhunter.e.awt.dnd.dragDropKit> (<awt>, traceline)
+        def getFileRcvrs() :any {navWidgetController.getSelectedFileRcvrs() }
+        #dragDropKit setupLocalDragSource(listTable , getFileRcvrs )
+
+        def clear() :void {
+            for each => stub in navReactors {each.cleared(navWidgetController)}
+            diskNavRcvr := diskNavStub
+            if (optLowerDirControllerVow ==null) {traceline("clearing in bottom panel")}
+            localReactor.reload()
+        }
+
+        def lowerPaneReactor {
+            to openingDir(controller) :void {
+                traceline("opening dir reached in lower listener")
+                def nextNavRcvr := controller.dupDiskNavRcvr()
+                for each => stub in navReactors {each.lowerDirOpening(navWidgetController)}
+                diskNavRcvr := nextNavRcvr
+                localReactor.reload()
+                for each => stub in navReactors {each.openedDir(navWidgetController)}
+            }
+            to lowerDirOpening(controller) :void {
+                lowerPaneReactor.openingDir(controller)
+            }
+            match [verb, args] {}
+        }
+        when (optLowerDirControllerVow) -> doneLower(lowerController) :void {
+            if (lowerController != null) {
+                lowerController <- addNavReactor(lowerPaneReactor)
+            }
+        } catch prob {traceline("disaster with lowerController: " + prob)}
+
+        def upperPaneReactor {
+            to goingUp(controller) :void {
+                for each => stub in navReactors {each.goingUp(navWidgetController)}
+                diskNavRcvr := controller.dupDiskNavRcvr()
+                localReactor.reload()
+                for each => stub in navReactors {each.wentUp(navWidgetController)}
+            }
+            to lowerDirOpening(controller) :void {}
+            to wentUp(controller) :void {}
+            to jumped(controller) :void {clear()}
+            to cleared(controller) :void {clear()}
+            to openingDir(controller) :void {
+                traceline("opening dir gotten through upperPaneReactor")
+                clear <- run()
+            }
+            to openedDir(controller) :void {}
+            to selectedDir(controller) :void {
+                def newSelection := (controller.getSelectedNames())[0]
+                diskNavRcvr := controller.dupDiskNavRcvr()
+                diskNavRcvr <- changeToSubdirectory(newSelection)
+                localReactor.reload()
+                for each => stub in navReactors {each.jumped(navWidgetController)}
+            }
+            to deletionsMade(controller) :void {
+                when (diskNavRcvr <- currentDirExists()) -> done(exists) :void {
+                    if (! exists) {clear()}
+                } catch prob {traceline("deletionsmade prob: " + prob)}
+            }
+            match [verb, args] {traceline("Got verb in upperPaneReactor: " + verb)}
+        }
+
+        when (optHigherDirControllerVow) -> doneHigher(higherController) :void {
+            if (higherController != null) {
+                higherController <- addNavReactor(upperPaneReactor)
+            }
+        } catch prob {traceline("disaster with higherController: " + prob)}
+
+        def bind navWidgetController {
+            to setDiskNavRcvr(newNavRcvr) :void {
+                diskNavRcvr := newNavRcvr
+                localReactor.reload()
+            }
+            to getDiskNavRcvr() :any {diskNavRcvr }
+            to dupDiskNavRcvr() :any {
+                if (diskNavRcvr == null) {
+                    null
+                } else {diskNavRcvr <- dupNavigator()}
+            }
+            to addNavReactor(reactor) :void {navReactors[reactor] := null}
+            to removeNavReactor(reactor) :void {navReactors.removeKey(reactor)}
+            to goto(path) :void {
+                diskNavRcvr <-changeToDirectory(path)
+                localReactor.reload()
+                for each => stub in navReactors {each.jumped(navWidgetController)}
+            }
+            to gotoHome() :void {
+                diskNavRcvr <- gotoHome()
+                localReactor.reload()
+                for each => stub in navReactors {each.jumped(navWidgetController)}
+            }
+            to reload() :void {localReactor.reload()}
+            to deletionsMade() :void {
+                localReactor.reload()
+                for each => stub in navReactors {each.deletionsMade(navWidgetController)}
+            }
+            to getMainPanel() :near {mainPanel}
+            to getListTable() :near {listTable}
+            to goUp() :void {
+                for each => stub in navReactors { each.goingUp(navWidgetController)}
+                diskNavRcvr <- goUp()
+                localReactor.reload()
+                for each => stub in navReactors { each.wentUp(navWidgetController)}
+            }
+            to openDir() :void {
+                traceline("into open dir")
+                def newDirName := (navWidgetController.getSelectedNames())[0]
+                traceline("newDir: " + newDirName)
+                for each => stub in navReactors { each.openingDir(navWidgetController)}
+                traceline("told reactors opening")
+                diskNavRcvr <- changeToSubdirectory(newDirName)
+                #listTable  clearSelection()
+                traceline("about to change dir: " + diskNavRcvr)
+
+                localReactor.reload()
+                traceline("about to tell reactors opened")
+                for each => stub in navReactors { each.openedDir(navWidgetController)}
+            }
+            to getSelectedNames() :pbc {
+                def names := [].diverge()
+                def fileViews := listTable.getSelection()
+                for each in fileViews {
+                    names.push(each.getText())
+                }
+                names.snapshot()
+            }
+            to getSelectedFileModels() :pbc {
+                def fileModels := [].diverge()
+                for each in listTable.getSelection() {
+                    fileModels.push(listController.getFile(each))
+                }
+                fileModels.snapshot()
+            }
+            to getSelectedFileRcvrs() :pbc {
+                def fileRcvrs := [].diverge()
+                for each in navWidgetController.getSelectedNames() {
+                    fileRcvrs.push(diskNavRcvr <- getFileNamed(each))
+                }
+                fileRcvrs.snapshot()
+            }
+        }
+    }
+}
+

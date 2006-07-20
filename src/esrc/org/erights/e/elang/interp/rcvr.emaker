@@ -1,0 +1,86 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+/**
+ * Defines the builtin 'rcvr' guard and guard-template.
+ * <p>
+ * As a guard, 'rcvr' is formally equivalent to 'any'. However, it's
+ * used to indicate that one should beware that a given value's resolution
+ * may be 'far'. <a href=
+ * "http://www.erights.org/download/0-8-14/index.html#newguards"
+ * >Advisory type checking rules</a> may very well distinguish between 'any'
+ * and 'rcvr'.
+ *
+ * @author Mark S. Miller
+ */
+def rcvr0 implements Guard {
+
+    /**
+     * Always succeeds, returning specimen.
+     */
+    to coerce(specimen, _) :any {
+        specimen
+    }
+
+    /**
+     * Prints "rcvr"
+     */
+    to __printOn(out :TextWriter) :void { out.print("rcvr") }
+
+    /**
+     * @deprecated Use rcvr[subGuard] instead
+     */
+    to run(subGuard) :near { return rcvr[subGuard] }
+
+    /**
+     * Returns a mostly-advisory rcvr-guard parameterized by a Guard
+     * for indicating that a value's resolution is expected to either be
+     * broken or be a reference to an object that would pass or be returned
+     * by the subGuard parameter.
+     * <p>
+     * If 'subGuard' implies 'pbc', then you should use 'vow[subGuard]'
+     * rather than 'rcvr[subGuard]' since the former is implied and will
+     * be more informative.
+     */
+    to get(subGuard :Guard) :Guard {
+
+        /**
+         * @author Mark S. Miller
+         */
+        def rcvr1 implements Guard {
+
+            /**
+             * This operation is mostly advisory.
+             * <p>
+             * It reports failure only when it can report failure immediately,
+             * which is when the ref is near, in which case we return the
+             * result of coercing it through our subGuard parameter.
+             * <p>
+             * For example, 'rcvr[Foo]' will fail when given a Bar, but will
+             * currently succeed when given a promise that will resolve to a
+             * Bar (assuming that Foo and Bar are incompatible types). A
+             * future accurately enforcing 'rcvr[Foo]' should instead coerce
+             * to a promise that resolves to the same Foo iff the original
+             * resolves to an Foo (or a value that coerces to a Foo). If the
+             * original resolved to a value that doesn't coerce to an Foo,
+             * then the returned promise should resolve to broken.
+             */
+            to coerce(specimen, optEjector) :any {
+                if (Ref.isNear(specimen)) {
+                    subGuard.coerce(specimen, optEjector)
+                } else {
+                    specimen
+                }
+            }
+
+            /**
+             * For example, "rcvr[Foo]"
+             */
+            to __printOn(out :TextWriter) :void {
+                out.print("rcvr[")
+                out.quote(subGuard)
+                out.print("]")
+            }
+        }
+    }
+}

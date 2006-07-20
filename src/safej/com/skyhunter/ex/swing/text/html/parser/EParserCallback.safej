@@ -1,0 +1,3 @@
+class(safe,
+      "com.skyhunter.ex.swing.text.html.parser.EParserCallback",
+      statics(method("run(EParserHandler)")))

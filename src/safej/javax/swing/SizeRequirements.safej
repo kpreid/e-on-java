@@ -1,0 +1,14 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class(safe,
+      "javax.swing.SizeRequirements",
+      statics(method("run()"),
+              method("run(int, int, int, float)")),
+      methods(method("getTiledSizeRequirements(SizeRequirements[])"),
+              method("getAlignedSizeRequirements(SizeRequirements[])"),
+              method("calculateTiledPositions(int, SizeRequirements, SizeRequirements[], int[], int[])"),
+              method("calculateTiledPositions(int, SizeRequirements, SizeRequirements[], int[], int[], boolean)"),
+              method("calculateAlignedPositions(int, SizeRequirements, SizeRequirements[], int[], int[])"),
+              method("calculateAlignedPositions(int, SizeRequirements, SizeRequirements[], int[], int[], boolean)"),
+              method("adjustSizes(int, SizeRequirements[])")))

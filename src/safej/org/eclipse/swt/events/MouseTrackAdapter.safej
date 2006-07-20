@@ -1,0 +1,5 @@
+class("org.eclipse.swt.events.MouseTrackAdapter",
+           statics(method(suppress, "run()")),
+           methods(method(suppress, "mouseEnter(MouseEvent)"),
+                   method(suppress, "mouseExit(MouseEvent)"),
+                   method(suppress, "mouseHover(MouseEvent)"))) 

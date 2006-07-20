@@ -1,0 +1,85 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def MenuMakerMaker {
+    to run(<swing>, EActionMaker, recip) :any {
+        def Action := <type:javax.swing.Action>
+        def JMenuItem := <type:javax.swing.JMenuItem>
+
+        def MenuMaker {
+
+            /**
+             * @param menus a list of JMenu
+             * @return a JMenuBar
+             */
+            to menuBar(menus) :<type:javax.swing.JMenuBar> {
+                def result := <swing:makeJMenuBar>()
+                for menu in menus {
+                    result.add(menu)
+                }
+                result
+            }
+
+            /**
+             * @param desc The menu's description string.
+             * @param items A list of JMenuItems, Actions, and Strings that
+             *              begin with "--"
+             * @return a JMenu
+             *
+             */
+            to menu(desc :Twine, items) :<type:javax.swing.JMenu> {
+                def name := EActionMaker.descToName(desc)
+                def result := <swing:makeJMenu>(name)
+                def mnemonic := EActionMaker.descToMnemonic(desc)
+                if (mnemonic != -1) {
+                    result.setMnemonic(mnemonic.asChar())
+                }
+                for var item in items {
+                    if (item == "--") {
+                        result.addSeparator()
+                    } else {
+                        if (item =~ action :Action) {
+                            item := <swing:makeJMenuItem>(action)
+                            item.setAccelerator(action.getAccelerator())
+                        }
+                        E.call(result, "add(JMenuItem)", [item])
+                    }
+                }
+                result
+            }
+
+            /**
+             * @param action The thing to do when the check box changes state
+             * @return a JMenuItem
+             */
+            to check(action :Action) :JMenuItem {
+                <swing:makeJCheckBoxMenuItem>(action)
+            }
+
+            /**
+             *
+             */
+            to radio(group :<type:javax.swing.ButtonGroup>,
+                     action :Action
+            ) :JMenuItem {
+                def result := <swing:makeJRadioButtonMenuItem>(action)
+                group.add(result)
+                result
+            }
+
+            /**
+             *
+             */
+            to action(desc :Twine) :Action {
+                EActionMaker(recip, desc)
+            }
+
+            /**
+             *
+             */
+            to action(desc :Twine, accel :Twine) :Action {
+                EActionMaker(recip, desc, accel)
+            }
+        }
+    }
+}

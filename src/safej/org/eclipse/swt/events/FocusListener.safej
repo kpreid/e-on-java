@@ -1,0 +1,4 @@
+class("org.eclipse.swt.events.FocusListener",
+           statics,
+           methods(method(suppress, "focusGained(FocusEvent)"),
+                   method(suppress, "focusLost(FocusEvent)"))) 

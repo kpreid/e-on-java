@@ -1,0 +1,63 @@
+#!/usr/bin/env rune
+
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def eLauncherAuthor := <elang:launcher.eLauncherAuthor>
+
+/**
+ *
+ */
+def updocLauncherAuthor {
+
+    /**
+     *
+     */
+    to getHelp(_) :String {
+        return `$\
+    $$ rune <fbase>.updoc    Tests a single updoc script.
+                            Currently, "<fbase>.updoc" must be a filename.
+
+To learn updoc, see <http://www.erights.org/elang/tools/updoc.html>.`
+    }
+
+    /**
+     * @return null
+     */
+    to getOptVersionText(props) :void { return null }
+
+    /**
+     *
+     */
+    to run(auths) :near {
+
+        def eLauncher := eLauncherAuthor(auths)
+
+        /**
+         *
+         */
+        def updocLauncher {
+
+            /**
+             *
+             */
+            to run(props, options, fname, args) :vow[boolean] {
+                var eHome := props["e.home"]
+                if (eHome.endsWith("/")) {
+                    eHome := eHome(0, eHome.size() -1)
+                }
+                return eLauncher(props,
+                                 options,
+                                 `$eHome/scripts/updoc.e`,
+                                 [fname] + args)
+            }
+
+            /**
+             *
+             */
+            to interpret(props, options, src, args) :vow[boolean] {
+                throw(`XXX "--src.updoc <src> <arg>*" not yet implemented`)
+            }
+        }
+    }
+}

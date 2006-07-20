@@ -1,0 +1,13 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class(safe,
+      "java.awt.event.FocusEvent",
+      statics(method(suppress, "run(Component, int, boolean, Component)"),
+              method(suppress, "run(Component, int, boolean)"),
+              method(suppress, "run(Component, int)")),
+      methods(method("isTemporary()"),
+              method(suppress,
+                     "getOppositeComponent()",
+                     comment("Opposite component could be a button in the powerbar, unacceptable")),
+              method(suppress, "paramString()")))

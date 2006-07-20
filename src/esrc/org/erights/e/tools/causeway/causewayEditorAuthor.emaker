@@ -1,0 +1,833 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def swt__uriGetter := <import:org.eclipse.swt.*>
+def widget__uriGetter := <swt:widgets.*>
+def custom__uriGetter := <swt:custom.*>
+def SWT := <swt:makeSWT>
+
+def swtType__uriGetter := <type:org.eclipse.swt.*>
+def widgetType__uriGetter := <swtType:widgets.*>
+def Shell    := <widgetType:Shell>
+def Menu     := <widgetType:Menu>
+def MenuItem := <widgetType:MenuItem>
+def ToolBar  := <widgetType:ToolBar>
+def ToolItem := <widgetType:ToolItem>
+
+def causewayEditor
+
+def sky__uriGetter := <import:com.skyhunter.*>
+
+def <swttools> := <import:org.erights.e.ui.swt.*>
+def swtGrid__quasiParser := <swttools:swtGridQParserMaker>()
+def abstractActionAuthor := <swttools:abstractActionAuthor>
+def M := <swttools:menuKit>
+
+def paletteAuthor := <import:org.erights.e.tools.causeway.paletteAuthor>
+
+def makeLamportSlot := <elib:slot.makeLamportSlot>
+def whenever := <elib:slot.whenever>
+def EverReporter := <type:org.erights.e.elib.slot.EverReporter>
+
+def __versionLauncherAuthor := <elang:launcher.__versionLauncherAuthor>
+
+def setMargins(layout, marginSize) :void {
+    layout.setMarginWidth(marginSize)
+    layout.setMarginHeight(marginSize)
+    layout.setHorizontalSpacing(marginSize)
+    layout.setVerticalSpacing(marginSize)
+}
+
+def causewayEditorAuthor(rezKit,
+                         abstractAction,
+                         makers,
+                         openner, <file>, <jar>,
+                         props,
+                         activate, shutdown,
+                         tcr,
+                         traceline) :near {
+
+    def makeDialogVow := <sky:swt.makeDialogVowAuthor>(rezKit,
+                                                       makers.get("frame")(),
+                                                       traceline)
+    def makeCausewayEditor() :near {
+
+        def &everOptFile := makeLamportSlot(null)
+
+        def shell := makers.get("frame")()
+        def makePalette := paletteAuthor(rezKit, makers, traceline)
+        def palette := makePalette()
+
+        var hasMetrics := false
+        def listenerForMetrics {
+            to paintControl(event) :void {
+                hasMetrics := palette.setMetrics(event.getGc())
+            }
+        }
+        shell.addPaintListener(listenerForMetrics)
+
+#        if (hasMetrics) {
+#            shell.removePaintListener(listenerForMetrics)
+#        }
+
+        def toolArea := <widget:makeGroup>(shell, 0)
+
+        def toolBar :=
+          <widget:makeToolBar>(toolArea, SWT.getFLAT() | SWT.getHORIZONTAL())
+
+        def gCer := makers.get("gcer")(toolArea)
+        swtGrid`$toolArea:
+                $toolBar.X ${gCer.getLabel()} ${gCer.getToolBar()}`
+        setMargins(toolArea.getLayout(), 0)
+
+        def &everShowMainToolbar := makeLamportSlot(true)
+        whenever([&everShowMainToolbar], thunk{
+            toolArea.setVisible(everShowMainToolbar)
+        }, thunk{
+            ! toolArea.isDisposed()
+        })
+
+        def statusBar := <widget:makeLabel>(shell, 0)
+
+        def debugln(str) :void {
+            traceline(str)
+            statusBar.setText(str)
+        }
+
+        def &everShowStatusBar := makeLamportSlot(true)
+        whenever([&everShowStatusBar], thunk{
+            statusBar.setVisible(everShowStatusBar)
+        }, thunk{
+            ! statusBar.isDisposed()
+        })
+
+        def &everDirty := makeLamportSlot(false)
+        def &everWordWrap := makeLamportSlot(true)
+
+        # menuFile
+        [def doNew,
+         def doOpen,
+         def doClose,
+
+         def doSave,
+         def doSaveAs,
+         def doSaveAll,
+         def doRevert,
+
+         def doPageSetup,
+         def doPrint,
+
+         def doExit]
+
+        # menuEdit
+        [def doUndo,
+         def doRedo,
+
+         def doCut,
+         def doCopy,
+         def doPaste,
+         def doDelete,
+         def doSelectAll,
+
+         def doIndent,
+         def doOutdent]
+
+        # menuSearch
+        [def doFindReplace,
+         def doFindNext,
+         def doFindPrevious,
+
+         def doGoTo]
+
+        # menuView
+        [def doSmallerFont,
+         def doLargerFont,
+         # menuToolbars
+         [def doMainToolbar],
+         def doWordWrap,
+         def doStatusBar]
+
+        # menuTools
+        [def doConfigure,
+         def doOptions]
+
+        # menuCausality
+        [def doRelevanceOptions,
+         def doFilters]
+
+        # menuWindows
+        [def doNextTab,
+         def doPreviousTab]
+
+        # menuHelp
+        [def doHelpTopics,
+
+         def doAbout]
+
+        /**
+         *
+         */
+        bind doNew extends abstractAction(doNew) {
+            to run() :void {}
+            to getLabel()            :String { "&New" }
+            to getOptMenuAccelDesc() :String { "Ctrl+N" }
+            to getOptTip()           :String { "Makes a new editor" }
+            to getOptIconFQName()    :String {
+                "com/skyhunter/e/icons/new_page16-16.gif"
+            }
+        }
+
+        /**
+         *
+         */
+        bind doOpen extends abstractAction(doOpen) {
+            to run() :void {}
+            to getLabel()            :String { "&Open..." }
+            to getOptMenuAccelDesc() :String { "Ctrl+O" }
+            to getOptTip()           :String { "Open a file" }
+            to getOptIconFQName()    :String {
+                "com/skyhunter/e/icons/fileOpen.gif"
+            }
+        }
+
+        /**
+         *
+         */
+        bind doClose extends abstractAction(doClose) {
+            to run() :void {
+                debugln("doClose()")
+            }
+            to getLabel()            :String { "&Close" }
+            to getOptMenuAccelDesc() :String { "Ctrl+W" }
+            to getOptTip()           :String { "Closes the editor" }
+        }
+
+
+        /**
+         *
+         */
+        bind doSave extends abstractAction(doSave) {
+            to run() :void {}
+            to getLabel()            :String { "&Save" }
+            to getOptMenuAccelDesc() :String { "Ctrl+S" }
+            to getOptTip()           :String { "Saves the file" }
+            to getOptIconFQName()    :String {
+                "com/skyhunter/e/icons/save16-16.gif"
+            }
+            to everEnabledReporter() :EverReporter {
+                whenever([&everDirty, &everOptFile], thunk{
+                    everDirty | (everOptFile == null)
+                })
+            }
+        }
+
+        /**
+         *
+         */
+        bind doSaveAs extends abstractAction(doSaveAs) {
+            to run() :void {}
+            to getLabel()            :String { "Save &As..." }
+            to getOptTip()           :String {
+                "Saves a copy as a chosen file"
+            }
+            to getOptIconFQName()    :String {
+                "com/skyhunter/e/icons/saveas16-16.gif"
+            }
+        }
+
+
+        /**
+         *
+         */
+        bind doSaveAll extends abstractAction(doSaveAll) {
+            to run() :void {}
+            to getLabel()            :String { "Save A&ll" }
+            to getOptMenuAccelDesc() :String { "Alt+S" }
+            to getOptTip()           :String { "Save all files in this group" }
+            to getOptIconFQName()    :String {
+                "com/skyhunter/e/icons/saveall16-16.gif"
+            }
+        }
+
+        /**
+         *
+         */
+        bind doRevert extends abstractAction(doRevert) {
+            to run() :void {
+                debugln("doRevert()")
+            }
+            to getLabel()            :String { "&Revert" }
+            to getOptTip()           :String { "Revert to last saved version" }
+        }
+
+        /**
+         *
+         */
+        bind doPageSetup extends abstractAction(doPageSetup) {
+            to run() :void {
+                debugln("doPageSetup()")
+            }
+            to getLabel()            :String { "Page Set&up..." }
+            to getOptTip()           :String { "Printing preferences" }
+        }
+
+        /**
+         *
+         */
+        bind doPrint extends abstractAction(doPrint) {
+            to run() :void {
+                debugln("doPrint()")
+            }
+            to getLabel()            :String { "&Print..." }
+            to getOptMenuAccelDesc() :String { "Ctrl+P" }
+            to getOptTip()           :String { "Prints this file" }
+            to getOptIconFQName()    :String {
+                "com/skyhunter/e/icons/print16-16.gif"
+            }
+        }
+
+        /**
+         *
+         */
+        bind doExit extends abstractAction(doExit) {
+            to run() :void {
+                debugln("doExit()")
+            }
+            to getLabel()            :String { "E&xit" }
+            to getOptMenuAccelDesc() :String { "Ctrl+Q" }
+            to getOptTip()           :String { "Shuts down these editors" }
+        }
+
+        /**
+         *
+         */
+        bind doUndo extends abstractAction(doUndo) {
+            to run() :void {
+                debugln("doUndo()")
+            }
+            to getLabel()            :String { "&Undo" }
+            to getOptMenuAccelDesc() :String { "Ctrl+Z" }
+            to getOptTip()           :String { "Undo the last edit" }
+            to getOptIconFQName()    :String {
+                "com/skyhunter/e/icons/undo16-16.gif"
+            }
+        }
+
+        /**
+         *
+         */
+        bind doRedo extends abstractAction(doRedo) {
+            to run() :void {
+                debugln("doRedo()")
+            }
+            to getLabel()            :String { "&Redo" }
+            to getOptMenuAccelDesc() :String { "Shift+Ctrl+Z" }
+            to getOptTip()           :String {
+                "The last undone edit is redone"
+            }
+            to getOptIconFQName()    :String {
+                "com/skyhunter/e/icons/redo16-16.gif"
+            }
+        }
+
+        /**
+         *
+         */
+        bind doCut extends abstractAction(doCut) {
+            to run() :void {
+                debugln("doCut()")
+            }
+            to getLabel()            :String { "Cu&t" }
+            to getOptMenuAccelDesc() :String { "Ctrl+X" }
+            to getOptTip()           :String {
+                "Moves the selection to the clipboard"
+            }
+            to getOptIconFQName()    :String {
+                "com/skyhunter/e/icons/cut16-16.gif"
+            }
+        }
+
+        /**
+         *
+         */
+        bind doCopy extends abstractAction(doCopy) {
+            to run() :void {
+                debugln("doCopy()")
+            }
+            to getLabel()            :String { "&Copy" }
+            to getOptMenuAccelDesc() :String { "Ctrl+C" }
+            to getOptTip()           :String {
+                "Copies the selection to the clipboard"
+            }
+            to getOptIconFQName()    :String {
+                "com/skyhunter/e/icons/copy16-16.gif"
+            }
+        }
+
+        /**
+         *
+         */
+        bind doPaste extends abstractAction(doPaste) {
+            to run() :void {
+                debugln("doPaste()")
+            }
+            to getLabel()            :String { "&Paste" }
+            to getOptMenuAccelDesc() :String { "Ctrl+V" }
+            to getOptTip()           :String {
+                "Replaces the selection with a copy of the clipboard"
+            }
+            to getOptIconFQName()    :String {
+                "com/skyhunter/e/icons/paste16-16.gif"
+            }
+        }
+
+        /**
+         *
+         */
+        bind doDelete extends abstractAction(doDelete) {
+            to run() :void {
+                debugln("doDelete()")
+            }
+            to getLabel()            :String { "&Delete" }
+            to getOptMenuAccelDesc() :String { "Del" }
+            to getOptTip()           :String {
+                "Deletes the selection or next character"
+            }
+            to getOptIconFQName()    :String {
+                "com/skyhunter/e/icons/delete16-16.gif"
+            }
+        }
+
+        /**
+         *
+         */
+        bind doSelectAll extends abstractAction(doSelectAll) {
+            to run() :void {
+                debugln("doSelectAll()")
+            }
+            to getLabel()            :String { "Select &All" }
+            to getOptMenuAccelDesc() :String { "Ctrl+A" }
+            to getOptTip()           :String { "Selects all the text" }
+        }
+
+        /**
+         *
+         */
+        bind doIndent extends abstractAction(doIndent) {
+            to run() :void {}
+            to getLabel()            :String { "&Indent" }
+            to getOptMenuAccelDesc() :String { "Tab" }
+            to getOptTip()           :String {
+                "Indent the selection right to the next tab stop"
+            }
+            to getOptIconFQName()    :String {
+                "com/skyhunter/e/icons/indent16-16.gif"
+            }
+        }
+
+        /**
+         *
+         */
+        bind doOutdent extends abstractAction(doOutdent) {
+            to run() :void {
+                debugln("doOutdent()")
+            }
+            to getLabel()            :String { "&Outdent" }
+            to getOptMenuAccelDesc() :String { "Shift+Tab" }
+            to getOptTip()           :String {
+                "Outdent the selection left to the previous tab stop"
+            }
+            to getOptIconFQName()    :String {
+                "com/skyhunter/e/icons/outdent16-16.gif"
+            }
+        }
+
+
+        /**
+         *
+         */
+        bind doFindReplace extends abstractAction(doFindReplace) {
+            to run() :void {
+                debugln("doFindReplace()")
+            }
+            to getLabel()            :String { "Find/Replace..." }
+            to getOptMenuAccelDesc() :String { "Ctrl+F" }
+            to getOptTip()           :String {
+                "Find and possibly replace"
+            }
+            to getOptIconFQName()    :String {
+                "com/skyhunter/e/icons/find16-16.gif"
+            }
+        }
+
+
+        /**
+         *
+         */
+        bind doFindNext extends abstractAction(doFindNext) {
+            to run() :void {
+                debugln("doFindNext()")
+            }
+            to getLabel()            :String { "Find &Next" }
+            to getOptMenuAccelDesc() :String { "F3" }
+            to getOptTip()           :String { "Find the next one" }
+        }
+
+
+        /**
+         *
+         */
+        bind doFindPrevious extends abstractAction(doFindPrevious) {
+            to run() :void {
+                debugln("doFindPrevious()")
+            }
+            to getLabel()            :String { "Find &Previous" }
+            to getOptMenuAccelDesc() :String { "Shift+F3" }
+            to getOptTip()           :String { "Find the previous one" }
+        }
+
+
+        /**
+         *
+         */
+        bind doGoTo extends abstractAction(doGoTo) {
+            to run() :void {
+                debugln("doGoTo()")
+            }
+            to getLabel()            :String { "&Go To..." }
+            to getOptMenuAccelDesc() :String { "Ctrl+G" }
+            to getOptTip()           :String {
+                "Go to a line number"
+            }
+            to getOptIconFQName()    :String {
+                "com/skyhunter/e/icons/goto16-16.gif"
+            }
+        }
+
+
+        /**
+         *
+         */
+        bind doSmallerFont extends abstractAction(doSmallerFont) {
+            to run() :void {
+                debugln("doSmallerFont()")
+            }
+            to getLabel()            :String { "S&maller Font" }
+            to getOptMenuAccelDesc() :String { "Ctrl+[" }
+        }
+
+        /**
+         *
+         */
+        bind doLargerFont extends abstractAction(doLargerFont) {
+            to run() :void {
+                debugln("doLargerFont()")
+            }
+            to getLabel()            :String { "&Larger Font" }
+            to getOptMenuAccelDesc() :String { "Ctrl+]" }
+            to getOptIconFQName()    :String {
+                "com/skyhunter/e/icons/magnify.gif"
+            }
+        }
+
+        /**
+         *
+         */
+        bind doMainToolbar extends abstractAction(doMainToolbar) {
+            to run() :void {
+                everShowMainToolbar := ! everShowMainToolbar
+            }
+            to getLabel()             :String { "&Main Toolbar" }
+            to getMenuItemStyle()     :int    { SWT.getCHECK() }
+            to getOptTip()            :String {
+                "Toggle visibility of main toolbar"
+            }
+            to everEnabledReporter() :EverReporter {
+                whenever([], thunk{false})
+            }
+            to optEverCheckedReporter() :EverReporter { &everShowMainToolbar }
+        }
+
+        /**
+         *
+         */
+        bind doWordWrap extends abstractAction(doWordWrap) {
+            to run() :void {
+                everWordWrap := ! everWordWrap
+            }
+            to getLabel()             :String { "&Word Wrap" }
+            to getMenuItemStyle()     :int    { SWT.getCHECK() }
+            to getOptMenuAccelDesc()  :String { "Alt+W" }
+            to getOptTip()            :String { "Toggle word wrapping" }
+            to optEverCheckedReporter() :EverReporter { &everWordWrap }
+        }
+
+        /**
+         *
+         */
+        bind doStatusBar extends abstractAction(doStatusBar) {
+            to run() :void {
+                everShowStatusBar := ! everShowStatusBar
+            }
+            to getLabel()            :String  { "&Status Bar" }
+            to getMenuItemStyle()    :int     { SWT.getCHECK() }
+            to getOptTip()           :String  {
+                "Toggle visibility of status bar"
+            }
+            to everEnabledReporter() :EverReporter {
+                whenever([], thunk{false})
+            }
+            to optEverCheckedReporter() :EverReporter { &everShowStatusBar }
+        }
+
+        /**
+         *
+         */
+        bind doConfigure extends abstractAction(doConfigure) {
+            to run() :void {
+                debugln("doConfigure()")
+            }
+            to getLabel()            :String { "&Configure..." }
+            to getOptTip()           :String { "Move actions where you like" }
+        }
+
+        /**
+         *
+         */
+        bind doOptions extends abstractAction(doOptions) {
+            to run() :void {}
+            to getLabel()            :String { "&Options..." }
+            to getOptTip()           :String { "Set Preferences" }
+        }
+
+        /**
+         *
+         */
+        bind doRelevanceOptions extends abstractAction(doRelevanceOptions) {
+            to run() :void {}
+            #causewayEditor.getCausewayApp().openRelevanceOptionsDialog()
+            #}
+            to getLabel()            :String { "&Relevance Options..." }
+            to getOptTip()           :String { "Show Relevance Function Options" }
+        }
+
+        /**
+         *
+         */
+        bind doFilters extends abstractAction(doFilters) {
+            to run() :void {
+                causewayEditor.getCausewayApp().openFiltersDialog()
+            }
+            to getLabel()            :String { "&Filters..." }
+            to getOptTip()           :String { "Show File Filters" }
+        }
+
+        /**
+         *
+         */
+        bind doNextTab extends abstractAction(doNextTab) {
+            to run() :void {
+                debugln("doNextTab()")
+            }
+            to getLabel()            :String { "&Next Tab" }
+            to getOptMenuAccelDesc() :String { "Ctrl+Tab" }
+            to getOptTip()           :String { "Bring next to top" }
+        }
+
+        /**
+         *
+         */
+        bind doPreviousTab extends abstractAction(doPreviousTab) {
+            to run() :void {
+                debugln("doPreviousTab()")
+            }
+            to getLabel()            :String { "&Previous Tab" }
+            to getOptMenuAccelDesc() :String { "Shift+Ctrl+Tab" }
+            to getOptTip()           :String { "Bring previous to top" }
+        }
+
+        /**
+         *
+         */
+        bind doHelpTopics extends abstractAction(doHelpTopics) {
+            to run() :void {
+                debugln("doHelpTopics()")
+            }
+            to getLabel()            :String { "Help Topics..." }
+            to getOptMenuAccelDesc() :String { "F1" }
+            to getOptTip()           :String { "Helps clear up all confusion" }
+            to getOptIconFQName()    :String {
+                "com/skyhunter/e/icons/help.gif"
+            }
+        }
+
+        /**
+         *
+         */
+        bind doAbout extends abstractAction(doAbout) {
+            to run() :void {
+#                def appName := self.getAppName()
+#                makeDialogVow(`About $appName`,
+#                              term`text(b(.String.$appName),
+#                                   "
+                #by Terry Stanley and Mark S. Miller
+                #
+                #",
+#                                   .String.${doAbout.getVersionString()})`,
+#                              null,
+#                              ["Ok"])
+            }
+            to getVersionString() :String {
+                __versionLauncherAuthor.getOptVersionText(props)
+            }
+            to getLabel()  :String {
+                ""
+#                `&About ${self.getAppName()}...`
+            }
+            to getOptTip() :String { "What program is this?" }
+        }
+
+        def barAction :=
+          M.bar([def menuFile :=
+                   M.menu("&File",
+                          [doNew,
+                           doOpen,
+                           doClose,
+                           M.sep(),
+                           doSave,
+                           doSaveAs,
+                           doSaveAll,
+                           doRevert,
+                           M.sep(),
+                           doPageSetup,
+                           doPrint,
+                           M.sep(),
+                           doExit]),
+                 def menuEdit :=
+                   M.menu("&Edit",
+                          [doUndo,
+                           doRedo,
+                           M.sep(),
+                           doCut,
+                           doCopy,
+                           doPaste,
+                           doDelete,
+                           doSelectAll,
+                           M.sep(),
+                           doIndent,
+                           doOutdent]),
+                 def menuSearch :=
+                   M.menu("Sea&rch",
+                          [doFindReplace,
+                           doFindNext,
+                           doFindPrevious,
+                           M.sep(),
+                           doGoTo]),
+                 def menuView :=
+                   M.menu("&View",
+                          [doSmallerFont,
+                           doLargerFont,
+                           M.sep(),
+                           M.menu("&Toolbars",
+                                  [doMainToolbar]),
+                           doWordWrap,
+                           doStatusBar]),
+                 def menuTools :=
+                   M.menu("&Tools",
+                          [gCer.getGCAction(),
+                           M.sep(),
+                           doConfigure,
+                           doOptions]),
+                 def menuCausality :=
+                   M.menu("&Causality",
+                          [doRelevanceOptions,
+                           doFilters]),
+                 def menuWindow :=
+                   M.menu("&Window",
+                          [doNextTab,
+                           doPreviousTab]),
+                 def menuHelp :=
+                   M.menu("&Help",
+                          [doHelpTopics,
+                           M.sep(),
+                           doAbout])])
+
+
+        def toolActions :=
+          [doNew,
+           doOpen,
+           doSave,
+           doSaveAll,
+           M.sep(),
+           doPrint,
+           M.sep(),
+           doUndo,
+           doRedo,
+           M.sep(),
+           doCut,
+           doCopy,
+           doPaste,
+           M.sep(),
+           doFindReplace]
+
+        def menuMap := [].asMap().diverge()
+        def toolMap := [].asMap().diverge()
+
+        for action in toolActions {
+            action.makeToolItem(toolBar, toolMap)
+        }
+        toolMap.putAll(gCer.getToolMap(), true)
+
+        def causewayAppAuthor := <import:org.erights.e.tools.causeway.causewayAppAuthor>
+        def makeCausewayApp := causewayAppAuthor(<file>, <jar>, makers, shell, tcr, traceline)
+
+        def causewayApp := makeCausewayApp(shell, palette)
+
+        def makeCausalityTree :=
+          <import:org.erights.e.tools.causeway.makeCausalityTree>
+
+        bind causewayEditor {
+            to getAppName() :String { "Causeway" }
+            to getShell() :Shell { shell }
+            to getToolArea()  :near { toolArea }
+            to getCausewayApp() :near { causewayApp }
+            to getStatusBar() :near { statusBar }
+
+            /**
+             *
+             */
+            to open(traces :List) :void {
+                def model := makeCausalityTree(traces, traceline)
+                causewayEditor.getCausewayApp().setCausalityTree(model)
+
+                causewayEditor.getCausewayApp().layout()
+
+                swtGrid`${causewayEditor.getShell()}:
+                        ${causewayEditor.getToolArea()}.X
+                        ${causewayEditor.getCausewayApp().getTopLevelPane()}.X.Y
+                        ${causewayEditor.getStatusBar()}.X`
+
+                setMargins(causewayEditor.getShell().getLayout(), 0)
+
+                def menuBar := barAction.makeMenu(shell, menuMap)
+
+                def appName := causewayEditor.getAppName()
+
+                var names := ""
+                for i in 0 ..! traces.size() {
+                    def path := traces[i].getAbsolutePath()
+                    names := names + path
+                    if (i != traces.size() -1) {
+                        names := names + " "
+                    }
+                }
+                shell.setText(`$appName - $names`)
+
+                shell.open()
+
+                causewayEditor.getCausewayApp().open()
+            }
+        }
+        causewayEditor
+    }
+}

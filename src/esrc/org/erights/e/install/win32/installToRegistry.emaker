@@ -1,0 +1,225 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def makeShortcutMaker := <import:org.erights.e.install.win32.makeShortcutMaker>
+def fileAssocMaker := <import:org.erights.e.install.win32.fileAssocMaker>
+def addCommandMaker := <import:org.erights.e.install.win32.addCommandMaker>
+
+/**
+ * On the MSWindows platform, sets up the standard shortcuts and
+ * registry associations for E, Elmer, *.e, *.e-awt, *.e-swt,
+ * *.emaker, *.caplet, *.updoc, *.vat, and *.cap
+ *
+ * @param ehome is the path to the directory in which E is installed.
+ * @param javacmd is the path to the java executable, which must be a
+ *                Java >= 1.3.
+ * @param launchDir is the working directory for launched shortcuts.
+ * @param makeShortcutCmd is a Command (a frontend to a shell command)
+ *                        for making MSWindows shortcuts.
+ * @param fileAssocCmd is a Command for associating a file extension
+ *                     with an icon, Registry type, Registry type
+ *                     description, and Mime type.
+ * @param addCommandCmd is a Command for adding entries to the right
+ *                      button menu of files of a given Registry type.
+ */
+def installToRegistry(var ehome :String,
+                      javacmd :String,
+                      launchDir :String,
+                      makeShortcutCmd,
+                      fileAssocCmd,
+                      addCommandCmd
+) :void {
+    if (ehome.endsWith("/")) {
+        ehome := ehome(0, ehome.size() -1)
+    }
+    def ecmd := [
+        javacmd,
+        "-cp", `$ehome/e.jar;$ehome/bin/win32/swt.jar`,
+        "-Xfuture",
+        # XXX The following "/x86" should actually be based on the value of
+        # the system property e.machdir
+        `-Djava.library.path=$ehome/bin/win32/x86`,
+        `-De.home=$ehome/`,
+        "-De.gui-launch=true",
+        # further properties will be read from
+        # org/erights/e/elang/syntax/syntax-props-default.txt, eprops.txt,
+        # and ~/.e/user-eprops.txt
+        "org.erights.e.elang.interp.Rune"
+    ]
+
+    def makeShortcut := makeShortcutMaker(makeShortcutCmd)
+    def fileAssoc := fileAssocMaker(fileAssocCmd)
+    def addCommand := addCommandMaker(addCommandCmd)
+
+
+    ###############
+
+    # All these extensions are handled identically, so they all define the
+    # same registry type, "e-script"
+    for ext in [".e", ".e-awt", ".e-swt"] {
+
+        # *.<ext> files
+        fileAssoc(ext, "e-script", "E Script", "text/x-escript",
+                  `$ehome/bin/icons/e-doc.ico`)
+    }
+
+    # e-script Launch command
+    addCommand("e-script",
+               ecmd + ["%1"],
+               "Launch",
+               true)
+
+    # e-script eBrowse command
+    addCommand("e-script",
+               ecmd + [`$ehome/scripts/eBrowser.e-swt`, "%1"],
+               "eBrowse",
+               false)
+
+    ###############
+
+    # *.emaker files
+    fileAssoc(".emaker", "e-maker", "E Maker File", "text/x-emaker",
+              `$ehome/bin/icons/emaker-doc.ico`)
+
+    # e-emaker eBrowse command
+    addCommand("e-maker",
+               ecmd + [`$ehome/scripts/eBrowser.e-swt`, "%1"],
+               "eBrowse",
+               true)
+
+#    # e-emaker Elmer command
+#    addCommand("e-maker",
+#               ecmd + [`$ehome/scripts/elmer.e-awt`, "%1"],
+#               "Elmer",
+#               false)
+
+    ###############
+
+    # *.caplet files
+    fileAssoc(".caplet", "e-caplet", "E Caplet File", "text/x-caplet",
+              `$ehome/bin/icons/e-caplet.ico`)
+
+    # e-caplet Confined-Launch command
+    addCommand("e-caplet",
+               ecmd + ["%1"],
+               "Confined-Launch",
+               true)
+
+    # XXX What about installation?
+
+    # e-caplet eBrowse command
+    addCommand("e-caplet",
+               ecmd + [`$ehome/scripts/eBrowser.e-swt`, "%1"],
+               "eBrowse",
+               false)
+
+#    # e-caplet Elmer command
+#    addCommand("e-caplet",
+#               ecmd + [`$ehome/scripts/elmer.e-awt`, "%1"],
+#               "Elmer",
+#               false)
+
+    ###############
+
+    # *.updoc files
+    fileAssoc(".updoc", "e-updoc", "E Updoc Script", "text/x-updoc",
+              `$ehome/bin/icons/carrot-doc.ico`)
+
+#    # e-updoc Elmer command
+#    addCommand("e-updoc",
+#               ecmd + [`$ehome/scripts/elmer.e-awt`, "%1"],
+#               "Elmer",
+#               true)
+
+    # e-updoc Test command
+    addCommand("e-updoc",
+               ecmd + ["-De.onOkGuiExit=prompt", "%1"],
+               "Test",
+               true)
+
+    # e-updoc eBrowse command
+    addCommand("e-updoc",
+               ecmd + [`$ehome/scripts/eBrowser.e-swt`, "%1"],
+               "eBrowse",
+               false)
+
+    ###############
+
+    # *.vat files
+    fileAssoc(".vat", "e-vat", "E Persistent Vat State", "text/x-vat",
+              `$ehome/bin/icons/e-vat.ico`)
+
+    # e-vat Revive command
+    addCommand("e-vat",
+               ecmd + ["%1"],
+               "Revive",
+               true)
+
+    # *.vat-bak files
+    fileAssoc(".vat-bak",
+              "e-vat-bak",
+              "E Previous Vat State",
+              "text/x-vat-bak",
+              `$ehome/bin/icons/e-vat-bak.ico`)
+
+    # e-vat-bak Rescue command
+    addCommand("e-vat-bak",
+               ecmd + ["%1"],
+               "Rescue",
+               true)
+
+    # *.vat-draft files
+    fileAssoc(".vat-draft",
+              "e-vat-draft",
+              "E Partially Written Vat State. Likely junk.",
+              "text/x-vat-draft",
+              `$ehome/bin/icons/e-vat-draft.ico`)
+
+    # e-vat-draft What-me-worry command
+    addCommand("e-vat-draft",
+               ecmd + ["%1"],
+               "What-me-worry?",
+               true)
+
+    ###############
+
+    # *.cap files
+    fileAssoc(".cap", "e-cap", "E Capability", "text/x-cap",
+              `$ehome/bin/icons/e-cap.ico`)
+
+    ##################################
+
+    # Shortcut to Elmer
+#    makeShortcut([`$ehome/scripts/elmer.e-awt`],
+#                 `$ehome/bin/shortcuts/elmer.lnk`,
+#                 launchDir,
+#                 `$ehome/bin/icons/carrot2.ico`,
+#                 "SHOW",
+#                 "For editing Updoc scipts")
+
+    # Shortcut to eBrowser
+    makeShortcut([`$ehome/scripts/eBrowser.e-swt`],
+                 `$ehome/bin/shortcuts/eBrowser.lnk`,
+                 launchDir,
+                 `$ehome/bin/icons/green-e-on-white-32.ico`,
+                 "SHOW",
+                 "For editing E progams")
+
+    # Shortcut to capDesk
+    makeShortcut([`$ehome/scripts/capDesk.e-awt`],
+                 `$ehome/bin/shortcuts/capDesk.lnk`,
+                 launchDir,
+#                 `$ehome/bin/icons/cap-desk-drop.ico`,
+                 `$ehome/bin/icons/POLAbear5Tiny.ico`,
+                 "SHOW",
+                 "The Capability-Secure Desktop")
+
+
+    # Shortcut to rune.bat
+    makeShortcut([`$ehome/rune.bat`],
+                 `$ehome/bin/shortcuts/rune.lnk`,
+                 launchDir,
+                 `$ehome/bin/icons/e-shell.ico`,
+                 "SHOW",
+                 "The rune (run E) shell")
+}

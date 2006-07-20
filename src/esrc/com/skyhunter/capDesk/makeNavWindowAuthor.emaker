@@ -1,0 +1,596 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def __versionLauncherAuthor := <elang:launcher.__versionLauncherAuthor>
+
+def JPanel__quasiParser := <import:org.erights.ex.swing.JPanel__quasiParser>
+
+def makeNavWindowAuthor(<unsafe>,
+                        <file>,
+                        <fileURL>,
+                        installer,
+                        powerboxControllerMaker,
+                        interp,
+                        traceline) :near {
+
+    def <awt> := <unsafe:java.awt.*>
+    def <swing> := <unsafe:javax.swing.*>
+    def resolveAllVow := <import:com.skyhunter.e.net.resolveAllVow>
+
+
+    def frameMakerMaker(iconURL) :near {
+        def image := <swing:makeImageIcon>(iconURL).getImage()
+        def frameMaker {
+            to run(title) :near {
+                def frame := <swing:makeJFrame>(title)
+                frame.setIconImage(image)
+                frame
+            }
+            to run() :near {
+                frameMaker("")
+            }
+        }
+    }
+    traceline("compiled maker maker")
+#    def eFrameMaker := frameMakerMaker(
+#        <resource:org/erights/e/icons/green-e-on-white-16.gif>)
+    def strangerFrameMaker := frameMakerMaker(
+        <resource:com/skyhunter/capDesk/icons/stranger.gif>)
+#    def superFrameMaker := frameMakerMaker(
+#        <resource:com/skyhunter/capDesk/icons/cap-desk-on-white.gif>)
+    def superFrameMaker := frameMakerMaker(
+        <resource:com/skyhunter/capDesk/icons/POLAbear5Tiny.gif>)
+
+    traceline("got frame makers")
+
+    def uiTools := <import:com.skyhunter.ex.swing.uiToolsAuthor>(<awt>,
+                                                                 <swing>)
+    def dialogVowMaker := <import:com.skyhunter.ex.swing.dialogVowMakerAuthor>(
+        <awt>,
+        <swing>,
+        superFrameMaker)
+    def standardWindow := <import:com.skyhunter.ex.swing.standardWindowMakerAuthor>(interp, superFrameMaker)
+
+    traceline("got standardWindow")
+
+    def progressWindowMaker := <import:com.skyhunter.capDesk.progressWindowMakerAuthor>(
+        <swing>, standardWindow)
+
+
+
+    traceline("about to build appsManager")
+    def capDeskHomePath :=  <resource:com/skyhunter/capDesk/strings/capDeskHomePath.txt>.getText().trim()
+    # XXX use these dir and file text strings from resources ubiquitously
+    def appsDirPath :=  capDeskHomePath +
+      <resource:com/skyhunter/capDesk/strings/installedAppsDir.txt>.getText().trim()
+    traceline("appsDirPath: " + appsDirPath)
+    def appsDir := <file>[appsDirPath]
+    if (! (appsDir.exists())) {appsDir.mkdirs(null)}
+    def appsDescPath :=  appsDirPath + <resource:com/skyhunter/capDesk/strings/appsDescFile.txt>.getText().trim()
+    traceline("appsDescPath: " + appsDescPath)
+    def appsDescFile := <file>[appsDescPath]
+    if (! (appsDescFile.exists())) {appsDescFile.setText("<installed></installed>" )}
+    def installedAppsManager := <import:com.skyhunter.capDesk.installedAppsManagerMaker>(
+        appsDescFile, traceline )
+
+    traceline(`did appsManager: $installedAppsManager`)
+
+    def connectionWarning(description) :void {
+        dialogVowMaker("Connection apparently lost",
+                       `<html><b>Lost Connection</b><p><pre>$description</pre>`,
+                       null, ["OK"])
+    }
+
+
+
+    def fileProgressObserverMaker(title, farFile) :any {
+        def myWindow := progressWindowMaker(title)
+        var bytesSent := 0
+        def localFailed() :void {myWindow.closeWindow()}
+        Ref.whenBroken(farFile, def breaker(p) :void {
+            localFailed()
+        })
+        def fileProgressObserver {
+            to completed() :void {
+                traceline("completed file transfer!")
+                myWindow.closeWindow()
+            }
+            to setFileSize(theSize) :void {myWindow.setFileSize(theSize)}
+            to updateCount(countIncrement) :void {
+                bytesSent := bytesSent + countIncrement
+                myWindow.setProgress(bytesSent)
+            }
+            to copyFailed() :void {
+                localFailed()
+            }
+        }
+    }
+
+
+
+    /**
+     * farOverwriteAnswerer uses state pattern with different functions for
+     * different behaviors.
+     * <p>
+     * it select the right function with lazy evaluation:
+     * if there's never a preexisting file to consider overwriting,
+     * no overwriting policy request ever goes to the user
+     */
+    def overwriteAnswererMaker (): any {
+        def alwaysOverwrite(fileName) :any {true}
+        def neverOverwrite(fileName) :any {false}
+        def askOverwrite(fileName) :any {
+            def [answerPromise, resolver] := Ref.promise()
+            def answerDialog := dialogVowMaker ("Overwrite?", "Overwrite file " + fileName + "?", null, ["Yes","No"])
+            when (answerDialog) -> done(answer) :void {
+                resolver.resolve (answerDialog.getClickedButton() == "Yes")
+            } catch err {}
+            answerPromise
+        }
+        var answerFunctionSelectionAlreadyStarted := false
+        def [answerFunction,functionResolver] := Ref.promise()
+        def determineOverwritePlan() :void {
+            answerFunctionSelectionAlreadyStarted := true
+            def planDialogPromise := dialogVowMaker ("OverwritePolicy", "When should files be overwritten?", null, ["Always","Never","After Confirmation"])
+            when (planDialogPromise) -> done(planDialog) :void {
+                def button := planDialog.getClickedButton()
+                if (button == "Always") {
+                    functionResolver.resolve(alwaysOverwrite)
+                }else if (button == "Never") {
+                    functionResolver.resolve(neverOverwrite)
+                }else {functionResolver.resolve(askOverwrite)}
+            } catch err {}
+        }
+        def overwriteAnswerer {
+            to promiseOverwriteAnswer(fileName) :any {
+                if (! answerFunctionSelectionAlreadyStarted) {determineOverwritePlan()}
+                answerFunction <- run(fileName)
+            }
+        }
+        overwriteAnswerer
+    }
+
+    traceline("about to compile navigatorWindowMaker")
+
+    /**
+     * NavigatorWindow
+     */
+    def navigatorWindowMaker(myFtController, myDiskNavigator) :any {
+        def navigatorWindow
+        def myStorageName := myDiskNavigator <- getStorageName()
+        def navFrame := standardWindow("", navigatorWindow)
+        when (myStorageName) -> done(name) :void {
+            navFrame.setTitle(name)
+        } catch err{}
+        def mainPane := navFrame.getContentPane()
+
+        /**
+         * make the menus
+         */
+        def menuReactor {
+            to doNewWindow()    :void {navigatorWindow.dupWindow() }
+            to doOpenRemote()   :void {navigatorWindow.openRemote() }
+            to doAboutcapDesk() :void {
+                def props := interp.getProps()
+                def versionText :=
+                  __versionLauncherAuthor.getOptVersionText(props).
+                  replaceAll("\n", "<br>\n")
+
+                def html := `<html>
+<center><b> capDesk </b></center>
+<p>
+Copyright 2002 Combex, Inc. under the terms of the MIT X license<br>
+found at http://www.opensource.org/licenses/mit-license.html<br>
+<br>
+$versionText
+</html>`
+
+                dialogVowMaker ("About capDesk", html, null, ["OK"])
+            }
+            to doQuickHelp() :void {
+                def html := <resource:com/skyhunter/capDesk/strings/help.txt>.getText()
+                dialogVowMaker ("Quick Help", html, null, ["OK"])
+            }
+            match [verb,args] {traceline("menu hit for " + verb)}
+        }
+        def mm := <import:com.skyhunter.ex.swing.menuMakerAuthor>(
+            <swing>,
+            <unsafe:org.erights.e.ui.awt.makeEAction>,
+            menuReactor)
+        def menuBar := mm.menuBar([
+            mm.menu("&Windows", [
+                mm.action("&New Window",  "Ctrl+N"),
+                mm.action("Open Remote...", "Ctrl+O")
+            ]),
+            mm.menu("&Help", [
+                mm.action("&Quick Help"),
+                "--",
+                mm.action("&About capDesk")
+            ])
+        ])
+        navFrame.setJMenuBar(menuBar)
+
+        def statusPanel := <swing:makeJLabel>(" ")
+        def setStatus(status) :void {
+            if (status.size() == 0) {
+                statusPanel.setText(" ")
+            } else {statusPanel.setText(status)}
+        }
+        def navPanelServer
+
+        def navPanelControllerMaker := <import:com.skyhunter.capDesk.navPanelControllerMakerAuthor> (
+            <unsafe>, <awt>, <swing>, traceline)
+
+        def navPanelController1
+        def navPanelController2
+        def navPanelController3
+        def bind navPanelController1 := navPanelControllerMaker(null, navPanelController2, installedAppsManager , navPanelServer )
+        def bind navPanelController2 := navPanelControllerMaker(navPanelController1, navPanelController3, installedAppsManager , navPanelServer )
+        def bind navPanelController3 := navPanelControllerMaker(navPanelController2, null, installedAppsManager,  navPanelServer )
+
+        def navWinActionMaker(actionName) :near {
+            def action() :void {E.call(navigatorWindow, actionName, [])}
+        }
+        def gotoButton := uiTools.newToolButton(
+            <resource:com/skyhunter/capDesk/icons/goto.gif>,
+            "Goto", navWinActionMaker("gotoFieldName"))
+        def upButton := uiTools.newToolButton(
+            <resource:com/skyhunter/capDesk/icons/up.gif>,
+            "Up", navWinActionMaker("goUp"))
+        def homeButton := uiTools.newToolButton(
+            <resource:com/skyhunter/capDesk/icons/home.gif>,
+            "Home", navWinActionMaker("goHome"))
+        def fullPathTextField := <swing:makeJTextField>()
+        def enterKeyListener{
+            to keyPressed(theEvent) :void {
+                if (theEvent.getKeyCode() == <unsafe:java.awt.event.makeKeyEvent>.getVK_ENTER()) {
+                    navigatorWindow.gotoFieldName()
+                }
+            }
+            match _ {}
+        }
+        fullPathTextField.addKeyListener(enterKeyListener)
+        def refreshLocal() :void {
+            navPanelController1.reload()
+            navPanelController2.reload()
+            navPanelController3.reload()
+            traceline("BAD: RefreshLocal!")
+        }
+        def newFile(navPanelController) :void {
+            def newName := <swing:makeJOptionPane>.showInputDialog(navFrame, "Name for New File: ", "New File", <swing:makeJOptionPane>.getQUESTION_MESSAGE())
+            if (newName != null && newName.size() >0) {
+                navPanelController.getDiskNavRcvr() <- newFile(newName)
+            }
+            navPanelController.reload()
+        }
+        def newDir(navPanelController) :void {
+            def newName := <swing:makeJOptionPane>.showInputDialog(navFrame, "Name for New Folder: ", "New Folder", <swing:makeJOptionPane>.getQUESTION_MESSAGE())
+            traceline("Dir Name: " + newName)
+            if (newName != null && newName.size() >0) {
+                navPanelController.getDiskNavRcvr() <- makeDir(newName)
+            }
+            navPanelController.reload()
+        }
+        def openDir(navPanelController) :void {
+            navPanelController.openDir()
+        }
+        def openEDesk(navPanelController) :void {
+            def fileNames := navPanelController.getSelectedNames()
+            def navRcvr := navPanelController.dupDiskNavRcvr()
+            if (fileNames != null && fileNames.size() >0) {
+                for each in fileNames {
+                    myFtController.openEdesk(navRcvr <- getFileNamed(each))
+                }
+            }
+        }
+        def propertiesList(navPanelController) :void {
+            def fileRcvrList := navPanelController.getSelectedFileRcvrs()
+            if (fileRcvrList != null) {
+                setStatus("Showing files properties")
+                for each in fileRcvrList {
+                    traceline("a file properties")
+                    def path := each <- getPath()
+                    def canonical := each <- getCanonicalPath()
+                    def fileSize := each <- length()
+                    def lastModified := each <- lastModified()
+                    traceline("requested properties")
+                    when (path, canonical, fileSize,lastModified) -> done(p,c,f,l) :void {
+                        traceline("all resolved")
+                        def modDate := <unsafe:java.util.makeDate>(lastModified)
+                        def display :=
+                          `<html><table><tr>
+<td><b>Full Path:</b></td><td>$path</td>
+</tr><tr>
+<td><b>Canonical Path:</b></td><td>$canonical</td>
+</tr><tr>
+<td><b>Size:</b></td><td>$fileSize</td>
+</tr><tr>
+<td><b>Last Modified:</b></td><td>$modDate</td>
+</tr></table></html>`
+                        dialogVowMaker(`Properties For $each`,
+                                       display,
+                                       null,
+                                       ["OK"])
+                        setStatus("")
+                    } catch e { connectionWarning(e)}
+                }
+            }
+        }
+        def renameList(navPanelController) :void {
+            def theList := navPanelController.getSelectedNames()
+            def diskNavRcvr := navPanelController.dupDiskNavRcvr()
+            setStatus("Renaming files")
+            for each in theList {
+                def newName :=
+                  <swing:makeJOptionPane>.showInputDialog(null,
+                                                      `New Name for: $each`,
+                                                      "Rename",
+                                                      <swing:makeJOptionPane>.getQUESTION_MESSAGE(),
+                                                      null,
+                                                      null,
+                                                      each)
+                if (newName != null && newName.size() >0) {
+                    diskNavRcvr <- rename(each, newName)
+                }
+            }
+            navPanelController.reload()
+        }
+        def deleteList(navPanelController) :void {
+            def theList := navPanelController.getSelectedNames()
+            def navRcvr := navPanelController.dupDiskNavRcvr()
+            def deletionVows := [].diverge()
+            setStatus("Deleting files")
+            for each in theList {
+                deletionVows.push(navRcvr <- deleteFileObject(each))
+            }
+            when (resolveAllVow(deletionVows)) -> done(deletions) :void {
+                navPanelController  <- deletionsMade()
+            } catch prob {traceline("deletions incomplete: " + prob)}
+        }
+        def copyList(navPanelController) :void {
+            def fileRcvrs := navPanelController.getSelectedFileRcvrs()
+            def localNavigator := navPanelController.dupDiskNavRcvr()
+            myFtController.copyFrom (fileRcvrs, localNavigator)
+        }
+        def pasteFromPanel(navPanelController) :void {
+            setStatus("Paste/Copying files")
+            myFtController.paste(navPanelController.dupDiskNavRcvr(), navigatorWindow)
+        }
+        def installCaplet(navPanelController) :void {
+            def sourceFileVow := (navPanelController.getSelectedFileRcvrs())[0]
+            when (sourceFileVow) -> done(sourceFile) :void {
+                installer.install(sourceFile, installedAppsManager )
+            } catch prob {traceline("prob in install catch" + prob)}
+        }
+        def runCaplet{
+            to run(navPanelController) :void {
+                def sourceFileVow := (navPanelController.getSelectedFileRcvrs())[0]
+                when (sourceFileVow) -> done(sourceFile) :void {
+                    runCaplet(sourceFile,[])
+                } catch prob {
+                    traceline(`sourcefile prob in runcaplet/1: $prob`)
+                    throw(prob)
+                }
+            }
+            to run(sourceFile, docRcvrs) :void {
+                traceline("made powerboxMaker")
+                def appDesc := installedAppsManager.getAppBySourcePath(sourceFile.getCanonicalPath())
+                traceline(`got appDesc: $appDesc`)
+                def findImage() :near {
+                    var image := null
+                    if (appDesc.maps("Icon")) {
+                        def path := appDesc["Icon"]
+                        traceline("appDesc maps Icon: " + path )
+                        var iconfile := <file>[sourceFile.getParent()][path]
+                        if (! (iconfile.exists())) {
+                            iconfile := <file>[appDesc["Icon"]]
+                        }
+                        if (iconfile.exists()) {
+                            image := <swing:makeImageIcon>(<fileURL>[iconfile.getCanonicalPath()]).getImage()
+                        }
+                    }
+                    traceline(`returning image: $image`)
+                    image
+                }
+
+                def image := findImage()
+                def canonicalPath := sourceFile.getCanonicalPath()
+                traceline("runcaplet/2 got canonical: " + canonicalPath)
+                def capsXml := <file>[appDesc["RunPath"]].getText()
+                traceline("runcaplet/2 got capsXml")
+                def powerboxController := powerboxControllerMaker(
+                    appDesc.fetch("Name", thunk{canonicalPath}),
+                    image, capsXml)
+                traceline(`got pcontroller: $powerboxController`)
+                def box := powerboxController.getPowerbox()
+                traceline(`got pbox: $box`)
+                powerboxController.setCap(box.getDOC_SUFFIX(),
+                                          appDesc.fetch("Suffix", thunk{}))
+                traceline("set doc suffix cap")
+                powerboxController.setCap(box.getINITIAL_DOC_RCVRS(), docRcvrs)
+                traceline("about to launch file")
+                powerboxController.launchFile(sourceFile)
+                traceline("launch initiated")
+            }
+        }
+        def bind navPanelServer {
+            to setStatus(text) :void {setStatus(text)}
+            to doubleClickedDocument(navPanelController) :void {
+                traceline("into dclick")
+                def launchWithDefaultCaplet(fileName,fileRcvr) :void {
+                    def suffixSplit := fileName.split(".")
+                    def suffix := suffixSplit[suffixSplit.size() - 1]
+                    traceline("suffix for dclick: " + suffix)
+                    def appMap := installedAppsManager.optAppByPetSuffix(suffix)
+                    def sourceFile := <file>[appMap["SourcePath"]]
+                    traceline(`got dclick sourceFile: $sourceFile`)
+                    runCaplet(sourceFile, [fileRcvr])
+                }
+                def fileNames := navPanelController.getSelectedNames()
+                def navRcvr := navPanelController.dupDiskNavRcvr()
+                if (fileNames != null && fileNames.size() >0) {
+                    for each in fileNames {
+                        launchWithDefaultCaplet(each, navRcvr <- getFileNamed(each))
+                    }
+                }
+
+            }
+            to showFilePopup(navPanelController, showX, showY) :void {
+                def myNavigatorRcvr := navPanelController.dupDiskNavRcvr()
+                def selectedFileNames := navPanelController.getSelectedNames()
+                def selectedCells := navPanelController.getListPanel().getSelectedValues()
+                traceline(`got selected names: $selectedFileNames`)
+                def appReactor {
+                    match[verb, args] {
+                        def docRcvrs := [].diverge()
+                        def appMap := installedAppsManager.optAppByPetName(verb)
+                        def sourceFile := <file>[appMap["SourcePath"]]
+                        for each in selectedFileNames {
+                            docRcvrs.push(myNavigatorRcvr <- getFileNamed(each))
+                        }
+                        runCaplet(sourceFile, docRcvrs)
+                    }
+                }
+                def appActionMaker(appPetName) :near {
+                    def action() :void {E.call(appReactor, appPetName,[])}
+                }
+                def appsMenu := <swing:makeJMenu>("Open With")
+                for each in installedAppsManager.getAppPetNames() {
+                    uiTools.addMenuItem(appsMenu, each, appActionMaker(each))
+                }
+                var suffix := ""
+                if (selectedFileNames.size() > 0) {
+                    def sections := selectedFileNames[0].split(".")
+                    if (sections.size() > 1) {suffix := sections[sections.size() - 1]}
+                }
+                def actionMaker(func) :near {
+                    def action() :void {E.send(func, "run", [navPanelController])}
+                }
+                traceline("about to make popup frame")
+                def popup := <swing:makeJPopupMenu>("File Ops")
+                def popWithUniversalChoices() :void {
+                    traceline("into pop universal choices")
+                    uiTools.addMenuItem(popup,"Paste", actionMaker(pasteFromPanel))
+                    uiTools.addMenuItem(popup,"New File", actionMaker(newFile))
+                    uiTools.addMenuItem(popup,"New Folder", actionMaker(newDir))
+                    popup.show(navPanelController.getListPanel(), showX, showY)
+                }
+                def popWithDirChoices() :void {
+                    uiTools.addMenuItem(popup, "Open Folder", actionMaker(openDir))
+                    E.call(popup, "add(JMenuItem)", [appsMenu])
+                    uiTools.addMenuItem(popup,"Copy", actionMaker(copyList))
+                    uiTools.addMenuItem(popup, "Delete", actionMaker(deleteList))
+                    uiTools.addMenuItem(popup, "Rename", actionMaker(renameList))
+                    popWithUniversalChoices()
+                }
+                def popWithAllDocChoices() :void {
+                    E.call(popup, "add(JMenuItem)", [appsMenu])
+                    uiTools.addMenuItem(popup,"Copy", actionMaker(copyList))
+                    uiTools.addMenuItem(popup, "Delete", actionMaker(deleteList))
+                    uiTools.addMenuItem(popup, "Rename", actionMaker(renameList))
+                    uiTools.addMenuItem(popup,"Properties", actionMaker(propertiesList))
+                    popWithUniversalChoices()
+                }
+                if (selectedFileNames.size() > 0) {
+                    if (selectedCells[0].isDir()) {
+                        traceline("is dir")
+                        popWithDirChoices()
+                    } else if (suffix == "capdesk-cap") {
+                        uiTools.addMenuItem(popup,"Open Edesk", actionMaker(openEDesk))
+                        popWithAllDocChoices()
+                    } else if (suffix == "caplet") {
+                        uiTools.addMenuItem(popup,"Install", actionMaker(installCaplet))
+                        def pathVow := myNavigatorRcvr <- getFileNamed(selectedFileNames[0]) <- getCanonicalPath()
+                        when (pathVow) -> done(path) :void {
+                            if (installedAppsManager.optAppBySourcePath(path) != null) {
+                                uiTools.addMenuItem(popup,"Run", actionMaker(runCaplet))
+                            }
+                            popWithAllDocChoices()
+                        } catch prob {traceline("popup caplet path prob: " + prob)}
+                    } else {popWithAllDocChoices() }
+                } else {
+                    popWithUniversalChoices()
+                }
+            }
+        }
+        def toolbarPane :=
+          JPanel`$upButton $homeButton $gotoButton $fullPathTextField.X `
+        def navPanelsPane := uiTools.makeGridRow([navPanelController1.getMainPanel(), navPanelController2.getMainPanel(), navPanelController3.getMainPanel()])
+        def realPane := JPanel`$toolbarPane
+$navPanelsPane.Y
+$statusPanel`
+        mainPane.add(realPane)
+        #refreshLocal()
+        navFrame.pack()
+        navFrame.show()
+
+        def resetPathField() :void {
+            when (navPanelController1.getDiskNavRcvr() <- getCurrentPath()) -> done(path) :void {
+                fullPathTextField.setText(path)
+            } catch prob {traceline("prob getting path" + prob)}
+
+        }
+        def navReactorForPathField {
+            to wentUp(c) :void {resetPathField()}
+            to jumped(c) :void {resetPathField()}
+            to openedDir(c) :void {resetPathField()}
+            match [verb, args] {}
+        }
+        navPanelController1.addNavReactor(navReactorForPathField)
+        navPanelController1.setDiskNavRcvr(myDiskNavigator)
+        resetPathField()
+
+        def  bind navigatorWindow {
+
+#        to getDiskNavigator(): any {diskNav1()}
+
+            /** */
+            to dupWindow() :void {
+                navigatorWindowMaker(myFtController, navPanelController1 <- dupDiskNavRcvr())
+            }
+            to gotoFieldName() :void {
+                navPanelController1.goto(fullPathTextField.getText())
+            }
+            to getStorageName(): any {myStorageName}
+            to refresh() :void {refreshLocal()}
+            to windowClosing() :void {navFrame.dispose()}
+            to goUp() :void {
+                #myDiskNavigator <- goUp()
+                #navigatorWindow refresh()
+                navPanelController1.goUp()
+            }
+            to goHome() :void {
+                #myDiskNavigator <- gotoHome()
+                #navigatorWindow refresh()
+                navPanelController1.gotoHome()
+            }
+            to openRemote() :void {myFtController.openRemote()}
+            to makeOverwriteAnswerer() :near {overwriteAnswererMaker()}
+            to connectionWarning(text) :near {connectionWarning(text)}
+            to makeFileProgressObserver(title, farFile) :near {fileProgressObserverMaker(title, farFile)}
+            to openEdesk() :void {
+                def fileNames := navPanelController1.getSelectedNames()
+                if (fileNames != null && fileNames.size() >0) {
+                    for each in fileNames {
+                        myFtController.openEdesk(myDiskNavigator <- getFileNamed(each))
+                    }
+                }
+            }
+            to  getRemoteConnectionURI(): any {
+                var uri  := null
+                def blah := superFrameMaker("")
+                def dialog := <awt:makeFileDialog>(blah, "Select a CapDesk FileServer")
+                dialog.show()
+                var path := dialog.getFile()
+                if (path != null) {
+                    path := dialog.getDirectory() + path
+                    uri := <file>[path].getText()
+                    traceline("connection is:" + uri)
+                }
+                uri
+            }
+        }
+    }
+
+}
+

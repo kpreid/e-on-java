@@ -1,0 +1,17 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def substFromProps(var text, props) :Twine {
+    var result := ""
+    while (text =~ `@left$${{@name}}@right`) {
+        result += left
+        def prop := props.fetch(name.bare(), thunk{})
+        if (null != prop) {
+            result += name.infect(prop, false)
+        }
+        text := right
+    }
+    result += text
+    result
+}
+

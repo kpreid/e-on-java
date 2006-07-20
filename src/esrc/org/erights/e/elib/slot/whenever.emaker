@@ -1,0 +1,381 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def Slot := <type:org.erights.e.elib.slot.Slot>
+def EverReporter := <type:org.erights.e.elib.slot.EverReporter>
+def EverReactor := <type:org.erights.e.elib.slot.EverReactor>
+
+/**
+ * Makes an everFormula, which is a "perpetually evaluating expression"
+ * involving a formula defined in terms of a list of input values, and a
+ * corresponding list of input {@link EverReporters} from which to obtain
+ * these values, and to find out when these values change.
+ * <p>
+ * The everFormula subscribes to each of its input Reporters. Whenever the
+ * everFormula receives a report that any of its inputs have changed, it is
+ * asked to recalculate the value of the formula.
+ * <p>
+ * An everFormula will typically be defined in a scope in which these inputs
+ * appear as variables (with an EverReporter as each variable's Slot).
+ * Therefore, these the input Reporters must be near. This is less of a
+ * constraint then it seems: If a desired input Reporter is remote, use
+ * {@link makeLamportSlot} to make a local object that acts as an Reporter
+ * for a local but stale and eventually consistent copy of the value.
+ * <p>
+ * The everFormula itself is an EverReporter whose value is the formula's most
+ * recently calculated value. Therefore, everFormulas can also be used as
+ * inputs for other everFormulas. This enables a weak form of one-way
+ * constraint programming, as found in spreadsheets.
+ * <p>
+ * An everFormula may range from a whenever-formula to a forever-formula. See
+ * {@link EverReporter}.
+ * <p>
+ * RACE CONDITION DANGER!  Although a lamportSlot used by itself has
+ * the kind of strong synchronous guarantees normally associated with
+ * Slots (a getValue() gets the most recently setValue()), when they are
+ * hooked together in Lamport Cells, they, and the Lamport Cell as a
+ * whole, have much weaker concurrency guarantees. Multiple Lamport
+ * Cells have no joint simultenaity guarantees, so a formula that
+ * depends on several such cells may calculate terribly inconsistent
+ * values as it takes snapshots despite the lack of simultenaety.
+ * Lamport Cells do guarantee eventual convergence to the current
+ * answer given continued interest, quiescence and lack of partition.
+ * Likewise, if the formula is side effect free or idempotent (strongly
+ * recommended), this creates a corresponding guarantee of converging on the
+ * correct calculated value.
+ *
+ * @author Mark S. Miller (with help from K. Eric Drexler)
+ * @author Kevin Reid
+ */
+def whenever {
+
+    /**
+     * <tt>interest</tt> defaults to <tt>thunk{false}</tt>.
+     * <p>
+     * This creates a whenever-formula rather than a forever-formula.
+     *
+     * @see EverReporter
+     */
+    to run(inputReporters :List[EverReporter], formula :near) :EverReporter {
+        whenever(inputReporters, formula, thunk{false})
+    }
+
+    /**
+     * @param inputReporters A list of inputReporters to be subscribed to.
+     * @param formula A no-argument function (whose instance variables will
+     *                typically the input variables whose slots are the
+     *                inputReporters), that computes and returns the current
+     *                value of the everFormula.
+     * @param interest If interest() returns true, then we are interested in
+     *                 being less stale even in the absence of other
+     *                 expressions of local interest.
+     */
+    to run(inputReporters :List[EverReporter],
+           formula :near,
+           interest :near) :EverReporter {
+
+        whenever.makePair(inputReporters, formula, interest)[0]
+    }
+
+    /**
+     * Like whenever/3, but returns a pair of an EverReporter and its
+     * EverReactor.
+     * <p>
+     * Useful if you want to manually subscribe the reactor to a dynamic set of
+     * inputs, but never unsubscribe from them, in which case this is more
+     * efficient than whenever.dynamic.
+     */
+    to makePair(inputReporters :List[EverReporter],
+                formula :near,
+                interest :near) :Tuple[EverReporter, EverReactor] {
+        whenever.makePairDynamic(inputReporters,
+                                 thunk{[formula(), []]},
+                                 interest)
+    }
+
+    /**
+     * Like whenever/2, but the formula should return a tuple of the result
+     * and additional near EverReporters which the result depends upon.
+     */
+    to dynamic(inputReporters :List[EverReporter],
+               pairFormula :near) :EverReporter {
+        whenever.makePairDynamic(inputReporters, pairFormula, thunk{false})[0]
+    }
+
+    /**
+     * Like whenever/3, but the formula should return a tuple of the result
+     * and additional near EverReporters which the result depends upon.
+     */
+    to dynamic(inputReporters :List[EverReporter],
+               pairFormula :near,
+               interest :near) :EverReporter {
+        whenever.makePairDynamic(inputReporters, pairFormula, interest)[0]
+    }
+
+    /**
+     * Takes arguments as whenever.dynamic/3 and returns as
+     * whenever.makePair/3.
+     */
+    to makePairDynamic(inputReporters :List[EverReporter],
+                       pairFormula :near,
+                       interest :near) :Tuple[EverReporter, EverReactor] {
+
+        # the value of the formula as a whole
+        var value := null
+
+        # Our own generation number for our value, for coordinating with
+        # EverReactors downstream from us.
+        var myGeneration := 0
+
+        # Those downstream waiting to hear this EverFormula report a change
+        # to its value.
+        var optReactors := null
+
+        # The subset of upstream inputReporters that have reported to us, but
+        # which we haven't yet re-subscribed with. This allows us to delay
+        # re-subscription until there's a demonstration of local interest.
+        # Each element is a pair of the Reporter and the Reporter's generation
+        # number as of their last report to us.
+        var optSources := null
+
+        # Reporters we will want to subscribe to if there is interest, but not
+        # more than once, unless the pairFormula thunk returns it again.
+        var dynamicSources := [].asSet()
+
+        # Reporters we've subscribed to, which we need to remember so we don't
+        # subscribe twice.
+        var dynamicSubscriptions := [].asSet()
+
+        # Generations from subscriptions we might want to resume
+        var oldDynamicGenerations := [].asMap()
+
+        def everFormula
+        def everFormulaReactor
+
+        /**
+         * Called internally when there's evidence of local interest in
+         * a current value.
+         * <p>
+         * Triggers any delayed reregistrations.
+         */
+        def localInterest() :void {
+            if (optSources != null) {
+                for [reporter, srcGen] in optSources {
+                    reporter.whenUpdated(everFormulaReactor, srcGen)
+                }
+                optSources := null
+            }
+            for reporter in dynamicSources {
+                reporter.whenUpdated(def dynamicSourceReactor {
+                    to reactToUpdate(_, newReporterGen :int, _) :void {
+                        oldDynamicGenerations with= (reporter, newReporterGen)
+                        everFormulaReactor <- update()
+                        dynamicSubscriptions without= reporter
+                    }
+                }, oldDynamicGenerations.fetch(reporter, thunk{-1}))
+                dynamicSubscriptions with= reporter
+            }
+            dynamicSources := [].asSet()
+        }
+
+        /**
+         * The everFormulaReactor is subscribed to each of the inputReporters
+         * so it can receive reports of state changes.
+         */
+        bind everFormulaReactor implements EverReactor {
+
+            /**
+             * Recalculate & report to downstream EverReactors
+             */
+            to update() :void {
+                def [newValue, newDynamicSources] := pairFormula()
+
+                dynamicSources :=
+                  newDynamicSources.asSet() &! dynamicSubscriptions
+
+                # Clean up oldDynamicGenerations: we only need entries for
+                # reporters which we plan to subscribe to, i.e. those in
+                # dynamicSources.
+                for reporter in oldDynamicGenerations {
+                    if (!dynamicSources.contains(reporter)) {
+                        oldDynamicGenerations without= reporter
+                    }
+                }
+
+                if (! Ref.isSettled(value) ||
+                      ! Ref.isSettled(newValue) ||
+                      value != newValue) {
+                    # If it's not known to be the same.
+
+                    value := newValue
+                    myGeneration += 1
+                    if (optReactors == null) {
+                        if (interest()) {
+                            # Although no one is interested in us at the
+                            # moment, we're interested anyway.
+                            localInterest()
+                        }
+                    } else {
+                        for reactor in optReactors {
+                            reactor <- reactToUpdate(value,
+                                                     myGeneration,
+                                                     everFormula)
+                        }
+                        optReactors := null
+                        # The fact that we had downstream reactors to report to
+                        # is sufficient demonstration of interest for us to
+                        # resubscribe to out inputs.
+                        localInterest()
+                    }
+                }
+            }
+
+            /**
+             *
+             */
+            to reactToUpdate(_,
+                             newReporterGen :int,
+                             optNewReporter :nullOk[EverReporter]) :void {
+                if (optNewReporter != null) {
+                    if (interest() || optReactors != null) {
+                        optNewReporter.whenUpdated(everFormulaReactor,
+                                                   newReporterGen)
+                    } else {
+                        if (optSources == null) {
+                            optSources := [].diverge()
+                        }
+                        optSources.push([optNewReporter, newReporterGen])
+                    }
+                }
+                # Since update is going to reread its input
+                # values, we needn't be concerned about
+                # whether newReporterGen is most recent we've heard,
+                # but we do need to use it when re-subscribing.
+                everFormulaReactor.update()
+            }
+        }
+
+        # initial connectivity
+        everFormulaReactor.update()
+        for reporter in inputReporters {
+            reporter.whenUpdated(everFormulaReactor)
+        }
+
+        /**
+         * The everFormula reports successively more recent values calculated
+         * by the formula.
+         */
+        bind everFormula implements EverReporter {
+
+            /**
+             * Synchronously returns the locally cached value, but also
+             * arranges for this value to become more current.
+             * <p>
+             * Only a watched Slot never spoils.
+             */
+            to getValue() :any {
+                localInterest()
+                value
+            }
+
+            to isFinal() :boolean { return false }
+            to readOnly() :Slot { return everFormula }
+
+            /**
+             * reactor wants to be informed of any changes more recent
+             * than my lastGeneration.
+             * <p>
+             * If we've got more recent news, let it know immediately.
+             * Otherwise, remember to inform it. In either case, this request
+             * demonstrates local interest.
+             */
+            to whenUpdated(reactor :EverReactor, lastGeneration :int) :void {
+                localInterest()
+                if (lastGeneration < myGeneration) {
+                    reactor <- reactToUpdate(value,
+                                             myGeneration,
+                                             everFormula)
+                } else {
+                    if (optReactors == null) {
+                        optReactors := [].diverge()
+                    }
+                    optReactors.push(reactor)
+                }
+            }
+
+            /**
+             * For initial connectivity.
+             */
+            to whenUpdated(reactor :EverReactor) :void {
+                everFormula.whenUpdated(reactor, -1)
+            }
+        }
+        [everFormula, everFormulaReactor]
+    }
+}
+
+
+
+
+? def makeLamportSlot := <elib:slot.makeLamportSlot>
+# value: <makeLamportSlot>
+
+? def a := makeLamportSlot(1)
+# value: <lamport 1 as of 0>
+
+? def b := makeLamportSlot(2)
+# value: <lamport 2 as of 0>
+
+? def c := makeLamportSlot(3)
+# value: <lamport 3 as of 0>
+
+? def l := makeLamportSlot([a])
+# value: <lamport [<lamport 1 as of 0>] as of 0>
+
+? def whenever := <elib:slot.whenever>
+# value: <whenever>
+
+? def m := whenever.dynamic([l], thunk{
+>     var out := []
+>     for x in l.getValue() {
+>         out with= x.getValue()
+>     }
+>     [out, l.getValue()]
+> })
+# value: <everFormula_23>
+
+? m.getValue()
+# value: [1]
+
+? a.setValue(11)
+? m.getValue()
+# value: [1]
+
+? m.getValue()
+# value: [11]
+
+? l.setValue([a, b, c])
+? m.getValue()
+# value: [11, 2, 3]
+
+? b.setValue(22)
+? m.getValue()
+# value: [11, 2, 3]
+
+? m.getValue()
+# value: [11, 22, 3]
+
+? a.setValue(111)
+? l.setValue([])
+? l.setValue([a, c])
+? m.getValue()
+# value: []
+
+? m.getValue()
+# value: [111, 3]
+
+? a.setValue(4)
+? b.setValue(5)
+? c.setValue(6)
+? m.getValue()
+# value: [4, 6]

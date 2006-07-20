@@ -1,0 +1,24 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class("java.awt.Menu",
+      statics(method(suppress, "run()"),
+              method(suppress, "run(String)"),
+              method(suppress, "run(String, boolean)")),
+      methods(method(suppress, "addNotify()"),
+              method(suppress, "removeNotify()"),
+              method(suppress, "isTearOff()"),
+              method(suppress, "getItemCount()"),
+              method(suppress, "countItems()"),
+              method(suppress, "getItem(int)"),
+              method(suppress, "add(MenuItem)"),
+              method(suppress, "add(String)"),
+              method(suppress, "insert(MenuItem, int)"),
+              method(suppress, "insert(String, int)"),
+              method(suppress, "addSeparator()"),
+              method(suppress, "insertSeparator(int)"),
+              method(suppress, "remove(int)"),
+              method(reject, "remove(MenuComponent)"),
+              method(suppress, "removeAll()"),
+              method(suppress, "paramString()"),
+              method(suppress, "getAccessibleContext()")))

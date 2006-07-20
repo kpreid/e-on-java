@@ -1,0 +1,17 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class(safe,
+      "javax.swing.JSpinner.DefaultEditor",
+      statics(method("run(JSpinner)")),
+      methods(method("dismiss(JSpinner)"),
+              method("getSpinner()"),
+              method("getTextField()"),
+              method("stateChanged(ChangeEvent)"),
+              method(suppress, "propertyChange(PropertyChangeEvent)"),
+              method(suppress, "addLayoutComponent(String, Component)"),
+              method(suppress, "removeLayoutComponent(Component)"),
+              method("preferredLayoutSize(Container)"),
+              method("minimumLayoutSize(Container)"),
+              method("layoutContainer(Container)"),
+              method("commitEdit()")))

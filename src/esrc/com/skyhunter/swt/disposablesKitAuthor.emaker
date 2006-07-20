@@ -1,0 +1,58 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+/**
+ * Author a {@link disposablesKitAuthor$disposablesKit disposablesKit}.
+ *
+ * @param display The SWT Display object for this thread.
+ */
+def disposablesKitAuthor {
+
+    to run(display, traceline) :near {
+        return disposablesKitAuthor(display)
+    }
+
+    to run(display) :near {
+        def <swt> := <import:org.eclipse.swt.*>
+        def makeables := ["Color", "Font", "Image"].asSet()
+        var createdObjects := [].asSet().diverge()
+
+        /**
+         * This is a kit of makers for the items that require the
+         * display to be passed as an argument during construction, and which
+         * also not-coincidentally need to be explicitly disposed after they
+         * are no longer needed.
+         * <p>
+         * It is intended that this kit be handed out to POLA objects that
+         * don't really need the display. The kit keeps track of all allocated
+         * objects, and can dispose of them itself.
+         * <p>
+         * The basic makers are formed by as "make<i>Name</i>(<i>args...</i>)"
+         * where args is a series of args that will be prefixed with the
+         * display as the first arg. Currently, making Color, Font, and Image
+         * is supported, as in, makeColor(0, 128, 0). These makers are
+         * constructed using E matches, so there is no separate edoc for each
+         * individual maker method
+         */
+        def disposablesKit {
+
+            to disposeAll() :void {
+                for each in createdObjects {each.dispose()}
+                createdObjects  := [].asSet().diverge()
+            }
+            to dispose(createdObj) :void {
+                createdObjects.remove(createdObj)
+                createdObj.dispose()
+            }
+            match [`make@name`, args] {
+                require(makeables.contains(name), thunk{`unexpected $name`})
+                def result := E.call(<swt:graphics.*>[`make$name`],
+                                     "run",
+                                     [display] + args)
+                createdObjects.addElement(result)
+                result
+            }
+        }
+        return disposablesKit
+    }
+}

@@ -1,0 +1,48 @@
+
+/**
+ * farOverwriteAnswerer uses state pattern with different functions for
+ * different behaviors.
+ * <p>
+ * it select the right function with lazy evaluation:
+ * if there's never a preexisting file to consider overwriting,
+ * no overwriting policy request ever goes to the user
+ */
+def makeOverwriteAnswerer (makeDialogVow): any {
+    def alwaysOverwrite(fileName) :any {true}
+    def neverOverwrite(fileName) :any {false}
+    def askOverwrite(fileName) :any {
+        def [answerPromise, resolver] := Ref.promise()
+        def answerDialog := makeDialogVow ("Overwrite?",
+                                           "Overwrite file " + fileName + "?",
+                                           null,
+                                           ["Yes","No"])
+        when (answerDialog) -> done(answer) :void {
+            resolver.resolve (answerDialog.getClickedButton() == "Yes")
+        } catch err {}
+        answerPromise
+    }
+    var answerFunctionSelectionAlreadyStarted := false
+    def [answerFunction,functionResolver] := Ref.promise()
+    def determineOverwritePlan() :void {
+        answerFunctionSelectionAlreadyStarted := true
+        def planDialogPromise := makeDialogVow ("OverwritePolicy",
+                                                "When should files be overwritten?",
+                                                null,
+                                                ["Always","Never","After Confirmation"])
+        when (planDialogPromise) -> done(planDialog) :void {
+            def button := planDialog.getClickedButton()
+            if (button == "Always") {
+                functionResolver.resolve(alwaysOverwrite)
+            }else if (button == "Never") {
+                functionResolver.resolve(neverOverwrite)
+            }else {functionResolver.resolve(askOverwrite)}
+        } catch err {}
+    }
+    def overwriteAnswerer {
+        to promiseOverwriteAnswer(fileName) :vow {
+            if (! answerFunctionSelectionAlreadyStarted) {determineOverwritePlan()}
+            answerFunction <- run(fileName)
+        }
+    }
+    overwriteAnswerer
+}

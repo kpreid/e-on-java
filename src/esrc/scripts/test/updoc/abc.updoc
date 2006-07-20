@@ -1,0 +1,48 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+?? in new vat vatB
+
+    ? (introducer.onTheAir()
+    >  var x := null
+    >  def bob {
+    >      to foo()       :any { 3 }
+    >      to setX(newX) :void { x := newX }
+    >      to getX()      :any { x }
+    >  }
+    >  def sr := makeSturdyRef(bob, timer.now() + 3_600_000)
+    >  def uri := introducer.sturdyToURI(sr)
+    >  <file:~/Desktop/bob.cap>.setText(uri))
+
+?? in new vat vatAC
+
+    ? (introducer.onTheAir()
+    >  def carol {
+    >      to bar() :any { 5 }
+    >  }
+    >  def uri := <file:~/Desktop/bob.cap>.getText().trim()
+    >  def sr := introducer.sturdyFromURI(uri))
+
+    ? def farBob := sr.getRcvr()
+    # value: <Eventual ref>
+
+    ? def result := farBob <- foo()
+    # value: <Eventual ref>
+
+    ? interp.waitAtTop(result)
+
+    ? result == 3
+    # value: true
+
+    ? farBob <- setX(carol)
+    # value: <Eventual ref>
+
+?? in vat vatB
+
+    ? def answer := x <- bar()
+    # value: <Eventual ref>
+
+    ? interp.waitAtTop(answer)
+
+    ? answer == 5
+    # value: true

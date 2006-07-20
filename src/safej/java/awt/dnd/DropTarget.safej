@@ -1,0 +1,27 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class("java.awt.dnd.DropTarget",
+      statics(method("run(Component, int, DropTargetListener, boolean, FlavorMap)"),
+              method("run(Component, int, DropTargetListener, boolean)"),
+              method("run()"),
+              method("run(Component, DropTargetListener)"),
+              method("run(Component, int, DropTargetListener)")),
+      methods(method("setComponent(Component)"),
+              method(suppress, "getComponent()"),
+              method("setDefaultActions(int)"),
+              method("getDefaultActions()"),
+              method("setActive(boolean)"),
+              method("isActive()"),
+              method("addDropTargetListener(DropTargetListener)"),
+              method("removeDropTargetListener(DropTargetListener)"),
+              method("dragEnter(DropTargetDragEvent)"),
+              method("dragOver(DropTargetDragEvent)"),
+              method("dropActionChanged(DropTargetDragEvent)"),
+              method("dragExit(DropTargetEvent)"),
+              method("drop(DropTargetDropEvent)"),
+              method("getFlavorMap()"),
+              method("setFlavorMap(FlavorMap)"),
+              method(suppress, "addNotify(ComponentPeer)"),
+              method(suppress, "removeNotify(ComponentPeer)"),
+              method("getDropTargetContext()")))

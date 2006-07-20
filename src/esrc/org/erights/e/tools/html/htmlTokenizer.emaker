@@ -1,0 +1,73 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+pragma.enable("escape-handler")
+
+def first__quasiParser := <import:org.erights.e.tools.text.first__quasiParser>
+
+def firstWhiteSpace := first__quasiParser.matchMaker("@{0}[ \t\n]@{1}")
+
+def htmlTokenizer(var html) :List[Twine] {
+    def buf := [].diverge(Twine)
+    while (html =~ first`@left[&<]@right`) {
+        buf.push(left)
+        switch (right) {
+            match twine`<@{var tag}>@rest` {
+                if (tag =~ `@_<@_`) {
+                    throw(twine`"<$tag>" isn't really a tag`)
+                }
+                escape ejector {
+                    def [name, attrs] :=
+                      firstWhiteSpace.matchBind([], tag, ejector)
+                    buf.push(twine`<${name.toUpperCase()} $attrs>`)
+                } catch _ {
+                    buf.push(twine`<${tag.toUpperCase()} >`)
+                }
+                html := rest
+            }
+            match twine`&@entity;@rest` {
+                buf.push(twine`&$entity;`)
+                html := rest
+            }
+            match _ {
+                buf.push(right(0,1))
+                html := right(1,right.size())
+            }
+        }
+    }
+    buf.push(html)
+    return buf.snapshot()
+}
+
+
+    ? def htmlTokenizer := <import:org.erights.e.tools.html.htmlTokenizer>
+    # value: <htmlTokenizer>
+
+    ? htmlTokenizer("foo<pre>bar")
+    # value: ["foo", "<PRE >", "bar"]
+
+    ? htmlTokenizer(`foo<b x="y">bar`)
+    # value: ["foo", "<B  x=\"y\">", "bar"]
+
+    ? htmlTokenizer("3 &lt; 4")
+    # value: ["3 ", "&lt;", " 4"]
+
+    ?
+# A bug we're just going to live with for now:
+
+    ? htmlTokenizer("3 < 4")
+    # value: ["3 ", "<", " 4"]
+
+    ?
+
+# How do real html parsers handle this?
+
+    ? htmlTokenizer("3 < 4<b>5")
+    # problem: "< 4<b>" isn't really a tag
+    #
+    #   throw("\"< 4<b>\" isn\'t really a tag")
+    #   <e object>()
+    #   org.erights.e.elang.interp.Loop@e4174e(<e object>)
+    #   <htmlTokenizer>("3 < 4<b>5")
+    #   <interactive interp> evalPrint(e`htmlTokenizer run("3 < 4<b>5")`)
+

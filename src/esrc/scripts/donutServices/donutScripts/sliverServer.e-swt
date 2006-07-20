@@ -1,0 +1,165 @@
+#!/usr/bin/env rune
+
+# Copyright 2005 Mark S. Miller, under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def Text := <type:org.eclipse.swt.widgets.Text>
+def SWT := <swt:makeSWT>
+def <widgets> := <swt:widgets.*>
+def <dnd> := <swt:dnd.*>
+def <swttools> := <import:org.erights.e.ui.swt.*>
+def <sky> := <import:com.skyhunter.*>
+def disposablesKit := <sky:swt.disposablesKitAuthor>(currentDisplay)
+
+def dndKit := <swttools:dndKitAuthor>(<dnd>,
+                                      currentDisplay,
+                                      <file>,
+                                      introducer,
+                                      makeSturdyRef)
+def RIGHT := SWT.getRIGHT()
+
+def Slot := <type:org.erights.e.elib.slot.Slot>
+def EverReporter := <type:org.erights.e.elib.slot.EverReporter>
+def EverReactor := <type:org.erights.e.elib.slot.EverReactor>
+def Throwable := <type:java.lang.Throwable>
+def makeLamportSlot := <elib:slot.makeLamportSlot>
+def whenever := <elib:slot.whenever>
+
+def sliverServer
+def price := sliverServer <- getSliverPrice()
+def &priceStr := makeLamportSlot("$???")
+when (price) -> d1(_) :void {
+    priceStr := "$"+`$price`
+} catch ex {
+    throw(ex)
+}
+def sliver
+
+def ssImage := disposablesKit.makeImage(
+    <resource:org/erights/e/icons/carrot2.gif>)
+
+def shell := <widgets:makeShell>(currentDisplay)
+shell.setText("Sliver Server")
+shell.setImage(ssImage)
+
+def winDisposeListener {
+    to widgetDisposed(event) :void {
+        interp.exitAtTop()
+    }
+}
+shell.addDisposeListener(winDisposeListener)
+
+def WHITE  := disposablesKit.makeColor(255,255,255)
+def PINK   := disposablesKit.makeColor(255,196,196)
+def ALMOND := disposablesKit.makeColor(255,255,196)
+
+def setColor(control, color) :void {
+    if (control !~ _ :Text) {
+        control.setBackground(color)
+    }
+    if (control.__respondsTo("getChildren", 0)) {
+        for child in control.getChildren() {
+            setColor(child, color)
+        }
+    }
+}
+
+def ssTarget := <widgets:makeLabel>(shell, SWT.getSHADOW_OUT())
+ssTarget.setImage(ssImage)
+var ssSet := false
+def ssSlot {
+    to getValue() :any {
+        return sliverServer
+    }
+    to setValue(newSS) :void {
+        if (!ssSet) {
+            bind sliverServer := newSS
+            ssSet := true
+        }
+    }
+    to isFinal() :boolean {
+        return ssSet
+    }
+}
+dndKit.makeDragSource(ssTarget, ssSlot)
+dndKit.makeDropTarget(ssTarget, ssSlot)
+ssTarget.setToolTipText(
+    "Drop or right-click-paste a Sliver Server to start")
+
+
+def bullseyeImage   := disposablesKit.makeImage(
+    <resource:org/erights/e/icons/bullseye.jpg>)
+def depositTarget   := <widgets:makeLabel>(shell, 0)
+depositTarget.setImage(bullseyeImage)
+depositTarget.setToolTipText(
+    "Drop or right-click-paste to deposit a payment")
+
+def depositSlot {
+    to setValue(payment) :void {
+        when (payment) -> d1(p) :void {
+            def sliverVow := sliverServer <- buyNewSliver(p) <- getRcvr()
+            when (sliverVow) -> d2(s) :void {
+                bind sliver := s
+            } catch ex {
+                throw(ex)
+            }
+        } catch ex {
+            throw(ex)
+        }
+    }
+    to isFinal() :boolean { return false }
+}
+dndKit.makeDropTarget(depositTarget, depositSlot)
+
+def sliverSource := <widgets:makeLabel>(shell, SWT.getSHADOW_OUT())
+def sliverImage   := disposablesKit.makeImage(
+    <resource:org/erights/e/icons/POLAbear5Tiny.gif>)
+sliverSource.setImage(sliverImage)
+dndKit.makeDragSource(sliverSource, &sliver)
+sliverSource.setToolTipText(
+    "Drag or right-click-copy a Sliver")
+
+
+
+
+Ref.whenBrokenOnly(sliver, def reactor(_) :void {
+    setColor(shell, PINK)
+})
+when (sliver) -> d2(_) :void {
+    setColor(shell, ALMOND)
+} catch ex {
+    throw(ex)
+}
+
+swtGrid`$shell:
+        $ssTarget      ${"Sliver Server"}.X
+        $depositTarget ${"Deposit "} ${[&priceStr, RIGHT]} ${" to get..."}
+        ${""}.X.Y
+        $sliverSource  ${"...a sliver"}`
+
+if (interp.getProps().fetch("e.osdir", thunk{}) == "linux-motif") {
+    println("skipping font adjustment on linux-motif to avoid bug")
+} else {
+    def setFont(control, font) :void {
+        control.setFont(font)
+        if (control.__respondsTo("getChildren", 0)) {
+            for child in control.getChildren() {
+                setFont(child, font)
+            }
+        }
+    }
+    def fontData := shell.getFont().getFontData()[0]
+    fontData.setHeight(fontData.getHeight() + 4)
+    def font := disposablesKit.makeFont(fontData)
+    setFont(shell, font)
+}
+
+setColor(shell, PINK)
+
+shell.pack(true)
+shell.open()
+introducer.onTheAir()
+interp.blockAtTop()
+
+# rune(["~/e/src/esrc/scripts/donutServices/donutScripts" +
+#       "/sliverServer.e-swt"])

@@ -1,0 +1,15 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class("java.awt.event.WindowAdapter",
+      statics(method(suppress, "run()")),
+      methods(method(suppress, "windowOpened(WindowEvent)"),
+              method(suppress, "windowClosing(WindowEvent)"),
+              method(suppress, "windowClosed(WindowEvent)"),
+              method(suppress, "windowIconified(WindowEvent)"),
+              method(suppress, "windowDeiconified(WindowEvent)"),
+              method(suppress, "windowActivated(WindowEvent)"),
+              method(suppress, "windowDeactivated(WindowEvent)"),
+              method(suppress, "windowStateChanged(WindowEvent)"),
+              method(suppress, "windowGainedFocus(WindowEvent)"),
+              method(suppress, "windowLostFocus(WindowEvent)")))

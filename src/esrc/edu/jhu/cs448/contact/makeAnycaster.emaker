@@ -1,0 +1,145 @@
+#!/usr/bin/env rune
+
+# Copyright 2004 Mark S. Miller, under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+# Based on a design by Christian Scheideler
+
+# A Ticket is any integer (without bound) starting at 0
+def Ticket := int >= 0
+
+def Resolver := <type:org.erights.e.elib.ref.Resolver>
+
+def Throwable := <type:java.lang.Throwable>
+
+def <contact> := <import:edu.jhu.cs448.contact.*>
+
+def makeOpenQueue := <contact:makeOpenQueue>
+
+/**
+ * Callback messages, for getting notification about how a stream of sent
+ * messages is doing, as they hopefully proceed towards being delivered to at
+ * least one target.
+ */
+interface StatusObserver {
+
+    /**
+     * When this ticket is properly acked
+     */
+    to noticeCommit(ticket :Ticket) :void
+
+    /**
+     * A ticket is skipped if a later ticket number is first committed.
+     * <p>
+     * Currently, we're not sure if this case can ever happen if all
+     * deliverators of this abstract service are well behaved. (A proof one way
+     * or the other would be very satisfying.) For messages that are skipped,
+     * the promises for their results become broken.
+     */
+    to noticeSkip(ticket :Ticket) :void
+
+    /**
+     * When this ticket is "redundantly" acked, meaning either that this same
+     * ticket has already been committed or skipped.
+     */
+    to noticeRedundant(ticket :Ticket) :void
+
+    /**
+     * If our current deliverator becomes broken, this reports the excuse
+     * explaining the alleged reasons for breakage, and the earliest ticket
+     * that remains unacknowleged at this time.
+     * <p>
+     * When this happens, we attempt to recover by obtaining a promise for a
+     * new deliverator, and resending all messages starting with that ticket.
+     */
+    to noticeExcuse(excuse :Throwable, ticket :Ticket) :void
+}
+
+
+/**
+ *
+ * @param accessor Can be an accessor, as made by
+ *                 contactKitAuthor/makeAccessor, or a SturdyRef, or anything
+ *                 which responds to getRcvr() with a rcvr[Deliverator].
+ */
+def makeAnycaster(entropy, accessor, statusObserver) :any {
+    def [enq, deq] := makeOpenQueue(0)
+    var deliverator := accessor.getRcvr()
+
+    def recover
+
+    def committer {
+
+        /**
+         * Note that result need not be resolved.
+         */
+        to commit(ticket :Ticket, result) :void {
+            if (ticket < deq.getNextServing()) {
+                statusObserver <- noticeRedundant(ticket)
+
+            } else if (ticket > enq.getNextTicket()) {
+                deliverator := Ref.broken(`Ticket $ticket not issued yet`)
+                # BUG: Oops, no reason to expect we'll pick a different
+                # provider this time. If we pick the same provider, we're
+                # likely not to make any progress, since he's likely still
+                # confused (or we are).
+                recover()
+
+            } else {
+                while (ticket > deq.getNextServing()) {
+                    def [_, _, resolver] := deq.dequeue()
+                    resolver.smash("result skipped")
+                    statusObserver <- noticeSkip(ticket)
+                }
+                require(ticket == deq.getNextServing(), thunk{`can't happen`})
+                def [_, _, resolver] := deq.dequeue()
+                resolver.resolve(result)
+                statusObserver <- noticeCommit(ticket)
+            }
+        }
+
+        to __reactToLostClient(excuse) :void {
+            deliverator := Ref.broken(excuse)
+            recover()
+        }
+    }
+    def committerID := entropy.nextSwiss()
+
+    def send(ticket :Ticket, msgRecord) :void {
+        def [verb :String, args :List, resolver :Resolver] := msgRecord
+        deliverator <- deliver(verb, args, committer, committerID, ticket)
+    }
+
+    bind recover() :void {
+        if (Ref.optProblem(deliverator) =~ excuse :notNull) {
+            statusObserver <- noticeExcuse(excuse, deq.getNextServing())
+            deliverator := accessor.getRcvr()
+            # resend all uncommitted messages
+            for ticket => msgRecord in deq {
+                send(ticket, msgRecord)
+            }
+        }
+    }
+
+    /**
+     * At-least-once delivery with error control and flow control, given the
+     * cooperation of a deliverator on the other side.
+     */
+    def anycaster {
+        match [`__respondsTo`, [_, _]] { return false }
+        match [`__getAllegedType`, []] { return null }
+        match [verb, args] {
+            recover()
+
+            # This looses promise pipelining, but such is the price of
+            # fault-tolerant at-least-once delivery. Oh well, we still retain
+            # normal message pipelining.
+            def [result, resolver] := Ref.promise()
+            def msgRecord := [verb, args, resolver]
+            def ticket := enq.enqueue(msgRecord)
+            send(ticket, msgRecord)
+            result
+        }
+    }
+    return anycaster
+}

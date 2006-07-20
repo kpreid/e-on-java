@@ -1,0 +1,51 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+/**
+ * Makes a textSelector for selecting text in a given textPane
+ * representing a given url.
+ * <p>
+ * XXX now we need something which will find and open a textPane given a url.
+ *
+ * @author Mark S. Miller
+ * @author Modified to support SWT by marc stiegler, 8/4/2002
+ */
+def textSelectorMaker(textPane, paneUrl) :any {
+    def textSelector {
+
+        /**
+         * If optTwine isn't null, and it's not bare, and the urls
+         * match, then select that span in the textPane, grab the
+         * focus, and pop to the top.
+         * <p>
+         * XXX Todo: if optTwine is discontiguous, select discontiguous spans.
+         *
+         * @return Whether selection happened.
+         */
+        to selectSpan(optTwine) :boolean {
+            if (optTwine == null) {
+                return false
+            }
+            def optSpan := optTwine.getOptSpan()
+            if (optSpan == null) {
+                return false
+            }
+            def url := optSpan.getUrl()
+            if (url != paneUrl) {
+                return false
+            }
+            # "-1" because getLineStartOffset is 0 index origin
+            def line1pos := textPane.getOffsetAtLine(optSpan.getStartLine() -1)
+            textPane.setCaretOffset(line1pos + optSpan.getStartCol())
+            def line2pos := textPane.getOffsetAtLine(optSpan.getEndLine() -1)
+            #textPane moveCaretPosition(line2pos + optSpan getEndCol() +1)
+
+            textPane.setSelection(textPane.getCaretOffset(),
+                line2pos + optSpan.getEndCol() +1)
+            textPane.showSelection()
+
+            #HocusFocusMaker requestFocus(textPane)
+            true
+        }
+    }
+}

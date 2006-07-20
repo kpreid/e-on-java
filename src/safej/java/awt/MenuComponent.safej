@@ -1,0 +1,16 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class(safe,
+      "java.awt.MenuComponent",
+      statics(method("run()")),
+      methods(method("getName()"),
+              method("setName(String)"),
+              method(suppress, "getParent()"),
+              method(suppress, "getPeer()"),
+              method("getFont()"),
+              method("setFont(Font)"),
+              method(suppress, "removeNotify()"),
+              method(suppress, "postEvent(Event)"),
+              method(suppress, "dispatchEvent(AWTEvent)"),
+              method(suppress, "getAccessibleContext()")))

@@ -1,0 +1,18 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class(safe,
+      "javax.swing.DefaultCellEditor",
+      statics(method("run(JTextField)"),
+              method("run(JCheckBox)"),
+              method("run(JComboBox)")),
+      methods(method("getComponent()"),
+              method("setClickCountToStart(int)"),
+              method("getClickCountToStart()"),
+              method("getCellEditorValue()"),
+              method("isCellEditable(EventObject)"),
+              method("shouldSelectCell(EventObject)"),
+              method("stopCellEditing()"),
+              method("cancelCellEditing()"),
+              method("getTreeCellEditorComponent(JTree, Object, boolean, boolean, boolean, int)"),
+              method("getTableCellEditorComponent(JTable, Object, boolean, int, int)")))

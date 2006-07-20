@@ -1,0 +1,120 @@
+TODO:
+. todos
+. parse emakers and launched files as a single Sequence expression
+  msm: only emakers, not launched files
+. copy nodes for lazy outer resolution
+
+. discuss protected vs. package
+. send coding conventions
+. send agorics open systems papers
+
+DONE:
+. check out notes.txt
+. rename FrameVarNounExpr.java LocalVarNounExpr.java
+. rename Frames to Fields
+. rename FrameVarNounExpr.java LocalVarNounExpr.java
+. track the number of active outers
+. implement getSlot and put for Scopes
+. top-level locals
+. clean up mutable scopes
+. arrange so that locals don't need to grow
+. bindSlot
+. move LoaderScope, PackageScope, and UnsafeLoaderScope into a separate
+      hierarchy
+. get mutable scopes working
+. send notes.txt to markm
+. copy nodes for scopeLayout, source positions,
+
+NOTES:
+. New locals are introduced by the top of the world, method, matcher, loop
+. staticScope is called in computeStaticScope, ExpandedEBuilder, and eval()
+. IgnorePattern should not be a kernel type; it's just a degenerate case of
+      FinalPattern.
+. mutable scopes are only when interacting with the user
+    . command line
+    . elmer
+    . updoc
+    . never for a lazy evaluation
+- each top level expression in an emaker evaluates separately
+    - semanticaly complicted and unnecessary
+. emakers see top level expressions within the emaker as outers.
+.? should top-level defs in an emaker shadow outers (e.g., println)
+    . yes
+    . they should be outers though, just with a different offset
+
+. The bindings go into each ENode
+
+Optimizations:
+. universal constants should be defined in a singleton
+. have Slot types for common scalars
+. have a special range of variables or supporting FinalNoun types for scalars
+. make override fillInStackTrace in Ejector
+. linearly search for eq classnames in HONORARY
+. separate selfless and non-selfless classes in const and __equalizer
+. Ejection is now a runtime exception, and the Ejector does not need asSafe
+
+Starting it:
+simple.e makeprettydean.e eChat.e
+
+Interp VTable
+
+Reference:
+<import:foo> => <import>.get("foo")
+
+final normal form vs slot normal form
+
+gc:
+    #? force full gc required?
+    #? is conservative allowed?
+      msm: yes
+loops:
+    #? termination
+      msm: changed to testing thunk's boolean return. See LoopBody
+    #? contour
+architecture:
+    #? flat closures vs. display lists
+        . use flat closures
+    #? debugging?
+    #? antlr
+kernel E:
+    #? move to slot normal form
+    #? preserve hide
+    #? no embedded defs or vars
+    #? list expansion
+    #? what do you have to know to understand the java mapping
+    #?! kernel E is the contract between unprivileged computation
+       and the virtual machine
+
+DONE:
+x Scopes must respond to getValue(String)
+x make universal constants into universal nouns and don't have
+  them in the eval context
+x have a UniversalNoun and a LazyNoun that when asked for the
+  copy with source positions, returns a new, no longer lazy
+  UniversalNoun
+x remove lamport stuff out of the universal scope
+x Loading an emaker is an eval.
+x compute the maximum allocated # of locals for each stack frame
+x rename VarNounExprs to SlotNounExprs, and then add a VarNounExpr set that
+  store there as Finals do. (for single closure vars)
+x scope objects should have a Bindings and an EvalContext that has values for
+  the specified bindings
+x add a contour boundary in the scope map. Have the with() operation
+  fail with AlreadyDefined
+- for outers, the slot must be reassignable. Therefore, make each
+  OuterNounExpr point directly at its slot object. Then the slot
+  is "compiled in" to the code.
+- when asked for a slot by name, the global slot should return one that
+  indirects through the OuterNounExpr
+x eval is sent to a kernel tree. It assign-transforms the tree and then
+  subEvals it.
+
+. ParseNode
+    ENode
+        EExpr
+        Pattern
+        EScript
+        EMethod
+        EMatcher
+  MethodNode
+    EMethodNode

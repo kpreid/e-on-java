@@ -1,0 +1,123 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+/**
+ * A simple interim arg parser to be used only until we have a
+ * decent one.
+ *
+ * @param optionDescs A map from option names to option descs.
+ *                    An optionDesc is either a Term of the form
+ *     <pre>
+ *     option(optionName, comment)
+ *     </pre> where <ul>
+ *       <li><i>optionName</i> is the name after the "--", and is used
+ *           as the key in the optionDescs map and the returned map.
+ *       <li><i>comment</i> not used here, but useful for generating
+ *           a help summary.<li>
+ *     </ul> for options that have no argument, or a Term of the form
+ *     <pre>
+ *     option(optionName, argName, quant, comment)
+ *     </pre> where the additional arguments are <ul>
+ *       <li><i>argName</i> is the name of the
+ *           argument. For parsing, the name is not significant, but
+ *           it's useful for generating help text.
+ *       <li><i>quant</i> is one of <tt>one</tt>, <tt>zeroOrOne</tt>,
+ *           <tt>zeroOrMore</tt>, or <tt>oneOrMore</tt>. The last
+ *           three correspond to the conventional regex '?', '*', and
+ *           '+' respectively.
+ *     </ul> for options with an argument. Options without an argument
+ *     implicitly have quant <tt>zeroOrOne</tt>.
+ * @param args The list of argument strings to be parsed.
+ * @return A pair of an options map and the remaining argument list.
+ *         The options map is a map from optionName to a non-empty list
+ *         of argument values. (The empty case is represented instead by
+ *         absence.) For options that don't take an argument, when present,
+ *         the value is true.
+ * @author Mark S. Miller
+ */
+def interimArgParser(optionDescs, var args) :near {
+    def optionsMap := [].asMap().diverge()
+    while (true) {
+        switch (args) {
+            match [`--`] + rest {
+                args := rest
+                break
+            }
+            match [`--@optionName`] + rest {
+                def desc := optionDescs[optionName]
+                if (desc =~ term`option(@name, @comment)`) {
+                    require(name.getOptString() == optionName,
+                            thunk{`bad description: $name`})
+                    require(!(optionsMap.maps(optionName)),
+                            thunk{`--$optionName may appear at most once`})
+                    optionsMap[optionName] := true
+                    args := rest
+                } else {
+                    def term`option(@name, @argName, @quant, @comment)` := desc
+                    require(name.getOptString() == optionName,
+                            thunk{`bad description: $name`})
+                    require(rest =~ [arg] + rest2,
+                            thunk{`option --$optionName expects an argument`})
+                    def list := optionsMap.fetch(optionName, thunk{[]}) + [arg]
+                    # Don't check quant yet, but wait till we're done
+                    optionsMap[optionName] := list
+                    args := rest2
+                }
+            }
+            match [`-@option`] + rest {
+                throw(`-$option unrecognized`)
+            }
+            match _ {
+                break
+            }
+        }
+    }
+
+    # check quants
+    for optionName => desc in optionDescs {
+        if (desc =~ term`option(@name, @comment)`) {
+            def value := optionsMap.fetch(optionName, thunk{true})
+            require(value == true,
+                    thunk{`unrecognized --$optionName value: $value`})
+        } else {
+            def term`option(@name, @argName, @quant, @comment)` := desc
+            def list := optionsMap.fetch(optionName, thunk{[]})
+            def num := list.size()
+            switch (quant) {
+                match term`one` {
+                    require(num == 1,
+                            thunk{`must have exactly one --$optionName`})
+                }
+                match term`zeroOrOne` {
+                    require(num <= 1,
+                            thunk{`must have at most one --$optionName`})
+                }
+                match term`zeroOrMore` {
+                    # any num is fine
+                }
+                match term`oneOrMore` {
+                    require(num >= 1,
+                            thunk{`must have at least one --$optionName`})
+                }
+            }
+        }
+    }
+    [optionsMap.snapshot(), args]
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

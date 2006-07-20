@@ -1,0 +1,16 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def extractChildNodes(tag, node) :near {
+    def nodes := [].diverge()
+    for each in node {
+        if (each.getNodeType() == 1 &&
+            each.getTagName() == tag) {
+            nodes.push(each)
+        }
+    }
+    nodes.snapshot()
+}
+
+ #def tree := sml`<a> <b> <c>blah</c></b></a>`
+# println("b of Tree: " + extractChildNodes("b", tree))

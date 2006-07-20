@@ -1,0 +1,15 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+class(safe,
+      "javax.swing.event.TreeSelectionEvent",
+      statics(method(suppress, "run(Object, TreePath[], boolean[], TreePath, TreePath)"),
+              method(suppress, "run(Object, TreePath, boolean, TreePath, TreePath)")),
+      methods(method("getPaths()"),
+              method("getPath()"),
+              method("isAddedPath()"),
+              method("isAddedPath(TreePath)"),
+              method("isAddedPath(int)"),
+              method("getOldLeadSelectionPath()"),
+              method("getNewLeadSelectionPath()"),
+              method(suppress, "cloneWithSource(Object)")))

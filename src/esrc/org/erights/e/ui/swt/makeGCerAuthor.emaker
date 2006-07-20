@@ -1,0 +1,111 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def <swt> := <import:org.eclipse.swt.*>
+def <widget> := <swt:widgets.*>
+def SWT := <swt:makeSWT>
+
+def Timer := <type:org.erights.e.extern.timer.Timer>
+def <swtType> := <type:org.eclipse.swt.*>
+def <widgetType> := <swtType:widgets.*>
+def Shell    := <widgetType:Shell>
+def Menu     := <widgetType:Menu>
+def MenuItem := <widgetType:MenuItem>
+def ToolBar  := <widgetType:ToolBar>
+def ToolItem := <widgetType:ToolItem>
+def Group    := <widgetType:Group>
+def Image    := <swtType:graphics.Image>
+
+def <swttools> := <import:org.erights.e.ui.swt.*>
+def swtGrid__quasiParser := <swttools:swtGridQParserMaker>()
+
+def whenever := <elib:slot.whenever>
+def EverReporter := <type:org.erights.e.elib.slot.EverReporter>
+
+def abbrevNum(num :int) :String {
+    `${num >> 20}M`
+}
+
+/**
+ * Makes the pair of widgets used to see memory usage and to cause a garbage
+ * collect.
+ *
+ * @param runtime A {@link Runtime}, or a facet on one that provides the
+ *                methods about memory usage and garbage collection:<ul>
+ *                <li>{@link Runtime#gc()}
+ *                <li>{@link Runtime#freeMemory()}
+ *                <li>{@link Runtime#totalMemory()}
+ *                </ul>
+ * @param timer Used to poll runtime's memory usage indicators.
+ */
+def makeGCerAuthor(runtime, timer :Timer, abstractAction) :near {
+
+    def labelText() :String {
+        def totalMem := runtime.totalMemory()
+        def freeMem := runtime.freeMemory()
+        def usedMem := totalMem - freeMem
+        `${abbrevNum(usedMem)} of ${abbrevNum(totalMem)}`
+    }
+
+    def makeGCer {
+
+        /**
+         * intervalMillis defaults to 1000 milliseconds, so the display is
+         * refreshed no more often than once a second.
+         */
+        to run(parent) :near {
+            makeGCer(parent, 1000)
+        }
+
+        /**
+         * Makes a pair of widgets, and makes and returns a gCer from which
+         * these widgets may be gotten.
+         *
+         * @param parent The widget within which makeGCer will make its
+         *               widgets. The caller must do any layout which is
+         *               required.
+         * @param intervalMillis How often should the memory usage display be
+         *                       updated?
+         */
+        to run(parent, intervalMillis :int) :near {
+
+            def label := <widget:makeLabel>(parent, 0)
+            label.setText(labelText())
+            def clock := timer.every(intervalMillis, def reactor(_) :void {
+                if (label.isDisposed()) {
+                    clock.stop()
+                } else {
+                    label.setText(labelText())
+                }
+            })
+            clock.start()
+
+            def toolBar :=
+              <widget:makeToolBar>(parent, SWT.getFLAT() | SWT.getHORIZONTAL())
+
+            /**
+             *
+             */
+            def doGC extends abstractAction(doGC) {
+                to run() :void {
+                    runtime.gc()
+                }
+                to getLabel()            :String { "&Garbage Collect" }
+                to getOptTip()           :String { "Reclaim unused memory" }
+                to getOptIconFQName()    :String {
+                    "com/skyhunter/e/icons/gc16-16.gif"
+                }
+            }
+            var toolMap := [].asMap().diverge()
+            doGC.makeToolItem(toolBar, toolMap)
+            toolMap := toolMap.snapshot()
+
+            def gCer {
+                to getLabel() :near { label }
+                to getToolBar() :near { toolBar }
+                to getGCAction() :near { doGC }
+                to getToolMap() :near { toolMap }
+            }
+        }
+    }
+}

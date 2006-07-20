@@ -1,0 +1,113 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+/**
+ * An identifier is any Java identifier that has no dollar signs.
+ */
+def isIdentifierStart(c :char) :boolean {
+    <import:java.lang.makeCharacter>.isJavaIdentifierStart(c) &&
+      c != '$'
+}
+
+def analyzeOutlineFuncAuthor(traceline) :near {
+
+    /**
+     * Analyzes source code and returns lists of functions, makers, and
+     * variables suitable for being passed to the textModel setLines() method.
+     *
+     * @param sourceText The source code to be analyzed for summary
+     *                   information for an outline
+     * @return [outlineList,outlineIndices,varLineList,varLineIndices] The
+     *         outline is a list of functions, objects, and makers, and the
+     *         varline is the list of variable declarations. The indices are
+     *         the line numbers of the items, starting from zero. All the
+     *         elements in both lists are indented 1 space for each level of
+     *         nesting.
+     */
+    def analyzeSource (sourceText) :near {
+        def computeIndent(leadString) :any {
+            var spaceCount := 0
+            var indentCount := 0
+            for each in leadString {
+                if (each == '\t') {
+                    indentCount += 1
+                } else if (each == ' ') {
+                    spaceCount += 1
+                }
+            }
+            indentCount := indentCount + (spaceCount // 4)
+            " " * (indentCount)
+        }
+        def newFuncList := [].diverge()
+        def funcLineIndices := [].diverge()
+        def newVarList := [].diverge()
+        def varLineIndices := [].diverge()
+        var declarationType := ""
+        var leader := ""
+        var postDeclaration := ""
+
+        traceline("beginning outline analysis")
+        for eachIndex => each in sourceText.split("\n") {
+            # first ascertain if this line has "def " or "interface "
+            # in front
+            postDeclaration := ""
+            if (each =~ `@{defLeader}def @postDef`) {
+                leader := defLeader
+                postDeclaration := postDef.trim()
+                declarationType := "def"
+            } else if (each =~ `@{classLeader}interface @postClass`) {
+                leader := classLeader
+                postDeclaration := postClass.trim()
+                declarationType := "interface"
+            } else if (each =~ `@{toLeader}to @postTo`) {
+                leader := toLeader
+                postDeclaration := postTo.trim()
+                declarationType := "to"
+            } else if (each =~ `@{varLeader}var @postVar`) {
+                leader := varLeader
+                postDeclaration := postVar.trim()
+                declarationType := "var"
+            } else if (each =~ `@{varLeader}bind @postBind`) {
+                leader := varLeader
+                postDeclaration := postBind.trim()
+                declarationType := "bind"
+            }
+            # if it looks like a interface or def, using an open
+            # brace, process it as such
+            if (postDeclaration.size() != 0 && leader.trim().size() == 0) {
+                # if this is a def/interface, is it an object
+                # definition with a "{"?
+                try {
+                    # if this uses a brace in the declaration, it
+                    # is a func
+                    if (postDeclaration =~ `@nameArea{@theEnd` &&
+                          (isIdentifierStart(nameArea[0]))
+                       ) {
+                        def indent := computeIndent(leader)
+                        def entry := `$indent $declarationType $nameArea`
+                        newFuncList.push(entry)
+                        funcLineIndices.push(eachIndex)
+                        # otherwise, is this a define of a variable?
+                    } else if (postDeclaration =~ `@nameArea:=@theEnd` &&
+                                 (isIdentifierStart(nameArea[0]) ||
+                                    nameArea[0] == '[')
+                              ) {
+                        def indent := computeIndent(leader)
+                        newVarList.push(`$indent $nameArea`)
+                        varLineIndices.push(eachIndex)
+                    } else if (isIdentifierStart(postDeclaration[0])){
+                        # this is probably a def blah promise declaration
+                        def indent := computeIndent(leader)
+                        newFuncList.push(`$indent $declarationType $postDeclaration`)
+                        funcLineIndices.push(eachIndex)
+                    }
+                } catch innerDefE {
+                    traceline(`caught inner def e $innerDefE$\nOn: $each`)
+                }
+            }
+        }
+
+        traceline("completed analysis, returning result array")
+        [newFuncList.snapshot(), funcLineIndices.snapshot(), newVarList.snapshot(), varLineIndices.snapshot()]
+    }
+}

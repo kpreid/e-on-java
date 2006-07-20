@@ -1,0 +1,52 @@
+
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def stringDataKit {
+    to getUrlProtocolHelp() :String {
+"<html><b><i>Warning! </i></b>The <b>file</b> protocol is very powerful,
+it can read every file on your disk. It cannot enable a cracker to take control
+of your computer, but it does put all your confidential data at risk if combined with
+any of the other protocols in this tab.
+<p><b>General Rating: </b>Medium-high power <br>
+<b>Legitimate applications: </b> Web browsers, FTP servers, some chat programs
+ <br><b>Risks: </b>
+A program granted URL protocols can transmit any data you supply the program to
+anyone on the network. So be careful about granting both read authority on your
+confidential files and URL protocols to the same program.<br>
+The program can also receive orders from other people through these protocols.
+<br>These protocols can be used in denial of service attacks on other people by
+the program.
+<br> URL protocols cannot be directly used to gain control of your computer. However,
+any attempt to gain control of your system is likely to include a request for these
+protocols so that the attacker can communicate with the suborned system.
+</html>"
+    }
+
+    to getServerHelp() :String {
+"<html><b><i>Warning </i></b>If you give an app a server port, then almost
+anyone can connect with the app from outside, give directions, and receive
+information. This authority cannot enable a cracker to take control of your
+computer, nor can it be used to engage in denial of service attacks on other
+people from your computer, but all files to which you grant access for this
+app can be requested
+and read by anyone in the world.
+<p><b>General Rating: </b>Medium-high power<br>
+<b>Legitimate applications: </b> Web servers, FTP servers, other similar
+service-offering applications
+<br><b>Risks: </b> A program granted server authorities can be reach and
+communicated with from anywhere on the web. The remote people can ask for
+any data that the app has been granted access to.
+</html>"
+    }
+
+    to getPetHelp() :String {
+"<html>The Pet Name is your personal name for this program.
+<p> The File Extension is the last part of the names of documents
+which will be opened with this caplet by default
+<p> The Pet Icon is the image that will be placed in the top left
+corner of all windows opened by this caplet
+</html>"
+    }
+}
+

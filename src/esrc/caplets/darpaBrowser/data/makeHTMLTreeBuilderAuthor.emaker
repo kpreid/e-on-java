@@ -1,0 +1,214 @@
+
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+/**
+ * Builds an HTMLTree of HTMLNodes. First getHandler() and use it in a
+ * EParserCallback for a ParseDelegator
+ * to build the tree. Then getTreeVow to get the tree; at the
+ * end of the parse, the vow will be resolved.
+ *
+ * @param makeUrl A url Maker that can create a url from either an absolute
+ *                or relative url string taken from an href attribute.
+ * @param urlRequestReactor Object to be informed if the renderer requests
+ *                          a new page. The reactor must accept the message
+ *                          gotoURL(url)
+ * @param traceline Trace output
+ */
+def makeHTMLTreeBuilderAuthor(makeUrl, urlRequestReactor, traceline) :near {
+
+
+    def makeUrlCarrier(urlString) :near {
+        def url := makeUrl(urlString)
+        def urlCarrier {
+            to getHref() :String {urlString}
+            to run() :void {
+                traceline(`urlCarrier requesting goto: $url`)
+                urlRequestReactor.goToURL(url)
+            }
+
+            /**
+             * submit Stub demonstrating where form data would be handled
+             */
+            to submit(queryString) :void {
+                traceline("urlCarrier got submit: " + queryString)
+            }
+        }
+    }
+
+    def makeImageCarrier(urlString) :near {
+        def url := makeUrl(urlString)
+        def imageCarrier {
+            to get() :near {
+                traceline("getting image")
+                <import:javax.swing.ImageIcon>(url)
+            }
+            to src() :String {urlString}
+        }
+    }
+
+    /**
+     * makeHTMLNode Immutable html tag or text node maker
+     *
+     * @param tag The html tag, such as h1 or b. the angle brackets are
+     *            stripped off
+     * @param text The text for this node. If the tag is "", this is a text
+     *             node. If the tag is not "", the text should be ""
+     * @param attributeMap a ConstMap of the attributes, with the key being
+     *                     the name of the attribute and the value being 1 of
+     *                     three things:<ul>
+     *                      <li>either the textual original attribute, or
+     *                      <li>the capability to request a traverse to the
+     *                          link (if this is an href attribute), or
+     *                      <li>an ImageIconGetter if this is a src attribute
+     *                          for an img tag
+     *                     </ul>
+     *                     If it is a traversal request, issue a run() call
+     *                     to it to cause traversal. Issue a "getHref" to it
+     *                     for the textual href.
+     *                     <p>
+     *                     If it is an ImageIconGetter, issue "get()" to get
+     *                     the ImageIcon; issue a "src" to get the textual src
+     * @param subNodes a ConstList subNodes for this node, if there are no
+     *                 subnodes, the list is size=0
+     */
+    def makeHTMLNode(tag :String,
+                     text :String,
+                     attributeMap :pbc,
+                     subNodes :pbc) :near {
+        def HTMLNode {
+            to getTag() :String {tag}
+            to isLeafText() :boolean {tag == ""}
+            to getText() :String {text}
+            to getAttributes() :pbc {attributeMap}
+            to getSubNodes() :pbc {subNodes}
+            to __printOn(out :TextWriter) :void {
+                out.print(`htmlNode: $tag numattrs=${
+                    attributeMap.size()} $text $\n`)
+                for each in subNodes {out.print(each)}
+            }
+        }
+    }
+
+    /**
+     * makes a nodeReader and a node Writer.
+     * <p>
+     * The Writer is used to accumulate the information about an HTML node.
+     * The Reader is a promise for a readable node. When writing is complete,
+     * call finishNode to resolve the reader into the finished, immutable
+     * node.
+     */
+    def makeNodeReadWritePair() :pbc {
+        var text := ""
+        var tag := ""
+        var attributes := [].asMap()
+        var subNodes := []
+        def finalNodeVow
+        def nodeWriter {
+            to setText(theText) :void {text := theText}
+            to setTag(theTag) :void {tag := theTag}
+            to addAttribute(name,value) :void {attributes with= (name, value)}
+            to addSubNode(node) :void {subNodes += [node]}
+            to finishNode() :void {
+                bind finalNodeVow := makeHTMLNode(`$tag`, text, attributes, subNodes)
+            }
+        }
+        [finalNodeVow, nodeWriter]
+    }
+
+    /**
+     * Cycles through the attributesList, identifying the ones which need to
+     * have special processing (images and links at this time), making a
+     * proper attribute map for the node.
+     *
+     * @param nodeWriter The node to which to add these attributes
+     * @param tagElement The TagElement for this node
+     */
+    def addAttributes(nodeWriter, tag, attributes) :void {
+        for each in attributes.getAttributeNames() {
+            def name := `$each`
+            #traceline(`attribute: $name`)
+            def baseValue := attributes.getAttribute(each)
+            #traceline(`attribute value: $baseValue`)
+            if (`$tag` == "a" && name == "href") {
+                traceline("got a link")
+                nodeWriter.addAttribute(name, makeUrlCarrier(baseValue))
+            } else if (`$tag` == "img" && name == "src") {
+                traceline("got an image")
+                nodeWriter.addAttribute(name, makeImageCarrier(baseValue))
+            } else {
+                nodeWriter.addAttribute(name, baseValue)
+            }
+        }
+    }
+
+    def treeRoot
+    def readerStack := [].diverge()
+    def writerStack := [].diverge()
+    def currentWriter() :near {(writerStack[writerStack.size() - 1]) }
+    def currentReader() :near {(readerStack[readerStack.size() - 1])}
+    def handleParseTag {
+        to handleStartTag(tag, attributes) :void {
+            try {
+                #traceline("start " + tag)
+                def [nodeReader, nodeWriter] := makeNodeReadWritePair()
+                readerStack.push(nodeReader)
+                writerStack.push(nodeWriter)
+                nodeWriter.setTag(tag)
+                addAttributes(nodeWriter, tag, attributes)
+            } catch prob {traceline(`prob in start tag: $prob`)}
+        }
+        to handleEndTag(tag) :void {
+            #traceline(`end $tag`)
+            if (writerStack.size() > 1) {
+                currentWriter().finishNode()
+                def finishedNode := currentReader()
+                writerStack.pop()
+                readerStack.pop()
+                currentWriter().addSubNode(finishedNode)
+            } else if (writerStack.size() == 1){
+                traceline("binding treeRoot")
+                currentWriter().finishNode()
+                bind treeRoot := currentReader()
+                readerStack.pop()
+                writerStack.pop()
+            } else {traceline("uh-oh, popped all the nodes but still ending tags")}
+        }
+        to handleSimpleTag(tag, attributes) :void {
+            #traceline("got simple tag: " + tag)
+            def [nodeReader, nodeWriter] := makeNodeReadWritePair()
+            nodeWriter.setTag(tag)
+            addAttributes(nodeWriter, tag, attributes)
+            nodeWriter.finishNode()
+            currentWriter().addSubNode(nodeReader)
+        }
+        to handleText(text) :void {
+            #traceline("got text: " + text)
+            def [nodeReader, nodeWriter] := makeNodeReadWritePair()
+            nodeWriter.setText(text)
+            nodeWriter.finishNode()
+            currentWriter().addSubNode(nodeReader)
+        }
+        match [verb, args] {
+            traceline(`gotv $verb $args`)
+        }
+    }
+    def treeConverter {
+        to getHandler() :near {handleParseTag}
+        to getTreeVow() :vow {treeRoot}
+    }
+}
+
+#def test() {
+#    def dummy {match [verb, args] {println("makeUrl: " + verb)}}
+#    def treeBuilder := makeHTMLTreeBuilderAuthor(dummy, null,println)
+#    def callback := <unsafe:com.skyhunter.ex.swing.text.html.parser.EParserCallback>(treeBuilder getHandler())
+#    def parser := <swing:text.html.parser.makeParserDelegator>()
+#    def testReader := <unsafe:java.io.makeStringReader>(
+#        `<html><head><title>mainTitle</title></head><body>
+#        <a href="http://www.skyhunter.com">skyhunter</a><p>blah</p></body></html>`)
+#    parser parse(testReader, callback, false)
+#    println("tree: " + treeBuilder getTreeVow())
+#
+#}
+#test()

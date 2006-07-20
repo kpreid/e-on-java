@@ -1,0 +1,148 @@
+#!/usr/bin/env rune
+
+# Copyright 2004 Mark S. Miller, under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+# Based on a design by Christian Scheideler
+
+def PublicKey := <type:java.security.PublicKey>
+def PrivateKey := <type:java.security.PrivateKey>
+def KeyPair := <type:java.security.KeyPair>
+
+# The info needed to access an abstract service:
+# 0) The fingerprint of the PublicKey used to authenticate the service
+# 1) The list of captp: URI strings for the rendezvous servers where this
+#    service is thought to register
+# 2) A swiss number (an unguessable, apparently random number, revealed to
+#    an authentic service provider, to establish a right to use the service.
+def AccessInfo := Tuple[int, List[String], int]
+
+# The info needed to establish oneself as a provider of an abstract service:
+# 0) The KeyPair used to authenticate that one knows the PrivateKey
+#    corresponding to the AccessInfo's fingerprint
+# 1) The list of captp: URI strings of the rendezvous servers where those
+#    looking for this service will look, and therefore, where this provider
+#    should register
+# 2) A swiss base (an unguessable, randomly chosen number, whose hash is the
+#    AccessInfo's swiss number), used to check the presented swiss number.
+def ProvisionInfo := Tuple[KeyPair, List[String], int]
+
+def makeKeyPairGenerator := <import:java.security.makeKeyPairGenerator>
+def signer := <elib:sealing.crypto.makeSigner>
+
+def <contact> := <import:edu.jhu.cs448.contact.*>
+def makeOpenQueue := <contact:makeOpenQueue>
+def makeAccessor := <contact:makeAccessor>
+
+def surgeon := <elib:serial.makeSurgeon>.withSrcKit("de: ")
+
+def contactKitAuthor(entropy,
+                     introducer,
+                     makeSturdyRef,
+                     rendezvousURIs :List[String]) :near {
+    def keyPairGenerator := makeKeyPairGenerator(entropy)
+
+    /**
+     * Together with makeRendezvous, used to provide an overlay network over E
+     * providing a rendezvous semantics designed by Christian Scheideler for
+     * cs448.
+     * <p>
+     * The rendezvous semantics is similar, but different from, the one to be
+     * provided by E once we've integrated the Redirectory service. At that
+     * time, we may try to better unify these issues, and so have these
+     * abstractions provide a thinner overlay.
+     * <p>
+     * The contactKit by itself doesn't provide Scheideler's error control and
+     * flow control. We leave this to the contactAuthor/contact layer to be
+     * built on this contactKit.
+     */
+    def contactKit {
+
+        /**
+         * Defines the identity representing a new abstract service to be
+         * contacted or provided.
+         * <p>
+         * Returns the provisionInfoStr -- the information needed to register
+         * as a provider of the service.
+         */
+        to newContact() :String {
+            def keyPair := keyPairGenerator.generateKeyPair()
+            def swissBase := entropy.nextSwiss()
+            return surgeon.serialize([keyPair, rendezvousURIs, swissBase])
+        }
+
+        /**
+         * From a provisionInfoStr (as would be returned by newContact), derive
+         * the corresponding accessInfoStr -- the information needed to contact
+         * and access some provider of the service.
+         */
+        to getAccessInfo(provisionInfoStr :String) :String {
+            def [keyPair :KeyPair, rURIs :List[String], swissBase :int] :=
+              surgeon.unserialize(provisionInfoStr)
+            return surgeon.serialize([keyPair.getPublic().getFingerprint(),
+                                      rURIs,
+                                      swissBase.cryptoHash()])
+        }
+
+        /**
+         * Returns an accessor -- a zero argument function, which, each
+         * time it's invoked, will use the accessInfo to try to find and return
+         * a vow for a new live reference to some provider to the designated
+         * service.
+         * <p>
+         * If the accessInfo does not currently seem to lead to a reachable
+         * provider, then the vow will break with an excuse indicating the
+         * alleged problem.
+         */
+        to makeAccessor(accessInfoStr :String) :any {
+            def accessInfo :AccessInfo := surgeon.unserialize(accessInfoStr)
+            return makeAccessor(introducer, accessInfo)
+        }
+
+        /**
+         * Registers the provider as providing the service identified by the
+         * ProvisionInfo.
+         * <p>
+         * Returns a promise which will resolve once any registration succeeds
+         * or all fail. The latter case breaks the returned promise.
+         */
+        to provide(provisionInfoStr :String, provider) :any {
+            def [keyPair :KeyPair, rURIs :List[String], swissBase :int] :=
+              surgeon.unserialize(provisionInfoStr)
+
+            /**
+             * This protocol allows us to eventually associate multiple
+             * swissNumbers/provider-facets with one public key.
+             */
+            def swissChecker {
+                to getProvider(swissNum) :any {
+                    if (swissBase.cryptoHash() == swissNum) {
+                        return provider
+                    } else {
+                        throw("Unrecognized swiss number")
+                    }
+                }
+            }
+            def sr := makeSturdyRef.temp(swissChecker)
+            def uri := introducer.sturdyToURI(sr)
+            def sig := signer.sign(keyPair.getPrivate(), uri)
+            def publicKey := keyPair.getPublic()
+
+            def [result, resolver] := Ref.promise()
+            var countDown := rURIs.size()
+            for rURI in rURIs {
+                def r := introducer.sturdyFromURI(rURI).getRcvr()
+#                throw.breakpoint([publicKey, uri, sig])
+                when (r <- register(publicKey, uri, sig)) -> done(res) :void {
+                    resolver.resolve(res, false)
+                } catch problem {
+                    if ((countDown -= 1) <= 0) {
+                        resolver.smash(problem)
+                    }
+                }
+            }
+            return result
+        }
+    }
+    return contactKit
+}
