@@ -5,7 +5,6 @@ package org.erights.e.elib.base;
 
 import org.erights.e.elib.oldeio.TextWriter;
 import org.erights.e.elib.oldeio.UnQuote;
-import org.erights.e.elib.oldeio.EPrintable;
 import org.erights.e.elib.prim.E;
 import org.erights.e.elib.prim.ScriptMaker;
 import org.erights.e.elib.serial.Persistent;
@@ -81,7 +80,7 @@ public class TypeDesc extends BaseAuditor implements Persistent {
     }
 
     /**
-     * @return
+     *
      */
     public ConstList getSupers() {
         return mySupers;

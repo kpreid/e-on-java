@@ -162,7 +162,7 @@ extension`)
                 options[optionName] := value
             }
         }
-        [props.snapshot(), options.snapshot(), optFname, args]
+        return [props.snapshot(), options.snapshot(), optFname, args]
     }
 
     /**

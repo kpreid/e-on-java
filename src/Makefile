@@ -9,8 +9,8 @@ default: draft explain
 
 # Prefix tagging this release's attributes
 PREFIX=E
-DOTVER=0.8.37a
-TAGVER=0_8_37a
+DOTVER=0.8.37b
+TAGVER=0_8_37b
 RELEASE=working
 
 TOP=..
@@ -75,6 +75,7 @@ export:
 	# remove jsrc15 because it's not yet ready
 	-rm -rf $(TOP)/export/e/src/jsrc15/
 	-rm -rf `find $(TOP)/export -name CVS`
+	-rm -rf `find $(TOP)/export -name .svn`
 	-rm -rf `find $(TOP)/export -name makeout`
 	-rm -rf `find $(TOP)/export -name cvsout`
 	-rm -rf `find $(TOP)/export -name y`

@@ -150,6 +150,9 @@ $optFname($props,
                     match `-` {
                         "-.e"
                     }
+                    match `-.@_` {
+                        optFname
+                    }
                     match _ {
                         # normalize
                         def <file> := auths["file__uriGetter"]
