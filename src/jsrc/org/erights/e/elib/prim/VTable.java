@@ -103,7 +103,7 @@ public abstract class VTable implements Script {
         }
         int newArity = newMeth.getArity();
 
-        int slash = verb.indexOf('/');
+        int slash = verb.lastIndexOf('/');
         if (-1 != slash) {
             String arityStr = verb.substring(slash + 1);
             int marity = Integer.parseInt(arityStr);
@@ -247,7 +247,7 @@ public abstract class VTable implements Script {
      * separate verb and arity.
      */
     public MethodNode optMethod(String mverb) {
-        int slash = mverb.indexOf('/');
+        int slash = mverb.lastIndexOf('/');
         if (slash == -1) {
             T.fail("missing slash");
         }

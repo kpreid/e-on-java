@@ -761,9 +761,12 @@ subPattern:
  |      compOp prim                     { b.reserved($1,
                                                      "comparison pattern"); }
 // XXX The IN keyword below is just too ugly!
- |      IN prim '(' paramList ')'          { b.reserved($1,"struct-pattern"); }
- |      IN prim '.' verb '(' paramList ')' { b.reserved($1,"struct-pattern"); }
- |      IN prim '[' paramList ']'          { b.reserved($1,"struct-pattern"); }
+ |      IN nounExpr '(' paramList ')'          { b.pocket($1,"call-pattern");
+                                                 $$ = b.callPattern($2, $3,"run", $4);}
+ |      IN nounExpr '.' verb '(' paramList ')' { b.pocket($1,"call-pattern");
+                                                 $$ = b.callPattern($2, $4, $6); }
+ |      IN nounExpr '[' paramList ']'          { b.pocket($1,"call-pattern");
+                                                 $$ = b.callPattern($2, $3,"get", $4);}
 
  |      listPattern                             { $$ = b.listPattern($1); }
  |      '[' mapPatternList ']'                  { $$ = b.mapPattern($2,null); }

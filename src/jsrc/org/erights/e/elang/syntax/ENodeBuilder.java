@@ -2211,4 +2211,25 @@ public class ENodeBuilder extends BaseENodeBuilder implements EBuilder {
             return kerneldef(ignore(__TEST), noun(optEj), expr);
         }
     }
+
+    /**
+     *
+     */
+    public Pattern callPattern(Object rcvr,
+                               Object poser, String verb,
+                               Object params) {
+        return callPattern(rcvr, ident(poser,verb), params);
+    }
+
+    /**
+     *
+     */
+    public Pattern callPattern(Object rcvr,
+                               Object verb,
+                               Object params) {
+        Pattern[] patts = optPatterns(params);
+        String mverb = "match__" + idStr(verb) + "_" + patts.length;
+        return via(callFacet(rcvr, ident(verb, mverb)),
+                   listPattern(patts));
+    }
 }

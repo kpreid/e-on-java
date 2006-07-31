@@ -98,7 +98,7 @@ public class MessageDesc implements Persistent, EPrintable {
         myParams = params;
         myOptResultGuard = optResultGuard;
 
-        int i = verb.indexOf('/');
+        int i = verb.lastIndexOf('/');
         if (-1 != i) {
             verb = verb.substring(0, i);
         }

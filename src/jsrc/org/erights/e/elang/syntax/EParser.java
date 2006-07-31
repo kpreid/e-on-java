@@ -517,7 +517,7 @@ final static short yydefred[] = {                         0,
    95,  406,  397,  398,  399,  400,  404,  401,  402,  405,
   403,  408,    0,  407,    0,  153,  112,    0,    0,    0,
     0,    0,    0,  128,    0,    0,    0,    0,  137,  140,
-    0,  245,    0,  246,    0,    0,    0,    0,  181,    0,
+    0,    0,    0,    0,    0,  181,    0,  245,    0,  246,
     0,    0,    0,    0,  229,  241,  240,    0,    0,  232,
     0,    0,  196,    0,    0,  157,  203,    0,    0,  201,
   199,  202,    0,  198,  180,  194,    0,    0,    0,    0,
@@ -579,9 +579,9 @@ final static short yydgoto[] = {                          3,
   451,  452,  131,  797,  461,  681,  675,  697,  735,  583,
   446,  747,  748,  749,  593,  709,  447,  665,  666,
 };
-final static short yysindex[] = {                      -203,
-    0,14866,    0,10293,    0, -195,    0, -170, -143,13118,
-12977,    0,    0,16092,   84,   87,    0,    0,    0,    0,
+final static short yysindex[] = {                      -213,
+    0,15095,    0,10382,    0, -120,    0, -105,  -62,13207,
+16184,    0,    0,16184,  220,  243,    0,    0,    0,    0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
@@ -590,85 +590,85 @@ final static short yysindex[] = {                      -203,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
-    0,12977,12977,    0,    0,    0,17250,16092,    0,    0,
-15731, -103,   19,  -84,    0,    0,    0,    0,   84,  122,
-  -47,    0,    0,    0,  121,    0,    0,12977,  161,    0,
-    0,    0,    0,    0,    0,    0,    0,  429,13118,    0,
-    0,14357,14866, -103,14866,   84,15370,    0,   84,  117,
-16092, 8242,   84,12456,  296,   84,  117, -103,11446,12456,
-12977,12456,12456,12456, -103, -103,  308,11809, -103,  272,
-    0,    0,    0, 1293,  -77,  -66,  -40,   25,    0,  601,
-  335,  306,  -26,  390,  484,  -17,    0,   51,  154,  442,
-  -13,16982,    0,    0,    0,    0,  327,    0,    0,    0,
-    0,    0,   55,    0,  363,  367,  449,    0,  437,13118,
-15370,15370,16092,  478,  470,14866,15731,    0,    0,    0,
-    0,  474,    0,  -76,    0,    0,13337,    0,  402,  443,
-    0,    0,    0,  112,15731,  560,    0,    0,  344,   84,
-    0,15002,    0,    0,  449,13118,16092,   87,  308, -220,
-    0,  122,    0,  117,14866,  117,    0,  116,  257,  125,
-  117,13118,16092,    0,    0,  203,  426,    0,  470, -103,
-    0,  274,  117,  -41,  197,  426,    0,11304,  520,    0,
-   -3,    0,   -3,   -3,   -3,10435,  138,  479,  106,    0,
-  530,    0,10799,  451,    0,    0,    7,    0,    0,10941,
-11304,11951,12314,11446,    0,    0,    0,    0,    0,    0,
-    0,    0,    0,    0,    0,    0,    0,11446,11446,11446,
-12605, 3683,15731,17116, -103,12314,12314,12314,12314,14866,
-14866,12314,12314,12314,12314,12314,12314,12314,12314,12314,
-12314,12314,12314,12314,12314,12314,12314,12314,12314,12314,
-12314,12314,12314, -103, -103,16582,17116, -103,17116, -103,
+    0,13066,13066,    0,    0,    0,17325,16184,    0,    0,
+15824,  151,   -5,   48,    0,    0,    0,    0,  220,  364,
+  281,    0,    0,    0,  362,    0,    0,13066,  387,    0,
+    0,    0,    0,    0,    0,    0,    0,  441,13207,    0,
+    0,14446,15095,  151,15095,  220, 8319,    0,  220,  336,
+16184,14955,  220,12545,  298,  220,  336,  151,11535,12545,
+13066,12545,12545,12545,  151,  151,  373,11898,  151,  414,
+    0,    0,    0, 1343,   78,   81,   31,   98,    0,  -22,
+  469,  400,   33,  270,  396,   44,    0,  103,  252,  501,
+   -7,17057,    0,    0,    0,    0,  418,    0,    0,    0,
+    0,    0,  489,    0,  433,  440,  498,    0,  430,  512,
+15095,15824,  576,13207, 8319, 8319,16184,    0,    0,    0,
+    0,  516,    0,  -64,    0,    0,13426,    0,  492,  497,
+    0,    0,    0,  165,15824,  720,    0,    0,  423,  220,
+    0,15464,    0,    0,  498,13207,16184,  243,  373, -211,
+    0,  364,    0,  336,15095,  336,    0,  171,  314,  173,
+  336,13207,16184,    0,    0,   87,  485,    0,  512,  151,
+    0,  331,  336,  312,  283,  485,    0,11393,  584,    0,
+  -42,    0,  -42,  -42,  -42,10524,  205,  551,   82,    0,
+  590,    0,10888,  522,    0,    0,   42,    0,    0,11030,
+11393,12040,12403,11535,    0,    0,    0,    0,    0,    0,
+    0,    0,    0,    0,    0,    0,    0,11535,11535,11535,
+12694, 3667,15824,17191,  151,12403,12403,12403,12403,15095,
+15095,12403,12403,12403,12403,12403,12403,12403,12403,12403,
+12403,12403,12403,12403,12403,12403,12403,12403,12403,12403,
+12403,12403,12403,  151,  151,16657,17191,  151,17191,  151,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
-    0,    0,   -9,    0,  204,    0,    0,  368,12314,12314,
-17116, -103,17116,    0,  -38,  117,  298,  -15,    0,    0,
-15731,    0,  303,    0, -103,17116, -103,15731,    0,  -76,
-15731,17116, -103,15599,    0,    0,    0,   12,   63,    0,
-  176,  483,    0,14866,  -76,    0,    0, -103, -103,    0,
-    0,    0,  560,    0,    0,    0,  449,  470,12456,11446,
-  337, -103,  573,    0,14866,12314,14866,  336,    0,    0,
-14866,17116, -103,17116,  168,    0,  117, -103,    0, -164,
-    0,    0,11304,    0,  584,12314,  337,14866,   84,   84,
-    0, -103,    0,    0,15960, -103,    0, -103,    0, -103,
-    0,    0,    0,  272,    0,   32,    0,    0,   25,    0,
-    0,    0,    0, 4115,  308,    0,  590,    0,    0,17116,
-  308,    0,    0,  -76,    0,  590,    0,    0,  539,    0,
-  592,    0,    0,    0,    0,    0,    0,    0,    0,    0,
-    0,    0,   -3,    0,    0,    0,    0,    0,  250,  250,
-  484,  484,  -17,  -17,    0,    0,    0,    0,    0,    0,
-  117,  599,  308,  590,    0,    0,    0,  606,  590,  566,
- -103,  117,    0,  204,    0,    0,    0,    0,  623,  627,
-  649,14866, -103,    0,    0,    0,  647,12314,    0,  -76,
-  653,  658,  607,  -76,  -76,    0,  629, -269,14866,    0,
-  -29,    0,14866,15002,    0,  604,14866,    0,   23,    0,
-14866,    0,    0,    0,    0,    0,  117,    0,  -31,    0,
-  691,16448,  692,  695,12314,  614,   -6,  -18,    0,    0,
-  117,    0,    0, -103,  117,    0,  460,  618,  618,    0,
-13118,16092,    0,    0,10435,  138,    0,    0,    0,   93,
-17116,    0,    0,    0,    0,    0, -103,    0,16982,    0,
-    0,    0,    0,  709,    0,    0, -103,  -37, -103,  117,
-    0,    0,    0, -103,    0,    0,12314,12314,    0,    0,
- -263,    0,    0, -103,11446,  117,  337,    0,    0, -103,
-  699,15731,  699,    0,   79,    0,  699, -103,    0, -103,
-  715,12314,  647,    0,   75,    0,  338,    0,12314, -103,
-    0,    0,    0,    0, -103,    0,    0, -103,  117,  722,
-15731,15731,    0,  725,    0,    0,  496,  729,    0,    0,
-12314,12314,  646,    0,    0,    0,  734,15731,    0,  -76,
-    0,16448,    0,    0,  737,  496,    0,    0, -103,15234,
-  618,  373,  738,  117,    0,  -37,  -76,  740,  -51,  -37,
-    0, -168, -103,  490,  657,    0,    0,    0,    0,  699,
-  -76,    0,  699,  661,  501,    0, -103,    0,  117,    0,
-15731,15731,    0,  -21,    0,  117,    0,  920, -103,    0,
-    0,    0,15731,15731,    0,16716,16716,    0,    0,    0,
-    0,    0,16850,    0, -158,    0,  740,  -23, -103,  117,
+    0,    0,    6,    0,  212,    0,    0,  431,12403,12403,
+17191,  151,17191,    0,  -87,  336,  365,   -3,    0,    0,
+15824,  151,17191,  151,15824,    0,  -64,    0,  370,    0,
+15824,17191,  151,15675,    0,    0,    0,   -2,   54,    0,
+  240,  555,    0,15095,  -64,    0,    0,  151,  151,    0,
+    0,    0,  720,    0,    0,    0,  498,  512,12545,11535,
+  446,  151,  655,    0,15095,12403,15095,  428,    0,    0,
+15095,17191,  151,17191, -178,    0,  336,  151,    0,   14,
+    0,    0,11393,    0,  675,12403,  446,15095,  220,  220,
+    0,  151,    0,    0,16035,  151,    0,  151,    0,  151,
+    0,    0,    0,  414,    0,   53,    0,    0,   98,    0,
+    0,    0,    0, 4099,  373,    0,  684,    0,    0,17191,
+  373,    0,    0,  -64,    0,  684,    0,    0,  634,    0,
+  699,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+    0,    0,  -42,    0,    0,    0,    0,    0,  233,  233,
+  396,  396,   44,   44,    0,    0,    0,    0,    0,    0,
+  336,  703,  373,  684,    0,    0,    0,  704,  684,  654,
+  151,  336,    0,  212,    0,    0,    0,    0,  712,  718,
+  723,15095,  151,    0,    0,    0,  722,12403,    0,  -64,
+  726,  729,  677,  -64,  -64,    0,  686, -229,15095,    0,
+  -12,    0,15095,15464,    0,  656,15095,    0,   18,    0,
+15095,    0,    0,    0,    0,    0,  336,    0,  -56,    0,
+  742,16523,  751,  743,12403,  671,    7,  -10,    0,    0,
+  336,    0,    0,  151,  336,    0,  506,  673,  673,    0,
+13207,16184,    0,    0,10524,  205,    0,    0,    0,   75,
+17191,    0,    0,    0,    0,    0,  151,    0,17057,    0,
+    0,    0,    0,  759,    0,    0,  151,  -47,  151,  336,
+    0,    0,    0,  151,    0,    0,12403,12403,    0,    0,
+ -222,    0,    0,  151,11535,  336,  446,    0,    0,  151,
+  744,15824,  744,    0,   80,    0,  744,  151,    0,  151,
+  769,12403,  722,    0,  -71,    0,  394,    0,12403,  151,
+    0,    0,    0,    0,  151,    0,    0,  151,  336,  773,
+15824,15824,    0,  774,    0,    0,  544,  780,    0,    0,
+12403,12403,  697,    0,    0,    0,  783,15824,    0,  -64,
+    0,16523,    0,    0,  785,  544,    0,    0,  151,15315,
+  673,  279,  788,  336,    0,  -47,  -64,  789,  -73,  -47,
+    0,  124,  151,  547,  707,    0,    0,    0,    0,  744,
+  -64,    0,  744,  715,  546,    0,  151,    0,  336,    0,
+15824,15824,    0,    3,    0,  336,    0,  932,  151,    0,
+    0,    0,15824,15824,    0,16791,16791,    0,    0,    0,
+    0,    0,16925,    0,  -97,    0,  789,  -66,  151,  336,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
-    0,    0,    0,    0,    0,17116,11446,  675,  -76,  740,
- -103,  761,  117,  117, -103,  762,    0,15731,14866,  766,
-    0,  337,  526,  590, -103,    0,  771, -103,    0,    0,
-  772, -103,  740,  -30,    0, -103,  690,  -37,  779,  699,
-  781,  117,  707,    0,    0,  -37,    0,  699,    0,    0,
+    0,    0,    0,    0,    0,17191,11535,  727,  -64,  789,
+  151,  808,  336,  336,  151,  813,    0,15824,15095,  814,
+    0,  446,  573,  684,  151,    0,  816,  151,    0,    0,
+  820,  151,  789,  -41,    0,  151,  746,  -47,  829,  744,
+  831,  336,  749,    0,    0,  -47,    0,  744,    0,    0,
     0,    0,
 };
-final static short yyrindex[] = {                      1543,
-    0,  412,    0,   41,    0, 1147,    0,    0,    0,    0,
-  412,    0,    0,    0,    0, 6574,    0,    0,    0,    0,
+final static short yyrindex[] = {                      1527,
+    0,  447,    0,   37,    0, 1131,    0,    0,    0,    0,
+    0,    0,    0,    0,    0, 6592,    0,    0,    0,    0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
@@ -677,98 +677,98 @@ final static short yyrindex[] = {                      1543,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
-    0,  412,  412,    0,    0,    0,    0,    0,    0,    0,
-    0,12816,    0,    0,    0,    0,    0,    0,    0, 6794,
-    0,    0,    0, 1701, 7847,    0,    0,  412, 6827,    0,
+    0,  447,  447,    0,    0,    0,    0,    0,    0,    0,
+    0,12905,    0,    0,    0,    0,    0,    0,    0, 6776,
+    0,    0,    0, 1685, 7953,    0,    0,  447, 6809,    0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
-    0,  412,  412,13479,  412,    0,    0,    0,    0,    0,
-    0,  412,    0,  412,    0,    0,    0, 9930,  412,  412,
-  412,  412,  412,  412, 8414, 9283, 2396,   46,   35,  281,
-    0,    0,    0,  169,    0,    0, 4723, 2091,    0, 2218,
- 2650, 3082,  867, 6323, 5891, 5646,    0, 5421, 3428, 4554,
-    0, 3691,    0,    0,    0,    0,    0,    0,    0,    0,
-    0,    0,   71,    0,    0,    0, 7002,    0,    0,    0,
-    0,    0,    0,    0, 7037,  412,    0,    0,    0,    0,
-    0, 7079,    0, 7252,    0,    0,  264,    0,    0,    0,
+    0,  447,  447,13568,  447,    0,    0,    0,    0,    0,
+    0,  447,    0,  447,    0,    0,    0,10019,  447,  447,
+  447,  447,  447,  447, 8503, 9372, 2380,   19,   76,  493,
+    0,    0,    0,  372,    0,    0, 4707,  851,    0, 2202,
+ 2634, 3066, 6383, 6100, 5839,  956,    0, 5405, 3412, 4538,
+    0, 3675,    0,    0,    0,    0,    0,    0,    0,    0,
+    0,    0,  -58,    0,    0,    0, 6986,    0,    0, 7029,
+  447,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+    0, 7084,    0, 7261,    0,    0,  245,    0,    0,    0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
-    0,  412,    0,    0,  808,    0,    0,  847,  913,    0,
- 3514,  887,    0,    0,  136,    0,    0,  535,    0,  711,
-    0,    0,    0,    0,    0,  332,    0,    0,  815, 9425,
-    0,    0,    0,    0,    0,    0,    0,  412,    0,    0,
- 4790,    0, 4986, 5185, 5252,  264,  454,    0,    0,    0,
-    0,    0,  412,    0,    0,    0, 9930,    0,    0,   16,
-  387,  412,  412,  412,    0,    0,    0,    0,    0,    0,
-    0,    0,    0,    0,    0,    0,    0,  412,  412,  412,
-    0,    0,    0,    0, 9788,  412,  412,  412,  412,  412,
-  412,  412,  412,  412,  412,  412,  412,  412,  412,  412,
-  412,  412,  412,  412,  412,  412,  412,  412,  412,  412,
-  412,  412,  412,13479, 9425,    0,    0, 9425,    0, 9788,
+    0,  447,    0,    0,  745,    0,    0,  262, 1997,    0,
+  105,  795,    0,    0,  391,    0,    0,  587,    0,  754,
+    0,    0,    0,    0,    0,  327,    0,    0, 1648, 9514,
+    0,    0,    0,    0,    0,    0,    0,  447,    0,    0,
+ 4774,    0, 4970, 5169, 5236,  245,  393,    0,    0,    0,
+    0,    0,  447,    0,    0,    0,10019,    0,    0,   15,
+   88,  447,  447,  447,    0,    0,    0,    0,    0,    0,
+    0,    0,    0,    0,    0,    0,    0,  447,  447,  447,
+    0,    0,    0,    0, 9877,  447,  447,  447,  447,  447,
+  447,  447,  447,  447,  447,  447,  447,  447,  447,  447,
+  447,  447,  447,  447,  447,  447,  447,  447,  447,  447,
+  447,  447,  447,13568, 9514,    0,    0, 9514,    0, 9877,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
-    0,    0,13479,    0,    0,    0,    0,    0,  412,  412,
-    0,13848,    0,    0,    0,    0,   74,   91,    0,    0,
-    0,    0,  332,    0,13848,    0,13988,    0,    0, 7287,
-    0,    0, 9788,    0,    0,    0,    0,  108,  743,    0,
-    0, 7463,    0,  412, 7514,    0,    0, 9930,14497,    0,
-    0,    0,    0,    0,    0,    0, 1271, 1275,  412,  412,
- 2565,  145,   45,    0,  412,  412,  412, 2828,    0,    0,
-  412,    0,16316,    0,  714,    0,  452,  246,    0, 2997,
-    0,    0,   33,  141,    0,  412, 2565,  412,    0,    0,
-    0, 9930,    0,    0,    0, 9930,    0, 8050,    0, 8778,
-    0,    0,    0,  372,    0, 9930,    0,    0, 2523,    0,
-    0,    0,    0,    0, 3860,    0,    0,    0, 4123,    0,
- 3259,    0,    0,  964,    0,    0,    0,    0,    0,    0,
-  142,    0,    0,    0,    0,    0,    0,    0,    0,    0,
-    0,    0, 4723,    0,    0,    0,    0,    0, 6362, 6401,
- 5931, 6116, 5682, 5855,    0,    0,    0,    0,    0,    0,
-    0,    0,  798,    0,    0,    0,    0,    0,    0,    0,
- 9425,    0,    0,    0,    0,    0,    0,    0,    0,    0,
-    0,  412,  315,    0,    0,    0,   92,  412,    0, 7564,
-    0,    0,    0, 7741, 7774,    0,    0,   40,  412,    0,
-    0,    0,  412,  412,    0,    0,  412,    0,    0,    0,
-  412,    0,    0,    0,    0,    0,    0,    0,    0,    0,
-    0,  799,    0,    0,  412,    0,  716,  720,    0,    0,
-    0,    0,    0,  418,    0,    0,    0,    0,    0,    0,
-    0,    0,    0,    0,  412,    0,    0,   86,    0,    0,
-    0,    0,    0,    0,    0,    0, 8920,    0, 4292,    0,
-    0,    0,    0,    0,    0,    0,13848,  727,13848,    0,
-    0,    0,    0,13848,    0,    0,  412,  412,    0,    0,
-   54,    0,    0,  728,  412,    0, 2565,    0,    0,16316,
-   52,    0,   52,    0,  804,    0,  724,16316,    0,  293,
-  733,  412,  735,    0,    0,    0,    0,    0,  412,  453,
-    0,    0,    0,    0, 9930,    0,    0,13479,    0,    0,
-    0,    0,    0,    0,    0,    0,  193,    0,    0,    0,
-  412,  412,    0,    0,    0,    0,    0,    0,    0,   53,
-    0,    0,    0,    0,    0,  -55,    0,    0,  246,  746,
-    0,    0,    0,    0,    0,  727,   20,  747,  748,  727,
-    0,    0,  315,  749,    0,    0,    0,    0,    0,  724,
-  767,    0,  724,    0,    0,    0,  728,    0,  -81,    0,
-    0,    0,    0,  746,    0,    0,    0,    0,  728,    0,
+    0,    0,13568,    0,    0,    0,    0,    0,  447,  447,
+    0,13937,    0,    0,    0,    0,  -38,   27,    0,    0,
+    0,13937,    0,14077,    0,    0, 7296,    0,  327,    0,
+    0,    0, 9877,    0,    0,    0,    0,  147,  791,    0,
+    0, 7469,    0,  447, 7523,    0,    0,10019,14586,    0,
+    0,    0,    0,    0,    0,    0, 1647, 1652,  447,  447,
+ 2549,   55,  397,    0,  447,  447,  447, 2812,    0,    0,
+  447,    0,16391,    0,  758,    0,  790,   99,    0, 2981,
+    0,    0,  272,   90,    0,  447, 2549,  447,    0,    0,
+    0,10019,    0,    0,    0,10019,    0, 8139,    0, 8867,
+    0,    0,    0,  867,    0,10019,    0,    0,  909,    0,
+    0,    0,    0,    0, 3844,    0,    0,    0, 4107,    0,
+ 3243,    0,    0, 6556,    0,    0,    0,    0,    0,    0,
+  334,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+    0,    0, 4707,    0,    0,    0,    0,    0, 6307, 6346,
+ 5875, 5915, 5630, 5666,    0,    0,    0,    0,    0,    0,
+    0,    0,  853,    0,    0,    0,    0,    0,    0,    0,
+ 9514,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+    0,  447,  303,    0,    0,    0,   91,  447,    0, 7566,
+    0,    0,    0, 7735, 7777,    0,    0,   30,  447,    0,
+    0,    0,  447,  447,    0,    0,  447,    0,    0,    0,
+  447,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+    0,  855,    0,    0,  447,    0,  771,  776,    0,    0,
+    0,    0,    0,  475,    0,    0,    0,    0,    0,    0,
+    0,    0,    0,    0,  447,    0,    0,   84,    0,    0,
+    0,    0,    0,    0,    0,    0, 9009,    0, 4276,    0,
+    0,    0,    0,    0,    0,    0,13937,  779,13937,    0,
+    0,    0,    0,13937,    0,    0,  447,  447,    0,    0,
+   86,    0,    0,  782,  447,    0, 2549,    0,    0,16391,
+   95,    0,   95,    0,  864,    0,  682,16391,    0,  -68,
+  794,  447,  796,    0,    0,    0,    0,    0,  447,  308,
+    0,    0,    0,    0,10019,    0,    0,13568,    0,    0,
+    0,    0,    0,    0,    0,    0,  169,    0,    0,    0,
+  447,  447,    0,    0,    0,    0,    0,    0,    0,  197,
+    0,    0,    0,    0,    0,  -63,    0,    0,   99,  798,
+    0,    0,    0,    0,    0,  779,   63,  800,  803,  779,
+    0,    0,  303,  787,    0,    0,    0,    0,    0,  682,
+  705,    0,  682,    0,    0,    0,  782,    0,  -25,    0,
+    0,    0,    0,  798,    0,    0,    0,    0,  782,    0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
-    0,    0,    0,    0,  -50,    0,  752,  753,13848,    0,
- 1964,    0,    0,    0,    0,    0,    0,    0,    0,    0,
-    0,    0,    0,    0,    0,    0,  412,    0,   67,  759,
-13848,    0,    0,    0,16316,    0,    0,    0,    8,    0,
-    0,    0, 2133,    0,  728,    0,    0,13848,    0,    0,
-    0,16316,  763,  746,    0,  728,    0,  727,    0,  300,
-    0,    0,    0,    0,    0,  727,    0,  300,    0,    0,
+    0,    0,    0,    0,   66,    0,  804,  805,13937,    0,
+ 1948,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+    0,    0,    0,    0,    0,    0,  447,    0,   67,  807,
+13937,    0,    0,    0,16391,    0,    0,    0,   56,    0,
+    0,    0, 2117,    0,  782,    0,    0,13937,    0,    0,
+    0,16391,  810,  798,    0,  782,    0,  779,    0,  402,
+    0,    0,    0,    0,    0,  779,    0,  402,    0,    0,
     0,    0,
 };
 final static short yygindex[] = {                         0,
-    1,  415,  630,   69,    0,    0,  552, -169,  587, -146,
-  751,    0,   -7,    0,    0,   28,   49, 1815,  187,  591,
- -316, 1392,    0,    0,  260,  143,  354,  399,  370,  441,
-  543,  571,    0,  575, -266,   64,  165,    0, -279, -298,
-    0,  273, -251,  279, -213,   10,   50,    0,  286,  631,
-    0, -394, -144,  628,  126,   90,    0,  189,  323,    0,
-  -28,    0,    0, -145,    0,    0,    0,    0,    0,    0,
-    0,    0, -135, -375,  541,    0, -293,  -65,  -82,  445,
- -235,  510,    0,    0,    0,    0,    0,  137,    0,  492,
-    0,    0,    0,  662,    0,  347,    0,  223,  533, -281,
-  326, -308,    0,  158, -166,  544, -294,    0, -646, -436,
-  147,   26, -188,    0,  208, -570,  237,    0,    0, -442,
-    0,    0,  166,    0, -112, -148,    0,    0,  224,
+    1,  101,  523,   69,    0,    0,  613, -167,  630, -146,
+  797,    0,   -4,    0,    0,   28,   49, 1799,  229,  635,
+ -253, 1373,    0,    0,  471,  177,  320,  388,  389,  539,
+  588,  593,    0,  622,  -93,   64,  -24,    0, -301, -316,
+    0,  318, -344,  456, -197,   10,   50,    0,  377,  667,
+    0, -422, -144,  676,  168,  138,    0,  234,  366,    0,
+  -48,    0,    0, -147,    0,    0,    0,    0,    0,    0,
+    0,    0, -138, -409,  541,    0, -300,  -86,  -51,  490,
+ -235,  553,    0,    0,    0,    0,    0,  180,    0,  538,
+    0,    0,    0,  708,    0,  395,    0,  267,  583, -342,
+  375, -312,    0,  206,  -39,  595, -233,    0, -639, -638,
+  200,   68, -189,    0,  260, -522,  287,    0,    0, -442,
+    0,    0,  211,    0, -111,  -37,    0,    0,  284,
 };
-final static int YYTABLESIZE=17645;
+final static int YYTABLESIZE=17720;
 
 //These two tables are not statically initialized, but rather
 //initialized on first use, so that a failure to initialize
@@ -791,7 +791,7 @@ static private void initTables() {
         yytable = (short[])obInp.readObject();
         yycheck = (short[])obInp.readObject();
         long hash = EYaccFixer.checkhash(yytable, yycheck);
-        if (hash != 4731244189745095124L) {
+        if (hash != 5597256968383022868L) {
             T.fail(rName + " bad checkhash: " +
                                        hash);
         }
@@ -1038,9 +1038,9 @@ final static String yyrule[] = {
 "subPattern : OpSame prim",
 "subPattern : OpNSame prim",
 "subPattern : compOp prim",
-"subPattern : IN prim '(' paramList ')'",
-"subPattern : IN prim '.' verb '(' paramList ')'",
-"subPattern : IN prim '[' paramList ']'",
+"subPattern : IN nounExpr '(' paramList ')'",
+"subPattern : IN nounExpr '.' verb '(' paramList ')'",
+"subPattern : IN nounExpr '[' paramList ']'",
 "subPattern : listPattern",
 "subPattern : '[' mapPatternList ']'",
 "subPattern : listPattern '+' subPattern",
@@ -1345,7 +1345,7 @@ final static String yyrule[] = {
 "reserved : WSTRING",
 };
 
-//#line 1538 "e.y"
+//#line 1541 "e.y"
 
 
 /**
@@ -2050,7 +2050,7 @@ static private final ObjDecl ODECL = ObjDecl.EMPTY;
  * from which source position info can be derived).
  */
 static private final Object NO_POSER = BaseEBuilder.NO_POSER;
-//#line 5504 "EParser.java"
+//#line 5518 "EParser.java"
 //###############################################################
 // method: yylexdebug : check lexer state
 //###############################################################
@@ -2818,369 +2818,372 @@ case 188:
 break;
 case 189:
 //#line 764 "e.y"
-{ b.reserved(val_peek(4),"struct-pattern"); }
+{ b.pocket(val_peek(4),"call-pattern");
+                                              yyval = b.callPattern(val_peek(3), val_peek(2),"run", val_peek(1)); }
 break;
 case 190:
-//#line 765 "e.y"
-{ b.reserved(val_peek(6),"struct-pattern"); }
+//#line 766 "e.y"
+{ b.pocket(val_peek(6),"call-pattern"); 
+                                                  yyval = b.callPattern(val_peek(5), val_peek(3), val_peek(1)); }
 break;
 case 191:
-//#line 766 "e.y"
-{ b.reserved(val_peek(4),"struct-pattern"); }
+//#line 768 "e.y"
+{ b.pocket(val_peek(4),"call-pattern");
+                                              yyval = b.callPattern(val_peek(3), val_peek(2),"get", val_peek(1)); }
 break;
 case 192:
-//#line 768 "e.y"
+//#line 771 "e.y"
 { yyval = b.listPattern(val_peek(0)); }
 break;
 case 193:
-//#line 769 "e.y"
+//#line 772 "e.y"
 { yyval = b.mapPattern(val_peek(1),null); }
 break;
 case 194:
-//#line 770 "e.y"
+//#line 773 "e.y"
 { yyval = b.cdrPattern(val_peek(2), val_peek(0)); }
 break;
 case 195:
-//#line 771 "e.y"
+//#line 774 "e.y"
 { yyval = b.mapPattern(val_peek(3), val_peek(0)); }
 break;
 case 196:
-//#line 775 "e.y"
+//#line 778 "e.y"
 { yyval = val_peek(1); }
 break;
 case 197:
-//#line 779 "e.y"
+//#line 782 "e.y"
 { yyval = b.list(val_peek(0)); }
 break;
 case 198:
-//#line 780 "e.y"
+//#line 783 "e.y"
 { yyval = b.with(val_peek(1), val_peek(0)); }
 break;
 case 199:
-//#line 784 "e.y"
+//#line 787 "e.y"
 { yyval = b.list(val_peek(1), val_peek(0)); }
 break;
 case 200:
-//#line 785 "e.y"
+//#line 788 "e.y"
 { yyval = b.with(b.with(val_peek(2), val_peek(1)),
                                                               val_peek(0)); }
 break;
 case 203:
-//#line 795 "e.y"
+//#line 798 "e.y"
 { yyval = b.atNoun(val_peek(0)); }
 break;
 case 204:
-//#line 796 "e.y"
+//#line 799 "e.y"
 { yyval = val_peek(2); }
 break;
 case 205:
-//#line 809 "e.y"
+//#line 812 "e.y"
 { yyval = b.ignore(); }
 break;
 case 206:
-//#line 810 "e.y"
+//#line 813 "e.y"
 { yyval = b.ignore(val_peek(0)); }
 break;
 case 207:
-//#line 811 "e.y"
+//#line 814 "e.y"
 { yyval = b.ignore(val_peek(0));}
 break;
 case 208:
-//#line 815 "e.y"
+//#line 818 "e.y"
 { yyval = b.finalPattern(val_peek(2),val_peek(0));}
 break;
 case 209:
-//#line 816 "e.y"
+//#line 819 "e.y"
 { b.antiPocket(val_peek(0),
                                                        "explicit-final-guard");
                                           yyval = b.finalPattern(val_peek(0)); }
 break;
 case 213:
-//#line 825 "e.y"
+//#line 828 "e.y"
 { yyval = b.bindDefiner(val_peek(2),val_peek(0)); }
 break;
 case 214:
-//#line 826 "e.y"
+//#line 829 "e.y"
 { b.antiPocket(val_peek(1),
                                                        "explicit-final-guard");
                                           yyval = b.bindDefiner(val_peek(0)); }
 break;
 case 215:
-//#line 832 "e.y"
+//#line 835 "e.y"
 { yyval = b.varPattern(val_peek(2),val_peek(0)); }
 break;
 case 216:
-//#line 833 "e.y"
+//#line 836 "e.y"
 { b.antiPocket(val_peek(1),
                                                        "explicit-var-guard");
                                           yyval = b.varPattern(val_peek(0)); }
 break;
 case 217:
-//#line 839 "e.y"
+//#line 842 "e.y"
 { yyval = b.slotPattern(val_peek(2),val_peek(0)); }
 break;
 case 218:
-//#line 840 "e.y"
+//#line 843 "e.y"
 { b.antiPocket(val_peek(1),
                                                        "explicit-slot-guard");
                                           yyval = b.slotPattern(val_peek(0)); }
 break;
 case 219:
-//#line 851 "e.y"
+//#line 854 "e.y"
 { yyval = b.finalPattern(val_peek(0)); }
 break;
 case 220:
-//#line 852 "e.y"
+//#line 855 "e.y"
 { yyval = b.ignore(); }
 break;
 case 221:
-//#line 853 "e.y"
+//#line 856 "e.y"
 { yyval = b.bindDefiner(val_peek(0)); }
 break;
 case 222:
-//#line 854 "e.y"
+//#line 857 "e.y"
 { yyval = b.varPattern(val_peek(0)); }
 break;
 case 223:
-//#line 855 "e.y"
+//#line 858 "e.y"
 { b.reserved(val_peek(0),
                                 "literal qualified name no longer accepted"); }
 break;
 case 225:
-//#line 868 "e.y"
+//#line 871 "e.y"
 { yyval = val_peek(1); }
 break;
 case 228:
-//#line 894 "e.y"
+//#line 897 "e.y"
 { yyval = val_peek(1); }
 break;
 case 229:
-//#line 898 "e.y"
+//#line 901 "e.y"
 { yyval = b.list(val_peek(0)); }
 break;
 case 230:
-//#line 899 "e.y"
+//#line 902 "e.y"
 { yyval = b.with(val_peek(2), val_peek(0)); }
 break;
 case 231:
-//#line 903 "e.y"
+//#line 906 "e.y"
 { yyval = val_peek(1); }
 break;
 case 232:
-//#line 907 "e.y"
+//#line 910 "e.y"
 { yyval = b.list(val_peek(0)); }
 break;
 case 233:
-//#line 908 "e.y"
+//#line 911 "e.y"
 { yyval = b.with(val_peek(2), val_peek(0)); }
 break;
 case 234:
-//#line 912 "e.y"
+//#line 915 "e.y"
 { yyval = b.assoc(val_peek(2), val_peek(0)); }
 break;
 case 235:
-//#line 913 "e.y"
+//#line 916 "e.y"
 { b.pocket(val_peek(1),"pattern-default");
                                           yyval = b.assoc(val_peek(4), b.assoc(val_peek(0),val_peek(2))); }
 break;
 case 236:
-//#line 915 "e.y"
+//#line 918 "e.y"
 { b.pocket(val_peek(1),"pattern-default");
                                      b.reserved(val_peek(1),"default in map pattern"); }
 break;
 case 237:
-//#line 917 "e.y"
+//#line 920 "e.y"
 { b.pocket(val_peek(1),"importer");
                                           yyval = b.importer(val_peek(0)); }
 break;
 case 238:
-//#line 919 "e.y"
+//#line 922 "e.y"
 { b.pocket(val_peek(1),"pattern-default");
                                           b.pocket(val_peek(3),"importer");
                                           yyval = b.importer(b.assoc(val_peek(0),val_peek(2))); }
 break;
 case 239:
-//#line 922 "e.y"
+//#line 925 "e.y"
 { b.pocket(val_peek(1),"pattern-default");
                                           b.pocket(val_peek(3),"importer");
                                      b.reserved(val_peek(0),"default in map pattern"); }
 break;
 case 242:
-//#line 943 "e.y"
+//#line 946 "e.y"
 { yyval = ""; }
 break;
 case 244:
-//#line 951 "e.y"
+//#line 954 "e.y"
 { yyval = val_peek(0); }
 break;
 case 245:
-//#line 952 "e.y"
+//#line 955 "e.y"
 { yyval = b.bindDefiner(val_peek(0)); }
 break;
 case 246:
-//#line 953 "e.y"
+//#line 956 "e.y"
 { yyval = b.varPattern(val_peek(0)); }
 break;
 case 247:
-//#line 960 "e.y"
+//#line 963 "e.y"
 { yyval = ODECL; }
 break;
 case 248:
-//#line 961 "e.y"
+//#line 964 "e.y"
 { yyval = ODECL.withExtends(b,val_peek(0)); }
 break;
 case 249:
-//#line 962 "e.y"
+//#line 965 "e.y"
 { yyval = ODECL.withAuditors(b,val_peek(0));}
 break;
 case 250:
-//#line 963 "e.y"
+//#line 966 "e.y"
 { yyval = ODECL.withExtends(b,val_peek(1))
                                                           .withAuditors(b,val_peek(0));}
 break;
 case 251:
-//#line 966 "e.y"
+//#line 969 "e.y"
 { yyerror("'extends' must come before 'implements'"); }
 break;
 case 252:
-//#line 973 "e.y"
+//#line 976 "e.y"
 { yyval = ODECL; }
 break;
 case 253:
-//#line 974 "e.y"
+//#line 977 "e.y"
 { yyval = ODECL.withExtends(b,val_peek(0)); }
 break;
 case 254:
-//#line 975 "e.y"
+//#line 978 "e.y"
 { yyval = ODECL.withAuditors(b,val_peek(0));}
 break;
 case 255:
-//#line 976 "e.y"
+//#line 979 "e.y"
 { yyval = ODECL.withExtends(b,val_peek(1))
                                                           .withAuditors(b,val_peek(0));}
 break;
 case 256:
-//#line 979 "e.y"
+//#line 982 "e.y"
 { yyerror("'extends' must come before 'implements'"); }
 break;
 case 257:
-//#line 988 "e.y"
+//#line 991 "e.y"
 { yyval = b.list(val_peek(0)); }
 break;
 case 258:
-//#line 995 "e.y"
+//#line 998 "e.y"
 { yyval = b.list(val_peek(0)); }
 break;
 case 259:
-//#line 996 "e.y"
+//#line 999 "e.y"
 { yyval = b.with(val_peek(2), val_peek(0)); }
 break;
 case 260:
-//#line 1003 "e.y"
+//#line 1006 "e.y"
 { yyval = b.list(val_peek(0)); }
 break;
 case 261:
-//#line 1004 "e.y"
+//#line 1007 "e.y"
 { yyval = b.with(val_peek(2), val_peek(0)); }
 break;
 case 265:
-//#line 1018 "e.y"
+//#line 1021 "e.y"
 { b.reserved(val_peek(0),"literal concat"); }
 break;
 case 266:
-//#line 1019 "e.y"
+//#line 1022 "e.y"
 { b.reserved(val_peek(0),"literal concat"); }
 break;
 case 267:
-//#line 1028 "e.y"
+//#line 1031 "e.y"
 { /* binds __return */
                                                yyval = b.to(val_peek(3), val_peek(1), val_peek(0)); }
 break;
 case 268:
-//#line 1030 "e.y"
+//#line 1033 "e.y"
 { /* doesn't bind __return */
                                                yyval = b.method(val_peek(3), val_peek(1), val_peek(0)); }
 break;
 case 269:
-//#line 1058 "e.y"
+//#line 1061 "e.y"
 { yyval = b.methHead(val_peek(3),"run",val_peek(2),val_peek(0)); }
 break;
 case 270:
-//#line 1059 "e.y"
+//#line 1062 "e.y"
 { yyval = b.methHead(val_peek(4),      val_peek(2),val_peek(0)); }
 break;
 case 271:
-//#line 1068 "e.y"
+//#line 1071 "e.y"
 { yyval = b.methHead(val_peek(3),"run", val_peek(2), val_peek(0));}
 break;
 case 272:
-//#line 1070 "e.y"
-{ b.pocket(val_peek(5),"one-method-object");
-                                          yyval = b.methHead(val_peek(4), val_peek(2), val_peek(0)); }
-break;
-case 273:
 //#line 1073 "e.y"
 { b.pocket(val_peek(5),"one-method-object");
                                           yyval = b.methHead(val_peek(4), val_peek(2), val_peek(0)); }
 break;
+case 273:
+//#line 1076 "e.y"
+{ b.pocket(val_peek(5),"one-method-object");
+                                          yyval = b.methHead(val_peek(4), val_peek(2), val_peek(0)); }
+break;
 case 274:
-//#line 1085 "e.y"
+//#line 1088 "e.y"
 { yyval = b.matcher(val_peek(1), val_peek(0)); }
 break;
 case 276:
-//#line 1093 "e.y"
+//#line 1096 "e.y"
 { yyval = b.uriExpr(val_peek(0)); }
 break;
 case 278:
-//#line 1095 "e.y"
+//#line 1098 "e.y"
 { yyval = b.call(val_peek(3), val_peek(2),"get", val_peek(1)); }
 break;
 case 279:
-//#line 1096 "e.y"
+//#line 1099 "e.y"
 { yyval = b.propValue(val_peek(2), val_peek(0)); }
 break;
 case 285:
-//#line 1108 "e.y"
+//#line 1111 "e.y"
 { yyval = val_peek(0); }
 break;
 case 286:
-//#line 1109 "e.y"
+//#line 1112 "e.y"
 { yyval = b.defaultOptResultGuard(yylval); }
 break;
 case 287:
-//#line 1110 "e.y"
+//#line 1113 "e.y"
 { b.reserved(val_peek(1),"throws"); }
 break;
 case 288:
-//#line 1111 "e.y"
+//#line 1114 "e.y"
 { b.reserved(val_peek(1),"throws"); }
 break;
 case 289:
-//#line 1114 "e.y"
+//#line 1117 "e.y"
 { yyval = b.list(val_peek(0)); }
 break;
 case 290:
-//#line 1115 "e.y"
+//#line 1118 "e.y"
 { yyval = b.with(val_peek(2),val_peek(0)); }
 break;
 case 291:
-//#line 1123 "e.y"
+//#line 1126 "e.y"
 { yyval = b.when(val_peek(4), val_peek(1), val_peek(0)); }
 break;
 case 292:
-//#line 1124 "e.y"
+//#line 1127 "e.y"
 { b.pocket(val_peek(2),"when-sequence");
                                               yyval = b.whenSeq(val_peek(4), val_peek(1), val_peek(0)); }
 break;
 case 293:
-//#line 1133 "e.y"
+//#line 1136 "e.y"
 { /* binds __return */
                                   yyval = b.list(ODECL.withOName(val_peek(5)),
                                               val_peek(3), val_peek(1), val_peek(0),
                                               Boolean.TRUE); }
 break;
 case 294:
-//#line 1138 "e.y"
+//#line 1141 "e.y"
 { /* XXX should this bind __return ?? */
                                   /* Currently, it does. */
                                   b.pocket(val_peek(1),"easy-when");
@@ -3189,7 +3192,7 @@ case 294:
                                               Boolean.TRUE); }
 break;
 case 295:
-//#line 1145 "e.y"
+//#line 1148 "e.y"
 { /* XXX should this bind __return ?? */
                                   /* Currently, it does not. */
                                   b.pocket(val_peek(1),"easy-when");
@@ -3198,367 +3201,367 @@ case 295:
                                               Boolean.FALSE); }
 break;
 case 296:
-//#line 1154 "e.y"
+//#line 1157 "e.y"
 { yyval = val_peek(0); }
 break;
 case 297:
-//#line 1155 "e.y"
+//#line 1158 "e.y"
 { yyval = b.defaultOptWhenGuard(yylval); }
 break;
 case 298:
-//#line 1156 "e.y"
+//#line 1159 "e.y"
 { b.reserved(val_peek(1),"throws"); }
 break;
 case 299:
-//#line 1157 "e.y"
+//#line 1160 "e.y"
 { b.reserved(val_peek(1),"throws"); }
 break;
 case 300:
-//#line 1169 "e.y"
+//#line 1172 "e.y"
 { yyval = b.list(val_peek(2), val_peek(1), val_peek(0)); }
 break;
 case 301:
-//#line 1170 "e.y"
+//#line 1173 "e.y"
 { b.pocket(val_peek(0),"easy-when");
                                      yyval = b.list(val_peek(0), null, null); }
 break;
 case 306:
-//#line 1191 "e.y"
+//#line 1194 "e.y"
 { yyval = b.list(); }
 break;
 case 307:
-//#line 1195 "e.y"
+//#line 1198 "e.y"
 { yyval = b.list(); }
 break;
 case 309:
-//#line 1204 "e.y"
+//#line 1207 "e.y"
 { b.pocket(val_peek(0),"verb-string");
                                           yyval = val_peek(0); }
 break;
 case 310:
-//#line 1212 "e.y"
+//#line 1215 "e.y"
 { b.pocket(val_peek(0),"verb-curry");
                                           yyval = val_peek(0); }
 break;
 case 311:
-//#line 1214 "e.y"
+//#line 1217 "e.y"
 { b.pocket(val_peek(0),"verb-curry");
                                           b.pocket(val_peek(0),"verb-string");
                                           yyval = val_peek(0); }
 break;
 case 312:
-//#line 1226 "e.y"
+//#line 1229 "e.y"
 { b.pocket(val_peek(0),"dot-props");
                                           yyval = val_peek(0); }
 break;
 case 313:
-//#line 1228 "e.y"
+//#line 1231 "e.y"
 { b.pocket(val_peek(0),"dot-props");
                                           yyval = val_peek(0); }
 break;
 case 314:
-//#line 1236 "e.y"
+//#line 1239 "e.y"
 { yyval = b.varName(val_peek(0)); }
 break;
 case 315:
-//#line 1237 "e.y"
+//#line 1240 "e.y"
 { b.pocket(val_peek(1),"noun-string");
                                           yyval = b.varName(val_peek(0)); }
 break;
 case 316:
-//#line 1239 "e.y"
+//#line 1242 "e.y"
 { b.pocket(val_peek(1),"noun-string");
                                           yyval = b.varName(val_peek(0)); }
 break;
 case 318:
-//#line 1248 "e.y"
+//#line 1251 "e.y"
 { b.reserved(val_peek(0),"keyword \"" +
                                      ((Astro)val_peek(0)).getTag().getTagName() +
                                      "\""); }
 break;
 case 319:
-//#line 1264 "e.y"
+//#line 1267 "e.y"
 { yyval = b.ident(val_peek(0), "add"); }
 break;
 case 320:
-//#line 1265 "e.y"
+//#line 1268 "e.y"
 { yyval = b.ident(val_peek(0), "and"); }
 break;
 case 321:
-//#line 1266 "e.y"
+//#line 1269 "e.y"
 { yyval = b.ident(val_peek(0), "approxDivide"); }
 break;
 case 322:
-//#line 1267 "e.y"
+//#line 1270 "e.y"
 { yyval = b.ident(val_peek(0), "floorDivide"); }
 break;
 case 323:
-//#line 1268 "e.y"
+//#line 1271 "e.y"
 { yyval = b.ident(val_peek(0), "shiftLeft"); }
 break;
 case 324:
-//#line 1269 "e.y"
+//#line 1272 "e.y"
 { yyval = b.ident(val_peek(0), "shiftRight"); }
 break;
 case 325:
-//#line 1270 "e.y"
+//#line 1273 "e.y"
 { yyval = b.ident(val_peek(0), "remainder"); }
 break;
 case 326:
-//#line 1271 "e.y"
+//#line 1274 "e.y"
 { yyval = b.ident(val_peek(0), "mod"); }
 break;
 case 327:
-//#line 1272 "e.y"
+//#line 1275 "e.y"
 { yyval = b.ident(val_peek(0), "multiply"); }
 break;
 case 328:
-//#line 1273 "e.y"
+//#line 1276 "e.y"
 { yyval = b.ident(val_peek(0), "or"); }
 break;
 case 329:
-//#line 1274 "e.y"
+//#line 1277 "e.y"
 { yyval = b.ident(val_peek(0), "pow"); }
 break;
 case 330:
-//#line 1275 "e.y"
+//#line 1278 "e.y"
 { yyval = b.ident(val_peek(0), "subtract"); }
 break;
 case 331:
-//#line 1276 "e.y"
+//#line 1279 "e.y"
 { yyval = b.ident(val_peek(0), "xor"); }
 break;
 case 332:
-//#line 1287 "e.y"
+//#line 1290 "e.y"
 { yyval = b.ident(val_peek(0), "add"); }
 break;
 case 333:
-//#line 1288 "e.y"
+//#line 1291 "e.y"
 { yyval = b.ident(val_peek(0), "and"); }
 break;
 case 334:
-//#line 1289 "e.y"
+//#line 1292 "e.y"
 { yyval = b.ident(val_peek(0), "approxDivide"); }
 break;
 case 335:
-//#line 1290 "e.y"
+//#line 1293 "e.y"
 { yyval = b.ident(val_peek(0), "floorDivide"); }
 break;
 case 336:
-//#line 1291 "e.y"
+//#line 1294 "e.y"
 { yyval = b.ident(val_peek(0), "shiftLeft"); }
 break;
 case 337:
-//#line 1292 "e.y"
+//#line 1295 "e.y"
 { yyval = b.ident(val_peek(0), "shiftRight"); }
 break;
 case 338:
-//#line 1293 "e.y"
+//#line 1296 "e.y"
 { yyval = b.ident(val_peek(0), "remainder"); }
 break;
 case 339:
-//#line 1294 "e.y"
+//#line 1297 "e.y"
 { yyval = b.ident(val_peek(0), "mod"); }
 break;
 case 340:
-//#line 1295 "e.y"
+//#line 1298 "e.y"
 { yyval = b.ident(val_peek(0), "multiply"); }
 break;
 case 341:
-//#line 1296 "e.y"
+//#line 1299 "e.y"
 { yyval = b.ident(val_peek(0), "or"); }
 break;
 case 342:
-//#line 1297 "e.y"
+//#line 1300 "e.y"
 { yyval = b.ident(val_peek(0), "pow"); }
 break;
 case 343:
-//#line 1298 "e.y"
+//#line 1301 "e.y"
 { yyval = b.ident(val_peek(0), "subtract"); }
 break;
 case 344:
-//#line 1299 "e.y"
+//#line 1302 "e.y"
 { yyval = b.ident(val_peek(0), "xor"); }
 break;
 case 345:
-//#line 1308 "e.y"
+//#line 1311 "e.y"
 { yyval = b.getNULL(); }
 break;
 case 346:
-//#line 1309 "e.y"
+//#line 1312 "e.y"
 { yyval = val_peek(1); }
 break;
 case 347:
-//#line 1317 "e.y"
+//#line 1320 "e.y"
 { b.pocket(val_peek(2),"accumulator");
                                                   yyval = b.accumulate(val_peek(1),val_peek(0)); }
 break;
 case 348:
-//#line 1322 "e.y"
+//#line 1325 "e.y"
 { yyval = b.accumFor(val_peek(3),val_peek(1),val_peek(0)); }
 break;
 case 349:
-//#line 1323 "e.y"
+//#line 1326 "e.y"
 { yyval = b.accumIf(val_peek(1),val_peek(0)); }
 break;
 case 350:
-//#line 1324 "e.y"
+//#line 1327 "e.y"
 { yyval = b.accumWhile(val_peek(1),val_peek(0)); }
 break;
 case 351:
-//#line 1328 "e.y"
+//#line 1331 "e.y"
 { yyval = b.accumBody(val_peek(3),
                                                                  b.list(val_peek(2))); }
 break;
 case 352:
-//#line 1330 "e.y"
+//#line 1333 "e.y"
 { yyval = b.accumBody(val_peek(3),val_peek(2)); }
 break;
 case 353:
-//#line 1331 "e.y"
+//#line 1334 "e.y"
 { yyval = val_peek(2); }
 break;
 case 354:
-//#line 1336 "e.y"
+//#line 1339 "e.y"
 { yyval = val_peek(1); }
 break;
 case 355:
-//#line 1340 "e.y"
+//#line 1343 "e.y"
 { yyval = b.vTable(val_peek(2), val_peek(1)); }
 break;
 case 356:
-//#line 1341 "e.y"
+//#line 1344 "e.y"
 { b.pocket(NO_POSER,
                                                            "plumbing");
                                                   yyval = b.vTable(null,
                                                                 b.list(val_peek(0))); }
 break;
 case 358:
-//#line 1356 "e.y"
+//#line 1359 "e.y"
 { yyval = b.with(val_peek(2), val_peek(1)); }
 break;
 case 361:
-//#line 1366 "e.y"
+//#line 1369 "e.y"
 { yyval = b.with(val_peek(2), val_peek(1)); }
 break;
 case 364:
-//#line 1383 "e.y"
+//#line 1386 "e.y"
 { yyval = b.with(val_peek(1), val_peek(0)); }
 break;
 case 365:
-//#line 1387 "e.y"
+//#line 1390 "e.y"
 { yyval = null; }
 break;
 case 366:
-//#line 1388 "e.y"
+//#line 1391 "e.y"
 { b.pocket(NO_POSER,
                                                            "escape-handler");
                                                   yyval = val_peek(0); }
 break;
 case 367:
-//#line 1394 "e.y"
+//#line 1397 "e.y"
 { yyval = b.matcher(val_peek(1), val_peek(0)); }
 break;
 case 368:
-//#line 1401 "e.y"
+//#line 1404 "e.y"
 { yyval = null; }
 break;
 case 369:
-//#line 1402 "e.y"
+//#line 1405 "e.y"
 { yyval = val_peek(0); }
 break;
 case 370:
-//#line 1412 "e.y"
+//#line 1415 "e.y"
 { yyval = b.oType("", val_peek(1), b.list(),
                                                        b.list(val_peek(0))); }
 break;
 case 371:
-//#line 1421 "e.y"
+//#line 1424 "e.y"
 { yyval = null; }
 break;
 case 372:
-//#line 1422 "e.y"
+//#line 1425 "e.y"
 { yyval = val_peek(0); }
 break;
 case 375:
-//#line 1431 "e.y"
+//#line 1434 "e.y"
 { yyval = b.list(val_peek(0)); }
 break;
 case 376:
-//#line 1432 "e.y"
+//#line 1435 "e.y"
 { yyval = b.with(val_peek(2),val_peek(0)); }
 break;
 case 378:
-//#line 1440 "e.y"
+//#line 1443 "e.y"
 { b.reserved(NO_POSER,"causality"); }
 break;
 case 379:
-//#line 1445 "e.y"
+//#line 1448 "e.y"
 { yyval = b.mType(val_peek(6), val_peek(4), val_peek(2), val_peek(0)); }
 break;
 case 380:
-//#line 1447 "e.y"
+//#line 1450 "e.y"
 { yyval = b.mType(val_peek(5), "run", val_peek(2), val_peek(0));}
 break;
 case 382:
-//#line 1455 "e.y"
+//#line 1458 "e.y"
 { b.reserved(NO_POSER,"causality"); }
 break;
 case 383:
-//#line 1459 "e.y"
+//#line 1462 "e.y"
 { yyval = b.mType("", "run", val_peek(2), val_peek(0)); }
 break;
 case 384:
-//#line 1460 "e.y"
+//#line 1463 "e.y"
 { b.pocket(val_peek(5),"one-method-object");
                                             yyval = b.mType("", val_peek(4),    val_peek(2), val_peek(0)); }
 break;
 case 385:
-//#line 1462 "e.y"
+//#line 1465 "e.y"
 {b.pocket(val_peek(5),"one-method-object");
                                             yyval = b.mType("", val_peek(4),    val_peek(2), val_peek(0)); }
 break;
 case 386:
-//#line 1467 "e.y"
+//#line 1470 "e.y"
 { yyval = val_peek(0); }
 break;
 case 387:
-//#line 1468 "e.y"
+//#line 1471 "e.y"
 { yyval = val_peek(1); }
 break;
 case 388:
-//#line 1473 "e.y"
+//#line 1476 "e.y"
 { yyval = b.list(val_peek(0)); }
 break;
 case 389:
-//#line 1474 "e.y"
+//#line 1477 "e.y"
 { yyval = b.with(val_peek(2),val_peek(0)); }
 break;
 case 390:
-//#line 1481 "e.y"
+//#line 1484 "e.y"
 { yyval = b.pType(val_peek(1),val_peek(0)); }
 break;
 case 391:
-//#line 1482 "e.y"
+//#line 1485 "e.y"
 { yyval = b.pType(null,val_peek(0)); }
 break;
 case 392:
-//#line 1483 "e.y"
+//#line 1486 "e.y"
 { yyval = b.pType(null,val_peek(0)); }
 break;
 case 393:
-//#line 1491 "e.y"
+//#line 1494 "e.y"
 { yyval = null; }
 break;
 case 394:
-//#line 1492 "e.y"
+//#line 1495 "e.y"
 { yyval = val_peek(0); }
 break;
 case 408:
-//#line 1508 "e.y"
+//#line 1511 "e.y"
 { yyval = "->"; }
 break;
-//#line 7009 "EParser.java"
+//#line 7026 "EParser.java"
 //########## END OF USER-SUPPLIED ACTIONS ##########
     }//switch
     //#### Now let's reduce... ####

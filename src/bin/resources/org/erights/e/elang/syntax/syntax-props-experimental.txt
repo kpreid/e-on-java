@@ -43,3 +43,4 @@ e.enable.verb-curry=true
 e.enable.one-method-object=true
 # e.enable.when-sequence=true
 e.enable.trinary-define=true
+e.enable.call-pattern=true

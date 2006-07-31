@@ -372,6 +372,12 @@ e.enable.noun-string=allow
 
 e.enable.trinary-define=allow
 
+################ New as of 0.8.37b #######################
+
+# http://www.eros-os.org/pipermail/e-lang/2006-July/011407.html
+
+e.enable.call-pattern=allow
+
 ################ Discontinued Switches ####################
 
 

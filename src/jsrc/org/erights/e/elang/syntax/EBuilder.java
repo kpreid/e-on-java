@@ -819,4 +819,18 @@ public interface EBuilder extends BaseEBuilder {
      * @see DelayedExpr#forControl(ENodeBuilder,org.quasiliteral.astro.Astro,org.erights.e.elang.evm.StaticScope)
      */
     EExpr matchBind(Object specimen, Object poser, Object pattern);
+
+    /**
+     *
+     */
+    Pattern callPattern(Object rcvr,
+                        Object poser, String verb,
+                        Object params);
+
+    /**
+     *
+     */
+    Pattern callPattern(Object rcvr,
+                        Object verb,
+                        Object params);
 }
