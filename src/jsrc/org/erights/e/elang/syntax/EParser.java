@@ -2819,17 +2819,17 @@ break;
 case 189:
 //#line 764 "e.y"
 { b.pocket(val_peek(4),"call-pattern");
-                                              yyval = b.callPattern(val_peek(3), val_peek(2),"run", val_peek(1)); }
+                                                 yyval = b.callPattern(val_peek(3), val_peek(2),"run", val_peek(1));}
 break;
 case 190:
 //#line 766 "e.y"
-{ b.pocket(val_peek(6),"call-pattern"); 
-                                                  yyval = b.callPattern(val_peek(5), val_peek(3), val_peek(1)); }
+{ b.pocket(val_peek(6),"call-pattern");
+                                                 yyval = b.callPattern(val_peek(5), val_peek(3), val_peek(1)); }
 break;
 case 191:
 //#line 768 "e.y"
 { b.pocket(val_peek(4),"call-pattern");
-                                              yyval = b.callPattern(val_peek(3), val_peek(2),"get", val_peek(1)); }
+                                                 yyval = b.callPattern(val_peek(3), val_peek(2),"get", val_peek(1));}
 break;
 case 192:
 //#line 771 "e.y"
