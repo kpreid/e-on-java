@@ -143,9 +143,20 @@ public interface CmdLoop extends ControlLoop {
     Scope getTopScope();
 
     /**
-     *
+     * Sets the topScope and suppresses the next {@link #nextScope(Scope)}
      */
     void setTopScope(Scope newScope);
+
+    /**
+     * If {@link #setTopScope(Scope)} has not been called, nextScope/1 sets the
+     * topScope, presumably for the next turn.
+     * <p>
+     * If {@link #setTopScope(Scope)} has been called, it sets a flag
+     * suppressing the next call to nextScope/1. If nextScope/1 is called while
+     * that flag is set, it only clears that flag, so the next call to
+     * nextScope/1 will be independent.
+     */
+    void nextScope(Scope newScope);
 
     /**
      * Returns the result of evaluating i'th most recent command (top

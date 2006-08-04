@@ -4,12 +4,16 @@
 def propUtils := <import:org.erights.e.tools.collect.propUtils>
 def controlLoopMaker := <elang:cmd.controlLoopMaker>
 
+def Scope := <type:org.erights.e.elang.scope.Scope>
+
 def cmdLoopMakerAuthor(systemGC) :any {
 
     def cmdLoopMaker(args :List,
                      props :Map[String,String],
-                     var topScope,
+                     var topScope :Scope,
                      isInteractive :boolean) :any {
+
+        var suppressNextScopeFlag :boolean := false;
 
         var expandFlag :boolean :=
           propUtils.testProp(props, "e.interp.expand")
@@ -119,7 +123,17 @@ def cmdLoopMakerAuthor(systemGC) :any {
              * What scope are top-level expressions evaluated in?
              */
             to getTopScope()            :any { topScope }
-            to setTopScope(newScope)   :void { topScope := newScope }
+            to setTopScope(newScope)   :void {
+                topScope := newScope
+                suppressNextScopeFlag := true
+            }
+            to nextScope(newScope)     :void {
+                if (suppressNextScopeFlag) {
+                    suppressNextScopeFlag := false
+                } else {
+                    topScope := newScope
+                }
+            }
 
             /**
              * Returns the result of evaluating i'th most recent command (top

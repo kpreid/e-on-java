@@ -95,6 +95,7 @@ def cmdMakerMaker(cmdLoop,
             def [outcomeVow, outcomeRes] := Ref.promise()
             def cmdValuer() :void {
                 def scope := cmdLoop.getTopScope()
+                var nextScope := scope
                 var success := true
                 def result
                 def interactive :boolean := cmdLoop.getInteractive()
@@ -120,13 +121,16 @@ def cmdMakerMaker(cmdLoop,
                     }
                     def [bind result, newScope] := eExpr.evalToPair(scope)
                     if (interactive) {
-                        cmdLoop.setTopScope(newScope.nestOuter())
+                        nextScope := newScope.nestOuter()
                     } else {
-                        cmdLoop.setTopScope(newScope)
+                        nextScope := newScope
                     }
                 } catch problem {
                     success := false
                     bind result := Ref.broken(problem)
+                } finally {
+                    # Clears the suppressNextScopeFlag
+                    cmdLoop.nextScope(nextScope)
                 }
                 cmdLoop.pushResult(result)
                 # in order to distinguish a successfully returned broken
