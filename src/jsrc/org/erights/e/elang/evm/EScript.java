@@ -59,7 +59,7 @@ public class EScript extends ENode {
                    EMatcher[] matchers,
                    ScopeLayout optScopeLayout) {
         super(optSpan, optScopeLayout);
-        if (optMethods == null && matchers.length != 0) {
+        if (optMethods == null && matchers.length != 1) {
             T.fail("The plumbingExpr must have exactly one matcher");
         }
         myOptMethods = optMethods;
