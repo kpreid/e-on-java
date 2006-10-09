@@ -1,0 +1,96 @@
+# don't delete intermediate outputs
+.SECONDARY:
+
+# swt stuff
+SWT_JARPATH=/usr/share/java/swt-gtk-3.1.1.jar
+SWT_LIBDIR=/usr/lib/eclipse
+SWT_LIB=swt-gtk-3139
+
+MAIN_CLASS=org.erights.e.elang.interp.MetaRune
+
+# output directories
+BUILD_DIR=BUILD
+CLASS_DIR=$(BUILD_DIR)/class
+OBJ_DIR=$(BUILD_DIR)/obj
+LIB_DIR=$(BUILD_DIR)/lib
+BIN_DIR=$(BUILD_DIR)/bin
+
+SRC_DIR=jsrc
+JAVA_SOURCES=$(shell find $(SRC_DIR) -name "*.java")
+JAVA_CLASSES=$(JAVA_SOURCES:$(SRC_DIR)/%.java=$(CLASS_DIR)/%.class)
+JAVA_OBJS=$(JAVA_SOURCES:$(SRC_DIR)/%.java=$(OBJ_DIR)/%.o)
+
+MAIN_STATICLIB=$(LIB_DIR)/lib$(MAIN_CLASS).a
+MAIN_JAR=$(LIB_DIR)/e.jar
+MAIN_SHLIB=$(MAIN_JAR).so
+
+MAIN_BINARY=$(BIN_DIR)/e
+MAIN_CLASSMAP=$(LIB_DIR)/classmap.db
+JAVA_PACKAGE_DIRS=$(shell find $(SRC_DIR) -type d)
+OBJ_PACKAGE_DIRS=$(JAVA_PACKAGE_DIRS:$(SRC_DIR)/%=$(OBJ_DIR)/%)
+
+OUTPUT_DIRS=$(BUILD_DIR) $(CLASS_DIR) $(OBJ_DIR) $(LIB_DIR) $(BIN_DIR) $(OBJ_PACKAGE_DIRS)
+
+default: $(OUTPUT_DIRS) $(MAIN_BINARY)
+
+# build the binary from .o files rather than .class files, for performance
+# -- otherwise startup time for resulting binary is 300% slower.
+# tell the binary where to find the map from classes to precompiled versions
+# in the shared library -- this improves startup time by about 10%
+$(MAIN_BINARY): $(MAIN_STATICLIB) $(MAIN_CLASSMAP)
+	gcj --main=$(MAIN_CLASS) $< -o $@ \
+          -I$(SWT_JARPATH) -L$(SWT_LIBDIR) -l$(SWT_LIB) \
+          -Djava.class.path=$$PWD/$(MAIN_JAR) \
+          -Dgnu.gcj.precompiled.db.path=$$PWD/$(MAIN_CLASSMAP)
+
+# build a classmap file that maps classes to a shared library implementation.
+# this way, we can use as much precompiled code as possible and avoid
+# interpreting java bytecode, which should give us some performance boost
+$(MAIN_CLASSMAP): $(MAIN_SHLIB) $(MAIN_JAR)
+	rm -f $@
+	gcj-dbtool -n $@
+	gcj-dbtool -a $@ $(MAIN_JAR) $(MAIN_SHLIB)
+
+# build a .jar of all the class files that get created.
+# ensure that the files inside the jar have the proper pathname corresponding
+# to their package name -- otherwise we cause gcj to segfault when compiling
+# the .jar to a shared library
+# also include the safej files, the resources and the esrc contents
+$(MAIN_JAR): $(JAVA_CLASSES)
+	ORIGPWD=$$PWD;\
+	cd $(CLASS_DIR);\
+	jar cf $$ORIGPWD/$@ `find . -name "*.class"`;\
+	cd $$ORIGPWD/safej;\
+	jar uf $$ORIGPWD/$@ `find . -type f`;\
+	cd $$ORIGPWD/bin/resources;\
+	jar uf $$ORIGPWD/$@ `find . -type f`;\
+	cd $$ORIGPWD/esrc;\
+	jar uf $$ORIGPWD/$@ `find . -type f`;
+
+# build a shared library from the .jar that allows us to use precompiled
+# versions of classes that are loaded through the system classloader,
+# which should give some speed increase
+$(MAIN_SHLIB): $(MAIN_JAR)
+	gcj -shared -findirect-dispatch -Wl,-Bsymbolic -fPIC -o $@ $^
+
+# build a static library of all the .o files for use when
+# creating the main binary
+$(MAIN_STATICLIB): $(JAVA_OBJS)
+	ar -crs $@ $^
+
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.java $(JAVA_CLASSES)
+	gcj -I$(CLASS_DIR) -I$(SWT_JARPATH) -c $< -o $@
+
+# build all the jave sources to .class files
+$(JAVA_CLASSES): $(JAVA_SOURCES)
+	gcj -C -d $(CLASS_DIR) $^ -I$(SWT_JARPATH)
+
+distclean:
+	rm -rf $(BUILD_DIR)
+
+# don't remove the .o or the .class files as these take a while to rebuild
+clean:
+	rm -rf $(BIN_DIR) $(LIB_DIR)
+
+$(OUTPUT_DIRS):
+	mkdir -p $@
