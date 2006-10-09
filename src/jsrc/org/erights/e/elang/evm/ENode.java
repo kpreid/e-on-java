@@ -15,7 +15,7 @@ import org.erights.e.elib.tables.ConstMap;
  *
  * @author Mark S. Miller
  */
-public abstract class ENode extends ParseNode implements Cloneable {
+public abstract class ENode extends ParseNode {
 
     private transient StaticScope myOptStaticScope = null;
 
