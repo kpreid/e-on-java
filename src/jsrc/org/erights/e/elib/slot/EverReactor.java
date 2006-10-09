@@ -1,5 +1,7 @@
 package org.erights.e.elib.slot;
 
+import org.erights.e.meta.java.math.EInt;
+
 // Copyright 2002 Combex, Inc. under the terms of the MIT X license
 // found at http://www.opensource.org/licenses/mit-license.html ...............
 
@@ -34,7 +36,7 @@ public interface EverReactor {
      * whenever-reactor, then it will delay the re-subscribe request until
      * there's an expression of local interest.
      *
-     * @param newReporterGen an {@link org.erights.e.meta.java.math.EInt EInt}.
+     * @param newReporterGen an {@link EInt}.
      * @param optNewReporter If null, then this EverReactor has been cut loose
      *                       -- this last newValue is now authoritative since
      *                       there's no one upstream to ask.

@@ -62,7 +62,7 @@ def makeLamportSlot {
         # Those downstream and subscribed to me.
         var optReactors := null
 
-        # The EverReporters upstream from this one, ie, the one from
+        # The EverReporter upstream from this one, ie, the one from
         # which the most recent report was received. null if no one
         # is upstream, or if we've already sent in our subscription request.
         var optSource := null

@@ -63,7 +63,7 @@ def whenever {
     /**
      * @param inputReporters A list of inputReporters to be subscribed to.
      * @param formula A no-argument function (whose instance variables will
-     *                typically the input variables whose slots are the
+     *                typically be the input variables whose slots are the
      *                inputReporters), that computes and returns the current
      *                value of the everFormula.
      * @param interest If interest() returns true, then we are interested in
