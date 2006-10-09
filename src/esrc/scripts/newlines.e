@@ -88,6 +88,7 @@ def extensions := [
 
     "Makefile-w32" => true, #
     "Makefile-unix" => true, #
+    "Makefile-gcj" => true, #
     "bat" => false #
 ]
 
