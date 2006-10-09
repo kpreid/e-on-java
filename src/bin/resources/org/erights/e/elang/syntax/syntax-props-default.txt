@@ -482,4 +482,3 @@ e.enable.call-pattern=allow
 # fully-qualified name.
 
 # e.enable.literal-oname=allow
-
