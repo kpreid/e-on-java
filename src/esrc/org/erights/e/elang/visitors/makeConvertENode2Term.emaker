@@ -46,10 +46,10 @@ def makeConvertENode2Term() :any {
                                  [${convert(args)}*])`
         }
 
-        to visitDefineExpr(optOriginal :nullOk[ENode]
+        to visitDefineExpr(optOriginal :nullOk[ENode],
                            patt :Pattern,
                            optEjectorExpr :nullOk[EExpr],
-                           rValue :EExpr,) :Term {
+                           rValue :EExpr) :Term {
             return term`DefineExpr(${convert(patt)},
                                    ${convert(optEjectorExpr)},
                                    ${convert(rValue)})`
