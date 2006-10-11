@@ -55,7 +55,7 @@ import java.lang.reflect.Modifier;
 public class StaticMaker
   implements Callable, Persistent, PassByConstruction {
 
-    static final long serialVersionUID = -9145754747555989915L;
+    static private final long serialVersionUID = -9145754747555989915L;
 
     /**
      *

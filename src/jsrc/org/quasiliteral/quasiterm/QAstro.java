@@ -23,7 +23,7 @@ import org.quasiliteral.base.ValueMaker;
 public abstract class QAstro extends QAstroArg
   implements Astro, ValueMaker, MatchMaker {
 
-    static final long serialVersionUID = 7338296043865833760L;
+    static private final long serialVersionUID = 7338296043865833760L;
 
     /**
      *
@@ -37,7 +37,7 @@ public abstract class QAstro extends QAstroArg
      */
     public Object substitute(ConstList args) {
         ConstList list = substSlice(args, EMPTY_INDEX);
-        T.require(list.size() == 1,
+        T.require(1 == list.size(),
                   "Must be singleton: ", list);
         return list.get(0);
     }
@@ -86,7 +86,7 @@ public abstract class QAstro extends QAstroArg
      *
      */
     public Object getOptArgData() {
-        if (getArgs().size() != 1) {
+        if (1 != getArgs().size()) {
             return null;
         }
         QAstroArg qaa = (QAstroArg)getArgs().get(0);
@@ -166,16 +166,14 @@ public abstract class QAstro extends QAstroArg
             result = (Astro)termoid;
 
         } else if (termoid instanceof String) {
-            if (null != optTag &&
-              optTag.getOptDataType() == Twine.class) {
+            if (null != optTag && Twine.class == optTag.getOptDataType()) {
                 result = myBuilder.leafString((String)termoid, null);
             } else {
                 result = leafTag((String)termoid, null);
             }
         } else if (termoid instanceof Twine) {
             Twine twine = (Twine)termoid;
-            if (null != optTag &&
-              optTag.getOptDataType() == Twine.class) {
+            if (null != optTag && Twine.class == optTag.getOptDataType()) {
                 result = myBuilder.leafTwine(twine, null);
             } else {
                 result = leafTag(twine.bare(), twine.getOptSpan());
@@ -199,7 +197,7 @@ public abstract class QAstro extends QAstroArg
         if (null != optTag && 0.0 != optTag.op__cmp(result.getTag())) {
             return null;
         }
-        if (isFunctorHole && result.getArgs().size() != 0) {
+        if (isFunctorHole && 0 != result.getArgs().size()) {
             return null;
         }
         return result;

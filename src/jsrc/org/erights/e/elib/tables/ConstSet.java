@@ -14,7 +14,7 @@ import java.io.IOException;
 public class ConstSet
   extends ESet implements PassByConstruction, Selfless {
 
-    static final long serialVersionUID = 139247792984994555L;
+    static private final long serialVersionUID = 139247792984994555L;
 
     /**
      *

@@ -22,7 +22,7 @@ import org.erights.e.elib.tables.Selfless;
  */
 public interface DeepPassByCopy extends PassByConstruction, Selfless {
 
-    static final long serialVersionUID = 6883670304147415885L;
+    long serialVersionUID = 6883670304147415885L;
 
     /**
      * List of Java library classes whose instances are transitively
@@ -32,7 +32,7 @@ public interface DeepPassByCopy extends PassByConstruction, Selfless {
      * and modify them to implement the DeepPassByCopy interface, but we
      * equally obviously want people to be able to use them as if we had.
      */
-    static public final String[] HONORED_NAMES = {
+    String[] HONORED_NAMES = {
         "java.lang.Boolean",
         "java.lang.Character",
         "java.lang.String",
@@ -54,6 +54,6 @@ public interface DeepPassByCopy extends PassByConstruction, Selfless {
      * HONORARY (effectively) contains all the classes named in HONORED_NAMES
      * and all their subclasses.
      */
-    static public final ConstSubclassSet HONORARY
+    ConstSubclassSet HONORARY
       = ConstSubclassSet.make(HONORED_NAMES);
 }

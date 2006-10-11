@@ -35,7 +35,7 @@ import java.io.IOException;
  */
 public class QAtHole extends QHole {
 
-    static final long serialVersionUID = 6979086503562395304L;
+    static private final long serialVersionUID = 6979086503562395304L;
 
     /**
      *
@@ -148,7 +148,7 @@ public class QAtHole extends QHole {
                               ConstList specimenList,
                               FlexList bindings,
                               int[] index) {
-        if (specimenList.size() <= 0) {
+        if (0 >= specimenList.size()) {
             return -1;
         }
         Astro optSpecimen = optCoerce(specimenList.get(0), myIsFunctorHole);

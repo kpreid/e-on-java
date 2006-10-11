@@ -50,7 +50,7 @@ import java.math.BigInteger;
 public final class Term extends Termish
   implements Persistent, DeepPassByCopy, Astro, Conformable {
 
-    static final long serialVersionUID = -8268521124096510369L;
+    static private final long serialVersionUID = -8268521124096510369L;
 
     /**
      * Initialized lazily to avoid a circularity.

@@ -38,7 +38,7 @@ import org.erights.e.elib.serial.PassByConstruction;
  */
 interface ObjectRefDesc extends PassByConstruction {
 
-    static final long serialVersionUID = -1216565871698747757L;
+    long serialVersionUID = -1216565871698747757L;
 
     /**
      * Return an appropriate object (eg, a Proxy) matching this

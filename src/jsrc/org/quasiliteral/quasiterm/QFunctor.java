@@ -1,7 +1,6 @@
 package org.quasiliteral.quasiterm;
 
 import org.erights.e.develop.format.StringHelper;
-import org.erights.e.develop.assertion.T;
 import org.erights.e.elib.base.SourceSpan;
 import org.erights.e.elib.oldeio.TextWriter;
 import org.erights.e.elib.prim.E;
@@ -9,11 +8,13 @@ import org.erights.e.elib.prim.StaticMaker;
 import org.erights.e.elib.tables.ConstList;
 import org.erights.e.elib.tables.FlexList;
 import org.erights.e.elib.tables.Twine;
+import org.erights.e.meta.java.math.EInt;
 import org.quasiliteral.astro.Astro;
 import org.quasiliteral.astro.AstroArg;
 import org.quasiliteral.astro.AstroBuilder;
 import org.quasiliteral.astro.AstroTag;
 import org.quasiliteral.term.QuasiBuilder;
+import org.quasiliteral.term.Term;
 
 import java.io.IOException;
 
@@ -21,7 +22,7 @@ import java.io.IOException;
 // found at http://www.opensource.org/licenses/mit-license.html ...............
 
 /**
- * A quasi-literal functor of a {@link org.quasiliteral.term.Term Term}.
+ * A quasi-literal functor of a {@link Term Term}.
  * <p/>
  * As a ValueMaker, this acts like a 0-arity Term. As a MatchMaker, this
  * matches only the functor info of a specimen term, and ignores the
@@ -31,7 +32,7 @@ import java.io.IOException;
  */
 public class QFunctor extends QAstro {
 
-    static final long serialVersionUID = -4841426503764679037L;
+    static private final long serialVersionUID = -4841426503764679037L;
 
     /**
      *
@@ -62,7 +63,7 @@ public class QFunctor extends QAstro {
      *                of related grammars, used as the functor (or "label") of
      *                this QTerm
      * @param optData Either something that promotes to a {@link Character},
-     *                {@link org.erights.e.meta.java.math.EInt EInt},
+     *                {@link EInt EInt},
      *                {@link Double}, or {@link Twine} or null. If not null,
      *                then the tag must represent the canonical literal type
      *                for this kind of data in this schema.
@@ -164,7 +165,7 @@ public class QFunctor extends QAstro {
                               ConstList specimenList,
                               FlexList bindings,
                               int[] index) {
-        if (specimenList.size() <= 0) {
+        if (0 >= specimenList.size()) {
             return -1;
         }
         Astro optSpecimen = optCoerce(specimenList.get(0), false);
@@ -222,7 +223,7 @@ public class QFunctor extends QAstro {
     }
 
     /**
-     * @return
+     *
      */
     QAstro asFunctor() {
         return this;
@@ -249,9 +250,6 @@ public class QFunctor extends QAstro {
 
     /**
      *
-     * @param termoid
-     * @param isFunctorHole
-     * @return
      */
     Astro optCoerce(Object termoid, boolean isFunctorHole) {
         return optCoerce(termoid, isFunctorHole, myTag);

@@ -78,7 +78,7 @@ import java.io.IOException;
  */
 public class Text extends Node {
 
-    static final long serialVersionUID = -7993276082779589979L;
+    static private final long serialVersionUID = -7993276082779589979L;
 
     /**
      *

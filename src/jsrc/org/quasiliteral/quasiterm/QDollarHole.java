@@ -36,7 +36,7 @@ import java.io.IOException;
  */
 public class QDollarHole extends QHole {
 
-    static final long serialVersionUID = 3563608921615703114L;
+    static private final long serialVersionUID = 3563608921615703114L;
 
     /**
      *
@@ -162,7 +162,7 @@ public class QDollarHole extends QHole {
                               ConstList specimenList,
                               FlexList bindings,
                               int[] index) {
-        if (specimenList.size() <= 0) {
+        if (0 >= specimenList.size()) {
             return -1;
         }
         Object specimen = specimenList.get(0);

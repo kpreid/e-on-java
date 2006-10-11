@@ -37,7 +37,7 @@ import java.io.IOException;
  */
 public abstract class ESet implements EPrintable, Persistent, EIteratable {
 
-    static final long serialVersionUID = -8027825640033613130L;
+    static private final long serialVersionUID = -8027825640033613130L;
 
     /**
      * XXX Should build an ESet directly from a KeyColumn rather than an EMap.

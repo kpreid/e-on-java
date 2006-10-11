@@ -40,7 +40,7 @@ import java.net.MalformedURLException;
 public final class SturdyRef
   implements Persistent, PassByConstruction, EPrintable {
 
-    static final long serialVersionUID = 1034104891471210303L;
+    static private final long serialVersionUID = 1034104891471210303L;
 
     /**
      * The LocatorUnum that links us to the outside world.

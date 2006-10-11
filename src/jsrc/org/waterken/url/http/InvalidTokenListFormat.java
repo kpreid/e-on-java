@@ -9,7 +9,7 @@ package org.waterken.url.http;
  */
 public class InvalidTokenListFormat extends RuntimeException {
 
-    static final long serialVersionUID = 3859309500294447096L;
+    static private final long serialVersionUID = 3859309500294447096L;
 
     /**
      * Constructs an <code>InvalidTokenListFormat</code>.

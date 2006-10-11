@@ -9,7 +9,7 @@ package org.waterken.uri;
  */
 public class InvalidPath extends RuntimeException {
 
-    static final long serialVersionUID = 8459875934719645712L;
+    static private final long serialVersionUID = 8459875934719645712L;
 
     protected InvalidPath() {
     }

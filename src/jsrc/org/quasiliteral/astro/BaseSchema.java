@@ -27,7 +27,7 @@ import java.math.BigInteger;
 public class BaseSchema
   implements AstroSchema, Persistent /*, PassByConstruction */ {
 
-    static final long serialVersionUID = 3951039891178561818L;
+    static private final long serialVersionUID = 3951039891178561818L;
 
     static private final String[] MinimalTagNames = {
         ".char.",

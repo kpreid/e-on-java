@@ -11,7 +11,7 @@ import java.io.IOException;
  */
 public final class HTTPException extends IOException {
 
-    static final long serialVersionUID = 7521688257434685450L;
+    static private final long serialVersionUID = 7521688257434685450L;
 
     /**
      * The HTTP status code.

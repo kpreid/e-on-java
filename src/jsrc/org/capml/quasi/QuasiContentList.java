@@ -32,7 +32,7 @@ import java.io.IOException;
  */
 public class QuasiContentList extends QuasiContent {
 
-    static final long serialVersionUID = -3122022149910166996L;
+    static private final long serialVersionUID = -3122022149910166996L;
 
     static public final StaticMaker QuasiContentListMaker
       = StaticMaker.make(QuasiContentList.class);

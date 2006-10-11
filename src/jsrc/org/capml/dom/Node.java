@@ -62,7 +62,7 @@ import java.io.IOException;
 public abstract class Node
   implements Persistent, DeepPassByCopy, EIteratable, EPrintable {
 
-    static final long serialVersionUID = 1930678083045024505L;
+    static private final long serialVersionUID = 1930678083045024505L;
 
     // NodeType
     static public final short ELEMENT_NODE = 1;

@@ -39,7 +39,7 @@ import java.util.Collections;
  */
 public final class Host implements java.io.Serializable {
 
-    static final long serialVersionUID = -5803768622635370747L;
+    static private final long serialVersionUID = -5803768622635370747L;
 
     /**
      * The keyspace.

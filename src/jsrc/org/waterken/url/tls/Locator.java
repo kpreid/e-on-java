@@ -37,7 +37,7 @@ import java.util.Set;
 public final class Locator implements org.waterken.url.Locator,
   java.io.Serializable {
 
-    static final long serialVersionUID = 9148342181345156610L;
+    static private final long serialVersionUID = 9148342181345156610L;
 
     /**
      * The underlying network.

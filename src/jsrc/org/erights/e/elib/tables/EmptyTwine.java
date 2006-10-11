@@ -34,7 +34,7 @@ Contributor(s): ______________________________________.
  */
 public class EmptyTwine extends Twine {
 
-    static final long serialVersionUID = 8545207059080665278L;
+    static private final long serialVersionUID = 8545207059080665278L;
 
     /**
      * The canonical instance

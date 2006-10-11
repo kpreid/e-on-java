@@ -32,7 +32,7 @@ import java.io.Serializable;
  */
 public interface PassByConstruction extends Serializable, Marker {
 
-    static final long serialVersionUID = -1917353432884312686L;
+    long serialVersionUID = -1917353432884312686L;
 
     /**
      * List of Java library classes that can be passed by contruction.
@@ -41,7 +41,7 @@ public interface PassByConstruction extends Serializable, Marker {
      * and modify them to implement the PassByConstruction interface, but we
      * equally obviously want people to be able to use them as if we had.
      */
-    static public final String[] HONORED_NAMES = {
+    String[] HONORED_NAMES = {
         //also Transparent & Selfless, and so PassByCopy
         "java.lang.Boolean",
         "java.lang.Character",
@@ -68,6 +68,6 @@ public interface PassByConstruction extends Serializable, Marker {
      * HONORARY (effectively) contains all the classes named in HONORED_NAMES
      * and all their subclasses.
      */
-    static public final ConstSubclassSet HONORARY
+    ConstSubclassSet HONORARY
       = ConstSubclassSet.make(HONORED_NAMES);
 }

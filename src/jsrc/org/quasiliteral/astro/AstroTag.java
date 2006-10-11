@@ -34,7 +34,7 @@ import java.math.BigInteger;
  */
 public class AstroTag implements Persistent, DeepPassByCopy {
 
-    static final long serialVersionUID = -7783370054885847533L;
+    static private final long serialVersionUID = -7783370054885847533L;
 
     static private StaticMaker AstroTagMaker = null;
 

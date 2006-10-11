@@ -20,6 +20,7 @@ Contributor(s): ______________________________________.
 */
 
 import org.erights.e.elib.tables.ConstSubclassSet;
+import org.erights.e.elib.ref.Ref;
 
 import java.io.Serializable;
 
@@ -28,13 +29,13 @@ import java.io.Serializable;
  * checkpoint for purposes of persistence.
  * <p/>
  * This interface helps to determine whether an object {@link
- * org.erights.e.elib.ref.Ref#isPersistent(Object)}.
+ * Ref#isPersistent(Object)}.
  *
  * @author Mark S. Miller
  */
 public interface Persistent extends Serializable, Marker {
 
-    static final long serialVersionUID = -1917353432884312686L;
+    long serialVersionUID = -1917353432884312686L;
 
     /**
      * List of Java library classes to be considered persistent.
@@ -43,7 +44,7 @@ public interface Persistent extends Serializable, Marker {
      * and modify them to implement the Persistent interface, but we equally
      * obviously want people to be able to use them as if we had.
      */
-    static final String[] HONORED_NAMES = {
+    String[] HONORED_NAMES = {
         //also PBC, Transparent, & Selfless, and so PassByCopy
         "java.lang.Boolean",
         "java.lang.Character",
@@ -78,6 +79,6 @@ public interface Persistent extends Serializable, Marker {
      * HONORARY (effectively) contains all the classes named in HONORED_NAMES
      * and all their subclasses.
      */
-    static public final ConstSubclassSet HONORARY
+    ConstSubclassSet HONORARY
       = ConstSubclassSet.make(HONORED_NAMES);
 }

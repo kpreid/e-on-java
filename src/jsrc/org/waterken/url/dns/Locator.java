@@ -15,7 +15,7 @@ import java.net.SocketAddress;
 public final class Locator implements org.waterken.url.Locator,
   java.io.Serializable {
 
-    static final long serialVersionUID = 1616824535748530028L;
+    static private final long serialVersionUID = 1616824535748530028L;
 
     /**
      * The default port.

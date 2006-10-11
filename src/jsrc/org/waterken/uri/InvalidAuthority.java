@@ -9,7 +9,7 @@ package org.waterken.uri;
  */
 public class InvalidAuthority extends RuntimeException {
 
-    static final long serialVersionUID = -3377352962235832164L;
+    static private final long serialVersionUID = -3377352962235832164L;
 
     protected InvalidAuthority() {
     }

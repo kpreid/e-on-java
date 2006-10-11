@@ -18,7 +18,7 @@ import java.net.SocketAddress;
 public final class Locator implements org.waterken.url.Locator,
   java.io.Serializable {
 
-    static final long serialVersionUID = 5008216486101224538L;
+    static private final long serialVersionUID = 5008216486101224538L;
 
     /**
      * The proxy locator.

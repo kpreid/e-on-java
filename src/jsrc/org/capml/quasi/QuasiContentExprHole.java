@@ -25,7 +25,7 @@ import java.io.IOException;
  */
 public class QuasiContentExprHole extends QuasiContent {
 
-    static final long serialVersionUID = -3526871811031899230L;
+    static private final long serialVersionUID = -3526871811031899230L;
 
     static public final StaticMaker QuasiContentExprHoleMaker
       = StaticMaker.make(QuasiContentExprHole.class);

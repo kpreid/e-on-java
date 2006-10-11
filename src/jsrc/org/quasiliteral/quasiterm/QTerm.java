@@ -25,7 +25,7 @@ import java.io.IOException;
  */
 public class QTerm extends QAstro {
 
-    static final long serialVersionUID = 8957426444620247360L;
+    static private final long serialVersionUID = 8957426444620247360L;
 
     /**
      *
@@ -159,7 +159,7 @@ public class QTerm extends QAstro {
                               ConstList specimenList,
                               FlexList bindings,
                               int[] index) {
-        if (specimenList.size() <= 0) {
+        if (0 >= specimenList.size()) {
             return -1;
         }
         Astro optSpecimen = optCoerce(specimenList.get(0), false);
@@ -172,7 +172,7 @@ public class QTerm extends QAstro {
                                                 singletonFunctorList,
                                                 bindings,
                                                 index);
-        if (matches <= 0) {
+        if (0 >= matches) {
             return -1;
         }
         T.requireSI(1 == matches,
@@ -211,7 +211,7 @@ public class QTerm extends QAstro {
      *
      */
     QAstro asFunctor() {
-        T.require(myQArgs.getHeight() == 1,
+        T.require(1 == myQArgs.getHeight(),
                   "Terms with args can't be used as functors: ", this);
         //could 'return this;', but may as well shed unnecessary structure
         return myQFunctor;
@@ -247,9 +247,6 @@ public class QTerm extends QAstro {
 
     /**
      *
-     * @param termoid
-     * @param isFunctorHole
-     * @return
      */
     Astro optCoerce(Object termoid, boolean isFunctorHole) {
         return myQFunctor.optCoerce(termoid, isFunctorHole);

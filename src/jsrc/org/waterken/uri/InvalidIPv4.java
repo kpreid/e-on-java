@@ -9,7 +9,7 @@ package org.waterken.uri;
  */
 public class InvalidIPv4 extends RuntimeException {
 
-    static final long serialVersionUID = -6866919856527173933L;
+    static private final long serialVersionUID = -6866919856527173933L;
 
     protected InvalidIPv4() {
     }

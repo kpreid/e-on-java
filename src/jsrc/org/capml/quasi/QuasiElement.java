@@ -34,7 +34,7 @@ import java.io.IOException;
  */
 public class QuasiElement extends QuasiContent {
 
-    static final long serialVersionUID = -4487551194798463363L;
+    static private final long serialVersionUID = -4487551194798463363L;
 
     static public final StaticMaker QuasiElementMaker
       = StaticMaker.make(QuasiElement.class);

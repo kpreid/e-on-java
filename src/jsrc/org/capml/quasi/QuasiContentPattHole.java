@@ -24,7 +24,7 @@ import java.io.IOException;
  */
 public class QuasiContentPattHole extends QuasiContent {
 
-    static final long serialVersionUID = -2774222631122956274L;
+    static private final long serialVersionUID = -2774222631122956274L;
 
     static public final StaticMaker QuasiContentPattHoleMaker
       = StaticMaker.make(QuasiContentPattHole.class);

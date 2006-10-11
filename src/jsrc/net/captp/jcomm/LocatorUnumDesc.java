@@ -8,7 +8,7 @@ package net.captp.jcomm;
  */
 class LocatorUnumDesc implements ObjectRefDesc {
 
-    static final long serialVersionUID = -8748706103551187843L;
+    static private final long serialVersionUID = -8748706103551187843L;
 
     /**
      *

@@ -44,7 +44,7 @@ import java.math.BigInteger;
  */
 public class LocatorUnum implements PassByConstruction {
 
-    static final long serialVersionUID = 6565076271340985687L;
+    static private final long serialVersionUID = 6565076271340985687L;
 
     final Introducer myIntroducer;
 

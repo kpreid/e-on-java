@@ -9,7 +9,7 @@ package org.waterken.uri;
  */
 public class InvalidFilename extends RuntimeException {
 
-    static final long serialVersionUID = 5839912755282961504L;
+    static private final long serialVersionUID = 5839912755282961504L;
 
     /**
      * Constructs an <code>InvalidFilename</code>.

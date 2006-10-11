@@ -56,7 +56,7 @@ import java.io.IOException;
  */
 public class Element extends Node {
 
-    static final long serialVersionUID = -6137794451491033993L;
+    static private final long serialVersionUID = -6137794451491033993L;
 
     static public final StaticMaker ElementMaker
       = StaticMaker.make(Element.class);

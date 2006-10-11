@@ -25,7 +25,7 @@ import java.io.IOException;
  */
 public class QuasiText extends QuasiContent {
 
-    static final long serialVersionUID = -1744822228049984960L;
+    static private final long serialVersionUID = -1744822228049984960L;
 
     static public final StaticMaker QuasiTextMaker
       = StaticMaker.make(QuasiText.class);

@@ -23,7 +23,7 @@ import java.io.IOException;
  */
 public class QSome extends QAstroArg {
 
-    static final long serialVersionUID = 3043579604546641336L;
+    static private final long serialVersionUID = 3043579604546641336L;
 
     /**
      *

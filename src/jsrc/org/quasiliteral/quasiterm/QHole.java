@@ -4,11 +4,9 @@ import org.erights.e.develop.assertion.T;
 import org.erights.e.develop.exception.ExceptionMgr;
 import org.erights.e.elib.base.Ejector;
 import org.erights.e.elib.base.SourceSpan;
-import org.erights.e.elib.ref.Ref;
 import org.erights.e.elib.tables.ConstList;
 import org.erights.e.elib.tables.EList;
 import org.erights.e.elib.tables.FlexList;
-import org.erights.e.elib.tables.Twine;
 import org.quasiliteral.astro.Astro;
 import org.quasiliteral.astro.AstroBuilder;
 import org.quasiliteral.astro.AstroTag;
@@ -25,7 +23,7 @@ import org.quasiliteral.astro.AstroTag;
  */
 public abstract class QHole extends QAstro {
 
-    static final long serialVersionUID = 199932029973185772L;
+    static private final long serialVersionUID = 199932029973185772L;
 
     /**
      * @serial If present, represents the token tag that the corresponding
@@ -230,9 +228,6 @@ public abstract class QHole extends QAstro {
 
     /**
      *
-     * @param termoid
-     * @param isFunctorHole
-     * @return
      */
     Astro optCoerce(Object termoid, boolean isFunctorHole) {
         return optCoerce(termoid, isFunctorHole, myOptTag);

@@ -11,7 +11,7 @@ import java.io.IOException;
  */
 public class TooMuchData extends IOException {
 
-    static final long serialVersionUID = 8449729970758218002L;
+    static private final long serialVersionUID = 8449729970758218002L;
 
     /**
      * Constructs an <code>TooMuchData</code>.

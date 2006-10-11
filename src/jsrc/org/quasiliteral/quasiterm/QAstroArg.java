@@ -28,7 +28,7 @@ import java.io.StringWriter;
 public abstract class QAstroArg
   implements Selfless, PassByConstruction, Persistent, AstroArg, EPrintable {
 
-    static final long serialVersionUID = -677636576833337794L;
+    static private final long serialVersionUID = -677636576833337794L;
 
     /**
      *

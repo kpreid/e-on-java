@@ -32,7 +32,7 @@ import java.io.IOException;
 public abstract class QuasiContent
   implements Persistent, Selfless, PassByConstruction, MatchMaker {
 
-    static final long serialVersionUID = 1194569409508874930L;
+    static private final long serialVersionUID = 1194569409508874930L;
 
     /**
      * Coerce 'content', which must be Content (as defined in the class
