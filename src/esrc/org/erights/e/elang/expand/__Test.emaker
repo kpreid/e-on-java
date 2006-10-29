@@ -9,9 +9,9 @@
  * __Test is a non-transforming guard -- when it succeeds, the result is the
  * same as the specimen.
  * <p>
- * If the specimen is true, return it. If it's false, eject to the ejector.
- * Otherwise, throw a complaint that it's not a boolean. Note that a
- * non-boolean causes a throw, <i>not</i> a match-failure.
+ * If the specimen coerces to true, return it. If coerces to false, eject to
+ * the ejector. Otherwise, throw a complaint that it doesn't coerce to a
+ * boolean. Note that a non-boolean causes a throw, <i>not</i> a match-failure.
  *
  * @author Mark S. Miller
  */
