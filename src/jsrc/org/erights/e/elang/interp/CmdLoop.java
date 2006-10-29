@@ -47,9 +47,9 @@ public interface CmdLoop extends ControlLoop {
     /**
      * A map from String (property names) to Strings (property values) that's
      * assumed to reflect System.getProperties(),
-     * org/erights/e/elang/syntax/syntax-props-default.txt, the eprops.txt
-     * file, the optional ~/.e/user-eprops.txt file, and any -Dprop=value
-     * command line arguments.
+     * org/erights/e/elang/syntax/syntax-props-<major_version>.txt, the
+     * eprops.txt file, the optional ~/.e/user-eprops.txt file, and any
+     * -Dprop=value command line arguments.
      */
     ConstMap getProps();
 

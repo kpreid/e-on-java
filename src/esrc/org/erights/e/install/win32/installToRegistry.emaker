@@ -42,8 +42,8 @@ def installToRegistry(var ehome :String,
         `-De.home=$ehome/`,
         "-De.gui-launch=true",
         # further properties will be read from
-        # org/erights/e/elang/syntax/syntax-props-default.txt, eprops.txt,
-        # and ~/.e/user-eprops.txt
+        # org/erights/e/elang/syntax/syntax-props-<major_version>.txt,
+        # eprops.txt, and ~/.e/user-eprops.txt
         "org.erights.e.elang.interp.Rune"
     ]
 

@@ -10,15 +10,10 @@
 
 # The settings of these switches that support a particular version of
 # E are given by first reading the resource file
-# 'syntax-props-default.txt', and then reading the shadowing
-# definitions in 'syntax-props-<version>.txt', where the <version>
-# string of is just the numeric part of the version with the parts
-# separated by hyphens. For example, the <version> string "0-8-25"
-# would represent the canonical version of the 0.8.25* sequence, which
-# happens to be "0.8.25n". This means that the description of a
-# particular version isn't settled until the minor letter settles. As
-# of this writing, 0.8.25n is the earliest version of the language to
-# be described by these mechanisms.
+# 'syntax-props-<major_version>.txt', where the <major_version>
+# string of is just the first two numeric part of the version
+# separated by dots. For example, the major_version of the "0.8.25n"
+# is "0.8".
 
 # These files are in the classpath and accessible by E expressions
 # like
@@ -30,7 +25,7 @@
 # An individual E compilation unit can declare itself to be written in
 # a particular version of E by saying, for example:
 #
-#     pragma.syntax("0-8-25")
+#     pragma.syntax("0.8")
 #
 # This has exactly the effect of loading the definitions corresponding
 # that version of E, in order to effect the parsing and expansion of

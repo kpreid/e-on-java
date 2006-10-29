@@ -37,8 +37,13 @@ import java.util.Properties;
  */
 public class Rune {
 
+    static public final String SYN_PROPS_PATH_PREFIX =
+      "org/erights/e/elang/syntax/syntax-props-";
+
+    static public final String MAJOR_VERSION = "0.8";
+
     static public final String SYN_PROPS_PATH =
-      "org/erights/e/elang/syntax/syntax-props-default.txt";
+      SYN_PROPS_PATH_PREFIX + MAJOR_VERSION + ".txt";
 
     /**
      * prevent instantiation
@@ -47,7 +52,7 @@ public class Rune {
     }
 
     /**
-     * Processes org/erights/e/elang/syntax/syntax-props-default.txt,
+     * Processes org/erights/e/elang/syntax/syntax-props-<major_version>.txt,
      * eprops.txt, ~/.e/user-eprops.txt, and initial "-Dprop=value" arguments
      * into the system properties.
      * <p>
@@ -65,14 +70,15 @@ public class Rune {
      *         arguments have been consumed.
      */
     static public ConstList doProps(ConstList args) throws IOException {
+        //noinspection AccessOfSystemProperties
         Properties sysProps = System.getProperties();
-        while (args.size() >= 1) {
+        while (1 <= args.size()) {
             String option = (String)args.get(0);
             if (!option.startsWith("-D")) {
                 break;
             }
             int equals = option.indexOf('=');
-            if (equals == -1) {
+            if (-1 == equals) {
                 //Even though this is a probable error, if it is it will be
                 //caught downstream, so we don't need to try to diagnose this
                 //here.
@@ -92,7 +98,7 @@ public class Rune {
         eprops.setProperty("e.safej.bind-var-to-propName", "true");
 
         /////////////////////
-        //Load the default syntax-props
+        //Load the syntax-props-<major_version> file.
         URL synPropsURL = (URL)ResourceUriGetter.THE_ONE.get(SYN_PROPS_PATH);
         PropertiesSugar.loadFromURL(eprops, synPropsURL);
 
@@ -151,7 +157,7 @@ public class Rune {
         //how to do it for itself.
         String traceLogDir = sysProps.getProperty("TraceLog_dir", null);
         if (null != traceLogDir) {
-            if (!traceLogDir.equals("-")) {
+            if (!"-".equals(traceLogDir)) {
                 traceLogDir = FileGetter.normalize(traceLogDir);
             }
             sysProps.setProperty("TraceLog_dir", traceLogDir);
@@ -194,11 +200,13 @@ public class Rune {
      */
     static public void printTime(long start, double percentile) {
         long stop = System.currentTimeMillis();
+        //noinspection AccessOfSystemProperties
         ConstMap props = ConstMap.fromProperties(System.getProperties());
         if (ConstMap.testProp(props, "e.interp.print-timing")) {
             Profiler.THE_ONE.printTime(percentile);
             Selector.printCacheStats();
             Memoizer.printCacheStats();
+            //noinspection UseOfSystemOutOrSystemErr
             System.err.println("Run after initialization: " +
                                (stop - start) + " ms");
         }
@@ -206,11 +214,9 @@ public class Rune {
 
     /**
      *
-     * @param propName
-     * @param dflt default answer
-     * @return
      */
     static private boolean testProperty(String propName, boolean dflt) {
+        //noinspection AccessOfSystemProperties
         String optVal = System.getProperty(propName);
         if (null == optVal) {
             return dflt;
@@ -230,17 +236,17 @@ public class Rune {
      * <p>
      * If e.gui-launch is true and e.onOkGuiExit is "prompt", then this
      * prompts for a character to be typed before exiting.
-     *
-     * @param errs
      */
     static void okExit(TextWriter errs) {
         try {
             if (testProperty("e.gui-launch", false)) {
+                //noinspection AccessOfSystemProperties
                 String ooge = System.getProperty("e.onOkGuiExit", "ignore");
                 if ("ignore".equals(ooge)) {
                     //ignored
                 } else if ("prompt".equals(ooge)) {
                     errs.print("\nHit Enter to dismiss.\n");
+                    //noinspection ResultOfMethodCallIgnored
                     System.in.read();
                 } else {
                     T.fail("unrecognized e.onOkGuiExit value: " + ooge);
@@ -261,6 +267,7 @@ public class Rune {
                       errs,
                       testProperty("e.interp.show-j-stack", false),
                       testProperty("e.interp.show-e-stack", true));
+        //noinspection AccessOfSystemProperties
         String oee = System.getProperty("e.onErrorExit", "gui");
         try {
             if ("report".equals(oee)) {
@@ -268,11 +275,13 @@ public class Rune {
 
             } else if ("prompt".equals(oee)) {
                 errs.print("\nHit Enter to dismiss.\n");
+                //noinspection ResultOfMethodCallIgnored
                 System.in.read();
 
             } else if ("gui".equals(oee)) {
                 //XXX not yet implemented, uses prompt's behavior instead
                 errs.print("\nHit Enter to dismiss.\n");
+                //noinspection ResultOfMethodCallIgnored
                 System.in.read();
             } else {
                 T.fail("unrecognized e.onErrorExit value: " + oee);
@@ -297,6 +306,7 @@ public class Rune {
 
             final ConstList args = doProps(ConstList.fromArray(argArray));
 
+            //noinspection AccessOfSystemProperties
             Properties sysProps = System.getProperties();
             ConstMap props = ConstMap.fromProperties(sysProps);
 
@@ -377,8 +387,6 @@ public class Rune {
 
         /**
          *
-         * @param start
-         * @param errs
          */
         Terminator(long start, TextWriter errs) {
             myStart = start;
