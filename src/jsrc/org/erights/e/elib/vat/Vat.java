@@ -250,11 +250,10 @@ public class Vat {
 
     /**
      *
-     * @return
      */
     public boolean isQuiescent() {
         requireCurrent();
-        return (myNextTicket - myRunner.servingTicket()) == 1;
+        return 1L == (myNextTicket - myRunner.servingTicket());
     }
 
     /**
