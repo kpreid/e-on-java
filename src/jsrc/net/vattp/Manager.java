@@ -7,14 +7,17 @@ import org.waterken.url.Locator;
 import org.waterken.url.tls.Host;
 
 import javax.net.ssl.SSLSocket;
+import javax.net.ssl.SSLPeerUnverifiedException;
 import java.io.EOFException;
 import java.io.IOException;
+import java.io.InterruptedIOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.security.GeneralSecurityException;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Map;
+import java.util.HashMap;
 
 /**
  * A {@link Connection} manager.
@@ -30,7 +33,7 @@ public final class Manager {
     private final Locator network;  // The network for outbound connections.
     private final Reactor reactor;  // The connection birth notification.
 
-    private volatile boolean terminate; // Stop listening?
+    private volatile boolean terminate = false; // Stop listening?
     private final Map connections;      // The [ peer id => connection ].
 
     /**
@@ -50,7 +53,7 @@ public final class Manager {
         this.network = network;
         this.reactor = reactor;
 
-        connections = new java.util.HashMap();
+        connections = new HashMap();
     }
 
     // net.vattp.Manager interface.
@@ -110,7 +113,7 @@ public final class Manager {
                                     }
                                 }
                             }.start();
-                        } catch (final java.io.InterruptedIOException _) {
+                        } catch (final InterruptedIOException _) {
                             // Timeout occured. Just go around again, checking
                             // for termination before blocking again.
                         }
@@ -142,7 +145,7 @@ public final class Manager {
                 }
                 r = _open(peer, null).connect(socket, false);
             }
-        } catch (final javax.net.ssl.SSLPeerUnverifiedException _) {
+        } catch (final SSLPeerUnverifiedException _) {
             try {
                 socket.close();
             } catch (final IOException __) {

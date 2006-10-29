@@ -87,7 +87,7 @@ public class TokenStreamRewriteEngine implements TokenStream {
 
         public int execute(StringBuffer buf) {
             buf.append(text);
-            return index;
+            return this.index;
         }
     }
 
