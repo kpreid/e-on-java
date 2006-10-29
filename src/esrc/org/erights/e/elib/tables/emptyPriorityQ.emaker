@@ -1,0 +1,119 @@
+#!/usr/bin/env rune
+
+# Copyright 2006 Hewlett-Packard, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+pragma.syntax("experimental")
+
+# XXX The current implementation seems horribly more complex than it should be.
+
+def makePriorityQ
+
+/**
+ * A functional priority queue
+ *
+ * @author Mark S. Miller
+ */
+def emptyPriorityQ {
+    to __printOn(out :TextWriter) { out.print("[]") }
+    to getHeight() { return 0 }
+    to op__cmp(otherQ) {
+        return if (otherQ.getHeight() == 0) {0} else {-1}
+    }
+    to compareFrom(priority :int) { return 1 }
+    to optSplit() { return null }
+    to with(priority :int, element) {
+        return makePriorityQ(priority,
+                             element,
+                             emptyPriorityQ,
+                             emptyPriorityQ)
+    }
+    to merge(rightQ) { return rightQ }
+}
+
+bind makePriorityQ(myPriority :int, myElement, myLeft, myRight) {
+    def leftHeight := myLeft.getHeight()
+    def rightHeight := myRight.getHeight()
+    
+    # left is the same height or one shorter than the right
+    require(leftHeight == rightHeight || leftHeight == rightHeight -1)
+    
+    if (myLeft.compareFrom(myPriority) < 0) {
+        return myLeft.withRight(myPriority :int, myElement, myRight)
+    }
+    if (myRight.compareFrom(myPriority) < 0) {
+        return myRight.withLeft(myPriority :int, myElement, myLeft)
+    }
+    
+    def myHeight := leftHeight.max(rightHeight) + 1
+    def qNode {
+        to __printOn(out :TextWriter) {
+            out.print("[", myPriority, ", ")
+            out.quote(myElement)
+            if (myHeight >= 2) {
+                out.print(",\n ")
+                out.indent(" ").print(myLeft,",\n",myRight)
+            }
+            out.print("]")
+        }
+        to getHeight() { return myHeight }
+        to op__cmp(otherQ) {
+            return otherQ.compareFrom(myPriority)
+        }
+        to compareFrom(priority :int) {
+            return priority.op__cmp(myPriority)
+        }
+        to optSplit() {
+            return [myPriority, myElement, myLeft.merge(myRight)]
+        }
+        to with(priority :int, element) {
+            if (priority >= myPriority) {
+                return makePriorityQ(priority,
+                                     element,
+                                     myRight,
+                                     myLeft.with(myPriority, myElement))
+            } else {
+                return makePriorityQ(myPriority,
+                                     myElement,
+                                     myRight,
+                                     myLeft.with(priority, element))
+            }
+        }
+        to withRight(priority :int, element, rightQ) {
+            require(myPriority > priority)
+            return makePriorityQ(myPriority,
+                                 myElement,
+                                 makePriorityQ(priority,
+                                               element,
+                                               myLeft,
+                                               myRight),
+                                 rightQ)
+        }
+        to withLeft(priority :int, element, leftQ) {
+            require(myPriority > priority)
+            return makePriorityQ(myPriority,
+                                 myElement,
+                                 leftQ,
+                                 makePriorityQ(priority,
+                                               element,
+                                               myLeft,
+                                               myRight))
+        }
+        to merge(rightQ) {
+            def rHeight := rightQ.getHeight()
+            require(myHeight == rHeight || myHeight == rHeight -1)
+            def [rPriority, rElement, rRest] := rightQ.optSplit()
+            return makePriorityQ(rPriority, 
+                                 rElement,
+                                 rRest,
+                                 qNode)
+        }
+    }
+    # each qNode's priority at least as high as its children's
+    require(qNode >= myLeft)
+    require(qNode >= myRight)
+    
+    return qNode
+}
+
+emptyPriorityQ
