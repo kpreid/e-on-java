@@ -202,11 +202,15 @@ def barrier(m,n,f,g) := ((let(u,v) where u m()) where v n())
     # value: <extend>
 
 orc: def choose1(expr) := let(x) where x expr
+Is it possible to write choose1 in orc itself? I'm not sure.
 
     ? def choose1(agent) {
     >     return orc.where(fn x{orc.call(orc,[x])},agent)
     > }
     # value: <choose1>
+
+8 Queens seems to work, but it takes too long, so here's 5 queens (on the last
+5 columns of an 8x8 board).
 
     ? interp.waitAtTop(def results := orcShell(choose1(extend([],5))))
     ? results
