@@ -1,0 +1,213 @@
+#!/usr/bin/env rune
+
+# Copyright 2006 Hewlett-Packard, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+
+rune(["~/e/src/esrc/scripts/updoc.e", "~/e/src/esrc/com/hp/orc/orc.updoc"])
+
+    ? pragma.syntax("experimental")
+    ? def orc := <import:com.hp.orc.orc>
+    ? def traceTimeFn(now) { println(`now: $now`) }
+    ? def makeOrcShell := <import:com.hp.orc.makeOrcShell>
+    ? def orcShell := makeOrcShell.forSimulatedTime(currentVat,traceTimeFn)
+    ? def pseudoRand := <unsafe:java.util.makeRandom>(0)
+
+    ? def CNN() { return "US News" }
+    # value: <CNN>
+
+    ? def BBC() { return "UK News" }
+    # value: <BBC>
+
+orc: CNN() | BBC()
+
+    ? def newsAgent := orc.par(orc.call(CNN,[]), orc.call(BBC,[]))
+    # value: <parAgent>
+
+orc: (CNN() | BBC()) >m> println(m)
+
+    ? def printNewsAgent := orc.pipe(newsAgent, fn m{orc.call(println,[m])})
+    # value: <pipeAgent>
+
+    ? interp.waitAtTop(def results := orcShell(printNewsAgent))
+    ? results
+    # stdout: US News
+    #         UK News
+    #
+
+    # value: [null, null]
+
+orc: def newsOnce := println(m) where m (CNN() | BBC())
+
+    ? def newsOnceAgent := orc.where(fn m{orc.call(println,[m])}, newsAgent)
+    # value: <whereAgent>
+
+    ? interp.waitAtTop(def results := orcShell(newsOnceAgent))
+    ? results
+    # stdout: US News
+    #
+
+    # value: [null]
+
+orc: def newsLoop(t) := newsOnce >> Rtimer(t) >> newsLoop(t)
+
+    ? def newsLoop(t) {
+    >     return orc.pipe(newsOnceAgent,
+    >                     fn _{orc.pipe(orc.call(orcShell.rtimer,[t]),
+    >                                   fn _{newsLoop(t)})})
+    > }
+    # value: <newsLoop>
+
+orc: zero() where x (newsLoop(3) | Rtimer(20))
+
+    ? def someNews := orc.where(fn x{orc.call(orc.zero,[])},
+    >                           orc.par(newsLoop(3),
+    >                                   orc.call(orcShell.rtimer,[20])))
+    # value: <whereAgent>
+
+    ? interp.waitAtTop(def results := orcShell(someNews))
+    ? results
+    # stdout: US News
+    #         now: 3
+    #         US News
+    #         now: 6
+    #         US News
+    #         now: 9
+    #         US News
+    #         now: 12
+    #         US News
+    #         now: 15
+    #         US News
+    #         now: 18
+    #         US News
+    #         now: 20
+    #         now: 21
+    #
+
+    # value: []
+
+orc bounded metronome:
+def bm(0) := zero()
+def bm(n) := Signal() | Rtimer(1) >> bm(n-1)
+
+    ? def bm(n) {
+    >     if (n <= 0) {
+    >         return orc.call(orc.zero,[])
+    >     } else {
+    >         return orc.par(orc.call(orc.signal,[]),
+    >                        orc.pipe(orc.call(orcShell.rtimer,[1]),
+    >                                 fn _{bm(n-1)}))
+    >     }
+    > }
+    # value: <bm>
+
+    ? interp.waitAtTop(def results := orcShell(bm(3)))
+    ? results
+    # stdout: now: 22
+    #         now: 23
+    #         now: 24
+    #
+
+    # value: [null, null, null]
+
+orc: def accept(x) := if (x %% 5 == 0) >> let(x)
+
+    ? def accept(x) {
+    >     return orc.pipe(orc.call(orc.test,[x %% 5 == 0]),
+    >                     fn _{orc.call(orc,[x])})
+    > }
+    # value: <accept>
+
+orc: bm(20) >> pseudoRand.nextInt() >x> accept(x)
+
+    ? def someRands := orc.pipe(bm(20),
+    >                           fn _{orc.pipe(orc.call(pseudoRand.nextInt,[]),
+    >                                         fn x{accept(x)})})
+    # value: <pipeAgent>
+
+    ? interp.waitAtTop(def results := orcShell(someRands))
+    ? results
+    # stdout: now: 25
+    #         now: 26
+    #         now: 27
+    #         now: 28
+    #         now: 29
+    #         now: 30
+    #         now: 31
+    #         now: 32
+    #         now: 33
+    #         now: 34
+    #         now: 35
+    #         now: 36
+    #         now: 37
+    #         now: 38
+    #         now: 39
+    #         now: 40
+    #         now: 41
+    #         now: 42
+    #         now: 43
+    #         now: 44
+    #
+
+    # value: [-723955400, 1431162155, 1085665355, -65105105]
+
+orc barrier:
+def barrier(m,n,f,g) := ((let(u,v) where u m()) where v n())
+                        >(u,v)> (f(u) | g(v))
+
+    ? def barrier(m,n,f,g) {
+    >     return orc.pipe(orc.where(fn v{orc.where(fn u{orc.call(orc,[u,v])},
+    >                                              orc.call(m,[]))},
+    >                               orc.call(n,[])),
+    >                     fn [u,v]{orc.par(orc.call(f,[u]),
+    >                                      orc.call(g,[v]))})
+    > }
+    # value: <barrier>
+
+    ? def isValid(config) {
+    >     switch (config) {
+    >         match [] { return true }
+    >         match [p] + rest {
+    >             if (!isValid(rest)) { return false }
+    >             for i in 1..rest.size() {
+    >                 def q := config[i]
+    >                 if (q == p || q == p+i || q == p-i) {
+    >                     return false
+    >                 }
+    >             }
+    >             return true
+    >         }
+    >     }
+    > }
+    # value: <isValid>
+
+    ? def valid(config) {
+    >     return if (isValid(config)) { config } else { orc.zero() }
+    > }
+    # value: <valid>
+
+    ? def extend(z,n) {
+    >     if (n == 1) {
+    >         var result := orc.call(orc.zero,[])
+    >         for p in 0..7 {
+    >             result := orc.par(result,
+    >                               orc.call(valid,[[p] + z]))
+    >         }
+    >         return result
+    >     } else {
+    >         return orc.pipe(extend(z,1),
+    >                         fn y{extend(y,n-1)})
+    >     }
+    > }
+    # value: <extend>
+
+orc: def choose1(expr) := let(x) where x expr
+
+    ? def choose1(agent) {
+    >     return orc.where(fn x{orc.call(orc,[x])},agent)
+    > }
+    # value: <choose1>
+
+    ? interp.waitAtTop(def results := orcShell(choose1(extend([],5))))
+    ? results
+    # value: [[6, 4, 7, 5, 3]]

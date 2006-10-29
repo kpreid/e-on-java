@@ -1,0 +1,117 @@
+#!/usr/bin/env rune
+
+# Copyright 2006 Hewlett-Packard, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+pragma.syntax("experimental")
+
+def promiseAllResolved := <elang:interp.promiseAllResolved>
+def [NEVER,_] := Ref.promise()
+def UNIT := null
+
+/**
+ *
+ * @author Mark S. Miller
+ */
+def orc {
+
+    ########################### orc syntactic primitives ####################
+
+    /**
+     * orc`@site(@args*)` => e`orc.call($site, [$args*])
+     * <p>
+     * We assume that a nullary call to a site is written as
+     * orc`@site()`, so that we may interpret orc`@site` as
+     * an expression whose value is the channel to that site,
+     * rather than a call on that channel.
+     */
+    to call(site, args) {
+        def callAgent(term, chan) {
+            when (promiseAllResolved(args)) -> {
+                if (!Ref.isResolved(term)) {
+                    def result := E.send(site, "run", args)
+                    when (result) -> {
+                        if (!Ref.isResolved(term)) {
+                            chan <- publish(result)
+                        }
+                    }
+                }
+            }
+        }
+        return callAgent
+    }
+
+    /** orc`@left | @right` => e`orc.par($left, $right)` */
+    to par(leftAgent, rightAgent) {
+        def parAgent(term, chan) {
+            if (!Ref.isResolved(term)) {
+                leftAgent <- run(term, chan)
+                rightAgent <- run(term, chan)
+            }
+        }
+        return parAgent
+    }
+
+    /**
+     * orc`@left >@x> @right` => e`orc.pipe($left, fn $x{$right})`
+     * orc`@left >> @right` => e`orc.pipe($left, fn _{$right})`
+     */
+    to pipe(leftAgent, rightAgentFn) {
+        def pipeAgent(term, chan) {
+            def rightChan {
+                to publish(val) {
+                    if (!Ref.isResolved(term)) {
+                        rightAgentFn <- run(val) <- run(term, chan)
+                    }
+                }
+            }
+            leftAgent <- run(term, rightChan)
+        }
+        return pipeAgent
+    }
+
+    /**
+     * orc`@left where @x @right` => e`orc.where(fn $x{$left}, $right)`
+     */
+    to where(leftAgentFn, rightAgent) {
+        def whereAgent(term, chan) {
+            def [x,xR] := Ref.promise()
+            leftAgentFn <- run(x) <- run(term, chan)
+            def [rightTerm,rightTermR] := Ref.promise()
+            def leftChan {
+                to publish(val) {
+                    if (!Ref.isResolved(term)) {
+                        xR.resolveRace(val)
+                        rightTermR.resolveRace(null)
+                    }
+                }
+            }
+            when (term) -> { rightTermR.resolveRace(null) }
+            rightAgent <- run(rightTerm, leftChan)
+        }
+        return whereAgent
+    }
+
+    ####################### built in sites ########################
+
+    /** orc`0` (bold, not number) => e`orc.zero` */
+    to zero() { return NEVER }
+
+    /** orc`Signal` => e`orc.signal` */
+    to signal() { return UNIT }
+
+    /** orc`if` => e`orc.test` */
+    to test(cond) { return if (cond) { UNIT } else { NEVER } }
+
+    /**
+     * orc`let` => e`orc`
+     * <p>
+     * In order to simulate the ML-like tuple, which Orc demands, this method
+     * will pick up the 1-arity case, yielding just the value, while the
+     * match clause will pick up the remaining cases, returning a list of
+     * values.
+     */
+    to run(val) { return val }
+
+    match [`run`, args] { args }
+}

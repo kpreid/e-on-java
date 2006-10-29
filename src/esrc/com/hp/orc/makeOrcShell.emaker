@@ -1,0 +1,119 @@
+#!/usr/bin/env rune
+
+# Copyright 2006 Hewlett-Packard, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+pragma.syntax("experimental")
+
+def orc := <import:com.hp.orc.orc>
+def emptyPriorityQ := <elib:tables.emptyPriorityQ>
+def [never,_] := Ref.promise()
+
+/**
+ *
+ * @author Mark S. Miller
+ */
+def makeOrcShell {
+
+    /**
+     *
+     */
+    to forLocalTime(currentVat, timer) {
+        def rtimerFn(millis) {
+            return timer.whenPast(timer.now() + millis,
+                                  fn{orc.signal()})
+        }
+        return makeOrcShell(currentVat.isQuiescent, rtimerFn)
+    }
+
+    /**
+     * For discrete event simulation.
+     * <p>
+     *
+     */
+    to forSimulatedTime(currentVat,traceTimeFn) {
+        var q := emptyPriorityQ
+        var now := 0
+        def isQuiescentFn() {
+            if (!currentVat.isQuiescent()) {
+                return false
+            }
+            if (q.optSplit() =~ [negTime, resolver, rest]) {
+                now := -negTime
+                traceTimeFn(now)
+                resolver.resolve(orc.signal())
+                q := rest
+                return false
+            } else {
+                return true
+            }
+        }
+        def rtimerFn(millis :(int >= 0)) {
+            def [p,r] := Ref.promise()
+            q with= (-(now + millis), r)
+            return p
+        }
+        return makeOrcShell(isQuiescentFn, rtimerFn)
+    }
+
+    /**
+     *
+     * @param isQuiescentFn is a nullary predicate that returns true
+     *        once we have locally quiesced, so that results so far should be
+     *        reported.
+     * @param rtimerFn is a unary function of a number of time units
+     *        (presumably milliseconds). It returns a promise immediately.
+     *        After the indicated number of time units have elapsed, this
+     *        promise should be resolved to UNIT.
+     */
+    to run(isQuiescentFn, rtimerFn) {
+        def orcShell {
+
+            ############# primitive Orc command line interpreter ##############
+
+            /**
+             * To run an orc expression as a command, do
+             * <pre>    orcShell(agentExpr)</pre>
+             * where agentExpr is the translation of the orc syntactic
+             * primitives into E agent creation calls listed in orc.emaker.
+             * This returns a promise for the results published by this agent
+             * by the time the local vat quiesces.
+             */
+            to run(agent) {
+                var results := []
+                def goChan {
+                    to publish(val) {
+                        results with= val
+                    }
+                }
+                # XXX A more realistic command line interpreter would provide
+                # the caller a way to resolve the term argument, in order to
+                # stop the command.
+                agent(never, goChan)
+                def getResults() {
+                    if (isQuiescentFn()) {
+                        return results
+                    } else {
+                        return getResults <- run()
+                    }
+                }
+                return getResults <- run()
+            }
+
+            ########################### built in sites ########################
+
+            /**
+             * orc`Rtimer` => e`orcShell.rtimer`
+             * <p>
+             * Note that the E expansion uses orcShell rather than orc, since
+             * orcShell is defined relative to a time source, which is a form
+             * of authority, whereas everything defined by orc.emaker is
+             * universal and safe.
+             */
+            to rtimer(t) {
+                return rtimerFn(t)
+            }
+        }
+        return orcShell
+    }
+}
