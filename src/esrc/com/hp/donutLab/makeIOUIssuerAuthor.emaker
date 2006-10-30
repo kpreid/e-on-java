@@ -7,6 +7,7 @@
 # Originally adapted to E by Marc Stiegler
 # Further mods by Mark S. Miller
 
+pragma.syntax("0.9")
 pragma.enable("explicit-result-guard")
 
 def Brand := <type:org.erights.e.elib.sealing.Brand>

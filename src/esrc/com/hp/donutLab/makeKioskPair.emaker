@@ -3,6 +3,7 @@
 # Copyright 2004 Hewlett Packard, Inc. under the terms of the MIT X license
 # found at http://www.opensource.org/licenses/mit-license.html ................
 
+pragma.syntax("0.8")
 pragma.disable("explicit-result-guard")
 
 /**
@@ -15,10 +16,10 @@ pragma.disable("explicit-result-guard")
  *        kiosk service everywhere.
  *
  */
-def makeKioskPair (account :rcvr,
-                   optBaseKiosk :rcvr,
-                   nickName :String,
-                   traceRcvr :rcvr) :near {
+def makeKioskPair(account :rcvr,
+                  optBaseKiosk :rcvr,
+                  nickName :String,
+                  traceRcvr :rcvr) :near {
     def traceLine(message) {
         traceRcvr <- run(`Kiosk $nickName reports: $message`)
     }

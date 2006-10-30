@@ -3,7 +3,7 @@
 # Copyright 2006 Hewlett-Packard, Inc. under the terms of the MIT X license
 # found at http://www.opensource.org/licenses/mit-license.html ................
 
-pragma.syntax("experimental")
+pragma.syntax("0.9")
 
 # XXX The current implementation seems horribly more complex than it should be.
 
@@ -34,17 +34,17 @@ def emptyPriorityQ {
 bind makePriorityQ(myPriority :int, myElement, myLeft, myRight) {
     def leftHeight := myLeft.getHeight()
     def rightHeight := myRight.getHeight()
-    
+
     # left is the same height or one shorter than the right
     require(leftHeight == rightHeight || leftHeight == rightHeight -1)
-    
+
     if (myLeft.compareFrom(myPriority) < 0) {
         return myLeft.withRight(myPriority :int, myElement, myRight)
     }
     if (myRight.compareFrom(myPriority) < 0) {
         return myRight.withLeft(myPriority :int, myElement, myLeft)
     }
-    
+
     def myHeight := leftHeight.max(rightHeight) + 1
     def qNode {
         to __printOn(out :TextWriter) {
@@ -103,7 +103,7 @@ bind makePriorityQ(myPriority :int, myElement, myLeft, myRight) {
             def rHeight := rightQ.getHeight()
             require(myHeight == rHeight || myHeight == rHeight -1)
             def [rPriority, rElement, rRest] := rightQ.optSplit()
-            return makePriorityQ(rPriority, 
+            return makePriorityQ(rPriority,
                                  rElement,
                                  rRest,
                                  qNode)
@@ -112,7 +112,7 @@ bind makePriorityQ(myPriority :int, myElement, myLeft, myRight) {
     # each qNode's priority at least as high as its children's
     require(qNode >= myLeft)
     require(qNode >= myRight)
-    
+
     return qNode
 }
 

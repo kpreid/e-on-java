@@ -4,9 +4,10 @@
 # found at http://www.opensource.org/licenses/mit-license.html ................
 
 
-rune(["~/e/src/esrc/scripts/updoc.e", "~/e/src/esrc/com/hp/orc/orc.updoc"])
+def x := rune(["~/e/src/esrc/scripts/updoc.e",
+               "~/e/src/esrc/com/hp/orc/orc.updoc"])
 
-    ? pragma.syntax("experimental")
+    ? pragma.syntax("0.9")
     ? def orc := <import:com.hp.orc.orc>
     ? def traceTimeFn(now) { println(`now: $now`) }
     ? def makeOrcShell := <import:com.hp.orc.makeOrcShell>
