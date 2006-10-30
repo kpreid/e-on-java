@@ -507,17 +507,17 @@ public class ENodeBuilder extends BaseENodeBuilder implements EBuilder {
                                                            new ValueThunk(
                                                              "false"));
                     propVal = propVal.intern();
-                    if (propVal == "true") {
+                    if ("true" == propVal) {
                         //already enabled. ignore.
                         return NULL;
-                    } else if (propVal == "warn") {
+                    } else if ("warn" == propVal) {
                         //enabling it turns off warnings.
                         myProps = myProps.with(propName, "true");
                         return NULL;
-                    } else if (propVal == "allow") {
+                    } else if ("allow" == propVal) {
                         myProps = myProps.with(propName, "true");
                         return NULL;
-                    } else if (propVal == "false") {
+                    } else if ("false" == propVal) {
                         syntaxError(verb,
                                     "The optional " + propName +
                                       " feature (see " + Rune.SYN_PROPS_PATH +
@@ -530,17 +530,17 @@ public class ENodeBuilder extends BaseENodeBuilder implements EBuilder {
                                                            new ValueThunk(
                                                              "false"));
                     propVal = propVal.intern();
-                    if (propVal == "true") {
+                    if ("true" == propVal) {
                         //Turns on warnings
                         myProps = myProps.with(propName, "warn");
                         return NULL;
-                    } else if (propVal == "warn") {
+                    } else if ("warn" == propVal) {
                         //already warning. ignore.
                         return NULL;
-                    } else if (propVal == "allow") {
+                    } else if ("allow" == propVal) {
                         myProps = myProps.with(propName, "warn");
                         return NULL;
-                    } else if (propVal == "false") {
+                    } else if ("false" == propVal) {
                         syntaxError(verb,
                                     "The optional " + propName +
                                       " feature (see " + Rune.SYN_PROPS_PATH +
@@ -553,18 +553,18 @@ public class ENodeBuilder extends BaseENodeBuilder implements EBuilder {
                                                            new ValueThunk(
                                                              "false"));
                     propVal = propVal.intern();
-                    if (propVal == "true") {
+                    if ("true" == propVal) {
                         //If it was enabled, it can still be re-enabled
                         myProps = myProps.with(propName, "allow");
                         return NULL;
-                    } else if (propVal == "warn") {
+                    } else if ("warn" == propVal) {
                         //If it was warning, it can still be re-enabled
                         myProps = myProps.with(propName, "allow");
                         return NULL;
-                    } else if (propVal == "allow") {
+                    } else if ("allow" == propVal) {
                         //Already disabled but allowed. Ignore.
                         return NULL;
-                    } else if (propVal == "false") {
+                    } else if ("false" == propVal) {
                         //already disabled. Ignore.
                         return NULL;
                     }
@@ -651,7 +651,7 @@ public class ENodeBuilder extends BaseENodeBuilder implements EBuilder {
      */
     private EExpr[] antiCycle(FlexMap conflicts) {
         int numVars = conflicts.size();
-        if (numVars <= 0) {
+        if (0 >= numVars) {
             return null;
         }
         EExpr[] result = new EExpr[numVars * 2 + 2];
@@ -686,7 +686,7 @@ public class ENodeBuilder extends BaseENodeBuilder implements EBuilder {
      *
      */
     private void ensureEmpty(ConstMap conflicts, String msg) {
-        if (conflicts.size() >= 1) {
+        if (1 <= conflicts.size()) {
             ENode node = ((ENode[])conflicts.getValues(ENode.class))[0];
             syntaxError(node, msg + ": " + E.toString(conflicts.getKeys()));
         }
@@ -731,7 +731,7 @@ public class ENodeBuilder extends BaseENodeBuilder implements EBuilder {
         ensureEmpty(shadows, "Pattern may not use var defined on the right");
         FlexMap conflicts = defPatts.and(rValUsed).diverge();
         int numVars = conflicts.size();
-        if (numVars <= 0) {
+        if (0 >= numVars) {
             return kerneldef(patt, optEj, rVal);
         }
         EExpr[] parts = antiCycle(conflicts);
@@ -1100,7 +1100,7 @@ public class ENodeBuilder extends BaseENodeBuilder implements EBuilder {
             result = (Pattern)optRestPatt;
         }
         Assoc[] assocs = (Assoc[])optTypedArray(assocList, Assoc.class);
-        for (int i = assocs.length - 1; i >= 0; i--) {
+        for (int i = assocs.length - 1; 0 <= i; i--) {
             EExpr keyExpr = forValue(assocs[i].key(), null);
             Object value = assocs[i].value();
             EExpr optDefaultExpr;
@@ -1182,8 +1182,8 @@ public class ENodeBuilder extends BaseENodeBuilder implements EBuilder {
             CallExpr ce = (CallExpr)val;
             EExpr[] args = ce.getArgs();
             EExpr[] moduli = optExprs(nModulus);
-            if ("pow".equals(ce.getVerb()) && args.length == 1 &&
-              moduli.length == 1) {
+            if ("pow".equals(ce.getVerb()) && 1 == args.length &&
+              1 == moduli.length) {
                 EExpr base = ce.getRecipient();
                 EExpr exp = args[0];
                 return call(base, poser, "modPow", list(exp, moduli[0]));
@@ -1531,7 +1531,7 @@ public class ENodeBuilder extends BaseENodeBuilder implements EBuilder {
      *
      */
     private EExpr hide(Pattern[] typeParams, Object body) {
-        for (int i = typeParams.length - 1; i >= 0; i--) {
+        for (int i = typeParams.length - 1; 0 <= i; i--) {
             body = sequence(kdef(typeParams[i], ANY), body);
         }
         return hide(body);
@@ -1569,7 +1569,7 @@ public class ENodeBuilder extends BaseENodeBuilder implements EBuilder {
         } else {
             result = optOtherwise;
         }
-        for (int i = matchers.length - 1; i >= 0; i--) {
+        for (int i = matchers.length - 1; 0 <= i; i--) {
             result = ifx(matchBind(specimen,
                                    NO_POSER,
                                    matchers[i].getPattern()),
@@ -1754,7 +1754,7 @@ public class ENodeBuilder extends BaseENodeBuilder implements EBuilder {
                            Object optFinally,
                            boolean bindReturn) {
         int len = eExprs.length;
-        if (len <= 0) {
+        if (0 >= len) {
             syntaxError(poser, "must list at least one expression");
         }
         if (null != optPatts && len != optPatts.length) {
