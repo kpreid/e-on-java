@@ -1,8 +1,7 @@
 # Copyright 2005 Mark S. Miller under the terms of the MIT X license
 # found at http://www.opensource.org/licenses/mit-license.html ................
 
-pragma.enable("easy-return")
-pragma.enable("trinary-define")
+pragma.syntax("0.9")
 
 def Throwable     := <type:java.lang.Throwable>
 def AtomicExpr    := <type:org.erights.e.elang.evm.AtomicExpr>
@@ -342,22 +341,23 @@ a $llen size list doesn't match a $slen size list pattern`)
 # rune(["~/e/src/esrc/scripts/updoc.e",
 #       "~/e/src/esrc/org/erights/e/elang/visitors/makeMetaEval.emaker"])
 
-? def ObjectExpr := <type:org.erights.e.elang.evm.ObjectExpr>
-? def Auditor    := <type:org.erights.e.elib.slot.Auditor>
+    ? pragma.syntax("0.9")
+    ? def ObjectExpr := <type:org.erights.e.elang.evm.ObjectExpr>
+    ? def Auditor    := <type:org.erights.e.elib.slot.Auditor>
 
-? interface Audition guards AuditionStamp {
->     to ask(:Auditor) :void
->     to getSource() :ObjectExpr
-> }
+    ? interface Audition guards AuditionStamp {
+    >     to ask(:Auditor) :void
+    >     to getSource() :ObjectExpr
+    > }
 
-? def eval := <elang:visitors.makeMetaEval>(AuditionStamp)
-# value: <eval>
+    ? def eval := <elang:visitors.makeMetaEval>(AuditionStamp)
+    # value: <eval>
 
-? def makeStaticContext := <elang:scope.makeStaticContext>
-# value: <makeStaticContext>
+    ? def makeStaticContext := <elang:scope.makeStaticContext>
+    # value: <makeStaticContext>
 
-? def sc := makeStaticContext("foo.", [].asMap(), null)
-# value: <static foo., 0>
+    ? def sc := makeStaticContext("foo.", [].asMap(), null)
+    # value: <static foo., 0>
 
-? eval(e`2+3`, [[].asMap(), sc])
-# value: [5, [[].asMap(), <static foo., 0>]]
+    ? eval(e`2+3`, [[].asMap(), sc])
+    # value: [5, [[].asMap(), <static foo., 0>]]

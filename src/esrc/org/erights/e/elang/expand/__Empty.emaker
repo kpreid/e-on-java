@@ -1,7 +1,7 @@
 # Copyright 2005 Mark S. Miller under the terms of the MIT X license
 # found at http://www.opensource.org/licenses/mit-license.html ................
 
-pragma.enable("easy-return")
+pragma.syntax("0.9")
 
 /**
  * Defines the builtin '__Empty' guard, which checks if the specimen's size()
@@ -37,13 +37,14 @@ def Empty implements Guard {
     to __printOn(out :TextWriter) :void { out.print("__Empty") }
 }
 
-? var x :__Empty := [].diverge()
-# value: [].diverge()
+    ? pragma.syntax("0.9")
+    ? var x :__Empty := [].diverge()
+    # value: [].diverge()
 
-? x.push(3)
+    ? x.push(3)
 
-? x
-# value: [3].diverge()
+    ? x
+    # value: [3].diverge()
 
-? x := x
-# problem: Not empty: [3].diverge()
+    ? x := x
+    # problem: Not empty: [3].diverge()

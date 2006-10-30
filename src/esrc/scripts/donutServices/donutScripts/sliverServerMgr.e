@@ -5,9 +5,8 @@
 
 # Assumes uml_mconsole (from the user-mode-linux utilities) is on the path.
 
-pragma.enable("easy-return")
+pragma.syntax("0.9")
 pragma.enable("explicit-result-guard")
-pragma.enable("lambda-args")
 
 def Nat := (int >= 0)
 def byte := <import:java.lang.makeByte>.getTYPE()

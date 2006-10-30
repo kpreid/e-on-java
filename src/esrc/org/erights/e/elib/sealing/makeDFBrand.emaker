@@ -5,9 +5,7 @@
 # http://www.erights.org/elang/kernel/auditors/index.html
 # This variation allows Sealers & Unsealers to be DeepFrozen.
 
-pragma.enable("easy-return")
-# pragma.disable("explicit-result-guard")
-pragma.enable("trinary-define")
+pragma.syntax("0.9")
 
 def makeDFBrand implements DeepFrozen {
     to run(label :String) :any {
@@ -117,12 +115,14 @@ def makeDFBrand implements DeepFrozen {
              * This brand kit will coerce to a tuple, so that it may be
              * matched against a list pattern like epatt`[sealer, unsealer]`.
              */
-            to __conformTo(guard) :any { switch (guard) {
-                match ==<type:org.erights.e.elib.tables.ConstList> {
-                    return [sealer, unsealer]
+            to __conformTo(guard) :any { 
+                switch (guard) {
+                    match ==<type:org.erights.e.elib.tables.ConstList> {
+                        return [sealer, unsealer]
+                    }
+                    match _ { return brandKit }
                 }
-                match _ { return brandKit }
-            }}
+            }
         }
 
         return brandKit

@@ -1,8 +1,8 @@
 #!/usr/bin/env rune
 
 #eChat with minimalist user interface
-pragma.enable("easy-return")
-pragma.disable("explicit-result-guard")
+pragma.syntax("0.9")
+
 def <widget> := <swt:widgets.*>
 def SWT := <swt:makeSWT>
 introducer.onTheAir()

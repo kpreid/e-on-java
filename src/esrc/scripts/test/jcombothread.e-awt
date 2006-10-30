@@ -7,8 +7,7 @@
 # https://bugs.sieve.net/bugs/?func=detailbug&bug_id=125634&group_id=16380
 # https://bugs.sieve.net/bugs/?func=detailbug&bug_id=125635&group_id=16380
 
-pragma.enable("explicit-result-guard")
-pragma.disable("easy-return")
+pragma.syntax("0.8")
 
 def Callback := <type:org.erights.e.elib.deflect.Callback>
 

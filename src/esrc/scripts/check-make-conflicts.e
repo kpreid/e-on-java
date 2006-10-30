@@ -1,10 +1,6 @@
 #!/usr/bin/env rune
 
-pragma.disable("explicit-result-guard")
-pragma.enable("easy-return")
-pragma.enable("easy-when")
-pragma.enable("anon-lambda")
-pragma.enable("lambda-args")
+pragma.syntax("0.9")
 
 def table extends [].asMap().diverge() {
     to get(index) {

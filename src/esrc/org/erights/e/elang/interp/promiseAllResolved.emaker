@@ -10,9 +10,8 @@
 # file, as an expression of an idea, are largely derived from the original,
 # then the notice should be left alone. But again, IANAL.
 
+pragma.syntax("0.9")
 pragma.enable("explicit-result-guard")
-pragma.disable("no-dot-call")
-pragma.disable("easy-return")
 
 /**
  * Given a list of promises, this returns a promise for the list of
@@ -58,34 +57,35 @@ def promiseAllResolved {
     }
 }
 
-? def promiseAllResolved := <elang:interp.promiseAllResolved>
-# value: <promiseAllResolved>
+    ? pragma.syntax("0.9")
+    ? def promiseAllResolved := <elang:interp.promiseAllResolved>
+    # value: <promiseAllResolved>
 
-? def a := promiseAllResolved([1, 2, 3])
-# value: <Promise>
+    ? def a := promiseAllResolved([1, 2, 3])
+    # value: <Promise>
 
-? interp.waitAtTop(a)
-? a
-# value: [1, 2, 3]
+    ? interp.waitAtTop(a)
+    ? a
+    # value: [1, 2, 3]
 
-? def a := promiseAllResolved([def x; x, def y; y, def z; z])
-# value: <Promise>
+    ? def a := promiseAllResolved([def x; x, def y; y, def z; z])
+    # value: <Promise>
 
-? bind x := 4
-# value: 4
+    ? bind x := 4
+    # value: 4
 
-? a
-# value: <Promise>
+    ? a
+    # value: <Promise>
 
-? bind y := Ref.broken("boom")
-# value: <ref broken by problem: boom>
+    ? bind y := Ref.broken("boom")
+    # value: <ref broken by problem: boom>
 
-? a
-# value: <Promise>
+    ? a
+    # value: <Promise>
 
-? bind z := [a]
-# value: [<Promise>]
+    ? bind z := [a]
+    # value: [<Promise>]
 
-? interp.waitAtTop(timer.whenPast(timer.now() + 100, thunk{}))
-? a
-# value: [4, <ref broken by problem: boom>, [***CYCLE***]]
+    ? interp.waitAtTop(timer.whenPast(timer.now() + 100, thunk{}))
+    ? a
+    # value: [4, <ref broken by problem: boom>, [***CYCLE***]]

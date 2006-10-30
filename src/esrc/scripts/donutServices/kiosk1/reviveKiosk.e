@@ -3,7 +3,7 @@
 # Copyright 2004 Hewlett Packard, Inc. under the terms of the MIT X license
 # found at http://www.opensource.org/licenses/mit-license.html ................
 
-pragma.disable("explicit-result-guard")
+pragma.syntax("0.9")
 
 def currDir := <file:.>
 def <donut> := <import:com.hp.donutLab.*>
@@ -12,7 +12,10 @@ def baseKiosk
 var kioskName := "kiosk"
 def nameFile := currDir["kioskName.txt"]
 if (nameFile.exists()) {kioskName := nameFile.getText()}
-def [kiosk, boss] := <donut:makeKioskPair>(account, baseKiosk, kioskName, println)
+def [kiosk, boss] := <donut:makeKioskPair>(account,
+                                           baseKiosk,
+                                           kioskName,
+                                           println)
 
 def makeAtomicFile := <import:org.erights.e.extern.persist.makeAtomicFile>
 def vatFile := makeAtomicFile(currDir, "kiosk.vat")

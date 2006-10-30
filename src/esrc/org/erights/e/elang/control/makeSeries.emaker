@@ -3,9 +3,8 @@
 # Copyright 2004 Mark S. Miller, under the terms of the MIT X license
 # found at http://www.opensource.org/licenses/mit-license.html ................
 
-pragma.enable("easy-return")
+pragma.syntax("0.9")
 pragma.enable("explicit-result-guard")
-pragma.enable("anon-lambda")
 
 def EIteratable := <type:org.erights.e.elib.tables.EIteratable>
 
@@ -17,8 +16,8 @@ def EIteratable := <type:org.erights.e.elib.tables.EIteratable>
 #     [[x,y] for x in (1..6) for y in (1..x) if (x+y < 10)]
 # done using series.
 
+? pragma.syntax("0.9")
 ? def makeSeries := <elang:control.makeSeries>
-? pragma.enable("anon-lambda")
 
 ? makeSeries(1..6).splice(fn x {
 >     makeSeries(1..x).filter(fn y {x+y < 10}).map(fn y {[x,y]})

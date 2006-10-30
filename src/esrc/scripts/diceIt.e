@@ -58,8 +58,7 @@
 # multidice to combine their results.
 # simple dice further breaks down into leaf dice and modifier dice.
 
-pragma.enable("easy-return")
-pragma.disable("explicit-result-guard")
+pragma.syntax("0.9")
 
 
 ## HELPER FUNCTIONS #############################################

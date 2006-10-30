@@ -3,7 +3,7 @@
 # Copyright 2004 Mark S. Miller, under the terms of the MIT X license
 # found at http://www.opensource.org/licenses/mit-license.html ................
 
-pragma.enable("easy-return")
+pragma.syntax("0.9")
 pragma.enable("explicit-result-guard")
 
 /**
@@ -27,7 +27,7 @@ def __dynamicExtent0 {
     to run(verb, target, context) :any {
         var enabled := true
         def forwarder {
-            
+
             /**
              * forward __getAllegedType/0, though one could argue that, once
              * disabled, the type shouldn't include the supressed verb
@@ -35,7 +35,7 @@ def __dynamicExtent0 {
             to __getAllegedType() :any {
                 return target.__getAllegedType()
             }
-            
+
             /**
              * forward __respondsTo, though one could argue that, once
              * disabled, the type shouldn't include the supressed verb
@@ -43,15 +43,15 @@ def __dynamicExtent0 {
             to __respondsTo(verb2, arity) :boolean {
                 return target.__respondsTo(verb2, arity)
             }
-            
+
             /** forward __printOn/1 */
             to __printOn(out :TextWriter) :void { target.__printOn(out) }
-            
+
             /** forward __reactToLostClient */
             to __reactToLostClient(problem) :void {
                 target.__reactToLostClient(problem)
             }
-            
+
             # handle all other messages
             match [verb2, args] {
                 if (verb == verb2) {
@@ -68,7 +68,7 @@ def __dynamicExtent0 {
             enabled := false
         }
     }
-    
+
     # default to suppressing "run"
     to run(target, context) :any {
         return __dynamicExtent0("run", target, context)
@@ -77,25 +77,26 @@ def __dynamicExtent0 {
 
 # Give the thief the ability to print only until he returns
 
-? def __dynamicExtent := <elang:control.__dynamicExtent>
+    ? pragma.syntax("0.9")
+    ? def __dynamicExtent := <elang:control.__dynamicExtent>
 
-? var loot := null
+    ? var loot := null
 
-? def thief(printlnFunc) :any {
->     loot := printlnFunc
->     printlnFunc("Hello")
->     return 33
-> }
-# value: <thief>
+    ? def thief(printlnFunc) :any {
+    >     loot := printlnFunc
+    >     printlnFunc("Hello")
+    >     return 33
+    > }
+    # value: <thief>
 
-? __dynamicExtent(println, thief)
-# stdout: Hello
-#
+    ? __dynamicExtent(println, thief)
+    # stdout: Hello
+    #
 
-# value: 33
+    # value: 33
 
-? loot(" World")
-# problem: disabled
+    ? loot(" World")
+    # problem: disabled
 
 # rune(["~/e/src/esrc/scripts/updoc.e",
 #       "~/e/src/esrc/org/erights/e/elang/control/__dynamicExtent.emaker"])

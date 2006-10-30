@@ -1,9 +1,9 @@
 #!/usr/bin/env rune
 
-? pragma.enable("meta-scope")
+? pragma.syntax("0.9")
 ? interp.setExpand(true)
 
-? def foo():any{[meta.getState(),meta.context()]}
+? def foo() :any { return [meta.getState(),meta.context()] }
 # expansion: def foo := def "__main$foo__C" {
 #
 #                /**

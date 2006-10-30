@@ -3,9 +3,8 @@
 # Copyright 2005 Mark S. Miller, under the terms of the MIT X license
 # found at http://www.opensource.org/licenses/mit-license.html ................
 
-pragma.enable("easy-return")
+pragma.syntax("0.9")
 pragma.enable("explicit-result-guard")
-pragma.enable("lambda-args")
 
 /**
  * Unlike many of the other example controls, this one is implemented in terms
@@ -31,6 +30,7 @@ def __try0 {
                           finally__control_0(finallyFn)
                     }
                 }
+                return tryCatchControl
             }
             to finally__control_0(finallyFn) :any {
                 def tryFinallyControl {

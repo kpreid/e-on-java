@@ -128,7 +128,7 @@ To see how close this gets us to the power Smalltalk programmers are
 used to, let's first see how close we can get to defining the existing
 control flow sugars as functions:
 
-    ? pragma.enable("lambda-args")
+    ? pragma.syntax("0.9")
 
     ? def __escape := <elang:control.__escape>
     ? def __for := <elang:control.__for>

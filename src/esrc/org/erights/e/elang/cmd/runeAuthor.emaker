@@ -3,7 +3,7 @@
 # Copyright 2002 Combex, Inc. under the terms of the MIT X license
 # found at http://www.opensource.org/licenses/mit-license.html ................
 
-pragma.enable("anon-lambda")
+pragma.syntax("0.9")
 
 def makeConstMap := <elib:tables.makeConstMap>
 def makeTextWriter := <elib:oldeio.makeTextWriter>
@@ -30,7 +30,7 @@ def runeAuthor {
             ext := rest
         }
         ext := ext.replaceAll("-", "_")
-        `org.erights.e.elang.launcher.${ext}LauncherAuthor`
+        return `org.erights.e.elang.launcher.${ext}LauncherAuthor`
     }
 
     /**
@@ -61,17 +61,17 @@ def runeAuthor {
         def sysProps := <unsafe:java.lang.makeSystem>.getProperties()
         def defaultProps := makeConstMap.fromProperties(sysProps)
 
-        ["metain"          => metain,
-         "metaout"         => metaout,
-         "metaerr"         => metaerr,
+        return ["metain"          => metain,
+                "metaout"         => metaout,
+                "metaerr"         => metaerr,
 
-         "makeVat"         => makeVat,
-         "makeELexer"      => makeELexer,
-         "makeFileFeeder"  => makeFileFeeder,
-         "makeScopeSetup"  => makeScopeSetup,
-         "file__uriGetter" => <file>,
-         "systemGC"        => systemGC,
-         "defaultProps"    => defaultProps]
+                "makeVat"         => makeVat,
+                "makeELexer"      => makeELexer,
+                "makeFileFeeder"  => makeFileFeeder,
+                "makeScopeSetup"  => makeScopeSetup,
+                "file__uriGetter" => <file>,
+                "systemGC"        => systemGC,
+                "defaultProps"    => defaultProps]
     }
 
     /**
@@ -81,8 +81,8 @@ def runeAuthor {
      * Sometimes strict adherence to POLA causes a lot of authorization
      * arguments to be passed. This method accepts these using name-based
      * parameters rather than positional parameters. To make this convenient,
-     * we are using the experimental "importer" syntax, enabled by a pragma
-     * above. See the documentation on "e.enable.importer" in
+     * we are using the "importer" syntax. See the documentation on
+     * "e.enable.importer" in
      * org/erights/e/elang/syntax/syntax-props-default.txt. We also provide
      * the {@link #defaultAuths} method for composing a default set of
      * authorization arguments you can then override as you wish.
@@ -102,7 +102,7 @@ def runeAuthor {
              * been provided)
              */
             to run(args :List) :vow[boolean] {
-                rune(auths["defaultProps"], args)
+                return rune(auths["defaultProps"], args)
             }
 
             /**
@@ -168,13 +168,14 @@ $launcherAuthorName(..)($props,
                         $options,
                         $fname,
                         $args)`)
-                    true
+                    return true
                 } else {
                     def launcherAuthor := <import>[launcherAuthorName]
                     def launcher := launcherAuthor(auths)
-                    launcher(props, options, fname, args)
+                    return launcher(props, options, fname, args)
                 }
             }
         }
+        return rune
     }
 }

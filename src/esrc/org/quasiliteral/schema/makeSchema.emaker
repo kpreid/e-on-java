@@ -5,7 +5,7 @@
 
 # XXX This file is not yet meaningful
 
-pragma.enable("easy-return")
+pragma.syntax("0.9")
 pragma.enable("explicit-result-guard")
 
 def <quasi> := <import:org.quasiliteral.*>
@@ -29,6 +29,7 @@ def makeSchema {
     }
 }
 
+    ? pragma.syntax("0.9")
     ? def <quasi> := <import:org.quasiliteral.*>
     # value: <import:org.quasiliteral.*>
 

@@ -1,8 +1,7 @@
 # Copyright 2005 Mark S. Miller under the terms of the MIT X license
 # found at http://www.opensource.org/licenses/mit-license.html ................
 
-pragma.enable("easy-return")
-pragma.enable("trinary-define")
+pragma.syntax("0.9")
 
 def EList := <type:org.erights.e.elib.tables.EList>
 
@@ -29,24 +28,24 @@ a $llen size list doesn't match a >= $cut size list pattern`)
 
 # The following elegant example is from Kevin Reid
 
-? pragma.enable("trinary-define")
+    ? pragma.syntax("0.9")
 
-? def Termish {
->     to coerce(specimen, optEjector) :any {
->         def [tag :String] + elements :List[Termish] exit optEjector :=
->           specimen
->         return [tag] + elements
->     }
-> }
+    ? def Termish {
+    >     to coerce(specimen, optEjector) :any {
+    >         def [tag :String] + elements :List[Termish] exit optEjector :=
+    >           specimen
+    >         return [tag] + elements
+    >     }
+    > }
 
-? var x :Termish := ["foo", ["bar"]]
-# value: ["foo", ["bar"]]
+    ? var x :Termish := ["foo", ["bar"]]
+    # value: ["foo", ["bar"]]
 
-? x
-# value: ["foo", ["bar"]]
+    ? x
+    # value: ["foo", ["bar"]]
 
-? x := "foo"
-# problem: <ClassCastException: Character doesn't coerce to a String
+    ? x := "foo"
+    # problem: <ClassCastException: Character doesn't coerce to a String
 
-? x := []
-# problem: a 0 size list doesn't match a >= 1 size list pattern
+    ? x := []
+    # problem: a 0 size list doesn't match a >= 1 size list pattern

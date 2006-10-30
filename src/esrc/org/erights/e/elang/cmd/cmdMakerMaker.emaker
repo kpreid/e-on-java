@@ -1,7 +1,7 @@
 # Copyright 2002 Combex, Inc. under the terms of the MIT X license
 # found at http://www.opensource.org/licenses/mit-license.html ................
 
-pragma.enable("anon-lambda")
+pragma.syntax("0.9")
 
 def EExpr := <type:org.erights.e.elang.evm.EExpr>
 def Term := <type:org.quasiliteral.term.Term>
@@ -138,7 +138,7 @@ def cmdMakerMaker(cmdLoop,
                 # detection of a successfully returned unresolved reference
                 outcomeRes.resolve([result, success])
             }
-            [outcomeVow, cmdValuer]
+            return [outcomeVow, cmdValuer]
         }
 
         /**
@@ -215,8 +215,9 @@ def cmdMakerMaker(cmdLoop,
                 }
                 exitStatusRes.resolve(exitStatus)
             }
-            [exitStatusVow, cmdAnswerer]
+            return [exitStatusVow, cmdAnswerer]
         }
     }
+    return cmdMaker
 }
 

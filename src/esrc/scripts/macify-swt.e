@@ -3,8 +3,7 @@
 # Copyright 2005-2006 Kevin Reid, under the terms of the MIT X license
 # found at http://www.opensource.org/licenses/mit-license.html ................
 
-pragma.enable("easy-return")
-pragma.disable("explicit-result-guard")
+pragma.syntax("0.9")
 
 def chmod := makeCommand("chmod")
 def setExecutable(file) {
@@ -26,9 +25,9 @@ def macifySwt(script, target, bundleID, eHome) {
     def contents := target["Contents"]
     def platformDir := contents["MacOS"]
     platformDir.mkdirs(null)
-    
+
     def shehome := shesc(eHome)
-    
+
     def executable := platformDir["run"]
     executable.setText(`$\
 #!/bin/sh
@@ -39,13 +38,13 @@ exec $shehome/rune \
 	"``dirname $$0``/script.e-swt"
 `)
     setExecutable(executable)
-    
+
     platformDir["script.e-swt"].setText(script.getText())
-    
+
     # XXX use an XML (or plist) generator instead
     contents["Info.plist"].setText(`$\
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http:// 
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://
 www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
