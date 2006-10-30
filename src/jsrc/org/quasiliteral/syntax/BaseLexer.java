@@ -126,7 +126,7 @@ public abstract class BaseLexer implements LexerFace {
      * "ignorable control character".
      */
     static public boolean isJavaIdPart(char c) {
-        return Character.isJavaIdentifierPart(c) && c != EOFCHAR;
+        return Character.isJavaIdentifierPart(c) && EOFCHAR != c;
     }
 
 
@@ -137,7 +137,7 @@ public abstract class BaseLexer implements LexerFace {
      * @see Character#isJavaIdentifierStart
      */
     static public boolean isIdentifierStart(char ch) {
-        return isJavaIdStart(ch) && ch != '$';
+        return isJavaIdStart(ch) && '$' != ch;
     }
 
     /**
@@ -147,7 +147,7 @@ public abstract class BaseLexer implements LexerFace {
      * for the full spec.
      */
     static public boolean isIdentifierPart(char ch) {
-        return isJavaIdPart(ch) && ch != '$';
+        return isJavaIdPart(ch) && '$' != ch;
     }
 
     /**
@@ -159,7 +159,7 @@ public abstract class BaseLexer implements LexerFace {
      */
     static public boolean isIdentifierOrKeyword(String str) {
         int len = str.length();
-        if (len == 0) {
+        if (0 == len) {
             return false;
         } else if (!isIdentifierStart(str.charAt(0))) {
             return false;
@@ -281,14 +281,14 @@ public abstract class BaseLexer implements LexerFace {
         char closer = myIndenter.getCloser();
         int indent = myIndenter.getIndent();
         int closeIndent = myIndenter.getCloseIndent();
-        if (myContinueCount >= 0) {
+        if (0 <= myContinueCount) {
             indent += myContinueCount;
             //If we're after a continuer, then a closing bracket shouldn't be
             //allowed as the next character.
             closeIndent = indent;
         }
         boolean quoted = ('"' == closer || '`' == closer);
-        boolean atTop = !quoted && indent == 0 && -1 == myContinueCount;
+        boolean atTop = !quoted && 0 == indent && -1 == myContinueCount;
         myLTwine = myInput.optNextLine(atTop,
                                        quoted,
                                        indent,
@@ -301,7 +301,7 @@ public abstract class BaseLexer implements LexerFace {
             myLData = null;
         } else {
             myLData = myLTwine.bare().toCharArray();
-            if (myContinueCount >= 0) {
+            if (0 <= myContinueCount) {
                 if (isRestBlank(0)) {
                     //If we're after a continuation operator, then keep
                     //eating blank lines until we get a non-blank line.
@@ -350,7 +350,7 @@ public abstract class BaseLexer implements LexerFace {
             tok = nextToken();
             result.push(tok);
             tagCode = tok.getOptTagCode();
-        } while (tagCode != myEotluTok && tagCode != LexerFace.EOFTOK);
+        } while (tagCode != myEotluTok && LexerFace.EOFTOK != tagCode);
         return (Astro[])result.getArray(Astro.class);
     }
 
@@ -396,12 +396,12 @@ public abstract class BaseLexer implements LexerFace {
             //XXX Need to refactor, but how?
             char closer = myIndenter.getCloser();
             int indent = myIndenter.getIndent();
-            if (myContinueCount >= 0) {
+            if (0 <= myContinueCount) {
                 indent += myContinueCount;
                 myContinueCount = -1;
             }
             boolean quoted = ('"' == closer || '`' == closer);
-            boolean atTop = !quoted && indent == 0 && -1 == myContinueCount;
+            boolean atTop = !quoted && 0 == indent && -1 == myContinueCount;
             T.require(!atTop, "Internal: confused about top level", this);
             NeedMoreException nme = new NeedMoreException(msg,
                                                           quoted,
@@ -421,7 +421,7 @@ public abstract class BaseLexer implements LexerFace {
      * <tt>radix</tt>?
      */
     private boolean isDigitStart(char c, int radix) {
-        return Character.digit(c, radix) != -1;
+        return -1 != Character.digit(c, radix);
     }
 
     /**
@@ -473,14 +473,14 @@ public abstract class BaseLexer implements LexerFace {
      */
     protected void skipWhiteSpace() throws IOException {
         while (true) {
-            if (myChar == EOFCHAR) {
+            if (EOFCHAR == myChar) {
                 return;
             }
             if (Character.isWhitespace(myChar)) {
-                if (myChar == '\n') {
+                if ('\n' == myChar) {
                     return;
                 }
-                if (myChar == '\t') {
+                if ('\t' == myChar) {
                     if (myNoTabsFlag) {
                         syntaxError("The optional e.enable.notabs" +
                           " feature (see " + "org/erights/e/elang/syntax/" +
@@ -681,7 +681,7 @@ public abstract class BaseLexer implements LexerFace {
         do {
             ccode = charConstant();
         } while (-1 == ccode);
-        if (myChar != '\'') {
+        if ('\'' != myChar) {
             syntaxError("char constant must end in \"'\"");
         }
         nextChar();
@@ -700,8 +700,8 @@ public abstract class BaseLexer implements LexerFace {
         Twine openner = (Twine)myLTwine.run(myOptStartPos, myPos);
         myIndenter.push(openner, '"', 0);
         StringBuffer buf = new StringBuffer();
-        while (myChar != '"') {
-            if (myChar == EOFCHAR) {
+        while ('"' != myChar) {
+            if (EOFCHAR == myChar) {
                 needMore("File ends inside string literal");
             }
             int ccode = charConstant();
@@ -733,15 +733,15 @@ public abstract class BaseLexer implements LexerFace {
 
         String line = myLTwine.bare();
         int bound;
-        while ((bound = line.indexOf("*/", myPos)) == -1) {
+        while (-1 == (bound = line.indexOf("*/", myPos))) {
             buf.append(line.substring(myPos));
             skipLine();
             nextChar();
-            if (myChar == EOFCHAR) {
+            if (EOFCHAR == myChar) {
                 needMore("File ends inside doc-comment");
             }
             skipWhiteSpace();
-            if (myChar == '*' && peekChar() != '/') {
+            if ('*' == myChar && '/' != peekChar()) {
                 //skip leading whitespace and initial '*'
                 nextChar();
             }
@@ -779,18 +779,18 @@ public abstract class BaseLexer implements LexerFace {
         // Handles floating point numbers as well as integers
         boolean floating = false;
         int radix = 10;
-        if (myChar == '-') {
+        if ('-' == myChar) {
             nextChar();
         }
-        if (myChar == '0') {
+        if ('0' == myChar) {
             radix = 8;
             nextChar();
-            if (myChar == 'x' || myChar == 'X') {
+            if ('x' == myChar || 'X' == myChar) {
                 radix = 16;
                 nextChar();
             }
         }
-        if (radix == 16) {
+        if (16 == radix) {
             digits(16);
         } else {
             //even if radix == 8, we may instead have a floating point literal
@@ -798,16 +798,16 @@ public abstract class BaseLexer implements LexerFace {
             digits(10);
             // If we have a decimal point and a digit, go for the fractional
             // part
-            if (myChar == '.' && isDigitStart(peekChar(), 10)) {
+            if ('.' == myChar && isDigitStart(peekChar(), 10)) {
                 nextChar();
                 floating = true;
                 digits(10);
             }
 
-            if ((myChar == 'E') || (myChar == 'e')) {
+            if (('E' == myChar) || ('e' == myChar)) {
                 nextChar();
                 floating = true;
-                if (myChar == '-') {
+                if ('-' == myChar) {
                     nextChar();
                 }
                 if (!digits(10)) {
@@ -821,15 +821,15 @@ public abstract class BaseLexer implements LexerFace {
             return myBuilder.leafFloat64(Double.parseDouble(str),
                                          tok.getOptSpan());
         } else {
-            if (radix == 16) {
+            if (16 == radix) {
                 //remove the leading "0x" to make BigInteger happy
-                if (str.charAt(0) == '-') {
+                if ('-' == str.charAt(0)) {
                     str = "-" + str.substring(3);
                 } else {
                     str = str.substring(2);
                 }
             }
-            if (radix == 8 && str.length() >= 2) {
+            if (8 == radix && 2 <= str.length()) {
                 //As suggested by Ping or Dean
                 syntaxError("Octal is no longer supported: " + str);
             }
@@ -842,10 +842,10 @@ public abstract class BaseLexer implements LexerFace {
      * XXX Get rid of peekChar/0 or make it work
      */
     protected char peekChar() {
-        if (myChar == EOFCHAR) {
+        if (EOFCHAR == myChar) {
             needMore("internal: can't peek here");
         }
-        if (myChar == '\n') {
+        if ('\n' == myChar) {
             T.fail("internal: can't peek here");
         }
         int last = myLData.length - 1;
@@ -861,19 +861,15 @@ public abstract class BaseLexer implements LexerFace {
      * Is the next character c?
      */
     protected boolean peekChar(char c) {
-        if (myChar == EOFCHAR) {
+        if (EOFCHAR == myChar) {
             needMore("internal: can't peek here");
         }
-        if (myChar == '\n') {
+        if ('\n' == myChar) {
             T.fail("internal: can't peek here");
         }
         int last = myLData.length - 1;
 
-        if (myPos < last) {
-            return c == myLData[myPos + 1];
-        } else {
-            return false;
-        }
+        return myPos < last && c == myLData[myPos + 1];
     }
 
     /**
