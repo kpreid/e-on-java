@@ -165,7 +165,7 @@ public interface EBuilder extends BaseEBuilder {
      *     unit basis. See the
      *     org/erights/e/elang/syntax/syntax-props-default.txt file for a list
      *     of properties
-     * <li>'pragma.disable("<i>propName</i>")' sets the property
+     * <li>'pragma.warn("<i>propName</i>")' sets the property
      *     'e.enable.<i>propName</i>' from 'true' to 'warn'.
      *     XXX explain "warn".
      * <li>'pragma.disable("<i>propName</i>")' sets the property
@@ -193,10 +193,8 @@ public interface EBuilder extends BaseEBuilder {
      * otherwise would have been an eventual-send expression, then the
      * builder should dispatch on the verb and arity of the arguments to
      * figure out what to do.<ul>
-     * <li>'meta &lt;- eval({@link
-     *     org.erights.e.elang.evm.Evaluator Evaluator}, expr)' is reserved
-     *     for future use. See
-     *     {@link Evaluator}.
+     * <li>'meta &lt;- eval({@link Evaluator}, expr)' is reserved for future
+     *     use. See {@link Evaluator}.
      *</ul>
      * All other possibilities are reserved for future use.
      */
