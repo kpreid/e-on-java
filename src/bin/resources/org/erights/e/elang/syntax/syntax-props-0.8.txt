@@ -1,0 +1,40 @@
+# Copyright 2006, Hewlett Packard, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+# Records the settings representing the official 0.8 version of the language
+# This version will be current as of 0.8.37, which should be the last 0.8
+# release.
+# See syntax-props-default.txt for documentation.
+
+# Grouped by switch setting. Alphabetical within each group.
+
+e.enable.anon-lambda=true
+e.enable.cast=true
+e.enable.easy-when=true
+e.enable.escape-handler=true
+e.enable.explicit-result-guard=true
+e.enable.exporter=true
+e.enable.importer=true
+e.enable.meta-scope=true
+e.enable.pattern-default=true
+e.enable.plumbing=true
+e.enable.verb-string=true
+
+e.enable.smalltalk-return=warn
+
+e.enable.accumulator=allow
+e.enable.call-pattern=allow
+e.enable.delegate-clause=allow
+e.enable.dot-props=allow
+e.enable.easy-return=allow
+e.enable.explicit-final-guard=allow
+e.enable.explicit-slot-guard=allow
+e.enable.explicit-var-guard=allow
+e.enable.lambda-args=allow
+e.enable.notabs=allow
+e.enable.noun-string=allow
+e.enable.one-method-object=allow
+e.enable.trinary-define=allow
+e.enable.unary-star=allow
+e.enable.verb-curry=allow
+e.enable.when-sequence=allow

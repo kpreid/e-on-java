@@ -1,0 +1,61 @@
+# Copyright 2006, Hewlett Packard, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+# Records the settings anticipated for the official 0.9 version of the
+# language. Until 0.9 settles down, these settings may change, so any files
+# declared as pragma.syntax("0.9") may need to be modified accordingly.
+# If you wish your file to be more stable than that, declare it as
+# pragma.syntax("0.8") and then explicitly pragma.enable/1 and pragma.disable/1
+# as you wish.
+# See syntax-props-default.txt for documentation.
+
+# Grouped by switch setting. Alphabetical within each group.
+
+e.enable.anon-lambda=true
+e.enable.cast=true
+e.enable.easy-return=true
+e.enable.easy-when=true
+e.enable.escape-handler=true
+e.enable.exporter=true
+e.enable.importer=true
+e.enable.lambda-args=true
+e.enable.meta-scope=true
+e.enable.noun-string=true
+e.enable.pattern-default=true
+e.enable.plumbing=true
+e.enable.trinary-define=true
+e.enable.verb-curry=true
+e.enable.verb-string=true
+
+e.enable.accumulator=allow
+e.enable.call-pattern=allow
+e.enable.delegate-clause=allow
+e.enable.dot-props=allow
+e.enable.explicit-final-guard=allow
+e.enable.explicit-result-guard=allow
+e.enable.explicit-slot-guard=allow
+e.enable.explicit-var-guard=allow
+e.enable.notabs=allow
+e.enable.one-method-object=allow
+e.enable.smalltalk-return=allow
+e.enable.unary-star=allow
+e.enable.when-sequence=allow
+
+
+# The differences from 0.8 are:
+
+# e.enable.easy-return:           allow -> true *
+# e.enable.lambda-args:           allow -> true
+# e.enable.noun-string:           allow -> true
+# e.enable.trinary-define:        allow -> true
+# e.enable.verb-curry:            allow -> true
+# e.enable.verb-string:           allow -> true
+# e.enable.explicit-result-guard: true -> allow
+# e.enable.smalltalk-return:      warn -> allow *
+
+# The non-upwards compatible changes are marked with a "*" above. For
+# 0.8 programs where these aren't an issue, these can safely be
+# declared as 0.9 programs. As a general rule, this means that files that
+# said pragma.enable("easy-return") should be declared as 0.9, and those that
+# aren't should either be fixed or declared as 0.8.
+
