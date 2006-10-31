@@ -200,8 +200,10 @@ srccheck-doc:
 		$(TOP)/doc/elang $(TOP)/src/esrc 2>&1 | tee report-doc.txt)
 
 updoc_reports:
-	($(STLE) $(TOP)/src/esrc/scripts/updoc.e jsrc 2>&1 | tee report-updoc-jsrc.txt)
-	($(STLEBIG) $(TOP)/src/esrc/scripts/updoc.e esrc 2>&1 | tee report-updoc-esrc.txt)
+	($(STLE) $(TOP)/src/esrc/scripts/updoc.e \
+		jsrc 2>&1 | tee report-updoc-jsrc.txt)
+	($(STLEBIG) $(TOP)/src/esrc/scripts/updoc.e \
+		esrc 2>&1 | tee report-updoc-esrc.txt)
 	cp "/cygdrive/c/Program Files/erights.org/updoc-hash-cache.txt" \
 		$(TOP)/src/csrc/setup/updoc-hash-cache.txt
 

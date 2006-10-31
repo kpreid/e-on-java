@@ -51,4 +51,3 @@ def check() :any {
    }
 }
 interp.waitAtTop(check())
-
