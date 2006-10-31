@@ -1,9 +1,227 @@
-[[[][..[]..][.[.][*.*.]][..[.][..].]][[[[]..........]][[[.]]][[[]...........[......].][...][[[...]][][...][.....][..][.......]][.[]......][[.....[[[]]].]][....][.....]]][[[[........]][[....]]]][[[[[............][.....][..][.............][.........][[..
+[[[][][][[][][]]][[[][][][[][][]]][[[][][][[][][]]]][[[][][][[][][]]]..[[[][][][[][][]]]]..][[[][][][[][][]]].[[[][][][[][][]]].][[[][][][[][][]]]*.*.]][[[][][][[][][]]]..[[[][][][[][][]]].][[[][][][[][][]]]..].]][[[][][][[][][]]][[[][][][[][][]]][[[][][][[][][]]][[[][][][[][][]]]]..........][[[][][][[][][]]]...]][[[][][][[][][]]][[[][][][[][][]]][[[][][][[][][]]].]]][[[][][][[][][]]][[[][][][[][][]]][[[][][][[][][]]]]...........[[[][][][[][][]]]......].][[[][][][[][][]]]...][[[][][][[][][]]][[[][][][[][][]]][[[][][][[][][]]]...]][[[][][][[][][]]]][[[][][][[][][]]]...][[[][][][[][][]]].....][[[][][][[][][]]]..][[[][][][[][][]]].......]][[[][][][[][][]]].[[[][][][[][][]]]]......][[[][][][[][][]]][[[][][][[][][]]].....[[[][][][[][][]]][[[][][][[][][]]][[[][][][[][][]]]]]].]][[[][][][[][][]]]....][[[][][][[][][]]].....]]][[[][][][[][][]]][[[][][][[][][]]][[[][][][[][][]]][[[][][][[][][]]]........]][[[][][][[][][]]][[[][][][[][][]]]....]]]][[[][][][[][][]]][[[][][][[][][]]][[[][][][[][][]]][[[][][][[][][]]][[[][][][[][][]]]............][[[][][][[][][]]]........][[[][][][[][][]]]..][[[][][][[][][]]]..........][[[][][][[][][]]]............][[[][][][[][][]]].........][[[][][][[][][]]][[[][][][[][][]]]..
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/scope/test/leakage.emaker
-problem: <NoSuchMethodException: <a Scope>.bindOuter/2>
-]][..][....]][[..][.][..][..........][.....][[...# tab at 2240 from: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/tables/graph/templateVertex.emaker#:span::76:8::76:8>
+problem: Failed: Undefined variable: __makeVarSlot
+]][[[][][][[][][]]]..][[[][][][[][][]]].
+c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/visitors/makeMetaEval.emaker
+syntax error: 
+                      var v2 :guard exit optEjector := specimen
+                                       ^
+  @ <file:/C:/Documents%20and%20Settings/millerm1/e/src/esrc/org/erights/e/elang/visitors/makeMetaEval.emaker#:span::291:37::291:37>
+..]][[[][][][[][][]]][[[][][][[][][]]]..][[[][][][[][][]]].][[[][][][[][][]]]
+c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/sealing/makeDFBrand.emaker
+problem: <AuditFailedException: object expression def makeDFBrand implements DeepFrozen {
+             
+             method run(label :String) :any {
+                 escape __return {
+                     def key {
+                     }
+                     (def [BoxGuard, BoxStamp] := {
+                         __makeProtocolDesc.makePair("", meta.context().getFQNPrefix().add("BoxGuard__T"), __makeList.run(), __makeList.run(), __makeList.run())
+                     }).get(0)
+                     def brand implements DeepFrozen {
+                         
+                         method __printOn(out :TextWriter) :void {
+                             escape __return {
+                                 out.print(label)
+                                 null
+                             }
+                         }
+                     }
+                     def sealer implements DeepFrozen {
+                         
+                         method __printOn(out :TextWriter) :void {
+                             escape __return {
+                                 out.print("<", brand, " sealer>")
+                                 null
+                             }
+                         }
+                         
+                         /** Return the Brand of this sealer/unsealer set. */
+                         method getBrand() :any {
+                             escape __return {
+                                 __return.run(brand)
+                                 null
+                             }
+                         }
+                         
+                         method seal(content) :any {
+                             escape __return {
+                                 def sealedBox implements BoxStamp {
+                                     
+                                     method __printOn(out :TextWriter) :void {
+                                         escape __return {
+                                             out.print("<sealed by ", brand, ">")
+                                             null
+                                         }
+                                     }
+                                     
+                                     /**
+                                      * Return the Brand of the Unsealer which can unseal
+                                      * this box.
+                                      */
+                                     method getBrand() :any {
+                                         escape __return {
+                                             __return.run(brand)
+                                             null
+                                         }
+                                     }
+                                     
+                                     /** An implementation detail. */
+                                     method _offerContent(k) :any {
+                                         escape __return {
+                                             require.run(__equalizer.sameEver(key, k), def _ {
+                                                 
+                                                 method run() {
+                                                     simple__quasiParser.valueMaker("Can't unseal - wrong key").substitute(__makeList.run())
+                                                 }
+                                             })
+                                             __return.run(content)
+                                             null
+                                         }
+                                     }
+                                 }
+                                 __return.run(sealedBox)
+                                 null
+                             }
+                         }
+                     }
+                     def unsealer implements DeepFrozen {
+                         
+                         method __printOn(out :TextWriter) :void {
+                             escape __return {
+                                 out.print("<", brand, " unsealer>")
+                                 null
+                             }
+                         }
+                         
+                         /** Return the Brand of this sealer/unsealer set. */
+                         method getBrand() :any {
+                             escape __return {
+                                 __return.run(brand)
+                                 null
+                             }
+                         }
+                         
+                         /** .unseal(specimen, null) */
+                         method unseal(specimen) :any {
+                             escape __return {
+                                 __return.run(unsealer.unseal(specimen, null))
+                                 null
+                             }
+                         }
+                         
+                         /**
+                          * Unseal a SealedBox: return its contents.
+                          *
+                          * Coerces specimen by BoxGuard (giving a wrapping specimen the
+                          * opportunity to __conformTo(BoxGuard)). If this succeeds, ask
+                          * the resulting SealedBox of our Brand to _offerContent(key).
+                          *
+                          * Note that an object which successfully unseals will not
+                          * necessarily give the same contents on a second unsealing
+                          * because it might __conformTo differently.
+                          */
+                         method unseal(specimen, optEjector) :any {
+                             escape __return {
+                                 def box :BoxGuard exit optEjector := specimen
+                                 __return.run(box._offerContent(key))
+                                 null
+                             }
+                         }
+                     }
+                     def brandKit implements DeepFrozen {
+                         
+                         method __printOn(out :TextWriter) :void {
+                             escape __return {
+                                 out.print("<", brand, " brand kit>")
+                                 null
+                             }
+                         }
+                         
+                         method getSealer() :any {
+                             escape __return {
+                                 __return.run(sealer)
+                                 null
+                             }
+                         }
+                         
+                         method getUnsealer() :any {
+                             escape __return {
+                                 __return.run(unsealer)
+                                 null
+                             }
+                         }
+                         
+                         /** Return the Brand of this sealer/unsealer set. */
+                         method getBrand() :any {
+                             escape __return {
+                                 __return.run(brand)
+                                 null
+                             }
+                         }
+                         
+                         /**
+                          * This brand kit will coerce to a tuple, so that it may be
+                          * matched against a list pattern like epatt`[sealer, unsealer]`.
+                          */
+                         method __conformTo(guard) :any {
+                             escape __return {
+                                 {
+                                     def specimen__1 := guard
+                                     escape ej__5 {
+                                         def via (__is.run(type__uriGetter.get("org.erights.e.elib.tables.ConstList"))) _ exit ej__5 := specimen__1
+                                         __return.run(__makeList.run(sealer, unsealer))
+                                     } catch _ {
+                                         escape ej__3 {
+                                             def _ exit ej__3 := specimen__1
+                                             __return.run(brandKit)
+                                         } catch _ {
+                                             throw.run("no match: ".add(specimen__1))
+                                         }
+                                     }
+                                 }
+                                 null
+                             }
+                         }
+                     }
+                     __return.run(brandKit)
+                     null
+                 }
+             }
+         } failed audit by org.erights.e.elib.serial.DeepFrozenAuditor@4eeee3>
+..][[[][][][[][][]]]..........][[[][][][[][][]]]..
+c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/makeLazySlot.emaker
+syntax error: 
+  def baz; eject out { bind baz := makeLazySlot(thunk { out("bass") }); baz.getValue() }
+                   ^
+  @ <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/makeLazySlot.emaker#:span::84:21::84:21>
+..][[[][][][[][][]]].[[[][][][[][][]]]...# tab at 2240 from: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/tables/graph/templateVertex.emaker#:span::76:8::76:8>
 
-.].]][[....]][[.....]][..
+.].]][[[][][][[][][]]][[[][][][[][][]]]....]][[[][][][[][][]]][[[][][][[][][]]].....]][[[][][][[][][]]]..
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/facet/makeGrantMgrAuthor.emaker
 problem: Failed: org.erights.e.facet.:makeCaretaker not found
-....][.[.][.....]][[......][.......][......][..][...][.][....][.][.......]][[...][.......]]][[...]]][[.][..][..]]][.........[[...........][..][...][...][...][...]]..............................[..[....]......[.....]]..[.*.*.*..].]]
+.....][[[][][][[][][]]].[[[][][][[][][]]].][[[][][][[][][]]].....]][[[][][][[][][]]][[[][][][[][][]]]......][[[][][][[][][]]]
+c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/tools/causeway/causewayAppAuthor.emaker
+problem: <NoSuchMethodException: <a TupleGuard>.get/0>
+.
+c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/tools/causeway/makeCausalityGraph.emaker
+problem: <NoSuchMethodException: <a TupleGuard>.get/0>
+
+c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/tools/causeway/makeCausalityTree.emaker
+problem: <NoSuchMethodException: <a TupleGuard>.get/0>
+
+c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/tools/causeway/makePrunedCausalityTree.emaker
+problem: <NoSuchMethodException: <a TupleGuard>.get/0>
+..][[[][][][[][][]]]......][[[][][][[][][]]]..][[[][][][[][][]]]...][[[][][][[][][]]]=== 2006-10-31T07:04:21.978Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
+eruntime: Import org.quasiliteral.text.makeIdentifiers instead : (Importing org.quasiliteral.text.Identifiers)
+ @ Loader#get(String)
+ @ get/1: <file:/C:/Documents%20and%20Settings/millerm1/e/src/esrc/org/erights/e/tools/java/fixImports.emaker#:span::4:23::4:64>
+.][[[][][][[][][]]]....][[[][][][[][][]]].][[[][][][[][][]]].......]][[[][][][[][][]]][[[][][][[][][]]]...][[[][][][[][][]]].......]]][[[][][][[][][]]][[[][][][[][][]]]...]]][[[][][][[][][]]][[[][][][[][][]]].][[[][][][[][][]]]..][[[][][][[][][]]]..]]][[[][][][[][][]]]............[[[][][][[][][]]][[[][][][[][][]]]...........][[[][][][[][][]]]..][[[][][][[][][]]]...][[[][][][[][][]]]...][[[][][][[][][]]]...][[[][][][[][][]]]...]]................# tab at 856 from: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/macify-swt.e#:span::35:0::35:0>
+
+...............[[[][][][[][][]]]..[[[][][][[][][]]]....]......[[[][][][[][][]]].....]]..[[[][][][[][][]]].*
+c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html
+syntax error: calc-uri syntax is no longer supported. Use '<protocol>[expr]' instead.
+  def file3 := <file: filePath>
+               ^^^^^^
+  @ <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:blob::1213:14::1213:21>
+*.*..].]]

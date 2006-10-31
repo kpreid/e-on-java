@@ -1,7 +1,15 @@
 
 updoc: started
 
-c:/Documents and Settings/millerm1/e/src/jsrc/com/zooko/tray/EPainter.updoc:
+c:/Documents and Settings/millerm1/e/src/jsrc/com/zooko/tray/EPainter.updoc:=== 2006-10-31T08:07:54.720Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
+eruntime: Import javax.swing.makeJFrame instead : (Importing javax.swing.JFrame)
+ @ Loader#get(String)
+ @ get/1: <file:c:/Documents and Settings/millerm1/e/src/jsrc/com/zooko/tray/EPainter.updoc#:span::1:25::1:51>
+=== 2006-10-31T08:07:54.810Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
+eruntime: Import java.awt.makeColor instead : (Importing java.awt.Color)
+ @ Loader#get(String)
+ @ get/1: <file:c:/Documents and Settings/millerm1/e/src/jsrc/com/zooko/tray/EPainter.updoc#:span::2:25::2:47>
+
 at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/com/zooko/tray/EPainter.updoc#:span::1:6::1:51>
 expr: (def makeJFrame := <unsafe:javax.swing.JFrame>
        def ColorBlack := <unsafe:java.awt.Color>.black()
@@ -35,6 +43,7 @@ expr: (def myep := makeEPainter(helloer)
 missing original problem
 new problem: Failed: Undefined variable: makeEPainter
 ..
+c:/Documents and Settings/millerm1/e/src/jsrc/ForManifest.txt:
 c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/jcomm/bad-resolve.updoc:........................
 at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/jcomm/bad-resolve.updoc#:span::134:6::134:13>
 expr: bobState
@@ -42,12 +51,41 @@ original and new value differ
 original value: <a SturdyRef>
      new value: <SturdyRef>
 ..................
-c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/jcomm/multi-test.updoc:...........
+c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/jcomm/multi-test.updoc:=== 2006-10-31T08:08:03.743Z (PendingEvent.report:PendingEvent.java:109) WRN
+causality: Problem in turn <<Vat server in <runs in server>>,138>: 
+--vvvv--
+<null>.add/1
+
+
+java.lang.NoSuchMethodException: <null>.add/1
+	at org.erights.e.elib.prim.VTable.shorten(VTable.java:198)
+	at org.erights.e.elib.prim.E.callAll(E.java:166)
+	at org.erights.e.elib.vat.PendingDelivery.innerRun(PendingDelivery.java:102)
+	at org.erights.e.elib.vat.PendingEvent.run(PendingEvent.java:76)
+	at org.erights.e.elib.vat.HeadlessRunner.run(HeadlessRunner.java:176)
+	at java.lang.Thread.run(Thread.java:595)
+
+--^^^^--
+
+...........
 at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/jcomm/multi-test.updoc#:span::70:6::70:6>
 expr: x
 missing new value
 original value: <Remote Promise>
-.........
+
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/jcomm/multi-test.updoc#:span::75:6::75:25>
+expr: def y := x <- add(3)
+original and new value differ
+original value: <Remote Promise>
+     new value: <Promise>
+....
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/jcomm/multi-test.updoc#:span::97:6::97:6>
+expr: y
+original and new value differ
+original value: 5
+     new value: <ref broken by problem: <NoSuchMethodException: <null>.add/1>>
+...
+c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/jcomm/package.html:
 c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/jcomm/refmon.updoc:.....
 at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/jcomm/refmon.updoc#:span::37:6::37:37>
 expr: def sr := makeSturdyRef.temp(&x)
@@ -75,7 +113,15 @@ original value: "++++.run/1.run/1+.run/1+.run/1
      new value: "++++.run/1.run/1+.run/1
                 =add/2+.__whenMoreResolved/1"
 
-c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc:
+c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc:=== 2006-10-31T08:08:12.015Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
+eruntime: Import net.captp.tables.makeAnswersTable instead : (Importing net.captp.tables.AnswersTable)
+ @ Loader#get(String)
+ @ get/1: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::6:31::6:68>
+=== 2006-10-31T08:08:12.195Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
+eruntime: Import java.lang.makeRuntimeException instead : (Importing java.lang.RuntimeException)
+ @ Loader#get(String)
+ @ get/1: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::125:21::125:55>
+
 at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::6:6::6:68>
 expr: def AnswersTableMaker := <unsafe:net.captp.tables.AnswersTable>
 original and new value differ
@@ -308,9 +354,25 @@ original stdout: i: 1
                  i: 3
                  
 .
+c:/Documents and Settings/millerm1/e/src/jsrc/net/ertp/package.html:
+c:/Documents and Settings/millerm1/e/src/jsrc/net/vattp/chat/package.html:
+c:/Documents and Settings/millerm1/e/src/jsrc/net/vattp/data/package.html:
+c:/Documents and Settings/millerm1/e/src/jsrc/net/vattp/package.html:
+c:/Documents and Settings/millerm1/e/src/jsrc/net/vattp/security/package.html:
+c:/Documents and Settings/millerm1/e/src/jsrc/net/vattp/tunnel/package.html:
+c:/Documents and Settings/millerm1/e/src/jsrc/net/vattp/vls/package.html:
+c:/Documents and Settings/millerm1/e/src/jsrc/notes.txt:
+c:/Documents and Settings/millerm1/e/src/jsrc/org/apache/oro/text/regex/package.html:
+c:/Documents and Settings/millerm1/e/src/jsrc/org/capml/dom/package.html:
+c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/develop/assertion/package.html:
+c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/develop/exception/package.html:
+c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/develop/trace/package.html:
+c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/evm/package.html:
+c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/interp/auditors.txt:
+c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/interp/package.html:
 c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/scope/meta-context.updoc:..
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/scope/meta-context.updoc#:span::6:2::6:48>
-expr: def foo():any{[meta.getState(),meta.context()]}
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/scope/meta-context.updoc#:span::6:2::6:59>
+expr: def foo() :any { return [meta.getState(),meta.context()] }
 original and new expansion differ
 original expansion: def foo := def "__main$foo__C" {
                     
@@ -323,12 +385,12 @@ original expansion: def foo := def "__main$foo__C" {
                     }
                     }
                     }
-     new expansion: def foo := def "__main$foo__C" {
+     new expansion: def foo {
                     
-                    /** Invoke as a function */
                     method run() :any {
                     escape __return {
-                    __makeList.run(meta.getState(), meta.context())
+                    __return.run(__makeList.run(meta.getState(), meta.context()))
+                    null
                     }
                     }
                     }
@@ -337,7 +399,7 @@ at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/scop
 expr: def [s,c] := foo()
 original and new value differ
 original value: [["&__makeList" => <& <import:org.erights.e.elib.tables.ConstList>>, "&any" => <& <any>>, "&__return" => <& <__return: disabled Ejector>>], <StaticContext>]
-     new value: [["&__makeList" => <& <makeConstList>>, "&any" => <& any>, "&__return" => <& <__return: disabled Ejector>>], <a StaticContext>]
+     new value: [["&null" => <& null>, "&__makeList" => <& <makeConstList>>, "&any" => <& any>, "&__return" => <& <__return: disabled Ejector>>], <static __main$foo$, 4 s>]
 
 at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/scope/meta-context.updoc#:span::29:2::29:14>
 expr: c.getSource()
@@ -353,26 +415,36 @@ original value: e`def "__main$foo__C" {
                 }
                 }
                 }`
-     new value: e`def "__main$foo__C" {
+     new value: e`def foo {
                 
-                /** Invoke as a function */
                 method run() :any {
                 escape __return {
-                __makeList.run(meta.getState(), meta.context())
+                __return.run(__makeList.run(meta.getState(), meta.context()))
+                null
                 }
                 }
                 }`
-...
-c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/scope/meta-scope.updoc:
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/scope/meta-scope.updoc#:span::4:6::4:29>
-expr: def m := meta.getState()
-missing new syntax error
-original syntax error: The optional e.enable.meta-scope feature (see org/erights/e/elang/syntax/syntax-props-default.txt) is currently off.
-                       def m := meta.getState()
-                       ^
-                       
-..
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/scope/meta-scope.updoc#:span::14:6::14:29>
+
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/scope/meta-context.updoc#:span::44:2::44:14>
+expr: c.getSynEnv()
+original and new value differ
+original value: ["__makeList" => epatt`__makeList`, "any" => epatt`any`, "__return" => epatt`__return`]
+     new value: ["null" => epatt`null`, "__makeList" => epatt`__makeList`, "any" => epatt`any`, "__return" => epatt`__return`]
+
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/scope/meta-context.updoc#:span::51:2::51:26>
+expr: c.getSource().getSynEnv()
+original and new value differ
+original value: ["__makeList" => epatt`__makeList`, "any" => epatt`any`]
+     new value: ["null" => epatt`null`, "__makeList" => epatt`__makeList`, "any" => epatt`any`]
+
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/scope/meta-context.updoc#:span::56:2::56:17>
+expr: c.getFQNPrefix()
+original and new value differ
+original value: "__main$foo__C$"
+     new value: "__main$foo$"
+
+c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/scope/meta-scope.updoc:..
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/scope/meta-scope.updoc#:span::6:6::6:29>
 expr: def m := meta.getState()
 original and new value differ
 original value: an InnerScope
@@ -421,7 +493,7 @@ original value: an InnerScope
                 unsafe__uriGetter
                 an UnsafeLoaderScope
                 
-     new value: ["&null" => <& null>, "&false" => <& false>, "&true" => <& true>, "&throw" => <& throw>, "&__loop" => <& <__loop>>, "&__for" => <lazy eval slot>, "&__if" => <lazy eval slot>, "&__while" => <lazy eval slot>, "&__makeList" => <& <makeConstList>>, "&__makeMap" => <& <makeConstMap>>, "&__makeProtocolDesc" => <& <makeProtocolDesc>>, "&__makeMessageDesc" => <& <makeMessageDesc>>, "&__makeParamDesc" => <& <makeParamDesc>>, "&any" => <& any>, "&void" => <& void>, "&boolean" => <& Boolean>, "&__makeOrderedSpace" => <lazy eval slot>, "&ValueGuard" => <& ValueGuard>, "&__MatchContext" => <& __MatchContext>, "&require" => <lazy eval slot>, "&__makeVerbFacet" => <lazy eval slot>, "&NaN" => <& NaN>, "&Infinity" => <& Infinity>, "&__identityFunc" => <& <an IdentityFunc>>, "&__makeInt" => <lazy eval slot>, "&__makeFinalSlot" => <& <makeFinalSlot>>, "&__makeVarSlot" => <& <makeSimpleSlot>>, "&__makeGuardedSlot" => <& <makeSettableSlot>>, "&__makeGuard" => <& <makeBaseGuard>>, "&__makeTwine" => <& <makeTwine>>, "&__makeSourceSpan" => <& <makeSourceSpan>>, "&__auditedBy" => <& <an AuditChecker>>, "&Guard" => <& Guard>, "&near" => <lazy eval slot>, "&pbc" => <& pbc>, "&PassByCopy" => <& PassByCopy>, "&DeepPassByCopy" => <& DeepPassByCopy>, "&Data" => <& DeepPassByCopy>, "&Persistent" => <& Persistent>, "&DeepFrozen" => <& DeepFrozen>, "&int" => <lazy eval slot>, "&float64" => <lazy eval slot>, "&char" => <lazy eval slot>, "&String" => <& String>, "&Twine" => <& Twine>, "&TextWriter" => <& TextWriter>, "&List" => <& List>, "&Map" => <& Map>, "&Set" => <& Set>, "&nullOk" => <& nullOk>, "&Tuple" => <& <makeTupleGuard>>, "&__Portrayal" => <lazy eval slot>, "&notNull" => <lazy eval slot>, "&vow" => <lazy eval slot>, "&rcvr" => <lazy eval slot>, "&SturdyRef" => <lazy eval slot>, "&simple__quasiParser" => <& <a SimpleQuasiParser>>, "&twine__quasiParser" => <lazy eval slot>, "&rx__quasiParser" => <lazy eval slot>, "&olde__quasiParser" => <& <makeEParser>>, "&e__quasiParser" => <& <makeEParser>>, "&epatt__quasiParser" => <lazy eval slot>, "&sml__quasiParser" => <lazy eval slot>, "&term__quasiParser" => <& <a QBuilder>>, "&__equalizer" => <& <an Equalizer>>, "&__comparer" => <& <a Comparer>>, "&Ref" => <& <makeRef>>, "&E" => <lazy eval slot>, "&promiseAllFulfilled" => <lazy eval slot>, "&__when" => <lazy eval slot>, "&EIO" => <& <makeEIO>>, "&help" => <& ? help
+     new value: ["&null" => <& null>, "&false" => <& false>, "&true" => <& true>, "&throw" => <& throw>, "&__loop" => <& <__loop>>, "&__makeList" => <& <makeConstList>>, "&__makeMap" => <& <makeConstMap>>, "&__makeProtocolDesc" => <& <makeProtocolDesc>>, "&__makeMessageDesc" => <& <makeMessageDesc>>, "&__makeParamDesc" => <& <makeParamDesc>>, "&any" => <& any>, "&void" => <& void>, "&boolean" => <& Boolean>, "&__makeOrderedSpace" => <lazy eval slot>, "&Guard" => <& Guard>, "&require" => <lazy eval slot>, "&__makeVerbFacet" => <lazy eval slot>, "&__MatchContext" => <lazy eval slot>, "&__is" => <lazy eval slot>, "&__splitList" => <lazy eval slot>, "&__suchThat" => <lazy eval slot>, "&__bind" => <lazy eval slot>, "&__extract" => <lazy eval slot>, "&__Empty" => <lazy eval slot>, "&__matchBind" => <lazy eval slot>, "&__Test" => <lazy eval slot>, "&NaN" => <& NaN>, "&Infinity" => <& Infinity>, "&__identityFunc" => <& <an IdentityFunc>>, "&__makeInt" => <lazy eval slot>, "&__makeFinalSlot" => <& <makeFinalSlot>>, "&__makeTwine" => <& <makeTwine>>, "&__makeSourceSpan" => <& <makeSourceSpan>>, "&__auditedBy" => <& <an AuditChecker>>, "&near" => <lazy eval slot>, "&pbc" => <& pbc>, "&PassByCopy" => <& PassByCopy>, "&DeepPassByCopy" => <& DeepPassByCopy>, "&Data" => <& DeepPassByCopy>, "&Persistent" => <& Persistent>, "&DeepFrozen" => <& DeepFrozen>, "&int" => <lazy eval slot>, "&float64" => <lazy eval slot>, "&char" => <lazy eval slot>, "&String" => <& String>, "&Twine" => <& Twine>, "&TextWriter" => <& TextWriter>, "&List" => <& List>, "&Map" => <& Map>, "&Set" => <& Set>, "&nullOk" => <& nullOk>, "&Tuple" => <& <makeTupleGuard>>, "&__Portrayal" => <lazy eval slot>, "&notNull" => <lazy eval slot>, "&vow" => <lazy eval slot>, "&rcvr" => <lazy eval slot>, "&SturdyRef" => <lazy eval slot>, "&simple__quasiParser" => <& <a SimpleQuasiParser>>, "&twine__quasiParser" => <lazy eval slot>, "&rx__quasiParser" => <lazy eval slot>, "&olde__quasiParser" => <& <makeEParser>>, "&e__quasiParser" => <& <makeEParser>>, "&epatt__quasiParser" => <lazy eval slot>, "&sml__quasiParser" => <lazy eval slot>, "&term__quasiParser" => <& <a QBuilder>>, "&__equalizer" => <& <an Equalizer>>, "&__comparer" => <& <a Comparer>>, "&Ref" => <& <makeRef>>, "&E" => <lazy eval slot>, "&promiseAllFulfilled" => <lazy eval slot>, "&EIO" => <& <makeEIO>>, "&help" => <& ? help
                 Shows this message.
                 ? help(<expression>)
                 Shows what messages the expression's value responds to.
@@ -432,33 +504,44 @@ original value: an InnerScope
                 Documentation on the E Language can be found at
                 http://www.erights.org/elang/help.html>, "&safeScope" => <& <a Scope>>, "&__eval" => <& <a BaseEvaluator>>, "&resource__uriGetter" => <& <resource>>, "&type__uriGetter" => <& <type>>, "&import__uriGetter" => <& <import>>, "&elib__uriGetter" => <lazy eval slot>, "&elang__uriGetter" => <lazy eval slot>, "&opaque__uriGetter" => <lazy eval slot>, "&__abortIncarnation" => <& <ref broken by problem: XXX __abortIncarnation not yet implemented>>, "&file__uriGetter" => <& <file>>, "&fileURL__uriGetter" => <& <file>>, "&jar__uriGetter" => <& <jar>>, "&http__uriGetter" => <& <http>>, "&ftp__uriGetter" => <& <ftp>>, "&gopher__uriGetter" => <& <gopher>>, "&news__uriGetter" => <& <news>>, "&captp__uriGetter" => <& <Off The Air>>, "&makeCommand" => <lazy eval slot>, "&stdout" => <& <a TextWriter>>, "&stderr" => <& <a TextWriter>>, "&stdin" => <& <ref broken by problem: XXX stdin not yet implemented>>, "&print" => <lazy eval slot>, "&println" => <lazy eval slot>, "&interp" => <& <cmdLoop>>, "&entropy" => <& <an ESecureRandom>>, "&timer" => <& <a Timer>>, "&introducer" => <& <Off The Air>>, "&identityMgr" => <& <IdentityMgr Off The Air>>, "&makeSturdyRef" => <lazy eval slot>, "&timeMachine" => <lazy eval slot>, "&unsafe__uriGetter" => <& <unsafe>>, "&currentVat" => <& <Vat home in <runs in home>>>, "&rune" => <lazy eval slot>, "&awt__uriGetter" => <lazy eval slot>, "&swing__uriGetter" => <lazy eval slot>, "&JPanel__quasiParser" => <lazy eval slot>, "&swt__uriGetter" => <lazy eval slot>, "&currentDisplay" => <lazy eval slot>, "&swtGrid__quasiParser" => <lazy eval slot>, "&swtWatch" => <lazy eval slot>, "&privilegedScope" => <& <a Scope>>, "&m" => null]
 ..
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/scope/meta-scope.updoc#:span::75:6::75:19>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/scope/meta-scope.updoc#:span::67:6::67:19>
 expr: scp["println"]
 missing new value
 original value: <println>
 missing original problem
 new problem: <IndexOutOfBoundsException: "println" not found>
 .
+c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/scope/package.html:
 c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/scope/redef.updoc:.......
-c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/syntax/exporter.updoc:.....
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/syntax/exporter.updoc#:span::12:6::12:16>
+c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/syntax/antlr/CommonTokenTypes.txt:
+c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/syntax/antlr/EALexerTokenTypes.txt:
+c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/syntax/antlr/ETokenTypes.txt:
+c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/syntax/antlr/example.e:
+c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/syntax/exporter.updoc:...
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/syntax/exporter.updoc#:span::11:6::11:16>
 expr: [=>x, =>&y]
 original and new value differ
 original value: ["x" => 3, "&y" => <forwards to: <& 5>>]
      new value: ["x" => 3, "&y" => <var 5>]
 .
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/syntax/exporter.updoc#:span::19:6::19:59>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/syntax/exporter.updoc#:span::18:6::18:59>
 expr: def [=>a := 3, =>&b, "&y" => &c] := ["&b" => &x, =>&y]
 original and new value differ
 original value: ["&b" => <forwards to: <& 3>>, "&y" => <forwards to: <& 5>>]
      new value: ["&b" => <var 3>, "&y" => <var 5>]
 .....
-c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/syntax/lambdaArg.updoc:......
+c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/syntax/lambdaArg.updoc:............
+c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/syntax/package.html:
+c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/visitors/package.html:
+c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/base/package.html:
+c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/eio/package.html:
+c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/prim/package.html:
+c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/ref/package.html:
 c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/sealing/amplify.updoc:
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/sealing/amplify.updoc#:span::6:2::6:38>
-expr: def makeBrand := <elib:sealing.Brand>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/sealing/amplify.updoc#:span::6:2::6:42>
+expr: def makeBrand := <elib:sealing.makeBrand>
 original and new value differ
-original value: <elib:sealing.Brand>
+original value: <elib:sealing.makeBrand>
      new value: <makeBrand>
 ...
 at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/sealing/amplify.updoc#:span::26:2::26:43>
@@ -483,6 +566,7 @@ missing original problem
 new problem: Failed: Undefined variable: uncall
 
 c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/sealing/crypto/signing.updoc:....
+c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/sealing/package.html:
 c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/sealing/point.updoc:......
 at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/sealing/point.updoc#:span::35:6::35:16>
 expr: pt2 := null
@@ -516,7 +600,13 @@ original and new problem differ
 original problem: couldn't coerce to: X
      new problem: Failed: Undefined variable: xVar
 .
-c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker.updoc:
+c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/serial/package.html:
+c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/slot/package.html:
+c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker.updoc:=== 2006-10-31T08:09:24.209Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
+eruntime: Import org.erights.e.elib.tables.makeTraversalKey instead : (Importing org.erights.e.elib.tables.TraversalKey)
+ @ Loader#get(String)
+ @ get/1: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker.updoc#:span::6:30::6:76>
+
 at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker.updoc#:span::6:6::6:76>
 expr: def makeTraversalKey := <unsafe:org.erights.e.elib.tables.TraversalKey>
 original and new value differ
@@ -646,10 +736,10 @@ original and new problem differ
 original problem: <NotSettledException: Not sufficuently settled: [<Promise>, ***CYCLE***, 3] == [<Promise>, ***CYCLE***, 3]>
      new problem: <NotSettledException: Not sufficiently settled: [<Promise>, <***CYCLE***>, 3] == [<Promise>, <***CYCLE***>, 3]>
 .
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker2.updoc#:span::38:6::38:55>
-expr: def makeTraversalKey := <elib:tables.TraversalKey>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker2.updoc#:span::38:6::38:59>
+expr: def makeTraversalKey := <elib:tables.makeTraversalKey>
 original and new value differ
-original value: <import:org.erights.e.elib.tables.TraversalKey>
+original value: <import:org.erights.e.elib.tables.makeTraversalKey>
      new value: <makeTraversalKey>
 
 at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker2.updoc#:span::41:6::41:34>
@@ -683,14 +773,23 @@ original problem: <IndexOutOfBoundsException: <key:[666, ***CYCLE***, 3]> not fo
      new problem: <IndexOutOfBoundsException: <key:[666, <***CYCLE***>, 3]> not found>
 .
 c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/FlexList.updoc:......
+c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/package.html:
 c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/trijection.updoc:
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/trijection.updoc#:span::6:2::6:43>
-expr: def makeFT := <elib:tables.FlexTrijection>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/trijection.updoc#:span::6:2::6:47>
+expr: def makeFT := <elib:tables.makeFlexTrijection>
 original and new value differ
-original value: <import:org.erights.e.elib.tables.FlexTrijection>
+original value: <import:org.erights.e.elib.tables.makeFlexTrijection>
      new value: <makeFlexTrijection>
 ..........
-c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc:..
+c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/util/package.html:
+c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/extern/file/package.html:
+c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/extern/timer/package.html:
+c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/base/package.html:
+c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc:=== 2006-10-31T08:10:28.541Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
+eruntime: Import org.quasiliteral.astro.makeBaseSchema instead : (Importing org.quasiliteral.astro.BaseSchema)
+ @ Loader#get(String)
+ @ get/1: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::32:25::32:45>
+..
 at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::16:6::16:55>
 expr: def miniSchema := <astro:BaseSchema>.new("mini", [
           "tag",
@@ -749,11 +848,22 @@ missing new value
 original value: <building Term trees for safej>
 missing original problem
 new problem: Failed: Undefined variable: safejSchema
-.
+
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::55:6::55:23>
+expr: def testSmlFile :=
+        <c: "/Documents and Settings/Administrator/Desktop/marcs/safej/tamings/java.awt.AWTPermission.txt">
+missing new value
+original value: <file:c:/Documents and Settings/Administrator/Desktop/marcs/safej/tamings/java.awt.AWTPermission.txt>
+missing original syntax error
+new syntax error: calc-uri syntax is no longer supported. Use '<protocol>[expr]' instead.
+                  <c: "/Documents and Settings/Administrator/Desktop/marcs/safej/tamings/java.awt.AWTPermission.txt">
+                  ^^^
+                  @ <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::56:8::56:10>
+
 at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::59:6::59:94>
 expr: def dom := sml__quasiParser.valueMaker(testSmlFile.getText().trim()).substitute([]); null
 missing original problem
-new problem: <FileNotFoundException: c:\Documents and Settings\Administrator\Desktop\marcs\safej\tamings\java.awt.AWTPermission.txt (The system cannot find the path specified)>
+new problem: Failed: Undefined variable: testSmlFile
 
 at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::60:6::60:19>
 expr: dom.minimize()
@@ -1116,3 +1226,19 @@ original value: ast`wow:"foo$$@@``x"(wow:"foo$$@@``x"(wow:"foo$$@@``x", wow:"foo
 missing original problem
 new problem: Failed: Undefined variable: TermTreeMaker
 .
+c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/toy-grammar.updoc:...
+c:/Documents and Settings/millerm1/e/src/jsrc/org/waterken/entropy/package.html:
+c:/Documents and Settings/millerm1/e/src/jsrc/org/waterken/uri/package.html:
+c:/Documents and Settings/millerm1/e/src/jsrc/org/waterken/url/amp/package.html:
+c:/Documents and Settings/millerm1/e/src/jsrc/org/waterken/url/conforming/package.html:
+c:/Documents and Settings/millerm1/e/src/jsrc/org/waterken/url/dns/package.html:
+c:/Documents and Settings/millerm1/e/src/jsrc/org/waterken/url/http/package.html:
+c:/Documents and Settings/millerm1/e/src/jsrc/org/waterken/url/httpsy/package.html:
+c:/Documents and Settings/millerm1/e/src/jsrc/org/waterken/url/io/package.html:
+c:/Documents and Settings/millerm1/e/src/jsrc/org/waterken/url/package.html:
+c:/Documents and Settings/millerm1/e/src/jsrc/org/waterken/url/proxy/package.html:
+c:/Documents and Settings/millerm1/e/src/jsrc/org/waterken/url/redirectory/package.html:
+c:/Documents and Settings/millerm1/e/src/jsrc/org/waterken/url/tls/package.html:
+c:/Documents and Settings/millerm1/e/src/jsrc/org/waterken/url/tls/sha1withrsa/package.html:
+c:/Documents and Settings/millerm1/e/src/jsrc/org/waterken/url/tunnel/package.html:
+c:/Documents and Settings/millerm1/e/src/jsrc/overview.html:

@@ -1,10 +1,16 @@
-[[*.*.*.*.*.*.*.*.*.*.*.[]*.*.*.*.*.*.*.*.*.][[*.*.]*.[]*.*.*.*.][[*.*.*.*.*.*.*.*.]*.[]*.*.*.][*
+[[[][][][[][][][]]][[[][][][[][][][]]]*.*.*.*.*.*.*.*.*.*.*.[[[][][][[][][][]]]]*.*.*.*.*.*.*.*.*.][[[][][][[][][][]]][[[][][][[][][][]]]*.*.]*.[[[][][][[][][][]]]]*
+c:/Documents and Settings/millerm1/e/doc/elang/collect/index.html
+syntax error: calc-uri syntax is no longer supported. Use '<protocol>[expr]' instead.
+  def ehomeDir := <file: interp.getProps()["e.home"]>
+                  ^^^^^^
+  @ <file:c:/Documents and Settings/millerm1/e/doc/elang/collect/index.html#:blob::94:32::94:39>
+*.*.*.][[[][][][[][][][]]][[[][][][[][][][]]]*.*.*.*.*.*.*.*.]*.[[[][][][[][][][]]]]*.*.*.][[[][][][[][][][]]]*
 c:/Documents and Settings/millerm1/e/doc/elang/echat/index.html
-syntax error: The optional e.enable.explicit-result-guard feature (see org/erights/e/elang/syntax/syntax-props-default.txt) is currently on disallowing this construct.
+syntax error: The optional e.enable.explicit-result-guard feature (see org/erights/e/elang/syntax/syntax-props-0.8.txt) is currently on disallowing this construct.
   def awt(className) {
                      ^
-  @ <file:c:/Documents and Settings/millerm1/e/doc/elang/echat/index.html#:span::122:21::122:21>
-][*.[[c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/chen-tsang/fileClt.e-awt
+  @ <file:c:/Documents and Settings/millerm1/e/doc/elang/echat/index.html#:span::138:21::138:21>
+][[[][][][[][][][]]]*.[[[][][][[][][][]]][[[][][][[][][][]]]c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/chen-tsang/fileClt.e-awt
 
 c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/chen-tsang/fileClt.e-awt
 First line should be "#!/usr/bin/env rune"
@@ -12,34 +18,86 @@ c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/chen-tsang/fil
 
 c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/chen-tsang/fileSvr.e-awt
 First line should be "#!/usr/bin/env rune"
-.][.*..][......*..# tab at 654 from: <file:c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/exercises/pong-client.e#:span::23:0::23:0>
+.][[[][][][[][][][]]]
+c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/chung-binder/dBhc_combo.e
+syntax error: calc-uri syntax is no longer supported. Use '<protocol>[expr]' instead.
+      return <file: `dBhc-$addr.cap`>
+             ^^^^^^
+  @ <file:c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/chung-binder/dBhc_combo.e#:span::14:11::14:16>
+*..][[[][][][[][][][]]]..
+c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/exercises/hyper-hash.e
+syntax error: calc-uri syntax is no longer supported. Use '<protocol>[expr]' instead.
+      return <file: `~/Desktop/intro-$addr.cap`>
+             ^^^^^^
+  @ <file:c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/exercises/hyper-hash.e#:span::7:11::7:16>
+.
+c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/exercises/hyper-ring.e
+syntax error: calc-uri syntax is no longer supported. Use '<protocol>[expr]' instead.
+      return <file: `peer-$name.cap`>
+             ^^^^^^
+  @ <file:c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/exercises/hyper-ring.e#:span::7:11::7:16>
 
-....]*.]][*.*.*.*.*.*.*.*.*.*.][*.*.]*.*.[.*.*..*.*.*.*.*.][*.*.*.][*.[[]*.]*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.]*.[[*.]*.*.[*.]*.*.[*.]*.[*.*.*.*.][*.*.*.][*.*.][*.*.]]*.*.# tab at 1604 from: <file:c:/Documents and Settings/millerm1/e/doc/elang/report.txt#:span::34:0::34:0>
+c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/exercises/hypercube.e
+syntax error: calc-uri syntax is no longer supported. Use '<protocol>[expr]' instead.
+      return <file: `~/Desktop/intro-$addr.cap`>
+             ^^^^^^
+  @ <file:c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/exercises/hypercube.e#:span::7:11::7:16>
+*..# tab at 654 from: <file:c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/exercises/pong-client.e#:span::23:0::23:0>
 
-.*# warning: The optional e.enable.smalltalk-return feature (see org/erights/e/elang/syntax/syntax-props-default.txt) is set to "warn".: <file:c:/Documents and Settings/millerm1/e/doc/elang/same-ref.html#:span::134:116::134:116>
+.
+c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/exercises/tree_peer.e
+syntax error: calc-uri syntax is no longer supported. Use '<protocol>[expr]' instead.
+      return <file: `tree-sup.cap`>
+             ^^^^^^
+  @ <file:c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/exercises/tree_peer.e#:span::22:11::22:16>
 
-# warning: The optional e.enable.smalltalk-return feature (see org/erights/e/elang/syntax/syntax-props-default.txt) is set to "warn".: <file:c:/Documents and Settings/millerm1/e/doc/elang/same-ref.html#:span::135:116::135:116>
+c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/exercises/tree_sup.e
+syntax error: calc-uri syntax is no longer supported. Use '<protocol>[expr]' instead.
+      return <file: `tree-sup.cap`>
+             ^^^^^^
+  @ <file:c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/exercises/tree_sup.e#:span::27:11::27:16>
 
-# warning: The optional e.enable.smalltalk-return feature (see org/erights/e/elang/syntax/syntax-props-default.txt) is set to "warn".: <file:c:/Documents and Settings/millerm1/e/doc/elang/same-ref.html#:span::133:37::133:37>
+c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/exercises/xy-mesh-router.e
+syntax error: calc-uri syntax is no longer supported. Use '<protocol>[expr]' instead.
+      return <file: `~/Desktop/intro-$x-$y.cap`>
+             ^^^^^^
+  @ <file:c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/exercises/xy-mesh-router.e#:span::7:11::7:16>
+]*.]*.][[[][][][[][][][]]]*.*.*.*.*.*.*.*.*.*.][[[][][][[][][][]]]*.*.]*.*.[[[][][][[][][][]]].*.*..*.*.*.*.*.*.][[[][][][[][][][]]]*.*
+c:/Documents and Settings/millerm1/e/doc/elang/io/text-file-io.html
+syntax error: calc-uri syntax is no longer supported. Use '<protocol>[expr]' instead.
+  dirMapper(<file: "/Windows/Start Menu">,
+            ^^^^^^
+  @ <file:c:/Documents and Settings/millerm1/e/doc/elang/io/text-file-io.html#:blob::483:26::483:33>
+*.][[[][][][[][][][]]]*.[[[][][][[][][][]]][[[][][][[][][][]]]]*.]*.*.*.*.*.*.*.*.*
+c:/Documents and Settings/millerm1/e/doc/elang/kernel/EscapeExpr.html
+syntax error: 
+      escape x3 ? stealer(x3) { 7 }
+                        ^
+  @ <file:c:/Documents and Settings/millerm1/e/doc/elang/kernel/EscapeExpr.html#:span::400:27::400:27>
+*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.]*.[[[][][][[][][][]]][[[][][][[][][][]]]*.]*.*.[[[][][][[][][][]]]*.]*.*.[[[][][][[][][][]]]*.]*.[[[][][][[][][][]]]*.*.*.*.][[[][][][[][][][]]]*.*.*.][[[][][][[][][][]]]*.*.][[[][][][[][][][]]]*.*.]]*.*..*# warning: The optional e.enable.smalltalk-return feature (see org/erights/e/elang/syntax/syntax-props-0.8.txt) is set to "warn".: <file:c:/Documents and Settings/millerm1/e/doc/elang/same-ref.html#:span::150:116::150:116>
 
-# warning: The optional e.enable.smalltalk-return feature (see org/erights/e/elang/syntax/syntax-props-default.txt) is set to "warn".: <file:c:/Documents and Settings/millerm1/e/doc/elang/same-ref.html#:span::178:116::178:116>
+# warning: The optional e.enable.smalltalk-return feature (see org/erights/e/elang/syntax/syntax-props-0.8.txt) is set to "warn".: <file:c:/Documents and Settings/millerm1/e/doc/elang/same-ref.html#:span::151:116::151:116>
 
-# warning: The optional e.enable.smalltalk-return feature (see org/erights/e/elang/syntax/syntax-props-default.txt) is set to "warn".: <file:c:/Documents and Settings/millerm1/e/doc/elang/same-ref.html#:span::179:116::179:116>
+# warning: The optional e.enable.smalltalk-return feature (see org/erights/e/elang/syntax/syntax-props-0.8.txt) is set to "warn".: <file:c:/Documents and Settings/millerm1/e/doc/elang/same-ref.html#:span::149:37::149:37>
 
-# warning: The optional e.enable.smalltalk-return feature (see org/erights/e/elang/syntax/syntax-props-default.txt) is set to "warn".: <file:c:/Documents and Settings/millerm1/e/doc/elang/same-ref.html#:span::181:45::181:45>
+# warning: The optional e.enable.smalltalk-return feature (see org/erights/e/elang/syntax/syntax-props-0.8.txt) is set to "warn".: <file:c:/Documents and Settings/millerm1/e/doc/elang/same-ref.html#:span::194:116::194:116>
 
-# warning: The optional e.enable.smalltalk-return feature (see org/erights/e/elang/syntax/syntax-props-default.txt) is set to "warn".: <file:c:/Documents and Settings/millerm1/e/doc/elang/same-ref.html#:span::184:45::184:45>
+# warning: The optional e.enable.smalltalk-return feature (see org/erights/e/elang/syntax/syntax-props-0.8.txt) is set to "warn".: <file:c:/Documents and Settings/millerm1/e/doc/elang/same-ref.html#:span::195:116::195:116>
+
+# warning: The optional e.enable.smalltalk-return feature (see org/erights/e/elang/syntax/syntax-props-0.8.txt) is set to "warn".: <file:c:/Documents and Settings/millerm1/e/doc/elang/same-ref.html#:span::197:45::197:45>
+
+# warning: The optional e.enable.smalltalk-return feature (see org/erights/e/elang/syntax/syntax-props-0.8.txt) is set to "warn".: <file:c:/Documents and Settings/millerm1/e/doc/elang/same-ref.html#:span::200:45::200:45>
 
 
 c:/Documents and Settings/millerm1/e/doc/elang/same-ref.html
-syntax error: The optional e.enable.explicit-result-guard feature (see org/erights/e/elang/syntax/syntax-props-default.txt) is currently on disallowing this construct.
+syntax error: The optional e.enable.explicit-result-guard feature (see org/erights/e/elang/syntax/syntax-props-0.8.txt) is currently on disallowing this construct.
           to __printOn(out) {
                             ^
-  @ <file:c:/Documents and Settings/millerm1/e/doc/elang/same-ref.html#:span::186:145::186:145>
-[*.*.*.*.*.][[*
+  @ <file:c:/Documents and Settings/millerm1/e/doc/elang/same-ref.html#:span::202:145::202:145>
+[[[][][][[][][][]]]*.*.*.*.*.][[[][][][[][][][]]][[[][][][[][][][]]]*
 c:/Documents and Settings/millerm1/e/doc/elang/tools/causeway/causeway-intro.html
 problem: "<- question()</tt>" isn't really a tag
-[]*
+[[[][][][[][][][]]]]*
 c:/Documents and Settings/millerm1/e/doc/elang/tools/causeway/index.html
 problem: "<- question()</tt>" isn't really a tag
-][[]*.]*.*.]]
+][[[][][][[][][][]]][[[][][][[][][][]]]]*.]*.*.]]
