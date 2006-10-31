@@ -193,11 +193,11 @@ srccheck-jsrc:
 
 srccheck-doc:
 	($(STLEBIG) $(TOP)/src/esrc/scripts/srccheck.e \
-		$(TOP)/doc/data  $(TOP)/src/esrc 2>&1 | tee report-doc.txt)
+		$(TOP)/doc/data  $(TOP)/src/esrc 2>&1 | tee report-doc1.txt)
 	($(STLEBIG) $(TOP)/src/esrc/scripts/srccheck.e \
-		$(TOP)/doc/elib  $(TOP)/src/esrc 2>&1 | tee report-doc.txt)
+		$(TOP)/doc/elib  $(TOP)/src/esrc 2>&1 | tee report-doc2.txt)
 	($(STLEBIG) $(TOP)/src/esrc/scripts/srccheck.e \
-		$(TOP)/doc/elang $(TOP)/src/esrc 2>&1 | tee report-doc.txt)
+		$(TOP)/doc/elang $(TOP)/src/esrc 2>&1 | tee report-doc3.txt)
 
 updoc_reports:
 	($(STLE) $(TOP)/src/esrc/scripts/updoc.e \
@@ -206,6 +206,15 @@ updoc_reports:
 		esrc 2>&1 | tee report-updoc-esrc.txt)
 	cp "/cygdrive/c/Program Files/erights.org/updoc-hash-cache.txt" \
 		$(TOP)/src/csrc/setup/updoc-hash-cache.txt
+
+updoc_doc_reports:
+	($(STLEBIG) $(TOP)/src/esrc/scripts/updoc.e \
+		$(TOP)/doc/data 2>&1 | tee report-updoc-doc1.txt)
+	($(STLEBIG) $(TOP)/src/esrc/scripts/updoc.e \
+		$(TOP)/doc/elib 2>&1 | tee report-updoc-doc2.txt)
+	($(STLEBIG) $(TOP)/src/esrc/scripts/updoc.e \
+		$(TOP)/doc/elang 2>&1 | tee report-updoc-doc3.txt)
+
 
 # Just for experimenting with the STLE environment
 __interact:

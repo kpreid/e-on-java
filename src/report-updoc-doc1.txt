@@ -1,0 +1,58 @@
+
+updoc: started
+
+c:/Documents and Settings/millerm1/e/doc/data/common-syntax/baking-chars.html:=== 2006-10-31T08:37:38.325Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
+eruntime: Import java.lang.makeCharacter instead : (Importing java.lang.Character)
+ @ Loader#get(String)
+ @ get/1: <file:c:/Documents and Settings/millerm1/e/doc/data/common-syntax/baking-chars.html#:blob::362:121::362:182>
+..
+c:/Documents and Settings/millerm1/e/doc/data/common-syntax/conformance.html:
+c:/Documents and Settings/millerm1/e/doc/data/common-syntax/index.html:
+c:/Documents and Settings/millerm1/e/doc/data/common-syntax/lexing.html:
+c:/Documents and Settings/millerm1/e/doc/data/common-syntax/wysiwyg-ascii.html:
+c:/Documents and Settings/millerm1/e/doc/data/index.html:
+c:/Documents and Settings/millerm1/e/doc/data/irrelevance.html:.
+at: <file:c:/Documents and Settings/millerm1/e/doc/data/irrelevance.html#:span::234:31::234:33>
+expr: for i in (0..i) { println(i) }
+missing new stdout
+original stdout: 0
+                 1
+                 2
+                 3
+                 
+missing original syntax error
+new syntax error: Use on right isn't really in scope of definition: ["i"]
+                  for i in (0..i) { println(i) }
+                  ^
+                  @ <file:c:/Documents and Settings/millerm1/e/doc/data/irrelevance.html#:span::234:124::234:124>
+
+c:/Documents and Settings/millerm1/e/doc/data/overview.html:
+c:/Documents and Settings/millerm1/e/doc/data/report.txt:
+c:/Documents and Settings/millerm1/e/doc/data/serial/index.html:
+c:/Documents and Settings/millerm1/e/doc/data/serial/jhu-paper/acks-n-refs.html:
+c:/Documents and Settings/millerm1/e/doc/data/serial/jhu-paper/conclusions.html:
+c:/Documents and Settings/millerm1/e/doc/data/serial/jhu-paper/data-e-manual.html:..................
+c:/Documents and Settings/millerm1/e/doc/data/serial/jhu-paper/deconstructing.html:...........................................
+c:/Documents and Settings/millerm1/e/doc/data/serial/jhu-paper/entry-security.html:
+c:/Documents and Settings/millerm1/e/doc/data/serial/jhu-paper/exit-security.html:...............................................
+c:/Documents and Settings/millerm1/e/doc/data/serial/jhu-paper/index.html:
+c:/Documents and Settings/millerm1/e/doc/data/serial/jhu-paper/intro.html:
+c:/Documents and Settings/millerm1/e/doc/data/serial/jhu-paper/outtakes.html:
+c:/Documents and Settings/millerm1/e/doc/data/serial/jhu-paper/recog-n-build.html:......
+c:/Documents and Settings/millerm1/e/doc/data/serial/jhu-paper/related.html:....
+c:/Documents and Settings/millerm1/e/doc/data/serial/jhu-paper/subgraph-security.html:.....................
+c:/Documents and Settings/millerm1/e/doc/data/serial/jhu-paper/upgrade.html:
+c:/Documents and Settings/millerm1/e/doc/data/serial/safe-serial-paper/acks-n-refs.html:
+c:/Documents and Settings/millerm1/e/doc/data/serial/safe-serial-paper/conclusions.html:
+c:/Documents and Settings/millerm1/e/doc/data/serial/safe-serial-paper/index.html:
+c:/Documents and Settings/millerm1/e/doc/data/serial/safe-serial-paper/leaf-security.html:
+c:/Documents and Settings/millerm1/e/doc/data/serial/safe-serial-paper/modeling.html:
+c:/Documents and Settings/millerm1/e/doc/data/serial/safe-serial-paper/modelling.html:
+c:/Documents and Settings/millerm1/e/doc/data/serial/safe-serial-paper/overview.html:
+c:/Documents and Settings/millerm1/e/doc/data/serial/safe-serial-paper/related.html:
+c:/Documents and Settings/millerm1/e/doc/data/serial/safe-serial-paper/root-security.html:
+c:/Documents and Settings/millerm1/e/doc/data/serial/safe-serial-paper/subgraph-security.html:
+c:/Documents and Settings/millerm1/e/doc/data/serial/safe-serial-paper/upgrade.html:
+c:/Documents and Settings/millerm1/e/doc/data/terml/embeddings.html:
+c:/Documents and Settings/millerm1/e/doc/data/terml/index.html:
+c:/Documents and Settings/millerm1/e/doc/data/terml/terml-spec.html:

@@ -1,0 +1,7 @@
+[[[][][][[][][][]]][[[][][][[][][][]]]*.*.*.*.*.][[[][][][[][][][]]]]*.*
+c:/Documents and Settings/millerm1/e/doc/data/irrelevance.html
+syntax error: Use on right isn't really in scope of definition: ["i"]
+  for i in (0..i) { println(i) }
+                               ^
+  @ <file:c:/Documents and Settings/millerm1/e/doc/data/irrelevance.html#:span::234:124::234:124>
+*..[[[][][][[][][][]]]*.[[[][][][[][][][]]]*.*.*.*.*.*.[[[][][][[][][][]]]]*.*.*.*..*.*.*.][[[][][][[][][][]]]*.*.*.*.*.*.*.*.*.*.*.*.]][[[][][][[][][][]]]*.*.*.]]
