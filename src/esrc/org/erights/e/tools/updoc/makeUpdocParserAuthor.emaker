@@ -48,7 +48,7 @@ def EMPTY_SCRIPT := term`script(inVats("home"), [inVat("home",[])])`
  *     sequence ::= inVat($vatName, [$testCase*])
  *     testCase ::= test(expr, {$answer*})
  *     expr ::= .String.$EExpr
- *     answer ::= $keyword=.String.$AnswerText
+ *     answer ::= $keyword:.String.$AnswerText
  *     keyword ::= value | problem # | ... XXX more to be specified</pre>
  * The first script above would parse into<pre>
  *     term`script(inVats("home"),
@@ -165,7 +165,7 @@ def makeUpdocParserAuthor(optCacheFile) :near {
              * @return The answer as a term, or null. Since the answer keywords
              *         are assumed to be keywords in updoc syntax, these are
              *         turned into tags. The result, for example, is
-             *         term`value="5"`.
+             *         term`value:"5"`.
              */
             def readOptAnswer() :nullOk[Term] {
                 var keyword := null
@@ -199,7 +199,7 @@ def makeUpdocParserAuthor(optCacheFile) :near {
                     require(answer.endsWith("\n"), thunk{
                         `${E.toQuote(answer)} must end with a newline`
                     })
-                    return term`$keyword=.String.$answer`
+                    return term`$keyword:.String.$answer`
                 } else {
                     return null
                 }
