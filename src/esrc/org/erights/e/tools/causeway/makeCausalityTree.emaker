@@ -13,7 +13,7 @@ def SourceSpan := Tuple[Tuple[int,int], Tuple[int, int]]
 def StackEntry := Tuple[String, SourceSpan]
 
 # top-to-bottom list of stack entries
-def Stack := StackEntry[]
+def Stack := List[StackEntry]
 
 # trace-file file-name
 def TraceName := String
@@ -44,10 +44,10 @@ def makeCausalityTree(traceFiles :List[File], traceline) :near {
 
     def graph := makeCausalityGraph(traceline)
 
-    # TraceName[]; names of trace files
+    # List[TraceName]; names of trace files
     def traces := [].diverge()
 
-    # Map[TraceName, near[]]; named fully ordered lists message-contexts
+    # Map[TraceName, List[near]]; named fully ordered lists message-contexts
     def ordered := [].asMap().diverge()
 
     # Map[TraceName, Set[VatName]]; named sets of vat names
@@ -410,7 +410,7 @@ def makeCausalityTree(traceFiles :List[File], traceline) :near {
             }
             return top
         }
-        to getTraces() :TraceName[] {
+        to getTraces() :List[TraceName] {
             return traces.snapshot()
         }
         to getVatSet(path :TraceName) :near {

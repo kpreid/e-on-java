@@ -83,7 +83,7 @@ public class TupleGuard implements Guard {
      * Prints "Tuple[<i>elem-guard</i>,...]"
      */
     public void __printOn(TextWriter out) throws IOException {
-        if (myElemGuards.length == 0) {
+        if (0 == myElemGuards.length) {
             out.print("Tuple[]");
         } else {
             out.print("Tuple[", myElemGuards[0]);

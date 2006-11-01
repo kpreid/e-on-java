@@ -32,10 +32,10 @@ def macifySwt(script, target, bundleID, eHome) {
     executable.setText(`$\
 #!/bin/sh
 exec $shehome/rune \
-	-J-XstartOnFirstThread \
-	-cpb $shehome/src/bin/mac/swt.jar \
-	-Djava.library.path=$shehome/src/bin/mac/ppc \
-	"``dirname $$0``/script.e-swt"
+    -J-XstartOnFirstThread \
+    -cpb $shehome/src/bin/mac/swt.jar \
+    -Djava.library.path=$shehome/src/bin/mac/ppc \
+    "``dirname $$0``/script.e-swt"
 `)
     setExecutable(executable)
 

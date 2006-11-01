@@ -179,25 +179,14 @@ problem: <AuditFailedException: object expression def makeDFBrand implements Dee
                      null
                  }
              }
-         } failed audit by org.erights.e.elib.serial.DeepFrozenAuditor@8adcb8>
+         } failed audit by org.erights.e.elib.serial.DeepFrozenAuditor@276150>
 ..][[[][][][[][][]]]..........][[[][][][[][][]]].....][[[][][][[][][]]].[[[][][][[][][]]]....].]][[[][][][[][][]]][[[][][][[][][]]]....]][[[][][][[][][]]][[[][][][[][][]]].....]][[[][][][[][][]]]..
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/facet/makeGrantMgrAuthor.emaker
-problem: Failed: org.erights.e.facet.:makeCaretaker not found
-.....][[[][][][[][][]]].[[[][][][[][][]]].][[[][][][[][][]]].....]][[[][][][[][][]]][[[][][][[][][]]]......][[[][][][[][][]]]
-c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/tools/causeway/causewayAppAuthor.emaker
-problem: <NoSuchMethodException: <a TupleGuard>.get/0>
-.
-c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/tools/causeway/makeCausalityGraph.emaker
-problem: <NoSuchMethodException: <a TupleGuard>.get/0>
-
+problem: Failed: UnionGuard unneeded any[[]]
+.....][[[][][][[][][]]].[[[][][][[][][]]].][[[][][][[][][]]].....]][[[][][][[][][]]][[[][][][[][][]]]......][[[][][][[][][]]]...
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/tools/causeway/makeCausalityTree.emaker
 problem: <NoSuchMethodException: <a TupleGuard>.get/0>
-
-c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/tools/causeway/makePrunedCausalityTree.emaker
-problem: <NoSuchMethodException: <a TupleGuard>.get/0>
-..][[[][][][[][][]]]......][[[][][][[][][]]]..][[[][][][[][][]]]...][[[][][][[][][]]].][[[][][][[][][]]]....][[[][][][[][][]]].][[[][][][[][][]]].......]][[[][][][[][][]]][[[][][][[][][]]]...][[[][][][[][][]]].......]]][[[][][][[][][]]][[[][][][[][][]]]...]]][[[][][][[][][]]][[[][][][[][][]]].][[[][][][[][][]]]..][[[][][][[][][]]]..]]][[[][][][[][][]]].[[[][][][[][][]]]...]...........[[[][][][[][][]]][[[][][][[][][]]]...........][[[][][][[][][]]]..][[[][][][[][][]]]...][[[][][][[][][]]]...][[[][][][[][][]]]...][[[][][][[][][]]]...]]................# tab at 856 from: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/macify-swt.e#:span::35:0::35:0>
-
-...............[[[][][][[][][]]]..[[[][][][[][][]]]....]......[[[][][][[][][]]].....]]..[[[][][][[][][]]].*
+...][[[][][][[][][]]]......][[[][][][[][][]]]..][[[][][][[][][]]]...][[[][][][[][][]]].][[[][][][[][][]]]....][[[][][][[][][]]].][[[][][][[][][]]].......]][[[][][][[][][]]][[[][][][[][][]]]...][[[][][][[][][]]].......]]][[[][][][[][][]]][[[][][][[][][]]]...]]][[[][][][[][][]]][[[][][][[][][]]].][[[][][][[][][]]]..][[[][][][[][][]]]..]]][[[][][][[][][]]].[[[][][][[][][]]]...]...........[[[][][][[][][]]][[[][][][[][][]]]...........][[[][][][[][][]]]..][[[][][][[][][]]]...][[[][][][[][][]]]...][[[][][][[][][]]]...][[[][][][[][][]]]...]]...............................[[[][][][[][][]]]..[[[][][][[][][]]]....]......[[[][][][[][][]]].....]]..[[[][][][[][][]]].*
 c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html
 syntax error: Can't use ">" to start a URI body
   def file3 := <file:>[filePath]

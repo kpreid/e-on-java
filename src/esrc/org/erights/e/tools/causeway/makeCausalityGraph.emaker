@@ -17,7 +17,7 @@ def SourceSpan := Tuple[Tuple[int,int], Tuple[int, int]]
 def StackEntry := Tuple[String, SourceSpan]
 
 # top-to-bottom list of stack entries
-def Stack := StackEntry[]
+def Stack := List[StackEntry]
 
 # trace-file file-name
 def TraceName := String
@@ -56,24 +56,24 @@ def hasBeenSeen(c, e) :boolean {
 }
 
 def walk(cause, edge, level, traceline) :void {
-    
+
     def effect := edge.getTarget()
-    
+
     if (hasBeenSeen(cause, effect)) { return }
     see(cause, effect)
-    
+
     def who := cause.getID()
     def [cname, cturn] := who
-    
+
     def what := effect.getMessage()
-    
+
     def toWhom := effect.getID()
     def [ename, eturn] := toWhom
-    
+
     traceline(`message send from [$cname:$cturn] to [$ename:$eturn]`)
     traceline(`$what`)
     traceline(``)
-    
+
     for grandEdge => _ in effect.outs() {
         walk(effect, grandEdge, level + 1, traceline)
     }
@@ -85,31 +85,31 @@ def walk(cause, edge, level, traceline) :void {
  *
  */
 def makeCausalityGraph(traceline) :near {
-    
+
     def dag := makeDirectedGraph(traceline)
-    
+
     def mkMessageEvent(id :UTurn, var message :Message) :near {
         var leafStack :Stack := []
         def messageEvent extends templateVertex(messageEvent, id) {
             to getMessage() :Message { message }
             to setMessage(newMessage :Message) :void { message := newMessage }
-            
+
             to hasLeafStack() :boolean { leafStack != [] }
-            
+
             to getLeafStack() :Stack { leafStack }
             to setLeafStack(stack :Stack) :any { leafStack := stack }
-            
+
             to getVatName() :VatName {
                 id =~ [_, name, _]
                 return name
             }
-            
+
             to __printOn(out :TextWriter) :void {
                 out.print(id)
             }
         }
     }
-    
+
     def mkMessageContext(origin :near,
                          target :near,
                          var context :Tuple[SendingContext, Stack]) :near {
@@ -131,30 +131,30 @@ def makeCausalityGraph(traceline) :near {
             }
         }
     }
-    
-    
+
+
     def causalityGraph {
-        
+
         to addMessageEvent(me) :void {
             dag.addVertex(me)
         }
-        
+
         to makeMessageEvent(id :UTurn, message :Message) :near {
             return mkMessageEvent(id, message)
         }
-        
+
         to makeMessageContext(origin :near,
                               target :near,
                               context :Tuple[SendingContext, Stack]) :near {
             return mkMessageContext(origin, target, context)
         }
-        
+
         to optGet(id) :any { return dag.optGet(id) }
-        
+
         to getRoots() :any { return dag.getRoots() }
-        
+
         to getSize() :any { return dag.getSize() }
-        
+
         to walkRelations(root, level, traceline) :void {
             for edge => _ in root.outs() {
                 def cause := edge.getTarget()
