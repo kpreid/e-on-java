@@ -288,7 +288,7 @@ def makeMetaEval(AuditionStamp) :any {
                     [&v1, ctx]
                 } else {
                     def [guard, c1] := eval(optGuardExpr, ctx)
-                    var v2 :guard exit optEjector := specimen
+                    def var v2 :guard exit optEjector := specimen
                     [&v2, c1]
                 }
                 return withSlot(c2, nounExpr.getName(), slot, original)

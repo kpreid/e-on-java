@@ -19,7 +19,6 @@ Copyright (C) 1998 Electric Communities. All Rights Reserved.
 Contributor(s): ______________________________________.
 */
 
-import org.erights.e.elib.oldeio.EPrintable;
 import org.erights.e.elib.oldeio.TextWriter;
 import org.erights.e.elib.prim.E;
 import org.erights.e.elib.prim.StaticMaker;
@@ -33,7 +32,7 @@ import java.io.IOException;
  *
  * @author Mark S. Miller
  */
-public class SimpleSlot implements Slot, EPrintable, PassByProxy {
+public class SimpleSlot implements Slot, PassByProxy {
 
     static public final StaticMaker SimpleSlotMaker =
       StaticMaker.make(SimpleSlot.class);

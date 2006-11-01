@@ -3,7 +3,7 @@
 # Copyright 2004 Hewlett Packard, Inc. under the terms of the MIT X license
 # found at http://www.opensource.org/licenses/mit-license.html ................
 
-def makeIdentifiers := <import:org.quasiliteral.text.Identifiers>
+def makeIdentifiers := <import:org.quasiliteral.text.makeIdentifiers>
 
 def names := [].asSet().diverge()
 

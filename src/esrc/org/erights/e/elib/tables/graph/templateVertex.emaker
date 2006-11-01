@@ -73,7 +73,7 @@ def templateVertex(self, id) :near {
         }
 
         to isRoot() :boolean {
-        	return self.getPrevIn() == self && self.getNextIn() == self
+            return self.getPrevIn() == self && self.getNextIn() == self
         }
     }
     return baseVertex

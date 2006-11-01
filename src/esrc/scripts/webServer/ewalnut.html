@@ -1209,8 +1209,9 @@ def file1 := &lt;file:myFile.txt&gt;
 def file2 := &lt;file:/home/marcs/myFile.txt&gt;
 
 #Using a variable for a file name, note the space after the colon:
+# XXX Fix above comment.
 def filePath := "c:\\docs\\myFile.txt"
-def file3 := &lt;file: filePath&gt;
+def file3 := &lt;file:&gt;[filePath]
 
 #Using a single character to specify a Windows drive
 def file4 := &lt;c:/docs/myFile.txt&gt;

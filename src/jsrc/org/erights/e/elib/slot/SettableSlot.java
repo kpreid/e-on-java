@@ -3,7 +3,6 @@ package org.erights.e.elib.slot;
 // Copyright 2002 Combex, Inc. under the terms of the MIT X license
 // found at http://www.opensource.org/licenses/mit-license.html ...............
 
-import org.erights.e.elib.oldeio.EPrintable;
 import org.erights.e.elib.oldeio.TextWriter;
 import org.erights.e.elib.prim.E;
 import org.erights.e.elib.prim.StaticMaker;
@@ -18,7 +17,7 @@ import java.io.IOException;
  *
  * @author Mark S. Miller
  */
-public class SettableSlot implements Slot, EPrintable, PassByProxy {
+public class SettableSlot implements Slot, PassByProxy {
 
     static public final StaticMaker SettableSlotMaker =
       StaticMaker.make(SettableSlot.class);

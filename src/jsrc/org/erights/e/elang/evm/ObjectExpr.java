@@ -221,7 +221,6 @@ public class ObjectExpr extends EExpr {
             for (int i = 0; i < numAuditors; i++) {
                 Object aud = myAuditorExprs[i].subEval(ctx, true);
                 auditors[i] = (Auditor)AuditorGuard.coerce(aud, null);
-
             }
         }
 

@@ -1,7 +1,7 @@
 # Copyright 2002 Combex, Inc. under the terms of the MIT X license
 # found at http://www.opensource.org/licenses/mit-license.html ................
 
-def makeIdentifiers := <import:org.quasiliteral.text.Identifiers>
+def makeIdentifiers := <import:org.quasiliteral.text.makeIdentifiers>
 
 def lastIdent(fqname) :any {
     def afterLastDot := 1 + fqname.lastIndexOf(".")
