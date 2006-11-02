@@ -27,6 +27,7 @@ def makeQueue() :near {
 }
 
 
+    ? pragma.syntax("0.8")
 
     ? def makeQueue := <import:org.erights.e.examples.concurrency.makeQueue>
     # value: <makeQueue>

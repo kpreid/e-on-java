@@ -36,6 +36,8 @@ def require0 {
     }
 }
 
+    ? pragma.syntax("0.8")
+
     ? require(2 == 3, thunk{"foo"})
     # problem: foo
 

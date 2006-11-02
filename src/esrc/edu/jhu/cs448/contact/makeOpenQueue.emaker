@@ -150,6 +150,8 @@ def makeOpenQueue(var nextTicket :Ticket) :any {
 # rune(["~/e/src/esrc/scripts/updoc.e",
 #       "resource:edu/jhu/cs448/contact/makeOpenQueue.emaker"])
 
+    ? pragma.syntax("0.8")
+
     ? def <contact> := <import:edu.jhu.cs448.contact.*>
     # value: <import:edu.jhu.cs448.contact.*>
 

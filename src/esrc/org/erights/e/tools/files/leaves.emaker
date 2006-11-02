@@ -22,5 +22,5 @@ def leaves(filedir) :any {
     }
 }
 
+    ? pragma.syntax("0.8")
     ? def leaves := <import:org.erights.e.tools.files.leaves>
-

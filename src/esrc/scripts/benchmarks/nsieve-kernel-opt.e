@@ -20,7 +20,6 @@ def nsieve {
                     method run(_, value__7) {
                         require.run(validFlag__3,
                                     "For-loop body isn't valid after for-loop exits.")
-                        def i := value__7
                         isPrime.put(value__7, true)
                         null
                     }

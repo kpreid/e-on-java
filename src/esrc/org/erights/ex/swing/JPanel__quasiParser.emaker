@@ -112,6 +112,7 @@ def JPanel__quasiParser {
     }
 }
 
+    ? pragma.syntax("0.8")
 
     ? def fr := <import:javax.swing.makeJFrame>(); null
     ? fr.setSize(300,300)

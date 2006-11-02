@@ -39,6 +39,7 @@ def htmlTokenizer(var html) :List[Twine] {
     return buf.snapshot()
 }
 
+    ? pragma.syntax("0.8")
 
     ? def htmlTokenizer := <import:org.erights.e.tools.html.htmlTokenizer>
     # value: <htmlTokenizer>

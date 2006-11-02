@@ -6,6 +6,8 @@
 From http://www.eros-os.org/pipermail/e-lang/2004-January/009423.html
 # @author Kevin Reid
 
+  ? pragma.syntax("0.8")
+
   ? def uc_construct {}
   # value: <uc_construct>
 

@@ -52,8 +52,10 @@ def is {
     }
 }
 
-? interp.setExpand(true)
-? 3 =~ ==3
-# expansion: 3 =~ via (__is.run(3)) _
+    ? pragma.syntax("0.8")
 
-# value: true
+    ? interp.setExpand(true)
+    ? 3 =~ ==3
+    # expansion: 3 =~ via (__is.run(3)) _
+
+    # value: true

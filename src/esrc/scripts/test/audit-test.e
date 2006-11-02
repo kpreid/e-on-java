@@ -104,6 +104,7 @@ def good implements DeepFrozen0 {
 # getName() some places, name() in others
 
 
+? pragma.syntax("0.8")
 
 ? def passer { to audit(_) :boolean { true } }
 # value: <passer>

@@ -1,3 +1,7 @@
+#!/usr/bin/env rune
+
+    ? pragma.syntax("0.8")
+
     ? def interimArgParser := <import:org.erights.e.tools.args.interimArgParser>
     # value: <interimArgParser>
     

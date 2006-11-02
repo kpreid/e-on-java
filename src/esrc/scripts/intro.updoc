@@ -1,5 +1,9 @@
+#!/usr/bin/env rune
+
 Elmer is a simple text editor that also executes embedded
 command line examples. Try hitting enter below
+
+    ? pragma.syntax("0.8")
 
     ? 2 + 3
 

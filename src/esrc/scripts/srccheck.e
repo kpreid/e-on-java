@@ -3,6 +3,9 @@
 # Copyright 2002 Combex, Inc. under the terms of the MIT X license
 # found at http://www.opensource.org/licenses/mit-license.html ................
 
+pragma.syntax("0.9")
+pragma.enable("explicit-result-guard")
+
 def makeELexer := <elang:syntax.makeELexer>
 def makeEParser := <elang:syntax.makeEParser>
 def Term := <type:org.quasiliteral.term.Term>
@@ -16,6 +19,19 @@ def optCacheFile :=
 }
 def makeUpdocParser := <tools:updoc.makeUpdocParserAuthor>(optCacheFile)
 
+def warn(warning :String, src :Twine) :void {
+    stderr.println()
+    stderr.print(`# warning: $warning`)
+    if (src.getOptSpan() =~ span :notNull) {
+        stderr.print(` from: $span`)
+    } else if (src.getParts() =~ [firstPart] + _) {
+        if (firstPart.getOptSpan() =~ span :notNull) {
+            stderr.print(` from: $span`)
+        }
+    }
+    stderr.println()
+    stderr.println()
+}
 
 def checkUpdoc(script :Term) :void {
 
@@ -35,6 +51,12 @@ def checkUpdoc(script :Term) :void {
     def term`script(@_,[inVat(@_,[test(@exprss,@_)*])*])` := script
     # exprss is a list of lists of terms of twine
     for exprs in exprss {
+        if (exprs =~ [firstExpr] + _) {
+            def firstExprSrc :Twine := firstExpr.getOptData()
+            if (firstExprSrc !~ `pragma.syntax(@_)@_`) {
+                warn(`undeclared updoc version`, firstExprSrc)
+            }
+        }
         for expr in exprs {
             def exprSrc :Twine := expr.getOptData()
             parser.setSource(exprSrc)
@@ -45,26 +67,14 @@ def checkUpdoc(script :Term) :void {
 
 def checkWidth(src) :void {
     if (src.startOf("\t") =~ pos :(int >= 0)) {
-        stderr.print(`# tab at $pos`)
-        if (src(pos,pos+1).getOptSpan() =~ span :notNull) {
-            stderr.print(` from: $span`)
-        }
-        stderr.println()
-        stderr.println()
+        warn(`tab at $pos`, src(pos,pos+1))
     }
     return
 # XXX Make the following switchable
     for line in src.split("\n") {
         def len := line.size()
         if (len > 79) {
-            stderr.print(`# warning: $len column line`)
-            if (line(79,len).getOptSpan() =~ span :notNull) {
-                stderr.print(` from: $span`)
-            } else {
-                throw.breakpoint([len, line])
-            }
-            stderr.println()
-            stderr.println()
+            warn(`$len column line`, line(79,len))
             return #only one width warning per compilation unit.
         }
     }
@@ -98,6 +108,9 @@ def srcCheckRecurse(filedir,
         return false
     }
     if (filedir.isDirectory()) {
+        if (relpath =~ `@_/.svn`) {
+            return true
+        }
         var result := true
         stderr.print("[")
         for name => sub in filedir {

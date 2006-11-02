@@ -98,6 +98,7 @@ def watchAuthor(<swt>,
     return watch
 }
 
+? pragma.syntax("0.8")
 ? interp.waitAtTop(currentVat.morphInto("swt"))
 ? def &x := <elib:slot.makeLamportSlot>(3)
 ? swtWatch(&x, "x1")

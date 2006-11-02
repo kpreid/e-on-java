@@ -3,6 +3,7 @@
 
 ?? in new vat vatB
 
+    ? pragma.syntax("0.8")
     ? (introducer.onTheAir()
     >  var x := null
     >  def bob {
@@ -16,6 +17,7 @@
 
 ?? in new vat vatAC
 
+    ? pragma.syntax("0.8")
     ? (introducer.onTheAir()
     >  def carol {
     >      to bar() :any { 5 }

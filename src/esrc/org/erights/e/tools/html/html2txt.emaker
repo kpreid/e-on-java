@@ -96,6 +96,8 @@ def html2txt {
     }
 }
 
+    ? pragma.syntax("0.8")
+
     ? def html2txt := <import:org.erights.e.tools.html.html2txt>
     # value: <html2txt>
 

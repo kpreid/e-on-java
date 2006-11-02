@@ -315,7 +315,7 @@ def whenever {
 }
 
 
-
+? pragma.syntax("0.8")
 
 ? def makeLamportSlot := <elib:slot.makeLamportSlot>
 # value: <makeLamportSlot>

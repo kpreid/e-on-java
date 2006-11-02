@@ -23,6 +23,8 @@ def reverse(list :EList) :Iteratable {
     }
 }
 
+    ? pragma.syntax("0.8")
+
     ? for i => x in reverse(["a", "b", "c"]) { println(`$i => $x`) }
     # stdout: 2 => c
     #         1 => b

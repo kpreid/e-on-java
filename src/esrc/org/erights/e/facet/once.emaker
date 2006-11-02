@@ -70,6 +70,8 @@ def once {
 
 # printOnce is a println that gets used up:
 
+    ? pragma.syntax("0.8")
+
     ? def once := <import:org.erights.e.facet.once>
 
     ? def printOnce := once(println)

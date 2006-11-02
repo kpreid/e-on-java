@@ -10,6 +10,8 @@
 #                   .int.$bound,
 #                   .String.$newText)
 
+? pragma.syntax("0.8")
+
 ? def intersects(term`change(@{rp1 :String},
 >                            @{ln1 :int}, @{s1 :int}, @{b1 :int},
 >                            @_)`,

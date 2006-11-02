@@ -1,3 +1,7 @@
+#!/use/bin/env rune
+
+    ? pragma.syntax("0.8")
+
     ? def traceline(str) :void { stderr.println(str) }
     # value: <traceline>
 

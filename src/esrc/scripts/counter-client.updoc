@@ -1,3 +1,7 @@
+#!/usr/bin/env rune
+
+    ? pragma.syntax("0.8")
+
     ? introducer.onTheAir()
     # value: ["3DES_SDH_M2", "3DES_SDH_M"]
 

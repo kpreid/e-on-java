@@ -14,6 +14,7 @@
 
 ?? in new vat Rendezvous
 
+? pragma.syntax("0.8")
 ? introducer.onTheAir()
 # value: ["3DES_SDH_M2", "3DES_SDH_M"]
 
@@ -30,6 +31,7 @@
 
 ?? in new vat Root
 
+? pragma.syntax("0.8")
 ? introducer.onTheAir()
 # value: ["3DES_SDH_M2", "3DES_SDH_M"]
 
@@ -54,6 +56,7 @@
 
 ?? in new vat Ping
 
+? pragma.syntax("0.8")
 ? introducer.onTheAir()
 # value: ["3DES_SDH_M2", "3DES_SDH_M"]
 
@@ -91,6 +94,7 @@
 
 ?? in new vat Pong
 
+? pragma.syntax("0.8")
 ? introducer.onTheAir()
 # value: ["3DES_SDH_M2", "3DES_SDH_M"]
 
@@ -130,4 +134,4 @@
 
 ?? in vat Pong
 
-? 
+?

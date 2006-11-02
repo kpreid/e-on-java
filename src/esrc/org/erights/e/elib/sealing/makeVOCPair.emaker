@@ -65,6 +65,7 @@ def makeVOCPair(brandName :String) :near {
     return [ProveAuth, CheckAuth]
 }
 
+    ? pragma.syntax("0.8")
 
     ? def [ProveAuth, CheckAuth] := <elib:sealing.makeVOCPair>("voc")
     # value: [<voc prover>, <voc checker template>]

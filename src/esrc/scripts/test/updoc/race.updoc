@@ -1,3 +1,6 @@
+#!/usr/bin/env rune
+
+? pragma.syntax("0.8")
 
 ? def race := <import:org.erights.e.tools.concurrency.race>
 

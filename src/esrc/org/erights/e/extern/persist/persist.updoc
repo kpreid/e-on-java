@@ -5,6 +5,7 @@
 
 ?? in new vat Alice
 
+? pragma.syntax("0.8")
 ? timeMachine
 # value: <ephemeral>
 
@@ -49,6 +50,7 @@
 
 ?? in new vat Bob
 
+? pragma.syntax("0.8")
 ? def makeAtomicFile := <import:org.erights.e.extern.persist.makeAtomicFile>
 # value: <makeAtomicFile>
 

@@ -1,5 +1,7 @@
 #!/usr/bin/env rune
 
+    ? pragma.syntax("0.8")
+
     ? def test1(x, y) :void {
     >     def fquot := x // y
     >     def mod := x %% y

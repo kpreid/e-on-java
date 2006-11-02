@@ -318,7 +318,8 @@ program that is difficult to test.</p>
 
 <p>Using Rune: One-line commands start with a question mark prompt and return the
 result on the next line in a comment:</p>
-<blockquote><pre>? 2 + 2
+<blockquote><pre>? pragma.syntax("0.8")
+? 2 + 2
 # value: 4</pre></blockquote>
 
 <p>Commands that cannot be completed in a single line will receive
@@ -584,7 +585,8 @@ of that expression.</p>
 
 <p>(Note: the following patch of code is used by updoc.e, the <span class="e"><em>E</em></span>
 testing tool, to enable execution of all the upcoming code that depends on Swing)</p>
-<blockquote><pre>?? in new vat awtVat.e-awt</pre></blockquote>
+<blockquote><pre>?? in new vat awtVat.e-awt
+? pragma.syntax("0.8")</pre></blockquote>
 
 <h3><a href="#TOC11" name="SEC11">Objects and Functions</a></h3>
 

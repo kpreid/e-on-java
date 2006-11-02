@@ -24,7 +24,7 @@ def QMaker() :near {
     }]
 }
 
-
+    ? pragma.syntax("0.8")
 
     ? def QMaker := <import:org.erights.e.examples.concurrency.QMaker>
     # value: <QMaker>

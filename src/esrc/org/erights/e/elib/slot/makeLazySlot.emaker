@@ -44,6 +44,8 @@ def makeLazySlot(maker) :Slot {
     return lazySlot
 }
 
+  ? pragma.syntax("0.8")
+
   ? def makeLazySlot := <import:org.erights.e.elib.slot.makeLazySlot>
   # value: <makeLazySlot>
 
