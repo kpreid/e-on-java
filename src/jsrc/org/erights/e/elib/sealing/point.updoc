@@ -1,3 +1,7 @@
+#!/usr/bin/env rune
+
+
+    ? pragma.syntax("0.8")
 
     ? /**
     >  * Would Euclid approve?

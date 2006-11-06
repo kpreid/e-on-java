@@ -1,7 +1,11 @@
 #!/usr/bin/env rune
 
-#eChat with minimalist user interface
 pragma.syntax("0.9")
+
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+#eChat with minimalist user interface
 
 def <widget> := <swt:widgets.*>
 def SWT := <swt:makeSWT>

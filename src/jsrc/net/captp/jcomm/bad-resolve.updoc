@@ -8,6 +8,8 @@
 Exports 'carol' as a server. 'carolState' is a server variable clients can
 get and set.
 
+    ? pragma.syntax("0.8")
+
     ? (introducer.onTheAir()
     > var carolState := null
     > def carol {
@@ -28,6 +30,8 @@ get and set.
 Exports 'bob' as a server. 'bobState' is a server variable clients can
 get and set.
 
+    ? pragma.syntax("0.8")
+
     ? (introducer.onTheAir()
     > var bobState := null
     > def bob {
@@ -46,6 +50,8 @@ get and set.
 ?? in new vat AliceVat
 
 Import a remote reference to the 'carol' server
+
+    ? pragma.syntax("0.8")
 
     ? (introducer.onTheAir()
     > def uri := <file:~/Desktop/carol.cap>.getText().trim()

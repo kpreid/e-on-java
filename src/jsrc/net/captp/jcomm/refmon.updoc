@@ -6,6 +6,8 @@
 
 ?? in new vat AliceVat
 
+    ? pragma.syntax("0.8")
+
     ? var trace := ""
     # value: ""
 
@@ -40,6 +42,8 @@
     ? <file:~/Desktop/x.cap>.setText(introducer.sturdyToURI(sr))
 
 ?? in new vat BobVat
+
+    ? pragma.syntax("0.8")
 
     ? introducer.onTheAir()
     # value: ["3DES_SDH_M2", "3DES_SDH_M"]

@@ -5,6 +5,8 @@ Toy grammar definition from Dean to test out the grammar.y parser.
 rune(["~/e/src/esrc/scripts/updoc.e",
       "~/e/src/jsrc/org/quasiliteral/term/toy-grammar.updoc"])
 
+? pragma.syntax("0.8")
+
 ? def x := `
 > Top ::= e:E EOF -> e;
 > E ::= n:N                 -> n

@@ -1,7 +1,17 @@
-[[[][][][[][][][]]][[[][][][[][][][]]]*..*.*.*.*.*.*.*.*.[[[][][][[][][][]]]*.# tab at 56192 from: <file:c:/Documents and Settings/millerm1/e/doc/elib/capability/duals/capmyths.txt#:span::477:2::477:2>
+[[*..*.*.*.*.*.*.*.*.[*.
+# warning: tab at 56192 from: <file:c:/Documents and Settings/millerm1/e/doc/elib/capability/duals/capmyths.txt#:span::477:2::477:2>
 
-.*.[[[][][][[][][][]]]]*.*.*.]*.[[[][][][[][][][]]]]*.[[[][][][[][][][]]]*.[[[][][][[][][][]]]].][[[][][][[][][][]]]c:/Documents and Settings/millerm1/e/doc/elib/capability/ode/compose.e
+.*.[]*.*.*.]*.[]*.[*.[].][c:/Documents and Settings/millerm1/e/doc/elib/capability/ode/compose.e
 
 c:/Documents and Settings/millerm1/e/doc/elib/capability/ode/compose.e
 First line should be "#!/usr/bin/env rune"
-[[[][][][[][][][]]]]*.*.*.*.*.*.*.*.*.*.*.]*.*.*.[[[][][][[][][][]]]][[[][][][[][][][]]]*.]][[[][][][[][][][]]][[[][][][[][][][]]]*.*.*.*.*.]*.[[[][][][[][][][]]]]*.*.*.*.*.*.*.*.*.*.[[[][][][[][][][]]]*.*.*.*.*.]][[[][][][[][][][]]][[[][][][[][][][]]][[[][][][[][][]]][[[][][][[][][]]]]]*.*.*.*.*.*.*.*.*.*.[[[][][][[][][][]]]]*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.[[[][][][[][][][]]]*.]*.*.*.*.*.*.*.*.]*.*.*.*.[[[][][][[][][][]]][[[][][][[][][][]]]]*.][[[][][][[][][][]]]*.*.*.*.*.*.*.]]*.[[[][][][[][][][]]]*.[[[][][][[][][][]]]*.[[[][][][[][][][]]]......]*.[[[][][][[][][][]]]]*.[[[][][][[][][][]]].....]][[[][][][[][][][]]]]*.*.*.*.*.][[[][][][[][][][]]]]*.[[[][][][[][][][]]]*.*.[[[][][][[][][][]]]*.]*.][[[][][][[][][][]]]*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.].*.]
+[]*.*.*
+# warning: undeclared updoc version from: <file:c:/Documents and Settings/millerm1/e/doc/elib/capability/ode/ode-bearer.html#:span::289:22::289:24>
+
+.*
+# warning: undeclared updoc version from: <file:c:/Documents and Settings/millerm1/e/doc/elib/capability/ode/ode-capabilities.html#:span::206:85::206:87>
+
+.*.*
+# warning: undeclared updoc version from: <file:c:/Documents and Settings/millerm1/e/doc/elib/capability/ode/ode-objects.html#:span::92:22::92:24>
+
+.*.*.*.*.*.]*.*.*.[][*.]][[*.*.*.*.*.]*.[]*.*.*.*.*.*.*.*.*.*.[*.*.*.*.*.]][[[[]]*.*.*.*.*.*.*.*.*.*.[]*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.[*.]*.*.*.*.*.*.*.*.]*.*.*.*.[[]*.][*.*.*.*.*.*.*.]]*.[*.[*.[......]*.[]*.[.....]][]*.*.*.*.*.][]*.[*.*.[*.]*.][*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.].*.]

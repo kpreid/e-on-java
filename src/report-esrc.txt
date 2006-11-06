@@ -1,10 +1,7 @@
-[[[][..[]..][.[.][*.*.]][..[.][..].]][[[[]..........][...]][[[.]]][[[]...........[......].][...][[[...]][][...][.....][..][.......]][.[]......][[.....[[[]]].]][....][.....]]][[[[.
-# warning: undeclared updoc version from: <file:c:/Documents and Settings/millerm1/e/src/esrc/edu/jhu/cs448/contact/contactKit.updoc#:span::130:2::130:46>
+[[[][..[]..][.[.][*.*.]][..[.][..].]][[[[]..........][...]][[[.]]][[[]...........[......].][
+# warning: Missing copyright notice from: <file:c:/Documents and Settings/millerm1/e/src/esrc/com/skyhunter/convertForEDoc/bounds.updoc#:blob::2:0::44:5>
 
-
-# warning: undeclared updoc version
-
-.......]][[....]]]][[[[[............][........][..][..........][............][.........][[..]][..][....]][[..][.][
+...][[[...]][][...][.....][..][.......]][.[]......][[.....[[[]]].]][....][.....]]][[[[........]][[....]]]][[[[[............][........][..][..........][............][.........][[..]][..][....]][[..][.][
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/sealing/makeDFBrand.emaker
 problem: <AuditFailedException: object expression def makeDFBrand implements DeepFrozen {
              
@@ -185,17 +182,23 @@ problem: <AuditFailedException: object expression def makeDFBrand implements Dee
                      null
                  }
              }
-         } failed audit by org.erights.e.elib.serial.DeepFrozenAuditor@10fd2db>
-..][..........][.....][.[....].]][[....]][[.....]][........][.[.][.....]][[......][.......][......][..][...][.][....][.][.......]][[...][.......]]][[...]]][[.][..][..]]][.[...]...........[[...........][..][...][...][...][...]]...............................[..[....]
-# warning: undeclared updoc version from: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/dist-cycle.updoc#:span::44:6::44:58>
+         } failed audit by org.erights.e.elib.serial.DeepFrozenAuditor@1994899>
+..][..........][.....][.[....].]][[....]][[
+# warning: duplicate header from: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/extern/persist/initTimeMachine.emaker#:span::25:19::25:37>
+
+.....]][........][.[.][.....]][[......][.......][......][..][...][.][....][.][.......]][[...][.......]]][[...]]][[.][..][..]]][.[....]......
+# warning: Missing copyright notice from: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/cipher-saber.e#:blob::2:0::67:1>
+
+.....[[...........][..][...][...][...][...]].............................
+# warning: duplicate header from: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/srccheck.e#:span::92:18::92:36>
 
 
-# warning: undeclared updoc version from: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/dist-cycle.updoc#:span::57:6::57:15>
+# warning: duplicate version from: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/srccheck.e#:span::37:48::37:60>
 
+...[..[....].
+# warning: Missing copyright notice from: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/jcombothread.e-awt#:blob::2:0::53:25>
 
-# warning: undeclared updoc version from: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/dist-cycle.updoc#:span::70:6::70:15>
+..
+# warning: Missing copyright notice from: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/methcall.e#:blob::2:0::34:24>
 
-......[
-# warning: undeclared updoc version from: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/updoc/abc.updoc#:span::44:6::44:29>
-
-.....]]..[.*.*.*..].]]
+...[.....]]..[.*.*.*..].]]

@@ -1,62 +1,55 @@
 
 updoc: started
 
-c:/Documents and Settings/millerm1/e/src/esrc/caplets/capEdit/capEdit-synexp.caplet:
 c:/Documents and Settings/millerm1/e/src/esrc/caplets/capEdit/capEdit.caplet:
-c:/Documents and Settings/millerm1/e/src/esrc/caplets/capEdit/test.txt:
-c:/Documents and Settings/millerm1/e/src/esrc/caplets/capEdit/whoShotJFK.txt:
 c:/Documents and Settings/millerm1/e/src/esrc/caplets/capWebServer/capWebServer.caplet:
 c:/Documents and Settings/millerm1/e/src/esrc/caplets/capWebServer/data/webServerAuthor.emaker:
-c:/Documents and Settings/millerm1/e/src/esrc/caplets/capWebServer/sampleDocRoot/compareos.html:
-c:/Documents and Settings/millerm1/e/src/esrc/caplets/capWebServer/sampleDocRoot/index.html:
 c:/Documents and Settings/millerm1/e/src/esrc/caplets/darpaBrowser/darpaBrowser.caplet:
 c:/Documents and Settings/millerm1/e/src/esrc/caplets/darpaBrowser/darpaBrowserMemoryless.caplet:
 c:/Documents and Settings/millerm1/e/src/esrc/caplets/darpaBrowser/data/makeHTMLTreeBuilderAuthor.emaker:
 c:/Documents and Settings/millerm1/e/src/esrc/caplets/darpaBrowser/renderers/benign.emaker:
 c:/Documents and Settings/millerm1/e/src/esrc/caplets/darpaBrowser/renderers/evil.emaker:
 c:/Documents and Settings/millerm1/e/src/esrc/caplets/darpaBrowser/unconfinedBrowser.e-awt:
-c:/Documents and Settings/millerm1/e/src/esrc/com/hp/donutLab/makeBudgetingRefMon.emaker:
-c:/Documents and Settings/millerm1/e/src/esrc/com/hp/donutLab/makeDoughBot.emaker:
-c:/Documents and Settings/millerm1/e/src/esrc/com/hp/donutLab/makeIOUIssuer.updoc:.....
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/com/hp/donutLab/makeIOUIssuer.updoc#:span::23:2::23:37>
+c:/Documents and Settings/millerm1/e/src/esrc/com/hp/donutLab/makeIOUIssuer.updoc:......
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/com/hp/donutLab/makeIOUIssuer.updoc#:span::24:2::24:37>
 expr: def am1 := issuer.makeAccountMgr(33)
 missing new value
 original value: <manages <has (33 - 0) Sugar>>
 missing original problem
 new problem: <NoSuchMethodException: <an issuer>.makeAccountMgr/1>
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/com/hp/donutLab/makeIOUIssuer.updoc#:span::26:2::26:7>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/com/hp/donutLab/makeIOUIssuer.updoc#:span::27:2::27:7>
 expr: supply
 original and new value differ
 original value: 33
      new value: 0
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/com/hp/donutLab/makeIOUIssuer.updoc#:span::29:2::29:22>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/com/hp/donutLab/makeIOUIssuer.updoc#:span::30:2::30:22>
 expr: swtWatch(&am1, "am1")
 missing original problem
 new problem: Failed: Undefined variable: am1
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/com/hp/donutLab/makeIOUIssuer.updoc#:span::31:2::31:37>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/com/hp/donutLab/makeIOUIssuer.updoc#:span::32:2::32:37>
 expr: def am2 := issuer.makeAccountMgr(44)
 missing new value
 original value: [<purse <has (44 - 0) Sugar>>, <purseRevoker>]
 missing original problem
 new problem: <NoSuchMethodException: <an issuer>.makeAccountMgr/1>
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/com/hp/donutLab/makeIOUIssuer.updoc#:span::34:2::34:7>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/com/hp/donutLab/makeIOUIssuer.updoc#:span::35:2::35:7>
 expr: supply
 original and new value differ
 original value: 77
      new value: 0
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/com/hp/donutLab/makeIOUIssuer.updoc#:span::37:2::37:22>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/com/hp/donutLab/makeIOUIssuer.updoc#:span::38:2::38:22>
 expr: swtWatch(&am2, "am2")
 missing new value
 original value: [Shell {watching - am2}, Label {<manages <has (44 - 0) Sugar>>}]
 missing original problem
 new problem: Failed: Undefined variable: am2
-.....=== 2006-10-31T08:11:35.628Z (PendingEvent.report:PendingEvent.java:109) WRN
-causality: Problem in turn <<Vat home in <SWTRunner>>,197>: 
+.....=== 2006-11-06T04:56:55.352Z (PendingEvent.report:PendingEvent.java:109) WRN
+causality: Problem in turn <<Vat home in <SWTRunner>>,211>: 
 --vvvv--
 Failed: Not mergeable: <Vat home in <SWTRunner>>
 
@@ -86,15 +79,7 @@ java.lang.RuntimeException: Failed: Not mergeable: <Vat home in <SWTRunner>>
 --^^^^--
 
 
-c:/Documents and Settings/millerm1/e/src/esrc/com/hp/donutLab/makeIOUIssuerAuthor.emaker:
-c:/Documents and Settings/millerm1/e/src/esrc/com/hp/donutLab/makeKioskPair.emaker:
-c:/Documents and Settings/millerm1/e/src/esrc/com/hp/donutLab/sliverServerPair.emaker:
-c:/Documents and Settings/millerm1/e/src/esrc/com/hp/donutLab/testDoughBot.e:
 c:/Documents and Settings/millerm1/e/src/esrc/com/hp/donutLab/testIOUs.e:
-c:/Documents and Settings/millerm1/e/src/esrc/com/hp/donutLab/testKiosks.e:
-c:/Documents and Settings/millerm1/e/src/esrc/com/hp/donutLab/testSliverServer.e:
-c:/Documents and Settings/millerm1/e/src/esrc/com/hp/orc/makeOrcShell.emaker:
-c:/Documents and Settings/millerm1/e/src/esrc/com/hp/orc/orc.emaker:
 c:/Documents and Settings/millerm1/e/src/esrc/com/hp/orc/orc.updoc:..............
 at: <file:c:/Documents and Settings/millerm1/e/src/esrc/com/hp/orc/orc.updoc#:span::47:6::47:12>
 expr: results
@@ -140,21 +125,21 @@ original stdout: US News
                  now: 21
                  
 ..............
-c:/Documents and Settings/millerm1/e/src/esrc/com/opencola/drm/example/MintMaker.updoc:
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/com/opencola/drm/example/MintMaker.updoc#:span::4:2::4:43>
+c:/Documents and Settings/millerm1/e/src/esrc/com/opencola/drm/example/MintMaker.updoc:.
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/com/opencola/drm/example/MintMaker.updoc#:span::7:2::7:43>
 expr: def BrandMaker := <elib:sealing.makeBrand>
 original and new value differ
 original value: <import:org.erights.e.elib.sealing.makeBrand>
      new value: <makeBrand>
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/com/opencola/drm/example/MintMaker.updoc#:span::7:2::7:31>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/com/opencola/drm/example/MintMaker.updoc#:span::10:2::10:31>
 expr: interp.getProps()["e.version"]
 missing new value
 original value: "0.8.9s"
 missing original problem
 new problem: <IndexOutOfBoundsException: "e.version" not found>
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/com/opencola/drm/example/MintMaker.updoc#:span::10:2::10:27>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/com/opencola/drm/example/MintMaker.updoc#:span::13:2::13:27>
 expr: def MintMaker(name) :any {
           def [sealer,unsealer] := BrandMaker.pair(name)
           def issuer{
@@ -226,14 +211,10 @@ c:/Documents and Settings/millerm1/e/src/esrc/com/skyhunter/capDesk/navWidgetCon
 c:/Documents and Settings/millerm1/e/src/esrc/com/skyhunter/capDesk/progressWindowMakerAuthor.emaker:
 c:/Documents and Settings/millerm1/e/src/esrc/com/skyhunter/capDesk/serverDescVowAuthor.emaker:
 c:/Documents and Settings/millerm1/e/src/esrc/com/skyhunter/capDesk/strings/about.emaker:
-c:/Documents and Settings/millerm1/e/src/esrc/com/skyhunter/capDesk/strings/appsDescFile.txt:
-c:/Documents and Settings/millerm1/e/src/esrc/com/skyhunter/capDesk/strings/capDeskHomePath.txt:
 c:/Documents and Settings/millerm1/e/src/esrc/com/skyhunter/capDesk/strings/help.emaker:
-c:/Documents and Settings/millerm1/e/src/esrc/com/skyhunter/capDesk/strings/help.txt:
-c:/Documents and Settings/millerm1/e/src/esrc/com/skyhunter/capDesk/strings/installedAppsDir.txt:
 c:/Documents and Settings/millerm1/e/src/esrc/com/skyhunter/capDesk/testNavWidget.e-swt:
-c:/Documents and Settings/millerm1/e/src/esrc/com/skyhunter/convertForEDoc/bounds.updoc:.....
-c:/Documents and Settings/millerm1/e/src/esrc/com/skyhunter/convertForEDoc/edoc.updoc:.....
+c:/Documents and Settings/millerm1/e/src/esrc/com/skyhunter/convertForEDoc/bounds.updoc:......
+c:/Documents and Settings/millerm1/e/src/esrc/com/skyhunter/convertForEDoc/edoc.updoc:......
 c:/Documents and Settings/millerm1/e/src/esrc/com/skyhunter/convertForEDoc/makeUpgradeComments.emaker:
 c:/Documents and Settings/millerm1/e/src/esrc/com/skyhunter/e/awt/dnd/dragDropKit.emaker:
 c:/Documents and Settings/millerm1/e/src/esrc/com/skyhunter/e/awt/dnd/setupDropFuncAuthor.emaker:
@@ -278,16 +259,16 @@ c:/Documents and Settings/millerm1/e/src/esrc/com/skyhunter/swt/fillStyledTextAu
 c:/Documents and Settings/millerm1/e/src/esrc/com/skyhunter/swt/makeDialogVowAuthor.emaker:
 c:/Documents and Settings/millerm1/e/src/esrc/com/skyhunter/swt/makeETextAuthor.emaker:
 c:/Documents and Settings/millerm1/e/src/esrc/edu/jhu/cs448/contact/contactAuthor.emaker:
-c:/Documents and Settings/millerm1/e/src/esrc/edu/jhu/cs448/contact/contactKit.updoc:=== 2006-10-31T08:13:14.380Z (PendingEvent.report:PendingEvent.java:109) WRN
-causality: Problem in turn <<Vat Rendezvous in <runs in Rendezvous>>,111>: 
+c:/Documents and Settings/millerm1/e/src/esrc/edu/jhu/cs448/contact/contactKit.updoc:=== 2006-11-06T04:58:46.311Z (PendingEvent.report:PendingEvent.java:109) WRN
+causality: Problem in turn <<Vat Rendezvous in <runs in Rendezvous>>,126>: 
 --vvvv--
 Failed: not synchronously callable
 
 - static Verifier#verify(PublicKey, String, BigInteger)
-. <makeVerifier>.verify(<Far ref>, "captp://*f3c2ma7nlkitr62gitwdoj6nqufh7bf...:1573/dmq6bsr6zvukratbrxmbsl25xq6n4tsb", 17235671728789...45438574135041)
-@ verify/3: <file:/C:/Documents%20and%20Settings/millerm1/e/src/esrc/edu/jhu/cs448/contact/makeRendezvous.emaker#:span::26:29::26:34>
-- edu.jhu.cs448.contact.makeRendezvous$makeRendezvous$rendezvous#register/3: <file:/C:/Documents%20and%20Settings/millerm1/e/src/esrc/edu/jhu/cs448/contact/makeRendezvous.emaker#:span::23:11::23:18>
-. <rendezvous>.register(<Far ref>, "captp://*f3c2ma7nlkitr62gitwdoj6nqufh7bf...:1573/dmq6bsr6zvukratbrxmbsl25xq6n4tsb", 17235671728789...45438574135041)
+. <makeVerifier>.verify(<Far ref>, "captp://*pyby3ogbu4fxhnktvamejrjiyx47gfd...:2150/bo5yneigkpggbgrmdmi53fvplkus35in", 17535330789963...43509458130365)
+@ verify/3: <file:/C:/Documents%20and%20Settings/millerm1/e/src/esrc/edu/jhu/cs448/contact/makeRendezvous.emaker#:span::28:29::28:34>
+- edu.jhu.cs448.contact.makeRendezvous$makeRendezvous$rendezvous#register/3: <file:/C:/Documents%20and%20Settings/millerm1/e/src/esrc/edu/jhu/cs448/contact/makeRendezvous.emaker#:span::25:11::25:18>
+. <rendezvous>.register(<Far ref>, "captp://*pyby3ogbu4fxhnktvamejrjiyx47gfd...:2150/bo5yneigkpggbgrmdmi53fvplkus35in", 17535330789963...43509458130365)
 
 java.lang.RuntimeException: Failed: not synchronously callable
 	at org.erights.e.develop.assertion.T.fail(T.java:84)
@@ -327,16 +308,16 @@ java.lang.RuntimeException: Failed: not synchronously callable
 
 --^^^^--
 
-=== 2006-10-31T08:13:15.982Z (PendingEvent.report:PendingEvent.java:109) WRN
-causality: Problem in turn <<Vat Rendezvous in <runs in Rendezvous>>,173>: 
+=== 2006-11-06T04:58:47.904Z (PendingEvent.report:PendingEvent.java:109) WRN
+causality: Problem in turn <<Vat Rendezvous in <runs in Rendezvous>>,190>: 
 --vvvv--
 Failed: not synchronously callable
 
 - static Verifier#verify(PublicKey, String, BigInteger)
-. <makeVerifier>.verify(<Far ref>, "captp://*4rwvo4gry3xqhgtzcj7oay2i2f4fjbj...:1577/3ii7yueyptuoth4b6nqzrzv43a44qiau", 30449641804079...48640442323242)
-@ verify/3: <file:/C:/Documents%20and%20Settings/millerm1/e/src/esrc/edu/jhu/cs448/contact/makeRendezvous.emaker#:span::26:29::26:34>
-- edu.jhu.cs448.contact.makeRendezvous$makeRendezvous$rendezvous#register/3: <file:/C:/Documents%20and%20Settings/millerm1/e/src/esrc/edu/jhu/cs448/contact/makeRendezvous.emaker#:span::23:11::23:18>
-. <rendezvous>.register(<Far ref>, "captp://*4rwvo4gry3xqhgtzcj7oay2i2f4fjbj...:1577/3ii7yueyptuoth4b6nqzrzv43a44qiau", 30449641804079...48640442323242)
+. <makeVerifier>.verify(<Far ref>, "captp://*canv4ossef2myujntx7ota75yxremgh...:2154/ehs6xhjtxlm7ychmtqasuyfcu2yz5ad6", 89585235805652...07593258602087)
+@ verify/3: <file:/C:/Documents%20and%20Settings/millerm1/e/src/esrc/edu/jhu/cs448/contact/makeRendezvous.emaker#:span::28:29::28:34>
+- edu.jhu.cs448.contact.makeRendezvous$makeRendezvous$rendezvous#register/3: <file:/C:/Documents%20and%20Settings/millerm1/e/src/esrc/edu/jhu/cs448/contact/makeRendezvous.emaker#:span::25:11::25:18>
+. <rendezvous>.register(<Far ref>, "captp://*canv4ossef2myujntx7ota75yxremgh...:2154/ehs6xhjtxlm7ychmtqasuyfcu2yz5ad6", 89585235805652...07593258602087)
 
 java.lang.RuntimeException: Failed: not synchronously callable
 	at org.erights.e.develop.assertion.T.fail(T.java:84)
@@ -376,41 +357,38 @@ java.lang.RuntimeException: Failed: not synchronously callable
 
 --^^^^--
 
-.....................................
+.........................................
 c:/Documents and Settings/millerm1/e/src/esrc/edu/jhu/cs448/contact/contactKitAuthor.emaker:
 c:/Documents and Settings/millerm1/e/src/esrc/edu/jhu/cs448/contact/makeAccessor.emaker:
 c:/Documents and Settings/millerm1/e/src/esrc/edu/jhu/cs448/contact/makeAnycaster.emaker:
 c:/Documents and Settings/millerm1/e/src/esrc/edu/jhu/cs448/contact/makeDeliverator.emaker:
-c:/Documents and Settings/millerm1/e/src/esrc/edu/jhu/cs448/contact/makeOpenQueue.emaker:.......................
+c:/Documents and Settings/millerm1/e/src/esrc/edu/jhu/cs448/contact/makeOpenQueue.emaker:........................
 c:/Documents and Settings/millerm1/e/src/esrc/edu/jhu/cs448/contact/makeRendezvous.emaker:
 c:/Documents and Settings/millerm1/e/src/esrc/edu/jhu/markm/thesis/actors.updoc:.........
-c:/Documents and Settings/millerm1/e/src/esrc/edu/jhu/markm/thesis/makeAct.emaker:
-c:/Documents and Settings/millerm1/e/src/esrc/edu/jhu/markm/thesis/makeMailboxAuthor.emaker:
-c:/Documents and Settings/millerm1/e/src/esrc/edu/jhu/markm/thesis/makePrintContinuation.emaker:
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdLoopMakerAuthor.emaker:
-c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdLoopMakerAuthor.updoc:..
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdLoopMakerAuthor.updoc#:span::15:6::15:71>
+c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdLoopMakerAuthor.updoc:...
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdLoopMakerAuthor.updoc#:span::19:6::19:71>
 expr: def ScopeImplMaker := <unsafe:org.erights.e.elang.scope.ScopeImpl>
 missing new value
 original value: <unsafe:org.erights.e.elang.scope.ScopeImpl>
 missing original problem
 new problem: Failed: org.erights.e.elang.scope.ScopeImpl not found
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdLoopMakerAuthor.updoc#:span::18:6::18:36>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdLoopMakerAuthor.updoc#:span::22:6::22:36>
 expr: def scope := ScopeImplMaker([])
 missing new value
 original value: org.erights.e.elang.scope.ScopeImpl@38b82
 missing original problem
 new problem: Failed: Undefined variable: ScopeImplMaker
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdLoopMakerAuthor.updoc#:span::21:6::21:18>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdLoopMakerAuthor.updoc#:span::25:6::25:18>
 expr: scope.asMap()
 missing new value
 original value: [] asMap
 missing original problem
 new problem: Failed: Undefined variable: scope
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdLoopMakerAuthor.updoc#:span::24:6::24:44>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdLoopMakerAuthor.updoc#:span::28:6::28:44>
 expr: def cmdLoop := cmdLoopMaker(["a", "b"],
                                   interp.getProps(),
                                   scope)
@@ -419,136 +397,136 @@ original value: <cmdLoop>
 missing original problem
 new problem: Failed: Undefined variable: scope
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdLoopMakerAuthor.updoc#:span::29:6::29:22>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdLoopMakerAuthor.updoc#:span::33:6::33:22>
 expr: cmdLoop.getArgs()
 missing new value
 original value: ["a", "b"]
 missing original problem
 new problem: Failed: Undefined variable: cmdLoop
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdLoopMakerAuthor.updoc#:span::32:6::32:30>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdLoopMakerAuthor.updoc#:span::36:6::36:30>
 expr: cmdLoop.getProps().size()
 missing new value
 original value: 78
 missing original problem
 new problem: Failed: Undefined variable: cmdLoop
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdLoopMakerAuthor.updoc#:span::35:6::35:24>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdLoopMakerAuthor.updoc#:span::39:6::39:24>
 expr: cmdLoop.getExpand()
 missing new value
 original value: false
 missing original problem
 new problem: Failed: Undefined variable: cmdLoop
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdLoopMakerAuthor.updoc#:span::38:6::38:28>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdLoopMakerAuthor.updoc#:span::42:6::42:28>
 expr: cmdLoop.setExpand(true)
 missing original problem
 new problem: Failed: Undefined variable: cmdLoop
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdLoopMakerAuthor.updoc#:span::39:6::39:24>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdLoopMakerAuthor.updoc#:span::43:6::43:24>
 expr: cmdLoop.getExpand()
 missing new value
 original value: true
 missing original problem
 new problem: Failed: Undefined variable: cmdLoop
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdLoopMakerAuthor.updoc#:span::42:6::42:28>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdLoopMakerAuthor.updoc#:span::46:6::46:28>
 expr: cmdLoop.pushResult("x")
 missing original problem
 new problem: Failed: Undefined variable: cmdLoop
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdLoopMakerAuthor.updoc#:span::43:6::43:28>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdLoopMakerAuthor.updoc#:span::47:6::47:28>
 expr: cmdLoop.pushResult("y")
 missing original problem
 new problem: Failed: Undefined variable: cmdLoop
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdLoopMakerAuthor.updoc#:span::44:6::44:25>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdLoopMakerAuthor.updoc#:span::48:6::48:25>
 expr: cmdLoop.getResult(0)
 missing new value
 original value: "y"
 missing original problem
 new problem: Failed: Undefined variable: cmdLoop
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdLoopMakerAuthor.updoc#:span::47:6::47:25>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdLoopMakerAuthor.updoc#:span::51:6::51:25>
 expr: cmdLoop.getResult(1)
 missing new value
 original value: "x"
 missing original problem
 new problem: Failed: Undefined variable: cmdLoop
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdLoopMakerAuthor.updoc#:span::50:6::50:25>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdLoopMakerAuthor.updoc#:span::54:6::54:25>
 expr: cmdLoop.getResult(2)
 original and new problem differ
 original problem: <IndexOutOfBoundsException: 2 must be below 2>
      new problem: Failed: Undefined variable: cmdLoop
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdLoopMakerAuthor.updoc#:span::57:6::57:28>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdLoopMakerAuthor.updoc#:span::61:6::61:28>
 expr: cmdLoop.pushResult("z")
 missing original problem
 new problem: Failed: Undefined variable: cmdLoop
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdLoopMakerAuthor.updoc#:span::58:6::58:25>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdLoopMakerAuthor.updoc#:span::62:6::62:25>
 expr: cmdLoop.getResult(0)
 missing new value
 original value: "z"
 missing original problem
 new problem: Failed: Undefined variable: cmdLoop
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdLoopMakerAuthor.updoc#:span::61:6::61:25>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdLoopMakerAuthor.updoc#:span::65:6::65:25>
 expr: cmdLoop.getResult(2)
 missing new value
 original value: "x"
 missing original problem
 new problem: Failed: Undefined variable: cmdLoop
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdLoopMakerAuthor.updoc#:span::64:6::64:17>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdLoopMakerAuthor.updoc#:span::68:6::68:17>
 expr: cmdLoop.gc()
 missing original problem
 new problem: Failed: Undefined variable: cmdLoop
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdLoopMakerAuthor.updoc#:span::66:6::66:25>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdLoopMakerAuthor.updoc#:span::70:6::70:25>
 expr: cmdLoop.getResult(0)
 original and new problem differ
 original problem: <IndexOutOfBoundsException: 0 must be below 0>
      new problem: Failed: Undefined variable: cmdLoop
 .
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdMakerMaker.emaker:
-c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdMakerMaker.updoc:=== 2006-10-31T08:13:33.798Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
+c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdMakerMaker.updoc:=== 2006-11-06T04:59:07.742Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
 eruntime: Import org.erights.e.elang.interp.makeScopeSetup instead : (Importing org.erights.e.elang.interp.ScopeSetup)
  @ Loader#get(String)
- @ get/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdMakerMaker.updoc#:span::21:24::21:69>
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdMakerMaker.updoc#:span::4:6::4:55>
+ @ get/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdMakerMaker.updoc#:span::25:24::25:69>
+.
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdMakerMaker.updoc#:span::8:6::8:55>
 expr: def makeTextWriter := <elib:oldeio.makeTextWriter>
 original and new value differ
 original value: <import:org.erights.e.elib.oldeio.makeTextWriter>
      new value: <makeTextWriter>
 ...
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdMakerMaker.updoc#:span::21:6::21:69>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdMakerMaker.updoc#:span::25:6::25:69>
 expr: def ScopeSetup := <unsafe:org.erights.e.elang.interp.ScopeSetup>
 original and new value differ
 original value: <unsafe:org.erights.e.elang.interp.ScopeSetup>
      new value: <makeScopeSetup>
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdMakerMaker.updoc#:span::24:6::24:66>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdMakerMaker.updoc#:span::28:6::28:66>
 expr: def [altout, altoutBuf] := makeTextWriter.makeBufferingPair()
 original and new value differ
 original value: [<TextWriter>, ]
      new value: [<a TextWriter>, <stringBuffer "">]
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdMakerMaker.updoc#:span::27:6::27:66>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdMakerMaker.updoc#:span::31:6::31:66>
 expr: def [alterr, alterrBuf] := makeTextWriter.makeBufferingPair()
 original and new value differ
 original value: [<TextWriter>, ]
      new value: [<a TextWriter>, <stringBuffer "">]
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdMakerMaker.updoc#:span::30:6::30:16>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdMakerMaker.updoc#:span::34:6::34:16>
 expr: def cmdLoop
 original and new value differ
 original value: <Promise>
      new value: <Resolver>
 .
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdMakerMaker.updoc#:span::34:6::34:55>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdMakerMaker.updoc#:span::38:6::38:55>
 expr: def privileged := ScopeSetup.privileged("__main$",
                                               altout,
                                               alterr,
@@ -559,14 +537,14 @@ original and new value differ
 original value: org.erights.e.elang.scope.MutableScope@366999
      new value: <a Scope>
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdMakerMaker.updoc#:span::42:6::42:64>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdMakerMaker.updoc#:span::46:6::46:64>
 expr: bind cmdLoop := cmdLoopMaker(["a", "b"], props, privileged)
 missing new value
 original value: <cmdLoop>
 missing original problem
 new problem: <NoSuchMethodException: <a cmdLoopMaker>.run/3>
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdMakerMaker.updoc#:span::45:6::45:65>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdMakerMaker.updoc#:span::49:6::49:65>
 expr: def cmdMaker := cmdMakerMaker(cmdLoop, altoutBuf, alterrBuf)
 missing new value
 original value: <cmdMaker>
@@ -574,55 +552,55 @@ missing original problem
 new problem: <NoSuchMethodException: <a cmdMakerMaker>.run/3>
 .
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/controlLoopMaker.emaker:
-c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/controlLoopMaker.updoc:..
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/controlLoopMaker.updoc#:span::14:6::14:35>
+c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/controlLoopMaker.updoc:...
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/controlLoopMaker.updoc#:span::18:6::18:35>
 expr: def ctrl := controlLoopMaker()
 original and new value differ
 original value: <controlLoop_7>
      new value: <controlLoop>
 ..............
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/controlLoopMaker.updoc#:span::64:6::64:45>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/controlLoopMaker.updoc#:span::68:6::68:45>
 expr: def exitPairVow := ctrl.getExitPairVow()
 missing new value
 original value: <Promise>
 missing original problem
 new problem: <NoSuchMethodException: <a controlLoop>.getExitPairVow/0>
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/controlLoopMaker.updoc#:span::67:6::67:16>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/controlLoopMaker.updoc#:span::71:6::71:16>
 expr: exitPairVow
 missing new value
 original value: <Promise>
 missing original problem
 new problem: Failed: Undefined variable: exitPairVow
 ....
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/controlLoopMaker.updoc#:span::85:6::85:16>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/controlLoopMaker.updoc#:span::89:6::89:16>
 expr: exitPairVow
 missing new value
 original value: [0, null]
 missing original problem
 new problem: Failed: Undefined variable: exitPairVow
 ..
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/controlLoopMaker.updoc#:span::99:6::99:37>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/controlLoopMaker.updoc#:span::103:6::103:37>
 expr: bind ctrl3 := controlLoopMaker()
 original and new value differ
 original value: <controlLoop_7>
      new value: <controlLoop>
 ...
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/controlLoopMaker.updoc#:span::111:6::111:47>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/controlLoopMaker.updoc#:span::115:6::115:47>
 expr: def exitPairVow3 := ctrl3.getExitPairVow()
 missing new value
 original value: <Promise>
 missing original problem
 new problem: <NoSuchMethodException: <a controlLoop>.getExitPairVow/0>
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/controlLoopMaker.updoc#:span::114:6::114:17>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/controlLoopMaker.updoc#:span::118:6::118:17>
 expr: exitPairVow3
 missing new value
 original value: <Promise>
 missing original problem
 new problem: Failed: Undefined variable: exitPairVow3
 ...
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/controlLoopMaker.updoc#:span::121:6::121:17>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/controlLoopMaker.updoc#:span::125:6::125:17>
 expr: exitPairVow3
 missing new value
 original value: [0, null]
@@ -634,32 +612,25 @@ c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/makeEvalCo
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/makeEvalPrinterAuthor.emaker:
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/makeParseFuncAuthor.emaker:
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/makeRepl.emaker:
-c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/runeAuthor.emaker:
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/control/makeSeries.emaker:.........
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/control/__dynamicExtent.emaker:......
-c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/control/__escape.emaker:
-c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/control/__for.emaker:
-c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/control/__if.emaker:
-c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/control/__try.emaker:
-c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/control/__when.emaker:
-c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/control/__while.emaker:
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/coord/OrderedRegionMaker.emaker:
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/coord/OrderedSpaceMaker.emaker:
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/expand/__bind.emaker:.
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/expand/__bind.emaker#:span::30:6::30:10>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/expand/__bind.emaker#:span::32:6::32:10>
 expr: def x
 missing new expansion
 original expansion: def [x, x__Resolver] := Ref.promise()
                     x__Resolver
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/expand/__bind.emaker#:span::36:6::36:16>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/expand/__bind.emaker#:span::38:6::38:16>
 expr: bind x := 3
 missing new expansion
 original expansion: def via (__bind.run(x__Resolver)) _ := 3
 ..
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/expand/__Empty.emaker:.....
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/expand/__extract.emaker:...
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/expand/__extract.emaker#:span::59:6::59:56>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/expand/__extract.emaker#:span::61:6::61:56>
 expr: def [=>x, "y" => y, => z := 3] := ["x"=>a, "y"=> b]
 original and new expansion differ
 original expansion: def via (__extract.run("x"))
@@ -670,7 +641,7 @@ original expansion: def via (__extract.run("x"))
                     __makeList.run("y", b)))
      new expansion: def via (__extract.run("x")) [x, via (__extract.run("y")) [y, via (__extract.depr("z", 3)) [z, _ :__Empty]]] := __makeMap.fromPairs(__makeList.run(__makeList.run("x", a), __makeList.run("y", b)))
 ....
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/expand/__extract.emaker#:span::80:6::80:63>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/expand/__extract.emaker#:span::82:6::82:63>
 expr: def ["i" => j, (j) => k] := ["i" => "foo", "foo" => "bar"]
 original and new expansion differ
 original expansion: def via (__extract.run("i"))
@@ -680,8 +651,8 @@ original expansion: def via (__extract.run("i"))
                     __makeList.run("foo", "bar")))
      new expansion: def via (__extract.run("i")) [j, via (__extract.run(j)) [k, _ :__Empty]] := __makeMap.fromPairs(__makeList.run(__makeList.run("i", "foo"), __makeList.run("foo", "bar")))
 ..
-c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/expand/__is.emaker:.
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/expand/__is.emaker#:span::56:2::56:9>
+c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/expand/__is.emaker:..
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/expand/__is.emaker#:span::61:6::61:13>
 expr: 3 =~ ==3
 original and new expansion differ
 original expansion: 3 =~ via (__is.run(3)) _
@@ -694,27 +665,27 @@ original expansion: 3 =~ via (__is.run(3)) _
 
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/expand/__makeVerbFacet.emaker:
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/expand/__matchBind.emaker:...
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/expand/__matchBind.emaker#:span::28:6::28:28>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/expand/__matchBind.emaker#:span::30:6::30:28>
 expr: def `@x$d@y` := "ab.de"
 original and new expansion differ
 original expansion: def via (__matchBind.run(simple__quasiParser. matchMaker("@{0}${0}@{1}"), __makeList.run(d))) [x, y] := "ab.de"
      new expansion: def via (__matchBind.run(simple__quasiParser.matchMaker("@{0}${0}@{1}"), __makeList.run(d))) [x, y] := "ab.de"
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/expand/__matchBind.emaker#:span::35:6::35:28>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/expand/__matchBind.emaker#:span::37:6::37:28>
 expr: interp.setExpand(false)
 missing original expansion
 new expansion: interp.setExpand(false)
 .
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/expand/__MatchContext.emaker:
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/expand/__splitList.emaker:....
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/expand/__splitList.emaker#:span::47:6::47:15>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/expand/__splitList.emaker#:span::49:6::49:15>
 expr: x := "foo"
 original and new problem differ
 original problem: <ClassCastException: Character doesn't coerce to a String
      new problem: <ClassCastException: Character doesn't coerce to a String>
 .
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/expand/__suchThat.emaker:..
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/expand/__suchThat.emaker#:span::33:6::33:65>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/expand/__suchThat.emaker#:span::35:6::35:65>
 expr: def foo(G1, G2, x :G1 ? (x =~ y :G2)) :any { return [x, y] }
 original and new expansion differ
 original expansion: def foo := def "__main$foo__C" {
@@ -746,78 +717,78 @@ original expansion: def foo := def "__main$foo__C" {
                     }
                     }
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/expand/__suchThat.emaker#:span::49:6::49:28>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/expand/__suchThat.emaker#:span::51:6::51:28>
 expr: interp.setExpand(false)
 missing original expansion
 new expansion: interp.setExpand(false)
 ..
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/expand/__Test.emaker:
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/E.emaker:
-c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/makeBootServer.updoc:=== 2006-10-31T08:13:46.346Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
+c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/makeBootServer.updoc:=== 2006-11-06T04:59:22.574Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
 eruntime: Import org.erights.e.elib.serial.makePersistentKeyHolder instead : (Importing org.erights.e.elib.serial.PersistentKeyHolder)
  @ Loader#get(String)
- @ get/1: <file:/C:/Documents%20and%20Settings/millerm1/e/src/esrc/org/erights/e/extern/persist/initTimeMachine.emaker#:span::31:6::31:59>
-.......
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/makeBootServer.updoc#:span::25:2::25:59>
+ @ get/1: <file:/C:/Documents%20and%20Settings/millerm1/e/src/esrc/org/erights/e/extern/persist/initTimeMachine.emaker#:span::35:6::35:59>
+........
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/makeBootServer.updoc#:span::27:2::27:59>
 expr: def vatFile := makeAtomicFile(<file:~/Desktop>, "foo.vat")
 original and new value differ
 original value: <atomic: <file:C:/Documents and Settings/MILLERM1/Desktop/foo.vat>>
      new value: <atomic: <file:c:/Documents and Settings/millerm1/Desktop/foo.vat>>
 ...
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/makeBootServer.updoc#:span::34:2::34:7>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/makeBootServer.updoc#:span::36:2::36:7>
 expr: [p,sr]
 original and new value differ
 original value: [null, <a SturdyRef>]
      new value: [null, <SturdyRef to 3>]
 ....
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/makePerlMatchMaker.emaker:
-c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/makeServer.updoc:.....
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/makeServer.updoc#:span::21:2::21:11>
+c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/makeServer.updoc:......
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/makeServer.updoc#:span::23:2::23:11>
 expr: env.size()
 missing new value
 original value: 105
 missing original problem
 new problem: Failed: not synchronously callable
 .
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/makeServer.updoc#:span::27:2::27:38>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/makeServer.updoc#:span::29:2::29:38>
 expr: def farPrintlnSlot := env["&println"]
 missing new value
 original value: <Far ref>
 missing original problem
 new problem: Failed: not synchronously callable
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/makeServer.updoc#:span::30:2::30:47>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/makeServer.updoc#:span::32:2::32:47>
 expr: def farPrintln := farPrintlnSlot <- getValue()
 missing new value
 original value: <Remote Promise>
 missing original problem
 new problem: Failed: Undefined variable: farPrintlnSlot
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/makeServer.updoc#:span::33:2::33:29>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/makeServer.updoc#:span::35:2::35:29>
 expr: interp.waitAtTop(farPrintln)
 missing original problem
 new problem: Failed: Undefined variable: farPrintln
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/makeServer.updoc#:span::35:2::35:11>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/makeServer.updoc#:span::37:2::37:11>
 expr: farPrintln
 missing new value
 original value: <Far ref>
 missing original problem
 new problem: Failed: Undefined variable: farPrintln
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/makeServer.updoc#:span::38:2::38:53>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/makeServer.updoc#:span::40:2::40:53>
 expr: def x := server <- run(farPrintln, "run", ["Foo!!"])
 missing new value
 original value: <Remote Promise>
 missing original problem
 new problem: Failed: Undefined variable: farPrintln
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/makeServer.updoc#:span::43:2::43:20>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/makeServer.updoc#:span::45:2::45:20>
 expr: interp.waitAtTop(x)
 missing original problem
 new problem: Failed: Undefined variable: x
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/makeServer.updoc#:span::44:2::44:10>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/makeServer.updoc#:span::46:2::46:10>
 expr: x == null
 missing new value
 original value: true
@@ -828,44 +799,44 @@ c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/makeSer
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/notNull.emaker:
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/promiseAllFulfilled.emaker:
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/promiseAllResolved.emaker:..
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/promiseAllResolved.emaker#:span::64:6::64:43>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/promiseAllResolved.emaker#:span::66:6::66:43>
 expr: def a := promiseAllResolved([1, 2, 3])
 missing new value
 original value: <Promise>
 .
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/promiseAllResolved.emaker#:span::68:6::68:6>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/promiseAllResolved.emaker#:span::70:6::70:6>
 expr: a
 missing new value
 original value: [1, 2, 3]
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/promiseAllResolved.emaker#:span::71:6::71:64>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/promiseAllResolved.emaker#:span::73:6::73:64>
 expr: def a := promiseAllResolved([def x; x, def y; y, def z; z])
 missing new value
 original value: <Promise>
 .
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/promiseAllResolved.emaker#:span::77:6::77:6>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/promiseAllResolved.emaker#:span::79:6::79:6>
 expr: a
 missing new value
 original value: <Promise>
 .
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/promiseAllResolved.emaker#:span::83:6::83:6>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/promiseAllResolved.emaker#:span::85:6::85:6>
 expr: a
 missing new value
 original value: <Promise>
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/promiseAllResolved.emaker#:span::86:6::86:18>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/promiseAllResolved.emaker#:span::88:6::88:18>
 expr: bind z := [a]
 original and new value differ
 original value: [<Promise>]
      new value: [null]
 .
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/promiseAllResolved.emaker#:span::90:6::90:6>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/promiseAllResolved.emaker#:span::92:6::92:6>
 expr: a
 missing new value
 original value: [4, <ref broken by problem: boom>, [***CYCLE***]]
 
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/rcvr.emaker:
-c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/require.emaker:.....
+c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/require.emaker:......
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/seedVatAuthor.emaker:
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/vow.emaker:
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/launcher/capletLauncherAuthor.emaker:
@@ -879,10 +850,9 @@ c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/launcher/__src
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/launcher/__versionLauncherAuthor.emaker:
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/scope/test/A.emaker:
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/scope/test/B.emaker:
-c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/scope/test/leakage.emaker:
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/syntax/epatt__quasiParser.emaker:
-c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/syntax/termE__quasiParser.emaker:.
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/syntax/termE__quasiParser.emaker#:span::45:2::45:22>
+c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/syntax/termE__quasiParser.emaker:..
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/syntax/termE__quasiParser.emaker#:span::48:2::48:22>
 expr: def x := termE`a + b`
 original and new value differ
 original value: term`CallExpr(NounExpr("a"),
@@ -892,7 +862,7 @@ original value: term`CallExpr(NounExpr("a"),
                 "add",
                 [NounExpr("b")])`
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/syntax/termE__quasiParser.emaker#:span::50:2::50:27>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/syntax/termE__quasiParser.emaker#:span::53:2::53:27>
 expr: def y := termE`c * $x * d`
 original and new value differ
 original value: term`CallExpr(CallExpr(NounExpr("c"),
@@ -910,7 +880,7 @@ original value: term`CallExpr(CallExpr(NounExpr("c"),
                 "multiply",
                 [NounExpr("d")])`
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/syntax/termE__quasiParser.emaker#:span::59:2::59:24>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/syntax/termE__quasiParser.emaker#:span::62:2::62:24>
 expr: def termE`@w * @z` := y
 original and new value differ
 original value: term`CallExpr(CallExpr(NounExpr("c"),
@@ -928,7 +898,7 @@ original value: term`CallExpr(CallExpr(NounExpr("c"),
                 "multiply",
                 [NounExpr("d")])`
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/syntax/termE__quasiParser.emaker#:span::68:2::68:2>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/syntax/termE__quasiParser.emaker#:span::71:2::71:2>
 expr: w
 original and new value differ
 original value: term`CallExpr(NounExpr("c"),
@@ -943,81 +913,63 @@ original value: term`CallExpr(NounExpr("c"),
                 [NounExpr("b")])])`
 .
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/visitors/makeConvertENode2Term.emaker:
-c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/visitors/makeMetaEval.emaker:....
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/visitors/makeMetaEval.emaker#:span::353:6::353:61>
-expr: def eval := <elang:visitors.makeMetaEval>(AuditionStamp)
-missing new value
-original value: <eval>
-missing original syntax error
-new syntax error: 
-                  var v2 :guard exit optEjector := specimen
-                  ^
-                  @ <file:/C:/Documents%20and%20Settings/millerm1/e/src/esrc/org/erights/e/elang/visitors/makeMetaEval.emaker#:span::291:37::291:37>
-..
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/visitors/makeMetaEval.emaker#:span::362:6::362:35>
-expr: eval(e`2+3`, [[].asMap(), sc])
-missing new value
-original value: [5, [[].asMap(), <static foo., 0>]]
-missing original problem
-new problem: Failed: Undefined variable: eval
-
+c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/visitors/makeMetaEval.emaker:........
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/visitors/TermSimple.emaker:
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/visitors/TermVisitor.emaker:
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/extern/CommandMakerAuthor.emaker:
-c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/extern/CommandMakerAuthor.updoc:.....
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/extern/CommandMakerAuthor.updoc#:span::21:6::21:48>
+c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/extern/CommandMakerAuthor.updoc:......
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/extern/CommandMakerAuthor.updoc#:span::25:6::25:48>
 expr: bash("-c", "cygpath -w `type -p echo.exe`")
 missing new problem
 original problem: c:/cygwin/bin/bash.exe failed with(127,,/usr/bin/bash: cygpath: command not found
                   )
 .
-c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/ref/makeLazyPromiseAuthor.emaker:=== 2006-10-31T08:14:04.291Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
+c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/ref/makeLazyPromiseAuthor.emaker:=== 2006-11-06T04:59:44.034Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
 eruntime: Import org.erights.e.elib.ref.makeEProxyResolver instead : (Importing org.erights.e.elib.ref.EProxyResolver)
  @ Loader#get(String)
- @ get/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/ref/makeLazyPromiseAuthor.emaker#:span::39:31::39:76>
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/ref/makeLazyPromiseAuthor.emaker#:span::39:6::39:76>
+ @ get/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/ref/makeLazyPromiseAuthor.emaker#:span::43:31::43:76>
+.
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/ref/makeLazyPromiseAuthor.emaker#:span::43:6::43:76>
 expr: def makeProxyResolver := <unsafe:org.erights.e.elib.ref.EProxyResolver>
 original and new value differ
 original value: <unsafe:org.erights.e.elib.ref.EProxyResolver>
      new value: <makeEProxyResolver>
 .......
-c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/sealing/makeDFBrand.emaker:
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/sealing/makeMuBrand.emaker:
-c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/sealing/makeVOCPair.emaker:.
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/sealing/makeVOCPair.emaker#:span::72:6::72:31>
+c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/sealing/makeVOCPair.emaker:..
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/sealing/makeVOCPair.emaker#:span::75:6::75:31>
 expr: def f1 := <file:~/.bashrc>
 original and new value differ
 original value: <file:c:/Documents and Settings/MILLERM1/.bashrc>
      new value: <file:c:/Documents and Settings/millerm1/.bashrc>
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/sealing/makeVOCPair.emaker#:span::75:6::75:31>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/sealing/makeVOCPair.emaker#:span::78:6::78:31>
 expr: def f2 := <file:~/Desktop>
 original and new value differ
 original value: <file:c:/Documents and Settings/MILLERM1/Desktop/>
      new value: <file:c:/Documents and Settings/millerm1/Desktop/>
 .
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/sealing/makeVOCPair.emaker#:span::83:6::83:12>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/sealing/makeVOCPair.emaker#:span::86:6::86:12>
 expr: foo(f1)
 original and new stdout differ
 original stdout: c:/Documents and Settings/MILLERM1/.bashrc
      new stdout: c:/Documents and Settings/millerm1/.bashrc
                  
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/sealing/makeVOCPair.emaker#:span::86:6::86:23>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/sealing/makeVOCPair.emaker#:span::89:6::89:23>
 expr: def f3 := <file:~>
 original and new value differ
 original value: <file:c:/Documents and Settings/MILLERM1/>
      new value: <file:c:/Documents and Settings/millerm1/>
 .
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/sealing/makeVOCPair.emaker#:span::92:6::92:23>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/sealing/makeVOCPair.emaker#:span::95:6::95:23>
 expr: foo(f1 :ProveAuth)
 original and new stdout differ
 original stdout: c:/Documents and Settings/MILLERM1/.bashrc
      new stdout: c:/Documents and Settings/millerm1/.bashrc
                  
 ..
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/sealing/makeVOCPair.emaker#:span::103:6::103:12>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/sealing/makeVOCPair.emaker#:span::106:6::106:12>
 expr: bar(f1)
 original and new stdout differ
 original stdout: c:/Documents and Settings/MILLERM1/.bashrc
@@ -1034,45 +986,45 @@ c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/serial/deSubgra
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/serial/makeAnUncaller.emaker:
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/serial/makeSurgeon.emaker:
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/serial/opaque__uriGetter.emaker:
-c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/lamport.updoc:.
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/lamport.updoc#:span::4:2::4:37>
+c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/lamport.updoc:..
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/lamport.updoc#:span::11:2::11:37>
 expr: def whenever := <elib:slot.whenever>
 original and new value differ
 original value: <ever0>
      new value: <whenever>
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/lamport.updoc#:span::7:2::7:35>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/lamport.updoc#:span::14:2::14:35>
 expr: def forever := <elib:slot.forever>
 missing new value
 original value: <trackLamportSlot>
 missing original problem
 new problem: Failed: org.erights.e.elib.slot.forever not found
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/lamport.updoc#:span::10:2::10:29>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/lamport.updoc#:span::17:2::17:29>
 expr: def &x := makeLamportSlot(3)
 original and new value differ
 original value: 3
      new value: <lamport 3 as of 0>
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/lamport.updoc#:span::13:2::13:29>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/lamport.updoc#:span::20:2::20:29>
 expr: def &y := makeLamportSlot(5)
 original and new value differ
 original value: 5
      new value: <lamport 5 as of 0>
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/lamport.updoc#:span::16:2::16:28>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/lamport.updoc#:span::23:2::23:28>
 expr: def &z := whenever(&x) + &y
 missing new value
 original value: <everFormula_19>
 missing original problem
 new problem: <NoSuchMethodException: <a whenever>.run/1>
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/lamport.updoc#:span::19:2::19:29>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/lamport.updoc#:span::26:2::26:29>
 expr: forever(&stdout).println(&z)
 missing original problem
 new problem: Failed: Undefined variable: forever
 ...
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/lamport.updoc#:span::33:2::33:2>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/lamport.updoc#:span::40:2::40:2>
 expr: z
 missing new value
 original value: <ref broken by problem: <ClassCastException: String doesn't coerce to an int>>
@@ -1080,28 +1032,28 @@ missing original problem
 new problem: Failed: Undefined variable: z
 ..
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/makeLamportSlot.emaker:
-c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/makeLazySlot.emaker:.
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/makeLazySlot.emaker#:span::50:4::50:27>
+c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/makeLazySlot.emaker:..
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/makeLazySlot.emaker#:span::54:4::54:27>
 expr: makeLazySlot :DeepFrozen
 missing new value
 original value: <makeLazySlot>
 missing original problem
 new problem: Not audited by DeepFrozen
 .
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/makeLazySlot.emaker#:span::57:4::57:16>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/makeLazySlot.emaker#:span::61:4::61:16>
 expr: foo.isFinal()
 missing new value
 original value: true
 missing original problem
 new problem: <NoSuchMethodException: <a String>.isFinal/0>
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/makeLazySlot.emaker#:span::60:4::60:23>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/makeLazySlot.emaker#:span::64:4::64:23>
 expr: foo.setValue("mood")
 original and new problem differ
 original problem: this lazy Slot may not be changed
      new problem: nonlocal exit by lazy slot's maker
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/makeLazySlot.emaker#:span::63:4::63:6>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/makeLazySlot.emaker#:span::67:4::67:6>
 expr: foo
 missing new stdout
 original stdout: foof
@@ -1110,120 +1062,103 @@ original value: "food"
 missing original problem
 new problem: nonlocal exit by lazy slot's maker
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/makeLazySlot.emaker#:span::68:4::68:6>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/makeLazySlot.emaker#:span::72:4::72:6>
 expr: foo
 missing new value
 original value: "food"
 missing original problem
 new problem: nonlocal exit by lazy slot's maker
 .
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/makeLazySlot.emaker#:span::75:4::75:6>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/makeLazySlot.emaker#:span::79:4::79:6>
 expr: bar
 original and new stdout differ
 original stdout: barn
      new stdout: barn
                  
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/makeLazySlot.emaker#:span::80:4::80:6>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/makeLazySlot.emaker#:span::84:4::84:6>
 expr: bar
 original and new problem differ
 original problem: bare
      new problem: nonlocal exit by lazy slot's maker
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/makeLazySlot.emaker#:span::83:4::83:22>
-expr: # Ejecting by maker
-      def baz; eject out { bind baz := makeLazySlot(thunk { out("bass") }); baz.getValue() }
-missing new value
-original value: "bass"
-missing original syntax error
-new syntax error: 
-                  def baz; eject out { bind baz := makeLazySlot(thunk { out("bass") }); baz.getValue() }
-                  ^
-                  @ <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/makeLazySlot.emaker#:span::84:21::84:21>
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/makeLazySlot.emaker#:span::87:4::87:17>
-expr: baz.getValue()
-original and new problem differ
-original problem: nonlocal exit by lazy slot's maker
-     new problem: Failed: Undefined variable: baz
-
-c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/near.emaker:
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/near.emaker#:span::25:6::25:31>
+..
+c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/near.emaker:.
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/near.emaker#:span::31:6::31:31>
 expr: def nr := <elib:slot.near>
 original and new value differ
 original value: <near>
      new value: near
 .
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/near.emaker#:span::31:6::31:11>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/near.emaker#:span::37:6::37:11>
 expr: x := 4
 missing new value
 original value: 4
 missing original problem
 new problem: Failed: Can't assign to final variable: x
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/near.emaker#:span::34:6::34:31>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/near.emaker#:span::40:6::40:31>
 expr: def [p,r] := Ref.promise()
 original and new value differ
 original value: [<Promise>, <Unresolved Resolver>]
      new value: [<Promise>, <Resolver>]
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/near.emaker#:span::37:6::37:11>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/near.emaker#:span::43:6::43:11>
 expr: x := p
 original and new problem differ
 original problem: not near
      new problem: Failed: Can't assign to final variable: x
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/near.emaker#:span::46:6::46:11>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/near.emaker#:span::52:6::52:11>
 expr: x := r
 missing new value
 original value: <Unresolved Resolver>
 missing original problem
 new problem: Failed: Can't assign to final variable: x
 .
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/near.emaker#:span::50:6::50:11>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/near.emaker#:span::56:6::56:11>
 expr: x := p
 missing new value
 original value: 44
 missing original problem
 new problem: Failed: Can't assign to final variable: x
 ...
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/near.emaker#:span::58:6::58:11>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/near.emaker#:span::64:6::64:11>
 expr: y := 3
 missing new value
 original value: 3
 missing original problem
 new problem: Failed: Can't assign to final variable: y
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/near.emaker#:span::61:6::61:10>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/near.emaker#:span::67:6::67:10>
 expr: foo()
 missing new value
 original value: 3
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/near.emaker#:span::64:6::64:33>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/near.emaker#:span::70:6::70:33>
 expr: def [p2,r2] := Ref.promise()
 original and new value differ
 original value: [<Promise>, <Unresolved Resolver>]
      new value: [<Promise>, <Resolver>]
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/near.emaker#:span::67:6::67:12>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/near.emaker#:span::73:6::73:12>
 expr: y := p2
 missing new value
 original value: <Promise>
 missing original problem
 new problem: Failed: Can't assign to final variable: y
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/near.emaker#:span::70:6::70:10>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/near.emaker#:span::76:6::76:10>
 expr: foo()
 missing new problem
 original problem: not near
 .
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/near.emaker#:span::80:6::80:10>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/near.emaker#:span::86:6::86:10>
 expr: foo()
 missing new value
 original value: 77
 .
-c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/whenever.emaker:......
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/whenever.emaker#:span::338:2::338:38>
+c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/whenever.emaker:.......
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/whenever.emaker#:span::342:2::342:38>
 expr: def m := whenever.dynamic([l], thunk{
           var out := []
           for x in l.getValue() {
@@ -1235,7 +1170,6 @@ original and new value differ
 original value: <everFormula_23>
      new value: <_>
 ..................
-c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/tables/emptyPriorityQ.emaker:
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/tables/graph/makeDirectedGraph.emaker:
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/tables/graph/templateEdge.emaker:
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/tables/graph/templateGraphElement.emaker:
@@ -1243,46 +1177,46 @@ c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/tables/graph/te
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/tables/makeCycleBreaker.emaker:
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/examples/concurrency/asyncAnd-cya.emaker:
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/examples/concurrency/asyncAnd.emaker:
-c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/examples/concurrency/makeQueue.emaker:...........
-c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/examples/concurrency/QMaker.emaker:...........
+c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/examples/concurrency/makeQueue.emaker:............
+c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/examples/concurrency/QMaker.emaker:............
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/extern/persist/initTimeMachine.emaker:
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/extern/persist/makeAtomicFile.emaker:
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/extern/persist/makeTimeMachineAuthor.emaker:
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/extern/persist/makeTransplanterAuthor.emaker:
-c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/extern/persist/persist.updoc:.....
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/extern/persist/persist.updoc#:span::28:2::28:27>
+c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/extern/persist/persist.updoc:......
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/extern/persist/persist.updoc#:span::29:2::29:27>
 expr: def sr := makeSturdyRef(3)
 original and new value differ
 original value: <SturdyRef>
      new value: <SturdyRef to 3>
 ..
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/extern/persist/persist.updoc#:span::37:2::37:54>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/extern/persist/persist.updoc#:span::38:2::38:54>
 expr: def af := makeAtomicFile(<file:~/Desktop>, "foo.vat")
 original and new value differ
 original value: <atomic: <file:c:/Documents and Settings/MILLERM1/Desktop/foo.vat>>
      new value: <atomic: <file:c:/Documents and Settings/millerm1/Desktop/foo.vat>>
-.....
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/extern/persist/persist.updoc#:span::55:2::55:54>
+......
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/extern/persist/persist.updoc#:span::57:2::57:54>
 expr: def af := makeAtomicFile(<file:~/Desktop>, "foo.vat")
 original and new value differ
 original value: <atomic: <file:c:/Documents and Settings/MILLERM1/Desktop/foo.vat>>
      new value: <atomic: <file:c:/Documents and Settings/millerm1/Desktop/foo.vat>>
 .
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/extern/persist/persist.updoc#:span::60:2::60:71>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/extern/persist/persist.updoc#:span::62:2::62:71>
 expr: def sr := introducer.sturdyFromURI(<file:~/Desktop/foo.cap>.getText())
 original and new value differ
 original value: <SturdyRef>
      new value: <SturdyRef to 3>
 .
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/facet/makeCaretaker.emaker:
-c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/facet/makeCaretaker.updoc:..
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/facet/makeCaretaker.updoc#:span::12:2::12:27>
+c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/facet/makeCaretaker.updoc:...
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/facet/makeCaretaker.updoc#:span::14:2::14:27>
 expr: def [f,r] := mct(<file:.>)
 original and new value differ
 original value: [<<file:c:/Documents and Settings/MILLERM1/e/src/>>, <revoker>]
      new value: [<<file:c:/Documents and Settings/millerm1/e/src/>>, <revoker>]
 ......
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/facet/makeCaretaker.updoc#:span::31:2::31:8>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/facet/makeCaretaker.updoc#:span::33:2::33:8>
 expr: help(f)
 original and new value differ
 original value: an org.erights.e.elang.evm.EImplByProxy
@@ -1322,7 +1256,8 @@ c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/facet/makeGrantMgrAu
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/facet/makeOnlyOne.emaker:
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/facet/makeRethrower.emaker:
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/facet/makeStoneCast.emaker:
-c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/facet/once.emaker:....
+c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/facet/once.emaker:.....
+c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/facet/__dynamicExtent.emaker:
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/install/confirm.emaker:
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/install/props/substFromProps.emaker:
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/install/win32/addCommandMaker.emaker:
@@ -1330,12 +1265,11 @@ c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/install/win32/fileAs
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/install/win32/installToRegistry.emaker:
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/install/win32/makeShortcutMaker.emaker:
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/install/win32/setupWindows.emaker:
-c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/tools/args/argParser.emaker:
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/tools/args/interimArgParser.emaker:
-c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/tools/args/interimArgParser.updoc:......
+c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/tools/args/interimArgParser.updoc:.......
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/tools/args/makeCapExporter.emaker:
-c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/tools/args/makeCapExporter.updoc:.
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/tools/args/makeCapExporter.updoc#:span::4:6::4:24>
+c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/tools/args/makeCapExporter.updoc:..
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/tools/args/makeCapExporter.updoc#:span::11:6::11:24>
 expr: def uriGetters := [
           "file" => <file>,
           "http" => <http>,
@@ -1344,66 +1278,66 @@ original and new value differ
 original value: ["file" => <a FileGetter>, "http" => http__uriGetter, "ftp" => ftp__uriGetter]
      new value: ["file" => <file>, "http" => <http>, "ftp" => <ftp>]
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/tools/args/makeCapExporter.updoc#:span::12:6::12:69>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/tools/args/makeCapExporter.updoc#:span::19:6::19:69>
 expr: def exportCap := makeCapExporter(introducer, <file>, uriGetters)
 missing new value
 original value: <exportCap>
 missing original problem
 new problem: <NoSuchMethodException: <a makeCapExporter>.run/3>
 .
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/tools/args/makeCapExporter.updoc#:span::18:6::18:31>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/tools/args/makeCapExporter.updoc#:span::25:6::25:31>
 expr: def sr := makeSturdyRef(3)
 missing new value
 original value: <SturdyRef>
 missing original problem
 new problem: <NullPointerException: TimeMachine must be made non-Ephemeral first.
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/tools/args/makeCapExporter.updoc#:span::21:6::21:32>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/tools/args/makeCapExporter.updoc#:span::28:6::28:32>
 expr: exportCap(sr, "c:/foo.cap")
 missing original problem
 new problem: Failed: Undefined variable: exportCap
 ....
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/tools/args/makeCapExporter.updoc#:span::33:6::33:68>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/tools/args/makeCapExporter.updoc#:span::40:6::40:68>
 expr: exportCap(sr, introducer.sturdyToURI(makeSturdyRef(connector)))
 missing new value
 original value: <Promise>
 missing original problem
 new problem: Failed: Undefined variable: exportCap
 .
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/tools/args/makeCapExporter.updoc#:span::38:6::38:11>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/tools/args/makeCapExporter.updoc#:span::45:6::45:11>
 expr: bletch
 missing new value
 original value: 3
 ..
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/tools/args/makeCapExporter.updoc#:span::47:6::47:40>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/tools/args/makeCapExporter.updoc#:span::54:6::54:40>
 expr: def sr2 := importCap("@c:/foo.cap")
 missing new value
 original value: <SturdyRef>
 missing original problem
 new problem: <FileNotFoundException: c:\foo.cap (The system cannot find the file specified)>
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/tools/args/makeCapExporter.updoc#:span::50:6::50:14>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/tools/args/makeCapExporter.updoc#:span::57:6::57:14>
 expr: sr == sr2
 missing new value
 original value: true
 missing original problem
 new problem: Failed: Undefined variable: sr
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/tools/args/makeCapExporter.updoc#:span::53:6::53:27>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/tools/args/makeCapExporter.updoc#:span::60:6::60:27>
 expr: def x := sr2.getRcvr()
 missing new value
 original value: 3
 missing original problem
 new problem: Failed: Undefined variable: sr2
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/tools/args/makeCapExporter.updoc#:span::56:6::56:45>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/tools/args/makeCapExporter.updoc#:span::63:6::63:45>
 expr: def sr3 := importCap("@file:c:/foo.cap")
 missing new value
 original value: <SturdyRef>
 missing original problem
 new problem: <FileNotFoundException: c:\foo.cap (The system cannot find the file specified)>
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/tools/args/makeCapExporter.updoc#:span::59:6::59:18>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/tools/args/makeCapExporter.updoc#:span::66:6::66:18>
 expr: sr3.getRcvr()
 missing new value
 original value: 3
@@ -1422,20 +1356,20 @@ c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/tools/collect/allOf.
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/tools/collect/anyOf.emaker:
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/tools/collect/oneAtATimeVow.emaker:
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/tools/collect/propUtils.emaker:
-c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/tools/collect/propUtils.updoc:...
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/tools/collect/propUtils.updoc#:span::11:6::11:43>
+c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/tools/collect/propUtils.updoc:....
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/tools/collect/propUtils.updoc#:span::15:6::15:43>
 expr: propUtils.testProp(props, "e.version")
 missing new problem
 original problem: 0.8.9zb must be true or false
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/tools/collect/propUtils.updoc#:span::20:6::20:47>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/tools/collect/propUtils.updoc#:span::24:6::24:47>
 expr: propUtils.testProp(props, "e.enable.bind")
 original and new value differ
 original value: true
      new value: false
 ..
-c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/tools/collect/reverse.emaker:
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/tools/collect/reverse.emaker#:span::26:6::26:67>
+c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/tools/collect/reverse.emaker:.
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/tools/collect/reverse.emaker#:span::32:6::32:67>
 expr: for i => x in reverse(["a", "b", "c"]) { println(`$i => $x`) }
 missing new stdout
 original stdout: 2 => c
@@ -1444,20 +1378,16 @@ original stdout: 2 => c
 missing original problem
 new problem: Failed: Undefined variable: reverse
 
-c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/tools/files/leaves.emaker:.
+c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/tools/files/leaves.emaker:..
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/tools/files/walkSingleFileVow.emaker:
-c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/tools/html/html2txt.emaker:......
-c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/tools/html/html2updoc.emaker:.....
-c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/tools/html/htmlTokenizer.emaker:....
+c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/tools/html/html2txt.emaker:.......
+c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/tools/html/html2updoc.emaker:......
+c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/tools/html/htmlTokenizer.emaker:.....
 expr: 
 missing new A bug we're just going to live with for now
 original A bug we're just going to live with for now: 
 ...
-c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/tools/java/fixImports.emaker:=== 2006-10-31T08:14:51.329Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
-eruntime: Import org.quasiliteral.text.makeIdentifiers instead : (Importing org.quasiliteral.text.Identifiers)
- @ Loader#get(String)
- @ get/1: <file:/C:/Documents%20and%20Settings/millerm1/e/src/esrc/org/erights/e/tools/java/fixImports.emaker#:span::4:23::4:64>
-..
+c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/tools/java/fixImports.emaker:...
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/tools/text/abbrev.emaker:
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/tools/text/first__quasiParser.emaker:
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/tools/text/trimLines.emaker:
@@ -1479,8 +1409,8 @@ c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/ui/swt/makeGCerAutho
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/ui/swt/makeTableTreeAuthor.emaker:
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/ui/swt/menuKit.emaker:
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/ui/swt/swtGridQParserMaker.emaker:
-c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/ui/swt/watchAuthor.emaker:........=== 2006-10-31T08:15:02.155Z (PendingEvent.report:PendingEvent.java:109) WRN
-causality: Problem in turn <<Vat home in <SWTRunner>>,108>: 
+c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/ui/swt/watchAuthor.emaker:.........=== 2006-11-06T05:00:53.745Z (PendingEvent.report:PendingEvent.java:109) WRN
+causality: Problem in turn <<Vat home in <SWTRunner>>,121>: 
 --vvvv--
 Failed: Not mergeable: <Vat home in <SWTRunner>>
 
@@ -1491,7 +1421,7 @@ java.lang.RuntimeException: Failed: Not mergeable: <Vat home in <SWTRunner>>
 	at org.erights.e.develop.assertion.T.fail(T.java:84)
 	at org.erights.e.develop.assertion.T.require(T.java:339)
 	at org.erights.e.elib.vat.Vat$VatRedirector.run(Vat.java:627)
-	at sun.reflect.GeneratedMethodAccessor196.invoke(Unknown Source)
+	at sun.reflect.GeneratedMethodAccessor205.invoke(Unknown Source)
 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
 	at java.lang.reflect.Method.invoke(Method.java:585)
 	at org.erights.e.elib.prim.InstanceMethodNode.innerExecute(InstanceMethodNode.java:113)
@@ -1509,35 +1439,35 @@ java.lang.RuntimeException: Failed: Not mergeable: <Vat home in <SWTRunner>>
 --^^^^--
 
 
-c:/Documents and Settings/millerm1/e/src/esrc/org/erights/ex/swing/JPanel__quasiParser.emaker:
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/ex/swing/JPanel__quasiParser.emaker#:span::116:6::116:54>
+c:/Documents and Settings/millerm1/e/src/esrc/org/erights/ex/swing/JPanel__quasiParser.emaker:.
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/ex/swing/JPanel__quasiParser.emaker#:span::119:6::119:54>
 expr: def fr := <import:javax.swing.makeJFrame>(); null
 missing original problem
 new problem: <SecurityException: javax.swing.JFrame not approved as safe>
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/ex/swing/JPanel__quasiParser.emaker#:span::117:6::117:24>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/ex/swing/JPanel__quasiParser.emaker#:span::120:6::120:24>
 expr: fr.setSize(300,300)
 missing original problem
 new problem: Failed: Undefined variable: fr
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/ex/swing/JPanel__quasiParser.emaker#:span::118:6::118:14>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/ex/swing/JPanel__quasiParser.emaker#:span::121:6::121:14>
 expr: fr.show()
 missing original problem
 new problem: Failed: Undefined variable: fr
 ..
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/ex/swing/JPanel__quasiParser.emaker#:span::124:6::124:43>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/ex/swing/JPanel__quasiParser.emaker#:span::127:6::127:43>
 expr: fr.getContentPane().add(JPanel`$a $b >
                                      V  $c $d
                                      $e >  V`); null
 missing original problem
 new problem: Failed: Undefined variable: fr
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/ex/swing/JPanel__quasiParser.emaker#:span::127:6::127:20>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/ex/swing/JPanel__quasiParser.emaker#:span::130:6::130:20>
 expr: fr.invalidate()
 missing original problem
 new problem: Failed: Undefined variable: fr
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/ex/swing/JPanel__quasiParser.emaker#:span::128:6::128:18>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/ex/swing/JPanel__quasiParser.emaker#:span::131:6::131:18>
 expr: fr.validate()
 missing original problem
 new problem: Failed: Undefined variable: fr
@@ -1715,160 +1645,162 @@ original value: term`schema(production(tag("<schema>"),
                 tag(".String."))))`
 
 c:/Documents and Settings/millerm1/e/src/esrc/org/quasiliteral/schema/quasiMetaBuilder.emaker:
-c:/Documents and Settings/millerm1/e/src/esrc/org/quasiliteral/text/convertHoles.emaker:
-c:/Documents and Settings/millerm1/e/src/esrc/org/quasiliteral/text/twine__quasiParser.emaker:
 c:/Documents and Settings/millerm1/e/src/esrc/scripts/bad-char.e:
-c:/Documents and Settings/millerm1/e/src/esrc/scripts/ButtonPointer.e:
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/ButtonPointer.e#:span::37:2::37:32>
+c:/Documents and Settings/millerm1/e/src/esrc/scripts/benchmarks/nsieve-guardless.e:
+c:/Documents and Settings/millerm1/e/src/esrc/scripts/benchmarks/nsieve-kernel-opt.e:
+c:/Documents and Settings/millerm1/e/src/esrc/scripts/benchmarks/nsieve-kernel.e:
+c:/Documents and Settings/millerm1/e/src/esrc/scripts/benchmarks/nsieve.e:
+c:/Documents and Settings/millerm1/e/src/esrc/scripts/ButtonPointer.e:.
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/ButtonPointer.e#:span::41:2::41:32>
 expr: def f := <file:~/e/doc/toc.txt>
 original and new value differ
 original value: <file:c:/e/doc/toc.txt>
      new value: <file:c:/Documents and Settings/millerm1/e/doc/toc.txt>
 .
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/ButtonPointer.e#:span::59:2::59:12>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/ButtonPointer.e#:span::63:2::63:12>
 expr: getLine(tr)
 missing new value
 original value: [1, elib/]
 missing original problem
 new problem: Failed: Undefined variable: getLine
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/ButtonPointer.e#:span::62:2::62:12>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/ButtonPointer.e#:span::66:2::66:12>
 expr: getLine(tr)
 missing new value
 original value: [2, capability/]
 missing original problem
 new problem: Failed: Undefined variable: getLine
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/ButtonPointer.e#:span::65:2::65:12>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/ButtonPointer.e#:span::69:2::69:12>
 expr: getLine(tr)
 missing new value
 original value: [3, ode/]
 missing original problem
 new problem: Failed: Undefined variable: getLine
 .
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/ButtonPointer.e#:span::129:2::129:25>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/ButtonPointer.e#:span::133:2::133:25>
 expr: splitName("foo/bar/baz")
 missing new value
 original value: [foo/bar/, baz]
 missing original problem
 new problem: Failed: Undefined variable: splitName
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/ButtonPointer.e#:span::132:2::132:21>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/ButtonPointer.e#:span::136:2::136:21>
 expr: splitName("foo.bar")
 missing new value
 original value: [, foo.bar]
 missing original problem
 new problem: Failed: Undefined variable: splitName
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/ButtonPointer.e#:span::135:2::135:22>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/ButtonPointer.e#:span::139:2::139:22>
 expr: splitName("foo/bar/")
 missing original problem
 new problem: Failed: Undefined variable: splitName
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/ButtonPointer.e#:span::169:2::169:34>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/ButtonPointer.e#:span::173:2::173:34>
 expr: relativeURL("foo/bar", "baz/zip")
 missing new value
 original value: ../baz/zip
 missing original problem
 new problem: Failed: Undefined variable: relativeURL
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/ButtonPointer.e#:span::172:2::172:35>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/ButtonPointer.e#:span::176:2::176:35>
 expr: relativeURL("foo/bar", "baz/zip/")
 missing new value
 original value: ../baz/zip/index.html
 missing original problem
 new problem: Failed: Undefined variable: relativeURL
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/ButtonPointer.e#:span::175:2::175:34>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/ButtonPointer.e#:span::179:2::179:34>
 expr: relativeURL("foo/bar", "foo/zip")
 missing new value
 original value: zip
 missing original problem
 new problem: Failed: Undefined variable: relativeURL
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/ButtonPointer.e#:span::178:2::178:38>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/ButtonPointer.e#:span::182:2::182:38>
 expr: relativeURL("foo/bar", "foo/bar/zip")
 original and new problem differ
 original problem: required condition failed
      new problem: Failed: Undefined variable: relativeURL
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/ButtonPointer.e#:span::187:2::187:39>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/ButtonPointer.e#:span::191:2::191:39>
 expr: relativeURL("foo/bar/", "foo/bar/zip")
 missing new value
 original value: zip
 missing original problem
 new problem: Failed: Undefined variable: relativeURL
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/ButtonPointer.e#:span::190:2::190:32>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/ButtonPointer.e#:span::194:2::194:32>
 expr: relativeURL("foo/bar/", "foo/")
 missing original problem
 new problem: Failed: Undefined variable: relativeURL
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/ButtonPointer.e#:span::293:2::293:48>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/ButtonPointer.e#:span::297:2::297:48>
 expr: def welib := FileWrapperMaker(<c:/e/doc/elib/>)
 missing new value
 original value: <file:c:/e/doc/elib/>
 missing original problem
 new problem: Failed: Undefined variable: FileWrapperMaker
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/ButtonPointer.e#:span::296:2::296:17>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/ButtonPointer.e#:span::300:2::300:17>
 expr: welib.getTitle()
 missing new value
 original value: ELib: Local and Remote
 missing original problem
 new problem: Failed: Undefined variable: welib
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/ButtonPointer.e#:span::299:2::299:69>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/ButtonPointer.e#:span::303:2::303:69>
 expr: def winsrc := FileWrapperMaker(<c:/e/doc/download/windows-src.html>)
 missing new value
 original value: <file:c:/e/doc/download/windows-src.html>
 missing original problem
 new problem: Failed: Undefined variable: FileWrapperMaker
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/ButtonPointer.e#:span::302:2::302:30>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/ButtonPointer.e#:span::306:2::306:30>
 expr: welib.getDownButton() := null
 missing original problem
 new problem: Failed: Undefined variable: welib
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/ButtonPointer.e#:span::303:2::303:32>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/ButtonPointer.e#:span::307:2::307:32>
 expr: welib.getDownButton() := winsrc
 missing new value
 original value: <file:c:/e/doc/download/windows-src.html>
 missing original problem
 new problem: Failed: Undefined variable: welib
 .
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/ButtonPointer.e#:span::307:2::307:67>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/ButtonPointer.e#:span::311:2::311:67>
 expr: def unixbin := FileWrapperMaker(<c:/e/doc/download/unix-bin.html>)
 missing new value
 original value: <file:c:/e/doc/download/unix-bin.html>
 missing original problem
 new problem: Failed: Undefined variable: FileWrapperMaker
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/ButtonPointer.e#:span::310:2::310:31>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/ButtonPointer.e#:span::314:2::314:31>
 expr: winsrc.getNextButton() := null
 missing original problem
 new problem: Failed: Undefined variable: winsrc
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/ButtonPointer.e#:span::311:2::311:34>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/ButtonPointer.e#:span::315:2::315:34>
 expr: winsrc.getNextButton() := unixbin
 missing new value
 original value: <file:c:/e/doc/download/unix-bin.html>
 missing original problem
 new problem: Failed: Undefined variable: winsrc
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/ButtonPointer.e#:span::314:2::314:34>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/ButtonPointer.e#:span::318:2::318:34>
 expr: unixbin.getPrevButton() := winsrc
 missing new value
 original value: <file:c:/e/doc/download/windows-src.html>
 missing original problem
 new problem: Failed: Undefined variable: unixbin
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/ButtonPointer.e#:span::317:2::317:32>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/ButtonPointer.e#:span::321:2::321:32>
 expr: unixbin.getPrevButton() := null
 missing original problem
 new problem: Failed: Undefined variable: unixbin
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/ButtonPointer.e#:span::318:2::318:64>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/ButtonPointer.e#:span::322:2::322:64>
 expr: unixbin.getUpButton() := FileWrapperMaker(<c:/e/doc/download/>)
 missing new value
 original value: <file:c:/e/doc/download/>
@@ -1882,29 +1814,29 @@ c:/Documents and Settings/millerm1/e/src/esrc/scripts/causeway.e-swt:
 c:/Documents and Settings/millerm1/e/src/esrc/scripts/check-make-conflicts.e:
 c:/Documents and Settings/millerm1/e/src/esrc/scripts/cipher-saber.e:
 c:/Documents and Settings/millerm1/e/src/esrc/scripts/copyOnly.e:
-c:/Documents and Settings/millerm1/e/src/esrc/scripts/counter-client.updoc:..
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/counter-client.updoc#:span::7:6::7:44>
+c:/Documents and Settings/millerm1/e/src/esrc/scripts/counter-client.updoc:...
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/counter-client.updoc#:span::14:6::14:44>
 expr: def sr := introducer.sturdyFromURI(uri)
 missing new value
 original value: <a SturdyRef>
 missing original problem
 new problem: <MalformedURLException: URI captp://213.130.163.34:4451/0Bg1bGDtCQCmpMvfBJ8wvl6dmRHH/08tjK7_p7d8G8u7OfaVHFr6quSvx does not start with captp://*>
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/counter-client.updoc#:span::10:6::10:31>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/counter-client.updoc#:span::17:6::17:31>
 expr: def remote := sr.getRcvr()
 missing new value
 original value: <Promise>
 missing original problem
 new problem: Failed: Undefined variable: sr
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/counter-client.updoc#:span::13:6::13:33>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/counter-client.updoc#:span::20:6::20:33>
 expr: def val1 := remote <- incr()
 missing new value
 original value: <Promise>
 missing original problem
 new problem: Failed: Undefined variable: remote
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/counter-client.updoc#:span::16:6::16:9>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/counter-client.updoc#:span::23:6::23:9>
 expr: val1
 missing new value
 original value: 1
@@ -1912,73 +1844,54 @@ missing original problem
 new problem: Failed: Undefined variable: val1
 .
 c:/Documents and Settings/millerm1/e/src/esrc/scripts/counter-example.e:
-c:/Documents and Settings/millerm1/e/src/esrc/scripts/diceIt.e:
-c:/Documents and Settings/millerm1/e/src/esrc/scripts/donutServices/donutScripts/createKiosk.e:
-c:/Documents and Settings/millerm1/e/src/esrc/scripts/donutServices/donutScripts/createMint.e:
-c:/Documents and Settings/millerm1/e/src/esrc/scripts/donutServices/donutScripts/createSliverServer.e:
-c:/Documents and Settings/millerm1/e/src/esrc/scripts/donutServices/donutScripts/reviveKiosk.e:
-c:/Documents and Settings/millerm1/e/src/esrc/scripts/donutServices/donutScripts/reviveMint.e:
-c:/Documents and Settings/millerm1/e/src/esrc/scripts/donutServices/donutScripts/reviveSliverServer.e:
 c:/Documents and Settings/millerm1/e/src/esrc/scripts/donutServices/donutScripts/sliverServer.e-swt:
-c:/Documents and Settings/millerm1/e/src/esrc/scripts/donutServices/donutScripts/sliverServerMgr.e:
 c:/Documents and Settings/millerm1/e/src/esrc/scripts/donutServices/donutScripts/sliverServerMgr.e-swt:
-c:/Documents and Settings/millerm1/e/src/esrc/scripts/donutServices/donutScripts/startDoughBot.e:
 c:/Documents and Settings/millerm1/e/src/esrc/scripts/donutServices/donutScripts/sugar-demo.e-swt:
-c:/Documents and Settings/millerm1/e/src/esrc/scripts/donutServices/doughBot1/name.txt:
-c:/Documents and Settings/millerm1/e/src/esrc/scripts/donutServices/doughBot1/startDoughBot.e:
-c:/Documents and Settings/millerm1/e/src/esrc/scripts/donutServices/kiosk1/createKiosk.e:
-c:/Documents and Settings/millerm1/e/src/esrc/scripts/donutServices/kiosk1/kioskName.txt:
-c:/Documents and Settings/millerm1/e/src/esrc/scripts/donutServices/kiosk1/reviveKiosk.e:
-c:/Documents and Settings/millerm1/e/src/esrc/scripts/donutServices/kiosk2/kioskName.txt:
-c:/Documents and Settings/millerm1/e/src/esrc/scripts/donutServices/kiosk2/reviveKiosk.e:
-c:/Documents and Settings/millerm1/e/src/esrc/scripts/donutServices/sliverServer1/name.txt:
-c:/Documents and Settings/millerm1/e/src/esrc/scripts/donutServices/sugarMint/createMint.e:
-c:/Documents and Settings/millerm1/e/src/esrc/scripts/donutServices/sugarMint/mintName.txt:
-c:/Documents and Settings/millerm1/e/src/esrc/scripts/donutServices/sugarMint/reviveMint.e:
 c:/Documents and Settings/millerm1/e/src/esrc/scripts/eBrowser.e-awt:
 c:/Documents and Settings/millerm1/e/src/esrc/scripts/eBrowser.e-swt:
 c:/Documents and Settings/millerm1/e/src/esrc/scripts/echat.e-awt:
 c:/Documents and Settings/millerm1/e/src/esrc/scripts/eChat.e-swt:
 c:/Documents and Settings/millerm1/e/src/esrc/scripts/echo.e:
 c:/Documents and Settings/millerm1/e/src/esrc/scripts/eConfig.e-awt:
+c:/Documents and Settings/millerm1/e/src/esrc/scripts/emacsify.e:
 c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.e:
-c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc:.
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::7:2::7:94>
+c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc:..
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::11:2::11:94>
 expr: def sr := <captp://192.168.0.21:1043/5UmFAqXbepvCOwuSHCEGHt5V1wC/Ray1=9hgEHkC8i_DRs5WKfsLnji>
 missing new value
 original value: <a SturdyRef>
 missing original problem
 new problem: <MalformedURLException: URI //192.168.0.21:1043/5UmFAqXbepvCOwuSHCEGHt5V1wC/Ray1=9hgEHkC8i_DRs5WKfsLnji does not start with captp://*>
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::10:2::10:35>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::14:2::14:35>
 expr: def evalServerRcvr := sr.getRcvr()
 missing new value
 original value: <Remote Promise>
 missing original problem
 new problem: Failed: Undefined variable: sr
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::13:2::13:15>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::17:2::17:15>
 expr: evalServerRcvr
 missing new value
 original value: <Remote Promise>
 missing original problem
 new problem: Failed: Undefined variable: evalServerRcvr
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::16:2::16:68>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::20:2::20:68>
 expr: def seRcvr1 := evalServerRcvr <- newScriptEvaluator(["se1", "arg"])
 missing new value
 original value: <Remote Promise>
 missing original problem
 new problem: Failed: Undefined variable: evalServerRcvr
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::19:2::19:47>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::23:2::23:47>
 expr: def r1 := seRcvr1 <- evalCmdReportVow("2 + 3")
 missing new value
 original value: <Remote Promise>
 missing original problem
 new problem: Failed: Undefined variable: seRcvr1
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::22:2::22:3>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::26:2::26:3>
 expr: r1
 missing new value
 original value: "# value: 5
@@ -1987,35 +1900,35 @@ original value: "# value: 5
 missing original problem
 new problem: Failed: Undefined variable: r1
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::27:2::27:12>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::31:2::31:12>
 expr: println(r1)
 missing new value
 original value: 5
 missing original problem
 new problem: Failed: Undefined variable: r1
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::31:2::31:46>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::35:2::35:46>
 expr: def v1 := seRcvr1 <- evalCmdValueVow("2 + 3")
 missing new value
 original value: <Remote Promise>
 missing original problem
 new problem: Failed: Undefined variable: seRcvr1
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::34:2::34:3>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::38:2::38:3>
 expr: v1
 missing new value
 original value: [5, true]
 missing original problem
 new problem: Failed: Undefined variable: v1
 .
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::38:2::38:58>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::42:2::42:58>
 expr: def r2 := sePass1 <- evalCmdVow(`println("Hello world")`)
 missing new value
 original value: <Promise>
 missing original problem
 new problem: Failed: Undefined variable: sePass1
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::41:2::41:3>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::45:2::45:3>
 expr: r2
 missing new value
 original value: "# stdout: Hello world
@@ -2025,7 +1938,7 @@ original value: "# stdout: Hello world
 missing original problem
 new problem: Failed: Undefined variable: r2
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::47:2::47:12>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::51:2::51:12>
 expr: println(r2)
 missing new stdout
 original stdout: Hello world
@@ -2033,121 +1946,121 @@ original stdout: Hello world
 missing original problem
 new problem: Failed: Undefined variable: r2
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::52:2::52:43>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::56:2::56:43>
 expr: def cmdLoopPass := sePass1 <- getCmdLoop()
 missing new value
 original value: <Promise>
 missing original problem
 new problem: Failed: Undefined variable: sePass1
 .
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::62:2::62:41>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::66:2::66:41>
 expr: cmdLoopPass <- addStatusReactor(reactor)
 missing new value
 original value: <Promise>
 missing original problem
 new problem: Failed: Undefined variable: cmdLoopPass
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::65:2::65:42>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::69:2::69:42>
 expr: def r3 := sePass1 <- evalCmdVow("3 // 0")
 missing new value
 original value: <Promise>
 missing original problem
 new problem: Failed: Undefined variable: sePass1
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::68:2::68:3>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::72:2::72:3>
 expr: r3
 missing original problem
 new problem: Failed: Undefined variable: r3
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::76:2::76:52>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::80:2::80:52>
 expr: def r4 := sePass1 <- evalCmdVow("interp getArgs()")
 missing new value
 original value: <Promise>
 missing original problem
 new problem: Failed: Undefined variable: sePass1
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::79:2::79:3>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::83:2::83:3>
 expr: r4
 missing original problem
 new problem: Failed: Undefined variable: r4
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::87:2::87:55>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::91:2::91:55>
 expr: def r5 := sePass1 <- evalCmdVow("interp blockAtTop()")
 missing new value
 original value: <Promise>
 missing original problem
 new problem: Failed: Undefined variable: sePass1
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::90:2::90:3>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::94:2::94:3>
 expr: r5
 missing original problem
 new problem: Failed: Undefined variable: r5
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::95:2::95:41>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::99:2::99:41>
 expr: def r6 := sePass1 <- evalCmdVow("4 * 3")
 missing new value
 original value: <Promise>
 missing original problem
 new problem: Failed: Undefined variable: sePass1
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::98:2::98:3>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::102:2::102:3>
 expr: r6
 missing original problem
 new problem: Failed: Undefined variable: r6
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::102:2::102:31>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::106:2::106:31>
 expr: cmdLoopPass <- continueAtTop()
 missing new value
 original value: <Promise>
 missing original problem
 new problem: Failed: Undefined variable: cmdLoopPass
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::105:2::105:3>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::109:2::109:3>
 expr: r6
 missing original problem
 new problem: Failed: Undefined variable: r6
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::112:2::112:42>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::116:2::116:42>
 expr: def never := evalServerPass <- shutdown()
 missing new value
 original value: <Promise>
 missing original problem
 new problem: Failed: Undefined variable: evalServerPass
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::115:2::115:6>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::119:2::119:6>
 expr: never
 missing original problem
 new problem: Failed: Undefined variable: never
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::116:2::116:8>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::120:2::120:8>
 expr: sePass1
 missing new value
 original value: <Promise>
 missing original problem
 new problem: Failed: Undefined variable: sePass1
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::119:2::119:24>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::123:2::123:24>
 expr: Ref.isResolved(sePass1)
 missing new value
 original value: true
 missing original problem
 new problem: Failed: Undefined variable: sePass1
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::122:2::122:31>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::126:2::126:31>
 expr: Ref.isResolved(evalServerPass)
 missing new value
 original value: true
 missing original problem
 new problem: Failed: Undefined variable: evalServerPass
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::125:2::125:15>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::129:2::129:15>
 expr: evalServerPass
 missing new value
 original value: <ref broken by problem: <SocketException: Connection reset by peer: JVM_recv in socket input stream read>>
 missing original problem
 new problem: Failed: Undefined variable: evalServerPass
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::128:2::128:8>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::132:2::132:8>
 expr: sePass1
 missing new value
 original value: <Promise>
@@ -2160,7 +2073,7 @@ c:/Documents and Settings/millerm1/e/src/esrc/scripts/findall.e:
 c:/Documents and Settings/millerm1/e/src/esrc/scripts/findOldConstNames.e:
 c:/Documents and Settings/millerm1/e/src/esrc/scripts/fixdoc.e:
 c:/Documents and Settings/millerm1/e/src/esrc/scripts/fixImports.e:
-c:/Documents and Settings/millerm1/e/src/esrc/scripts/intro.updoc:.
+c:/Documents and Settings/millerm1/e/src/esrc/scripts/intro.updoc:..
 c:/Documents and Settings/millerm1/e/src/esrc/scripts/jed.e-swt:
 c:/Documents and Settings/millerm1/e/src/esrc/scripts/macify-swt.e:
 c:/Documents and Settings/millerm1/e/src/esrc/scripts/minChat.e-swt:
@@ -2173,12 +2086,12 @@ c:/Documents and Settings/millerm1/e/src/esrc/scripts/replace.e:
 c:/Documents and Settings/millerm1/e/src/esrc/scripts/replaceall.e:
 c:/Documents and Settings/millerm1/e/src/esrc/scripts/rune.e:
 c:/Documents and Settings/millerm1/e/src/esrc/scripts/setup.e-awt:
-c:/Documents and Settings/millerm1/e/src/esrc/scripts/srccheck-post.e:.....
+c:/Documents and Settings/millerm1/e/src/esrc/scripts/srccheck-post.e:......
 c:/Documents and Settings/millerm1/e/src/esrc/scripts/srccheck.e:
 c:/Documents and Settings/millerm1/e/src/esrc/scripts/substProps.e:
 c:/Documents and Settings/millerm1/e/src/esrc/scripts/tamingConverter.e:
-c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/audit-test.e:...
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/audit-test.e#:span::119:2::119:30>
+c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/audit-test.e:....
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/audit-test.e#:span::122:2::122:30>
 expr: def bad implements failer { }
 original and new problem differ
 original problem: <AuditFailedException: object expression <main>.bad__C failed audit by <failer>>
@@ -2189,115 +2102,114 @@ c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/causeway/buyer.e:
 c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/causeway/ping-server.e:
 c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/causeway/pong-client.e:
 c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/causeway/seller.e:
-c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/dist-cycle.updoc:.
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/dist-cycle.updoc#:span::11:6::11:33>
+c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/dist-cycle.updoc:..
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/dist-cycle.updoc#:span::12:6::12:33>
 expr: def [ap,ar] := Ref.promise()
 original and new value differ
 original value: [<Promise>, <Open Resolver>]
      new value: [<Promise>, <Resolver>]
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/dist-cycle.updoc#:span::14:6::14:59>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/dist-cycle.updoc#:span::15:6::15:59>
 expr: def apURI := introducer.sturdyToURI(makeSturdyRef(ap))
 missing original problem
 new problem: <NullPointerException: TimeMachine must be made non-Ephemeral first.
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/dist-cycle.updoc#:span::16:6::16:43>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/dist-cycle.updoc#:span::17:6::17:43>
 expr: <file:~/Desktop/ap.cap>.setText(apURI)
 missing original problem
 new problem: Failed: Undefined variable: apURI
-.
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/dist-cycle.updoc#:span::24:6::24:33>
+..
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/dist-cycle.updoc#:span::26:6::26:33>
 expr: def [bp,br] := Ref.promise()
 original and new value differ
 original value: [<Promise>, <Open Resolver>]
      new value: [<Promise>, <Resolver>]
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/dist-cycle.updoc#:span::27:6::27:59>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/dist-cycle.updoc#:span::29:6::29:59>
 expr: def bpURI := introducer.sturdyToURI(makeSturdyRef(bp))
 missing original problem
 new problem: <NullPointerException: TimeMachine must be made non-Ephemeral first.
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/dist-cycle.updoc#:span::29:6::29:43>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/dist-cycle.updoc#:span::31:6::31:43>
 expr: <file:~/Desktop/bp.cap>.setText(bpURI)
 missing original problem
 new problem: Failed: Undefined variable: bpURI
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/dist-cycle.updoc#:span::31:6::31:58>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/dist-cycle.updoc#:span::33:6::33:58>
 expr: def apURI := <file:~/Desktop/ap.cap>.getText().trim()
 missing original problem
 new problem: <FileNotFoundException: c:\Documents and Settings\millerm1\Desktop\ap.cap (The system cannot find the file specified)>
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/dist-cycle.updoc#:span::33:6::33:56>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/dist-cycle.updoc#:span::35:6::35:56>
 expr: def ap := introducer.sturdyFromURI(apURI).getRcvr()
 missing new value
 original value: <Promise>
 missing original problem
 new problem: Failed: Undefined variable: apURI
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/dist-cycle.updoc#:span::36:6::36:15>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/dist-cycle.updoc#:span::38:6::38:15>
 expr: [bp,br,ap]
 missing new value
 original value: [<Promise>, <Open Resolver>, <Promise>]
 missing original problem
 new problem: Failed: Undefined variable: ap
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/dist-cycle.updoc#:span::42:6::42:58>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/dist-cycle.updoc#:span::44:6::44:58>
 expr: def bpURI := <file:~/Desktop/bp.cap>.getText().trim()
 missing original problem
 new problem: <FileNotFoundException: c:\Documents and Settings\millerm1\Desktop\bp.cap (The system cannot find the file specified)>
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/dist-cycle.updoc#:span::44:6::44:56>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/dist-cycle.updoc#:span::46:6::46:56>
 expr: def bp := introducer.sturdyFromURI(bpURI).getRcvr()
 missing new value
 original value: <Promise>
 missing original problem
 new problem: Failed: Undefined variable: bpURI
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/dist-cycle.updoc#:span::47:6::47:15>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/dist-cycle.updoc#:span::49:6::49:15>
 expr: [ap,ar,bp]
 missing new value
 original value: [<Promise>, <Open Resolver>, <Promise>]
 missing original problem
 new problem: Failed: Undefined variable: bp
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/dist-cycle.updoc#:span::50:6::50:19>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/dist-cycle.updoc#:span::52:6::52:19>
 expr: ar.resolve(bp)
 missing original problem
 new problem: Failed: Undefined variable: bp
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/dist-cycle.updoc#:span::55:6::55:15>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/dist-cycle.updoc#:span::57:6::57:15>
 expr: [bp,br,ap]
 missing new value
 original value: [<Promise>, <Open Resolver>, <Promise>]
 missing original problem
 new problem: Failed: Undefined variable: ap
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/dist-cycle.updoc#:span::58:6::58:19>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/dist-cycle.updoc#:span::60:6::60:19>
 expr: br.resolve(ap)
 missing original problem
 new problem: Failed: Undefined variable: ap
 .
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/dist-cycle.updoc#:span::62:6::62:15>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/dist-cycle.updoc#:span::64:6::64:15>
 expr: [bp,br,ap]
 missing new value
 original value: [<Promise>, <Closed Resolver>, <Promise>]
 missing original problem
 new problem: Failed: Undefined variable: ap
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/dist-cycle.updoc#:span::68:6::68:15>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/dist-cycle.updoc#:span::70:6::70:15>
 expr: [ap,ar,bp]
 missing new value
 original value: [<Promise>, <Closed Resolver>, <Promise>]
 missing original problem
 new problem: Failed: Undefined variable: bp
 
-c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/jcombothread.e-awt:
-c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/makeScope.updoc:=== 2006-10-31T08:15:37.155Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
+c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/makeScope.updoc:=== 2006-11-06T05:01:38.359Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
 eruntime: Import org.erights.e.elang.scope.makeScope instead : (Importing org.erights.e.elang.scope.Scope)
  @ Loader#get(String)
- @ get/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/makeScope.updoc#:span::12:21::12:60>
-.
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/makeScope.updoc#:span::12:4::12:66>
+ @ get/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/makeScope.updoc#:span::14:21::14:60>
+..
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/makeScope.updoc#:span::14:4::14:66>
 expr: def demoScope := <unsafe:org.erights.e.elang.scope.Scope>.make(
         __makeMap.fromColumns(
           ["y", "any", "x", "__makeList", "&uc_construct"],
@@ -2311,7 +2223,7 @@ original value: <a Scope>
 missing original problem
 new problem: <NoSuchMethodException: <a Scope__Maker>.make/3>
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/makeScope.updoc#:span::22:4::22:49>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/makeScope.updoc#:span::24:4::24:49>
 expr: for k => v in demoScope { println(k, " ", v) }
 missing new stdout
 original stdout: &y <& 6>
@@ -2323,21 +2235,21 @@ original stdout: &y <& 6>
 missing original problem
 new problem: Failed: Undefined variable: demoScope
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/makeScope.updoc#:span::30:4::30:25>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/makeScope.updoc#:span::32:4::32:25>
 expr: e`any`.eval(demoScope)
 missing new value
 original value: <any>
 missing original problem
 new problem: Failed: Undefined variable: demoScope
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/makeScope.updoc#:span::33:4::33:34>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/makeScope.updoc#:span::35:4::35:34>
 expr: e`uc_construct`.eval(demoScope)
 missing new value
 original value: <uc_construct>
 missing original problem
 new problem: Failed: Undefined variable: demoScope
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/makeScope.updoc#:span::36:4::36:28>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/makeScope.updoc#:span::38:4::38:28>
 expr: demoScope["uc_construct"]
 missing new value
 original value: <uc_construct>
@@ -2345,17 +2257,17 @@ missing original problem
 new problem: Failed: Undefined variable: demoScope
 
 c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/methcall.e:
-c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/mod.updoc:.....
+c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/mod.updoc:......
 c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/unserTest.emaker:
-c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/updoc/abc.updoc:=== 2006-10-31T08:15:40.640Z (CapTPConnection.killConnection:CapTPConnection.java:1262) WRN
-captp: lost Conn(5gqbmn2wzhca6gy3yt2x4evqs5xqupio <-> ipdkx7khttclogp2cflvpk4vb6qanvo6)
+c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/updoc/abc.updoc:=== 2006-11-06T05:01:42.455Z (CapTPConnection.killConnection:CapTPConnection.java:1262) WRN
+captp: lost Conn(ngawyfrsem6jdj37ljesvb2dlhfxvifh <-> ntskrrqcumqay3y65dptc422xpiagwzu)
 --vvvv--
 java.net.ConnectException: Connection refused: connect
 
 
-# lost net.vattp.data.VatTPConnection@1fc5088
-  to 192.168.1.103:1543|ipdkx7khttclogp2cflvpk4vb6qanvo6
-  searchpath=192.168.1.103:1543 state=7
+# lost net.vattp.data.VatTPConnection@f212df
+  to 192.168.1.66:2117|ntskrrqcumqay3y65dptc422xpiagwzu
+  searchpath=192.168.1.66:2117 state=7
 
 java.io.IOException: java.net.ConnectException: Connection refused: connect
 
@@ -2370,8 +2282,8 @@ java.io.IOException: java.net.ConnectException: Connection refused: connect
 
 --^^^^--
 
-=== 2006-10-31T08:15:40.640Z (PendingEvent.report:PendingEvent.java:109) WRN
-causality: Problem in turn <<Vat vatAC in <runs in vatAC>>,60>: 
+=== 2006-11-06T05:01:42.455Z (PendingEvent.report:PendingEvent.java:109) WRN
+causality: Problem in turn <<Vat vatAC in <runs in vatAC>>,73>: 
 --vvvv--
 Failed: done
 
@@ -2398,8 +2310,8 @@ java.lang.RuntimeException: Failed: done
 
 --^^^^--
 
-=== 2006-10-31T08:15:40.640Z (PendingEvent.report:PendingEvent.java:109) WRN
-causality: Problem in turn <<Vat vatAC in <runs in vatAC>>,61>: 
+=== 2006-11-06T05:01:42.455Z (PendingEvent.report:PendingEvent.java:109) WRN
+causality: Problem in turn <<Vat vatAC in <runs in vatAC>>,74>: 
 --vvvv--
 Failed: done
 
@@ -2426,8 +2338,8 @@ java.lang.RuntimeException: Failed: done
 
 --^^^^--
 
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/updoc/abc.updoc#:span::6:6::6:27>
+.
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/updoc/abc.updoc#:span::9:6::9:27>
 expr: (introducer.onTheAir()
        var x := null
        def bob {
@@ -2440,232 +2352,232 @@ expr: (introducer.onTheAir()
        <file:~/Desktop/bob.cap>.setText(uri))
 missing original problem
 new problem: <NullPointerException: TimeMachine must be made non-Ephemeral first.
-.
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/updoc/abc.updoc#:span::26:6::26:31>
+..
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/updoc/abc.updoc#:span::30:6::30:31>
 expr: def farBob := sr.getRcvr()
 original and new value differ
 original value: <Eventual ref>
      new value: <Remote Promise>
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/updoc/abc.updoc#:span::29:6::29:34>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/updoc/abc.updoc#:span::33:6::33:34>
 expr: def result := farBob <- foo()
 original and new value differ
 original value: <Eventual ref>
      new value: <Remote Promise>
 .
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/updoc/abc.updoc#:span::34:6::34:16>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/updoc/abc.updoc#:span::38:6::38:16>
 expr: result == 3
 original and new value differ
 original value: true
      new value: false
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/updoc/abc.updoc#:span::37:6::37:26>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/updoc/abc.updoc#:span::41:6::41:26>
 expr: farBob <- setX(carol)
 original and new value differ
 original value: <Eventual ref>
      new value: <ref broken by problem: <IOException: java.net.ConnectException: Connection refused: connect
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/updoc/abc.updoc#:span::42:6::42:29>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/updoc/abc.updoc#:span::46:6::46:29>
 expr: def answer := x <- bar()
 missing new value
 original value: <Eventual ref>
 missing original problem
 new problem: Failed: Undefined variable: x
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/updoc/abc.updoc#:span::45:6::45:29>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/updoc/abc.updoc#:span::49:6::49:29>
 expr: interp.waitAtTop(answer)
 missing original problem
 new problem: Failed: Undefined variable: answer
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/updoc/abc.updoc#:span::47:6::47:16>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/updoc/abc.updoc#:span::51:6::51:16>
 expr: answer == 5
 missing new value
 original value: true
 missing original problem
 new problem: Failed: Undefined variable: answer
 
-c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/updoc/FlexList.updoc:......
-c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/updoc/propUtils.updoc:......
-c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/updoc/race.updoc:
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/updoc/race.updoc#:span::2:2::2:58>
+c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/updoc/FlexList.updoc:.......
+c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/updoc/propUtils.updoc:.......
+c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/updoc/race.updoc:.
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/updoc/race.updoc#:span::8:2::8:58>
 expr: def race := <import:org.erights.e.tools.concurrency.race>
 missing original problem
 new problem: Failed: org.erights.e.tools.concurrency.race not found
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/updoc/race.updoc#:span::5:2::5:28>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/updoc/race.updoc#:span::11:2::11:28>
 expr: def [a,ar] := Ref.promise()
 original and new value differ
 original value: [<Promise>, <Open Resolver>]
      new value: [<Promise>, <Resolver>]
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/updoc/race.updoc#:span::8:2::8:28>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/updoc/race.updoc#:span::14:2::14:28>
 expr: def [b,br] := Ref.promise()
 original and new value differ
 original value: [<Promise>, <Open Resolver>]
      new value: [<Promise>, <Resolver>]
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/updoc/race.updoc#:span::11:2::11:22>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/updoc/race.updoc#:span::17:2::17:22>
 expr: def c := race([a, b])
 missing new value
 original value: <Promise>
 missing original problem
 new problem: Failed: Undefined variable: race
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/updoc/race.updoc#:span::14:2::14:2>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/updoc/race.updoc#:span::20:2::20:2>
 expr: c
 missing new value
 original value: <Promise>
 missing original problem
 new problem: Failed: Undefined variable: c
 .
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/updoc/race.updoc#:span::18:2::18:2>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/updoc/race.updoc#:span::24:2::24:2>
 expr: c
 missing new value
 original value: 3
 missing original problem
 new problem: Failed: Undefined variable: c
 ...
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/updoc/race.updoc#:span::28:2::28:2>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/updoc/race.updoc#:span::34:2::34:2>
 expr: c
 missing new value
 original value: 3
 missing original problem
 new problem: Failed: Undefined variable: c
 
-c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/updoc/shortFlexList.updoc:...
+c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/updoc/shortFlexList.updoc:....
 c:/Documents and Settings/millerm1/e/src/esrc/scripts/updoc.e:
 c:/Documents and Settings/millerm1/e/src/esrc/scripts/upgradeComments.e:
 c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/evilEditor.caplet:
-c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html:=== 2006-10-31T08:17:36.216Z (Twine.add:Twine.java:354) WRN
+c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html:=== 2006-11-06T05:03:44.720Z (Twine.add:Twine.java:354) WRN
 eruntime: Stringifying with '+' : (3)
  @ Twine#add(Object)
- @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::481:37::481:37>
-=== 2006-10-31T08:17:36.427Z (Twine.add:Twine.java:354) WRN
+ @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::482:37::482:37>
+=== 2006-11-06T05:03:45.081Z (Twine.add:Twine.java:354) WRN
 eruntime: Stringifying with '+' : (10)
  @ Twine#add(Object)
- @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::798:64::798:64>
-=== 2006-10-31T08:17:36.497Z (Twine.add:Twine.java:354) WRN
+ @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::800:64::800:64>
+=== 2006-11-06T05:03:45.141Z (Twine.add:Twine.java:354) WRN
 eruntime: Stringifying with '+' : (10)
  @ Twine#add(Object)
- @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::895:32::895:32>
-=== 2006-10-31T08:17:36.577Z (Twine.add:Twine.java:354) WRN
+ @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::897:32::897:32>
+=== 2006-11-06T05:03:45.231Z (Twine.add:Twine.java:354) WRN
 eruntime: Stringifying with '+' : (380)
  @ Twine#add(Object)
- @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::1028:26::1028:26>
-=== 2006-10-31T08:17:36.647Z (Twine.add:Twine.java:354) WRN
+ @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::1030:26::1030:26>
+=== 2006-11-06T05:03:45.301Z (Twine.add:Twine.java:354) WRN
 eruntime: Stringifying with '+' : (2)
  @ Twine#add(Object)
- @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::1289:41::1289:41>
-=== 2006-10-31T08:17:36.657Z (Twine.add:Twine.java:354) WRN
+ @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::1292:41::1292:41>
+=== 2006-11-06T05:03:45.301Z (Twine.add:Twine.java:354) WRN
 eruntime: Stringifying with '+' : (true)
  @ Twine#add(Object)
- @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::1289:41::1289:41>
-=== 2006-10-31T08:17:36.657Z (Twine.add:Twine.java:354) WRN
+ @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::1292:41::1292:41>
+=== 2006-11-06T05:03:45.301Z (Twine.add:Twine.java:354) WRN
 eruntime: Stringifying with '+' : (0)
  @ Twine#add(Object)
- @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::1290:55::1290:55>
-=== 2006-10-31T08:17:36.657Z (Twine.add:Twine.java:354) WRN
+ @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::1293:55::1293:55>
+=== 2006-11-06T05:03:45.321Z (Twine.add:Twine.java:354) WRN
 eruntime: Stringifying with '+' : (1)
  @ Twine#add(Object)
- @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::1290:55::1290:55>
-=== 2006-10-31T08:17:36.657Z (Twine.add:Twine.java:354) WRN
+ @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::1293:55::1293:55>
+=== 2006-11-06T05:03:45.321Z (Twine.add:Twine.java:354) WRN
 eruntime: Stringifying with '+' : (2)
  @ Twine#add(Object)
- @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::1290:68::1290:68>
-=== 2006-10-31T08:17:36.657Z (Twine.add:Twine.java:354) WRN
+ @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::1293:68::1293:68>
+=== 2006-11-06T05:03:45.321Z (Twine.add:Twine.java:354) WRN
 eruntime: Stringifying with '+' : (2)
  @ Twine#add(Object)
- @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::1290:55::1290:55>
-=== 2006-10-31T08:17:36.657Z (Twine.add:Twine.java:354) WRN
+ @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::1293:55::1293:55>
+=== 2006-11-06T05:03:45.321Z (Twine.add:Twine.java:354) WRN
 eruntime: Stringifying with '+' : (true)
  @ Twine#add(Object)
- @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::1290:68::1290:68>
-=== 2006-10-31T08:17:36.657Z (Twine.add:Twine.java:354) WRN
+ @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::1293:68::1293:68>
+=== 2006-11-06T05:03:45.321Z (Twine.add:Twine.java:354) WRN
 eruntime: Stringifying with '+' : (3)
  @ Twine#add(Object)
- @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::1290:55::1290:55>
-=== 2006-10-31T08:17:36.687Z (Twine.add:Twine.java:354) WRN
+ @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::1293:55::1293:55>
+=== 2006-11-06T05:03:45.341Z (Twine.add:Twine.java:354) WRN
 eruntime: Stringifying with '+' : (1)
  @ Twine#add(Object)
- @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::1335:65::1335:65>
-=== 2006-10-31T08:17:36.687Z (Twine.add:Twine.java:354) WRN
+ @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::1338:65::1338:65>
+=== 2006-11-06T05:03:45.341Z (Twine.add:Twine.java:354) WRN
 eruntime: Stringifying with '+' : (2)
  @ Twine#add(Object)
- @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::1335:46::1335:46>
-=== 2006-10-31T08:17:36.687Z (Twine.add:Twine.java:354) WRN
+ @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::1338:46::1338:46>
+=== 2006-11-06T05:03:45.351Z (Twine.add:Twine.java:354) WRN
 eruntime: Stringifying with '+' : (1)
  @ Twine#add(Object)
- @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::1336:37::1336:37>
-=== 2006-10-31T08:17:36.767Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
+ @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::1339:37::1339:37>
+=== 2006-11-06T05:03:45.422Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
 eruntime: Import java.util.makeVector instead : (Importing java.util.Vector)
  @ Loader#get(String)
- @ get/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:blob::1408:17::1408:45>
-=== 2006-10-31T08:17:36.797Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
+ @ get/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:blob::1411:17::1411:45>
+=== 2006-11-06T05:03:45.462Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
 eruntime: Import java.util.makeCalendar instead : (Importing java.util.Calendar)
  @ Loader#get(String)
- @ get/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:blob::1464:1::1464:31>
-=== 2006-10-31T08:17:36.807Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
+ @ get/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:blob::1467:1::1467:31>
+=== 2006-11-06T05:03:45.482Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
 eruntime: Import java.lang.makeSystem instead : (Importing java.lang.System)
  @ Loader#get(String)
- @ get/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:blob::1485:21::1485:49>
-abc=== 2006-10-31T08:17:36.857Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
+ @ get/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:blob::1488:21::1488:49>
+abc=== 2006-11-06T05:03:45.532Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
 eruntime: Import javax.swing.makeJLabel instead : (Importing javax.swing.JLabel)
  @ Loader#get(String)
- @ get/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:blob::1495:25::1495:42>
-=== 2006-10-31T08:17:37.178Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
+ @ get/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:blob::1498:25::1498:42>
+=== 2006-11-06T05:03:48.766Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
 eruntime: Import java.lang.makeByte instead : (Importing java.lang.Byte)
  @ Loader#get(String)
- @ get/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:blob::1509:13::1509:39>
-=== 2006-10-31T08:17:37.588Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
+ @ get/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:blob::1512:13::1512:39>
+=== 2006-11-06T05:03:49.187Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
 eruntime: Import javax.swing.makeJFrame instead : (Importing javax.swing.JFrame)
  @ Loader#get(String)
- @ get/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:blob::1936:18::1936:35>
-=== 2006-10-31T08:17:37.598Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
+ @ get/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:blob::1939:18::1939:35>
+=== 2006-11-06T05:03:49.297Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
 eruntime: Import javax.swing.makeJTextArea instead : (Importing javax.swing.JTextArea)
  @ Loader#get(String)
- @ get/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:blob::1939:23::1939:43>
-=== 2006-10-31T08:17:38.429Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
+ @ get/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:blob::1942:23::1942:43>
+=== 2006-11-06T05:03:50.529Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
 eruntime: Import java.awt.makeSystemColor instead : (Importing java.awt.SystemColor)
  @ Loader#get(String)
- @ get/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:blob::1942:26::1942:46>
-=== 2006-10-31T08:17:38.439Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
+ @ get/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:blob::1945:26::1945:46>
+=== 2006-11-06T05:03:50.549Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
 eruntime: Import javax.swing.makeJButton instead : (Importing javax.swing.JButton)
  @ Loader#get(String)
- @ get/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:blob::1894:19::1894:37>
-=== 2006-10-31T08:17:38.660Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
+ @ get/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:blob::1897:19::1897:37>
+=== 2006-11-06T05:03:50.919Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
 eruntime: Import javax.swing.makeWindowConstants instead : (Importing javax.swing.WindowConstants)
  @ Loader#get(String)
- @ get/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:blob::1958:36::1958:62>
-=== 2006-10-31T08:20:35.965Z (Twine.add:Twine.java:354) WRN
+ @ get/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:blob::1961:36::1961:62>
+=== 2006-11-06T05:17:27.253Z (Twine.add:Twine.java:354) WRN
 eruntime: Stringifying with '+' : (10)
  @ Twine#add(Object)
- @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::2729:36::2729:36>
-=== 2006-10-31T08:20:36.015Z (Twine.add:Twine.java:354) WRN
+ @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::2732:36::2732:36>
+=== 2006-11-06T05:17:27.303Z (Twine.add:Twine.java:354) WRN
 eruntime: Stringifying with '+' : (["R&D" => 10000, "Marketing" => 50000])
  @ Twine#add(Object)
- @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::3071:55::3071:55>
-=== 2006-10-31T08:20:36.065Z (Twine.add:Twine.java:354) WRN
+ @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::3074:55::3074:55>
+=== 2006-11-06T05:17:27.343Z (Twine.add:Twine.java:354) WRN
 eruntime: Stringifying with '+' : (11)
  @ Twine#add(Object)
- @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::3265:40::3265:40>
-=== 2006-10-31T08:20:36.155Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
+ @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::3268:40::3268:40>
+=== 2006-11-06T05:17:27.434Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
 eruntime: Import org.erights.e.elib.sealing.makeBrand instead : (Importing org.erights.e.elib.sealing.Brand)
  @ Loader#get(String)
- @ get/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:blob::4341:41::4341:64>
-=== 2006-10-31T08:20:36.295Z (Twine.add:Twine.java:354) WRN
+ @ get/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:blob::4344:41::4344:64>
+=== 2006-11-06T05:17:27.564Z (Twine.add:Twine.java:354) WRN
 eruntime: Stringifying with '+' : (problem: claim not transferable, invalid attendant)
  @ Twine#add(Object)
- @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::4719:53::4719:53>
-=== 2006-10-31T08:20:36.315Z (Twine.add:Twine.java:354) WRN
+ @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::4722:53::4722:53>
+=== 2006-11-06T05:17:27.604Z (Twine.add:Twine.java:354) WRN
 eruntime: Stringifying with '+' : (<doc2>)
  @ Twine#add(Object)
- @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::4852:36::4852:36>
-=== 2006-10-31T08:20:36.315Z (Twine.add:Twine.java:354) WRN
+ @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::4855:36::4855:36>
+=== 2006-11-06T05:17:27.604Z (Twine.add:Twine.java:354) WRN
 eruntime: Stringifying with '+' : (<sealed by claim>)
  @ Twine#add(Object)
- @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::4854:35::4854:35>
-................................
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::1179:2::1179:10>
+ @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::4857:35::4857:35>
+..................................
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::1181:2::1181:10>
 expr: help(add)
 original and new value differ
 original value: an org.erights.e.elang.evm.EImplByProxy
@@ -2681,38 +2593,20 @@ original value: an org.erights.e.elang.evm.EImplByProxy
                 to run(:any, :any) :any
                 }
                 
-.
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::1207:0::1207:33>
-expr: #File objects for hardwired files:
-      def file1 := <file:myFile.txt>
-      def file2 := <file:/home/marcs/myFile.txt>
-      
-      #Using a variable for a file name, note the space after the colon:
-      def filePath := "c:\\docs\\myFile.txt"
-      def file3 := <file: filePath>
-      
-      #Using a single character to specify a Windows drive
-      def file4 := <c:/docs/myFile.txt>
-      def file5 := <c:\docs\myFile.txt>
-missing original syntax error
-new syntax error: calc-uri syntax is no longer supported. Use '<protocol>[expr]' instead.
-                  def file3 := <file: filePath>
-                  ^^^^^^
-                  @ <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:blob::1213:14::1213:21>
-.........
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::1488:2::1488:17>
+...........
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::1491:2::1491:17>
 expr: out.print("abc")
 original and new problem differ
 original problem: <IllegalArgumentException: Ambiguous overload on class java.io.PrintStream: print(char[]) vs print(Object)>
      new problem: <IllegalArgumentException: Ambiguous overload on class java.io.PrintStream: print(Object) vs print(String)>
 ....................
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::4341:19::4341:39>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::4344:19::4344:39>
 expr: def makeBrandPair := <elib:sealing.Brand>
 original and new value differ
 original value: <import:org.erights.e.elib.sealing.Brand>
      new value: <makeBrand>
-.......................=== 2006-10-31T08:20:36.826Z (PendingEvent.report:PendingEvent.java:109) WRN
-causality: Problem in turn <<Vat awtVat.e-awt in <AWTRunner>>,897>: 
+.......................=== 2006-11-06T05:17:28.135Z (PendingEvent.report:PendingEvent.java:109) WRN
+causality: Problem in turn <<Vat awtVat.e-awt in <AWTRunner>>,850>: 
 --vvvv--
 Failed: Not mergeable: <Vat awtVat.e-awt in <AWTRunner>>
 
@@ -2723,7 +2617,7 @@ java.lang.RuntimeException: Failed: Not mergeable: <Vat awtVat.e-awt in <AWTRunn
 	at org.erights.e.develop.assertion.T.fail(T.java:84)
 	at org.erights.e.develop.assertion.T.require(T.java:339)
 	at org.erights.e.elib.vat.Vat$VatRedirector.run(Vat.java:627)
-	at sun.reflect.GeneratedMethodAccessor196.invoke(Unknown Source)
+	at sun.reflect.GeneratedMethodAccessor205.invoke(Unknown Source)
 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
 	at java.lang.reflect.Method.invoke(Method.java:585)
 	at org.erights.e.elib.prim.InstanceMethodNode.innerExecute(InstanceMethodNode.java:113)
@@ -2742,7 +2636,5 @@ java.lang.RuntimeException: Failed: Not mergeable: <Vat awtVat.e-awt in <AWTRunn
 --^^^^--
 
 
-c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/index.html:
-c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/MicrosoftLaws.htm:
 c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/webServerSocket80.e:
 c:/Documents and Settings/millerm1/e/src/esrc/scripts/without.e:

@@ -1,5 +1,7 @@
 #!/usr/bin/env rune
 
+pragma.syntax("0.8")
+
 # Copyright 2004 Mark S. Miller & Sandeep Ranade under the terms of the 
 # MIT X license found at http://www.opensource.org/licenses/mit-license.html ..
 

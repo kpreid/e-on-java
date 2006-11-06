@@ -1,16 +1,16 @@
 
 updoc: started
 
-c:/Documents and Settings/millerm1/e/src/jsrc/com/zooko/tray/EPainter.updoc:=== 2006-10-31T08:07:54.720Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
+c:/Documents and Settings/millerm1/e/src/jsrc/com/zooko/tray/EPainter.updoc:=== 2006-11-06T04:52:04.904Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
 eruntime: Import javax.swing.makeJFrame instead : (Importing javax.swing.JFrame)
  @ Loader#get(String)
- @ get/1: <file:c:/Documents and Settings/millerm1/e/src/jsrc/com/zooko/tray/EPainter.updoc#:span::1:25::1:51>
-=== 2006-10-31T08:07:54.810Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
+ @ get/1: <file:c:/Documents and Settings/millerm1/e/src/jsrc/com/zooko/tray/EPainter.updoc#:span::11:25::11:51>
+=== 2006-11-06T04:52:05.044Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
 eruntime: Import java.awt.makeColor instead : (Importing java.awt.Color)
  @ Loader#get(String)
- @ get/1: <file:c:/Documents and Settings/millerm1/e/src/jsrc/com/zooko/tray/EPainter.updoc#:span::2:25::2:47>
-
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/com/zooko/tray/EPainter.updoc#:span::1:6::1:51>
+ @ get/1: <file:c:/Documents and Settings/millerm1/e/src/jsrc/com/zooko/tray/EPainter.updoc#:span::12:25::12:47>
+.
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/com/zooko/tray/EPainter.updoc#:span::11:6::11:51>
 expr: (def makeJFrame := <unsafe:javax.swing.JFrame>
        def ColorBlack := <unsafe:java.awt.Color>.black()
        def makeEPainter := <unsafe:com.zooko.tray.EPainter>)
@@ -19,7 +19,7 @@ original value: <unsafe:com.zooko.tray.EPainter>
 missing original problem
 new problem: <NoSuchMethodException: <a Color__Maker>.black/0>
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/com/zooko/tray/EPainter.updoc#:span::6:6::6:18>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/com/zooko/tray/EPainter.updoc#:span::16:6::16:18>
 expr: def helloer {
           to paintComponent(g) :void {
               println("mubmle\n")
@@ -33,7 +33,7 @@ original value: <helloer>
 missing original problem
 new problem: Failed: Undefined variable: ColorBlack
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/com/zooko/tray/EPainter.updoc#:span::16:6::16:39>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/com/zooko/tray/EPainter.updoc#:span::26:6::26:39>
 expr: (def myep := makeEPainter(helloer)
        def myjf := makeJFrame()
        myep.setOpaque(false)
@@ -43,23 +43,63 @@ expr: (def myep := makeEPainter(helloer)
 missing original problem
 new problem: Failed: Undefined variable: makeEPainter
 ..
-c:/Documents and Settings/millerm1/e/src/jsrc/ForManifest.txt:
-c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/jcomm/bad-resolve.updoc:........................
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/jcomm/bad-resolve.updoc#:span::134:6::134:13>
+c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/jcomm/bad-resolve.updoc:...........................
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/jcomm/bad-resolve.updoc#:span::140:6::140:13>
 expr: bobState
 original and new value differ
 original value: <a SturdyRef>
      new value: <SturdyRef>
 ..................
-c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/jcomm/multi-test.updoc:=== 2006-10-31T08:08:03.743Z (PendingEvent.report:PendingEvent.java:109) WRN
-causality: Problem in turn <<Vat server in <runs in server>>,138>: 
+c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/jcomm/multi-test.updoc:.............
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/jcomm/multi-test.updoc#:span::74:6::74:6>
+expr: x
+missing new value
+original value: <Remote Promise>
+.........
+c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/jcomm/refmon.updoc:......
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/jcomm/refmon.updoc#:span::39:6::39:37>
+expr: def sr := makeSturdyRef.temp(&x)
+original and new value differ
+original value: <a SturdyRef>
+     new value: <SturdyRef to <var 3>>
+...
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/jcomm/refmon.updoc#:span::51:6::51:73>
+expr: def sr := introducer.sturdyFromURI(<file:~/Desktop/x.cap>.getText())
+original and new value differ
+original value: <a SturdyRef>
+     new value: <SturdyRef>
+...
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/jcomm/refmon.updoc#:span::64:6::64:10>
+expr: trace
+original and new value differ
+original value: "++++.run/1.run/1+.run/1+.run/1"
+     new value: "++++.run/1.run/1+.run/1"
+.....
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/jcomm/refmon.updoc#:span::79:6::79:10>
+expr: trace
+original and new value differ
+original value: "++++.run/1.run/1+.run/1+.run/1
+                =add/2+.__whenMoreResolved/1.__whenMoreResolved/1"
+     new value: "++++.run/1.run/1+.run/1
+                =add/2+.__whenMoreResolved/1"
+=== 2006-11-06T04:52:25.374Z (RecvThread.callDataPath:RecvThread.java:156) ERR
+comm: Error while calling net.vattp.data.DataCommThunk@1e36252 Type=4
 --vvvv--
-<null>.add/1
+makeEvaluator shutdown
 
 
-java.lang.NoSuchMethodException: <null>.add/1
-	at org.erights.e.elib.prim.VTable.shorten(VTable.java:198)
-	at org.erights.e.elib.prim.E.callAll(E.java:166)
+java.lang.RuntimeException: makeEvaluator shutdown
+	at org.erights.e.meta.java.lang.ThrowableGuardSugar.subCoerceR(ThrowableGuardSugar.java:60)
+	at org.erights.e.elib.base.ClassDesc.tryCoerceR(ClassDesc.java:350)
+	at org.erights.e.elib.slot.BaseAuditor.coerce(BaseAuditor.java:59)
+	at org.erights.e.elib.prim.E.as(E.java:530)
+	at org.erights.e.elib.prim.JavaMemberNode.coerceArgs(JavaMemberNode.java:143)
+	at org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:188)
+	at org.erights.e.elib.prim.Selector.callIt(Selector.java:84)
+	at org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:132)
+	at org.erights.e.elang.evm.EMethod.execute(EMethod.java:175)
+	at org.erights.e.elang.evm.EMethodNode.execute(EMethodNode.java:136)
+	at org.erights.e.elib.prim.E.callAll(E.java:167)
 	at org.erights.e.elib.vat.PendingDelivery.innerRun(PendingDelivery.java:102)
 	at org.erights.e.elib.vat.PendingEvent.run(PendingEvent.java:76)
 	at org.erights.e.elib.vat.HeadlessRunner.run(HeadlessRunner.java:176)
@@ -67,75 +107,30 @@ java.lang.NoSuchMethodException: <null>.add/1
 
 --^^^^--
 
-...........
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/jcomm/multi-test.updoc#:span::70:6::70:6>
-expr: x
-missing new value
-original value: <Remote Promise>
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/jcomm/multi-test.updoc#:span::75:6::75:25>
-expr: def y := x <- add(3)
-original and new value differ
-original value: <Remote Promise>
-     new value: <Promise>
-....
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/jcomm/multi-test.updoc#:span::97:6::97:6>
-expr: y
-original and new value differ
-original value: 5
-     new value: <ref broken by problem: <NoSuchMethodException: <null>.add/1>>
-...
-c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/jcomm/package.html:
-c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/jcomm/refmon.updoc:.....
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/jcomm/refmon.updoc#:span::37:6::37:37>
-expr: def sr := makeSturdyRef.temp(&x)
-original and new value differ
-original value: <a SturdyRef>
-     new value: <SturdyRef to <var 3>>
-..
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/jcomm/refmon.updoc#:span::47:6::47:73>
-expr: def sr := introducer.sturdyFromURI(<file:~/Desktop/x.cap>.getText())
-original and new value differ
-original value: <a SturdyRef>
-     new value: <SturdyRef>
-...
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/jcomm/refmon.updoc#:span::60:6::60:10>
-expr: trace
-original and new value differ
-original value: "++++.run/1.run/1+.run/1+.run/1"
-     new value: "++++.run/1.run/1+.run/1"
-.....
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/jcomm/refmon.updoc#:span::75:6::75:10>
-expr: trace
-original and new value differ
-original value: "++++.run/1.run/1+.run/1+.run/1
-                =add/2+.__whenMoreResolved/1.__whenMoreResolved/1"
-     new value: "++++.run/1.run/1+.run/1
-                =add/2+.__whenMoreResolved/1"
-
-c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc:=== 2006-10-31T08:08:12.015Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
+c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc:=== 2006-11-06T04:52:27.967Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
 eruntime: Import net.captp.tables.makeAnswersTable instead : (Importing net.captp.tables.AnswersTable)
  @ Loader#get(String)
- @ get/1: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::6:31::6:68>
-=== 2006-10-31T08:08:12.195Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
+ @ get/1: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::10:31::10:68>
+=== 2006-11-06T04:52:28.178Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
 eruntime: Import java.lang.makeRuntimeException instead : (Importing java.lang.RuntimeException)
  @ Loader#get(String)
- @ get/1: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::125:21::125:55>
-
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::6:6::6:68>
+ @ get/1: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::129:21::129:55>
+.
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::10:6::10:68>
 expr: def AnswersTableMaker := <unsafe:net.captp.tables.AnswersTable>
 original and new value differ
 original value: <unsafe:net.captp.tables.AnswersTable>
      new value: <makeAnswersTable>
 ..
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::18:6::18:29>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::22:6::22:29>
 expr: def i1 := at1.put("foo")
 missing new value
 original value: 1
 missing original problem
 new problem: <NoSuchMethodException: <an AnswersTable>.put/1>
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::21:6::21:8>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::25:6::25:8>
 expr: at1
 original and new value differ
 original value: <AnswersTable[
@@ -144,20 +139,20 @@ original value: <AnswersTable[
      new value: <AnswersTable[
                 ], free: [ 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15]>
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::26:6::26:15>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::30:6::30:15>
 expr: at1.size()
 original and new value differ
 original value: 1
      new value: 0
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::29:6::29:29>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::33:6::33:29>
 expr: def i2 := at1.put("bar")
 missing new value
 original value: 2
 missing original problem
 new problem: <NoSuchMethodException: <an AnswersTable>.put/1>
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::32:6::32:8>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::36:6::36:8>
 expr: at1
 original and new value differ
 original value: <AnswersTable[
@@ -167,12 +162,12 @@ original value: <AnswersTable[
      new value: <AnswersTable[
                 ], free: [ 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15]>
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::38:6::38:17>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::42:6::42:17>
 expr: at1.free(i1)
 missing original problem
 new problem: Failed: Undefined variable: i1
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::39:6::39:8>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::43:6::43:8>
 expr: at1
 original and new value differ
 original value: <AnswersTable[
@@ -181,49 +176,49 @@ original value: <AnswersTable[
      new value: <AnswersTable[
                 ], free: [ 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15]>
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::44:6::44:16>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::48:6::48:16>
 expr: at1.get(i2)
 missing new value
 original value: "bar"
 missing original problem
 new problem: Failed: Undefined variable: i2
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::47:6::47:12>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::51:6::51:12>
 expr: at1[i2]
 missing new value
 original value: "bar"
 missing original problem
 new problem: Failed: Undefined variable: i2
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::50:6::50:12>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::54:6::54:12>
 expr: at1[i1]
 original and new problem differ
 original problem: <IllegalArgumentException: not alloced: 1>
      new problem: Failed: Undefined variable: i1
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::56:6::56:23>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::60:6::60:23>
 expr: at1.mustBeFree(i1)
 missing original problem
 new problem: Failed: Undefined variable: i1
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::57:6::57:23>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::61:6::61:23>
 expr: at1.mustBeFree(i2)
 original and new problem differ
 original problem: <IllegalArgumentException: not free: 2>
      new problem: Failed: Undefined variable: i2
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::64:6::64:26>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::68:6::68:26>
 expr: at1.mustBeAlloced(i1)
 original and new problem differ
 original problem: <IllegalArgumentException: not alloced: 1>
      new problem: Failed: Undefined variable: i1
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::71:6::71:26>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::75:6::75:26>
 expr: at1.mustBeAlloced(i2)
 missing original problem
 new problem: Failed: Undefined variable: i2
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::72:6::72:8>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::76:6::76:8>
 expr: at1
 original and new value differ
 original value: <AnswersTable[
@@ -232,23 +227,23 @@ original value: <AnswersTable[
      new value: <AnswersTable[
                 ], free: [ 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15]>
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::77:6::77:17>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::81:6::81:17>
 expr: at1.incr(i2)
 missing original problem
 new problem: Failed: Undefined variable: i2
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::78:6::78:17>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::82:6::82:17>
 expr: at1.incr(i2)
 missing original problem
 new problem: Failed: Undefined variable: i2
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::79:6::79:17>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::83:6::83:17>
 expr: at1.incr(i1)
 original and new problem differ
 original problem: <IllegalArgumentException: not alloced: 1>
      new problem: Failed: Undefined variable: i1
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::85:6::85:8>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::89:6::89:8>
 expr: at1
 original and new value differ
 original value: <AnswersTable[
@@ -257,28 +252,28 @@ original value: <AnswersTable[
      new value: <AnswersTable[
                 ], free: [ 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15]>
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::90:6::90:20>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::94:6::94:20>
 expr: at1.decr(i2, 1)
 missing new value
 original value: false
 missing original problem
 new problem: Failed: Undefined variable: i2
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::93:6::93:20>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::97:6::97:20>
 expr: at1.decr(i2, 1)
 missing new value
 original value: false
 missing original problem
 new problem: Failed: Undefined variable: i2
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::96:6::96:20>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::100:6::100:20>
 expr: at1.decr(i2, 1)
 missing new value
 original value: true
 missing original problem
 new problem: Failed: Undefined variable: i2
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::99:6::99:8>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::103:6::103:8>
 expr: at1
 original and new value differ
 original value: <AnswersTable[
@@ -286,21 +281,21 @@ original value: <AnswersTable[
      new value: <AnswersTable[
                 ], free: [ 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15]>
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::103:6::103:21>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::107:6::107:21>
 expr: at1.put("zippy")
 missing new value
 original value: 2
 missing original problem
 new problem: <NoSuchMethodException: <an AnswersTable>.put/1>
 .
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::116:6::116:17>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::120:6::120:17>
 expr: at1.put(dms)
 missing new value
 original value: 1
 missing original problem
 new problem: <NoSuchMethodException: <an AnswersTable>.put/1>
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::119:6::119:8>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::123:6::123:8>
 expr: at1
 original and new value differ
 original value: <AnswersTable[
@@ -310,37 +305,37 @@ original value: <AnswersTable[
      new value: <AnswersTable[
                 ], free: [ 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15]>
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::125:6::125:68>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::129:6::129:68>
 expr: def problem := <unsafe:java.lang.RuntimeException>.new("fooey")
 missing new value
 original value: <RuntimeException: fooey>
 missing original problem
 new problem: <NoSuchMethodException: <a RuntimeException__Maker>.new/1>
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::128:6::128:23>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::132:6::132:23>
 expr: at1.smash(problem)
 missing original problem
 new problem: Failed: Undefined variable: problem
 .
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::131:6::131:12>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::135:6::135:12>
 expr: at1[i2]
 original and new problem differ
 original problem: <IllegalArgumentException: not alloced: 2>
      new problem: Failed: Undefined variable: i2
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::137:6::137:12>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::141:6::141:12>
 expr: at1[i1]
 original and new problem differ
 original problem: <IllegalArgumentException: not alloced: 1>
      new problem: Failed: Undefined variable: i1
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::143:6::143:21>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::147:6::147:21>
 expr: at1.put("glorp")
 original and new problem differ
 original problem: <NullPointerException>
      new problem: <NoSuchMethodException: <an AnswersTable>.put/1>
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::149:6::149:21>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::153:6::153:21>
 expr: (for i in 1..3 {
           println(`i: $i`)
       }
@@ -354,22 +349,6 @@ original stdout: i: 1
                  i: 3
                  
 .
-c:/Documents and Settings/millerm1/e/src/jsrc/net/ertp/package.html:
-c:/Documents and Settings/millerm1/e/src/jsrc/net/vattp/chat/package.html:
-c:/Documents and Settings/millerm1/e/src/jsrc/net/vattp/data/package.html:
-c:/Documents and Settings/millerm1/e/src/jsrc/net/vattp/package.html:
-c:/Documents and Settings/millerm1/e/src/jsrc/net/vattp/security/package.html:
-c:/Documents and Settings/millerm1/e/src/jsrc/net/vattp/tunnel/package.html:
-c:/Documents and Settings/millerm1/e/src/jsrc/net/vattp/vls/package.html:
-c:/Documents and Settings/millerm1/e/src/jsrc/notes.txt:
-c:/Documents and Settings/millerm1/e/src/jsrc/org/apache/oro/text/regex/package.html:
-c:/Documents and Settings/millerm1/e/src/jsrc/org/capml/dom/package.html:
-c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/develop/assertion/package.html:
-c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/develop/exception/package.html:
-c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/develop/trace/package.html:
-c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/evm/package.html:
-c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/interp/auditors.txt:
-c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/interp/package.html:
 c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/scope/meta-context.updoc:..
 at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/scope/meta-context.updoc#:span::6:2::6:59>
 expr: def foo() :any { return [meta.getState(),meta.context()] }
@@ -444,7 +423,7 @@ original value: "__main$foo__C$"
      new value: "__main$foo$"
 
 c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/scope/meta-scope.updoc:..
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/scope/meta-scope.updoc#:span::6:6::6:29>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/scope/meta-scope.updoc#:span::8:6::8:29>
 expr: def m := meta.getState()
 original and new value differ
 original value: an InnerScope
@@ -504,19 +483,14 @@ original value: an InnerScope
                 Documentation on the E Language can be found at
                 http://www.erights.org/elang/help.html>, "&safeScope" => <& <a Scope>>, "&__eval" => <& <a BaseEvaluator>>, "&resource__uriGetter" => <& <resource>>, "&type__uriGetter" => <& <type>>, "&import__uriGetter" => <& <import>>, "&elib__uriGetter" => <lazy eval slot>, "&elang__uriGetter" => <lazy eval slot>, "&opaque__uriGetter" => <lazy eval slot>, "&__abortIncarnation" => <& <ref broken by problem: XXX __abortIncarnation not yet implemented>>, "&file__uriGetter" => <& <file>>, "&fileURL__uriGetter" => <& <file>>, "&jar__uriGetter" => <& <jar>>, "&http__uriGetter" => <& <http>>, "&ftp__uriGetter" => <& <ftp>>, "&gopher__uriGetter" => <& <gopher>>, "&news__uriGetter" => <& <news>>, "&captp__uriGetter" => <& <Off The Air>>, "&makeCommand" => <lazy eval slot>, "&stdout" => <& <a TextWriter>>, "&stderr" => <& <a TextWriter>>, "&stdin" => <& <ref broken by problem: XXX stdin not yet implemented>>, "&print" => <lazy eval slot>, "&println" => <lazy eval slot>, "&interp" => <& <cmdLoop>>, "&entropy" => <& <an ESecureRandom>>, "&timer" => <& <a Timer>>, "&introducer" => <& <Off The Air>>, "&identityMgr" => <& <IdentityMgr Off The Air>>, "&makeSturdyRef" => <lazy eval slot>, "&timeMachine" => <lazy eval slot>, "&unsafe__uriGetter" => <& <unsafe>>, "&currentVat" => <& <Vat home in <runs in home>>>, "&rune" => <lazy eval slot>, "&awt__uriGetter" => <lazy eval slot>, "&swing__uriGetter" => <lazy eval slot>, "&JPanel__quasiParser" => <lazy eval slot>, "&swt__uriGetter" => <lazy eval slot>, "&currentDisplay" => <lazy eval slot>, "&swtGrid__quasiParser" => <lazy eval slot>, "&swtWatch" => <lazy eval slot>, "&privilegedScope" => <& <a Scope>>, "&m" => null]
 ..
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/scope/meta-scope.updoc#:span::67:6::67:19>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/scope/meta-scope.updoc#:span::69:6::69:19>
 expr: scp["println"]
 missing new value
 original value: <println>
 missing original problem
 new problem: <IndexOutOfBoundsException: "println" not found>
 .
-c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/scope/package.html:
-c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/scope/redef.updoc:.......
-c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/syntax/antlr/CommonTokenTypes.txt:
-c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/syntax/antlr/EALexerTokenTypes.txt:
-c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/syntax/antlr/ETokenTypes.txt:
-c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/syntax/antlr/example.e:
+c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/scope/redef.updoc:........
 c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/syntax/exporter.updoc:...
 at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/syntax/exporter.updoc#:span::11:6::11:16>
 expr: [=>x, =>&y]
@@ -531,266 +505,252 @@ original value: ["&b" => <forwards to: <& 3>>, "&y" => <forwards to: <& 5>>]
      new value: ["&b" => <var 3>, "&y" => <var 5>]
 .....
 c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/syntax/lambdaArg.updoc:............
-c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/syntax/package.html:
-c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/visitors/package.html:
-c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/base/package.html:
-c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/eio/package.html:
-c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/prim/package.html:
-c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/ref/package.html:
-c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/sealing/amplify.updoc:
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/sealing/amplify.updoc#:span::6:2::6:42>
+c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/sealing/amplify.updoc:.
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/sealing/amplify.updoc#:span::8:2::8:42>
 expr: def makeBrand := <elib:sealing.makeBrand>
 original and new value differ
 original value: <elib:sealing.makeBrand>
      new value: <makeBrand>
 ...
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/sealing/amplify.updoc#:span::26:2::26:43>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/sealing/amplify.updoc#:span::28:2::28:43>
 expr: def makeUncall := <elib:serial.makeUncall>
 missing new value
 original value: <makeUncall>
 missing original problem
 new problem: Failed: org.erights.e.elib.serial.makeUncall not found
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/sealing/amplify.updoc#:span::29:2::29:48>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/sealing/amplify.updoc#:span::31:2::31:48>
 expr: def uncall := makeUncall([<import>], xUnsealer)
 missing new value
 original value: <uncall>
 missing original problem
 new problem: Failed: Undefined variable: makeUncall
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/sealing/amplify.updoc#:span::32:2::32:22>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/sealing/amplify.updoc#:span::34:2::34:22>
 expr: uncall(forXsEyesOnly)
 missing new value
 original value: [3, "add", [4]]
 missing original problem
 new problem: Failed: Undefined variable: uncall
 
-c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/sealing/crypto/signing.updoc:....
-c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/sealing/package.html:
-c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/sealing/point.updoc:......
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/sealing/point.updoc#:span::35:6::35:16>
+c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/sealing/crypto/signing.updoc:.....
+c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/sealing/point.updoc:.......
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/sealing/point.updoc#:span::39:6::39:16>
 expr: pt2 := null
 original and new problem differ
 original problem: couldn't coerce to: Point
      new problem: Not audited by Point
 .
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/sealing/point.updoc#:span::44:6::44:22>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/sealing/point.updoc#:span::48:6::48:22>
 expr: def f :Foo := pt1
 original and new problem differ
 original problem: unrecognized brand: Foo
      new problem: Not audited by Foo
 ...
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/sealing/point.updoc#:span::58:6::58:31>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/sealing/point.updoc#:span::62:6::62:31>
 expr: def x implements XStamp {}
 missing new value
 original value: <x>
 missing original problem
 new problem: <ClassCastException: Sealer doesn't coerce to an Auditor>
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/sealing/point.updoc#:span::61:6::61:21>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/sealing/point.updoc#:span::65:6::65:21>
 expr: var xVar :X := x
 missing new value
 original value: <x>
 missing original problem
 new problem: Failed: Undefined variable: x
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/sealing/point.updoc#:span::64:6::64:14>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/sealing/point.updoc#:span::68:6::68:14>
 expr: xVar := 3
 original and new problem differ
 original problem: couldn't coerce to: X
      new problem: Failed: Undefined variable: xVar
 .
-c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/serial/package.html:
-c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/slot/package.html:
-c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker.updoc:=== 2006-10-31T08:09:24.209Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
+c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker.updoc:=== 2006-11-06T04:54:07.330Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
 eruntime: Import org.erights.e.elib.tables.makeTraversalKey instead : (Importing org.erights.e.elib.tables.TraversalKey)
  @ Loader#get(String)
- @ get/1: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker.updoc#:span::6:30::6:76>
-
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker.updoc#:span::6:6::6:76>
+ @ get/1: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker.updoc#:span::8:30::8:76>
+.
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker.updoc#:span::8:6::8:76>
 expr: def makeTraversalKey := <unsafe:org.erights.e.elib.tables.TraversalKey>
 original and new value differ
 original value: <unsafe:org.erights.e.elib.tables.TraversalKey>
      new value: <makeTraversalKey>
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker.updoc#:span::9:6::9:33>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker.updoc#:span::11:6::11:33>
 expr: def cb := makeTraversalKey()
 missing new value
 original value: <TraversalKey>
 missing original problem
 new problem: <NoSuchMethodException: <a TraversalKey__Maker>.run/0>
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker.updoc#:span::12:6::12:33>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker.updoc#:span::14:6::14:33>
 expr: def [p1,r1] := Ref.promise()
 original and new value differ
 original value: [<Promise>, <Open Resolver>]
      new value: [<Promise>, <Resolver>]
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker.updoc#:span::15:6::15:33>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker.updoc#:span::17:6::17:33>
 expr: def [p2,r2] := Ref.promise()
 original and new value differ
 original value: [<Promise>, <Open Resolver>]
      new value: [<Promise>, <Resolver>]
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker.updoc#:span::18:6::18:19>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker.updoc#:span::20:6::20:19>
 expr: cb["foo"] := 3
 missing new value
 original value: 3
 missing original problem
 new problem: Failed: Undefined variable: cb
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker.updoc#:span::21:6::21:16>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker.updoc#:span::23:6::23:16>
 expr: cb[p1] := 4
 missing new value
 original value: 4
 missing original problem
 new problem: Failed: Undefined variable: cb
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker.updoc#:span::24:6::24:11>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker.updoc#:span::26:6::26:11>
 expr: cb[p1]
 missing new value
 original value: 4
 missing original problem
 new problem: Failed: Undefined variable: cb
 .
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker.updoc#:span::30:6::30:15>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker.updoc#:span::32:6::32:15>
 expr: cb[x] := 5
 missing new value
 original value: 5
 missing original problem
 new problem: Failed: Undefined variable: cb
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker.updoc#:span::33:6::33:21>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker.updoc#:span::35:6::35:21>
 expr: cb[[p1,p2]] := 6
 missing new value
 original value: 6
 missing original problem
 new problem: Failed: Undefined variable: cb
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker.updoc#:span::36:6::36:16>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker.updoc#:span::38:6::38:16>
 expr: cb[[p1,p2]]
 original and new problem differ
 original problem: <IndexOutOfBoundsException: not found: [<Promise>, <Promise>]>
      new problem: Failed: Undefined variable: cb
 .
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker.updoc#:span::41:6::41:11>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker.updoc#:span::43:6::43:11>
 expr: cb[p1]
 missing new value
 original value: 3
 missing original problem
 new problem: Failed: Undefined variable: cb
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker.updoc#:span::44:6::44:16>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker.updoc#:span::46:6::46:16>
 expr: cb[[p1,p2]]
 original and new problem differ
 original problem: <IndexOutOfBoundsException: not found: ["foo", <Promise>]>
      new problem: Failed: Undefined variable: cb
 .
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker.updoc#:span::48:6::48:16>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker.updoc#:span::50:6::50:16>
 expr: cb[[p1,p2]]
 missing new value
 original value: 5
 missing original problem
 new problem: Failed: Undefined variable: cb
 .
-c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker2.updoc:
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker2.updoc#:span::7:6::7:21>
+c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker2.updoc:.
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker2.updoc#:span::9:6::9:21>
 expr: def x := [1,x,3]
 original and new value differ
 original value: [1, ***CYCLE***, 3]
      new value: [1, <***CYCLE***>, 3]
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker2.updoc#:span::10:6::10:27>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker2.updoc#:span::12:6::12:27>
 expr: def y := [1,[1,x,3],3]
 original and new value differ
 original value: [1, ***CYCLE***, 3]
      new value: [1, <***CYCLE***>, 3]
 .
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker2.updoc#:span::16:6::16:33>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker2.updoc#:span::18:6::18:33>
 expr: def [p1,r1] := Ref.promise()
 original and new value differ
 original value: [<Promise>, <Open Resolver>]
      new value: [<Promise>, <Resolver>]
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker2.updoc#:span::19:6::19:22>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker2.updoc#:span::21:6::21:22>
 expr: def x := [p1,x,3]
 original and new value differ
 original value: [<Promise>, ***CYCLE***, 3]
      new value: [<Promise>, <***CYCLE***>, 3]
 .
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker2.updoc#:span::25:6::25:33>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker2.updoc#:span::27:6::27:33>
 expr: def [p2,r2] := Ref.promise()
 original and new value differ
 original value: [<Promise>, <Open Resolver>]
      new value: [<Promise>, <Resolver>]
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker2.updoc#:span::28:6::28:22>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker2.updoc#:span::30:6::30:22>
 expr: def y := [p2,y,3]
 original and new value differ
 original value: [<Promise>, ***CYCLE***, 3]
      new value: [<Promise>, <***CYCLE***>, 3]
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker2.updoc#:span::31:6::31:11>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker2.updoc#:span::33:6::33:11>
 expr: x == y
 original and new problem differ
 original problem: <NotSettledException: Not sufficuently settled: [<Promise>, ***CYCLE***, 3] == [<Promise>, ***CYCLE***, 3]>
      new problem: <NotSettledException: Not sufficiently settled: [<Promise>, <***CYCLE***>, 3] == [<Promise>, <***CYCLE***>, 3]>
 .
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker2.updoc#:span::38:6::38:59>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker2.updoc#:span::40:6::40:59>
 expr: def makeTraversalKey := <elib:tables.makeTraversalKey>
 original and new value differ
 original value: <import:org.erights.e.elib.tables.makeTraversalKey>
      new value: <makeTraversalKey>
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker2.updoc#:span::41:6::41:34>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker2.updoc#:span::43:6::43:34>
 expr: def xx := makeTraversalKey(x)
 original and new value differ
 original value: <key:[<Promise>, ***CYCLE***, 3]>
      new value: <key:[<Promise>, <***CYCLE***>, 3]>
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker2.updoc#:span::44:6::44:29>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker2.updoc#:span::46:6::46:29>
 expr: def tab := [xx => "foo"]
 original and new value differ
 original value: [<key:[<Promise>, ***CYCLE***, 3]> => "foo"]
      new value: [<key:[<Promise>, <***CYCLE***>, 3]> => "foo"]
 ..
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker2.updoc#:span::51:6::51:8>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker2.updoc#:span::53:6::53:8>
 expr: tab
 original and new value differ
 original value: [<key:[666, ***CYCLE***, 3]> => "foo"]
      new value: [<key:[666, <***CYCLE***>, 3]> => "foo"]
 .
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker2.updoc#:span::57:6::57:35>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker2.updoc#:span::59:6::59:35>
 expr: def xx2 := makeTraversalKey(x)
 original and new value differ
 original value: <key:[666, ***CYCLE***, 3]>
      new value: <key:[666, <***CYCLE***>, 3]>
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker2.updoc#:span::60:6::60:13>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker2.updoc#:span::62:6::62:13>
 expr: tab[xx2]
 original and new problem differ
 original problem: <IndexOutOfBoundsException: <key:[666, ***CYCLE***, 3]> not found>
      new problem: <IndexOutOfBoundsException: <key:[666, <***CYCLE***>, 3]> not found>
 .
-c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/FlexList.updoc:......
-c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/package.html:
-c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/trijection.updoc:
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/trijection.updoc#:span::6:2::6:47>
+c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/FlexList.updoc:.......
+c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/trijection.updoc:.
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/trijection.updoc#:span::8:2::8:47>
 expr: def makeFT := <elib:tables.makeFlexTrijection>
 original and new value differ
 original value: <import:org.erights.e.elib.tables.makeFlexTrijection>
      new value: <makeFlexTrijection>
 ..........
-c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/util/package.html:
-c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/extern/file/package.html:
-c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/extern/timer/package.html:
-c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/base/package.html:
-c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc:=== 2006-10-31T08:10:28.541Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
+c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc:=== 2006-11-06T04:55:27.996Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
 eruntime: Import org.quasiliteral.astro.makeBaseSchema instead : (Importing org.quasiliteral.astro.BaseSchema)
  @ Loader#get(String)
- @ get/1: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::32:25::32:45>
-..
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::16:6::16:55>
+ @ get/1: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::36:25::36:45>
+...
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::20:6::20:55>
 expr: def miniSchema := <astro:BaseSchema>.new("mini", [
           "tag",
           ".char.",
@@ -802,14 +762,14 @@ original value: <Schema for mini>
 missing original problem
 new problem: Failed: Undefined variable: astro__uriGetter
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::24:6::24:58>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::28:6::28:58>
 expr: def miniBuilder := <term:TermBuilder>.new(miniSchema)
 missing new value
 original value: <building Term trees for mini>
 missing original problem
 new problem: Failed: Undefined variable: term__uriGetter
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::27:6::27:39>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::31:6::31:39>
 expr: def term := dom.build(miniBuilder)
 missing new value
 original value: term`tag("text",
@@ -818,7 +778,7 @@ original value: term`tag("text",
 missing original problem
 new problem: Failed: Undefined variable: miniBuilder
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::32:6::32:60>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::36:6::36:60>
 expr: def safejSchema := <qq:astro.BaseSchema>.new("safej", [
           ".char.",
           ".int.",
@@ -842,30 +802,27 @@ original value: <Schema for safej>
 missing original problem
 new problem: <NoSuchMethodException: <a BaseSchema__Maker>.new/2>
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::52:6::52:63>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::56:6::56:63>
 expr: def safejBuilder := <qq:term.TermBuilder>.new(safejSchema)
 missing new value
 original value: <building Term trees for safej>
 missing original problem
 new problem: Failed: Undefined variable: safejSchema
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::55:6::55:23>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::59:6::59:23>
 expr: def testSmlFile :=
-        <c: "/Documents and Settings/Administrator/Desktop/marcs/safej/tamings/java.awt.AWTPermission.txt">
+        <c>["/Documents and Settings/Administrator/Desktop/marcs/safej/tamings/java.awt.AWTPermission.txt"]
 missing new value
 original value: <file:c:/Documents and Settings/Administrator/Desktop/marcs/safej/tamings/java.awt.AWTPermission.txt>
-missing original syntax error
-new syntax error: calc-uri syntax is no longer supported. Use '<protocol>[expr]' instead.
-                  <c: "/Documents and Settings/Administrator/Desktop/marcs/safej/tamings/java.awt.AWTPermission.txt">
-                  ^^^
-                  @ <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::56:8::56:10>
+missing original problem
+new problem: Failed: Undefined variable: c__uriGetter
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::59:6::59:94>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::63:6::63:94>
 expr: def dom := sml__quasiParser.valueMaker(testSmlFile.getText().trim()).substitute([]); null
 missing original problem
 new problem: Failed: Undefined variable: testSmlFile
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::60:6::60:19>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::64:6::64:19>
 expr: dom.minimize()
 original and new value differ
 original value: sml`<class>
@@ -920,7 +877,7 @@ original value: sml`<class>
                 y
                 </tag>`
 ...
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::109:6::109:34>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::113:6::113:34>
 expr: def qsml2term(qsmlSrc) :any {
           def dom := sml__quasiParser.valueMaker(qsmlSrc.trim()).substitute([]).minimize()
           dom.build(safejBuilder)
@@ -930,7 +887,7 @@ original value: <qsml2term>
 missing original problem
 new problem: Failed: Undefined variable: safejBuilder
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::115:6::115:49>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::119:6::119:49>
 expr: def tree := qsml2term(testSmlFile.getText())
 missing new value
 original value: term`class(name("java.awt.AWTPermission"),
@@ -951,28 +908,28 @@ original value: term`class(name("java.awt.AWTPermission"),
 missing original problem
 new problem: Failed: Undefined variable: qsml2term
 ..
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::147:6::147:26>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::151:6::151:26>
 expr: def name := fqn(tree)
 missing new value
 original value: "java.awt.AWTPermission"
 missing original problem
 new problem: Failed: Undefined variable: tree
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::150:6::150:20>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::154:6::154:20>
 expr: name.split(".")
 missing new value
 original value: ["java", "awt", "AWTPermission"]
 missing original problem
 new problem: Failed: Undefined variable: name
 ..
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::171:6::171:15>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::175:6::175:15>
 expr: path(name)
 missing new value
 original value: "java/awt/AWTPermission.safej"
 missing original problem
 new problem: Failed: Undefined variable: name
 .....
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::192:6::192:50>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::196:6::196:50>
 expr: def convert(smlFiledir, safejRootDir) :void {
           if (smlFiledir.isDirectory()) {
               for sub in smlFiledir {
@@ -996,12 +953,12 @@ original value: <convert>
 missing original problem
 new problem: Failed: Undefined variable: qsml2term
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::212:6::212:43>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::216:6::216:43>
 expr: convert(testSmlFile, <c:/e/src/safej>)
 missing original problem
 new problem: Failed: Undefined variable: convert
 .
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::216:6::216:8>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::220:6::220:8>
 expr: fqn
 original and new value differ
 original value: term`"java.awt.AWTPermission"`
@@ -1017,14 +974,14 @@ original value: [term`name("java.awt.AWTPermission")`, term`method(static("true"
                 suppress("true"),
                 comment)`, term`byproxy`, term`selfless`, term`byconstruction`, term`persistent`, term`safe("false")`, term`comment`]
 ..
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::231:6::231:45>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::235:6::235:45>
 expr: def TermParserMaker := <term:TermParser>
 missing new value
 original value: <unsafe:org.quasiliteral.term.TermParser>
 missing original problem
 new problem: Failed: Undefined variable: term__uriGetter
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::234:6::234:58>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::238:6::238:58>
 expr: def term := TermParserMaker("foo(3, x(3, 'x'), zip)")
 missing new value
 original value: term`foo(3,
@@ -1033,7 +990,7 @@ original value: term`foo(3,
 missing original problem
 new problem: Failed: Undefined variable: TermParserMaker
 ....
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::257:6::257:36>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::261:6::261:36>
 expr: def term`LiteralString@x` := t3
 missing new value
 original value: term`"foo"(bar,
@@ -1041,7 +998,7 @@ original value: term`"foo"(bar,
 missing original problem
 new problem: LiteralString@{0} doesn't match: term`"foo"(bar,
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::261:6::261:6>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::265:6::265:6>
 expr: x
 missing new value
 original value: term`"foo"(bar,
@@ -1049,20 +1006,20 @@ original value: term`"foo"(bar,
 missing original problem
 new problem: Failed: Undefined variable: x
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::265:6::265:47>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::269:6::269:47>
 expr: def term`LiteralInteger@f(@a1, @a2)` := t3
 original and new problem differ
 original problem: such-that expression was false
      new problem: LiteralInteger@{0}(@{1}, @{2}) doesn't match: term`"foo"(bar,
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::270:6::270:6>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::274:6::274:6>
 expr: f
 missing new value
 original value: <ref broken by problem: <NullPointerException: must be a EList rather than null>>
 missing original problem
 new problem: Failed: Undefined variable: f
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::273:6::273:46>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::277:6::277:46>
 expr: def term`LiteralString@f(@a1, @a2)` := t3
 missing new value
 original value: term`"foo"(bar,
@@ -1070,80 +1027,80 @@ original value: term`"foo"(bar,
 missing original problem
 new problem: LiteralString@{0}(@{1}, @{2}) doesn't match: term`"foo"(bar,
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::277:6::277:6>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::281:6::281:6>
 expr: f
 missing new value
 original value: term`"foo"`
 missing original problem
 new problem: Failed: Undefined variable: f
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::280:6::280:7>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::284:6::284:7>
 expr: a1
 missing new value
 original value: term`bar`
 missing original problem
 new problem: Failed: Undefined variable: a1
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::283:6::283:7>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::287:6::287:7>
 expr: a2
 missing new value
 original value: term`"foo"(4)`
 missing original problem
 new problem: Failed: Undefined variable: a2
 ...
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::297:6::297:22>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::301:6::301:22>
 expr: term`zip($args?)`
 original and new problem differ
 original problem: <Internal: Improper quantity: 2 vs ?>
      new problem: Failed: Improper quantity: 2 vs ?
 .
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::307:6::307:22>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::311:6::311:22>
 expr: term`zip(${[]}+)`
 original and new problem differ
 original problem: <Internal: Improper quantity: 0 vs +>
      new problem: Failed: Improper quantity: 0 vs +
 ...
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::320:6::320:42>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::324:6::324:42>
 expr: def term`LiteralString(@args*)` := t3
 original and new problem differ
 original problem: XXX not yet implemented
      new problem: LiteralString(@{0}*) doesn't match: term`"foo"(bar,
 .............
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::356:6::356:45>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::360:6::360:45>
 expr: def TermParserMaker := <term:TermParser>
 missing new value
 original value: <unsafe:org.quasiliteral.term.TermParser>
 missing original problem
 new problem: Failed: Undefined variable: term__uriGetter
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::359:6::359:73>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::363:6::363:73>
 expr: def term := TermParserMaker(<file:~/Desktop/termtest.txt>.getText())
 original and new problem differ
 original problem: <ClassCastException: org.quasiliteral.term.Term>
      new problem: Failed: Undefined variable: TermParserMaker
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::365:6::365:22>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::369:6::369:22>
 expr: term.getFunctor()
 missing new value
 original value: foo
 missing original problem
 new problem: Failed: Undefined variable: term
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::368:6::368:19>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::372:6::372:19>
 expr: term.getArgs()
 missing new value
 original value: [term`3`, term`x(3, 'x')`, term`zip`]
 missing original problem
 new problem: Failed: Undefined variable: term
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::371:6::371:67>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::375:6::375:67>
 expr: def SimpleTermBuilder := <term:SimpleTermBuilder>.getTHE_ONE()
 missing new value
 original value: <SimpleTermBuilder>
 missing original problem
 new problem: Failed: Undefined variable: term__uriGetter
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::374:6::374:47>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::378:6::378:47>
 expr: def term2 := term.build(SimpleTermBuilder)
 missing new value
 original value: term`foo(3,
@@ -1152,56 +1109,56 @@ original value: term`foo(3,
 missing original problem
 new problem: Failed: Undefined variable: term
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::379:6::379:38>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::383:6::383:38>
 expr: def f := TermParserMaker("foo:3")
 missing new value
 original value: term`foo:3`
 missing original problem
 new problem: Failed: Undefined variable: TermParserMaker
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::382:6::382:31>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::386:6::386:31>
 expr: f.build(SimpleTermBuilder)
 missing new value
 original value: term`foo:3`
 missing original problem
 new problem: Failed: Undefined variable: f
 ..
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::391:6::391:42>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::395:6::395:42>
 expr: def TermTreeMaker := <astro:TermTree>
 missing new value
 original value: <unsafe:org.quasiliteral.astro.TermTree>
 missing original problem
 new problem: Failed: org.quasiliteral.astro.TermTree not found
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::394:6::394:40>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::398:6::398:40>
 expr: def FunctorMaker := <astro:Functor>
 missing new value
 original value: <unsafe:org.quasiliteral.astro.Functor>
 missing original problem
 new problem: Failed: org.quasiliteral.astro.Functor not found
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::397:6::397:51>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::401:6::401:51>
 expr: def foo := FunctorMaker("id", "foo$@`x", null)
 missing new value
 original value: id:"foo$@`x"
 missing original problem
 new problem: Failed: Undefined variable: FunctorMaker
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::400:6::400:40>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::404:6::404:40>
 expr: def tree1 := TermTreeMaker(foo, [])
 missing new value
 original value: ast`id:"foo$$@@``x"`
 missing original problem
 new problem: Failed: Undefined variable: TermTreeMaker
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::403:6::403:52>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::407:6::407:52>
 expr: def tree2 := TermTreeMaker(foo, [tree1, tree1])
 missing new value
 original value: ast`id:"foo$$@@``x"(id:"foo$$@@``x", id:"foo$$@@``x")`
 missing original problem
 new problem: Failed: Undefined variable: TermTreeMaker
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::406:6::406:59>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::410:6::410:59>
 expr: def tree3 := TermTreeMaker(foo, [tree2, tree1, tree2])
 missing new value
 original value: ast`id:"foo$$@@``x"(id:"foo$$@@``x"(id:"foo$$@@``x", id:"foo$$@@``x"),
@@ -1210,14 +1167,14 @@ original value: ast`id:"foo$$@@``x"(id:"foo$$@@``x"(id:"foo$$@@``x", id:"foo$$@@
 missing original problem
 new problem: Failed: Undefined variable: TermTreeMaker
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::411:6::411:41>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::415:6::415:41>
 expr: def ast3 := tree3.asAST(["id" => 2])
 missing new value
 original value: foo$@`x
 missing original problem
 new problem: Failed: Undefined variable: tree3
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::414:6::414:105>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::418:6::418:105>
 expr: def tree4 := TermTreeMaker.fromAST(ast3, "file:what-me-worry.txt", ["huh?", "what", "wow", "zippy"])
 missing new value
 original value: ast`wow:"foo$$@@``x"(wow:"foo$$@@``x"(wow:"foo$$@@``x", wow:"foo$$@@``x"),
@@ -1226,19 +1183,4 @@ original value: ast`wow:"foo$$@@``x"(wow:"foo$$@@``x"(wow:"foo$$@@``x", wow:"foo
 missing original problem
 new problem: Failed: Undefined variable: TermTreeMaker
 .
-c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/toy-grammar.updoc:...
-c:/Documents and Settings/millerm1/e/src/jsrc/org/waterken/entropy/package.html:
-c:/Documents and Settings/millerm1/e/src/jsrc/org/waterken/uri/package.html:
-c:/Documents and Settings/millerm1/e/src/jsrc/org/waterken/url/amp/package.html:
-c:/Documents and Settings/millerm1/e/src/jsrc/org/waterken/url/conforming/package.html:
-c:/Documents and Settings/millerm1/e/src/jsrc/org/waterken/url/dns/package.html:
-c:/Documents and Settings/millerm1/e/src/jsrc/org/waterken/url/http/package.html:
-c:/Documents and Settings/millerm1/e/src/jsrc/org/waterken/url/httpsy/package.html:
-c:/Documents and Settings/millerm1/e/src/jsrc/org/waterken/url/io/package.html:
-c:/Documents and Settings/millerm1/e/src/jsrc/org/waterken/url/package.html:
-c:/Documents and Settings/millerm1/e/src/jsrc/org/waterken/url/proxy/package.html:
-c:/Documents and Settings/millerm1/e/src/jsrc/org/waterken/url/redirectory/package.html:
-c:/Documents and Settings/millerm1/e/src/jsrc/org/waterken/url/tls/package.html:
-c:/Documents and Settings/millerm1/e/src/jsrc/org/waterken/url/tls/sha1withrsa/package.html:
-c:/Documents and Settings/millerm1/e/src/jsrc/org/waterken/url/tunnel/package.html:
-c:/Documents and Settings/millerm1/e/src/jsrc/overview.html:
+c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/toy-grammar.updoc:....

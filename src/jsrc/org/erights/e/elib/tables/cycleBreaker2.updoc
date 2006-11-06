@@ -4,6 +4,8 @@
 # found at http://www.opensource.org/licenses/mit-license.html ................
 
 
+    ? pragma.syntax("0.8")
+
     ? def x := [1,x,3]
     # value: [1, ***CYCLE***, 3]
 

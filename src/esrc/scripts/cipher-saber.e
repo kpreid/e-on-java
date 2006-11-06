@@ -1,5 +1,7 @@
 #!/usr/bin/env rune
 
+pragma.syntax("0.8")
+
 /**
  * A <a href="http://ciphersaber.gurus.com/">CipherSaber</a>
  * implementation in <a href="http://www.erights.org/">E</a>.

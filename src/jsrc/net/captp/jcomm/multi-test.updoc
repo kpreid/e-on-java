@@ -8,6 +8,8 @@
 Exports 'thing' as the server. 'x' is a server variable the
 client can get and set.
 
+    ? pragma.syntax("0.8")
+
     ? (introducer.onTheAir()
     > var x := null
     > def thing {
@@ -26,6 +28,8 @@ client can get and set.
 ?? in new vat client
 
 Import a remote reference to the 'thing' server
+
+    ? pragma.syntax("0.8")
 
     ? (introducer.onTheAir()
     > def uri := <file:~/Desktop/thing.cap>.getText().trim()

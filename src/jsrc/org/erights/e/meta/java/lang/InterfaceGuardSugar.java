@@ -8,10 +8,9 @@ import org.erights.e.develop.format.StringHelper;
 import org.erights.e.elib.base.Callable;
 import org.erights.e.elib.base.ClassDesc;
 import org.erights.e.elib.deflect.Deflector;
-import org.erights.e.elib.prim.Thrower;
 import org.erights.e.elib.prim.E;
+import org.erights.e.elib.prim.Thrower;
 import org.erights.e.elib.serial.Marker;
-import org.erights.e.elib.slot.AuditFailedException;
 import org.erights.e.elib.slot.Audition;
 import org.erights.e.elib.util.OneArgFunc;
 
@@ -74,8 +73,11 @@ public class InterfaceGuardSugar extends ClassDesc {
      * XXX Otherwise, I currently reject everything, but this must be fixed.
      */
     public boolean audit(Audition audition) {
+        //noinspection RedundantIfStatement
         if (myIsMarker) {
-            throw new AuditFailedException(this, audition.getSource());
+//            throw new AuditFailedException(this, audition.getSource());
+            Thrower.THE_ONE.breakpoint(audition);
+            return false;
         } else {
             return true;
         }

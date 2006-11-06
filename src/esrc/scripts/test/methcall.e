@@ -1,5 +1,7 @@
 #!/usr/bin/env rune
 
+pragma.syntax("0.8")
+
 def makeToggle(self, var state) :any {
     def toggle {
         to value() :any    { state }
