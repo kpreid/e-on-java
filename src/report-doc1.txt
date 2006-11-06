@@ -1,31 +1,7 @@
-[[*
-# warning: undeclared updoc version from: <file:c:/Documents and Settings/millerm1/e/doc/data/common-syntax/baking-chars.html#:span::362:69::362:71>
-
-.*.*.*.*.][]*.*
-# warning: undeclared updoc version from: <file:c:/Documents and Settings/millerm1/e/doc/data/irrelevance.html#:span::231:65::231:67>
-
-
+[[*.*.*.*.*.][]*.*
 c:/Documents and Settings/millerm1/e/doc/data/irrelevance.html
 syntax error: Use on right isn't really in scope of definition: ["i"]
   for i in (0..i) { println(i) }
                                ^
-  @ <file:c:/Documents and Settings/millerm1/e/doc/data/irrelevance.html#:span::234:124::234:124>
-*..[*.[*.*.*
-# warning: undeclared updoc version from: <file:c:/Documents and Settings/millerm1/e/doc/data/serial/jhu-paper/data-e-manual.html#:span::242:65::242:67>
-
-.*
-# warning: undeclared updoc version from: <file:c:/Documents and Settings/millerm1/e/doc/data/serial/jhu-paper/deconstructing.html#:span::144:63::144:67>
-
-.*.*
-# warning: undeclared updoc version from: <file:c:/Documents and Settings/millerm1/e/doc/data/serial/jhu-paper/exit-security.html#:span::115:22::115:24>
-
-.[]*.*.*.*
-# warning: undeclared updoc version from: <file:c:/Documents and Settings/millerm1/e/doc/data/serial/jhu-paper/recog-n-build.html#:span::376:65::376:67>
-
-..*
-# warning: undeclared updoc version from: <file:c:/Documents and Settings/millerm1/e/doc/data/serial/jhu-paper/related.html#:span::236:15::236:36>
-
-.*
-# warning: undeclared updoc version from: <file:c:/Documents and Settings/millerm1/e/doc/data/serial/jhu-paper/subgraph-security.html#:span::73:85::73:87>
-
-.*.][*.*.*.*.*.*.*.*.*.*.*.*.]][*.*.*.]]
+  @ <file:c:/Documents and Settings/millerm1/e/doc/data/irrelevance.html#:span::236:124::236:124>
+*..[*.[*.*.*.*.*.*.[]*.*.*.*..*.*.*.][*.*.*.*.*.*.*.*.*.*.*.*.]][*.*.*.]]

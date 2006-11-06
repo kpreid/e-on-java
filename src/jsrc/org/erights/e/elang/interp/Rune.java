@@ -152,6 +152,16 @@ public class Rune {
             }
         }
 
+        String optVersion = sysProps.getProperty("e.version");
+        if (null == optVersion) {
+            sysProps.setProperty("e.version", MAJOR_VERSION + ".??");
+        } else {
+            T.require(optVersion.startsWith(MAJOR_VERSION + "."),
+                      "Inconsistent version: ", E.toQuote(optVersion),
+                      " vs. ", E.toQuote(MAJOR_VERSION), ".\n",
+                      "See e/src/Makefile for the other version setting.");
+        }
+
         //In order to avoid an upwards dependency, we do the
         //tilde-expansion for the trace package, since it doesn't know
         //how to do it for itself.
