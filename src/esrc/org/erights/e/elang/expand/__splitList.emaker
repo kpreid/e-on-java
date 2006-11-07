@@ -47,7 +47,7 @@ a $llen size list doesn't match a >= $cut size list pattern`)
     # value: ["foo", ["bar"]]
 
     ? x := "foo"
-    # problem: <ClassCastException: Character doesn't coerce to a String
+    # problem: <ClassCastException: Character doesn't coerce to a String>
 
     ? x := []
     # problem: a 0 size list doesn't match a >= 1 size list pattern

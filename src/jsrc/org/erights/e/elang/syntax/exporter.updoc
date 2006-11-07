@@ -1,5 +1,8 @@
 #!/usr/bin/env rune
 
+# Copyright 2005 Mark S. Miller, under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
     ? pragma.syntax("0.9")
     
     ? var x := 3
@@ -9,14 +12,14 @@
     # value: 5
 
     ? [=>x, =>&y]
-    # value: ["x" => 3, "&y" => <forwards to: <& 5>>]
+    # value: ["x" => 3, "&y" => <var 5>]
 
     ? [=>x, =>&y]
 
     # value: ["x" => 3, "&y" => <forwards to: <& 5>>]
 
     ? def [=>a := 3, =>&b, "&y" => &c] := ["&b" => &x, =>&y]
-    # value: ["&b" => <forwards to: <& 3>>, "&y" => <forwards to: <& 5>>]
+    # value: ["&b" => <var 3>, "&y" => <var 5>]
 
     ? x := 33
     # value: 33

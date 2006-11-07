@@ -81,7 +81,8 @@ def makeOldUpdocParser(source) :any {
      *     # value: "foo
      *     #        bar"
      * </pre>
-     * For answers with the keyword "problem" the stack trace is skipped.
+     * For answers with the keyword "problem" or "syntax error", the stack
+     * trace is skipped.
      *
      * @return The answer as a <tt>ConstList</tt> or <tt>null</tt>.
      *         The result includes the key-value pair with all
@@ -103,7 +104,8 @@ def makeOldUpdocParser(source) :any {
                 # multi-line answer block
                 def nextLine := rest.trim()
                 # skip over the stack trace which can vary from run to run
-                if (nextLine =~ `` && keyword =~ `problem`) {
+                if (nextLine =~ `` && (keyword =~ `problem` ||
+                                         keyword =~ `syntax error`)) {
                     index += 1
                     while (index < lines.size() &&
                              lines[index].trim() =~ `#@_`) {

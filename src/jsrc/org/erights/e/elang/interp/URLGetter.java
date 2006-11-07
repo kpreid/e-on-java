@@ -49,6 +49,7 @@ public class URLGetter extends BaseLoader {
 
     /**
      *
+     * @param uriBody
      */
     public Object get(String uriBody) {
         try {

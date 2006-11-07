@@ -60,12 +60,12 @@ class PackageLoader extends BaseLoader {
     /**
      *
      */
-    public Object get(String name) {
-        return mySubstrate.get(myPrefix + name);
+    public Object get(String uriBody) {
+        return mySubstrate.get(myPrefix + uriBody);
     }
 
     /**
-     * See {@link org.erights.e.elib.serial.BaseLoader#getOptWrappingUncall}.
+     * See {@link BaseLoader#getOptWrappingUncall}.
      */
     public Object[] optUncall(Object obj) {
         return BaseLoader.getOptWrappingUncall(this,

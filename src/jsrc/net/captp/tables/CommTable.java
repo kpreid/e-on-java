@@ -12,20 +12,19 @@ import java.io.IOException;
 import java.lang.reflect.Array;
 
 /**
- * Just some common mechanism made available to the CommTable
- * implementations. <p>
+ * Just some common mechanism made available to the CommTable implementations.
+ * <p>
  * <p/>
- * CommTables are defined in terms of indices
- * (always positive), not position. At a higher level, positions use
- * positive or negative to encode choice of table (questions vs imports,
- * answers vs exports). This can be a bit confusing because CommTable
- * internally uses negated indices for free list entries, and these two uses
- * of negation are completely independent.
+ * CommTables are defined in terms of indices (always positive), not position.
+ * At a higher level, positions use positive or negative to encode choice of
+ * table (questions vs imports, answers vs exports). This can be a bit
+ * confusing because CommTable internally uses negated indices for free list
+ * entries, and these two uses of negation are completely independent.
  * <p/>
- * The rest of CapTP depends on the tables, but for the
- * sake of unit testing, each table stands alone to the greatest reasonable
- * degree. Since AnswersTable adds almost nothing to CommTable, you can unit
- * test CommTable by testing AnswersTable.
+ * The rest of CapTP depends on the tables, but for the sake of unit testing,
+ * each table stands alone to the greatest reasonable degree. Since
+ * AnswersTable adds almost nothing to CommTable, you can unit test CommTable
+ * by testing AnswersTable.
  *
  * @author Mark S. Miller
  */
@@ -56,18 +55,16 @@ public abstract class CommTable implements EPrintable {
     /**
      * Keeps track of the allocation of my indices. <p>
      * <p/>
-     * myFreeList[0] is unused and always has the value 0.
-     * For all i >= 1, if myFreeList[i] >= 1, it's an allocation count.
-     * Otherwise, let next := -myFreeList[i].
-     * If next >= 1, it's the index of the next free entry in myFreeList.
-     * If next == 0, we're at the end of the list.
+     * myFreeList[0] is unused and always has the value 0. For all i >= 1, if
+     * myFreeList[i] >= 1, it's an allocation count. Otherwise, let next :=
+     * -myFreeList[i]. If next >= 1, it's the index of the next free entry in
+     * myFreeList. If next == 0, we're at the end of the list.
      */
     private int[] myFreeList;
 
     /**
-     * Let first = -myFreeHead;
-     * If first >= 1, it's the index of the first free entry in myFreeList.
-     * If first == 0, the list is empty.
+     * Let first = -myFreeHead; If first >= 1, it's the index of the first free
+     * entry in myFreeList. If first == 0, the list is empty.
      */
     private int myFreeHead;
 
@@ -117,17 +114,17 @@ public abstract class CommTable implements EPrintable {
     }
 
     /**
-     * Is this index free?  If it's past the end, yes.
-     * If it's before the beginning, it's not valid, so no.
+     * Is this index free?  If it's past the end, yes. If it's before the
+     * beginning, it's not valid, so no.
      */
     boolean isFree(int index) {
         if (index >= myCapacity) {
             return true;
         }
-        if (index <= 0) {
+        if (0 >= index) {
             throw new IllegalArgumentException("bad index: " + index);
         }
-        return myFreeList[index] <= 0;
+        return 0 >= myFreeList[index];
     }
 
     /**
@@ -152,7 +149,7 @@ public abstract class CommTable implements EPrintable {
      * What the next capacity big enough to represent index?
      */
     private int bigEnough(int index) {
-        if (index <= 0) {
+        if (0 >= index) {
             throw new IllegalArgumentException("bad index: " + index);
         }
         int result = myCapacity;
@@ -201,8 +198,8 @@ public abstract class CommTable implements EPrintable {
     /**
      * Deallocates an allocated index. <p>
      * <p/>
-     * Subclasses may override and send-super in order to clear their
-     * parallel arrays.
+     * Subclasses may override and send-super in order to clear their parallel
+     * arrays.
      */
     public void free(int index) {
         mustBeAlloced(index);
@@ -233,7 +230,7 @@ public abstract class CommTable implements EPrintable {
     public boolean decr(int index, int delta) {
         mustBeAlloced(index);
         int newCount = myFreeList[index] - delta;
-        if (newCount <= 0) {
+        if (0 >= newCount) {
             free(index);
             return true;
         } else {
@@ -264,7 +261,7 @@ public abstract class CommTable implements EPrintable {
         }
         //we lose. Search the free list for -index
         int i = -myFreeHead;
-        while (i != 0) {
+        while (0 != i) {
             int next = -myFreeList[i];
             if (index == next) {
                 myFreeList[i] = myFreeList[index];
@@ -284,6 +281,7 @@ public abstract class CommTable implements EPrintable {
     public Object get(int index) {
         mustBeAlloced(index);
         Object result = myStuff[index];
+        //noinspection ObjectEquality
         if (ThePumpkin == result) {
             T.fail("export: " + index + " is a pumpkin");
         }
@@ -312,15 +310,15 @@ public abstract class CommTable implements EPrintable {
     }
 
     /**
-     * Allocates a free index, put value there, and returns that index. <p>
+     * Allocates a free index, put value there, and returns that index.
      * <p/>
      * Subclasses may override and send-super to initialize their parallel
      * arrays.
-     * <p>
+     * <p/>
      * The wireCount is initialized to one
      */
     public int bind(Object value) {
-        if (myFreeHead == 0) {
+        if (0 == myFreeHead) {
             growToHold(myCapacity);
         }
         int result = -myFreeHead;
@@ -347,7 +345,7 @@ public abstract class CommTable implements EPrintable {
             }
         }
         out.print("\n], free: [");
-        for (int i = -myFreeHead; i != 0; i = -myFreeList[i]) {
+        for (int i = -myFreeHead; 0 != i; i = -myFreeList[i]) {
             out.print(" " + i);
         }
         out.print("]>");

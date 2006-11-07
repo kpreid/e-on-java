@@ -11,14 +11,12 @@ From http://www.eros-os.org/pipermail/e-lang/2004-January/009423.html
   ? def uc_construct {}
   # value: <uc_construct>
 
-  ? def demoScope := <unsafe:org.erights.e.elang.scope.Scope>.make(
+  ? def demoScope := <unsafe:org.erights.e.elang.scope.makeScope>.fromState(
   >   __makeMap.fromColumns(
   >     ["y", "any", "x", "__makeList", "&uc_construct"],
   >     [6, any, 5, __makeList, __makeFinalSlot(uc_construct)]
   >   ),
-  >   "__main$makePoint__C$point__C$",
-  >   false
-  > )
+  >   "__main$makePoint__C$point__C$")
   # value: <a Scope>
 
   ? for k => v in demoScope { println(k, " ", v) }

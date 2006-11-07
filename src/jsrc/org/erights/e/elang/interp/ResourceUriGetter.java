@@ -27,10 +27,10 @@ public class ResourceUriGetter extends BaseLoader {
     /**
      * &lt;resource:...&gt; expands to resource__uriGetter.get(...)
      */
-    public Object get(String name) {
-        URL result = ClassLoader.getSystemResource(name);
+    public Object get(String uriBody) {
+        URL result = ClassLoader.getSystemResource(uriBody);
         T.notNull(result,
-                  "Resource not found: ", name);
+                  "Resource not found: ", uriBody);
         return result;
     }
 

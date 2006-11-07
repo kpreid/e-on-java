@@ -96,9 +96,10 @@ class TypeLoader extends BaseLoader {
 
     /**
      * exception if not found
+     * @param uriBody
      */
-    public Object get(String fqName) {
-        return getLocalSlot(fqName).getValue();
+    public Object get(String uriBody) {
+        return getLocalSlot(uriBody).getValue();
     }
 
     /**

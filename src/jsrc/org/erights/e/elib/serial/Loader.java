@@ -1,5 +1,6 @@
 package org.erights.e.elib.serial;
 
+import org.erights.e.elib.vat.Vat;
 
 /*
 The contents of this file are subject to the Electric Communities E Open
@@ -24,12 +25,11 @@ Contributor(s): ______________________________________.
 /**
  * XXX need to fix java-documentation.
  * <p/>
- * The following documentation is stale:
- * Provides access to the java fully-qualified class namespace.
+ * The following documentation is stale: Provides access to the java
+ * fully-qualified class namespace.
  * <p/>
- * Must be implemented in a thread-safe fashion, as use of
- * {@link org.erights.e.elib.vat.Vat#seed Vat.seed/*} will normally cause
- * these to be accessed from multiple vats.
+ * Must be implemented in a thread-safe fashion, as use of {@link Vat#seed
+ * Vat.seed/*} will normally cause these to be accessed from multiple vats.
  * <p/>
  * If <tt>loader[name]</tt> yields <tt>obj</tt>, then
  * <pre>    loader.optUncall(obj)</pre>
@@ -48,13 +48,11 @@ public interface Loader extends Uncaller {
      * If this loader is called 'foo__uriGetter', then '<foo:name>' will expand
      * to 'foo__uriGetter.get("name")'.
      */
-    Object get(String name);
+    Object get(String uriBody);
 
     /**
      * If child can be gotten from this Loader with a get, return the needed
      * argument string.
-     *
-     * @return
      */
     String optUnget(Object child);
 }

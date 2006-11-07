@@ -7,8 +7,8 @@ This file is for testing the AnswersTable. First we obtain the maker:
 
     ? pragma.syntax("0.8")
 
-    ? def AnswersTableMaker := <unsafe:net.captp.tables.AnswersTable>
-    # value: <unsafe:net.captp.tables.AnswersTable>
+    ? def AnswersTableMaker := <unsafe:net.captp.tables.makeAnswersTable>
+    # value: <makeAnswersTable>
 
 Then we make an instance:
 
@@ -19,7 +19,7 @@ Then we make an instance:
     ? at1.size()
     # value: 0
 
-    ? def i1 := at1.put("foo")
+    ? def i1 := at1."bind"("foo")
     # value: 1
 
     ? at1
@@ -30,7 +30,7 @@ Then we make an instance:
     ? at1.size()
     # value: 1
 
-    ? def i2 := at1.put("bar")
+    ? def i2 := at1."bind"("bar")
     # value: 2
 
     ? at1
@@ -53,24 +53,13 @@ Then we make an instance:
 
     ? at1[i1]
     # problem: <IllegalArgumentException: not alloced: 1>
-    #
-    #   <AnswersTable[   2:bar ], fr... 6 7 8 9 10 11 12 13 14 15]> get(1)
-    #   <interp> evalPrint(e`at1 get(i1)`)
 
     ? at1.mustBeFree(i1)
     ? at1.mustBeFree(i2)
     # problem: <IllegalArgumentException: not free: 2>
-    #
-    #   <AnswersTable[   2:bar ], fr... 6 7 8 9 10 11 12 13 14 15]>.\
-    #   mustBeFree(2)
-    #   <interp> evalPrint(e`at1 mustBeFree(i2)`)
 
     ? at1.mustBeAlloced(i1)
     # problem: <IllegalArgumentException: not alloced: 1>
-    #
-    #   <AnswersTable[   2:bar ], fr... 6 7 8 9 10 11 12 13 14 15]>.
-    #   mustBeAlloced(1)
-    #   <interp> evalPrint(e`at1 mustBeAlloced(i1)`)
 
     ? at1.mustBeAlloced(i2)
     ? at1
@@ -82,9 +71,6 @@ Then we make an instance:
     ? at1.incr(i2)
     ? at1.incr(i1)
     # problem: <IllegalArgumentException: not alloced: 1>
-    #
-    #   <AnswersTable[   2:bar ], fr... 6 7 8 9 10 11 12 13 14 15]> incr(1)
-    #   <interp> evalPrint(e`at1 incr(i1)`)
 
     ? at1
     # value: <AnswersTable[
@@ -104,7 +90,7 @@ Then we make an instance:
     # value: <AnswersTable[
     #        ], free: [ 2 1 3 4 5 6 7 8 9 10 11 12 13 14 15]>
 
-    ? at1.put("zippy")
+    ? at1."bind"("zippy")
     # value: 2
 
     ? def dms {
@@ -117,7 +103,7 @@ Then we make an instance:
     > }
     # value: Dead Man Switch
 
-    ? at1.put(dms)
+    ? at1."bind"(dms)
     # value: 1
 
     ? at1
@@ -126,29 +112,20 @@ Then we make an instance:
     #          2:zippy
     #        ], free: [ 3 4 5 6 7 8 9 10 11 12 13 14 15]>
 
-    ? def problem := <unsafe:java.lang.RuntimeException>.new("fooey")
-    # value: <RuntimeException: fooey>
+    ? def problem := <import:java.lang.makeRuntimeException>("fooey")
+    # value: problem: fooey
 
     ? at1.smash(problem)
     ?
     client gone because <RuntimeException: fooey>
     ? at1[i2]
     # problem: <IllegalArgumentException: not alloced: 2>
-    #
-    #   ....
-    #   <interp> evalPrint(e`at1 get(i2)`)
 
     ? at1[i1]
     # problem: <IllegalArgumentException: not alloced: 1>
-    #
-    #   ....
-    #   <interp> evalPrint(e`at1 get(i1)`)
 
-    ? at1.put("glorp")
+    ? at1."bind"("glorp")
     # problem: <NullPointerException>
-    #
-    #   ....
-    #   <interp> evalPrint(e`at1 put("glorp")`)
 
     ? (for i in 1..3 {
     >     println(`i: $i`)
@@ -157,6 +134,7 @@ Then we make an instance:
     # stdout: i: 1
     #         i: 2
     #         i: 3
+    #
 
     # value: 44
 

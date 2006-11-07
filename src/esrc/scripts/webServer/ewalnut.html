@@ -1183,7 +1183,7 @@ in rune.</p>
 #        interface "__main$add__C" {
 #
 #            /** Invoke as a function */
-#            to run(_ :any, _ :any) :any
+#            to run(:any, :any) :any
 #        }
 #
 ?</pre>
@@ -1408,7 +1408,7 @@ import statement, and speak to the Java object much as we would speak to an E
 object: <span class="note">replace vector as example</span> </p>
 <blockquote><pre># E sample
 #create a single vector with a direct call to Java
-def myVector := &lt;unsafe:java.util.Vector&gt;()
+def myVector := &lt;unsafe:java.util.makeVector&gt;()
 myVector.addElement("abc")
 #create a makeVector function which can be called repeatedly to make more vectors
 def makeVector := &lt;unsafe:java.util.Vector&gt;
@@ -1464,7 +1464,7 @@ like a function call, prefix it with "get", uppercase the first letter,
 and<span class="e"><em>E</em></span>will get the value for you:</p>
 <blockquote>
   <pre># E sample
-&lt;unsafe:java.util.Calendar&gt;.getYEAR()</pre>
+&lt;unsafe:java.util.makeCalendar&gt;.getYEAR()</pre>
 </blockquote>
 
 <h4>Speaking to Java objects with superclass/subclass overloaded methods</h4>
@@ -1485,17 +1485,17 @@ example, we see that the print function for the System.out object is
 overloaded for both String and Object, with String being a subclass of
 Object, so the full signature is required:</p>
 <blockquote>
-  <pre>? def out := &lt;unsafe:java.lang.System&gt;.getOut()
+  <pre>? def out := &lt;unsafe:java.lang.makeSystem&gt;.getOut()
 # value: &lt;a PrintStream&gt;
 
 ? out.print("abc")
-# problem: &lt;IllegalArgumentException: Ambiguous overload on class java.io.PrintStream: print(char[]) vs print(Object)&gt;
+# problem: &lt;IllegalArgumentException: Ambiguous overload on class java.io.PrintStream: print(Object) vs print(String)&gt;
 #
 #   java.io.PrintStream@8d92e print("abc")
 #   &lt;interactive interp&gt; evalPrint(e`out print("abc")`)
 
 ? E.call(out, "print(String)", ["abc"])
-? def myLabel := E.call(&lt;swing:JLabel&gt;, "run(String)",["label text"])</pre>
+? def myLabel := E.call(&lt;swing:makeJLabel&gt;, "run(String)",["label text"])</pre>
 </blockquote>
 
 <p>If you encounter one of these special cases that requires multiple
@@ -1509,7 +1509,7 @@ signature:</p>
 <p>It is possible to make Java arrays of Java primitive types, as in this
 example:</p>
 <blockquote><pre># E sample
-def byte := &lt;unsafe:java.lang.Byte&gt;.getTYPE()
+def byte := &lt;unsafe:java.lang.makeByte&gt;.getTYPE()
 def byteArray := byte[300].diverge()
 byteArray[0] := 3</pre></blockquote>
 
@@ -1894,7 +1894,7 @@ def attachAction(component,target,verb) {
 }
 
 def newButton(labelText, verb, target) {
-    def button := &lt;swing:JButton&gt;(labelText)
+    def button := &lt;swing:makeJButton&gt;(labelText)
     button.setBackground(&lt;awt:SystemColor&gt;.getControl())
     attachAction(button,target,verb)
     return button
@@ -1936,13 +1936,13 @@ def makeInstrumentPanel(car) :near {
     }
     def makeXIndicator(speed) {return makeIndicator(speed,"&gt;","&lt;")}
     def makeYIndicator(speed) {return makeIndicator(speed,"^\n","V\n")}
-    def frame := &lt;swing:JFrame&gt;("Car " + car.getName() + " Instrument Panel")
+    def frame := &lt;swing:makeJFrame&gt;("Car " + car.getName() + " Instrument Panel")
     def lbl(text) {return &lt;swing:JLabel&gt;(text)}
     def xLabel := lbl("Horizontal Speed:")
-    def xIndicator := &lt;swing:JTextArea&gt;()
+    def xIndicator := &lt;swing:makeJTextArea&gt;()
     xIndicator.setText("0")
     def yLabel := &lt;swing:JTextArea&gt;("V \ne\nr\nt\ni\nc\na\nl")
-    yLabel.setBackground(&lt;awt:SystemColor&gt;.getControl())
+    yLabel.setBackground(&lt;awt:makeSystemColor&gt;.getControl())
     def yIndicator := &lt;swing:JTextArea&gt;()
     yIndicator.setText("0")
     def statusPane := lbl("Running...")
@@ -1958,7 +1958,7 @@ def makeInstrumentPanel(car) :near {
         V           V           ${btn("/","downLeft")} ${btn("V","down")} ${btn("\\","downRight")}
         V           V           $submitButton.X        &gt;                  &gt;
         $statusPane &gt;           &gt;                      &gt;                  &gt;`
-    frame.setDefaultCloseOperation(&lt;swing:WindowConstants&gt;.getDO_NOTHING_ON_CLOSE())
+    frame.setDefaultCloseOperation(&lt;swing:makeWindowConstants&gt;.getDO_NOTHING_ON_CLOSE())
     frame.getContentPane().add(realPane)
     frame.pack()
     frame.show()
@@ -2729,8 +2729,8 @@ def myCar {
 }
 def milesVow := calcMilesBeforeEmptyVow(myCar)
 when (milesVow) -&gt; done(milesBeforeEmpty) {
-    println("miles before empty = " + milesBeforeEmpty)
-} catch e {println("Error: " + e)}</pre></blockquote>
+    println(`miles before empty = $milesBeforeEmpty`)
+} catch e {println(`Error: $e`)}</pre></blockquote>
 
 <p>This example highlights several different features of promises. The basic
 idea of the example is that the function calcMilesBeforeEmptyVow(carRcvr)
@@ -3071,7 +3071,7 @@ def aliceRcvr {
     to prepareIPOVow()  {
         def RDNumbersVow := bobRcvr &lt;- getCostNumbers()
         return when (carolRcvr &lt;- integrateSpreadsheetVow(RDNumbersVow)) -&gt; done(spreadsheet){
-            println("Appendix: Budget Spreadsheet: \n" + spreadsheet)
+            println(`Appendix: Budget Spreadsheet: $\n$spreadsheet`)
         } catch prob {
             aliceRcvr &lt;- fireSomebody([bobRcvr, carolRcvr])
         }
@@ -3265,7 +3265,7 @@ def printTotalContributions(amountsList) {
     for each in amountsList {
         if (!(Ref.isBroken(each))) {total += each}
     }
-    println("Total contributions are: " + total)
+    println(`Total contributions are: $total`)
 }
 # scaffold contributors: real contributors would be remote Rcvrs
 def makeContributer(donation) {
@@ -4341,8 +4341,8 @@ pass objects safely. Use the sealer to make a sealed box that can only be opened
 by the matching unsealer. <span class="e">E</span> has built-in support for
 sealer/unsealer pairs:</p>
 
-<blockquote><pre>? def makeBrandPair := &lt;elib:sealing.Brand&gt;
-# value: &lt;import:org.erights.e.elib.sealing.Brand&gt;
+<blockquote><pre>? def makeBrandPair := &lt;elib:sealing.makeBrand&gt;
+# value: &lt;makeBrand&gt;
 
 ? def [sealer, unsealer] := makeBrandPair("BrandNickName")
 # value: [&lt;BrandNickName sealer&gt;, &lt;BrandNickName unsealer&gt;]
@@ -4719,7 +4719,7 @@ def carThief {
         try {
             legitAttendant.retrieveCar(claim)
             println("Ha! didn't get car, but got control")
-        } catch prob {println("rats! foiled again: " + prob)}
+        } catch prob {println(`rats! foiled again: $prob`)}
     }
 }
 
@@ -4852,9 +4852,9 @@ def bob {
     to lookAtHPMDoc(claim) :void {
         try {
             def doc := HPMDocClaimMgr.matchClaim(claim, intilSharedDocs)
-            println("reading doc: " + doc)
+            println(`reading doc: $doc`)
         } catch prob {
-            println("can't read: " + claim)
+            println(`can't read: $claim')
         }
     }
 }

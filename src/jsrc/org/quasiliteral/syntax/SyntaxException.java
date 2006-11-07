@@ -74,7 +74,7 @@ public class SyntaxException
     }
 
     /**
-     * @return
+     *
      */
     public Twine getOptOpenner() {
         return myOptOpenner;
@@ -136,8 +136,8 @@ public class SyntaxException
     public void __printOn(TextWriter out) throws IOException {
         out.print(ErrPrefix);
         String msg = getMessage();
-        if (!msg.equals("syntax error")) {
-            out.indent(ErrIndent).print(msg);
+        if (!"syntax error".equals(msg)) {
+            out.indent(ErrIndent).println(msg);
         }
         if (null != myOptLine) {
             out = out.indent("  ");

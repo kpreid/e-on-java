@@ -311,6 +311,7 @@ public class Introducer extends BaseLoader implements PassByProxy {
     /**
      * Same as sturdyFromURI, but named get/1 so the introducer can be used
      * as a URIGetter.
+     * @param uriBody
      */
     public Object get(String uriBody) {
         try {

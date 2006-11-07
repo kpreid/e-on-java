@@ -234,9 +234,10 @@ class ImportLoader extends BaseLoader {
 
     /**
      *
+     * @param uriBody
      */
-    public Object get(String name) {
-        return getLocalSlot(name).getValue();
+    public Object get(String uriBody) {
+        return getLocalSlot(uriBody).getValue();
     }
 
     /**

@@ -35,6 +35,7 @@ def matchBind(matchMaker, args) :any {
     # value: "ab.de"
 
     ? interp.setExpand(false)
+    # expansion: interp.setExpand(false)
 
     ? [x,y]
     # value: ["ab", "de"]

@@ -1,31 +1,15 @@
 
 updoc: started
 
-c:/Documents and Settings/millerm1/e/doc/elang/blocks/andExpr.html:
-c:/Documents and Settings/millerm1/e/doc/elang/blocks/controlIntro.html:
 c:/Documents and Settings/millerm1/e/doc/elang/blocks/defFunc.html:...........
 c:/Documents and Settings/millerm1/e/doc/elang/blocks/defObject.html:.............................
 c:/Documents and Settings/millerm1/e/doc/elang/blocks/defPlumbing.html:.............
-c:/Documents and Settings/millerm1/e/doc/elang/blocks/defVar.html:............
-at: <file:c:/Documents and Settings/millerm1/e/doc/elang/blocks/defVar.html#:span::141:9::141:14>
-expr: k := 7
-original and new problem differ
-original problem: Failed: Final variables may not be changed
-     new problem: Failed: Can't assign to final variable: k
-..
+c:/Documents and Settings/millerm1/e/doc/elang/blocks/defVar.html:...............
 c:/Documents and Settings/millerm1/e/doc/elang/blocks/delegation.html:......
 c:/Documents and Settings/millerm1/e/doc/elang/blocks/escapeExpr.html:.....
 c:/Documents and Settings/millerm1/e/doc/elang/blocks/forExpr.html:...
-c:/Documents and Settings/millerm1/e/doc/elang/blocks/forKVExpr.html:............
-at: <file:c:/Documents and Settings/millerm1/e/doc/elang/blocks/forKVExpr.html#:span::240:31::240:35>
-expr: count
-original and new value differ
-original value: 829
-     new value: 942
-
-c:/Documents and Settings/millerm1/e/doc/elang/blocks/ifExpr.html:
-c:/Documents and Settings/millerm1/e/doc/elang/blocks/index.html:
-c:/Documents and Settings/millerm1/e/doc/elang/blocks/miranda.html:=== 2006-11-06T16:09:30.930Z (PendingEvent.report:PendingEvent.java:109) WRN
+c:/Documents and Settings/millerm1/e/doc/elang/blocks/forKVExpr.html:.............
+c:/Documents and Settings/millerm1/e/doc/elang/blocks/miranda.html:=== 2006-11-07T06:21:49.814Z (PendingEvent.report:PendingEvent.java:109) WRN
 causality: Problem in turn <<Vat home in <runs in home>>,116>: 
 --vvvv--
 / by zero
@@ -60,11 +44,6 @@ java.lang.ArithmeticException: / by zero
 --^^^^--
 
 .........
-c:/Documents and Settings/millerm1/e/doc/elang/blocks/nestedExpr.html:
-c:/Documents and Settings/millerm1/e/doc/elang/blocks/orExpr.html:
-c:/Documents and Settings/millerm1/e/doc/elang/blocks/overview.html:
-c:/Documents and Settings/millerm1/e/doc/elang/blocks/switchExpr.html:
-c:/Documents and Settings/millerm1/e/doc/elang/blocks/tryExpr.html:
 c:/Documents and Settings/millerm1/e/doc/elang/blocks/whileExpr.html:..
 at: <file:c:/Documents and Settings/millerm1/e/doc/elang/blocks/whileExpr.html#:span::113:2::113:11>
 expr: findFirst(<c:/jabbertest/jabberwocky.txt>, "and")
@@ -80,8 +59,6 @@ original value: true
 missing original problem
 new problem: <FileNotFoundException: c:\jabbertest\jabberwocky.txt (The system cannot find the path specified)>
 
-c:/Documents and Settings/millerm1/e/doc/elang/collect/coord/index.html:
-c:/Documents and Settings/millerm1/e/doc/elang/collect/coord/IntegerRegion.html:
 c:/Documents and Settings/millerm1/e/doc/elang/collect/EList.html:..
 c:/Documents and Settings/millerm1/e/doc/elang/collect/index.html:..
 at: <file:c:/Documents and Settings/millerm1/e/doc/elang/collect/index.html#:span::99:2::99:41>
@@ -113,7 +90,7 @@ original stdout: bin is 0 bytes
                  caplets is 0 bytes
                  devrune is 7037 bytes
                  devrune-template.txt is 6774 bytes
-                 e.jar is 4005355 bytes
+                 e.jar is 4036737 bytes
                  eprops-template.txt is 13845 bytes
                  eprops.txt is 14296 bytes
                  eVersion.txt is 8 bytes
@@ -126,71 +103,20 @@ original stdout: bin is 0 bytes
                  rune.bat is 671 bytes
                  sacrificial-long-file-name-to-test-for-truncation.txt is 0 bytes
                  scripts is 0 bytes
-                 updoc-hash-cache.txt is 95770 bytes
+                 updoc-hash-cache.txt is 98755 bytes
                  winfo.txt is 2271 bytes
                  
 
-c:/Documents and Settings/millerm1/e/doc/elang/collect/String-ref.html:..
-at: <file:c:/Documents and Settings/millerm1/e/doc/elang/collect/String-ref.html#:span::270:18::270:20>
-expr: for i => c in "foo" {
-          def code := c.asInteger()
-          println(`$i => $c ($code)`)
-      }
-original and new stdout differ
-original stdout: 0 => 'f' (102)
-                 1 => 'o' (111)
-                 2 => 'o' (111)
-                 
-     new stdout: 0 => f (102)
-                 1 => o (111)
-                 2 => o (111)
-                 
-...............
+c:/Documents and Settings/millerm1/e/doc/elang/collect/String-ref.html:..................
 c:/Documents and Settings/millerm1/e/doc/elang/collect/table-ref.html:....
-c:/Documents and Settings/millerm1/e/doc/elang/collect/tables.html:=== 2006-11-06T16:10:28.373Z (Twine.add:Twine.java:354) WRN
-eruntime: Stringifying with '+' : (r)
- @ Twine#add(Object)
- @ add/1: <file:c:/Documents and Settings/millerm1/e/doc/elang/collect/tables.html#:span::380:21::380:22>
-=== 2006-11-06T16:10:28.373Z (Twine.add:Twine.java:354) WRN
-eruntime: Stringifying with '+' : (o)
- @ Twine#add(Object)
- @ add/1: <file:c:/Documents and Settings/millerm1/e/doc/elang/collect/tables.html#:span::380:21::380:22>
-=== 2006-11-06T16:10:28.373Z (Twine.add:Twine.java:354) WRN
-eruntime: Stringifying with '+' : (y)
- @ Twine#add(Object)
- @ add/1: <file:c:/Documents and Settings/millerm1/e/doc/elang/collect/tables.html#:span::380:21::380:22>
-=== 2006-11-06T16:10:28.373Z (Twine.add:Twine.java:354) WRN
-eruntime: Stringifying with '+' : (g)
- @ Twine#add(Object)
- @ add/1: <file:c:/Documents and Settings/millerm1/e/doc/elang/collect/tables.html#:span::380:21::380:22>
-=== 2006-11-06T16:10:28.383Z (Twine.add:Twine.java:354) WRN
-eruntime: Stringifying with '+' : (b)
- @ Twine#add(Object)
- @ add/1: <file:c:/Documents and Settings/millerm1/e/doc/elang/collect/tables.html#:span::380:21::380:22>
-=== 2006-11-06T16:10:28.383Z (Twine.add:Twine.java:354) WRN
-eruntime: Stringifying with '+' : (i)
- @ Twine#add(Object)
- @ add/1: <file:c:/Documents and Settings/millerm1/e/doc/elang/collect/tables.html#:span::380:21::380:22>
-=== 2006-11-06T16:10:28.383Z (Twine.add:Twine.java:354) WRN
-eruntime: Stringifying with '+' : (v)
- @ Twine#add(Object)
- @ add/1: <file:c:/Documents and Settings/millerm1/e/doc/elang/collect/tables.html#:span::380:21::380:22>
-.......................................
-c:/Documents and Settings/millerm1/e/doc/elang/concurrency/determinism/behavior-verify.html:
-c:/Documents and Settings/millerm1/e/doc/elang/concurrency/determinism/challenges.html:
-c:/Documents and Settings/millerm1/e/doc/elang/concurrency/determinism/commitment.html:
-c:/Documents and Settings/millerm1/e/doc/elang/concurrency/determinism/debugging.html:
-c:/Documents and Settings/millerm1/e/doc/elang/concurrency/determinism/fault-tolerance.html:
-c:/Documents and Settings/millerm1/e/doc/elang/concurrency/determinism/index.html:
-c:/Documents and Settings/millerm1/e/doc/elang/concurrency/determinism/inward-bit.html:
-c:/Documents and Settings/millerm1/e/doc/elang/concurrency/determinism/overview.html:
-c:/Documents and Settings/millerm1/e/doc/elang/concurrency/epimenides.html:..
-at: <file:c:/Documents and Settings/millerm1/e/doc/elang/concurrency/epimenides.html#:span::96:65::96:67>
-expr: def liar := liar.not()
-missing new Somewhere inside Alice
-original Somewhere inside Alice: 
-..
-c:/Documents and Settings/millerm1/e/doc/elang/concurrency/index.html:
+c:/Documents and Settings/millerm1/e/doc/elang/collect/tables.html:......
+at: <file:c:/Documents and Settings/millerm1/e/doc/elang/collect/tables.html#:span::383:2::383:9>
+expr: mnemonic
+original and new value differ
+original value: "roygbiv"
+     new value: ['r', 'o', 'y', 'g', 'b', 'i', 'v']
+................................
+c:/Documents and Settings/millerm1/e/doc/elang/concurrency/epimenides.html:.....
 c:/Documents and Settings/millerm1/e/doc/elang/concurrency/introducer.html:..............
 at: <file:c:/Documents and Settings/millerm1/e/doc/elang/concurrency/introducer.html#:span::200:15::200:36>
 expr: def uri := introducer.sturdyToURI(sr)
@@ -202,15 +128,15 @@ expr: def uri := <file:counter.cap>.getText()
 missing new example
 original example: cap://127.0.0.1:1107/080nrRvgvO8fMq...
 .........
-c:/Documents and Settings/millerm1/e/doc/elang/concurrency/race.html:=== 2006-11-06T16:11:11.805Z (PendingEvent.report:PendingEvent.java:109) WRN
-causality: Problem in turn <<Vat home in <runs in home>>,430>: 
+c:/Documents and Settings/millerm1/e/doc/elang/concurrency/race.html:=== 2006-11-07T06:23:06.224Z (PendingEvent.report:PendingEvent.java:109) WRN
+causality: Problem in turn <<Vat home in <runs in home>>,438>: 
 --vvvv--
 time's up
 
 - Thrower#run(RuntimeException)
 . throw("time's up")
 @ run/1: <file:c:/Documents and Settings/millerm1/e/doc/elang/concurrency/race.html#:span::254:46::254:46>
-- __main$timeBomb$_#run/0: <file:c:/Documents and Settings/millerm1/e/doc/elang/concurrency/race.html#:span::253:96::253:100>
+- __main$timeBomb$_#run/0: <file:c:/Documents and Settings/millerm1/e/doc/elang/concurrency/race.html#:span::253:96::253:97>
 . <_>()
 
 java.lang.RuntimeException: time's up
@@ -232,449 +158,161 @@ java.lang.RuntimeException: time's up
 
 --^^^^--
 
-...................
-at: <file:c:/Documents and Settings/millerm1/e/doc/elang/concurrency/race.html#:span::227:31::227:33>
-expr: def z := asynchAnd([x,y])
-missing new value
-original value: <Promise>
-missing original problem
-new problem: <NoSuchMethodException: <a vow1>.get/0>
-
-at: <file:c:/Documents and Settings/millerm1/e/doc/elang/concurrency/race.html#:span::230:9::230:9>
-expr: z
-missing new value
-original value: <Promise>
-missing original problem
-new problem: Failed: Undefined variable: z
-..
-at: <file:c:/Documents and Settings/millerm1/e/doc/elang/concurrency/race.html#:span::237:9::237:9>
-expr: z
-missing new value
-original value: <Promise>
-missing original problem
-new problem: Failed: Undefined variable: z
-..
-at: <file:c:/Documents and Settings/millerm1/e/doc/elang/concurrency/race.html#:span::244:9::244:27>
-expr: interp.waitAtTop(z)
-missing original problem
-new problem: Failed: Undefined variable: z
-
-at: <file:c:/Documents and Settings/millerm1/e/doc/elang/concurrency/race.html#:span::246:30::246:30>
-expr: z
-missing new value
-original value: false
-missing original problem
-new problem: Failed: Undefined variable: z
-.....
+.................................
 c:/Documents and Settings/millerm1/e/doc/elang/echat/index.html:..................
-c:/Documents and Settings/millerm1/e/doc/elang/examples/index.html:
-c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/chen-tsang/fileClt.e-awt:
-c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/chen-tsang/fileSvr.e-awt:
-c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/chen-tsang/README.txt:
 c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/chung-binder/dBhc_combo.e:
-c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/chung-binder/index.html:
-c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/chung-binder/readme.txt:
-c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/exercises/hello-client.e:
-c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/exercises/hello-server.e:
-c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/exercises/hyper-hash.e:.
-at: <file:c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/exercises/hyper-hash.e#:span::135:2::135:51>
+c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/exercises/hyper-hash.e:..
+at: <file:c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/exercises/hyper-hash.e#:span::137:2::137:51>
 expr: def uri0 := <file:~/Desktop/intro-0.cap>.getText()
 missing original problem
 new problem: <FileNotFoundException: c:\Documents and Settings\millerm1\Desktop\intro-0.cap (The system cannot find the file specified)>
 
-at: <file:c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/exercises/hyper-hash.e#:span::137:2::137:51>
+at: <file:c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/exercises/hyper-hash.e#:span::139:2::139:51>
 expr: def r0 := introducer.sturdyFromURI(uri0).getRcvr()
 missing original problem
 new problem: Failed: Undefined variable: uri0
 
-at: <file:c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/exercises/hyper-hash.e#:span::139:2::139:17>
+at: <file:c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/exercises/hyper-hash.e#:span::141:2::141:17>
 expr: r0 <- insert(37)
 missing original problem
 new problem: Failed: Undefined variable: r0
 
 c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/exercises/hyper-ring-test.e:
 c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/exercises/hyper-ring.e:
-c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/exercises/hypercube.e:.
-at: <file:c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/exercises/hypercube.e#:span::109:2::109:51>
+c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/exercises/hypercube.e:..
+at: <file:c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/exercises/hypercube.e#:span::113:2::113:51>
 expr: def uri0 := <file:~/Desktop/intro-0.cap>.getText()
 missing original problem
 new problem: <FileNotFoundException: c:\Documents and Settings\millerm1\Desktop\intro-0.cap (The system cannot find the file specified)>
 
-at: <file:c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/exercises/hypercube.e#:span::111:2::111:51>
+at: <file:c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/exercises/hypercube.e#:span::115:2::115:51>
 expr: def r0 := introducer.sturdyFromURI(uri0).getRcvr()
 missing original problem
 new problem: Failed: Undefined variable: uri0
 
-at: <file:c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/exercises/hypercube.e#:span::113:2::113:31>
+at: <file:c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/exercises/hypercube.e#:span::117:2::117:31>
 expr: def t5 := r0 <- makeVTarget(5)
 missing original problem
 new problem: Failed: Undefined variable: r0
 
-at: <file:c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/exercises/hypercube.e#:span::115:2::115:21>
+at: <file:c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/exercises/hypercube.e#:span::119:2::119:21>
 expr: t5 <- hello("world")
 missing original problem
 new problem: Failed: Undefined variable: t5
 
-c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/exercises/index.html:
-c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/exercises/ping-server.e:
-c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/exercises/pong-client.e:
 c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/exercises/tree_peer.e:
-c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/exercises/tree_peer.readme.txt:
-c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/exercises/tree_sup.e:
-c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/exercises/xy-mesh-router.e:.
-at: <file:c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/exercises/xy-mesh-router.e#:span::92:6::92:58>
+c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/exercises/xy-mesh-router.e:..
+at: <file:c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/exercises/xy-mesh-router.e#:span::94:6::94:58>
 expr: def uri00 := <file:~/Desktop/intro-0-0.cap>.getText()
 missing original problem
 new problem: <FileNotFoundException: c:\Documents and Settings\millerm1\Desktop\intro-0-0.cap (The system cannot find the file specified)>
 
-at: <file:c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/exercises/xy-mesh-router.e#:span::94:6::94:57>
+at: <file:c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/exercises/xy-mesh-router.e#:span::96:6::96:57>
 expr: def r00 := introducer.sturdyFromURI(uri00).getRcvr()
 missing original problem
 new problem: Failed: Undefined variable: uri00
 
-at: <file:c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/exercises/xy-mesh-router.e#:span::96:6::96:39>
+at: <file:c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/exercises/xy-mesh-router.e#:span::98:6::98:39>
 expr: def t20 := r00 <- makeVTarget(2,0)
 missing original problem
 new problem: Failed: Undefined variable: r00
 
-at: <file:c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/exercises/xy-mesh-router.e#:span::98:6::98:26>
+at: <file:c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/exercises/xy-mesh-router.e#:span::100:6::100:26>
 expr: t20 <- hello("world")
 missing original problem
 new problem: Failed: Undefined variable: t20
 
-c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/index.html:
 c:/Documents and Settings/millerm1/e/doc/elang/examples/multi-stage.html:.........
-c:/Documents and Settings/millerm1/e/doc/elang/examples/when-examples.e.html:
-c:/Documents and Settings/millerm1/e/doc/elang/grammar/dispatchee.html:
-c:/Documents and Settings/millerm1/e/doc/elang/grammar/expr.html:
-c:/Documents and Settings/millerm1/e/doc/elang/grammar/index.html:
-c:/Documents and Settings/millerm1/e/doc/elang/grammar/lexical.html:
-c:/Documents and Settings/millerm1/e/doc/elang/grammar/overview.html:
-c:/Documents and Settings/millerm1/e/doc/elang/grammar/patterns.html:
-c:/Documents and Settings/millerm1/e/doc/elang/grammar/prim-expr.html:
 c:/Documents and Settings/millerm1/e/doc/elang/grammar/quasi-overview.html:........
-c:/Documents and Settings/millerm1/e/doc/elang/grammar/quasi-terms.html:
-c:/Documents and Settings/millerm1/e/doc/elang/grammar/quasi-xml.html:
-c:/Documents and Settings/millerm1/e/doc/elang/guarding/index.html:
-c:/Documents and Settings/millerm1/e/doc/elang/help.html:
-c:/Documents and Settings/millerm1/e/doc/elang/index.html:
-c:/Documents and Settings/millerm1/e/doc/elang/intro/findall_e.txt:
-c:/Documents and Settings/millerm1/e/doc/elang/intro/finding-text.html:..
-at: <file:c:/Documents and Settings/millerm1/e/doc/elang/intro/finding-text.html#:blob::90:3::90:4>
-expr: <file:c:/jabbertest>.mkdirs(); null
-missing original problem
-new problem: <NoSuchMethodException: <a File>.mkdirs/0>
-
-at: <file:c:/Documents and Settings/millerm1/e/doc/elang/intro/finding-text.html#:blob::91:3::91:4>
-expr: <file:c:/jabbertest/jabberwocky.txt>.setText(poem.getText())
-missing original problem
-new problem: <FileNotFoundException: c:\jabbertest\jabberwocky.txt (The system cannot find the path specified)>
-
-at: <file:c:/Documents and Settings/millerm1/e/doc/elang/intro/finding-text.html#:span::97:15::97:26>
-expr: for line in <file:c:/jabbertest/jabberwocky.txt> {
-          print(line)
-      }
-missing original problem
-new problem: <FileNotFoundException: c:\jabbertest\jabberwocky.txt (The system cannot find the path specified)>
-.
-at: <file:c:/Documents and Settings/millerm1/e/doc/elang/intro/finding-text.html#:span::130:10::130:14>
-expr: show(<file:c:/jabbertest/jabberwocky.txt>)
-missing original problem
-new problem: <FileNotFoundException: c:\jabbertest\jabberwocky.txt (The system cannot find the path specified)>
-.
-at: <file:c:/Documents and Settings/millerm1/e/doc/elang/intro/finding-text.html#:span::171:21::171:25>
-expr: find(<file:c:/jabbertest/jabberwocky.txt>, "and")
-missing original problem
-new problem: <FileNotFoundException: c:\jabbertest\jabberwocky.txt (The system cannot find the path specified)>
-
-at: <file:c:/Documents and Settings/millerm1/e/doc/elang/intro/finding-text.html#:span::256:21::256:53>
-expr: def find(file, substring) :void {
-          for num => line in file {
-              if (line.includes(substring)) {
-                  print("" + num + ":" + line)
-              }
-          }
-      }
-      find(<file:c:/jabbertest/jabberwocky.txt>, "and")
-missing original problem
-new problem: <FileNotFoundException: c:\jabbertest\jabberwocky.txt (The system cannot find the path specified)>
-..
-at: <file:c:/Documents and Settings/millerm1/e/doc/elang/intro/finding-text.html#:span::336:10::336:17>
-expr: findall(<file:c:/jabbertest>, "and")
-missing original problem
-new problem: <FileNotFoundException: c:\jabbertest (The system cannot find the file specified)>
-..
-c:/Documents and Settings/millerm1/e/doc/elang/intro/index.html:
-c:/Documents and Settings/millerm1/e/doc/elang/intro/jabberwocky.txt:
-c:/Documents and Settings/millerm1/e/doc/elang/intro/object-lambda.html:
-c:/Documents and Settings/millerm1/e/doc/elang/intro/overview.html:
+c:/Documents and Settings/millerm1/e/doc/elang/intro/finding-text.html:=== 2006-11-07T06:24:08.774Z (Twine.add:Twine.java:354) WRN
+eruntime: Stringifying with '+' : (1)
+ @ Twine#add(Object)
+ @ add/1: <file:c:/Documents and Settings/millerm1/e/doc/elang/intro/finding-text.html#:span::259:41::259:41>
+=== 2006-11-07T06:24:08.774Z (Twine.add:Twine.java:354) WRN
+eruntime: Stringifying with '+' : (2)
+ @ Twine#add(Object)
+ @ add/1: <file:c:/Documents and Settings/millerm1/e/doc/elang/intro/finding-text.html#:span::259:41::259:41>
+=== 2006-11-07T06:24:08.774Z (Twine.add:Twine.java:354) WRN
+eruntime: Stringifying with '+' : (8)
+ @ Twine#add(Object)
+ @ add/1: <file:c:/Documents and Settings/millerm1/e/doc/elang/intro/finding-text.html#:span::259:41::259:41>
+=== 2006-11-07T06:24:08.774Z (Twine.add:Twine.java:354) WRN
+eruntime: Stringifying with '+' : (9)
+ @ Twine#add(Object)
+ @ add/1: <file:c:/Documents and Settings/millerm1/e/doc/elang/intro/finding-text.html#:span::259:41::259:41>
+=== 2006-11-07T06:24:08.804Z (Twine.add:Twine.java:354) WRN
+eruntime: Stringifying with '+' : (1)
+ @ Twine#add(Object)
+ @ add/1: <file:c:/Documents and Settings/millerm1/e/doc/elang/intro/finding-text.html#:span::302:41::302:41>
+=== 2006-11-07T06:24:08.814Z (Twine.add:Twine.java:354) WRN
+eruntime: Stringifying with '+' : (2)
+ @ Twine#add(Object)
+ @ add/1: <file:c:/Documents and Settings/millerm1/e/doc/elang/intro/finding-text.html#:span::302:41::302:41>
+=== 2006-11-07T06:24:08.814Z (Twine.add:Twine.java:354) WRN
+eruntime: Stringifying with '+' : (8)
+ @ Twine#add(Object)
+ @ add/1: <file:c:/Documents and Settings/millerm1/e/doc/elang/intro/finding-text.html#:span::302:41::302:41>
+=== 2006-11-07T06:24:08.814Z (Twine.add:Twine.java:354) WRN
+eruntime: Stringifying with '+' : (9)
+ @ Twine#add(Object)
+ @ add/1: <file:c:/Documents and Settings/millerm1/e/doc/elang/intro/finding-text.html#:span::302:41::302:41>
+=== 2006-11-07T06:24:08.834Z (Twine.add:Twine.java:354) WRN
+eruntime: Stringifying with '+' : (1)
+ @ Twine#add(Object)
+ @ add/1: <file:c:/Documents and Settings/millerm1/e/doc/elang/intro/finding-text.html#:span::302:41::302:41>
+=== 2006-11-07T06:24:08.834Z (Twine.add:Twine.java:354) WRN
+eruntime: Stringifying with '+' : (2)
+ @ Twine#add(Object)
+ @ add/1: <file:c:/Documents and Settings/millerm1/e/doc/elang/intro/finding-text.html#:span::302:41::302:41>
+=== 2006-11-07T06:24:08.834Z (Twine.add:Twine.java:354) WRN
+eruntime: Stringifying with '+' : (8)
+ @ Twine#add(Object)
+ @ add/1: <file:c:/Documents and Settings/millerm1/e/doc/elang/intro/finding-text.html#:span::302:41::302:41>
+=== 2006-11-07T06:24:08.844Z (Twine.add:Twine.java:354) WRN
+eruntime: Stringifying with '+' : (9)
+ @ Twine#add(Object)
+ @ add/1: <file:c:/Documents and Settings/millerm1/e/doc/elang/intro/finding-text.html#:span::302:41::302:41>
+...............
 c:/Documents and Settings/millerm1/e/doc/elang/intro/standalone.html:...
-c:/Documents and Settings/millerm1/e/doc/elang/intro/starting-e.html:
-c:/Documents and Settings/millerm1/e/doc/elang/io/index.html:
-c:/Documents and Settings/millerm1/e/doc/elang/io/text-file-io.html:..
-at: <file:c:/Documents and Settings/millerm1/e/doc/elang/io/text-file-io.html#:blob::76:3::76:4>
-expr: <file:c:/jabbertest>.mkdirs(); null
-missing original problem
-new problem: <NoSuchMethodException: <a File>.mkdirs/0>
-
-at: <file:c:/Documents and Settings/millerm1/e/doc/elang/io/text-file-io.html#:blob::77:3::77:4>
-expr: <file:c:/jabbertest/jabberwocky.txt>.setText(poem.getText())
-missing original problem
-new problem: <FileNotFoundException: c:\jabbertest\jabberwocky.txt (The system cannot find the path specified)>
-
+c:/Documents and Settings/millerm1/e/doc/elang/io/text-file-io.html:....
 at: <file:c:/Documents and Settings/millerm1/e/doc/elang/io/text-file-io.html#:blob::78:3::78:4>
-expr: <file:c:/jabbertest/jabberwocky2.txt>.delete(); null
+expr: <file:c:/jabbertest/jabberwocky2.txt>.delete(null); null
 missing original problem
-new problem: <NoSuchMethodException: <a File>.delete/0>
+new problem: Can't delete "c:/jabbertest/jabberwocky2.txt"
 
 at: <file:c:/Documents and Settings/millerm1/e/doc/elang/io/text-file-io.html#:blob::79:3::79:4>
-expr: <file:c:/jabbertest/a/b/c>.delete(); null
+expr: <file:c:/jabbertest/a/b/c>.delete(null); null
 missing original problem
-new problem: <NoSuchMethodException: <a File>.delete/0>
+new problem: Can't delete "c:/jabbertest/a/b/c"
 
 at: <file:c:/Documents and Settings/millerm1/e/doc/elang/io/text-file-io.html#:blob::80:3::80:4>
-expr: <file:c:/jabbertest/a/b>.delete(); null
+expr: <file:c:/jabbertest/a/b>.delete(null); null
 missing original problem
-new problem: <NoSuchMethodException: <a File>.delete/0>
+new problem: Can't delete "c:/jabbertest/a/b"
 
 at: <file:c:/Documents and Settings/millerm1/e/doc/elang/io/text-file-io.html#:blob::81:3::81:4>
-expr: <file:c:/jabbertest/a>.delete(); null
+expr: <file:c:/jabbertest/a>.delete(null); null
 missing original problem
-new problem: <NoSuchMethodException: <a File>.delete/0>
-.
-at: <file:c:/Documents and Settings/millerm1/e/doc/elang/io/text-file-io.html#:span::97:2::97:4>
-expr: j1.exists()
-original and new value differ
-original value: true
-     new value: false
-
-at: <file:c:/Documents and Settings/millerm1/e/doc/elang/io/text-file-io.html#:span::100:2::100:4>
-expr: j1.isNormal()
-original and new value differ
-original value: true
-     new value: false
-.....
+new problem: Can't delete "c:/jabbertest/a"
+........
 at: <file:c:/Documents and Settings/millerm1/e/doc/elang/io/text-file-io.html#:span::130:15::130:26>
 expr: def desk := <file:~/Desktop>
 original and new value differ
-original value: <file:C:/Documents and Settings/MILLERM1/Desktop/>
+original value: <file:C:/Documents and Settings/millerm1/Desktop/>
      new value: <file:c:/Documents and Settings/millerm1/Desktop/>
 ...
 at: <file:c:/Documents and Settings/millerm1/e/doc/elang/io/text-file-io.html#:span::145:15::145:19>
 expr: desk.getCanonicalPath()
 original and new value differ
-original value: "C:/Documents and Settings/MILLERM1/Desktop/"
+original value: "C:/Documents and Settings/millerm1/Desktop/"
      new value: "c:/Documents and Settings/millerm1/Desktop/"
 .
 at: <file:c:/Documents and Settings/millerm1/e/doc/elang/io/text-file-io.html#:span::157:2::157:6>
 expr: desk.getParent()
 original and new value differ
-original value: "C:/Documents and Settings/MILLERM1/"
+original value: "C:/Documents and Settings/millerm1/"
      new value: "c:/Documents and Settings/millerm1/"
-.
-at: <file:c:/Documents and Settings/millerm1/e/doc/elang/io/text-file-io.html#:span::163:2::163:15>
-expr: j1.getParent()
-original and new value differ
-original value: "c:/jabbertest/"
-     new value: "c:/jabbertest"
-.
-at: <file:c:/Documents and Settings/millerm1/e/doc/elang/io/text-file-io.html#:span::182:2::182:13>
-expr: for line in <c:/jabbertest/jabberwocky.txt> {
-          size += line.size()
-      }
-missing original problem
-new problem: <FileNotFoundException: c:\jabbertest\jabberwocky.txt (The system cannot find the path specified)>
-
-at: <file:c:/Documents and Settings/millerm1/e/doc/elang/io/text-file-io.html#:span::186:2::186:5>
-expr: size
-original and new value differ
-original value: 270
-     new value: 0
-
-at: <file:c:/Documents and Settings/millerm1/e/doc/elang/io/text-file-io.html#:blob::194:16::194:17>
-expr: <c:/jabbertest/jabberwocky.txt>.getText().size()
-missing new value
-original value: 270
-missing original problem
-new problem: <FileNotFoundException: c:\jabbertest\jabberwocky.txt (The system cannot find the path specified)>
-
-at: <file:c:/Documents and Settings/millerm1/e/doc/elang/io/text-file-io.html#:span::204:15::204:28>
-expr: def reader := <c:/jabbertest/jabberwocky.txt>.textReader()
-missing new value
-original value: <a BufferedReader>
-missing original problem
-new problem: <FileNotFoundException: c:\jabbertest\jabberwocky.txt (The system cannot find the path specified)>
-
-at: <file:c:/Documents and Settings/millerm1/e/doc/elang/io/text-file-io.html#:span::207:2::207:8>
-expr: reader.readChar()
-missing new value
-original value: '\''
-missing original problem
-new problem: Failed: Undefined variable: reader
-
-at: <file:c:/Documents and Settings/millerm1/e/doc/elang/io/text-file-io.html#:span::210:2::210:8>
-expr: reader.readLine()
-missing new value
-original value: "Twas brillig and the slithy toves "
-missing original problem
-new problem: Failed: Undefined variable: reader
-
-at: <file:c:/Documents and Settings/millerm1/e/doc/elang/io/text-file-io.html#:span::213:2::213:8>
-expr: reader.readString(10)
-missing new value
-original value: "Did gyre a"
-missing original problem
-new problem: Failed: Undefined variable: reader
-
-at: <file:c:/Documents and Settings/millerm1/e/doc/elang/io/text-file-io.html#:span::216:2::216:8>
-expr: reader.readString(1000).size()
-missing new value
-original value: 232
-missing original problem
-new problem: Failed: Undefined variable: reader
-
-at: <file:c:/Documents and Settings/millerm1/e/doc/elang/io/text-file-io.html#:span::226:15::226:39>
-expr: reader.readChar() == null
-missing new value
-original value: true
-missing original problem
-new problem: Failed: Undefined variable: reader
-
-at: <file:c:/Documents and Settings/millerm1/e/doc/elang/io/text-file-io.html#:span::232:15::232:21>
-expr: reader.close()
-missing original problem
-new problem: Failed: Undefined variable: reader
-
-at: <file:c:/Documents and Settings/millerm1/e/doc/elang/io/text-file-io.html#:span::233:2::233:18>
-expr: reader.readChar()
-original and new problem differ
-original problem: <IOException: Stream closed>
-     new problem: Failed: Undefined variable: reader
-
-at: <file:c:/Documents and Settings/millerm1/e/doc/elang/io/text-file-io.html#:span::241:15::241:28>
-expr: def reader := <c:/jabbertest/jabberwocky.txt>.textReader()
-missing new value
-original value: <a BufferedReader>
-missing original problem
-new problem: <FileNotFoundException: c:\jabbertest\jabberwocky.txt (The system cannot find the path specified)>
-.
-at: <file:c:/Documents and Settings/millerm1/e/doc/elang/io/text-file-io.html#:span::247:2::247:6>
-expr: try {
-          while((def line := reader.readLine()) != null) {
-              size += line.size()
-          }
-          size
-      } finally {
-          reader.close()
-      }
-missing new value
-original value: 261
-missing original problem
-new problem: Failed: Undefined variable: reader
-.
-at: <file:c:/Documents and Settings/millerm1/e/doc/elang/io/text-file-io.html#:blob::269:3::269:4>
-expr: <c:/jabbertest/jabberwocky2.txt>.textReader()
-original and new problem differ
-original problem: <FileNotFoundException: c:\jabbertest\jabberwocky2.txt (The system cannot find the file specified)>
-     new problem: <FileNotFoundException: c:\jabbertest\jabberwocky2.txt (The system cannot find the path specified)>
-
-at: <file:c:/Documents and Settings/millerm1/e/doc/elang/io/text-file-io.html#:span::280:15::280:28>
-expr: def writer := <c:/jabbertest/jabberwocky2.txt>.textWriter()
-missing new value
-original value: <a TextWriter>
-missing original problem
-new problem: <FileNotFoundException: c:\jabbertest\jabberwocky2.txt (The system cannot find the path specified)>
-
-at: <file:c:/Documents and Settings/millerm1/e/doc/elang/io/text-file-io.html#:blob::283:3::283:4>
-expr: <c:/jabbertest/jabberwocky2.txt>.exists()
-original and new value differ
-original value: true
-     new value: false
-
-at: <file:c:/Documents and Settings/millerm1/e/doc/elang/io/text-file-io.html#:span::291:15::291:19>
-expr: try {
-          for line in <c:/jabbertest/jabberwocky.txt> {
-              writer.print(line)
-          }
-      } finally {
-          writer.close()
-      }
-missing original problem
-new problem: Failed: Undefined variable: writer
-..
-at: <file:c:/Documents and Settings/millerm1/e/doc/elang/io/text-file-io.html#:blob::317:16::317:17>
-expr: <c:/jabbertest/jabberwocky2.txt>.getText().size()
-missing new value
-original value: 270
-missing original problem
-new problem: <FileNotFoundException: c:\jabbertest\jabberwocky2.txt (The system cannot find the path specified)>
-.
-at: <file:c:/Documents and Settings/millerm1/e/doc/elang/io/text-file-io.html#:span::338:15::338:27>
-expr: textFileCopy(<c:/jabbertest/jabberwocky.txt>,
-                   <c:/jabbertest/jabberwocky2.txt>)
-missing original problem
-new problem: <FileNotFoundException: c:\jabbertest\jabberwocky2.txt (The system cannot find the path specified)>
-...
-at: <file:c:/Documents and Settings/millerm1/e/doc/elang/io/text-file-io.html#:span::365:2::365:15>
-expr: def reader := <c:/jabbertest/jabberwocky.txt>.textReader()
-missing new value
-original value: <a BufferedReader>
-missing original problem
-new problem: <FileNotFoundException: c:\jabbertest\jabberwocky.txt (The system cannot find the path specified)>
-
-at: <file:c:/Documents and Settings/millerm1/e/doc/elang/io/text-file-io.html#:span::368:2::368:6>
-expr: try {
-          textStreamCopy(reader, stdout)
-      } finally {
-          reader.close()
-      }
-missing original problem
-new problem: Failed: Undefined variable: reader
-
-at: <file:c:/Documents and Settings/millerm1/e/doc/elang/io/text-file-io.html#:span::408:15::408:28>
-expr: stdout.indent("...").lnPrint(<c:/jabbertest/jabberwocky.txt>.getText())
-missing original problem
-new problem: <FileNotFoundException: c:\jabbertest\jabberwocky.txt (The system cannot find the path specified)>
-......
-at: <file:c:/Documents and Settings/millerm1/e/doc/elang/io/text-file-io.html#:span::519:15::519:18>
-expr: abc.mkdirs()
-missing new value
-original value: true
-missing original problem
-new problem: <NoSuchMethodException: <a File>.mkdirs/0>
-
-at: <file:c:/Documents and Settings/millerm1/e/doc/elang/io/text-file-io.html#:span::529:15::529:26>
-expr: abc.exists()
-original and new value differ
-original value: true
-     new value: false
-
-at: <file:c:/Documents and Settings/millerm1/e/doc/elang/io/text-file-io.html#:span::531:15::531:31>
-expr: abc.isDirectory()
-original and new value differ
-original value: true
-     new value: false
-
-at: <file:c:/Documents and Settings/millerm1/e/doc/elang/io/text-file-io.html#:span::534:2::534:4>
-expr: abc
-original and new value differ
-original value: <file:c:/jabbertest/a/b/c/>
-     new value: <file:c:/jabbertest/a/b/c>
-
-at: <file:c:/Documents and Settings/millerm1/e/doc/elang/io/text-file-io.html#:span::540:15::540:24>
-expr: def ab := <c:/jabbertest/a/b>
-original and new value differ
-original value: <file:c:/jabbertest/a/b/>
-     new value: <file:c:/jabbertest/a/b>
-
-at: <file:c:/Documents and Settings/millerm1/e/doc/elang/io/text-file-io.html#:span::543:2::543:3>
-expr: ab["c"]
-original and new value differ
-original value: <file:c:/jabbertest/a/b/c/>
-     new value: <file:c:/jabbertest/a/b/c>
-.
-c:/Documents and Settings/millerm1/e/doc/elang/io/uri-exprs.html:
-c:/Documents and Settings/millerm1/e/doc/elang/kernel/AssignExpr.html:
+..............................................
 c:/Documents and Settings/millerm1/e/doc/elang/kernel/auditors/index.html:..................
 at: <file:c:/Documents and Settings/millerm1/e/doc/elang/kernel/auditors/index.html#:span::750:45::750:50>
 expr: script
@@ -709,14 +347,6 @@ original value: ["int" => null]
 missing original problem
 new problem: Failed: Undefined variable: script
 
-c:/Documents and Settings/millerm1/e/doc/elang/kernel/Auditors.html:
-c:/Documents and Settings/millerm1/e/doc/elang/kernel/CallExpr.html:
-c:/Documents and Settings/millerm1/e/doc/elang/kernel/CatchExpr.html:
-c:/Documents and Settings/millerm1/e/doc/elang/kernel/CdrPattern.html:
-c:/Documents and Settings/millerm1/e/doc/elang/kernel/CharLiteral.html:
-c:/Documents and Settings/millerm1/e/doc/elang/kernel/DefineExpr.html:
-c:/Documents and Settings/millerm1/e/doc/elang/kernel/e2j-binding.html:
-c:/Documents and Settings/millerm1/e/doc/elang/kernel/EMethod.html:
 c:/Documents and Settings/millerm1/e/doc/elang/kernel/EscapeExpr.html:.........
 at: <file:c:/Documents and Settings/millerm1/e/doc/elang/kernel/EscapeExpr.html#:span::396:15::396:28>
 expr: var x1 := null
@@ -741,129 +371,92 @@ new syntax error:
                   ^
                   @ <file:c:/Documents and Settings/millerm1/e/doc/elang/kernel/EscapeExpr.html#:span::402:27::402:27>
 
-c:/Documents and Settings/millerm1/e/doc/elang/kernel/EScript.html:
-c:/Documents and Settings/millerm1/e/doc/elang/kernel/FinallyExpr.html:
-c:/Documents and Settings/millerm1/e/doc/elang/kernel/FinalPattern.html:
-c:/Documents and Settings/millerm1/e/doc/elang/kernel/Float64Literal.html:
-c:/Documents and Settings/millerm1/e/doc/elang/kernel/HideExpr.html:
-c:/Documents and Settings/millerm1/e/doc/elang/kernel/IfExpr.html:
-c:/Documents and Settings/millerm1/e/doc/elang/kernel/IgnorePattern.html:
-c:/Documents and Settings/millerm1/e/doc/elang/kernel/index.html:
-c:/Documents and Settings/millerm1/e/doc/elang/kernel/IntegerLiteral.html:..
-at: <file:c:/Documents and Settings/millerm1/e/doc/elang/kernel/IntegerLiteral.html#:span::183:2::183:7>
-expr: x := 5
-original and new problem differ
-original problem: not in region
-     new problem: 5 is not in the region 2..!5
-.
-c:/Documents and Settings/millerm1/e/doc/elang/kernel/ListPattern.html:
-c:/Documents and Settings/millerm1/e/doc/elang/kernel/LiteralExpr.html:
-c:/Documents and Settings/millerm1/e/doc/elang/kernel/MatchBindExpr.html:
-c:/Documents and Settings/millerm1/e/doc/elang/kernel/Matcher.html:
-c:/Documents and Settings/millerm1/e/doc/elang/kernel/MethodicalExpr.html:
-c:/Documents and Settings/millerm1/e/doc/elang/kernel/NounExpr.html:
-c:/Documents and Settings/millerm1/e/doc/elang/kernel/ObjectExpr.html:
-c:/Documents and Settings/millerm1/e/doc/elang/kernel/overview.html:
-c:/Documents and Settings/millerm1/e/doc/elang/kernel/PlumbingExpr.html:
-c:/Documents and Settings/millerm1/e/doc/elang/kernel/SendExpr.html:
-c:/Documents and Settings/millerm1/e/doc/elang/kernel/SeqExpr.html:
-c:/Documents and Settings/millerm1/e/doc/elang/kernel/SlotExpr.html:
-c:/Documents and Settings/millerm1/e/doc/elang/kernel/StringLiteral.html:
-c:/Documents and Settings/millerm1/e/doc/elang/kernel/SuchThatPattern.html:
-c:/Documents and Settings/millerm1/e/doc/elang/kernel/VarPattern.html:
-c:/Documents and Settings/millerm1/e/doc/elang/overview.html:
-c:/Documents and Settings/millerm1/e/doc/elang/quasi/extending/index.html:
-c:/Documents and Settings/millerm1/e/doc/elang/quasi/index.html:
-c:/Documents and Settings/millerm1/e/doc/elang/quasi/like-ellipses.html:
-c:/Documents and Settings/millerm1/e/doc/elang/quasi/nested-ed/index.html:
+c:/Documents and Settings/millerm1/e/doc/elang/kernel/IntegerLiteral.html:....
 c:/Documents and Settings/millerm1/e/doc/elang/quasi/overview.html:........
-c:/Documents and Settings/millerm1/e/doc/elang/quasi/pola.html:
-c:/Documents and Settings/millerm1/e/doc/elang/quasi/serial/index.html:
-c:/Documents and Settings/millerm1/e/doc/elang/quasi/spec.html:
-c:/Documents and Settings/millerm1/e/doc/elang/quasi/terms/index.html:
 c:/Documents and Settings/millerm1/e/doc/elang/quasi/terms/like-ellipses.html:..................
-c:/Documents and Settings/millerm1/e/doc/elang/quasi/terms/quasi-term-spec.html:
-c:/Documents and Settings/millerm1/e/doc/elang/quasi/text/index.html:
-c:/Documents and Settings/millerm1/e/doc/elang/quasi/text/rx-spec.html:
-c:/Documents and Settings/millerm1/e/doc/elang/quasi/text/simple-spec.html:
-c:/Documents and Settings/millerm1/e/doc/elang/quasi/ui/index.html:
-c:/Documents and Settings/millerm1/e/doc/elang/quasi/ui/jpanel-spec.html:
-c:/Documents and Settings/millerm1/e/doc/elang/quasi/xml/index.html:
-c:/Documents and Settings/millerm1/e/doc/elang/quick-ref-old.html:
-c:/Documents and Settings/millerm1/e/doc/elang/quick-ref.html:
-c:/Documents and Settings/millerm1/e/doc/elang/report.txt:
-c:/Documents and Settings/millerm1/e/doc/elang/same-ref.html:.................
-at: <file:c:/Documents and Settings/millerm1/e/doc/elang/same-ref.html#:span::194:52::194:54>
-expr: def makePoint(x, y) :any {
-          return def point implements PassByCopy {
-              to getX() :any { return x }
-              to getY() :any { return y }
-              to openState() :any {
-                  return meta.getState()
-              }
-              to openSource() :any {
-                  return meta.context().getOptSource()
-              }
-              to __printOn(out) {
-                  out.print(`<$x, $y>`)
-              }
-          }
-      }
+c:/Documents and Settings/millerm1/e/doc/elang/same-ref.html:..................
+at: <file:c:/Documents and Settings/millerm1/e/doc/elang/same-ref.html#:span::211:31::211:33>
+expr: def c := makePoint(3, 5)
 missing new value
-original value: <makePoint>
-missing original syntax error
-new syntax error: The optional e.enable.explicit-result-guard feature (see org/erights/e/elang/syntax/syntax-props-0.8.txt) is currently on disallowing this construct.
-                  to __printOn(out) {
-                  ^
-                  @ <file:c:/Documents and Settings/millerm1/e/doc/elang/same-ref.html#:span::204:145::204:145>
-....
+original value: <3, 5>
+missing original problem
+new problem: <AuditFailedException: object expression e`def point implements PassByCopy {
+
+at: <file:c:/Documents and Settings/millerm1/e/doc/elang/same-ref.html#:span::214:31::214:33>
+expr: def d := makePoint(3, 5)
+missing new value
+original value: <3, 5>
+missing original problem
+new problem: <AuditFailedException: object expression e`def point implements PassByCopy {
+
+at: <file:c:/Documents and Settings/millerm1/e/doc/elang/same-ref.html#:span::217:31::217:33>
+expr: def e := makePoint(7, 5)
+missing new value
+original value: <7, 5>
+missing original problem
+new problem: <AuditFailedException: object expression e`def point implements PassByCopy {
+
+at: <file:c:/Documents and Settings/millerm1/e/doc/elang/same-ref.html#:span::220:9::220:14>
+expr: c == c
+missing new value
+original value: true
+missing original problem
+new problem: Failed: Undefined variable: c
+
 at: <file:c:/Documents and Settings/millerm1/e/doc/elang/same-ref.html#:span::223:9::223:14>
 expr: c == d
-original and new value differ
+missing new value
 original value: true
-     new value: false
-........
+missing original problem
+new problem: Failed: Undefined variable: c
+
+at: <file:c:/Documents and Settings/millerm1/e/doc/elang/same-ref.html#:span::226:9::226:14>
+expr: c == e
+missing new value
+original value: false
+missing original problem
+new problem: Failed: Undefined variable: c
+.......
 c:/Documents and Settings/millerm1/e/doc/elang/scalars/boolean-ref.html:...
 c:/Documents and Settings/millerm1/e/doc/elang/scalars/char-ref.html:....
 c:/Documents and Settings/millerm1/e/doc/elang/scalars/float64-ref.html:.............................
-c:/Documents and Settings/millerm1/e/doc/elang/scalars/index.html:
-c:/Documents and Settings/millerm1/e/doc/elang/scalars/integer-ref.html:=== 2006-11-06T16:17:52.592Z (Twine.add:Twine.java:354) WRN
+c:/Documents and Settings/millerm1/e/doc/elang/scalars/integer-ref.html:=== 2006-11-07T06:26:10.619Z (Twine.add:Twine.java:354) WRN
 eruntime: Stringifying with '+' : (0)
  @ Twine#add(Object)
  @ add/1: <file:c:/Documents and Settings/millerm1/e/doc/elang/scalars/integer-ref.html#:span::217:30::217:30>
-=== 2006-11-06T16:17:52.592Z (Twine.add:Twine.java:354) WRN
+=== 2006-11-07T06:26:10.619Z (Twine.add:Twine.java:354) WRN
 eruntime: Stringifying with '+' : (1)
  @ Twine#add(Object)
  @ add/1: <file:c:/Documents and Settings/millerm1/e/doc/elang/scalars/integer-ref.html#:span::217:56::217:56>
-=== 2006-11-06T16:17:52.612Z (Twine.add:Twine.java:354) WRN
+=== 2006-11-07T06:26:10.629Z (Twine.add:Twine.java:354) WRN
 eruntime: Stringifying with '+' : (1)
  @ Twine#add(Object)
  @ add/1: <file:c:/Documents and Settings/millerm1/e/doc/elang/scalars/integer-ref.html#:span::217:30::217:30>
-=== 2006-11-06T16:17:52.612Z (Twine.add:Twine.java:354) WRN
+=== 2006-11-07T06:26:10.629Z (Twine.add:Twine.java:354) WRN
 eruntime: Stringifying with '+' : (1)
  @ Twine#add(Object)
  @ add/1: <file:c:/Documents and Settings/millerm1/e/doc/elang/scalars/integer-ref.html#:span::217:56::217:56>
-=== 2006-11-06T16:17:52.612Z (Twine.add:Twine.java:354) WRN
+=== 2006-11-07T06:26:10.629Z (Twine.add:Twine.java:354) WRN
 eruntime: Stringifying with '+' : (2)
  @ Twine#add(Object)
  @ add/1: <file:c:/Documents and Settings/millerm1/e/doc/elang/scalars/integer-ref.html#:span::217:30::217:30>
-=== 2006-11-06T16:17:52.612Z (Twine.add:Twine.java:354) WRN
+=== 2006-11-07T06:26:10.639Z (Twine.add:Twine.java:354) WRN
 eruntime: Stringifying with '+' : (2)
  @ Twine#add(Object)
  @ add/1: <file:c:/Documents and Settings/millerm1/e/doc/elang/scalars/integer-ref.html#:span::217:56::217:56>
-=== 2006-11-06T16:17:52.612Z (Twine.add:Twine.java:354) WRN
+=== 2006-11-07T06:26:10.639Z (Twine.add:Twine.java:354) WRN
 eruntime: Stringifying with '+' : (3)
  @ Twine#add(Object)
  @ add/1: <file:c:/Documents and Settings/millerm1/e/doc/elang/scalars/integer-ref.html#:span::217:30::217:30>
-=== 2006-11-06T16:17:52.622Z (Twine.add:Twine.java:354) WRN
+=== 2006-11-07T06:26:10.639Z (Twine.add:Twine.java:354) WRN
 eruntime: Stringifying with '+' : (6)
  @ Twine#add(Object)
  @ add/1: <file:c:/Documents and Settings/millerm1/e/doc/elang/scalars/integer-ref.html#:span::217:56::217:56>
-=== 2006-11-06T16:17:52.622Z (Twine.add:Twine.java:354) WRN
+=== 2006-11-07T06:26:10.639Z (Twine.add:Twine.java:354) WRN
 eruntime: Stringifying with '+' : (4)
  @ Twine#add(Object)
  @ add/1: <file:c:/Documents and Settings/millerm1/e/doc/elang/scalars/integer-ref.html#:span::217:30::217:30>
-=== 2006-11-06T16:17:52.622Z (Twine.add:Twine.java:354) WRN
+=== 2006-11-07T06:26:10.649Z (Twine.add:Twine.java:354) WRN
 eruntime: Stringifying with '+' : (24)
  @ Twine#add(Object)
  @ add/1: <file:c:/Documents and Settings/millerm1/e/doc/elang/scalars/integer-ref.html#:span::217:56::217:56>
@@ -872,9 +465,7 @@ c:/Documents and Settings/millerm1/e/doc/elang/tools/causeway/causeway-intro.htm
 can't parse c:/Documents and Settings/millerm1/e/doc/elang/tools/causeway/causeway-intro.html: problem: "<- question()</tt>" isn't really a tag
 c:/Documents and Settings/millerm1/e/doc/elang/tools/causeway/index.html:
 can't parse c:/Documents and Settings/millerm1/e/doc/elang/tools/causeway/index.html: problem: "<- question()</tt>" isn't really a tag
-c:/Documents and Settings/millerm1/e/doc/elang/tools/graph/index.html:
-c:/Documents and Settings/millerm1/e/doc/elang/tools/index.html:
-c:/Documents and Settings/millerm1/e/doc/elang/tools/updoc.html:=== 2006-11-06T16:18:21.794Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
+c:/Documents and Settings/millerm1/e/doc/elang/tools/updoc.html:=== 2006-11-07T06:26:36.015Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
 eruntime: Import java.util.makeVector instead : (Importing java.util.Vector)
  @ Loader#get(String)
  @ get/1: <file:c:/Documents and Settings/millerm1/e/doc/elang/tools/updoc.html#:blob::120:110::120:138>

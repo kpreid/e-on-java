@@ -17,7 +17,7 @@
     #                y
     #            </tag>`
 
-    ? def miniSchema := <astro:BaseSchema>.new("mini", [
+    ? def miniSchema := <astro:makeBaseSchema>.new("mini", [
     >     "tag",
     >     ".char.",
     >     ".int.",
@@ -33,7 +33,7 @@
     #                 foo("x@@z"),
     #                 "y")`
 
-    ? def safejSchema := <qq:astro.BaseSchema>.new("safej", [
+    ? def safejSchema := <qq:astro.makeBaseSchema>.new("safej", [
     >     ".char.",
     >     ".int.",
     >     ".float64.",
@@ -57,7 +57,7 @@
     # value: <building Term trees for safej>
 
     ? def testSmlFile :=
-    >   <c>["/Documents and Settings/Administrator/Desktop/marcs/safej/tamings/java.awt.AWTPermission.txt"]
+    >   c__uriGetter["/Documents and Settings/Administrator/Desktop/marcs/safej/tamings/java.awt.AWTPermission.txt"]
     # value: <file:c:/Documents and Settings/Administrator/Desktop/marcs/safej/tamings/java.awt.AWTPermission.txt>
 
     ? def dom := sml__quasiParser.valueMaker(testSmlFile.getText().trim()).substitute([]); null

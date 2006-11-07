@@ -1,57 +1,51 @@
 
 updoc: started
 
-c:/Documents and Settings/millerm1/e/src/jsrc/com/zooko/tray/EPainter.updoc:=== 2006-11-06T06:51:49.565Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
-eruntime: Import javax.swing.makeJFrame instead : (Importing javax.swing.JFrame)
- @ Loader#get(String)
- @ get/1: <file:c:/Documents and Settings/millerm1/e/src/jsrc/com/zooko/tray/EPainter.updoc#:span::11:25::11:51>
-=== 2006-11-06T06:51:49.585Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
-eruntime: Import java.awt.makeColor instead : (Importing java.awt.Color)
- @ Loader#get(String)
- @ get/1: <file:c:/Documents and Settings/millerm1/e/src/jsrc/com/zooko/tray/EPainter.updoc#:span::12:25::12:47>
-.
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/com/zooko/tray/EPainter.updoc#:span::11:6::11:51>
-expr: (def makeJFrame := <unsafe:javax.swing.JFrame>
-       def ColorBlack := <unsafe:java.awt.Color>.black()
-       def makeEPainter := <unsafe:com.zooko.tray.EPainter>)
-missing new value
-original value: <unsafe:com.zooko.tray.EPainter>
-missing original problem
-new problem: <NoSuchMethodException: <a Color__Maker>.black/0>
-
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/com/zooko/tray/EPainter.updoc#:span::16:6::16:18>
-expr: def helloer {
-          to paintComponent(g) :void {
-              println("mubmle\n")
-              g.setColor(ColorBlack)
-              E.call(g, "drawString(String, int, int)", ["hello", 10, 10])
-              g.fillOval(10, 10, 100, 100)
-          }
-      }
-missing new value
-original value: <helloer>
-missing original problem
-new problem: Failed: Undefined variable: ColorBlack
-
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/com/zooko/tray/EPainter.updoc#:span::26:6::26:39>
-expr: (def myep := makeEPainter(helloer)
-       def myjf := makeJFrame()
-       myep.setOpaque(false)
-       myjf.setContentPane(myep)
-       myjf.setSize(256, 256)
-       myjf.setVisible(true))
-missing original problem
-new problem: Failed: Undefined variable: makeEPainter
-..
-c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/jcomm/bad-resolve.updoc:...........................
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/jcomm/bad-resolve.updoc#:span::140:6::140:13>
-expr: bobState
+c:/Documents and Settings/millerm1/e/src/jsrc/com/zooko/tray/EPainter.updoc:.
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/com/zooko/tray/EPainter.updoc#:span::11:6::11:55>
+expr: (def makeJFrame := <unsafe:javax.swing.makeJFrame>
+       def ColorBlack := <unsafe:java.awt.makeColor>.getBlack()
+       def makeEPainter := <unsafe:com.zooko.tray.makeEPainter>)
 original and new value differ
-original value: <a SturdyRef>
-     new value: <SturdyRef>
-..................
-c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/jcomm/multi-test.updoc:.......................=== 2006-11-06T06:51:59.930Z (RecvThread.callDataPath:RecvThread.java:156) ERR
-comm: Error while calling net.vattp.data.DataCommThunk@1968336 Type=8
+original value: <unsafe:com.zooko.tray.EPainter>
+     new value: <makeEPainter>
+....Exception in thread "AWT-EventQueue-0" java.lang.RuntimeException: Failed: Must only be called from <DeadRunner java.lang.RuntimeException: makeEvaluator shutdown>'s thread
+	at org.erights.e.develop.assertion.T.fail(T.java:84)
+	at org.erights.e.develop.assertion.T.require(T.java:358)
+	at org.erights.e.elib.vat.Runner.requireCurrent(Runner.java:381)
+	at org.erights.e.elib.vat.Vat.callAll(Vat.java:491)
+	at org.erights.e.elib.deflect.Deflector.invoke(Deflector.java:216)
+	at $Proxy9.paintComponent(Unknown Source)
+	at com.zooko.tray.EPainter.paintComponent(EPainter.java:56)
+	at javax.swing.JComponent.paint(JComponent.java:1005)
+	at javax.swing.JComponent.paintChildren(JComponent.java:842)
+	at javax.swing.JComponent.paint(JComponent.java:1014)
+	at javax.swing.JLayeredPane.paint(JLayeredPane.java:559)
+	at javax.swing.JComponent.paintChildren(JComponent.java:842)
+	at javax.swing.JComponent.paintWithOffscreenBuffer(JComponent.java:4970)
+	at javax.swing.JComponent.paintDoubleBuffered(JComponent.java:4916)
+	at javax.swing.JComponent.paint(JComponent.java:995)
+	at java.awt.GraphicsCallback$PaintCallback.run(GraphicsCallback.java:21)
+	at sun.awt.SunGraphicsCallback.runOneComponent(SunGraphicsCallback.java:60)
+	at sun.awt.SunGraphicsCallback.runComponents(SunGraphicsCallback.java:97)
+	at java.awt.Container.paint(Container.java:1709)
+	at sun.awt.RepaintArea.paintComponent(RepaintArea.java:248)
+	at sun.awt.RepaintArea.paint(RepaintArea.java:224)
+	at sun.awt.windows.WComponentPeer.handleEvent(WComponentPeer.java:254)
+	at java.awt.Component.dispatchEventImpl(Component.java:4031)
+	at java.awt.Container.dispatchEventImpl(Container.java:2024)
+	at java.awt.Window.dispatchEventImpl(Window.java:1778)
+	at java.awt.Component.dispatchEvent(Component.java:3803)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:463)
+	at java.awt.EventDispatchThread.pumpOneEventForHierarchy(EventDispatchThread.java:242)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:163)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:157)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:149)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:110)
+
+c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/jcomm/bad-resolve.updoc:..............................................
+c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/jcomm/multi-test.updoc:=== 2006-11-07T05:57:10.417Z (SendThread.callDataPath:SendThread.java:337) ERR
+comm: to=192.168.1.103:1768 Error while calling net.vattp.data.DataCommThunk@1aeda5c Type=3
 --vvvv--
 makeEvaluator shutdown
 
@@ -75,8 +69,8 @@ java.lang.RuntimeException: makeEvaluator shutdown
 
 --^^^^--
 
-=== 2006-11-06T06:51:59.930Z (RecvThread.callDataPath:RecvThread.java:156) ERR
-comm: Error while calling net.vattp.data.DataCommThunk@805b59 Type=8
+=== 2006-11-07T05:57:10.417Z (RecvThread.callDataPath:RecvThread.java:156) ERR
+comm: Error while calling net.vattp.data.DataCommThunk@15c730f Type=8
 --vvvv--
 makeEvaluator shutdown
 
@@ -100,8 +94,8 @@ java.lang.RuntimeException: makeEvaluator shutdown
 
 --^^^^--
 
-=== 2006-11-06T06:51:59.930Z (RecvThread.callDataPath:RecvThread.java:156) ERR
-comm: Error while calling net.vattp.data.DataCommThunk@ed65a8 Type=4
+=== 2006-11-07T05:57:10.607Z (RecvThread.callDataPath:RecvThread.java:156) ERR
+comm: Error while calling net.vattp.data.DataCommThunk@56f2f9 Type=4
 --vvvv--
 makeEvaluator shutdown
 
@@ -125,8 +119,8 @@ java.lang.RuntimeException: makeEvaluator shutdown
 
 --^^^^--
 
-=== 2006-11-06T06:51:59.930Z (RecvThread.callDataPath:RecvThread.java:156) ERR
-comm: Error while calling net.vattp.data.DataCommThunk@1ad1aeb Type=4
+.......................=== 2006-11-07T05:57:11.678Z (SendThread.callDataPath:SendThread.java:337) ERR
+comm: to=192.168.1.103:1774 Error while calling net.vattp.data.DataCommThunk@1bee7e6 Type=8
 --vvvv--
 makeEvaluator shutdown
 
@@ -150,8 +144,233 @@ java.lang.RuntimeException: makeEvaluator shutdown
 
 --^^^^--
 
-=== 2006-11-06T06:51:59.930Z (SendThread.callDataPath:SendThread.java:337) ERR
-comm: to=192.168.1.66:2492 Error while calling net.vattp.data.DataCommThunk@15c4b36 Type=3
+=== 2006-11-07T05:57:11.678Z (SendThread.callDataPath:SendThread.java:337) ERR
+comm: to=192.168.1.103:1774 Error while calling net.vattp.data.DataCommThunk@6ab103 Type=3
+--vvvv--
+makeEvaluator shutdown
+
+
+java.lang.RuntimeException: makeEvaluator shutdown
+	at org.erights.e.meta.java.lang.ThrowableGuardSugar.subCoerceR(ThrowableGuardSugar.java:60)
+	at org.erights.e.elib.base.ClassDesc.tryCoerceR(ClassDesc.java:350)
+	at org.erights.e.elib.slot.BaseAuditor.coerce(BaseAuditor.java:59)
+	at org.erights.e.elib.prim.E.as(E.java:530)
+	at org.erights.e.elib.prim.JavaMemberNode.coerceArgs(JavaMemberNode.java:143)
+	at org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:188)
+	at org.erights.e.elib.prim.Selector.callIt(Selector.java:84)
+	at org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:132)
+	at org.erights.e.elang.evm.EMethod.execute(EMethod.java:175)
+	at org.erights.e.elang.evm.EMethodNode.execute(EMethodNode.java:136)
+	at org.erights.e.elib.prim.E.callAll(E.java:167)
+	at org.erights.e.elib.vat.PendingDelivery.innerRun(PendingDelivery.java:102)
+	at org.erights.e.elib.vat.PendingEvent.run(PendingEvent.java:76)
+	at org.erights.e.elib.vat.HeadlessRunner.run(HeadlessRunner.java:176)
+	at java.lang.Thread.run(Thread.java:595)
+
+--^^^^--
+
+=== 2006-11-07T05:57:11.678Z (RecvThread.callDataPath:RecvThread.java:156) ERR
+comm: Error while calling net.vattp.data.DataCommThunk@8b3f3f Type=8
+--vvvv--
+makeEvaluator shutdown
+
+
+java.lang.RuntimeException: makeEvaluator shutdown
+	at org.erights.e.meta.java.lang.ThrowableGuardSugar.subCoerceR(ThrowableGuardSugar.java:60)
+	at org.erights.e.elib.base.ClassDesc.tryCoerceR(ClassDesc.java:350)
+	at org.erights.e.elib.slot.BaseAuditor.coerce(BaseAuditor.java:59)
+	at org.erights.e.elib.prim.E.as(E.java:530)
+	at org.erights.e.elib.prim.JavaMemberNode.coerceArgs(JavaMemberNode.java:143)
+	at org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:188)
+	at org.erights.e.elib.prim.Selector.callIt(Selector.java:84)
+	at org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:132)
+	at org.erights.e.elang.evm.EMethod.execute(EMethod.java:175)
+	at org.erights.e.elang.evm.EMethodNode.execute(EMethodNode.java:136)
+	at org.erights.e.elib.prim.E.callAll(E.java:167)
+	at org.erights.e.elib.vat.PendingDelivery.innerRun(PendingDelivery.java:102)
+	at org.erights.e.elib.vat.PendingEvent.run(PendingEvent.java:76)
+	at org.erights.e.elib.vat.HeadlessRunner.run(HeadlessRunner.java:176)
+	at java.lang.Thread.run(Thread.java:595)
+
+--^^^^--
+
+=== 2006-11-07T05:57:11.678Z (RecvThread.callDataPath:RecvThread.java:156) ERR
+comm: Error while calling net.vattp.data.DataCommThunk@1e56547 Type=4
+--vvvv--
+makeEvaluator shutdown
+
+
+java.lang.RuntimeException: makeEvaluator shutdown
+	at org.erights.e.meta.java.lang.ThrowableGuardSugar.subCoerceR(ThrowableGuardSugar.java:60)
+	at org.erights.e.elib.base.ClassDesc.tryCoerceR(ClassDesc.java:350)
+	at org.erights.e.elib.slot.BaseAuditor.coerce(BaseAuditor.java:59)
+	at org.erights.e.elib.prim.E.as(E.java:530)
+	at org.erights.e.elib.prim.JavaMemberNode.coerceArgs(JavaMemberNode.java:143)
+	at org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:188)
+	at org.erights.e.elib.prim.Selector.callIt(Selector.java:84)
+	at org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:132)
+	at org.erights.e.elang.evm.EMethod.execute(EMethod.java:175)
+	at org.erights.e.elang.evm.EMethodNode.execute(EMethodNode.java:136)
+	at org.erights.e.elib.prim.E.callAll(E.java:167)
+	at org.erights.e.elib.vat.PendingDelivery.innerRun(PendingDelivery.java:102)
+	at org.erights.e.elib.vat.PendingEvent.run(PendingEvent.java:76)
+	at org.erights.e.elib.vat.HeadlessRunner.run(HeadlessRunner.java:176)
+	at java.lang.Thread.run(Thread.java:595)
+
+--^^^^--
+
+=== 2006-11-07T05:57:11.678Z (RecvThread.callDataPath:RecvThread.java:156) ERR
+comm: Error while calling net.vattp.data.DataCommThunk@15c4980 Type=4
+--vvvv--
+makeEvaluator shutdown
+
+
+java.lang.RuntimeException: makeEvaluator shutdown
+	at org.erights.e.meta.java.lang.ThrowableGuardSugar.subCoerceR(ThrowableGuardSugar.java:60)
+	at org.erights.e.elib.base.ClassDesc.tryCoerceR(ClassDesc.java:350)
+	at org.erights.e.elib.slot.BaseAuditor.coerce(BaseAuditor.java:59)
+	at org.erights.e.elib.prim.E.as(E.java:530)
+	at org.erights.e.elib.prim.JavaMemberNode.coerceArgs(JavaMemberNode.java:143)
+	at org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:188)
+	at org.erights.e.elib.prim.Selector.callIt(Selector.java:84)
+	at org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:132)
+	at org.erights.e.elang.evm.EMethod.execute(EMethod.java:175)
+	at org.erights.e.elang.evm.EMethodNode.execute(EMethodNode.java:136)
+	at org.erights.e.elib.prim.E.callAll(E.java:167)
+	at org.erights.e.elib.vat.PendingDelivery.innerRun(PendingDelivery.java:102)
+	at org.erights.e.elib.vat.PendingEvent.run(PendingEvent.java:76)
+	at org.erights.e.elib.vat.HeadlessRunner.run(HeadlessRunner.java:176)
+	at java.lang.Thread.run(Thread.java:595)
+
+--^^^^--
+
+=== 2006-11-07T05:57:11.688Z (RecvThread.callDataPath:RecvThread.java:156) ERR
+comm: Error while calling net.vattp.data.DataCommThunk@1dd9a2d Type=8
+--vvvv--
+makeEvaluator shutdown
+
+
+java.lang.RuntimeException: makeEvaluator shutdown
+	at org.erights.e.meta.java.lang.ThrowableGuardSugar.subCoerceR(ThrowableGuardSugar.java:60)
+	at org.erights.e.elib.base.ClassDesc.tryCoerceR(ClassDesc.java:350)
+	at org.erights.e.elib.slot.BaseAuditor.coerce(BaseAuditor.java:59)
+	at org.erights.e.elib.prim.E.as(E.java:530)
+	at org.erights.e.elib.prim.JavaMemberNode.coerceArgs(JavaMemberNode.java:143)
+	at org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:188)
+	at org.erights.e.elib.prim.Selector.callIt(Selector.java:84)
+	at org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:132)
+	at org.erights.e.elang.evm.EMethod.execute(EMethod.java:175)
+	at org.erights.e.elang.evm.EMethodNode.execute(EMethodNode.java:136)
+	at org.erights.e.elib.prim.E.callAll(E.java:167)
+	at org.erights.e.elib.vat.PendingDelivery.innerRun(PendingDelivery.java:102)
+	at org.erights.e.elib.vat.PendingEvent.run(PendingEvent.java:76)
+	at org.erights.e.elib.vat.HeadlessRunner.run(HeadlessRunner.java:176)
+	at java.lang.Thread.run(Thread.java:595)
+
+--^^^^--
+
+=== 2006-11-07T05:57:11.688Z (RecvThread.callDataPath:RecvThread.java:156) ERR
+comm: Error while calling net.vattp.data.DataCommThunk@1b5349a Type=8
+--vvvv--
+makeEvaluator shutdown
+
+
+java.lang.RuntimeException: makeEvaluator shutdown
+	at org.erights.e.meta.java.lang.ThrowableGuardSugar.subCoerceR(ThrowableGuardSugar.java:60)
+	at org.erights.e.elib.base.ClassDesc.tryCoerceR(ClassDesc.java:350)
+	at org.erights.e.elib.slot.BaseAuditor.coerce(BaseAuditor.java:59)
+	at org.erights.e.elib.prim.E.as(E.java:530)
+	at org.erights.e.elib.prim.JavaMemberNode.coerceArgs(JavaMemberNode.java:143)
+	at org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:188)
+	at org.erights.e.elib.prim.Selector.callIt(Selector.java:84)
+	at org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:132)
+	at org.erights.e.elang.evm.EMethod.execute(EMethod.java:175)
+	at org.erights.e.elang.evm.EMethodNode.execute(EMethodNode.java:136)
+	at org.erights.e.elib.prim.E.callAll(E.java:167)
+	at org.erights.e.elib.vat.PendingDelivery.innerRun(PendingDelivery.java:102)
+	at org.erights.e.elib.vat.PendingEvent.run(PendingEvent.java:76)
+	at org.erights.e.elib.vat.HeadlessRunner.run(HeadlessRunner.java:176)
+	at java.lang.Thread.run(Thread.java:595)
+
+--^^^^--
+
+=== 2006-11-07T05:57:11.688Z (RecvThread.callDataPath:RecvThread.java:156) ERR
+comm: Error while calling net.vattp.data.DataCommThunk@1908708 Type=4
+--vvvv--
+makeEvaluator shutdown
+
+
+java.lang.RuntimeException: makeEvaluator shutdown
+	at org.erights.e.meta.java.lang.ThrowableGuardSugar.subCoerceR(ThrowableGuardSugar.java:60)
+	at org.erights.e.elib.base.ClassDesc.tryCoerceR(ClassDesc.java:350)
+	at org.erights.e.elib.slot.BaseAuditor.coerce(BaseAuditor.java:59)
+	at org.erights.e.elib.prim.E.as(E.java:530)
+	at org.erights.e.elib.prim.JavaMemberNode.coerceArgs(JavaMemberNode.java:143)
+	at org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:188)
+	at org.erights.e.elib.prim.Selector.callIt(Selector.java:84)
+	at org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:132)
+	at org.erights.e.elang.evm.EMethod.execute(EMethod.java:175)
+	at org.erights.e.elang.evm.EMethodNode.execute(EMethodNode.java:136)
+	at org.erights.e.elib.prim.E.callAll(E.java:167)
+	at org.erights.e.elib.vat.PendingDelivery.innerRun(PendingDelivery.java:102)
+	at org.erights.e.elib.vat.PendingEvent.run(PendingEvent.java:76)
+	at org.erights.e.elib.vat.HeadlessRunner.run(HeadlessRunner.java:176)
+	at java.lang.Thread.run(Thread.java:595)
+
+--^^^^--
+
+=== 2006-11-07T05:57:11.688Z (RecvThread.callDataPath:RecvThread.java:156) ERR
+comm: Error while calling net.vattp.data.DataCommThunk@1914c28 Type=4
+--vvvv--
+makeEvaluator shutdown
+
+
+java.lang.RuntimeException: makeEvaluator shutdown
+	at org.erights.e.meta.java.lang.ThrowableGuardSugar.subCoerceR(ThrowableGuardSugar.java:60)
+	at org.erights.e.elib.base.ClassDesc.tryCoerceR(ClassDesc.java:350)
+	at org.erights.e.elib.slot.BaseAuditor.coerce(BaseAuditor.java:59)
+	at org.erights.e.elib.prim.E.as(E.java:530)
+	at org.erights.e.elib.prim.JavaMemberNode.coerceArgs(JavaMemberNode.java:143)
+	at org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:188)
+	at org.erights.e.elib.prim.Selector.callIt(Selector.java:84)
+	at org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:132)
+	at org.erights.e.elang.evm.EMethod.execute(EMethod.java:175)
+	at org.erights.e.elang.evm.EMethodNode.execute(EMethodNode.java:136)
+	at org.erights.e.elib.prim.E.callAll(E.java:167)
+	at org.erights.e.elib.vat.PendingDelivery.innerRun(PendingDelivery.java:102)
+	at org.erights.e.elib.vat.PendingEvent.run(PendingEvent.java:76)
+	at org.erights.e.elib.vat.HeadlessRunner.run(HeadlessRunner.java:176)
+	at java.lang.Thread.run(Thread.java:595)
+
+--^^^^--
+
+=== 2006-11-07T05:57:11.688Z (SendThread.callDataPath:SendThread.java:337) ERR
+comm: to=192.168.1.103 Error while calling net.vattp.data.DataCommThunk@1ee648 Type=8
+--vvvv--
+makeEvaluator shutdown
+
+
+java.lang.RuntimeException: makeEvaluator shutdown
+	at org.erights.e.meta.java.lang.ThrowableGuardSugar.subCoerceR(ThrowableGuardSugar.java:60)
+	at org.erights.e.elib.base.ClassDesc.tryCoerceR(ClassDesc.java:350)
+	at org.erights.e.elib.slot.BaseAuditor.coerce(BaseAuditor.java:59)
+	at org.erights.e.elib.prim.E.as(E.java:530)
+	at org.erights.e.elib.prim.JavaMemberNode.coerceArgs(JavaMemberNode.java:143)
+	at org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:188)
+	at org.erights.e.elib.prim.Selector.callIt(Selector.java:84)
+	at org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:132)
+	at org.erights.e.elang.evm.EMethod.execute(EMethod.java:175)
+	at org.erights.e.elang.evm.EMethodNode.execute(EMethodNode.java:136)
+	at org.erights.e.elib.prim.E.callAll(E.java:167)
+	at org.erights.e.elib.vat.PendingDelivery.innerRun(PendingDelivery.java:102)
+	at org.erights.e.elib.vat.PendingEvent.run(PendingEvent.java:76)
+	at org.erights.e.elib.vat.HeadlessRunner.run(HeadlessRunner.java:176)
+	at java.lang.Thread.run(Thread.java:595)
+
+--^^^^--
+
+=== 2006-11-07T05:57:11.688Z (SendThread.callDataPath:SendThread.java:337) ERR
+comm: to=192.168.1.103 Error while calling net.vattp.data.DataCommThunk@a0c0a1 Type=3
 --vvvv--
 makeEvaluator shutdown
 
@@ -180,252 +399,24 @@ c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/jcomm/refmon.updoc:.....
 at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/jcomm/refmon.updoc#:span::39:6::39:37>
 expr: def sr := makeSturdyRef.temp(&x)
 original and new value differ
-original value: <a SturdyRef>
+original value: <SturdyRef>
      new value: <SturdyRef to <var 3>>
-...
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/jcomm/refmon.updoc#:span::51:6::51:73>
-expr: def sr := introducer.sturdyFromURI(<file:~/Desktop/x.cap>.getText())
-original and new value differ
-original value: <a SturdyRef>
-     new value: <SturdyRef>
-...
+.......
 at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/jcomm/refmon.updoc#:span::64:6::64:10>
 expr: trace
 original and new value differ
 original value: "++++.run/1.run/1+.run/1+.run/1"
-     new value: "++.run/1+++.run/1.run/1.run/1"
+     new value: "++++.run/1.run/1+.run/1"
 .....
 at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/jcomm/refmon.updoc#:span::79:6::79:10>
 expr: trace
 original and new value differ
 original value: "++++.run/1.run/1+.run/1+.run/1
                 =add/2+.__whenMoreResolved/1.__whenMoreResolved/1"
-     new value: "++.run/1+++.run/1.run/1.run/1
+     new value: "++++.run/1.run/1+.run/1
                 =add/2+.__whenMoreResolved/1"
-=== 2006-11-06T06:52:05.949Z (SendThread.callDataPath:SendThread.java:337) ERR
-comm: to=192.168.1.66:2495 Error while calling net.vattp.data.DataCommThunk@151ef6d Type=8
---vvvv--
-makeEvaluator shutdown
 
-
-java.lang.RuntimeException: makeEvaluator shutdown
-	at org.erights.e.meta.java.lang.ThrowableGuardSugar.subCoerceR(ThrowableGuardSugar.java:60)
-	at org.erights.e.elib.base.ClassDesc.tryCoerceR(ClassDesc.java:350)
-	at org.erights.e.elib.slot.BaseAuditor.coerce(BaseAuditor.java:59)
-	at org.erights.e.elib.prim.E.as(E.java:530)
-	at org.erights.e.elib.prim.JavaMemberNode.coerceArgs(JavaMemberNode.java:143)
-	at org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:188)
-	at org.erights.e.elib.prim.Selector.callIt(Selector.java:84)
-	at org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:132)
-	at org.erights.e.elang.evm.EMethod.execute(EMethod.java:175)
-	at org.erights.e.elang.evm.EMethodNode.execute(EMethodNode.java:136)
-	at org.erights.e.elib.prim.E.callAll(E.java:167)
-	at org.erights.e.elib.vat.PendingDelivery.innerRun(PendingDelivery.java:102)
-	at org.erights.e.elib.vat.PendingEvent.run(PendingEvent.java:76)
-	at org.erights.e.elib.vat.HeadlessRunner.run(HeadlessRunner.java:176)
-	at java.lang.Thread.run(Thread.java:595)
-
---^^^^--
-
-=== 2006-11-06T06:52:05.949Z (SendThread.callDataPath:SendThread.java:337) ERR
-comm: to=192.168.1.66:2495 Error while calling net.vattp.data.DataCommThunk@3e08dd Type=3
---vvvv--
-makeEvaluator shutdown
-
-
-java.lang.RuntimeException: makeEvaluator shutdown
-	at org.erights.e.meta.java.lang.ThrowableGuardSugar.subCoerceR(ThrowableGuardSugar.java:60)
-	at org.erights.e.elib.base.ClassDesc.tryCoerceR(ClassDesc.java:350)
-	at org.erights.e.elib.slot.BaseAuditor.coerce(BaseAuditor.java:59)
-	at org.erights.e.elib.prim.E.as(E.java:530)
-	at org.erights.e.elib.prim.JavaMemberNode.coerceArgs(JavaMemberNode.java:143)
-	at org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:188)
-	at org.erights.e.elib.prim.Selector.callIt(Selector.java:84)
-	at org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:132)
-	at org.erights.e.elang.evm.EMethod.execute(EMethod.java:175)
-	at org.erights.e.elang.evm.EMethodNode.execute(EMethodNode.java:136)
-	at org.erights.e.elib.prim.E.callAll(E.java:167)
-	at org.erights.e.elib.vat.PendingDelivery.innerRun(PendingDelivery.java:102)
-	at org.erights.e.elib.vat.PendingEvent.run(PendingEvent.java:76)
-	at org.erights.e.elib.vat.HeadlessRunner.run(HeadlessRunner.java:176)
-	at java.lang.Thread.run(Thread.java:595)
-
---^^^^--
-
-
-c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc:=== 2006-11-06T06:52:08.152Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
-eruntime: Import net.captp.tables.makeAnswersTable instead : (Importing net.captp.tables.AnswersTable)
- @ Loader#get(String)
- @ get/1: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::10:31::10:68>
-=== 2006-11-06T06:52:08.312Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
-eruntime: Import java.lang.makeRuntimeException instead : (Importing java.lang.RuntimeException)
- @ Loader#get(String)
- @ get/1: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::129:21::129:55>
-.
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::10:6::10:68>
-expr: def AnswersTableMaker := <unsafe:net.captp.tables.AnswersTable>
-original and new value differ
-original value: <unsafe:net.captp.tables.AnswersTable>
-     new value: <makeAnswersTable>
-..
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::22:6::22:29>
-expr: def i1 := at1.put("foo")
-missing new value
-original value: 1
-missing original problem
-new problem: <NoSuchMethodException: <an AnswersTable>.put/1>
-
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::25:6::25:8>
-expr: at1
-original and new value differ
-original value: <AnswersTable[
-                1:foo
-                ], free: [ 2 3 4 5 6 7 8 9 10 11 12 13 14 15]>
-     new value: <AnswersTable[
-                ], free: [ 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15]>
-
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::30:6::30:15>
-expr: at1.size()
-original and new value differ
-original value: 1
-     new value: 0
-
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::33:6::33:29>
-expr: def i2 := at1.put("bar")
-missing new value
-original value: 2
-missing original problem
-new problem: <NoSuchMethodException: <an AnswersTable>.put/1>
-
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::36:6::36:8>
-expr: at1
-original and new value differ
-original value: <AnswersTable[
-                1:foo
-                2:bar
-                ], free: [ 3 4 5 6 7 8 9 10 11 12 13 14 15]>
-     new value: <AnswersTable[
-                ], free: [ 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15]>
-
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::42:6::42:17>
-expr: at1.free(i1)
-missing original problem
-new problem: Failed: Undefined variable: i1
-
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::43:6::43:8>
-expr: at1
-original and new value differ
-original value: <AnswersTable[
-                2:bar
-                ], free: [ 1 3 4 5 6 7 8 9 10 11 12 13 14 15]>
-     new value: <AnswersTable[
-                ], free: [ 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15]>
-
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::48:6::48:16>
-expr: at1.get(i2)
-missing new value
-original value: "bar"
-missing original problem
-new problem: Failed: Undefined variable: i2
-
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::51:6::51:12>
-expr: at1[i2]
-missing new value
-original value: "bar"
-missing original problem
-new problem: Failed: Undefined variable: i2
-
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::54:6::54:12>
-expr: at1[i1]
-original and new problem differ
-original problem: <IllegalArgumentException: not alloced: 1>
-     new problem: Failed: Undefined variable: i1
-
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::60:6::60:23>
-expr: at1.mustBeFree(i1)
-missing original problem
-new problem: Failed: Undefined variable: i1
-
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::61:6::61:23>
-expr: at1.mustBeFree(i2)
-original and new problem differ
-original problem: <IllegalArgumentException: not free: 2>
-     new problem: Failed: Undefined variable: i2
-
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::68:6::68:26>
-expr: at1.mustBeAlloced(i1)
-original and new problem differ
-original problem: <IllegalArgumentException: not alloced: 1>
-     new problem: Failed: Undefined variable: i1
-
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::75:6::75:26>
-expr: at1.mustBeAlloced(i2)
-missing original problem
-new problem: Failed: Undefined variable: i2
-
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::76:6::76:8>
-expr: at1
-original and new value differ
-original value: <AnswersTable[
-                2:bar
-                ], free: [ 1 3 4 5 6 7 8 9 10 11 12 13 14 15]>
-     new value: <AnswersTable[
-                ], free: [ 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15]>
-
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::81:6::81:17>
-expr: at1.incr(i2)
-missing original problem
-new problem: Failed: Undefined variable: i2
-
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::82:6::82:17>
-expr: at1.incr(i2)
-missing original problem
-new problem: Failed: Undefined variable: i2
-
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::83:6::83:17>
-expr: at1.incr(i1)
-original and new problem differ
-original problem: <IllegalArgumentException: not alloced: 1>
-     new problem: Failed: Undefined variable: i1
-
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::89:6::89:8>
-expr: at1
-original and new value differ
-original value: <AnswersTable[
-                2:bar
-                ], free: [ 1 3 4 5 6 7 8 9 10 11 12 13 14 15]>
-     new value: <AnswersTable[
-                ], free: [ 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15]>
-
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::94:6::94:20>
-expr: at1.decr(i2, 1)
-missing new value
-original value: false
-missing original problem
-new problem: Failed: Undefined variable: i2
-
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::97:6::97:20>
-expr: at1.decr(i2, 1)
-missing new value
-original value: false
-missing original problem
-new problem: Failed: Undefined variable: i2
-
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::100:6::100:20>
-expr: at1.decr(i2, 1)
-missing new value
-original value: true
-missing original problem
-new problem: Failed: Undefined variable: i2
-
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::103:6::103:8>
-expr: at1
-original and new value differ
-original value: <AnswersTable[
-                ], free: [ 2 1 3 4 5 6 7 8 9 10 11 12 13 14 15]>
-     new value: <AnswersTable[
-                ], free: [ 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15]>
-
+c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc:...........................
 at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::107:6::107:21>
 expr: at1.put("zippy")
 missing new value
@@ -448,10 +439,10 @@ original value: <AnswersTable[
                 2:zippy
                 ], free: [ 3 4 5 6 7 8 9 10 11 12 13 14 15]>
      new value: <AnswersTable[
-                ], free: [ 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15]>
+                ], free: [ 2 1 3 4 5 6 7 8 9 10 11 12 13 14 15]>
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::129:6::129:68>
-expr: def problem := <unsafe:java.lang.RuntimeException>.new("fooey")
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::129:6::129:72>
+expr: def problem := <unsafe:java.lang.makeRuntimeException>.new("fooey")
 missing new value
 original value: <RuntimeException: fooey>
 missing original problem
@@ -461,19 +452,7 @@ at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/Answers
 expr: at1.smash(problem)
 missing original problem
 new problem: Failed: Undefined variable: problem
-.
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::135:6::135:12>
-expr: at1[i2]
-original and new problem differ
-original problem: <IllegalArgumentException: not alloced: 2>
-     new problem: Failed: Undefined variable: i2
-
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::141:6::141:12>
-expr: at1[i1]
-original and new problem differ
-original problem: <IllegalArgumentException: not alloced: 1>
-     new problem: Failed: Undefined variable: i1
-
+...
 at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc#:span::147:6::147:21>
 expr: at1.put("glorp")
 original and new problem differ
@@ -495,7 +474,7 @@ original stdout: i: 1
                  
 .
 c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/scope/meta-context.updoc:..
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/scope/meta-context.updoc#:span::6:2::6:59>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/scope/meta-context.updoc#:span::9:2::9:59>
 expr: def foo() :any { return [meta.getState(),meta.context()] }
 original and new expansion differ
 original expansion: def foo := def "__main$foo__C" {
@@ -514,18 +493,17 @@ original expansion: def foo := def "__main$foo__C" {
                     method run() :any {
                     escape __return {
                     __return.run(__makeList.run(meta.getState(), meta.context()))
-                    null
                     }
                     }
                     }
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/scope/meta-context.updoc#:span::21:2::21:19>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/scope/meta-context.updoc#:span::24:2::24:19>
 expr: def [s,c] := foo()
 original and new value differ
 original value: [["&__makeList" => <& <import:org.erights.e.elib.tables.ConstList>>, "&any" => <& <any>>, "&__return" => <& <__return: disabled Ejector>>], <StaticContext>]
-     new value: [["&null" => <& null>, "&__makeList" => <& <makeConstList>>, "&any" => <& any>, "&__return" => <& <__return: disabled Ejector>>], <static __main$foo$, 4 s>]
+     new value: [["&__makeList" => <& <makeConstList>>, "&any" => <& any>, "&__return" => <& <__return: disabled Ejector>>], <static __main$foo$, 3 s>]
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/scope/meta-context.updoc#:span::29:2::29:14>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/scope/meta-context.updoc#:span::32:2::32:14>
 expr: c.getSource()
 original and new value differ
 original value: e`def "__main$foo__C" {
@@ -544,24 +522,11 @@ original value: e`def "__main$foo__C" {
                 method run() :any {
                 escape __return {
                 __return.run(__makeList.run(meta.getState(), meta.context()))
-                null
                 }
                 }
                 }`
-
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/scope/meta-context.updoc#:span::44:2::44:14>
-expr: c.getSynEnv()
-original and new value differ
-original value: ["__makeList" => epatt`__makeList`, "any" => epatt`any`, "__return" => epatt`__return`]
-     new value: ["null" => epatt`null`, "__makeList" => epatt`__makeList`, "any" => epatt`any`, "__return" => epatt`__return`]
-
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/scope/meta-context.updoc#:span::51:2::51:26>
-expr: c.getSource().getSynEnv()
-original and new value differ
-original value: ["__makeList" => epatt`__makeList`, "any" => epatt`any`]
-     new value: ["null" => epatt`null`, "__makeList" => epatt`__makeList`, "any" => epatt`any`]
-
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/scope/meta-context.updoc#:span::56:2::56:17>
+..
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/scope/meta-context.updoc#:span::59:2::59:17>
 expr: c.getFQNPrefix()
 original and new value differ
 original value: "__main$foo__C$"
@@ -636,27 +601,9 @@ missing original problem
 new problem: <IndexOutOfBoundsException: "println" not found>
 .
 c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/scope/redef.updoc:........
-c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/syntax/exporter.updoc:...
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/syntax/exporter.updoc#:span::11:6::11:16>
-expr: [=>x, =>&y]
-original and new value differ
-original value: ["x" => 3, "&y" => <forwards to: <& 5>>]
-     new value: ["x" => 3, "&y" => <var 5>]
-.
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/syntax/exporter.updoc#:span::18:6::18:59>
-expr: def [=>a := 3, =>&b, "&y" => &c] := ["&b" => &x, =>&y]
-original and new value differ
-original value: ["&b" => <forwards to: <& 3>>, "&y" => <forwards to: <& 5>>]
-     new value: ["&b" => <var 3>, "&y" => <var 5>]
-.....
+c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/syntax/exporter.updoc:...........
 c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/syntax/lambdaArg.updoc:............
-c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/sealing/amplify.updoc:.
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/sealing/amplify.updoc#:span::8:2::8:42>
-expr: def makeBrand := <elib:sealing.makeBrand>
-original and new value differ
-original value: <elib:sealing.makeBrand>
-     new value: <makeBrand>
-...
+c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/sealing/amplify.updoc:.....
 at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/sealing/amplify.updoc#:span::28:2::28:43>
 expr: def makeUncall := <elib:serial.makeUncall>
 missing new value
@@ -679,224 +626,108 @@ missing original problem
 new problem: Failed: Undefined variable: uncall
 
 c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/sealing/crypto/signing.updoc:.....
-c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/sealing/point.updoc:.......
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/sealing/point.updoc#:span::39:6::39:16>
-expr: pt2 := null
-original and new problem differ
-original problem: couldn't coerce to: Point
-     new problem: Not audited by Point
-.
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/sealing/point.updoc#:span::48:6::48:22>
-expr: def f :Foo := pt1
-original and new problem differ
-original problem: unrecognized brand: Foo
-     new problem: Not audited by Foo
-...
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/sealing/point.updoc#:span::62:6::62:31>
+c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/sealing/point.updoc:.............
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/sealing/point.updoc#:span::64:6::64:31>
 expr: def x implements XStamp {}
 missing new value
 original value: <x>
 missing original problem
 new problem: <ClassCastException: Sealer doesn't coerce to an Auditor>
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/sealing/point.updoc#:span::65:6::65:21>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/sealing/point.updoc#:span::67:6::67:21>
 expr: var xVar :X := x
 missing new value
 original value: <x>
 missing original problem
 new problem: Failed: Undefined variable: x
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/sealing/point.updoc#:span::68:6::68:14>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/sealing/point.updoc#:span::70:6::70:14>
 expr: xVar := 3
 original and new problem differ
 original problem: couldn't coerce to: X
      new problem: Failed: Undefined variable: xVar
 .
-c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker.updoc:=== 2006-11-06T06:53:32.714Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
-eruntime: Import org.erights.e.elib.tables.makeTraversalKey instead : (Importing org.erights.e.elib.tables.TraversalKey)
- @ Loader#get(String)
- @ get/1: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker.updoc#:span::8:30::8:76>
-.
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker.updoc#:span::8:6::8:76>
-expr: def makeTraversalKey := <unsafe:org.erights.e.elib.tables.TraversalKey>
-original and new value differ
-original value: <unsafe:org.erights.e.elib.tables.TraversalKey>
-     new value: <makeTraversalKey>
-
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker.updoc#:span::11:6::11:33>
+c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker.updoc:..
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker.updoc#:span::12:6::12:33>
 expr: def cb := makeTraversalKey()
 missing new value
 original value: <TraversalKey>
 missing original problem
 new problem: <NoSuchMethodException: <a TraversalKey__Maker>.run/0>
-
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker.updoc#:span::14:6::14:33>
-expr: def [p1,r1] := Ref.promise()
-original and new value differ
-original value: [<Promise>, <Open Resolver>]
-     new value: [<Promise>, <Resolver>]
-
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker.updoc#:span::17:6::17:33>
-expr: def [p2,r2] := Ref.promise()
-original and new value differ
-original value: [<Promise>, <Open Resolver>]
-     new value: [<Promise>, <Resolver>]
-
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker.updoc#:span::20:6::20:19>
+..
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker.updoc#:span::21:6::21:19>
 expr: cb["foo"] := 3
 missing new value
 original value: 3
 missing original problem
 new problem: Failed: Undefined variable: cb
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker.updoc#:span::23:6::23:16>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker.updoc#:span::24:6::24:16>
 expr: cb[p1] := 4
 missing new value
 original value: 4
 missing original problem
 new problem: Failed: Undefined variable: cb
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker.updoc#:span::26:6::26:11>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker.updoc#:span::27:6::27:11>
 expr: cb[p1]
 missing new value
 original value: 4
 missing original problem
 new problem: Failed: Undefined variable: cb
 .
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker.updoc#:span::32:6::32:15>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker.updoc#:span::33:6::33:15>
 expr: cb[x] := 5
 missing new value
 original value: 5
 missing original problem
 new problem: Failed: Undefined variable: cb
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker.updoc#:span::35:6::35:21>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker.updoc#:span::36:6::36:21>
 expr: cb[[p1,p2]] := 6
 missing new value
 original value: 6
 missing original problem
 new problem: Failed: Undefined variable: cb
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker.updoc#:span::38:6::38:16>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker.updoc#:span::39:6::39:16>
 expr: cb[[p1,p2]]
 original and new problem differ
 original problem: <IndexOutOfBoundsException: not found: [<Promise>, <Promise>]>
      new problem: Failed: Undefined variable: cb
 .
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker.updoc#:span::43:6::43:11>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker.updoc#:span::44:6::44:11>
 expr: cb[p1]
 missing new value
 original value: 3
 missing original problem
 new problem: Failed: Undefined variable: cb
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker.updoc#:span::46:6::46:16>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker.updoc#:span::47:6::47:16>
 expr: cb[[p1,p2]]
 original and new problem differ
 original problem: <IndexOutOfBoundsException: not found: ["foo", <Promise>]>
      new problem: Failed: Undefined variable: cb
 .
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker.updoc#:span::50:6::50:16>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker.updoc#:span::51:6::51:16>
 expr: cb[[p1,p2]]
 missing new value
 original value: 5
 missing original problem
 new problem: Failed: Undefined variable: cb
 .
-c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker2.updoc:.
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker2.updoc#:span::9:6::9:21>
-expr: def x := [1,x,3]
-original and new value differ
-original value: [1, ***CYCLE***, 3]
-     new value: [1, <***CYCLE***>, 3]
-
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker2.updoc#:span::12:6::12:27>
-expr: def y := [1,[1,x,3],3]
-original and new value differ
-original value: [1, ***CYCLE***, 3]
-     new value: [1, <***CYCLE***>, 3]
-.
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker2.updoc#:span::18:6::18:33>
-expr: def [p1,r1] := Ref.promise()
-original and new value differ
-original value: [<Promise>, <Open Resolver>]
-     new value: [<Promise>, <Resolver>]
-
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker2.updoc#:span::21:6::21:22>
-expr: def x := [p1,x,3]
-original and new value differ
-original value: [<Promise>, ***CYCLE***, 3]
-     new value: [<Promise>, <***CYCLE***>, 3]
-.
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker2.updoc#:span::27:6::27:33>
-expr: def [p2,r2] := Ref.promise()
-original and new value differ
-original value: [<Promise>, <Open Resolver>]
-     new value: [<Promise>, <Resolver>]
-
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker2.updoc#:span::30:6::30:22>
-expr: def y := [p2,y,3]
-original and new value differ
-original value: [<Promise>, ***CYCLE***, 3]
-     new value: [<Promise>, <***CYCLE***>, 3]
-
+c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker2.updoc:.........
 at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker2.updoc#:span::33:6::33:11>
 expr: x == y
 original and new problem differ
-original problem: <NotSettledException: Not sufficuently settled: [<Promise>, ***CYCLE***, 3] == [<Promise>, ***CYCLE***, 3]>
+original problem: <NotSettledException: Not sufficuently settled: [<Promise>, <***CYCLE***>, 3] == [<Promise>, <***CYCLE***>, 3]>
      new problem: <NotSettledException: Not sufficiently settled: [<Promise>, <***CYCLE***>, 3] == [<Promise>, <***CYCLE***>, 3]>
-.
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker2.updoc#:span::40:6::40:59>
-expr: def makeTraversalKey := <elib:tables.makeTraversalKey>
-original and new value differ
-original value: <import:org.erights.e.elib.tables.makeTraversalKey>
-     new value: <makeTraversalKey>
-
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker2.updoc#:span::43:6::43:34>
-expr: def xx := makeTraversalKey(x)
-original and new value differ
-original value: <key:[<Promise>, ***CYCLE***, 3]>
-     new value: <key:[<Promise>, <***CYCLE***>, 3]>
-
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker2.updoc#:span::46:6::46:29>
-expr: def tab := [xx => "foo"]
-original and new value differ
-original value: [<key:[<Promise>, ***CYCLE***, 3]> => "foo"]
-     new value: [<key:[<Promise>, <***CYCLE***>, 3]> => "foo"]
-..
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker2.updoc#:span::53:6::53:8>
-expr: tab
-original and new value differ
-original value: [<key:[666, ***CYCLE***, 3]> => "foo"]
-     new value: [<key:[666, <***CYCLE***>, 3]> => "foo"]
-.
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker2.updoc#:span::59:6::59:35>
-expr: def xx2 := makeTraversalKey(x)
-original and new value differ
-original value: <key:[666, ***CYCLE***, 3]>
-     new value: <key:[666, <***CYCLE***>, 3]>
-
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker2.updoc#:span::62:6::62:13>
-expr: tab[xx2]
-original and new problem differ
-original problem: <IndexOutOfBoundsException: <key:[666, ***CYCLE***, 3]> not found>
-     new problem: <IndexOutOfBoundsException: <key:[666, <***CYCLE***>, 3]> not found>
-.
+...........
 c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/FlexList.updoc:.......
-c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/trijection.updoc:.
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/trijection.updoc#:span::8:2::8:47>
-expr: def makeFT := <elib:tables.makeFlexTrijection>
-original and new value differ
-original value: <import:org.erights.e.elib.tables.makeFlexTrijection>
-     new value: <makeFlexTrijection>
-..........
-c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc:=== 2006-11-06T06:54:50.856Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
-eruntime: Import org.quasiliteral.astro.makeBaseSchema instead : (Importing org.quasiliteral.astro.BaseSchema)
- @ Loader#get(String)
- @ get/1: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::36:25::36:45>
-...
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::20:6::20:55>
-expr: def miniSchema := <astro:BaseSchema>.new("mini", [
+c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/trijection.updoc:............
+c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc:...
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::20:6::20:59>
+expr: def miniSchema := <astro:makeBaseSchema>.new("mini", [
           "tag",
           ".char.",
           ".int.",
@@ -923,8 +754,8 @@ original value: term`tag("text",
 missing original problem
 new problem: Failed: Undefined variable: miniBuilder
 
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::36:6::36:60>
-expr: def safejSchema := <qq:astro.BaseSchema>.new("safej", [
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::36:6::36:64>
+expr: def safejSchema := <qq:astro.makeBaseSchema>.new("safej", [
           ".char.",
           ".int.",
           ".float64.",
@@ -956,7 +787,7 @@ new problem: Failed: Undefined variable: safejSchema
 
 at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::59:6::59:23>
 expr: def testSmlFile :=
-        <c>["/Documents and Settings/Administrator/Desktop/marcs/safej/tamings/java.awt.AWTPermission.txt"]
+        c__uriGetter["/Documents and Settings/Administrator/Desktop/marcs/safej/tamings/java.awt.AWTPermission.txt"]
 missing new value
 original value: <file:c:/Documents and Settings/Administrator/Desktop/marcs/safej/tamings/java.awt.AWTPermission.txt>
 missing original problem

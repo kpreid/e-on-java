@@ -1,5 +1,7 @@
 #!/usr/bin/env rune
 
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
 
     ? pragma.syntax("0.8")
 
@@ -37,7 +39,7 @@
     # value: 3
 
     ? pt2 := null
-    # problem: couldn't coerce to: Point
+    # problem: Not audited by Point
     #
     #   assigning pt2
     #   <interactive interp> evalPrint(e`pt2 := null`)
@@ -46,7 +48,7 @@
     # value: Foo
 
     ? def f :Foo := pt1
-    # problem: unrecognized brand: Foo
+    # problem: Not audited by Foo
     #
     #   <interactive interp> evalPrint(e`def f :Foo := pt1`)
 

@@ -29,6 +29,7 @@ def bind0 {
 }
 
     ? pragma.syntax("0.9")
+    ? interp.setExpand(true)
     ? def x
     # expansion: def [x, x__Resolver] := Ref.promise()
     #            x__Resolver

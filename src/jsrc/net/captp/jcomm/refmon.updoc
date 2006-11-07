@@ -37,7 +37,7 @@
     # value: 3
 
     ? def sr := makeSturdyRef.temp(&x)
-    # value: <a SturdyRef>
+    # value: <SturdyRef to <var 3>>
 
     ? <file:~/Desktop/x.cap>.setText(introducer.sturdyToURI(sr))
 
@@ -49,7 +49,7 @@
     # value: ["3DES_SDH_M2", "3DES_SDH_M"]
 
     ? def sr := introducer.sturdyFromURI(<file:~/Desktop/x.cap>.getText())
-    # value: <a SturdyRef>
+    # value: <SturdyRef>
 
     ? def farSlot := sr.getRcvr()
     # value: <Remote Promise>

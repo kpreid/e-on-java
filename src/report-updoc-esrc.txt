@@ -39,7 +39,7 @@ missing new value
 original value: [Shell {watching - am2}, Label {<manages <has (44 - 0) Sugar>>}]
 missing original problem
 new problem: Failed: Undefined variable: am2
-.....=== 2006-11-06T06:56:10.510Z (PendingEvent.report:PendingEvent.java:109) WRN
+.....=== 2006-11-07T06:03:15.782Z (PendingEvent.report:PendingEvent.java:109) WRN
 causality: Problem in turn <<Vat home in <SWTRunner>>,212>: 
 --vvvv--
 Failed: Not mergeable: <Vat home in <SWTRunner>>
@@ -115,19 +115,12 @@ original stdout: US News
                  now: 21
                  
 ..............
-c:/Documents and Settings/millerm1/e/src/esrc/com/opencola/drm/example/MintMaker.updoc:.
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/com/opencola/drm/example/MintMaker.updoc#:span::7:2::7:43>
-expr: def BrandMaker := <elib:sealing.makeBrand>
-original and new value differ
-original value: <import:org.erights.e.elib.sealing.makeBrand>
-     new value: <makeBrand>
-
+c:/Documents and Settings/millerm1/e/src/esrc/com/opencola/drm/example/MintMaker.updoc:..
 at: <file:c:/Documents and Settings/millerm1/e/src/esrc/com/opencola/drm/example/MintMaker.updoc#:span::10:2::10:31>
 expr: interp.getProps()["e.version"]
-missing new value
+original and new value differ
 original value: "0.8.9s"
-missing original problem
-new problem: <IndexOutOfBoundsException: "e.version" not found>
+     new value: "0.8.??"
 
 at: <file:c:/Documents and Settings/millerm1/e/src/esrc/com/opencola/drm/example/MintMaker.updoc#:span::13:2::13:27>
 expr: def MintMaker(name) :any {
@@ -159,8 +152,8 @@ expr: def MintMaker(name) :any {
                           quantity.op__cmp(other.getQuantity())
                       }
                       to transfer(var src,var dest) :void {
-                          src := vouch(src)
-                          dest := vouch(dest)
+                          src := issuer.vouch(src)
+                          dest := issuer.vouch(dest)
                           unsealer.unseal(src.getDecr())(quantity)
                           unsealer.unseal(dest.getIncr())(quantity)
                       }
@@ -187,20 +180,20 @@ expr: def MintMaker(name) :any {
           }
       }
 missing original problem
-new problem: Failed: Undefined variable: vouch
+new problem: Failed: Undefined variable: mint
 
 c:/Documents and Settings/millerm1/e/src/esrc/com/skyhunter/convertForEDoc/bounds.updoc:......
 c:/Documents and Settings/millerm1/e/src/esrc/com/skyhunter/convertForEDoc/edoc.updoc:......
-c:/Documents and Settings/millerm1/e/src/esrc/edu/jhu/cs448/contact/contactKit.updoc:=== 2006-11-06T06:57:57.434Z (PendingEvent.report:PendingEvent.java:109) WRN
+c:/Documents and Settings/millerm1/e/src/esrc/edu/jhu/cs448/contact/contactKit.updoc:=== 2006-11-07T06:05:25.348Z (PendingEvent.report:PendingEvent.java:109) WRN
 causality: Problem in turn <<Vat Rendezvous in <runs in Rendezvous>>,126>: 
 --vvvv--
 Failed: not synchronously callable
 
 - static Verifier#verify(PublicKey, String, BigInteger)
-. <makeVerifier>.verify(<Far ref>, "captp://*rnet6ouavwmwxvn5p5lqa4pfv2jf52g...:2518/ua6jds34lw3gnag3cntg7p3ku5kx2by5", 72971646843144...94377527384709)
+. <makeVerifier>.verify(<Far ref>, "captp://*5c4m462bcjdj7ie5spedlgh3ncj7ylk...:1829/2pbdt6rkl6y35v3dxkeeqtipe5v7mkba", 85650713742723...67674337143567)
 @ verify/3: <file:/C:/Documents%20and%20Settings/millerm1/e/src/esrc/edu/jhu/cs448/contact/makeRendezvous.emaker#:span::28:29::28:34>
 - edu.jhu.cs448.contact.makeRendezvous$makeRendezvous$rendezvous#register/3: <file:/C:/Documents%20and%20Settings/millerm1/e/src/esrc/edu/jhu/cs448/contact/makeRendezvous.emaker#:span::25:11::25:18>
-. <rendezvous>.register(<Far ref>, "captp://*rnet6ouavwmwxvn5p5lqa4pfv2jf52g...:2518/ua6jds34lw3gnag3cntg7p3ku5kx2by5", 72971646843144...94377527384709)
+. <rendezvous>.register(<Far ref>, "captp://*5c4m462bcjdj7ie5spedlgh3ncj7ylk...:1829/2pbdt6rkl6y35v3dxkeeqtipe5v7mkba", 85650713742723...67674337143567)
 
 java.lang.RuntimeException: Failed: not synchronously callable
 	at org.erights.e.develop.assertion.T.fail(T.java:84)
@@ -240,16 +233,16 @@ java.lang.RuntimeException: Failed: not synchronously callable
 
 --^^^^--
 
-=== 2006-11-06T06:57:58.816Z (PendingEvent.report:PendingEvent.java:109) WRN
-causality: Problem in turn <<Vat Rendezvous in <runs in Rendezvous>>,184>: 
+=== 2006-11-07T06:05:26.830Z (PendingEvent.report:PendingEvent.java:109) WRN
+causality: Problem in turn <<Vat Rendezvous in <runs in Rendezvous>>,188>: 
 --vvvv--
 Failed: not synchronously callable
 
 - static Verifier#verify(PublicKey, String, BigInteger)
-. <makeVerifier>.verify(<Far ref>, "captp://*qd2f6knq2gd4mem3t62ggomixwzwchu...:2524/uo33b6dp3pyojpjpyxzpecq5fnxlhieh", 16060292852273...59600804013077)
+. <makeVerifier>.verify(<Far ref>, "captp://*lp6724swch2sobbswvwk77l5of7qd34...:1834/dovgv6noftsxtb3rrbsungh4ceyzvdim", 68832172357200...35608806908129)
 @ verify/3: <file:/C:/Documents%20and%20Settings/millerm1/e/src/esrc/edu/jhu/cs448/contact/makeRendezvous.emaker#:span::28:29::28:34>
 - edu.jhu.cs448.contact.makeRendezvous$makeRendezvous$rendezvous#register/3: <file:/C:/Documents%20and%20Settings/millerm1/e/src/esrc/edu/jhu/cs448/contact/makeRendezvous.emaker#:span::25:11::25:18>
-. <rendezvous>.register(<Far ref>, "captp://*qd2f6knq2gd4mem3t62ggomixwzwchu...:2524/uo33b6dp3pyojpjpyxzpecq5fnxlhieh", 16060292852273...59600804013077)
+. <rendezvous>.register(<Far ref>, "captp://*lp6724swch2sobbswvwk77l5of7qd34...:1834/dovgv6noftsxtb3rrbsungh4ceyzvdim", 68832172357200...35608806908129)
 
 java.lang.RuntimeException: Failed: not synchronously callable
 	at org.erights.e.develop.assertion.T.fail(T.java:84)
@@ -292,25 +285,18 @@ java.lang.RuntimeException: Failed: not synchronously callable
 .........................................
 c:/Documents and Settings/millerm1/e/src/esrc/edu/jhu/cs448/contact/makeOpenQueue.emaker:........................
 c:/Documents and Settings/millerm1/e/src/esrc/edu/jhu/markm/thesis/actors.updoc:.........
-c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdLoopMakerAuthor.updoc:...
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdLoopMakerAuthor.updoc#:span::19:6::19:71>
-expr: def ScopeImplMaker := <unsafe:org.erights.e.elang.scope.ScopeImpl>
+c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdLoopMakerAuthor.updoc:....
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdLoopMakerAuthor.updoc#:span::22:6::22:31>
+expr: def scope := makeScope([])
 missing new value
-original value: <unsafe:org.erights.e.elang.scope.ScopeImpl>
+original value: <makeScope>
 missing original problem
-new problem: Failed: org.erights.e.elang.scope.ScopeImpl not found
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdLoopMakerAuthor.updoc#:span::22:6::22:36>
-expr: def scope := ScopeImplMaker([])
-missing new value
-original value: org.erights.e.elang.scope.ScopeImpl@38b82
-missing original problem
-new problem: Failed: Undefined variable: ScopeImplMaker
+new problem: <NoSuchMethodException: <a Scope__Maker>.run/1>
 
 at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdLoopMakerAuthor.updoc#:span::25:6::25:18>
 expr: scope.asMap()
 missing new value
-original value: [] asMap
+original value: [].asMap()
 missing original problem
 new problem: Failed: Undefined variable: scope
 
@@ -416,52 +402,13 @@ original and new problem differ
 original problem: <IndexOutOfBoundsException: 0 must be below 0>
      new problem: Failed: Undefined variable: cmdLoop
 .
-c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdMakerMaker.updoc:=== 2006-11-06T06:58:17.944Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
-eruntime: Import org.erights.e.elang.interp.makeScopeSetup instead : (Importing org.erights.e.elang.interp.ScopeSetup)
- @ Loader#get(String)
- @ get/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdMakerMaker.updoc#:span::25:24::25:69>
-.
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdMakerMaker.updoc#:span::8:6::8:55>
-expr: def makeTextWriter := <elib:oldeio.makeTextWriter>
-original and new value differ
-original value: <import:org.erights.e.elib.oldeio.makeTextWriter>
-     new value: <makeTextWriter>
-...
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdMakerMaker.updoc#:span::25:6::25:69>
-expr: def ScopeSetup := <unsafe:org.erights.e.elang.interp.ScopeSetup>
-original and new value differ
-original value: <unsafe:org.erights.e.elang.interp.ScopeSetup>
-     new value: <makeScopeSetup>
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdMakerMaker.updoc#:span::28:6::28:66>
-expr: def [altout, altoutBuf] := makeTextWriter.makeBufferingPair()
-original and new value differ
-original value: [<TextWriter>, ]
-     new value: [<a TextWriter>, <stringBuffer "">]
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdMakerMaker.updoc#:span::31:6::31:66>
-expr: def [alterr, alterrBuf] := makeTextWriter.makeBufferingPair()
-original and new value differ
-original value: [<TextWriter>, ]
-     new value: [<a TextWriter>, <stringBuffer "">]
-
+c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdMakerMaker.updoc:........
 at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdMakerMaker.updoc#:span::34:6::34:16>
 expr: def cmdLoop
 original and new value differ
 original value: <Promise>
      new value: <Resolver>
-.
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdMakerMaker.updoc#:span::38:6::38:55>
-expr: def privileged := ScopeSetup.privileged("__main$",
-                                              altout,
-                                              alterr,
-                                              props,
-                                              cmdLoop,
-                                              currentVat)
-original and new value differ
-original value: org.erights.e.elang.scope.MutableScope@366999
-     new value: <a Scope>
-
+..
 at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdMakerMaker.updoc#:span::46:6::46:64>
 expr: bind cmdLoop := cmdLoopMaker(["a", "b"], props, privileged)
 missing new value
@@ -476,13 +423,7 @@ original value: <cmdMaker>
 missing original problem
 new problem: <NoSuchMethodException: <a cmdMakerMaker>.run/3>
 .
-c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/controlLoopMaker.updoc:...
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/controlLoopMaker.updoc#:span::18:6::18:35>
-expr: def ctrl := controlLoopMaker()
-original and new value differ
-original value: <controlLoop_7>
-     new value: <controlLoop>
-..............
+c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/controlLoopMaker.updoc:..................
 at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/controlLoopMaker.updoc#:span::68:6::68:45>
 expr: def exitPairVow := ctrl.getExitPairVow()
 missing new value
@@ -503,13 +444,7 @@ missing new value
 original value: [0, null]
 missing original problem
 new problem: Failed: Undefined variable: exitPairVow
-..
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/controlLoopMaker.updoc#:span::103:6::103:37>
-expr: bind ctrl3 := controlLoopMaker()
-original and new value differ
-original value: <controlLoop_7>
-     new value: <controlLoop>
-...
+......
 at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/controlLoopMaker.updoc#:span::115:6::115:47>
 expr: def exitPairVow3 := ctrl3.getExitPairVow()
 missing new value
@@ -533,39 +468,24 @@ new problem: Failed: Undefined variable: exitPairVow3
 .
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/control/makeSeries.emaker:.........
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/control/__dynamicExtent.emaker:......
-c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/expand/__bind.emaker:.
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/expand/__bind.emaker#:span::32:6::32:10>
-expr: def x
-missing new expansion
-original expansion: def [x, x__Resolver] := Ref.promise()
-                    x__Resolver
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/expand/__bind.emaker#:span::38:6::38:16>
-expr: bind x := 3
-missing new expansion
-original expansion: def via (__bind.run(x__Resolver)) _ := 3
-..
+c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/expand/__bind.emaker:....
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/expand/__bind.emaker#:span::44:6::44:28>
+expr: interp.setExpand(false)
+missing original expansion
+new expansion: interp.setExpand(false)
+.
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/expand/__Empty.emaker:.....
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/expand/__extract.emaker:...
 at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/expand/__extract.emaker#:span::61:6::61:56>
 expr: def [=>x, "y" => y, => z := 3] := ["x"=>a, "y"=> b]
 original and new expansion differ
-original expansion: def via (__extract.run("x"))
-                    [x, via (__extract.run("y"))
-                    [y, via (__extract.depr("z", 3))
-                    [z, :__Empty]]] :=
-                    __makeMap.fromPairs(__makeList.run(__makeList.run("x", a),
-                    __makeList.run("y", b)))
+original expansion: def via (__extract.run("x")) [x, via (__extract.run("y")) [y, via (__extract.depr("z", 3)) [z, :__Empty]]] := __makeMap.fromPairs(__makeList.run(__makeList.run("x", a), __makeList.run("y", b)))
      new expansion: def via (__extract.run("x")) [x, via (__extract.run("y")) [y, via (__extract.depr("z", 3)) [z, _ :__Empty]]] := __makeMap.fromPairs(__makeList.run(__makeList.run("x", a), __makeList.run("y", b)))
 ....
 at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/expand/__extract.emaker#:span::82:6::82:63>
 expr: def ["i" => j, (j) => k] := ["i" => "foo", "foo" => "bar"]
 original and new expansion differ
-original expansion: def via (__extract.run("i"))
-                    [j, via (__extract.run(j))
-                    [k, :__Empty]] :=
-                    __makeMap.fromPairs(__makeList.run(__makeList.run("i", "foo"),
-                    __makeList.run("foo", "bar")))
+original expansion: def via (__extract.run("i")) [j, via (__extract.run(j)) [k, :__Empty]] := __makeMap.fromPairs(__makeList.run(__makeList.run("i", "foo"), __makeList.run("foo", "bar")))
      new expansion: def via (__extract.run("i")) [j, via (__extract.run(j)) [k, _ :__Empty]] := __makeMap.fromPairs(__makeList.run(__makeList.run("i", "foo"), __makeList.run("foo", "bar")))
 ..
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/expand/__is.emaker:..
@@ -586,19 +506,8 @@ expr: def `@x$d@y` := "ab.de"
 original and new expansion differ
 original expansion: def via (__matchBind.run(simple__quasiParser. matchMaker("@{0}${0}@{1}"), __makeList.run(d))) [x, y] := "ab.de"
      new expansion: def via (__matchBind.run(simple__quasiParser.matchMaker("@{0}${0}@{1}"), __makeList.run(d))) [x, y] := "ab.de"
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/expand/__matchBind.emaker#:span::37:6::37:28>
-expr: interp.setExpand(false)
-missing original expansion
-new expansion: interp.setExpand(false)
-.
-c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/expand/__splitList.emaker:....
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/expand/__splitList.emaker#:span::49:6::49:15>
-expr: x := "foo"
-original and new problem differ
-original problem: <ClassCastException: Character doesn't coerce to a String
-     new problem: <ClassCastException: Character doesn't coerce to a String>
-.
+..
+c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/expand/__splitList.emaker:......
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/expand/__suchThat.emaker:..
 at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/expand/__suchThat.emaker#:span::35:6::35:65>
 expr: def foo(G1, G2, x :G1 ? (x =~ y :G2)) :any { return [x, y] }
@@ -631,13 +540,8 @@ original expansion: def foo := def "__main$foo__C" {
                     }
                     }
                     }
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/expand/__suchThat.emaker#:span::51:6::51:28>
-expr: interp.setExpand(false)
-missing original expansion
-new expansion: interp.setExpand(false)
-..
-c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/makeBootServer.updoc:=== 2006-11-06T06:58:31.623Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
+...
+c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/makeBootServer.updoc:=== 2006-11-07T06:06:08.050Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
 eruntime: Import org.erights.e.elib.serial.makePersistentKeyHolder instead : (Importing org.erights.e.elib.serial.PersistentKeyHolder)
  @ Loader#get(String)
  @ get/1: <file:/C:/Documents%20and%20Settings/millerm1/e/src/esrc/org/erights/e/extern/persist/initTimeMachine.emaker#:span::35:6::35:59>
@@ -645,7 +549,7 @@ eruntime: Import org.erights.e.elib.serial.makePersistentKeyHolder instead : (Im
 at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/makeBootServer.updoc#:span::27:2::27:59>
 expr: def vatFile := makeAtomicFile(<file:~/Desktop>, "foo.vat")
 original and new value differ
-original value: <atomic: <file:C:/Documents and Settings/MILLERM1/Desktop/foo.vat>>
+original value: <atomic: <file:C:/Documents and Settings/millerm1/Desktop/foo.vat>>
      new value: <atomic: <file:c:/Documents and Settings/millerm1/Desktop/foo.vat>>
 
 at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/makeBootServer.updoc#:span::30:2::30:47>
@@ -824,7 +728,7 @@ missing new problem
 original problem: c:/cygwin/bin/bash.exe failed with(127,,/usr/bin/bash: cygpath: command not found
                   )
 .
-c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/ref/makeLazyPromiseAuthor.emaker:=== 2006-11-06T06:58:50.360Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
+c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/ref/makeLazyPromiseAuthor.emaker:=== 2006-11-07T06:06:34.488Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
 eruntime: Import org.erights.e.elib.ref.makeEProxyResolver instead : (Importing org.erights.e.elib.ref.EProxyResolver)
  @ Loader#get(String)
  @ get/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/ref/makeLazyPromiseAuthor.emaker#:span::43:31::43:76>
@@ -1209,8 +1113,9 @@ new problem: Failed: Undefined variable: sr3
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/tools/collect/propUtils.updoc:....
 at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/tools/collect/propUtils.updoc#:span::15:6::15:43>
 expr: propUtils.testProp(props, "e.version")
-missing new problem
+original and new problem differ
 original problem: 0.8.9zb must be true or false
+     new problem: 0.8.?? must be true or false
 
 at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/tools/collect/propUtils.updoc#:span::24:6::24:47>
 expr: propUtils.testProp(props, "e.enable.bind")
@@ -1237,8 +1142,9 @@ missing new A bug we're just going to live with for now
 original A bug we're just going to live with for now: 
 ...
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/tools/java/fixImports.emaker:...
-c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/ui/swt/watchAuthor.emaker:.........=== 2006-11-06T06:59:51.468Z (PendingEvent.report:PendingEvent.java:109) WRN
-causality: Problem in turn <<Vat home in <SWTRunner>>,115>: 
+c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/tools/updoc/makeOldUpdocParser.emaker:
+c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/ui/swt/watchAuthor.emaker:.........=== 2006-11-07T06:07:54.873Z (PendingEvent.report:PendingEvent.java:109) WRN
+causality: Problem in turn <<Vat home in <SWTRunner>>,121>: 
 --vvvv--
 Failed: Not mergeable: <Vat home in <SWTRunner>>
 
@@ -1249,7 +1155,7 @@ java.lang.RuntimeException: Failed: Not mergeable: <Vat home in <SWTRunner>>
 	at org.erights.e.develop.assertion.T.fail(T.java:84)
 	at org.erights.e.develop.assertion.T.require(T.java:339)
 	at org.erights.e.elib.vat.Vat$VatRedirector.run(Vat.java:627)
-	at sun.reflect.GeneratedMethodAccessor190.invoke(Unknown Source)
+	at sun.reflect.GeneratedMethodAccessor203.invoke(Unknown Source)
 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
 	at java.lang.reflect.Method.invoke(Method.java:585)
 	at org.erights.e.elib.prim.InstanceMethodNode.innerExecute(InstanceMethodNode.java:113)
@@ -1978,7 +1884,7 @@ original value: [<Promise>, <Closed Resolver>, <Promise>]
 missing original problem
 new problem: Failed: Undefined variable: bp
 
-c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/makeScope.updoc:=== 2006-11-06T07:00:27.750Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
+c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/makeScope.updoc:=== 2006-11-07T06:08:48.490Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
 eruntime: Import org.erights.e.elang.scope.makeScope instead : (Importing org.erights.e.elang.scope.Scope)
  @ Loader#get(String)
  @ get/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/makeScope.updoc#:span::14:21::14:60>
@@ -2031,17 +1937,19 @@ missing original problem
 new problem: Failed: Undefined variable: demoScope
 
 c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/mod.updoc:......
-c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/updoc/abc.updoc:=== 2006-11-06T07:00:31.476Z (CapTPConnection.killConnection:CapTPConnection.java:1262) WRN
-captp: lost Conn(jqkvsroo3acouelgibip7p5hfludyhlk <-> xh54bjkhz3ww2hiwmmb7we2jf573muus)
+c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/updoc/abc.updoc:=== 2006-11-07T06:08:53.938Z (CapTPConnection.killConnection:CapTPConnection.java:1262) WRN
+captp: lost Conn(5pnhwp2gnba7ri3yq5rc322lx6zoypnn <-> sqfokin7vwgy5r5k7nwmgxomhedwrxh5)
 --vvvv--
+java.net.ConnectException: Connection refused: connect
 java.net.ConnectException: Connection refused: connect
 
 
-# lost net.vattp.data.VatTPConnection@179001b
-  to 192.168.1.66:2487|xh54bjkhz3ww2hiwmmb7we2jf573muus
-  searchpath=192.168.1.66:2487 state=7
+# lost net.vattp.data.VatTPConnection@cd4bb4
+  to 192.168.1.66:1769|sqfokin7vwgy5r5k7nwmgxomhedwrxh5
+  searchpath=192.168.1.103:1769,192.168.1.66:1769 state=7
 
 java.io.IOException: java.net.ConnectException: Connection refused: connect
+java.net.ConnectException: Connection refused: connect
 
 	at net.vattp.data.VatTPConnection.tryNextAddress(VatTPConnection.java:1222)
 	at net.vattp.data.VatTPConnection.shutDownFinished(VatTPConnection.java:1013)
@@ -2054,13 +1962,13 @@ java.io.IOException: java.net.ConnectException: Connection refused: connect
 
 --^^^^--
 
-=== 2006-11-06T07:00:31.476Z (PendingEvent.report:PendingEvent.java:109) WRN
-causality: Problem in turn <<Vat vatAC in <runs in vatAC>>,73>: 
+=== 2006-11-07T06:08:53.938Z (PendingEvent.report:PendingEvent.java:109) WRN
+causality: Problem in turn <<Vat vatAC in <runs in vatAC>>,75>: 
 --vvvv--
 Failed: done
 
 - DelayedRedirector#__reactToLostClient(Throwable)
-. <a DelayedRedirector>.__reactToLostClient(problem: <IOException: java.net.ConnectException: Connection refused: connect\n         >)
+. <a DelayedRedirector>.__reactToLostClient(problem: <IOException: java.net.ConnectException: Connection refuse... java.net.ConnectException: Connection refused: connect\n         >)
 
 java.lang.RuntimeException: Failed: done
 	at org.erights.e.develop.assertion.T.fail(T.java:84)
@@ -2082,13 +1990,13 @@ java.lang.RuntimeException: Failed: done
 
 --^^^^--
 
-=== 2006-11-06T07:00:31.476Z (PendingEvent.report:PendingEvent.java:109) WRN
-causality: Problem in turn <<Vat vatAC in <runs in vatAC>>,74>: 
+=== 2006-11-07T06:08:53.938Z (PendingEvent.report:PendingEvent.java:109) WRN
+causality: Problem in turn <<Vat vatAC in <runs in vatAC>>,76>: 
 --vvvv--
 Failed: done
 
 - DelayedRedirector#__reactToLostClient(Throwable)
-. <a DelayedRedirector>.__reactToLostClient(problem: <IOException: java.net.ConnectException: Connection refused: connect\n         >)
+. <a DelayedRedirector>.__reactToLostClient(problem: <IOException: java.net.ConnectException: Connection refuse... java.net.ConnectException: Connection refused: connect\n         >)
 
 java.lang.RuntimeException: Failed: done
 	at org.erights.e.develop.assertion.T.fail(T.java:84)
@@ -2217,1031 +2125,131 @@ missing original problem
 new problem: Failed: Undefined variable: c
 
 c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/updoc/shortFlexList.updoc:....
-c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html:=== 2006-11-06T07:02:24.839Z (Twine.add:Twine.java:354) WRN
+c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html:=== 2006-11-07T06:10:56.034Z (Twine.add:Twine.java:354) WRN
 eruntime: Stringifying with '+' : (3)
  @ Twine#add(Object)
  @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::482:37::482:37>
-=== 2006-11-06T07:02:25.119Z (Twine.add:Twine.java:354) WRN
+=== 2006-11-07T06:10:56.394Z (Twine.add:Twine.java:354) WRN
 eruntime: Stringifying with '+' : (10)
  @ Twine#add(Object)
  @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::800:64::800:64>
-=== 2006-11-06T07:02:25.179Z (Twine.add:Twine.java:354) WRN
+=== 2006-11-07T06:10:56.474Z (Twine.add:Twine.java:354) WRN
 eruntime: Stringifying with '+' : (10)
  @ Twine#add(Object)
  @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::897:32::897:32>
-=== 2006-11-06T07:02:25.269Z (Twine.add:Twine.java:354) WRN
+=== 2006-11-07T06:10:56.605Z (Twine.add:Twine.java:354) WRN
 eruntime: Stringifying with '+' : (380)
  @ Twine#add(Object)
  @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::1030:26::1030:26>
-=== 2006-11-06T07:02:25.339Z (Twine.add:Twine.java:354) WRN
+=== 2006-11-07T06:10:56.675Z (Twine.add:Twine.java:354) WRN
 eruntime: Stringifying with '+' : (2)
  @ Twine#add(Object)
  @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::1292:41::1292:41>
-=== 2006-11-06T07:02:25.339Z (Twine.add:Twine.java:354) WRN
+=== 2006-11-07T06:10:56.675Z (Twine.add:Twine.java:354) WRN
 eruntime: Stringifying with '+' : (true)
  @ Twine#add(Object)
  @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::1292:41::1292:41>
-=== 2006-11-06T07:02:25.349Z (Twine.add:Twine.java:354) WRN
+=== 2006-11-07T06:10:56.675Z (Twine.add:Twine.java:354) WRN
 eruntime: Stringifying with '+' : (0)
  @ Twine#add(Object)
  @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::1293:55::1293:55>
-=== 2006-11-06T07:02:25.349Z (Twine.add:Twine.java:354) WRN
+=== 2006-11-07T06:10:56.675Z (Twine.add:Twine.java:354) WRN
 eruntime: Stringifying with '+' : (1)
  @ Twine#add(Object)
  @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::1293:55::1293:55>
-=== 2006-11-06T07:02:25.349Z (Twine.add:Twine.java:354) WRN
+=== 2006-11-07T06:10:56.675Z (Twine.add:Twine.java:354) WRN
 eruntime: Stringifying with '+' : (2)
  @ Twine#add(Object)
  @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::1293:68::1293:68>
-=== 2006-11-06T07:02:25.349Z (Twine.add:Twine.java:354) WRN
+=== 2006-11-07T06:10:56.675Z (Twine.add:Twine.java:354) WRN
 eruntime: Stringifying with '+' : (2)
  @ Twine#add(Object)
  @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::1293:55::1293:55>
-=== 2006-11-06T07:02:25.349Z (Twine.add:Twine.java:354) WRN
+=== 2006-11-07T06:10:56.705Z (Twine.add:Twine.java:354) WRN
 eruntime: Stringifying with '+' : (true)
  @ Twine#add(Object)
  @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::1293:68::1293:68>
-=== 2006-11-06T07:02:25.349Z (Twine.add:Twine.java:354) WRN
+=== 2006-11-07T06:10:56.705Z (Twine.add:Twine.java:354) WRN
 eruntime: Stringifying with '+' : (3)
  @ Twine#add(Object)
  @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::1293:55::1293:55>
-=== 2006-11-06T07:02:25.369Z (Twine.add:Twine.java:354) WRN
+=== 2006-11-07T06:10:56.745Z (Twine.add:Twine.java:354) WRN
 eruntime: Stringifying with '+' : (1)
  @ Twine#add(Object)
  @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::1338:65::1338:65>
-=== 2006-11-06T07:02:25.380Z (Twine.add:Twine.java:354) WRN
+=== 2006-11-07T06:10:56.745Z (Twine.add:Twine.java:354) WRN
 eruntime: Stringifying with '+' : (2)
  @ Twine#add(Object)
  @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::1338:46::1338:46>
-=== 2006-11-06T07:02:25.380Z (Twine.add:Twine.java:354) WRN
+=== 2006-11-07T06:10:56.755Z (Twine.add:Twine.java:354) WRN
 eruntime: Stringifying with '+' : (1)
  @ Twine#add(Object)
  @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::1339:37::1339:37>
-=== 2006-11-06T07:02:25.460Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
+=== 2006-11-07T06:10:56.985Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
 eruntime: Import java.util.makeVector instead : (Importing java.util.Vector)
  @ Loader#get(String)
  @ get/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:blob::1411:17::1411:45>
-=== 2006-11-06T07:02:25.480Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
+=== 2006-11-07T06:10:57.115Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
 eruntime: Import java.util.makeCalendar instead : (Importing java.util.Calendar)
  @ Loader#get(String)
  @ get/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:blob::1467:1::1467:31>
-=== 2006-11-06T07:02:25.490Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
+=== 2006-11-07T06:10:57.125Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
 eruntime: Import java.lang.makeSystem instead : (Importing java.lang.System)
  @ Loader#get(String)
  @ get/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:blob::1488:21::1488:49>
-abc=== 2006-11-06T07:02:25.520Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
+abc=== 2006-11-07T06:10:57.256Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
 eruntime: Import javax.swing.makeJLabel instead : (Importing javax.swing.JLabel)
  @ Loader#get(String)
  @ get/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:blob::1498:25::1498:42>
-=== 2006-11-06T07:02:26.141Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
+=== 2006-11-07T06:11:29.913Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
 eruntime: Import java.lang.makeByte instead : (Importing java.lang.Byte)
  @ Loader#get(String)
  @ get/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:blob::1512:13::1512:39>
-=== 2006-11-06T07:02:26.551Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
+=== 2006-11-07T06:11:30.343Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
 eruntime: Import javax.swing.makeJFrame instead : (Importing javax.swing.JFrame)
  @ Loader#get(String)
  @ get/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:blob::1939:18::1939:35>
-=== 2006-11-06T07:02:26.561Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
+=== 2006-11-07T06:11:30.423Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
 eruntime: Import javax.swing.makeJTextArea instead : (Importing javax.swing.JTextArea)
  @ Loader#get(String)
  @ get/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:blob::1942:23::1942:43>
-=== 2006-11-06T07:02:27.302Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
+=== 2006-11-07T06:11:32.196Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
 eruntime: Import java.awt.makeSystemColor instead : (Importing java.awt.SystemColor)
  @ Loader#get(String)
  @ get/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:blob::1945:26::1945:46>
-=== 2006-11-06T07:02:27.342Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
+=== 2006-11-07T06:11:32.266Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
 eruntime: Import javax.swing.makeJButton instead : (Importing javax.swing.JButton)
  @ Loader#get(String)
  @ get/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:blob::1897:19::1897:37>
-=== 2006-11-06T07:02:27.583Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
+=== 2006-11-07T06:11:32.877Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
 eruntime: Import javax.swing.makeWindowConstants instead : (Importing javax.swing.WindowConstants)
  @ Loader#get(String)
  @ get/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:blob::1961:36::1961:62>
-=== 2006-11-06T07:28:32.683Z (RecvThread.callDataPath:RecvThread.java:156) ERR
-comm: Error while calling net.vattp.data.DataCommThunk@92ca30 Type=8
---vvvv--
-makeEvaluator shutdown
-
-
-java.lang.RuntimeException: makeEvaluator shutdown
-	at org.erights.e.meta.java.lang.ThrowableGuardSugar.subCoerceR(ThrowableGuardSugar.java:60)
-	at org.erights.e.elib.base.ClassDesc.tryCoerceR(ClassDesc.java:350)
-	at org.erights.e.elib.slot.BaseAuditor.coerce(BaseAuditor.java:59)
-	at org.erights.e.elib.prim.E.as(E.java:530)
-	at org.erights.e.elib.prim.JavaMemberNode.coerceArgs(JavaMemberNode.java:143)
-	at org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:188)
-	at org.erights.e.elib.prim.Selector.callIt(Selector.java:84)
-	at org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:132)
-	at org.erights.e.elang.evm.EMethod.execute(EMethod.java:175)
-	at org.erights.e.elang.evm.EMethodNode.execute(EMethodNode.java:136)
-	at org.erights.e.elib.prim.E.callAll(E.java:167)
-	at org.erights.e.elib.vat.PendingDelivery.innerRun(PendingDelivery.java:102)
-	at org.erights.e.elib.vat.PendingEvent.run(PendingEvent.java:76)
-	at org.erights.e.elib.vat.HeadlessRunner.run(HeadlessRunner.java:176)
-	at java.lang.Thread.run(Thread.java:595)
-
---^^^^--
-
-=== 2006-11-06T07:28:32.683Z (RecvThread.callDataPath:RecvThread.java:156) ERR
-comm: Error while calling net.vattp.data.DataCommThunk@1183a89 Type=4
---vvvv--
-makeEvaluator shutdown
-
-
-java.lang.RuntimeException: makeEvaluator shutdown
-	at org.erights.e.meta.java.lang.ThrowableGuardSugar.subCoerceR(ThrowableGuardSugar.java:60)
-	at org.erights.e.elib.base.ClassDesc.tryCoerceR(ClassDesc.java:350)
-	at org.erights.e.elib.slot.BaseAuditor.coerce(BaseAuditor.java:59)
-	at org.erights.e.elib.prim.E.as(E.java:530)
-	at org.erights.e.elib.prim.JavaMemberNode.coerceArgs(JavaMemberNode.java:143)
-	at org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:188)
-	at org.erights.e.elib.prim.Selector.callIt(Selector.java:84)
-	at org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:132)
-	at org.erights.e.elang.evm.EMethod.execute(EMethod.java:175)
-	at org.erights.e.elang.evm.EMethodNode.execute(EMethodNode.java:136)
-	at org.erights.e.elib.prim.E.callAll(E.java:167)
-	at org.erights.e.elib.vat.PendingDelivery.innerRun(PendingDelivery.java:102)
-	at org.erights.e.elib.vat.PendingEvent.run(PendingEvent.java:76)
-	at org.erights.e.elib.vat.HeadlessRunner.run(HeadlessRunner.java:176)
-	at java.lang.Thread.run(Thread.java:595)
-
---^^^^--
-
-=== 2006-11-06T07:58:32.681Z (RecvThread.callDataPath:RecvThread.java:156) ERR
-comm: Error while calling net.vattp.data.DataCommThunk@1f7b816 Type=8
---vvvv--
-makeEvaluator shutdown
-
-
-java.lang.RuntimeException: makeEvaluator shutdown
-	at org.erights.e.meta.java.lang.ThrowableGuardSugar.subCoerceR(ThrowableGuardSugar.java:60)
-	at org.erights.e.elib.base.ClassDesc.tryCoerceR(ClassDesc.java:350)
-	at org.erights.e.elib.slot.BaseAuditor.coerce(BaseAuditor.java:59)
-	at org.erights.e.elib.prim.E.as(E.java:530)
-	at org.erights.e.elib.prim.JavaMemberNode.coerceArgs(JavaMemberNode.java:143)
-	at org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:188)
-	at org.erights.e.elib.prim.Selector.callIt(Selector.java:84)
-	at org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:132)
-	at org.erights.e.elang.evm.EMethod.execute(EMethod.java:175)
-	at org.erights.e.elang.evm.EMethodNode.execute(EMethodNode.java:136)
-	at org.erights.e.elib.prim.E.callAll(E.java:167)
-	at org.erights.e.elib.vat.PendingDelivery.innerRun(PendingDelivery.java:102)
-	at org.erights.e.elib.vat.PendingEvent.run(PendingEvent.java:76)
-	at org.erights.e.elib.vat.HeadlessRunner.run(HeadlessRunner.java:176)
-	at java.lang.Thread.run(Thread.java:595)
-
---^^^^--
-
-=== 2006-11-06T07:58:32.681Z (RecvThread.callDataPath:RecvThread.java:156) ERR
-comm: Error while calling net.vattp.data.DataCommThunk@56d871 Type=4
---vvvv--
-makeEvaluator shutdown
-
-
-java.lang.RuntimeException: makeEvaluator shutdown
-	at org.erights.e.meta.java.lang.ThrowableGuardSugar.subCoerceR(ThrowableGuardSugar.java:60)
-	at org.erights.e.elib.base.ClassDesc.tryCoerceR(ClassDesc.java:350)
-	at org.erights.e.elib.slot.BaseAuditor.coerce(BaseAuditor.java:59)
-	at org.erights.e.elib.prim.E.as(E.java:530)
-	at org.erights.e.elib.prim.JavaMemberNode.coerceArgs(JavaMemberNode.java:143)
-	at org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:188)
-	at org.erights.e.elib.prim.Selector.callIt(Selector.java:84)
-	at org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:132)
-	at org.erights.e.elang.evm.EMethod.execute(EMethod.java:175)
-	at org.erights.e.elang.evm.EMethodNode.execute(EMethodNode.java:136)
-	at org.erights.e.elib.prim.E.callAll(E.java:167)
-	at org.erights.e.elib.vat.PendingDelivery.innerRun(PendingDelivery.java:102)
-	at org.erights.e.elib.vat.PendingEvent.run(PendingEvent.java:76)
-	at org.erights.e.elib.vat.HeadlessRunner.run(HeadlessRunner.java:176)
-	at java.lang.Thread.run(Thread.java:595)
-
---^^^^--
-
-=== 2006-11-06T08:28:32.680Z (RecvThread.callDataPath:RecvThread.java:156) ERR
-comm: Error while calling net.vattp.data.DataCommThunk@2ba9bf Type=8
---vvvv--
-makeEvaluator shutdown
-
-
-java.lang.RuntimeException: makeEvaluator shutdown
-	at org.erights.e.meta.java.lang.ThrowableGuardSugar.subCoerceR(ThrowableGuardSugar.java:60)
-	at org.erights.e.elib.base.ClassDesc.tryCoerceR(ClassDesc.java:350)
-	at org.erights.e.elib.slot.BaseAuditor.coerce(BaseAuditor.java:59)
-	at org.erights.e.elib.prim.E.as(E.java:530)
-	at org.erights.e.elib.prim.JavaMemberNode.coerceArgs(JavaMemberNode.java:143)
-	at org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:188)
-	at org.erights.e.elib.prim.Selector.callIt(Selector.java:84)
-	at org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:132)
-	at org.erights.e.elang.evm.EMethod.execute(EMethod.java:175)
-	at org.erights.e.elang.evm.EMethodNode.execute(EMethodNode.java:136)
-	at org.erights.e.elib.prim.E.callAll(E.java:167)
-	at org.erights.e.elib.vat.PendingDelivery.innerRun(PendingDelivery.java:102)
-	at org.erights.e.elib.vat.PendingEvent.run(PendingEvent.java:76)
-	at org.erights.e.elib.vat.HeadlessRunner.run(HeadlessRunner.java:176)
-	at java.lang.Thread.run(Thread.java:595)
-
---^^^^--
-
-=== 2006-11-06T08:28:32.680Z (RecvThread.callDataPath:RecvThread.java:156) ERR
-comm: Error while calling net.vattp.data.DataCommThunk@955661 Type=4
---vvvv--
-makeEvaluator shutdown
-
-
-java.lang.RuntimeException: makeEvaluator shutdown
-	at org.erights.e.meta.java.lang.ThrowableGuardSugar.subCoerceR(ThrowableGuardSugar.java:60)
-	at org.erights.e.elib.base.ClassDesc.tryCoerceR(ClassDesc.java:350)
-	at org.erights.e.elib.slot.BaseAuditor.coerce(BaseAuditor.java:59)
-	at org.erights.e.elib.prim.E.as(E.java:530)
-	at org.erights.e.elib.prim.JavaMemberNode.coerceArgs(JavaMemberNode.java:143)
-	at org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:188)
-	at org.erights.e.elib.prim.Selector.callIt(Selector.java:84)
-	at org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:132)
-	at org.erights.e.elang.evm.EMethod.execute(EMethod.java:175)
-	at org.erights.e.elang.evm.EMethodNode.execute(EMethodNode.java:136)
-	at org.erights.e.elib.prim.E.callAll(E.java:167)
-	at org.erights.e.elib.vat.PendingDelivery.innerRun(PendingDelivery.java:102)
-	at org.erights.e.elib.vat.PendingEvent.run(PendingEvent.java:76)
-	at org.erights.e.elib.vat.HeadlessRunner.run(HeadlessRunner.java:176)
-	at java.lang.Thread.run(Thread.java:595)
-
---^^^^--
-
-=== 2006-11-06T08:58:32.678Z (RecvThread.callDataPath:RecvThread.java:156) ERR
-comm: Error while calling net.vattp.data.DataCommThunk@1d8809c Type=8
---vvvv--
-makeEvaluator shutdown
-
-
-java.lang.RuntimeException: makeEvaluator shutdown
-	at org.erights.e.meta.java.lang.ThrowableGuardSugar.subCoerceR(ThrowableGuardSugar.java:60)
-	at org.erights.e.elib.base.ClassDesc.tryCoerceR(ClassDesc.java:350)
-	at org.erights.e.elib.slot.BaseAuditor.coerce(BaseAuditor.java:59)
-	at org.erights.e.elib.prim.E.as(E.java:530)
-	at org.erights.e.elib.prim.JavaMemberNode.coerceArgs(JavaMemberNode.java:143)
-	at org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:188)
-	at org.erights.e.elib.prim.Selector.callIt(Selector.java:84)
-	at org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:132)
-	at org.erights.e.elang.evm.EMethod.execute(EMethod.java:175)
-	at org.erights.e.elang.evm.EMethodNode.execute(EMethodNode.java:136)
-	at org.erights.e.elib.prim.E.callAll(E.java:167)
-	at org.erights.e.elib.vat.PendingDelivery.innerRun(PendingDelivery.java:102)
-	at org.erights.e.elib.vat.PendingEvent.run(PendingEvent.java:76)
-	at org.erights.e.elib.vat.HeadlessRunner.run(HeadlessRunner.java:176)
-	at java.lang.Thread.run(Thread.java:595)
-
---^^^^--
-
-=== 2006-11-06T08:58:32.678Z (RecvThread.callDataPath:RecvThread.java:156) ERR
-comm: Error while calling net.vattp.data.DataCommThunk@e386d0 Type=4
---vvvv--
-makeEvaluator shutdown
-
-
-java.lang.RuntimeException: makeEvaluator shutdown
-	at org.erights.e.meta.java.lang.ThrowableGuardSugar.subCoerceR(ThrowableGuardSugar.java:60)
-	at org.erights.e.elib.base.ClassDesc.tryCoerceR(ClassDesc.java:350)
-	at org.erights.e.elib.slot.BaseAuditor.coerce(BaseAuditor.java:59)
-	at org.erights.e.elib.prim.E.as(E.java:530)
-	at org.erights.e.elib.prim.JavaMemberNode.coerceArgs(JavaMemberNode.java:143)
-	at org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:188)
-	at org.erights.e.elib.prim.Selector.callIt(Selector.java:84)
-	at org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:132)
-	at org.erights.e.elang.evm.EMethod.execute(EMethod.java:175)
-	at org.erights.e.elang.evm.EMethodNode.execute(EMethodNode.java:136)
-	at org.erights.e.elib.prim.E.callAll(E.java:167)
-	at org.erights.e.elib.vat.PendingDelivery.innerRun(PendingDelivery.java:102)
-	at org.erights.e.elib.vat.PendingEvent.run(PendingEvent.java:76)
-	at org.erights.e.elib.vat.HeadlessRunner.run(HeadlessRunner.java:176)
-	at java.lang.Thread.run(Thread.java:595)
-
---^^^^--
-
-=== 2006-11-06T09:28:32.676Z (RecvThread.callDataPath:RecvThread.java:156) ERR
-comm: Error while calling net.vattp.data.DataCommThunk@146d62d Type=8
---vvvv--
-makeEvaluator shutdown
-
-
-java.lang.RuntimeException: makeEvaluator shutdown
-	at org.erights.e.meta.java.lang.ThrowableGuardSugar.subCoerceR(ThrowableGuardSugar.java:60)
-	at org.erights.e.elib.base.ClassDesc.tryCoerceR(ClassDesc.java:350)
-	at org.erights.e.elib.slot.BaseAuditor.coerce(BaseAuditor.java:59)
-	at org.erights.e.elib.prim.E.as(E.java:530)
-	at org.erights.e.elib.prim.JavaMemberNode.coerceArgs(JavaMemberNode.java:143)
-	at org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:188)
-	at org.erights.e.elib.prim.Selector.callIt(Selector.java:84)
-	at org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:132)
-	at org.erights.e.elang.evm.EMethod.execute(EMethod.java:175)
-	at org.erights.e.elang.evm.EMethodNode.execute(EMethodNode.java:136)
-	at org.erights.e.elib.prim.E.callAll(E.java:167)
-	at org.erights.e.elib.vat.PendingDelivery.innerRun(PendingDelivery.java:102)
-	at org.erights.e.elib.vat.PendingEvent.run(PendingEvent.java:76)
-	at org.erights.e.elib.vat.HeadlessRunner.run(HeadlessRunner.java:176)
-	at java.lang.Thread.run(Thread.java:595)
-
---^^^^--
-
-=== 2006-11-06T09:28:32.676Z (RecvThread.callDataPath:RecvThread.java:156) ERR
-comm: Error while calling net.vattp.data.DataCommThunk@19744cf Type=4
---vvvv--
-makeEvaluator shutdown
-
-
-java.lang.RuntimeException: makeEvaluator shutdown
-	at org.erights.e.meta.java.lang.ThrowableGuardSugar.subCoerceR(ThrowableGuardSugar.java:60)
-	at org.erights.e.elib.base.ClassDesc.tryCoerceR(ClassDesc.java:350)
-	at org.erights.e.elib.slot.BaseAuditor.coerce(BaseAuditor.java:59)
-	at org.erights.e.elib.prim.E.as(E.java:530)
-	at org.erights.e.elib.prim.JavaMemberNode.coerceArgs(JavaMemberNode.java:143)
-	at org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:188)
-	at org.erights.e.elib.prim.Selector.callIt(Selector.java:84)
-	at org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:132)
-	at org.erights.e.elang.evm.EMethod.execute(EMethod.java:175)
-	at org.erights.e.elang.evm.EMethodNode.execute(EMethodNode.java:136)
-	at org.erights.e.elib.prim.E.callAll(E.java:167)
-	at org.erights.e.elib.vat.PendingDelivery.innerRun(PendingDelivery.java:102)
-	at org.erights.e.elib.vat.PendingEvent.run(PendingEvent.java:76)
-	at org.erights.e.elib.vat.HeadlessRunner.run(HeadlessRunner.java:176)
-	at java.lang.Thread.run(Thread.java:595)
-
---^^^^--
-
-=== 2006-11-06T09:58:32.675Z (RecvThread.callDataPath:RecvThread.java:156) ERR
-comm: Error while calling net.vattp.data.DataCommThunk@1bfdaed Type=8
---vvvv--
-makeEvaluator shutdown
-
-
-java.lang.RuntimeException: makeEvaluator shutdown
-	at org.erights.e.meta.java.lang.ThrowableGuardSugar.subCoerceR(ThrowableGuardSugar.java:60)
-	at org.erights.e.elib.base.ClassDesc.tryCoerceR(ClassDesc.java:350)
-	at org.erights.e.elib.slot.BaseAuditor.coerce(BaseAuditor.java:59)
-	at org.erights.e.elib.prim.E.as(E.java:530)
-	at org.erights.e.elib.prim.JavaMemberNode.coerceArgs(JavaMemberNode.java:143)
-	at org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:188)
-	at org.erights.e.elib.prim.Selector.callIt(Selector.java:84)
-	at org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:132)
-	at org.erights.e.elang.evm.EMethod.execute(EMethod.java:175)
-	at org.erights.e.elang.evm.EMethodNode.execute(EMethodNode.java:136)
-	at org.erights.e.elib.prim.E.callAll(E.java:167)
-	at org.erights.e.elib.vat.PendingDelivery.innerRun(PendingDelivery.java:102)
-	at org.erights.e.elib.vat.PendingEvent.run(PendingEvent.java:76)
-	at org.erights.e.elib.vat.HeadlessRunner.run(HeadlessRunner.java:176)
-	at java.lang.Thread.run(Thread.java:595)
-
---^^^^--
-
-=== 2006-11-06T09:58:32.675Z (RecvThread.callDataPath:RecvThread.java:156) ERR
-comm: Error while calling net.vattp.data.DataCommThunk@be1618 Type=4
---vvvv--
-makeEvaluator shutdown
-
-
-java.lang.RuntimeException: makeEvaluator shutdown
-	at org.erights.e.meta.java.lang.ThrowableGuardSugar.subCoerceR(ThrowableGuardSugar.java:60)
-	at org.erights.e.elib.base.ClassDesc.tryCoerceR(ClassDesc.java:350)
-	at org.erights.e.elib.slot.BaseAuditor.coerce(BaseAuditor.java:59)
-	at org.erights.e.elib.prim.E.as(E.java:530)
-	at org.erights.e.elib.prim.JavaMemberNode.coerceArgs(JavaMemberNode.java:143)
-	at org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:188)
-	at org.erights.e.elib.prim.Selector.callIt(Selector.java:84)
-	at org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:132)
-	at org.erights.e.elang.evm.EMethod.execute(EMethod.java:175)
-	at org.erights.e.elang.evm.EMethodNode.execute(EMethodNode.java:136)
-	at org.erights.e.elib.prim.E.callAll(E.java:167)
-	at org.erights.e.elib.vat.PendingDelivery.innerRun(PendingDelivery.java:102)
-	at org.erights.e.elib.vat.PendingEvent.run(PendingEvent.java:76)
-	at org.erights.e.elib.vat.HeadlessRunner.run(HeadlessRunner.java:176)
-	at java.lang.Thread.run(Thread.java:595)
-
---^^^^--
-
-=== 2006-11-06T10:28:32.683Z (RecvThread.callDataPath:RecvThread.java:156) ERR
-comm: Error while calling net.vattp.data.DataCommThunk@d6fa93 Type=8
---vvvv--
-makeEvaluator shutdown
-
-
-java.lang.RuntimeException: makeEvaluator shutdown
-	at org.erights.e.meta.java.lang.ThrowableGuardSugar.subCoerceR(ThrowableGuardSugar.java:60)
-	at org.erights.e.elib.base.ClassDesc.tryCoerceR(ClassDesc.java:350)
-	at org.erights.e.elib.slot.BaseAuditor.coerce(BaseAuditor.java:59)
-	at org.erights.e.elib.prim.E.as(E.java:530)
-	at org.erights.e.elib.prim.JavaMemberNode.coerceArgs(JavaMemberNode.java:143)
-	at org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:188)
-	at org.erights.e.elib.prim.Selector.callIt(Selector.java:84)
-	at org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:132)
-	at org.erights.e.elang.evm.EMethod.execute(EMethod.java:175)
-	at org.erights.e.elang.evm.EMethodNode.execute(EMethodNode.java:136)
-	at org.erights.e.elib.prim.E.callAll(E.java:167)
-	at org.erights.e.elib.vat.PendingDelivery.innerRun(PendingDelivery.java:102)
-	at org.erights.e.elib.vat.PendingEvent.run(PendingEvent.java:76)
-	at org.erights.e.elib.vat.HeadlessRunner.run(HeadlessRunner.java:176)
-	at java.lang.Thread.run(Thread.java:595)
-
---^^^^--
-
-=== 2006-11-06T10:28:32.683Z (RecvThread.callDataPath:RecvThread.java:156) ERR
-comm: Error while calling net.vattp.data.DataCommThunk@1dcd5a2 Type=4
---vvvv--
-makeEvaluator shutdown
-
-
-java.lang.RuntimeException: makeEvaluator shutdown
-	at org.erights.e.meta.java.lang.ThrowableGuardSugar.subCoerceR(ThrowableGuardSugar.java:60)
-	at org.erights.e.elib.base.ClassDesc.tryCoerceR(ClassDesc.java:350)
-	at org.erights.e.elib.slot.BaseAuditor.coerce(BaseAuditor.java:59)
-	at org.erights.e.elib.prim.E.as(E.java:530)
-	at org.erights.e.elib.prim.JavaMemberNode.coerceArgs(JavaMemberNode.java:143)
-	at org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:188)
-	at org.erights.e.elib.prim.Selector.callIt(Selector.java:84)
-	at org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:132)
-	at org.erights.e.elang.evm.EMethod.execute(EMethod.java:175)
-	at org.erights.e.elang.evm.EMethodNode.execute(EMethodNode.java:136)
-	at org.erights.e.elib.prim.E.callAll(E.java:167)
-	at org.erights.e.elib.vat.PendingDelivery.innerRun(PendingDelivery.java:102)
-	at org.erights.e.elib.vat.PendingEvent.run(PendingEvent.java:76)
-	at org.erights.e.elib.vat.HeadlessRunner.run(HeadlessRunner.java:176)
-	at java.lang.Thread.run(Thread.java:595)
-
---^^^^--
-
-=== 2006-11-06T10:58:32.681Z (RecvThread.callDataPath:RecvThread.java:156) ERR
-comm: Error while calling net.vattp.data.DataCommThunk@6d1583 Type=8
---vvvv--
-makeEvaluator shutdown
-
-
-java.lang.RuntimeException: makeEvaluator shutdown
-	at org.erights.e.meta.java.lang.ThrowableGuardSugar.subCoerceR(ThrowableGuardSugar.java:60)
-	at org.erights.e.elib.base.ClassDesc.tryCoerceR(ClassDesc.java:350)
-	at org.erights.e.elib.slot.BaseAuditor.coerce(BaseAuditor.java:59)
-	at org.erights.e.elib.prim.E.as(E.java:530)
-	at org.erights.e.elib.prim.JavaMemberNode.coerceArgs(JavaMemberNode.java:143)
-	at org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:188)
-	at org.erights.e.elib.prim.Selector.callIt(Selector.java:84)
-	at org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:132)
-	at org.erights.e.elang.evm.EMethod.execute(EMethod.java:175)
-	at org.erights.e.elang.evm.EMethodNode.execute(EMethodNode.java:136)
-	at org.erights.e.elib.prim.E.callAll(E.java:167)
-	at org.erights.e.elib.vat.PendingDelivery.innerRun(PendingDelivery.java:102)
-	at org.erights.e.elib.vat.PendingEvent.run(PendingEvent.java:76)
-	at org.erights.e.elib.vat.HeadlessRunner.run(HeadlessRunner.java:176)
-	at java.lang.Thread.run(Thread.java:595)
-
---^^^^--
-
-=== 2006-11-06T10:58:32.681Z (RecvThread.callDataPath:RecvThread.java:156) ERR
-comm: Error while calling net.vattp.data.DataCommThunk@19f6031 Type=4
---vvvv--
-makeEvaluator shutdown
-
-
-java.lang.RuntimeException: makeEvaluator shutdown
-	at org.erights.e.meta.java.lang.ThrowableGuardSugar.subCoerceR(ThrowableGuardSugar.java:60)
-	at org.erights.e.elib.base.ClassDesc.tryCoerceR(ClassDesc.java:350)
-	at org.erights.e.elib.slot.BaseAuditor.coerce(BaseAuditor.java:59)
-	at org.erights.e.elib.prim.E.as(E.java:530)
-	at org.erights.e.elib.prim.JavaMemberNode.coerceArgs(JavaMemberNode.java:143)
-	at org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:188)
-	at org.erights.e.elib.prim.Selector.callIt(Selector.java:84)
-	at org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:132)
-	at org.erights.e.elang.evm.EMethod.execute(EMethod.java:175)
-	at org.erights.e.elang.evm.EMethodNode.execute(EMethodNode.java:136)
-	at org.erights.e.elib.prim.E.callAll(E.java:167)
-	at org.erights.e.elib.vat.PendingDelivery.innerRun(PendingDelivery.java:102)
-	at org.erights.e.elib.vat.PendingEvent.run(PendingEvent.java:76)
-	at org.erights.e.elib.vat.HeadlessRunner.run(HeadlessRunner.java:176)
-	at java.lang.Thread.run(Thread.java:595)
-
---^^^^--
-
-=== 2006-11-06T11:28:32.679Z (RecvThread.callDataPath:RecvThread.java:156) ERR
-comm: Error while calling net.vattp.data.DataCommThunk@1bf5abf Type=8
---vvvv--
-makeEvaluator shutdown
-
-
-java.lang.RuntimeException: makeEvaluator shutdown
-	at org.erights.e.meta.java.lang.ThrowableGuardSugar.subCoerceR(ThrowableGuardSugar.java:60)
-	at org.erights.e.elib.base.ClassDesc.tryCoerceR(ClassDesc.java:350)
-	at org.erights.e.elib.slot.BaseAuditor.coerce(BaseAuditor.java:59)
-	at org.erights.e.elib.prim.E.as(E.java:530)
-	at org.erights.e.elib.prim.JavaMemberNode.coerceArgs(JavaMemberNode.java:143)
-	at org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:188)
-	at org.erights.e.elib.prim.Selector.callIt(Selector.java:84)
-	at org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:132)
-	at org.erights.e.elang.evm.EMethod.execute(EMethod.java:175)
-	at org.erights.e.elang.evm.EMethodNode.execute(EMethodNode.java:136)
-	at org.erights.e.elib.prim.E.callAll(E.java:167)
-	at org.erights.e.elib.vat.PendingDelivery.innerRun(PendingDelivery.java:102)
-	at org.erights.e.elib.vat.PendingEvent.run(PendingEvent.java:76)
-	at org.erights.e.elib.vat.HeadlessRunner.run(HeadlessRunner.java:176)
-	at java.lang.Thread.run(Thread.java:595)
-
---^^^^--
-
-=== 2006-11-06T11:28:32.679Z (RecvThread.callDataPath:RecvThread.java:156) ERR
-comm: Error while calling net.vattp.data.DataCommThunk@1dee5c8 Type=4
---vvvv--
-makeEvaluator shutdown
-
-
-java.lang.RuntimeException: makeEvaluator shutdown
-	at org.erights.e.meta.java.lang.ThrowableGuardSugar.subCoerceR(ThrowableGuardSugar.java:60)
-	at org.erights.e.elib.base.ClassDesc.tryCoerceR(ClassDesc.java:350)
-	at org.erights.e.elib.slot.BaseAuditor.coerce(BaseAuditor.java:59)
-	at org.erights.e.elib.prim.E.as(E.java:530)
-	at org.erights.e.elib.prim.JavaMemberNode.coerceArgs(JavaMemberNode.java:143)
-	at org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:188)
-	at org.erights.e.elib.prim.Selector.callIt(Selector.java:84)
-	at org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:132)
-	at org.erights.e.elang.evm.EMethod.execute(EMethod.java:175)
-	at org.erights.e.elang.evm.EMethodNode.execute(EMethodNode.java:136)
-	at org.erights.e.elib.prim.E.callAll(E.java:167)
-	at org.erights.e.elib.vat.PendingDelivery.innerRun(PendingDelivery.java:102)
-	at org.erights.e.elib.vat.PendingEvent.run(PendingEvent.java:76)
-	at org.erights.e.elib.vat.HeadlessRunner.run(HeadlessRunner.java:176)
-	at java.lang.Thread.run(Thread.java:595)
-
---^^^^--
-
-=== 2006-11-06T11:58:32.678Z (RecvThread.callDataPath:RecvThread.java:156) ERR
-comm: Error while calling net.vattp.data.DataCommThunk@c6bfe8 Type=8
---vvvv--
-makeEvaluator shutdown
-
-
-java.lang.RuntimeException: makeEvaluator shutdown
-	at org.erights.e.meta.java.lang.ThrowableGuardSugar.subCoerceR(ThrowableGuardSugar.java:60)
-	at org.erights.e.elib.base.ClassDesc.tryCoerceR(ClassDesc.java:350)
-	at org.erights.e.elib.slot.BaseAuditor.coerce(BaseAuditor.java:59)
-	at org.erights.e.elib.prim.E.as(E.java:530)
-	at org.erights.e.elib.prim.JavaMemberNode.coerceArgs(JavaMemberNode.java:143)
-	at org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:188)
-	at org.erights.e.elib.prim.Selector.callIt(Selector.java:84)
-	at org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:132)
-	at org.erights.e.elang.evm.EMethod.execute(EMethod.java:175)
-	at org.erights.e.elang.evm.EMethodNode.execute(EMethodNode.java:136)
-	at org.erights.e.elib.prim.E.callAll(E.java:167)
-	at org.erights.e.elib.vat.PendingDelivery.innerRun(PendingDelivery.java:102)
-	at org.erights.e.elib.vat.PendingEvent.run(PendingEvent.java:76)
-	at org.erights.e.elib.vat.HeadlessRunner.run(HeadlessRunner.java:176)
-	at java.lang.Thread.run(Thread.java:595)
-
---^^^^--
-
-=== 2006-11-06T11:58:32.678Z (RecvThread.callDataPath:RecvThread.java:156) ERR
-comm: Error while calling net.vattp.data.DataCommThunk@612927 Type=4
---vvvv--
-makeEvaluator shutdown
-
-
-java.lang.RuntimeException: makeEvaluator shutdown
-	at org.erights.e.meta.java.lang.ThrowableGuardSugar.subCoerceR(ThrowableGuardSugar.java:60)
-	at org.erights.e.elib.base.ClassDesc.tryCoerceR(ClassDesc.java:350)
-	at org.erights.e.elib.slot.BaseAuditor.coerce(BaseAuditor.java:59)
-	at org.erights.e.elib.prim.E.as(E.java:530)
-	at org.erights.e.elib.prim.JavaMemberNode.coerceArgs(JavaMemberNode.java:143)
-	at org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:188)
-	at org.erights.e.elib.prim.Selector.callIt(Selector.java:84)
-	at org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:132)
-	at org.erights.e.elang.evm.EMethod.execute(EMethod.java:175)
-	at org.erights.e.elang.evm.EMethodNode.execute(EMethodNode.java:136)
-	at org.erights.e.elib.prim.E.callAll(E.java:167)
-	at org.erights.e.elib.vat.PendingDelivery.innerRun(PendingDelivery.java:102)
-	at org.erights.e.elib.vat.PendingEvent.run(PendingEvent.java:76)
-	at org.erights.e.elib.vat.HeadlessRunner.run(HeadlessRunner.java:176)
-	at java.lang.Thread.run(Thread.java:595)
-
---^^^^--
-
-=== 2006-11-06T12:28:32.676Z (RecvThread.callDataPath:RecvThread.java:156) ERR
-comm: Error while calling net.vattp.data.DataCommThunk@5e172c Type=8
---vvvv--
-makeEvaluator shutdown
-
-
-java.lang.RuntimeException: makeEvaluator shutdown
-	at org.erights.e.meta.java.lang.ThrowableGuardSugar.subCoerceR(ThrowableGuardSugar.java:60)
-	at org.erights.e.elib.base.ClassDesc.tryCoerceR(ClassDesc.java:350)
-	at org.erights.e.elib.slot.BaseAuditor.coerce(BaseAuditor.java:59)
-	at org.erights.e.elib.prim.E.as(E.java:530)
-	at org.erights.e.elib.prim.JavaMemberNode.coerceArgs(JavaMemberNode.java:143)
-	at org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:188)
-	at org.erights.e.elib.prim.Selector.callIt(Selector.java:84)
-	at org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:132)
-	at org.erights.e.elang.evm.EMethod.execute(EMethod.java:175)
-	at org.erights.e.elang.evm.EMethodNode.execute(EMethodNode.java:136)
-	at org.erights.e.elib.prim.E.callAll(E.java:167)
-	at org.erights.e.elib.vat.PendingDelivery.innerRun(PendingDelivery.java:102)
-	at org.erights.e.elib.vat.PendingEvent.run(PendingEvent.java:76)
-	at org.erights.e.elib.vat.HeadlessRunner.run(HeadlessRunner.java:176)
-	at java.lang.Thread.run(Thread.java:595)
-
---^^^^--
-
-=== 2006-11-06T12:28:32.676Z (RecvThread.callDataPath:RecvThread.java:156) ERR
-comm: Error while calling net.vattp.data.DataCommThunk@1435d61 Type=4
---vvvv--
-makeEvaluator shutdown
-
-
-java.lang.RuntimeException: makeEvaluator shutdown
-	at org.erights.e.meta.java.lang.ThrowableGuardSugar.subCoerceR(ThrowableGuardSugar.java:60)
-	at org.erights.e.elib.base.ClassDesc.tryCoerceR(ClassDesc.java:350)
-	at org.erights.e.elib.slot.BaseAuditor.coerce(BaseAuditor.java:59)
-	at org.erights.e.elib.prim.E.as(E.java:530)
-	at org.erights.e.elib.prim.JavaMemberNode.coerceArgs(JavaMemberNode.java:143)
-	at org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:188)
-	at org.erights.e.elib.prim.Selector.callIt(Selector.java:84)
-	at org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:132)
-	at org.erights.e.elang.evm.EMethod.execute(EMethod.java:175)
-	at org.erights.e.elang.evm.EMethodNode.execute(EMethodNode.java:136)
-	at org.erights.e.elib.prim.E.callAll(E.java:167)
-	at org.erights.e.elib.vat.PendingDelivery.innerRun(PendingDelivery.java:102)
-	at org.erights.e.elib.vat.PendingEvent.run(PendingEvent.java:76)
-	at org.erights.e.elib.vat.HeadlessRunner.run(HeadlessRunner.java:176)
-	at java.lang.Thread.run(Thread.java:595)
-
---^^^^--
-
-=== 2006-11-06T12:58:32.684Z (RecvThread.callDataPath:RecvThread.java:156) ERR
-comm: Error while calling net.vattp.data.DataCommThunk@f88131 Type=8
---vvvv--
-makeEvaluator shutdown
-
-
-java.lang.RuntimeException: makeEvaluator shutdown
-	at org.erights.e.meta.java.lang.ThrowableGuardSugar.subCoerceR(ThrowableGuardSugar.java:60)
-	at org.erights.e.elib.base.ClassDesc.tryCoerceR(ClassDesc.java:350)
-	at org.erights.e.elib.slot.BaseAuditor.coerce(BaseAuditor.java:59)
-	at org.erights.e.elib.prim.E.as(E.java:530)
-	at org.erights.e.elib.prim.JavaMemberNode.coerceArgs(JavaMemberNode.java:143)
-	at org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:188)
-	at org.erights.e.elib.prim.Selector.callIt(Selector.java:84)
-	at org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:132)
-	at org.erights.e.elang.evm.EMethod.execute(EMethod.java:175)
-	at org.erights.e.elang.evm.EMethodNode.execute(EMethodNode.java:136)
-	at org.erights.e.elib.prim.E.callAll(E.java:167)
-	at org.erights.e.elib.vat.PendingDelivery.innerRun(PendingDelivery.java:102)
-	at org.erights.e.elib.vat.PendingEvent.run(PendingEvent.java:76)
-	at org.erights.e.elib.vat.HeadlessRunner.run(HeadlessRunner.java:176)
-	at java.lang.Thread.run(Thread.java:595)
-
---^^^^--
-
-=== 2006-11-06T12:58:32.684Z (RecvThread.callDataPath:RecvThread.java:156) ERR
-comm: Error while calling net.vattp.data.DataCommThunk@e9f0e1 Type=4
---vvvv--
-makeEvaluator shutdown
-
-
-java.lang.RuntimeException: makeEvaluator shutdown
-	at org.erights.e.meta.java.lang.ThrowableGuardSugar.subCoerceR(ThrowableGuardSugar.java:60)
-	at org.erights.e.elib.base.ClassDesc.tryCoerceR(ClassDesc.java:350)
-	at org.erights.e.elib.slot.BaseAuditor.coerce(BaseAuditor.java:59)
-	at org.erights.e.elib.prim.E.as(E.java:530)
-	at org.erights.e.elib.prim.JavaMemberNode.coerceArgs(JavaMemberNode.java:143)
-	at org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:188)
-	at org.erights.e.elib.prim.Selector.callIt(Selector.java:84)
-	at org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:132)
-	at org.erights.e.elang.evm.EMethod.execute(EMethod.java:175)
-	at org.erights.e.elang.evm.EMethodNode.execute(EMethodNode.java:136)
-	at org.erights.e.elib.prim.E.callAll(E.java:167)
-	at org.erights.e.elib.vat.PendingDelivery.innerRun(PendingDelivery.java:102)
-	at org.erights.e.elib.vat.PendingEvent.run(PendingEvent.java:76)
-	at org.erights.e.elib.vat.HeadlessRunner.run(HeadlessRunner.java:176)
-	at java.lang.Thread.run(Thread.java:595)
-
---^^^^--
-
-=== 2006-11-06T13:28:32.682Z (RecvThread.callDataPath:RecvThread.java:156) ERR
-comm: Error while calling net.vattp.data.DataCommThunk@bb1c2a Type=8
---vvvv--
-makeEvaluator shutdown
-
-
-java.lang.RuntimeException: makeEvaluator shutdown
-	at org.erights.e.meta.java.lang.ThrowableGuardSugar.subCoerceR(ThrowableGuardSugar.java:60)
-	at org.erights.e.elib.base.ClassDesc.tryCoerceR(ClassDesc.java:350)
-	at org.erights.e.elib.slot.BaseAuditor.coerce(BaseAuditor.java:59)
-	at org.erights.e.elib.prim.E.as(E.java:530)
-	at org.erights.e.elib.prim.JavaMemberNode.coerceArgs(JavaMemberNode.java:143)
-	at org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:188)
-	at org.erights.e.elib.prim.Selector.callIt(Selector.java:84)
-	at org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:132)
-	at org.erights.e.elang.evm.EMethod.execute(EMethod.java:175)
-	at org.erights.e.elang.evm.EMethodNode.execute(EMethodNode.java:136)
-	at org.erights.e.elib.prim.E.callAll(E.java:167)
-	at org.erights.e.elib.vat.PendingDelivery.innerRun(PendingDelivery.java:102)
-	at org.erights.e.elib.vat.PendingEvent.run(PendingEvent.java:76)
-	at org.erights.e.elib.vat.HeadlessRunner.run(HeadlessRunner.java:176)
-	at java.lang.Thread.run(Thread.java:595)
-
---^^^^--
-
-=== 2006-11-06T13:28:32.682Z (RecvThread.callDataPath:RecvThread.java:156) ERR
-comm: Error while calling net.vattp.data.DataCommThunk@362057 Type=4
---vvvv--
-makeEvaluator shutdown
-
-
-java.lang.RuntimeException: makeEvaluator shutdown
-	at org.erights.e.meta.java.lang.ThrowableGuardSugar.subCoerceR(ThrowableGuardSugar.java:60)
-	at org.erights.e.elib.base.ClassDesc.tryCoerceR(ClassDesc.java:350)
-	at org.erights.e.elib.slot.BaseAuditor.coerce(BaseAuditor.java:59)
-	at org.erights.e.elib.prim.E.as(E.java:530)
-	at org.erights.e.elib.prim.JavaMemberNode.coerceArgs(JavaMemberNode.java:143)
-	at org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:188)
-	at org.erights.e.elib.prim.Selector.callIt(Selector.java:84)
-	at org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:132)
-	at org.erights.e.elang.evm.EMethod.execute(EMethod.java:175)
-	at org.erights.e.elang.evm.EMethodNode.execute(EMethodNode.java:136)
-	at org.erights.e.elib.prim.E.callAll(E.java:167)
-	at org.erights.e.elib.vat.PendingDelivery.innerRun(PendingDelivery.java:102)
-	at org.erights.e.elib.vat.PendingEvent.run(PendingEvent.java:76)
-	at org.erights.e.elib.vat.HeadlessRunner.run(HeadlessRunner.java:176)
-	at java.lang.Thread.run(Thread.java:595)
-
---^^^^--
-
-=== 2006-11-06T13:58:32.721Z (RecvThread.callDataPath:RecvThread.java:156) ERR
-comm: Error while calling net.vattp.data.DataCommThunk@176e7f3 Type=8
---vvvv--
-makeEvaluator shutdown
-
-
-java.lang.RuntimeException: makeEvaluator shutdown
-	at org.erights.e.meta.java.lang.ThrowableGuardSugar.subCoerceR(ThrowableGuardSugar.java:60)
-	at org.erights.e.elib.base.ClassDesc.tryCoerceR(ClassDesc.java:350)
-	at org.erights.e.elib.slot.BaseAuditor.coerce(BaseAuditor.java:59)
-	at org.erights.e.elib.prim.E.as(E.java:530)
-	at org.erights.e.elib.prim.JavaMemberNode.coerceArgs(JavaMemberNode.java:143)
-	at org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:188)
-	at org.erights.e.elib.prim.Selector.callIt(Selector.java:84)
-	at org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:132)
-	at org.erights.e.elang.evm.EMethod.execute(EMethod.java:175)
-	at org.erights.e.elang.evm.EMethodNode.execute(EMethodNode.java:136)
-	at org.erights.e.elib.prim.E.callAll(E.java:167)
-	at org.erights.e.elib.vat.PendingDelivery.innerRun(PendingDelivery.java:102)
-	at org.erights.e.elib.vat.PendingEvent.run(PendingEvent.java:76)
-	at org.erights.e.elib.vat.HeadlessRunner.run(HeadlessRunner.java:176)
-	at java.lang.Thread.run(Thread.java:595)
-
---^^^^--
-
-=== 2006-11-06T13:58:32.721Z (RecvThread.callDataPath:RecvThread.java:156) ERR
-comm: Error while calling net.vattp.data.DataCommThunk@1763aaa Type=4
---vvvv--
-makeEvaluator shutdown
-
-
-java.lang.RuntimeException: makeEvaluator shutdown
-	at org.erights.e.meta.java.lang.ThrowableGuardSugar.subCoerceR(ThrowableGuardSugar.java:60)
-	at org.erights.e.elib.base.ClassDesc.tryCoerceR(ClassDesc.java:350)
-	at org.erights.e.elib.slot.BaseAuditor.coerce(BaseAuditor.java:59)
-	at org.erights.e.elib.prim.E.as(E.java:530)
-	at org.erights.e.elib.prim.JavaMemberNode.coerceArgs(JavaMemberNode.java:143)
-	at org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:188)
-	at org.erights.e.elib.prim.Selector.callIt(Selector.java:84)
-	at org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:132)
-	at org.erights.e.elang.evm.EMethod.execute(EMethod.java:175)
-	at org.erights.e.elang.evm.EMethodNode.execute(EMethodNode.java:136)
-	at org.erights.e.elib.prim.E.callAll(E.java:167)
-	at org.erights.e.elib.vat.PendingDelivery.innerRun(PendingDelivery.java:102)
-	at org.erights.e.elib.vat.PendingEvent.run(PendingEvent.java:76)
-	at org.erights.e.elib.vat.HeadlessRunner.run(HeadlessRunner.java:176)
-	at java.lang.Thread.run(Thread.java:595)
-
---^^^^--
-
-=== 2006-11-06T14:28:32.679Z (RecvThread.callDataPath:RecvThread.java:156) ERR
-comm: Error while calling net.vattp.data.DataCommThunk@1552c4b Type=8
---vvvv--
-makeEvaluator shutdown
-
-
-java.lang.RuntimeException: makeEvaluator shutdown
-	at org.erights.e.meta.java.lang.ThrowableGuardSugar.subCoerceR(ThrowableGuardSugar.java:60)
-	at org.erights.e.elib.base.ClassDesc.tryCoerceR(ClassDesc.java:350)
-	at org.erights.e.elib.slot.BaseAuditor.coerce(BaseAuditor.java:59)
-	at org.erights.e.elib.prim.E.as(E.java:530)
-	at org.erights.e.elib.prim.JavaMemberNode.coerceArgs(JavaMemberNode.java:143)
-	at org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:188)
-	at org.erights.e.elib.prim.Selector.callIt(Selector.java:84)
-	at org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:132)
-	at org.erights.e.elang.evm.EMethod.execute(EMethod.java:175)
-	at org.erights.e.elang.evm.EMethodNode.execute(EMethodNode.java:136)
-	at org.erights.e.elib.prim.E.callAll(E.java:167)
-	at org.erights.e.elib.vat.PendingDelivery.innerRun(PendingDelivery.java:102)
-	at org.erights.e.elib.vat.PendingEvent.run(PendingEvent.java:76)
-	at org.erights.e.elib.vat.HeadlessRunner.run(HeadlessRunner.java:176)
-	at java.lang.Thread.run(Thread.java:595)
-
---^^^^--
-
-=== 2006-11-06T14:28:32.679Z (RecvThread.callDataPath:RecvThread.java:156) ERR
-comm: Error while calling net.vattp.data.DataCommThunk@cf0419 Type=4
---vvvv--
-makeEvaluator shutdown
-
-
-java.lang.RuntimeException: makeEvaluator shutdown
-	at org.erights.e.meta.java.lang.ThrowableGuardSugar.subCoerceR(ThrowableGuardSugar.java:60)
-	at org.erights.e.elib.base.ClassDesc.tryCoerceR(ClassDesc.java:350)
-	at org.erights.e.elib.slot.BaseAuditor.coerce(BaseAuditor.java:59)
-	at org.erights.e.elib.prim.E.as(E.java:530)
-	at org.erights.e.elib.prim.JavaMemberNode.coerceArgs(JavaMemberNode.java:143)
-	at org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:188)
-	at org.erights.e.elib.prim.Selector.callIt(Selector.java:84)
-	at org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:132)
-	at org.erights.e.elang.evm.EMethod.execute(EMethod.java:175)
-	at org.erights.e.elang.evm.EMethodNode.execute(EMethodNode.java:136)
-	at org.erights.e.elib.prim.E.callAll(E.java:167)
-	at org.erights.e.elib.vat.PendingDelivery.innerRun(PendingDelivery.java:102)
-	at org.erights.e.elib.vat.PendingEvent.run(PendingEvent.java:76)
-	at org.erights.e.elib.vat.HeadlessRunner.run(HeadlessRunner.java:176)
-	at java.lang.Thread.run(Thread.java:595)
-
---^^^^--
-
-=== 2006-11-06T14:58:32.677Z (RecvThread.callDataPath:RecvThread.java:156) ERR
-comm: Error while calling net.vattp.data.DataCommThunk@1f9f19f Type=8
---vvvv--
-makeEvaluator shutdown
-
-
-java.lang.RuntimeException: makeEvaluator shutdown
-	at org.erights.e.meta.java.lang.ThrowableGuardSugar.subCoerceR(ThrowableGuardSugar.java:60)
-	at org.erights.e.elib.base.ClassDesc.tryCoerceR(ClassDesc.java:350)
-	at org.erights.e.elib.slot.BaseAuditor.coerce(BaseAuditor.java:59)
-	at org.erights.e.elib.prim.E.as(E.java:530)
-	at org.erights.e.elib.prim.JavaMemberNode.coerceArgs(JavaMemberNode.java:143)
-	at org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:188)
-	at org.erights.e.elib.prim.Selector.callIt(Selector.java:84)
-	at org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:132)
-	at org.erights.e.elang.evm.EMethod.execute(EMethod.java:175)
-	at org.erights.e.elang.evm.EMethodNode.execute(EMethodNode.java:136)
-	at org.erights.e.elib.prim.E.callAll(E.java:167)
-	at org.erights.e.elib.vat.PendingDelivery.innerRun(PendingDelivery.java:102)
-	at org.erights.e.elib.vat.PendingEvent.run(PendingEvent.java:76)
-	at org.erights.e.elib.vat.HeadlessRunner.run(HeadlessRunner.java:176)
-	at java.lang.Thread.run(Thread.java:595)
-
---^^^^--
-
-=== 2006-11-06T14:58:32.677Z (RecvThread.callDataPath:RecvThread.java:156) ERR
-comm: Error while calling net.vattp.data.DataCommThunk@660e1f Type=4
---vvvv--
-makeEvaluator shutdown
-
-
-java.lang.RuntimeException: makeEvaluator shutdown
-	at org.erights.e.meta.java.lang.ThrowableGuardSugar.subCoerceR(ThrowableGuardSugar.java:60)
-	at org.erights.e.elib.base.ClassDesc.tryCoerceR(ClassDesc.java:350)
-	at org.erights.e.elib.slot.BaseAuditor.coerce(BaseAuditor.java:59)
-	at org.erights.e.elib.prim.E.as(E.java:530)
-	at org.erights.e.elib.prim.JavaMemberNode.coerceArgs(JavaMemberNode.java:143)
-	at org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:188)
-	at org.erights.e.elib.prim.Selector.callIt(Selector.java:84)
-	at org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:132)
-	at org.erights.e.elang.evm.EMethod.execute(EMethod.java:175)
-	at org.erights.e.elang.evm.EMethodNode.execute(EMethodNode.java:136)
-	at org.erights.e.elib.prim.E.callAll(E.java:167)
-	at org.erights.e.elib.vat.PendingDelivery.innerRun(PendingDelivery.java:102)
-	at org.erights.e.elib.vat.PendingEvent.run(PendingEvent.java:76)
-	at org.erights.e.elib.vat.HeadlessRunner.run(HeadlessRunner.java:176)
-	at java.lang.Thread.run(Thread.java:595)
-
---^^^^--
-
-=== 2006-11-06T15:28:32.676Z (RecvThread.callDataPath:RecvThread.java:156) ERR
-comm: Error while calling net.vattp.data.DataCommThunk@bf542d Type=8
---vvvv--
-makeEvaluator shutdown
-
-
-java.lang.RuntimeException: makeEvaluator shutdown
-	at org.erights.e.meta.java.lang.ThrowableGuardSugar.subCoerceR(ThrowableGuardSugar.java:60)
-	at org.erights.e.elib.base.ClassDesc.tryCoerceR(ClassDesc.java:350)
-	at org.erights.e.elib.slot.BaseAuditor.coerce(BaseAuditor.java:59)
-	at org.erights.e.elib.prim.E.as(E.java:530)
-	at org.erights.e.elib.prim.JavaMemberNode.coerceArgs(JavaMemberNode.java:143)
-	at org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:188)
-	at org.erights.e.elib.prim.Selector.callIt(Selector.java:84)
-	at org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:132)
-	at org.erights.e.elang.evm.EMethod.execute(EMethod.java:175)
-	at org.erights.e.elang.evm.EMethodNode.execute(EMethodNode.java:136)
-	at org.erights.e.elib.prim.E.callAll(E.java:167)
-	at org.erights.e.elib.vat.PendingDelivery.innerRun(PendingDelivery.java:102)
-	at org.erights.e.elib.vat.PendingEvent.run(PendingEvent.java:76)
-	at org.erights.e.elib.vat.HeadlessRunner.run(HeadlessRunner.java:176)
-	at java.lang.Thread.run(Thread.java:595)
-
---^^^^--
-
-=== 2006-11-06T15:28:32.676Z (RecvThread.callDataPath:RecvThread.java:156) ERR
-comm: Error while calling net.vattp.data.DataCommThunk@12f6726 Type=4
---vvvv--
-makeEvaluator shutdown
-
-
-java.lang.RuntimeException: makeEvaluator shutdown
-	at org.erights.e.meta.java.lang.ThrowableGuardSugar.subCoerceR(ThrowableGuardSugar.java:60)
-	at org.erights.e.elib.base.ClassDesc.tryCoerceR(ClassDesc.java:350)
-	at org.erights.e.elib.slot.BaseAuditor.coerce(BaseAuditor.java:59)
-	at org.erights.e.elib.prim.E.as(E.java:530)
-	at org.erights.e.elib.prim.JavaMemberNode.coerceArgs(JavaMemberNode.java:143)
-	at org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:188)
-	at org.erights.e.elib.prim.Selector.callIt(Selector.java:84)
-	at org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:132)
-	at org.erights.e.elang.evm.EMethod.execute(EMethod.java:175)
-	at org.erights.e.elang.evm.EMethodNode.execute(EMethodNode.java:136)
-	at org.erights.e.elib.prim.E.callAll(E.java:167)
-	at org.erights.e.elib.vat.PendingDelivery.innerRun(PendingDelivery.java:102)
-	at org.erights.e.elib.vat.PendingEvent.run(PendingEvent.java:76)
-	at org.erights.e.elib.vat.HeadlessRunner.run(HeadlessRunner.java:176)
-	at java.lang.Thread.run(Thread.java:595)
-
---^^^^--
-
-=== 2006-11-06T15:58:32.684Z (RecvThread.callDataPath:RecvThread.java:156) ERR
-comm: Error while calling net.vattp.data.DataCommThunk@6ba7ea Type=8
---vvvv--
-makeEvaluator shutdown
-
-
-java.lang.RuntimeException: makeEvaluator shutdown
-	at org.erights.e.meta.java.lang.ThrowableGuardSugar.subCoerceR(ThrowableGuardSugar.java:60)
-	at org.erights.e.elib.base.ClassDesc.tryCoerceR(ClassDesc.java:350)
-	at org.erights.e.elib.slot.BaseAuditor.coerce(BaseAuditor.java:59)
-	at org.erights.e.elib.prim.E.as(E.java:530)
-	at org.erights.e.elib.prim.JavaMemberNode.coerceArgs(JavaMemberNode.java:143)
-	at org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:188)
-	at org.erights.e.elib.prim.Selector.callIt(Selector.java:84)
-	at org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:132)
-	at org.erights.e.elang.evm.EMethod.execute(EMethod.java:175)
-	at org.erights.e.elang.evm.EMethodNode.execute(EMethodNode.java:136)
-	at org.erights.e.elib.prim.E.callAll(E.java:167)
-	at org.erights.e.elib.vat.PendingDelivery.innerRun(PendingDelivery.java:102)
-	at org.erights.e.elib.vat.PendingEvent.run(PendingEvent.java:76)
-	at org.erights.e.elib.vat.HeadlessRunner.run(HeadlessRunner.java:176)
-	at java.lang.Thread.run(Thread.java:595)
-
---^^^^--
-
-=== 2006-11-06T15:58:32.684Z (RecvThread.callDataPath:RecvThread.java:156) ERR
-comm: Error while calling net.vattp.data.DataCommThunk@1dd119c Type=4
---vvvv--
-makeEvaluator shutdown
-
-
-java.lang.RuntimeException: makeEvaluator shutdown
-	at org.erights.e.meta.java.lang.ThrowableGuardSugar.subCoerceR(ThrowableGuardSugar.java:60)
-	at org.erights.e.elib.base.ClassDesc.tryCoerceR(ClassDesc.java:350)
-	at org.erights.e.elib.slot.BaseAuditor.coerce(BaseAuditor.java:59)
-	at org.erights.e.elib.prim.E.as(E.java:530)
-	at org.erights.e.elib.prim.JavaMemberNode.coerceArgs(JavaMemberNode.java:143)
-	at org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:188)
-	at org.erights.e.elib.prim.Selector.callIt(Selector.java:84)
-	at org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:132)
-	at org.erights.e.elang.evm.EMethod.execute(EMethod.java:175)
-	at org.erights.e.elang.evm.EMethodNode.execute(EMethodNode.java:136)
-	at org.erights.e.elib.prim.E.callAll(E.java:167)
-	at org.erights.e.elib.vat.PendingDelivery.innerRun(PendingDelivery.java:102)
-	at org.erights.e.elib.vat.PendingEvent.run(PendingEvent.java:76)
-	at org.erights.e.elib.vat.HeadlessRunner.run(HeadlessRunner.java:176)
-	at java.lang.Thread.run(Thread.java:595)
-
---^^^^--
-
-=== 2006-11-06T15:59:26.511Z (Twine.add:Twine.java:354) WRN
+=== 2006-11-07T06:16:22.874Z (Twine.add:Twine.java:354) WRN
 eruntime: Stringifying with '+' : (10)
  @ Twine#add(Object)
  @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::2732:36::2732:36>
-=== 2006-11-06T15:59:26.561Z (Twine.add:Twine.java:354) WRN
+=== 2006-11-07T06:16:22.944Z (Twine.add:Twine.java:354) WRN
 eruntime: Stringifying with '+' : (["R&D" => 10000, "Marketing" => 50000])
  @ Twine#add(Object)
  @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::3074:55::3074:55>
-=== 2006-11-06T15:59:26.611Z (Twine.add:Twine.java:354) WRN
+=== 2006-11-07T06:16:22.994Z (Twine.add:Twine.java:354) WRN
 eruntime: Stringifying with '+' : (11)
  @ Twine#add(Object)
  @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::3268:40::3268:40>
-=== 2006-11-06T15:59:26.691Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
+=== 2006-11-07T06:16:23.084Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
 eruntime: Import org.erights.e.elib.sealing.makeBrand instead : (Importing org.erights.e.elib.sealing.Brand)
  @ Loader#get(String)
  @ get/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:blob::4344:41::4344:64>
-=== 2006-11-06T15:59:26.832Z (Twine.add:Twine.java:354) WRN
+=== 2006-11-07T06:16:23.214Z (Twine.add:Twine.java:354) WRN
 eruntime: Stringifying with '+' : (problem: claim not transferable, invalid attendant)
  @ Twine#add(Object)
  @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::4722:53::4722:53>
-=== 2006-11-06T15:59:26.872Z (Twine.add:Twine.java:354) WRN
+=== 2006-11-07T06:16:23.244Z (Twine.add:Twine.java:354) WRN
 eruntime: Stringifying with '+' : (<doc2>)
  @ Twine#add(Object)
  @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::4855:36::4855:36>
-=== 2006-11-06T15:59:26.872Z (Twine.add:Twine.java:354) WRN
+=== 2006-11-07T06:16:23.244Z (Twine.add:Twine.java:354) WRN
 eruntime: Stringifying with '+' : (<sealed by claim>)
  @ Twine#add(Object)
  @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::4857:35::4857:35>
@@ -3274,8 +2282,8 @@ expr: def makeBrandPair := <elib:sealing.Brand>
 original and new value differ
 original value: <import:org.erights.e.elib.sealing.Brand>
      new value: <makeBrand>
-.......................=== 2006-11-06T15:59:27.342Z (PendingEvent.report:PendingEvent.java:109) WRN
-causality: Problem in turn <<Vat awtVat.e-awt in <AWTRunner>>,772>: 
+.......................=== 2006-11-07T06:16:23.665Z (PendingEvent.report:PendingEvent.java:109) WRN
+causality: Problem in turn <<Vat awtVat.e-awt in <AWTRunner>>,838>: 
 --vvvv--
 Failed: Not mergeable: <Vat awtVat.e-awt in <AWTRunner>>
 
@@ -3286,7 +2294,7 @@ java.lang.RuntimeException: Failed: Not mergeable: <Vat awtVat.e-awt in <AWTRunn
 	at org.erights.e.develop.assertion.T.fail(T.java:84)
 	at org.erights.e.develop.assertion.T.require(T.java:339)
 	at org.erights.e.elib.vat.Vat$VatRedirector.run(Vat.java:627)
-	at sun.reflect.GeneratedMethodAccessor190.invoke(Unknown Source)
+	at sun.reflect.GeneratedMethodAccessor203.invoke(Unknown Source)
 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
 	at java.lang.reflect.Method.invoke(Method.java:585)
 	at org.erights.e.elib.prim.InstanceMethodNode.innerExecute(InstanceMethodNode.java:113)

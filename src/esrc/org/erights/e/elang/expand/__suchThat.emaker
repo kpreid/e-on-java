@@ -49,6 +49,7 @@ def suchThat0 {
     # value: <foo>
 
     ? interp.setExpand(false)
+    # expansion: interp.setExpand(false)
 
     ? def Add1 { to coerce(specimen, _) :any { return specimen +1 }}
 

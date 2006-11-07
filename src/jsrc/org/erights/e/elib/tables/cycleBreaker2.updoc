@@ -7,60 +7,60 @@
     ? pragma.syntax("0.8")
 
     ? def x := [1,x,3]
-    # value: [1, ***CYCLE***, 3]
+    # value: [1, <***CYCLE***>, 3]
 
     ? def y := [1,[1,x,3],3]
-    # value: [1, ***CYCLE***, 3]
+    # value: [1, <***CYCLE***>, 3]
 
     ? x == y
     # value: true
 
     ? def [p1,r1] := Ref.promise()
-    # value: [<Promise>, <Open Resolver>]
+    # value: [<Promise>, <Resolver>]
 
     ? def x := [p1,x,3]
-    # value: [<Promise>, ***CYCLE***, 3]
+    # value: [<Promise>, <***CYCLE***>, 3]
 
     ? x == x
     # value: true
 
     ? def [p2,r2] := Ref.promise()
-    # value: [<Promise>, <Open Resolver>]
+    # value: [<Promise>, <Resolver>]
 
     ? def y := [p2,y,3]
-    # value: [<Promise>, ***CYCLE***, 3]
+    # value: [<Promise>, <***CYCLE***>, 3]
 
     ? x == y
     # problem: <NotSettledException: Not sufficuently settled: \
-    #     [<Promise>, ***CYCLE***, 3] == [<Promise>, ***CYCLE***, 3]>
+    #     [<Promise>, <***CYCLE***>, 3] == [<Promise>, <***CYCLE***>, 3]>
 
     ? [x => "foo"]
     # problem: <NotSettledException: must be settled>
 
     ? def makeTraversalKey := <elib:tables.makeTraversalKey>
-    # value: <import:org.erights.e.elib.tables.makeTraversalKey>
+    # value: <makeTraversalKey>
 
     ? def xx := makeTraversalKey(x)
-    # value: <key:[<Promise>, ***CYCLE***, 3]>
+    # value: <key:[<Promise>, <***CYCLE***>, 3]>
 
     ? def tab := [xx => "foo"]
-    # value: [<key:[<Promise>, ***CYCLE***, 3]> => "foo"]
+    # value: [<key:[<Promise>, <***CYCLE***>, 3]> => "foo"]
 
     ? tab[xx]
     # value: "foo"
 
     ? r1.resolve(666)
     ? tab
-    # value: [<key:[666, ***CYCLE***, 3]> => "foo"]
+    # value: [<key:[666, <***CYCLE***>, 3]> => "foo"]
 
     ? tab[xx]
     # value: "foo"
 
     ? def xx2 := makeTraversalKey(x)
-    # value: <key:[666, ***CYCLE***, 3]>
+    # value: <key:[666, <***CYCLE***>, 3]>
 
     ? tab[xx2]
     # problem: <IndexOutOfBoundsException: \
-    #           <key:[666, ***CYCLE***, 3]> not found>
+    #           <key:[666, <***CYCLE***>, 3]> not found>
 
     ?

@@ -40,8 +40,8 @@ def makeLazyPromiseAuthor(makeProxyResolver) :any {
 
     ? pragma.syntax("0.8")
 
-    ? def makeProxyResolver := <unsafe:org.erights.e.elib.ref.EProxyResolver>
-    # value: <unsafe:org.erights.e.elib.ref.EProxyResolver>
+    ? def makeProxyResolver := <unsafe:org.erights.e.elib.ref.makeEProxyResolver>
+    # value: <makeEProxyResolver>
 
     ? def makeLazyPromiseAuthor := <elib:ref.makeLazyPromiseAuthor>
     # value: <makeLazyPromiseAuthor>

@@ -8,10 +8,10 @@
 
     ? pragma.syntax("0.8")
 
-    ? (def makeJFrame := <unsafe:javax.swing.JFrame>
-    >  def ColorBlack := <unsafe:java.awt.Color>.black()
-    >  def makeEPainter := <unsafe:com.zooko.tray.EPainter>)
-    # value: <unsafe:com.zooko.tray.EPainter>
+    ? (def makeJFrame := <unsafe:javax.swing.makeJFrame>
+    >  def ColorBlack := <unsafe:java.awt.makeColor>.getBlack()
+    >  def makeEPainter := <unsafe:com.zooko.tray.makeEPainter>)
+    # value: <makeEPainter>
     
     ? def helloer {
     >     to paintComponent(g) :void {

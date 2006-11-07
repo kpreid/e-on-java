@@ -32,7 +32,7 @@ def initTimeMachine(privScope) :near {
     surgeon.addFromPrivScope(privScope)
 
     def makePersistentKeyHolder :=
-      <unsafe:org.erights.e.elib.serial.PersistentKeyHolder>
+      <unsafe:org.erights.e.elib.serial.makePersistentKeyHolder>
     def pBrand    := makePersistentKeyHolder.getTHE_BRAND()
     def pUnsealer := makePersistentKeyHolder.getTHE_UNSEALER()
     def persistUncaller {

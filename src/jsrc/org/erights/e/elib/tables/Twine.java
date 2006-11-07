@@ -97,9 +97,9 @@ public abstract class Twine extends ConstList implements DeepPassByCopy {
      * on these parts.
      */
     static public Twine fromParts(ConstList parts) {
-        if (parts.size() == 0) {
+        if (0 == parts.size()) {
             return EmptyTwine.THE_ONE;
-        } else if (parts.size() == 1) {
+        } else if (1 == parts.size()) {
             return (Twine)parts.get(0);
         } else {
             AtomicTwine[] atoms =
@@ -125,7 +125,7 @@ public abstract class Twine extends ConstList implements DeepPassByCopy {
      * a new SimpleTwine on str or a LocatedTwine on both args.
      */
     static public Twine fromString(String str, SourceSpan optSourceSpan) {
-        if (str.length() == 0) {
+        if (0 == str.length()) {
             return EmptyTwine.THE_ONE;
         } else if (null == optSourceSpan) {
             return new SimpleTwine(str);
@@ -191,7 +191,7 @@ public abstract class Twine extends ConstList implements DeepPassByCopy {
      */
     public int[] getPartAt(int pos)
       throws IndexOutOfBoundsException {
-        if (pos <= -1) {
+        if (-1 >= pos) {
             throw new IndexOutOfBoundsException(Integer.toString(pos));
         }
         ConstList parts = getParts();
@@ -359,7 +359,7 @@ public abstract class Twine extends ConstList implements DeepPassByCopy {
         ConstList his = otherTwine.getParts();
         int hisSize = his.size();
 
-        if (mineSize >= 1 && hisSize >= 1) {
+        if (1 <= mineSize && 1 <= hisSize) {
             mineSize--;
             AtomicTwine lastMine = (AtomicTwine)mine.get(mineSize);
             mine = mine.run(0, mineSize);
@@ -388,7 +388,7 @@ public abstract class Twine extends ConstList implements DeepPassByCopy {
      * remaining cr is turned into an lf to deal with Mac.
      */
     public Twine canonical() {
-        if (indexOf("\r") == -1) {
+        if (-1 == indexOf("\r")) {
             return this;
         } else {
             return replaceAll("\r\n", "\n").replaceAll("\r", "\n");
@@ -457,7 +457,7 @@ public abstract class Twine extends ConstList implements DeepPassByCopy {
                 }
             default:
                 {
-                    if ((int)c < 32 || (int)c > 255) {
+                    if (32 > (int)c || 255 < (int)c) {
                         String num = "0000" + Integer.toHexString(c);
                         int numlen = num.length();
                         num = num.substring(numlen - 4, numlen);
@@ -655,7 +655,7 @@ public abstract class Twine extends ConstList implements DeepPassByCopy {
               ("oldStr must not be the null string");
         }
         int p1 = 0;
-        for (int p2 = indexOf(oldStr); p2 != -1; p2 = indexOf(oldStr, p1)) {
+        for (int p2 = indexOf(oldStr); -1 != p2; p2 = indexOf(oldStr, p1)) {
             Twine left = (Twine)run(p1, p2);
             Twine oldTwine = (Twine)run(p2, p2 + oldLen);
             result = (Twine)result.add(left)
@@ -684,7 +684,7 @@ public abstract class Twine extends ConstList implements DeepPassByCopy {
               ("sep must not be the null string");
         }
         int p1 = 0;
-        for (int p2 = indexOf(sep); p2 != -1; p2 = indexOf(sep, p1)) {
+        for (int p2 = indexOf(sep); -1 != p2; p2 = indexOf(sep, p1)) {
             result.push(run(p1, p2));
             p1 = p2 + sepLen;
         }

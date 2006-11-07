@@ -5,7 +5,7 @@ found at http://www.opensource.org/licenses/mit-license.html ..................
 
 ? pragma.syntax("0.8")
 ? def BrandMaker := <elib:sealing.makeBrand>
-# value: <import:org.erights.e.elib.sealing.makeBrand>
+# value: <makeBrand>
 
 ? interp.getProps()["e.version"]
 # value: "0.8.9s"
@@ -39,8 +39,8 @@ found at http://www.opensource.org/licenses/mit-license.html ..................
 >                     quantity.op__cmp(other.getQuantity())
 >                 }
 >                 to transfer(var src,var dest) :void {
->                     src := vouch(src)
->                     dest := vouch(dest)
+>                     src := issuer.vouch(src)
+>                     dest := issuer.vouch(dest)
 >                     unsealer.unseal(src.getDecr())(quantity)
 >                     unsealer.unseal(dest.getIncr())(quantity)
 >                 }

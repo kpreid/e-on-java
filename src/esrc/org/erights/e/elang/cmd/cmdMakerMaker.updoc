@@ -6,7 +6,7 @@
     ? pragma.syntax("0.8")
 
     ? def makeTextWriter := <elib:oldeio.makeTextWriter>
-    # value: <import:org.erights.e.elib.oldeio.makeTextWriter>
+    # value: <makeTextWriter>
 
     ? def cmdMakerMaker := <elang:cmd.cmdMakerMaker>
     # value: <cmdMakerMaker>
@@ -22,14 +22,14 @@
     ? def cmdLoopMaker := <elang:cmd.cmdLoopMakerAuthor>(SystemGC)
     # value: <cmdLoopMaker>
 
-    ? def ScopeSetup := <unsafe:org.erights.e.elang.interp.ScopeSetup>
-    # value: <unsafe:org.erights.e.elang.interp.ScopeSetup>
+    ? def ScopeSetup := <unsafe:org.erights.e.elang.interp.makeScopeSetup>
+    # value: <makeScopeSetup>
 
     ? def [altout, altoutBuf] := makeTextWriter.makeBufferingPair()
-    # value: [<TextWriter>, ]
+    # value: [<a TextWriter>, <stringBuffer "">]
 
     ? def [alterr, alterrBuf] := makeTextWriter.makeBufferingPair()
-    # value: [<TextWriter>, ]
+    # value: [<a TextWriter>, <stringBuffer "">]
 
     ? def cmdLoop
     # value: <Promise>
@@ -41,7 +41,7 @@
     >                                         props,
     >                                         cmdLoop,
     >                                         currentVat)
-    # value: org.erights.e.elang.scope.MutableScope@366999
+    # value: <a Scope>
 
     ? bind cmdLoop := cmdLoopMaker(["a", "b"], props, privileged)
     # value: <cmdLoop>

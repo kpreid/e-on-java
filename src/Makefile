@@ -183,6 +183,8 @@ endif
 
 
 reports: srccheck updoc_reports
+visit_reports:
+	$(TOP)/src/esrc/scripts/emacsify.e *report*.txt
 
 srccheck: srccheck-esrc srccheck-jsrc srccheck-doc
 

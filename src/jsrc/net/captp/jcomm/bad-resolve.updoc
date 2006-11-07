@@ -138,7 +138,7 @@ test script.
 ?? in vat BobVat
 
     ? bobState
-    # value: <a SturdyRef>
+    # value: <SturdyRef>
 
     ? def farAlice := bobState.getRcvr()
     # value: <Remote Promise>

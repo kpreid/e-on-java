@@ -16,7 +16,7 @@
     # value: <reactor>
 
     ? def ctrl := controlLoopMaker()
-    # value: <controlLoop_7>
+    # value: <controlLoop>
 
     ? ctrl.addStatusReactor(reactor)
     ? ctrl.enqueue(thunk{println("foo")})
@@ -101,7 +101,7 @@
     # value: <event3>
 
     ? bind ctrl3 := controlLoopMaker()
-    # value: <controlLoop_7>
+    # value: <controlLoop>
 
     ? ctrl3.addStatusReactor(reactor)
     ? ctrl3.enqueue(event3)

@@ -6,7 +6,7 @@
 ? pragma.syntax("0.8")
 
 ? def makeBrand := <elib:sealing.makeBrand>
-# value: <elib:sealing.makeBrand>
+# value: <makeBrand>
 
 ? def [xSealer,xUnsealer] := makeBrand("X")
 # value: [<X sealer>, <X unsealer>]

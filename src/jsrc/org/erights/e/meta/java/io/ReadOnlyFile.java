@@ -271,9 +271,10 @@ public class ReadOnlyFile extends BaseLoader
 
     /**
      *
+     * @param uriBody
      */
-    public Object get(String name) {
-        File result = FileSugar.get(myPrecious, name);
+    public Object get(String uriBody) {
+        File result = FileSugar.get(myPrecious, uriBody);
         if (myIsTransitive) {
             return new ReadOnlyFile(result, true);
         } else {

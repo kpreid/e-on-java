@@ -16,14 +16,14 @@
     ? def cmdLoopMaker := <elang:cmd.cmdLoopMakerAuthor>(SystemGC)
     # value: <cmdLoopMaker>
 
-    ? def ScopeImplMaker := <unsafe:org.erights.e.elang.scope.ScopeImpl>
-    # value: <unsafe:org.erights.e.elang.scope.ScopeImpl>
+    ? def makeScope := <unsafe:org.erights.e.elang.scope.makeScope>
+    # value: <makeScope>
 
-    ? def scope := ScopeImplMaker([])
-    # value: org.erights.e.elang.scope.ScopeImpl@38b82
+    ? def scope := makeScope([])
+    # value: <makeScope>
 
     ? scope.asMap()
-    # value: [] asMap
+    # value: [].asMap()
 
     ? def cmdLoop := cmdLoopMaker(["a", "b"],
     >                             interp.getProps(),

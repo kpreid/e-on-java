@@ -121,6 +121,7 @@ public class FileGetter extends BaseLoader {
 
     /**
      *
+     * @param uriBody
      */
     public Object get(String uriBody) {
         return new File(normalize(uriBody));
@@ -142,7 +143,7 @@ public class FileGetter extends BaseLoader {
     }
 
     /**
-     * 
+     *
      * @return
      */
     public String toString() {

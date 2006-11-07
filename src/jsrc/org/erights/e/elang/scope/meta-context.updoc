@@ -1,17 +1,17 @@
 #!/usr/bin/env rune
 
-? pragma.syntax("0.9")
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+? pragma.syntax("0.8")
 ? interp.setExpand(true)
 
 ? def foo() :any { return [meta.getState(),meta.context()] }
-# expansion: def foo := def "__main$foo__C" {
+# expansion: def foo {
 #
-#                /**
-#                 * Invoke as a function
-#                 */
 #                method run() :any {
 #                    escape __return {
-#                        __makeList.run(meta.getState(), meta.context())
+#                        __return.run(__makeList.run(meta.getState(), meta.context()))
 #                    }
 #                }
 #            }

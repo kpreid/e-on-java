@@ -6,7 +6,7 @@
 ? pragma.syntax("0.8")
 
 ? def makeFT := <elib:tables.makeFlexTrijection>
-# value: <import:org.erights.e.elib.tables.makeFlexTrijection>
+# value: <makeFlexTrijection>
 
 ? def f := makeFT()
 # value: [].asMap().diverge()

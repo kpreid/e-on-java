@@ -1,9 +1,9 @@
 [[*.*.*.*.*.*.*.*.*.*.*.[]*.*.*.*.*.*.*.*.*.][[*.*.]*.[]*.*.*.*.][[*.*.*.*.*.*.*.*.]*.[]*.*.*.][*
 c:/Documents and Settings/millerm1/e/doc/elang/echat/index.html
 syntax error: 
-  introducer onTheAir
-                    ^
-  @ <file:c:/Documents and Settings/millerm1/e/doc/elang/echat/index.html#:span::150:33::150:33>
+      def theDialog := awt("FileDialog") new(chatWin,"Select a Friend")
+                                            ^
+  @ <file:c:/Documents and Settings/millerm1/e/doc/elang/echat/index.html#:span::168:47::168:47>
 ][*.[[c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/chen-tsang/fileClt.e-awt
 
 c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/chen-tsang/fileClt.e-awt
@@ -12,49 +12,13 @@ c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/chen-tsang/fil
 
 c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/chen-tsang/fileSvr.e-awt
 First line should be "#!/usr/bin/env rune"
-.][
-# warning: undeclared version from: <file:c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/chung-binder/dBhc_combo.e#:blob::1:0::282:1>
-
-.*..][..
-c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/exercises/hyper-hash.e
-syntax error: 
-      return <file>[~/Desktop/intro-$addr.cap`]
-                     ^
-  @ <file:c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/exercises/hyper-hash.e#:span::9:19::9:19>
-
-# warning: Missing copyright notice from: <file:c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/exercises/hyper-ring-test.e#:blob::2:0::43:0>
-
-.
-# warning: undeclared version from: <file:c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/exercises/hyper-ring.e#:blob::1:0::582:0>
-
-.
-# warning: undeclared updoc version from: <file:c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/exercises/hypercube.e#:span::107:2::107:22>
-
-
-# warning: undeclared version from: <file:c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/exercises/hypercube.e#:blob::1:0::115:22>
-
-.*...
-c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/exercises/tree_peer.e
-syntax error: 
-      return <file<[`tree-sup.cap`]
-             ^
-  @ <file:c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/exercises/tree_peer.e#:span::24:11::24:11>
-..
-# warning: undeclared updoc version from: <file:c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/exercises/xy-mesh-router.e#:span::90:6::90:26>
-
-.]*.]*.][*.*.*.*.*.*.*.*.*.*.][*.*.]*.*.[.*.*..*.*.*.*.*.*.][*.*.*.][*.[[]*.]*.*.*.*.*.*.*.*.*
+.][.*..][......*.......]*.]*.][*.*.*.*.*.*.*.*.*.*.][*.*.]*.*.[.*.*..*.*.*.*.*.*.][*.*.*.][*.[[]*.]*.*.*.*.*.*.*.*.*
 c:/Documents and Settings/millerm1/e/doc/elang/kernel/EscapeExpr.html
 syntax error: 
       escape x3 ? stealer(x3) { 7 }
                         ^
   @ <file:c:/Documents and Settings/millerm1/e/doc/elang/kernel/EscapeExpr.html#:span::402:27::402:27>
-*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.]*.[[*.]*.*.[*.]*.*.[*.]*.[*.*.*.*.][*.*.*.][*.*.][*.*.]]*.*..*
-c:/Documents and Settings/millerm1/e/doc/elang/same-ref.html
-syntax error: The optional e.enable.explicit-result-guard feature (see org/erights/e/elang/syntax/syntax-props-0.8.txt) is currently on disallowing this construct.
-          to __printOn(out) {
-                            ^
-  @ <file:c:/Documents and Settings/millerm1/e/doc/elang/same-ref.html#:span::204:145::204:145>
-[*.*.*.*.*.][[*
+*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.]*.[[*.]*.*.[*.]*.*.[*.]*.[*.*.*.*.][*.*.*.][*.*.][*.*.]]*.*..*.[*.*.*.*.*.][[*
 c:/Documents and Settings/millerm1/e/doc/elang/tools/causeway/causeway-intro.html
 problem: "<- question()</tt>" isn't really a tag
 []*
