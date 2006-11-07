@@ -9,7 +9,7 @@ c:/Documents and Settings/millerm1/e/doc/elang/blocks/delegation.html:......
 c:/Documents and Settings/millerm1/e/doc/elang/blocks/escapeExpr.html:.....
 c:/Documents and Settings/millerm1/e/doc/elang/blocks/forExpr.html:...
 c:/Documents and Settings/millerm1/e/doc/elang/blocks/forKVExpr.html:.............
-c:/Documents and Settings/millerm1/e/doc/elang/blocks/miranda.html:=== 2006-11-07T06:21:49.814Z (PendingEvent.report:PendingEvent.java:109) WRN
+c:/Documents and Settings/millerm1/e/doc/elang/blocks/miranda.html:=== 2006-11-07T09:22:44.152Z (PendingEvent.report:PendingEvent.java:109) WRN
 causality: Problem in turn <<Vat home in <runs in home>>,116>: 
 --vvvv--
 / by zero
@@ -44,21 +44,7 @@ java.lang.ArithmeticException: / by zero
 --^^^^--
 
 .........
-c:/Documents and Settings/millerm1/e/doc/elang/blocks/whileExpr.html:..
-at: <file:c:/Documents and Settings/millerm1/e/doc/elang/blocks/whileExpr.html#:span::113:2::113:11>
-expr: findFirst(<c:/jabbertest/jabberwocky.txt>, "and")
-missing new value
-original value: "'Twas brillig and the slithy toves "
-missing original problem
-new problem: <FileNotFoundException: c:\jabbertest\jabberwocky.txt (The system cannot find the path specified)>
-
-at: <file:c:/Documents and Settings/millerm1/e/doc/elang/blocks/whileExpr.html#:span::116:33::116:42>
-expr: findFirst(<c:/jabbertest/jabberwocky.txt>, "foo") == null
-missing new value
-original value: true
-missing original problem
-new problem: <FileNotFoundException: c:\jabbertest\jabberwocky.txt (The system cannot find the path specified)>
-
+c:/Documents and Settings/millerm1/e/doc/elang/blocks/whileExpr.html:....
 c:/Documents and Settings/millerm1/e/doc/elang/collect/EList.html:..
 c:/Documents and Settings/millerm1/e/doc/elang/collect/index.html:..
 at: <file:c:/Documents and Settings/millerm1/e/doc/elang/collect/index.html#:span::99:2::99:41>
@@ -103,7 +89,7 @@ original stdout: bin is 0 bytes
                  rune.bat is 671 bytes
                  sacrificial-long-file-name-to-test-for-truncation.txt is 0 bytes
                  scripts is 0 bytes
-                 updoc-hash-cache.txt is 98755 bytes
+                 updoc-hash-cache.txt is 98900 bytes
                  winfo.txt is 2271 bytes
                  
 
@@ -127,8 +113,33 @@ at: <file:c:/Documents and Settings/millerm1/e/doc/elang/concurrency/introducer.
 expr: def uri := <file:counter.cap>.getText()
 missing new example
 original example: cap://127.0.0.1:1107/080nrRvgvO8fMq...
-.........
-c:/Documents and Settings/millerm1/e/doc/elang/concurrency/race.html:=== 2006-11-07T06:23:06.224Z (PendingEvent.report:PendingEvent.java:109) WRN
+.........=== 2006-11-07T09:23:52.740Z (SendThread.callDataPath:SendThread.java:337) ERR
+comm: to=192.168.1.103 Error while calling net.vattp.data.DataCommThunk@1080a10 Type=3
+--vvvv--
+makeEvaluator shutdown
+
+
+java.lang.RuntimeException: makeEvaluator shutdown
+	at org.erights.e.meta.java.lang.ThrowableGuardSugar.subCoerceR(ThrowableGuardSugar.java:60)
+	at org.erights.e.elib.base.ClassDesc.tryCoerceR(ClassDesc.java:350)
+	at org.erights.e.elib.slot.BaseAuditor.coerce(BaseAuditor.java:59)
+	at org.erights.e.elib.prim.E.as(E.java:530)
+	at org.erights.e.elib.prim.JavaMemberNode.coerceArgs(JavaMemberNode.java:143)
+	at org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:188)
+	at org.erights.e.elib.prim.Selector.callIt(Selector.java:84)
+	at org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:132)
+	at org.erights.e.elang.evm.EMethod.execute(EMethod.java:175)
+	at org.erights.e.elang.evm.EMethodNode.execute(EMethodNode.java:136)
+	at org.erights.e.elib.prim.E.callAll(E.java:167)
+	at org.erights.e.elib.vat.PendingDelivery.innerRun(PendingDelivery.java:102)
+	at org.erights.e.elib.vat.PendingEvent.run(PendingEvent.java:76)
+	at org.erights.e.elib.vat.HeadlessRunner.run(HeadlessRunner.java:176)
+	at java.lang.Thread.run(Thread.java:595)
+
+--^^^^--
+
+
+c:/Documents and Settings/millerm1/e/doc/elang/concurrency/race.html:=== 2006-11-07T09:24:04.798Z (PendingEvent.report:PendingEvent.java:109) WRN
 causality: Problem in turn <<Vat home in <runs in home>>,438>: 
 --vvvv--
 time's up
@@ -160,7 +171,6 @@ java.lang.RuntimeException: time's up
 
 .................................
 c:/Documents and Settings/millerm1/e/doc/elang/echat/index.html:..................
-c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/chung-binder/dBhc_combo.e:
 c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/exercises/hyper-hash.e:..
 at: <file:c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/exercises/hyper-hash.e#:span::137:2::137:51>
 expr: def uri0 := <file:~/Desktop/intro-0.cap>.getText()
@@ -177,8 +187,6 @@ expr: r0 <- insert(37)
 missing original problem
 new problem: Failed: Undefined variable: r0
 
-c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/exercises/hyper-ring-test.e:
-c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/exercises/hyper-ring.e:
 c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/exercises/hypercube.e:..
 at: <file:c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/exercises/hypercube.e#:span::113:2::113:51>
 expr: def uri0 := <file:~/Desktop/intro-0.cap>.getText()
@@ -200,7 +208,6 @@ expr: t5 <- hello("world")
 missing original problem
 new problem: Failed: Undefined variable: t5
 
-c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/exercises/tree_peer.e:
 c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/exercises/xy-mesh-router.e:..
 at: <file:c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/exercises/xy-mesh-router.e#:span::94:6::94:58>
 expr: def uri00 := <file:~/Desktop/intro-0-0.cap>.getText()
@@ -224,77 +231,89 @@ new problem: Failed: Undefined variable: t20
 
 c:/Documents and Settings/millerm1/e/doc/elang/examples/multi-stage.html:.........
 c:/Documents and Settings/millerm1/e/doc/elang/grammar/quasi-overview.html:........
-c:/Documents and Settings/millerm1/e/doc/elang/intro/finding-text.html:=== 2006-11-07T06:24:08.774Z (Twine.add:Twine.java:354) WRN
+c:/Documents and Settings/millerm1/e/doc/elang/intro/finding-text.html:=== 2006-11-07T09:24:55.621Z (Twine.add:Twine.java:354) WRN
 eruntime: Stringifying with '+' : (1)
  @ Twine#add(Object)
  @ add/1: <file:c:/Documents and Settings/millerm1/e/doc/elang/intro/finding-text.html#:span::259:41::259:41>
-=== 2006-11-07T06:24:08.774Z (Twine.add:Twine.java:354) WRN
+=== 2006-11-07T09:24:55.621Z (Twine.add:Twine.java:354) WRN
 eruntime: Stringifying with '+' : (2)
  @ Twine#add(Object)
  @ add/1: <file:c:/Documents and Settings/millerm1/e/doc/elang/intro/finding-text.html#:span::259:41::259:41>
-=== 2006-11-07T06:24:08.774Z (Twine.add:Twine.java:354) WRN
+=== 2006-11-07T09:24:55.621Z (Twine.add:Twine.java:354) WRN
 eruntime: Stringifying with '+' : (8)
  @ Twine#add(Object)
  @ add/1: <file:c:/Documents and Settings/millerm1/e/doc/elang/intro/finding-text.html#:span::259:41::259:41>
-=== 2006-11-07T06:24:08.774Z (Twine.add:Twine.java:354) WRN
+=== 2006-11-07T09:24:55.621Z (Twine.add:Twine.java:354) WRN
 eruntime: Stringifying with '+' : (9)
  @ Twine#add(Object)
  @ add/1: <file:c:/Documents and Settings/millerm1/e/doc/elang/intro/finding-text.html#:span::259:41::259:41>
-=== 2006-11-07T06:24:08.804Z (Twine.add:Twine.java:354) WRN
+=== 2006-11-07T09:24:55.671Z (Twine.add:Twine.java:354) WRN
 eruntime: Stringifying with '+' : (1)
  @ Twine#add(Object)
  @ add/1: <file:c:/Documents and Settings/millerm1/e/doc/elang/intro/finding-text.html#:span::302:41::302:41>
-=== 2006-11-07T06:24:08.814Z (Twine.add:Twine.java:354) WRN
+=== 2006-11-07T09:24:55.671Z (Twine.add:Twine.java:354) WRN
 eruntime: Stringifying with '+' : (2)
  @ Twine#add(Object)
  @ add/1: <file:c:/Documents and Settings/millerm1/e/doc/elang/intro/finding-text.html#:span::302:41::302:41>
-=== 2006-11-07T06:24:08.814Z (Twine.add:Twine.java:354) WRN
+=== 2006-11-07T09:24:55.671Z (Twine.add:Twine.java:354) WRN
 eruntime: Stringifying with '+' : (8)
  @ Twine#add(Object)
  @ add/1: <file:c:/Documents and Settings/millerm1/e/doc/elang/intro/finding-text.html#:span::302:41::302:41>
-=== 2006-11-07T06:24:08.814Z (Twine.add:Twine.java:354) WRN
+=== 2006-11-07T09:24:55.671Z (Twine.add:Twine.java:354) WRN
 eruntime: Stringifying with '+' : (9)
  @ Twine#add(Object)
  @ add/1: <file:c:/Documents and Settings/millerm1/e/doc/elang/intro/finding-text.html#:span::302:41::302:41>
-=== 2006-11-07T06:24:08.834Z (Twine.add:Twine.java:354) WRN
+=== 2006-11-07T09:24:55.681Z (Twine.add:Twine.java:354) WRN
 eruntime: Stringifying with '+' : (1)
  @ Twine#add(Object)
  @ add/1: <file:c:/Documents and Settings/millerm1/e/doc/elang/intro/finding-text.html#:span::302:41::302:41>
-=== 2006-11-07T06:24:08.834Z (Twine.add:Twine.java:354) WRN
+=== 2006-11-07T09:24:55.681Z (Twine.add:Twine.java:354) WRN
 eruntime: Stringifying with '+' : (2)
  @ Twine#add(Object)
  @ add/1: <file:c:/Documents and Settings/millerm1/e/doc/elang/intro/finding-text.html#:span::302:41::302:41>
-=== 2006-11-07T06:24:08.834Z (Twine.add:Twine.java:354) WRN
+=== 2006-11-07T09:24:55.681Z (Twine.add:Twine.java:354) WRN
 eruntime: Stringifying with '+' : (8)
  @ Twine#add(Object)
  @ add/1: <file:c:/Documents and Settings/millerm1/e/doc/elang/intro/finding-text.html#:span::302:41::302:41>
-=== 2006-11-07T06:24:08.844Z (Twine.add:Twine.java:354) WRN
+=== 2006-11-07T09:24:55.681Z (Twine.add:Twine.java:354) WRN
+eruntime: Stringifying with '+' : (9)
+ @ Twine#add(Object)
+ @ add/1: <file:c:/Documents and Settings/millerm1/e/doc/elang/intro/finding-text.html#:span::302:41::302:41>
+=== 2006-11-07T09:24:55.781Z (Twine.add:Twine.java:354) WRN
+eruntime: Stringifying with '+' : (1)
+ @ Twine#add(Object)
+ @ add/1: <file:c:/Documents and Settings/millerm1/e/doc/elang/intro/finding-text.html#:span::302:41::302:41>
+=== 2006-11-07T09:24:55.781Z (Twine.add:Twine.java:354) WRN
+eruntime: Stringifying with '+' : (2)
+ @ Twine#add(Object)
+ @ add/1: <file:c:/Documents and Settings/millerm1/e/doc/elang/intro/finding-text.html#:span::302:41::302:41>
+=== 2006-11-07T09:24:55.781Z (Twine.add:Twine.java:354) WRN
+eruntime: Stringifying with '+' : (8)
+ @ Twine#add(Object)
+ @ add/1: <file:c:/Documents and Settings/millerm1/e/doc/elang/intro/finding-text.html#:span::302:41::302:41>
+=== 2006-11-07T09:24:55.841Z (Twine.add:Twine.java:354) WRN
+eruntime: Stringifying with '+' : (9)
+ @ Twine#add(Object)
+ @ add/1: <file:c:/Documents and Settings/millerm1/e/doc/elang/intro/finding-text.html#:span::302:41::302:41>
+=== 2006-11-07T09:24:55.841Z (Twine.add:Twine.java:354) WRN
+eruntime: Stringifying with '+' : (1)
+ @ Twine#add(Object)
+ @ add/1: <file:c:/Documents and Settings/millerm1/e/doc/elang/intro/finding-text.html#:span::302:41::302:41>
+=== 2006-11-07T09:24:55.841Z (Twine.add:Twine.java:354) WRN
+eruntime: Stringifying with '+' : (2)
+ @ Twine#add(Object)
+ @ add/1: <file:c:/Documents and Settings/millerm1/e/doc/elang/intro/finding-text.html#:span::302:41::302:41>
+=== 2006-11-07T09:24:55.851Z (Twine.add:Twine.java:354) WRN
+eruntime: Stringifying with '+' : (8)
+ @ Twine#add(Object)
+ @ add/1: <file:c:/Documents and Settings/millerm1/e/doc/elang/intro/finding-text.html#:span::302:41::302:41>
+=== 2006-11-07T09:24:55.851Z (Twine.add:Twine.java:354) WRN
 eruntime: Stringifying with '+' : (9)
  @ Twine#add(Object)
  @ add/1: <file:c:/Documents and Settings/millerm1/e/doc/elang/intro/finding-text.html#:span::302:41::302:41>
 ...............
 c:/Documents and Settings/millerm1/e/doc/elang/intro/standalone.html:...
-c:/Documents and Settings/millerm1/e/doc/elang/io/text-file-io.html:....
-at: <file:c:/Documents and Settings/millerm1/e/doc/elang/io/text-file-io.html#:blob::78:3::78:4>
-expr: <file:c:/jabbertest/jabberwocky2.txt>.delete(null); null
-missing original problem
-new problem: Can't delete "c:/jabbertest/jabberwocky2.txt"
-
-at: <file:c:/Documents and Settings/millerm1/e/doc/elang/io/text-file-io.html#:blob::79:3::79:4>
-expr: <file:c:/jabbertest/a/b/c>.delete(null); null
-missing original problem
-new problem: Can't delete "c:/jabbertest/a/b/c"
-
-at: <file:c:/Documents and Settings/millerm1/e/doc/elang/io/text-file-io.html#:blob::80:3::80:4>
-expr: <file:c:/jabbertest/a/b>.delete(null); null
-missing original problem
-new problem: Can't delete "c:/jabbertest/a/b"
-
-at: <file:c:/Documents and Settings/millerm1/e/doc/elang/io/text-file-io.html#:blob::81:3::81:4>
-expr: <file:c:/jabbertest/a>.delete(null); null
-missing original problem
-new problem: Can't delete "c:/jabbertest/a"
-........
+c:/Documents and Settings/millerm1/e/doc/elang/io/text-file-io.html:................
 at: <file:c:/Documents and Settings/millerm1/e/doc/elang/io/text-file-io.html#:span::130:15::130:26>
 expr: def desk := <file:~/Desktop>
 original and new value differ
@@ -420,43 +439,43 @@ new problem: Failed: Undefined variable: c
 c:/Documents and Settings/millerm1/e/doc/elang/scalars/boolean-ref.html:...
 c:/Documents and Settings/millerm1/e/doc/elang/scalars/char-ref.html:....
 c:/Documents and Settings/millerm1/e/doc/elang/scalars/float64-ref.html:.............................
-c:/Documents and Settings/millerm1/e/doc/elang/scalars/integer-ref.html:=== 2006-11-07T06:26:10.619Z (Twine.add:Twine.java:354) WRN
+c:/Documents and Settings/millerm1/e/doc/elang/scalars/integer-ref.html:=== 2006-11-07T09:27:03.875Z (Twine.add:Twine.java:354) WRN
 eruntime: Stringifying with '+' : (0)
  @ Twine#add(Object)
  @ add/1: <file:c:/Documents and Settings/millerm1/e/doc/elang/scalars/integer-ref.html#:span::217:30::217:30>
-=== 2006-11-07T06:26:10.619Z (Twine.add:Twine.java:354) WRN
+=== 2006-11-07T09:27:03.875Z (Twine.add:Twine.java:354) WRN
 eruntime: Stringifying with '+' : (1)
  @ Twine#add(Object)
  @ add/1: <file:c:/Documents and Settings/millerm1/e/doc/elang/scalars/integer-ref.html#:span::217:56::217:56>
-=== 2006-11-07T06:26:10.629Z (Twine.add:Twine.java:354) WRN
+=== 2006-11-07T09:27:03.895Z (Twine.add:Twine.java:354) WRN
 eruntime: Stringifying with '+' : (1)
  @ Twine#add(Object)
  @ add/1: <file:c:/Documents and Settings/millerm1/e/doc/elang/scalars/integer-ref.html#:span::217:30::217:30>
-=== 2006-11-07T06:26:10.629Z (Twine.add:Twine.java:354) WRN
+=== 2006-11-07T09:27:03.895Z (Twine.add:Twine.java:354) WRN
 eruntime: Stringifying with '+' : (1)
  @ Twine#add(Object)
  @ add/1: <file:c:/Documents and Settings/millerm1/e/doc/elang/scalars/integer-ref.html#:span::217:56::217:56>
-=== 2006-11-07T06:26:10.629Z (Twine.add:Twine.java:354) WRN
+=== 2006-11-07T09:27:03.895Z (Twine.add:Twine.java:354) WRN
 eruntime: Stringifying with '+' : (2)
  @ Twine#add(Object)
  @ add/1: <file:c:/Documents and Settings/millerm1/e/doc/elang/scalars/integer-ref.html#:span::217:30::217:30>
-=== 2006-11-07T06:26:10.639Z (Twine.add:Twine.java:354) WRN
+=== 2006-11-07T09:27:03.895Z (Twine.add:Twine.java:354) WRN
 eruntime: Stringifying with '+' : (2)
  @ Twine#add(Object)
  @ add/1: <file:c:/Documents and Settings/millerm1/e/doc/elang/scalars/integer-ref.html#:span::217:56::217:56>
-=== 2006-11-07T06:26:10.639Z (Twine.add:Twine.java:354) WRN
+=== 2006-11-07T09:27:03.895Z (Twine.add:Twine.java:354) WRN
 eruntime: Stringifying with '+' : (3)
  @ Twine#add(Object)
  @ add/1: <file:c:/Documents and Settings/millerm1/e/doc/elang/scalars/integer-ref.html#:span::217:30::217:30>
-=== 2006-11-07T06:26:10.639Z (Twine.add:Twine.java:354) WRN
+=== 2006-11-07T09:27:03.895Z (Twine.add:Twine.java:354) WRN
 eruntime: Stringifying with '+' : (6)
  @ Twine#add(Object)
  @ add/1: <file:c:/Documents and Settings/millerm1/e/doc/elang/scalars/integer-ref.html#:span::217:56::217:56>
-=== 2006-11-07T06:26:10.639Z (Twine.add:Twine.java:354) WRN
+=== 2006-11-07T09:27:03.895Z (Twine.add:Twine.java:354) WRN
 eruntime: Stringifying with '+' : (4)
  @ Twine#add(Object)
  @ add/1: <file:c:/Documents and Settings/millerm1/e/doc/elang/scalars/integer-ref.html#:span::217:30::217:30>
-=== 2006-11-07T06:26:10.649Z (Twine.add:Twine.java:354) WRN
+=== 2006-11-07T09:27:03.895Z (Twine.add:Twine.java:354) WRN
 eruntime: Stringifying with '+' : (24)
  @ Twine#add(Object)
  @ add/1: <file:c:/Documents and Settings/millerm1/e/doc/elang/scalars/integer-ref.html#:span::217:56::217:56>
@@ -465,8 +484,4 @@ c:/Documents and Settings/millerm1/e/doc/elang/tools/causeway/causeway-intro.htm
 can't parse c:/Documents and Settings/millerm1/e/doc/elang/tools/causeway/causeway-intro.html: problem: "<- question()</tt>" isn't really a tag
 c:/Documents and Settings/millerm1/e/doc/elang/tools/causeway/index.html:
 can't parse c:/Documents and Settings/millerm1/e/doc/elang/tools/causeway/index.html: problem: "<- question()</tt>" isn't really a tag
-c:/Documents and Settings/millerm1/e/doc/elang/tools/updoc.html:=== 2006-11-07T06:26:36.015Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
-eruntime: Import java.util.makeVector instead : (Importing java.util.Vector)
- @ Loader#get(String)
- @ get/1: <file:c:/Documents and Settings/millerm1/e/doc/elang/tools/updoc.html#:blob::120:110::120:138>
-..............
+c:/Documents and Settings/millerm1/e/doc/elang/tools/updoc.html:..............

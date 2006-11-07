@@ -198,4 +198,11 @@ problem: <AuditFailedException: object expression e`def makeDFBrand implements D
 ..
 # warning: Missing copyright notice from: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/methcall.e#:blob::2:0::34:24>
 
-...[.....]]..[.*.*.*..].]]
+...[.....]]..[.*
+c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html
+syntax error: File end inside quasi-string literal, unmatched openning bracket: 
+              
+  `
+  ^
+  @ <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::4857:20::4857:20>
+*.*..].]]

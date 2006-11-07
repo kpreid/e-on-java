@@ -1,9 +1,9 @@
 [[*.*.*.*.*.*.*.*.*.*.*.[]*.*.*.*.*.*.*.*.*.][[*.*.]*.[]*.*.*.*.][[*.*.*.*.*.*.*.*.]*.[]*.*.*.][*
 c:/Documents and Settings/millerm1/e/doc/elang/echat/index.html
 syntax error: 
-      def theDialog := awt("FileDialog") new(chatWin,"Select a Friend")
-                                            ^
-  @ <file:c:/Documents and Settings/millerm1/e/doc/elang/echat/index.html#:span::168:47::168:47>
+      theDialog show
+                   ^
+  @ <file:c:/Documents and Settings/millerm1/e/doc/elang/echat/index.html#:span::169:22::169:22>
 ][*.[[c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/chen-tsang/fileClt.e-awt
 
 c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/chen-tsang/fileClt.e-awt

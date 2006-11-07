@@ -39,8 +39,8 @@ missing new value
 original value: [Shell {watching - am2}, Label {<manages <has (44 - 0) Sugar>>}]
 missing original problem
 new problem: Failed: Undefined variable: am2
-.....=== 2006-11-07T06:03:15.782Z (PendingEvent.report:PendingEvent.java:109) WRN
-causality: Problem in turn <<Vat home in <SWTRunner>>,212>: 
+.....=== 2006-11-07T09:09:16.330Z (PendingEvent.report:PendingEvent.java:109) WRN
+causality: Problem in turn <<Vat home in <SWTRunner>>,206>: 
 --vvvv--
 Failed: Not mergeable: <Vat home in <SWTRunner>>
 
@@ -184,16 +184,16 @@ new problem: Failed: Undefined variable: mint
 
 c:/Documents and Settings/millerm1/e/src/esrc/com/skyhunter/convertForEDoc/bounds.updoc:......
 c:/Documents and Settings/millerm1/e/src/esrc/com/skyhunter/convertForEDoc/edoc.updoc:......
-c:/Documents and Settings/millerm1/e/src/esrc/edu/jhu/cs448/contact/contactKit.updoc:=== 2006-11-07T06:05:25.348Z (PendingEvent.report:PendingEvent.java:109) WRN
+c:/Documents and Settings/millerm1/e/src/esrc/edu/jhu/cs448/contact/contactKit.updoc:=== 2006-11-07T09:11:19.938Z (PendingEvent.report:PendingEvent.java:109) WRN
 causality: Problem in turn <<Vat Rendezvous in <runs in Rendezvous>>,126>: 
 --vvvv--
 Failed: not synchronously callable
 
 - static Verifier#verify(PublicKey, String, BigInteger)
-. <makeVerifier>.verify(<Far ref>, "captp://*5c4m462bcjdj7ie5spedlgh3ncj7ylk...:1829/2pbdt6rkl6y35v3dxkeeqtipe5v7mkba", 85650713742723...67674337143567)
+. <makeVerifier>.verify(<Far ref>, "captp://*47epaniee2ulvpsfxa7u6gdqhmxs3ea...:2015/6ad5u65sfnmzwxzngqkl3m6loyj7irln", 19966662660060...91635644994261)
 @ verify/3: <file:/C:/Documents%20and%20Settings/millerm1/e/src/esrc/edu/jhu/cs448/contact/makeRendezvous.emaker#:span::28:29::28:34>
 - edu.jhu.cs448.contact.makeRendezvous$makeRendezvous$rendezvous#register/3: <file:/C:/Documents%20and%20Settings/millerm1/e/src/esrc/edu/jhu/cs448/contact/makeRendezvous.emaker#:span::25:11::25:18>
-. <rendezvous>.register(<Far ref>, "captp://*5c4m462bcjdj7ie5spedlgh3ncj7ylk...:1829/2pbdt6rkl6y35v3dxkeeqtipe5v7mkba", 85650713742723...67674337143567)
+. <rendezvous>.register(<Far ref>, "captp://*47epaniee2ulvpsfxa7u6gdqhmxs3ea...:2015/6ad5u65sfnmzwxzngqkl3m6loyj7irln", 19966662660060...91635644994261)
 
 java.lang.RuntimeException: Failed: not synchronously callable
 	at org.erights.e.develop.assertion.T.fail(T.java:84)
@@ -233,16 +233,16 @@ java.lang.RuntimeException: Failed: not synchronously callable
 
 --^^^^--
 
-=== 2006-11-07T06:05:26.830Z (PendingEvent.report:PendingEvent.java:109) WRN
+=== 2006-11-07T09:11:21.530Z (PendingEvent.report:PendingEvent.java:109) WRN
 causality: Problem in turn <<Vat Rendezvous in <runs in Rendezvous>>,188>: 
 --vvvv--
 Failed: not synchronously callable
 
 - static Verifier#verify(PublicKey, String, BigInteger)
-. <makeVerifier>.verify(<Far ref>, "captp://*lp6724swch2sobbswvwk77l5of7qd34...:1834/dovgv6noftsxtb3rrbsungh4ceyzvdim", 68832172357200...35608806908129)
+. <makeVerifier>.verify(<Far ref>, "captp://*kxutwpo4s7dxel5exficcyoolltddem...:2019/27kkof4zowi6nirc7y5k5hxrdmewekgw", 20274287589510...93922233360357)
 @ verify/3: <file:/C:/Documents%20and%20Settings/millerm1/e/src/esrc/edu/jhu/cs448/contact/makeRendezvous.emaker#:span::28:29::28:34>
 - edu.jhu.cs448.contact.makeRendezvous$makeRendezvous$rendezvous#register/3: <file:/C:/Documents%20and%20Settings/millerm1/e/src/esrc/edu/jhu/cs448/contact/makeRendezvous.emaker#:span::25:11::25:18>
-. <rendezvous>.register(<Far ref>, "captp://*lp6724swch2sobbswvwk77l5of7qd34...:1834/dovgv6noftsxtb3rrbsungh4ceyzvdim", 68832172357200...35608806908129)
+. <rendezvous>.register(<Far ref>, "captp://*kxutwpo4s7dxel5exficcyoolltddem...:2019/27kkof4zowi6nirc7y5k5hxrdmewekgw", 20274287589510...93922233360357)
 
 java.lang.RuntimeException: Failed: not synchronously callable
 	at org.erights.e.develop.assertion.T.fail(T.java:84)
@@ -541,32 +541,18 @@ original expansion: def foo := def "__main$foo__C" {
                     }
                     }
 ...
-c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/makeBootServer.updoc:=== 2006-11-07T06:06:08.050Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
-eruntime: Import org.erights.e.elib.serial.makePersistentKeyHolder instead : (Importing org.erights.e.elib.serial.PersistentKeyHolder)
- @ Loader#get(String)
- @ get/1: <file:/C:/Documents%20and%20Settings/millerm1/e/src/esrc/org/erights/e/extern/persist/initTimeMachine.emaker#:span::35:6::35:59>
-........
+c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/makeBootServer.updoc:........
 at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/makeBootServer.updoc#:span::27:2::27:59>
 expr: def vatFile := makeAtomicFile(<file:~/Desktop>, "foo.vat")
 original and new value differ
 original value: <atomic: <file:C:/Documents and Settings/millerm1/Desktop/foo.vat>>
      new value: <atomic: <file:c:/Documents and Settings/millerm1/Desktop/foo.vat>>
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/makeBootServer.updoc#:span::30:2::30:47>
-expr: if (vatFile.exists()) { vatFile.delete(null) }
-missing original problem
-new problem: <NoSuchMethodException: <an atomicFile>.delete/1>
-.
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/makeBootServer.updoc#:span::35:2::35:30>
-expr: timeMachine.createAs(vatFile)
-missing original problem
-new problem: Delete <atomic: <file:c:/Documents and Settings/millerm1/Desktop/foo.vat>> first
-
+...
 at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/makeBootServer.updoc#:span::36:2::36:7>
 expr: [p,sr]
 original and new value differ
 original value: [null, <a SturdyRef>]
-     new value: [<Promise>, <Promise>]
+     new value: [null, <SturdyRef to 3>]
 ....
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/makeServer.updoc:......
 at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/makeServer.updoc#:span::23:2::23:11>
@@ -728,17 +714,7 @@ missing new problem
 original problem: c:/cygwin/bin/bash.exe failed with(127,,/usr/bin/bash: cygpath: command not found
                   )
 .
-c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/ref/makeLazyPromiseAuthor.emaker:=== 2006-11-07T06:06:34.488Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
-eruntime: Import org.erights.e.elib.ref.makeEProxyResolver instead : (Importing org.erights.e.elib.ref.EProxyResolver)
- @ Loader#get(String)
- @ get/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/ref/makeLazyPromiseAuthor.emaker#:span::43:31::43:76>
-.
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/ref/makeLazyPromiseAuthor.emaker#:span::43:6::43:76>
-expr: def makeProxyResolver := <unsafe:org.erights.e.elib.ref.EProxyResolver>
-original and new value differ
-original value: <unsafe:org.erights.e.elib.ref.EProxyResolver>
-     new value: <makeEProxyResolver>
-.......
+c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/ref/makeLazyPromiseAuthor.emaker:.........
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/sealing/makeVOCPair.emaker:..
 at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/sealing/makeVOCPair.emaker#:span::75:6::75:31>
 expr: def f1 := <file:~/.bashrc>
@@ -964,6 +940,7 @@ original value: <everFormula_23>
 ..................
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/examples/concurrency/makeQueue.emaker:............
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/examples/concurrency/QMaker.emaker:............
+c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/extern/persist/initTimeMachine.emaker:
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/extern/persist/persist.updoc:......
 at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/extern/persist/persist.updoc#:span::29:2::29:27>
 expr: def sr := makeSturdyRef(3)
@@ -1142,8 +1119,7 @@ missing new A bug we're just going to live with for now
 original A bug we're just going to live with for now: 
 ...
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/tools/java/fixImports.emaker:...
-c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/tools/updoc/makeOldUpdocParser.emaker:
-c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/ui/swt/watchAuthor.emaker:.........=== 2006-11-07T06:07:54.873Z (PendingEvent.report:PendingEvent.java:109) WRN
+c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/ui/swt/watchAuthor.emaker:.........=== 2006-11-07T09:13:37.876Z (PendingEvent.report:PendingEvent.java:109) WRN
 causality: Problem in turn <<Vat home in <SWTRunner>>,121>: 
 --vvvv--
 Failed: Not mergeable: <Vat home in <SWTRunner>>
@@ -1155,7 +1131,7 @@ java.lang.RuntimeException: Failed: Not mergeable: <Vat home in <SWTRunner>>
 	at org.erights.e.develop.assertion.T.fail(T.java:84)
 	at org.erights.e.develop.assertion.T.require(T.java:339)
 	at org.erights.e.elib.vat.Vat$VatRedirector.run(Vat.java:627)
-	at sun.reflect.GeneratedMethodAccessor203.invoke(Unknown Source)
+	at sun.reflect.GeneratedMethodAccessor189.invoke(Unknown Source)
 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
 	at java.lang.reflect.Method.invoke(Method.java:585)
 	at org.erights.e.elib.prim.InstanceMethodNode.innerExecute(InstanceMethodNode.java:113)
@@ -1884,69 +1860,40 @@ original value: [<Promise>, <Closed Resolver>, <Promise>]
 missing original problem
 new problem: Failed: Undefined variable: bp
 
-c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/makeScope.updoc:=== 2006-11-07T06:08:48.490Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
-eruntime: Import org.erights.e.elang.scope.makeScope instead : (Importing org.erights.e.elang.scope.Scope)
- @ Loader#get(String)
- @ get/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/makeScope.updoc#:span::14:21::14:60>
-..
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/makeScope.updoc#:span::14:4::14:66>
-expr: def demoScope := <unsafe:org.erights.e.elang.scope.Scope>.make(
-        __makeMap.fromColumns(
-          ["y", "any", "x", "__makeList", "&uc_construct"],
-          [6, any, 5, __makeList, __makeFinalSlot(uc_construct)]
-        ),
-        "__main$makePoint__C$point__C$",
-        false
-      )
-missing new value
-original value: <a Scope>
-missing original problem
-new problem: <NoSuchMethodException: <a Scope__Maker>.make/3>
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/makeScope.updoc#:span::24:4::24:49>
+c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/makeScope.updoc:...
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/makeScope.updoc#:span::22:4::22:49>
 expr: for k => v in demoScope { println(k, " ", v) }
-missing new stdout
+original and new stdout differ
 original stdout: &y <& 6>
                  &any <& <any>>
                  &x <& 5>
                  &__makeList <& <import:org.erights.e.elib.tables.ConstList>>
                  &uc_construct <& <uc_construct>>
                  
-missing original problem
-new problem: Failed: Undefined variable: demoScope
+     new stdout: &y <& 6>
+                 &any <& any>
+                 &x <& 5>
+                 &__makeList <& <makeConstList>>
+                 &uc_construct <& <uc_construct>>
+                 
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/makeScope.updoc#:span::32:4::32:25>
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/makeScope.updoc#:span::30:4::30:25>
 expr: e`any`.eval(demoScope)
-missing new value
+original and new value differ
 original value: <any>
-missing original problem
-new problem: Failed: Undefined variable: demoScope
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/makeScope.updoc#:span::35:4::35:34>
-expr: e`uc_construct`.eval(demoScope)
-missing new value
-original value: <uc_construct>
-missing original problem
-new problem: Failed: Undefined variable: demoScope
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/makeScope.updoc#:span::38:4::38:28>
-expr: demoScope["uc_construct"]
-missing new value
-original value: <uc_construct>
-missing original problem
-new problem: Failed: Undefined variable: demoScope
-
+     new value: any
+..
 c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/mod.updoc:......
-c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/updoc/abc.updoc:=== 2006-11-07T06:08:53.938Z (CapTPConnection.killConnection:CapTPConnection.java:1262) WRN
-captp: lost Conn(5pnhwp2gnba7ri3yq5rc322lx6zoypnn <-> sqfokin7vwgy5r5k7nwmgxomhedwrxh5)
+c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/updoc/abc.updoc:=== 2006-11-07T09:14:30.672Z (CapTPConnection.killConnection:CapTPConnection.java:1262) WRN
+captp: lost Conn(xuhvk6gtngx7saboiyhqurv5q63bucqg <-> hfm2wbl22ea4e5fpkmhncuznjah6frvx)
 --vvvv--
 java.net.ConnectException: Connection refused: connect
 java.net.ConnectException: Connection refused: connect
 
 
-# lost net.vattp.data.VatTPConnection@cd4bb4
-  to 192.168.1.66:1769|sqfokin7vwgy5r5k7nwmgxomhedwrxh5
-  searchpath=192.168.1.103:1769,192.168.1.66:1769 state=7
+# lost net.vattp.data.VatTPConnection@3667b
+  to 192.168.1.66:1976|hfm2wbl22ea4e5fpkmhncuznjah6frvx
+  searchpath=192.168.1.103:1976,192.168.1.66:1976 state=7
 
 java.io.IOException: java.net.ConnectException: Connection refused: connect
 java.net.ConnectException: Connection refused: connect
@@ -1962,7 +1909,7 @@ java.net.ConnectException: Connection refused: connect
 
 --^^^^--
 
-=== 2006-11-07T06:08:53.938Z (PendingEvent.report:PendingEvent.java:109) WRN
+=== 2006-11-07T09:14:30.672Z (PendingEvent.report:PendingEvent.java:109) WRN
 causality: Problem in turn <<Vat vatAC in <runs in vatAC>>,75>: 
 --vvvv--
 Failed: done
@@ -1990,7 +1937,7 @@ java.lang.RuntimeException: Failed: done
 
 --^^^^--
 
-=== 2006-11-07T06:08:53.938Z (PendingEvent.report:PendingEvent.java:109) WRN
+=== 2006-11-07T09:14:30.672Z (PendingEvent.report:PendingEvent.java:109) WRN
 causality: Problem in turn <<Vat vatAC in <runs in vatAC>>,76>: 
 --vvvv--
 Failed: done
@@ -2125,134 +2072,90 @@ missing original problem
 new problem: Failed: Undefined variable: c
 
 c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/updoc/shortFlexList.updoc:....
-c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html:=== 2006-11-07T06:10:56.034Z (Twine.add:Twine.java:354) WRN
+c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html:=== 2006-11-07T09:16:35.051Z (Twine.add:Twine.java:354) WRN
 eruntime: Stringifying with '+' : (3)
  @ Twine#add(Object)
  @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::482:37::482:37>
-=== 2006-11-07T06:10:56.394Z (Twine.add:Twine.java:354) WRN
+=== 2006-11-07T09:16:35.462Z (Twine.add:Twine.java:354) WRN
 eruntime: Stringifying with '+' : (10)
  @ Twine#add(Object)
  @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::800:64::800:64>
-=== 2006-11-07T06:10:56.474Z (Twine.add:Twine.java:354) WRN
+=== 2006-11-07T09:16:35.582Z (Twine.add:Twine.java:354) WRN
 eruntime: Stringifying with '+' : (10)
  @ Twine#add(Object)
  @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::897:32::897:32>
-=== 2006-11-07T06:10:56.605Z (Twine.add:Twine.java:354) WRN
+=== 2006-11-07T09:16:35.672Z (Twine.add:Twine.java:354) WRN
 eruntime: Stringifying with '+' : (380)
  @ Twine#add(Object)
  @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::1030:26::1030:26>
-=== 2006-11-07T06:10:56.675Z (Twine.add:Twine.java:354) WRN
+=== 2006-11-07T09:16:35.742Z (Twine.add:Twine.java:354) WRN
 eruntime: Stringifying with '+' : (2)
  @ Twine#add(Object)
  @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::1292:41::1292:41>
-=== 2006-11-07T06:10:56.675Z (Twine.add:Twine.java:354) WRN
+=== 2006-11-07T09:16:35.742Z (Twine.add:Twine.java:354) WRN
 eruntime: Stringifying with '+' : (true)
  @ Twine#add(Object)
  @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::1292:41::1292:41>
-=== 2006-11-07T06:10:56.675Z (Twine.add:Twine.java:354) WRN
+=== 2006-11-07T09:16:35.742Z (Twine.add:Twine.java:354) WRN
 eruntime: Stringifying with '+' : (0)
  @ Twine#add(Object)
  @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::1293:55::1293:55>
-=== 2006-11-07T06:10:56.675Z (Twine.add:Twine.java:354) WRN
+=== 2006-11-07T09:16:35.742Z (Twine.add:Twine.java:354) WRN
 eruntime: Stringifying with '+' : (1)
  @ Twine#add(Object)
  @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::1293:55::1293:55>
-=== 2006-11-07T06:10:56.675Z (Twine.add:Twine.java:354) WRN
+=== 2006-11-07T09:16:35.742Z (Twine.add:Twine.java:354) WRN
 eruntime: Stringifying with '+' : (2)
  @ Twine#add(Object)
  @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::1293:68::1293:68>
-=== 2006-11-07T06:10:56.675Z (Twine.add:Twine.java:354) WRN
+=== 2006-11-07T09:16:35.742Z (Twine.add:Twine.java:354) WRN
 eruntime: Stringifying with '+' : (2)
  @ Twine#add(Object)
  @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::1293:55::1293:55>
-=== 2006-11-07T06:10:56.705Z (Twine.add:Twine.java:354) WRN
+=== 2006-11-07T09:16:35.742Z (Twine.add:Twine.java:354) WRN
 eruntime: Stringifying with '+' : (true)
  @ Twine#add(Object)
  @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::1293:68::1293:68>
-=== 2006-11-07T06:10:56.705Z (Twine.add:Twine.java:354) WRN
+=== 2006-11-07T09:16:35.762Z (Twine.add:Twine.java:354) WRN
 eruntime: Stringifying with '+' : (3)
  @ Twine#add(Object)
  @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::1293:55::1293:55>
-=== 2006-11-07T06:10:56.745Z (Twine.add:Twine.java:354) WRN
+=== 2006-11-07T09:16:35.782Z (Twine.add:Twine.java:354) WRN
 eruntime: Stringifying with '+' : (1)
  @ Twine#add(Object)
  @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::1338:65::1338:65>
-=== 2006-11-07T06:10:56.745Z (Twine.add:Twine.java:354) WRN
+=== 2006-11-07T09:16:35.782Z (Twine.add:Twine.java:354) WRN
 eruntime: Stringifying with '+' : (2)
  @ Twine#add(Object)
  @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::1338:46::1338:46>
-=== 2006-11-07T06:10:56.755Z (Twine.add:Twine.java:354) WRN
+=== 2006-11-07T09:16:35.782Z (Twine.add:Twine.java:354) WRN
 eruntime: Stringifying with '+' : (1)
  @ Twine#add(Object)
  @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::1339:37::1339:37>
-=== 2006-11-07T06:10:56.985Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
+=== 2006-11-07T09:16:35.962Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
 eruntime: Import java.util.makeVector instead : (Importing java.util.Vector)
  @ Loader#get(String)
- @ get/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:blob::1411:17::1411:45>
-=== 2006-11-07T06:10:57.115Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
-eruntime: Import java.util.makeCalendar instead : (Importing java.util.Calendar)
- @ Loader#get(String)
- @ get/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:blob::1467:1::1467:31>
-=== 2006-11-07T06:10:57.125Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
-eruntime: Import java.lang.makeSystem instead : (Importing java.lang.System)
- @ Loader#get(String)
- @ get/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:blob::1488:21::1488:49>
-abc=== 2006-11-07T06:10:57.256Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
+ @ get/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:blob::1414:19::1414:47>
+abc=== 2006-11-07T09:16:49.121Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
 eruntime: Import javax.swing.makeJLabel instead : (Importing javax.swing.JLabel)
  @ Loader#get(String)
- @ get/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:blob::1498:25::1498:42>
-=== 2006-11-07T06:11:29.913Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
-eruntime: Import java.lang.makeByte instead : (Importing java.lang.Byte)
- @ Loader#get(String)
- @ get/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:blob::1512:13::1512:39>
-=== 2006-11-07T06:11:30.343Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
-eruntime: Import javax.swing.makeJFrame instead : (Importing javax.swing.JFrame)
- @ Loader#get(String)
- @ get/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:blob::1939:18::1939:35>
-=== 2006-11-07T06:11:30.423Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
+ @ get/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:blob::1940:27::1940:44>
+=== 2006-11-07T09:16:50.663Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
 eruntime: Import javax.swing.makeJTextArea instead : (Importing javax.swing.JTextArea)
  @ Loader#get(String)
- @ get/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:blob::1942:23::1942:43>
-=== 2006-11-07T06:11:32.196Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
+ @ get/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:blob::1944:19::1944:39>
+=== 2006-11-07T09:16:50.894Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
 eruntime: Import java.awt.makeSystemColor instead : (Importing java.awt.SystemColor)
  @ Loader#get(String)
- @ get/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:blob::1945:26::1945:46>
-=== 2006-11-07T06:11:32.266Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
-eruntime: Import javax.swing.makeJButton instead : (Importing javax.swing.JButton)
+ @ get/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:blob::1898:26::1898:46>
+=== 2006-11-07T09:16:51.525Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
+eruntime: Import javax.swing.makeJFrame instead : (Importing javax.swing.JFrame)
  @ Loader#get(String)
- @ get/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:blob::1897:19::1897:37>
-=== 2006-11-07T06:11:32.877Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
-eruntime: Import javax.swing.makeWindowConstants instead : (Importing javax.swing.WindowConstants)
- @ Loader#get(String)
- @ get/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:blob::1961:36::1961:62>
-=== 2006-11-07T06:16:22.874Z (Twine.add:Twine.java:354) WRN
-eruntime: Stringifying with '+' : (10)
- @ Twine#add(Object)
- @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::2732:36::2732:36>
-=== 2006-11-07T06:16:22.944Z (Twine.add:Twine.java:354) WRN
-eruntime: Stringifying with '+' : (["R&D" => 10000, "Marketing" => 50000])
- @ Twine#add(Object)
- @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::3074:55::3074:55>
-=== 2006-11-07T06:16:22.994Z (Twine.add:Twine.java:354) WRN
-eruntime: Stringifying with '+' : (11)
- @ Twine#add(Object)
- @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::3268:40::3268:40>
-=== 2006-11-07T06:16:23.084Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
+ @ get/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:blob::2084:18::2084:35>
+=== 2006-11-07T09:16:56.812Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
 eruntime: Import org.erights.e.elib.sealing.makeBrand instead : (Importing org.erights.e.elib.sealing.Brand)
  @ Loader#get(String)
- @ get/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:blob::4344:41::4344:64>
-=== 2006-11-07T06:16:23.214Z (Twine.add:Twine.java:354) WRN
-eruntime: Stringifying with '+' : (problem: claim not transferable, invalid attendant)
- @ Twine#add(Object)
- @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::4722:53::4722:53>
-=== 2006-11-07T06:16:23.244Z (Twine.add:Twine.java:354) WRN
-eruntime: Stringifying with '+' : (<doc2>)
- @ Twine#add(Object)
- @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::4855:36::4855:36>
-=== 2006-11-07T06:16:23.244Z (Twine.add:Twine.java:354) WRN
-eruntime: Stringifying with '+' : (<sealed by claim>)
- @ Twine#add(Object)
- @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::4857:35::4857:35>
+ @ get/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:blob::4667:22::4667:45>
 ..................................
 at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::1181:2::1181:10>
 expr: help(add)
@@ -2261,7 +2164,7 @@ original value: an org.erights.e.elang.evm.EImplByProxy
                 interface "__main$add__C" {
                 
                 /** Invoke as a function */
-                to run(_ :any, _ :any) :any
+                to run(:any, :any) :any
                 }
                 
      new value: an org.erights.e.elang.evm.EImplByProxy
@@ -2270,20 +2173,49 @@ original value: an org.erights.e.elang.evm.EImplByProxy
                 to run(:any, :any) :any
                 }
                 
-...........
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::1491:2::1491:17>
-expr: out.print("abc")
-original and new problem differ
-original problem: <IllegalArgumentException: Ambiguous overload on class java.io.PrintStream: print(char[]) vs print(Object)>
-     new problem: <IllegalArgumentException: Ambiguous overload on class java.io.PrintStream: print(Object) vs print(String)>
-....................
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::4344:19::4344:39>
+........................................
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::4834:0::4834:20>
 expr: def makeBrandPair := <elib:sealing.Brand>
-original and new value differ
-original value: <import:org.erights.e.elib.sealing.Brand>
-     new value: <makeBrand>
-.......................=== 2006-11-07T06:16:23.665Z (PendingEvent.report:PendingEvent.java:109) WRN
-causality: Problem in turn <<Vat awtVat.e-awt in <AWTRunner>>,838>: 
+      def [claimSealer, claimUnsealer] := makeBrandPair("claim")
+      def HPMDocClaimMgr {
+          to makeClaim(doc) :any {
+              return claimSealer.seal(doc)
+          }
+          to matchClaim(claim, listOfCandidates) :any {
+              def doc := claimUnsealer.unseal(claim)
+              for each in listOfCandidates {
+                  if (doc == each) {return each}
+              }
+              throw("No match from claimCheck to candidate auths")
+          }
+      }
+      
+      def intilSharedDocs := [def doc1{}, def doc2{}, def doc3{}]
+      
+      def bob {
+          to lookAtHPMDoc(claim) :void {
+              try {
+                  def doc := HPMDocClaimMgr.matchClaim(claim, intilSharedDocs)
+                  println(`reading doc: $doc`)
+              } catch prob {
+                  println(`can't read: $claim')
+              }
+          }
+      }
+      
+      def alice {
+          to sendDoc(doc, recipient) :void {
+              def claim := HPMDocClaimMgr.makeClaim(doc)
+              recipient.lookAtHPMDoc(claim)
+          }
+      }
+      alice.sendDoc(doc2, bob)
+      alice.sendDoc(def doc4{}, bob)
+      
+missing original syntax error
+new syntax error: File end inside quasi-string literal, unmatched openning bracket:
+...............=== 2006-11-07T09:16:57.363Z (PendingEvent.report:PendingEvent.java:109) WRN
+causality: Problem in turn <<Vat awtVat.e-awt in <AWTRunner>>,832>: 
 --vvvv--
 Failed: Not mergeable: <Vat awtVat.e-awt in <AWTRunner>>
 
@@ -2294,7 +2226,7 @@ java.lang.RuntimeException: Failed: Not mergeable: <Vat awtVat.e-awt in <AWTRunn
 	at org.erights.e.develop.assertion.T.fail(T.java:84)
 	at org.erights.e.develop.assertion.T.require(T.java:339)
 	at org.erights.e.elib.vat.Vat$VatRedirector.run(Vat.java:627)
-	at sun.reflect.GeneratedMethodAccessor203.invoke(Unknown Source)
+	at sun.reflect.GeneratedMethodAccessor189.invoke(Unknown Source)
 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
 	at java.lang.reflect.Method.invoke(Method.java:585)
 	at org.erights.e.elib.prim.InstanceMethodNode.innerExecute(InstanceMethodNode.java:113)
