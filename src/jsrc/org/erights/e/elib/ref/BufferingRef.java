@@ -23,7 +23,6 @@ import org.erights.e.develop.assertion.T;
 import org.erights.e.elib.oldeio.TextWriter;
 import org.erights.e.elib.prim.Message;
 import org.erights.e.elib.prim.MirandaMethods;
-import org.erights.e.elib.sealing.Brand;
 import org.erights.e.elib.sealing.SealedBox;
 import org.erights.e.elib.slot.Guard;
 import org.erights.e.elib.tables.FlexList;
@@ -198,7 +197,7 @@ class BufferingRef extends Ref {
     /**
      *
      */
-    public SealedBox __optSealedDispatch(Brand brand) {
+    public SealedBox __optSealedDispatch(Object brand) {
         return MirandaMethods.__optSealedDispatch(this, brand);
     }
 
@@ -211,8 +210,6 @@ class BufferingRef extends Ref {
 
     /**
      *
-     * @param out
-     * @throws IOException
      */
     public void __printOn(TextWriter out) throws IOException {
         out.print("<Promise>");

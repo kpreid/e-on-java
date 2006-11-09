@@ -603,13 +603,13 @@ final static short yysindex[] = {                      -213,
     0,    0,  489,    0,  433,  440,  498,    0,  430,  512,
 15095,15824,  576,13207, 8319, 8319,16184,    0,    0,    0,
     0,  516,    0,  -64,    0,    0,13426,    0,  492,  497,
-    0,    0,    0,  165,15824,  720,    0,    0,  423,  220,
+    0,    0,    0,  165,15824,  720,    0,    0,  423,13066,
     0,15464,    0,    0,  498,13207,16184,  243,  373, -211,
     0,  364,    0,  336,15095,  336,    0,  171,  314,  173,
   336,13207,16184,    0,    0,   87,  485,    0,  512,  151,
-    0,  331,  336,  312,  283,  485,    0,11393,  584,    0,
-  -42,    0,  -42,  -42,  -42,10524,  205,  551,   82,    0,
-  590,    0,10888,  522,    0,    0,   42,    0,    0,11030,
+    0,  328,  336,  312,  283,  485,    0,11393,  579,    0,
+  -42,    0,  -42,  -42,  -42,10524,  198,  551,   82,    0,
+  588,    0,10888,  509,    0,    0,   42,    0,    0,11030,
 11393,12040,12403,11535,    0,    0,    0,    0,    0,    0,
     0,    0,    0,    0,    0,    0,    0,11535,11535,11535,
 12694, 3667,15824,17191,  151,12403,12403,12403,12403,15095,
@@ -618,51 +618,51 @@ final static short yysindex[] = {                      -213,
 12403,12403,12403,  151,  151,16657,17191,  151,17191,  151,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
     0,    0,    6,    0,  212,    0,    0,  431,12403,12403,
-17191,  151,17191,    0,  -87,  336,  365,   -3,    0,    0,
-15824,  151,17191,  151,15824,    0,  -64,    0,  370,    0,
+17191,  151,17191,    0,  -87,  336,  359,   -3,    0,    0,
+15824,  151,17191,  151,15824,    0,  -64,    0,  367,    0,
 15824,17191,  151,15675,    0,    0,    0,   -2,   54,    0,
-  240,  555,    0,15095,  -64,    0,    0,  151,  151,    0,
+  229,  543,    0,15095,  -64,    0,    0,  151,  151,    0,
     0,    0,  720,    0,    0,    0,  498,  512,12545,11535,
-  446,  151,  655,    0,15095,12403,15095,  428,    0,    0,
+  403,  151,  655,    0,15095,12403,15095,  428,    0,    0,
 15095,17191,  151,17191, -178,    0,  336,  151,    0,   14,
-    0,    0,11393,    0,  675,12403,  446,15095,  220,  220,
+    0,    0,11393,    0,  675,12403,  403,15095,  220,  220,
     0,  151,    0,    0,16035,  151,    0,  151,    0,  151,
     0,    0,    0,  414,    0,   53,    0,    0,   98,    0,
     0,    0,    0, 4099,  373,    0,  684,    0,    0,17191,
-  373,    0,    0,  -64,    0,  684,    0,    0,  634,    0,
-  699,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+  373,    0,    0,  -64,    0,  684,    0,    0,  629,    0,
+  683,    0,    0,    0,    0,    0,    0,    0,    0,    0,
     0,    0,  -42,    0,    0,    0,    0,    0,  233,  233,
   396,  396,   44,   44,    0,    0,    0,    0,    0,    0,
-  336,  703,  373,  684,    0,    0,    0,  704,  684,  654,
-  151,  336,    0,  212,    0,    0,    0,    0,  712,  718,
-  723,15095,  151,    0,    0,    0,  722,12403,    0,  -64,
-  726,  729,  677,  -64,  -64,    0,  686, -229,15095,    0,
-  -12,    0,15095,15464,    0,  656,15095,    0,   18,    0,
+  336,  702,  373,  684,    0,    0,    0,  703,  684,  652,
+  151,  336,    0,  212,    0,    0,    0,    0,  707,  711,
+  719,15095,  151,    0,    0,    0,  722,12403,    0,  -64,
+  726,  723,  676,  -64,  -64,    0,  677, -229,15095,    0,
+  -12,    0,15095,15464,    0,  654,15095,    0,   18,    0,
 15095,    0,    0,    0,    0,    0,  336,    0,  -56,    0,
-  742,16523,  751,  743,12403,  671,    7,  -10,    0,    0,
-  336,    0,    0,  151,  336,    0,  506,  673,  673,    0,
-13207,16184,    0,    0,10524,  205,    0,    0,    0,   75,
+  741,16523,  742,  752,12403,  659,    7,  -10,    0,    0,
+  336,    0,    0,  151,  336,    0,  505,  672,  672,    0,
+13207,16184,    0,    0,10524,  198,    0,    0,    0,   75,
 17191,    0,    0,    0,    0,    0,  151,    0,17057,    0,
-    0,    0,    0,  759,    0,    0,  151,  -47,  151,  336,
+    0,    0,    0,  755,    0,    0,  151,  -47,  151,  336,
     0,    0,    0,  151,    0,    0,12403,12403,    0,    0,
- -222,    0,    0,  151,11535,  336,  446,    0,    0,  151,
+ -222,    0,    0,  151,11535,  336,  403,    0,    0,  151,
   744,15824,  744,    0,   80,    0,  744,  151,    0,  151,
-  769,12403,  722,    0,  -71,    0,  394,    0,12403,  151,
-    0,    0,    0,    0,  151,    0,    0,  151,  336,  773,
-15824,15824,    0,  774,    0,    0,  544,  780,    0,    0,
-12403,12403,  697,    0,    0,    0,  783,15824,    0,  -64,
-    0,16523,    0,    0,  785,  544,    0,    0,  151,15315,
-  673,  279,  788,  336,    0,  -47,  -64,  789,  -73,  -47,
-    0,  124,  151,  547,  707,    0,    0,    0,    0,  744,
+  756,12403,  722,    0,  -71,    0,  394,    0,12403,  151,
+    0,    0,    0,    0,  151,    0,    0,  151,  336,  772,
+15824,15824,    0,  773,    0,    0,  542,  776,    0,    0,
+12403,12403,  696,    0,    0,    0,  781,15824,    0,  -64,
+    0,16523,    0,    0,  783,  542,    0,    0,  151,15315,
+  672,  279,  785,  336,    0,  -47,  -64,  788,  -73,  -47,
+    0,  124,  151,  538,  713,    0,    0,    0,    0,  744,
   -64,    0,  744,  715,  546,    0,  151,    0,  336,    0,
 15824,15824,    0,    3,    0,  336,    0,  932,  151,    0,
     0,    0,15824,15824,    0,16791,16791,    0,    0,    0,
-    0,    0,16925,    0,  -97,    0,  789,  -66,  151,  336,
+    0,    0,16925,    0,  -97,    0,  788,  -66,  151,  336,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
-    0,    0,    0,    0,    0,17191,11535,  727,  -64,  789,
+    0,    0,    0,    0,    0,17191,11535,  727,  -64,  788,
   151,  808,  336,  336,  151,  813,    0,15824,15095,  814,
-    0,  446,  573,  684,  151,    0,  816,  151,    0,    0,
-  820,  151,  789,  -41,    0,  151,  746,  -47,  829,  744,
+    0,  403,  573,  684,  151,    0,  816,  151,    0,    0,
+  820,  151,  788,  -41,    0,  151,  746,  -47,  829,  744,
   831,  336,  749,    0,    0,  -47,    0,  744,    0,    0,
     0,    0,
 };
@@ -690,7 +690,7 @@ final static short yyrindex[] = {                      1527,
     0,    0,  -58,    0,    0,    0, 6986,    0,    0, 7029,
   447,    0,    0,    0,    0,    0,    0,    0,    0,    0,
     0, 7084,    0, 7261,    0,    0,  245,    0,    0,    0,
-    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+    0,    0,    0,    0,    0,    0,    0,    0,    0,  447,
     0,  447,    0,    0,  745,    0,    0,  262, 1997,    0,
   105,  795,    0,    0,  391,    0,    0,  587,    0,  754,
     0,    0,    0,    0,    0,  327,    0,    0, 1648, 9514,
@@ -726,44 +726,44 @@ final static short yyrindex[] = {                      1527,
     0,    0,    0, 7735, 7777,    0,    0,   30,  447,    0,
     0,    0,  447,  447,    0,    0,  447,    0,    0,    0,
   447,    0,    0,    0,    0,    0,    0,    0,    0,    0,
-    0,  855,    0,    0,  447,    0,  771,  776,    0,    0,
-    0,    0,    0,  475,    0,    0,    0,    0,    0,    0,
+    0,  855,    0,    0,  447,    0,  771,  778,    0,    0,
+    0,    0,    0,  473,    0,    0,    0,    0,    0,    0,
     0,    0,    0,    0,  447,    0,    0,   84,    0,    0,
     0,    0,    0,    0,    0,    0, 9009,    0, 4276,    0,
     0,    0,    0,    0,    0,    0,13937,  779,13937,    0,
     0,    0,    0,13937,    0,    0,  447,  447,    0,    0,
-   86,    0,    0,  782,  447,    0, 2549,    0,    0,16391,
-   95,    0,   95,    0,  864,    0,  682,16391,    0,  -68,
-  794,  447,  796,    0,    0,    0,    0,    0,  447,  308,
+   86,    0,    0,  780,  447,    0, 2549,    0,    0,16391,
+   95,    0,   95,    0,  866,    0,  682,16391,    0,  -68,
+  789,  447,  794,    0,    0,    0,    0,    0,  447,  308,
     0,    0,    0,    0,10019,    0,    0,13568,    0,    0,
     0,    0,    0,    0,    0,    0,  169,    0,    0,    0,
   447,  447,    0,    0,    0,    0,    0,    0,    0,  197,
-    0,    0,    0,    0,    0,  -63,    0,    0,   99,  798,
-    0,    0,    0,    0,    0,  779,   63,  800,  803,  779,
-    0,    0,  303,  787,    0,    0,    0,    0,    0,  682,
-  705,    0,  682,    0,    0,    0,  782,    0,  -25,    0,
-    0,    0,    0,  798,    0,    0,    0,    0,  782,    0,
+    0,    0,    0,    0,    0,  -63,    0,    0,   99,  796,
+    0,    0,    0,    0,    0,  779,   63,  798,  800,  779,
+    0,    0,  303,  801,    0,    0,    0,    0,    0,  682,
+  705,    0,  682,    0,    0,    0,  780,    0,  -25,    0,
+    0,    0,    0,  796,    0,    0,    0,    0,  780,    0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
     0,    0,    0,    0,   66,    0,  804,  805,13937,    0,
  1948,    0,    0,    0,    0,    0,    0,    0,    0,    0,
     0,    0,    0,    0,    0,    0,  447,    0,   67,  807,
 13937,    0,    0,    0,16391,    0,    0,    0,   56,    0,
-    0,    0, 2117,    0,  782,    0,    0,13937,    0,    0,
-    0,16391,  810,  798,    0,  782,    0,  779,    0,  402,
+    0,    0, 2117,    0,  780,    0,    0,13937,    0,    0,
+    0,16391,  810,  796,    0,  780,    0,  779,    0,  402,
     0,    0,    0,    0,    0,  779,    0,  402,    0,    0,
     0,    0,
 };
 final static short yygindex[] = {                         0,
     1,  101,  523,   69,    0,    0,  613, -167,  630, -146,
-  797,    0,   -4,    0,    0,   28,   49, 1799,  229,  635,
+  797,    0,   -4,    0,    0,   28,   49, 1799,  253,  611,
  -253, 1373,    0,    0,  471,  177,  320,  388,  389,  539,
-  588,  593,    0,  622,  -93,   64,  -24,    0, -301, -316,
-    0,  318, -344,  456, -197,   10,   50,    0,  377,  667,
-    0, -422, -144,  676,  168,  138,    0,  234,  366,    0,
+  584,  593,    0,  617,  -93,   64,  -24,    0, -301, -316,
+    0,  317, -344,  456, -197,   10,   50,    0,  377,  679,
+    0, -422, -144,  671,  170,  139,    0,  234,  366,    0,
   -48,    0,    0, -147,    0,    0,    0,    0,    0,    0,
     0,    0, -138, -409,  541,    0, -300,  -86,  -51,  490,
- -235,  553,    0,    0,    0,    0,    0,  180,    0,  538,
-    0,    0,    0,  708,    0,  395,    0,  267,  583, -342,
+ -235,  553,    0,    0,    0,    0,    0,  180,    0,  540,
+    0,    0,    0,  706,    0,  395,    0,  267,  583, -342,
   375, -312,    0,  206,  -39,  595, -233,    0, -639, -638,
   200,   68, -189,    0,  260, -522,  287,    0,    0, -442,
     0,    0,  211,    0, -111,  -37,    0,    0,  284,
@@ -791,7 +791,7 @@ static private void initTables() {
         yytable = (short[])obInp.readObject();
         yycheck = (short[])obInp.readObject();
         long hash = EYaccFixer.checkhash(yytable, yycheck);
-        if (hash != 5597256968383022868L) {
+        if (hash != -3670744596009150916L) {
             T.fail(rName + " bad checkhash: " +
                                        hash);
         }
@@ -1029,7 +1029,7 @@ final static String yyrule[] = {
 "iterPattern : pattern",
 "iterPattern : pattern MapsTo pattern",
 "pattern : subPattern",
-"pattern : subPattern '?' parenExpr",
+"pattern : subPattern '?' prim",
 "pattern : VIA parenExpr pattern",
 "pattern : metaoid parenExpr MapsTo pattern",
 "subPattern : namer",
@@ -1345,7 +1345,7 @@ final static String yyrule[] = {
 "reserved : WSTRING",
 };
 
-//#line 1541 "e.y"
+//#line 1544 "e.y"
 
 
 /**
@@ -2620,8 +2620,8 @@ case 129:
 break;
 case 130:
 //#line 573 "e.y"
-{ /* doesn't bind __return */
-                                          /* XXX We may deprecate this */
+{ b.pocket(NO_POSER,"thunk");
+                                          /* doesn't bind __return */
                                           yyval = b.fnDecl(val_peek(1), b.list(), val_peek(0)); }
 break;
 case 131:
@@ -3178,21 +3178,23 @@ break;
 case 293:
 //#line 1136 "e.y"
 { /* binds __return */
+                                  b.pocket(val_peek(5),"hard-when");
                                   yyval = b.list(ODECL.withOName(val_peek(5)),
                                               val_peek(3), val_peek(1), val_peek(0),
                                               Boolean.TRUE); }
 break;
 case 294:
-//#line 1141 "e.y"
+//#line 1142 "e.y"
 { /* XXX should this bind __return ?? */
                                   /* Currently, it does. */
-                                  b.pocket(val_peek(1),"easy-when");
+                                  b.pocket(val_peek(2),"easy-when");
+                                  b.pocket(val_peek(2),"hard-when");
                                   yyval = b.list(ODECL.withOName(val_peek(2)),
                                               null, val_peek(1), val_peek(0),
                                               Boolean.TRUE); }
 break;
 case 295:
-//#line 1148 "e.y"
+//#line 1150 "e.y"
 { /* XXX should this bind __return ?? */
                                   /* Currently, it does not. */
                                   b.pocket(val_peek(1),"easy-when");
@@ -3201,367 +3203,368 @@ case 295:
                                               Boolean.FALSE); }
 break;
 case 296:
-//#line 1157 "e.y"
-{ yyval = val_peek(0); }
+//#line 1159 "e.y"
+{ b.pocket(val_peek(1),"hard-when");
+                                          yyval = val_peek(0); }
 break;
 case 297:
-//#line 1158 "e.y"
+//#line 1161 "e.y"
 { yyval = b.defaultOptWhenGuard(yylval); }
 break;
 case 298:
-//#line 1159 "e.y"
+//#line 1162 "e.y"
 { b.reserved(val_peek(1),"throws"); }
 break;
 case 299:
-//#line 1160 "e.y"
+//#line 1163 "e.y"
 { b.reserved(val_peek(1),"throws"); }
 break;
 case 300:
-//#line 1172 "e.y"
+//#line 1175 "e.y"
 { yyval = b.list(val_peek(2), val_peek(1), val_peek(0)); }
 break;
 case 301:
-//#line 1173 "e.y"
+//#line 1176 "e.y"
 { b.pocket(val_peek(0),"easy-when");
                                      yyval = b.list(val_peek(0), null, null); }
 break;
 case 306:
-//#line 1194 "e.y"
+//#line 1197 "e.y"
 { yyval = b.list(); }
 break;
 case 307:
-//#line 1198 "e.y"
+//#line 1201 "e.y"
 { yyval = b.list(); }
 break;
 case 309:
-//#line 1207 "e.y"
+//#line 1210 "e.y"
 { b.pocket(val_peek(0),"verb-string");
                                           yyval = val_peek(0); }
 break;
 case 310:
-//#line 1215 "e.y"
+//#line 1218 "e.y"
 { b.pocket(val_peek(0),"verb-curry");
                                           yyval = val_peek(0); }
 break;
 case 311:
-//#line 1217 "e.y"
+//#line 1220 "e.y"
 { b.pocket(val_peek(0),"verb-curry");
                                           b.pocket(val_peek(0),"verb-string");
                                           yyval = val_peek(0); }
 break;
 case 312:
-//#line 1229 "e.y"
+//#line 1232 "e.y"
 { b.pocket(val_peek(0),"dot-props");
                                           yyval = val_peek(0); }
 break;
 case 313:
-//#line 1231 "e.y"
+//#line 1234 "e.y"
 { b.pocket(val_peek(0),"dot-props");
                                           yyval = val_peek(0); }
 break;
 case 314:
-//#line 1239 "e.y"
+//#line 1242 "e.y"
 { yyval = b.varName(val_peek(0)); }
 break;
 case 315:
-//#line 1240 "e.y"
+//#line 1243 "e.y"
 { b.pocket(val_peek(1),"noun-string");
                                           yyval = b.varName(val_peek(0)); }
 break;
 case 316:
-//#line 1242 "e.y"
+//#line 1245 "e.y"
 { b.pocket(val_peek(1),"noun-string");
                                           yyval = b.varName(val_peek(0)); }
 break;
 case 318:
-//#line 1251 "e.y"
+//#line 1254 "e.y"
 { b.reserved(val_peek(0),"keyword \"" +
                                      ((Astro)val_peek(0)).getTag().getTagName() +
                                      "\""); }
 break;
 case 319:
-//#line 1267 "e.y"
+//#line 1270 "e.y"
 { yyval = b.ident(val_peek(0), "add"); }
 break;
 case 320:
-//#line 1268 "e.y"
+//#line 1271 "e.y"
 { yyval = b.ident(val_peek(0), "and"); }
 break;
 case 321:
-//#line 1269 "e.y"
+//#line 1272 "e.y"
 { yyval = b.ident(val_peek(0), "approxDivide"); }
 break;
 case 322:
-//#line 1270 "e.y"
+//#line 1273 "e.y"
 { yyval = b.ident(val_peek(0), "floorDivide"); }
 break;
 case 323:
-//#line 1271 "e.y"
+//#line 1274 "e.y"
 { yyval = b.ident(val_peek(0), "shiftLeft"); }
 break;
 case 324:
-//#line 1272 "e.y"
+//#line 1275 "e.y"
 { yyval = b.ident(val_peek(0), "shiftRight"); }
 break;
 case 325:
-//#line 1273 "e.y"
+//#line 1276 "e.y"
 { yyval = b.ident(val_peek(0), "remainder"); }
 break;
 case 326:
-//#line 1274 "e.y"
+//#line 1277 "e.y"
 { yyval = b.ident(val_peek(0), "mod"); }
 break;
 case 327:
-//#line 1275 "e.y"
+//#line 1278 "e.y"
 { yyval = b.ident(val_peek(0), "multiply"); }
 break;
 case 328:
-//#line 1276 "e.y"
+//#line 1279 "e.y"
 { yyval = b.ident(val_peek(0), "or"); }
 break;
 case 329:
-//#line 1277 "e.y"
+//#line 1280 "e.y"
 { yyval = b.ident(val_peek(0), "pow"); }
 break;
 case 330:
-//#line 1278 "e.y"
+//#line 1281 "e.y"
 { yyval = b.ident(val_peek(0), "subtract"); }
 break;
 case 331:
-//#line 1279 "e.y"
+//#line 1282 "e.y"
 { yyval = b.ident(val_peek(0), "xor"); }
 break;
 case 332:
-//#line 1290 "e.y"
+//#line 1293 "e.y"
 { yyval = b.ident(val_peek(0), "add"); }
 break;
 case 333:
-//#line 1291 "e.y"
+//#line 1294 "e.y"
 { yyval = b.ident(val_peek(0), "and"); }
 break;
 case 334:
-//#line 1292 "e.y"
+//#line 1295 "e.y"
 { yyval = b.ident(val_peek(0), "approxDivide"); }
 break;
 case 335:
-//#line 1293 "e.y"
+//#line 1296 "e.y"
 { yyval = b.ident(val_peek(0), "floorDivide"); }
 break;
 case 336:
-//#line 1294 "e.y"
+//#line 1297 "e.y"
 { yyval = b.ident(val_peek(0), "shiftLeft"); }
 break;
 case 337:
-//#line 1295 "e.y"
+//#line 1298 "e.y"
 { yyval = b.ident(val_peek(0), "shiftRight"); }
 break;
 case 338:
-//#line 1296 "e.y"
+//#line 1299 "e.y"
 { yyval = b.ident(val_peek(0), "remainder"); }
 break;
 case 339:
-//#line 1297 "e.y"
+//#line 1300 "e.y"
 { yyval = b.ident(val_peek(0), "mod"); }
 break;
 case 340:
-//#line 1298 "e.y"
+//#line 1301 "e.y"
 { yyval = b.ident(val_peek(0), "multiply"); }
 break;
 case 341:
-//#line 1299 "e.y"
+//#line 1302 "e.y"
 { yyval = b.ident(val_peek(0), "or"); }
 break;
 case 342:
-//#line 1300 "e.y"
+//#line 1303 "e.y"
 { yyval = b.ident(val_peek(0), "pow"); }
 break;
 case 343:
-//#line 1301 "e.y"
+//#line 1304 "e.y"
 { yyval = b.ident(val_peek(0), "subtract"); }
 break;
 case 344:
-//#line 1302 "e.y"
+//#line 1305 "e.y"
 { yyval = b.ident(val_peek(0), "xor"); }
 break;
 case 345:
-//#line 1311 "e.y"
+//#line 1314 "e.y"
 { yyval = b.getNULL(); }
 break;
 case 346:
-//#line 1312 "e.y"
+//#line 1315 "e.y"
 { yyval = val_peek(1); }
 break;
 case 347:
-//#line 1320 "e.y"
+//#line 1323 "e.y"
 { b.pocket(val_peek(2),"accumulator");
                                                   yyval = b.accumulate(val_peek(1),val_peek(0)); }
 break;
 case 348:
-//#line 1325 "e.y"
+//#line 1328 "e.y"
 { yyval = b.accumFor(val_peek(3),val_peek(1),val_peek(0)); }
 break;
 case 349:
-//#line 1326 "e.y"
+//#line 1329 "e.y"
 { yyval = b.accumIf(val_peek(1),val_peek(0)); }
 break;
 case 350:
-//#line 1327 "e.y"
+//#line 1330 "e.y"
 { yyval = b.accumWhile(val_peek(1),val_peek(0)); }
 break;
 case 351:
-//#line 1331 "e.y"
+//#line 1334 "e.y"
 { yyval = b.accumBody(val_peek(3),
                                                                  b.list(val_peek(2))); }
 break;
 case 352:
-//#line 1333 "e.y"
+//#line 1336 "e.y"
 { yyval = b.accumBody(val_peek(3),val_peek(2)); }
 break;
 case 353:
-//#line 1334 "e.y"
+//#line 1337 "e.y"
 { yyval = val_peek(2); }
 break;
 case 354:
-//#line 1339 "e.y"
+//#line 1342 "e.y"
 { yyval = val_peek(1); }
 break;
 case 355:
-//#line 1343 "e.y"
+//#line 1346 "e.y"
 { yyval = b.vTable(val_peek(2), val_peek(1)); }
 break;
 case 356:
-//#line 1344 "e.y"
+//#line 1347 "e.y"
 { b.pocket(NO_POSER,
                                                            "plumbing");
                                                   yyval = b.vTable(null,
                                                                 b.list(val_peek(0))); }
 break;
 case 358:
-//#line 1359 "e.y"
+//#line 1362 "e.y"
 { yyval = b.with(val_peek(2), val_peek(1)); }
 break;
 case 361:
-//#line 1369 "e.y"
+//#line 1372 "e.y"
 { yyval = b.with(val_peek(2), val_peek(1)); }
 break;
 case 364:
-//#line 1386 "e.y"
+//#line 1389 "e.y"
 { yyval = b.with(val_peek(1), val_peek(0)); }
 break;
 case 365:
-//#line 1390 "e.y"
+//#line 1393 "e.y"
 { yyval = null; }
 break;
 case 366:
-//#line 1391 "e.y"
+//#line 1394 "e.y"
 { b.pocket(NO_POSER,
                                                            "escape-handler");
                                                   yyval = val_peek(0); }
 break;
 case 367:
-//#line 1397 "e.y"
+//#line 1400 "e.y"
 { yyval = b.matcher(val_peek(1), val_peek(0)); }
 break;
 case 368:
-//#line 1404 "e.y"
+//#line 1407 "e.y"
 { yyval = null; }
 break;
 case 369:
-//#line 1405 "e.y"
+//#line 1408 "e.y"
 { yyval = val_peek(0); }
 break;
 case 370:
-//#line 1415 "e.y"
+//#line 1418 "e.y"
 { yyval = b.oType("", val_peek(1), b.list(),
                                                        b.list(val_peek(0))); }
 break;
 case 371:
-//#line 1424 "e.y"
+//#line 1427 "e.y"
 { yyval = null; }
 break;
 case 372:
-//#line 1425 "e.y"
+//#line 1428 "e.y"
 { yyval = val_peek(0); }
 break;
 case 375:
-//#line 1434 "e.y"
+//#line 1437 "e.y"
 { yyval = b.list(val_peek(0)); }
 break;
 case 376:
-//#line 1435 "e.y"
+//#line 1438 "e.y"
 { yyval = b.with(val_peek(2),val_peek(0)); }
 break;
 case 378:
-//#line 1443 "e.y"
+//#line 1446 "e.y"
 { b.reserved(NO_POSER,"causality"); }
 break;
 case 379:
-//#line 1448 "e.y"
+//#line 1451 "e.y"
 { yyval = b.mType(val_peek(6), val_peek(4), val_peek(2), val_peek(0)); }
 break;
 case 380:
-//#line 1450 "e.y"
+//#line 1453 "e.y"
 { yyval = b.mType(val_peek(5), "run", val_peek(2), val_peek(0));}
 break;
 case 382:
-//#line 1458 "e.y"
+//#line 1461 "e.y"
 { b.reserved(NO_POSER,"causality"); }
 break;
 case 383:
-//#line 1462 "e.y"
+//#line 1465 "e.y"
 { yyval = b.mType("", "run", val_peek(2), val_peek(0)); }
 break;
 case 384:
-//#line 1463 "e.y"
+//#line 1466 "e.y"
 { b.pocket(val_peek(5),"one-method-object");
                                             yyval = b.mType("", val_peek(4),    val_peek(2), val_peek(0)); }
 break;
 case 385:
-//#line 1465 "e.y"
+//#line 1468 "e.y"
 {b.pocket(val_peek(5),"one-method-object");
                                             yyval = b.mType("", val_peek(4),    val_peek(2), val_peek(0)); }
 break;
 case 386:
-//#line 1470 "e.y"
+//#line 1473 "e.y"
 { yyval = val_peek(0); }
 break;
 case 387:
-//#line 1471 "e.y"
+//#line 1474 "e.y"
 { yyval = val_peek(1); }
 break;
 case 388:
-//#line 1476 "e.y"
+//#line 1479 "e.y"
 { yyval = b.list(val_peek(0)); }
 break;
 case 389:
-//#line 1477 "e.y"
+//#line 1480 "e.y"
 { yyval = b.with(val_peek(2),val_peek(0)); }
 break;
 case 390:
-//#line 1484 "e.y"
+//#line 1487 "e.y"
 { yyval = b.pType(val_peek(1),val_peek(0)); }
 break;
 case 391:
-//#line 1485 "e.y"
+//#line 1488 "e.y"
 { yyval = b.pType(null,val_peek(0)); }
 break;
 case 392:
-//#line 1486 "e.y"
+//#line 1489 "e.y"
 { yyval = b.pType(null,val_peek(0)); }
 break;
 case 393:
-//#line 1494 "e.y"
+//#line 1497 "e.y"
 { yyval = null; }
 break;
 case 394:
-//#line 1495 "e.y"
+//#line 1498 "e.y"
 { yyval = val_peek(0); }
 break;
 case 408:
-//#line 1511 "e.y"
+//#line 1514 "e.y"
 { yyval = "->"; }
 break;
-//#line 7026 "EParser.java"
+//#line 7029 "EParser.java"
 //########## END OF USER-SUPPLIED ACTIONS ##########
     }//switch
     //#### Now let's reduce... ####

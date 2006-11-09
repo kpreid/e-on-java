@@ -29,7 +29,6 @@ import org.erights.e.elib.base.TypeDesc;
 import org.erights.e.elib.base.ValueThunk;
 import org.erights.e.elib.oldeio.TextWriter;
 import org.erights.e.elib.ref.Ref;
-import org.erights.e.elib.sealing.Brand;
 import org.erights.e.elib.sealing.SealedBox;
 import org.erights.e.elib.serial.PassByConstruction;
 import org.erights.e.elib.serial.Persistent;
@@ -282,13 +281,13 @@ public class StaticMaker
     /**
      *
      */
-    public SealedBox __optSealedDispatch(Brand brand) {
+    public SealedBox __optSealedDispatch(Object brand) {
         Object box = E.call(this, "__optSealedDispatch", brand);
         return (SealedBox)E.as(box, SealedBox.class);
     }
 
     /**
-     * @return
+     *
      */
     public Object __conformTo(Guard guard) {
         return E.call(this, "__conformTo", guard);
@@ -296,7 +295,6 @@ public class StaticMaker
 
     /**
      *
-     * @param out
      */
     public void __printOn(TextWriter out) {
         E.call(this, "__printOn", out);
@@ -311,8 +309,6 @@ public class StaticMaker
 
     /**
      *
-     * @param out
-     * @throws IOException
      */
     public void mirandaPrintOn(TextWriter out) throws IOException {
         if (SafeJ.approve(myClass, true)) {

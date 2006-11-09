@@ -27,7 +27,6 @@ import org.erights.e.elib.ref.EProxyHandler;
 import org.erights.e.elib.ref.EProxyResolver;
 import org.erights.e.elib.ref.Ref;
 import org.erights.e.elib.ref.ReferenceMonitor;
-import org.erights.e.elib.sealing.Brand;
 import org.erights.e.elib.sealing.SealedBox;
 import org.erights.e.elib.sealing.Sealer;
 import org.erights.e.elib.sealing.Unsealer;
@@ -106,7 +105,7 @@ abstract class RemoteHandler implements EProxyHandler {
     }
 
     /**
-     * @return
+     * 
      */
     public EProxyHandler unwrap() {
         return this;
@@ -115,7 +114,7 @@ abstract class RemoteHandler implements EProxyHandler {
     /**
      * How should my ref respond to an __optSealedDispatch request?
      */
-    public SealedBox handleOptSealedDispatch(Brand brand) {
+    public SealedBox handleOptSealedDispatch(Object brand) {
         Sealer sealer = myConn.getSealer();
         if (sealer.getBrand() == brand) {
             return sealer.seal(this);
@@ -208,7 +207,6 @@ abstract class RemoteHandler implements EProxyHandler {
 
     /**
      *
-     * @return
      */
     static private Ref promiseForNull() {
         Object[] pair = Ref.promise();
@@ -278,12 +276,12 @@ abstract class RemoteHandler implements EProxyHandler {
             //reported remotely.
             return;
         }
-        if (myPos > 0) {
-            if (myWireCount >= 1) {
+        if (0 < myPos) {
+            if (1 <= myWireCount) {
                 myConn.sendGCExportOp(myPos, myWireCount);
                 myWireCount = 0;
             }
-        } else if (myPos < 0) {
+        } else if (0 > myPos) {
             myConn.dropQuestion(myPos);
         }
     }

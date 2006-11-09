@@ -373,6 +373,26 @@ e.enable.trinary-define=allow
 
 e.enable.call-pattern=allow
 
+################ New as of 0.8.37c #######################
+
+# As of 0.8.37c, we add an explicit switch for controlling the currently
+# allowed syntax
+#
+#    "thunk" "{" <expr> "}"
+#
+# with the intention of disabling it as of 0.9 and retiring it as of 1.0, since
+# the "fn" syntax makes "thunk" redundant.
+
+e.enable.thunk=allow
+
+# As of 0.8.37c, we add an explicit switch for controlling the currently
+# allowed syntaxes for using an explicit done function in a when. The intention
+# is to disable it as of 0.9 and retire it as of 1.0, at which time we hope
+# to also retire the "when" keyword and swicth to a first class "when"
+# control abstraction using the to-be-enabled by default lambda-args.
+
+e.enable.hard-when=allow
+
 ################ Discontinued Switches ####################
 
 

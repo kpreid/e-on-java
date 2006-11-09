@@ -22,7 +22,6 @@ Contributor(s): ______________________________________.
 import org.erights.e.elib.oldeio.TextWriter;
 import org.erights.e.elib.prim.E;
 import org.erights.e.elib.sealing.Amplifiable;
-import org.erights.e.elib.sealing.Brand;
 import org.erights.e.elib.sealing.SealedBox;
 import org.erights.e.elib.serial.PassByProxy;
 import org.erights.e.elib.serial.PersistentKeyHolder;
@@ -33,8 +32,8 @@ import java.io.IOException;
  * A ROList gives read-only access to an underlying potentially mutable list.
  *
  * @author Mark S. Miller
- * @see org.erights.e.elib.tables.ConstList
- * @see org.erights.e.elib.tables.FlexList
+ * @see ConstList
+ * @see FlexList
  */
 class ROList extends EList implements Amplifiable, PassByProxy {
 
@@ -217,10 +216,8 @@ class ROList extends EList implements Amplifiable, PassByProxy {
      * <p/>
      * XXX Should provide an optional creation-time parameter of a Sealer to
      * use in addition (or instead?) as a secret divulging channel.
-     *
-     * @return
      */
-    public SealedBox __optSealedDispatch(Brand brand) {
+    public SealedBox __optSealedDispatch(Object brand) {
         if (PersistentKeyHolder.THE_BRAND == brand) {
             Object[] uncall = {myPrecious, "readOnly", E.NO_ARGS};
             return PersistentKeyHolder.THE_SEALER.seal(uncall);

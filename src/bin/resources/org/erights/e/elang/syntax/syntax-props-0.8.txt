@@ -14,10 +14,12 @@ e.enable.easy-when=true
 e.enable.escape-handler=true
 e.enable.explicit-result-guard=true
 e.enable.exporter=true
+e.enable.hard-when=true
 e.enable.importer=true
 e.enable.meta-scope=true
 e.enable.pattern-default=true
 e.enable.plumbing=true
+e.enable.thunk=true
 e.enable.verb-string=true
 
 e.enable.smalltalk-return=warn

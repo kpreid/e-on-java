@@ -23,7 +23,6 @@ import org.erights.e.elib.base.Thunk;
 import org.erights.e.elib.oldeio.TextWriter;
 import org.erights.e.elib.prim.E;
 import org.erights.e.elib.sealing.Amplifiable;
-import org.erights.e.elib.sealing.Brand;
 import org.erights.e.elib.sealing.SealedBox;
 import org.erights.e.elib.serial.PassByProxy;
 import org.erights.e.elib.serial.PersistentKeyHolder;
@@ -140,14 +139,12 @@ class ROMap extends EMap implements Amplifiable, PassByProxy {
 
     /**
      * Divulges itself only to a holder of
-     * {@link org.erights.e.elib.serial.PersistentKeyHolder#THE_UNSEALER}.
+     * {@link PersistentKeyHolder#THE_UNSEALER}.
      * <p/>
      * XXX Should provide an optional creation-time parameter of a Sealer to
      * use in addition (or instead?) as a secret divulging channel.
-     *
-     * @return
      */
-    public SealedBox __optSealedDispatch(Brand brand) {
+    public SealedBox __optSealedDispatch(Object brand) {
         if (PersistentKeyHolder.THE_BRAND == brand) {
             Object[] uncall = {myPrecious, "readOnly", E.NO_ARGS};
             return PersistentKeyHolder.THE_SEALER.seal(uncall);

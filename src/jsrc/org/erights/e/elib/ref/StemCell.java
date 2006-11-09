@@ -6,7 +6,6 @@ package org.erights.e.elib.ref;
 import org.erights.e.develop.assertion.T;
 import org.erights.e.elib.oldeio.TextWriter;
 import org.erights.e.elib.prim.MirandaMethods;
-import org.erights.e.elib.sealing.Brand;
 import org.erights.e.elib.sealing.SealedBox;
 import org.erights.e.elib.serial.PassByConstruction;
 import org.erights.e.elib.serial.Persistent;
@@ -211,9 +210,9 @@ public /*abstract*/ class StemCell extends Ref
     }
 
     /**
-     * @return
+     *
      */
-    public SealedBox __optSealedDispatch(Brand brand) {
+    public SealedBox __optSealedDispatch(Object brand) {
         if (null == myOptPromise) {
             return MirandaMethods.__optSealedDispatch(this, brand);
         } else {
@@ -222,7 +221,7 @@ public /*abstract*/ class StemCell extends Ref
     }
 
     /**
-     * @return
+     *
      */
     public Object __conformTo(Guard guard) {
         if (null == myOptPromise) {

@@ -13,28 +13,27 @@ import org.erights.e.elib.sealing.Brand;
 import org.erights.e.elib.sealing.SealedBox;
 import org.erights.e.elib.sealing.Sealer;
 import org.erights.e.elib.sealing.Unsealer;
+import org.erights.e.elib.serial.DeepPassByCopy;
+import org.erights.e.elib.serial.PassByConstruction;
+import org.erights.e.elib.serial.PassByProxy;
 import org.erights.e.elib.tables.ConstList;
 import org.erights.e.elib.tables.ConstMap;
 import org.erights.e.elib.util.ArityMismatchException;
 
 
 /**
- * There is one boot-comm-system per JVM, and all boot-refs
- * (all {@link Ref}s handled by a BootRefHandler) are part of that
- * one comm system.
+ * There is one boot-comm-system per JVM, and all boot-refs (all {@link Ref}s
+ * handled by a BootRefHandler) are part of that one comm system.
  * <p/>
- * The boot-comm-system differs from normal inter-vat comm systems (like
- * CapTP) in the following ways: <ul>
- * <li>The boot-comm-system can only be used to communicate with vats
- * within the same jvm (or host OS address space).
- * <li>Communications happen by pointer manipulation, not serialization,
- * so the only
- * {@link org.erights.e.elib.serial.PassByConstruction PassByConstruction}
- * arguments that may be passed or returned as results are those that are
- * {@link org.erights.e.elib.serial.DeepPassByCopy DeepPassByCopy}.
- * </ul>
- * When PassByProxy objects are passed between vats by the boot-comm-system,
- * this is done by wrapping or unwrapping them in a BootRefHandler.
+ * The boot-comm-system differs from normal inter-vat comm systems (like CapTP)
+ * in the following ways: <ul> <li>The boot-comm-system can only be used to
+ * communicate with vats within the same jvm (or host OS address space).
+ * <li>Communications happen by pointer manipulation, not serialization, so the
+ * only {@link PassByConstruction PassByConstruction} arguments that may be
+ * passed or returned as results are those that are {@link DeepPassByCopy
+ * DeepPassByCopy}. </ul> When PassByProxy objects are passed between vats by
+ * the boot-comm-system, this is done by wrapping or unwrapping them in a
+ * BootRefHandler.
  *
  * @author Mark S. Miller
  */
@@ -94,7 +93,7 @@ class BootRefHandler implements EProxyHandler {
     }
 
     /**
-     * @return
+     *
      */
     public EProxyHandler unwrap() {
         return this;
@@ -103,7 +102,7 @@ class BootRefHandler implements EProxyHandler {
     /**
      *
      */
-    public SealedBox handleOptSealedDispatch(Brand brand) {
+    public SealedBox handleOptSealedDispatch(Object brand) {
         if (OurSealer.getBrand() == brand) {
             return OurSealer.seal(this);
         } else {
@@ -119,16 +118,12 @@ class BootRefHandler implements EProxyHandler {
      * EProxyResolver#getOptProxyHandler}(OurUnsealer, ref)</pre>
      * except that it's thread-safe.
      * <p/>
-     * <tt>getOptBootRefHandler/1</tt> must be thread safe, in order for
-     * {@link org.erights.e.elib.vat.BootRefHandler#packageArg(Object,
-      * org.erights.e.elib.vat.Vat,
-      * org.erights.e.elib.vat.Vat,
-      * org.erights.e.elib.vat.Vat)
-     * BootRefHandler.packageArg/4}
-     * to be thread safe: Callers of this should keep in mind that ref may be
-     * shortened after the handler is gotten but before these callers use it.
-     * If they access only final fields of the handler in a thread safe way,
-     * then everything should be fine.
+     * <tt>getOptBootRefHandler/1</tt> must be thread safe, in order for {@link
+     * org.erights.e.elib.vat.BootRefHandler#packageArg(Object,Vat,Vat,Vat)
+     * BootRefHandler.packageArg/4} to be thread safe: Callers of this should
+     * keep in mind that ref may be shortened after the handler is gotten but
+     * before these callers use it. If they access only final fields of the
+     * handler in a thread safe way, then everything should be fine.
      */
     static private BootRefHandler getOptBootRefHandler(Object ref) {
         if (ref instanceof Ref) {
@@ -140,32 +135,24 @@ class BootRefHandler implements EProxyHandler {
     }
 
     /**
-     * Given that <tt>arg</tt> is an object in the src vat (ie, an object
-     * that would be safe to invoke in the src vat), then return a ref
-     * to it packaged for use in the dest vat.
+     * Given that <tt>arg</tt> is an object in the src vat (ie, an object that
+     * would be safe to invoke in the src vat), then return a ref to it
+     * packaged for use in the dest vat.
      * <p/>
-     * By cases:<ul>
-     * <li>If src and dest are the same, then returns <tt>arg</tt>.
-     * <li>If <tt>arg</tt> is
-     *     {@link org.erights.e.elib.serial.DeepPassByCopy DeepPassByCopy} or
-     *     a broken reference, then it can be invoked from any vat, so we pass
-     *     it as is.
-     * <li>If it's {@link org.erights.e.elib.serial.PassByProxy PassByProxy},
-     *     then we gotta wrap it in a boot-ref for use in the dest vat, and
-     *     return that.
-     * <li>If it's already a boot-ref, then we gotta determine which vat is
-     *     it's target's vat. If it's target's vat is<ul>
-     *     <li>the dest, then return its target.
-     *     <li>some other vat, then we re-wrap it in a fresh boot-ref
-     *     <li>(it would be an error for it to be the src vat)
-     * </ul>
+     * By cases:<ul> <li>If src and dest are the same, then returns
+     * <tt>arg</tt>. <li>If <tt>arg</tt> is {@link DeepPassByCopy
+     * DeepPassByCopy} or a broken reference, then it can be invoked from any
+     * vat, so we pass it as is. <li>If it's {@link PassByProxy PassByProxy},
+     * then we gotta wrap it in a boot-ref for use in the dest vat, and return
+     * that. <li>If it's already a boot-ref, then we gotta determine which vat
+     * is it's target's vat. If it's target's vat is<ul> <li>the dest, then
+     * return its target. <li>some other vat, then we re-wrap it in a fresh
+     * boot-ref <li>(it would be an error for it to be the src vat) </ul>
      * <li>If it's a non-boot-ref eventual reference, then we wrap it in a
-     *     boot-ref and return that, but we also send a __whenMoreResolved
-     *     message to the eventual reference in the src vat, where the
-     *     argument is a boot-ref on a {@link DelayedRedirector} on the
-     *     returned boot-ref.
-     * <li>In all other cases, an exception is thrown.
-     * </ul>
+     * boot-ref and return that, but we also send a __whenMoreResolved message
+     * to the eventual reference in the src vat, where the argument is a
+     * boot-ref on a {@link DelayedRedirector} on the returned boot-ref. <li>In
+     * all other cases, an exception is thrown. </ul>
      *
      * @param arg        The reference to be packaged.
      * @param src        The vat that 'arg' is valid within.
@@ -200,7 +187,7 @@ class BootRefHandler implements EProxyHandler {
                 Object[] result = new Object[argList.size()];
                 for (int i = 0, len = result.length; i < len; i++) {
                     result[i] =
-                    packageArg(argList.get(i), src, dest, currentVat);
+                      packageArg(argList.get(i), src, dest, currentVat);
                 }
                 return ConstList.fromArray(result);
             }
@@ -229,8 +216,7 @@ class BootRefHandler implements EProxyHandler {
             return handler.myResolver.getProxy();
 
         } else {
-            T.require(Ref.EVENTUAL == state,
-                      "unrecognized state: ", state);
+            T.require(Ref.EVENTUAL == state, "unrecognized state: ", state);
             BootRefHandler optHandler = getOptBootRefHandler(arg);
             if (null != optHandler) {
                 // arg is a boot-ref (a ref handled by a BootRefHandler).
@@ -241,7 +227,8 @@ class BootRefHandler implements EProxyHandler {
                 //caused by a race condition, and should therefore be handled
                 //rather than rejected.
                 T.require(src != optHandler.myTargetsVat,
-                          "Unshortened boot-ref: ", arg);
+                          "Unshortened boot-ref: ",
+                          arg);
                 return packageArg(optHandler.myTarget,
                                   optHandler.myTargetsVat,
                                   dest,
@@ -270,10 +257,8 @@ class BootRefHandler implements EProxyHandler {
         Vat currentVat = Vat.getCurrentVat();
         Object[] result = new Object[args.length];
         for (int i = 0, len = args.length; i < len; i++) {
-            result[i] = packageArg(args[i],
-                                   currentVat,
-                                   myTargetsVat,
-                                   currentVat);
+            result[i] =
+              packageArg(args[i], currentVat, myTargetsVat, currentVat);
         }
         return result;
     }

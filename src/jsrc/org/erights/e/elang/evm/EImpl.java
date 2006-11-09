@@ -28,7 +28,6 @@ import org.erights.e.elib.base.Script;
 import org.erights.e.elib.base.TypeDesc;
 import org.erights.e.elib.oldeio.TextWriter;
 import org.erights.e.elib.prim.E;
-import org.erights.e.elib.sealing.Brand;
 import org.erights.e.elib.sealing.SealedBox;
 import org.erights.e.elib.slot.Auditable;
 import org.erights.e.elib.slot.Auditor;
@@ -119,13 +118,13 @@ public abstract class EImpl extends Auditable implements Callable {
     /**
      * Invoked by the Miranda __optSealedDispatch method.
      */
-    public SealedBox __optSealedDispatch(Brand brand) {
+    public SealedBox __optSealedDispatch(Object brand) {
         Object box = E.call(this, "__optSealedDispatch", brand);
         return (SealedBox)E.as(box, SealedBox.class);
     }
 
     /**
-     * 
+     *
      */
     public Object __conformTo(Guard guard) {
         return E.call(this, "__conformTo", guard);
@@ -133,7 +132,6 @@ public abstract class EImpl extends Auditable implements Callable {
 
     /**
      *
-     * @param out
      */
     public void __printOn(TextWriter out) {
         E.call(this, "__printOn", out);
@@ -147,9 +145,7 @@ public abstract class EImpl extends Auditable implements Callable {
     }
 
     /**
-     *
-     * @param out
-     * @throws IOException
+     * 
      */
     public void mirandaPrintOn(TextWriter out) throws IOException {
         out.print("<", ClassDesc.simpleName(myScript.getFQName()), ">");

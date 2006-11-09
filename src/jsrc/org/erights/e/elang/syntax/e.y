@@ -570,8 +570,8 @@ postdocodef:
  |      INTERFACE oName guards iDeclTail '{' br mTypeList '}'
                                         { $$ = b.oType("",$2,b.list(),
                                                        $3,$4,$7); }
- |      THUNK body                      { /* doesn't bind __return */
-                                          /* XXX We may deprecate this */
+ |      THUNK body                      { b.pocket(NO_POSER,"thunk");
+                                          /* doesn't bind __return */
                                           $$ = b.fnDecl($1, b.list(), $2); }
 
  |      FN paramList body               { b.pocket(NO_POSER,"anon-lambda");
@@ -746,7 +746,7 @@ iterPattern:
 
 pattern:
         subPattern
- |      subPattern '?' parenExpr            { $$ = b.suchThat($1, $3); }
+ |      subPattern '?' prim                 { $$ = b.suchThat($1, $3); }
  |      VIA parenExpr pattern               { $$ = b.via($2,$3); }
 
  |      metaoid parenExpr MapsTo pattern    { b.reserved($3,"meta pattern"); }
@@ -1134,13 +1134,15 @@ whenRest:
 whenTail:
         oName '(' patternList ')' whenGuard whenBody
                                 { /* binds __return */
+                                  b.pocket($1,"hard-when");
                                   $$ = b.list(ODECL.withOName($1),
                                               $3, $5, $6,
                                               Boolean.TRUE); }
  |      oName                     whenGuard whenBody
                                 { /* XXX should this bind __return ?? */
                                   /* Currently, it does. */
-                                  b.pocket($2,"easy-when");
+                                  b.pocket($1,"easy-when");
+                                  b.pocket($1,"hard-when");
                                   $$ = b.list(ODECL.withOName($1),
                                               null, $2, $3,
                                               Boolean.TRUE); }
@@ -1154,7 +1156,8 @@ whenTail:
  ;
 
 whenGuard:
-        ':' guard                       { $$ = $2; }
+        ':' guard                       { b.pocket($1,"hard-when");
+                                          $$ = $2; }
  |      /*empty*/                       { $$ = b.defaultOptWhenGuard(yylval); }
  |      ':' guard THROWS throws         { b.reserved($3,"throws"); }
  |                THROWS throws         { b.reserved($1,"throws"); }

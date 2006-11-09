@@ -3,7 +3,6 @@ package org.erights.e.elib.ref;
 // Copyright 2002 Combex, Inc. under the terms of the MIT X license
 // found at http://www.opensource.org/licenses/mit-license.html ...............
 
-import org.erights.e.elib.sealing.Brand;
 import org.erights.e.elib.sealing.SealedBox;
 
 /**
@@ -26,7 +25,7 @@ public interface EProxyHandler {
      * since the untrusted clients are not those holding the wrapper, but those
      * holding the {@link EProxy}. Starting from an EProxy, you can only obtain
      * access to a handler by
-     * {@link #handleOptSealedDispatch(org.erights.e.elib.sealing.Brand)
+     * {@link #handleOptSealedDispatch(Object)
      * rights amplification}, which you can only do if you have the needed
      * {@link org.erights.e.elib.sealing.Unsealer Unsealer}. (And rights
      * amplification normally gives direct access to the underlying anyway).
@@ -36,7 +35,7 @@ public interface EProxyHandler {
     /**
      * How should my ref respond to an __optSealedDispatch request?
      */
-    SealedBox handleOptSealedDispatch(Brand brand);
+    SealedBox handleOptSealedDispatch(Object brand);
 
     /**
      * My Ref is asking me to deliver the message to the other side and

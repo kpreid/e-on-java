@@ -18,7 +18,6 @@ e.enable.easy-when=true
 e.enable.escape-handler=true
 e.enable.exporter=true
 e.enable.importer=true
-e.enable.lambda-args=true
 e.enable.meta-scope=true
 e.enable.noun-string=true
 e.enable.pattern-default=true
@@ -35,9 +34,12 @@ e.enable.explicit-final-guard=allow
 e.enable.explicit-result-guard=allow
 e.enable.explicit-slot-guard=allow
 e.enable.explicit-var-guard=allow
+e.enable.hard-when=allow
+e.enable.lambda-args=allow
 e.enable.notabs=allow
 e.enable.one-method-object=allow
 e.enable.smalltalk-return=allow
+e.enable.thunk=allow
 e.enable.unary-star=allow
 e.enable.when-sequence=allow
 
@@ -45,13 +47,14 @@ e.enable.when-sequence=allow
 # The differences from 0.8 are:
 
 # e.enable.easy-return:           allow -> true *
-# e.enable.lambda-args:           allow -> true
+# e.enable.hard-when:             true -> allow *
 # e.enable.noun-string:           allow -> true
 # e.enable.trinary-define:        allow -> true
 # e.enable.verb-curry:            allow -> true
 # e.enable.verb-string:           allow -> true
 # e.enable.explicit-result-guard: true -> allow
 # e.enable.smalltalk-return:      warn -> allow *
+# e.enable.thunk:                 true -> allow *
 
 # The non-upwards compatible changes are marked with a "*" above. For
 # 0.8 programs where these aren't an issue, these can safely be

@@ -260,7 +260,7 @@ def makeIOUIssuerAuthor(timer) :any {
                                     out.print(`<revoked $nickName hold>`)
                                 }
                             }
-                            to __optSealedDispatch(br :Brand) :SealedBox {
+                            to __optSealedDispatch(br) :SealedBox {
                                 if (br == brand) {
                                     return sealer.seal(holdMgr)
                                 } else {

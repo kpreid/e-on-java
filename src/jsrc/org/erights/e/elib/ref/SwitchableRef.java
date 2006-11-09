@@ -23,7 +23,6 @@ import org.erights.e.develop.assertion.T;
 import org.erights.e.elib.oldeio.TextWriter;
 import org.erights.e.elib.prim.Message;
 import org.erights.e.elib.prim.MirandaMethods;
-import org.erights.e.elib.sealing.Brand;
 import org.erights.e.elib.sealing.SealedBox;
 import org.erights.e.elib.slot.Guard;
 
@@ -206,9 +205,9 @@ class SwitchableRef extends Ref {
     }
 
     /**
-     * @return
+     * 
      */
-    public SealedBox __optSealedDispatch(Brand brand) {
+    public SealedBox __optSealedDispatch(Object brand) {
         if (myIsSwitchable) {
             return MirandaMethods.__optSealedDispatch(this, brand);
         } else {
@@ -218,7 +217,7 @@ class SwitchableRef extends Ref {
     }
 
     /**
-     * @return
+     *
      */
     public Object __conformTo(Guard guard) {
         if (myIsSwitchable) {
@@ -231,8 +230,6 @@ class SwitchableRef extends Ref {
 
     /**
      *
-     * @param out
-     * @throws IOException
      */
     public void __printOn(TextWriter out) throws IOException {
         if (myIsSwitchable) {

@@ -22,7 +22,6 @@ Contributor(s): ______________________________________.
 import org.erights.e.develop.assertion.T;
 import org.erights.e.develop.trace.Trace;
 import org.erights.e.elib.prim.MirandaMethods;
-import org.erights.e.elib.sealing.Brand;
 import org.erights.e.elib.sealing.SealedBox;
 import org.erights.e.elib.slot.Guard;
 
@@ -212,7 +211,7 @@ abstract class EProxy extends Ref {
     /**
      * If handled, ask our handler; else delegate to our target.
      */
-    public SealedBox __optSealedDispatch(Brand brand) {
+    public SealedBox __optSealedDispatch(Object brand) {
         if (null == myOptTarget) {
             //XXX should we allow throws to propogate?
             return myOptHandler.handleOptSealedDispatch(brand);
@@ -222,7 +221,7 @@ abstract class EProxy extends Ref {
     }
 
     /**
-     * @return
+     *
      */
     public Object __conformTo(Guard guard) {
         if (null == myOptTarget) {

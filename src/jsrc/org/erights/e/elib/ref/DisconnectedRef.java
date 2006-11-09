@@ -24,7 +24,6 @@ import org.erights.e.develop.exception.ExceptionMgr;
 import org.erights.e.elib.oldeio.TextWriter;
 import org.erights.e.elib.prim.E;
 import org.erights.e.elib.prim.MirandaMethods;
-import org.erights.e.elib.sealing.Brand;
 import org.erights.e.elib.sealing.SealedBox;
 import org.erights.e.elib.serial.PassByConstruction;
 import org.erights.e.elib.serial.Persistent;
@@ -36,19 +35,18 @@ import java.io.IOException;
  * What a FarRef becomes when it breaks -- a BROKEN Ref with identity.
  * <p/>
  * Maintains the same()ness identity and sameness hash of the FarRef. A
- * DisconnectedRef is listed as an HONORARY Selfless object for
- * implementation reasons only: (HONORARY because it encapsulates its
- * identity, so it isn't transparent).
+ * DisconnectedRef is listed as an HONORARY Selfless object for implementation
+ * reasons only: (HONORARY because it encapsulates its identity, so it isn't
+ * transparent).
  * <p/>
- * A DisconnectedRef's contents must be transitively transparently Selfless
- * and passable by construction. DisconnectedRef is listed as implementing
+ * A DisconnectedRef's contents must be transitively transparently Selfless and
+ * passable by construction. DisconnectedRef is listed as implementing
  * PassByConstruction for implementation reasons only. Not being NEAR, by
  * definition it is not a PassByContruction object.
  *
  * @author Mark S. Miller
  */
-class DisconnectedRef
-  extends Ref implements Persistent, PassByConstruction {
+class DisconnectedRef extends Ref implements Persistent, PassByConstruction {
 
     static private final long serialVersionUID = 1307531130876647340L;
 
@@ -78,11 +76,11 @@ class DisconnectedRef
     }
 
     /**
-     * As an HONORARY Selfless object, my .equals() and .hashCode()
-     * determine sameness.
+     * As an HONORARY Selfless object, my .equals() and .hashCode() determine
+     * sameness.
      * <p/>
-     * NOTE: Uses myIdentity's .equals(), which is safe, as myIdentity must
-     * be an honorary Selfless object.
+     * NOTE: Uses myIdentity's .equals(), which is safe, as myIdentity must be
+     * an honorary Selfless object.
      */
     public boolean equals(Object other) {
         if (other instanceof FarRef) {
@@ -95,8 +93,8 @@ class DisconnectedRef
     }
 
     /**
-     * As an HONORARY Selfless object, my .equals() and .hashCode()
-     * determine sameness.
+     * As an HONORARY Selfless object, my .equals() and .hashCode() determine
+     * sameness.
      * <p/>
      * NOTE: Uses myIdentity's .hashCode(), which is safe, as myIdentity must
      * be an honorary Selfless object.
@@ -121,8 +119,7 @@ class DisconnectedRef
      * Returns <tt>this</tt>.
      * <p/>
      * All implementations of <tt>resolutionRef/0</tt> must be thread safe, in
-     * order for {@link Ref#resolution() Ref.resolution/0} to be thread
-     * safe.
+     * order for {@link Ref#resolution() Ref.resolution/0} to be thread safe.
      *
      * @return <tt>this</tt>.
      */
@@ -151,16 +148,15 @@ class DisconnectedRef
      *
      * @return Why wasn't a __whenMoreResolved/1 or __whenBroken/1 queued? It
      *         isn't queued if this vat or comm connection is shut down, in
-     *         which case the returned problem explains why.
-     *         If null is returned, then the message wasn't
-     *         __whenMoreResolved/1 or __whenBroken/1, in which case there was
-     *         nothing to queue, or it was one of these and it was queued,
-     *         though it may still not arrive.
+     *         which case the returned problem explains why. If null is
+     *         returned, then the message wasn't __whenMoreResolved/1 or
+     *         __whenBroken/1, in which case there was nothing to queue, or it
+     *         was one of these and it was queued, though it may still not
+     *         arrive.
      */
     private Throwable doBreakage(String verb, Object[] args) {
-        if (args.length == 1
-          && (verb.equals("__whenMoreResolved") ||
-          verb.equals("__whenBroken"))) {
+        if (1 == args.length &&
+          ("__whenMoreResolved".equals(verb) || "__whenBroken".equals(verb))) {
 
             return E.sendOnly(args[0], "run", this);
         } else {
@@ -169,8 +165,8 @@ class DisconnectedRef
     }
 
     /**
-     * This default implementation switches on state() and either
-     * synchronously forward the message, if we're NEAR, or complains.
+     * This default implementation switches on state() and either synchronously
+     * forward the message, if we're NEAR, or complains.
      */
     public Object callAll(String verb, Object[] args) {
         doBreakage(verb, args);
@@ -214,14 +210,14 @@ class DisconnectedRef
     }
 
     /**
-     * @return
+     *
      */
-    public SealedBox __optSealedDispatch(Brand brand) {
+    public SealedBox __optSealedDispatch(Object brand) {
         return MirandaMethods.__optSealedDispatch(this, brand);
     }
 
     /**
-     * @return
+     *
      */
     public Object __conformTo(Guard guard) {
         return MirandaMethods.__conformTo(this, guard);
@@ -229,8 +225,6 @@ class DisconnectedRef
 
     /**
      *
-     * @param out
-     * @throws java.io.IOException
      */
     public void __printOn(TextWriter out) throws IOException {
         out.print("<ref disconnected by ", myProblem, ">");

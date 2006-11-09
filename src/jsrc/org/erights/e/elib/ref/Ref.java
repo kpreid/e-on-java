@@ -30,7 +30,6 @@ import org.erights.e.elib.prim.E;
 import org.erights.e.elib.prim.Message;
 import org.erights.e.elib.prim.StaticMaker;
 import org.erights.e.elib.sealing.Amplifiable;
-import org.erights.e.elib.sealing.Brand;
 import org.erights.e.elib.sealing.SealedBox;
 import org.erights.e.elib.serial.DeepPassByCopy;
 import org.erights.e.elib.serial.PassByConstruction;
@@ -1115,7 +1114,7 @@ public abstract class Ref implements Callable {
      * brand, but that's up to the ref. If ref has nothing to give to one who
      * has the unsealer for this brand, return null.
      */
-    static public SealedBox optSealedDispatch(Object ref, Brand brand) {
+    static public SealedBox optSealedDispatch(Object ref, Object brand) {
         ref = resolution(ref);
         if (ref != null && ref instanceof Amplifiable) {
             return ((Amplifiable)ref).__optSealedDispatch(brand);

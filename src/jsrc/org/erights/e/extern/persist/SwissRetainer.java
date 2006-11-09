@@ -6,7 +6,6 @@ package org.erights.e.extern.persist;
 import net.captp.jcomm.IdentityMgr;
 import org.erights.e.elib.prim.StaticMaker;
 import org.erights.e.elib.sealing.Amplifiable;
-import org.erights.e.elib.sealing.Brand;
 import org.erights.e.elib.sealing.SealedBox;
 import org.erights.e.elib.serial.PersistentKeyHolder;
 import org.erights.e.elib.tables.FlexMap;
@@ -70,9 +69,9 @@ public class SwissRetainer extends Retainer implements Amplifiable {
     }
 
     /**
-     * @return
+     * 
      */
-    public SealedBox __optSealedDispatch(Brand brand) {
+    public SealedBox __optSealedDispatch(Object brand) {
         if (PersistentKeyHolder.THE_BRAND == brand) {
             Object[] args = {
                 myOptTimer,
