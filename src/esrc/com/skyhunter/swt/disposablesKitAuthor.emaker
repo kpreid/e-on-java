@@ -49,7 +49,7 @@ def disposablesKitAuthor {
                 createdObj.dispose()
             }
             match [`make@name`, args] {
-                require(makeables.contains(name), thunk{`unexpected $name`})
+                require(makeables.contains(name), fn{`unexpected $name`})
                 def result := E.call(<swt:graphics.*>[`make$name`],
                                      "run",
                                      [display] + args)

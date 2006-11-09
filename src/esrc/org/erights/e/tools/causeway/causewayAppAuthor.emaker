@@ -105,7 +105,7 @@ def see(c, e) :any {
 }
 
 def hasBeenSeen(c, e) :boolean {
-    if (ceMap.fetch([c, e], thunk{}) == null) {
+    if (ceMap.fetch([c, e], fn{}) == null) {
         return false
     } else {
         return true
@@ -149,7 +149,7 @@ def buildTree(treeParent,
 
     item.setText(`[${attr[0]}:$turn] ${effect.getMessage()} $why`)
 
-    def le := lastEdge.fetch(effect, thunk {})
+    def le := lastEdge.fetch(effect, fn{})
 
     #if (lastEdge[effect] == edge) {
 
@@ -334,7 +334,7 @@ def makeTreePane(folder, top, vatMap, lastEdge, palette, traceline) :near {
         }
 
         to syncSelect(selection) :void {
-            def item := modelToItemMap.fetch(selection, thunk{})
+            def item := modelToItemMap.fetch(selection, fn{})
             if (item != null) {
                 treePane.selectAndShow(item)
 
@@ -404,7 +404,7 @@ def makeVatMap(causalityTree, palette, traceline) :near {
     }
     def vatMap {
         to fetchDisplayAttributes(path, vat) :near {
-            return attributes.fetch([path, vat], thunk{
+            return attributes.fetch([path, vat], fn{
                 [vat, palette.getDefaultVatColor()]
             })
         }
@@ -555,7 +555,7 @@ def causewayAppAuthor(<file>, <jar>, makers, shell, tcr, traceline) :near {
         def listenerForGroup {
             to widgetSelected(event) :void {
                 def item := event.getItem()
-                def edge := itemToModelMap.fetch(item, thunk{})
+                def edge := itemToModelMap.fetch(item, fn{})
                 if (edge != null) {
                     def [path, _, _] := edge.getTarget().getID()
                     def pane := olistFolderGroup.syncSelect(path)

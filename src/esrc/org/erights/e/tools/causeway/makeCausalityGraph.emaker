@@ -52,7 +52,7 @@ def see(c, e) :any {
 }
 
 def hasBeenSeen(c, e) :boolean {
-    if (ceMap.fetch([c, e], thunk{}) == null) {
+    if (ceMap.fetch([c, e], fn{}) == null) {
         return false
     } else {
         return true

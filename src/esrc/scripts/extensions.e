@@ -17,7 +17,7 @@ def gather(filedir) :void {
         }
     } else {
         def ext := argParser.getExtension(filedir.getName())
-        def dirs := extensions.fetch(ext, thunk{[].asSet().diverge()})
+        def dirs := extensions.fetch(ext, fn{[].asSet().diverge()})
         dirs.addElement(filedir.getParent())
         extensions.put(ext, dirs)
     }

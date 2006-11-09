@@ -12,7 +12,7 @@ def Term := <type:org.quasiliteral.term.Term>
 def <tools> := <import:org.erights.e.tools.*>
 
 def optCacheFile :=
-  if (interp.getProps().fetch("e.home", thunk{}) =~ eHomeName :notNull) {
+  if (interp.getProps().fetch("e.home", fn{}) =~ eHomeName :notNull) {
     <file>[eHomeName]["updoc-hash-cache.txt"]
 } else {
     null
@@ -37,7 +37,7 @@ def checkExprs(exprs :List[Twine]) :void {
     if (exprs =~ [firstExpr]+_ && firstExpr !~ `pragma.syntax(@_)@_`) {
         warn(`undeclared updoc version`, firstExpr)
     }
-    
+
     # XXX Should refactor: the following is copy-pasted from
     #     cmdMakerMaker.emaker
     def lexer := makeELexer(null,           # optLineFeeder
@@ -183,7 +183,7 @@ def srcCheckRecurse(filedir,
         try {
             if (null != optImportRoot &&
                   fullpath =~ `$optImportRoot@restpath.emaker`) {
-                
+
                 def fqname := restpath.replaceAll("/", ".")
                 <import>[fqname]
             }

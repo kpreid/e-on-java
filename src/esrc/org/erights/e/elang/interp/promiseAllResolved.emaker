@@ -88,6 +88,6 @@ def promiseAllResolved {
     ? bind z := [a]
     # value: [<Promise>]
 
-    ? interp.waitAtTop(timer.whenPast(timer.now() + 100, thunk{}))
+    ? interp.waitAtTop(timer.whenPast(timer.now() + 100, fn{}))
     ? a
     # value: [4, <ref broken by problem: boom>, [***CYCLE***]]

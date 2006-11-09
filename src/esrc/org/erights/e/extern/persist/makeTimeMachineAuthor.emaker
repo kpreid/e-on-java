@@ -144,7 +144,7 @@ def makeTimeMachineAuthor(makeTransplanter) :near {
              * making this a new incarnation rather than a reincarnation.
              */
             to new() :void {
-                require(timeMachine.isEphemeral(), thunk{"Must be ephemeral"})
+                require(timeMachine.isEphemeral(), fn{"Must be ephemeral"})
 
                 myOptRoots := optMakeSturdyRef.tearOffRoots(null, timeMachine)
                 if (null != optIntroducer && null == myOptKeyPair) {
@@ -166,8 +166,8 @@ def makeTimeMachineAuthor(makeTransplanter) :near {
              * This operation puts the TimeMachine in the "Saved" state.
              */
             to createAs(atomicFile) :void {
-                require(timeMachine.isForming(), thunk{"Must be forming"})
-                require(! atomicFile.exists(), thunk{
+                require(timeMachine.isForming(), fn{"Must be forming"})
+                require(! atomicFile.exists(), fn{
                     `Delete $atomicFile first`
                 })
                 myOptTransplanter := makeTransplanter(atomicFile)
@@ -184,7 +184,7 @@ def makeTimeMachineAuthor(makeTransplanter) :near {
              *
              */
             to whenSaved() :vow[nullOk] {
-                require(!timeMachine.isEphemeral(), thunk{
+                require(!timeMachine.isEphemeral(), fn{
                     "Must not be ephemeral"
                 })
 
@@ -204,7 +204,7 @@ def makeTimeMachineAuthor(makeTransplanter) :near {
              */
             to save() :void {
                 try {
-                    require(timeMachine.isSaved(), thunk{"Must be saved"})
+                    require(timeMachine.isSaved(), fn{"Must be saved"})
 
                     var state := ["root" => myOptRoots,
                                   "vatIdentity" => myOptKeyPair]
@@ -238,8 +238,8 @@ def makeTimeMachineAuthor(makeTransplanter) :near {
              * instead.
              */
             to saveAs(atomicFile) :void {
-                require(timeMachine.isSaved(), thunk{"Must be saved"})
-                require(! atomicFile.exists(), thunk{
+                require(timeMachine.isSaved(), fn{"Must be saved"})
+                require(! atomicFile.exists(), fn{
                     `Delete $atomicFile first`
                 })
                 myOptTransplanter := makeTransplanter(atomicFile)
@@ -254,7 +254,7 @@ def makeTimeMachineAuthor(makeTransplanter) :near {
              * checkpoint file must not exist.
              */
             to renameAtomicFileTo(atomicFile) :void {
-                require(timeMachine.isSaved(), thunk{"Must be saved"})
+                require(timeMachine.isSaved(), fn{"Must be saved"})
 
                 myOptTransplanter.renameAtomicFileTo(atomicFile)
             }
@@ -270,13 +270,13 @@ def makeTimeMachineAuthor(makeTransplanter) :near {
              * This operation puts the TimeMachine in the "Saved" state.
              */
             to revive(atomicFile) :void {
-                require(timeMachine.isEphemeral(), thunk{"Must be ephemeral"})
+                require(timeMachine.isEphemeral(), fn{"Must be ephemeral"})
 
                 myOptTransplanter := makeTransplanter(atomicFile)
                 def state := myOptTransplanter.restore()
 
-                def optNetConfig := state.fetch("netConfig", thunk{})
-                myOptKeyPair := state.fetch("vatIdentity", thunk{})
+                def optNetConfig := state.fetch("netConfig", fn{})
+                myOptKeyPair := state.fetch("vatIdentity", fn{})
                 if (null != optIntroducer) {
                     if (null != optNetConfig) {
                         optIntroducer.setNetConfig(optNetConfig)
@@ -297,7 +297,7 @@ def makeTimeMachineAuthor(makeTransplanter) :near {
              * The TimeMachine must be in a Saved state.
              */
             to delete() :void {
-                require(timeMachine.isSaved(), thunk{"Must be saved"})
+                require(timeMachine.isSaved(), fn{"Must be saved"})
 
                 myOptTransplanter.delete()
                 myOptTransplanter := null
@@ -316,7 +316,7 @@ def makeTimeMachineAuthor(makeTransplanter) :near {
             to addExit(value, exitName :String, mustBeSettled :boolean) :void {
                 makeTransplanter.addExit(value, exitName, mustBeSettled)
             }
-            
+
             /**
              *
              */

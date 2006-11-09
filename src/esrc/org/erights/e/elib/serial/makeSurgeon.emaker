@@ -218,7 +218,7 @@ def makeSurgeon {
 
             to addExit(value, exitName :String, mustBeSettled :boolean) :void {
                 if (mustBeSettled) {
-                    require(Ref.isSettled(value), thunk{
+                    require(Ref.isSettled(value), fn{
                         `Must be settled: $value => $exitName`})
                 }
                 surgeon.addExit(value, exitName)
@@ -259,14 +259,14 @@ def makeSurgeon {
              */
             to addFromScope(otherScope, exitNames, loaderNames) :void {
                 for name in exitNames {
-                    if (otherScope.fetch(name, thunk{}) =~ value :notNull) {
+                    if (otherScope.fetch(name, fn{}) =~ value :notNull) {
                         surgeon.addExit(value, name, true)
                     } else {
                         throw.breakpoint(`no exit: $name`)
                     }
                 }
                 for name in loaderNames {
-                    if (otherScope.fetch(name, thunk{}) =~ value :notNull) {
+                    if (otherScope.fetch(name, fn{}) =~ value :notNull) {
                         surgeon.addLoader(value, name, true)
                     } else {
                         throw.breakpoint(`no loader: $name`)

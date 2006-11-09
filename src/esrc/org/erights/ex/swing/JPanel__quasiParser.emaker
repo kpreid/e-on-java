@@ -29,7 +29,7 @@ def lexPanel(GBCMaker, str) :any {
 
         } else if (myChar == '$') {
             require(next() == '{',
-                    thunk{`$myChar should have been '{'`})
+                    fn{`$myChar should have been '{'`})
             var index := 0
             next()
             while ('0' <= myChar && myChar <= '9') {
@@ -37,9 +37,9 @@ def lexPanel(GBCMaker, str) :any {
                 next()
             }
             require(myChar == '}',
-                    thunk{`$myChar should have been '}'`})
+                    fn{`$myChar should have been '}'`})
             require(index == constraints.size(),
-                    thunk{"Must be in order"})
+                    fn{"Must be in order"})
             def constraint := GBCMaker()
             constraint.setFill(GBCMaker.getBOTH())
             constraint.setWeightx(0.000001)

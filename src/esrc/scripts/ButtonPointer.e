@@ -53,7 +53,7 @@ def getLine(tr) :Tuple[int, nullOk[String]] {
             if (name != "" && name[0] != '#') {
                 def spaces := line.size() - name.size()
                 require(spaces %% 4 == 0,
-                        thunk{`$line not aligned`})
+                        fn{`$line not aligned`})
                 return [spaces // 4, name]
             }
         }
@@ -78,7 +78,7 @@ def walkToc(wdir) :void {
     var prevLevel := 1
     def nest() :void {
         require(prev != null,
-                thunk{`internal: Missing prev`})
+                fn{`internal: Missing prev`})
         parent := prev
         prev := null # no left sibling
         prevLevel += 1
@@ -95,7 +95,7 @@ def walkToc(wdir) :void {
         if (level > prevLevel) {
             # name is the first child of prev.
             require(level == prevLevel + 1,
-                    thunk{`can only nest one level at a time:
+                    fn{`can only nest one level at a time:
                            $name $level $prevLevel`})
             nest()
             # 'parent[name]' is redundant. Oh well.
@@ -109,7 +109,7 @@ def walkToc(wdir) :void {
         }
         if (level == 0 || name == null) {
             require(level == 0 && name == null,
-                    thunk{`$level vs $name`})
+                    fn{`$level vs $name`})
             break
         }
         def current := parent[name]
@@ -156,7 +156,7 @@ def relativeURL(osrc, otarget) :any {
         src := parent
     }
     require(src == "" || src.endsWith("/"),
-            thunk{`$src should be at end`})
+            fn{`$src should be at end`})
     def `$src@rest` := target
     buf.append(rest)
     var result := `${buf.snapshot()}`
@@ -275,7 +275,7 @@ def FileWrapperMaker(filedir) :any {
                 path := rest
             }
             require(path == "",
-                    thunk{`"$path" must be empty`})
+                    fn{`"$path" must be empty`})
             def levels := list.size()
             def buf := "".diverge(char)
             def adjust := if (filedir.isDirectory()) { 0 } else { 1 }

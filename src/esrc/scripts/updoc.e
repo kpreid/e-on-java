@@ -22,7 +22,7 @@ def makeOldUpdocParser := <tools:updoc.makeOldUpdocParser>
 def makeScriptPlayer := <tools:updoc.makeScriptPlayer>
 
 def optCacheFile :=
-  if (interp.getProps().fetch("e.home", thunk{}) =~ eHomeName :notNull) {
+  if (interp.getProps().fetch("e.home", fn{}) =~ eHomeName :notNull) {
     <file>[eHomeName]["updoc-hash-cache.txt"]
 } else {
     null

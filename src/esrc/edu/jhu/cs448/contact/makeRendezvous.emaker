@@ -26,12 +26,12 @@ def makeRendezvous() :near {
                     location :String,
                     signature :int) :void {
             require(verifier.verify(publicKey, location, signature),
-                    thunk{`signature on "$location" doesn't verify`})
+                    fn{`signature on "$location" doesn't verify`})
 
             def fingerprint := publicKey.getFingerprint()
             def entry := [publicKey, location, signature]
             table[fingerprint] :=
-              table.fetch(fingerprint, thunk{[].asSet()}).with(entry)
+              table.fetch(fingerprint, fn{[].asSet()}).with(entry)
         }
 
         /**
@@ -46,7 +46,7 @@ def makeRendezvous() :near {
          * happen.
          */
         to lookup(fingerprint :int) :near {
-            return table.fetch(fingerprint, thunk{[].asSet()})
+            return table.fetch(fingerprint, fn{[].asSet()})
         }
     }
     return rendezvous

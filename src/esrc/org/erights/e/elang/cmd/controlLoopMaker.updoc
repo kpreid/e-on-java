@@ -19,15 +19,15 @@
     # value: <controlLoop>
 
     ? ctrl.addStatusReactor(reactor)
-    ? ctrl.enqueue(thunk{println("foo")})
+    ? ctrl.enqueue(fn{println("foo")})
     ?
     foo
     reactToEnqueue[1]
     reactToSuccess[1, false]
     reactToQueueEmpty[1]
-    ? (ctrl.enqueue(thunk{println("bar")})
+    ? (ctrl.enqueue(fn{println("bar")})
     >  ctrl.blockAtTop()
-    >  ctrl.enqueue(thunk{println("baz")})
+    >  ctrl.enqueue(fn{println("baz")})
     > )
     ?
     reactToEnqueue[2]
@@ -46,7 +46,7 @@
     ? def event() :void {
     >     println("before")
     >     println("after")
-    >     ctrl.enqueue(thunk{println("next")})
+    >     ctrl.enqueue(fn{println("next")})
     >     ctrl.waitAtTop(p)
     > }
     # value: <event>
@@ -74,7 +74,7 @@
     ? def event2() :void {
     >     ctrl.exitAtTop()
     >     println(`exit: ${ctrl.getExitPairVow()}`)
-    >     ctrl.enqueue(thunk{println("already dead")})
+    >     ctrl.enqueue(fn{println("already dead")})
     > }
     # value: <event2>
 
@@ -95,7 +95,7 @@
     ? def event3() :void {
     >     println("before")
     >     println("after")
-    >     ctrl3.enqueue(thunk{println("next")})
+    >     ctrl3.enqueue(fn{println("next")})
     >     ctrl3.blockAtTop()
     > }
     # value: <event3>

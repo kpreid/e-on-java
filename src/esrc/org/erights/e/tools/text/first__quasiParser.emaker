@@ -17,7 +17,7 @@ def mmCache := [].asMap().diverge()
  */
 def first__quasiParser {
     to matchMaker(template :String) :any {
-        if (mmCache.fetch(template, thunk{}) =~ result :notNull) {
+        if (mmCache.fetch(template, fn{}) =~ result :notNull) {
             return result
         } else {
             # XXX special case for now

@@ -49,7 +49,7 @@ def installedAppsManagerMaker (appsXMLFile, traceline) :near {
             appMapsBySourcePath[path]
         }
         to optAppBySourcePath(path) :near {
-            appMapsBySourcePath.fetch(path, thunk{})
+            appMapsBySourcePath.fetch(path, fn{})
         }
         to getAppPetNames() :pbc {
             def names := [].diverge()
@@ -60,10 +60,10 @@ def installedAppsManagerMaker (appsXMLFile, traceline) :near {
         }
         to optAppByPetName(name) :near {
             traceline("optAppByPetname name: " + name)
-            appMapsByPetName.fetch(name, thunk{})
+            appMapsByPetName.fetch(name, fn{})
         }
         to optAppByPetSuffix(suffix) :near {
-            appMapsByPetExtension.fetch(suffix, thunk{})
+            appMapsByPetExtension.fetch(suffix, fn{})
         }
         to reload() :void {loadApps()}
         to save() :void {saveApps()}

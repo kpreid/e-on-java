@@ -29,7 +29,7 @@ def identCounts(file) :any {
     def result := [].asMap().diverge()
     def idents := makeIdentifiers.fromFile(file)
     for ident in idents {
-        result[ident] := 1 + result.fetch(ident, thunk{0})
+        result[ident] := 1 + result.fetch(ident, fn{0})
     }
     result.snapshot()
 }

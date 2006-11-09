@@ -9,7 +9,7 @@ def substFromProps(var text, props) :Twine {
     var result := ""
     while (text =~ `@left$${{@name}}@right`) {
         result += left
-        def prop := props.fetch(name.bare(), thunk{})
+        def prop := props.fetch(name.bare(), fn{})
         if (null != prop) {
             result += name.infect(prop, false)
         }

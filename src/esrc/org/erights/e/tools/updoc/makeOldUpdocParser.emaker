@@ -117,7 +117,7 @@ def makeOldUpdocParser(source) :any {
                 index += 1
             }
             answer := answer.replaceAll("\\\n", "")
-            require(answer.endsWith("\n"), thunk{
+            require(answer.endsWith("\n"), fn{
                 `${E.toQuote(answer)} must end with a newline`
             })
             return [keyword.bare(), answer]

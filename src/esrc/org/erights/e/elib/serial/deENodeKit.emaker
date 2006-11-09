@@ -105,7 +105,7 @@ def deENodeKit {
             }
 
             to buildIbid(tempIndex :int) :EExpr {
-                require(tempIndex < nextTemp, thunk {
+                require(tempIndex < nextTemp, fn{
                     `internal: $tempIndex must be < $nextTemp`
                 })
                 varReused[tempIndex] := true
@@ -269,7 +269,7 @@ def deENodeKit {
                     require(resPatt.getOptName() == resName)
                     require(rPatt.getOptName() == rName)
                     require(oPatt.getOptName() == oName)
-                    require(isTempName(oName), thunk{`unrecognized: $oName`})
+                    require(isTempName(oName), fn{`unrecognized: $oName`})
 
                     def varIndex := builder.buildPromise()
                     def resIndex := varIndex +1

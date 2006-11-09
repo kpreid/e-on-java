@@ -22,14 +22,14 @@ snippets...
 
 Alan Karp wrote:
 >> Second, the syntax
->>     __when(foo,thunk{...})
+>>     __when(foo,fn{...})
 >> looks OK on one line, but I had to read the sugar free version
 >> 3 times before I could figure out what went with what.
 
 Andreas Raab wrote:
 > Yup, seconded. There is something in the graphical patters which (at
 > least for me) when confronted with a line like:
->    def fileRcvr := __when(optFileRcvr, thunk {
+>    def fileRcvr := __when(optFileRcvr, fn{
 > makes me actually see
 >    def fileRcvr := __when(optFileRcvr, thunk )
 

@@ -74,7 +74,7 @@ def makeVat := <unsafe:org.erights.e.elib.vat.makeVat>
 def syncVat := makeVat.make("headless", "Sync Server")
 syncVat.setPriority(1)
 
-def farBrowseServerMaker :rcvr := syncVat.seed(thunk{
+def farBrowseServerMaker :rcvr := syncVat.seed(fn{
     <import:com.skyhunter.eBrowser.syncServerMakerAuthor>(traceline)
 })
 
@@ -251,7 +251,7 @@ traceline("no elmer to prep yet")
 #def EditGroupMaker := <eui:jed.EditGroup>
 #def ElmerMainMaker := <eui:elmer.ElmerMain>
 #def EInterpAdapterMaker := <eui:elmer.EInterpAdapter>
-#def group := EditGroupMaker(thunk{})
+#def group := EditGroupMaker(fn{})
 #def elmer() {
 #    def first := ElmerMainMaker(group, EInterpAdapterMaker)
 #    first setVisible(true)

@@ -43,7 +43,7 @@ def makeDeliverator(var ackTable :Map[int, Ticket],
                    ticket :Ticket) :void {
 
             if (status == "THAWED") {
-                def lastAck := ackTable.fetch(committerID, thunk{-1})
+                def lastAck := ackTable.fetch(committerID, fn{-1})
                 def numSkipped := ticket - (lastAck +1)
                 if (numSkipped < 0) {
                     # redundant resend, drop it on the floor

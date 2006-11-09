@@ -90,9 +90,9 @@ def makeLamportSlot {
          */
         def localInterest() :void {
             if (optSource == null) {
-                tracer(thunk {"localInterest() ignored"})
+                tracer(fn{"localInterest() ignored"})
             } else {
-                tracer(thunk{`localInterest() $srcGen`})
+                tracer(fn{`localInterest() $srcGen`})
                 optSource <- whenUpdated(lamportSlot, srcGen)
                 optSource := null
             }
@@ -132,14 +132,14 @@ def makeLamportSlot {
              * you have more recent news, let him know."
              */
             to whenUpdated(reactor :EverReactor, lastGeneration :int) :void {
-                tracer(thunk{
+                tracer(fn{
                     `lamportReporter whenUpdated($reactor, $lastGeneration)`
                 })
 
                 # Like getValue(), whenUpdated() is a demonstration of
                 # local interest.
                 localInterest()
-                tracer(thunk{`$lastGeneration < $myGeneration`})
+                tracer(fn{`$lastGeneration < $myGeneration`})
                 if (lastGeneration < myGeneration) {
                     # We have more recent news right now, so notify
                     # reactor without registering him. When we
@@ -232,7 +232,7 @@ def makeLamportSlot {
             to reactToUpdate(newValue :subGuard,
                              newReporterGen :int,
                              optNewSource :nullOk[EverReporter]) :void {
-                tracer(thunk{
+                tracer(fn{
                     `$lamportSlot reactToUpdate($newValue,
                                                 $newReporterGen,
                                                 $optNewSource)`
@@ -242,7 +242,7 @@ def makeLamportSlot {
                 optSource := optNewSource
                 myGeneration += 1
                 if (optReactors != null) {
-                    tracer(thunk{"spread the news"})
+                    tracer(fn{"spread the news"})
                     for reactor in optReactors {
                         reactor <- reactToUpdate(value,
                                                  myGeneration,

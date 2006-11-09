@@ -135,10 +135,10 @@ def makeAtomicFile {
              * performed while there's a nextFile outstanding.
              */
             to renameTo(other) :void {
-                require(! other.exists(), thunk {
+                require(! other.exists(), fn{
                     `Can't rename $atomicFile because $other exists`
                 })
-                require(atomicFile.exists(), thunk {
+                require(atomicFile.exists(), fn{
                     `Can't rename non-existent $atomicFile to $other`
                 })
 

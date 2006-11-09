@@ -245,7 +245,7 @@ def updocScriptMaker {
                     }
                 }
                 for keyword => answer in answers {
-                    def optNewAnswer := newAnswers.fetch(keyword, thunk{})
+                    def optNewAnswer := newAnswers.fetch(keyword, fn{})
                     if (optNewAnswer == null) {
                         # missing new case
                         printExprOnce(expr, out)

@@ -51,18 +51,18 @@ def interimArgParser(optionDescs, var args) :near {
                 def desc := optionDescs[optionName]
                 if (desc =~ term`option(@name, @comment)`) {
                     require(name.getOptString() == optionName,
-                            thunk{`bad description: $name`})
+                            fn{`bad description: $name`})
                     require(!(optionsMap.maps(optionName)),
-                            thunk{`--$optionName may appear at most once`})
+                            fn{`--$optionName may appear at most once`})
                     optionsMap[optionName] := true
                     args := rest
                 } else {
                     def term`option(@name, @argName, @quant, @comment)` := desc
                     require(name.getOptString() == optionName,
-                            thunk{`bad description: $name`})
+                            fn{`bad description: $name`})
                     require(rest =~ [arg] + rest2,
-                            thunk{`option --$optionName expects an argument`})
-                    def list := optionsMap.fetch(optionName, thunk{[]}) + [arg]
+                            fn{`option --$optionName expects an argument`})
+                    def list := optionsMap.fetch(optionName, fn{[]}) + [arg]
                     # Don't check quant yet, but wait till we're done
                     optionsMap[optionName] := list
                     args := rest2
@@ -80,28 +80,28 @@ def interimArgParser(optionDescs, var args) :near {
     # check quants
     for optionName => desc in optionDescs {
         if (desc =~ term`option(@name, @comment)`) {
-            def value := optionsMap.fetch(optionName, thunk{true})
+            def value := optionsMap.fetch(optionName, fn{true})
             require(value == true,
-                    thunk{`unrecognized --$optionName value: $value`})
+                    fn{`unrecognized --$optionName value: $value`})
         } else {
             def term`option(@name, @argName, @quant, @comment)` := desc
-            def list := optionsMap.fetch(optionName, thunk{[]})
+            def list := optionsMap.fetch(optionName, fn{[]})
             def num := list.size()
             switch (quant) {
                 match term`one` {
                     require(num == 1,
-                            thunk{`must have exactly one --$optionName`})
+                            fn{`must have exactly one --$optionName`})
                 }
                 match term`zeroOrOne` {
                     require(num <= 1,
-                            thunk{`must have at most one --$optionName`})
+                            fn{`must have at most one --$optionName`})
                 }
                 match term`zeroOrMore` {
                     # any num is fine
                 }
                 match term`oneOrMore` {
                     require(num >= 1,
-                            thunk{`must have at least one --$optionName`})
+                            fn{`must have at least one --$optionName`})
                 }
             }
         }

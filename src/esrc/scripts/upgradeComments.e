@@ -25,7 +25,7 @@ def endsWithAny(name, suffixList) :boolean {
 def upgrade(oldFiledir, newFiledir) :void {
     if (oldFiledir.isDirectory()) {
         require(newFiledir.exists() || newFiledir.mkdirs(null),
-                thunk{`Couldn't make ${newFiledir.getPath()}`})
+                fn{`Couldn't make ${newFiledir.getPath()}`})
         for name => sub in oldFiledir {
             upgrade(sub, newFiledir[name])
         }

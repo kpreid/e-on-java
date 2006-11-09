@@ -36,7 +36,7 @@ def makeGrantMgrAuthor(makeWeakPtr) :any {
 
             def revokeOne(problem :Throwable, key :K, revoker) :void {
                 revoker.revoke(problem)
-                def oldSet := grantRecords.fetch(key, thunk{return})
+                def oldSet := grantRecords.fetch(key, fn{return})
                 def newSet := oldSet.without(revoker)
                 if (newSet.size() >= 1) {
                     grantRecords[key] := newSet
@@ -48,7 +48,7 @@ def makeGrantMgrAuthor(makeWeakPtr) :any {
                 to getKeys() :K[] { return grantRecords.getKeys() }
                 to makeForwarder(key :K, underlying :T) :any {
                     def [forwarder, revoker] := makeCaretaker(underlying)
-                    def oldSet := grantRecords.fetch(key, thunk{[].asSet()})
+                    def oldSet := grantRecords.fetch(key, fn{[].asSet()})
                     grantRecords[key] := oldSet.with(revoker)
                     makeWeakPtr(forwarder,
                                 revokeOne,
@@ -65,7 +65,7 @@ def makeGrantMgrAuthor(makeWeakPtr) :any {
                     grantRecords.removeAll()
                 }
                 to revoke(problem :Throwable, key :K) :void {
-                    for revoker in grantRecords.fetch(key, thunk{return}) {
+                    for revoker in grantRecords.fetch(key, fn{return}) {
                         revoker.revoke(problem)
                     }
                     grantRecords.removeKey(key)

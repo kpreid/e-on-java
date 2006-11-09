@@ -315,7 +315,7 @@ def makeMatcher(template :Twine,
         return endMatcher
 
     }
-    def atHole := atHoles.fetch(atHoleNum, thunk{template.size()})
+    def atHole := atHoles.fetch(atHoleNum, fn{template.size()})
     if (atHole < start) {
         throw("at-holes not in order: " + dlrHoles)
     }
@@ -386,7 +386,7 @@ def twine__quasiParser0 implements QuasiExprParser, QuasiPatternParser {
 
     to valueMaker(oldTemplate :Twine) :ValueMaker {
         def key := [oldTemplate, "value"]
-        if (makerCache.fetch(key, thunk{}) =~ result :notNull) {
+        if (makerCache.fetch(key, fn{}) =~ result :notNull) {
             return result
         }
         def [newTemplate, dlrHoles, atHoles] := convertHoles(oldTemplate)
@@ -407,7 +407,7 @@ def twine__quasiParser0 implements QuasiExprParser, QuasiPatternParser {
 
     to valueMaker(newTemplate :Twine, dlrHoles :List[int]) :ValueMaker {
         def key := [newTemplate, dlrHoles]
-        if (makerCache.fetch(key, thunk{}) =~ result :notNull) {
+        if (makerCache.fetch(key, fn{}) =~ result :notNull) {
             return result
         }
         var dlrHoleNum :int := 0
@@ -424,7 +424,7 @@ def twine__quasiParser0 implements QuasiExprParser, QuasiPatternParser {
 
     to matchMaker(oldTemplate :String) :MatchMaker {
         def key := [oldTemplate, "match"]
-        if (makerCache.fetch(key, thunk{}) =~ result :notNull) {
+        if (makerCache.fetch(key, fn{}) =~ result :notNull) {
             return result
         }
         def [newTemplate, dlrHoles, atHoles] := convertHoles(oldTemplate)
@@ -441,7 +441,7 @@ def twine__quasiParser0 implements QuasiExprParser, QuasiPatternParser {
                   dlrHoles :List[int],
                   atHoles :List[int]) :MatchMaker {
         def key := [newTemplate, dlrHoles, atHoles]
-        if (makerCache.fetch(key, thunk{}) =~ result :notNull) {
+        if (makerCache.fetch(key, fn{}) =~ result :notNull) {
             return result
         }
         def matcher := makeMatcher(newTemplate,

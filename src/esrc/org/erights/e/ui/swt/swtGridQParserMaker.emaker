@@ -107,7 +107,7 @@ def parseTemplate(template) :any {
      */
     def expect(c :char) :nullOk[char] {
         require(myChar == c,
-                thunk{`'$c' expected, not '$myChar'`})
+                fn{`'$c' expected, not '$myChar'`})
         next()
     }
 
@@ -137,7 +137,7 @@ def parseTemplate(template) :any {
      */
     def digit(base) :nullOk[int] {
         require(base==10,
-                thunk{`Base $base not yet implemented`})
+                fn{`Base $base not yet implemented`})
         if (myChar != null && '0' <= myChar && myChar <= '9') {
             def result := myChar - '0'
             next()
@@ -159,11 +159,11 @@ def parseTemplate(template) :any {
     def wholeNumber() :int {
         var result := digit(10)
         require(result != null,
-                thunk{`number expected: '$myChar'`})
+                fn{`number expected: '$myChar'`})
         var next := digit(10)
         if (result == 0) {
             require(next == null,
-                    thunk{`Octal not yet implemented: '$myChar'`})
+                    fn{`Octal not yet implemented: '$myChar'`})
         }
         while (next != null) {
             result := result * 10 + next
@@ -192,7 +192,7 @@ def parseTemplate(template) :any {
     def expectDollarHole(index :int) :void {
         def num := dollarHole()
         require(index == num,
-                thunk{`Expected dollar-hole number $index, not $num`})
+                fn{`Expected dollar-hole number $index, not $num`})
     }
 
     ws()
@@ -364,7 +364,7 @@ def swtGridQParserMaker() :any {
                     def &watched := reporter
                     def label :=
                       swtGridQParser.makeControl(parent, [watched, style])
-                    whenever([&watched], thunk{
+                    whenever([&watched], fn{
                         if (!label.isDisposed()) {
                             label.setText(watched)
                             if (packUp(label)) {
@@ -372,7 +372,7 @@ def swtGridQParserMaker() :any {
                             }
                             label.redraw()
                         }
-                    }, thunk{ !label.isDisposed() })
+                    }, fn{ !label.isDisposed() })
                     return label
                 }
                 match reporter :EverReporter {

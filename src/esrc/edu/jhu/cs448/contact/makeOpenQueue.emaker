@@ -57,7 +57,7 @@ def makeOpenQueue(var nextTicket :Ticket) :any {
          */
         to enqueue(item) :Ticket {
             require(!qTail.isDone(),
-                    thunk{`Already closed`})
+                    fn{`Already closed`})
             def result := nextTicket
             nextTicket += 1
             def [nextHead, nextTail] := Ref.promise()
@@ -121,7 +121,7 @@ def makeOpenQueue(var nextTicket :Ticket) :any {
          */
         to commit(served :Ticket) :void {
             require(served < nextTicket,
-                    thunk{`Can't serve items before they're enqueued`})
+                    fn{`Can't serve items before they're enqueued`})
             while (served >= nextServing) {
                 qHead := qHead.getOptNext()
                 nextServing += 1
@@ -133,7 +133,7 @@ def makeOpenQueue(var nextTicket :Ticket) :any {
          */
         to dequeue() :any {
             require(nextServing < nextTicket,
-                    thunk{`Can't serve items before they're enqueued`})
+                    fn{`Can't serve items before they're enqueued`})
             def result := qHead.getItem()
             qHead := qHead.getOptNext()
             nextServing += 1

@@ -7,7 +7,7 @@ pragma.syntax("0.8")
 
 println(currentVat)
 
-timer.whenPast(timer.now() + 10_000, thunk{
+timer.whenPast(timer.now() + 10_000, fn{
     println("time's up")
     # interp.exitAtTop("foo")
     interp.continueAtTop()

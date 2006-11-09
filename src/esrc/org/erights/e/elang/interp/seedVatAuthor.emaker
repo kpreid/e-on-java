@@ -80,7 +80,7 @@ def seedVatAuthor(<unsafe>) :near {
          */
         to run(vat :Vat, privSrc :String) :rcvr {
 
-            return vat.seed(thunk{
+            return vat.seed(fn{
                 def eParser := <elang:syntax.makeEParser>
                 def makeScopeSetup :=
                   <unsafe:org.erights.e.elang.interp.makeScopeSetup>

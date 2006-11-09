@@ -127,7 +127,7 @@ def agreedCapsPetsVowMakerAuthor(<unsafe>, <file>) :any {
             }
             to visitIndependent(subNodes) :void {
                 def table := mapDomText(subNodes)
-                def whyLabel := <swing:makeJLabel>(table.fetch("Why", thunk{""}))
+                def whyLabel := <swing:makeJLabel>(table.fetch("Why", fn{""}))
                 def runIndependentBox := <swing:makeJCheckBox> ("Run apart from CapDesk")
                 def clickedRunner2() :void {
                     runIndependentGranted := runIndependentBox.isEnabled()

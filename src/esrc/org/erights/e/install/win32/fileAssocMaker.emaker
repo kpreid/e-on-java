@@ -17,7 +17,7 @@ pragma.syntax("0.8")
  */
 def fileAssocMaker(fileAssocCmd) :any {
     def fileAssoc {
-        
+
         /**
          * @param ext file extension, such as ".e"
          * @param regType Registry Type, such as "e-script"
@@ -31,7 +31,7 @@ def fileAssocMaker(fileAssocCmd) :any {
                mimeType :Twine,
                icon :Twine) :void {
             require(ext.startsWith("."),
-                    thunk{`$ext must start with "."`})
+                    fn{`$ext must start with "."`})
             fileAssocCmd("-icon", icon, "0",
                          # XXX "-quickView", "*",
                          ext, regType, regDesc, mimeType)

@@ -16,7 +16,7 @@ def makeLazySlot(maker) :Slot {
 
     def firstGetter() :any {
         def v
-        getter := thunk { v }
+        getter := fn{ v }
         try {
           bind v := maker()
         } catch p {
@@ -55,7 +55,7 @@ def makeLazySlot(maker) :Slot {
   # value: <makeLazySlot>
 
   ? # Normal
-  > def &foo := makeLazySlot(thunk { println("foof"); "food" })
+  > def &foo := makeLazySlot(fn{ println("foof"); "food" })
   # value: <lazySlot>
 
   ? foo.isFinal()
@@ -73,7 +73,7 @@ def makeLazySlot(maker) :Slot {
   # value: "food"
 
   ? # Throwing by maker
-  > def &bar := makeLazySlot(thunk { println("barn"); throw("bare") })
+  > def &bar := makeLazySlot(fn{ println("barn"); throw("bare") })
   # value: <lazySlot>
 
   ? bar
@@ -87,7 +87,7 @@ def makeLazySlot(maker) :Slot {
   ? # Ejecting by maker
   > def baz
   > escape out {
-  >     bind baz := makeLazySlot(thunk { out("bass") })
+  >     bind baz := makeLazySlot(fn{ out("bass") })
   >     baz.getValue()
   > }
   # value: "bass"

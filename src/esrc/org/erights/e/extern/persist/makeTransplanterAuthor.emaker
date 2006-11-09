@@ -11,44 +11,44 @@ pragma.syntax("0.8")
  * @author Mark S. Miller
  */
 def makeTransplanterAuthor(surgeon) :near {
-    
+
     /**
      *
      */
     def makeTransplanter {
-        
+
         /**
          * mustBeSettled defaults to false
          */
         to addExit(value, exitName :String) :void {
             makeTransplanter.addExit(value, exitName, false)
         }
-        
+
         /**
          *
          */
         to addExit(value, exitName :String, mustBeSettled :boolean) :void {
             surgeon.addExit(value, exitName, mustBeSettled)
         }
-        
+
         /**
          *
          */
         to getSurgeon() :near {
             return surgeon
         }
-        
+
         /**
          *
          * @param atomicFile Where to save or restore the subgraph from
          */
         to run(var atomicFile) :near {
-            
+
             /**
              *
              */
             def transplanter {
-                
+
                 /**
                  * Used for saving the subgraph starting at 'root' to the
                  * atomic file.
@@ -58,7 +58,7 @@ def makeTransplanterAuthor(surgeon) :near {
                     atomicFile.getNextFile().setText(src)
                     atomicFile.commit()
                 }
-                
+
                 /**
                  * Moves the checkpoint to the new location, and remembers to
                  * use the new atomic file from now on.
@@ -70,20 +70,20 @@ def makeTransplanterAuthor(surgeon) :near {
                     atomicFile.renameTo(newAtomicFile, null)
                     atomicFile := newAtomicFile
                 }
-                
+
                 /**
                  * Used to restore a subgraph from an atomic file.
                  *
                  * @return The root of the restored copy of the subgraph.
                  */
                 to restore() :any {
-                    require(atomicFile.exists(), thunk {
+                    require(atomicFile.exists(), fn{
                         `Not found: $atomicFile`
                     })
                     def src := atomicFile.getNowFile().getText()
                     surgeon.unserialize(src)
                 }
-                
+
                 /**
                  * Deletes the atomic file (be careful!).
                  * <p>
@@ -93,7 +93,7 @@ def makeTransplanterAuthor(surgeon) :near {
                 to delete() :void {
                     atomicFile.delete()
                 }
-                
+
                 /**
                  *
                  */

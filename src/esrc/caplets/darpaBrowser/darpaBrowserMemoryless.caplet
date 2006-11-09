@@ -126,7 +126,7 @@ def darpaBrowserCapletAuthor {
             powerMap[renderPaneKey ] := renderPane
             def renderPGranter {
                 to optCap(capKey :String) :near {
-                    powerMap.fetch(capKey, thunk{})
+                    powerMap.fetch(capKey, fn{})
                 }
                 to getRENDER_PANE() :String {renderPaneKey }
                 to getTRACELN() :String {powerbox.getTRACELN()}

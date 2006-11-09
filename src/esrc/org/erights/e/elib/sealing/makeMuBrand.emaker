@@ -114,7 +114,7 @@ def makeMuBrand(nickName :String) :Tuple[Sealer,Unsealer] {
             myTempContents := none
             try {
                 box.offerContent()
-                require(myTempContents != none, thunk{
+                require(myTempContents != none, fn{
                     `$unsealer can't unseal $box`
                 })
                 return myTempContents

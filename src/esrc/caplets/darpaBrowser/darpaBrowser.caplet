@@ -101,7 +101,7 @@ def darpaBrowserCapletAuthor {
         powerMap[powerbox.getTRACELN()] := traceline
         def renderPGranter {
             to optCap(capKey) :near {
-                powerMap.fetch(capKey, thunk{})
+                powerMap.fetch(capKey, fn{})
             }
             to gotoUrl(urlText) :void {
                 traceline(`got gotoURL from renderer: $urlText`)

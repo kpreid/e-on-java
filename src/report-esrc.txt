@@ -1,208 +1,69 @@
-[[[][..[]..][.[.][*.*.]][..[.][..].]][[[[]..........][...]][[[.]]][[[]...........[......].][...][[[...]][][...][.....][..][.......]][.[]......][[.....[[[]]].]][....][.....]]][[[[........]][[....]]]][[[[[............][........][..][..........][............][.........][[..]][..][....]][[..][.][
-c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/sealing/makeDFBrand.emaker
-problem: <AuditFailedException: object expression e`def makeDFBrand implements DeepFrozen {
-             
-             method run(label :String) :any {
-                 escape __return {
-                     def key {
-                     }
-                     (def [BoxGuard, BoxStamp] := {
-                         __makeProtocolDesc.makePair("", meta.context().getFQNPrefix().add("BoxGuard__T"), __makeList.run(), __makeList.run(), __makeList.run())
-                     }).get(0)
-                     def brand implements DeepFrozen {
-                         
-                         method __printOn(out :TextWriter) :void {
-                             escape __return {
-                                 out.print(label)
-                                 null
-                             }
-                         }
-                     }
-                     def sealer implements DeepFrozen {
-                         
-                         method __printOn(out :TextWriter) :void {
-                             escape __return {
-                                 out.print("<", brand, " sealer>")
-                                 null
-                             }
-                         }
-                         
-                         /** Return the Brand of this sealer/unsealer set. */
-                         method getBrand() :any {
-                             escape __return {
-                                 __return.run(brand)
-                                 null
-                             }
-                         }
-                         
-                         method seal(content) :any {
-                             escape __return {
-                                 def sealedBox implements BoxStamp {
-                                     
-                                     method __printOn(out :TextWriter) :void {
-                                         escape __return {
-                                             out.print("<sealed by ", brand, ">")
-                                             null
-                                         }
-                                     }
-                                     
-                                     /**
-                                      * Return the Brand of the Unsealer which can unseal
-                                      * this box.
-                                      */
-                                     method getBrand() :any {
-                                         escape __return {
-                                             __return.run(brand)
-                                             null
-                                         }
-                                     }
-                                     
-                                     /** An implementation detail. */
-                                     method _offerContent(k) :any {
-                                         escape __return {
-                                             require.run(__equalizer.sameEver(key, k), def _ {
-                                                 
-                                                 method run() {
-                                                     simple__quasiParser.valueMaker("Can't unseal - wrong key").substitute(__makeList.run())
-                                                 }
-                                             })
-                                             __return.run(content)
-                                             null
-                                         }
-                                     }
-                                 }
-                                 __return.run(sealedBox)
-                                 null
-                             }
-                         }
-                     }
-                     def unsealer implements DeepFrozen {
-                         
-                         method __printOn(out :TextWriter) :void {
-                             escape __return {
-                                 out.print("<", brand, " unsealer>")
-                                 null
-                             }
-                         }
-                         
-                         /** Return the Brand of this sealer/unsealer set. */
-                         method getBrand() :any {
-                             escape __return {
-                                 __return.run(brand)
-                                 null
-                             }
-                         }
-                         
-                         /** .unseal(specimen, null) */
-                         method unseal(specimen) :any {
-                             escape __return {
-                                 __return.run(unsealer.unseal(specimen, null))
-                                 null
-                             }
-                         }
-                         
-                         /**
-                          * Unseal a SealedBox: return its contents.
-                          *
-                          * Coerces specimen by BoxGuard (giving a wrapping specimen the
-                          * opportunity to __conformTo(BoxGuard)). If this succeeds, ask
-                          * the resulting SealedBox of our Brand to _offerContent(key).
-                          *
-                          * Note that an object which successfully unseals will not
-                          * necessarily give the same contents on a second unsealing
-                          * because it might __conformTo differently.
-                          */
-                         method unseal(specimen, optEjector) :any {
-                             escape __return {
-                                 def box :BoxGuard exit optEjector := specimen
-                                 __return.run(box._offerContent(key))
-                                 null
-                             }
-                         }
-                     }
-                     def brandKit implements DeepFrozen {
-                         
-                         method __printOn(out :TextWriter) :void {
-                             escape __return {
-                                 out.print("<", brand, " brand kit>")
-                                 null
-                             }
-                         }
-                         
-                         method getSealer() :any {
-                             escape __return {
-                                 __return.run(sealer)
-                                 null
-                             }
-                         }
-                         
-                         method getUnsealer() :any {
-                             escape __return {
-                                 __return.run(unsealer)
-                                 null
-                             }
-                         }
-                         
-                         /** Return the Brand of this sealer/unsealer set. */
-                         method getBrand() :any {
-                             escape __return {
-                                 __return.run(brand)
-                                 null
-                             }
-                         }
-                         
-                         /**
-                          * This brand kit will coerce to a tuple, so that it may be
-                          * matched against a list pattern like epatt`[sealer, unsealer]`.
-                          */
-                         method __conformTo(guard) :any {
-                             escape __return {
-                                 {
-                                     def specimen__1 := guard
-                                     escape ej__5 {
-                                         def via (__is.run(type__uriGetter.get("org.erights.e.elib.tables.ConstList"))) _ exit ej__5 := specimen__1
-                                         __return.run(__makeList.run(sealer, unsealer))
-                                     } catch _ {
-                                         escape ej__3 {
-                                             def _ exit ej__3 := specimen__1
-                                             __return.run(brandKit)
-                                         } catch _ {
-                                             throw.run("no match: ".add(specimen__1))
-                                         }
-                                     }
-                                 }
-                                 null
-                             }
-                         }
-                     }
-                     __return.run(brandKit)
-                     null
-                 }
-             }
-         }` failed audit by DeepFrozen>
-..][..........][.....][.[....].]][[....]][[
-# warning: duplicate header from: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/extern/persist/initTimeMachine.emaker#:span::25:19::25:37>
+=== 2006-11-09T07:52:14.760Z (PendingEvent.report:PendingEvent.java:109) WRN
+causality: Problem in turn <<Vat parsing srccheck.e in <runs in parsing srccheck.e>>,97>: 
+--vvvv--
+The optional e.enable.thunk feature (see org/erights/e/elang/syntax/syntax-props-0.8.txt) is currently off.
 
-.....]][........][.[.][.....]][[......][.......][......][..][...][.][....][.][.......]][[...][.......]]][[...]]][[.][..][..]]][.[....]......
-# warning: Missing copyright notice from: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/cipher-saber.e#:blob::2:0::67:1>
+- EParser#parse()
+. <an EParser>.parse()
+@ parse/0: <file:/C:/Documents%20and%20Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/makeParseFuncAuthor.emaker#:span::52:30::52:34>
+- org.erights.e.elang.cmd.makeParseFuncAuthor$makeParseFuncAuthor$makeParseFunc$parseFunc#run/0: <file:/C:/Documents%20and%20Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/makeParseFuncAuthor.emaker#:span::48:21::48:21>
+. <parseFunc>()
 
-.....[[...........][..][...][...][...][...]].............................
-# warning: duplicate header from: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/srccheck.e#:span::92:18::92:36>
-
-
-# warning: duplicate version from: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/srccheck.e#:span::37:48::37:60>
-
-...[..[....].
-# warning: Missing copyright notice from: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/jcombothread.e-awt#:blob::2:0::53:25>
-
-..
-# warning: Missing copyright notice from: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/methcall.e#:blob::2:0::34:24>
-
-...[.....]]..[.*
-c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html
-syntax error: File end inside quasi-string literal, unmatched openning bracket: 
+syntax error: The optional e.enable.thunk feature (see org/erights/e/elang/syntax/syntax-props-0.8.txt) is currently off.
               
-  `
-  ^
-  @ <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::4857:20::4857:20>
-*.*..].]]
+    if (interp.getProps().fetch("e.home", thunk{}) =~ eHomeName :notNull) {
+                                                ^
+  @ <c:/Documents and Settings/millerm1/e/src/esrc/scripts/srccheck.e#:span::15:46::15:46>
+	at org.quasiliteral.syntax.BaseLexer.syntaxError(BaseLexer.java:379)
+	at org.erights.e.elang.syntax.BaseENodeBuilder.syntaxError(BaseENodeBuilder.java:190)
+	at org.erights.e.elang.syntax.BaseENodeBuilder.pocket(BaseENodeBuilder.java:245)
+	at org.erights.e.elang.syntax.EParser.yyparse(EParser.java:2623)
+	at org.erights.e.elang.syntax.EParser.optParse(EParser.java:1535)
+	at org.erights.e.elang.syntax.EParser.parse(EParser.java:1546)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at org.erights.e.elib.prim.InstanceMethodNode.innerExecute(InstanceMethodNode.java:113)
+	at org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:183)
+	at org.erights.e.elib.prim.Selector.callIt(Selector.java:84)
+	at org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:132)
+	at org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:126)
+	at org.erights.e.elang.evm.IfExpr.subEval(IfExpr.java:111)
+	at org.erights.e.elang.evm.EscapeExpr.subEval(EscapeExpr.java:153)
+	at org.erights.e.elang.evm.EMethod.execute(EMethod.java:175)
+	at org.erights.e.elang.evm.EMethodNode.execute(EMethodNode.java:136)
+	at org.erights.e.elib.prim.E.callAll(E.java:167)
+	at org.erights.e.elib.vat.PendingDelivery.innerRun(PendingDelivery.java:102)
+	at org.erights.e.elib.vat.PendingEvent.run(PendingEvent.java:76)
+	at org.erights.e.elib.vat.HeadlessRunner.run(HeadlessRunner.java:176)
+	at java.lang.Thread.run(Thread.java:595)
+
+--^^^^--
+
+# syntax error: The optional e.enable.thunk feature (see org/erights/e/elang/syntax/syntax-props-0.8.txt) is currently off.
+#               
+#     if (interp.getProps().fetch("e.home", thunk{}) =~ eHomeName :notNull) {
+#                                                 ^
+#   @ <c:/Documents and Settings/millerm1/e/src/esrc/scripts/srccheck.e#:span::15:46::15:46>
+
+# syntax error: The optional e.enable.thunk feature (see org/erights/e/elang/syntax/syntax-props-0.8.txt) is currently off.
+#               
+#     if (interp.getProps().fetch("e.home", thunk{}) =~ eHomeName :notNull) {
+#                                                 ^
+#   @ <c:/Documents and Settings/millerm1/e/src/esrc/scripts/srccheck.e#:span::15:46::15:46>
+#
+#   - EParser#parse()
+#   . <an EParser>.parse()
+#   @ parse/0: <file:/C:/Documents%20and%20Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/makeParseFuncAuthor.emaker#:span::52:30::52:34>
+#   - org.erights.e.elang.cmd.makeParseFuncAuthor$makeParseFuncAuthor$makeParseFunc$parseFunc#run/0: <file:/C:/Documents%20and%20Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/makeParseFuncAuthor.emaker#:span::48:21::48:21>
+#   . <parseFunc>()
+#   - static Ref#fulfillment(Object)
+#   . <makeRef>.fulfillment(<ref broken by syntax error: The optional e.enable.thunk feature (see org/eri...nts and Settings/millerm1/e/src/esrc/scripts/srccheck.e#:span::15:46::15:46>>)
+#   @ fulfillment/1
+#   - static Ref#fulfillment(Object)
+#   . <makeRef>.fulfillment(<ref broken by syntax error: The optional e.enable.thunk feature (see org/eri...nts and Settings/millerm1/e/src/esrc/scripts/srccheck.e#:span::15:46::15:46>>)
+#   @ fulfillment/1
+
+
+Hit Enter to dismiss.

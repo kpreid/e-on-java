@@ -85,9 +85,9 @@ def causewayEditorAuthor(rezKit,
         setMargins(toolArea.getLayout(), 0)
 
         def &everShowMainToolbar := makeLamportSlot(true)
-        whenever([&everShowMainToolbar], thunk{
+        whenever([&everShowMainToolbar], fn{
             toolArea.setVisible(everShowMainToolbar)
-        }, thunk{
+        }, fn{
             ! toolArea.isDisposed()
         })
 
@@ -99,9 +99,9 @@ def causewayEditorAuthor(rezKit,
         }
 
         def &everShowStatusBar := makeLamportSlot(true)
-        whenever([&everShowStatusBar], thunk{
+        whenever([&everShowStatusBar], fn{
             statusBar.setVisible(everShowStatusBar)
-        }, thunk{
+        }, fn{
             ! statusBar.isDisposed()
         })
 
@@ -219,7 +219,7 @@ def causewayEditorAuthor(rezKit,
                 "com/skyhunter/e/icons/save16-16.gif"
             }
             to everEnabledReporter() :EverReporter {
-                whenever([&everDirty, &everOptFile], thunk{
+                whenever([&everDirty, &everOptFile], fn{
                     everDirty | (everOptFile == null)
                 })
             }
@@ -547,7 +547,7 @@ def causewayEditorAuthor(rezKit,
                 "Toggle visibility of main toolbar"
             }
             to everEnabledReporter() :EverReporter {
-                whenever([], thunk{false})
+                whenever([], fn{false})
             }
             to optEverCheckedReporter() :EverReporter { &everShowMainToolbar }
         }
@@ -579,7 +579,7 @@ def causewayEditorAuthor(rezKit,
                 "Toggle visibility of status bar"
             }
             to everEnabledReporter() :EverReporter {
-                whenever([], thunk{false})
+                whenever([], fn{false})
             }
             to optEverCheckedReporter() :EverReporter { &everShowStatusBar }
         }

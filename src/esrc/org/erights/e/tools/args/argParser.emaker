@@ -127,7 +127,7 @@ extension`)
                         args := [`=$optionValue`] + args
                         break
                     }
-                    def values := options.fetch(op, thunk{[]})
+                    def values := options.fetch(op, fn{[]})
                     options[op] := values + [optionValue]
                 }
                 match `--@optionName` {
@@ -136,7 +136,7 @@ extension`)
                         args := [null] + args
                         break
                     }
-                    def values := options.fetch(first, thunk{[]})
+                    def values := options.fetch(first, fn{[]})
                     options[first] := values + [true]
                 }
                 match `-` {
@@ -189,7 +189,7 @@ extension`)
      * For turning a flag option's value into a boolean
      */
     to getFlag(optionName :String, map :Map, defaultValue) :boolean {
-        def optionValue := map.fetch(optionName, thunk{defaultValue})
+        def optionValue := map.fetch(optionName, fn{defaultValue})
         switch (optionValue) {
             match ==true  { true }
             match ==false { false }

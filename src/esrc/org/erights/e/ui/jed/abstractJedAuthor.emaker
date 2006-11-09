@@ -87,9 +87,9 @@ def abstractJedAuthor(display,
 
 
         def &everShowMainToolbar := makeLamportSlot(true)
-        whenever([&everShowMainToolbar], thunk{
+        whenever([&everShowMainToolbar], fn{
             toolArea.setVisible(everShowMainToolbar)
-        }, thunk{
+        }, fn{
             ! toolArea.isDisposed()
         })
 
@@ -111,9 +111,9 @@ def abstractJedAuthor(display,
             to modifyText(_) :void { everDirty := true }
         })
         def &everWordWrap := makeLamportSlot(true)
-        whenever([&everWordWrap], thunk{
+        whenever([&everWordWrap], fn{
             textPane.setWordWrap(everWordWrap)
-        }, thunk{
+        }, fn{
             ! textPane.isDisposed()
         })
 
@@ -124,9 +124,9 @@ def abstractJedAuthor(display,
             statusBar.setText(str)
         }
         def &everShowStatusBar := makeLamportSlot(true)
-        whenever([&everShowStatusBar], thunk{
+        whenever([&everShowStatusBar], fn{
             statusBar.setVisible(everShowStatusBar)
-        }, thunk{
+        }, fn{
             ! statusBar.isDisposed()
         })
 
@@ -256,7 +256,7 @@ def abstractJedAuthor(display,
                 "com/skyhunter/e/icons/save16-16.gif"
             }
             to everEnabledReporter() :EverReporter {
-                whenever([&everDirty, &everOptFile], thunk{
+                whenever([&everDirty, &everOptFile], fn{
                     everDirty | (everOptFile == null)
                 })
             }
@@ -593,7 +593,7 @@ def abstractJedAuthor(display,
                 "Toggle visibility of main toolbar"
             }
             to everEnabledReporter() :EverReporter {
-                whenever([], thunk{false})
+                whenever([], fn{false})
             }
             to optEverCheckedReporter() :EverReporter { &everShowMainToolbar }
         }
@@ -625,7 +625,7 @@ def abstractJedAuthor(display,
                 "Toggle visibility of status bar"
             }
             to everEnabledReporter() :EverReporter {
-                whenever([], thunk{false})
+                whenever([], fn{false})
             }
             to optEverCheckedReporter() :EverReporter { &everShowStatusBar }
         }
@@ -862,7 +862,7 @@ by Mark S. Miller and Marc Stiegler
                 shell.open()
                 <widget:makeControl>.transferFocus([shell], textPane)
 
-                whenever([&everOptFile, &everDirty], thunk{
+                whenever([&everOptFile, &everDirty], fn{
                     def appName := self.getAppName()
                     def path := if (everOptFile == null) {
                         "Untitled"
@@ -873,7 +873,7 @@ by Mark S. Miller and Marc Stiegler
                     }
                     def marker := if (everDirty) { "*" } else { "" }
                     shell.setText(`$appName - $path$marker`)
-                }, thunk{
+                }, fn{
                     ! shell.isDisposed()
                 })
             }

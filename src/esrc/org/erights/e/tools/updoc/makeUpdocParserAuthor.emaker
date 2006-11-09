@@ -200,7 +200,7 @@ def makeUpdocParserAuthor(optCacheFile) :near {
                         index += 1
                     }
                     answer := answer.replaceAll("\\\n", "")
-                    require(answer.endsWith("\n"), thunk{
+                    require(answer.endsWith("\n"), fn{
                         `${E.toQuote(answer)} must end with a newline`
                     })
                     return term`$keyword:.String.$answer`

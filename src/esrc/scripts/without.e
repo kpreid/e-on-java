@@ -50,7 +50,7 @@ try {
         require(null != optLine1)
         def optNext1 := reader1.readLine()
         require(null == optNext1 || optLine1 < optNext1,
-                thunk{`First file must be sorted:
+                fn{`First file must be sorted:
 ${E.toQuote(optLine1)}
 isn't less than
 ${E.toQuote(optNext1)}`})
@@ -62,7 +62,7 @@ ${E.toQuote(optNext1)}`})
         require(null != optLine2)
         def optNext2 := reader2.readLine()
         require(null == optNext2 || optLine2 < optNext2,
-                thunk{`Second file must be sorted:
+                fn{`Second file must be sorted:
 ${E.toQuote(optLine2)}
 isn't less than
 ${E.toQuote(optNext2)}`})

@@ -130,7 +130,7 @@ def abstractDice(self) :any {
             def res := [].asMap().diverge()
             for i in 1..n {
                 def roll := self.roll().getTotal()
-                res.put(roll, res.fetch(roll, thunk{0}) + 1)
+                res.put(roll, res.fetch(roll, fn{0}) + 1)
             }
             return res.sortKeys().snapshot()
         }

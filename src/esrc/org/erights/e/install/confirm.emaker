@@ -27,7 +27,7 @@ def confirm(props,
         interp.continueAtTop()
     }
 
-    if (props.fetch("e.swingLnF", thunk{}) == "none") {
+    if (props.fetch("e.swingLnF", fn{}) == "none") {
         stderr.println("(We seem to be headless.)\n")
         stderr.println(welcome)
 

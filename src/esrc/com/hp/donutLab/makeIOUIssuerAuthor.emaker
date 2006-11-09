@@ -209,7 +209,7 @@ def makeIOUIssuerAuthor(timer) :any {
                         def holdMgr {
                             to refundInto(allegedParent :Account) :Nat {
                                 requireValidHold()
-                                require(account == allegedParent, thunk{
+                                require(account == allegedParent, fn{
                                     `NotMine: not a child of this parent`})
                                 liabilities -= amount
                                 try {
@@ -313,7 +313,7 @@ def makeIOUIssuerAuthor(timer) :any {
                         return (&liabilities).readOnly()
                     }
                     to getBalanceReporter() :EverReporter {
-                        return whenever([&assets, &liabilities], thunk{
+                        return whenever([&assets, &liabilities], fn{
                             assets - liabilities
                         })
                     }

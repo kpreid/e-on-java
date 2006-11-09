@@ -29,7 +29,7 @@ For help on an individual extension, use "$$ rune --help.<ext>"`
      * installation of E we are running on.
      */
     to getOptVersionText(props) :String {
-        def prop(propName) :String { props.fetch(propName, thunk{"??"}) }
+        def prop(propName) :String { props.fetch(propName, fn{"??"}) }
         def javaHome := prop("java.home").replaceAll("\\", "/")
         def osName := prop("os.name")
         def osVer := prop("os.version")
@@ -52,7 +52,7 @@ on SWT $swtVer.$swtRev for $swtPlat`
 on Java version: ${prop("java.version")} at $javaHome$extra
 on OS: $osName version: $osVer on $arch ($osdir/$machdir)
 for ${prop("user.name")} in ${props.fetch("user.region",
-                                          thunk{prop("user.country")})}`
+                                          fn{prop("user.country")})}`
     }
 
     /**

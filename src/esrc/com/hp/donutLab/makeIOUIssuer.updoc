@@ -47,6 +47,6 @@ rune(["~/e/src/esrc/scripts/updoc.e",
 ? introducer.onTheAir()
 # value: ["3DES_SDH_M2", "3DES_SDH_M"]
 
-? timer.whenPast(timer.now() + 5000, thunk{interp.exitAtTop()})
+? timer.whenPast(timer.now() + 5000, fn{interp.exitAtTop()})
 
 ? interp.blockAtTop()

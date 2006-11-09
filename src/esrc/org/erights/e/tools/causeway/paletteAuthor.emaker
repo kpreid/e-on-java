@@ -52,16 +52,16 @@ def paletteAuthor(rezKit, makers, traceline) :near {
     colors.put("darkGray", rezKit.makeColor(128, 128, 128), true)
 
     def vatColors := [].diverge()
-    vatColors[0] := colors.fetch("aGoodBlue", thunk{})
-    vatColors[1] := colors.fetch("EGreen", thunk{})
-    vatColors[2] := colors.fetch("aGoodOrange", thunk{})
-    vatColors[3] := colors.fetch("aGoodPurple", thunk{})
-    vatColors[4] := colors.fetch("lightBlue", thunk{})
-    vatColors[5] := colors.fetch("darkBlue", thunk{})
-    vatColors[6] := colors.fetch("lightGreen", thunk{})
-    vatColors[7] := colors.fetch("darkGreen", thunk{})
-    vatColors[8] := colors.fetch("lightPurple", thunk{})
-    vatColors[9] := colors.fetch("darkPurple", thunk{})
+    vatColors[0] := colors.fetch("aGoodBlue", fn{})
+    vatColors[1] := colors.fetch("EGreen", fn{})
+    vatColors[2] := colors.fetch("aGoodOrange", fn{})
+    vatColors[3] := colors.fetch("aGoodPurple", fn{})
+    vatColors[4] := colors.fetch("lightBlue", fn{})
+    vatColors[5] := colors.fetch("darkBlue", fn{})
+    vatColors[6] := colors.fetch("lightGreen", fn{})
+    vatColors[7] := colors.fetch("darkGreen", fn{})
+    vatColors[8] := colors.fetch("lightPurple", fn{})
+    vatColors[9] := colors.fetch("darkPurple", fn{})
 
     def fonts := [].asMap().diverge()
 
@@ -144,20 +144,20 @@ def paletteAuthor(rezKit, makers, traceline) :near {
 
     def makeBasicPalette(fgName, bgName, fontName) :near {
 
-        def fg := colors.fetch(fgName, thunk{})
-        def bg := colors.fetch(bgName, thunk{})
+        def fg := colors.fetch(fgName, fn{})
+        def bg := colors.fetch(bgName, fn{})
 
-        def font := fonts.fetch(fontName, thunk{})
+        def font := fonts.fetch(fontName, fn{})
 
         def basicPalette {
             to getFg()   :near { return fg }
             to getBg()   :near { return bg }
             to getFont() :near { return font }
             to getCharExtent() :near {
-                return metrics.fetch(fontName, thunk{})
+                return metrics.fetch(fontName, fn{})
             }
             to getImage(imageName :String) :near {
-                return images.fetch(imageName, thunk{})
+                return images.fetch(imageName, fn{})
             }
         }
         return basicPalette
@@ -186,7 +186,7 @@ def paletteAuthor(rezKit, makers, traceline) :near {
             }
 
             to getDefaultVatColor() :near {
-                return colors.fetch("almostBlack", thunk{})
+                return colors.fetch("almostBlack", fn{})
             }
 
             to getVatColor(i :int) :near {

@@ -109,13 +109,13 @@ def runCaplet{
         }
         traceline("runcaplet/2 got capsXml")
         def powerboxController := powerboxControllerMaker(
-            appDesc.fetch("Name", thunk{canonicalPath}),
+            appDesc.fetch("Name", fn{canonicalPath}),
             image, capsXml)
         traceline(`got pcontroller: $powerboxController`)
         def box := powerboxController.getPowerbox()
         traceline(`got pbox: $box`)
         powerboxController.setCap(box.getDOC_SUFFIX(),
-                                  appDesc.fetch("Suffix", thunk{}))
+                                  appDesc.fetch("Suffix", fn{}))
         traceline("set doc suffix cap")
         powerboxController.setCap(box.getINITIAL_DOC_RCVRS(), docRcvrs)
         powerboxController.addPowerboxReactor( def obs{

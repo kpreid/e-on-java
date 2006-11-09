@@ -103,7 +103,7 @@ def deASTKit {
             }
 
             to buildIbid(tempIndex :int) :Term {
-                require(tempIndex < nextTemp, thunk {
+                require(tempIndex < nextTemp, fn{
                     `internal: $tempIndex must be < $nextTemp`
                 })
                 varReused[tempIndex] := true

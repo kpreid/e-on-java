@@ -13,14 +13,14 @@ def makeEditGroup(makeEditor, activate, shutdown, traceline) :near {
     def editors := [].diverge()
 
     # input reporters are dynamic, and so are subscribed to manually above
-    def [&everAnyDirty, everAnyDirtyReactor] := whenever.makePair([], thunk{
+    def [&everAnyDirty, everAnyDirtyReactor] := whenever.makePair([], fn{
         var result := false;
         for editor in editors {
             def &everDirty := editor.getEverDirtyReporter()
             result |= everDirty
         }
         result
-    }, thunk{
+    }, fn{
         false
     })
 
@@ -72,7 +72,7 @@ def makeEditGroup(makeEditor, activate, shutdown, traceline) :near {
                 def disposeListener {
                     to widgetDisposed(_) :void {
                         def index := editors.indexOf1(optResult)
-                        require(index >= 0, thunk{`not found: $optResult`})
+                        require(index >= 0, fn{`not found: $optResult`})
 
                         editors.removeRun(index, index+1)
                         # wake it up

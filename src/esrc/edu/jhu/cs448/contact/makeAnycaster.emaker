@@ -93,7 +93,7 @@ def makeAnycaster(entropy, accessor, statusObserver) :any {
                     resolver.smash("result skipped")
                     statusObserver <- noticeSkip(ticket)
                 }
-                require(ticket == deq.getNextServing(), thunk{`can't happen`})
+                require(ticket == deq.getNextServing(), fn{`can't happen`})
                 def [_, _, resolver] := deq.dequeue()
                 resolver.resolve(result)
                 statusObserver <- noticeCommit(ticket)

@@ -74,7 +74,7 @@
     ? y
     # value: 8
 
-    ? interp.waitAtTop(timer.whenPast(timer.now() + 5000, thunk{}))
+    ? interp.waitAtTop(timer.whenPast(timer.now() + 5000, fn{}))
 
     ? trace
     # value: "++++.run/1.run/1+.run/1+.run/1

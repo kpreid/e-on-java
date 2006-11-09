@@ -163,7 +163,7 @@ for topFile in files {
     for name => file in leaves(topFile) {
         def lastDot := name.lastIndexOf(".")
         def ext := name(lastDot+1, name.size())
-        def isText := extensions.fetch(ext, thunk{})
+        def isText := extensions.fetch(ext, fn{})
         if (isText == null) {
             if (onlyKnownFlag) {
                 errorMsg := "unrecognized extensions"

@@ -48,9 +48,9 @@ def evalServer {
      */
     to getAccessToService() :rcvr[SturdyRef] {
         require(optEvaluatorMaker == null,
-                thunk{"eval server must not be busy"})
+                fn{"eval server must not be busy"})
         optVat := makeVat.make("headless", "Service vat")
-        optEvaluatorMaker := optVat.seed(thunk {
+        optEvaluatorMaker := optVat.seed(fn{
             def [introducer2, identityMgr2] :=
               makeIntroducer.makePair(interp.getProps(),
                                       entropy,
@@ -83,7 +83,7 @@ def evalServer {
      */
     to releaseService(evaluatorMaker :rcvr[SturdyRef]) :void {
         require(optEvaluatorMaker == evaluatorMaker,
-                thunk{"Service must have been provided by this eval server."})
+                fn{"Service must have been provided by this eval server."})
         # service is no longer in use
         optEvaluatorMaker := null
         optVat.orderlyShutdown("Service released.")

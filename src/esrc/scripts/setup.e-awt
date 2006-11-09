@@ -16,10 +16,10 @@ def props := [].asMap().diverge()
 # 'false' means overwrite rather than complain
 props.putAll(interp.getProps(), false)
 
-def ehomeDir := <file>[props.fetch("e.home", thunk{"."})]
+def ehomeDir := <file>[props.fetch("e.home", fn{"."})]
 def eVersionFile := ehomeDir["eVersion.txt"]
 require(eVersionFile.exists(),
-        thunk{`Can't find ${eVersionFile.getPath()}`})
+        fn{`Can't find ${eVersionFile.getPath()}`})
 def eVersion := eVersionFile.getText().trim()
 props["e.version"] := eVersion
 println(`E $eVersion Installer...`)
@@ -30,11 +30,11 @@ if (epropsFile.exists()) {
     def cpa := ehomeDir.getCanonicalPath()
     def cpb := <file>[newProps["e.home"]].getCanonicalPath()
     require(cpa == cpb,
-            thunk{`$cpa/eprops.txt says it should be at $cpb`})
+            fn{`$cpa/eprops.txt says it should be at $cpb`})
     props.putAll(newProps, false)
 }
 
-def optIconImage := if (props.fetch("e.swingLnF", thunk{}) == "none") {
+def optIconImage := if (props.fetch("e.swingLnF", fn{}) == "none") {
     # If "none", then try to avoid doing anything that might crash the jvm
     # if we're headless. This may no longer be a concern with modern jvms.
     null
@@ -43,7 +43,7 @@ def optIconImage := if (props.fetch("e.swingLnF", thunk{}) == "none") {
     <swing:makeImageIcon>(iconURL).getImage()
 }
 
-def osname := interp.getProps().fetch("os.name", thunk{})
+def osname := interp.getProps().fetch("os.name", fn{})
 if (osname != null && osname.startsWith("Windows")) {
 
     def setupWindows := <import:org.erights.e.install.win32.setupWindows>

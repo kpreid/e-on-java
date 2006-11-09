@@ -71,9 +71,9 @@ println(introducer sturdyToURI(makeSturdyRef($sourceCode)))
 `
         altInterp.setSource(wrappedSource)
         def optProblem := altInterp.interpret() # beware: 2 vat blocking op
-        require(optProblem == null, thunk{`while spawning: $optProblem`})
+        require(optProblem == null, fn{`while spawning: $optProblem`})
         def errString := alterrBuffer.snapshot().trim()
-        require(errString == "", thunk{`errors while spawning: $errString`})
+        require(errString == "", fn{`errors while spawning: $errString`})
 
         def uri := readBuffer(altoutBuffer).trim()
         def sr := introducer.sturdyFromURI(uri)

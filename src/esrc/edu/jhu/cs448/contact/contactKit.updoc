@@ -129,7 +129,7 @@
 
 ? pongAccessor.getRcvr() <- output("I am Ping")
 
-? interp.waitAtTop(timer.whenPast(timer.now() + 5000, thunk{}))
+? interp.waitAtTop(timer.whenPast(timer.now() + 5000, fn{}))
 
 
 ?? in vat Pong

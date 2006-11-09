@@ -34,7 +34,7 @@ def piggyIssuer :=
 
 def &supply :=
   makeLamportSlot.localShadow("???", piggyIssuer <- getSupplyReporter())
-def &supplyStr := whenever([&supply], thunk{"$"+`$supply`})
+def &supplyStr := whenever([&supply], fn{"$"+`$supply`})
 
 def piggyShell := <widgets:makeShell>(currentDisplay)
 
@@ -117,7 +117,7 @@ swtGrid`$piggyShell:
         ${""}         ${"initial balance"} ${" for "}
         $acctSource   $amountField.X       $petnameField.X`
 
-if (interp.getProps().fetch("e.osdir", thunk{}) == "linux-motif") {
+if (interp.getProps().fetch("e.osdir", fn{}) == "linux-motif") {
     println("skipping font adjustment on linux-motif to avoid bug")
 } else {
     def setFont(control, font) :void {

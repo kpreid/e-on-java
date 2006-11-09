@@ -28,7 +28,7 @@ def makeMultiDispatch(verb, arity) {
 def makeManyDispatch(verb, arity) {
     def manyDispatch(visitor, node, args) {
         def argsSize := args.size()
-        require (argsSize == arity - 1, thunk{
+        require (argsSize == arity - 1, fn{
             `Send of $verb/$arity failed. Expected ${
                     arity-1} args, but got $argsSize`
         })
@@ -82,7 +82,7 @@ def templateTermVisitor(self) {
                     visits[verb] := makeDispatch(mType)
                 }
             }
-            def dispatcher := visits.fetch(tagName, thunk{VISIT_OTHER})
+            def dispatcher := visits.fetch(tagName, fn{VISIT_OTHER})
             return dispatcher(self, node, node.getArgs())
         }
         to visitAll(nodes) {

@@ -51,7 +51,7 @@ def makeDFBrand implements DeepFrozen {
 
                     /** An implementation detail. */
                     to _offerContent(k) :any {
-                        require(key == k, thunk{`Can't unseal - wrong key`})
+                        require(key == k, fn{`Can't unseal - wrong key`})
                         return content
                     }
                 }
@@ -115,7 +115,7 @@ def makeDFBrand implements DeepFrozen {
              * This brand kit will coerce to a tuple, so that it may be
              * matched against a list pattern like epatt`[sealer, unsealer]`.
              */
-            to __conformTo(guard) :any { 
+            to __conformTo(guard) :any {
                 switch (guard) {
                     match ==<type:org.erights.e.elib.tables.ConstList> {
                         return [sealer, unsealer]

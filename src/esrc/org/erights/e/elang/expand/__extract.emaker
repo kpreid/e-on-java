@@ -24,7 +24,7 @@ pragma.syntax("0.9")
 def extract {
     to run(key) :any {
         def extractor1(specimen, optEjector) :any {
-            def value := specimen.fetch(key, thunk {
+            def value := specimen.fetch(key, fn{
                 throw.eject(optEjector, `$key not found`)
             })
             return [value, specimen.without(key)]
@@ -34,7 +34,7 @@ def extract {
 
     to run(key, insteadThunk) :any {
         def extractor2(specimen, _) :any {
-            def value := specimen.fetch(key, thunk {
+            def value := specimen.fetch(key, fn{
                 return [insteadThunk(), specimen]
             })
             return [value, specimen.without(key)]

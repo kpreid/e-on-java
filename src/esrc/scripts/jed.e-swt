@@ -82,7 +82,7 @@ if (fNames =~ []) {
     }
 }
 
-if (interp.getProps().fetch("debug", thunk{}) == "rune") {
+if (interp.getProps().fetch("debug", fn{}) == "rune") {
     rune(["--interact", "-.e", editGroup])
 }
 

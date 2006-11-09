@@ -37,7 +37,7 @@ w.pack()
 w.setVisible(true)
 
 def check() :any {
-   when (timer.whenPast(timer.now() + 1_000, thunk{})) -> done(_) :any {
+   when (timer.whenPast(timer.now() + 1_000, fn{})) -> done(_) :any {
      if (Ref.isResolved(bigProblem)) {
        stdout.println(bigProblem)
        stdout.println(bigProblem.eStack())

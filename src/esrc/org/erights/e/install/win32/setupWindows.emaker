@@ -124,27 +124,27 @@ def setupWindows(var props,
         "java.exe" # in case we don't find one
     })
 
-    setDefaultFile(props, "e.home", thunk{
+    setDefaultFile(props, "e.home", fn{
         ehomeDir.getPath()
     })
-    setDefault(props, "e.osdir", thunk{
+    setDefault(props, "e.osdir", fn{
         "win32"
     })
-    setDefault(props, "e.machdir", thunk{
+    setDefault(props, "e.machdir", fn{
         # XXX should verify this with the Java system property arch.name
         "x86"
     })
-    setDefaultFile(props, "e.launch.dir", thunk{
+    setDefaultFile(props, "e.launch.dir", fn{
         props["e.winfo.DESKTOP"]
     })
-    setDefaultFile(props, "TraceLog_dir", thunk{
+    setDefaultFile(props, "TraceLog_dir", fn{
         props["e.winfo.tempdir"] + "/etrace"
     })
 
-    setDefaultPathlist(props, "e.put.bash.pathlist", thunk{
+    setDefaultPathlist(props, "e.put.bash.pathlist", fn{
         props["e.winfo.windowsdir"]
     })
-    setDefaultPathlist(props, "e.put.shortcut.pathlist", thunk{
+    setDefaultPathlist(props, "e.put.shortcut.pathlist", fn{
         props["e.winfo.DESKTOP"] + ";" +
           props["e.winfo.PROGRAMS"] + "/erights.org"
     })
@@ -199,7 +199,7 @@ def setupWindows(var props,
                       fileAssocCmd,
                       addCommandCmd)
 
-    def TraceLog_dirName := props.fetch("TraceLog_dir", thunk{""})
+    def TraceLog_dirName := props.fetch("TraceLog_dir", fn{""})
     if (TraceLog_dirName != "") {
         <file>[TraceLog_dirName].mkdir(null)
     }

@@ -76,9 +76,9 @@ def stackWalkerAuthor(<file>, <jar>, traceline) :near {
         })
 
         def &everWordWrap := makeLamportSlot(true)
-        whenever([&everWordWrap], thunk{
+        whenever([&everWordWrap], fn{
             source.setWordWrap(everWordWrap)
-        }, thunk{
+        }, fn{
             ! source.isDisposed()
         })
 

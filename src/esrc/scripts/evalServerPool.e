@@ -327,7 +327,7 @@ def [optionsMap, args] := interimArgParser(optionsDesc, interp.getArgs())
 traceline("args parsed")
 
 def exportFacet(optionName, face) :void {
-    for arg in optionsMap.fetch(optionName, thunk{[]}) {
+    for arg in optionsMap.fetch(optionName, fn{[]}) {
         when (exportCap(makeSturdyRef(face), arg)) -> done(_) :void {
             traceline("arg connected")
         } catch problem {

@@ -26,7 +26,7 @@ def JPanel__quasiParser := <import:org.erights.ex.swing.JPanel__quasiParser>
  */
 def execCommandAuthor(makeVat, runtime, cwdDir, traceline) :rcvr {
     def execVat := makeVat.make("headless", "exec")
-    execVat.seed(thunk{
+    execVat.seed(fn{
         def makeCommand :=
           <elib:extern.CommandMakerAuthor>(runtime)
         def command := makeCommand("java")
@@ -147,8 +147,8 @@ def powerboxControllerMakerAuthor {
                     def pets := capsPets.getPetMap()
                     def spunPowerController :=
                       powerboxControllerMaker(pets.fetch("Name",
-                                                         thunk{"Caplet"}),
-                                              pets.fetch("Icon", thunk{}),
+                                                         fn{"Caplet"}),
+                                              pets.fetch("Icon", fn{}),
                                               capsPets.getCapsXML())
                     traceline(`got spun power: $spunPowerController`)
                     spunPowerController.startExternalCaplet(capletAuthor(spunPowerController.getPowerbox()))
@@ -404,7 +404,7 @@ def powerboxControllerMakerAuthor {
                     throw("XXX requestCapPromise not yet implemented")
                 }
                 to optCap(capKey :String) :any {
-                    powersMap.fetch(capKey, thunk{})
+                    powersMap.fetch(capKey, fn{})
                 }
 
                 /**

@@ -54,14 +54,14 @@ def EverReactor := <type:org.erights.e.elib.slot.EverReactor>
 def whenever {
 
     /**
-     * <tt>interest</tt> defaults to <tt>thunk{false}</tt>.
+     * <tt>interest</tt> defaults to <tt>fn{false}</tt>.
      * <p>
      * This creates a whenever-formula rather than a forever-formula.
      *
      * @see EverReporter
      */
     to run(inputReporters :List[EverReporter], formula :near) :EverReporter {
-        whenever(inputReporters, formula, thunk{false})
+        whenever(inputReporters, formula, fn{false})
     }
 
     /**
@@ -93,7 +93,7 @@ def whenever {
                 formula :near,
                 interest :near) :Tuple[EverReporter, EverReactor] {
         whenever.makePairDynamic(inputReporters,
-                                 thunk{[formula(), []]},
+                                 fn{[formula(), []]},
                                  interest)
     }
 
@@ -103,7 +103,7 @@ def whenever {
      */
     to dynamic(inputReporters :List[EverReporter],
                pairFormula :near) :EverReporter {
-        whenever.makePairDynamic(inputReporters, pairFormula, thunk{false})[0]
+        whenever.makePairDynamic(inputReporters, pairFormula, fn{false})[0]
     }
 
     /**
@@ -176,7 +176,7 @@ def whenever {
                         everFormulaReactor <- update()
                         dynamicSubscriptions without= reporter
                     }
-                }, oldDynamicGenerations.fetch(reporter, thunk{-1}))
+                }, oldDynamicGenerations.fetch(reporter, fn{-1}))
                 dynamicSubscriptions with= reporter
             }
             dynamicSources := [].asSet()
@@ -339,7 +339,7 @@ def whenever {
 ? def whenever := <elib:slot.whenever>
 # value: <whenever>
 
-? def m := whenever.dynamic([l], thunk{
+? def m := whenever.dynamic([l], fn{
 >     var out := []
 >     for x in l.getValue() {
 >         out with= x.getValue()

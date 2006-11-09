@@ -49,7 +49,7 @@ def makeLazyPromiseAuthor(makeProxyResolver) :any {
     ? def makeLazyPromise := makeLazyPromiseAuthor(makeProxyResolver)
     # value: <makeLazyPromise>
 
-    ? def p := makeLazyPromise(thunk{println("what me worry"); 3 + 4})
+    ? def p := makeLazyPromise(fn{println("what me worry"); 3 + 4})
     # value: <Remote Promise>
 
     ? p

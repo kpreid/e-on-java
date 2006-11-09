@@ -86,7 +86,7 @@ Other E options:
                   argParser.getFlag("--confine", options, false)
                 def isExplicit :=
                   argParser.getFlag("--explicitIO", options, false)
-                def optRunnerKind := options.fetch("--runnerKind", thunk{})
+                def optRunnerKind := options.fetch("--runnerKind", fn{})
 
                 def makeVat := auths["makeVat"]
                 def name := fname.split("/").last()
@@ -95,7 +95,7 @@ Other E options:
                 def makeParseFunc :=
                   makeParseFuncAuthor(auths["makeELexer"])
 
-                def parseFunc :rcvr := parserVat.seed(thunk {
+                def parseFunc :rcvr := parserVat.seed(fn{
 
                     def input := if (fname =~ `-` || fname.startsWith("-.")) {
                         auths["metain"]
@@ -129,7 +129,7 @@ Other E options:
                                                              isConfined,
                                                              isExplicit)
 
-                def startReplRcvr := replVat.seed(thunk{
+                def startReplRcvr := replVat.seed(fn{
 
                     def startRepl(receivedArgs) :vow[boolean] {
 
@@ -162,7 +162,7 @@ Other E options:
                   argParser.getFlag("--confine", options, false)
                 def isExplicit :=
                   argParser.getFlag("--explicitIO", options, false)
-                def optRunnerKind := options.fetch("--runnerKind", thunk{})
+                def optRunnerKind := options.fetch("--runnerKind", fn{})
 
                 def makeVat := auths["makeVat"]
                 def parserVat := makeVat.make("headless", `parsing source`)
@@ -170,7 +170,7 @@ Other E options:
                 def makeParseFunc :=
                   makeParseFuncAuthor(auths["makeELexer"])
 
-                def parseFunc :rcvr := parserVat.seed(thunk {
+                def parseFunc :rcvr := parserVat.seed(fn{
 
                     def optPromptOut := if (isInteractive) {
                         auths["metaout"]
@@ -195,7 +195,7 @@ Other E options:
                                                              isConfined,
                                                              isExplicit)
 
-                def startReplRcvr := replVat.seed(thunk{
+                def startReplRcvr := replVat.seed(fn{
 
                     def startRepl(receivedArgs) :vow[boolean] {
 

@@ -77,7 +77,7 @@ def watchAuthor(<swt>,
             def label := <widgets:makeLabel>(shell, 0)
             swtGrid`$shell:$label`
 
-            whenever([reporter], thunk{
+            whenever([reporter], fn{
                 if (!label.isDisposed()) {
                     label.setText(`${reporter.getValue()}`)
                     if (packUp(label)) {
@@ -85,7 +85,7 @@ def watchAuthor(<swt>,
                     }
                     label.redraw()
                 }
-            }, thunk{ !label.isDisposed() && label.isVisible() })
+            }, fn{ !label.isDisposed() && label.isVisible() })
 
             dndKit.makeDragSource(label, reporter)
             dndKit.makeDropTarget(label, reporter)

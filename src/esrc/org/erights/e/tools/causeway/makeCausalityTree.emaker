@@ -178,7 +178,7 @@ def makeCausalityTree(traceFiles :List[File], traceline) :near {
                 return null
             }
             require(rxr != ["", "", ""],
-                    thunk{`index: $index message: $message has no rxr`})
+                    fn{`index: $index message: $message has no rxr`})
 
             if (index >= lines.size()) { return null }
 
@@ -306,7 +306,7 @@ def makeCausalityTree(traceFiles :List[File], traceline) :near {
                                                       uturn,
                                                       sc,
                                                       stack]) {
-                    def optEvent := xvatSplices.fetch(msg, thunk{})
+                    def optEvent := xvatSplices.fetch(msg, fn{})
                     def origin := obtainMessageEvent(uturn)
 
                     if (sc.startsWith("SC_sendDeliver")) {
@@ -330,10 +330,10 @@ def makeCausalityTree(traceFiles :List[File], traceline) :near {
 
                             def mc2 := graph.makeMessageContext(ether, optEvent, ["", []])
 
-                            def [xpath, xpos] := foFixups.fetch(optEvent, thunk{})
+                            def [xpath, xpos] := foFixups.fetch(optEvent, fn{})
                             foFixups.removeKey(optEvent)
 
-                            def xfo := ordered.fetch(xpath, thunk{})
+                            def xfo := ordered.fetch(xpath, fn{})
 
                             xfo[xpos] := mc2
                         }
@@ -354,7 +354,7 @@ def makeCausalityTree(traceFiles :List[File], traceline) :near {
 
                 } else if (readOptMessageSend() =~ [message, senders, rxr]) {
                     require(graph.optGet(rxr) == null,
-                            thunk{`duplicate: $rxr`})
+                            fn{`duplicate: $rxr`})
 
                     def [_, name, turn] := rxr
                     vatSet.addElement(name)
@@ -418,10 +418,10 @@ def makeCausalityTree(traceFiles :List[File], traceline) :near {
             return traces.snapshot()
         }
         to getVatSet(path :TraceName) :near {
-            return vats.fetch(path, thunk{[]})
+            return vats.fetch(path, fn{[]})
         }
         to getOrdered(path :TraceName) :List {
-            def foList := ordered.fetch(path, thunk{[]})
+            def foList := ordered.fetch(path, fn{[]})
             return foList.snapshot()
         }
     }

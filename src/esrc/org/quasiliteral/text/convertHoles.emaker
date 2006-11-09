@@ -31,10 +31,10 @@ def convertHoles {
             result += seg.replaceAll("$","$$").replaceAll("@","@@")
         }
         while (start < after) {
-            def dlrHole := dlrHoles.fetch(dlrHoleNum, thunk{after})
+            def dlrHole := dlrHoles.fetch(dlrHoleNum, fn{after})
             require(dlrHole >= start,
                     "Out of order dollar-hole")
-            def atHole := atHoles.fetch(atHoleNum, thunk{after})
+            def atHole := atHoles.fetch(atHoleNum, fn{after})
             require(atHole >= start,
                     "Out of order at-hole")
             if (dlrHole < atHole) {

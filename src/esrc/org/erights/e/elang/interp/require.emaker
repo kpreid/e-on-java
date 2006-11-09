@@ -42,10 +42,10 @@ def require0 {
 
     ? pragma.syntax("0.8")
 
-    ? require(2 == 3, thunk{"foo"})
+    ? require(2 == 3, fn{"foo"})
     # problem: foo
 
-    ? require(2 == 2, thunk{"foo"})
+    ? require(2 == 2, fn{"foo"})
     ? require(2 == 3)
     # problem: required condition failed
 

@@ -173,7 +173,7 @@ def abstractActionAuthor(disposablesKit) :near {
              *         but can't yet.
              */
             to everEnabledReporter() :EverReporter {
-                whenever([], thunk{true})
+                whenever([], fn{true})
             }
 
             /**
@@ -255,11 +255,11 @@ def abstractActionAuthor(disposablesKit) :near {
 
                 # arranges for the enabled state to be updated
                 def &everEnabled := self.everEnabledReporter()
-                whenever([&everEnabled], thunk{
+                whenever([&everEnabled], fn{
                     if (! result.isDisposed()) {
                         result.setEnabled(everEnabled)
                     }
-                }, thunk{
+                }, fn{
                     ! result.isDisposed()
                 })
 
@@ -269,11 +269,11 @@ def abstractActionAuthor(disposablesKit) :near {
                 def optChecker := self.optEverCheckedReporter()
                 if (optChecker != null) {
                     def &everChecked := optChecker
-                    whenever([&everChecked], thunk{
+                    whenever([&everChecked], fn{
                         if (! result.isDisposed()) {
                             result.setSelection(everChecked)
                         }
-                    }, thunk{
+                    }, fn{
                         ! result.isDisposed()
                     })
                 }
@@ -353,11 +353,11 @@ def abstractActionAuthor(disposablesKit) :near {
 
                 # arranges for the enabled state to be updated
                 def &everEnabled := self.everEnabledReporter()
-                whenever([&everEnabled], thunk{
+                whenever([&everEnabled], fn{
                     if (! result.isDisposed()) {
                         result.setEnabled(everEnabled)
                     }
-                }, thunk{
+                }, fn{
                     ! result.isDisposed()
                 })
 
@@ -367,11 +367,11 @@ def abstractActionAuthor(disposablesKit) :near {
                 def optChecker := self.optEverCheckedReporter()
                 if (optChecker != null) {
                     def &everChecked := optChecker
-                    whenever([&everChecked], thunk{
+                    whenever([&everChecked], fn{
                         if (! result.isDisposed()) {
                             result.setSelection(everChecked)
                         }
-                    }, thunk{
+                    }, fn{
                         ! result.isDisposed()
                     })
                 }

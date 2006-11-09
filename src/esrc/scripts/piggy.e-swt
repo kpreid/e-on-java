@@ -33,18 +33,18 @@ def accountMgr
 
 def &assets :=
   makeLamportSlot.localShadow("???", accountMgr <- getAssetsReporter())
-def &assetsStr := whenever([&assets], thunk{"$"+`$assets`})
+def &assetsStr := whenever([&assets], fn{"$"+`$assets`})
 
 def &liabilities :=
   makeLamportSlot.localShadow("???", accountMgr <- getLiabilitiesReporter())
-def &liabilitiesStr := whenever([&liabilities], thunk{"-$"+`$liabilities`})
+def &liabilitiesStr := whenever([&liabilities], fn{"-$"+`$liabilities`})
 
 def &balance :=
   makeLamportSlot.localShadow("???", accountMgr <- getBalanceReporter())
-def &balanceStr := whenever([&balance], thunk{"$"+`$balance`})
+def &balanceStr := whenever([&balance], fn{"$"+`$balance`})
 
 def &deposited := makeLamportSlot(0)
-def &depositedStr := whenever([&deposited], thunk{"+$"+`$deposited`})
+def &depositedStr := whenever([&deposited], fn{"+$"+`$deposited`})
 
 
 def piggyShell := <widgets:makeShell>(currentDisplay)
@@ -205,7 +205,7 @@ swtGrid`$piggyShell:
         $offerSource   $offerField.X       ${" from "} $offerCatField.X
         $depositTarget $depositLabel.X     ${" into "} $depositCatField.X`
 
-if (interp.getProps().fetch("e.osdir", thunk{}) == "linux-motif") {
+if (interp.getProps().fetch("e.osdir", fn{}) == "linux-motif") {
     println("skipping font adjustment on linux-motif to avoid bug")
 } else {
     def setFont(control, font) :void {

@@ -59,7 +59,7 @@ def makeKioskPair(account :rcvr,
 
     def crossAdvertise(service, amountPaid, minutesToExpiration, kiosk) {
         traceLine(`into crossAdvertising`)
-        def knownKiosks := serverMap.fetch(kioskDesc, thunk{[]})
+        def knownKiosks := serverMap.fetch(kioskDesc, fn{[]})
         var alreadyKnown := false
         for each in knownKiosks {
             if (each.getServer() == service) {alreadyKnown := true}
@@ -150,7 +150,7 @@ def makeKioskPair(account :rcvr,
             def serverList := [].diverge()
             if (serviceDesc =~ sd :String) {
                 traceLine("into getAdvertisedServers for: " + serviceDesc)
-                for each in serverMap.fetch(serviceDesc, thunk{[]}) {
+                for each in serverMap.fetch(serviceDesc, fn{[]}) {
                     serverList.push(each.getServer())
                 }
             }
