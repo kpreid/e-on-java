@@ -15,13 +15,21 @@ def OLD := "c:/Documents and Settings/millerm1/e"
 def NEW := "~/e"
 
 def emacsify(file) {
-    for line in file {
+    for rawline in file {
+        def line := rawline.replaceAll("%20"," ").replaceAll("<file:/C:/","<file:c:/")
         if (line =~ `@pre<file:$OLD/@path#@kind::@span>@post`) {
             stderr.println(`error: $NEW/$path($span)`)
             stderr.println(`$pre $post`)
-        } else {
-            stderr.println(line)
+            continue
         }
+        if (line =~ `@{pre}org.erights.@qname(@className.java:@num)@post`) {
+            if (qname.replaceAll(".","/") =~ `@pkg/$className/@meth`) {
+                stderr.println(`~/e/src/jsrc/org/erights/$pkg/$className.java($num)`)
+                stderr.println(`$pre $post`)
+                continue
+            }
+        }
+        stderr.println(line)
     }
 }
 

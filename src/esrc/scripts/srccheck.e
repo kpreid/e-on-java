@@ -19,18 +19,26 @@ def optCacheFile :=
 }
 def makeUpdocParser := <tools:updoc.makeUpdocParserAuthor>(optCacheFile)
 
-def warn(warning :String, src :Twine) :void {
-    stderr.println()
-    stderr.print(`# warning: $warning`)
-    if (src.getOptSpan() =~ span :notNull) {
-        stderr.print(` from: $span`)
-    } else if (src.getParts() =~ [firstPart] + _) {
-        if (firstPart.getOptSpan() =~ span :notNull) {
-            stderr.print(` from: $span`)
-        }
+def warn {
+    to run(warning, src) :void {
+        warn(warning, src, null)
     }
-    stderr.println()
-    stderr.println()
+    to run(warning :String, src :Twine, optPathname) :void {
+        stderr.println()
+        if (null != optPathname) {
+            stderr.println(`at <file:$optPathname#:span::1:0::1:0>`)
+        }
+        stderr.print(`# warning: $warning`)
+        if (src.getOptSpan() =~ span :notNull) {
+            stderr.print(` from: $span`)
+        } else if (src.getParts() =~ [firstPart] + _) {
+            if (firstPart.getOptSpan() =~ span :notNull) {
+                stderr.print(` from: $span`)
+            }
+        }
+        stderr.println()
+        stderr.println()
+    }
 }
 
 def checkExprs(exprs :List[Twine]) :void {
@@ -99,10 +107,10 @@ def checkHeader(var src) :void {
         }
         src := rest
     } else {
-        warn(`First line should be "$STDHEADER"`, src)
+        warn(`First line should be "$STDHEADER"`, src(0,1))
     }
     if (src !~ `@{_}opyright@_`) {
-        warn("Missing copyright notice", src)
+        warn("Missing copyright notice", src(0,1))
     }
 }
 
@@ -137,7 +145,7 @@ def checkESrc(src) :void {
                        pre.size() + "pragma.syntax".size()))
         }
     } else {
-        warn("undeclared version", src)
+        warn("undeclared version", src(0,1))
     }
 }
 
@@ -161,9 +169,8 @@ def srcCheckRecurse(filedir,
         stderr.print(".")
         return true
     }
-    def bad(msg) :boolean {
-        stderr.println("\n" + fullpath)
-        stderr.println(msg)
+    def bad(msg, src) :boolean {
+        warn(`$msg`, src, fullpath)
         return false
     }
     if (filedir.isDirectory()) {
@@ -191,7 +198,7 @@ def srcCheckRecurse(filedir,
             checkESrc(src)
             return good()
         } catch problem {
-            return bad(problem)
+            return bad(problem, src(0,1))
         }
     } else if (relpath =~ `./@_.caplet`) {
         def src := filedir.getTwine()
@@ -201,13 +208,13 @@ def srcCheckRecurse(filedir,
             checkESrc(src)
             return good()
         } catch problem {
-            return bad(problem)
+            return bad(problem, src(0,1))
         }
     } else if (relpath =~ `./@_.@ext` && STDEXTS.contains(ext)) {
         def src := filedir.getTwine()
         if (! (src.startsWith(STDHEADER + "\n"))) {
             stderr.println(fullpath)
-            return bad(`First line should be "$STDHEADER"`)
+            return bad(`First line should be "$STDHEADER"`, src(0,1))
         } else {
             try {
                 e__quasiParser(src)
@@ -215,7 +222,7 @@ def srcCheckRecurse(filedir,
                 checkESrc(src)
                 return good()
             } catch problem {
-                return bad(problem)
+                return bad(problem, src(0,1))
             }
         }
     } else if (relpath =~ `./@_.java` && relpath !~ `@_/antlr/@_`) {
@@ -225,7 +232,7 @@ def srcCheckRecurse(filedir,
             checkText(src)
             return good()
         } catch problem {
-            return bad(problem)
+            return bad(problem, src(0,1))
         }
     } else if (relpath =~ `./@_.updoc`) {
         def src := filedir.getTwine()
@@ -235,7 +242,7 @@ def srcCheckRecurse(filedir,
             checkText(src)
             return good()
         } catch problem {
-            return bad(problem)
+            return bad(problem, src(0,1))
         }
     } else if (relpath =~ `./@_.txt`) {
         def src := filedir.getTwine()
@@ -244,7 +251,7 @@ def srcCheckRecurse(filedir,
             checkText(src)
             return good()
         } catch problem {
-            return bad(problem)
+            return bad(problem, src(0,1))
         }
     } else if (relpath =~ `./@_.@ext` && ["html", "htm"].contains(ext)) {
         def src := filedir.getTwine()
@@ -254,7 +261,7 @@ def srcCheckRecurse(filedir,
             # checkText(html2updoc(src))
             return good()
         } catch problem {
-            return bad(problem)
+            return bad(problem, src(0,1))
         }
     } else {
         return true

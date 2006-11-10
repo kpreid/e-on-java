@@ -5,35 +5,34 @@ package org.erights.e.elang.syntax;
 
 import org.erights.e.elang.evm.EExpr;
 import org.erights.e.elang.evm.EMethod;
+import org.erights.e.elang.evm.Evaluator;
 import org.erights.e.elang.evm.LiteralExpr;
+import org.erights.e.elang.evm.MetaContextExpr;
+import org.erights.e.elang.evm.MetaStateExpr;
 import org.erights.e.elang.evm.Pattern;
 import org.erights.e.elang.evm.QuasiLiteralExpr;
 import org.erights.e.elang.evm.QuasiLiteralPatt;
 import org.erights.e.elang.evm.QuasiPatternExpr;
 import org.erights.e.elang.evm.QuasiPatternPatt;
-import org.erights.e.elang.evm.MetaStateExpr;
-import org.erights.e.elang.evm.MetaContextExpr;
-import org.erights.e.elang.evm.Evaluator;
 import org.erights.e.elang.scope.ScopeLayout;
 import org.quasiliteral.astro.Astro;
 
 /**
- *
  * @author Mark S. Miller
  */
 public interface EBuilder extends BaseEBuilder {
 
     /**
      * The expression <tt>null</tt>.
-     * <p>
-     * <tt>null</tt> is bound in the universal scope to the one null value.
-     * In E-on-Java, this is the same as Java null.
+     * <p/>
+     * <tt>null</tt> is bound in the universal scope to the one null value. In
+     * E-on-Java, this is the same as Java null.
      */
     EExpr getNULL();
 
     /**
      * The expression <tt>void</tt>.
-     * <p>
+     * <p/>
      * <tt>void</tt> is bound in the universal scope to a guard that coerces
      * all values to null.
      */
@@ -41,17 +40,17 @@ public interface EBuilder extends BaseEBuilder {
 
     /**
      * The expression <tt>__break</tt>.
-     * <p>
+     * <p/>
      * The <tt>for</tt> and <tt>while</tt> loop expansions include an
-     * <tt>escape&nbsp;__break&nbsp;{...</tt>, putting a variable of this
-     * name into scope. The keyword <tt>break</tt> expands to a call to
+     * <tt>escape&nbsp;__break&nbsp;{...</tt>, putting a variable of this name
+     * into scope. The keyword <tt>break</tt> expands to a call to
      * <tt>__break</tt>.
      */
     EExpr get__BREAK();
 
     /**
      * The expression <tt>__continue</tt>.
-     * <p>
+     * <p/>
      * The <tt>for</tt> and <tt>while</tt> loop expansions include an
      * <tt>escape&nbsp;__continue&nbsp;{...</tt>, putting a variable of this
      * name into scope. The keyword <tt>continue</tt> expands to a call to
@@ -61,29 +60,26 @@ public interface EBuilder extends BaseEBuilder {
 
     /**
      * The expression <tt>__return</tt>.
-     * <p>
+     * <p/>
      * The keyword <tt>return</tt> expands to a call to <tt>__return</tt>.
      */
     EExpr get__RETURN();
 
     /**
-     * Makes an identifier token whose value is 'newStr', and whose source
-     * is derived from 'poser'.
-     * <p>
+     * Makes an identifier token whose value is 'newStr', and whose source is
+     * derived from 'poser'.
+     * <p/>
      * 'poser' might be a String, an identifier token (an Astro), or a
-     * CallExpr.<ul>
-     * <li>If it's a String, the source is empty.
-     * <li>If it's an Astro, then the Astro's source is used.
-     * <li>If it's a CallExpr, then the source is the expr's
-     *     verb with the expr's source position.
-     * </ul>
+     * CallExpr.<ul> <li>If it's a String, the source is empty. <li>If it's an
+     * Astro, then the Astro's source is used. <li>If it's a CallExpr, then the
+     * source is the expr's verb with the expr's source position. </ul>
      */
     Astro ident(Object poser, String newStr);
 
     /**
-     * Expands <tt>lValue verb= rnValue</tt> to
-     * <tt>lValue := lValue.verb(rnValue)</tt>, sort of.
-     * <p>
+     * Expands <tt>lValue verb= rnValue</tt> to <tt>lValue :=
+     * lValue.verb(rnValue)</tt>, sort of.
+     * <p/>
      * When x is a variable name, <pre>
      *   x "verb=" z   expands to   x := x.verb(z)</pre>
      * Otherwise, we need to ensure that the lValue's subexpressions are only
@@ -101,36 +97,26 @@ public interface EBuilder extends BaseEBuilder {
     /**
      *
      */
-    EExpr call(Object recipientExpr,
-               Object poser,
-               String verb,
-               Object args);
-    /**
-     *
-     */
-    EExpr send(Object recipientExpr,
-               Object verb,
-               Object args);
+    EExpr call(Object recipientExpr, Object poser, String verb, Object args);
 
     /**
      *
      */
-    EExpr send(Object recipientExpr,
-               Object poser,
-               String verb,
-               Object args);
+    EExpr send(Object recipientExpr, Object verb, Object args);
 
     /**
      *
      */
-    EExpr binop(Object recipientExpr,
-               Object poser,
-               String verb,
-               Object arg);
+    EExpr send(Object recipientExpr, Object poser, String verb, Object args);
+
+    /**
+     *
+     */
+    EExpr binop(Object recipientExpr, Object poser, String verb, Object arg);
 
     /**
      * Convenience for <tt>call(x, "not", list())</tt>.
-     * <p>
+     * <p/>
      * Makes the expression <tt>x.not()</tt>
      */
     EExpr not(Object poser, Object x);
@@ -138,42 +124,32 @@ public interface EBuilder extends BaseEBuilder {
     /**
      * Used for pseudo-immediate invocations of the <tt>meta</tt> or
      * <tt>pragma</tt> keywords.
-     * <p>
-     * This is a bit of a syntactic hack, to enable the creation of new
-     * special forms without extending the BNF of the language. Rather,
-     * if <tt>meta</tt> or <tt>pragma</tt> appear as the receiver of what
-     * otherwise would have been an immediate-call expression, then the
-     * builder should dispatch on the verb and arity of the arguments to
-     * figure out what to do.<ul>
-     * <li>'meta.getState()' evaluates to a reification of the current
-     *     environment. This is currently done by a kernel
-     *     {@link MetaStateExpr}
-     *     expression, but can instead be done (and probably should be
-     *     done) by expanding the current scope into a map-creation
-     *     expression. This expansion would need to be done after
-     *     scope analysis of course. <li>'meta.context()' reifies the current
-     *     {@link ScopeLayout}. This
-     *     is done by the kernel
-     *     {@link MetaContextExpr}.
-     * <li>'meta.eval(Evaluator, expr)' is reserved for future use. See
-     *     {@link Evaluator}.
+     * <p/>
+     * This is a bit of a syntactic hack, to enable the creation of new special
+     * forms without extending the BNF of the language. Rather, if
+     * <tt>meta</tt> or <tt>pragma</tt> appear as the receiver of what
+     * otherwise would have been an immediate-call expression, then the builder
+     * should dispatch on the verb and arity of the arguments to figure out
+     * what to do.<ul> <li>'meta.getState()' evaluates to a reification of the
+     * current environment. This is currently done by a kernel {@link
+     * MetaStateExpr} expression, but can instead be done (and probably should
+     * be done) by expanding the current scope into a map-creation expression.
+     * This expansion would need to be done after scope analysis of course.
+     * <li>'meta.context()' reifies the current {@link ScopeLayout}. This is
+     * done by the kernel {@link MetaContextExpr}. <li>'meta.eval(Evaluator,
+     * expr)' is reserved for future use. See {@link Evaluator}.
      * <li>'pragma.enable("<i>propName</i>")' changes the property
-     *     'e.enable.<i>propName</i>' from 'allow' to 'true'. If it was
-     *     already 'true', this does nothing. If it was false, this throws
-     *     an exception and does not change the value. 'pragma.enable(..)'
-     *     is used to enable the corresponding feature on a per-compilation
-     *     unit basis. See the
-     *     org/erights/e/elang/syntax/syntax-props-default.txt file for a list
-     *     of properties
-     * <li>'pragma.warn("<i>propName</i>")' sets the property
-     *     'e.enable.<i>propName</i>' from 'true' to 'warn'.
-     *     XXX explain "warn".
+     * 'e.enable.<i>propName</i>' from 'allow' to 'true'. If it was already
+     * 'true', this does nothing. If it was false, this throws an exception and
+     * does not change the value. 'pragma.enable(..)' is used to enable the
+     * corresponding feature on a per-compilation unit basis. See the
+     * org/erights/e/elang/syntax/syntax-props-default.txt file for a list of
+     * properties <li>'pragma.warn("<i>propName</i>")' sets the property
+     * 'e.enable.<i>propName</i>' from 'true' to 'warn'. XXX explain "warn".
      * <li>'pragma.disable("<i>propName</i>")' sets the property
-     *     'e.enable.<i>propName</i>' from 'true' to 'allow'. If it was
-     *     already 'allow' or 'false', this does nothing.
-     *     'pragma.disable(..)' is used to disable the corresponding feature
-     *     on a per-compilation unit basis.
-     * </ul>
+     * 'e.enable.<i>propName</i>' from 'true' to 'allow'. If it was already
+     * 'allow' or 'false', this does nothing. 'pragma.disable(..)' is used to
+     * disable the corresponding feature on a per-compilation unit basis. </ul>
      * All other possibilities are reserved for future use.
      */
     EExpr doMeta(Object keyword, Object verb, Object args);
@@ -186,27 +162,22 @@ public interface EBuilder extends BaseEBuilder {
     /**
      * Used for pseudo-eventual invocations of the <tt>meta</tt> or
      * <tt>pragma</tt> keywords.
-     * <p>
-     * This is a bit of a syntactic hack, to enable the creation of new
-     * special forms without extending the BNF of the language. Rather,
-     * if <tt>meta</tt> or <tt>pragma</tt> appear as the receiver of what
-     * otherwise would have been an eventual-send expression, then the
-     * builder should dispatch on the verb and arity of the arguments to
-     * figure out what to do.<ul>
-     * <li>'meta &lt;- eval({@link Evaluator}, expr)' is reserved for future
-     *     use. See {@link Evaluator}.
-     *</ul>
-     * All other possibilities are reserved for future use.
+     * <p/>
+     * This is a bit of a syntactic hack, to enable the creation of new special
+     * forms without extending the BNF of the language. Rather, if
+     * <tt>meta</tt> or <tt>pragma</tt> appear as the receiver of what
+     * otherwise would have been an eventual-send expression, then the builder
+     * should dispatch on the verb and arity of the arguments to figure out
+     * what to do.<ul> <li>'meta &lt;- eval({@link Evaluator}, expr)' is
+     * reserved for future use. See {@link Evaluator}. </ul> All other
+     * possibilities are reserved for future use.
      */
     EExpr doMetaSend(Object keyword, Object verb, Object args);
 
     /**
      *
      */
-    EExpr doMetaSend(Object keyword,
-                     Object poser,
-                     String verb,
-                     Object args);
+    EExpr doMetaSend(Object keyword, Object poser, String verb, Object args);
 
     /**
      * Makes, for example, <tt>meta::context</tt> be equivalent to
@@ -236,14 +207,14 @@ public interface EBuilder extends BaseEBuilder {
 
     /**
      * A forward declaration. <p>
-     *
+     * <p/>
      * "def name" expands to <pre>
      *     (def [name, name__Resolver] := Ref.promise(); name__Resolver)
      * </pre>
-     * The value of a "def name" expression is the Resolver that will
-     * resolve 'name', so, for example, '(def name)' can be used in an
-     * argument position both to define 'name' and to pass the
-     * Resolver as an argument to someone who will resolve it.
+     * The value of a "def name" expression is the Resolver that will resolve
+     * 'name', so, for example, '(def name)' can be used in an argument
+     * position both to define 'name' and to pass the Resolver as an argument
+     * to someone who will resolve it.
      */
     EExpr forward(Object identOrStr);
 
@@ -284,28 +255,28 @@ public interface EBuilder extends BaseEBuilder {
      *      }
      *  }</pre>
      *
-     * @param assoc An {@link Assoc} of kPattern and a vPattern.
-     * @param collExpr Evaluates to the collection to be iterated (to be sent
-     *                 the "iterate" message).
-     * @param mBody The body of the for-loop.
+     * @param assoc      An {@link Assoc} of kPattern and a vPattern.
+     * @param collExpr   Evaluates to the collection to be iterated (to be sent
+     *                   the "iterate" message).
+     * @param mBody      The body of the for-loop.
      * @param optCatcher The optional
      *                   <pre>    &quot;catch&quot; <i>pattern</i
-     *                       > &quot;{&quot; <i>eExpr</i> &quot;}&quot;</pre>
+     *                                         > &quot;{&quot; <i>eExpr</i>
+     *                   &quot;}&quot;</pre>
      *                   following the for loop for receiving the break
      *                   argument.
      * @return The expression for computing the for-loop.
-     * @see <a href=
-     * "https://bugs.sieve.net/bugs/?func=detailbug&bug_id=125606&group_id=16380"
-     * >'for' loop security concerns</a>
+     * @see <a href= "https://bugs.sieve.net/bugs/?func=detailbug&bug_id=125606&group_id=16380"
+     *      >'for' loop security concerns</a>
      */
     EExpr forx(Object assoc, Object collExpr, Object mBody, Object optCatcher);
 
     /**
      * Implements the "accumulator" syntax.
-     * <p>
-     * The "accumulator" syntax has most of the advantages
-     * of list comprehension (from Haskell and Python), but is more
-     * E-like. For example, with this property enabled, one can write:
+     * <p/>
+     * The "accumulator" syntax has most of the advantages of list
+     * comprehension (from Haskell and Python), but is more E-like. For
+     * example, with this property enabled, one can write:
      * <pre>
      *     accum [] for i in 1..5 { _ + i**2 }
      * </pre>
@@ -320,9 +291,9 @@ public interface EBuilder extends BaseEBuilder {
      * }
      * </pre>
      * Note that this is more flexible but more verbose than a list
-     * comprehension, and less flexible and comparably verbose to a
-     * Smalltalk injection.
-     * <p>
+     * comprehension, and less flexible and comparably verbose to a Smalltalk
+     * injection.
+     * <p/>
      * More formally, the transformation is from
      * <pre>
      *     "accum" starterExpr accumulator
@@ -333,12 +304,12 @@ public interface EBuilder extends BaseEBuilder {
      *     accum_n
      * }
      * </pre>
-     * where accumulator is one of {@link #accumFor}, {@link #accumIf},
-     * or {@link #accumWhile}. They each have an accumBody parameter. The
+     * where accumulator is one of {@link #accumFor}, {@link #accumIf}, or
+     * {@link #accumWhile}. They each have an accumBody parameter. The
      * corresponding argument is one of {@link #accumFor}, {@link #accumIf},
-     * {@link #accumWhile}, or {@link #accumBody}, and returns a pair of
-     * the name of the temporary variable (shown as "accum-n" above) and
-     * an expression (shown as "accumExpr" above).
+     * {@link #accumWhile}, or {@link #accumBody}, and returns a pair of the
+     * name of the temporary variable (shown as "accum-n" above) and an
+     * expression (shown as "accumExpr" above).
      *
      * @param starterExpr The initial value to be accumulated on to.
      * @param accumulator A pair of a temp-name and an accumExpr.
@@ -349,9 +320,9 @@ public interface EBuilder extends BaseEBuilder {
     /**
      * Use a for-loop to {@link #accumulate} for each member of a collection.
      *
-     * @param assoc An {@link Assoc} of a key-pattern and a value-pattern.
-     * @param collExpr Evaluates to the collection to be iterated (to be sent
-     *                 the "iterate" message).
+     * @param assoc     An {@link Assoc} of a key-pattern and a value-pattern.
+     * @param collExpr  Evaluates to the collection to be iterated (to be sent
+     *                  the "iterate" message).
      * @param accumBody A pair of a temp-name and an accumExpr.
      * @return A pair of a temp-name and the obvious for-loop EExpr.
      */
@@ -371,11 +342,11 @@ public interface EBuilder extends BaseEBuilder {
      * Actually does the accumulation into the temporary accumulation
      * variable.
      *
-     * @param verb The messageName that says how the temporary should
-     *             be updated.
+     * @param verb    The messageName that says how the temporary should be
+     *                updated.
      * @param rnValue The argument-list for computing a new value.
      * @return A pair of a new temp-name and the expression
-     *  <pre>    temp-name verb= rnValue</pre>
+     *         <pre>    temp-name verb= rnValue</pre>
      */
     Object[] accumBody(Object verb, Object rnValue);
 
@@ -421,22 +392,21 @@ public interface EBuilder extends BaseEBuilder {
 
     /**
      * [a => b, c => d]  expands to  __makeMap fromPairs([[a, b], [c, d]).
-     * <p>
+     * <p/>
      * This exapansion satisfies the requirement that it preserves order.
      */
     EExpr map(Object assocList);
 
     /**
-     * '["k" => p            ] | r' to 'via (__extract("k")) [p, r]'
-     * '["k" => p default {e}] | r' to 'via (__extract("k", fn {e})) [p, r]'
-     * '["k" => p       := e ] | r' to 'via (__extract.depr("k", e)) [p, r]'
-     * </pre>
-     * Note that the ':=' syntax for default values is deprecated. Should this
-     * be removed, the depr/2 method may be removed as well.
-     * <p>
+     * '["k" => p            ] | r' to 'via (__extract("k")) [p, r]' '["k" => p
+     * default {e}] | r' to 'via (__extract("k", fn {e})) [p, r]' '["k" => p
+     *    := e ] | r' to 'via (__extract.depr("k", e)) [p, r]' </pre> Note that
+     * the ':=' syntax for default values is deprecated. Should this be
+     * removed, the depr/2 method may be removed as well.
+     * <p/>
      * When the original has no rest pattern, the expanded rest pattern is
      * ':__Empty'.
-     * <p>
+     * <p/>
      * XXX At some future time, it is probably worth making the expansion more
      * complex in order to handle an entire map-pattern all at once.
      */
@@ -444,9 +414,9 @@ public interface EBuilder extends BaseEBuilder {
 
     /**
      * Represents a key => value association.
-     * <p>
-     * It depends on context whether either key of value is an expression or
-     * a pattern.
+     * <p/>
+     * It depends on context whether either key of value is an expression or a
+     * pattern.
      */
     Assoc assoc(Object key, Object value);
 
@@ -456,9 +426,8 @@ public interface EBuilder extends BaseEBuilder {
     Assoc exporter(Object nameExpr);
 
     /**
-     * '=> namerPatt' expands to '"varName" => namerPatt' and
-     * '=> (expr) : namerPatt' expands to
-     * '"varName" => (expr) : namerPatt'
+     * '=> namerPatt' expands to '"varName" => namerPatt' and '=> (expr) :
+     * namerPatt' expands to '"varName" => (expr) : namerPatt'
      */
     Assoc importer(Object namerPatt);
 
@@ -488,9 +457,7 @@ public interface EBuilder extends BaseEBuilder {
     /**
      * For defining an eScript that consists of exactly one method
      */
-    ObjDecl methDecl(Object msgPatt,
-                     Object bodyExpr,
-                     boolean bindReturn);
+    ObjDecl methDecl(Object msgPatt, Object bodyExpr, boolean bindReturn);
 
     /**
      * Expands to
@@ -522,24 +489,22 @@ public interface EBuilder extends BaseEBuilder {
 
     /**
      * What to do when no result guard was explicitly written.
-     * <p>
-     * As of 0.8.23g, this still defaults to e`void`, but is now switchable.
-     * At a later time, the default will switch to null, which acts like
-     * e`any`.
+     * <p/>
+     * As of 0.8.23g, this still defaults to e`void`, but is now switchable. At
+     * a later time, the default will switch to null, which acts like e`any`.
      */
     EExpr defaultOptResultGuard(Object poser);
 
     /**
      * What to do when no when-result guard was explicitly written.
-     * <p>
-     * This still defaults to e`void`, but is now switchable.
-     * At a later time, the default will switch to null, which acts like
-     * e`any`.
+     * <p/>
+     * This still defaults to e`void`, but is now switchable. With easy-return,
+     * the default as of 0.9, this returns null, which acts like e`any`.
      */
     EExpr defaultOptWhenGuard(Object poser);
 
     /**
-     *   (== eExpr)  expands to   via (__is(eExpr)) _
+     * (== eExpr)  expands to   via (__is(eExpr)) _
      */
     Pattern patternEquals(Object eExpr);
 
@@ -549,10 +514,8 @@ public interface EBuilder extends BaseEBuilder {
     Pattern atNoun(Object token);
 
     /**
-     *  syntax`foo $bar baz $zip zorp`
-     * expands to
-     *  syntax_quasiParser.
-     *    valueMaker("foo ${0} baz ${1} zorp").substitute([bar, zip])
+     * syntax`foo $bar baz $zip zorp` expands to syntax_quasiParser.
+     * valueMaker("foo ${0} baz ${1} zorp").substitute([bar, zip])
      */
     EExpr quasiExpr(Object syntax, Object quasiList);
 
@@ -572,11 +535,8 @@ public interface EBuilder extends BaseEBuilder {
     QuasiLiteralPatt quasiLiteralPatt(Object litIndex);
 
     /**
-     * The pattern syntax`foo $bar baz @zip zap`
-     * expands to
-     * via (__matchBind(
-     *   syntax__quasiParser.matchMaker("foo ${0} baz @{0} zap"),
-     *   [bar])) [zip]
+     * The pattern syntax`foo $bar baz @zip zap` expands to via (__matchBind(
+     * syntax__quasiParser.matchMaker("foo ${0} baz @{0} zap"), [bar])) [zip]
      */
     Pattern quasiPattern(Object syntax, Object quasiList);
 
@@ -606,21 +566,9 @@ public interface EBuilder extends BaseEBuilder {
     EExpr sequence(Object x, Object y, Object z);
 
     /**
-     *  switch (eExpr) {
-     *      match pattern1 { body1 }
-     *      match pattern2 { body2 }
-     *  }
-     * expands to
-     *  {
-     *      def temp = eExpr
-     *      if (temp =~ pattern1) {
-     *          body1
-     *      } else if (temp =~ pattern2) {
-     *          body2
-     *      } else {
-     *          throw("no match: " + temp)
-     *      }
-     *  }
+     * switch (eExpr) { match pattern1 { body1 } match pattern2 { body2 } }
+     * expands to { def temp = eExpr if (temp =~ pattern1) { body1 } else if
+     * (temp =~ pattern2) { body2 } else { throw("no match: " + temp) } }
      */
     EExpr switchx(Object specimen, Object matchers);
 
@@ -631,9 +579,9 @@ public interface EBuilder extends BaseEBuilder {
 
     /**
      * uriToken must be a URI, and have both protocol and body.
-     * <p>
-     * &lt;http:foo&gt; expands to http__uriGetter["foo"].
-     * &lt;x:foo&gt;    expands to file__uriGetter["x:foo"].
+     * <p/>
+     * &lt;http:foo&gt; expands to http__uriGetter["foo"]. &lt;x:foo&gt;
+     * expands to file__uriGetter["x:foo"].
      */
     EExpr uriExpr(Object uriToken);
 
@@ -659,10 +607,7 @@ public interface EBuilder extends BaseEBuilder {
     /**
      *
      */
-    EExpr oType(Object doco,
-                Object oName,
-                Object typeParams,
-                Object mTypes);
+    EExpr oType(Object doco, Object oName, Object typeParams, Object mTypes);
 
     /**
      *
@@ -677,10 +622,7 @@ public interface EBuilder extends BaseEBuilder {
     /**
      *
      */
-    EExpr mType(Object doco,
-                Object verb,
-                Object pTypes,
-                Object optRetType);
+    EExpr mType(Object doco, Object verb, Object pTypes, Object optRetType);
 
     /**
      *
@@ -692,9 +634,9 @@ public interface EBuilder extends BaseEBuilder {
      *
      * @param ident An Astro representing the identifier as it appears in the
      *              source code.
-     * @return The variable name as far as the program is concerned. So long
-     *         as ident doesn't have the form of a temporary variable name,
-     *         this will be the same as ident.
+     * @return The variable name as far as the program is concerned. So long as
+     *         ident doesn't have the form of a temporary variable name, this
+     *         will be the same as ident.
      */
     Astro varName(Object ident);
 
@@ -779,7 +721,7 @@ public interface EBuilder extends BaseEBuilder {
 
     /**
      * Binds (resolves) a forward declaration. <p>
-     *
+     * <p/>
      * "bind name" expands to <pre>
      *     via (__bind(name__Resolver)) _
      * </pre>
@@ -788,7 +730,7 @@ public interface EBuilder extends BaseEBuilder {
 
     /**
      * Binds (resolves) a forward declaration. <p>
-     *
+     * <p/>
      * "bind name :int" expands to <pre>
      *     via (__bind(name__Resolver, int)) _
      * </pre>
@@ -821,14 +763,10 @@ public interface EBuilder extends BaseEBuilder {
     /**
      *
      */
-    Pattern callPattern(Object rcvr,
-                        Object poser, String verb,
-                        Object params);
+    Pattern callPattern(Object rcvr, Object poser, String verb, Object params);
 
     /**
      *
      */
-    Pattern callPattern(Object rcvr,
-                        Object verb,
-                        Object params);
+    Pattern callPattern(Object rcvr, Object verb, Object params);
 }

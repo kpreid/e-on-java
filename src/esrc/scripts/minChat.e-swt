@@ -65,7 +65,7 @@ def chatUI {
 def friend
 bind chatController {
     to send(message) {
-        when (friend<-receive(message)) -> done(gotAnswer) {
+        when (friend<-receive(message)) -> {
             chatUI.showMessage("self", message)
         } catch prob {chatUI.showMessage("system", "connection lost")}
     }

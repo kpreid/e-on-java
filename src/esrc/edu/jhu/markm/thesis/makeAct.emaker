@@ -9,8 +9,8 @@ def makeAct() :any {
     def act {
         to send(receiver, verb, args, continuation) :void {
             def p := E.send(receiver, verb, args)
-            when (p) -> done(result) :void {
-                continuation.resolve(result)
+            when (p) -> {
+                continuation.resolve(p)
             } catch ex {
                 continuation.smash(ex)
             }

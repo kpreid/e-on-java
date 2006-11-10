@@ -20,9 +20,9 @@ def accountDoc := currDir["account.cap-account"]
 def sturdyAccount := introducer.sturdyFromURI(accountDoc.getText())
 bind account := sturdyAccount.getRcvr()
 def balance :=
-when (account <- getBalance()) -> gotBalance(balance) {
+when (def balance := account <- getBalance()) -> {
     println("doughbot starting balance: " + balance)
-}catch prob {}
+} catch prob {}
 
 def kioskDoc := currDir["kiosk.cap-kiosk"]
 def sturdyBase := introducer.sturdyFromURI(kioskDoc.getText())

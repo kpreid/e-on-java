@@ -1146,12 +1146,11 @@ whenTail:
                                   $$ = b.list(ODECL.withOName($1),
                                               null, $2, $3,
                                               Boolean.TRUE); }
- |                                whenGuard whenBody
-                                { /* XXX should this bind __return ?? */
-                                  /* Currently, it does not. */
+ |                                whenBody
+                                { /* Binds bind __return ?? */
                                   b.pocket($1,"easy-when");
                                   $$ = b.list(ODECL.withOName(b.ignore()),
-                                              null, $1, $2,
+                                              null, null, $1,
                                               Boolean.FALSE); }
  ;
 

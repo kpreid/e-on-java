@@ -1,27 +1,30 @@
 [[*.*.*.*.*.*.*.*.*.*.*.[]*.*.*.*.*.*.*.*.*.][[*.*.]*.[]*.*.*.*.][[*.*.*.*.*.*.*.*.]*.[]*.*.*.][*
-c:/Documents and Settings/millerm1/e/doc/elang/echat/index.html
-syntax error: 
-      theDialog show
-                   ^
-  @ <file:c:/Documents and Settings/millerm1/e/doc/elang/echat/index.html#:span::169:22::169:22>
-][*.[[c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/chen-tsang/fileClt.e-awt
+at <file:c:/Documents and Settings/millerm1/e/doc/elang/echat/index.html#:span::1:0::1:0>
+# warning: syntax error: 
+      def theDialog := awt("FileDialog") new(chatWin,
+                                            ^
+  @ <file:c:/Documents and Settings/millerm1/e/doc/elang/echat/index.html#:span::180:47::180:47> from: <file:c:/Documents and Settings/millerm1/e/doc/elang/echat/index.html#:span::1:0::1:0>
 
-c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/chen-tsang/fileClt.e-awt
-First line should be "#!/usr/bin/env rune"
-c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/chen-tsang/fileSvr.e-awt
+][*.[[
+# warning: Missing copyright notice from: <file:c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/chen-tsang/fileClt.e-awt#:span::2:0::2:0>
 
-c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/chen-tsang/fileSvr.e-awt
-First line should be "#!/usr/bin/env rune"
-.][.*..][......*.......]*.]*.][*.*.*.*.*.*.*.*.*.*.][*.*.]*.*.[.*.*..*.*.*.*.*.*.][*.*.*.][*.[[]*.]*.*.*.*.*.*.*.*.*
-c:/Documents and Settings/millerm1/e/doc/elang/kernel/EscapeExpr.html
-syntax error: 
+
+# warning: tab at 9932 from: <file:c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/chen-tsang/fileClt.e-awt#:span::342:5::342:5>
+
+.
+# warning: Missing copyright notice from: <file:c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/chen-tsang/fileSvr.e-awt#:span::2:0::2:0>
+
+
+# warning: tab at 29083 from: <file:c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/chen-tsang/fileSvr.e-awt#:span::701:13::701:13>
+
+
+# warning: undeclared version from: <file:c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/chen-tsang/fileSvr.e-awt#:span::1:0::1:0>
+
+..][.*..][......*.......]*.]*.][*.*.*.*.*.*.*.*.*.*.][*.*.]*.*.[.*.*..*.*.*.*.*.*.][*.*.*.][*.[[]*.]*.*.*.*.*.*.*.*.*
+at <file:c:/Documents and Settings/millerm1/e/doc/elang/kernel/EscapeExpr.html#:span::1:0::1:0>
+# warning: syntax error: 
       escape x3 ? stealer(x3) { 7 }
-                        ^
-  @ <file:c:/Documents and Settings/millerm1/e/doc/elang/kernel/EscapeExpr.html#:span::402:27::402:27>
-*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.]*.[[*.]*.*.[*.]*.*.[*.]*.[*.*.*.*.][*.*.*.][*.*.][*.*.]]*.*..*.[*.*.*.*.*.][[*
-c:/Documents and Settings/millerm1/e/doc/elang/tools/causeway/causeway-intro.html
-problem: "<- question()</tt>" isn't really a tag
-[]*
-c:/Documents and Settings/millerm1/e/doc/elang/tools/causeway/index.html
-problem: "<- question()</tt>" isn't really a tag
-][[]*.]*.*.]]
+                         ^
+  @ <file:c:/Documents and Settings/millerm1/e/doc/elang/kernel/EscapeExpr.html#:span::402:28::402:28> from: <file:c:/Documents and Settings/millerm1/e/doc/elang/kernel/EscapeExpr.html#:span::1:0::1:0>
+
+*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.]*.[[*.]*.*.[*.]*.*.[*.]*.[*.*.*.*.][*.*.*.][*.*.][*.*.]]*.*..*.[*.*.*.*.*.][[*.[]*.][[]*.]*.*.]]

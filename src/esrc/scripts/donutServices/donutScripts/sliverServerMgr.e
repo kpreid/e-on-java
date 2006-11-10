@@ -136,11 +136,11 @@ def makeSliverMgr(umid :Word) :any {
         }
         to writeGuestFile(src :rcvr, dest :String) :any {
             def catProc := sliverController.command(`cat > $dest`)
-            return when (src <- getBytes()) -> done(bytes :List[byte]) :void {
+            return when (def bytes := src <- getBytes()) -> {
                 def outs := catProc.getOutputStream()
                 outs.write(bytes)
                 outs.close()
-                return catProc
+                catProc
             } catch ex {
                 throw(ex)
             }
@@ -162,12 +162,12 @@ def sliverServer {
     to getMoneyBrand() :any { return acctMgr <- getBrand() }
     to buyNewSliver(payment) :vow[SturdyRef] {
         def doneVow := acctMgr <- deposit(payment, "sliverSale", sliverPrice)
-        return when(doneVow) -> done(_) :SturdyRef {
+        return when(doneVow) -> {
             def umid := `prod$umidCount`
             umidCount += 1
             def sliverMgr := makeSliverMgr(umid)
             def result := sliverMgr.getController()
-            return makeSturdyRef.temp(result)
+            makeSturdyRef.temp(result)
         } catch ex {
             throw(ex)
         }

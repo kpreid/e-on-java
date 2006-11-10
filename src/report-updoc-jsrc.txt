@@ -1,7 +1,7 @@
 
 updoc: started
 
-c:/Documents and Settings/millerm1/e/src/jsrc/com/zooko/tray/EPainter.updoc:......Exception in thread "AWT-EventQueue-0" java.lang.RuntimeException: Failed: Must only be called from <runs in home>'s thread
+c:/Documents and Settings/millerm1/e/src/jsrc/com/zooko/tray/EPainter.updoc:......Exception in thread "AWT-EventQueue-0" java.lang.RuntimeException: Failed: Must only be called from <DeadRunner java.lang.RuntimeException: makeEvaluator shutdown>'s thread
 	at org.erights.e.develop.assertion.T.fail(T.java:84)
 	at org.erights.e.develop.assertion.T.require(T.java:358)
 	at org.erights.e.elib.vat.Runner.requireCurrent(Runner.java:381)
@@ -37,20 +37,145 @@ c:/Documents and Settings/millerm1/e/src/jsrc/com/zooko/tray/EPainter.updoc:....
 
 c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/jcomm/bad-resolve.updoc:..............................................
 c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/jcomm/multi-test.updoc:.......................
-c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/jcomm/refmon.updoc:..............
+c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/jcomm/refmon.updoc:=== 2006-11-09T09:29:26.055Z (RecvThread.callDataPath:RecvThread.java:156) ERR
+comm: Error while calling net.vattp.data.DataCommThunk@5397a0 Type=8
+--vvvv--
+makeEvaluator shutdown
+
+
+java.lang.RuntimeException: makeEvaluator shutdown
+	at org.erights.e.meta.java.lang.ThrowableGuardSugar.subCoerceR(ThrowableGuardSugar.java:60)
+	at org.erights.e.elib.base.ClassDesc.tryCoerceR(ClassDesc.java:350)
+	at org.erights.e.elib.slot.BaseAuditor.coerce(BaseAuditor.java:59)
+	at org.erights.e.elib.prim.E.as(E.java:530)
+	at org.erights.e.elib.prim.JavaMemberNode.coerceArgs(JavaMemberNode.java:143)
+	at org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:188)
+	at org.erights.e.elib.prim.Selector.callIt(Selector.java:84)
+	at org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:132)
+	at org.erights.e.elang.evm.EMethod.execute(EMethod.java:175)
+	at org.erights.e.elang.evm.EMethodNode.execute(EMethodNode.java:136)
+	at org.erights.e.elib.prim.E.callAll(E.java:167)
+	at org.erights.e.elib.vat.PendingDelivery.innerRun(PendingDelivery.java:102)
+	at org.erights.e.elib.vat.PendingEvent.run(PendingEvent.java:76)
+	at org.erights.e.elib.vat.HeadlessRunner.run(HeadlessRunner.java:176)
+	at java.lang.Thread.run(Thread.java:595)
+
+--^^^^--
+
+=== 2006-11-09T09:29:26.215Z (RecvThread.callDataPath:RecvThread.java:156) ERR
+comm: Error while calling net.vattp.data.DataCommThunk@ddbd64 Type=8
+--vvvv--
+makeEvaluator shutdown
+
+
+java.lang.RuntimeException: makeEvaluator shutdown
+	at org.erights.e.meta.java.lang.ThrowableGuardSugar.subCoerceR(ThrowableGuardSugar.java:60)
+	at org.erights.e.elib.base.ClassDesc.tryCoerceR(ClassDesc.java:350)
+	at org.erights.e.elib.slot.BaseAuditor.coerce(BaseAuditor.java:59)
+	at org.erights.e.elib.prim.E.as(E.java:530)
+	at org.erights.e.elib.prim.JavaMemberNode.coerceArgs(JavaMemberNode.java:143)
+	at org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:188)
+	at org.erights.e.elib.prim.Selector.callIt(Selector.java:84)
+	at org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:132)
+	at org.erights.e.elang.evm.EMethod.execute(EMethod.java:175)
+	at org.erights.e.elang.evm.EMethodNode.execute(EMethodNode.java:136)
+	at org.erights.e.elib.prim.E.callAll(E.java:167)
+	at org.erights.e.elib.vat.PendingDelivery.innerRun(PendingDelivery.java:102)
+	at org.erights.e.elib.vat.PendingEvent.run(PendingEvent.java:76)
+	at org.erights.e.elib.vat.HeadlessRunner.run(HeadlessRunner.java:176)
+	at java.lang.Thread.run(Thread.java:595)
+
+--^^^^--
+
+=== 2006-11-09T09:29:26.215Z (RecvThread.callDataPath:RecvThread.java:156) ERR
+comm: Error while calling net.vattp.data.DataCommThunk@1bcf7db Type=4
+--vvvv--
+makeEvaluator shutdown
+
+
+java.lang.RuntimeException: makeEvaluator shutdown
+	at org.erights.e.meta.java.lang.ThrowableGuardSugar.subCoerceR(ThrowableGuardSugar.java:60)
+	at org.erights.e.elib.base.ClassDesc.tryCoerceR(ClassDesc.java:350)
+	at org.erights.e.elib.slot.BaseAuditor.coerce(BaseAuditor.java:59)
+	at org.erights.e.elib.prim.E.as(E.java:530)
+	at org.erights.e.elib.prim.JavaMemberNode.coerceArgs(JavaMemberNode.java:143)
+	at org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:188)
+	at org.erights.e.elib.prim.Selector.callIt(Selector.java:84)
+	at org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:132)
+	at org.erights.e.elang.evm.EMethod.execute(EMethod.java:175)
+	at org.erights.e.elang.evm.EMethodNode.execute(EMethodNode.java:136)
+	at org.erights.e.elib.prim.E.callAll(E.java:167)
+	at org.erights.e.elib.vat.PendingDelivery.innerRun(PendingDelivery.java:102)
+	at org.erights.e.elib.vat.PendingEvent.run(PendingEvent.java:76)
+	at org.erights.e.elib.vat.HeadlessRunner.run(HeadlessRunner.java:176)
+	at java.lang.Thread.run(Thread.java:595)
+
+--^^^^--
+
+..............
 at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/jcomm/refmon.updoc#:span::64:6::64:10>
 expr: trace
 original and new value differ
 original value: "++++.run/1.run/1+.run/1+.run/1"
-     new value: "++.run/1++.run/1+.run/1"
+     new value: "++.run/1+++.run/1.run/1.run/1"
 .....
 at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/jcomm/refmon.updoc#:span::79:6::79:10>
 expr: trace
 original and new value differ
 original value: "++++.run/1.run/1+.run/1+.run/1
                 =add/2+.__whenMoreResolved/1.__whenMoreResolved/1"
-     new value: "++.run/1++.run/1+.run/1
-                =add/2+"
+     new value: "++.run/1+++.run/1.run/1.run/1
+                =add/2+.__whenMoreResolved/1"
+=== 2006-11-09T09:29:32.063Z (SendThread.callDataPath:SendThread.java:337) ERR
+comm: to=192.168.1.66:2740 Error while calling net.vattp.data.DataCommThunk@53c434 Type=8
+--vvvv--
+makeEvaluator shutdown
+
+
+java.lang.RuntimeException: makeEvaluator shutdown
+	at org.erights.e.meta.java.lang.ThrowableGuardSugar.subCoerceR(ThrowableGuardSugar.java:60)
+	at org.erights.e.elib.base.ClassDesc.tryCoerceR(ClassDesc.java:350)
+	at org.erights.e.elib.slot.BaseAuditor.coerce(BaseAuditor.java:59)
+	at org.erights.e.elib.prim.E.as(E.java:530)
+	at org.erights.e.elib.prim.JavaMemberNode.coerceArgs(JavaMemberNode.java:143)
+	at org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:188)
+	at org.erights.e.elib.prim.Selector.callIt(Selector.java:84)
+	at org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:132)
+	at org.erights.e.elang.evm.EMethod.execute(EMethod.java:175)
+	at org.erights.e.elang.evm.EMethodNode.execute(EMethodNode.java:136)
+	at org.erights.e.elib.prim.E.callAll(E.java:167)
+	at org.erights.e.elib.vat.PendingDelivery.innerRun(PendingDelivery.java:102)
+	at org.erights.e.elib.vat.PendingEvent.run(PendingEvent.java:76)
+	at org.erights.e.elib.vat.HeadlessRunner.run(HeadlessRunner.java:176)
+	at java.lang.Thread.run(Thread.java:595)
+
+--^^^^--
+
+=== 2006-11-09T09:29:32.063Z (SendThread.callDataPath:SendThread.java:337) ERR
+comm: to=192.168.1.66:2740 Error while calling net.vattp.data.DataCommThunk@1763f6c Type=3
+--vvvv--
+makeEvaluator shutdown
+
+
+java.lang.RuntimeException: makeEvaluator shutdown
+	at org.erights.e.meta.java.lang.ThrowableGuardSugar.subCoerceR(ThrowableGuardSugar.java:60)
+	at org.erights.e.elib.base.ClassDesc.tryCoerceR(ClassDesc.java:350)
+	at org.erights.e.elib.slot.BaseAuditor.coerce(BaseAuditor.java:59)
+	at org.erights.e.elib.prim.E.as(E.java:530)
+	at org.erights.e.elib.prim.JavaMemberNode.coerceArgs(JavaMemberNode.java:143)
+	at org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:188)
+	at org.erights.e.elib.prim.Selector.callIt(Selector.java:84)
+	at org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:132)
+	at org.erights.e.elang.evm.EMethod.execute(EMethod.java:175)
+	at org.erights.e.elang.evm.EMethodNode.execute(EMethodNode.java:136)
+	at org.erights.e.elib.prim.E.callAll(E.java:167)
+	at org.erights.e.elib.vat.PendingDelivery.innerRun(PendingDelivery.java:102)
+	at org.erights.e.elib.vat.PendingEvent.run(PendingEvent.java:76)
+	at org.erights.e.elib.vat.HeadlessRunner.run(HeadlessRunner.java:176)
+	at java.lang.Thread.run(Thread.java:595)
+
+--^^^^--
+
 
 c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc:.......................................
 c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/scope/meta-context.updoc:...
@@ -159,7 +284,7 @@ new problem: <IndexOutOfBoundsException: "println" not found>
 .
 c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/scope/redef.updoc:........
 c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/syntax/exporter.updoc:...........
-c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/syntax/lambdaArg.updoc:............
+c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/syntax/lambdaArg.updoc:.............
 c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/sealing/amplify.updoc:.....
 at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/sealing/amplify.updoc#:span::28:2::28:43>
 expr: def makeUncall := <elib:serial.makeUncall>

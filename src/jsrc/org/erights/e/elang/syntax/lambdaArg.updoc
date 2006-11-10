@@ -129,6 +129,7 @@ used to, let's first see how close we can get to defining the existing
 control flow sugars as functions:
 
     ? pragma.syntax("0.9")
+    ? pragma.enable("lambda-args")
 
     ? def __escape := <elang:control.__escape>
     ? def __for := <elang:control.__for>
