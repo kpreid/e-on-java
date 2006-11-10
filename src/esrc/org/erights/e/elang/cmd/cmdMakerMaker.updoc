@@ -32,7 +32,7 @@
     # value: [<a TextWriter>, <stringBuffer "">]
 
     ? def cmdLoop
-    # value: <Promise>
+    # value: <Resolver>
 
     ? def props := interp.getProps(); null
     ? def privileged := ScopeSetup.privileged("__main$",

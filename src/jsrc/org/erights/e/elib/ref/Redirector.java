@@ -6,6 +6,7 @@ package org.erights.e.elib.ref;
 import org.erights.e.elib.serial.PassByProxy;
 import org.erights.e.elib.util.DeadManSwitch;
 import org.erights.e.elib.util.OneArgFunc;
+import org.erights.e.elib.prim.E;
 
 /**
  * Wraps a Resolver in a way suitable for inclusion as an argument in a
@@ -44,9 +45,9 @@ class Redirector implements DeadManSwitch, OneArgFunc, PassByProxy {
     /**
      * Smash the Resolver with the arg.
      */
-    public void __reactToLostClient(Throwable problem) {
+    public void __reactToLostClient(Object problem) {
         if (null != myOptResolver) {
-            myOptResolver.smash(problem);
+            myOptResolver.smash(E.asRTE(problem));
             myOptResolver = null;
         }
     }

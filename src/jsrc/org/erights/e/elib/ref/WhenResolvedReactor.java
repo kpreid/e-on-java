@@ -112,7 +112,7 @@ class WhenResolvedReactor
      * Just like run/1, this is treated merely as a wakeup call to check
      * myRef.
      */
-    public void __reactToLostClient(Throwable ignored) {
+    public void __reactToLostClient(Object ignored) {
         run(ignored);
     }
 }

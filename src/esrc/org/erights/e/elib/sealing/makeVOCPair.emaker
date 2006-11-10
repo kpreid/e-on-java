@@ -73,10 +73,10 @@ def makeVOCPair(brandName :String) :near {
     # value: [<voc prover>, <voc checker template>]
 
     ? def f1 := <file:~/.bashrc>
-    # value: <file:c:/Documents and Settings/MILLERM1/.bashrc>
+    # value: <file:c:/Documents and Settings/millerm1/.bashrc>
 
     ? def f2 := <file:~/Desktop>
-    # value: <file:c:/Documents and Settings/MILLERM1/Desktop/>
+    # value: <file:c:/Documents and Settings/millerm1/Desktop/>
 
     ? def foo(f :CheckAuth[f1,f2]) :void {
     >     println(f.getPath())
@@ -84,16 +84,16 @@ def makeVOCPair(brandName :String) :near {
     # value: <foo>
 
     ? foo(f1)
-    # stdout: c:/Documents and Settings/MILLERM1/.bashrc
+    # stdout: c:/Documents and Settings/millerm1/.bashrc
 
     ? def f3 := <file:~>
-    # value: <file:c:/Documents and Settings/MILLERM1/>
+    # value: <file:c:/Documents and Settings/millerm1/>
 
     ? foo(f3)
     # problem: Unmatched voc authorization
 
     ? foo(f1 :ProveAuth)
-    # stdout: c:/Documents and Settings/MILLERM1/.bashrc
+    # stdout: c:/Documents and Settings/millerm1/.bashrc
 
     ? foo(f3 :ProveAuth)
     # problem: Unmatched voc authorization
@@ -104,7 +104,7 @@ def makeVOCPair(brandName :String) :near {
     # value: <bar>
 
     ? bar(f1)
-    # stdout: c:/Documents and Settings/MILLERM1/.bashrc
+    # stdout: c:/Documents and Settings/millerm1/.bashrc
 
     ? bar(f1 :ProveAuth)
     # problem: <NoSuchMethodException: <a sealedBox>.getPath/0>

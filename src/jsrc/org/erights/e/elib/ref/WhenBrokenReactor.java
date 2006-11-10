@@ -118,7 +118,7 @@ class WhenBrokenReactor
      * Just like run/1, this is treated merely as a wakeup call to check
      * myRef.
      */
-    public void __reactToLostClient(Throwable problem) {
+    public void __reactToLostClient(Object problem) {
         run(myRef);
     }
 }

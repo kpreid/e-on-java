@@ -22,11 +22,8 @@ public interface DeadManSwitch {
      * Notification that some client of this object may no longer be able to
      * talk to it, presumably because of a Partition whose case is described by
      * 'problem'.
-     * <p>
-     * Note that the parameter here is declared as Throwable even though the
-     * corresponding Miranda method's parameter is declared Object.
      *
      * @see MirandaMethods#__reactToLostClient
      */
-    void __reactToLostClient(Throwable problem);
+    void __reactToLostClient(Object problem);
 }

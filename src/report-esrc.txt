@@ -187,15 +187,7 @@ at <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/sealin
 .....]][........][.[.][.....]][[......][.......][......][..][...][.][....][.][.......]][[...][.......]]][[...]]][[.][..][..]]][.[....]......
 # warning: Missing copyright notice from: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/cipher-saber.e#:span::2:0::2:0>
 
-.....[[.......
-at <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/donutServices/donutScripts/sliverServerMgr.e#:span::1:0::1:0>
-# warning: syntax error: The optional e.enable.hard-when feature (see org/erights/e/elang/syntax/syntax-props-0.8.txt) is currently off.
-              
-          return when(doneVow) -> done(_) :SturdyRef {
-                                                     ^
-  @ <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/donutServices/donutScripts/sliverServerMgr.e#:span::165:51::165:51> from: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/donutServices/donutScripts/sliverServerMgr.e#:span::1:0::1:0>
-
-...][..][...][...][...][...]].............................
+.....[[...........][..][...][...][...][...]].............................
 # warning: duplicate header from: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/srccheck.e#:span::100:18::100:36>
 
 

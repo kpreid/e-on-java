@@ -8,17 +8,8 @@ at <file:c:/Documents and Settings/millerm1/e/doc/elang/echat/index.html#:span::
 ][*.[[
 # warning: Missing copyright notice from: <file:c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/chen-tsang/fileClt.e-awt#:span::2:0::2:0>
 
-
-# warning: tab at 9932 from: <file:c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/chen-tsang/fileClt.e-awt#:span::342:5::342:5>
-
 .
 # warning: Missing copyright notice from: <file:c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/chen-tsang/fileSvr.e-awt#:span::2:0::2:0>
-
-
-# warning: tab at 29083 from: <file:c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/chen-tsang/fileSvr.e-awt#:span::701:13::701:13>
-
-
-# warning: undeclared version from: <file:c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/chen-tsang/fileSvr.e-awt#:span::1:0::1:0>
 
 ..][.*..][......*.......]*.]*.][*.*.*.*.*.*.*.*.*.*.][*.*.]*.*.[.*.*..*.*.*.*.*.*.][*.*.*.][*.[[]*.]*.*.*.*.*.*.*.*.*
 at <file:c:/Documents and Settings/millerm1/e/doc/elang/kernel/EscapeExpr.html#:span::1:0::1:0>

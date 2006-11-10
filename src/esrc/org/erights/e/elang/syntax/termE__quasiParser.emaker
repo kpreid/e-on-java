@@ -48,32 +48,32 @@ def termE__quasiParser implements QuasiExprParser, QuasiPatternParser {
 ? def x := termE`a + b`
 # value: term`CallExpr(NounExpr("a"),
 #                      "add",
-#                      NounExpr("b"))`
+#                      [NounExpr("b")])`
 
 ? def y := termE`c * $x * d`
 # value: term`CallExpr(CallExpr(NounExpr("c"),
 #                               "multiply",
-#                               CallExpr(NounExpr("a"),
-#                                        "add",
-#                                        NounExpr("b"))),
+#                               [CallExpr(NounExpr("a"),
+#                                         "add",
+#                                         [NounExpr("b")])]),
 #                      "multiply",
-#                      NounExpr("d"))`
+#                      [NounExpr("d")])`
 
 ? def termE`@w * @z` := y
 # value: term`CallExpr(CallExpr(NounExpr("c"),
 #                               "multiply",
-#                               CallExpr(NounExpr("a"),
-#                                        "add",
-#                                        NounExpr("b"))),
+#                               [CallExpr(NounExpr("a"),
+#                                         "add",
+#                                         [NounExpr("b")])]),
 #                      "multiply",
-#                      NounExpr("d"))`
+#                      [NounExpr("d")])`
 
 ? w
 # value: term`CallExpr(NounExpr("c"),
 #                      "multiply",
-#                      CallExpr(NounExpr("a"),
-#                               "add",
-#                               NounExpr("b")))`
+#                      [CallExpr(NounExpr("a"),
+#                                "add",
+#                                [NounExpr("b")])])`
 
 ? z
 # value: term`NounExpr("d")`

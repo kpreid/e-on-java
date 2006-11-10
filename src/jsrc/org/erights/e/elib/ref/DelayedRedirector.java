@@ -111,9 +111,9 @@ public class DelayedRedirector
     /**
      * Smash the EProxyResolver with the arg.
      */
-    public void __reactToLostClient(Throwable problem) {
+    public void __reactToLostClient(Object problem) {
         if (null != myOptResolver) {
-            myOptResolver.smash(problem);
+            myOptResolver.smash(E.asRTE(problem));
             myOptResolver = null;
             myOptProxy = null;
         }

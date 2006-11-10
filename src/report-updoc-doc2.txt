@@ -1,34 +1,20 @@
-=== 2006-11-07T09:19:16.623Z (PendingEvent.report:PendingEvent.java:109) WRN
-causality: Problem in turn <<Vat start in <runs in start>>,3>: 
---vvvv--
-Failed: FarRef may only be smashed: <Far ref>
-
-- DelayedRedirector#run(Object)
-. <a DelayedRedirector>(<Far ref>)
-
-java.lang.RuntimeException: Failed: FarRef may only be smashed: <Far ref>
-	at org.erights.e.develop.assertion.T.fail(T.java:84)
-	at org.erights.e.elib.ref.FarRef.setTarget(FarRef.java:105)
-	at org.erights.e.elib.ref.EProxyResolver.resolve(EProxyResolver.java:191)
-	at org.erights.e.elib.ref.EProxyResolver.resolve(EProxyResolver.java:204)
-	at org.erights.e.elib.ref.DelayedRedirector.run(DelayedRedirector.java:83)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
-	at java.lang.reflect.Method.invoke(Method.java:585)
-	at org.erights.e.elib.prim.InstanceMethodNode.innerExecute(InstanceMethodNode.java:113)
-	at org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:183)
-	at org.erights.e.elib.prim.E.callAll(E.java:167)
-	at org.erights.e.elib.vat.PendingDelivery.innerRun(PendingDelivery.java:102)
-	at org.erights.e.elib.vat.PendingEvent.run(PendingEvent.java:76)
-	at org.erights.e.elib.vat.HeadlessRunner.run(HeadlessRunner.java:176)
-	at java.lang.Thread.run(Thread.java:595)
-
---^^^^--
-
 
 updoc: started
 
+c:/Documents and Settings/millerm1/e/doc/elib/capability/duals/index.html:
+c:/Documents and Settings/millerm1/e/doc/elib/capability/index.html:
+c:/Documents and Settings/millerm1/e/doc/elib/capability/ode/compose.e:
+c:/Documents and Settings/millerm1/e/doc/elib/capability/ode/index.html:
 c:/Documents and Settings/millerm1/e/doc/elib/capability/ode/ode-bearer.html:...
 c:/Documents and Settings/millerm1/e/doc/elib/capability/ode/ode-capabilities.html:..............
 c:/Documents and Settings/millerm1/e/doc/elib/capability/ode/ode-objects.html:...................
+c:/Documents and Settings/millerm1/e/doc/elib/concurrency/eio/index.html:
+c:/Documents and Settings/millerm1/e/doc/elib/concurrency/index.html:
+c:/Documents and Settings/millerm1/e/doc/elib/concurrency/when/index.html:
+c:/Documents and Settings/millerm1/e/doc/elib/distrib/captp/index.html:
+c:/Documents and Settings/millerm1/e/doc/elib/distrib/index.html:
+c:/Documents and Settings/millerm1/e/doc/elib/distrib/vattp/index.html:
+c:/Documents and Settings/millerm1/e/doc/elib/equality/grant-matcher/index.html:
+c:/Documents and Settings/millerm1/e/doc/elib/equality/index.html:
+c:/Documents and Settings/millerm1/e/doc/elib/index.html:
+c:/Documents and Settings/millerm1/e/doc/elib/legacy/index.html:
