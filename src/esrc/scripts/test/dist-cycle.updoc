@@ -10,7 +10,7 @@
     # value: ["3DES_SDH_M2", "3DES_SDH_M"]
 
     ? def [ap,ar] := Ref.promise()
-    # value: [<Promise>, <Open Resolver>]
+    # value: [<Promise>, <Resolver>]
 
     ? def apURI := introducer.sturdyToURI(makeSturdyRef(ap))
 
@@ -24,7 +24,7 @@
     # value: ["3DES_SDH_M2", "3DES_SDH_M"]
 
     ? def [bp,br] := Ref.promise()
-    # value: [<Promise>, <Open Resolver>]
+    # value: [<Promise>, <Resolver>]
 
     ? def bpURI := introducer.sturdyToURI(makeSturdyRef(bp))
 
@@ -36,7 +36,7 @@
     # value: <Promise>
 
     ? [bp,br,ap]
-    # value: [<Promise>, <Open Resolver>, <Promise>]
+    # value: [<Promise>, <Resolver>, <Promise>]
 
 
     ?? in vat Alice
@@ -47,7 +47,7 @@
     # value: <Promise>
 
     ? [ap,ar,bp]
-    # value: [<Promise>, <Open Resolver>, <Promise>]
+    # value: [<Promise>, <Resolver>, <Promise>]
 
     ? ar.resolve(bp)
 
@@ -55,7 +55,7 @@
     ?? in vat Bob
 
     ? [bp,br,ap]
-    # value: [<Promise>, <Open Resolver>, <Promise>]
+    # value: [<Promise>, <Resolver>, <Promise>]
 
     ? br.resolve(ap)
 

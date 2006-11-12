@@ -85,6 +85,7 @@ def makeVOCPair(brandName :String) :near {
 
     ? foo(f1)
     # stdout: c:/Documents and Settings/millerm1/.bashrc
+    #
 
     ? def f3 := <file:~>
     # value: <file:c:/Documents and Settings/millerm1/>
@@ -94,6 +95,7 @@ def makeVOCPair(brandName :String) :near {
 
     ? foo(f1 :ProveAuth)
     # stdout: c:/Documents and Settings/millerm1/.bashrc
+    #
 
     ? foo(f3 :ProveAuth)
     # problem: Unmatched voc authorization
@@ -105,6 +107,7 @@ def makeVOCPair(brandName :String) :near {
 
     ? bar(f1)
     # stdout: c:/Documents and Settings/millerm1/.bashrc
+    #
 
     ? bar(f1 :ProveAuth)
     # problem: <NoSuchMethodException: <a sealedBox>.getPath/0>

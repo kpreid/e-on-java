@@ -13,33 +13,33 @@ def cmdMakerMaker := <elang:cmd.cmdMakerMaker>
 def makeEvalContextAuthor := <elang:cmd.makeEvalContextAuthor>
 
 def makeEvaluatorAuthor(gc, auths, options, vat) :any {
-
+    
     def makeEvalContext := makeEvalContextAuthor(auths,
                                                  options,
                                                  vat,
                                                  false,      #confined
                                                  true)       #explicitIO
-
+    
     def cmdLoopMaker := <elang:cmd.cmdLoopMakerAuthor>(gc)
-
+    
     def makeEvaluator {
         to run(args, props) :any {
-
+            
             def [metaout, metaoutBuf] := makeTextWriter.makeBufferingPair()
-
+            
             def cmdLoop
             def evalContext := makeEvalContext(props, cmdLoop)
             bind cmdLoop := cmdLoopMaker(args,
                                          props,
                                          evalContext.getTopScope(),
                                          true)
-
+            
             def cmdMaker := cmdMakerMaker(cmdLoop,
                                           evalContext.getOptAltoutBuf(),
                                           evalContext.getOptAlterrBuf(),
                                           metaout,
                                           metaout)
-
+            
             def evalPrint(expr :Expr) :vow[boolean] {
                 def [exitStatusVow, cmd] :=
                   cmdMaker.makeCmdAnswerer(expr)
@@ -49,9 +49,9 @@ def makeEvaluatorAuthor(gc, auths, options, vat) :any {
                     cmdLoop.getFinalExitStatusVow()
                 }
             }
-
+            
             def evaluator {
-
+                
                 /**
                  * Schedules expr to be evaluated as the next top level
                  * command in the evaluator's current scope, and returns a
@@ -60,7 +60,7 @@ def makeEvaluatorAuthor(gc, auths, options, vat) :any {
                 to evaluateForReport(expr :Expr) :vow[Tuple[String, boolean]] {
                     when (evalPrint(expr)) ->
                       done(exitStatus :boolean) :Tuple[String, boolean] {
-
+                        
                         def transcript := metaoutBuf.snapshot()
                         metaoutBuf.setLength(0)
                         [transcript, exitStatus]
@@ -68,7 +68,7 @@ def makeEvaluatorAuthor(gc, auths, options, vat) :any {
                         throw(problem)
                     }
                 }
-
+                
                 to getCmdLoop() :any { cmdLoop }
             }
         }

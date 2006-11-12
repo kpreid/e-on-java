@@ -27,7 +27,7 @@
 # value: ["3DES_SDH_M2", "3DES_SDH_M"]
 
 ? def sr := makeSturdyRef(3)
-# value: <SturdyRef>
+# value: <SturdyRef to 3>
 
 ? timeMachine.save()
 # problem: Must be saved
@@ -36,7 +36,7 @@
 # value: <makeAtomicFile>
 
 ? def af := makeAtomicFile(<file:~/Desktop>, "foo.vat")
-# value: <atomic: <file:c:/Documents and Settings/MILLERM1/Desktop/foo.vat>>
+# value: <atomic: <file:c:/Documents and Settings/millerm1/Desktop/foo.vat>>
 
 ? timeMachine
 # value: <forming>
@@ -55,12 +55,12 @@
 # value: <makeAtomicFile>
 
 ? def af := makeAtomicFile(<file:~/Desktop>, "foo.vat")
-# value: <atomic: <file:c:/Documents and Settings/MILLERM1/Desktop/foo.vat>>
+# value: <atomic: <file:c:/Documents and Settings/millerm1/Desktop/foo.vat>>
 
 ? timeMachine.revive(af)
 
 ? def sr := introducer.sturdyFromURI(<file:~/Desktop/foo.cap>.getText())
-# value: <SturdyRef>
+# value: <SturdyRef to 3>
 
 ? def survivor := sr.getRcvr()
 # value: 3

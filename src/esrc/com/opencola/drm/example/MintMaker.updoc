@@ -12,7 +12,8 @@ found at http://www.opensource.org/licenses/mit-license.html ..................
 
 ? def MintMaker(name) :any {
 >     def [sealer,unsealer] := BrandMaker.pair(name)
->     def issuer{
+>     def mint
+>     def issuer {
 >         to __printOn(out :TextWriter) :void { out.print(`<$name's issuer>`) }
 >         to makePurse() :any {
 >             mint.makePurse(0)
@@ -25,7 +26,7 @@ found at http://www.opensource.org/licenses/mit-license.html ..................
 >             unsealer.unseal(other.getSealed())
 >         }
 >      }
->     def mint {
+>     bind mint {
 >         to __printOn(out :TextWriter) :void { out.print(`<$name's mint>`) }
 >         to makeAssay(quantity :(any >= 0)) :any {
 >

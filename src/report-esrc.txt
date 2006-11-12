@@ -184,19 +184,10 @@ at <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/sealin
 ..][..........][.....][.[....].]][[....]][[
 # warning: duplicate header from: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/extern/persist/initTimeMachine.emaker#:span::25:19::25:37>
 
-.....]][........][.[.][.....]][[......][.......][......][..][...][.][....][.][.......]][[...][.......]]][[...]]][[.][..][..]]][.[....]......
-# warning: Missing copyright notice from: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/cipher-saber.e#:span::2:0::2:0>
-
-.....[[...........][..][...][...][...][...]].............................
+.....]][........][.[.][.....]][[......][.......][......][..][...][.][....][.][.......]][[...][.......]]][[...]]][[.][..][..]]][.[....]...........[[...........][..][...][...][...][...]].............................
 # warning: duplicate header from: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/srccheck.e#:span::100:18::100:36>
 
 
 # warning: duplicate version from: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/srccheck.e#:span::45:48::45:60>
 
-...[..[....].
-# warning: Missing copyright notice from: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/jcombothread.e-awt#:span::2:0::2:0>
-
-..
-# warning: Missing copyright notice from: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/methcall.e#:span::2:0::2:0>
-
-...[.....]]..[.*.*.*..].]]
+...[..[....]......[.....]]..[.*.*.*..].]]

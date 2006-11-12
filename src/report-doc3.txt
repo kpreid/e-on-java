@@ -5,13 +5,7 @@ at <file:c:/Documents and Settings/millerm1/e/doc/elang/echat/index.html#:span::
                                             ^
   @ <file:c:/Documents and Settings/millerm1/e/doc/elang/echat/index.html#:span::180:47::180:47> from: <file:c:/Documents and Settings/millerm1/e/doc/elang/echat/index.html#:span::1:0::1:0>
 
-][*.[[
-# warning: Missing copyright notice from: <file:c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/chen-tsang/fileClt.e-awt#:span::2:0::2:0>
-
-.
-# warning: Missing copyright notice from: <file:c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/chen-tsang/fileSvr.e-awt#:span::2:0::2:0>
-
-..][.*..][......*.......]*.]*.][*.*.*.*.*.*.*.*.*.*.][*.*.]*.*.[.*.*..*.*.*.*.*.*.][*.*.*.][*.[[]*.]*.*.*.*.*.*.*.*.*
+][*.[[...][.*..][......*.......]*.]*.][*.*.*.*.*.*.*.*.*.*.][*.*.]*.*.[.*.*..*.*.*.*.*.*.][*.*.*.][*.[[]*.]*.*.*.*.*.*.*.*.*
 at <file:c:/Documents and Settings/millerm1/e/doc/elang/kernel/EscapeExpr.html#:span::1:0::1:0>
 # warning: syntax error: 
       escape x3 ? stealer(x3) { 7 }

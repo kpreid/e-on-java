@@ -1,5 +1,9 @@
 #!/usr/bin/env rune
 
+# XXX Need copyright notice
+
+pragma.syntax("0.8")
+
 def t := `Canonical Path: $canonical$\nSize: $fileSize$\nLast Mod: $modDate`
 makeDialogVow("Properties For " + name, textTree, null, ["OK"])
 

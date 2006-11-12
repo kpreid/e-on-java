@@ -22,9 +22,9 @@ def updocScriptMaker := <tools:updoc.updocScriptMaker>
 def makeOldUpdocParser(source) :any {
     def lines := source.split("\n")
     var index := 0
-
+    
     def vatNames := [].diverge()
-
+    
     /**
      * <tt>readExpr</tt> reads a single or multi-line expression.
      * <p>
@@ -55,20 +55,20 @@ def makeOldUpdocParser(source) :any {
             }
             # put back newline removed by split
             result += current + "\n"
-
+            
             index += 1
             if (index >= lines.size()) {
                 break
             }
             current := lines[index].trim()
-
+            
             if (! (current.startsWith(">"))) {
                 break
             }
         }
         result
     }
-
+    
     /**
      * <tt>readOptAnswer</tt> reads an optional single or multi-line answer.
      * <p>
@@ -125,7 +125,7 @@ def makeOldUpdocParser(source) :any {
             return null
         }
     }
-
+    
     /**
      * <tt>readBlankLine</tt> tests for a blank line and skips over it.
      */
@@ -134,7 +134,7 @@ def makeOldUpdocParser(source) :any {
             index += 1
         }
     }
-
+    
     /**
      * <tt>readAnswers</tt>
      *
@@ -149,7 +149,7 @@ def makeOldUpdocParser(source) :any {
         }
         answers.snapshot()
     }
-
+    
     /**
      * <tt>readDirective</tt> reads an <tt>Updoc</tt> directive. Currently,
      * only vat directives are recognized. Use these directives to create
@@ -184,7 +184,7 @@ def makeOldUpdocParser(source) :any {
             }
         }
     }
-
+    
     /**
      * <tt>readSequence</tt> reads a directive and one or more test cases.
      *
@@ -208,9 +208,9 @@ def makeOldUpdocParser(source) :any {
         }
         updocScriptMaker.makeSequence(directive, cases.snapshot())
     }
-
+    
     def oldUpdocParser {
-
+        
         /**
          * <tt>readAnswers</tt>
          *
@@ -220,7 +220,7 @@ def makeOldUpdocParser(source) :any {
         to readAnswers() :near {
             readAnswers()
         }
-
+        
         /**
          * <tt>readScript</tt> reads an <tt>Updoc</tt> script.
          *

@@ -1,5 +1,7 @@
 #!/usr/bin/env rune
 
+# XXX Need copyright notice
+
 Toy grammar definition from Dean to test out the grammar.y parser.
 
 rune(["~/e/src/esrc/scripts/updoc.e",

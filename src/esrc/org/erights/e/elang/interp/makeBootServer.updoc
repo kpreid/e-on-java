@@ -27,7 +27,7 @@
 ? def vatFile := makeAtomicFile(<file:~/Desktop>, "foo.vat")
 # value: <atomic: <file:c:/Documents and Settings/millerm1/Desktop/foo.vat>>
 
-? if (vatFile.exists()) { vatFile.delete(null) }
+? if (vatFile.exists()) { vatFile.delete() }
 
 ? [p,sr]
 # value: [<Promise>, <Promise>]

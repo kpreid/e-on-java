@@ -28,7 +28,7 @@ def matchBind(matchMaker, args) :any {
     ? interp.setExpand(true)
 
     ? def `@x$d@y` := "ab.de"
-    # expansion: def via (__matchBind.run(simple__quasiParser. \
+    # expansion: def via (__matchBind.run(simple__quasiParser.\
     #              matchMaker("@{0}${0}@{1}"), __makeList.run(d))) [x, y] := \
     #              "ab.de"
 

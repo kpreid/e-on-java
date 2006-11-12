@@ -28,10 +28,10 @@
     >  def sr := introducer.sturdyFromURI(uri))
 
     ? def farBob := sr.getRcvr()
-    # value: <Eventual ref>
+    # value: <Remote Promise>
 
     ? def result := farBob <- foo()
-    # value: <Eventual ref>
+    # value: <Remote Promise>
 
     ? interp.waitAtTop(result)
 

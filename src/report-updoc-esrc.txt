@@ -8,275 +8,16 @@ missing new value
 original value: <manages <has (33 - 0) Sugar>>
 missing original problem
 new problem: <NoSuchMethodException: <an issuer>.makeAccountMgr/1>
+***-----------------------***
+*** Trace data written to ***
+'C:/Documents and Settings/millerm1/.e/etrace/etrace.2006-11-12T06_59_25.142Z.txt'
+***-----------------------***
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/com/hp/donutLab/makeIOUIssuer.updoc#:span::27:2::27:7>
-expr: supply
-original and new value differ
-original value: 33
-     new value: 0
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/com/hp/donutLab/makeIOUIssuer.updoc#:span::30:2::30:22>
-expr: swtWatch(&am1, "am1")
-missing original problem
-new problem: Failed: Undefined variable: am1
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/com/hp/donutLab/makeIOUIssuer.updoc#:span::32:2::32:37>
-expr: def am2 := issuer.makeAccountMgr(44)
-missing new value
-original value: [<purse <has (44 - 0) Sugar>>, <purseRevoker>]
-missing original problem
-new problem: <NoSuchMethodException: <an issuer>.makeAccountMgr/1>
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/com/hp/donutLab/makeIOUIssuer.updoc#:span::35:2::35:7>
-expr: supply
-original and new value differ
-original value: 77
-     new value: 0
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/com/hp/donutLab/makeIOUIssuer.updoc#:span::38:2::38:22>
-expr: swtWatch(&am2, "am2")
-missing new value
-original value: [Shell {watching - am2}, Label {<manages <has (44 - 0) Sugar>>}]
-missing original problem
-new problem: Failed: Undefined variable: am2
-.....=== 2006-11-10T09:38:20.639Z (PendingEvent.report:PendingEvent.java:109) WRN
-causality: Problem in turn <<Vat home in <SWTRunner>>,218>: 
---vvvv--
-Failed: Not mergeable: <Vat home in <SWTRunner>>
-
-- Runnable#run()
-. <a VatRedirector>()
-
-java.lang.RuntimeException: Failed: Not mergeable: <Vat home in <SWTRunner>>
-	at org.erights.e.develop.assertion.T.fail(T.java:84)
-	at org.erights.e.develop.assertion.T.require(T.java:339)
-	at org.erights.e.elib.vat.Vat$VatRedirector.run(Vat.java:627)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
-	at java.lang.reflect.Method.invoke(Method.java:585)
-	at org.erights.e.elib.prim.InstanceMethodNode.innerExecute(InstanceMethodNode.java:113)
-	at org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:183)
-	at org.erights.e.elib.prim.E.callAll(E.java:167)
-	at org.erights.e.elib.vat.PendingDelivery.innerRun(PendingDelivery.java:102)
-	at org.erights.e.elib.vat.PendingEvent.run(PendingEvent.java:76)
-	at org.eclipse.swt.widgets.RunnableLock.run(RunnableLock.java:35)
-	at org.eclipse.swt.widgets.Synchronizer.runAsyncMessages(Synchronizer.java:98)
-	at org.eclipse.swt.widgets.Display.runAsyncMessages(Display.java:1815)
-	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:1549)
-	at org.erights.e.ui.swt.SWTRunner.run(SWTRunner.java:189)
-	at java.lang.Thread.run(Thread.java:595)
-
---^^^^--
-
-
-c:/Documents and Settings/millerm1/e/src/esrc/com/hp/orc/orc.updoc:..............
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/com/hp/orc/orc.updoc#:span::47:6::47:12>
-expr: results
-original and new stdout differ
-original stdout: US News
-                 
-     new stdout: <Promise>
-                 
-...
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/com/hp/orc/orc.updoc#:span::70:6::70:12>
-expr: results
-original and new stdout differ
-original stdout: US News
-                 now: 3
-                 US News
-                 now: 6
-                 US News
-                 now: 9
-                 US News
-                 now: 12
-                 US News
-                 now: 15
-                 US News
-                 now: 18
-                 US News
-                 now: 20
-                 now: 21
-                 
-     new stdout: <Promise>
-                 now: 3
-                 <Promise>
-                 now: 6
-                 <Promise>
-                 now: 9
-                 <Promise>
-                 now: 12
-                 <Promise>
-                 now: 15
-                 <Promise>
-                 now: 18
-                 <Promise>
-                 now: 20
-                 now: 21
-                 
-..............
-c:/Documents and Settings/millerm1/e/src/esrc/com/opencola/drm/example/MintMaker.updoc:...
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/com/opencola/drm/example/MintMaker.updoc#:span::13:2::13:27>
-expr: def MintMaker(name) :any {
-          def [sealer,unsealer] := BrandMaker.pair(name)
-          def issuer{
-              to __printOn(out :TextWriter) :void { out.print(`<$name's issuer>`) }
-              to makePurse() :any {
-                  mint.makePurse(0)
-              }
-              to sturdyVouch(other) :any {
-              #  can't be done until persistence is added
-                  throw("method sturdyVouch() not yet implemented")
-              }
-              to vouch(other) :any {
-                  unsealer.unseal(other.getSealed())
-              }
-           }
-          def mint {
-              to __printOn(out :TextWriter) :void { out.print(`<$name's mint>`) }
-              to makeAssay(quantity :(any >= 0)) :any {
-      
-                  def assay {
-                      to __printOn(out :TextWriter) :void {
-                          out.print(`<Assay: $name>`)
-                      }
-                      to getQuantity()    :any { quantity }
-                      to getSealed()      :any { sealer.seal(assay)}
-                      to op__cmp(other) :any {
-                          quantity.op__cmp(other.getQuantity())
-                      }
-                      to transfer(var src,var dest) :void {
-                          src := issuer.vouch(src)
-                          dest := issuer.vouch(dest)
-                          unsealer.unseal(src.getDecr())(quantity)
-                          unsealer.unseal(dest.getIncr())(quantity)
-                      }
-                      to getIssuer() :any { issuer }
-                  }
-              }
-              to makePurse(var quantity :(any >= 0)) :any {
-                  def Decr(amount :(0..quantity)) :void { quantity -= amount }
-                  def Incr(amount :(any >= 0))    :void { quantity += amount }
-                  def Purse {
-                      to getPurseValue() :any { quantity }
-                      to getSealed()     :any { sealer.seal(Purse)}
-                      to getIssuer()     :any { issuer }
-                      to getAssay()      :any { mint.makeAssay(quantity) }
-                      to depositAll(src) :any {
-                          def assay := issuer.vouch(src.getAssay())
-                          assay.transfer(src,Purse)
-                          assay
-                      }
-                      to getIncr() :any { sealer.seal(Incr) }
-                      to getDecr() :any { sealer.seal(Decr) }
-                  }
-              }
-          }
-      }
-missing original problem
-new problem: Failed: Undefined variable: mint
-
+c:/Documents and Settings/millerm1/e/src/esrc/com/hp/orc/orc.updoc:.................................
+c:/Documents and Settings/millerm1/e/src/esrc/com/opencola/drm/example/MintMaker.updoc:....
 c:/Documents and Settings/millerm1/e/src/esrc/com/skyhunter/convertForEDoc/bounds.updoc:......
 c:/Documents and Settings/millerm1/e/src/esrc/com/skyhunter/convertForEDoc/edoc.updoc:......
-c:/Documents and Settings/millerm1/e/src/esrc/edu/jhu/cs448/contact/contactKit.updoc:=== 2006-11-10T09:40:32.649Z (PendingEvent.report:PendingEvent.java:109) WRN
-causality: Problem in turn <<Vat Rendezvous in <runs in Rendezvous>>,126>: 
---vvvv--
-Failed: not synchronously callable
-
-- static Verifier#verify(PublicKey, String, BigInteger)
-. <makeVerifier>.verify(<Far ref>, "captp://*45enpabhblmbho2iy6zei5mvr6wtyyx...:2667/obgex42xco6gbbklzoboie72fq7i7hfo", 45238965119692...19635647428136)
-@ verify/3: <file:/C:/Documents%20and%20Settings/millerm1/e/src/esrc/edu/jhu/cs448/contact/makeRendezvous.emaker#:span::28:29::28:34>
-- edu.jhu.cs448.contact.makeRendezvous$makeRendezvous$rendezvous#register/3: <file:/C:/Documents%20and%20Settings/millerm1/e/src/esrc/edu/jhu/cs448/contact/makeRendezvous.emaker#:span::25:11::25:18>
-. <rendezvous>.register(<Far ref>, "captp://*45enpabhblmbho2iy6zei5mvr6wtyyx...:2667/obgex42xco6gbbklzoboie72fq7i7hfo", 45238965119692...19635647428136)
-
-java.lang.RuntimeException: Failed: not synchronously callable
-	at org.erights.e.develop.assertion.T.fail(T.java:84)
-	at org.erights.e.elib.ref.EProxy.callAll(EProxy.java:154)
-	at org.erights.e.elib.prim.CallableScript.execute(CallableScript.java:55)
-	at org.erights.e.elib.prim.E.callAll(E.java:167)
-	at org.erights.e.elib.vat.Vat.callAll(Vat.java:503)
-	at org.erights.e.elib.deflect.Deflector.invoke(Deflector.java:216)
-	at $Proxy19.getAlgorithm(Unknown Source)
-	at sun.security.rsa.RSAKeyFactory.engineTranslateKey(RSAKeyFactory.java:142)
-	at sun.security.rsa.RSAKeyFactory.toRSAKey(RSAKeyFactory.java:79)
-	at sun.security.rsa.RSASignature.engineInitVerify(RSASignature.java:75)
-	at java.security.Signature$Delegate.init(Signature.java:1073)
-	at java.security.Signature$Delegate.chooseProvider(Signature.java:1036)
-	at java.security.Signature$Delegate.engineInitVerify(Signature.java:1091)
-	at java.security.Signature.initVerify(Signature.java:426)
-	at org.erights.e.elib.sealing.crypto.Verifier.<init>(Verifier.java:56)
-	at org.erights.e.elib.sealing.crypto.Verifier.<init>(Verifier.java:35)
-	at org.erights.e.elib.sealing.crypto.Verifier.verify(Verifier.java:73)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
-	at java.lang.reflect.Method.invoke(Method.java:585)
-	at org.erights.e.elib.prim.StaticMethodNode.innerExecute(StaticMethodNode.java:115)
-	at org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:183)
-	at org.erights.e.elib.prim.Selector.callIt(Selector.java:99)
-	at org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:132)
-	at org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:126)
-	at org.erights.e.elang.evm.SeqExpr.subEval(SeqExpr.java:97)
-	at org.erights.e.elang.evm.EMethod.execute(EMethod.java:175)
-	at org.erights.e.elang.evm.EMethodNode.execute(EMethodNode.java:136)
-	at org.erights.e.elib.prim.E.callAll(E.java:167)
-	at org.erights.e.elib.vat.PendingDelivery.innerRun(PendingDelivery.java:102)
-	at org.erights.e.elib.vat.PendingEvent.run(PendingEvent.java:76)
-	at org.erights.e.elib.vat.HeadlessRunner.run(HeadlessRunner.java:176)
-	at java.lang.Thread.run(Thread.java:595)
-
---^^^^--
-
-=== 2006-11-10T09:40:34.422Z (PendingEvent.report:PendingEvent.java:109) WRN
-causality: Problem in turn <<Vat Rendezvous in <runs in Rendezvous>>,184>: 
---vvvv--
-Failed: not synchronously callable
-
-- static Verifier#verify(PublicKey, String, BigInteger)
-. <makeVerifier>.verify(<Far ref>, "captp://*3e3y3ygs7p6pfqhtpprrs4vd7ycc3e5...:2671/chtb5cg5euvhg4e7m3esrr6njkaiz5ea", 14512277566370...45382080180404)
-@ verify/3: <file:/C:/Documents%20and%20Settings/millerm1/e/src/esrc/edu/jhu/cs448/contact/makeRendezvous.emaker#:span::28:29::28:34>
-- edu.jhu.cs448.contact.makeRendezvous$makeRendezvous$rendezvous#register/3: <file:/C:/Documents%20and%20Settings/millerm1/e/src/esrc/edu/jhu/cs448/contact/makeRendezvous.emaker#:span::25:11::25:18>
-. <rendezvous>.register(<Far ref>, "captp://*3e3y3ygs7p6pfqhtpprrs4vd7ycc3e5...:2671/chtb5cg5euvhg4e7m3esrr6njkaiz5ea", 14512277566370...45382080180404)
-
-java.lang.RuntimeException: Failed: not synchronously callable
-	at org.erights.e.develop.assertion.T.fail(T.java:84)
-	at org.erights.e.elib.ref.EProxy.callAll(EProxy.java:154)
-	at org.erights.e.elib.prim.CallableScript.execute(CallableScript.java:55)
-	at org.erights.e.elib.prim.E.callAll(E.java:167)
-	at org.erights.e.elib.vat.Vat.callAll(Vat.java:503)
-	at org.erights.e.elib.deflect.Deflector.invoke(Deflector.java:216)
-	at $Proxy19.getAlgorithm(Unknown Source)
-	at sun.security.rsa.RSAKeyFactory.engineTranslateKey(RSAKeyFactory.java:142)
-	at sun.security.rsa.RSAKeyFactory.toRSAKey(RSAKeyFactory.java:79)
-	at sun.security.rsa.RSASignature.engineInitVerify(RSASignature.java:75)
-	at java.security.Signature$Delegate.init(Signature.java:1073)
-	at java.security.Signature$Delegate.chooseProvider(Signature.java:1036)
-	at java.security.Signature$Delegate.engineInitVerify(Signature.java:1091)
-	at java.security.Signature.initVerify(Signature.java:426)
-	at org.erights.e.elib.sealing.crypto.Verifier.<init>(Verifier.java:56)
-	at org.erights.e.elib.sealing.crypto.Verifier.<init>(Verifier.java:35)
-	at org.erights.e.elib.sealing.crypto.Verifier.verify(Verifier.java:73)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
-	at java.lang.reflect.Method.invoke(Method.java:585)
-	at org.erights.e.elib.prim.StaticMethodNode.innerExecute(StaticMethodNode.java:115)
-	at org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:183)
-	at org.erights.e.elib.prim.Selector.callIt(Selector.java:84)
-	at org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:132)
-	at org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:126)
-	at org.erights.e.elang.evm.SeqExpr.subEval(SeqExpr.java:97)
-	at org.erights.e.elang.evm.EMethod.execute(EMethod.java:175)
-	at org.erights.e.elang.evm.EMethodNode.execute(EMethodNode.java:136)
-	at org.erights.e.elib.prim.E.callAll(E.java:167)
-	at org.erights.e.elib.vat.PendingDelivery.innerRun(PendingDelivery.java:102)
-	at org.erights.e.elib.vat.PendingEvent.run(PendingEvent.java:76)
-	at org.erights.e.elib.vat.HeadlessRunner.run(HeadlessRunner.java:176)
-	at java.lang.Thread.run(Thread.java:595)
-
---^^^^--
-
-.........................................
+c:/Documents and Settings/millerm1/e/src/esrc/edu/jhu/cs448/contact/contactKit.updoc:.........................................
 c:/Documents and Settings/millerm1/e/src/esrc/edu/jhu/cs448/contact/makeOpenQueue.emaker:........................
 c:/Documents and Settings/millerm1/e/src/esrc/edu/jhu/markm/thesis/actors.updoc:.........
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdLoopMakerAuthor.updoc:....
@@ -287,115 +28,6 @@ original value: <makeScope>
 missing original problem
 new problem: <NoSuchMethodException: <a Scope__Maker>.run/1>
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdLoopMakerAuthor.updoc#:span::25:6::25:18>
-expr: scope.asMap()
-missing new value
-original value: [].asMap()
-missing original problem
-new problem: Failed: Undefined variable: scope
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdLoopMakerAuthor.updoc#:span::28:6::28:44>
-expr: def cmdLoop := cmdLoopMaker(["a", "b"],
-                                  interp.getProps(),
-                                  scope)
-missing new value
-original value: <cmdLoop>
-missing original problem
-new problem: Failed: Undefined variable: scope
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdLoopMakerAuthor.updoc#:span::33:6::33:22>
-expr: cmdLoop.getArgs()
-missing new value
-original value: ["a", "b"]
-missing original problem
-new problem: Failed: Undefined variable: cmdLoop
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdLoopMakerAuthor.updoc#:span::36:6::36:30>
-expr: cmdLoop.getProps().size()
-missing new value
-original value: 78
-missing original problem
-new problem: Failed: Undefined variable: cmdLoop
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdLoopMakerAuthor.updoc#:span::39:6::39:24>
-expr: cmdLoop.getExpand()
-missing new value
-original value: false
-missing original problem
-new problem: Failed: Undefined variable: cmdLoop
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdLoopMakerAuthor.updoc#:span::42:6::42:28>
-expr: cmdLoop.setExpand(true)
-missing original problem
-new problem: Failed: Undefined variable: cmdLoop
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdLoopMakerAuthor.updoc#:span::43:6::43:24>
-expr: cmdLoop.getExpand()
-missing new value
-original value: true
-missing original problem
-new problem: Failed: Undefined variable: cmdLoop
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdLoopMakerAuthor.updoc#:span::46:6::46:28>
-expr: cmdLoop.pushResult("x")
-missing original problem
-new problem: Failed: Undefined variable: cmdLoop
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdLoopMakerAuthor.updoc#:span::47:6::47:28>
-expr: cmdLoop.pushResult("y")
-missing original problem
-new problem: Failed: Undefined variable: cmdLoop
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdLoopMakerAuthor.updoc#:span::48:6::48:25>
-expr: cmdLoop.getResult(0)
-missing new value
-original value: "y"
-missing original problem
-new problem: Failed: Undefined variable: cmdLoop
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdLoopMakerAuthor.updoc#:span::51:6::51:25>
-expr: cmdLoop.getResult(1)
-missing new value
-original value: "x"
-missing original problem
-new problem: Failed: Undefined variable: cmdLoop
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdLoopMakerAuthor.updoc#:span::54:6::54:25>
-expr: cmdLoop.getResult(2)
-original and new problem differ
-original problem: <IndexOutOfBoundsException: 2 must be below 2>
-     new problem: Failed: Undefined variable: cmdLoop
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdLoopMakerAuthor.updoc#:span::61:6::61:28>
-expr: cmdLoop.pushResult("z")
-missing original problem
-new problem: Failed: Undefined variable: cmdLoop
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdLoopMakerAuthor.updoc#:span::62:6::62:25>
-expr: cmdLoop.getResult(0)
-missing new value
-original value: "z"
-missing original problem
-new problem: Failed: Undefined variable: cmdLoop
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdLoopMakerAuthor.updoc#:span::65:6::65:25>
-expr: cmdLoop.getResult(2)
-missing new value
-original value: "x"
-missing original problem
-new problem: Failed: Undefined variable: cmdLoop
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdLoopMakerAuthor.updoc#:span::68:6::68:17>
-expr: cmdLoop.gc()
-missing original problem
-new problem: Failed: Undefined variable: cmdLoop
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdLoopMakerAuthor.updoc#:span::70:6::70:25>
-expr: cmdLoop.getResult(0)
-original and new problem differ
-original problem: <IndexOutOfBoundsException: 0 must be below 0>
-     new problem: Failed: Undefined variable: cmdLoop
-.
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdMakerMaker.updoc:...........
 at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdMakerMaker.updoc#:span::46:6::46:64>
 expr: bind cmdLoop := cmdLoopMaker(["a", "b"], props, privileged)
@@ -404,13 +36,6 @@ original value: <cmdLoop>
 missing original problem
 new problem: <NoSuchMethodException: <a cmdLoopMaker>.run/3>
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdMakerMaker.updoc#:span::49:6::49:65>
-expr: def cmdMaker := cmdMakerMaker(cmdLoop, altoutBuf, alterrBuf)
-missing new value
-original value: <cmdMaker>
-missing original problem
-new problem: <NoSuchMethodException: <a cmdMakerMaker>.run/3>
-.
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/controlLoopMaker.updoc:..................
 at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/controlLoopMaker.updoc#:span::68:6::68:45>
 expr: def exitPairVow := ctrl.getExitPairVow()
@@ -419,49 +44,9 @@ original value: <Promise>
 missing original problem
 new problem: <NoSuchMethodException: <a controlLoop>.getExitPairVow/0>
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/controlLoopMaker.updoc#:span::71:6::71:16>
-expr: exitPairVow
-missing new value
-original value: <Promise>
-missing original problem
-new problem: Failed: Undefined variable: exitPairVow
-....
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/controlLoopMaker.updoc#:span::89:6::89:16>
-expr: exitPairVow
-missing new value
-original value: [0, null]
-missing original problem
-new problem: Failed: Undefined variable: exitPairVow
-......
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/controlLoopMaker.updoc#:span::115:6::115:47>
-expr: def exitPairVow3 := ctrl3.getExitPairVow()
-missing new value
-original value: <Promise>
-missing original problem
-new problem: <NoSuchMethodException: <a controlLoop>.getExitPairVow/0>
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/controlLoopMaker.updoc#:span::118:6::118:17>
-expr: exitPairVow3
-missing new value
-original value: <Promise>
-missing original problem
-new problem: Failed: Undefined variable: exitPairVow3
-...
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/controlLoopMaker.updoc#:span::125:6::125:17>
-expr: exitPairVow3
-missing new value
-original value: [0, null]
-missing original problem
-new problem: Failed: Undefined variable: exitPairVow3
-.
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/control/makeSeries.emaker:.........
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/control/__dynamicExtent.emaker:......
-c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/expand/__bind.emaker:....
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/expand/__bind.emaker#:span::44:6::44:28>
-expr: interp.setExpand(false)
-missing original expansion
-new expansion: interp.setExpand(false)
-.
+c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/expand/__bind.emaker:......
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/expand/__Empty.emaker:.....
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/expand/__extract.emaker:...
 at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/expand/__extract.emaker#:span::61:6::61:56>
@@ -488,13 +73,7 @@ original expansion: 3 =~ via (__is.run(3)) _
                     false
                     }
 
-c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/expand/__matchBind.emaker:...
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/expand/__matchBind.emaker#:span::30:6::30:28>
-expr: def `@x$d@y` := "ab.de"
-original and new expansion differ
-original expansion: def via (__matchBind.run(simple__quasiParser. matchMaker("@{0}${0}@{1}"), __makeList.run(d))) [x, y] := "ab.de"
-     new expansion: def via (__matchBind.run(simple__quasiParser.matchMaker("@{0}${0}@{1}"), __makeList.run(d))) [x, y] := "ab.de"
-..
+c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/expand/__matchBind.emaker:......
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/expand/__splitList.emaker:......
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/expand/__suchThat.emaker:..
 at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/expand/__suchThat.emaker#:span::35:6::35:65>
@@ -529,22 +108,12 @@ original expansion: def foo := def "__main$foo__C" {
                     }
                     }
 ...
-c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/makeBootServer.updoc:.........
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/makeBootServer.updoc#:span::30:2::30:47>
-expr: if (vatFile.exists()) { vatFile.delete(null) }
-missing original problem
-new problem: <NoSuchMethodException: <an atomicFile>.delete/1>
-.
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/makeBootServer.updoc#:span::35:2::35:30>
-expr: timeMachine.createAs(vatFile)
-missing original problem
-new problem: Delete <atomic: <file:c:/Documents and Settings/millerm1/Desktop/foo.vat>> first
-
+c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/makeBootServer.updoc:............
 at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/makeBootServer.updoc#:span::36:2::36:7>
 expr: [p,sr]
 original and new value differ
 original value: [null, <a SturdyRef>]
-     new value: [<Promise>, <Promise>]
+     new value: [null, <SturdyRef to 3>]
 ....
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/makeServer.updoc:......
 at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/makeServer.updoc#:span::23:2::23:11>
@@ -553,88 +122,13 @@ missing new value
 original value: 105
 missing original problem
 new problem: Failed: not synchronously callable
-.
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/makeServer.updoc#:span::29:2::29:38>
-expr: def farPrintlnSlot := env["&println"]
-missing new value
-original value: <Far ref>
-missing original problem
-new problem: Failed: not synchronously callable
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/makeServer.updoc#:span::32:2::32:47>
-expr: def farPrintln := farPrintlnSlot <- getValue()
-missing new value
-original value: <Remote Promise>
-missing original problem
-new problem: Failed: Undefined variable: farPrintlnSlot
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/makeServer.updoc#:span::35:2::35:29>
-expr: interp.waitAtTop(farPrintln)
-missing original problem
-new problem: Failed: Undefined variable: farPrintln
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/makeServer.updoc#:span::37:2::37:11>
-expr: farPrintln
-missing new value
-original value: <Far ref>
-missing original problem
-new problem: Failed: Undefined variable: farPrintln
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/makeServer.updoc#:span::40:2::40:53>
-expr: def x := server <- run(farPrintln, "run", ["Foo!!"])
-missing new value
-original value: <Remote Promise>
-missing original problem
-new problem: Failed: Undefined variable: farPrintln
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/makeServer.updoc#:span::45:2::45:20>
-expr: interp.waitAtTop(x)
-missing original problem
-new problem: Failed: Undefined variable: x
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/makeServer.updoc#:span::46:2::46:10>
-expr: x == null
-missing new value
-original value: true
-missing original problem
-new problem: Failed: Undefined variable: x
-
-c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/promiseAllResolved.emaker:..
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/promiseAllResolved.emaker#:span::66:6::66:43>
-expr: def a := promiseAllResolved([1, 2, 3])
-missing new value
-original value: <Promise>
-.
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/promiseAllResolved.emaker#:span::70:6::70:6>
-expr: a
-missing new value
-original value: [1, 2, 3]
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/promiseAllResolved.emaker#:span::73:6::73:64>
-expr: def a := promiseAllResolved([def x; x, def y; y, def z; z])
-missing new value
-original value: <Promise>
-.
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/promiseAllResolved.emaker#:span::79:6::79:6>
-expr: a
-missing new value
-original value: <Promise>
-.
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/promiseAllResolved.emaker#:span::85:6::85:6>
-expr: a
-missing new value
-original value: <Promise>
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/promiseAllResolved.emaker#:span::88:6::88:18>
-expr: bind z := [a]
-original and new value differ
-original value: [<Promise>]
-     new value: [null]
-.
+c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/promiseAllResolved.emaker:............
 at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/promiseAllResolved.emaker#:span::92:6::92:6>
 expr: a
-missing new value
+original and new value differ
 original value: [4, <ref broken by problem: boom>, [***CYCLE***]]
+     new value: [4, <ref broken by problem: boom>, [<***CYCLE***>]]
 
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/require.emaker:......
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/syntax/termE__quasiParser.emaker:.......
@@ -647,35 +141,8 @@ original problem: c:/cygwin/bin/bash.exe failed with(127,,/usr/bin/bash: cygpath
                   )
 .
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/ref/makeLazyPromiseAuthor.emaker:.........
-c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/sealing/makeVOCPair.emaker:.....
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/sealing/makeVOCPair.emaker#:span::86:6::86:12>
-expr: foo(f1)
-original and new stdout differ
-original stdout: c:/Documents and Settings/millerm1/.bashrc
-     new stdout: c:/Documents and Settings/millerm1/.bashrc
-                 
-..
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/sealing/makeVOCPair.emaker#:span::95:6::95:23>
-expr: foo(f1 :ProveAuth)
-original and new stdout differ
-original stdout: c:/Documents and Settings/millerm1/.bashrc
-     new stdout: c:/Documents and Settings/millerm1/.bashrc
-                 
-..
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/sealing/makeVOCPair.emaker#:span::106:6::106:12>
-expr: bar(f1)
-original and new stdout differ
-original stdout: c:/Documents and Settings/millerm1/.bashrc
-     new stdout: c:/Documents and Settings/millerm1/.bashrc
-                 
-.
-c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/lamport.updoc:..
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/lamport.updoc#:span::11:2::11:37>
-expr: def whenever := <elib:slot.whenever>
-original and new value differ
-original value: <ever0>
-     new value: <whenever>
-
+c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/sealing/makeVOCPair.emaker:.............
+c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/lamport.updoc:...
 at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/lamport.updoc#:span::14:2::14:35>
 expr: def forever := <elib:slot.forever>
 missing new value
@@ -683,37 +150,6 @@ original value: <trackLamportSlot>
 missing original problem
 new problem: Failed: org.erights.e.elib.slot.forever not found
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/lamport.updoc#:span::17:2::17:29>
-expr: def &x := makeLamportSlot(3)
-original and new value differ
-original value: 3
-     new value: <lamport 3 as of 0>
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/lamport.updoc#:span::20:2::20:29>
-expr: def &y := makeLamportSlot(5)
-original and new value differ
-original value: 5
-     new value: <lamport 5 as of 0>
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/lamport.updoc#:span::23:2::23:28>
-expr: def &z := whenever(&x) + &y
-missing new value
-original value: <everFormula_19>
-missing original problem
-new problem: <NoSuchMethodException: <a whenever>.run/1>
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/lamport.updoc#:span::26:2::26:29>
-expr: forever(&stdout).println(&z)
-missing original problem
-new problem: Failed: Undefined variable: forever
-...
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/lamport.updoc#:span::40:2::40:2>
-expr: z
-missing new value
-original value: <ref broken by problem: <ClassCastException: String doesn't coerce to an int>>
-missing original problem
-new problem: Failed: Undefined variable: z
-..
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/makeLazySlot.emaker:..
 at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/makeLazySlot.emaker#:span::54:4::54:27>
 expr: makeLazySlot :DeepFrozen
@@ -721,89 +157,20 @@ missing new value
 original value: <makeLazySlot>
 missing original problem
 new problem: Not audited by DeepFrozen
-.
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/makeLazySlot.emaker#:span::61:4::61:16>
-expr: foo.isFinal()
-missing new value
-original value: true
-missing original problem
-new problem: <NoSuchMethodException: <a String>.isFinal/0>
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/makeLazySlot.emaker#:span::64:4::64:23>
-expr: foo.setValue("mood")
-original and new problem differ
-original problem: this lazy Slot may not be changed
-     new problem: nonlocal exit by lazy slot's maker
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/makeLazySlot.emaker#:span::67:4::67:6>
-expr: foo
-missing new stdout
-original stdout: foof
-missing new value
-original value: "food"
-missing original problem
-new problem: nonlocal exit by lazy slot's maker
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/makeLazySlot.emaker#:span::72:4::72:6>
-expr: foo
-missing new value
-original value: "food"
-missing original problem
-new problem: nonlocal exit by lazy slot's maker
-.
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/makeLazySlot.emaker#:span::79:4::79:6>
-expr: bar
-original and new stdout differ
-original stdout: barn
-     new stdout: barn
-                 
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/makeLazySlot.emaker#:span::84:4::84:6>
-expr: bar
-original and new problem differ
-original problem: bare
-     new problem: nonlocal exit by lazy slot's maker
-..
-c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/near.emaker:.
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/near.emaker#:span::31:6::31:31>
-expr: def nr := <elib:slot.near>
-original and new value differ
-original value: <near>
-     new value: near
-.
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/near.emaker#:span::37:6::37:11>
-expr: x := 4
-missing new value
-original value: 4
-missing original problem
-new problem: Failed: Can't assign to final variable: x
-
+c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/near.emaker:....
 at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/near.emaker#:span::40:6::40:31>
 expr: def [p,r] := Ref.promise()
 original and new value differ
 original value: [<Promise>, <Unresolved Resolver>]
      new value: [<Promise>, <Resolver>]
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/near.emaker#:span::43:6::43:11>
-expr: x := p
-original and new problem differ
-original problem: not near
-     new problem: Failed: Can't assign to final variable: x
-
+.
 at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/near.emaker#:span::52:6::52:11>
 expr: x := r
-missing new value
+original and new value differ
 original value: <Unresolved Resolver>
-missing original problem
-new problem: Failed: Can't assign to final variable: x
-.
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/near.emaker#:span::56:6::56:11>
-expr: x := p
-missing new value
-original value: 44
-missing original problem
-new problem: Failed: Can't assign to final variable: x
-...
+     new value: <Resolver>
+.....
 at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/near.emaker#:span::64:6::64:11>
 expr: y := 3
 missing new value
@@ -811,81 +178,11 @@ original value: 3
 missing original problem
 new problem: Failed: Can't assign to final variable: y
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/near.emaker#:span::67:6::67:10>
-expr: foo()
-missing new value
-original value: 3
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/near.emaker#:span::70:6::70:33>
-expr: def [p2,r2] := Ref.promise()
-original and new value differ
-original value: [<Promise>, <Unresolved Resolver>]
-     new value: [<Promise>, <Resolver>]
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/near.emaker#:span::73:6::73:12>
-expr: y := p2
-missing new value
-original value: <Promise>
-missing original problem
-new problem: Failed: Can't assign to final variable: y
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/near.emaker#:span::76:6::76:10>
-expr: foo()
-missing new problem
-original problem: not near
-.
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/near.emaker#:span::86:6::86:10>
-expr: foo()
-missing new value
-original value: 77
-.
-c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/whenever.emaker:.......
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/whenever.emaker#:span::342:2::342:35>
-expr: def m := whenever.dynamic([l], fn{
-          var out := []
-          for x in l.getValue() {
-              out with= x.getValue()
-          }
-          [out, l.getValue()]
-      })
-original and new value differ
-original value: <everFormula_23>
-     new value: <_>
-..................
+c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/whenever.emaker:..........................
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/examples/concurrency/makeQueue.emaker:............
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/examples/concurrency/QMaker.emaker:............
-c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/extern/persist/persist.updoc:......
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/extern/persist/persist.updoc#:span::29:2::29:27>
-expr: def sr := makeSturdyRef(3)
-original and new value differ
-original value: <SturdyRef>
-     new value: <SturdyRef to 3>
-..
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/extern/persist/persist.updoc#:span::38:2::38:54>
-expr: def af := makeAtomicFile(<file:~/Desktop>, "foo.vat")
-original and new value differ
-original value: <atomic: <file:c:/Documents and Settings/MILLERM1/Desktop/foo.vat>>
-     new value: <atomic: <file:c:/Documents and Settings/millerm1/Desktop/foo.vat>>
-......
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/extern/persist/persist.updoc#:span::57:2::57:54>
-expr: def af := makeAtomicFile(<file:~/Desktop>, "foo.vat")
-original and new value differ
-original value: <atomic: <file:c:/Documents and Settings/MILLERM1/Desktop/foo.vat>>
-     new value: <atomic: <file:c:/Documents and Settings/millerm1/Desktop/foo.vat>>
-.
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/extern/persist/persist.updoc#:span::62:2::62:71>
-expr: def sr := introducer.sturdyFromURI(<file:~/Desktop/foo.cap>.getText())
-original and new value differ
-original value: <SturdyRef>
-     new value: <SturdyRef to 3>
-.
-c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/facet/makeCaretaker.updoc:...
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/facet/makeCaretaker.updoc#:span::14:2::14:27>
-expr: def [f,r] := mct(<file:.>)
-original and new value differ
-original value: [<<file:c:/Documents and Settings/MILLERM1/e/src/>>, <revoker>]
-     new value: [<<file:c:/Documents and Settings/millerm1/e/src/>>, <revoker>]
-......
+c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/extern/persist/persist.updoc:....................
+c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/facet/makeCaretaker.updoc:..........
 at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/facet/makeCaretaker.updoc#:span::33:2::33:8>
 expr: help(f)
 original and new value differ
@@ -940,73 +237,8 @@ missing new value
 original value: <exportCap>
 missing original problem
 new problem: <NoSuchMethodException: <a makeCapExporter>.run/3>
-.
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/tools/args/makeCapExporter.updoc#:span::25:6::25:31>
-expr: def sr := makeSturdyRef(3)
-missing new value
-original value: <SturdyRef>
-missing original problem
-new problem: <NullPointerException: TimeMachine must be made non-Ephemeral first.
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/tools/args/makeCapExporter.updoc#:span::28:6::28:32>
-expr: exportCap(sr, "c:/foo.cap")
-missing original problem
-new problem: Failed: Undefined variable: exportCap
-....
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/tools/args/makeCapExporter.updoc#:span::40:6::40:68>
-expr: exportCap(sr, introducer.sturdyToURI(makeSturdyRef(connector)))
-missing new value
-original value: <Promise>
-missing original problem
-new problem: Failed: Undefined variable: exportCap
-.
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/tools/args/makeCapExporter.updoc#:span::45:6::45:11>
-expr: bletch
-missing new value
-original value: 3
-..
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/tools/args/makeCapExporter.updoc#:span::54:6::54:40>
-expr: def sr2 := importCap("@c:/foo.cap")
-missing new value
-original value: <SturdyRef>
-missing original problem
-new problem: <FileNotFoundException: c:\foo.cap (The system cannot find the file specified)>
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/tools/args/makeCapExporter.updoc#:span::57:6::57:14>
-expr: sr == sr2
-missing new value
-original value: true
-missing original problem
-new problem: Failed: Undefined variable: sr
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/tools/args/makeCapExporter.updoc#:span::60:6::60:27>
-expr: def x := sr2.getRcvr()
-missing new value
-original value: 3
-missing original problem
-new problem: Failed: Undefined variable: sr2
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/tools/args/makeCapExporter.updoc#:span::63:6::63:45>
-expr: def sr3 := importCap("@file:c:/foo.cap")
-missing new value
-original value: <SturdyRef>
-missing original problem
-new problem: <FileNotFoundException: c:\foo.cap (The system cannot find the file specified)>
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/tools/args/makeCapExporter.updoc#:span::66:6::66:18>
-expr: sr3.getRcvr()
-missing new value
-original value: 3
-missing original problem
-new problem: Failed: Undefined variable: sr3
-.
-c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/tools/collect/propUtils.updoc:....
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/tools/collect/propUtils.updoc#:span::15:6::15:43>
-expr: propUtils.testProp(props, "e.version")
-original and new problem differ
-original problem: 0.8.9zb must be true or false
-     new problem: 0.8.?? must be true or false
-
+c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/tools/collect/propUtils.updoc:.....
 at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/tools/collect/propUtils.updoc#:span::24:6::24:47>
 expr: propUtils.testProp(props, "e.enable.bind")
 original and new value differ
@@ -1032,69 +264,13 @@ missing new A bug we're just going to live with for now
 original A bug we're just going to live with for now: 
 ...
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/tools/java/fixImports.emaker:...
-c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/ui/swt/watchAuthor.emaker:.........=== 2006-11-10T09:42:44.739Z (PendingEvent.report:PendingEvent.java:109) WRN
-causality: Problem in turn <<Vat home in <SWTRunner>>,121>: 
---vvvv--
-Failed: Not mergeable: <Vat home in <SWTRunner>>
-
-- Runnable#run()
-. <a VatRedirector>()
-
-java.lang.RuntimeException: Failed: Not mergeable: <Vat home in <SWTRunner>>
-	at org.erights.e.develop.assertion.T.fail(T.java:84)
-	at org.erights.e.develop.assertion.T.require(T.java:339)
-	at org.erights.e.elib.vat.Vat$VatRedirector.run(Vat.java:627)
-	at sun.reflect.GeneratedMethodAccessor189.invoke(Unknown Source)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
-	at java.lang.reflect.Method.invoke(Method.java:585)
-	at org.erights.e.elib.prim.InstanceMethodNode.innerExecute(InstanceMethodNode.java:113)
-	at org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:183)
-	at org.erights.e.elib.prim.E.callAll(E.java:167)
-	at org.erights.e.elib.vat.PendingDelivery.innerRun(PendingDelivery.java:102)
-	at org.erights.e.elib.vat.PendingEvent.run(PendingEvent.java:76)
-	at org.eclipse.swt.widgets.RunnableLock.run(RunnableLock.java:35)
-	at org.eclipse.swt.widgets.Synchronizer.runAsyncMessages(Synchronizer.java:98)
-	at org.eclipse.swt.widgets.Display.runAsyncMessages(Display.java:1815)
-	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:1549)
-	at org.erights.e.ui.swt.SWTRunner.run(SWTRunner.java:189)
-	at java.lang.Thread.run(Thread.java:595)
-
---^^^^--
-
-
+c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/ui/swt/watchAuthor.emaker:.........
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/ex/swing/JPanel__quasiParser.emaker:.
 at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/ex/swing/JPanel__quasiParser.emaker#:span::119:6::119:54>
 expr: def fr := <import:javax.swing.makeJFrame>(); null
 missing original problem
 new problem: <SecurityException: javax.swing.JFrame not approved as safe>
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/ex/swing/JPanel__quasiParser.emaker#:span::120:6::120:24>
-expr: fr.setSize(300,300)
-missing original problem
-new problem: Failed: Undefined variable: fr
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/ex/swing/JPanel__quasiParser.emaker#:span::121:6::121:14>
-expr: fr.show()
-missing original problem
-new problem: Failed: Undefined variable: fr
-..
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/ex/swing/JPanel__quasiParser.emaker#:span::127:6::127:43>
-expr: fr.getContentPane().add(JPanel`$a $b >
-                                     V  $c $d
-                                     $e >  V`); null
-missing original problem
-new problem: Failed: Undefined variable: fr
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/ex/swing/JPanel__quasiParser.emaker#:span::130:6::130:20>
-expr: fr.invalidate()
-missing original problem
-new problem: Failed: Undefined variable: fr
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/ex/swing/JPanel__quasiParser.emaker#:span::131:6::131:18>
-expr: fr.validate()
-missing original problem
-new problem: Failed: Undefined variable: fr
-.
 c:/Documents and Settings/millerm1/e/src/esrc/org/quasiliteral/schema/makeSchema.emaker:....
 at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/quasiliteral/schema/makeSchema.emaker#:span::43:6::43:30>
 expr: makeSchema.parseGrammar(`
@@ -1264,162 +440,13 @@ original value: term`schema(production(tag("<schema>"),
                 tag(".float64."),
                 tag(".String."))))`
 
-c:/Documents and Settings/millerm1/e/src/esrc/scripts/ButtonPointer.e:.
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/ButtonPointer.e#:span::41:2::41:32>
-expr: def f := <file:~/e/doc/toc.txt>
-original and new value differ
-original value: <file:c:/e/doc/toc.txt>
-     new value: <file:c:/Documents and Settings/millerm1/e/doc/toc.txt>
-.
+c:/Documents and Settings/millerm1/e/src/esrc/scripts/ButtonPointer.e:...
 at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/ButtonPointer.e#:span::63:2::63:12>
 expr: getLine(tr)
 missing new value
 original value: [1, elib/]
 missing original problem
 new problem: Failed: Undefined variable: getLine
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/ButtonPointer.e#:span::66:2::66:12>
-expr: getLine(tr)
-missing new value
-original value: [2, capability/]
-missing original problem
-new problem: Failed: Undefined variable: getLine
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/ButtonPointer.e#:span::69:2::69:12>
-expr: getLine(tr)
-missing new value
-original value: [3, ode/]
-missing original problem
-new problem: Failed: Undefined variable: getLine
-.
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/ButtonPointer.e#:span::133:2::133:25>
-expr: splitName("foo/bar/baz")
-missing new value
-original value: [foo/bar/, baz]
-missing original problem
-new problem: Failed: Undefined variable: splitName
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/ButtonPointer.e#:span::136:2::136:21>
-expr: splitName("foo.bar")
-missing new value
-original value: [, foo.bar]
-missing original problem
-new problem: Failed: Undefined variable: splitName
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/ButtonPointer.e#:span::139:2::139:22>
-expr: splitName("foo/bar/")
-missing original problem
-new problem: Failed: Undefined variable: splitName
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/ButtonPointer.e#:span::173:2::173:34>
-expr: relativeURL("foo/bar", "baz/zip")
-missing new value
-original value: ../baz/zip
-missing original problem
-new problem: Failed: Undefined variable: relativeURL
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/ButtonPointer.e#:span::176:2::176:35>
-expr: relativeURL("foo/bar", "baz/zip/")
-missing new value
-original value: ../baz/zip/index.html
-missing original problem
-new problem: Failed: Undefined variable: relativeURL
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/ButtonPointer.e#:span::179:2::179:34>
-expr: relativeURL("foo/bar", "foo/zip")
-missing new value
-original value: zip
-missing original problem
-new problem: Failed: Undefined variable: relativeURL
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/ButtonPointer.e#:span::182:2::182:38>
-expr: relativeURL("foo/bar", "foo/bar/zip")
-original and new problem differ
-original problem: required condition failed
-     new problem: Failed: Undefined variable: relativeURL
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/ButtonPointer.e#:span::191:2::191:39>
-expr: relativeURL("foo/bar/", "foo/bar/zip")
-missing new value
-original value: zip
-missing original problem
-new problem: Failed: Undefined variable: relativeURL
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/ButtonPointer.e#:span::194:2::194:32>
-expr: relativeURL("foo/bar/", "foo/")
-missing original problem
-new problem: Failed: Undefined variable: relativeURL
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/ButtonPointer.e#:span::297:2::297:48>
-expr: def welib := FileWrapperMaker(<c:/e/doc/elib/>)
-missing new value
-original value: <file:c:/e/doc/elib/>
-missing original problem
-new problem: Failed: Undefined variable: FileWrapperMaker
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/ButtonPointer.e#:span::300:2::300:17>
-expr: welib.getTitle()
-missing new value
-original value: ELib: Local and Remote
-missing original problem
-new problem: Failed: Undefined variable: welib
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/ButtonPointer.e#:span::303:2::303:69>
-expr: def winsrc := FileWrapperMaker(<c:/e/doc/download/windows-src.html>)
-missing new value
-original value: <file:c:/e/doc/download/windows-src.html>
-missing original problem
-new problem: Failed: Undefined variable: FileWrapperMaker
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/ButtonPointer.e#:span::306:2::306:30>
-expr: welib.getDownButton() := null
-missing original problem
-new problem: Failed: Undefined variable: welib
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/ButtonPointer.e#:span::307:2::307:32>
-expr: welib.getDownButton() := winsrc
-missing new value
-original value: <file:c:/e/doc/download/windows-src.html>
-missing original problem
-new problem: Failed: Undefined variable: welib
-.
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/ButtonPointer.e#:span::311:2::311:67>
-expr: def unixbin := FileWrapperMaker(<c:/e/doc/download/unix-bin.html>)
-missing new value
-original value: <file:c:/e/doc/download/unix-bin.html>
-missing original problem
-new problem: Failed: Undefined variable: FileWrapperMaker
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/ButtonPointer.e#:span::314:2::314:31>
-expr: winsrc.getNextButton() := null
-missing original problem
-new problem: Failed: Undefined variable: winsrc
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/ButtonPointer.e#:span::315:2::315:34>
-expr: winsrc.getNextButton() := unixbin
-missing new value
-original value: <file:c:/e/doc/download/unix-bin.html>
-missing original problem
-new problem: Failed: Undefined variable: winsrc
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/ButtonPointer.e#:span::318:2::318:34>
-expr: unixbin.getPrevButton() := winsrc
-missing new value
-original value: <file:c:/e/doc/download/windows-src.html>
-missing original problem
-new problem: Failed: Undefined variable: unixbin
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/ButtonPointer.e#:span::321:2::321:32>
-expr: unixbin.getPrevButton() := null
-missing original problem
-new problem: Failed: Undefined variable: unixbin
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/ButtonPointer.e#:span::322:2::322:64>
-expr: unixbin.getUpButton() := FileWrapperMaker(<c:/e/doc/download/>)
-missing new value
-original value: <file:c:/e/doc/download/>
-missing original problem
-new problem: Failed: Undefined variable: unixbin
 
 c:/Documents and Settings/millerm1/e/src/esrc/scripts/counter-client.updoc:...
 at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/counter-client.updoc#:span::14:6::14:44>
@@ -1429,27 +456,6 @@ original value: <a SturdyRef>
 missing original problem
 new problem: <MalformedURLException: URI captp://213.130.163.34:4451/0Bg1bGDtCQCmpMvfBJ8wvl6dmRHH/08tjK7_p7d8G8u7OfaVHFr6quSvx does not start with captp://*>
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/counter-client.updoc#:span::17:6::17:31>
-expr: def remote := sr.getRcvr()
-missing new value
-original value: <Promise>
-missing original problem
-new problem: Failed: Undefined variable: sr
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/counter-client.updoc#:span::20:6::20:33>
-expr: def val1 := remote <- incr()
-missing new value
-original value: <Promise>
-missing original problem
-new problem: Failed: Undefined variable: remote
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/counter-client.updoc#:span::23:6::23:9>
-expr: val1
-missing new value
-original value: 1
-missing original problem
-new problem: Failed: Undefined variable: val1
-.
 c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc:..
 at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::11:2::11:94>
 expr: def sr := <captp://192.168.0.21:1043/5UmFAqXbepvCOwuSHCEGHt5V1wC/Ray1=9hgEHkC8i_DRs5WKfsLnji>
@@ -1458,311 +464,29 @@ original value: <a SturdyRef>
 missing original problem
 new problem: <MalformedURLException: URI //192.168.0.21:1043/5UmFAqXbepvCOwuSHCEGHt5V1wC/Ray1=9hgEHkC8i_DRs5WKfsLnji does not start with captp://*>
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::14:2::14:35>
-expr: def evalServerRcvr := sr.getRcvr()
-missing new value
-original value: <Remote Promise>
-missing original problem
-new problem: Failed: Undefined variable: sr
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::17:2::17:15>
-expr: evalServerRcvr
-missing new value
-original value: <Remote Promise>
-missing original problem
-new problem: Failed: Undefined variable: evalServerRcvr
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::20:2::20:68>
-expr: def seRcvr1 := evalServerRcvr <- newScriptEvaluator(["se1", "arg"])
-missing new value
-original value: <Remote Promise>
-missing original problem
-new problem: Failed: Undefined variable: evalServerRcvr
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::23:2::23:47>
-expr: def r1 := seRcvr1 <- evalCmdReportVow("2 + 3")
-missing new value
-original value: <Remote Promise>
-missing original problem
-new problem: Failed: Undefined variable: seRcvr1
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::26:2::26:3>
-expr: r1
-missing new value
-original value: "# value: 5
-                
-                "
-missing original problem
-new problem: Failed: Undefined variable: r1
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::31:2::31:12>
-expr: println(r1)
-missing new value
-original value: 5
-missing original problem
-new problem: Failed: Undefined variable: r1
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::35:2::35:46>
-expr: def v1 := seRcvr1 <- evalCmdValueVow("2 + 3")
-missing new value
-original value: <Remote Promise>
-missing original problem
-new problem: Failed: Undefined variable: seRcvr1
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::38:2::38:3>
-expr: v1
-missing new value
-original value: [5, true]
-missing original problem
-new problem: Failed: Undefined variable: v1
-.
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::42:2::42:58>
-expr: def r2 := sePass1 <- evalCmdVow(`println("Hello world")`)
-missing new value
-original value: <Promise>
-missing original problem
-new problem: Failed: Undefined variable: sePass1
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::45:2::45:3>
-expr: r2
-missing new value
-original value: "# stdout: Hello world
-                #
-                
-                "
-missing original problem
-new problem: Failed: Undefined variable: r2
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::51:2::51:12>
-expr: println(r2)
-missing new stdout
-original stdout: Hello world
-                 
-missing original problem
-new problem: Failed: Undefined variable: r2
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::56:2::56:43>
-expr: def cmdLoopPass := sePass1 <- getCmdLoop()
-missing new value
-original value: <Promise>
-missing original problem
-new problem: Failed: Undefined variable: sePass1
-.
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::66:2::66:41>
-expr: cmdLoopPass <- addStatusReactor(reactor)
-missing new value
-original value: <Promise>
-missing original problem
-new problem: Failed: Undefined variable: cmdLoopPass
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::69:2::69:42>
-expr: def r3 := sePass1 <- evalCmdVow("3 // 0")
-missing new value
-original value: <Promise>
-missing original problem
-new problem: Failed: Undefined variable: sePass1
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::72:2::72:3>
-expr: r3
-missing original problem
-new problem: Failed: Undefined variable: r3
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::80:2::80:52>
-expr: def r4 := sePass1 <- evalCmdVow("interp getArgs()")
-missing new value
-original value: <Promise>
-missing original problem
-new problem: Failed: Undefined variable: sePass1
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::83:2::83:3>
-expr: r4
-missing original problem
-new problem: Failed: Undefined variable: r4
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::91:2::91:55>
-expr: def r5 := sePass1 <- evalCmdVow("interp blockAtTop()")
-missing new value
-original value: <Promise>
-missing original problem
-new problem: Failed: Undefined variable: sePass1
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::94:2::94:3>
-expr: r5
-missing original problem
-new problem: Failed: Undefined variable: r5
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::99:2::99:41>
-expr: def r6 := sePass1 <- evalCmdVow("4 * 3")
-missing new value
-original value: <Promise>
-missing original problem
-new problem: Failed: Undefined variable: sePass1
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::102:2::102:3>
-expr: r6
-missing original problem
-new problem: Failed: Undefined variable: r6
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::106:2::106:31>
-expr: cmdLoopPass <- continueAtTop()
-missing new value
-original value: <Promise>
-missing original problem
-new problem: Failed: Undefined variable: cmdLoopPass
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::109:2::109:3>
-expr: r6
-missing original problem
-new problem: Failed: Undefined variable: r6
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::116:2::116:42>
-expr: def never := evalServerPass <- shutdown()
-missing new value
-original value: <Promise>
-missing original problem
-new problem: Failed: Undefined variable: evalServerPass
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::119:2::119:6>
-expr: never
-missing original problem
-new problem: Failed: Undefined variable: never
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::120:2::120:8>
-expr: sePass1
-missing new value
-original value: <Promise>
-missing original problem
-new problem: Failed: Undefined variable: sePass1
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::123:2::123:24>
-expr: Ref.isResolved(sePass1)
-missing new value
-original value: true
-missing original problem
-new problem: Failed: Undefined variable: sePass1
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::126:2::126:31>
-expr: Ref.isResolved(evalServerPass)
-missing new value
-original value: true
-missing original problem
-new problem: Failed: Undefined variable: evalServerPass
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::129:2::129:15>
-expr: evalServerPass
-missing new value
-original value: <ref broken by problem: <SocketException: Connection reset by peer: JVM_recv in socket input stream read>>
-missing original problem
-new problem: Failed: Undefined variable: evalServerPass
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::132:2::132:8>
-expr: sePass1
-missing new value
-original value: <Promise>
-missing original problem
-new problem: Failed: Undefined variable: sePass1
-.
 c:/Documents and Settings/millerm1/e/src/esrc/scripts/intro.updoc:..
 c:/Documents and Settings/millerm1/e/src/esrc/scripts/srccheck-post.e:......
-c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/audit-test.e:....
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/audit-test.e#:span::122:2::122:30>
-expr: def bad implements failer { }
-original and new problem differ
-original problem: <AuditFailedException: object expression <main>.bad__C failed audit by <failer>>
-     new problem: failed to audit e`def bad implements failer {
-.
-c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/dist-cycle.updoc:..
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/dist-cycle.updoc#:span::12:6::12:33>
-expr: def [ap,ar] := Ref.promise()
-original and new value differ
-original value: [<Promise>, <Open Resolver>]
-     new value: [<Promise>, <Resolver>]
-
+c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/audit-test.e:......
+c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/dist-cycle.updoc:...
 at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/dist-cycle.updoc#:span::15:6::15:59>
 expr: def apURI := introducer.sturdyToURI(makeSturdyRef(ap))
 missing original problem
 new problem: <NullPointerException: TimeMachine must be made non-Ephemeral first.
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/dist-cycle.updoc#:span::17:6::17:43>
-expr: <file:~/Desktop/ap.cap>.setText(apURI)
-missing original problem
-new problem: Failed: Undefined variable: apURI
-..
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/dist-cycle.updoc#:span::26:6::26:33>
-expr: def [bp,br] := Ref.promise()
-original and new value differ
-original value: [<Promise>, <Open Resolver>]
-     new value: [<Promise>, <Resolver>]
-
+...
 at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/dist-cycle.updoc#:span::29:6::29:59>
 expr: def bpURI := introducer.sturdyToURI(makeSturdyRef(bp))
 missing original problem
 new problem: <NullPointerException: TimeMachine must be made non-Ephemeral first.
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/dist-cycle.updoc#:span::31:6::31:43>
-expr: <file:~/Desktop/bp.cap>.setText(bpURI)
-missing original problem
-new problem: Failed: Undefined variable: bpURI
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/dist-cycle.updoc#:span::33:6::33:58>
-expr: def apURI := <file:~/Desktop/ap.cap>.getText().trim()
-missing original problem
-new problem: <FileNotFoundException: c:\Documents and Settings\millerm1\Desktop\ap.cap (The system cannot find the file specified)>
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/dist-cycle.updoc#:span::35:6::35:56>
-expr: def ap := introducer.sturdyFromURI(apURI).getRcvr()
-missing new value
-original value: <Promise>
-missing original problem
-new problem: Failed: Undefined variable: apURI
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/dist-cycle.updoc#:span::38:6::38:15>
-expr: [bp,br,ap]
-missing new value
-original value: [<Promise>, <Open Resolver>, <Promise>]
-missing original problem
-new problem: Failed: Undefined variable: ap
 
 at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/dist-cycle.updoc#:span::44:6::44:58>
 expr: def bpURI := <file:~/Desktop/bp.cap>.getText().trim()
 missing original problem
 new problem: <FileNotFoundException: c:\Documents and Settings\millerm1\Desktop\bp.cap (The system cannot find the file specified)>
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/dist-cycle.updoc#:span::46:6::46:56>
-expr: def bp := introducer.sturdyFromURI(bpURI).getRcvr()
-missing new value
-original value: <Promise>
-missing original problem
-new problem: Failed: Undefined variable: bpURI
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/dist-cycle.updoc#:span::49:6::49:15>
-expr: [ap,ar,bp]
-missing new value
-original value: [<Promise>, <Open Resolver>, <Promise>]
-missing original problem
-new problem: Failed: Undefined variable: bp
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/dist-cycle.updoc#:span::52:6::52:19>
-expr: ar.resolve(bp)
-missing original problem
-new problem: Failed: Undefined variable: bp
-
 at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/dist-cycle.updoc#:span::57:6::57:15>
 expr: [bp,br,ap]
 missing new value
-original value: [<Promise>, <Open Resolver>, <Promise>]
-missing original problem
-new problem: Failed: Undefined variable: ap
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/dist-cycle.updoc#:span::60:6::60:19>
-expr: br.resolve(ap)
-missing original problem
-new problem: Failed: Undefined variable: ap
-.
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/dist-cycle.updoc#:span::64:6::64:15>
-expr: [bp,br,ap]
-missing new value
-original value: [<Promise>, <Closed Resolver>, <Promise>]
+original value: [<Promise>, <Resolver>, <Promise>]
 missing original problem
 new problem: Failed: Undefined variable: ap
 
@@ -1789,94 +513,9 @@ original stdout: &y <& 6>
                  &__makeList <& <makeConstList>>
                  &uc_construct <& <uc_construct>>
                  
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/makeScope.updoc#:span::30:4::30:25>
-expr: e`any`.eval(demoScope)
-original and new value differ
-original value: <any>
-     new value: any
-..
+...
 c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/mod.updoc:......
-c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/updoc/abc.updoc:=== 2006-11-10T09:43:31.747Z (CapTPConnection.killConnection:CapTPConnection.java:1262) WRN
-captp: lost Conn(sjnkojaefrnqakax4thtb6bqe5yjzuzo <-> 5sktqem2ll7mkbo53m2ifr2sytkhjopc)
---vvvv--
-java.net.ConnectException: Connection refused: connect
-
-
-# lost net.vattp.data.VatTPConnection@1973ed1
-  to 192.168.1.66:2627|5sktqem2ll7mkbo53m2ifr2sytkhjopc
-  searchpath=192.168.1.66:2627 state=7
-
-java.io.IOException: java.net.ConnectException: Connection refused: connect
-
-	at net.vattp.data.VatTPConnection.tryNextAddress(VatTPConnection.java:1222)
-	at net.vattp.data.VatTPConnection.shutDownFinished(VatTPConnection.java:1013)
-	at net.vattp.data.DataPath.shutDownFinished(DataPath.java:923)
-	at net.vattp.data.DataCommThunk.run(DataCommThunk.java:202)
-	at org.erights.e.elib.vat.PendingCall.innerRun(PendingCall.java:75)
-	at org.erights.e.elib.vat.PendingEvent.run(PendingEvent.java:76)
-	at org.erights.e.elib.vat.HeadlessRunner.run(HeadlessRunner.java:176)
-	at java.lang.Thread.run(Thread.java:595)
-
---^^^^--
-
-=== 2006-11-10T09:43:31.747Z (PendingEvent.report:PendingEvent.java:109) WRN
-causality: Problem in turn <<Vat vatAC in <runs in vatAC>>,73>: 
---vvvv--
-Failed: done
-
-- DelayedRedirector#__reactToLostClient(Object)
-. <a DelayedRedirector>.__reactToLostClient(problem: <IOException: java.net.ConnectException: Connection refused: connect\n         >)
-
-java.lang.RuntimeException: Failed: done
-	at org.erights.e.develop.assertion.T.fail(T.java:84)
-	at org.erights.e.elib.ref.EProxyResolver.getOptRef(EProxyResolver.java:112)
-	at org.erights.e.elib.ref.EProxyResolver.resolve(EProxyResolver.java:186)
-	at org.erights.e.elib.ref.EProxyResolver.smash(EProxyResolver.java:215)
-	at org.erights.e.elib.ref.DelayedRedirector.__reactToLostClient(DelayedRedirector.java:116)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
-	at java.lang.reflect.Method.invoke(Method.java:585)
-	at org.erights.e.elib.prim.InstanceMethodNode.innerExecute(InstanceMethodNode.java:113)
-	at org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:183)
-	at org.erights.e.elib.prim.E.callAll(E.java:167)
-	at org.erights.e.elib.vat.PendingDelivery.innerRun(PendingDelivery.java:102)
-	at org.erights.e.elib.vat.PendingEvent.run(PendingEvent.java:76)
-	at org.erights.e.elib.vat.HeadlessRunner.run(HeadlessRunner.java:176)
-	at java.lang.Thread.run(Thread.java:595)
-
---^^^^--
-
-=== 2006-11-10T09:43:31.757Z (PendingEvent.report:PendingEvent.java:109) WRN
-causality: Problem in turn <<Vat vatAC in <runs in vatAC>>,74>: 
---vvvv--
-Failed: done
-
-- DelayedRedirector#__reactToLostClient(Object)
-. <a DelayedRedirector>.__reactToLostClient(problem: <IOException: java.net.ConnectException: Connection refused: connect\n         >)
-
-java.lang.RuntimeException: Failed: done
-	at org.erights.e.develop.assertion.T.fail(T.java:84)
-	at org.erights.e.elib.ref.EProxyResolver.getOptRef(EProxyResolver.java:112)
-	at org.erights.e.elib.ref.EProxyResolver.resolve(EProxyResolver.java:186)
-	at org.erights.e.elib.ref.EProxyResolver.smash(EProxyResolver.java:215)
-	at org.erights.e.elib.ref.DelayedRedirector.__reactToLostClient(DelayedRedirector.java:116)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
-	at java.lang.reflect.Method.invoke(Method.java:585)
-	at org.erights.e.elib.prim.InstanceMethodNode.innerExecute(InstanceMethodNode.java:113)
-	at org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:183)
-	at org.erights.e.elib.prim.E.callAll(E.java:167)
-	at org.erights.e.elib.vat.PendingDelivery.innerRun(PendingDelivery.java:102)
-	at org.erights.e.elib.vat.PendingEvent.run(PendingEvent.java:76)
-	at org.erights.e.elib.vat.HeadlessRunner.run(HeadlessRunner.java:176)
-	at java.lang.Thread.run(Thread.java:595)
-
---^^^^--
-
-.
+c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/updoc/abc.updoc:.
 at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/updoc/abc.updoc#:span::9:6::9:27>
 expr: (introducer.onTheAir()
        var x := null
@@ -1890,19 +529,7 @@ expr: (introducer.onTheAir()
        <file:~/Desktop/bob.cap>.setText(uri))
 missing original problem
 new problem: <NullPointerException: TimeMachine must be made non-Ephemeral first.
-..
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/updoc/abc.updoc#:span::30:6::30:31>
-expr: def farBob := sr.getRcvr()
-original and new value differ
-original value: <Eventual ref>
-     new value: <Remote Promise>
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/updoc/abc.updoc#:span::33:6::33:34>
-expr: def result := farBob <- foo()
-original and new value differ
-original value: <Eventual ref>
-     new value: <Remote Promise>
-.
+.....
 at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/updoc/abc.updoc#:span::38:6::38:16>
 expr: result == 3
 original and new value differ
@@ -1922,18 +549,6 @@ original value: <Eventual ref>
 missing original problem
 new problem: Failed: Undefined variable: x
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/updoc/abc.updoc#:span::49:6::49:29>
-expr: interp.waitAtTop(answer)
-missing original problem
-new problem: Failed: Undefined variable: answer
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/updoc/abc.updoc#:span::51:6::51:16>
-expr: answer == 5
-missing new value
-original value: true
-missing original problem
-new problem: Failed: Undefined variable: answer
-
 c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/updoc/FlexList.updoc:.......
 c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/updoc/propUtils.updoc:.......
 c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/updoc/race.updoc:.
@@ -1942,684 +557,8 @@ expr: def race := <import:org.erights.e.tools.concurrency.race>
 missing original problem
 new problem: Failed: org.erights.e.tools.concurrency.race not found
 
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/updoc/race.updoc#:span::11:2::11:28>
-expr: def [a,ar] := Ref.promise()
-original and new value differ
-original value: [<Promise>, <Open Resolver>]
-     new value: [<Promise>, <Resolver>]
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/updoc/race.updoc#:span::14:2::14:28>
-expr: def [b,br] := Ref.promise()
-original and new value differ
-original value: [<Promise>, <Open Resolver>]
-     new value: [<Promise>, <Resolver>]
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/updoc/race.updoc#:span::17:2::17:22>
-expr: def c := race([a, b])
-missing new value
-original value: <Promise>
-missing original problem
-new problem: Failed: Undefined variable: race
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/updoc/race.updoc#:span::20:2::20:2>
-expr: c
-missing new value
-original value: <Promise>
-missing original problem
-new problem: Failed: Undefined variable: c
-.
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/updoc/race.updoc#:span::24:2::24:2>
-expr: c
-missing new value
-original value: 3
-missing original problem
-new problem: Failed: Undefined variable: c
-...
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/updoc/race.updoc#:span::34:2::34:2>
-expr: c
-missing new value
-original value: 3
-missing original problem
-new problem: Failed: Undefined variable: c
-
 c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/updoc/shortFlexList.updoc:....
-c:/Documents and Settings/millerm1/e/src/esrc/scripts/updoc.e:
-c:/Documents and Settings/millerm1/e/src/esrc/scripts/upgradeComments.e:
-c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html:=== 2006-11-10T09:45:35.945Z (Twine.add:Twine.java:354) WRN
-eruntime: Stringifying with '+' : (3)
- @ Twine#add(Object)
- @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::482:37::482:37>
-=== 2006-11-10T09:45:36.266Z (Twine.add:Twine.java:354) WRN
-eruntime: Stringifying with '+' : (10)
- @ Twine#add(Object)
- @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::800:64::800:64>
-=== 2006-11-10T09:45:36.326Z (Twine.add:Twine.java:354) WRN
-eruntime: Stringifying with '+' : (10)
- @ Twine#add(Object)
- @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::897:32::897:32>
-=== 2006-11-10T09:45:36.416Z (Twine.add:Twine.java:354) WRN
-eruntime: Stringifying with '+' : (380)
- @ Twine#add(Object)
- @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::1030:26::1030:26>
-=== 2006-11-10T09:45:36.486Z (Twine.add:Twine.java:354) WRN
-eruntime: Stringifying with '+' : (2)
- @ Twine#add(Object)
- @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::1292:41::1292:41>
-=== 2006-11-10T09:45:36.496Z (Twine.add:Twine.java:354) WRN
-eruntime: Stringifying with '+' : (true)
- @ Twine#add(Object)
- @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::1292:41::1292:41>
-=== 2006-11-10T09:45:36.496Z (Twine.add:Twine.java:354) WRN
-eruntime: Stringifying with '+' : (0)
- @ Twine#add(Object)
- @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::1293:55::1293:55>
-=== 2006-11-10T09:45:36.496Z (Twine.add:Twine.java:354) WRN
-eruntime: Stringifying with '+' : (1)
- @ Twine#add(Object)
- @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::1293:55::1293:55>
-=== 2006-11-10T09:45:36.496Z (Twine.add:Twine.java:354) WRN
-eruntime: Stringifying with '+' : (2)
- @ Twine#add(Object)
- @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::1293:68::1293:68>
-=== 2006-11-10T09:45:36.496Z (Twine.add:Twine.java:354) WRN
-eruntime: Stringifying with '+' : (2)
- @ Twine#add(Object)
- @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::1293:55::1293:55>
-=== 2006-11-10T09:45:36.496Z (Twine.add:Twine.java:354) WRN
-eruntime: Stringifying with '+' : (true)
- @ Twine#add(Object)
- @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::1293:68::1293:68>
-=== 2006-11-10T09:45:36.496Z (Twine.add:Twine.java:354) WRN
-eruntime: Stringifying with '+' : (3)
- @ Twine#add(Object)
- @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::1293:55::1293:55>
-=== 2006-11-10T09:45:36.526Z (Twine.add:Twine.java:354) WRN
-eruntime: Stringifying with '+' : (1)
- @ Twine#add(Object)
- @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::1338:65::1338:65>
-=== 2006-11-10T09:45:36.526Z (Twine.add:Twine.java:354) WRN
-eruntime: Stringifying with '+' : (2)
- @ Twine#add(Object)
- @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::1338:46::1338:46>
-=== 2006-11-10T09:45:36.526Z (Twine.add:Twine.java:354) WRN
-eruntime: Stringifying with '+' : (1)
- @ Twine#add(Object)
- @ add/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::1339:37::1339:37>
-=== 2006-11-10T09:45:36.676Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
-eruntime: Import java.util.makeVector instead : (Importing java.util.Vector)
- @ Loader#get(String)
- @ get/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:blob::1414:19::1414:47>
-abc=== 2006-11-10T09:45:53.641Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
-eruntime: Import javax.swing.makeJLabel instead : (Importing javax.swing.JLabel)
- @ Loader#get(String)
- @ get/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:blob::1940:27::1940:44>
-=== 2006-11-10T09:45:55.253Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
-eruntime: Import javax.swing.makeJTextArea instead : (Importing javax.swing.JTextArea)
- @ Loader#get(String)
- @ get/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:blob::1944:19::1944:39>
-=== 2006-11-10T09:45:55.433Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
-eruntime: Import java.awt.makeSystemColor instead : (Importing java.awt.SystemColor)
- @ Loader#get(String)
- @ get/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:blob::1898:26::1898:46>
-=== 2006-11-10T09:45:55.974Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
-eruntime: Import javax.swing.makeJFrame instead : (Importing javax.swing.JFrame)
- @ Loader#get(String)
- @ get/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:blob::2084:18::2084:35>
-=== 2006-11-10T10:11:12.355Z (RecvThread.callDataPath:RecvThread.java:156) ERR
-comm: Error while calling net.vattp.data.DataCommThunk@db5f2d Type=8
---vvvv--
-makeEvaluator shutdown
-
-
-java.lang.RuntimeException: makeEvaluator shutdown
-	at org.erights.e.meta.java.lang.ThrowableGuardSugar.subCoerceR(ThrowableGuardSugar.java:60)
-	at org.erights.e.elib.base.ClassDesc.tryCoerceR(ClassDesc.java:350)
-	at org.erights.e.elib.slot.BaseAuditor.coerce(BaseAuditor.java:59)
-	at org.erights.e.elib.prim.E.as(E.java:530)
-	at org.erights.e.elib.prim.JavaMemberNode.coerceArgs(JavaMemberNode.java:143)
-	at org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:188)
-	at org.erights.e.elib.prim.Selector.callIt(Selector.java:84)
-	at org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:132)
-	at org.erights.e.elang.evm.EMethod.execute(EMethod.java:175)
-	at org.erights.e.elang.evm.EMethodNode.execute(EMethodNode.java:136)
-	at org.erights.e.elib.prim.E.callAll(E.java:167)
-	at org.erights.e.elib.vat.PendingDelivery.innerRun(PendingDelivery.java:102)
-	at org.erights.e.elib.vat.PendingEvent.run(PendingEvent.java:76)
-	at org.erights.e.elib.vat.HeadlessRunner.run(HeadlessRunner.java:176)
-	at java.lang.Thread.run(Thread.java:595)
-
---^^^^--
-
-=== 2006-11-10T10:11:12.355Z (RecvThread.callDataPath:RecvThread.java:156) ERR
-comm: Error while calling net.vattp.data.DataCommThunk@459228 Type=4
---vvvv--
-makeEvaluator shutdown
-
-
-java.lang.RuntimeException: makeEvaluator shutdown
-	at org.erights.e.meta.java.lang.ThrowableGuardSugar.subCoerceR(ThrowableGuardSugar.java:60)
-	at org.erights.e.elib.base.ClassDesc.tryCoerceR(ClassDesc.java:350)
-	at org.erights.e.elib.slot.BaseAuditor.coerce(BaseAuditor.java:59)
-	at org.erights.e.elib.prim.E.as(E.java:530)
-	at org.erights.e.elib.prim.JavaMemberNode.coerceArgs(JavaMemberNode.java:143)
-	at org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:188)
-	at org.erights.e.elib.prim.Selector.callIt(Selector.java:84)
-	at org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:132)
-	at org.erights.e.elang.evm.EMethod.execute(EMethod.java:175)
-	at org.erights.e.elang.evm.EMethodNode.execute(EMethodNode.java:136)
-	at org.erights.e.elib.prim.E.callAll(E.java:167)
-	at org.erights.e.elib.vat.PendingDelivery.innerRun(PendingDelivery.java:102)
-	at org.erights.e.elib.vat.PendingEvent.run(PendingEvent.java:76)
-	at org.erights.e.elib.vat.HeadlessRunner.run(HeadlessRunner.java:176)
-	at java.lang.Thread.run(Thread.java:595)
-
---^^^^--
-
-=== 2006-11-10T10:41:12.353Z (RecvThread.callDataPath:RecvThread.java:156) ERR
-comm: Error while calling net.vattp.data.DataCommThunk@1788ce Type=8
---vvvv--
-makeEvaluator shutdown
-
-
-java.lang.RuntimeException: makeEvaluator shutdown
-	at org.erights.e.meta.java.lang.ThrowableGuardSugar.subCoerceR(ThrowableGuardSugar.java:60)
-	at org.erights.e.elib.base.ClassDesc.tryCoerceR(ClassDesc.java:350)
-	at org.erights.e.elib.slot.BaseAuditor.coerce(BaseAuditor.java:59)
-	at org.erights.e.elib.prim.E.as(E.java:530)
-	at org.erights.e.elib.prim.JavaMemberNode.coerceArgs(JavaMemberNode.java:143)
-	at org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:188)
-	at org.erights.e.elib.prim.Selector.callIt(Selector.java:84)
-	at org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:132)
-	at org.erights.e.elang.evm.EMethod.execute(EMethod.java:175)
-	at org.erights.e.elang.evm.EMethodNode.execute(EMethodNode.java:136)
-	at org.erights.e.elib.prim.E.callAll(E.java:167)
-	at org.erights.e.elib.vat.PendingDelivery.innerRun(PendingDelivery.java:102)
-	at org.erights.e.elib.vat.PendingEvent.run(PendingEvent.java:76)
-	at org.erights.e.elib.vat.HeadlessRunner.run(HeadlessRunner.java:176)
-	at java.lang.Thread.run(Thread.java:595)
-
---^^^^--
-
-=== 2006-11-10T10:41:12.353Z (RecvThread.callDataPath:RecvThread.java:156) ERR
-comm: Error while calling net.vattp.data.DataCommThunk@116bb9e Type=4
---vvvv--
-makeEvaluator shutdown
-
-
-java.lang.RuntimeException: makeEvaluator shutdown
-	at org.erights.e.meta.java.lang.ThrowableGuardSugar.subCoerceR(ThrowableGuardSugar.java:60)
-	at org.erights.e.elib.base.ClassDesc.tryCoerceR(ClassDesc.java:350)
-	at org.erights.e.elib.slot.BaseAuditor.coerce(BaseAuditor.java:59)
-	at org.erights.e.elib.prim.E.as(E.java:530)
-	at org.erights.e.elib.prim.JavaMemberNode.coerceArgs(JavaMemberNode.java:143)
-	at org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:188)
-	at org.erights.e.elib.prim.Selector.callIt(Selector.java:84)
-	at org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:132)
-	at org.erights.e.elang.evm.EMethod.execute(EMethod.java:175)
-	at org.erights.e.elang.evm.EMethodNode.execute(EMethodNode.java:136)
-	at org.erights.e.elib.prim.E.callAll(E.java:167)
-	at org.erights.e.elib.vat.PendingDelivery.innerRun(PendingDelivery.java:102)
-	at org.erights.e.elib.vat.PendingEvent.run(PendingEvent.java:76)
-	at org.erights.e.elib.vat.HeadlessRunner.run(HeadlessRunner.java:176)
-	at java.lang.Thread.run(Thread.java:595)
-
---^^^^--
-
-=== 2006-11-10T11:11:12.361Z (RecvThread.callDataPath:RecvThread.java:156) ERR
-comm: Error while calling net.vattp.data.DataCommThunk@fed88b Type=8
---vvvv--
-makeEvaluator shutdown
-
-
-java.lang.RuntimeException: makeEvaluator shutdown
-	at org.erights.e.meta.java.lang.ThrowableGuardSugar.subCoerceR(ThrowableGuardSugar.java:60)
-	at org.erights.e.elib.base.ClassDesc.tryCoerceR(ClassDesc.java:350)
-	at org.erights.e.elib.slot.BaseAuditor.coerce(BaseAuditor.java:59)
-	at org.erights.e.elib.prim.E.as(E.java:530)
-	at org.erights.e.elib.prim.JavaMemberNode.coerceArgs(JavaMemberNode.java:143)
-	at org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:188)
-	at org.erights.e.elib.prim.Selector.callIt(Selector.java:84)
-	at org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:132)
-	at org.erights.e.elang.evm.EMethod.execute(EMethod.java:175)
-	at org.erights.e.elang.evm.EMethodNode.execute(EMethodNode.java:136)
-	at org.erights.e.elib.prim.E.callAll(E.java:167)
-	at org.erights.e.elib.vat.PendingDelivery.innerRun(PendingDelivery.java:102)
-	at org.erights.e.elib.vat.PendingEvent.run(PendingEvent.java:76)
-	at org.erights.e.elib.vat.HeadlessRunner.run(HeadlessRunner.java:176)
-	at java.lang.Thread.run(Thread.java:595)
-
---^^^^--
-
-=== 2006-11-10T11:11:12.371Z (RecvThread.callDataPath:RecvThread.java:156) ERR
-comm: Error while calling net.vattp.data.DataCommThunk@13abc59 Type=4
---vvvv--
-makeEvaluator shutdown
-
-
-java.lang.RuntimeException: makeEvaluator shutdown
-	at org.erights.e.meta.java.lang.ThrowableGuardSugar.subCoerceR(ThrowableGuardSugar.java:60)
-	at org.erights.e.elib.base.ClassDesc.tryCoerceR(ClassDesc.java:350)
-	at org.erights.e.elib.slot.BaseAuditor.coerce(BaseAuditor.java:59)
-	at org.erights.e.elib.prim.E.as(E.java:530)
-	at org.erights.e.elib.prim.JavaMemberNode.coerceArgs(JavaMemberNode.java:143)
-	at org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:188)
-	at org.erights.e.elib.prim.Selector.callIt(Selector.java:84)
-	at org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:132)
-	at org.erights.e.elang.evm.EMethod.execute(EMethod.java:175)
-	at org.erights.e.elang.evm.EMethodNode.execute(EMethodNode.java:136)
-	at org.erights.e.elib.prim.E.callAll(E.java:167)
-	at org.erights.e.elib.vat.PendingDelivery.innerRun(PendingDelivery.java:102)
-	at org.erights.e.elib.vat.PendingEvent.run(PendingEvent.java:76)
-	at org.erights.e.elib.vat.HeadlessRunner.run(HeadlessRunner.java:176)
-	at java.lang.Thread.run(Thread.java:595)
-
---^^^^--
-
-=== 2006-11-10T11:41:12.349Z (RecvThread.callDataPath:RecvThread.java:156) ERR
-comm: Error while calling net.vattp.data.DataCommThunk@dfece1 Type=8
---vvvv--
-makeEvaluator shutdown
-
-
-java.lang.RuntimeException: makeEvaluator shutdown
-	at org.erights.e.meta.java.lang.ThrowableGuardSugar.subCoerceR(ThrowableGuardSugar.java:60)
-	at org.erights.e.elib.base.ClassDesc.tryCoerceR(ClassDesc.java:350)
-	at org.erights.e.elib.slot.BaseAuditor.coerce(BaseAuditor.java:59)
-	at org.erights.e.elib.prim.E.as(E.java:530)
-	at org.erights.e.elib.prim.JavaMemberNode.coerceArgs(JavaMemberNode.java:143)
-	at org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:188)
-	at org.erights.e.elib.prim.Selector.callIt(Selector.java:84)
-	at org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:132)
-	at org.erights.e.elang.evm.EMethod.execute(EMethod.java:175)
-	at org.erights.e.elang.evm.EMethodNode.execute(EMethodNode.java:136)
-	at org.erights.e.elib.prim.E.callAll(E.java:167)
-	at org.erights.e.elib.vat.PendingDelivery.innerRun(PendingDelivery.java:102)
-	at org.erights.e.elib.vat.PendingEvent.run(PendingEvent.java:76)
-	at org.erights.e.elib.vat.HeadlessRunner.run(HeadlessRunner.java:176)
-	at java.lang.Thread.run(Thread.java:595)
-
---^^^^--
-
-=== 2006-11-10T11:41:12.349Z (RecvThread.callDataPath:RecvThread.java:156) ERR
-comm: Error while calling net.vattp.data.DataCommThunk@138b58f Type=4
---vvvv--
-makeEvaluator shutdown
-
-
-java.lang.RuntimeException: makeEvaluator shutdown
-	at org.erights.e.meta.java.lang.ThrowableGuardSugar.subCoerceR(ThrowableGuardSugar.java:60)
-	at org.erights.e.elib.base.ClassDesc.tryCoerceR(ClassDesc.java:350)
-	at org.erights.e.elib.slot.BaseAuditor.coerce(BaseAuditor.java:59)
-	at org.erights.e.elib.prim.E.as(E.java:530)
-	at org.erights.e.elib.prim.JavaMemberNode.coerceArgs(JavaMemberNode.java:143)
-	at org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:188)
-	at org.erights.e.elib.prim.Selector.callIt(Selector.java:84)
-	at org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:132)
-	at org.erights.e.elang.evm.EMethod.execute(EMethod.java:175)
-	at org.erights.e.elang.evm.EMethodNode.execute(EMethodNode.java:136)
-	at org.erights.e.elib.prim.E.callAll(E.java:167)
-	at org.erights.e.elib.vat.PendingDelivery.innerRun(PendingDelivery.java:102)
-	at org.erights.e.elib.vat.PendingEvent.run(PendingEvent.java:76)
-	at org.erights.e.elib.vat.HeadlessRunner.run(HeadlessRunner.java:176)
-	at java.lang.Thread.run(Thread.java:595)
-
---^^^^--
-
-=== 2006-11-10T12:11:12.348Z (RecvThread.callDataPath:RecvThread.java:156) ERR
-comm: Error while calling net.vattp.data.DataCommThunk@1379569 Type=8
---vvvv--
-makeEvaluator shutdown
-
-
-java.lang.RuntimeException: makeEvaluator shutdown
-	at org.erights.e.meta.java.lang.ThrowableGuardSugar.subCoerceR(ThrowableGuardSugar.java:60)
-	at org.erights.e.elib.base.ClassDesc.tryCoerceR(ClassDesc.java:350)
-	at org.erights.e.elib.slot.BaseAuditor.coerce(BaseAuditor.java:59)
-	at org.erights.e.elib.prim.E.as(E.java:530)
-	at org.erights.e.elib.prim.JavaMemberNode.coerceArgs(JavaMemberNode.java:143)
-	at org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:188)
-	at org.erights.e.elib.prim.Selector.callIt(Selector.java:84)
-	at org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:132)
-	at org.erights.e.elang.evm.EMethod.execute(EMethod.java:175)
-	at org.erights.e.elang.evm.EMethodNode.execute(EMethodNode.java:136)
-	at org.erights.e.elib.prim.E.callAll(E.java:167)
-	at org.erights.e.elib.vat.PendingDelivery.innerRun(PendingDelivery.java:102)
-	at org.erights.e.elib.vat.PendingEvent.run(PendingEvent.java:76)
-	at org.erights.e.elib.vat.HeadlessRunner.run(HeadlessRunner.java:176)
-	at java.lang.Thread.run(Thread.java:595)
-
---^^^^--
-
-=== 2006-11-10T12:11:12.348Z (RecvThread.callDataPath:RecvThread.java:156) ERR
-comm: Error while calling net.vattp.data.DataCommThunk@322746 Type=4
---vvvv--
-makeEvaluator shutdown
-
-
-java.lang.RuntimeException: makeEvaluator shutdown
-	at org.erights.e.meta.java.lang.ThrowableGuardSugar.subCoerceR(ThrowableGuardSugar.java:60)
-	at org.erights.e.elib.base.ClassDesc.tryCoerceR(ClassDesc.java:350)
-	at org.erights.e.elib.slot.BaseAuditor.coerce(BaseAuditor.java:59)
-	at org.erights.e.elib.prim.E.as(E.java:530)
-	at org.erights.e.elib.prim.JavaMemberNode.coerceArgs(JavaMemberNode.java:143)
-	at org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:188)
-	at org.erights.e.elib.prim.Selector.callIt(Selector.java:84)
-	at org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:132)
-	at org.erights.e.elang.evm.EMethod.execute(EMethod.java:175)
-	at org.erights.e.elang.evm.EMethodNode.execute(EMethodNode.java:136)
-	at org.erights.e.elib.prim.E.callAll(E.java:167)
-	at org.erights.e.elib.vat.PendingDelivery.innerRun(PendingDelivery.java:102)
-	at org.erights.e.elib.vat.PendingEvent.run(PendingEvent.java:76)
-	at org.erights.e.elib.vat.HeadlessRunner.run(HeadlessRunner.java:176)
-	at java.lang.Thread.run(Thread.java:595)
-
---^^^^--
-
-=== 2006-11-10T12:41:12.346Z (RecvThread.callDataPath:RecvThread.java:156) ERR
-comm: Error while calling net.vattp.data.DataCommThunk@1deec2d Type=8
---vvvv--
-makeEvaluator shutdown
-
-
-java.lang.RuntimeException: makeEvaluator shutdown
-	at org.erights.e.meta.java.lang.ThrowableGuardSugar.subCoerceR(ThrowableGuardSugar.java:60)
-	at org.erights.e.elib.base.ClassDesc.tryCoerceR(ClassDesc.java:350)
-	at org.erights.e.elib.slot.BaseAuditor.coerce(BaseAuditor.java:59)
-	at org.erights.e.elib.prim.E.as(E.java:530)
-	at org.erights.e.elib.prim.JavaMemberNode.coerceArgs(JavaMemberNode.java:143)
-	at org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:188)
-	at org.erights.e.elib.prim.Selector.callIt(Selector.java:84)
-	at org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:132)
-	at org.erights.e.elang.evm.EMethod.execute(EMethod.java:175)
-	at org.erights.e.elang.evm.EMethodNode.execute(EMethodNode.java:136)
-	at org.erights.e.elib.prim.E.callAll(E.java:167)
-	at org.erights.e.elib.vat.PendingDelivery.innerRun(PendingDelivery.java:102)
-	at org.erights.e.elib.vat.PendingEvent.run(PendingEvent.java:76)
-	at org.erights.e.elib.vat.HeadlessRunner.run(HeadlessRunner.java:176)
-	at java.lang.Thread.run(Thread.java:595)
-
---^^^^--
-
-=== 2006-11-10T12:41:12.346Z (RecvThread.callDataPath:RecvThread.java:156) ERR
-comm: Error while calling net.vattp.data.DataCommThunk@63b8c2 Type=4
---vvvv--
-makeEvaluator shutdown
-
-
-java.lang.RuntimeException: makeEvaluator shutdown
-	at org.erights.e.meta.java.lang.ThrowableGuardSugar.subCoerceR(ThrowableGuardSugar.java:60)
-	at org.erights.e.elib.base.ClassDesc.tryCoerceR(ClassDesc.java:350)
-	at org.erights.e.elib.slot.BaseAuditor.coerce(BaseAuditor.java:59)
-	at org.erights.e.elib.prim.E.as(E.java:530)
-	at org.erights.e.elib.prim.JavaMemberNode.coerceArgs(JavaMemberNode.java:143)
-	at org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:188)
-	at org.erights.e.elib.prim.Selector.callIt(Selector.java:84)
-	at org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:132)
-	at org.erights.e.elang.evm.EMethod.execute(EMethod.java:175)
-	at org.erights.e.elang.evm.EMethodNode.execute(EMethodNode.java:136)
-	at org.erights.e.elib.prim.E.callAll(E.java:167)
-	at org.erights.e.elib.vat.PendingDelivery.innerRun(PendingDelivery.java:102)
-	at org.erights.e.elib.vat.PendingEvent.run(PendingEvent.java:76)
-	at org.erights.e.elib.vat.HeadlessRunner.run(HeadlessRunner.java:176)
-	at java.lang.Thread.run(Thread.java:595)
-
---^^^^--
-
-=== 2006-11-10T13:11:12.354Z (RecvThread.callDataPath:RecvThread.java:156) ERR
-comm: Error while calling net.vattp.data.DataCommThunk@f98130 Type=8
---vvvv--
-makeEvaluator shutdown
-
-
-java.lang.RuntimeException: makeEvaluator shutdown
-	at org.erights.e.meta.java.lang.ThrowableGuardSugar.subCoerceR(ThrowableGuardSugar.java:60)
-	at org.erights.e.elib.base.ClassDesc.tryCoerceR(ClassDesc.java:350)
-	at org.erights.e.elib.slot.BaseAuditor.coerce(BaseAuditor.java:59)
-	at org.erights.e.elib.prim.E.as(E.java:530)
-	at org.erights.e.elib.prim.JavaMemberNode.coerceArgs(JavaMemberNode.java:143)
-	at org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:188)
-	at org.erights.e.elib.prim.Selector.callIt(Selector.java:84)
-	at org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:132)
-	at org.erights.e.elang.evm.EMethod.execute(EMethod.java:175)
-	at org.erights.e.elang.evm.EMethodNode.execute(EMethodNode.java:136)
-	at org.erights.e.elib.prim.E.callAll(E.java:167)
-	at org.erights.e.elib.vat.PendingDelivery.innerRun(PendingDelivery.java:102)
-	at org.erights.e.elib.vat.PendingEvent.run(PendingEvent.java:76)
-	at org.erights.e.elib.vat.HeadlessRunner.run(HeadlessRunner.java:176)
-	at java.lang.Thread.run(Thread.java:595)
-
---^^^^--
-
-=== 2006-11-10T13:11:12.354Z (RecvThread.callDataPath:RecvThread.java:156) ERR
-comm: Error while calling net.vattp.data.DataCommThunk@90917b Type=4
---vvvv--
-makeEvaluator shutdown
-
-
-java.lang.RuntimeException: makeEvaluator shutdown
-	at org.erights.e.meta.java.lang.ThrowableGuardSugar.subCoerceR(ThrowableGuardSugar.java:60)
-	at org.erights.e.elib.base.ClassDesc.tryCoerceR(ClassDesc.java:350)
-	at org.erights.e.elib.slot.BaseAuditor.coerce(BaseAuditor.java:59)
-	at org.erights.e.elib.prim.E.as(E.java:530)
-	at org.erights.e.elib.prim.JavaMemberNode.coerceArgs(JavaMemberNode.java:143)
-	at org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:188)
-	at org.erights.e.elib.prim.Selector.callIt(Selector.java:84)
-	at org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:132)
-	at org.erights.e.elang.evm.EMethod.execute(EMethod.java:175)
-	at org.erights.e.elang.evm.EMethodNode.execute(EMethodNode.java:136)
-	at org.erights.e.elib.prim.E.callAll(E.java:167)
-	at org.erights.e.elib.vat.PendingDelivery.innerRun(PendingDelivery.java:102)
-	at org.erights.e.elib.vat.PendingEvent.run(PendingEvent.java:76)
-	at org.erights.e.elib.vat.HeadlessRunner.run(HeadlessRunner.java:176)
-	at java.lang.Thread.run(Thread.java:595)
-
---^^^^--
-
-=== 2006-11-10T13:41:12.352Z (RecvThread.callDataPath:RecvThread.java:156) ERR
-comm: Error while calling net.vattp.data.DataCommThunk@1b2415 Type=8
---vvvv--
-makeEvaluator shutdown
-
-
-java.lang.RuntimeException: makeEvaluator shutdown
-	at org.erights.e.meta.java.lang.ThrowableGuardSugar.subCoerceR(ThrowableGuardSugar.java:60)
-	at org.erights.e.elib.base.ClassDesc.tryCoerceR(ClassDesc.java:350)
-	at org.erights.e.elib.slot.BaseAuditor.coerce(BaseAuditor.java:59)
-	at org.erights.e.elib.prim.E.as(E.java:530)
-	at org.erights.e.elib.prim.JavaMemberNode.coerceArgs(JavaMemberNode.java:143)
-	at org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:188)
-	at org.erights.e.elib.prim.Selector.callIt(Selector.java:84)
-	at org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:132)
-	at org.erights.e.elang.evm.EMethod.execute(EMethod.java:175)
-	at org.erights.e.elang.evm.EMethodNode.execute(EMethodNode.java:136)
-	at org.erights.e.elib.prim.E.callAll(E.java:167)
-	at org.erights.e.elib.vat.PendingDelivery.innerRun(PendingDelivery.java:102)
-	at org.erights.e.elib.vat.PendingEvent.run(PendingEvent.java:76)
-	at org.erights.e.elib.vat.HeadlessRunner.run(HeadlessRunner.java:176)
-	at java.lang.Thread.run(Thread.java:595)
-
---^^^^--
-
-=== 2006-11-10T13:41:12.352Z (RecvThread.callDataPath:RecvThread.java:156) ERR
-comm: Error while calling net.vattp.data.DataCommThunk@1ddec16 Type=4
---vvvv--
-makeEvaluator shutdown
-
-
-java.lang.RuntimeException: makeEvaluator shutdown
-	at org.erights.e.meta.java.lang.ThrowableGuardSugar.subCoerceR(ThrowableGuardSugar.java:60)
-	at org.erights.e.elib.base.ClassDesc.tryCoerceR(ClassDesc.java:350)
-	at org.erights.e.elib.slot.BaseAuditor.coerce(BaseAuditor.java:59)
-	at org.erights.e.elib.prim.E.as(E.java:530)
-	at org.erights.e.elib.prim.JavaMemberNode.coerceArgs(JavaMemberNode.java:143)
-	at org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:188)
-	at org.erights.e.elib.prim.Selector.callIt(Selector.java:84)
-	at org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:132)
-	at org.erights.e.elang.evm.EMethod.execute(EMethod.java:175)
-	at org.erights.e.elang.evm.EMethodNode.execute(EMethodNode.java:136)
-	at org.erights.e.elib.prim.E.callAll(E.java:167)
-	at org.erights.e.elib.vat.PendingDelivery.innerRun(PendingDelivery.java:102)
-	at org.erights.e.elib.vat.PendingEvent.run(PendingEvent.java:76)
-	at org.erights.e.elib.vat.HeadlessRunner.run(HeadlessRunner.java:176)
-	at java.lang.Thread.run(Thread.java:595)
-
---^^^^--
-
-=== 2006-11-10T14:11:12.351Z (RecvThread.callDataPath:RecvThread.java:156) ERR
-comm: Error while calling net.vattp.data.DataCommThunk@11fa50d Type=8
---vvvv--
-makeEvaluator shutdown
-
-
-java.lang.RuntimeException: makeEvaluator shutdown
-	at org.erights.e.meta.java.lang.ThrowableGuardSugar.subCoerceR(ThrowableGuardSugar.java:60)
-	at org.erights.e.elib.base.ClassDesc.tryCoerceR(ClassDesc.java:350)
-	at org.erights.e.elib.slot.BaseAuditor.coerce(BaseAuditor.java:59)
-	at org.erights.e.elib.prim.E.as(E.java:530)
-	at org.erights.e.elib.prim.JavaMemberNode.coerceArgs(JavaMemberNode.java:143)
-	at org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:188)
-	at org.erights.e.elib.prim.Selector.callIt(Selector.java:84)
-	at org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:132)
-	at org.erights.e.elang.evm.EMethod.execute(EMethod.java:175)
-	at org.erights.e.elang.evm.EMethodNode.execute(EMethodNode.java:136)
-	at org.erights.e.elib.prim.E.callAll(E.java:167)
-	at org.erights.e.elib.vat.PendingDelivery.innerRun(PendingDelivery.java:102)
-	at org.erights.e.elib.vat.PendingEvent.run(PendingEvent.java:76)
-	at org.erights.e.elib.vat.HeadlessRunner.run(HeadlessRunner.java:176)
-	at java.lang.Thread.run(Thread.java:595)
-
---^^^^--
-
-=== 2006-11-10T14:11:12.351Z (RecvThread.callDataPath:RecvThread.java:156) ERR
-comm: Error while calling net.vattp.data.DataCommThunk@8cff36 Type=4
---vvvv--
-makeEvaluator shutdown
-
-
-java.lang.RuntimeException: makeEvaluator shutdown
-	at org.erights.e.meta.java.lang.ThrowableGuardSugar.subCoerceR(ThrowableGuardSugar.java:60)
-	at org.erights.e.elib.base.ClassDesc.tryCoerceR(ClassDesc.java:350)
-	at org.erights.e.elib.slot.BaseAuditor.coerce(BaseAuditor.java:59)
-	at org.erights.e.elib.prim.E.as(E.java:530)
-	at org.erights.e.elib.prim.JavaMemberNode.coerceArgs(JavaMemberNode.java:143)
-	at org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:188)
-	at org.erights.e.elib.prim.Selector.callIt(Selector.java:84)
-	at org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:132)
-	at org.erights.e.elang.evm.EMethod.execute(EMethod.java:175)
-	at org.erights.e.elang.evm.EMethodNode.execute(EMethodNode.java:136)
-	at org.erights.e.elib.prim.E.callAll(E.java:167)
-	at org.erights.e.elib.vat.PendingDelivery.innerRun(PendingDelivery.java:102)
-	at org.erights.e.elib.vat.PendingEvent.run(PendingEvent.java:76)
-	at org.erights.e.elib.vat.HeadlessRunner.run(HeadlessRunner.java:176)
-	at java.lang.Thread.run(Thread.java:595)
-
---^^^^--
-
-=== 2006-11-10T14:41:12.349Z (RecvThread.callDataPath:RecvThread.java:156) ERR
-comm: Error while calling net.vattp.data.DataCommThunk@9d2610 Type=8
---vvvv--
-makeEvaluator shutdown
-
-
-java.lang.RuntimeException: makeEvaluator shutdown
-	at org.erights.e.meta.java.lang.ThrowableGuardSugar.subCoerceR(ThrowableGuardSugar.java:60)
-	at org.erights.e.elib.base.ClassDesc.tryCoerceR(ClassDesc.java:350)
-	at org.erights.e.elib.slot.BaseAuditor.coerce(BaseAuditor.java:59)
-	at org.erights.e.elib.prim.E.as(E.java:530)
-	at org.erights.e.elib.prim.JavaMemberNode.coerceArgs(JavaMemberNode.java:143)
-	at org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:188)
-	at org.erights.e.elib.prim.Selector.callIt(Selector.java:84)
-	at org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:132)
-	at org.erights.e.elang.evm.EMethod.execute(EMethod.java:175)
-	at org.erights.e.elang.evm.EMethodNode.execute(EMethodNode.java:136)
-	at org.erights.e.elib.prim.E.callAll(E.java:167)
-	at org.erights.e.elib.vat.PendingDelivery.innerRun(PendingDelivery.java:102)
-	at org.erights.e.elib.vat.PendingEvent.run(PendingEvent.java:76)
-	at org.erights.e.elib.vat.HeadlessRunner.run(HeadlessRunner.java:176)
-	at java.lang.Thread.run(Thread.java:595)
-
---^^^^--
-
-=== 2006-11-10T14:41:12.349Z (RecvThread.callDataPath:RecvThread.java:156) ERR
-comm: Error while calling net.vattp.data.DataCommThunk@12e224d Type=4
---vvvv--
-makeEvaluator shutdown
-
-
-java.lang.RuntimeException: makeEvaluator shutdown
-	at org.erights.e.meta.java.lang.ThrowableGuardSugar.subCoerceR(ThrowableGuardSugar.java:60)
-	at org.erights.e.elib.base.ClassDesc.tryCoerceR(ClassDesc.java:350)
-	at org.erights.e.elib.slot.BaseAuditor.coerce(BaseAuditor.java:59)
-	at org.erights.e.elib.prim.E.as(E.java:530)
-	at org.erights.e.elib.prim.JavaMemberNode.coerceArgs(JavaMemberNode.java:143)
-	at org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:188)
-	at org.erights.e.elib.prim.Selector.callIt(Selector.java:84)
-	at org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:132)
-	at org.erights.e.elang.evm.EMethod.execute(EMethod.java:175)
-	at org.erights.e.elang.evm.EMethodNode.execute(EMethodNode.java:136)
-	at org.erights.e.elib.prim.E.callAll(E.java:167)
-	at org.erights.e.elib.vat.PendingDelivery.innerRun(PendingDelivery.java:102)
-	at org.erights.e.elib.vat.PendingEvent.run(PendingEvent.java:76)
-	at org.erights.e.elib.vat.HeadlessRunner.run(HeadlessRunner.java:176)
-	at java.lang.Thread.run(Thread.java:595)
-
---^^^^--
-
-=== 2006-11-10T15:11:12.347Z (RecvThread.callDataPath:RecvThread.java:156) ERR
-comm: Error while calling net.vattp.data.DataCommThunk@1c39029 Type=8
---vvvv--
-makeEvaluator shutdown
-
-
-java.lang.RuntimeException: makeEvaluator shutdown
-	at org.erights.e.meta.java.lang.ThrowableGuardSugar.subCoerceR(ThrowableGuardSugar.java:60)
-	at org.erights.e.elib.base.ClassDesc.tryCoerceR(ClassDesc.java:350)
-	at org.erights.e.elib.slot.BaseAuditor.coerce(BaseAuditor.java:59)
-	at org.erights.e.elib.prim.E.as(E.java:530)
-	at org.erights.e.elib.prim.JavaMemberNode.coerceArgs(JavaMemberNode.java:143)
-	at org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:188)
-	at org.erights.e.elib.prim.Selector.callIt(Selector.java:84)
-	at org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:132)
-	at org.erights.e.elang.evm.EMethod.execute(EMethod.java:175)
-	at org.erights.e.elang.evm.EMethodNode.execute(EMethodNode.java:136)
-	at org.erights.e.elib.prim.E.callAll(E.java:167)
-	at org.erights.e.elib.vat.PendingDelivery.innerRun(PendingDelivery.java:102)
-	at org.erights.e.elib.vat.PendingEvent.run(PendingEvent.java:76)
-	at org.erights.e.elib.vat.HeadlessRunner.run(HeadlessRunner.java:176)
-	at java.lang.Thread.run(Thread.java:595)
-
---^^^^--
-
-=== 2006-11-10T15:11:12.347Z (RecvThread.callDataPath:RecvThread.java:156) ERR
-comm: Error while calling net.vattp.data.DataCommThunk@2d9fbc Type=4
---vvvv--
-makeEvaluator shutdown
-
-
-java.lang.RuntimeException: makeEvaluator shutdown
-	at org.erights.e.meta.java.lang.ThrowableGuardSugar.subCoerceR(ThrowableGuardSugar.java:60)
-	at org.erights.e.elib.base.ClassDesc.tryCoerceR(ClassDesc.java:350)
-	at org.erights.e.elib.slot.BaseAuditor.coerce(BaseAuditor.java:59)
-	at org.erights.e.elib.prim.E.as(E.java:530)
-	at org.erights.e.elib.prim.JavaMemberNode.coerceArgs(JavaMemberNode.java:143)
-	at org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:188)
-	at org.erights.e.elib.prim.Selector.callIt(Selector.java:84)
-	at org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:132)
-	at org.erights.e.elang.evm.EMethod.execute(EMethod.java:175)
-	at org.erights.e.elang.evm.EMethodNode.execute(EMethodNode.java:136)
-	at org.erights.e.elib.prim.E.callAll(E.java:167)
-	at org.erights.e.elib.vat.PendingDelivery.innerRun(PendingDelivery.java:102)
-	at org.erights.e.elib.vat.PendingEvent.run(PendingEvent.java:76)
-	at org.erights.e.elib.vat.HeadlessRunner.run(HeadlessRunner.java:176)
-	at java.lang.Thread.run(Thread.java:595)
-
---^^^^--
-
-=== 2006-11-10T15:30:17.304Z (ImportLoader.warnNoMake:ImportLoader.java:229) WRN
-eruntime: Import org.erights.e.elib.sealing.makeBrand instead : (Importing org.erights.e.elib.sealing.Brand)
- @ Loader#get(String)
- @ get/1: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:blob::4667:22::4667:45>
-..................................
+c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html:abc..................................
 at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::1181:2::1181:10>
 expr: help(add)
 original and new value differ
@@ -2636,35 +575,4 @@ original value: an org.erights.e.elang.evm.EImplByProxy
                 to run(:any, :any) :any
                 }
                 
-........................................................=== 2006-11-10T15:30:17.764Z (PendingEvent.report:PendingEvent.java:109) WRN
-causality: Problem in turn <<Vat awtVat.e-awt in <AWTRunner>>,868>: 
---vvvv--
-Failed: Not mergeable: <Vat awtVat.e-awt in <AWTRunner>>
-
-- Runnable#run()
-. <a VatRedirector>()
-
-java.lang.RuntimeException: Failed: Not mergeable: <Vat awtVat.e-awt in <AWTRunner>>
-	at org.erights.e.develop.assertion.T.fail(T.java:84)
-	at org.erights.e.develop.assertion.T.require(T.java:339)
-	at org.erights.e.elib.vat.Vat$VatRedirector.run(Vat.java:627)
-	at sun.reflect.GeneratedMethodAccessor189.invoke(Unknown Source)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
-	at java.lang.reflect.Method.invoke(Method.java:585)
-	at org.erights.e.elib.prim.InstanceMethodNode.innerExecute(InstanceMethodNode.java:113)
-	at org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:183)
-	at org.erights.e.elib.prim.E.callAll(E.java:167)
-	at org.erights.e.elib.vat.PendingDelivery.innerRun(PendingDelivery.java:102)
-	at org.erights.e.elib.vat.PendingEvent.run(PendingEvent.java:76)
-	at org.erights.e.ui.awt.AWTRunnerEvent.dispatch(AWTRunnerEvent.java:42)
-	at java.awt.EventQueue.dispatchEvent(EventQueue.java:461)
-	at java.awt.EventDispatchThread.pumpOneEventForHierarchy(EventDispatchThread.java:242)
-	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:163)
-	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:157)
-	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:149)
-	at java.awt.EventDispatchThread.run(EventDispatchThread.java:110)
-
---^^^^--
-
-
-c:/Documents and Settings/millerm1/e/src/esrc/scripts/without.e:
+........................................................

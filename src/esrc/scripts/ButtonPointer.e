@@ -39,7 +39,7 @@ def editFile(file, varName, newValue) :void {
 ? pragma.syntax("0.8")
 
 ? def f := <file:~/e/doc/toc.txt>
-# value: <file:c:/e/doc/toc.txt>
+# value: <file:c:/Documents and Settings/millerm1/e/doc/toc.txt>
 
 ? def tr := f.textReader()
 

@@ -293,11 +293,11 @@ STLJ="$(JAVACMD)" -cp "$(RUN_PATH)" \
 	-De.safej.bind-var-to-propName=true \
 	-Djava.library.path=$(TOP)/src/bin/$(PLATDIR)
 
-
 # A Time-Space-Local UI-less E that works after "make setup all" is done.
 # Includes those flags relevant to the E language as well.
 STLE=$(STLJ) org.erights.e.elang.interp.Rune
-STLEBIG=$(STLJ) -Xmx400m org.erights.e.elang.interp.Rune
+STLEBIG=$(STLJ) -Xmx400m -DTraceLog_dir=~/.e/etrace \
+	org.erights.e.elang.interp.Rune
 
 
 

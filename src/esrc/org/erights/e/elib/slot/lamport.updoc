@@ -9,7 +9,7 @@
 # value: <makeLamportSlot>
 
 ? def whenever := <elib:slot.whenever>
-# value: <ever0>
+# value: <whenever>
 
 ? def forever := <elib:slot.forever>
 # value: <trackLamportSlot>

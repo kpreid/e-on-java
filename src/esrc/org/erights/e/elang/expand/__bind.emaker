@@ -42,6 +42,7 @@ def bind0 {
     # value: 3
 
     ? interp.setExpand(false)
+    # expansion: interp.setExpand(false)
 
     ? x
     # value: 3

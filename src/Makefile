@@ -193,7 +193,7 @@ srccheck-esrc:
 		$(TOP)/src/esrc  $(TOP)/src/esrc 2>&1 | tee report-esrc.txt)
 
 srccheck-jsrc:
-	($(STLE) $(TOP)/src/esrc/scripts/srccheck.e \
+	($(STLEBIG) $(TOP)/src/esrc/scripts/srccheck.e \
 		$(TOP)/src/jsrc  $(TOP)/src/esrc 2>&1 | tee report-jsrc.txt)
 
 srccheck-doc:
@@ -207,7 +207,7 @@ srccheck-doc:
 updoc_reports: updoc_e_reports updoc_doc_reports
 
 updoc_e_reports:
-	($(STLE) $(TOP)/src/esrc/scripts/updoc.e \
+	($(STLEBIG) $(TOP)/src/esrc/scripts/updoc.e \
 		jsrc 2>&1 | tee report-updoc-jsrc.txt)
 	cp "/cygdrive/c/Program Files/erights.org/updoc-hash-cache.txt" \
 		$(TOP)/src/csrc/setup/updoc-hash-cache.txt

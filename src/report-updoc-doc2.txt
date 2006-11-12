@@ -1,20 +1,6 @@
 
 updoc: started
 
-c:/Documents and Settings/millerm1/e/doc/elib/capability/duals/index.html:
-c:/Documents and Settings/millerm1/e/doc/elib/capability/index.html:
-c:/Documents and Settings/millerm1/e/doc/elib/capability/ode/compose.e:
-c:/Documents and Settings/millerm1/e/doc/elib/capability/ode/index.html:
 c:/Documents and Settings/millerm1/e/doc/elib/capability/ode/ode-bearer.html:...
 c:/Documents and Settings/millerm1/e/doc/elib/capability/ode/ode-capabilities.html:..............
 c:/Documents and Settings/millerm1/e/doc/elib/capability/ode/ode-objects.html:...................
-c:/Documents and Settings/millerm1/e/doc/elib/concurrency/eio/index.html:
-c:/Documents and Settings/millerm1/e/doc/elib/concurrency/index.html:
-c:/Documents and Settings/millerm1/e/doc/elib/concurrency/when/index.html:
-c:/Documents and Settings/millerm1/e/doc/elib/distrib/captp/index.html:
-c:/Documents and Settings/millerm1/e/doc/elib/distrib/index.html:
-c:/Documents and Settings/millerm1/e/doc/elib/distrib/vattp/index.html:
-c:/Documents and Settings/millerm1/e/doc/elib/equality/grant-matcher/index.html:
-c:/Documents and Settings/millerm1/e/doc/elib/equality/index.html:
-c:/Documents and Settings/millerm1/e/doc/elib/index.html:
-c:/Documents and Settings/millerm1/e/doc/elib/legacy/index.html:

@@ -65,9 +65,9 @@ def EMPTY_SCRIPT := term`script(inVats("home"), [inVat("home",[])])`
  */
 def makeUpdocParserAuthor(optCacheFile) :near {
     def hashCache := makeHashCache(optCacheFile)
-
+    
     def makeUpdocParser {
-
+        
         to parsePlain(src :Twine) :Term {
             def bareHash := src.getBareCryptoHash()
             if (hashCache.has(bareHash)) {
@@ -79,7 +79,7 @@ def makeUpdocParserAuthor(optCacheFile) :near {
             }
             return result
         }
-
+        
         to parseHtml(htmlSrc :Twine) :Term {
             def bareHash := htmlSrc.getBareCryptoHash()
             if (hashCache.has(bareHash)) {
@@ -92,11 +92,11 @@ def makeUpdocParserAuthor(optCacheFile) :near {
             }
             return result
         }
-
+        
         to checkpoint() :void {
             hashCache.checkpoint()
         }
-
+        
         /**
          *
          * @source
@@ -104,9 +104,9 @@ def makeUpdocParserAuthor(optCacheFile) :near {
         to run(source :Twine) :near {
             def lines := source.split("\n")
             var index := 0
-
+            
             def vatNames := [].diverge()
-
+            
             /**
              * <tt>readExpr</tt> reads a single or multi-line expression.
              * <p>
@@ -136,20 +136,20 @@ def makeUpdocParserAuthor(optCacheFile) :near {
                     }
                     # put back newline removed by split
                     result += current + "\n"
-
+                    
                     index += 1
                     if (index >= lines.size()) {
                         break
                     }
                     current := lines[index].trim()
-
+                    
                     if (! (current.startsWith(">"))) {
                         break
                     }
                 }
                 return term`.String.$result`
             }
-
+            
             /**
              * <tt>readOptAnswer</tt> reads an optional single or multi-line
              * answer.
@@ -188,7 +188,8 @@ def makeUpdocParserAuthor(optCacheFile) :near {
                         def nextLine := rest.trim()
                         # skip over the stack trace which can vary from run to
                         # run
-                        if (nextLine =~ `` && keyword =~ `problem`) {
+                        if (nextLine =~ `` && (keyword =~ `problem` ||
+                                                 keyword =~ `syntax error`)) {
                             index += 1
                             while (index < lines.size() &&
                                      lines[index].trim() =~ `#@_`) {
@@ -208,7 +209,7 @@ def makeUpdocParserAuthor(optCacheFile) :near {
                     return null
                 }
             }
-
+            
             /**
              * Tests for a blank line and skips over it.
              */
@@ -217,7 +218,7 @@ def makeUpdocParserAuthor(optCacheFile) :near {
                     index += 1
                 }
             }
-
+            
             /**
              * Reads a sequence of answers.
              *
@@ -232,7 +233,7 @@ def makeUpdocParserAuthor(optCacheFile) :near {
                 }
                 return result
             }
-
+            
             /**
              * Reads an Updoc directive.
              * <p>
@@ -276,7 +277,7 @@ def makeUpdocParserAuthor(optCacheFile) :near {
                     }
                 }
             }
-
+            
             /**
              * Reads a directive and one or more test cases.
              *
@@ -304,9 +305,9 @@ def makeUpdocParserAuthor(optCacheFile) :near {
                     return term`sequence($directive, [$cases*])`
                 }
             }
-
+            
             def updocParser {
-
+                
                 /**
                  * <tt>readAnswers</tt>
                  *
@@ -315,7 +316,7 @@ def makeUpdocParserAuthor(optCacheFile) :near {
                 to readAnswers() :List[Term] {
                     return readAnswers()
                 }
-
+                
                 /**
                  * <tt>readScript</tt> reads an Updoc script.
                  *

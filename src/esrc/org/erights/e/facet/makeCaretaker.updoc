@@ -12,7 +12,7 @@ found at http://www.opensource.org/licenses/mit-license.html ..................
 # value: <makeCaretaker>
 
 ? def [f,r] := mct(<file:.>)
-# value: [<<file:c:/Documents and Settings/MILLERM1/e/src/>>, <revoker>]
+# value: [<<file:c:/Documents and Settings/millerm1/e/src/>>, <revoker>]
 
 ? f.exists()
 # value: true

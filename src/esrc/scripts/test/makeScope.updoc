@@ -28,7 +28,7 @@ From http://www.eros-os.org/pipermail/e-lang/2004-January/009423.html
   #
 
   ? e`any`.eval(demoScope)
-  # value: <any>
+  # value: any
 
   ? e`uc_construct`.eval(demoScope)
   # value: <uc_construct>

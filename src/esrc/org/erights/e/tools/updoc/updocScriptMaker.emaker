@@ -7,6 +7,8 @@ pragma.syntax("0.8")
 
 def withoutSuffix := <import:org.erights.e.tools.text.withoutSuffix>
 
+def LENIENT := true
+
 def getOptFirstSpan(str :Twine) :near {
     if (str.getOptSpan() =~ span :notNull) { return span }
     for part in str.getParts() {
@@ -194,7 +196,8 @@ def updocScriptMaker {
                 def shortAnswer := withoutSuffix(answer, "\n")
                 def spaces := keyword.size() + 3
                 def prefix := " " * spaces
-                out.indent(`    #$prefix`).print(`    # $keyword: $shortAnswer`)
+                out.indent(`    #$prefix`).print(
+                    `    # $keyword: $shortAnswer`)
                 # blank line for removed newline
                 out.println()
                 # blank line after answer block
@@ -229,7 +232,7 @@ def updocScriptMaker {
              * @param newAnswers
              * @param out
              */
-            to printDiffsOn(newAnswers, out) :void {
+            to printDiffsOn(newAnswers, out) :boolean {
                 # Only prints the first time
                 var exprPrinted := false
                 def printExprOnce(expr, out) :void {
@@ -247,20 +250,30 @@ def updocScriptMaker {
                 for keyword => answer in answers {
                     def optNewAnswer := newAnswers.fetch(keyword, fn{})
                     if (optNewAnswer == null) {
-                        # missing new case
-                        printExprOnce(expr, out)
-                        out.println(`missing new $keyword`)
-                        printBlock(`original $keyword`, answer, out)
+                        if (keyword =~ `example @rest` &&
+                              null != newAnswers.fetch(rest, fn{})) {
+                            # e.g.,   '#example stdout: xx'
+                            # matches '#stdout: yy'
+                        } else {
+                            # missing new case
+                            printExprOnce(expr, out)
+                            out.println(`missing new $keyword`)
+                            printBlock(`original $keyword`, answer, out)
+                        }
                     } else if (! (answer <=> optNewAnswer)) {
-                        # show differences
-                        printExprOnce(expr, out)
-                        out.println(`original and new $keyword differ`)
-                        printBlock(`original $keyword`,
-                                   answers[keyword],
-                                   out)
-                        printBlock(`     new $keyword`,
-                                   newAnswers[keyword],
-                                   out)
+                        if (keyword == "problem" && LENIENT) {
+                            # Ignore diffs in what's said about a problem
+                        } else {
+                            # show differences
+                            printExprOnce(expr, out)
+                            out.println(`original and new $keyword differ`)
+                            printBlock(`original $keyword`,
+                                       answers[keyword],
+                                       out)
+                            printBlock(`     new $keyword`,
+                                       newAnswers[keyword],
+                                       out)
+                        }
                     }
                 }
                 for keyword => answer in newAnswers {
@@ -271,12 +284,21 @@ def updocScriptMaker {
                             out.println(`missing original $keyword`)
                             printBlock(`new $keyword`, answer, out)
                         }
+                        if (keyword == "problem" ||
+                              keyword == "syntax error") {
+                            # After encountering an actual problem, we can
+                            # skip showing the rest of the script.
+                            # XXX We instead skip playing the rest of the
+                            # script, not just showing it.
+                            return true
+                        }
                     }
                 }
                 if (! exprPrinted) {
                     # success
                     out.print(".")
                 }
+                return false
             }
         }
     }

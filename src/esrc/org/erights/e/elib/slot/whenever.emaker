@@ -346,7 +346,7 @@ def whenever {
 >     }
 >     [out, l.getValue()]
 > })
-# value: <everFormula_23>
+# value: <_>
 
 ? m.getValue()
 # value: [1]
