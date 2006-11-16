@@ -33,12 +33,6 @@ public class TermBuilder extends BaseBuilder {
     static public final TermBuilder FOR_TERMS =
       new TermBuilder(TermParser.DEFAULT_SCHEMA);
 
-//    /**
-//     * Builds ASTs according to the term.y grammar
-//     */
-//    static public final ASTBuilder FOR_ASTS =
-//      new ASTBuilder(TermParser.DEFAULT_SCHEMA);
-
     /**
      *
      */

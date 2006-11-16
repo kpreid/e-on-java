@@ -9,6 +9,7 @@ import org.quasiliteral.astro.AstroArg;
 import org.quasiliteral.astro.AstroSchema;
 import org.quasiliteral.astro.AstroTag;
 import org.quasiliteral.astro.BaseBuilder;
+import org.quasiliteral.term.TermParser;
 
 /**
  * The default implementation (and default superclass) for implementing
@@ -25,6 +26,12 @@ import org.quasiliteral.astro.BaseBuilder;
  */
 public class ASTBuilder extends BaseBuilder {
 
+    /**
+     * Builds ASTs according to the term.y grammar
+     */
+    static public final ASTBuilder FOR_ASTS =
+      new ASTBuilder(TermParser.DEFAULT_SCHEMA);
+    
     /**
      *
      */

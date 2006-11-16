@@ -14,7 +14,6 @@ import org.erights.e.elib.slot.AnyGuard;
 import org.erights.e.elib.slot.Guard;
 import org.erights.e.elib.slot.NullOkGuard;
 import org.erights.e.elib.slot.VoidGuard;
-import org.erights.e.elib.tables.ArrayHelper;
 import org.erights.e.elib.tables.ConstList;
 import org.erights.e.elib.tables.ConstMap;
 import org.erights.e.elib.tables.FlexList;
@@ -158,7 +157,7 @@ public class ClassDesc extends TypeDesc {
                 //avoid E.toString() in order to avoid infinite regress
                 StringBuffer buf = new StringBuffer();
                 for (int i = 0; i < superSugars.length; i++) {
-                    buf.append(" " + superSugars[i]);
+                    buf.append(" ").append(superSugars[i]);
                 }
                 T.fail("coercion inheritance conflict" + buf);
             }
@@ -251,6 +250,7 @@ public class ClassDesc extends TypeDesc {
             if (null != result) {
                 return result;
             }
+            //noinspection CallToNativeMethodWhileLocked
             if (clazz.isPrimitive()) {
                 //This should only happen once, and clazz must be one of the
                 //nine primitive TYPEs below
@@ -304,7 +304,7 @@ public class ClassDesc extends TypeDesc {
 
     /**
      * Handles null, handles a trivial match ({@link Class#isInstance(Object)}),
-     * and otherwise delegates to {@link #subCoerceR(Object, OneArgFunc)}.
+     * and otherwise delegates to {@link #subCoerceR(Object,OneArgFunc)}.
      * <p/>
      * But does check the output, so it can give a meaningful error if it
      * doesn't match. This allows subCoerce implementations to avoid checking
@@ -355,13 +355,13 @@ public class ClassDesc extends TypeDesc {
         if (null != optPromo && myClass != optPromo &&
           myClass.isAssignableFrom(optPromo)) {
 
-            return ClassDesc.make(optPromo).coerce(shortSpecimen, optEjector);
+            return make(optPromo).coerce(shortSpecimen, optEjector);
         }
         throw doesntCoerceR(shortSpecimen, optEjector);
     }
 
     /**
-     * @return
+     *
      */
     protected RuntimeException doesntCoerceR(Object shortSpecimen,
                                              OneArgFunc optEjector) {
@@ -384,6 +384,11 @@ public class ClassDesc extends TypeDesc {
      * Rather weird kludge. Result is that, in E, "myClass[5]" doesn't get the
      * fifth (or sixth) of anything, but rather produces a 5 element array of
      * type myClass.
+     *
+     * @deprecated Since it makes an uninitialized array (or rather an array
+     *             initialized to its type's zero element), and since arrays,
+     *             to E, are immutable, this probably isn't what you wanted
+     *             anyway.
      */
     public Object get(int index) {
         return ArrayHelper.newArray(myClass, index);
@@ -393,11 +398,13 @@ public class ClassDesc extends TypeDesc {
      * Cause "myClass[]" to return the type "list of myClass".
      * <p/>
      * At the Java level, it's actually the type "Array of myClass".
+     *
+     * @deprecated Use ':List[type]' instead of ':type[]'
      */
     public Guard get() {
         //XXX this is a horrible way to do this, but I couldn't find any
         //simpler way.
-        return ClassDesc.make(get(0).getClass());
+        return make(get(0).getClass());
     }
 
     /************ name mangling and demangling, sort of ************/
@@ -432,7 +439,7 @@ public class ClassDesc extends TypeDesc {
         }
         if ("self".equals(result) || Character.isDigit(result.charAt(0))) {
             //result so far is not "significant".
-            if (lastSep >= 1) {
+            if (1 <= lastSep) {
                 String qualifier = fqName.substring(0, lastSep);
                 result = "..." + simpleName(qualifier) +
                   fqName.charAt(lastSep) + result;
