@@ -1,0 +1,15 @@
+# Copyright 2004 Hewlett Packard, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+# ? def makeSchema := <import:org.quasiliteral.schema.makeSchema>
+# ? def <schema> := <resource:org/quasiliteral/schema/>
+# ? makeSchema.parseSchema(<schema:jsonml.schema>.getTwine())
+
+# This describes the subset of json which represent an encoding of
+# (most of) xml in jsonml. See jsonml.org
+
+<jmlElement>    ::= [<jmlTag> & <jmlAttributes>? & <jmlChildren>?]
+                |   .String.;
+<jmlTag>        ::= .String.;
+<jmlAttributes> ::= { (.String. : .String.)* };
+<jmlChildren>   ::= [<jmlElements>*];

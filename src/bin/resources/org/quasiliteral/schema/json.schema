@@ -1,0 +1,16 @@
+# Copyright 2004 Hewlett Packard, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+# ? def makeSchema := <import:org.quasiliteral.schema.makeSchema>
+# ? def <schema> := <resource:org/quasiliteral/schema/>
+# ? makeSchema.parseSchema(<schema:json.schema>.getTwine())
+
+# This describes the subset of term-trees which represent json data.
+# See json.org
+
+<jsonData>   ::= <jsonObject> | <jsonArray>;
+<jsonObject> ::= { (.String. : <jsonValue>)* };
+<jsonArray>  ::= [<jsonValue>*];
+<jsonValue>  ::= .String. | .int. | .float.
+             |   <jsonObject> | <jsonArray>
+             |   true | false | null;
