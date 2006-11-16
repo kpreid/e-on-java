@@ -56,17 +56,18 @@ term_parser:
 # space-time-local elib & quasiliterals up to 'term'
 # depends on develop
 stl_elib:
-	find $(ER)/elib                 -name '*.java' > files.tmp
-	find $(ER)/meta/java/io         -name '*.java' >> files.tmp
-	find $(ER)/meta/java/lang       -name '*.java' >> files.tmp
-	find $(ER)/meta/java/math       -name '*.java' >> files.tmp
-	find $(ER)/meta/java/net        -name '*.java' >> files.tmp
-	find $(ER)/meta/java/security   -name '*.java' >> files.tmp
-	find $(ER)/meta/java/util       -name '*.java' >> files.tmp
-	find $(ER)/meta/$(ER)/elib      -name '*.java' >> files.tmp
-	find org/quasiliteral/astro     -name '*.java' >> files.tmp
-	find org/quasiliteral/syntax    -name '*.java' >> files.tmp
-	find org/quasiliteral/term      -name '*.java' >> files.tmp
+	find $(ER)/elib                        -name '*.java' > files.tmp
+	find $(ER)/meta/java/io                -name '*.java' >> files.tmp
+	find $(ER)/meta/java/lang              -name '*.java' >> files.tmp
+	find $(ER)/meta/java/math              -name '*.java' >> files.tmp
+	find $(ER)/meta/java/net               -name '*.java' >> files.tmp
+	find $(ER)/meta/java/security          -name '*.java' >> files.tmp
+	find $(ER)/meta/java/util              -name '*.java' >> files.tmp
+	find $(ER)/meta/$(ER)/elib             -name '*.java' >> files.tmp
+	find $(ER)/meta/org/quasiliteral/astro -name '*.java' >> files.tmp
+	find org/quasiliteral/astro            -name '*.java' >> files.tmp
+	find org/quasiliteral/syntax           -name '*.java' >> files.tmp
+	find org/quasiliteral/term             -name '*.java' >> files.tmp
 	$(JCOMPILE) @files.tmp
 
 # depends on stl_elib

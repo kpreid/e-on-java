@@ -78,6 +78,12 @@ public class AstroGuardSugar extends ClassDesc {
         } else if (shortSpecimen instanceof Character) {
             return myBuilder.leafChar(((Character)shortSpecimen).charValue(),
                                       null);
+        } else if (shortSpecimen instanceof String) {
+            return myBuilder.leafString((String)shortSpecimen, null);
+        } else if (shortSpecimen instanceof Twine) {
+            Twine twine = (Twine)shortSpecimen;
+            // XXX Should we be passing the getOptSpan() here, or null?
+            return myBuilder.leafTwine(twine, twine.getOptSpan());
         }
         return super.subCoerceR(shortSpecimen,
                                 optEjector); //make compiler happy
