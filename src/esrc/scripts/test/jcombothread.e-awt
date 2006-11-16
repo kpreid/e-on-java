@@ -1,6 +1,7 @@
 #!/usr/bin/env rune
 
-# XXX Need copyright notice
+# Copyright 2004 Kevin Reid, under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
 
 # Derived from Kevin Reid's message at
 # http://www.eros-os.org/pipermail/e-lang/2004-April/009766.html
