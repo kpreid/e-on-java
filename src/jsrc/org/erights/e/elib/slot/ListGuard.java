@@ -23,6 +23,8 @@ import java.io.IOException;
  */
 public class ListGuard implements Guard {
 
+    static private final ClassDesc ConstListGuard =
+      ClassDesc.make(ConstList.class);
     static public final ListGuard THE_BASE = new ListGuard(null);
 
     private final Guard myOptElemGuard;
@@ -35,13 +37,11 @@ public class ListGuard implements Guard {
     }
 
     /**
-     * @return
+     *
      */
     public ListGuard get(Guard elemGuard) {
-        T.require(null == myOptElemGuard,
-                  "Already parameterized: ", this);
-        T.notNull(elemGuard,
-                  "Missing element guard parameter");
+        T.require(null == myOptElemGuard, "Already parameterized: ", this);
+        T.notNull(elemGuard, "Missing element guard parameter");
         return new ListGuard(elemGuard);
     }
 
@@ -49,13 +49,31 @@ public class ListGuard implements Guard {
      *
      */
     public Object coerce(Object specimen, OneArgFunc optEjector) {
-        ClassDesc ConstListGuard = ClassDesc.make(ConstList.class);
         ConstList list =
           (ConstList)ConstListGuard.coerce(specimen, optEjector);
         if (null == myOptElemGuard) {
             return list;
         }
         int len = list.size();
+        cheap:
+        {
+            if (myOptElemGuard instanceof ClassDesc) {
+                // If it's a kind of ClassDesc, then we can assume it's
+                // monotonic.
+                // XXX It would be better to have a more inclusive monotonicity
+                // test.
+                // Try for a cheap success
+                Class elemClass = ((ClassDesc)myOptElemGuard).asClass();
+                for (int i = 0; i < len; i++) {
+                    if (!(elemClass.isInstance(list.get(i)))) {
+                        // No cheap success
+                        break cheap;
+                    }
+                }
+                // cheap success
+                return list;
+            }
+        }
         Object[] result = new Object[len];
         for (int i = 0; i < len; i++) {
             result[i] = myOptElemGuard.coerce(list.get(i), optEjector);
@@ -64,7 +82,7 @@ public class ListGuard implements Guard {
     }
 
     /**
-     * @return
+     *
      */
     public Guard getElemGuard() {
         if (null == myOptElemGuard) {

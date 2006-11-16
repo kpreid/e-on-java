@@ -12,6 +12,7 @@ import org.erights.e.elib.serial.DeepPassByCopy;
 import org.erights.e.elib.serial.Persistent;
 import org.erights.e.elib.slot.Conformable;
 import org.erights.e.elib.slot.Guard;
+import org.erights.e.elib.slot.ListGuard;
 import org.erights.e.elib.tables.ConstList;
 import org.erights.e.elib.tables.ConstSet;
 import org.erights.e.elib.tables.FlexList;
@@ -32,16 +33,17 @@ import java.math.BigInteger;
  * Like an Antlr {@link antlr.collections.AST AST}, but with differences that
  * make it suitable for quasiliteral processing.
  * <p/>
- * The differences are:<ul>
- * <li>It knows how to convert to and from an Antlr AST, in a way that
- * mostly preserves the semantics of vanilla ASTs.
- * <li>It's PassByCopy, necessitating it be Immutable.
- * <li>Each Term only points downward, not rightward, making them
- * sharable by different containing contexts.
- * <li>The functor is a {@link Term}, which is likewise like an Antlr
- * {@link antlr.Token}, rather than just storing a String and an int.
- * <li>It has a more conventional printed form, like a prolog term tree.
- * </ul>
+ * The differences are:<ul> <li>It knows how to convert to and from an Antlr
+ * AST, in a way that mostly preserves the semantics of vanilla ASTs. <li>It's
+ * PassByCopy, necessitating it be Immutable. <li>Each Term only points
+ * downward, not rightward, making them sharable by different containing
+ * contexts. <li>The functor is a {@link Term}, which is likewise like an Antlr
+ * {@link antlr.Token}, rather than just storing a String and an int. <li>It
+ * has a more conventional printed form, like a prolog term tree. </ul>
+ *
+ * New: A Term may not have both data and children. In other words,
+ * data-holding terms are leaves, so only tag-terms can have a non-empty list
+ * of children.
  *
  * @author Mark S. Miller
  * @author Many ideas from Danfuzz Bornstein
@@ -58,32 +60,42 @@ public final class Term extends Termish
     static private StaticMaker OptTermMaker = null;
 
     /** */
-    static private ConstSet TermDataGuards = null;
+    static private ConstSet OptTermDataGuards = null;
 
     /**
-     * @return
+     * Initialized lazily to avoid a circularity.
+     */
+    static private ListGuard OptListOfTermsGuard = null;
+
+    /**
+     *
      */
     static private boolean isTermDataGuard(Guard guard) {
-        if (null == TermDataGuards) {
-            Guard[] termDataGuards = {
-                ClassDesc.make(String.class),
-                ClassDesc.make(Twine.class),
-                ClassDesc.make(Character.TYPE),
-                ClassDesc.make(Byte.TYPE),
-                ClassDesc.make(Short.TYPE),
-                ClassDesc.make(Integer.TYPE),
-                ClassDesc.make(Long.TYPE),
-                ClassDesc.make(BigInteger.class),
-                ClassDesc.make(EInt.class),
-                ClassDesc.make(Float.TYPE),
-                ClassDesc.make(Double.TYPE),
-                ClassDesc.make(Number.class)
-            };
-            TermDataGuards = ConstList.fromArray(termDataGuards).asSet();
+        if (null == OptTermDataGuards) {
+            Guard[] termDataGuards = {ClassDesc.make(String.class),
+              ClassDesc.make(Twine.class),
+              ClassDesc.make(Character.TYPE),
+              ClassDesc.make(Byte.TYPE),
+              ClassDesc.make(Short.TYPE),
+              ClassDesc.make(Integer.TYPE),
+              ClassDesc.make(Long.TYPE),
+              ClassDesc.make(BigInteger.class),
+              ClassDesc.make(EInt.class),
+              ClassDesc.make(Float.TYPE),
+              ClassDesc.make(Double.TYPE),
+              ClassDesc.make(Number.class)};
+            OptTermDataGuards = ConstList.fromArray(termDataGuards).asSet();
         }
-        return TermDataGuards.contains(guard);
+        return OptTermDataGuards.contains(guard);
     }
 
+    static private ListGuard ListOfTermsGuard() {
+        if (null == OptListOfTermsGuard) {
+            ClassDesc TermGuard = ClassDesc.make(Term.class);
+            OptListOfTermsGuard = ListGuard.THE_BASE.get(TermGuard);
+        }
+        return OptListOfTermsGuard;
+    }
 
     /**
      * @serial Represents the token-type of the functor of this term.
@@ -91,9 +103,9 @@ public final class Term extends Termish
     private final AstroTag myTag;
 
     /**
-     * @serial If the functor represents a literal-data token, then this is
-     * the data, and myTag must represent the cononical corresponding
-     * token-type for this kind of data in this schema.
+     * @serial If the functor represents a literal-data token, then this is the
+     * data, and myTag must represent the cononical corresponding token-type
+     * for this kind of data in this schema.
      */
     private final Object myOptData;
 
@@ -106,8 +118,8 @@ public final class Term extends Termish
     /**
      * A term is a functor (the above three instance variables) as
      * parameterized by a list of argument Terms. These are the arguments. A
-     * term of zero arguments is often refered to as a "functor", so there's
-     * no information beyond the functor-part.
+     * term of zero arguments is often refered to as a "functor", so there's no
+     * information beyond the functor-part.
      */
     private final ConstList myArgs;
 
@@ -120,22 +132,21 @@ public final class Term extends Termish
     private transient int myHeight = 0;
 
     /**
-     * Makes a Term that represents a node in an abstract syntax tree, ie,
-     * a Term tree.
+     * Makes a Term that represents a node in an abstract syntax tree, ie, a
+     * Term tree.
      * <p/>
-     * The invariants of a Term are not checked here, but rather are
-     * enforced by the callers in this class and in TermBuilder.
-     * XXX Bug This constructor is now public, so the invariants must be
-     * enforced here. They aren't yet.
+     * The invariants of a Term are not checked here, but rather are enforced
+     * by the callers in this class and in TermBuilder. XXX Bug This
+     * constructor is now public, so the invariants must be enforced here. They
+     * aren't yet.
      *
-     * @param tag     Identifies a token type in a particular grammar or set
-     *                of related grammars, used as the functor (or "label") of
+     * @param tag     Identifies a token type in a particular grammar or set of
+     *                related grammars, used as the functor (or "label") of
      *                this Term
      * @param optData Either something that promotes to a {@link Character},
-     *                {@link org.erights.e.meta.java.math.EInt EInt},
-     *                {@link Double}, or {@link Twine} or null. If not null,
-     *                then the tag must represent the canonical literal type
-     *                for this kind of data in this schema.
+     *                {@link EInt}, {@link Double}, or {@link Twine} or null.
+     *                If not null, then the tag must represent the canonical
+     *                literal type for this kind of data in this schema.
      * @param optSpan Where was the source text this token was extracted from?
      * @param args    This Term's argument list -- a list of Terms
      */
@@ -146,7 +157,13 @@ public final class Term extends Termish
         myTag = tag;
         myOptData = optData;
         myOptSpan = optSpan;
-        myArgs = args;
+        // XXX For now, Terms may only contain Terms. See
+        // https://sourceforge.net/tracker/index.php?func=detail&aid=1527406&
+        // group_id=75274&atid=551529
+        myArgs = (ConstList)ListOfTermsGuard().coerce(args, null);
+
+        T.require(null == optData || 0 == args.size(),
+                  "Term ", tag, " can't have both data and children");
     }
 
     /**
@@ -156,9 +173,8 @@ public final class Term extends Termish
         if (null == OptTermMaker) {
             OptTermMaker = StaticMaker.make(Term.class);
         }
-        Object[] result = {
-            OptTermMaker, "run", myTag, myOptData, myOptSpan, myArgs
-        };
+        Object[] result =
+          {OptTermMaker, "run", myTag, myOptData, myOptSpan, myArgs};
         return result;
     }
 
@@ -194,9 +210,8 @@ public final class Term extends Termish
     }
 
     /**
-     * Either literal data or null. If not null, then the tag
-     * must represent the canonical literal type for this
-     * kind of data in this schema.
+     * Either literal data or null. If not null, then the tag must represent
+     * the canonical literal type for this kind of data in this schema.
      */
     public Object getOptData() {
         return myOptData;
@@ -217,7 +232,7 @@ public final class Term extends Termish
      *
      */
     public Object getOptArgData() {
-        if (myArgs.size() >= 1) {
+        if (1 <= myArgs.size()) {
             return ((Term)myArgs.get(0)).getOptData();
         } else {
             return null;
@@ -229,7 +244,9 @@ public final class Term extends Termish
      */
     public Object getOptArgData(short tagCode) {
         T.require(tagCode == myTag.getOptTagCode(),
-                  "Tag mismatch: ", myTag, " vs " + tagCode);
+                  "Tag mismatch: ",
+                  myTag,
+                  " vs " + tagCode);
         return getOptArgData();
     }
 
@@ -254,9 +271,9 @@ public final class Term extends Termish
 
     /**
      * A term is a functor (the above three instance variables) as
-     * parameterized by a list of argument Terms. These are the arguments.
-     * A term of zero arguments is often refered to as a "functor", so there's
-     * no information beyond the functor-part.
+     * parameterized by a list of argument Terms. These are the arguments. A
+     * term of zero arguments is often refered to as a "functor", so there's no
+     * information beyond the functor-part.
      */
     public ConstList getArgs() {
         return myArgs;
@@ -279,11 +296,8 @@ public final class Term extends Termish
 //    }
 
     /**
-     * Lexicographic comparison of, in order:<ul>
-     * <li>the tags
-     * <li>the data
-     * <li>the args
-     * </ul>
+     * Lexicographic comparison of, in order:<ul> <li>the tags <li>the data
+     * <li>the args </ul>
      */
     public double op__cmp(Term other) {
         //compare tags first
@@ -306,9 +320,8 @@ public final class Term extends Termish
             } else {
                 //note that we only compare data when tags match, so the
                 //comparison should never give a type mismatch exception
-                result = E.asFloat64(E.call(myOptData,
-                                            "op__cmp",
-                                            other.myOptData));
+                result =
+                  E.asFloat64(E.call(myOptData, "op__cmp", other.myOptData));
             }
         }
         if (0.0 != result) {
@@ -321,11 +334,11 @@ public final class Term extends Termish
     /**
      * What's the longest distance to the bottom?
      * <p/>
-     * A leaf node is height 1. All other nodes are one more than the height
-     * of their highest child. This is used for pretty printing.
+     * A leaf node is height 1. All other nodes are one more than the height of
+     * their highest child. This is used for pretty printing.
      */
     public int getHeight() {
-        if (myHeight <= 0) {
+        if (0 >= myHeight) {
             myHeight = 1;
             for (int i = 0; i < myArgs.size(); i++) {
                 int h = ((Term)myArgs.get(i)).getHeight();
@@ -339,11 +352,9 @@ public final class Term extends Termish
      * A leaf Term can coerce to the kind of data it holds.
      * <p/>
      * If it has no data, then it can coerce to the tag's name.
-     *
-     * @return
      */
     public Object __conformTo(Guard guard) {
-        if (myArgs.size() == 0 && isTermDataGuard(guard)) {
+        if (0 == myArgs.size() && isTermDataGuard(guard)) {
             if (null == myOptData) {
                 return myTag.getTagName();
             } else {
@@ -355,9 +366,6 @@ public final class Term extends Termish
 
     /**
      *
-     * @param out
-     * @param quasiFlag
-     * @throws IOException
      */
     public void prettyPrintOn(TextWriter out, boolean quasiFlag)
       throws IOException {
@@ -390,7 +398,7 @@ public final class Term extends Termish
         String close;
         ConstList args = myArgs;
         if (".tuple.".equals(label)) {
-            if (h <= 1) {
+            if (1 >= h) {
                 out.print("[]");
                 return;
             }
@@ -398,7 +406,7 @@ public final class Term extends Termish
             open = "[";
             close = "]";
         } else if (".bag.".equals(label)) {
-            if (h <= 1) {
+            if (1 >= h) {
                 out.print("{}");
                 return;
             }
@@ -406,7 +414,7 @@ public final class Term extends Termish
             open = "{";
             close = "}";
 
-        } else if (myArgs.size() == 1 &&
+        } else if (1 == myArgs.size() &&
           ".bag.".equals(((Term)myArgs.get(0)).getTag().getTagName())) {
 
             out.print(label);
@@ -414,9 +422,8 @@ public final class Term extends Termish
             open = "";
             close = "";
 
-        } else if (".attr.".equals(label) &&
-          myArgs.size() == 1 &&
-          ((Term)myArgs.get(0)).getArgs().size() == 1) {
+        } else if (".attr.".equals(label) && 1 == myArgs.size() &&
+          1 == ((Term)myArgs.get(0)).getArgs().size()) {
 
             Term child = (Term)myArgs.get(0);
             Term childFunctor = (Term)child.withoutArgs();
@@ -429,7 +436,7 @@ public final class Term extends Termish
 
         } else {
             out.print(label);
-            if (h <= 1) {
+            if (1 >= h) {
                 //If it's a leaf, don't show parens either
                 return;
             }
@@ -437,7 +444,7 @@ public final class Term extends Termish
             open = "(";
             close = ")";
         }
-        if (h == 2) {
+        if (2 == h) {
             //If it only contains leaves, do it on one line
             out.print(open);
             ((Term)args.get(0)).prettyPrintOn(out, quasiFlag);
