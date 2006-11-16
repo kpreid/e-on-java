@@ -8,6 +8,7 @@ import org.erights.e.develop.assertion.T;
 import org.erights.e.elib.base.SourceSpan;
 import org.erights.e.elib.tables.ConstList;
 import org.erights.e.elib.tables.Twine;
+import org.erights.e.meta.java.math.EInt;
 import org.quasiliteral.astro.Astro;
 import org.quasiliteral.astro.AstroBuilder;
 import org.quasiliteral.astro.AstroSchema;
@@ -15,14 +16,15 @@ import org.quasiliteral.astro.AstroTag;
 
 /**
  * A Kind of Antlr {@link Token} that preserves all the information in a
- * {@link Functor}.
+ * functor.
  * <p/>
- * In keeping with the nature of an Antlr Token, and in order to be usable
- * from within Antlr itself, AstroToken is mutable, but just mutable enough
- * to accomodate Antlr. Specifically, the various values are settable once.
+ * In keeping with the nature of an Antlr Token, and in order to be usable from
+ * within Antlr itself, AstroToken is mutable, but just mutable enough to
+ * accomodate Antlr. Specifically, the various values are settable once.
  *
  * @author Mark S. Miller
  * @author Based on ValueExtentToken by Danfuzz Bornstein
+ * @noinspection CloneableClassInSecureContext
  */
 public class AstroToken extends Token implements Astro {
 
@@ -38,8 +40,7 @@ public class AstroToken extends Token implements Astro {
 
     /**
      * Must be a null, or something that promotes to a {@link Character},
-     * {@link org.erights.e.meta.java.math.EInt EInt}, {@link Double},
-     * or {@link Twine}.
+     * {@link EInt}, {@link Double}, or {@link Twine}.
      * <p/>
      * If not null, then the type must correspond to the tag.
      */
@@ -83,14 +84,14 @@ public class AstroToken extends Token implements Astro {
      * enforced by the callers in this class and in ASTBuilder.
      *
      * @param optSchema If provided, the AstroSchema in which tag is defined.
-     *                  To use the composite representation, a schema must
-     *                  be provided.
+     *                  To use the composite representation, a schema must be
+     *                  provided.
      * @param tag       Identifies a token type in a particular grammar or set
      *                  of related grammars.
-     * @param optData   null, or something that promotes to a {@link Character},
-     *                  {@link org.erights.e.meta.java.math.EInt EInt},
-     *                  {@link Double}, or {@link Twine}
-     *                  presumably calculated from lexing this token
+     * @param optData   null, or something that promotes to a {@link
+     *                  Character}, {@link EInt EInt}, {@link Double}, or
+     *                  {@link Twine} presumably calculated from lexing this
+     *                  token
      * @param optSpan   Where this token was extracted from.
      */
     AstroToken(AstroSchema optSchema,
@@ -158,16 +159,17 @@ public class AstroToken extends Token implements Astro {
      * For when the type-code is already set by generic Antlr code, while
      * Astro-specific knowledge of the schema comes along later.
      * <p/>
-     * To use this, the type code must already be set, the tag must not
-     * yet be set, and the schema must not be set to a different schema.
+     * To use this, the type code must already be set, the tag must not yet be
+     * set, and the schema must not be set to a different schema.
      */
     public void setSchema(AstroSchema schema) {
-        T.require(INVALID_TYPE != getType(),
-                  "Type-code must be set: ", this);
-        T.require(null == myOptTag,
-                  "Tag must not be set: ", this);
+        T.require(INVALID_TYPE != getType(), "Type-code must be set: ", this);
+        T.require(null == myOptTag, "Tag must not be set: ", this);
         T.require(null == myOptSchema || myOptSchema == schema,
-                  "Schema conflict: ", myOptSchema, " vs ", schema);
+                  "Schema conflict: ",
+                  myOptSchema,
+                  " vs ",
+                  schema);
         myOptSchema = schema;
         myOptTag = schema.getTagForCode(getOptTagCode());
     }
@@ -185,8 +187,7 @@ public class AstroToken extends Token implements Astro {
     }
 
     /**
-     * If this token represents literal data, return that data,
-     * else null.
+     * If this token represents literal data, return that data, else null.
      */
     public Object getOptData() {
         if (getTag().isTagForData(myOptData)) {
@@ -207,13 +208,16 @@ public class AstroToken extends Token implements Astro {
      */
     public Object getOptArgData() {
         T.require(!(getTag().isTagForData(myOptData)),
-                  "Not a composite: ", this);
+                  "Not a composite: ",
+                  this);
         return myOptData;
     }
 
     public Object getOptArgData(short tagCode) {
         T.require(getTag().getOptTagCode() == tagCode,
-                  "Tag mismatch: ", getTag(), " vs " + tagCode);
+                  "Tag mismatch: ",
+                  getTag(),
+                  " vs " + tagCode);
         return getOptArgData();
     }
 
@@ -261,11 +265,10 @@ public class AstroToken extends Token implements Astro {
     }
 
     /**
-     * Override to make set-once, and so set the source-span info of
-     * myOptSpan
+     * Override to make set-once, and so set the source-span info of myOptSpan
      */
     public void setLine(int l) {
-        T.require(getLine() == 0, "Line already set");
+        T.require(0 == getLine(), "Line already set");
         T.fail("XXX setLine not yet implemented");
     }
 
@@ -280,11 +283,10 @@ public class AstroToken extends Token implements Astro {
     }
 
     /**
-     * Override to make set-once, and so set the source-span info of
-     * myOptSpan
+     * Override to make set-once, and so set the source-span info of myOptSpan
      */
     public void setColumn(int c) {
-        T.require(getColumn() == 0, "Column already set");
+        T.require(0 == getColumn(), "Column already set");
         T.fail("XXX setColumn not yet implemented");
     }
 
@@ -295,13 +297,10 @@ public class AstroToken extends Token implements Astro {
         if (getTag().isTagForData(myOptData)) {
             return ConstList.EmptyList;
         } else {
-            T.notNull(myOptSchema,
-                      "Must have a Schema first: ", this);
+            T.notNull(myOptSchema, "Must have a Schema first: ", this);
             AstroTag litTag = myOptSchema.getTypeTag(myOptData.getClass());
-            Astro arg = new AstroToken(myOptSchema,
-                                       litTag,
-                                       myOptData,
-                                       getOptSpan());
+            Astro arg =
+              new AstroToken(myOptSchema, litTag, myOptData, getOptSpan());
             return ConstList.EmptyList.with(arg);
         }
     }
