@@ -20,10 +20,10 @@ Contributor(s): ______________________________________.
 */
 
 import org.erights.e.develop.assertion.T;
+import org.erights.e.elib.base.Ejector;
 import org.erights.e.elib.base.Script;
 import org.erights.e.elib.base.SourceSpan;
 import org.erights.e.elib.base.TypeDesc;
-import org.erights.e.elib.base.Ejector;
 import org.erights.e.elib.debug.CallCounter;
 import org.erights.e.elib.debug.EStackItem;
 import org.erights.e.elib.debug.Profiler;
@@ -32,10 +32,10 @@ import org.erights.e.elib.prim.E;
 import org.erights.e.elib.prim.VTable;
 import org.erights.e.elib.prim.VTableEntry;
 import org.erights.e.elib.tables.ConstList;
-import org.erights.e.elib.tables.FlexList;
 import org.erights.e.elib.tables.ConstMap;
-import org.erights.e.elib.vat.Runner;
+import org.erights.e.elib.tables.FlexList;
 import org.erights.e.elib.util.OneArgFunc;
+import org.erights.e.elib.vat.Runner;
 import org.erights.e.meta.java.math.EInt;
 
 import java.io.IOException;
@@ -164,15 +164,15 @@ public class EMatchersNode implements VTableEntry, EStackItem {
                                      "__getAllegedType",
                                      E.NO_ARGS,
                                      ej);
-            if (null == optType) {
+            TypeDesc optTD = (TypeDesc)E.as(optType, TypeDesc.class);
+            if (null == optTD) {
                 return;
             }
-            ConstMap msgTypes = ((TypeDesc)optType).getMessageTypes();
+            ConstMap msgTypes = optTD.getMessageTypes();
             Object[] rest = (Object[])msgTypes.getValues();
             mTypes.append(ConstList.fromArray(rest));
         } catch (Throwable ex) {
             ej.result(ex);
-            return;
         } finally {
             ej.disable();
         }
