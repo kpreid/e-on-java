@@ -161,8 +161,6 @@ public interface AstroBuilder {
      * <pre>    term(leafTag(".attr."), term(functor, value))</pre>
      * although an individual builder/schema may have its own idea about what
      * tagName to use to mark an attribute.
-     *
-     * @return
      */
     Astro attr(Astro functor, AstroArg value);
 

@@ -17,7 +17,7 @@
     #                y
     #            </tag>`
 
-    ? def miniSchema := <astro:makeBaseSchema>.new("mini", [
+    ? def miniSchema := <qq:astro.makeBaseSchema>.new("mini", [
     >     "tag",
     >     ".char.",
     >     ".int.",
@@ -392,10 +392,10 @@
     ? def <astro> := <unsafe:org.quasiliteral.astro.*>
     # value: <unsafe:org.quasiliteral.astro.*>
 
-    ? def TermTreeMaker := <astro:TermTree>
+    ? def TermTreeMaker := <qq:astro.TermTree>
     # value: <unsafe:org.quasiliteral.astro.TermTree>
 
-    ? def FunctorMaker := <astro:Functor>
+    ? def FunctorMaker := <qq:astro.Functor>
     # value: <unsafe:org.quasiliteral.astro.Functor>
 
     ? def foo := FunctorMaker("id", "foo$@`x", null)
