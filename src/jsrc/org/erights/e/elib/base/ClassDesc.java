@@ -29,9 +29,9 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
 /**
- * Describes the E-type of instances of a Java class (and its subclasses).
- * This is the Java type as modified by the E sugar mechanism, and as seen
- * through E.
+ * Describes the E-type of instances of a Java class (and its subclasses). This
+ * is the Java type as modified by the E sugar mechanism, and as seen through
+ * E.
  *
  * @author Mark S. Miller
  */
@@ -39,62 +39,55 @@ public class ClassDesc extends TypeDesc {
 
     /**
      * Maps from the fully qualified class name of a non-primitive to the
-     * fqname of the GuardSugar class providing its coerce method. <p>
+     * fqname of the GuardSugar class providing its coerce method.
      * <p/>
      * When a Class is used as a type (coerced to a ClassDesc), it might have
      * per-Class coercion behavior. Such behavior would be in a GuardSugar
-     * class that implements Guard. This table maps from the fqnames of
-     * Classes to the fqnames of their corresponding GuardSugar class. The
-     * ClassDesc that a Class is an instance of this GuardSugar. <p>
+     * class that implements Guard. This table maps from the fqnames of Classes
+     * to the fqnames of their corresponding GuardSugar class. The ClassDesc
+     * that a Class is an instance of this GuardSugar.
      * <p/>
-     * For a given Class, if a direct match isn't found, we check that
-     * class's supertypes (both extends & implements). If a unique
-     * best match is found we take that. Otherwise we throw an Exception.
-     * (XXX double check that we actually do so.) <p>
+     * For a given Class, if a direct match isn't found, we check that class's
+     * supertypes (both extends & implements). If a unique best match is found
+     * we take that. Otherwise we throw an Exception. (XXX double check that we
+     * actually do so.)
      * <p/>
      * Arrays make use of ArrayGuardSugar, interfaces make use of
      * InterfaceGuardSugar by default, and fully unmatched types make use of
      * ClassDesc itself.
      */
-    static private final String[][] GuardSugarings = {
-        {"java.lang.Class",
-         "org.erights.e.meta.java.lang.ClassGuardSugar"},
-        {"java.lang.String",
-         "org.erights.e.meta.java.lang.StringGuardSugar"},
+    static private final String[][] GuardSugarings = {{"java.lang.Class",
+      "org.erights.e.meta.java.lang.ClassGuardSugar"},
+      {"java.lang.String", "org.erights.e.meta.java.lang.StringGuardSugar"},
 
-        {"java.lang.Throwable",
-         "org.erights.e.meta.java.lang.ThrowableGuardSugar"},
+      {"java.lang.Throwable",
+        "org.erights.e.meta.java.lang.ThrowableGuardSugar"},
 
-        {"java.lang.Byte",
-         "org.erights.e.meta.java.lang.ByteGuardSugar"},
-        {"java.lang.Short",
-         "org.erights.e.meta.java.lang.ShortGuardSugar"},
-        {"java.lang.Integer",
-         "org.erights.e.meta.java.lang.IntegerGuardSugar"},
-        {"java.lang.Long",
-         "org.erights.e.meta.java.lang.LongGuardSugar"},
-        {"java.math.BigInteger",
-         "org.erights.e.meta.java.math.BigIntegerGuardSugar"},
-        {"org.erights.e.meta.java.math.EInt",
-         "org.erights.e.meta.java.math.EIntGuardSugar"},
+      {"java.lang.Byte", "org.erights.e.meta.java.lang.ByteGuardSugar"},
+      {"java.lang.Short", "org.erights.e.meta.java.lang.ShortGuardSugar"},
+      {"java.lang.Integer", "org.erights.e.meta.java.lang.IntegerGuardSugar"},
+      {"java.lang.Long", "org.erights.e.meta.java.lang.LongGuardSugar"},
+      {"java.math.BigInteger",
+        "org.erights.e.meta.java.math.BigIntegerGuardSugar"},
+      {"org.erights.e.meta.java.math.EInt",
+        "org.erights.e.meta.java.math.EIntGuardSugar"},
 
-        {"java.lang.Float",
-         "org.erights.e.meta.java.lang.FloatGuardSugar"},
-        {"java.lang.Double",
-         "org.erights.e.meta.java.lang.DoubleGuardSugar"},
+      {"java.lang.Float", "org.erights.e.meta.java.lang.FloatGuardSugar"},
+      {"java.lang.Double", "org.erights.e.meta.java.lang.DoubleGuardSugar"},
 
-        {"java.lang.Void",
-         "org.erights.e.meta.java.lang.VoidGuardSugar"},
+      {"java.lang.Void", "org.erights.e.meta.java.lang.VoidGuardSugar"},
 
-        {"org.erights.e.elib.base.TypeDesc",
-         "org.erights.e.meta.org.erights.e.elib.base.TypeDescGuardSugar"},
+      {"org.erights.e.elib.base.TypeDesc",
+        "org.erights.e.meta.org.erights.e.elib.base.TypeDescGuardSugar"},
 
-        {"org.erights.e.elib.ref.Ref",
-         "org.erights.e.meta.org.erights.e.elib.ref.RefGuardSugar"},
+      {"org.erights.e.elib.ref.Ref",
+        "org.erights.e.meta.org.erights.e.elib.ref.RefGuardSugar"},
 
-        {"org.erights.e.elib.tables.EList",
-         "org.erights.e.meta.org.erights.e.elib.tables.EListGuardSugar"}
-    };
+      {"org.erights.e.elib.tables.EList",
+        "org.erights.e.meta.org.erights.e.elib.tables.EListGuardSugar"},
+
+      {"org.quasiliteral.astro.Astro",
+        "org.erights.e.meta.org.quasiliteral.astro.AstroGuardSugar"}};
 
     /**
      * The above list of pairs turned into a ConstMap.
@@ -112,8 +105,7 @@ public class ClassDesc extends TypeDesc {
      * @param clazz A non-primitive class
      * @return A kind of ClassDesc.
      */
-    static private Class GetGuard(Class clazz)
-      throws ClassNotFoundException {
+    static private Class GetGuard(Class clazz) throws ClassNotFoundException {
         if (clazz.isPrimitive()) {
             T.fail("Must not be primitive: " + clazz);
         }
@@ -145,9 +137,9 @@ public class ClassDesc extends TypeDesc {
             FlexSet superSugarSet = FlexSet.fromType(Class.class);
             for (int i = 0; i < supers.length; i++) {
                 Class superSugar = GetGuard(supers[i]);
-                if (ClassDesc.class != superSugar &&
-                  (InterfaceGuardSugar.class != superSugar ||
-                  clazz.isInterface())) {
+                if (ClassDesc.class != superSugar && (
+                  InterfaceGuardSugar.class != superSugar ||
+                    clazz.isInterface())) {
                     //only interfaces inherit InterfaceGuardSugar
                     superSugarSet.addElement(superSugar);
                 }
@@ -189,10 +181,9 @@ public class ClassDesc extends TypeDesc {
      * to Java's type conformance rules.
      * <p/>
      * 1) In Java, when a class is used to declare a variable, parameter, or
-     * return type, unless the class is primitive, it accepts
-     * <tt>null</tt> in addition to instances of its type. If the class
-     * is primitive (ie, a scalar, like <tt>char</tt>, then it accepts
-     * only instances of its type.
+     * return type, unless the class is primitive, it accepts <tt>null</tt> in
+     * addition to instances of its type. If the class is primitive (ie, a
+     * scalar, like <tt>char</tt>, then it accepts only instances of its type.
      * <p/>
      * By contrast, when a Java class is used as an E guard, it accepts only
      * instances of its type. In order to form a guard that accepts either
@@ -204,11 +195,11 @@ public class ClassDesc extends TypeDesc {
      * as make/1, except that if the Class parameter isn't primitive, it'll
      * then wrap the result in a call to nullOk/1.
      * <p/>
-     * 2) The class Object.class is turned into the equivalent of
-     * <tt>:any</tt> rather than using a ClassDesc on the class object.
-     * This reflects that Java parameters of type Object will also accept
-     * non-near pointers. Likewise, it converts Void.class and Void.TYPE into
-     * the equivalent of <tt>:void</tt>.
+     * 2) The class Object.class is turned into the equivalent of <tt>:any</tt>
+     * rather than using a ClassDesc on the class object. This reflects that
+     * Java parameters of type Object will also accept non-near pointers.
+     * Likewise, it converts Void.class and Void.TYPE into the equivalent of
+     * <tt>:void</tt>.
      */
     static public Guard byJavaRules(Class clazz) {
         if (Object.class == clazz) {
@@ -228,13 +219,10 @@ public class ClassDesc extends TypeDesc {
     /**
      * Returns the E-object that a Java Class object promotes to.
      * <p/>
-     * This provides several services<ul>
-     * <li>A descriptions of the messages that may be sent to members of this
-     * type.
-     * <li>Guard (coerce/2) behavior, enabling a Class to be used as a
-     * Guard.
-     * <li>Auditor (audit/1) behavior, enabling...
-     * </ul>
+     * This provides several services<ul> <li>A descriptions of the messages
+     * that may be sent to members of this type. <li>Guard (coerce/2) behavior,
+     * enabling a Class to be used as a Guard. <li>Auditor (audit/1) behavior,
+     * enabling... </ul>
      */
     static public ClassDesc make(Class clazz) {
         try {
@@ -253,12 +241,9 @@ public class ClassDesc extends TypeDesc {
      * Returns a description of the messages that may be sent to members of
      * this type.
      */
-    static private ClassDesc privateMake(Class clazz)
-      throws ClassNotFoundException,
-      IllegalAccessException,
-      InstantiationException,
-      InvocationTargetException,
-      NoSuchMethodException {
+    static private ClassDesc privateMake(Class clazz) throws
+      ClassNotFoundException, IllegalAccessException, InstantiationException,
+      InvocationTargetException, NoSuchMethodException {
         ClassDesc result;
         //Need to synchronize since this is inter-vat mutable state
         synchronized (DescCache) {
@@ -312,27 +297,23 @@ public class ClassDesc extends TypeDesc {
      */
     public ClassDesc(Class clazz) {
         super(" Missing docComment ", //XXX for now
-              sig(clazz),
-              null, //XXX for now
-              ConstList.EmptyList,
-              mTypes(clazz));
+              sig(clazz), null, //XXX for now
+              ConstList.EmptyList, mTypes(clazz));
         myClass = clazz;
     }
 
     /**
-     * Handles null, handles a trivial match ({@link
-     * Class#isInstance(Object)}), and otherwise delegates to {@link
-     * #subCoerce(Object, OneArgFunc)}.
+     * Handles null, handles a trivial match ({@link Class#isInstance(Object)}),
+     * and otherwise delegates to {@link #subCoerceR(Object, OneArgFunc)}.
      * <p/>
      * But does check the output, so it can give a meaningful error if it
-     * doesn't match. This allows subCoerce implementations to avoid
-     * checking for those errors that may as well be caught here.
+     * doesn't match. This allows subCoerce implementations to avoid checking
+     * for those errors that may as well be caught here.
      */
     protected Object tryCoerceR(Object shortSpecimen, OneArgFunc optEjector) {
         if (null == shortSpecimen) {
             throw Thrower.toEject(optEjector,
-                                  new NullPointerException(
-                                    "must be " +
+                                  new NullPointerException("must be " +
                                     StringHelper.aan(E.toString(this)) +
                                     " rather than null"));
         }
@@ -352,28 +333,26 @@ public class ClassDesc extends TypeDesc {
             return shortSpecimen;
         }
         throw Thrower.toEject(optEjector,
-                              "but " + shortSpecimen +
-                              " isn't " + StringHelper.aan(E.toString(this)));
+                              "but " + shortSpecimen + " isn't " +
+                                StringHelper.aan(E.toString(this)));
     }
 
     /**
      * 'shortSpecimen' is assumed to already be shortened, not be null, and
      * already known not to be an instance of myClass.
      * <p/>
-     * Used by {@link #tryCoerceR} and overridden by
-     * subclasses to provide the type-specific part of the coercion
-     * behavior. The default implementation here firsts sees if specimen
-     * promotes to a subtype of the target type, and if so, returns that
-     * promotion. Failing that, the default implementation ejects according to
-     * optEjector.
+     * Used by {@link #tryCoerceR} and overridden by subclasses to provide the
+     * type-specific part of the coercion behavior. The default implementation
+     * here firsts sees if specimen promotes to a subtype of the target type,
+     * and if so, returns that promotion. Failing that, the default
+     * implementation ejects according to optEjector.
      * <p/>
      * Subclasses should override to provide other coercions, and delegate to
      * this one (super.subCoerce...) if they can't coerce.
      */
     protected Object subCoerceR(Object shortSpecimen, OneArgFunc optEjector) {
         Class optPromo = ScriptMaker.OptPromotion(shortSpecimen.getClass());
-        if (null != optPromo &&
-          myClass != optPromo &&
+        if (null != optPromo && myClass != optPromo &&
           myClass.isAssignableFrom(optPromo)) {
 
             return ClassDesc.make(optPromo).coerce(shortSpecimen, optEjector);
@@ -387,10 +366,8 @@ public class ClassDesc extends TypeDesc {
     protected RuntimeException doesntCoerceR(Object shortSpecimen,
                                              OneArgFunc optEjector) {
         String specTypeName = simpleSig(shortSpecimen.getClass());
-        ClassCastException prob =
-          new ClassCastException(specTypeName +
-                                 " doesn't coerce to " +
-                                 StringHelper.aan(E.toString(this)));
+        ClassCastException prob = new ClassCastException(specTypeName +
+          " doesn't coerce to " + StringHelper.aan(E.toString(this)));
         return Thrower.toEject(optEjector, prob);
     }
 
@@ -404,9 +381,9 @@ public class ClassDesc extends TypeDesc {
     /**
      * Cause "myClass[5]" to return a 5 element array of myClass.
      * <p/>
-     * Rather weird kludge. Result is that, in E, "myClass[5]" doesn't get
-     * the fifth (or sixth) of anything, but rather produces a 5 element
-     * array of type myClass.
+     * Rather weird kludge. Result is that, in E, "myClass[5]" doesn't get the
+     * fifth (or sixth) of anything, but rather produces a 5 element array of
+     * type myClass.
      */
     public Object get(int index) {
         return ArrayHelper.newArray(myClass, index);
@@ -440,8 +417,8 @@ public class ClassDesc extends TypeDesc {
      * Drops any package or containing class prefixes and any "__C" or "__T"
      * suffixes prior to the last "significant" name.
      * <p/>
-     * A "significant" name is any name that doesn't begin with a digit
-     * (ruling out anonymous objects and classes) and that isn't "self".
+     * A "significant" name is any name that doesn't begin with a digit (ruling
+     * out anonymous objects and classes) and that isn't "self".
      */
     static public String simpleName(String fqName) {
         int lastSep = fqName.lastIndexOf('.');
@@ -465,8 +442,8 @@ public class ClassDesc extends TypeDesc {
     }
 
     /**
-     * If an array type, then the sig-with-suffix of the base type followed
-     * by "[]".
+     * If an array type, then the sig-with-suffix of the base type followed by
+     * "[]".
      */
     static public String sig(Class type, String suffix) {
         if (type.isArray()) {
