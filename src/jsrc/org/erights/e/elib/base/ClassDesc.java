@@ -378,35 +378,6 @@ public class ClassDesc extends TypeDesc {
         return myClass;
     }
 
-    /**
-     * Cause "myClass[5]" to return a 5 element array of myClass.
-     * <p/>
-     * Rather weird kludge. Result is that, in E, "myClass[5]" doesn't get the
-     * fifth (or sixth) of anything, but rather produces a 5 element array of
-     * type myClass.
-     *
-     * @deprecated Since it makes an uninitialized array (or rather an array
-     *             initialized to its type's zero element), and since arrays,
-     *             to E, are immutable, this probably isn't what you wanted
-     *             anyway.
-     */
-    public Object get(int index) {
-        return ArrayHelper.newArray(myClass, index);
-    }
-
-    /**
-     * Cause "myClass[]" to return the type "list of myClass".
-     * <p/>
-     * At the Java level, it's actually the type "Array of myClass".
-     *
-     * @deprecated Use ':List[type]' instead of ':type[]'
-     */
-    public Guard get() {
-        //XXX this is a horrible way to do this, but I couldn't find any
-        //simpler way.
-        return make(get(0).getClass());
-    }
-
     /************ name mangling and demangling, sort of ************/
 
     /**
