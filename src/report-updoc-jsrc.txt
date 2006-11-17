@@ -1,14 +1,14 @@
 
 updoc: started
 
-c:/Documents and Settings/millerm1/e/src/jsrc/com/zooko/tray/EPainter.updoc:......java.lang.RuntimeException: Failed: Must only be called from <DeadRunner java.lang.RuntimeException: makeEvaluator shutdown>'s thread
-	at org.erights.e.develop.assertion.T.fail(T.java:84)
-	at org.erights.e.develop.assertion.T.require(T.java:358)
-	at org.erights.e.elib.vat.Runner.requireCurrent(Runner.java:381)
-	at org.erights.e.elib.vat.Vat.callAll(Vat.java:491)
-	at org.erights.e.elib.deflect.Deflector.invoke(Deflector.java:216)
+c:/Documents and Settings/millerm1/e/src/jsrc/com/zooko/tray/EPainter.updoc:java.lang.RuntimeException: Failed: Must only be called from <runs in home>'s thread
+	at org.erights.e.develop.assertion.T.fail(T.java:85)
+	at org.erights.e.develop.assertion.T.require(T.java:315)
+	at org.erights.e.elib.vat.Runner.requireCurrent(Runner.java:374)
+	at org.erights.e.elib.vat.Vat.callAll(Vat.java:481)
+	at org.erights.e.elib.deflect.Deflector.invoke(Deflector.java:211)
 	at $Proxy9.paintComponent(Unknown Source)
-	at com.zooko.tray.EPainter.paintComponent(EPainter.java:56)
+	at com.zooko.tray.EPainter.paintComponent(EPainter.java:55)
 	at javax.swing.JComponent.paint(JComponent.java:808)
 	at javax.swing.JComponent.paintChildren(JComponent.java:647)
 	at javax.swing.JComponent.paint(JComponent.java:817)
@@ -33,22 +33,26 @@ c:/Documents and Settings/millerm1/e/src/jsrc/com/zooko/tray/EPainter.updoc:....
 	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:145)
 	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:137)
 	at java.awt.EventDispatchThread.run(EventDispatchThread.java:100)
-
+......
 c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/jcomm/bad-resolve.updoc:..............................................
-c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/jcomm/multi-test.updoc:.......................
+c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/jcomm/multi-test.updoc:.......................***-----------------------***
+*** Trace data written to ***
+'C:/Documents and Settings/millerm1/.e/etrace/etrace.2006-11-17T10_20_54.848Z.txt'
+***-----------------------***
+
 c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/jcomm/refmon.updoc:..............
 at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/jcomm/refmon.updoc#:span::64:6::64:10>
 expr: trace
 original and new value differ
 original value: "++++.run/1.run/1+.run/1+.run/1"
-     new value: "++.run/1++.run/1+.run/1"
+     new value: "++++.run/1.run/1+.run/1"
 .....
 at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/jcomm/refmon.updoc#:span::79:6::79:10>
 expr: trace
 original and new value differ
 original value: "++++.run/1.run/1+.run/1+.run/1
                 =add/2+.__whenMoreResolved/1.__whenMoreResolved/1"
-     new value: "++.run/1++.run/1+.run/1
+     new value: "++++.run/1.run/1+.run/1
                 =add/2+.__whenMoreResolved/1"
 
 c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc:.......................................
@@ -84,49 +88,86 @@ new problem: <NoSuchMethodException: <a TraversalKey__Maker>.run/0>
 
 c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker2.updoc:.....................
 c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/FlexList.updoc:.......
-c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/trijection.updoc:............java.lang.RuntimeException: Failed: Must only be called from <DeadRunner java.lang.RuntimeException: makeEvaluator shutdown>'s thread
-	at org.erights.e.develop.assertion.T.fail(T.java:84)
-	at org.erights.e.develop.assertion.T.require(T.java:358)
-	at org.erights.e.elib.vat.Runner.requireCurrent(Runner.java:381)
-	at org.erights.e.elib.vat.Vat.callAll(Vat.java:491)
-	at org.erights.e.elib.deflect.Deflector.invoke(Deflector.java:216)
-	at $Proxy9.paintComponent(Unknown Source)
-	at com.zooko.tray.EPainter.paintComponent(EPainter.java:56)
-	at javax.swing.JComponent.paint(JComponent.java:808)
-	at javax.swing.JComponent.paintChildren(JComponent.java:647)
-	at javax.swing.JComponent.paint(JComponent.java:817)
-	at javax.swing.JLayeredPane.paint(JLayeredPane.java:557)
-	at javax.swing.JComponent.paintChildren(JComponent.java:647)
-	at javax.swing.JComponent.paintWithOffscreenBuffer(JComponent.java:4794)
-	at javax.swing.JComponent.paintDoubleBuffered(JComponent.java:4740)
-	at javax.swing.JComponent.paint(JComponent.java:798)
-	at java.awt.GraphicsCallback$PaintCallback.run(GraphicsCallback.java:21)
-	at sun.awt.SunGraphicsCallback.runOneComponent(SunGraphicsCallback.java:60)
-	at sun.awt.SunGraphicsCallback.runComponents(SunGraphicsCallback.java:97)
-	at java.awt.Container.paint(Container.java:1312)
-	at sun.awt.RepaintArea.paint(RepaintArea.java:177)
-	at sun.awt.windows.WComponentPeer.handleEvent(WComponentPeer.java:260)
-	at java.awt.Component.dispatchEventImpl(Component.java:3678)
-	at java.awt.Container.dispatchEventImpl(Container.java:1627)
-	at java.awt.Window.dispatchEventImpl(Window.java:1606)
-	at java.awt.Component.dispatchEvent(Component.java:3477)
-	at java.awt.EventQueue.dispatchEvent(EventQueue.java:480)
-	at java.awt.EventDispatchThread.pumpOneEventForHierarchy(EventDispatchThread.java:201)
-	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:151)
-	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:145)
-	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:137)
-	at java.awt.EventDispatchThread.run(EventDispatchThread.java:100)
-
-c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc:***-----------------------***
-*** Trace data written to ***
-'C:/Documents and Settings/millerm1/.e/etrace/etrace.2006-11-17T00_51_55.045Z.txt'
-***-----------------------***
-....
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::28:6::28:54>
-expr: def miniBuilder := <term:TermBuilder>(miniSchema)
+c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/trijection.updoc:............
+c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc:....................
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::77:6::77:58>
+expr: def miniSchema := <qq:astro.makeBaseSchema>("mini", [
+          "tag",
+          ".char.",
+          ".int.",
+          ".float64.",
+          ".String."])
 missing new value
-original value: <building Term trees for mini>
+original value: <Schema for mini>
 missing original problem
-new problem: Failed: Undefined variable: term__uriGetter
+new problem: <SecurityException: org.quasiliteral.astro.BaseSchema not approved as safe>
 
-c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/toy-grammar.updoc:....
+c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/toy-grammar.updoc:...
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/toy-grammar.updoc#:span::25:2::25:27>
+expr: makeSchema.parseGrammar(x)
+missing new value
+original value: term`schema(production(tag("Top"),
+                action(seq(term(tag(".attr."),
+                term(e,
+                tag("E"))),
+                tag("EOF")),
+                tag("e"))),
+                production(tag("E"),
+                firstChoice(action(term(tag(".attr."),
+                term(n,
+                tag("N"))),
+                tag("n")),
+                action(seq(data("("),
+                term(tag(".attr."),
+                term(a,
+                tag("E"))),
+                data("+"),
+                term(tag(".attr."),
+                term(b,
+                tag("E"))),
+                data(")")),
+                seq(tag("add"),
+                tag("a"),
+                tag("b"))),
+                action(seq(data("("),
+                tag("E"),
+                data("-"),
+                tag("E"),
+                data(")")),
+                seq(tag("subtract"),
+                tag("a"),
+                tag("b"))))),
+                production(tag("N"),
+                firstChoice(action(seq(term(tag(".attr."),
+                term(d,
+                tag("D"))),
+                term(tag(".attr."),
+                term(n,
+                tag("N")))),
+                seq(tag("withDigit"),
+                tag("n"),
+                tag("d"))),
+                action(term(tag(".attr."),
+                term(d,
+                tag("D"))),
+                tag("d")))),
+                production(tag("D"),
+                action(term(tag(".attr."),
+                term(c,
+                firstChoice(data("0"),
+                data("1"),
+                data("2"),
+                data("3"),
+                data("4"),
+                data("5"),
+                data("6"),
+                data("7"),
+                data("8"),
+                data("9")))),
+                seq(tag("toDigit"),
+                tag("c")))))`
+missing original syntax error
+new syntax error: 
+                  D ::= c:("0" / "1" / "2" / "3" / "4" / "5" / "6" / "7" / "8" / "9")
+                  ^
+

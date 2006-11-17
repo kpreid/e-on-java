@@ -10,7 +10,7 @@ missing original problem
 new problem: <NoSuchMethodException: <an issuer>.makeAccountMgr/1>
 ***-----------------------***
 *** Trace data written to ***
-'C:/Documents and Settings/millerm1/.e/etrace/etrace.2006-11-17T00_58_06.897Z.txt'
+'C:/Documents and Settings/millerm1/.e/etrace/etrace.2006-11-17T10_26_34.176Z.txt'
 ***-----------------------***
 
 c:/Documents and Settings/millerm1/e/src/esrc/com/hp/orc/orc.updoc:.................................
