@@ -141,8 +141,8 @@ public class BaseSchema
             }
         }
         T.require(null == literalCharTagName &&
-          null == literalIntegerTagName && null == literalIntegerTagName &&
-          null == literalIntegerTagName,
+          null == literalIntegerTagName && null == literalFloat64TagName &&
+          null == literalStringTagName,
                   "Unmatched literal name for: ",
                   mySchemaName);
         myByTagCode = (AstroTag[])byCodes.getArray(AstroTag.class);
