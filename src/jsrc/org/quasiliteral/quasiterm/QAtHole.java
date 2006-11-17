@@ -141,7 +141,7 @@ public class QAtHole extends QHole {
         if (0 >= specimenList.size()) {
             return -1;
         }
-        Astro optSpecimen = optCoerce(specimenList.get(0), myIsFunctorHole);
+        Astro optSpecimen = optCoerce(specimenList.get(0));
         if (null == optSpecimen) {
             return -1;
         }

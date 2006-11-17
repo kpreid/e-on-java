@@ -14,8 +14,37 @@
     #              [2, 3]:
     #                  [4, 5]}`
 
+    ? def term`@foo` := "hello"; foo
+    # value: term`"hello"`
+
+    ? term`3(4)`
+    # problem: Failed: Term .int. can't have both data and children    
+
+    ? def term`@bar()` := "hello"; bar
+    # value: term`hello`
+
+    ? def term`hello@foo` := "hello"
+    # problem: hello@{0} doesn't match: hello
+
+    ? def term`hello@foo` := term`hello(3,4)`; foo
+    # value: term`hello(3, 4)`
+
+    ? def term`.String.@foo` := "hello"; foo
+    # value: term`"hello"`
+
+    ? def term`hello@bar()` := "hello"; bar
+    # value: term`hello`
+
+    ? def term`hello@bar()` := "hello world"
+    # problem: hello@{0}() doesn't match: hello world
+
+    ? def term`hello@bar()` := term`hello(3,4)`
+    # problem: hello@{0}() doesn't match: term`hello(3, 4)`
+
+
+
     ? def <qq> := <import:org.quasiliteral.*>
-    # value: <unsafe:org.quasiliteral.*>
+    # value: <import:org.quasiliteral.*>
 
     ? def dom := sml`<tag>text<foo>x@@z</foo>y</tag>`
     # value: sml`<tag>

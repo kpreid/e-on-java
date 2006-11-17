@@ -139,7 +139,7 @@ public class QDollarHole extends QHole {
      */
     public ConstList substSlice(ConstList args, int[] index) {
         Object termoid = multiGet(args, myHoleNum, index, true);
-        Astro optTerm = optCoerce(termoid, myIsFunctorHole);
+        Astro optTerm = optCoerce(termoid);
         T.require(null != optTerm, "Term ", termoid, " doesn't match ", this);
         return ConstList.EmptyList.with(optTerm);
     }
@@ -161,7 +161,7 @@ public class QDollarHole extends QHole {
         }
         Object specimen = specimenList.get(0);
         Object termoid = multiGet(args, myHoleNum, index, true);
-        Astro optTerm = optCoerce(termoid, myIsFunctorHole);
+        Astro optTerm = optCoerce(termoid);
         T.require(null != optTerm, "Term ", termoid, " doesn't match ", this);
         if (0.0 == E.asFloat64(E.call(optTerm, "op__cmp", specimen))) {
             return 1;

@@ -228,7 +228,7 @@ public abstract class QHole extends QAstro {
     /**
      *
      */
-    Astro optCoerce(Object termoid, boolean isFunctorHole) {
-        return optCoerce(termoid, isFunctorHole, myOptTag);
+    Astro optCoerce(Object termoid) {
+        return optCoerce(termoid, myIsFunctorHole, myOptTag);
     }
 }

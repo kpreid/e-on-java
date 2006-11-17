@@ -158,7 +158,7 @@ public class QTerm extends QAstro {
         if (0 >= specimenList.size()) {
             return -1;
         }
-        Astro optSpecimen = optCoerce(specimenList.get(0), false);
+        Astro optSpecimen = optCoerce(specimenList.get(0));
         if (null == optSpecimen) {
             return -1;
         }
@@ -238,7 +238,7 @@ public class QTerm extends QAstro {
     /**
      *
      */
-    Astro optCoerce(Object termoid, boolean isFunctorHole) {
-        return myQFunctor.optCoerce(termoid, isFunctorHole);
+    Astro optCoerce(Object termoid) {
+        return myQFunctor.optCoerce(termoid);
     }
 }

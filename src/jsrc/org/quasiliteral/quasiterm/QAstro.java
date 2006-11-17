@@ -203,7 +203,7 @@ public abstract class QAstro extends QAstroArg
     }
 
     /**
-     * Uses my own optTag
+     * Uses my own isFunctorHole and optTag
      */
-    abstract Astro optCoerce(Object termoid, boolean isFunctorHole);
+    abstract Astro optCoerce(Object termoid);
 }
