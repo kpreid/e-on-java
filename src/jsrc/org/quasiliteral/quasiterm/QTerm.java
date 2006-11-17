@@ -241,13 +241,16 @@ public class QTerm extends QAstro {
     Astro optCoerce(Object termoid) {
         if (termoid instanceof Astro) {
             Astro astro = (Astro)termoid;
-            Astro newFunctor = myQFunctor.optCoerce(astro.withoutArgs());
+            Astro newOptFunctor = myQFunctor.optCoerce(astro.withoutArgs());
+            if (null == newOptFunctor) {
+                return null;
+            }
             ConstList argList = astro.getArgs();
             AstroArg args = myBuilder.empty();
             for (int i = 0, max = argList.size(); i < max; i++) {
                 args = myBuilder.seq(args, (AstroArg)argList.get(i));
             }
-            return myBuilder.term(newFunctor, args);
+            return myBuilder.term(newOptFunctor, args);
         } else {
             return myQFunctor.optCoerce(termoid);
         }
