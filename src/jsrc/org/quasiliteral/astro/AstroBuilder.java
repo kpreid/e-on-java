@@ -12,9 +12,9 @@ import org.erights.e.elib.tables.Twine;
  * <p/>
  * Several arguments or return values below are declared 'Object', but
  * pseudo-declared ":Args" in the javadoc comments. For these, the concrete
- * type represents a list of {@link AstroArg}s, but the particular type used
- * to represent the list depends on the type of builder, and should be
- * documented in that builder's class comment.
+ * type represents a list of {@link AstroArg}s, but the particular type used to
+ * represent the list depends on the type of builder, and should be documented
+ * in that builder's class comment.
  *
  * @author Mark S. Miller
  */
@@ -29,8 +29,8 @@ public interface AstroBuilder {
      * When we're finished building, this should be applied to the root node.
      * <p/>
      * It is normally just an identity function, but allows, for example,
-     * post-parsing cleanup. This is called by the parser, but not currently
-     * by the 'build' or 'qbuild' methods of other trees.
+     * post-parsing cleanup. This is called by the parser, but not currently by
+     * the 'build' or 'qbuild' methods of other trees.
      */
     AstroArg start(AstroArg top);
 
@@ -39,8 +39,8 @@ public interface AstroBuilder {
      * token tag (token type indicator) as identified by 'tag'.
      * <p/>
      * The tag of the returned Astro should be according to the schema of this
-     * builder, even though the argument tag may be in a different schema.
-     * In this case, the correspondence is by tag name, rather than tag code.
+     * builder, even though the argument tag may be in a different schema. In
+     * this case, the correspondence is by tag name, rather than tag code.
      */
     Astro leafTag(AstroTag tag, SourceSpan optSource);
 
@@ -106,20 +106,19 @@ public interface AstroBuilder {
      * 'functor' must be a leaf (have no arguments).
      * <p/>
      * When parsing the term syntax, this is called if the empty args list
-     * appears explicitly, but not if it's left out. When usad as a
-     * quasi-term pattern, this allows us to distinguish between
-     * a) 'term`@foo`' and b) 'term`@foo()`'. #a matches any term, while
-     * #b matches only zero-arity terms. Note that
-     * c) 'term`@foo(*)`' or d) 'term`@foo(@args*)`' will also match any term,
-     * but in these cases, 'foo' will only be bound to the functor of the
-     * specimen, not, as in #a, the specimen as a whole. (In #c, the
-     * arguments are matched and ignored. In #d, 'args' is bound to the list
-     * of arguments.)
+     * appears explicitly, but not if it's left out. When usad as a quasi-term
+     * pattern, this allows us to distinguish between a) 'term`@foo`' and b)
+     * 'term`@foo()`'. #a matches any term, while #b matches only zero-arity
+     * terms. Note that c) 'term`@foo(*)`' or d) 'term`@foo(@args*)`' will also
+     * match any term, but in these cases, 'foo' will only be bound to the
+     * functor of the specimen, not, as in #a, the specimen as a whole. (In #c,
+     * the arguments are matched and ignored. In #d, 'args' is bound to the
+     * list of arguments.)
      * <p/>
-     * Similarly, this allows us to distinguish between the expressions
-     * e) 'term`$foo`' and f) 'term`$foo()`'. On success, both #e and #f mean
-     * the same thing. But #f additionally required the term bound to 'foo'
-     * to be zero-arity, or an exception will be thrown.
+     * Similarly, this allows us to distinguish between the expressions e)
+     * 'term`$foo`' and f) 'term`$foo()`'. On success, both #e and #f mean the
+     * same thing. But #f additionally required the term bound to 'foo' to be
+     * zero-arity, or an exception will be thrown.
      */
     Astro term(Astro functor, AstroArg args);
 
@@ -128,8 +127,8 @@ public interface AstroBuilder {
      * explicit '()'.
      * <p/>
      * For literal Astros, this is equivalent to 'term(functor, list())', but
-     * is separate for support of quasi-literals, and explained at
-     * {@link #term(Astro, AstroArg)}.
+     * is separate for support of quasi-literals, and explained at {@link
+     * #term(Astro,AstroArg)}.
      */
     Astro term(Astro functor);
 
@@ -138,8 +137,8 @@ public interface AstroBuilder {
      * tuples.
      * <p/>
      * This is equivalent to 'term(leafTag(".tuple."), args)', although an
-     * individual builder/schema may have its own idea about what tagName
-     * to use to mark a tuple.
+     * individual builder/schema may have its own idea about what tagName to
+     * use to mark a tuple.
      */
     Astro tuple(AstroArg args);
 
@@ -148,14 +147,14 @@ public interface AstroBuilder {
      * named fields or attributes.
      * <p/>
      * This is equivalent to 'term(leafTag(".bag."), args)', although an
-     * individual builder/schema may have its own idea about what tagName
-     * to use to mark a tuple.
+     * individual builder/schema may have its own idea about what tagName to
+     * use to mark a tuple.
      */
     Astro bag(AstroArg args);
 
     /**
-     * For supporting the ':' shorthand for a term that represents
-     * a named field or attribute.
+     * For supporting the ':' shorthand for a term that represents a named
+     * field or attribute.
      * <p/>
      * This is equivalent to
      * <pre>    term(leafTag(".attr."), term(functor, value))</pre>

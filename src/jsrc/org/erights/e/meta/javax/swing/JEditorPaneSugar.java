@@ -24,10 +24,10 @@ public class JEditorPaneSugar {
      * that imply following a URL.
      * <p/>
      * JEditorPane is declared 'safe', so it must not provide any implicit
-     * authority. The underlying html renderer will follow link and image
-     * URLs in the set text. Therefore, from E, we prevent the setting of
-     * text that would cause the renderer to employ these authorities which
-     * have never been granted to it.
+     * authority. The underlying html renderer will follow link and image URLs
+     * in the set text. Therefore, from E, we prevent the setting of text that
+     * would cause the renderer to employ these authorities which have never
+     * been granted to it.
      *
      * @see SafeHTMLParser
      */

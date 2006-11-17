@@ -29,10 +29,10 @@ import java.io.OutputStream;
  * Specialized by parameterization rather than subclassing.
  * <p/>
  * This stream should be used at least for persistence and CapTP. It is
- * specialized by composition rather than subclassing -- by providing a
- * {@link Replacer} rather than overriding the .replaceObject(..)
- * method, as a step towards enabling E programs (which can't subclass Java
- * classes) to specialize serialization behavior.
+ * specialized by composition rather than subclassing -- by providing a {@link
+ * Replacer} rather than overriding the .replaceObject(..) method, as a step
+ * towards enabling E programs (which can't subclass Java classes) to
+ * specialize serialization behavior.
  * <p/>
  * Note that reset() is considered legitimate usage of a SerializationStream.
  *
@@ -45,14 +45,12 @@ public final class SerializationStream extends ObjectOutputStream {
     /**
      * Makes SerializationStream specialized by 'replacer'.
      * <p/>
-     * Makes an ObjectOutputStream on out with the following differences:
-     * <ul>
+     * Makes an ObjectOutputStream on out with the following differences: <ul>
      * <li>When you do serializer.writeObject(foo), rather than foo being
      * written, replacer(foo) is written, and likewise for every object
-     * reachable from the replacement objects.
-     * </ul>
-     * replacer(..) is used as the overriding of .replaceObject(..). See the
-     * Java Serialization spec for the detailed implications of this.
+     * reachable from the replacement objects. </ul> replacer(..) is used as
+     * the overriding of .replaceObject(..). See the Java Serialization spec
+     * for the detailed implications of this.
      */
     SerializationStream(OutputStream out, Replacer replacer)
       throws IOException {

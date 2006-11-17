@@ -124,8 +124,7 @@ public class MismatchedCharException extends RecognitionException {
             break;
         case SET:
         case NOT_SET:
-            sb.append(
-              "expecting " + (mismatchType == NOT_SET ? "NOT " : "") +
+            sb.append("expecting " + (mismatchType == NOT_SET ? "NOT " : "") +
               "one of (");
             int[] elems = set.toArray();
             for (int i = 0; i < elems.length; i++) {
@@ -134,7 +133,7 @@ public class MismatchedCharException extends RecognitionException {
             sb.append("), found ");
             appendCharName(sb, foundChar);
             break;
-        default :
+        default:
             sb.append(super.getMessage());
             break;
         }
@@ -151,16 +150,16 @@ public class MismatchedCharException extends RecognitionException {
             // 65535 = (char) -1 = EOF
             sb.append("'<EOF>'");
             break;
-        case '\n':
+        case'\n':
             sb.append("'\\n'");
             break;
-        case '\r':
+        case'\r':
             sb.append("'\\r'");
             break;
-        case '\t':
+        case'\t':
             sb.append("'\\t'");
             break;
-        default :
+        default:
             sb.append('\'');
             sb.append((char)c);
             sb.append('\'');

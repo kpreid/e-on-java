@@ -13,7 +13,8 @@ import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
 
 /**
- * XXX Should be made virtually Selfless and implement getSpreadUncall instead.
+ * XXX Should be made virtually Selfless and implement getSpreadUncall
+ * instead.
  *
  * @author Mark S. Miller
  */

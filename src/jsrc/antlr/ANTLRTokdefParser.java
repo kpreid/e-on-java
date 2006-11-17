@@ -151,8 +151,8 @@ public class ANTLRTokdefParser extends antlr.LLkParser
                     s1 = LT(1);
                     match(STRING);
                     s = s1;
-                } else if ((LA(1) == ID) && (LA(2) == ASSIGN) &&
-                  (LA(3) == STRING)) {
+                } else
+                if ((LA(1) == ID) && (LA(2) == ASSIGN) && (LA(3) == STRING)) {
                     lab = LT(1);
                     match(ID);
                     t = lab;
@@ -168,8 +168,8 @@ public class ANTLRTokdefParser extends antlr.LLkParser
                     para = LT(1);
                     match(STRING);
                     match(RPAREN);
-                } else if ((LA(1) == ID) && (LA(2) == ASSIGN) &&
-                  (LA(3) == INT)) {
+                } else
+                if ((LA(1) == ID) && (LA(2) == ASSIGN) && (LA(3) == INT)) {
                     id2 = LT(1);
                     match(ID);
                     t = id2;
@@ -188,8 +188,8 @@ public class ANTLRTokdefParser extends antlr.LLkParser
                 tm.define(s.getText(), value.intValue());
                 // if label, then label the string and map label to token symbol also
                 if (t != null) {
-                    StringLiteralSymbol sl = (StringLiteralSymbol)tm.getTokenSymbol(
-                      s.getText());
+                    StringLiteralSymbol sl =
+                      (StringLiteralSymbol)tm.getTokenSymbol(s.getText());
                     sl.setLabel(t.getText());
                     tm.mapToTokenSymbol(t.getText(), sl);
                 }
@@ -212,21 +212,21 @@ public class ANTLRTokdefParser extends antlr.LLkParser
 
 
     public static final String[] _tokenNames = {"<0>",
-                                                "EOF",
-                                                "<2>",
-                                                "NULL_TREE_LOOKAHEAD",
-                                                "ID",
-                                                "STRING",
-                                                "ASSIGN",
-                                                "LPAREN",
-                                                "RPAREN",
-                                                "INT",
-                                                "WS",
-                                                "SL_COMMENT",
-                                                "ML_COMMENT",
-                                                "ESC",
-                                                "DIGIT",
-                                                "XDIGIT"};
+      "EOF",
+      "<2>",
+      "NULL_TREE_LOOKAHEAD",
+      "ID",
+      "STRING",
+      "ASSIGN",
+      "LPAREN",
+      "RPAREN",
+      "INT",
+      "WS",
+      "SL_COMMENT",
+      "ML_COMMENT",
+      "ESC",
+      "DIGIT",
+      "XDIGIT"};
 
     private static final long[] mk_tokenSet_0() {
         long[] data = {2L, 0L};

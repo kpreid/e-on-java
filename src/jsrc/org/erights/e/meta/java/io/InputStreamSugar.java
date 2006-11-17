@@ -26,8 +26,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 /**
- * A sweetener defining extra messages that may be e-sent to an
- * InputStream.
+ * A sweetener defining extra messages that may be e-sent to an InputStream.
  *
  * @author Mark S. Miller
  */
@@ -63,8 +62,8 @@ public class InputStreamSugar {
     }
 
     /**
-     * Reads the currently available bytes (presumably without blocking,
-     * since they are said to be available).
+     * Reads the currently available bytes (presumably without blocking, since
+     * they are said to be available).
      */
     static public byte[] readAvailable(InputStream self) throws IOException {
         // Despite
@@ -75,11 +74,11 @@ public class InputStreamSugar {
     }
 
     /**
-     * Reads the currently available bytes (presumably without blocking,
-     * since they are said to be available), but no more that max.
+     * Reads the currently available bytes (presumably without blocking, since
+     * they are said to be available), but no more that max.
      */
-    static public byte[] readAvailable(InputStream self,
-                                       int max) throws IOException {
+    static public byte[] readAvailable(InputStream self, int max)
+      throws IOException {
         int size = Math.min(self.available(), max);
         byte[] result = new byte[size];
         if (0 == size) {

@@ -14,8 +14,8 @@ import java.lang.reflect.Constructor;
 
 public class LLkDebuggingParser extends LLkParser implements DebuggingParser {
 
-    protected ParserEventSupport parserEventSupport = new ParserEventSupport(
-      this);
+    protected ParserEventSupport parserEventSupport =
+      new ParserEventSupport(this);
 
     private boolean _notDebugMode = false;
     protected String ruleNames[];
@@ -103,22 +103,19 @@ public class LLkDebuggingParser extends LLkParser implements DebuggingParser {
 
     protected void fireSyntacticPredicateFailed() {
         if (isDebugMode()) {
-            parserEventSupport.fireSyntacticPredicateFailed(
-              inputState.guessing);
+            parserEventSupport.fireSyntacticPredicateFailed(inputState.guessing);
         }
     }
 
     protected void fireSyntacticPredicateStarted() {
         if (isDebugMode()) {
-            parserEventSupport.fireSyntacticPredicateStarted(
-              inputState.guessing);
+            parserEventSupport.fireSyntacticPredicateStarted(inputState.guessing);
         }
     }
 
     protected void fireSyntacticPredicateSucceeded() {
         if (isDebugMode()) {
-            parserEventSupport.fireSyntacticPredicateSucceeded(
-              inputState.guessing);
+            parserEventSupport.fireSyntacticPredicateSucceeded(inputState.guessing);
         }
     }
 
@@ -161,8 +158,8 @@ public class LLkDebuggingParser extends LLkParser implements DebuggingParser {
      * an exception upon mismatch, which is catch by either the error handler
      * or by the syntactic predicate.
      */
-    public void match(int t) throws MismatchedTokenException,
-      TokenStreamException {
+    public void match(int t)
+      throws MismatchedTokenException, TokenStreamException {
         String text = LT(1).getText();
         int la_1 = LA(1);
         try {
@@ -184,8 +181,8 @@ public class LLkDebuggingParser extends LLkParser implements DebuggingParser {
      * exception upon mismatch, which is catch by either the error handler or
      * by the syntactic predicate.
      */
-    public void match(BitSet b) throws MismatchedTokenException,
-      TokenStreamException {
+    public void match(BitSet b)
+      throws MismatchedTokenException, TokenStreamException {
         String text = LT(1).getText();
         int la_1 = LA(1);
         try {
@@ -202,8 +199,8 @@ public class LLkDebuggingParser extends LLkParser implements DebuggingParser {
         }
     }
 
-    public void matchNot(int t) throws MismatchedTokenException,
-      TokenStreamException {
+    public void matchNot(int t)
+      throws MismatchedTokenException, TokenStreamException {
         String text = LT(1).getText();
         int la_1 = LA(1);
         try {
@@ -297,20 +294,22 @@ public class LLkDebuggingParser extends LLkParser implements DebuggingParser {
             try {
                 Class.forName("javax.swing.JButton");
             } catch (ClassNotFoundException e) {
-                System.err.println(
-                  "Swing is required to use ParseView, but is not present in your CLASSPATH");
+                System.err
+                  .println(
+                    "Swing is required to use ParseView, but is not present in your CLASSPATH");
                 System.exit(1);
             }
             Class c = Class.forName("antlr.parseview.ParseView");
-            Constructor constructor = c.getConstructor(
-              new Class[]{LLkDebuggingParser.class,
-                          TokenStream.class,
-                          TokenMultiBuffer.class});
+            Constructor constructor = c.getConstructor(new Class[]{
+              LLkDebuggingParser.class,
+              TokenStream.class,
+              TokenMultiBuffer.class});
             constructor.newInstance(new Object[]{this, lexer, tokenBuf});
         } catch (Exception e) {
             System.err.println("Error initializing ParseView: " + e);
-            System.err.println(
-              "Please report this to Scott Stanchfield, thetick@magelang.com");
+            System.err
+              .println(
+                "Please report this to Scott Stanchfield, thetick@magelang.com");
             System.exit(1);
         }
     }

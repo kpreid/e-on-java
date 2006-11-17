@@ -8,12 +8,12 @@ import org.erights.e.elang.scope.ScopeLayout;
 import org.erights.e.elang.visitors.ETreeVisitor;
 import org.erights.e.elib.base.SourceSpan;
 import org.erights.e.elib.oldeio.TextWriter;
+import org.erights.e.elib.prim.E;
 import org.erights.e.elib.prim.StaticMaker;
 import org.erights.e.elib.prim.Thrower;
-import org.erights.e.elib.prim.E;
-import org.erights.e.elib.slot.SimpleSlot;
 import org.erights.e.elib.slot.Guard;
 import org.erights.e.elib.slot.SettableSlot;
+import org.erights.e.elib.slot.SimpleSlot;
 import org.erights.e.elib.tables.ConstList;
 import org.erights.e.elib.tables.FlexList;
 import org.erights.e.elib.util.OneArgFunc;
@@ -22,7 +22,7 @@ import java.io.IOException;
 
 /**
  * BNF: 'var' ID (':' expr)?
- * <p>
+ * <p/>
  * Defines a variable whose primitive slot holds the specimen (as coerced by
  * the guard, if any).
  *
@@ -31,11 +31,11 @@ import java.io.IOException;
 public final class VarPattern extends NounPattern {
 
     /**
-     * If 'varName' would shadow a non-shadowable, throw a (XXX to be
-     * defined) exception instead.
-     * <p>
-     * If the VarPattern would not be well-formed, throw a (XXX to be
-     * defined) exception instead.
+     * If 'varName' would shadow a non-shadowable, throw a (XXX to be defined)
+     * exception instead.
+     * <p/>
+     * If the VarPattern would not be well-formed, throw a (XXX to be defined)
+     * exception instead.
      */
     public VarPattern(SourceSpan optSpan,
                       AtomicExpr noun,
@@ -59,12 +59,12 @@ public final class VarPattern extends NounPattern {
      * Uses XXX 'makeFoo(...)'
      */
     public Object[] getSpreadUncall() {
-        Object[] result = { StaticMaker.make(VarPattern.class),
-                            "run",
-                            getOptSpan(),
-                            getNoun(),
-                            getOptGuardExpr(),
-                            getOptScopeLayout() };
+        Object[] result = {StaticMaker.make(VarPattern.class),
+          "run",
+          getOptSpan(),
+          getNoun(),
+          getOptGuardExpr(),
+          getOptScopeLayout()};
         return result;
     }
 
@@ -111,9 +111,7 @@ public final class VarPattern extends NounPattern {
     /**
      *
      */
-    void testMatch(EvalContext ctx,
-                   Object specimen,
-                   OneArgFunc optEjector) {
+    void testMatch(EvalContext ctx, Object specimen, OneArgFunc optEjector) {
         if (null == myOptGuardExpr) {
             getNoun().initSlot(ctx, new SimpleSlot(specimen));
         } else {
@@ -122,9 +120,7 @@ public final class VarPattern extends NounPattern {
             Object vg = myOptGuardExpr.subEval(ctx, true);
             Guard guard = (Guard)E.as(vg, Guard.class);
             getNoun().initSlot(ctx,
-                               new SettableSlot(guard,
-                                                specimen,
-                                                optEjector));
+                               new SettableSlot(guard, specimen, optEjector));
         }
     }
 
@@ -132,9 +128,8 @@ public final class VarPattern extends NounPattern {
      *
      */
     public NounPattern withNounExpr(NounExpr newNounExpr) {
-        return new VarPattern(getOptSpan(),
-                              newNounExpr,
-                              null, // XXX is this right?
+        return new VarPattern(getOptSpan(), newNounExpr, null,
+                              // XXX is this right?
                               getOptScopeLayout());
     }
 

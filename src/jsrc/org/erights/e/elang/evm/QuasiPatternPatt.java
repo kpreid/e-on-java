@@ -37,10 +37,9 @@ import java.io.IOException;
 
 /**
  * BNF: '@' '{' <number> '}'
- * <p>
- * Not part of a valid E program, but a part of an E parse tree
- * acting as a MatchMaker (as a pattern to be matched against an E
- * pattern).
+ * <p/>
+ * Not part of a valid E program, but a part of an E parse tree acting as a
+ * MatchMaker (as a pattern to be matched against an E pattern).
  *
  * @author Mark S. Miller
  */
@@ -62,11 +61,11 @@ public class QuasiPatternPatt extends Pattern {
      * Uses XXX 'makeFoo(...)'
      */
     public Object[] getSpreadUncall() {
-        Object[] result = { StaticMaker.make(QuasiPatternPatt.class),
-                            "run",
-                            getOptSpan(),
-                            EInt.valueOf(myIndex),
-                            getOptScopeLayout() };
+        Object[] result = {StaticMaker.make(QuasiPatternPatt.class),
+          "run",
+          getOptSpan(),
+          EInt.valueOf(myIndex),
+          getOptScopeLayout()};
         return result;
     }
 
@@ -89,19 +88,17 @@ public class QuasiPatternPatt extends Pattern {
     /**
      * Throws an IncompleteQuasiException rather than indicating match failure
      */
-    void testMatch(EvalContext ctx,
-                   Object specimen,
-                   OneArgFunc optEjector) {
-        throw new IncompleteQuasiException
-          ("Can't evaluate programs that still contain bare \"@\"s");
+    void testMatch(EvalContext ctx, Object specimen, OneArgFunc optEjector) {
+        throw new IncompleteQuasiException(
+          "Can't evaluate programs that still contain bare \"@\"s");
     }
 
     /**
      *
      */
     public String getOptName() {
-        throw new IncompleteQuasiException
-          ("Can't use programs that still contain bare \"@\"s");
+        throw new IncompleteQuasiException(
+          "Can't use programs that still contain bare \"@\"s");
     }
 
     /**
@@ -120,8 +117,8 @@ public class QuasiPatternPatt extends Pattern {
                              FlexList bindings) {
         bindings.ensureSize(myIndex + 1);
         if (bindings.get(myIndex) != null) {
-            throw new AlreadyDefinedException("conflict defining @{"
-                                              + myIndex + "}");
+            throw new AlreadyDefinedException(
+              "conflict defining @{" + myIndex + "}");
         }
         bindings.put(myIndex, specimen);
     }
@@ -135,8 +132,8 @@ public class QuasiPatternPatt extends Pattern {
                           FlexList bindings) {
         bindings.ensureSize(myIndex + 1);
         if (bindings.get(myIndex) != null) {
-            throw new AlreadyDefinedException("conflict defining @{"
-                                              + myIndex + "}");
+            throw new AlreadyDefinedException(
+              "conflict defining @{" + myIndex + "}");
         }
         bindings.put(myIndex, optSpecimen);
     }

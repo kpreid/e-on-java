@@ -47,9 +47,8 @@ public final class AMP {
     public static String pipeline(final String cap, final String mid) {
         try {
             return cap.substring(0, cap.lastIndexOf('/') + 1) +
-              Base32.encode(
-                MessageDigest.getInstance("SHA-1").digest(
-                  mid.getBytes("US-ASCII")));
+              Base32.encode(MessageDigest.getInstance("SHA-1").digest(mid.getBytes(
+                "US-ASCII")));
         } catch (final java.io.UnsupportedEncodingException e) {
             // Should never happen.
             // US-ASCII is a required charset.
@@ -82,7 +81,8 @@ public final class AMP {
       throws FileNotFoundException, HTTPException, IOException {
         // Send the invocation.
         final URL target = new URL(cap + "?mid=" + mid);
-        final HttpURLConnection connection = (HttpURLConnection)target.openConnection();
+        final HttpURLConnection connection =
+          (HttpURLConnection)target.openConnection();
         connection.setRequestMethod("POST");
         connection.setDoOutput(true);
         connection.setRequestProperty("Content-Type", "application/xml");

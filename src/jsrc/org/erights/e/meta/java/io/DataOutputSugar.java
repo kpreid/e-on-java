@@ -24,8 +24,8 @@ public class DataOutputSugar {
 
     /**
      * Encodes a whole number (a non-negative integer) using the <a href=
-     * "http://www.waterken.com/dev/Doc/code/#ExtensionNumber"
-     * >Waterken Doc ExtensionNumber</a> format.
+     * "http://www.waterken.com/dev/Doc/code/#ExtensionNumber" >Waterken Doc
+     * ExtensionNumber</a> format.
      */
     static public int writeWholeNum(DataOutput self, BigInteger wholeNum)
       throws IOException {
@@ -34,8 +34,8 @@ public class DataOutputSugar {
 
     /**
      * Because this needs to write in big-endian order, but the natural
-     * algorithm generates in little endian order, this uses recursion to
-     * do the reversal.
+     * algorithm generates in little endian order, this uses recursion to do
+     * the reversal.
      *
      * @param highbit Either 0x00 or 0x80, which is or-ed into the low order
      *                byte.
@@ -43,12 +43,10 @@ public class DataOutputSugar {
      */
     static private int writeWholeNum(DataOutput self,
                                      BigInteger wholeNum,
-                                     int highbit)
-      throws IOException {
+                                     int highbit) throws IOException {
 
         int signum = wholeNum.signum();
-        T.require(signum >= 0,
-                  "Non-negative integer expected: ", wholeNum);
+        T.require(signum >= 0, "Non-negative integer expected: ", wholeNum);
 
         int result = 1;
         int lowByte = (wholeNum.intValue() & 0x7F) | highbit;

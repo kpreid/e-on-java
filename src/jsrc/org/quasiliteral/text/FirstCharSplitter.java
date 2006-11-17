@@ -54,8 +54,8 @@ public class FirstCharSplitter {
     }
 
     /**
-     * Return the index of the first occurrence of any of the special chars
-     * in str, or -1 if none are found.
+     * Return the index of the first occurrence of any of the special chars in
+     * str, or -1 if none are found.
      */
     public int findIn(String str) {
         int len = str.length();

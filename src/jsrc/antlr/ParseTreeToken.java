@@ -6,7 +6,6 @@ package antlr;
  */
 
 
-
 public class ParseTreeToken extends ParseTree {
 
     protected Token token;

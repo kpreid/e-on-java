@@ -51,13 +51,8 @@ public class TermLexer extends BaseLexer {
     public TermLexer(LineFeeder input,
                      boolean partialFlag,
                      boolean quasiFlag,
-                     boolean noTabsFlag)
-      throws IOException {
-        this(input,
-             partialFlag,
-             quasiFlag,
-             noTabsFlag,
-             TermBuilder.FOR_TERMS);
+                     boolean noTabsFlag) throws IOException {
+        this(input, partialFlag, quasiFlag, noTabsFlag, TermBuilder.FOR_TERMS);
     }
 
     /**
@@ -67,8 +62,7 @@ public class TermLexer extends BaseLexer {
                      boolean partialFlag,
                      boolean quasiFlag,
                      boolean noTabsFlag,
-                     AstroBuilder builder)
-      throws IOException {
+                     AstroBuilder builder) throws IOException {
         super(input,
               TermParser.EOL,
               TermParser.EOTLU,
@@ -81,19 +75,14 @@ public class TermLexer extends BaseLexer {
     /**
      * @param sourceCode The source code itself
      * @param quasiFlag  Should doubled @ and $ be collapsed to singles?
-     * @param noTabsFlag Should tabs be rejected as valid whitespace?
-     *                   Assumed to correspond to the e.enable.notabs
-     *                   property.
+     * @param noTabsFlag Should tabs be rejected as valid whitespace? Assumed
+     *                   to correspond to the e.enable.notabs property.
      */
     static public TermLexer make(Twine sourceCode,
                                  boolean quasiFlag,
-                                 boolean noTabsFlag)
-      throws IOException {
+                                 boolean noTabsFlag) throws IOException {
         LineFeeder lineFeeder = new TwineFeeder(sourceCode);
-        return new TermLexer(lineFeeder,
-                             false,
-                             quasiFlag,
-                             noTabsFlag);
+        return new TermLexer(lineFeeder, false, quasiFlag, noTabsFlag);
     }
 
     /**
@@ -128,233 +117,207 @@ public class TermLexer extends BaseLexer {
         startToken();
 
         switch (myChar) {
-        case '&':
-        case '|':
-        case '^':
-        case ',':
-        case ';':
-        case '!':
-        case '?':
-            {
-                char c = myChar;
+        case'&':
+        case'|':
+        case'^':
+        case',':
+        case';':
+        case'!':
+        case'?': {
+            char c = myChar;
+            nextChar();
+            return leafTag((short)c, endSpan());
+        }
+        case'*': {
+            nextChar();
+            if ('*' == myChar) {
                 nextChar();
-                return leafTag((short)c, endSpan());
+                return leafTag(TermParser.OpDoubleStar, endSpan());
             }
-        case '*':
-            {
+            return leafTag((short)'*', endSpan());
+        }
+        case'+': {
+            nextChar();
+            if ('+' == myChar) {
                 nextChar();
-                if ('*' == myChar) {
-                    nextChar();
-                    return leafTag(TermParser.OpDoubleStar, endSpan());
-                }
-                return leafTag((short)'*', endSpan());
+                return leafTag(TermParser.OpDoublePlus, endSpan());
             }
-        case '+':
-            {
+            return leafTag((short)'+', endSpan());
+        }
+        case'=': {
+            nextChar();
+            if ('>' == myChar) {
                 nextChar();
-                if ('+' == myChar) {
-                    nextChar();
-                    return leafTag(TermParser.OpDoublePlus, endSpan());
-                }
-                return leafTag((short)'+', endSpan());
+                syntaxError("'=>' is reserved");
             }
-        case '=':
-            {
+            return leafTag((short)'=', endSpan());
+        }
+        case'-': {
+            if (peekChar('>')) {
                 nextChar();
-                if ('>' == myChar) {
-                    nextChar();
-                    syntaxError("'=>' is reserved");
-                }
-                return leafTag((short)'=', endSpan());
-            }
-        case '-':
-            {
-                if (peekChar('>')) {
-                    nextChar();
-                    nextChar();
-                    return leafTag(TermParser.OpAction, endSpan());
-                }
-                return numberLiteral();
-            }
-        case '/':
-            {
                 nextChar();
-                if ('/' == myChar) {
-                    skipLine();
-                    return leafEOL();
-                } else if ('*' == myChar) {
-                    nextChar();
-                    skipBlockComment();
-                    return getNextToken();
-                }
-                return leafTag((short)'/', endSpan());
+                return leafTag(TermParser.OpAction, endSpan());
             }
-        case ':':
-            {
-                nextChar();
-                if (':' == myChar) {
-                    nextChar();
-                    if ('=' == myChar) {
-                        nextChar();
-                        return leafTag(TermParser.OpDef, endSpan());
-                    }
-                    return tag();
-                }
-                return leafTag((short)':', endSpan());
-            }
-        case '.':
-            {
-                if (isSegStart(peekChar())) {
-                    return tag();
-                }
-                nextChar();
-                if ('.' == myChar) {
-                    nextChar();
-                    return leafTag(TermParser.OpThru, endSpan());
-                }
-                return leafTag((short)'.', endSpan());
-            }
-        case '$':
-            {
-                if (myQuasiFlag) {
-                    if (peekChar('$')) {
-                        //If we're quasi-parsing, then a doubled '$'
-                        //is actually a single '$' beginning a tag.
-                        return tag();
-                    } else {
-                        //If we're quasi-parsing, then a single '$' is
-                        //its own token.
-                        nextChar();
-                        return leafTag((short)'$', endSpan());
-                    }
-                } else {
-                    //If we're not quasi-parsing, then a single '$' is
-                    //a single '$' beginning a tag.
-                    return tag();
-                }
-            }
-        case '@':
-            {
-                if (myQuasiFlag) {
-                    if (peekChar('@')) {
-                        //If we're quasi-parsing, then a doubled '@'
-                        //is actually a single '@', which doesn't begin
-                        //any tokens in this grammar.
-                        syntaxError("Unexpected @@");
-                    } else {
-                        //If we're quasi-parsing, then a single '@' is
-                        //its own token.
-                        nextChar();
-                        return leafTag((short)'@', endSpan());
-                    }
-                } else {
-                    //If we're not quasi-parsing, then a single '@' is
-                    //a single '@', which doesn't begin
-                    //any tokens in this grammar.
-                    syntaxError("Unexpected @");
-                }
-            }
-
-        case '[':
-            {
-                return openBracket(']');
-            }
-        case ']':
-            {
-                return closeBracket();
-            }
-        case '(':
-            {
-                return openBracket(')');
-            }
-        case ')':
-            {
-                return closeBracket();
-            }
-        case '{':
-            {
-                return openBracket('}');
-            }
-        case '}':
-            {
-                return closeBracket();
-            }
-
-        case EOFCHAR:
-            {
-                return leafTag(EOFTOK, null);
-            }
-        case '\n':
-            {
-                myDelayedNextChar = true;
-                return leafEOL();
-            }
-        case '#':
-            {
+            return numberLiteral();
+        }
+        case'/': {
+            nextChar();
+            if ('/' == myChar) {
                 skipLine();
                 return leafEOL();
-            }
-        case '\\':
-            {
+            } else if ('*' == myChar) {
                 nextChar();
-                if (myChar == 'u' || myChar == 'U') {
-                    syntaxError("\\u... not yet implemented");
-                    return null; //keep compiler happy
+                skipBlockComment();
+                return getNextToken();
+            }
+            return leafTag((short)'/', endSpan());
+        }
+        case':': {
+            nextChar();
+            if (':' == myChar) {
+                nextChar();
+                if ('=' == myChar) {
+                    nextChar();
+                    return leafTag(TermParser.OpDef, endSpan());
                 }
-                //an escaped newline is insensitive to trailing
-                //whitespace, since that's invisible anyway.
-                skipWhiteSpace();
-                if (myChar == '\n') {
-                    myContinueCount = 2;
-                    skipLine();
-                    stopToken();
-                    Astro result = getNextToken();
-                    if (result.getOptTagCode() == EOFTOK) {
-                        needMore("continued line");
-                        return null; //make compiler happy
-                    } else {
-                        return result;
-                    }
-                }
-                syntaxError("unrecognized escape");
-                return null; //keep compiler happy
-            }
-        case '\'':
-            {
-                return charsLiteral();
-            }
-        case '"':
-            {
-                return stringLiteral();
-            }
-        case '0':
-        case '1':
-        case '2':
-        case '3':
-        case '4':
-        case '5':
-        case '6':
-        case '7':
-        case '8':
-        case '9':
-            {
-                return numberLiteral();
-            }
-        case '<':
-            {
                 return tag();
             }
-        default:
-            {
-                if (isSegStart(myChar)) {
+            return leafTag((short)':', endSpan());
+        }
+        case'.': {
+            if (isSegStart(peekChar())) {
+                return tag();
+            }
+            nextChar();
+            if ('.' == myChar) {
+                nextChar();
+                return leafTag(TermParser.OpThru, endSpan());
+            }
+            return leafTag((short)'.', endSpan());
+        }
+        case'$': {
+            if (myQuasiFlag) {
+                if (peekChar('$')) {
+                    //If we're quasi-parsing, then a doubled '$'
+                    //is actually a single '$' beginning a tag.
                     return tag();
                 } else {
-                    syntaxError("unrecognized character: '" +
-                                myChar +
-                                "' code: " + (int)myChar);
-                    return null; //keep compiler happy
+                    //If we're quasi-parsing, then a single '$' is
+                    //its own token.
+                    nextChar();
+                    return leafTag((short)'$', endSpan());
+                }
+            } else {
+                //If we're not quasi-parsing, then a single '$' is
+                //a single '$' beginning a tag.
+                return tag();
+            }
+        }
+        case'@': {
+            if (myQuasiFlag) {
+                if (peekChar('@')) {
+                    //If we're quasi-parsing, then a doubled '@'
+                    //is actually a single '@', which doesn't begin
+                    //any tokens in this grammar.
+                    syntaxError("Unexpected @@");
+                } else {
+                    //If we're quasi-parsing, then a single '@' is
+                    //its own token.
+                    nextChar();
+                    return leafTag((short)'@', endSpan());
+                }
+            } else {
+                //If we're not quasi-parsing, then a single '@' is
+                //a single '@', which doesn't begin
+                //any tokens in this grammar.
+                syntaxError("Unexpected @");
+            }
+        }
+
+        case'[': {
+            return openBracket(']');
+        }
+        case']': {
+            return closeBracket();
+        }
+        case'(': {
+            return openBracket(')');
+        }
+        case')': {
+            return closeBracket();
+        }
+        case'{': {
+            return openBracket('}');
+        }
+        case'}': {
+            return closeBracket();
+        }
+
+        case EOFCHAR: {
+            return leafTag(EOFTOK, null);
+        }
+        case'\n': {
+            myDelayedNextChar = true;
+            return leafEOL();
+        }
+        case'#': {
+            skipLine();
+            return leafEOL();
+        }
+        case'\\': {
+            nextChar();
+            if (myChar == 'u' || myChar == 'U') {
+                syntaxError("\\u... not yet implemented");
+                return null; //keep compiler happy
+            }
+            //an escaped newline is insensitive to trailing
+            //whitespace, since that's invisible anyway.
+            skipWhiteSpace();
+            if (myChar == '\n') {
+                myContinueCount = 2;
+                skipLine();
+                stopToken();
+                Astro result = getNextToken();
+                if (result.getOptTagCode() == EOFTOK) {
+                    needMore("continued line");
+                    return null; //make compiler happy
+                } else {
+                    return result;
                 }
             }
+            syntaxError("unrecognized escape");
+            return null; //keep compiler happy
+        }
+        case'\'': {
+            return charsLiteral();
+        }
+        case'"': {
+            return stringLiteral();
+        }
+        case'0':
+        case'1':
+        case'2':
+        case'3':
+        case'4':
+        case'5':
+        case'6':
+        case'7':
+        case'8':
+        case'9': {
+            return numberLiteral();
+        }
+        case'<': {
+            return tag();
+        }
+        default: {
+            if (isSegStart(myChar)) {
+                return tag();
+            } else {
+                syntaxError("unrecognized character: '" + myChar + "' code: " +
+                  (int)myChar);
+                return null; //keep compiler happy
+            }
+        }
         }
     }
 
@@ -389,50 +352,42 @@ public class TermLexer extends BaseLexer {
         } else if (1 == len) {
             return myBuilder.leafChar(buf.charAt(0), optSpan);
         } else {
-            return composite(TermParser.LiteralChars,
-                             buf.toString(),
-                             optSpan);
+            return composite(TermParser.LiteralChars, buf.toString(), optSpan);
         }
     }
 
     /**
-     * Any character that may
-     * {@link java.lang.Character#isJavaIdentifierStart(char) start}
-     * a Java identifier.
+     * Any character that may {@link java.lang.Character#isJavaIdentifierStart(char)
+     * start} a Java identifier.
      * <p/>
      * Note that a Java identifier may start with a '_' or '$'.
      * <p/>
-     * This includes all the characters that may start an
-     * <a href="http://www.w3.org/TR/REC-xml-names/#NT-NCName"
-     * >XML-NS-NCName</a> as well as '$'.
+     * This includes all the characters that may start an <a
+     * href="http://www.w3.org/TR/REC-xml-names/#NT-NCName" >XML-NS-NCName</a>
+     * as well as '$'.
      * <p/>
-     * This also includes all the characters that may start a Java or E
-     * fully qualified name.
+     * This also includes all the characters that may start a Java or E fully
+     * qualified name.
      */
     static public boolean isSegStart(char c) {
         return isJavaIdStart(c);
     }
 
     /**
-     * Any character that may
-     * {@link java.lang.Character#isJavaIdentifierPart(char) be a part of}
-     * a Java identifier, or a '.' or '-'.
+     * Any character that may {@link java.lang.Character#isJavaIdentifierPart(char)
+     * be a part of} a Java identifier, or a '.' or '-'.
      * <p/>
      * Note that a Java identifier may contain '_'s and '$'s.
      * <p/>
-     * Not yet dealt with are the
-     * <a href=
-     * "http://www.w3.org/TR/2000/REC-xml-20001006#NT-CombiningChar"
-     * >XML CombiningChar</a>s or the <a href=
-     * "http://www.w3.org/TR/2000/REC-xml-20001006#NT-Extender"
-     * >XML Extender</a>s, both of which should be included in isSegPart.
-     * Once these are included, then this will include all the characters
-     * that can be part of an <a href=
-     * "http://www.w3.org/TR/REC-xml-names/#NT-NCNameChar"
+     * Not yet dealt with are the <a href= "http://www.w3.org/TR/2000/REC-xml-20001006#NT-CombiningChar"
+     * >XML CombiningChar</a>s or the <a href= "http://www.w3.org/TR/2000/REC-xml-20001006#NT-Extender"
+     * >XML Extender</a>s, both of which should be included in isSegPart. Once
+     * these are included, then this will include all the characters that can
+     * be part of an <a href= "http://www.w3.org/TR/REC-xml-names/#NT-NCNameChar"
      * >XML-NS-NCNameChar</a> as well as '$'.
      * <p/>
-     * This also includes all the characters that may be a part of a Java or
-     * E fully qualified name.
+     * This also includes all the characters that may be a part of a Java or E
+     * fully qualified name.
      */
     static public boolean isSegPart(char c) {
         return isJavaIdPart(c) || '.' == c || '-' == c;
@@ -448,15 +403,14 @@ public class TermLexer extends BaseLexer {
      *     |             '.' &lt;segStart&gt; &lt;segPart&gt;*
      *     |             '&lt;' &lt;uric&gt;* '&gt;';
      * </pre>
-     * Because of the second segment production, a segment may also begin
-     * with a '.', though neither an <a href=
-     * "http://www.w3.org/TR/REC-xml-names/#NT-NCName"
-     * >XML-NS-NCName</a> nor a Java or E fully qualified name may begin with
-     * a '.'. Therefore, names that begin with a '.' (like ".bag.") can be
-     * used in a keyword-like way without conflicting with these other
-     * namespaces. Out of Fortran nostalgia, by convention such names end
-     * with a '.' as well.
-     * <p>
+     * Because of the second segment production, a segment may also begin with
+     * a '.', though neither an <a href= "http://www.w3.org/TR/REC-xml-names/#NT-NCName"
+     * >XML-NS-NCName</a> nor a Java or E fully qualified name may begin with a
+     * '.'. Therefore, names that begin with a '.' (like ".bag.") can be used
+     * in a keyword-like way without conflicting with these other namespaces.
+     * Out of Fortran nostalgia, by convention such names end with a '.' as
+     * well.
+     * <p/>
      * If there was a leading double colon, it's already been eaten by the time
      * we get here. Otherwise, we're still looking at the first character, so
      * in all cases we start with the first character of the first &lt;sos&gt;
@@ -464,9 +418,8 @@ public class TermLexer extends BaseLexer {
      * assume that a double-colon has already been eaten, as we wouldn't have
      * gotten here otherwise.
      *
-     * @see <a href=
-     * "http://www.eros-os.org/pipermail/e-lang/2005-January/010355.html"
-     * >(Section at end:) Quasi-JSON back from the dead</a>
+     * @see <a href= "http://www.eros-os.org/pipermail/e-lang/2005-January/010355.html"
+     *      >(Section at end:) Quasi-JSON back from the dead</a>
      */
     private Astro tag() throws IOException, SyntaxException {
         while (true) {
@@ -495,8 +448,7 @@ public class TermLexer extends BaseLexer {
                         needMore("end of input in middle of tag");
                     }
                 } while (URIKit.isURIC(myChar));
-                T.require('>' == myChar,
-                          "missing '>' inside tag");
+                T.require('>' == myChar, "missing '>' inside tag");
                 nextChar();
             } else if ('"' == myChar) {
                 // XXX When we do implement this, we need to fix the
@@ -560,8 +512,7 @@ public class TermLexer extends BaseLexer {
     /**
      * Assumes the initial '/*' has already been eaten.
      */
-    private void skipBlockComment()
-      throws IOException, SyntaxException {
+    private void skipBlockComment() throws IOException, SyntaxException {
 
         //The openner is the initial '/*'
         Twine openner = (Twine)myLTwine.run(myOptStartPos, myPos);
@@ -592,8 +543,8 @@ public class TermLexer extends BaseLexer {
     }
 
     /**
-     * Just for testing. Reads an input file and prints one token per line
-     * to stdout.
+     * Just for testing. Reads an input file and prints one token per line to
+     * stdout.
      */
     static public void main(String[] args)
       throws IOException, SyntaxException {
@@ -628,8 +579,8 @@ public class TermLexer extends BaseLexer {
                 } while (t.getOptTagCode() != EOFTOK);
                 return;
             } catch (SyntaxException sex) {
-                TextWriter err = new TextWriter(PrintStreamWriter.stderr(),
-                                                true);
+                TextWriter err =
+                  new TextWriter(PrintStreamWriter.stderr(), true);
                 err.indent("# ").print("# ", sex);
                 err.println();
             }

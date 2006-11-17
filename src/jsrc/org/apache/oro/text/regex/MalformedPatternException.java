@@ -59,17 +59,17 @@ package org.apache.oro.text.regex;
 
 
 /**
- * A class used to signify the occurrence of a syntax error in a
- * regular expression that is being compiled. The class is not
- * declared final so that it may be subclassed for identifying
- * more specific pattern comilation errors. However, at this point
- * in time, this package does not subclass MalformedPatternException
- * for any purpose. This does not preclude users and third party
- * implementors of the interfaces of this package from subclassing it
- * for their own purposes.
+ * A class used to signify the occurrence of a syntax error in a regular
+ * expression that is being compiled. The class is not declared final so that
+ * it may be subclassed for identifying more specific pattern comilation
+ * errors. However, at this point in time, this package does not subclass
+ * MalformedPatternException for any purpose. This does not preclude users and
+ * third party implementors of the interfaces of this package from subclassing
+ * it for their own purposes.
  *
  * @author <a href="mailto:dfs@savarese.org">Daniel F. Savarese</a>
- * @version $Id: MalformedPatternException.java,v 1.4 2001/12/02 06:01:40 markm Exp $
+ * @version $Id: MalformedPatternException.java,v 1.4 2001/12/02 06:01:40 markm
+ *          Exp $
  * @see PatternCompiler
  */
 public class MalformedPatternException extends Exception {

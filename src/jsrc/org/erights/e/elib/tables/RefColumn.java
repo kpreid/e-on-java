@@ -49,8 +49,8 @@ class RefColumn extends Column {
      *
      */
     protected Column diverge(Class membType) {
-        Object[] array = (Object[])ArrayHelper.newArray(membType,
-                                                        myArray.length);
+        Object[] array =
+          (Object[])ArrayHelper.newArray(membType, myArray.length);
         try {
             System.arraycopy(myArray, 0, array, 0, myArray.length);
         } catch (ArrayStoreException ex) {

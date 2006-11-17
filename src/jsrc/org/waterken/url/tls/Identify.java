@@ -32,8 +32,8 @@ public final class Identify {
 
         // Load the key store.
         final KeyStore keys = KeyStore.getInstance(KeyStore.getDefaultType());
-        final FileInputStream keys_in = new FileInputStream(
-          key_file.getAbsoluteFile());
+        final FileInputStream keys_in =
+          new FileInputStream(key_file.getAbsoluteFile());
         keys.load(keys_in, passphrase.toCharArray());
         keys_in.close();
 

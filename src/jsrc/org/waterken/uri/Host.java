@@ -44,11 +44,11 @@ public final class Host {
             switch (j - i) {
             case 3:
                 switch (s.charAt(i)) {
-                case '1':
+                case'1':
                     r = '0' <= s.charAt(i + 1) && '9' >= s.charAt(i + 1) &&
                       '0' <= s.charAt(i + 2) && '9' >= s.charAt(i + 2);
                     break;
-                case '2':
+                case'2':
                     if ('5' == s.charAt(i + 1)) {
                         r = '0' <= s.charAt(i + 2) && '5' >= s.charAt(i + 2);
                     } else {

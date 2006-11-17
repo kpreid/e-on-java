@@ -49,8 +49,8 @@ public final class Main {
                          identity.getPrivate(),
                          passphrase.toCharArray(),
                          new Certificate[]{certificate});
-        final FileOutputStream out = new FileOutputStream(
-          key_file.getAbsoluteFile());
+        final FileOutputStream out =
+          new FileOutputStream(key_file.getAbsoluteFile());
         keys.store(out, passphrase.toCharArray());
         out.flush();
         out.close();

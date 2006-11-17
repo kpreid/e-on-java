@@ -20,12 +20,12 @@ import java.io.IOException;
 // found at http://www.opensource.org/licenses/mit-license.html ...............
 
 /**
- * An at-hole of a quasi-literal term expression extracts the specimen into
- * a binding.
+ * An at-hole of a quasi-literal term expression extracts the specimen into a
+ * binding.
  * <p/>
  * An at-hole is not a valid ValueMaker, and so neither is any quasi tree that
- * contains an at-hole. If encountered during substitution, an at-hole
- * throws. It would be good to make this error occur earlier.
+ * contains an at-hole. If encountered during substitution, an at-hole throws.
+ * It would be good to make this error occur earlier.
  * <p/>
  * As a MatchMaker, this requires the specimen to meet its constraints
  * (optional tag, optional requirement of zero arity), and then extracts it
@@ -62,19 +62,17 @@ public class QAtHole extends QHole {
     }
 
     /**
-     * Uses 'QAtHoleMaker(myBuilder, myOptTag, myHoleNum,
-     * myIsFunctorHole, myOptSpan)'
+     * Uses 'QAtHoleMaker(myBuilder, myOptTag, myHoleNum, myIsFunctorHole,
+     * myOptSpan)'
      */
     public Object[] getSpreadUncall() {
-        Object[] result = {
-            QAtHoleMaker,
-            "run",
-            myBuilder,
-            myOptTag,
-            EInt.valueOf(myHoleNum),
-            myIsFunctorHole ? Boolean.TRUE : Boolean.FALSE,
-            myOptSpan
-        };
+        Object[] result = {QAtHoleMaker,
+          "run",
+          myBuilder,
+          myOptTag,
+          EInt.valueOf(myHoleNum),
+          myIsFunctorHole ? Boolean.TRUE : Boolean.FALSE,
+          myOptSpan};
         return result;
     }
 
@@ -94,16 +92,15 @@ public class QAtHole extends QHole {
     }
 
     /**
-     * An at-hole doesn't contribute to the shape, so just returns
-     * shapeSoFar, but initializes the binding at [myHoleNum]+prefix to a
-     * new empty FlexList.
+     * An at-hole doesn't contribute to the shape, so just returns shapeSoFar,
+     * but initializes the binding at [myHoleNum]+prefix to a new empty
+     * FlexList.
      */
     int startShape(ConstList args,
                    FlexList optBindings,
                    int[] prefix,
                    int shapeSoFar) {
-        T.notNull(optBindings,
-                  "no at-holes in a ValueMaker: ", this);
+        T.notNull(optBindings, "no at-holes in a ValueMaker: ", this);
         multiPut(optBindings, myHoleNum, prefix, FlexList.make());
         return shapeSoFar;
     }
@@ -111,20 +108,12 @@ public class QAtHole extends QHole {
     /**
      * Truncate and snapshot the bindings at [myHoleNum]+prefix to shape.
      */
-    void endShape(FlexList optBindings,
-                  int[] prefix,
-                  int shape) {
-        T.notNull(optBindings,
-                  "no at-holes in a ValueMaker: ", this);
-        FlexList list = (FlexList)multiGet(optBindings.snapshot(),
-                                           myHoleNum,
-                                           prefix,
-                                           false);
+    void endShape(FlexList optBindings, int[] prefix, int shape) {
+        T.notNull(optBindings, "no at-holes in a ValueMaker: ", this);
+        FlexList list =
+          (FlexList)multiGet(optBindings.snapshot(), myHoleNum, prefix, false);
         list.setSize(shape);
-        multiPut(optBindings,
-                 myHoleNum,
-                 prefix,
-                 list.snapshot());
+        multiPut(optBindings, myHoleNum, prefix, list.snapshot());
     }
 
     /**
@@ -132,8 +121,9 @@ public class QAtHole extends QHole {
      * used as a ValueMaker.
      */
     public ConstList substSlice(ConstList args, int[] index) {
-        T.fail("A quasi-tree with an @-hole may not be used as a ValueMaker: "
-               + this);
+        T.fail(
+          "A quasi-tree with an @-hole may not be used as a ValueMaker: " +
+            this);
         return null; //make compiler happy
     }
 
@@ -155,10 +145,7 @@ public class QAtHole extends QHole {
         if (null == optSpecimen) {
             return -1;
         }
-        Object optOldValue = multiPut(bindings,
-                                      myHoleNum,
-                                      index,
-                                      optSpecimen);
+        Object optOldValue = multiPut(bindings, myHoleNum, index, optSpecimen);
         if (null == optOldValue ||
           0.0 == E.asFloat64(E.call(optOldValue, "op__cmp", optSpecimen))) {
 
@@ -173,8 +160,7 @@ public class QAtHole extends QHole {
      *
      */
     QHole asTagged(Astro ident) {
-        T.require(null == myOptTag,
-                  "Already tagged: ", this);
+        T.require(null == myOptTag, "Already tagged: ", this);
         return new QAtHole(myBuilder,
                            ident.getTag(),
                            myHoleNum,
@@ -200,8 +186,7 @@ public class QAtHole extends QHole {
     /**
      *
      */
-    public void prettyPrintOn(TextWriter out)
-      throws IOException {
+    public void prettyPrintOn(TextWriter out) throws IOException {
         if (null != myOptTag) {
             out.print(myOptTag.getTagName());
         }

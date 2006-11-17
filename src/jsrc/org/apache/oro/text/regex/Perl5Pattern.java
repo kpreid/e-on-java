@@ -61,16 +61,15 @@ import java.io.Serializable;
 
 /**
  * An implementation of the Pattern interface for Perl5 regular expressions.
- * This class is compatible with the Perl5Compiler and Perl5Matcher
- * classes. When a Perl5Compiler instance compiles a regular expression
- * pattern, it produces a Perl5Pattern instance containing internal
- * data structures used by Perl5Matcher to perform pattern matches.
- * This class cannot be subclassed and
- * cannot be directly instantiated by the programmer as it would not
- * make sense. Perl5Pattern instances should only be created through calls
- * to a Perl5Compiler instance's compile() methods. The class implements
- * the Serializable interface so that instances may be pre-compiled and
- * saved to disk if desired.
+ * This class is compatible with the Perl5Compiler and Perl5Matcher classes.
+ * When a Perl5Compiler instance compiles a regular expression pattern, it
+ * produces a Perl5Pattern instance containing internal data structures used by
+ * Perl5Matcher to perform pattern matches. This class cannot be subclassed and
+ * cannot be directly instantiated by the programmer as it would not make
+ * sense. Perl5Pattern instances should only be created through calls to a
+ * Perl5Compiler instance's compile() methods. The class implements the
+ * Serializable interface so that instances may be pre-compiled and saved to
+ * disk if desired.
  *
  * @author <a href="mailto:dfs@savarese.org">Daniel F. Savarese</a>
  * @version $Id: Perl5Pattern.java,v 1.4 2001/12/02 06:01:41 markm Exp $

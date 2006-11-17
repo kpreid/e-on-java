@@ -16,7 +16,7 @@ abstract class GrammarAtom extends AlternativeElement {
     protected String label;
     protected String atomText;
     protected int tokenType = Token.INVALID_TYPE;
-    protected boolean not = false;	// ~T or ~'c' or ~"foo"
+    protected boolean not = false;        // ~T or ~'c' or ~"foo"
     /**
      * Set to type of AST node to create during parse.  Defaults to what is set
      * in the TokenSymbol.
@@ -56,11 +56,11 @@ abstract class GrammarAtom extends AlternativeElement {
         if (option.getText().equals("AST")) {
             setASTNodeType(value.getText());
         } else {
-            grammar.antlrTool.error(
-              "Invalid element option:" + option.getText(),
-              grammar.getFilename(),
-              option.getLine(),
-              option.getColumn());
+            grammar.antlrTool
+              .error("Invalid element option:" + option.getText(),
+                     grammar.getFilename(),
+                     option.getLine(),
+                     option.getColumn());
         }
     }
 

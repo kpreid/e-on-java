@@ -11,8 +11,8 @@ import java.net.SocketAddress;
  *
  * @author Tyler
  */
-public final class Locator implements org.waterken.url.Locator,
-  java.io.Serializable {
+public final class Locator
+  implements org.waterken.url.Locator, java.io.Serializable {
 
     private org.waterken.url.Locator network;   // The underlying network.
     private String address;                     // The proxy address.
@@ -32,8 +32,8 @@ public final class Locator implements org.waterken.url.Locator,
      * @param network The underlying network.
      * @param address The proxy address.
      */
-    public static org.waterken.url.Locator make(
-      final org.waterken.url.Locator network, final String address) {
+    public static org.waterken.url.Locator make(final org.waterken.url.Locator network,
+                                                final String address) {
         return new Locator(network, address);
     }
 

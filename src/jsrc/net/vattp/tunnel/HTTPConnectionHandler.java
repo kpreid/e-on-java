@@ -159,42 +159,38 @@ public class HTTPConnectionHandler extends Thread {
                 break;
             }
             switch (subType) {
-            case HTTPMsgID.HTTP_NewConnection:
-                {
-                    byte connectionID = in.readByte();
-                    if (connectionID <= 0) {
-                        byte[] msg = {HTTPMsgID.HTTP_InvalidID, connectionID};
-                        client.close(connectionID);
-                        client.queueMsg(msg);
-                        break;
-                    }
-                    String hostPort = in.readUTF();
-                    client.makeConnection(connectionID, hostPort);
-                    break;
-                }
-            case HTTPMsgID.HTTP_Data:
-                {
-                    byte connectionID = in.readByte();
-                    int l = in.readUnsignedShort();
-                    byte[] data = new byte[l];
-                    in.readFully(data);
-                    client.sendData(connectionID, data);
-                    break;
-                }
-            case HTTPMsgID.HTTP_OKToSend:
-                {
-                    byte connectionID = in.readByte();
-                    int limit = in.readUnsignedShort();
-                    client.setSendLimit(connectionID, limit);
-                    break;
-                }
-            case HTTPMsgID.HTTP_Close:
-                {
-                    byte connectionID = in.readByte();
-                    String reason = in.readUTF();
+            case HTTPMsgID.HTTP_NewConnection: {
+                byte connectionID = in.readByte();
+                if (connectionID <= 0) {
+                    byte[] msg = {HTTPMsgID.HTTP_InvalidID, connectionID};
                     client.close(connectionID);
+                    client.queueMsg(msg);
                     break;
                 }
+                String hostPort = in.readUTF();
+                client.makeConnection(connectionID, hostPort);
+                break;
+            }
+            case HTTPMsgID.HTTP_Data: {
+                byte connectionID = in.readByte();
+                int l = in.readUnsignedShort();
+                byte[] data = new byte[l];
+                in.readFully(data);
+                client.sendData(connectionID, data);
+                break;
+            }
+            case HTTPMsgID.HTTP_OKToSend: {
+                byte connectionID = in.readByte();
+                int limit = in.readUnsignedShort();
+                client.setSendLimit(connectionID, limit);
+                break;
+            }
+            case HTTPMsgID.HTTP_Close: {
+                byte connectionID = in.readByte();
+                String reason = in.readUTF();
+                client.close(connectionID);
+                break;
+            }
             case HTTPMsgID.HTTP_InvalidID:
             case HTTPMsgID.HTTP_ConnectionFailed:
             case HTTPMsgID.HTTP_ConnectionComplete:
@@ -258,8 +254,8 @@ public class HTTPConnectionHandler extends Thread {
                  header = in.readLine()) {
                 if (header.toLowerCase().startsWith(lenHead)) {
                     try {
-                        contentLength = Integer.parseInt(
-                          header.substring(lenHead.length()));
+                        contentLength =
+                          Integer.parseInt(header.substring(lenHead.length()));
                     } catch (NumberFormatException e) {
                         clientError("Bad Content-length: " + e);
                         return;

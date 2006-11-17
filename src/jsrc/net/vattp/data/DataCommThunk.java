@@ -148,9 +148,7 @@ class DataCommThunk implements Runnable {
      * @param written      the number of bytes actually sent to TCP.
      * @param continuation is the streaming continuation or null.
      */
-    DataCommThunk(DataPath conn,
-                  int count,
-                  int length,
+    DataCommThunk(DataPath conn, int count, int length,
                   /*NullOK*/StreamMessage continuation) {
         myDataPath = conn;
         myWrittenCount = count;

@@ -23,14 +23,15 @@ public final class PathSegment {
         // Check for disallowed characters.
         for (int i = candidate.length(); i-- != 0;) {
             final char c = candidate.charAt(i);
-            if (c <= 0x20 || c >= 0x7F || "\"#/<>?[\\]^`{|}".indexOf(c) != -1) {
+            if (c <= 0x20 || c >= 0x7F ||
+              "\"#/<>?[\\]^`{|}".indexOf(c) != -1) {
                 throw InvalidPath.make();
             }
         }
 
         // Check for special segments.
-        if ("".equals(candidate) || ".".equals(candidate) || "..".equals(
-          candidate)) {
+        if ("".equals(candidate) || ".".equals(candidate) ||
+          "..".equals(candidate)) {
             throw InvalidPath.make();
         }
 

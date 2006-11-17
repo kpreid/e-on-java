@@ -22,9 +22,9 @@ Contributor(s): ______________________________________.
 import org.erights.e.elib.slot.Slot;
 
 /**
- * Instances maintain the outer, object-frame, and local nouns during
- * the evaluation of an E expression.
- * <p>
+ * Instances maintain the outer, object-frame, and local nouns during the
+ * evaluation of an E expression.
+ * <p/>
  * Three groups of variables comprise the execution state of the
  *
  * @author E. Dean Tribble
@@ -43,7 +43,6 @@ public class EvalContext {
     private final Slot[] myOuters;
 
     /**
-     *
      * @param localCount
      * @param fields
      * @param outers
@@ -56,7 +55,6 @@ public class EvalContext {
     }
 
     /**
-     *
      * @param localCount
      * @param outers
      * @return
@@ -66,22 +64,19 @@ public class EvalContext {
     }
 
     /**
-     *
      * @param locals
      * @param fields
      * @param outers
      */
-    private EvalContext(Object[] locals,
-                        Object[] fields,
-                        Slot[] outers) {
+    private EvalContext(Object[] locals, Object[] fields, Slot[] outers) {
         myLocals = locals;
         myFields = fields;
         myOuters = outers;
     }
 
     /**
-     * returns an EvalContext for a new Scope that inherits from this one.
-     * This new Scope has an empty set of locals.
+     * returns an EvalContext for a new Scope that inherits from this one. This
+     * new Scope has an empty set of locals.
      */
     public EvalContext extended(int localCount) {
         if (0 == localCount) {
@@ -112,8 +107,8 @@ public class EvalContext {
 
     public void initLocal(int index, Object value) {
         if (index >= myLocals.length) {
-            System.err.println("Assign: " + index +
-                               " within: " + myLocals.length);
+            System.err
+              .println("Assign: " + index + " within: " + myLocals.length);
         }
         myLocals[index] = value;
     }

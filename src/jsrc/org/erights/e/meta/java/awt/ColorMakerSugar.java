@@ -20,8 +20,7 @@ public final class ColorMakerSugar {
      * Like {@link Color#RGBtoHSB}(r,g,b,null).
      * <p/>
      *
-     * @see <a href=
-     *      "https://bugs.sieve.net/bugs/?func=detailbug&bug_id=125618&group_id=16380"
+     * @see <a href= "https://bugs.sieve.net/bugs/?func=detailbug&bug_id=125618&group_id=16380"
      *      >Taming bug: java.awt.Color.getComponents and related</a>
      */
     static public float[] RGBtoHSB(int r, int g, int b) {

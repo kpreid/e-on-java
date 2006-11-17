@@ -21,13 +21,12 @@ import java.io.IOException;
  * A Minimal-XML Element has only a tagName and children. The children are a
  * list of Nodes, which we define as a ContentList, which we define as a kind
  * of Content (see the QuasiContent class comment). Therefore, since the same
- * QuasiElement must match against Elements with different numbers of
- * children, we use a QuasiContent to represent the children of a
- * QuasiElement. <p>
+ * QuasiElement must match against Elements with different numbers of children,
+ * we use a QuasiContent to represent the children of a QuasiElement. <p>
  * <p/>
- * The tagName is either all hole or all literal. If it's literal, it must
- * be a well formed tagName identifier String (not checked). If it's a hole,
- * the corresponding arg or specimen must be such an identifier.
+ * The tagName is either all hole or all literal. If it's literal, it must be a
+ * well formed tagName identifier String (not checked). If it's a hole, the
+ * corresponding arg or specimen must be such an identifier.
  *
  * @author Mark S. Miller
  * @deprecated Use Term trees instead.
@@ -36,8 +35,8 @@ public class QuasiElement extends QuasiContent {
 
     static private final long serialVersionUID = -4487551194798463363L;
 
-    static public final StaticMaker QuasiElementMaker
-      = StaticMaker.make(QuasiElement.class);
+    static public final StaticMaker QuasiElementMaker =
+      StaticMaker.make(QuasiElement.class);
 
     /**
      *
@@ -50,12 +49,12 @@ public class QuasiElement extends QuasiContent {
     private final QuasiContent myChildren;
 
     /**
-     * @param tagName    If it's a String then this is the literal tag name.
-     *                   If it's a non-negative Integer, then it's a $-hole with that index.
-     *                   If it's a negative Integer, then it's a @-hole whose 1's complement
-     *                   (~) is the index.
-     * @param myChildren represent the quasi-literal XML between the start
-     *                   tag and the end tag.
+     * @param tagName    If it's a String then this is the literal tag name. If
+     *                   it's a non-negative Integer, then it's a $-hole with
+     *                   that index. If it's a negative Integer, then it's a
+     *                   @-hole whose 1's complement (~) is the index.
+     * @param myChildren represent the quasi-literal XML between the start tag
+     *                   and the end tag.
      */
     public QuasiElement(Object tagName, QuasiContent children) {
         myTagName = tagName;
@@ -82,8 +81,8 @@ public class QuasiElement extends QuasiContent {
             if (index >= 0) {
                 tagName = (String)args[index];
             } else {
-                throw new IncompleteQuasiException
-                  ("can't have @-holes in a ValueMaker");
+                throw new IncompleteQuasiException(
+                  "can't have @-holes in a ValueMaker");
             }
         }
         ConstList children = toContentList(myChildren.substitute(args));
@@ -99,8 +98,7 @@ public class QuasiElement extends QuasiContent {
                           FlexList bindings) {
         Node other = optTheOne(specimen);
         if (null == other || !(other instanceof Element)) {
-            throw Thrower.toEject(optEjector,
-                                  "Must be an Element: " + other);
+            throw Thrower.toEject(optEjector, "Must be an Element: " + other);
         }
         Element otherEl = (Element)other;
         String otherTagName = otherEl.getTagName();
@@ -110,8 +108,8 @@ public class QuasiElement extends QuasiContent {
         if (myTagName instanceof String) {
             if (!myTagName.equals(otherTagName)) {
                 throw Thrower.toEject(optEjector,
-                                      "Tag mismatch: " +
-                                      myTagName + "vs " + otherTagName);
+                                      "Tag mismatch: " + myTagName + "vs " +
+                                        otherTagName);
             }
         } else {
             int index = ((Integer)myTagName).intValue();
@@ -120,8 +118,8 @@ public class QuasiElement extends QuasiContent {
                 if (!tagName.equals(otherTagName)) {
                     throw Thrower.toEject(optEjector,
                                           "${" + index + "} (" + tagName +
-                                          ") doesn't match (" + otherTagName +
-                                          ")");
+                                            ") doesn't match (" +
+                                            otherTagName + ")");
                 }
             } else {
                 index = ~index;

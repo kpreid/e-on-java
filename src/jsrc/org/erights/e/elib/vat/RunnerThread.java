@@ -1,6 +1,5 @@
 package org.erights.e.elib.vat;
 
-
 /*
 The contents of this file are subject to the Electric Communities E Open
 Source Code License Version 1.0 (the "License"); you may not use this file
@@ -25,8 +24,8 @@ Contributor(s): ______________________________________.
  * <p/>
  * Since this is a thread, it must not be persistently reachable.
  * <p/>
- * XXX should not be public, we put {@link org.erights.e.ui.swt.SWTRunner} in
- * a separate package.
+ * XXX should not be public, we put {@link org.erights.e.ui.swt.SWTRunner} in a
+ * separate package.
  *
  * @author Mark S. Miller
  */

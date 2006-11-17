@@ -90,8 +90,7 @@ public class ProcessSugar {
      * @return A triple of the exitCode, the text sent to stdout as a String,
      *         and the text sent to stderr as a String.
      */
-    static public Object[] results(Process self)
-      throws InterruptedException {
+    static public Object[] results(Process self) throws InterruptedException {
         InputStream stdout = self.getInputStream();
         StringBuffer bufout = new StringBuffer();
         Bufferer outBufferer = new Bufferer(stdout, bufout);
@@ -110,19 +109,15 @@ public class ProcessSugar {
         String strout = StringHelper.canonical(bufout.toString());
         String strerr = StringHelper.canonical(buferr.toString());
 
-        Object[] result = {
-            EInt.valueOf(exitCode),
-            strout,
-            strerr
-        };
+        Object[] result = {EInt.valueOf(exitCode), strout, strerr};
         return result;
     }
 
     /**
      * @param self
-     * @return A pair of a vow for the triple that will be returned by
-     * {@link #results(Process) results/0}, and the vat which is
-     * {@link Process#waitFor() waiting for} that process.
+     * @return A pair of a vow for the triple that will be returned by {@link
+     *         #results(Process) results/0}, and the vat which is {@link
+     *         Process#waitFor() waiting for} that process.
      */
     static public Object[] resultsVow(Process self) {
         Vat procVat = Vat.make("headless", "process");

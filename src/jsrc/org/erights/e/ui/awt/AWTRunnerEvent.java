@@ -11,9 +11,9 @@ import java.awt.event.PaintEvent;
 
 
 /**
- * For scheduling {@link org.erights.e.elib.vat.PendingEvent}s (vat turns) on the AWT Event Queue at
- * the low priority (PaintEvent.PAINT), which is "supposed" to be for
- * repaints.
+ * For scheduling {@link org.erights.e.elib.vat.PendingEvent}s (vat turns) on
+ * the AWT Event Queue at the low priority (PaintEvent.PAINT), which is
+ * "supposed" to be for repaints.
  * <p/>
  * Unless we put everything at the low priority, repaints may be starved.
  *

@@ -167,8 +167,8 @@ public final class Connection {
                         out.write(record, 0, len);
                     } else {
                         // Buffer the message pending connection setup.
-                        final int needed = buffer_size + MAX_LENGTH_BYTES +
-                          len;
+                        final int needed =
+                          buffer_size + MAX_LENGTH_BYTES + len;
                         if (buffer.length < needed) {
                             System.arraycopy(buffer,
                                              0,

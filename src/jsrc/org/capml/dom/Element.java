@@ -28,29 +28,26 @@ import org.quasiliteral.astro.AstroTag;
 import java.io.IOException;
 
 /**
- * Represents everything in a Minimal-XML document from a start tag to
- * an end tag, inclusive. <p>
+ * Represents everything in a Minimal-XML document from a start tag to an end
+ * tag, inclusive. <p>
  * <p/>
- * This is a substantial revision by ERights.org of the file as
- * released by the w3c, as is allowed by the license. See the package
- * comment. The original class comment: <p>
+ * This is a substantial revision by ERights.org of the file as released by the
+ * w3c, as is allowed by the license. See the package comment. The original
+ * class comment: <p>
  * <p/>
- * <blockquote>
- * The <tt>Element</tt> interface represents an element in an HTML or XML
- * document. Elements may have attributes associated with them; since the
- * <tt>Element</tt> interface inherits from <tt>Node</tt> , the
- * generic <tt>Node</tt> interface attribute <tt>attributes</tt> may
- * be used to retrieve the set of all attributes for an element. There are
- * methods on the <tt>Element</tt> interface to retrieve either an
- * <tt>Attr</tt> object by name or an attribute value by name. In XML,
- * where an attribute value may contain entity references, an
- * <tt>Attr</tt> object should be retrieved to examine the possibly
- * fairly complex sub-tree representing the attribute value. On the other
- * hand, in HTML, where all attributes have simple string values, methods to
- * directly access an attribute value can safely be used as a convenience. In
- * DOM Level 2, the method <tt>normalize</tt> is inherited from the
- * <tt>Node</tt> interface where it was moved.
- * </blockquote>
+ * <blockquote> The <tt>Element</tt> interface represents an element in an HTML
+ * or XML document. Elements may have attributes associated with them; since
+ * the <tt>Element</tt> interface inherits from <tt>Node</tt> , the generic
+ * <tt>Node</tt> interface attribute <tt>attributes</tt> may be used to
+ * retrieve the set of all attributes for an element. There are methods on the
+ * <tt>Element</tt> interface to retrieve either an <tt>Attr</tt> object by
+ * name or an attribute value by name. In XML, where an attribute value may
+ * contain entity references, an <tt>Attr</tt> object should be retrieved to
+ * examine the possibly fairly complex sub-tree representing the attribute
+ * value. On the other hand, in HTML, where all attributes have simple string
+ * values, methods to directly access an attribute value can safely be used as
+ * a convenience. In DOM Level 2, the method <tt>normalize</tt> is inherited
+ * from the <tt>Node</tt> interface where it was moved. </blockquote>
  *
  * @deprecated Use Term trees instead.
  */
@@ -58,8 +55,8 @@ public class Element extends Node {
 
     static private final long serialVersionUID = -6137794451491033993L;
 
-    static public final StaticMaker ElementMaker
-      = StaticMaker.make(Element.class);
+    static public final StaticMaker ElementMaker =
+      StaticMaker.make(Element.class);
 
     /**
      * @serial the name after the &lt;
@@ -67,8 +64,8 @@ public class Element extends Node {
     private final String myTagName;
 
     /**
-     * @serial A list of Nodes. myChildren represent the stuff
-     * between the start tag and the end tag.
+     * @serial A list of Nodes. myChildren represent the stuff between the
+     * start tag and the end tag.
      */
     private final ConstList myChildren;
 
@@ -101,10 +98,9 @@ public class Element extends Node {
      * &lt;elementExample id="demo"&gt;
      *         ...
      * &lt;/elementExample&gt; ,</pre>
-     * <tt>tagName</tt> has
-     * the value <tt>"elementExample"</tt> . Note that this is
-     * case-preserving in XML, as are all of the operations of the DOM. The
-     * HTML DOM returns the <tt>tagName</tt> of an HTML element in the
+     * <tt>tagName</tt> has the value <tt>"elementExample"</tt> . Note that
+     * this is case-preserving in XML, as are all of the operations of the DOM.
+     * The HTML DOM returns the <tt>tagName</tt> of an HTML element in the
      * canonical uppercase form, regardless of the case in the  source HTML
      * document.
      */
@@ -120,8 +116,8 @@ public class Element extends Node {
     }
 
     /**
-     * Does 'visitor visit&lt;TagName&gt;(children...)', where the first
-     * letter of tagName is upperCased. <p>
+     * Does 'visitor visit&lt;TagName&gt;(children...)', where the first letter
+     * of tagName is upperCased. <p>
      * <p/>
      * For example, if the tag name is "foo", then the visitor will be called
      * as 'visitor visitFoo(children...)'
@@ -134,8 +130,7 @@ public class Element extends Node {
      * Turns the tagName "foo" into the verb "visitFoo".
      */
     private String verb() {
-        return "visit" +
-          Character.toUpperCase(myTagName.charAt(0)) +
+        return "visit" + Character.toUpperCase(myTagName.charAt(0)) +
           myTagName.substring(1);
     }
 

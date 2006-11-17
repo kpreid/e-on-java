@@ -59,16 +59,16 @@ class Rule {
     public boolean narrowerVisibility(Rule rule) {
         if (visibility.equals("public")) {
             if (!rule.equals("public")) {
-                return true;	// everything narrower than public
+                return true;        // everything narrower than public
             }
             return false;
         } else if (visibility.equals("protected")) {
             if (rule.equals("private")) {
-                return true;	// private narrower than protected
+                return true;        // private narrower than protected
             }
             return false;
         } else if (visibility.equals("private")) {
-            return false;	// nothing is narrower than private
+            return false;        // nothing is narrower than private
         }
         return false;
     }
@@ -127,17 +127,15 @@ class Rule {
 
     public String toString() {
         String s = "";
-        String retString = returnValue == null ?
-          "" :
-          "returns " + returnValue;
+        String retString = returnValue == null ? "" : "returns " + returnValue;
         String argString = args == null ? "" : args;
         String bang = getBang() ? "!" : "";
 
         s += visibility == null ? "" : visibility + " ";
         s += name + bang + argString + " " + retString + throwsSpec;
         if (options != null) {
-            s += System.getProperty("line.separator") + "options {" + System.getProperty(
-              "line.separator");
+            s += System.getProperty("line.separator") + "options {" +
+              System.getProperty("line.separator");
             for (Enumeration e = options.elements(); e.hasMoreElements();) {
                 s += (Option)e.nextElement() +
                   System.getProperty("line.separator");

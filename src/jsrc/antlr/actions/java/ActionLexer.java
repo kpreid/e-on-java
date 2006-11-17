@@ -52,7 +52,7 @@ public class ActionLexer extends antlr.CharScanner
     protected RuleBlock currentRule;
     protected CodeGenerator generator;
     protected int lineOffset = 0;
-    private Tool antlrTool;	// The ANTLR tool
+    private Tool antlrTool;        // The ANTLR tool
     ActionTransInfo transInfo;
 
     public ActionLexer(String s,
@@ -115,46 +115,44 @@ public class ActionLexer extends antlr.CharScanner
     public Token nextToken() throws TokenStreamException {
         Token theRetToken = null;
         tryAgain:
-                for (; ;) {
-                    Token _token = null;
-                    int _ttype = Token.INVALID_TYPE;
-                    resetText();
-                    try {   // for char stream error handling
-                        try {   // for lexical error handling
-                            if (((LA(1) >= '\u0003' && LA(1) <= '\u00ff'))) {
-                                mACTION(true);
-                                theRetToken = _returnToken;
-                            } else {
-                                if (LA(1) == EOF_CHAR) {
-                                    uponEOF();
-                                    _returnToken = makeToken(Token.EOF_TYPE);
-                                } else {
-                                    throw new NoViableAltForCharException(
-                                      (char)LA(1),
-                                      getFilename(),
-                                      getLine(),
-                                      getColumn());
-                                }
-                            }
-
-                            if (_returnToken == null) {
-                                continue tryAgain; // found SKIP token
-                            }
-                            _ttype = _returnToken.getType();
-                            _returnToken.setType(_ttype);
-                            return _returnToken;
-                        } catch (RecognitionException e) {
-                            throw new TokenStreamRecognitionException(e);
-                        }
-                    } catch (CharStreamException cse) {
-                        if (cse instanceof CharStreamIOException) {
-                            throw new TokenStreamIOException(
-                              ((CharStreamIOException)cse).io);
+        for (; ;) {
+            Token _token = null;
+            int _ttype = Token.INVALID_TYPE;
+            resetText();
+            try {   // for char stream error handling
+                try {   // for lexical error handling
+                    if (((LA(1) >= '\u0003' && LA(1) <= '\u00ff'))) {
+                        mACTION(true);
+                        theRetToken = _returnToken;
+                    } else {
+                        if (LA(1) == EOF_CHAR) {
+                            uponEOF();
+                            _returnToken = makeToken(Token.EOF_TYPE);
                         } else {
-                            throw new TokenStreamException(cse.getMessage());
+                            throw new NoViableAltForCharException((char)LA(1),
+                                                                  getFilename(),
+                                                                  getLine(),
+                                                                  getColumn());
                         }
                     }
+
+                    if (_returnToken == null) {
+                        continue tryAgain; // found SKIP token
+                    }
+                    _ttype = _returnToken.getType();
+                    _returnToken.setType(_ttype);
+                    return _returnToken;
+                } catch (RecognitionException e) {
+                    throw new TokenStreamRecognitionException(e);
                 }
+            } catch (CharStreamException cse) {
+                if (cse instanceof CharStreamIOException) {
+                    throw new TokenStreamIOException(((CharStreamIOException)cse).io);
+                } else {
+                    throw new TokenStreamException(cse.getMessage());
+                }
+            }
+        }
     }
 
     public final void mACTION(boolean _createToken)
@@ -170,16 +168,14 @@ public class ActionLexer extends antlr.CharScanner
             _loop382:
             do {
                 switch (LA(1)) {
-                case '#':
-                    {
-                        mAST_ITEM(false);
-                        break;
-                    }
-                case '$':
-                    {
-                        mTEXT_ITEM(false);
-                        break;
-                    }
+                case'#': {
+                    mAST_ITEM(false);
+                    break;
+                }
+                case'$': {
+                    mTEXT_ITEM(false);
+                    break;
+                }
                 default:
                     if ((_tokenSet_0.member(LA(1)))) {
                         mSTUFF(false);
@@ -199,8 +195,9 @@ public class ActionLexer extends antlr.CharScanner
         }
         if (_createToken && _token == null && _ttype != Token.SKIP) {
             _token = makeToken(_ttype);
-            _token.setText(
-              new String(text.getBuffer(), _begin, text.length() - _begin));
+            _token.setText(new String(text.getBuffer(),
+                                      _begin,
+                                      text.length() - _begin));
         }
         _returnToken = _token;
     }
@@ -214,22 +211,19 @@ public class ActionLexer extends antlr.CharScanner
         int _saveIndex;
 
         switch (LA(1)) {
-        case '"':
-            {
-                mSTRING(false);
-                break;
-            }
-        case '\'':
-            {
-                mCHAR(false);
-                break;
-            }
-        case '\n':
-            {
-                match('\n');
-                newline();
-                break;
-            }
+        case'"': {
+            mSTRING(false);
+            break;
+        }
+        case'\'': {
+            mCHAR(false);
+            break;
+        }
+        case'\n': {
+            match('\n');
+            newline();
+            break;
+        }
         default:
             if ((LA(1) == '/') && (LA(2) == '*' || LA(2) == '/')) {
                 mCOMMENT(false);
@@ -257,8 +251,9 @@ public class ActionLexer extends antlr.CharScanner
         }
         if (_createToken && _token == null && _ttype != Token.SKIP) {
             _token = makeToken(_ttype);
-            _token.setText(
-              new String(text.getBuffer(), _begin, text.length() - _begin));
+            _token.setText(new String(text.getBuffer(),
+                                      _begin,
+                                      text.length() - _begin));
         }
         _returnToken = _token;
     }
@@ -321,7 +316,7 @@ public class ActionLexer extends antlr.CharScanner
             text.setLength(_begin);
             text.append(r);
             if (transInfo != null) {
-                transInfo.refRuleRoot = r;	// we ref root of tree
+                transInfo.refRuleRoot = r;        // we ref root of tree
             }
 
             {
@@ -347,8 +342,9 @@ public class ActionLexer extends antlr.CharScanner
 
         if (_createToken && _token == null && _ttype != Token.SKIP) {
             _token = makeToken(_ttype);
-            _token.setText(
-              new String(text.getBuffer(), _begin, text.length() - _begin));
+            _token.setText(new String(text.getBuffer(),
+                                      _begin,
+                                      text.length() - _begin));
         }
         _returnToken = _token;
     }
@@ -375,26 +371,22 @@ public class ActionLexer extends antlr.CharScanner
                   ((LA(3) >= '\u0003' && LA(3) <= '\u00ff'))) {
                     {
                         switch (LA(1)) {
-                        case '\t':
-                        case '\n':
-                        case '\r':
-                        case ' ':
-                            {
-                                mWS(false);
-                                break;
-                            }
-                        case '(':
-                            {
-                                break;
-                            }
-                        default:
-                            {
-                                throw new NoViableAltForCharException(
-                                  (char)LA(1),
-                                  getFilename(),
-                                  getLine(),
-                                  getColumn());
-                            }
+                        case'\t':
+                        case'\n':
+                        case'\r':
+                        case' ': {
+                            mWS(false);
+                            break;
+                        }
+                        case'(': {
+                            break;
+                        }
+                        default: {
+                            throw new NoViableAltForCharException((char)LA(1),
+                                                                  getFilename(),
+                                                                  getLine(),
+                                                                  getColumn());
+                        }
                         }
                     }
                     match('(');
@@ -413,8 +405,7 @@ public class ActionLexer extends antlr.CharScanner
             String setName = generator.getFOLLOWBitSet(rule, 1);
             // System.out.println("FOLLOW("+rule+")="+setName);
             if (setName == null) {
-                reportError(
-                  "$FOLLOW(" + rule + ")" +
+                reportError("$FOLLOW(" + rule + ")" +
                   ": unknown rule or bad lookahead computation");
             } else {
                 text.setLength(_begin);
@@ -429,26 +420,22 @@ public class ActionLexer extends antlr.CharScanner
                   ((LA(3) >= '\u0003' && LA(3) <= '\u00ff'))) {
                     {
                         switch (LA(1)) {
-                        case '\t':
-                        case '\n':
-                        case '\r':
-                        case ' ':
-                            {
-                                mWS(false);
-                                break;
-                            }
-                        case '(':
-                            {
-                                break;
-                            }
-                        default:
-                            {
-                                throw new NoViableAltForCharException(
-                                  (char)LA(1),
-                                  getFilename(),
-                                  getLine(),
-                                  getColumn());
-                            }
+                        case'\t':
+                        case'\n':
+                        case'\r':
+                        case' ': {
+                            mWS(false);
+                            break;
+                        }
+                        case'(': {
+                            break;
+                        }
+                        default: {
+                            throw new NoViableAltForCharException((char)LA(1),
+                                                                  getFilename(),
+                                                                  getLine(),
+                                                                  getColumn());
+                        }
                         }
                     }
                     match('(');
@@ -467,8 +454,7 @@ public class ActionLexer extends antlr.CharScanner
             String setName = generator.getFIRSTBitSet(rule, 1);
             // System.out.println("FIRST("+rule+")="+setName);
             if (setName == null) {
-                reportError(
-                  "$FIRST(" + rule + ")" +
+                reportError("$FIRST(" + rule + ")" +
                   ": unknown rule or bad lookahead computation");
             } else {
                 text.setLength(_begin);
@@ -479,25 +465,22 @@ public class ActionLexer extends antlr.CharScanner
             match("$append");
             {
                 switch (LA(1)) {
-                case '\t':
-                case '\n':
-                case '\r':
-                case ' ':
-                    {
-                        mWS(false);
-                        break;
-                    }
-                case '(':
-                    {
-                        break;
-                    }
-                default:
-                    {
-                        throw new NoViableAltForCharException((char)LA(1),
-                                                              getFilename(),
-                                                              getLine(),
-                                                              getColumn());
-                    }
+                case'\t':
+                case'\n':
+                case'\r':
+                case' ': {
+                    mWS(false);
+                    break;
+                }
+                case'(': {
+                    break;
+                }
+                default: {
+                    throw new NoViableAltForCharException((char)LA(1),
+                                                          getFilename(),
+                                                          getLine(),
+                                                          getColumn());
+                }
                 }
             }
             match('(');
@@ -516,26 +499,22 @@ public class ActionLexer extends antlr.CharScanner
                     match("Text");
                     {
                         switch (LA(1)) {
-                        case '\t':
-                        case '\n':
-                        case '\r':
-                        case ' ':
-                            {
-                                mWS(false);
-                                break;
-                            }
-                        case '(':
-                            {
-                                break;
-                            }
-                        default:
-                            {
-                                throw new NoViableAltForCharException(
-                                  (char)LA(1),
-                                  getFilename(),
-                                  getLine(),
-                                  getColumn());
-                            }
+                        case'\t':
+                        case'\n':
+                        case'\r':
+                        case' ': {
+                            mWS(false);
+                            break;
+                        }
+                        case'(': {
+                            break;
+                        }
+                        default: {
+                            throw new NoViableAltForCharException((char)LA(1),
+                                                                  getFilename(),
+                                                                  getLine(),
+                                                                  getColumn());
+                        }
                         }
                     }
                     match('(');
@@ -553,26 +532,22 @@ public class ActionLexer extends antlr.CharScanner
                     match("Token");
                     {
                         switch (LA(1)) {
-                        case '\t':
-                        case '\n':
-                        case '\r':
-                        case ' ':
-                            {
-                                mWS(false);
-                                break;
-                            }
-                        case '(':
-                            {
-                                break;
-                            }
-                        default:
-                            {
-                                throw new NoViableAltForCharException(
-                                  (char)LA(1),
-                                  getFilename(),
-                                  getLine(),
-                                  getColumn());
-                            }
+                        case'\t':
+                        case'\n':
+                        case'\r':
+                        case' ': {
+                            mWS(false);
+                            break;
+                        }
+                        case'(': {
+                            break;
+                        }
+                        default: {
+                            throw new NoViableAltForCharException((char)LA(1),
+                                                                  getFilename(),
+                                                                  getLine(),
+                                                                  getColumn());
+                        }
                         }
                     }
                     match('(');
@@ -588,26 +563,22 @@ public class ActionLexer extends antlr.CharScanner
                     match("Type");
                     {
                         switch (LA(1)) {
-                        case '\t':
-                        case '\n':
-                        case '\r':
-                        case ' ':
-                            {
-                                mWS(false);
-                                break;
-                            }
-                        case '(':
-                            {
-                                break;
-                            }
-                        default:
-                            {
-                                throw new NoViableAltForCharException(
-                                  (char)LA(1),
-                                  getFilename(),
-                                  getLine(),
-                                  getColumn());
-                            }
+                        case'\t':
+                        case'\n':
+                        case'\r':
+                        case' ': {
+                            mWS(false);
+                            break;
+                        }
+                        case'(': {
+                            break;
+                        }
+                        default: {
+                            throw new NoViableAltForCharException((char)LA(1),
+                                                                  getFilename(),
+                                                                  getLine(),
+                                                                  getColumn());
+                        }
                         }
                     }
                     match('(');
@@ -643,8 +614,9 @@ public class ActionLexer extends antlr.CharScanner
 
         if (_createToken && _token == null && _ttype != Token.SKIP) {
             _token = makeToken(_ttype);
-            _token.setText(
-              new String(text.getBuffer(), _begin, text.length() - _begin));
+            _token.setText(new String(text.getBuffer(),
+                                      _begin,
+                                      text.length() - _begin));
         }
         _returnToken = _token;
     }
@@ -670,8 +642,9 @@ public class ActionLexer extends antlr.CharScanner
 
         if (_createToken && _token == null && _ttype != Token.SKIP) {
             _token = makeToken(_ttype);
-            _token.setText(
-              new String(text.getBuffer(), _begin, text.length() - _begin));
+            _token.setText(new String(text.getBuffer(),
+                                      _begin,
+                                      text.length() - _begin));
         }
         _returnToken = _token;
     }
@@ -701,8 +674,9 @@ public class ActionLexer extends antlr.CharScanner
         match('"');
         if (_createToken && _token == null && _ttype != Token.SKIP) {
             _token = makeToken(_ttype);
-            _token.setText(
-              new String(text.getBuffer(), _begin, text.length() - _begin));
+            _token.setText(new String(text.getBuffer(),
+                                      _begin,
+                                      text.length() - _begin));
         }
         _returnToken = _token;
     }
@@ -732,8 +706,9 @@ public class ActionLexer extends antlr.CharScanner
         match('\'');
         if (_createToken && _token == null && _ttype != Token.SKIP) {
             _token = makeToken(_ttype);
-            _token.setText(
-              new String(text.getBuffer(), _begin, text.length() - _begin));
+            _token.setText(new String(text.getBuffer(),
+                                      _begin,
+                                      text.length() - _begin));
         }
         _returnToken = _token;
     }
@@ -758,83 +733,80 @@ public class ActionLexer extends antlr.CharScanner
         text.setLength(_saveIndex);
         {
             switch (LA(1)) {
-            case '\t':
-            case '\n':
-            case '\r':
-            case ' ':
-                {
-                    _saveIndex = text.length();
-                    mWS(false);
-                    text.setLength(_saveIndex);
-                    break;
-                }
-            case '"':
-            case '#':
-            case '(':
-            case 'A':
-            case 'B':
-            case 'C':
-            case 'D':
-            case 'E':
-            case 'F':
-            case 'G':
-            case 'H':
-            case 'I':
-            case 'J':
-            case 'K':
-            case 'L':
-            case 'M':
-            case 'N':
-            case 'O':
-            case 'P':
-            case 'Q':
-            case 'R':
-            case 'S':
-            case 'T':
-            case 'U':
-            case 'V':
-            case 'W':
-            case 'X':
-            case 'Y':
-            case 'Z':
-            case '[':
-            case '_':
-            case 'a':
-            case 'b':
-            case 'c':
-            case 'd':
-            case 'e':
-            case 'f':
-            case 'g':
-            case 'h':
-            case 'i':
-            case 'j':
-            case 'k':
-            case 'l':
-            case 'm':
-            case 'n':
-            case 'o':
-            case 'p':
-            case 'q':
-            case 'r':
-            case 's':
-            case 't':
-            case 'u':
-            case 'v':
-            case 'w':
-            case 'x':
-            case 'y':
-            case 'z':
-                {
-                    break;
-                }
-            default:
-                {
-                    throw new NoViableAltForCharException((char)LA(1),
-                                                          getFilename(),
-                                                          getLine(),
-                                                          getColumn());
-                }
+            case'\t':
+            case'\n':
+            case'\r':
+            case' ': {
+                _saveIndex = text.length();
+                mWS(false);
+                text.setLength(_saveIndex);
+                break;
+            }
+            case'"':
+            case'#':
+            case'(':
+            case'A':
+            case'B':
+            case'C':
+            case'D':
+            case'E':
+            case'F':
+            case'G':
+            case'H':
+            case'I':
+            case'J':
+            case'K':
+            case'L':
+            case'M':
+            case'N':
+            case'O':
+            case'P':
+            case'Q':
+            case'R':
+            case'S':
+            case'T':
+            case'U':
+            case'V':
+            case'W':
+            case'X':
+            case'Y':
+            case'Z':
+            case'[':
+            case'_':
+            case'a':
+            case'b':
+            case'c':
+            case'd':
+            case'e':
+            case'f':
+            case'g':
+            case'h':
+            case'i':
+            case'j':
+            case'k':
+            case'l':
+            case'm':
+            case'n':
+            case'o':
+            case'p':
+            case'q':
+            case'r':
+            case's':
+            case't':
+            case'u':
+            case'v':
+            case'w':
+            case'x':
+            case'y':
+            case'z': {
+                break;
+            }
+            default: {
+                throw new NoViableAltForCharException((char)LA(1),
+                                                      getFilename(),
+                                                      getLine(),
+                                                      getColumn());
+            }
             }
         }
         _saveIndex = text.length();
@@ -844,28 +816,25 @@ public class ActionLexer extends antlr.CharScanner
         terms.appendElement(t.getText());
         {
             switch (LA(1)) {
-            case '\t':
-            case '\n':
-            case '\r':
-            case ' ':
-                {
-                    _saveIndex = text.length();
-                    mWS(false);
-                    text.setLength(_saveIndex);
-                    break;
-                }
-            case ')':
-            case ',':
-                {
-                    break;
-                }
-            default:
-                {
-                    throw new NoViableAltForCharException((char)LA(1),
-                                                          getFilename(),
-                                                          getLine(),
-                                                          getColumn());
-                }
+            case'\t':
+            case'\n':
+            case'\r':
+            case' ': {
+                _saveIndex = text.length();
+                mWS(false);
+                text.setLength(_saveIndex);
+                break;
+            }
+            case')':
+            case',': {
+                break;
+            }
+            default: {
+                throw new NoViableAltForCharException((char)LA(1),
+                                                      getFilename(),
+                                                      getLine(),
+                                                      getColumn());
+            }
             }
         }
         {
@@ -877,84 +846,80 @@ public class ActionLexer extends antlr.CharScanner
                     text.setLength(_saveIndex);
                     {
                         switch (LA(1)) {
-                        case '\t':
-                        case '\n':
-                        case '\r':
-                        case ' ':
-                            {
-                                _saveIndex = text.length();
-                                mWS(false);
-                                text.setLength(_saveIndex);
-                                break;
-                            }
-                        case '"':
-                        case '#':
-                        case '(':
-                        case 'A':
-                        case 'B':
-                        case 'C':
-                        case 'D':
-                        case 'E':
-                        case 'F':
-                        case 'G':
-                        case 'H':
-                        case 'I':
-                        case 'J':
-                        case 'K':
-                        case 'L':
-                        case 'M':
-                        case 'N':
-                        case 'O':
-                        case 'P':
-                        case 'Q':
-                        case 'R':
-                        case 'S':
-                        case 'T':
-                        case 'U':
-                        case 'V':
-                        case 'W':
-                        case 'X':
-                        case 'Y':
-                        case 'Z':
-                        case '[':
-                        case '_':
-                        case 'a':
-                        case 'b':
-                        case 'c':
-                        case 'd':
-                        case 'e':
-                        case 'f':
-                        case 'g':
-                        case 'h':
-                        case 'i':
-                        case 'j':
-                        case 'k':
-                        case 'l':
-                        case 'm':
-                        case 'n':
-                        case 'o':
-                        case 'p':
-                        case 'q':
-                        case 'r':
-                        case 's':
-                        case 't':
-                        case 'u':
-                        case 'v':
-                        case 'w':
-                        case 'x':
-                        case 'y':
-                        case 'z':
-                            {
-                                break;
-                            }
-                        default:
-                            {
-                                throw new NoViableAltForCharException(
-                                  (char)LA(1),
-                                  getFilename(),
-                                  getLine(),
-                                  getColumn());
-                            }
+                        case'\t':
+                        case'\n':
+                        case'\r':
+                        case' ': {
+                            _saveIndex = text.length();
+                            mWS(false);
+                            text.setLength(_saveIndex);
+                            break;
+                        }
+                        case'"':
+                        case'#':
+                        case'(':
+                        case'A':
+                        case'B':
+                        case'C':
+                        case'D':
+                        case'E':
+                        case'F':
+                        case'G':
+                        case'H':
+                        case'I':
+                        case'J':
+                        case'K':
+                        case'L':
+                        case'M':
+                        case'N':
+                        case'O':
+                        case'P':
+                        case'Q':
+                        case'R':
+                        case'S':
+                        case'T':
+                        case'U':
+                        case'V':
+                        case'W':
+                        case'X':
+                        case'Y':
+                        case'Z':
+                        case'[':
+                        case'_':
+                        case'a':
+                        case'b':
+                        case'c':
+                        case'd':
+                        case'e':
+                        case'f':
+                        case'g':
+                        case'h':
+                        case'i':
+                        case'j':
+                        case'k':
+                        case'l':
+                        case'm':
+                        case'n':
+                        case'o':
+                        case'p':
+                        case'q':
+                        case'r':
+                        case's':
+                        case't':
+                        case'u':
+                        case'v':
+                        case'w':
+                        case'x':
+                        case'y':
+                        case'z': {
+                            break;
+                        }
+                        default: {
+                            throw new NoViableAltForCharException((char)LA(1),
+                                                                  getFilename(),
+                                                                  getLine(),
+                                                                  getColumn());
+                        }
                         }
                     }
                     _saveIndex = text.length();
@@ -964,29 +929,25 @@ public class ActionLexer extends antlr.CharScanner
                     terms.appendElement(t2.getText());
                     {
                         switch (LA(1)) {
-                        case '\t':
-                        case '\n':
-                        case '\r':
-                        case ' ':
-                            {
-                                _saveIndex = text.length();
-                                mWS(false);
-                                text.setLength(_saveIndex);
-                                break;
-                            }
-                        case ')':
-                        case ',':
-                            {
-                                break;
-                            }
-                        default:
-                            {
-                                throw new NoViableAltForCharException(
-                                  (char)LA(1),
-                                  getFilename(),
-                                  getLine(),
-                                  getColumn());
-                            }
+                        case'\t':
+                        case'\n':
+                        case'\r':
+                        case' ': {
+                            _saveIndex = text.length();
+                            mWS(false);
+                            text.setLength(_saveIndex);
+                            break;
+                        }
+                        case')':
+                        case',': {
+                            break;
+                        }
+                        default: {
+                            throw new NoViableAltForCharException((char)LA(1),
+                                                                  getFilename(),
+                                                                  getLine(),
+                                                                  getColumn());
+                        }
                         }
                     }
                 } else {
@@ -1002,8 +963,9 @@ public class ActionLexer extends antlr.CharScanner
         text.setLength(_saveIndex);
         if (_createToken && _token == null && _ttype != Token.SKIP) {
             _token = makeToken(_ttype);
-            _token.setText(
-              new String(text.getBuffer(), _begin, text.length() - _begin));
+            _token.setText(new String(text.getBuffer(),
+                                      _begin,
+                                      text.length() - _begin));
         }
         _returnToken = _token;
     }
@@ -1018,78 +980,74 @@ public class ActionLexer extends antlr.CharScanner
 
         {
             switch (LA(1)) {
-            case 'a':
-            case 'b':
-            case 'c':
-            case 'd':
-            case 'e':
-            case 'f':
-            case 'g':
-            case 'h':
-            case 'i':
-            case 'j':
-            case 'k':
-            case 'l':
-            case 'm':
-            case 'n':
-            case 'o':
-            case 'p':
-            case 'q':
-            case 'r':
-            case 's':
-            case 't':
-            case 'u':
-            case 'v':
-            case 'w':
-            case 'x':
-            case 'y':
-            case 'z':
-                {
-                    matchRange('a', 'z');
-                    break;
-                }
-            case 'A':
-            case 'B':
-            case 'C':
-            case 'D':
-            case 'E':
-            case 'F':
-            case 'G':
-            case 'H':
-            case 'I':
-            case 'J':
-            case 'K':
-            case 'L':
-            case 'M':
-            case 'N':
-            case 'O':
-            case 'P':
-            case 'Q':
-            case 'R':
-            case 'S':
-            case 'T':
-            case 'U':
-            case 'V':
-            case 'W':
-            case 'X':
-            case 'Y':
-            case 'Z':
-                {
-                    matchRange('A', 'Z');
-                    break;
-                }
-            case '_':
-                {
-                    match('_');
-                    break;
-                }
-            default:
-                {
-                    throw new NoViableAltForCharException((char)LA(1),
-                                                          getFilename(),
-                                                          getLine(),
-                                                          getColumn());
-                }
+            case'a':
+            case'b':
+            case'c':
+            case'd':
+            case'e':
+            case'f':
+            case'g':
+            case'h':
+            case'i':
+            case'j':
+            case'k':
+            case'l':
+            case'm':
+            case'n':
+            case'o':
+            case'p':
+            case'q':
+            case'r':
+            case's':
+            case't':
+            case'u':
+            case'v':
+            case'w':
+            case'x':
+            case'y':
+            case'z': {
+                matchRange('a', 'z');
+                break;
+            }
+            case'A':
+            case'B':
+            case'C':
+            case'D':
+            case'E':
+            case'F':
+            case'G':
+            case'H':
+            case'I':
+            case'J':
+            case'K':
+            case'L':
+            case'M':
+            case'N':
+            case'O':
+            case'P':
+            case'Q':
+            case'R':
+            case'S':
+            case'T':
+            case'U':
+            case'V':
+            case'W':
+            case'X':
+            case'Y':
+            case'Z': {
+                matchRange('A', 'Z');
+                break;
+            }
+            case'_': {
+                match('_');
+                break;
+            }
+            default: {
+                throw new NoViableAltForCharException((char)LA(1),
+                                                      getFilename(),
+                                                      getLine(),
+                                                      getColumn());
+            }
             }
         }
         {
@@ -1098,93 +1056,87 @@ public class ActionLexer extends antlr.CharScanner
                 if ((_tokenSet_9.member(LA(1))) && (true) && (true)) {
                     {
                         switch (LA(1)) {
-                        case 'a':
-                        case 'b':
-                        case 'c':
-                        case 'd':
-                        case 'e':
-                        case 'f':
-                        case 'g':
-                        case 'h':
-                        case 'i':
-                        case 'j':
-                        case 'k':
-                        case 'l':
-                        case 'm':
-                        case 'n':
-                        case 'o':
-                        case 'p':
-                        case 'q':
-                        case 'r':
-                        case 's':
-                        case 't':
-                        case 'u':
-                        case 'v':
-                        case 'w':
-                        case 'x':
-                        case 'y':
-                        case 'z':
-                            {
-                                matchRange('a', 'z');
-                                break;
-                            }
-                        case 'A':
-                        case 'B':
-                        case 'C':
-                        case 'D':
-                        case 'E':
-                        case 'F':
-                        case 'G':
-                        case 'H':
-                        case 'I':
-                        case 'J':
-                        case 'K':
-                        case 'L':
-                        case 'M':
-                        case 'N':
-                        case 'O':
-                        case 'P':
-                        case 'Q':
-                        case 'R':
-                        case 'S':
-                        case 'T':
-                        case 'U':
-                        case 'V':
-                        case 'W':
-                        case 'X':
-                        case 'Y':
-                        case 'Z':
-                            {
-                                matchRange('A', 'Z');
-                                break;
-                            }
-                        case '0':
-                        case '1':
-                        case '2':
-                        case '3':
-                        case '4':
-                        case '5':
-                        case '6':
-                        case '7':
-                        case '8':
-                        case '9':
-                            {
-                                matchRange('0', '9');
-                                break;
-                            }
-                        case '_':
-                            {
-                                match('_');
-                                break;
-                            }
-                        default:
-                            {
-                                throw new NoViableAltForCharException(
-                                  (char)LA(1),
-                                  getFilename(),
-                                  getLine(),
-                                  getColumn());
-                            }
+                        case'a':
+                        case'b':
+                        case'c':
+                        case'd':
+                        case'e':
+                        case'f':
+                        case'g':
+                        case'h':
+                        case'i':
+                        case'j':
+                        case'k':
+                        case'l':
+                        case'm':
+                        case'n':
+                        case'o':
+                        case'p':
+                        case'q':
+                        case'r':
+                        case's':
+                        case't':
+                        case'u':
+                        case'v':
+                        case'w':
+                        case'x':
+                        case'y':
+                        case'z': {
+                            matchRange('a', 'z');
+                            break;
+                        }
+                        case'A':
+                        case'B':
+                        case'C':
+                        case'D':
+                        case'E':
+                        case'F':
+                        case'G':
+                        case'H':
+                        case'I':
+                        case'J':
+                        case'K':
+                        case'L':
+                        case'M':
+                        case'N':
+                        case'O':
+                        case'P':
+                        case'Q':
+                        case'R':
+                        case'S':
+                        case'T':
+                        case'U':
+                        case'V':
+                        case'W':
+                        case'X':
+                        case'Y':
+                        case'Z': {
+                            matchRange('A', 'Z');
+                            break;
+                        }
+                        case'0':
+                        case'1':
+                        case'2':
+                        case'3':
+                        case'4':
+                        case'5':
+                        case'6':
+                        case'7':
+                        case'8':
+                        case'9': {
+                            matchRange('0', '9');
+                            break;
+                        }
+                        case'_': {
+                            match('_');
+                            break;
+                        }
+                        default: {
+                            throw new NoViableAltForCharException((char)LA(1),
+                                                                  getFilename(),
+                                                                  getLine(),
+                                                                  getColumn());
+                        }
                         }
                     }
                 } else {
@@ -1195,8 +1147,9 @@ public class ActionLexer extends antlr.CharScanner
         }
         if (_createToken && _token == null && _ttype != Token.SKIP) {
             _token = makeToken(_ttype);
-            _token.setText(
-              new String(text.getBuffer(), _begin, text.length() - _begin));
+            _token.setText(new String(text.getBuffer(),
+                                      _begin,
+                                      text.length() - _begin));
         }
         _returnToken = _token;
     }
@@ -1243,8 +1196,9 @@ public class ActionLexer extends antlr.CharScanner
         }
         if (_createToken && _token == null && _ttype != Token.SKIP) {
             _token = makeToken(_ttype);
-            _token.setText(
-              new String(text.getBuffer(), _begin, text.length() - _begin));
+            _token.setText(new String(text.getBuffer(),
+                                      _begin,
+                                      text.length() - _begin));
         }
         _returnToken = _token;
     }
@@ -1261,15 +1215,16 @@ public class ActionLexer extends antlr.CharScanner
 
         // inform the code generator that an assignment was done to
         // AST root for the rule if invoker set refRuleRoot.
-        if (LA(1) != '=' && transInfo != null && transInfo.refRuleRoot !=
-          null) {
+        if (LA(1) != '=' && transInfo != null &&
+          transInfo.refRuleRoot != null) {
             transInfo.assignToRoot = true;
         }
 
         if (_createToken && _token == null && _ttype != Token.SKIP) {
             _token = makeToken(_ttype);
-            _token.setText(
-              new String(text.getBuffer(), _begin, text.length() - _begin));
+            _token.setText(new String(text.getBuffer(),
+                                      _begin,
+                                      text.length() - _begin));
         }
         _returnToken = _token;
     }
@@ -1290,93 +1245,90 @@ public class ActionLexer extends antlr.CharScanner
         text.setLength(_saveIndex);
         {
             switch (LA(1)) {
-            case '\t':
-            case '\n':
-            case '\r':
-            case ' ':
-                {
-                    _saveIndex = text.length();
-                    mWS(false);
-                    text.setLength(_saveIndex);
-                    break;
-                }
-            case '"':
-            case '#':
-            case '(':
-            case '0':
-            case '1':
-            case '2':
-            case '3':
-            case '4':
-            case '5':
-            case '6':
-            case '7':
-            case '8':
-            case '9':
-            case 'A':
-            case 'B':
-            case 'C':
-            case 'D':
-            case 'E':
-            case 'F':
-            case 'G':
-            case 'H':
-            case 'I':
-            case 'J':
-            case 'K':
-            case 'L':
-            case 'M':
-            case 'N':
-            case 'O':
-            case 'P':
-            case 'Q':
-            case 'R':
-            case 'S':
-            case 'T':
-            case 'U':
-            case 'V':
-            case 'W':
-            case 'X':
-            case 'Y':
-            case 'Z':
-            case '[':
-            case '_':
-            case 'a':
-            case 'b':
-            case 'c':
-            case 'd':
-            case 'e':
-            case 'f':
-            case 'g':
-            case 'h':
-            case 'i':
-            case 'j':
-            case 'k':
-            case 'l':
-            case 'm':
-            case 'n':
-            case 'o':
-            case 'p':
-            case 'q':
-            case 'r':
-            case 's':
-            case 't':
-            case 'u':
-            case 'v':
-            case 'w':
-            case 'x':
-            case 'y':
-            case 'z':
-                {
-                    break;
-                }
-            default:
-                {
-                    throw new NoViableAltForCharException((char)LA(1),
-                                                          getFilename(),
-                                                          getLine(),
-                                                          getColumn());
-                }
+            case'\t':
+            case'\n':
+            case'\r':
+            case' ': {
+                _saveIndex = text.length();
+                mWS(false);
+                text.setLength(_saveIndex);
+                break;
+            }
+            case'"':
+            case'#':
+            case'(':
+            case'0':
+            case'1':
+            case'2':
+            case'3':
+            case'4':
+            case'5':
+            case'6':
+            case'7':
+            case'8':
+            case'9':
+            case'A':
+            case'B':
+            case'C':
+            case'D':
+            case'E':
+            case'F':
+            case'G':
+            case'H':
+            case'I':
+            case'J':
+            case'K':
+            case'L':
+            case'M':
+            case'N':
+            case'O':
+            case'P':
+            case'Q':
+            case'R':
+            case'S':
+            case'T':
+            case'U':
+            case'V':
+            case'W':
+            case'X':
+            case'Y':
+            case'Z':
+            case'[':
+            case'_':
+            case'a':
+            case'b':
+            case'c':
+            case'd':
+            case'e':
+            case'f':
+            case'g':
+            case'h':
+            case'i':
+            case'j':
+            case'k':
+            case'l':
+            case'm':
+            case'n':
+            case'o':
+            case'p':
+            case'q':
+            case'r':
+            case's':
+            case't':
+            case'u':
+            case'v':
+            case'w':
+            case'x':
+            case'y':
+            case'z': {
+                break;
+            }
+            default: {
+                throw new NoViableAltForCharException((char)LA(1),
+                                                      getFilename(),
+                                                      getLine(),
+                                                      getColumn());
+            }
             }
         }
         _saveIndex = text.length();
@@ -1385,28 +1337,25 @@ public class ActionLexer extends antlr.CharScanner
         x = _returnToken;
         {
             switch (LA(1)) {
-            case '\t':
-            case '\n':
-            case '\r':
-            case ' ':
-                {
-                    _saveIndex = text.length();
-                    mWS(false);
-                    text.setLength(_saveIndex);
-                    break;
-                }
-            case ',':
-            case ']':
-                {
-                    break;
-                }
-            default:
-                {
-                    throw new NoViableAltForCharException((char)LA(1),
-                                                          getFilename(),
-                                                          getLine(),
-                                                          getColumn());
-                }
+            case'\t':
+            case'\n':
+            case'\r':
+            case' ': {
+                _saveIndex = text.length();
+                mWS(false);
+                text.setLength(_saveIndex);
+                break;
+            }
+            case',':
+            case']': {
+                break;
+            }
+            default: {
+                throw new NoViableAltForCharException((char)LA(1),
+                                                      getFilename(),
+                                                      getLine(),
+                                                      getColumn());
+            }
             }
         }
         {
@@ -1417,93 +1366,90 @@ public class ActionLexer extends antlr.CharScanner
                 text.setLength(_saveIndex);
                 {
                     switch (LA(1)) {
-                    case '\t':
-                    case '\n':
-                    case '\r':
-                    case ' ':
-                        {
-                            _saveIndex = text.length();
-                            mWS(false);
-                            text.setLength(_saveIndex);
-                            break;
-                        }
-                    case '"':
-                    case '#':
-                    case '(':
-                    case '0':
-                    case '1':
-                    case '2':
-                    case '3':
-                    case '4':
-                    case '5':
-                    case '6':
-                    case '7':
-                    case '8':
-                    case '9':
-                    case 'A':
-                    case 'B':
-                    case 'C':
-                    case 'D':
-                    case 'E':
-                    case 'F':
-                    case 'G':
-                    case 'H':
-                    case 'I':
-                    case 'J':
-                    case 'K':
-                    case 'L':
-                    case 'M':
-                    case 'N':
-                    case 'O':
-                    case 'P':
-                    case 'Q':
-                    case 'R':
-                    case 'S':
-                    case 'T':
-                    case 'U':
-                    case 'V':
-                    case 'W':
-                    case 'X':
-                    case 'Y':
-                    case 'Z':
-                    case '[':
-                    case '_':
-                    case 'a':
-                    case 'b':
-                    case 'c':
-                    case 'd':
-                    case 'e':
-                    case 'f':
-                    case 'g':
-                    case 'h':
-                    case 'i':
-                    case 'j':
-                    case 'k':
-                    case 'l':
-                    case 'm':
-                    case 'n':
-                    case 'o':
-                    case 'p':
-                    case 'q':
-                    case 'r':
-                    case 's':
-                    case 't':
-                    case 'u':
-                    case 'v':
-                    case 'w':
-                    case 'x':
-                    case 'y':
-                    case 'z':
-                        {
-                            break;
-                        }
-                    default:
-                        {
-                            throw new NoViableAltForCharException((char)LA(1),
-                                                                  getFilename(),
-                                                                  getLine(),
-                                                                  getColumn());
-                        }
+                    case'\t':
+                    case'\n':
+                    case'\r':
+                    case' ': {
+                        _saveIndex = text.length();
+                        mWS(false);
+                        text.setLength(_saveIndex);
+                        break;
+                    }
+                    case'"':
+                    case'#':
+                    case'(':
+                    case'0':
+                    case'1':
+                    case'2':
+                    case'3':
+                    case'4':
+                    case'5':
+                    case'6':
+                    case'7':
+                    case'8':
+                    case'9':
+                    case'A':
+                    case'B':
+                    case'C':
+                    case'D':
+                    case'E':
+                    case'F':
+                    case'G':
+                    case'H':
+                    case'I':
+                    case'J':
+                    case'K':
+                    case'L':
+                    case'M':
+                    case'N':
+                    case'O':
+                    case'P':
+                    case'Q':
+                    case'R':
+                    case'S':
+                    case'T':
+                    case'U':
+                    case'V':
+                    case'W':
+                    case'X':
+                    case'Y':
+                    case'Z':
+                    case'[':
+                    case'_':
+                    case'a':
+                    case'b':
+                    case'c':
+                    case'd':
+                    case'e':
+                    case'f':
+                    case'g':
+                    case'h':
+                    case'i':
+                    case'j':
+                    case'k':
+                    case'l':
+                    case'm':
+                    case'n':
+                    case'o':
+                    case'p':
+                    case'q':
+                    case'r':
+                    case's':
+                    case't':
+                    case'u':
+                    case'v':
+                    case'w':
+                    case'x':
+                    case'y':
+                    case'z': {
+                        break;
+                    }
+                    default: {
+                        throw new NoViableAltForCharException((char)LA(1),
+                                                              getFilename(),
+                                                              getLine(),
+                                                              getColumn());
+                    }
                     }
                 }
                 _saveIndex = text.length();
@@ -1512,28 +1458,25 @@ public class ActionLexer extends antlr.CharScanner
                 y = _returnToken;
                 {
                     switch (LA(1)) {
-                    case '\t':
-                    case '\n':
-                    case '\r':
-                    case ' ':
-                        {
-                            _saveIndex = text.length();
-                            mWS(false);
-                            text.setLength(_saveIndex);
-                            break;
-                        }
-                    case ',':
-                    case ']':
-                        {
-                            break;
-                        }
-                    default:
-                        {
-                            throw new NoViableAltForCharException((char)LA(1),
-                                                                  getFilename(),
-                                                                  getLine(),
-                                                                  getColumn());
-                        }
+                    case'\t':
+                    case'\n':
+                    case'\r':
+                    case' ': {
+                        _saveIndex = text.length();
+                        mWS(false);
+                        text.setLength(_saveIndex);
+                        break;
+                    }
+                    case',':
+                    case']': {
+                        break;
+                    }
+                    default: {
+                        throw new NoViableAltForCharException((char)LA(1),
+                                                              getFilename(),
+                                                              getLine(),
+                                                              getColumn());
+                    }
                     }
                 }
             } else if ((LA(1) == ',' || LA(1) == ']') && (true) && (true)) {
@@ -1547,146 +1490,135 @@ public class ActionLexer extends antlr.CharScanner
         }
         {
             switch (LA(1)) {
-            case ',':
+            case',': {
+                _saveIndex = text.length();
+                match(',');
+                text.setLength(_saveIndex);
                 {
-                    _saveIndex = text.length();
-                    match(',');
-                    text.setLength(_saveIndex);
-                    {
-                        switch (LA(1)) {
-                        case '\t':
-                        case '\n':
-                        case '\r':
-                        case ' ':
-                            {
-                                _saveIndex = text.length();
-                                mWS(false);
-                                text.setLength(_saveIndex);
-                                break;
-                            }
-                        case '"':
-                        case '#':
-                        case '(':
-                        case '0':
-                        case '1':
-                        case '2':
-                        case '3':
-                        case '4':
-                        case '5':
-                        case '6':
-                        case '7':
-                        case '8':
-                        case '9':
-                        case 'A':
-                        case 'B':
-                        case 'C':
-                        case 'D':
-                        case 'E':
-                        case 'F':
-                        case 'G':
-                        case 'H':
-                        case 'I':
-                        case 'J':
-                        case 'K':
-                        case 'L':
-                        case 'M':
-                        case 'N':
-                        case 'O':
-                        case 'P':
-                        case 'Q':
-                        case 'R':
-                        case 'S':
-                        case 'T':
-                        case 'U':
-                        case 'V':
-                        case 'W':
-                        case 'X':
-                        case 'Y':
-                        case 'Z':
-                        case '[':
-                        case '_':
-                        case 'a':
-                        case 'b':
-                        case 'c':
-                        case 'd':
-                        case 'e':
-                        case 'f':
-                        case 'g':
-                        case 'h':
-                        case 'i':
-                        case 'j':
-                        case 'k':
-                        case 'l':
-                        case 'm':
-                        case 'n':
-                        case 'o':
-                        case 'p':
-                        case 'q':
-                        case 'r':
-                        case 's':
-                        case 't':
-                        case 'u':
-                        case 'v':
-                        case 'w':
-                        case 'x':
-                        case 'y':
-                        case 'z':
-                            {
-                                break;
-                            }
-                        default:
-                            {
-                                throw new NoViableAltForCharException(
-                                  (char)LA(1),
-                                  getFilename(),
-                                  getLine(),
-                                  getColumn());
-                            }
-                        }
+                    switch (LA(1)) {
+                    case'\t':
+                    case'\n':
+                    case'\r':
+                    case' ': {
+                        _saveIndex = text.length();
+                        mWS(false);
+                        text.setLength(_saveIndex);
+                        break;
                     }
-                    _saveIndex = text.length();
-                    mAST_CTOR_ELEMENT(true);
-                    text.setLength(_saveIndex);
-                    z = _returnToken;
-                    {
-                        switch (LA(1)) {
-                        case '\t':
-                        case '\n':
-                        case '\r':
-                        case ' ':
-                            {
-                                _saveIndex = text.length();
-                                mWS(false);
-                                text.setLength(_saveIndex);
-                                break;
-                            }
-                        case ']':
-                            {
-                                break;
-                            }
-                        default:
-                            {
-                                throw new NoViableAltForCharException(
-                                  (char)LA(1),
-                                  getFilename(),
-                                  getLine(),
-                                  getColumn());
-                            }
-                        }
+                    case'"':
+                    case'#':
+                    case'(':
+                    case'0':
+                    case'1':
+                    case'2':
+                    case'3':
+                    case'4':
+                    case'5':
+                    case'6':
+                    case'7':
+                    case'8':
+                    case'9':
+                    case'A':
+                    case'B':
+                    case'C':
+                    case'D':
+                    case'E':
+                    case'F':
+                    case'G':
+                    case'H':
+                    case'I':
+                    case'J':
+                    case'K':
+                    case'L':
+                    case'M':
+                    case'N':
+                    case'O':
+                    case'P':
+                    case'Q':
+                    case'R':
+                    case'S':
+                    case'T':
+                    case'U':
+                    case'V':
+                    case'W':
+                    case'X':
+                    case'Y':
+                    case'Z':
+                    case'[':
+                    case'_':
+                    case'a':
+                    case'b':
+                    case'c':
+                    case'd':
+                    case'e':
+                    case'f':
+                    case'g':
+                    case'h':
+                    case'i':
+                    case'j':
+                    case'k':
+                    case'l':
+                    case'm':
+                    case'n':
+                    case'o':
+                    case'p':
+                    case'q':
+                    case'r':
+                    case's':
+                    case't':
+                    case'u':
+                    case'v':
+                    case'w':
+                    case'x':
+                    case'y':
+                    case'z': {
+                        break;
                     }
-                    break;
+                    default: {
+                        throw new NoViableAltForCharException((char)LA(1),
+                                                              getFilename(),
+                                                              getLine(),
+                                                              getColumn());
+                    }
+                    }
                 }
-            case ']':
+                _saveIndex = text.length();
+                mAST_CTOR_ELEMENT(true);
+                text.setLength(_saveIndex);
+                z = _returnToken;
                 {
-                    break;
+                    switch (LA(1)) {
+                    case'\t':
+                    case'\n':
+                    case'\r':
+                    case' ': {
+                        _saveIndex = text.length();
+                        mWS(false);
+                        text.setLength(_saveIndex);
+                        break;
+                    }
+                    case']': {
+                        break;
+                    }
+                    default: {
+                        throw new NoViableAltForCharException((char)LA(1),
+                                                              getFilename(),
+                                                              getLine(),
+                                                              getColumn());
+                    }
+                    }
                 }
-            default:
-                {
-                    throw new NoViableAltForCharException((char)LA(1),
-                                                          getFilename(),
-                                                          getLine(),
-                                                          getColumn());
-                }
+                break;
+            }
+            case']': {
+                break;
+            }
+            default: {
+                throw new NoViableAltForCharException((char)LA(1),
+                                                      getFilename(),
+                                                      getLine(),
+                                                      getColumn());
+            }
             }
         }
         _saveIndex = text.length();
@@ -1705,8 +1637,9 @@ public class ActionLexer extends antlr.CharScanner
 
         if (_createToken && _token == null && _ttype != Token.SKIP) {
             _token = makeToken(_ttype);
-            _token.setText(
-              new String(text.getBuffer(), _begin, text.length() - _begin));
+            _token.setText(new String(text.getBuffer(),
+                                      _begin,
+                                      text.length() - _begin));
         }
         _returnToken = _token;
     }
@@ -1721,91 +1654,88 @@ public class ActionLexer extends antlr.CharScanner
 
         {
             switch (LA(1)) {
-            case '\t':
-            case '\n':
-            case '\r':
-            case ' ':
-                {
-                    mWS(false);
-                    break;
-                }
-            case '"':
-            case '$':
-            case '\'':
-            case '+':
-            case '0':
-            case '1':
-            case '2':
-            case '3':
-            case '4':
-            case '5':
-            case '6':
-            case '7':
-            case '8':
-            case '9':
-            case 'A':
-            case 'B':
-            case 'C':
-            case 'D':
-            case 'E':
-            case 'F':
-            case 'G':
-            case 'H':
-            case 'I':
-            case 'J':
-            case 'K':
-            case 'L':
-            case 'M':
-            case 'N':
-            case 'O':
-            case 'P':
-            case 'Q':
-            case 'R':
-            case 'S':
-            case 'T':
-            case 'U':
-            case 'V':
-            case 'W':
-            case 'X':
-            case 'Y':
-            case 'Z':
-            case '_':
-            case 'a':
-            case 'b':
-            case 'c':
-            case 'd':
-            case 'e':
-            case 'f':
-            case 'g':
-            case 'h':
-            case 'i':
-            case 'j':
-            case 'k':
-            case 'l':
-            case 'm':
-            case 'n':
-            case 'o':
-            case 'p':
-            case 'q':
-            case 'r':
-            case 's':
-            case 't':
-            case 'u':
-            case 'v':
-            case 'w':
-            case 'x':
-            case 'y':
-            case 'z':
-                {
-                    break;
-                }
-            default:
-                {
-                    throw new NoViableAltForCharException((char)LA(1),
-                                                          getFilename(),
-                                                          getLine(),
-                                                          getColumn());
-                }
+            case'\t':
+            case'\n':
+            case'\r':
+            case' ': {
+                mWS(false);
+                break;
+            }
+            case'"':
+            case'$':
+            case'\'':
+            case'+':
+            case'0':
+            case'1':
+            case'2':
+            case'3':
+            case'4':
+            case'5':
+            case'6':
+            case'7':
+            case'8':
+            case'9':
+            case'A':
+            case'B':
+            case'C':
+            case'D':
+            case'E':
+            case'F':
+            case'G':
+            case'H':
+            case'I':
+            case'J':
+            case'K':
+            case'L':
+            case'M':
+            case'N':
+            case'O':
+            case'P':
+            case'Q':
+            case'R':
+            case'S':
+            case'T':
+            case'U':
+            case'V':
+            case'W':
+            case'X':
+            case'Y':
+            case'Z':
+            case'_':
+            case'a':
+            case'b':
+            case'c':
+            case'd':
+            case'e':
+            case'f':
+            case'g':
+            case'h':
+            case'i':
+            case'j':
+            case'k':
+            case'l':
+            case'm':
+            case'n':
+            case'o':
+            case'p':
+            case'q':
+            case'r':
+            case's':
+            case't':
+            case'u':
+            case'v':
+            case'w':
+            case'x':
+            case'y':
+            case'z': {
+                break;
+            }
+            default: {
+                throw new NoViableAltForCharException((char)LA(1),
+                                                      getFilename(),
+                                                      getLine(),
+                                                      getColumn());
+            }
             }
         }
         {
@@ -1813,16 +1743,14 @@ public class ActionLexer extends antlr.CharScanner
             _loop438:
             do {
                 if ((_tokenSet_11.member(LA(1))) &&
-                  ((LA(2) >= '\u0003' && LA(2) <= '\u00ff')) &&
-                  (true)) {
+                  ((LA(2) >= '\u0003' && LA(2) <= '\u00ff')) && (true)) {
                     mTEXT_ARG_ELEMENT(false);
                     {
                         if ((_tokenSet_4.member(LA(1))) &&
-                          (_tokenSet_12.member(LA(2))) &&
-                          (true)) {
+                          (_tokenSet_12.member(LA(2))) && (true)) {
                             mWS(false);
-                        } else if ((_tokenSet_12.member(LA(1))) && (true) &&
-                          (true)) {
+                        } else
+                        if ((_tokenSet_12.member(LA(1))) && (true) && (true)) {
                         } else {
                             throw new NoViableAltForCharException((char)LA(1),
                                                                   getFilename(),
@@ -1847,8 +1775,9 @@ public class ActionLexer extends antlr.CharScanner
         }
         if (_createToken && _token == null && _ttype != Token.SKIP) {
             _token = makeToken(_ttype);
-            _token.setText(
-              new String(text.getBuffer(), _begin, text.length() - _begin));
+            _token.setText(new String(text.getBuffer(),
+                                      _begin,
+                                      text.length() - _begin));
         }
         _returnToken = _token;
     }
@@ -1864,78 +1793,74 @@ public class ActionLexer extends antlr.CharScanner
         boolean was_mapped;
 
         switch (LA(1)) {
-        case '(':
-            {
-                mTREE(false);
-                break;
-            }
-        case '[':
-            {
-                mAST_CONSTRUCTOR(false);
-                break;
-            }
-        case 'A':
-        case 'B':
-        case 'C':
-        case 'D':
-        case 'E':
-        case 'F':
-        case 'G':
-        case 'H':
-        case 'I':
-        case 'J':
-        case 'K':
-        case 'L':
-        case 'M':
-        case 'N':
-        case 'O':
-        case 'P':
-        case 'Q':
-        case 'R':
-        case 'S':
-        case 'T':
-        case 'U':
-        case 'V':
-        case 'W':
-        case 'X':
-        case 'Y':
-        case 'Z':
-        case '_':
-        case 'a':
-        case 'b':
-        case 'c':
-        case 'd':
-        case 'e':
-        case 'f':
-        case 'g':
-        case 'h':
-        case 'i':
-        case 'j':
-        case 'k':
-        case 'l':
-        case 'm':
-        case 'n':
-        case 'o':
-        case 'p':
-        case 'q':
-        case 'r':
-        case 's':
-        case 't':
-        case 'u':
-        case 'v':
-        case 'w':
-        case 'x':
-        case 'y':
-        case 'z':
-            {
-                mID_ELEMENT(false);
-                break;
-            }
-        case '"':
-            {
-                mSTRING(false);
-                break;
-            }
+        case'(': {
+            mTREE(false);
+            break;
+        }
+        case'[': {
+            mAST_CONSTRUCTOR(false);
+            break;
+        }
+        case'A':
+        case'B':
+        case'C':
+        case'D':
+        case'E':
+        case'F':
+        case'G':
+        case'H':
+        case'I':
+        case'J':
+        case'K':
+        case'L':
+        case'M':
+        case'N':
+        case'O':
+        case'P':
+        case'Q':
+        case'R':
+        case'S':
+        case'T':
+        case'U':
+        case'V':
+        case'W':
+        case'X':
+        case'Y':
+        case'Z':
+        case'_':
+        case'a':
+        case'b':
+        case'c':
+        case'd':
+        case'e':
+        case'f':
+        case'g':
+        case'h':
+        case'i':
+        case'j':
+        case'k':
+        case'l':
+        case'm':
+        case'n':
+        case'o':
+        case'p':
+        case'q':
+        case'r':
+        case's':
+        case't':
+        case'u':
+        case'v':
+        case'w':
+        case'x':
+        case'y':
+        case'z': {
+            mID_ELEMENT(false);
+            break;
+        }
+        case'"': {
+            mSTRING(false);
+            break;
+        }
         default:
             if ((LA(1) == '#') && (LA(2) == '(')) {
                 _saveIndex = text.length();
@@ -1974,8 +1899,9 @@ public class ActionLexer extends antlr.CharScanner
         }
         if (_createToken && _token == null && _ttype != Token.SKIP) {
             _token = makeToken(_ttype);
-            _token.setText(
-              new String(text.getBuffer(), _begin, text.length() - _begin));
+            _token.setText(new String(text.getBuffer(),
+                                      _begin,
+                                      text.length() - _begin));
         }
         _returnToken = _token;
     }
@@ -2013,481 +1939,447 @@ public class ActionLexer extends antlr.CharScanner
         }
         {
             switch (LA(1)) {
-            case '(':
+            case'(': {
+                match('(');
                 {
-                    match('(');
-                    {
-                        if ((_tokenSet_4.member(LA(1))) &&
-                          (_tokenSet_14.member(LA(2))) &&
-                          ((LA(3) >= '\u0003' && LA(3) <= '\u00ff'))) {
-                            _saveIndex = text.length();
-                            mWS(false);
-                            text.setLength(_saveIndex);
-                        } else if ((_tokenSet_14.member(LA(1))) &&
-                          ((LA(2) >= '\u0003' && LA(2) <= '\u00ff')) &&
-                          (true)) {
-                        } else {
-                            throw new NoViableAltForCharException((char)LA(1),
-                                                                  getFilename(),
-                                                                  getLine(),
-                                                                  getColumn());
-                        }
+                    if ((_tokenSet_4.member(LA(1))) &&
+                      (_tokenSet_14.member(LA(2))) &&
+                      ((LA(3) >= '\u0003' && LA(3) <= '\u00ff'))) {
+                        _saveIndex = text.length();
+                        mWS(false);
+                        text.setLength(_saveIndex);
+                    } else if ((_tokenSet_14.member(LA(1))) &&
+                      ((LA(2) >= '\u0003' && LA(2) <= '\u00ff')) && (true)) {
+                    } else {
+                        throw new NoViableAltForCharException((char)LA(1),
+                                                              getFilename(),
+                                                              getLine(),
+                                                              getColumn());
+                    }
 
-                    }
-                    {
-                        switch (LA(1)) {
-                        case '"':
-                        case '#':
-                        case '\'':
-                        case '(':
-                        case '0':
-                        case '1':
-                        case '2':
-                        case '3':
-                        case '4':
-                        case '5':
-                        case '6':
-                        case '7':
-                        case '8':
-                        case '9':
-                        case 'A':
-                        case 'B':
-                        case 'C':
-                        case 'D':
-                        case 'E':
-                        case 'F':
-                        case 'G':
-                        case 'H':
-                        case 'I':
-                        case 'J':
-                        case 'K':
-                        case 'L':
-                        case 'M':
-                        case 'N':
-                        case 'O':
-                        case 'P':
-                        case 'Q':
-                        case 'R':
-                        case 'S':
-                        case 'T':
-                        case 'U':
-                        case 'V':
-                        case 'W':
-                        case 'X':
-                        case 'Y':
-                        case 'Z':
-                        case '[':
-                        case '_':
-                        case 'a':
-                        case 'b':
-                        case 'c':
-                        case 'd':
-                        case 'e':
-                        case 'f':
-                        case 'g':
-                        case 'h':
-                        case 'i':
-                        case 'j':
-                        case 'k':
-                        case 'l':
-                        case 'm':
-                        case 'n':
-                        case 'o':
-                        case 'p':
-                        case 'q':
-                        case 'r':
-                        case 's':
-                        case 't':
-                        case 'u':
-                        case 'v':
-                        case 'w':
-                        case 'x':
-                        case 'y':
-                        case 'z':
-                            {
-                                mARG(false);
-                                {
-                                    _loop426:
-                                    do {
-                                        if ((LA(1) == ',')) {
-                                            match(',');
-                                            {
-                                                switch (LA(1)) {
-                                                case '\t':
-                                                case '\n':
-                                                case '\r':
-                                                case ' ':
-                                                    {
-                                                        _saveIndex =
-                                                          text.length();
-                                                        mWS(false);
-                                                        text.setLength(
-                                                          _saveIndex);
-                                                        break;
-                                                    }
-                                                case '"':
-                                                case '#':
-                                                case '\'':
-                                                case '(':
-                                                case '0':
-                                                case '1':
-                                                case '2':
-                                                case '3':
-                                                case '4':
-                                                case '5':
-                                                case '6':
-                                                case '7':
-                                                case '8':
-                                                case '9':
-                                                case 'A':
-                                                case 'B':
-                                                case 'C':
-                                                case 'D':
-                                                case 'E':
-                                                case 'F':
-                                                case 'G':
-                                                case 'H':
-                                                case 'I':
-                                                case 'J':
-                                                case 'K':
-                                                case 'L':
-                                                case 'M':
-                                                case 'N':
-                                                case 'O':
-                                                case 'P':
-                                                case 'Q':
-                                                case 'R':
-                                                case 'S':
-                                                case 'T':
-                                                case 'U':
-                                                case 'V':
-                                                case 'W':
-                                                case 'X':
-                                                case 'Y':
-                                                case 'Z':
-                                                case '[':
-                                                case '_':
-                                                case 'a':
-                                                case 'b':
-                                                case 'c':
-                                                case 'd':
-                                                case 'e':
-                                                case 'f':
-                                                case 'g':
-                                                case 'h':
-                                                case 'i':
-                                                case 'j':
-                                                case 'k':
-                                                case 'l':
-                                                case 'm':
-                                                case 'n':
-                                                case 'o':
-                                                case 'p':
-                                                case 'q':
-                                                case 'r':
-                                                case 's':
-                                                case 't':
-                                                case 'u':
-                                                case 'v':
-                                                case 'w':
-                                                case 'x':
-                                                case 'y':
-                                                case 'z':
-                                                    {
-                                                        break;
-                                                    }
-                                                default:
-                                                    {
-                                                        throw new NoViableAltForCharException(
-                                                          (char)LA(1),
-                                                          getFilename(),
-                                                          getLine(),
-                                                          getColumn());
-                                                    }
-                                                }
-                                            }
-                                            mARG(false);
-                                        } else {
-                                            break _loop426;
-                                        }
-
-                                    } while (true);
-                                }
-                                break;
-                            }
-                        case '\t':
-                        case '\n':
-                        case '\r':
-                        case ' ':
-                        case ')':
-                            {
-                                break;
-                            }
-                        default:
-                            {
-                                throw new NoViableAltForCharException(
-                                  (char)LA(1),
-                                  getFilename(),
-                                  getLine(),
-                                  getColumn());
-                            }
-                        }
-                    }
-                    {
-                        switch (LA(1)) {
-                        case '\t':
-                        case '\n':
-                        case '\r':
-                        case ' ':
-                            {
-                                _saveIndex = text.length();
-                                mWS(false);
-                                text.setLength(_saveIndex);
-                                break;
-                            }
-                        case ')':
-                            {
-                                break;
-                            }
-                        default:
-                            {
-                                throw new NoViableAltForCharException(
-                                  (char)LA(1),
-                                  getFilename(),
-                                  getLine(),
-                                  getColumn());
-                            }
-                        }
-                    }
-                    match(')');
-                    break;
                 }
-            case '[':
                 {
-                    {
-                        int _cnt431 = 0;
-                        _loop431:
-                        do {
-                            if ((LA(1) == '[')) {
-                                match('[');
-                                {
-                                    switch (LA(1)) {
-                                    case '\t':
-                                    case '\n':
-                                    case '\r':
-                                    case ' ':
-                                        {
+                    switch (LA(1)) {
+                    case'"':
+                    case'#':
+                    case'\'':
+                    case'(':
+                    case'0':
+                    case'1':
+                    case'2':
+                    case'3':
+                    case'4':
+                    case'5':
+                    case'6':
+                    case'7':
+                    case'8':
+                    case'9':
+                    case'A':
+                    case'B':
+                    case'C':
+                    case'D':
+                    case'E':
+                    case'F':
+                    case'G':
+                    case'H':
+                    case'I':
+                    case'J':
+                    case'K':
+                    case'L':
+                    case'M':
+                    case'N':
+                    case'O':
+                    case'P':
+                    case'Q':
+                    case'R':
+                    case'S':
+                    case'T':
+                    case'U':
+                    case'V':
+                    case'W':
+                    case'X':
+                    case'Y':
+                    case'Z':
+                    case'[':
+                    case'_':
+                    case'a':
+                    case'b':
+                    case'c':
+                    case'd':
+                    case'e':
+                    case'f':
+                    case'g':
+                    case'h':
+                    case'i':
+                    case'j':
+                    case'k':
+                    case'l':
+                    case'm':
+                    case'n':
+                    case'o':
+                    case'p':
+                    case'q':
+                    case'r':
+                    case's':
+                    case't':
+                    case'u':
+                    case'v':
+                    case'w':
+                    case'x':
+                    case'y':
+                    case'z': {
+                        mARG(false);
+                        {
+                            _loop426:
+                            do {
+                                if ((LA(1) == ',')) {
+                                    match(',');
+                                    {
+                                        switch (LA(1)) {
+                                        case'\t':
+                                        case'\n':
+                                        case'\r':
+                                        case' ': {
                                             _saveIndex = text.length();
                                             mWS(false);
                                             text.setLength(_saveIndex);
                                             break;
                                         }
-                                    case '"':
-                                    case '#':
-                                    case '\'':
-                                    case '(':
-                                    case '0':
-                                    case '1':
-                                    case '2':
-                                    case '3':
-                                    case '4':
-                                    case '5':
-                                    case '6':
-                                    case '7':
-                                    case '8':
-                                    case '9':
-                                    case 'A':
-                                    case 'B':
-                                    case 'C':
-                                    case 'D':
-                                    case 'E':
-                                    case 'F':
-                                    case 'G':
-                                    case 'H':
-                                    case 'I':
-                                    case 'J':
-                                    case 'K':
-                                    case 'L':
-                                    case 'M':
-                                    case 'N':
-                                    case 'O':
-                                    case 'P':
-                                    case 'Q':
-                                    case 'R':
-                                    case 'S':
-                                    case 'T':
-                                    case 'U':
-                                    case 'V':
-                                    case 'W':
-                                    case 'X':
-                                    case 'Y':
-                                    case 'Z':
-                                    case '[':
-                                    case '_':
-                                    case 'a':
-                                    case 'b':
-                                    case 'c':
-                                    case 'd':
-                                    case 'e':
-                                    case 'f':
-                                    case 'g':
-                                    case 'h':
-                                    case 'i':
-                                    case 'j':
-                                    case 'k':
-                                    case 'l':
-                                    case 'm':
-                                    case 'n':
-                                    case 'o':
-                                    case 'p':
-                                    case 'q':
-                                    case 'r':
-                                    case 's':
-                                    case 't':
-                                    case 'u':
-                                    case 'v':
-                                    case 'w':
-                                    case 'x':
-                                    case 'y':
-                                    case 'z':
-                                        {
+                                        case'"':
+                                        case'#':
+                                        case'\'':
+                                        case'(':
+                                        case'0':
+                                        case'1':
+                                        case'2':
+                                        case'3':
+                                        case'4':
+                                        case'5':
+                                        case'6':
+                                        case'7':
+                                        case'8':
+                                        case'9':
+                                        case'A':
+                                        case'B':
+                                        case'C':
+                                        case'D':
+                                        case'E':
+                                        case'F':
+                                        case'G':
+                                        case'H':
+                                        case'I':
+                                        case'J':
+                                        case'K':
+                                        case'L':
+                                        case'M':
+                                        case'N':
+                                        case'O':
+                                        case'P':
+                                        case'Q':
+                                        case'R':
+                                        case'S':
+                                        case'T':
+                                        case'U':
+                                        case'V':
+                                        case'W':
+                                        case'X':
+                                        case'Y':
+                                        case'Z':
+                                        case'[':
+                                        case'_':
+                                        case'a':
+                                        case'b':
+                                        case'c':
+                                        case'd':
+                                        case'e':
+                                        case'f':
+                                        case'g':
+                                        case'h':
+                                        case'i':
+                                        case'j':
+                                        case'k':
+                                        case'l':
+                                        case'm':
+                                        case'n':
+                                        case'o':
+                                        case'p':
+                                        case'q':
+                                        case'r':
+                                        case's':
+                                        case't':
+                                        case'u':
+                                        case'v':
+                                        case'w':
+                                        case'x':
+                                        case'y':
+                                        case'z': {
                                             break;
                                         }
-                                    default:
-                                        {
+                                        default: {
                                             throw new NoViableAltForCharException(
                                               (char)LA(1),
                                               getFilename(),
                                               getLine(),
                                               getColumn());
                                         }
-                                    }
-                                }
-                                mARG(false);
-                                {
-                                    switch (LA(1)) {
-                                    case '\t':
-                                    case '\n':
-                                    case '\r':
-                                    case ' ':
-                                        {
-                                            _saveIndex = text.length();
-                                            mWS(false);
-                                            text.setLength(_saveIndex);
-                                            break;
-                                        }
-                                    case ']':
-                                        {
-                                            break;
-                                        }
-                                    default:
-                                        {
-                                            throw new NoViableAltForCharException(
-                                              (char)LA(1),
-                                              getFilename(),
-                                              getLine(),
-                                              getColumn());
                                         }
                                     }
-                                }
-                                match(']');
-                            } else {
-                                if (_cnt431 >= 1) {
-                                    break _loop431;
+                                    mARG(false);
                                 } else {
-                                    throw new NoViableAltForCharException(
-                                      (char)LA(1),
-                                      getFilename(),
-                                      getLine(),
-                                      getColumn());
+                                    break _loop426;
                                 }
-                            }
 
-                            _cnt431++;
-                        } while (true);
+                            } while (true);
+                        }
+                        break;
                     }
-                    break;
+                    case'\t':
+                    case'\n':
+                    case'\r':
+                    case' ':
+                    case')': {
+                        break;
+                    }
+                    default: {
+                        throw new NoViableAltForCharException((char)LA(1),
+                                                              getFilename(),
+                                                              getLine(),
+                                                              getColumn());
+                    }
+                    }
                 }
-            case '.':
                 {
-                    match('.');
-                    mID_ELEMENT(false);
-                    break;
+                    switch (LA(1)) {
+                    case'\t':
+                    case'\n':
+                    case'\r':
+                    case' ': {
+                        _saveIndex = text.length();
+                        mWS(false);
+                        text.setLength(_saveIndex);
+                        break;
+                    }
+                    case')': {
+                        break;
+                    }
+                    default: {
+                        throw new NoViableAltForCharException((char)LA(1),
+                                                              getFilename(),
+                                                              getLine(),
+                                                              getColumn());
+                    }
+                    }
                 }
-            case '\t':
-            case '\n':
-            case '\r':
-            case ' ':
-            case ')':
-            case '*':
-            case '+':
-            case ',':
-            case '-':
-            case '/':
-            case '=':
-            case ']':
+                match(')');
+                break;
+            }
+            case'[': {
                 {
-
-                    mapped = true;
-                    String t = generator.mapTreeId(id.getText(), transInfo);
-                    text.setLength(_begin);
-                    text.append(t);
-
-                    {
-                        if (((_tokenSet_15.member(LA(1))) &&
-                          (_tokenSet_16.member(LA(2))) &&
-                          (true)) &&
-                          (transInfo != null && transInfo.refRuleRoot != null)) {
+                    int _cnt431 = 0;
+                    _loop431:
+                    do {
+                        if ((LA(1) == '[')) {
+                            match('[');
                             {
                                 switch (LA(1)) {
-                                case '\t':
-                                case '\n':
-                                case '\r':
-                                case ' ':
-                                    {
-                                        mWS(false);
-                                        break;
-                                    }
-                                case '=':
-                                    {
-                                        break;
-                                    }
-                                default:
-                                    {
-                                        throw new NoViableAltForCharException(
-                                          (char)LA(1),
-                                          getFilename(),
-                                          getLine(),
-                                          getColumn());
-                                    }
+                                case'\t':
+                                case'\n':
+                                case'\r':
+                                case' ': {
+                                    _saveIndex = text.length();
+                                    mWS(false);
+                                    text.setLength(_saveIndex);
+                                    break;
+                                }
+                                case'"':
+                                case'#':
+                                case'\'':
+                                case'(':
+                                case'0':
+                                case'1':
+                                case'2':
+                                case'3':
+                                case'4':
+                                case'5':
+                                case'6':
+                                case'7':
+                                case'8':
+                                case'9':
+                                case'A':
+                                case'B':
+                                case'C':
+                                case'D':
+                                case'E':
+                                case'F':
+                                case'G':
+                                case'H':
+                                case'I':
+                                case'J':
+                                case'K':
+                                case'L':
+                                case'M':
+                                case'N':
+                                case'O':
+                                case'P':
+                                case'Q':
+                                case'R':
+                                case'S':
+                                case'T':
+                                case'U':
+                                case'V':
+                                case'W':
+                                case'X':
+                                case'Y':
+                                case'Z':
+                                case'[':
+                                case'_':
+                                case'a':
+                                case'b':
+                                case'c':
+                                case'd':
+                                case'e':
+                                case'f':
+                                case'g':
+                                case'h':
+                                case'i':
+                                case'j':
+                                case'k':
+                                case'l':
+                                case'm':
+                                case'n':
+                                case'o':
+                                case'p':
+                                case'q':
+                                case'r':
+                                case's':
+                                case't':
+                                case'u':
+                                case'v':
+                                case'w':
+                                case'x':
+                                case'y':
+                                case'z': {
+                                    break;
+                                }
+                                default: {
+                                    throw new NoViableAltForCharException((char)LA(
+                                      1),
+                                                                          getFilename(),
+                                                                          getLine(),
+                                                                          getColumn());
+                                }
                                 }
                             }
-                            mVAR_ASSIGN(false);
-                        } else if ((_tokenSet_17.member(LA(1))) && (true) &&
-                          (true)) {
+                            mARG(false);
+                            {
+                                switch (LA(1)) {
+                                case'\t':
+                                case'\n':
+                                case'\r':
+                                case' ': {
+                                    _saveIndex = text.length();
+                                    mWS(false);
+                                    text.setLength(_saveIndex);
+                                    break;
+                                }
+                                case']': {
+                                    break;
+                                }
+                                default: {
+                                    throw new NoViableAltForCharException((char)LA(
+                                      1),
+                                                                          getFilename(),
+                                                                          getLine(),
+                                                                          getColumn());
+                                }
+                                }
+                            }
+                            match(']');
                         } else {
-                            throw new NoViableAltForCharException((char)LA(1),
-                                                                  getFilename(),
-                                                                  getLine(),
-                                                                  getColumn());
+                            if (_cnt431 >= 1) {
+                                break _loop431;
+                            } else {
+                                throw new NoViableAltForCharException((char)LA(
+                                  1), getFilename(), getLine(), getColumn());
+                            }
                         }
 
-                    }
-                    break;
+                        _cnt431++;
+                    } while (true);
                 }
-            default:
+                break;
+            }
+            case'.': {
+                match('.');
+                mID_ELEMENT(false);
+                break;
+            }
+            case'\t':
+            case'\n':
+            case'\r':
+            case' ':
+            case')':
+            case'*':
+            case'+':
+            case',':
+            case'-':
+            case'/':
+            case'=':
+            case']': {
+
+                mapped = true;
+                String t = generator.mapTreeId(id.getText(), transInfo);
+                text.setLength(_begin);
+                text.append(t);
+
                 {
-                    throw new NoViableAltForCharException((char)LA(1),
-                                                          getFilename(),
-                                                          getLine(),
-                                                          getColumn());
+                    if (((_tokenSet_15.member(LA(1))) &&
+                      (_tokenSet_16.member(LA(2))) && (true)) &&
+                      (transInfo != null && transInfo.refRuleRoot != null)) {
+                        {
+                            switch (LA(1)) {
+                            case'\t':
+                            case'\n':
+                            case'\r':
+                            case' ': {
+                                mWS(false);
+                                break;
+                            }
+                            case'=': {
+                                break;
+                            }
+                            default: {
+                                throw new NoViableAltForCharException((char)LA(
+                                  1), getFilename(), getLine(), getColumn());
+                            }
+                            }
+                        }
+                        mVAR_ASSIGN(false);
+                    } else
+                    if ((_tokenSet_17.member(LA(1))) && (true) && (true)) {
+                    } else {
+                        throw new NoViableAltForCharException((char)LA(1),
+                                                              getFilename(),
+                                                              getLine(),
+                                                              getColumn());
+                    }
+
                 }
+                break;
+            }
+            default: {
+                throw new NoViableAltForCharException((char)LA(1),
+                                                      getFilename(),
+                                                      getLine(),
+                                                      getColumn());
+            }
             }
         }
         if (_createToken && _token == null && _ttype != Token.SKIP) {
             _token = makeToken(_ttype);
-            _token.setText(
-              new String(text.getBuffer(), _begin, text.length() - _begin));
+            _token.setText(new String(text.getBuffer(),
+                                      _begin,
+                                      text.length() - _begin));
         }
         _returnToken = _token;
         return mapped;
@@ -2508,8 +2400,7 @@ public class ActionLexer extends antlr.CharScanner
           ((LA(3) >= '\u0003' && LA(3) <= '\u00ff'))) {
             mSTRING(false);
         } else if ((_tokenSet_18.member(LA(1))) &&
-          ((LA(2) >= '\u0003' && LA(2) <= '\u00ff')) &&
-          (true)) {
+          ((LA(2) >= '\u0003' && LA(2) <= '\u00ff')) && (true)) {
             mTREE_ELEMENT(false);
         } else if (((LA(1) >= '0' && LA(1) <= '9'))) {
             mINT(false);
@@ -2522,8 +2413,9 @@ public class ActionLexer extends antlr.CharScanner
 
         if (_createToken && _token == null && _ttype != Token.SKIP) {
             _token = makeToken(_ttype);
-            _token.setText(
-              new String(text.getBuffer(), _begin, text.length() - _begin));
+            _token.setText(new String(text.getBuffer(),
+                                      _begin,
+                                      text.length() - _begin));
         }
         _returnToken = _token;
     }
@@ -2558,8 +2450,9 @@ public class ActionLexer extends antlr.CharScanner
         }
         if (_createToken && _token == null && _ttype != Token.SKIP) {
             _token = makeToken(_ttype);
-            _token.setText(
-              new String(text.getBuffer(), _begin, text.length() - _begin));
+            _token.setText(new String(text.getBuffer(),
+                                      _begin,
+                                      text.length() - _begin));
         }
         _returnToken = _token;
     }
@@ -2574,25 +2467,23 @@ public class ActionLexer extends antlr.CharScanner
 
         {
             switch (LA(1)) {
-            case '\'':
-                {
-                    mCHAR(false);
-                    break;
-                }
-            case '0':
-            case '1':
-            case '2':
-            case '3':
-            case '4':
-            case '5':
-            case '6':
-            case '7':
-            case '8':
-            case '9':
-                {
-                    mINT_OR_FLOAT(false);
-                    break;
-                }
+            case'\'': {
+                mCHAR(false);
+                break;
+            }
+            case'0':
+            case'1':
+            case'2':
+            case'3':
+            case'4':
+            case'5':
+            case'6':
+            case'7':
+            case'8':
+            case'9': {
+                mINT_OR_FLOAT(false);
+                break;
+            }
             default:
                 if ((_tokenSet_18.member(LA(1))) &&
                   ((LA(2) >= '\u0003' && LA(2) <= '\u00ff')) &&
@@ -2618,152 +2509,138 @@ public class ActionLexer extends antlr.CharScanner
                   ((LA(3) >= '\u0003' && LA(3) <= '\u00ff'))) {
                     {
                         switch (LA(1)) {
-                        case '\t':
-                        case '\n':
-                        case '\r':
-                        case ' ':
-                            {
-                                mWS(false);
-                                break;
-                            }
-                        case '*':
-                        case '+':
-                        case '-':
-                        case '/':
-                            {
-                                break;
-                            }
-                        default:
-                            {
-                                throw new NoViableAltForCharException(
-                                  (char)LA(1),
-                                  getFilename(),
-                                  getLine(),
-                                  getColumn());
-                            }
+                        case'\t':
+                        case'\n':
+                        case'\r':
+                        case' ': {
+                            mWS(false);
+                            break;
+                        }
+                        case'*':
+                        case'+':
+                        case'-':
+                        case'/': {
+                            break;
+                        }
+                        default: {
+                            throw new NoViableAltForCharException((char)LA(1),
+                                                                  getFilename(),
+                                                                  getLine(),
+                                                                  getColumn());
+                        }
                         }
                     }
                     {
                         switch (LA(1)) {
-                        case '+':
-                            {
-                                match('+');
-                                break;
-                            }
-                        case '-':
-                            {
-                                match('-');
-                                break;
-                            }
-                        case '*':
-                            {
-                                match('*');
-                                break;
-                            }
-                        case '/':
-                            {
-                                match('/');
-                                break;
-                            }
-                        default:
-                            {
-                                throw new NoViableAltForCharException(
-                                  (char)LA(1),
-                                  getFilename(),
-                                  getLine(),
-                                  getColumn());
-                            }
+                        case'+': {
+                            match('+');
+                            break;
+                        }
+                        case'-': {
+                            match('-');
+                            break;
+                        }
+                        case'*': {
+                            match('*');
+                            break;
+                        }
+                        case'/': {
+                            match('/');
+                            break;
+                        }
+                        default: {
+                            throw new NoViableAltForCharException((char)LA(1),
+                                                                  getFilename(),
+                                                                  getLine(),
+                                                                  getColumn());
+                        }
                         }
                     }
                     {
                         switch (LA(1)) {
-                        case '\t':
-                        case '\n':
-                        case '\r':
-                        case ' ':
-                            {
-                                mWS(false);
-                                break;
-                            }
-                        case '"':
-                        case '#':
-                        case '\'':
-                        case '(':
-                        case '0':
-                        case '1':
-                        case '2':
-                        case '3':
-                        case '4':
-                        case '5':
-                        case '6':
-                        case '7':
-                        case '8':
-                        case '9':
-                        case 'A':
-                        case 'B':
-                        case 'C':
-                        case 'D':
-                        case 'E':
-                        case 'F':
-                        case 'G':
-                        case 'H':
-                        case 'I':
-                        case 'J':
-                        case 'K':
-                        case 'L':
-                        case 'M':
-                        case 'N':
-                        case 'O':
-                        case 'P':
-                        case 'Q':
-                        case 'R':
-                        case 'S':
-                        case 'T':
-                        case 'U':
-                        case 'V':
-                        case 'W':
-                        case 'X':
-                        case 'Y':
-                        case 'Z':
-                        case '[':
-                        case '_':
-                        case 'a':
-                        case 'b':
-                        case 'c':
-                        case 'd':
-                        case 'e':
-                        case 'f':
-                        case 'g':
-                        case 'h':
-                        case 'i':
-                        case 'j':
-                        case 'k':
-                        case 'l':
-                        case 'm':
-                        case 'n':
-                        case 'o':
-                        case 'p':
-                        case 'q':
-                        case 'r':
-                        case 's':
-                        case 't':
-                        case 'u':
-                        case 'v':
-                        case 'w':
-                        case 'x':
-                        case 'y':
-                        case 'z':
-                            {
-                                break;
-                            }
-                        default:
-                            {
-                                throw new NoViableAltForCharException(
-                                  (char)LA(1),
-                                  getFilename(),
-                                  getLine(),
-                                  getColumn());
-                            }
+                        case'\t':
+                        case'\n':
+                        case'\r':
+                        case' ': {
+                            mWS(false);
+                            break;
+                        }
+                        case'"':
+                        case'#':
+                        case'\'':
+                        case'(':
+                        case'0':
+                        case'1':
+                        case'2':
+                        case'3':
+                        case'4':
+                        case'5':
+                        case'6':
+                        case'7':
+                        case'8':
+                        case'9':
+                        case'A':
+                        case'B':
+                        case'C':
+                        case'D':
+                        case'E':
+                        case'F':
+                        case'G':
+                        case'H':
+                        case'I':
+                        case'J':
+                        case'K':
+                        case'L':
+                        case'M':
+                        case'N':
+                        case'O':
+                        case'P':
+                        case'Q':
+                        case'R':
+                        case'S':
+                        case'T':
+                        case'U':
+                        case'V':
+                        case'W':
+                        case'X':
+                        case'Y':
+                        case'Z':
+                        case'[':
+                        case'_':
+                        case'a':
+                        case'b':
+                        case'c':
+                        case'd':
+                        case'e':
+                        case'f':
+                        case'g':
+                        case'h':
+                        case'i':
+                        case'j':
+                        case'k':
+                        case'l':
+                        case'm':
+                        case'n':
+                        case'o':
+                        case'p':
+                        case'q':
+                        case'r':
+                        case's':
+                        case't':
+                        case'u':
+                        case'v':
+                        case'w':
+                        case'x':
+                        case'y':
+                        case'z': {
+                            break;
+                        }
+                        default: {
+                            throw new NoViableAltForCharException((char)LA(1),
+                                                                  getFilename(),
+                                                                  getLine(),
+                                                                  getColumn());
+                        }
                         }
                     }
                     mARG(false);
@@ -2775,8 +2652,9 @@ public class ActionLexer extends antlr.CharScanner
         }
         if (_createToken && _token == null && _ttype != Token.SKIP) {
             _token = makeToken(_ttype);
-            _token.setText(
-              new String(text.getBuffer(), _begin, text.length() - _begin));
+            _token.setText(new String(text.getBuffer(),
+                                      _begin,
+                                      text.length() - _begin));
         }
         _returnToken = _token;
     }
@@ -2790,109 +2668,103 @@ public class ActionLexer extends antlr.CharScanner
         int _saveIndex;
 
         switch (LA(1)) {
-        case 'A':
-        case 'B':
-        case 'C':
-        case 'D':
-        case 'E':
-        case 'F':
-        case 'G':
-        case 'H':
-        case 'I':
-        case 'J':
-        case 'K':
-        case 'L':
-        case 'M':
-        case 'N':
-        case 'O':
-        case 'P':
-        case 'Q':
-        case 'R':
-        case 'S':
-        case 'T':
-        case 'U':
-        case 'V':
-        case 'W':
-        case 'X':
-        case 'Y':
-        case 'Z':
-        case '_':
-        case 'a':
-        case 'b':
-        case 'c':
-        case 'd':
-        case 'e':
-        case 'f':
-        case 'g':
-        case 'h':
-        case 'i':
-        case 'j':
-        case 'k':
-        case 'l':
-        case 'm':
-        case 'n':
-        case 'o':
-        case 'p':
-        case 'q':
-        case 'r':
-        case 's':
-        case 't':
-        case 'u':
-        case 'v':
-        case 'w':
-        case 'x':
-        case 'y':
-        case 'z':
-            {
-                mTEXT_ARG_ID_ELEMENT(false);
-                break;
-            }
-        case '"':
-            {
-                mSTRING(false);
-                break;
-            }
-        case '\'':
-            {
-                mCHAR(false);
-                break;
-            }
-        case '0':
-        case '1':
-        case '2':
-        case '3':
-        case '4':
-        case '5':
-        case '6':
-        case '7':
-        case '8':
-        case '9':
-            {
-                mINT_OR_FLOAT(false);
-                break;
-            }
-        case '$':
-            {
-                mTEXT_ITEM(false);
-                break;
-            }
-        case '+':
-            {
-                match('+');
-                break;
-            }
-        default:
-            {
-                throw new NoViableAltForCharException((char)LA(1),
-                                                      getFilename(),
-                                                      getLine(),
-                                                      getColumn());
-            }
+        case'A':
+        case'B':
+        case'C':
+        case'D':
+        case'E':
+        case'F':
+        case'G':
+        case'H':
+        case'I':
+        case'J':
+        case'K':
+        case'L':
+        case'M':
+        case'N':
+        case'O':
+        case'P':
+        case'Q':
+        case'R':
+        case'S':
+        case'T':
+        case'U':
+        case'V':
+        case'W':
+        case'X':
+        case'Y':
+        case'Z':
+        case'_':
+        case'a':
+        case'b':
+        case'c':
+        case'd':
+        case'e':
+        case'f':
+        case'g':
+        case'h':
+        case'i':
+        case'j':
+        case'k':
+        case'l':
+        case'm':
+        case'n':
+        case'o':
+        case'p':
+        case'q':
+        case'r':
+        case's':
+        case't':
+        case'u':
+        case'v':
+        case'w':
+        case'x':
+        case'y':
+        case'z': {
+            mTEXT_ARG_ID_ELEMENT(false);
+            break;
+        }
+        case'"': {
+            mSTRING(false);
+            break;
+        }
+        case'\'': {
+            mCHAR(false);
+            break;
+        }
+        case'0':
+        case'1':
+        case'2':
+        case'3':
+        case'4':
+        case'5':
+        case'6':
+        case'7':
+        case'8':
+        case'9': {
+            mINT_OR_FLOAT(false);
+            break;
+        }
+        case'$': {
+            mTEXT_ITEM(false);
+            break;
+        }
+        case'+': {
+            match('+');
+            break;
+        }
+        default: {
+            throw new NoViableAltForCharException((char)LA(1),
+                                                  getFilename(),
+                                                  getLine(),
+                                                  getColumn());
+        }
         }
         if (_createToken && _token == null && _ttype != Token.SKIP) {
             _token = makeToken(_ttype);
-            _token.setText(
-              new String(text.getBuffer(), _begin, text.length() - _begin));
+            _token.setText(new String(text.getBuffer(),
+                                      _begin,
+                                      text.length() - _begin));
         }
         _returnToken = _token;
     }
@@ -2925,252 +2797,234 @@ public class ActionLexer extends antlr.CharScanner
         }
         {
             switch (LA(1)) {
-            case '(':
+            case'(': {
+                match('(');
                 {
-                    match('(');
-                    {
-                        if ((_tokenSet_4.member(LA(1))) &&
-                          (_tokenSet_22.member(LA(2))) &&
-                          ((LA(3) >= '\u0003' && LA(3) <= '\u00ff'))) {
-                            _saveIndex = text.length();
-                            mWS(false);
-                            text.setLength(_saveIndex);
-                        } else if ((_tokenSet_22.member(LA(1))) &&
+                    if ((_tokenSet_4.member(LA(1))) &&
+                      (_tokenSet_22.member(LA(2))) &&
+                      ((LA(3) >= '\u0003' && LA(3) <= '\u00ff'))) {
+                        _saveIndex = text.length();
+                        mWS(false);
+                        text.setLength(_saveIndex);
+                    } else if ((_tokenSet_22.member(LA(1))) &&
+                      ((LA(2) >= '\u0003' && LA(2) <= '\u00ff')) && (true)) {
+                    } else {
+                        throw new NoViableAltForCharException((char)LA(1),
+                                                              getFilename(),
+                                                              getLine(),
+                                                              getColumn());
+                    }
+
+                }
+                {
+                    _loop447:
+                    do {
+                        if ((_tokenSet_23.member(LA(1))) &&
                           ((LA(2) >= '\u0003' && LA(2) <= '\u00ff')) &&
-                          (true)) {
-                        } else {
-                            throw new NoViableAltForCharException((char)LA(1),
-                                                                  getFilename(),
-                                                                  getLine(),
-                                                                  getColumn());
-                        }
-
-                    }
-                    {
-                        _loop447:
-                        do {
-                            if ((_tokenSet_23.member(LA(1))) &&
-                              ((LA(2) >= '\u0003' && LA(2) <= '\u00ff')) &&
-                              ((LA(3) >= '\u0003' && LA(3) <= '\u00ff'))) {
-                                mTEXT_ARG(false);
-                                {
-                                    _loop446:
-                                    do {
-                                        if ((LA(1) == ',')) {
-                                            match(',');
-                                            mTEXT_ARG(false);
-                                        } else {
-                                            break _loop446;
-                                        }
-
-                                    } while (true);
-                                }
-                            } else {
-                                break _loop447;
-                            }
-
-                        } while (true);
-                    }
-                    {
-                        switch (LA(1)) {
-                        case '\t':
-                        case '\n':
-                        case '\r':
-                        case ' ':
+                          ((LA(3) >= '\u0003' && LA(3) <= '\u00ff'))) {
+                            mTEXT_ARG(false);
                             {
-                                _saveIndex = text.length();
-                                mWS(false);
-                                text.setLength(_saveIndex);
-                                break;
-                            }
-                        case ')':
-                            {
-                                break;
-                            }
-                        default:
-                            {
-                                throw new NoViableAltForCharException(
-                                  (char)LA(1),
-                                  getFilename(),
-                                  getLine(),
-                                  getColumn());
-                            }
-                        }
-                    }
-                    match(')');
-                    break;
-                }
-            case '[':
-                {
-                    {
-                        int _cnt452 = 0;
-                        _loop452:
-                        do {
-                            if ((LA(1) == '[')) {
-                                match('[');
-                                {
-                                    if ((_tokenSet_4.member(LA(1))) &&
-                                      (_tokenSet_23.member(LA(2))) &&
-                                      ((LA(3) >= '\u0003' &&
-                                      LA(3) <= '\u00ff'))) {
-                                        _saveIndex = text.length();
-                                        mWS(false);
-                                        text.setLength(_saveIndex);
-                                    } else if ((_tokenSet_23.member(LA(1))) &&
-                                      ((LA(2) >= '\u0003' &&
-                                      LA(2) <= '\u00ff')) &&
-                                      ((LA(3) >= '\u0003' &&
-                                      LA(3) <= '\u00ff'))) {
+                                _loop446:
+                                do {
+                                    if ((LA(1) == ',')) {
+                                        match(',');
+                                        mTEXT_ARG(false);
                                     } else {
-                                        throw new NoViableAltForCharException(
-                                          (char)LA(1),
-                                          getFilename(),
-                                          getLine(),
-                                          getColumn());
+                                        break _loop446;
                                     }
 
-                                }
-                                mTEXT_ARG(false);
-                                {
-                                    switch (LA(1)) {
-                                    case '\t':
-                                    case '\n':
-                                    case '\r':
-                                    case ' ':
-                                        {
-                                            _saveIndex = text.length();
-                                            mWS(false);
-                                            text.setLength(_saveIndex);
-                                            break;
-                                        }
-                                    case ']':
-                                        {
-                                            break;
-                                        }
-                                    default:
-                                        {
-                                            throw new NoViableAltForCharException(
-                                              (char)LA(1),
-                                              getFilename(),
-                                              getLine(),
-                                              getColumn());
-                                        }
-                                    }
-                                }
-                                match(']');
-                            } else {
-                                if (_cnt452 >= 1) {
-                                    break _loop452;
+                                } while (true);
+                            }
+                        } else {
+                            break _loop447;
+                        }
+
+                    } while (true);
+                }
+                {
+                    switch (LA(1)) {
+                    case'\t':
+                    case'\n':
+                    case'\r':
+                    case' ': {
+                        _saveIndex = text.length();
+                        mWS(false);
+                        text.setLength(_saveIndex);
+                        break;
+                    }
+                    case')': {
+                        break;
+                    }
+                    default: {
+                        throw new NoViableAltForCharException((char)LA(1),
+                                                              getFilename(),
+                                                              getLine(),
+                                                              getColumn());
+                    }
+                    }
+                }
+                match(')');
+                break;
+            }
+            case'[': {
+                {
+                    int _cnt452 = 0;
+                    _loop452:
+                    do {
+                        if ((LA(1) == '[')) {
+                            match('[');
+                            {
+                                if ((_tokenSet_4.member(LA(1))) &&
+                                  (_tokenSet_23.member(LA(2))) &&
+                                  ((LA(3) >= '\u0003' && LA(3) <= '\u00ff'))) {
+                                    _saveIndex = text.length();
+                                    mWS(false);
+                                    text.setLength(_saveIndex);
+                                } else if ((_tokenSet_23.member(LA(1))) &&
+                                  ((LA(2) >= '\u0003' && LA(2) <= '\u00ff')) &&
+                                  ((LA(3) >= '\u0003' && LA(3) <= '\u00ff'))) {
                                 } else {
-                                    throw new NoViableAltForCharException(
-                                      (char)LA(1),
-                                      getFilename(),
-                                      getLine(),
-                                      getColumn());
+                                    throw new NoViableAltForCharException((char)LA(
+                                      1),
+                                                                          getFilename(),
+                                                                          getLine(),
+                                                                          getColumn());
+                                }
+
+                            }
+                            mTEXT_ARG(false);
+                            {
+                                switch (LA(1)) {
+                                case'\t':
+                                case'\n':
+                                case'\r':
+                                case' ': {
+                                    _saveIndex = text.length();
+                                    mWS(false);
+                                    text.setLength(_saveIndex);
+                                    break;
+                                }
+                                case']': {
+                                    break;
+                                }
+                                default: {
+                                    throw new NoViableAltForCharException((char)LA(
+                                      1),
+                                                                          getFilename(),
+                                                                          getLine(),
+                                                                          getColumn());
+                                }
                                 }
                             }
+                            match(']');
+                        } else {
+                            if (_cnt452 >= 1) {
+                                break _loop452;
+                            } else {
+                                throw new NoViableAltForCharException((char)LA(
+                                  1), getFilename(), getLine(), getColumn());
+                            }
+                        }
 
-                            _cnt452++;
-                        } while (true);
-                    }
-                    break;
+                        _cnt452++;
+                    } while (true);
                 }
-            case '.':
-                {
-                    match('.');
-                    mTEXT_ARG_ID_ELEMENT(false);
-                    break;
-                }
-            case '\t':
-            case '\n':
-            case '\r':
-            case ' ':
-            case '"':
-            case '$':
-            case '\'':
-            case ')':
-            case '+':
-            case ',':
-            case '0':
-            case '1':
-            case '2':
-            case '3':
-            case '4':
-            case '5':
-            case '6':
-            case '7':
-            case '8':
-            case '9':
-            case 'A':
-            case 'B':
-            case 'C':
-            case 'D':
-            case 'E':
-            case 'F':
-            case 'G':
-            case 'H':
-            case 'I':
-            case 'J':
-            case 'K':
-            case 'L':
-            case 'M':
-            case 'N':
-            case 'O':
-            case 'P':
-            case 'Q':
-            case 'R':
-            case 'S':
-            case 'T':
-            case 'U':
-            case 'V':
-            case 'W':
-            case 'X':
-            case 'Y':
-            case 'Z':
-            case ']':
-            case '_':
-            case 'a':
-            case 'b':
-            case 'c':
-            case 'd':
-            case 'e':
-            case 'f':
-            case 'g':
-            case 'h':
-            case 'i':
-            case 'j':
-            case 'k':
-            case 'l':
-            case 'm':
-            case 'n':
-            case 'o':
-            case 'p':
-            case 'q':
-            case 'r':
-            case 's':
-            case 't':
-            case 'u':
-            case 'v':
-            case 'w':
-            case 'x':
-            case 'y':
-            case 'z':
-                {
-                    break;
-                }
-            default:
-                {
-                    throw new NoViableAltForCharException((char)LA(1),
-                                                          getFilename(),
-                                                          getLine(),
-                                                          getColumn());
-                }
+                break;
+            }
+            case'.': {
+                match('.');
+                mTEXT_ARG_ID_ELEMENT(false);
+                break;
+            }
+            case'\t':
+            case'\n':
+            case'\r':
+            case' ':
+            case'"':
+            case'$':
+            case'\'':
+            case')':
+            case'+':
+            case',':
+            case'0':
+            case'1':
+            case'2':
+            case'3':
+            case'4':
+            case'5':
+            case'6':
+            case'7':
+            case'8':
+            case'9':
+            case'A':
+            case'B':
+            case'C':
+            case'D':
+            case'E':
+            case'F':
+            case'G':
+            case'H':
+            case'I':
+            case'J':
+            case'K':
+            case'L':
+            case'M':
+            case'N':
+            case'O':
+            case'P':
+            case'Q':
+            case'R':
+            case'S':
+            case'T':
+            case'U':
+            case'V':
+            case'W':
+            case'X':
+            case'Y':
+            case'Z':
+            case']':
+            case'_':
+            case'a':
+            case'b':
+            case'c':
+            case'd':
+            case'e':
+            case'f':
+            case'g':
+            case'h':
+            case'i':
+            case'j':
+            case'k':
+            case'l':
+            case'm':
+            case'n':
+            case'o':
+            case'p':
+            case'q':
+            case'r':
+            case's':
+            case't':
+            case'u':
+            case'v':
+            case'w':
+            case'x':
+            case'y':
+            case'z': {
+                break;
+            }
+            default: {
+                throw new NoViableAltForCharException((char)LA(1),
+                                                      getFilename(),
+                                                      getLine(),
+                                                      getColumn());
+            }
             }
         }
         if (_createToken && _token == null && _ttype != Token.SKIP) {
             _token = makeToken(_ttype);
-            _token.setText(
-              new String(text.getBuffer(), _begin, text.length() - _begin));
+            _token.setText(new String(text.getBuffer(),
+                                      _begin,
+                                      text.length() - _begin));
         }
         _returnToken = _token;
     }
@@ -3188,8 +3042,7 @@ public class ActionLexer extends antlr.CharScanner
             _loop492:
             do {
                 if (((LA(1) >= '0' && LA(1) <= '9')) &&
-                  (_tokenSet_24.member(LA(2))) &&
-                  (true)) {
+                  (_tokenSet_24.member(LA(2))) && (true)) {
                     mDIGIT(false);
                 } else {
                     if (_cnt492 >= 1) {
@@ -3208,7 +3061,8 @@ public class ActionLexer extends antlr.CharScanner
         {
             if ((LA(1) == 'L') && (_tokenSet_25.member(LA(2))) && (true)) {
                 match('L');
-            } else if ((LA(1) == 'l') && (_tokenSet_25.member(LA(2))) && (true)) {
+            } else
+            if ((LA(1) == 'l') && (_tokenSet_25.member(LA(2))) && (true)) {
                 match('l');
             } else if ((LA(1) == '.')) {
                 match('.');
@@ -3216,8 +3070,7 @@ public class ActionLexer extends antlr.CharScanner
                     _loop495:
                     do {
                         if (((LA(1) >= '0' && LA(1) <= '9')) &&
-                          (_tokenSet_25.member(LA(2))) &&
-                          (true)) {
+                          (_tokenSet_25.member(LA(2))) && (true)) {
                             mDIGIT(false);
                         } else {
                             break _loop495;
@@ -3236,8 +3089,9 @@ public class ActionLexer extends antlr.CharScanner
         }
         if (_createToken && _token == null && _ttype != Token.SKIP) {
             _token = makeToken(_ttype);
-            _token.setText(
-              new String(text.getBuffer(), _begin, text.length() - _begin));
+            _token.setText(new String(text.getBuffer(),
+                                      _begin,
+                                      text.length() - _begin));
         }
         _returnToken = _token;
     }
@@ -3259,8 +3113,7 @@ public class ActionLexer extends antlr.CharScanner
                     break _loop469;
                 }
                 if (((LA(1) >= '\u0003' && LA(1) <= '\u00ff')) &&
-                  ((LA(2) >= '\u0003' && LA(2) <= '\u00ff')) &&
-                  (true)) {
+                  ((LA(2) >= '\u0003' && LA(2) <= '\u00ff')) && (true)) {
                     matchNot(EOF_CHAR);
                 } else {
                     break _loop469;
@@ -3286,8 +3139,9 @@ public class ActionLexer extends antlr.CharScanner
         newline();
         if (_createToken && _token == null && _ttype != Token.SKIP) {
             _token = makeToken(_ttype);
-            _token.setText(
-              new String(text.getBuffer(), _begin, text.length() - _begin));
+            _token.setText(new String(text.getBuffer(),
+                                      _begin,
+                                      text.length() - _begin));
         }
         _returnToken = _token;
     }
@@ -3336,8 +3190,9 @@ public class ActionLexer extends antlr.CharScanner
         match("*/");
         if (_createToken && _token == null && _ttype != Token.SKIP) {
             _token = makeToken(_ttype);
-            _token.setText(
-              new String(text.getBuffer(), _begin, text.length() - _begin));
+            _token.setText(new String(text.getBuffer(),
+                                      _begin,
+                                      text.length() - _begin));
         }
         _returnToken = _token;
     }
@@ -3353,129 +3208,111 @@ public class ActionLexer extends antlr.CharScanner
         match('\\');
         {
             switch (LA(1)) {
-            case 'n':
+            case'n': {
+                match('n');
+                break;
+            }
+            case'r': {
+                match('r');
+                break;
+            }
+            case't': {
+                match('t');
+                break;
+            }
+            case'b': {
+                match('b');
+                break;
+            }
+            case'f': {
+                match('f');
+                break;
+            }
+            case'"': {
+                match('"');
+                break;
+            }
+            case'\'': {
+                match('\'');
+                break;
+            }
+            case'\\': {
+                match('\\');
+                break;
+            }
+            case'0':
+            case'1':
+            case'2':
+            case'3': {
                 {
-                    match('n');
-                    break;
+                    matchRange('0', '3');
                 }
-            case 'r':
                 {
-                    match('r');
-                    break;
-                }
-            case 't':
-                {
-                    match('t');
-                    break;
-                }
-            case 'b':
-                {
-                    match('b');
-                    break;
-                }
-            case 'f':
-                {
-                    match('f');
-                    break;
-                }
-            case '"':
-                {
-                    match('"');
-                    break;
-                }
-            case '\'':
-                {
-                    match('\'');
-                    break;
-                }
-            case '\\':
-                {
-                    match('\\');
-                    break;
-                }
-            case '0':
-            case '1':
-            case '2':
-            case '3':
-                {
-                    {
-                        matchRange('0', '3');
-                    }
-                    {
-                        if (((LA(1) >= '0' && LA(1) <= '9')) &&
-                          ((LA(2) >= '\u0003' && LA(2) <= '\u00ff')) &&
-                          (true)) {
-                            mDIGIT(false);
-                            {
-                                if (((LA(1) >= '0' && LA(1) <= '9')) &&
-                                  ((LA(2) >= '\u0003' && LA(2) <= '\u00ff')) &&
-                                  (true)) {
-                                    mDIGIT(false);
-                                } else if (((LA(1) >= '\u0003' &&
-                                  LA(1) <= '\u00ff')) &&
-                                  (true) &&
-                                  (true)) {
-                                } else {
-                                    throw new NoViableAltForCharException(
-                                      (char)LA(1),
-                                      getFilename(),
-                                      getLine(),
-                                      getColumn());
-                                }
-
+                    if (((LA(1) >= '0' && LA(1) <= '9')) &&
+                      ((LA(2) >= '\u0003' && LA(2) <= '\u00ff')) && (true)) {
+                        mDIGIT(false);
+                        {
+                            if (((LA(1) >= '0' && LA(1) <= '9')) &&
+                              ((LA(2) >= '\u0003' && LA(2) <= '\u00ff')) &&
+                              (true)) {
+                                mDIGIT(false);
+                            } else if (
+                              ((LA(1) >= '\u0003' && LA(1) <= '\u00ff')) &&
+                                (true) && (true)) {
+                            } else {
+                                throw new NoViableAltForCharException((char)LA(
+                                  1), getFilename(), getLine(), getColumn());
                             }
-                        } else if (((LA(1) >= '\u0003' && LA(1) <= '\u00ff')) &&
-                          (true) &&
-                          (true)) {
-                        } else {
-                            throw new NoViableAltForCharException((char)LA(1),
-                                                                  getFilename(),
-                                                                  getLine(),
-                                                                  getColumn());
-                        }
 
-                    }
-                    break;
-                }
-            case '4':
-            case '5':
-            case '6':
-            case '7':
-                {
-                    {
-                        matchRange('4', '7');
-                    }
-                    {
-                        if (((LA(1) >= '0' && LA(1) <= '9')) &&
-                          ((LA(2) >= '\u0003' && LA(2) <= '\u00ff')) &&
-                          (true)) {
-                            mDIGIT(false);
-                        } else if (((LA(1) >= '\u0003' && LA(1) <= '\u00ff')) &&
-                          (true) &&
-                          (true)) {
-                        } else {
-                            throw new NoViableAltForCharException((char)LA(1),
-                                                                  getFilename(),
-                                                                  getLine(),
-                                                                  getColumn());
                         }
-
+                    } else if (((LA(1) >= '\u0003' && LA(1) <= '\u00ff')) &&
+                      (true) && (true)) {
+                    } else {
+                        throw new NoViableAltForCharException((char)LA(1),
+                                                              getFilename(),
+                                                              getLine(),
+                                                              getColumn());
                     }
-                    break;
+
                 }
-            default:
+                break;
+            }
+            case'4':
+            case'5':
+            case'6':
+            case'7': {
                 {
-                    throw new NoViableAltForCharException((char)LA(1),
-                                                          getFilename(),
-                                                          getLine(),
-                                                          getColumn());
+                    matchRange('4', '7');
                 }
+                {
+                    if (((LA(1) >= '0' && LA(1) <= '9')) &&
+                      ((LA(2) >= '\u0003' && LA(2) <= '\u00ff')) && (true)) {
+                        mDIGIT(false);
+                    } else if (((LA(1) >= '\u0003' && LA(1) <= '\u00ff')) &&
+                      (true) && (true)) {
+                    } else {
+                        throw new NoViableAltForCharException((char)LA(1),
+                                                              getFilename(),
+                                                              getLine(),
+                                                              getColumn());
+                    }
+
+                }
+                break;
+            }
+            default: {
+                throw new NoViableAltForCharException((char)LA(1),
+                                                      getFilename(),
+                                                      getLine(),
+                                                      getColumn());
+            }
             }
         }
         if (_createToken && _token == null && _ttype != Token.SKIP) {
             _token = makeToken(_ttype);
-            _token.setText(
-              new String(text.getBuffer(), _begin, text.length() - _begin));
+            _token.setText(new String(text.getBuffer(),
+                                      _begin,
+                                      text.length() - _begin));
         }
         _returnToken = _token;
     }
@@ -3491,8 +3328,9 @@ public class ActionLexer extends antlr.CharScanner
         matchRange('0', '9');
         if (_createToken && _token == null && _ttype != Token.SKIP) {
             _token = makeToken(_ttype);
-            _token.setText(
-              new String(text.getBuffer(), _begin, text.length() - _begin));
+            _token.setText(new String(text.getBuffer(),
+                                      _begin,
+                                      text.length() - _begin));
         }
         _returnToken = _token;
     }

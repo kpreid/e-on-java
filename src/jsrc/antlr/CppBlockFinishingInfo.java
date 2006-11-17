@@ -11,7 +11,7 @@ package antlr;
 
 class CppBlockFinishingInfo {
 
-    String postscript;		// what to generate to terminate block
+    String postscript;                // what to generate to terminate block
     boolean generatedSwitch;// did block finish with "default:" of switch?
     boolean generatedAnIf;
 

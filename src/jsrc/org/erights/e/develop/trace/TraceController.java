@@ -31,17 +31,16 @@ import java.util.Hashtable;
 import java.util.Properties;
 
 /**
- * The single trace controller manages all the trace classes. Most
- * notably, it has one TraceSubsystemMediator for each subsystem
- * being traced. A TraceSubsystemMediator may mediate several Trace
- * objects. Messages sent to those trace objects are forwarded to the
- * mediator. The mediator, under the control of the TraceController,
- * sends the message on to TraceMessageAcceptors that are ready to
- * accept messages. The two current TraceMessageAcceptors are the
- * TraceLog and the TraceBuffer. Once upon a time, there was a third,
- * the TraceDisplay, which would echo to the screen the contents of
- * the TraceBuffer. However, that proved impractical in the current
- * build environment.
+ * The single trace controller manages all the trace classes. Most notably, it
+ * has one TraceSubsystemMediator for each subsystem being traced. A
+ * TraceSubsystemMediator may mediate several Trace objects. Messages sent to
+ * those trace objects are forwarded to the mediator. The mediator, under the
+ * control of the TraceController, sends the message on to
+ * TraceMessageAcceptors that are ready to accept messages. The two current
+ * TraceMessageAcceptors are the TraceLog and the TraceBuffer. Once upon a
+ * time, there was a third, the TraceDisplay, which would echo to the screen
+ * the contents of the TraceBuffer. However, that proved impractical in the
+ * current build environment.
  */
 public class TraceController implements TraceConstants {
 
@@ -52,8 +51,8 @@ public class TraceController implements TraceConstants {
     static private final Hashtable OurTraceMediators = new Hashtable();
 
     /**
-     * Trace thresholds that apply to subsystems that haven't
-     * been given specific values. NUM_ACCEPTORS elements.
+     * Trace thresholds that apply to subsystems that haven't been given
+     * specific values. NUM_ACCEPTORS elements.
      */
     static private final int[] OurDefaultThresholds;
 
@@ -88,28 +87,26 @@ public class TraceController implements TraceConstants {
     static private boolean OurStarted = false;
 
     /**
-     * The complete list of acceptors, for use by mediators. The fact
-     * that there's a fixed set of acceptors that can't be changed
-     * without recompiling is probably the major rigidity of the code.
+     * The complete list of acceptors, for use by mediators. The fact that
+     * there's a fixed set of acceptors that can't be changed without
+     * recompiling is probably the major rigidity of the code.
      * <p/>
-     * There are currently two acceptors:  on-disk logs and in-core
-     * buffers. The in-core buffer has two "variants": the buffer
-     * proper and a GUI window into the buffer.
+     * There are currently two acceptors:  on-disk logs and in-core buffers.
+     * The in-core buffer has two "variants": the buffer proper and a GUI
+     * window into the buffer.
      */
     static private final TraceMessageAcceptor[][] OurAcceptors;
 
     /**
-     * This object, if non-null, is informed when notifyFatal or
-     * notifyOptional is called. There is at most one such object,
-     * because it may exit.
+     * This object, if non-null, is informed when notifyFatal or notifyOptional
+     * is called. There is at most one such object, because it may exit.
      */
     static private TraceErrorWatcher OurTraceErrorWatcher;
 
     /**
-     * Synchronized static methods are prone to deadlocks in Sun's
-     * JVM. This avoids the problem. Initialized in the class
-     * initializer to make sure it's available before the first trace
-     * object is used.
+     * Synchronized static methods are prone to deadlocks in Sun's JVM. This
+     * avoids the problem. Initialized in the class initializer to make sure
+     * it's available before the first trace object is used.
      */
     static private final Object OurLock;
 
@@ -151,10 +148,9 @@ public class TraceController implements TraceConstants {
     }
 
     /**
-     * Request that the trace buffer be visible in a window.
-     * XXX This cannot be made to work given the current layering
-     * of the system / build environment. It should probably be
-     * thrown out.
+     * Request that the trace buffer be visible in a window. XXX This cannot be
+     * made to work given the current layering of the system / build
+     * environment. It should probably be thrown out.
      */
     static public void changeDisplay(boolean showIt) {
         /*
@@ -177,32 +173,32 @@ public class TraceController implements TraceConstants {
     }
 
     /**
-     * Change the default threshold for some TraceMessageAcceptor. The
-     * change must propagate to all subsystems that track that
-     * acceptor's default.
+     * Change the default threshold for some TraceMessageAcceptor. The change
+     * must propagate to all subsystems that track that acceptor's default.
      */
     static private void changeOneDefault(int acceptorIndex, int newThreshold) {
         OurDefaultThresholds[acceptorIndex] = newThreshold;
 
-        Trace.trace.eventm("The new default threshold for " +
-                           acceptorNames[acceptorIndex] + " is " +
-                           TraceLevelTranslator.terse(newThreshold));
+        Trace.trace
+          .eventm("The new default threshold for " +
+            acceptorNames[acceptorIndex] + " is " +
+            TraceLevelTranslator.terse(newThreshold));
 
         Enumeration e = OurTraceMediators.elements();
         while (e.hasMoreElements()) {
             TraceSubsystemMediator mediator =
               (TraceSubsystemMediator)e.nextElement();
             if (mediator.myDeferToDefaultThreshold[acceptorIndex]) {
-                mediator.setOneThreshold(acceptorIndex, newThreshold,
+                mediator.setOneThreshold(acceptorIndex,
+                                         newThreshold,
                                          FROM_DEFAULT);
             }
         }
     }
 
     /**
-     * Change a specific TraceMessageMediator to have its own
-     * trace priority threshold OR change it to resume tracking
-     * the default.
+     * Change a specific TraceMessageMediator to have its own trace priority
+     * threshold OR change it to resume tracking the default.
      */
     static private void changeOneSubsystem(int acceptorIndex,
                                            String subsystem,
@@ -222,8 +218,8 @@ public class TraceController implements TraceConstants {
     }
 
     /**
-     * Take the contents of the internal trace buffer and
-     * add them to the on-disk log.
+     * Take the contents of the internal trace buffer and add them to the
+     * on-disk log.
      */
     static public void dumpBufferToLog() {
         OurBuffer.dump(OurLog);
@@ -239,31 +235,34 @@ public class TraceController implements TraceConstants {
     /**
      * Register or unregister as a TraceErrorWatcher.
      * <p/>
-     * This is kind of a stupid interface. I didn't think it through
-     * before "publishing" it.
+     * This is kind of a stupid interface. I didn't think it through before
+     * "publishing" it.
      *
      * @param aTraceErrorWatcher the object to be informed of an error.
-     * @param add                true if the object is to be added, false if it's to
-     *                           be removed. It's not an error to add without first removing, or
-     *                           to remove without first adding, but it does provoke a warning.
+     * @param add                true if the object is to be added, false if
+     *                           it's to be removed. It's not an error to add
+     *                           without first removing, or to remove without
+     *                           first adding, but it does provoke a warning.
      */
     static public void errorWatcher(TraceErrorWatcher aTraceErrorWatcher,
                                     boolean add) {
         if (add) {
             Trace.trace.usagem("Adding an object that watches for errors.");
             if (OurTraceErrorWatcher != null) {
-                Trace.trace.warningm("Overriding previous TraceErrorWatcher",
-                                     OurTraceErrorWatcher);
+                Trace.trace
+                  .warningm("Overriding previous TraceErrorWatcher",
+                            OurTraceErrorWatcher);
             }
             OurTraceErrorWatcher = aTraceErrorWatcher;
         } else {
             Trace.trace.usagem("No object will watch for errors.");
             if (OurTraceErrorWatcher == null) {
-                Trace.trace.warningm(
-                  "TraceErrorWatcher has already been removed");
+                Trace.trace
+                  .warningm("TraceErrorWatcher has already been removed");
             } else if (OurTraceErrorWatcher != aTraceErrorWatcher) {
-                Trace.trace.warningm("A TraceErrorWatcher was removed by " +
-                                     "someone other than itself.");
+                Trace.trace
+                  .warningm("A TraceErrorWatcher was removed by " +
+                    "someone other than itself.");
             }
             OurTraceErrorWatcher = null;
         }
@@ -271,8 +270,8 @@ public class TraceController implements TraceConstants {
 
     /**
      * Find a TraceSubsystemMediator matching the given name. Create one if it
-     * does not exist. The new mediator initially contains copies
-     * of myDefaultThresholds and a pointer to myAcceptors.
+     * does not exist. The new mediator initially contains copies of
+     * myDefaultThresholds and a pointer to myAcceptors.
      */
     static private TraceSubsystemMediator findOrCreateMediator(String name) {
         String key = name.toLowerCase();
@@ -292,8 +291,7 @@ public class TraceController implements TraceConstants {
     }
 
     /**
-     * Invoke this to tell the TraceController that a display is
-     * ready to use.
+     * Invoke this to tell the TraceController that a display is ready to use.
      */
     static public void mayUseUI() {
         // Commented out because the display can't be compiled this early.
@@ -301,11 +299,10 @@ public class TraceController implements TraceConstants {
     }
 
     /**
-     * This is called by a Trace constructor to inform the Trace
-     * Controller that it exists. The end result of this call is that
-     * a TraceSubsystemMediator exists for the Trace object's
-     * subsystem, and the Trace object has been initialized with the
-     * values it caches.
+     * This is called by a Trace constructor to inform the Trace Controller
+     * that it exists. The end result of this call is that a
+     * TraceSubsystemMediator exists for the Trace object's subsystem, and the
+     * Trace object has been initialized with the values it caches.
      */
     // May be unnecessary for this to be synchronized, but it's a rare
     // operation.
@@ -314,8 +311,8 @@ public class TraceController implements TraceConstants {
             if (Trace.trace != null) {
                 // guarded because this is called during class
                 // initialization of Trace.
-                Trace.trace.debugm("New trace for " + subsystem + " is " +
-                                   requester);
+                Trace.trace
+                  .debugm("New trace for " + subsystem + " is " + requester);
             }
             TraceSubsystemMediator mediator = findOrCreateMediator(subsystem);
             mediator.newCache(requester);
@@ -329,28 +326,27 @@ public class TraceController implements TraceConstants {
     // - or may - want to do that.
 
     /**
-     * Notify a user that a fatal error has happened. Tell her how to
-     * report the bug. Normally does not return.
+     * Notify a user that a fatal error has happened. Tell her how to report
+     * the bug. Normally does not return.
      * <p/>
-     * If this method is called before a TraceErrorWatcher has
-     * registered, it's not clear what the best thing to do is. For
-     * the moment, we log that as an error and return, in the hopes
-     * that the system will hobble along a bit further to the point
-     * where a watcher registers and a later notifyFatal causes the
-     * user to be notified.
+     * If this method is called before a TraceErrorWatcher has registered, it's
+     * not clear what the best thing to do is. For the moment, we log that as
+     * an error and return, in the hopes that the system will hobble along a
+     * bit further to the point where a watcher registers and a later
+     * notifyFatal causes the user to be notified.
      */
     static public void notifyFatal() {
         if (OurTraceErrorWatcher != null) {
             OurTraceErrorWatcher.notifyFatal();
         } else {
-            Trace.trace.errorm("A fatal error has been reported, " +
-                               "but there is no one to report it to.", -1);
+            Trace.trace
+              .errorm("A fatal error has been reported, " +
+                "but there is no one to report it to.", -1);
         }
     }
 
     /**
-     * If the user wants to hear about nonfatal bugs, notify her.
-     * Does return.
+     * If the user wants to hear about nonfatal bugs, notify her. Does return.
      * <p/>
      * It is a (non-fatal) error if no object has registered as a
      * TraceErrorWatcher.
@@ -359,17 +355,16 @@ public class TraceController implements TraceConstants {
         if (OurTraceErrorWatcher != null) {
             OurTraceErrorWatcher.notifyOptional();
         } else {
-            Trace.trace.errorm("An optional error has been reported, " +
-                               "but there is no one to report it to.", -1);
+            Trace.trace
+              .errorm("An optional error has been reported, " +
+                "but there is no one to report it to.", -1);
         }
     }
 
     /**
-     * This method updates a trace controller from a given
-     * set of properties.
+     * This method updates a trace controller from a given set of properties.
      * <p/>
-     * IMPORTANT:  The properties are processed in an unpredictable
-     * order.
+     * IMPORTANT:  The properties are processed in an unpredictable order.
      */
     static public void setProperties(Properties p) {
         Enumeration keys = p.propertyNames();
@@ -384,9 +379,9 @@ public class TraceController implements TraceConstants {
     }
 
     /**
-     * If the given Key names a tracing property, process its value.
-     * It is not an error for the key to have nothing to do with
-     * tracing; in that case, it's ignored.
+     * If the given Key names a tracing property, process its value. It is not
+     * an error for the key to have nothing to do with tracing; in that case,
+     * it's ignored.
      * <p/>
      * It is an error for the value to be null.
      */
@@ -467,8 +462,8 @@ public class TraceController implements TraceConstants {
      * Set the timing value of a given subsystem's acceptor.
      *
      * @param acceptorIndex      the acceptor.
-     * @param afterFirstUnderbar is of the form <subsystem>_timing,
-     *                           else an assertion fails.
+     * @param afterFirstUnderbar is of the form <subsystem>_timing, else an
+     *                           assertion fails.
      * @param value              is "on", "off", "true", or "false".
      */
     static private void setTiming(int acceptorIndex,
@@ -477,11 +472,10 @@ public class TraceController implements TraceConstants {
         int underbar = afterFirstUnderbar.lastIndexOf('_');
         T.test(underbar != -1);
         String subsystem = afterFirstUnderbar.substring(0, underbar);
-        if (value.equalsIgnoreCase("on") ||
-          value.equalsIgnoreCase("true")) {
+        if (value.equalsIgnoreCase("on") || value.equalsIgnoreCase("true")) {
             findOrCreateMediator(subsystem).setTiming(acceptorIndex, true);
-        } else if (value.equalsIgnoreCase("off") ||
-          value.equalsIgnoreCase("false")) {
+        } else
+        if (value.equalsIgnoreCase("off") || value.equalsIgnoreCase("false")) {
             findOrCreateMediator(subsystem).setTiming(acceptorIndex, false);
         } else {
             Trace.trace.warningm("Unknown timing value given: " + value);
@@ -489,24 +483,25 @@ public class TraceController implements TraceConstants {
     }
 
     /**
-     * This routine is used to start the Trace Controller. Prior to
-     * this call, Trace objects may be obtained and messages may be
-     * sent to them. However, the messages will be queued up until
-     * this routine is called. (Note that the messages will be
-     * governed by the default thresholds.)
+     * This routine is used to start the Trace Controller. Prior to this call,
+     * Trace objects may be obtained and messages may be sent to them. However,
+     * the messages will be queued up until this routine is called. (Note that
+     * the messages will be governed by the default thresholds.)
      * <p/>
-     * Note: This routine may be called before the user interface is
-     * available. This allows on-disk logging to be useful in the
-     * case the system fails before the UI is initialized.
+     * Note: This routine may be called before the user interface is available.
+     * This allows on-disk logging to be useful in the case the system fails
+     * before the UI is initialized.
      *
-     * @param p the initial set of properties provided by the user.
-     *          They override the defaults. They may be changed later.
+     * @param p the initial set of properties provided by the user. They
+     *          override the defaults. They may be changed later.
      */
     static public void start(Properties p) {
         if (OurStarted) {
             //Used to be errorm. I (MarkM) changed it to usagem.
-            Trace.trace.usagem("The tracing system is being started for the second time.\n" +
-                               "Ignoring the second start.");
+            Trace.trace
+              .usagem(
+                "The tracing system is being started for the second time.\n" +
+                  "Ignoring the second start.");
             return;
         }
 
@@ -519,9 +514,8 @@ public class TraceController implements TraceConstants {
         }
 
         if (!p.containsKey("TraceLog_name") &&
-          !p.containsKey("TraceLog_dir") &&
-          !p.containsKey("TraceLog_tag")) {
-            
+          !p.containsKey("TraceLog_dir") && !p.containsKey("TraceLog_tag")) {
+
             //Trace.trace.usagem("TEMPORARY: TraceLog set to standard " +
             //                   "error for backwards compatibility.");
             p.put("TraceLog_name", "-");

@@ -15,13 +15,13 @@ import java.lang.reflect.Array;
 import java.util.Hashtable;
 
 /**
- * Implements E's sameness semantics, which should be used only through the
- * Ref class. <p>
+ * Implements E's sameness semantics, which should be used only through the Ref
+ * class. <p>
  * <p/>
- * The static methods are the recursive cycle-breaking sameness algorithm.
- * An Equalizer instance is a  hypothetical comparison pair as used by the
- * algorithm. Equalizer instances are honorary Selfless objects, so that
- * their .equals() and .hashCode() will be used to compare them.
+ * The static methods are the recursive cycle-breaking sameness algorithm. An
+ * Equalizer instance is a  hypothetical comparison pair as used by the
+ * algorithm. Equalizer instances are honorary Selfless objects, so that their
+ * .equals() and .hashCode() will be used to compare them.
  *
  * @author Mark S. Miller
  * @see org.erights.e.elib.ref.Ref
@@ -37,8 +37,7 @@ public final class Equalizer {
      * All instances of the left hand (key) types simplify (for purposes of
      * sameness comparison) to instances of the right hand (value) types.
      * <p/>
-     * This is much like
-     * {@link org.erights.e.elib.prim.ScriptMaker#Promotions
+     * This is much like {@link org.erights.e.elib.prim.ScriptMaker#Promotions
      * ScriptMaker.Promotions}, but with some differences.
      * <p/>
      * XXX Should ConstLists simplify into arrays, rather than just describing
@@ -46,28 +45,27 @@ public final class Equalizer {
      * corrent code probably doesn't judge an array and a corresponding
      * ConstList as the same. They probably should be judged to be the same.
      */
-    static private final String[][] Simplifications = {
-        {"java.lang.Byte", "java.lang.Integer"},
-        {"java.lang.Short", "java.lang.Integer"},
-        {"java.lang.Long", "org.erights.e.meta.java.math.EInt"},
-        {"java.math.BigInteger", "org.erights.e.meta.java.math.EInt"},
+    static private final String[][] Simplifications = {{"java.lang.Byte",
+      "java.lang.Integer"},
+      {"java.lang.Short", "java.lang.Integer"},
+      {"java.lang.Long", "org.erights.e.meta.java.math.EInt"},
+      {"java.math.BigInteger", "org.erights.e.meta.java.math.EInt"},
 
-        {"java.lang.Float", "java.lang.Double"},
+      {"java.lang.Float", "java.lang.Double"},
 
-        //The table virtually includes all subclasses of ClassDesc as well,
-        //which are added lazily by OptSimplification/1 below.
-        //XXX BUG: A class promoted and simplified isn't necessarily the same
-        //class. For example, '<type:byte> != <type:java.lang.Byte>', but
-        //the promotions of these two classes are (E) ==.
-        {"org.erights.e.elib.base.ClassDesc", "java.lang.Class"},
+      //The table virtually includes all subclasses of ClassDesc as well,
+      //which are added lazily by OptSimplification/1 below.
+      //XXX BUG: A class promoted and simplified isn't necessarily the same
+      //class. For example, '<type:byte> != <type:java.lang.Byte>', but
+      //the promotions of these two classes are (E) ==.
+      {"org.erights.e.elib.base.ClassDesc", "java.lang.Class"},
 
-        //Though String promotes to Twine, only SimpleTwine and EmptyTwine
-        //simplify back to String. This is less irregular than it seems,
-        //since Twine with no extra info will actually be a SimpleTwine or
-        //EmptyTwine.
-        {"org.erights.e.elib.tables.EmptyTwine", "java.lang.String"},
-        {"org.erights.e.elib.tables.SimpleTwine", "java.lang.String"},
-    };
+      //Though String promotes to Twine, only SimpleTwine and EmptyTwine
+      //simplify back to String. This is less irregular than it seems,
+      //since Twine with no extra info will actually be a SimpleTwine or
+      //EmptyTwine.
+      {"org.erights.e.elib.tables.EmptyTwine", "java.lang.String"},
+      {"org.erights.e.elib.tables.SimpleTwine", "java.lang.String"},};
 
     /**
      * Maps fq class names to the fqName of the classes they simplify to. <p>
@@ -105,7 +103,7 @@ public final class Equalizer {
         } catch (Exception ex) {
             throw new NestedException(ex,
                                       "# simplification not found: " +
-                                      simpName);
+                                        simpName);
         }
     }
 
@@ -231,10 +229,9 @@ public final class Equalizer {
      * With this method, unsettled objects may be hashed; but their hash only
      * lasts until they settle further.
      * <p/>
-     * This is useless for many purposes, but is good enough to build a
-     * {@link TraversalKey} wrapper, which can be used as a key in tables in
-     * order to finitely walk cyclic unsettled structures without a linear
-     * search.
+     * This is useless for many purposes, but is good enough to build a {@link
+     * TraversalKey} wrapper, which can be used as a key in tables in order to
+     * finitely walk cyclic unsettled structures without a linear search.
      */
     static int sameYetHash(Object obj, IdentityMap fringe) {
         int result;
@@ -257,24 +254,23 @@ public final class Equalizer {
      * Parallels the recursive logic of same/3, except that we make things more
      * efficient by leaving objects in sofar.
      * <p/>
-     * In all cases, if <tt>obj</tt> is settled, then we return a hashCode
-     * for it such that <tt>x == y</tt> implies <tt>hash(x) == hash(y)</tt>.
-     * This must be true even in the presence of cycles, and even if one is
-     * wound more tightly than the other. In this case, the optFringe argument
-     * is ignored.
+     * In all cases, if <tt>obj</tt> is settled, then we return a hashCode for
+     * it such that <tt>x == y</tt> implies <tt>hash(x) == hash(y)</tt>. This
+     * must be true even in the presence of cycles, and even if one is wound
+     * more tightly than the other. In this case, the optFringe argument is
+     * ignored.
      * <p/>
      * If <tt>optFringe</tt> is null, then we require that <tt>obj</tt> is
-     * settled: If <tt>obj</tt> isn't settled, we throw a
-     * NotSettledException.
+     * settled: If <tt>obj</tt> isn't settled, we throw a NotSettledException.
      * <p/>
-     * If <tt>optFringe</tt> isn't null and <tt>obj</tt> is not settled,
-     * then the Java == identity of the promises at the <i>current</i> fringe
-     * of <tt>obj</tt> are placed in optFringe, and a hash is returned
-     * taking this <i>current</i> fringe into account. Should any of the
-     * promises at the fringe of x later be forwarded, even to another promise,
-     * a sameHash of obj then <i>should</i> return a different hash, and
-     * <i>must</i> return a different fringe. Otherwise, TraversalKey cannot
-     * satisfy the contract for stable settled sameness.
+     * If <tt>optFringe</tt> isn't null and <tt>obj</tt> is not settled, then
+     * the Java == identity of the promises at the <i>current</i> fringe of
+     * <tt>obj</tt> are placed in optFringe, and a hash is returned taking this
+     * <i>current</i> fringe into account. Should any of the promises at the
+     * fringe of x later be forwarded, even to another promise, a sameHash of
+     * obj then <i>should</i> return a different hash, and <i>must</i> return a
+     * different fringe. Otherwise, TraversalKey cannot satisfy the contract
+     * for stable settled sameness.
      */
     static private int samenessHash(Object obj,
                                     int hashDepth,
@@ -308,9 +304,8 @@ public final class Equalizer {
             int len = Array.getLength(obj);
             int result = len;
             for (int i = 0; i < len; i++) {
-                result ^= i ^ samenessHash(Array.get(obj, i),
-                                           hashDepth - 1,
-                                           optFringe);
+                result ^= i ^
+                  samenessHash(Array.get(obj, i), hashDepth - 1, optFringe);
             }
             return result;
         }
@@ -318,9 +313,7 @@ public final class Equalizer {
         // sameness is recursive thru transparent Selfless objects
         if (obj instanceof Selfless) {
             Selfless a = (Selfless)obj;
-            return samenessHash(a.getSpreadUncall(),
-                                hashDepth,
-                                optFringe);
+            return samenessHash(a.getSpreadUncall(), hashDepth, optFringe);
         }
 
         // sameness defaults to .equals() for honorary Selfless objects
@@ -345,9 +338,9 @@ public final class Equalizer {
      * Parallels the recursive logic of same/3, except that we make things more
      * efficient by leaving objects in sofar.
      * <p/>
-     * In all cases, if <tt>original</tt> is settled, then we return true,
-     * even in the presence of cycles. In this case, the optFringe argument
-     * is ignored.
+     * In all cases, if <tt>original</tt> is settled, then we return true, even
+     * in the presence of cycles. In this case, the optFringe argument is
+     * ignored.
      * <p/>
      * In all cases, if <tt>original</tt> is unsettled, then we return false.
      * <p/>
@@ -357,10 +350,10 @@ public final class Equalizer {
      * <p/>
      * If <tt>optFringe</tt> isn't null and <tt>original</tt> is not settled,
      * then the Java == identity of the promises at the <i>current</i> fringe
-     * of <tt>original</tt> are placed in optFringe. Should any of the
-     * promises at the fringe or later be forwarded, even to another promise,
-     * a samenessFringe of <tt>original</tt> afterwards <i>must</i> accumulate
-     * a different fringe. Otherwise, TraversalKey cannot satisfy the contract
+     * of <tt>original</tt> are placed in optFringe. Should any of the promises
+     * at the fringe or later be forwarded, even to another promise, a
+     * samenessFringe of <tt>original</tt> afterwards <i>must</i> accumulate a
+     * different fringe. Otherwise, TraversalKey cannot satisfy the contract
      * for stable settled sameness.
      *
      * @return
@@ -412,9 +405,7 @@ public final class Equalizer {
             int len = Array.getLength(obj);
             boolean result = true;
             for (int i = 0; i < len; i++) {
-                result &= samenessFringe(Array.get(obj, i),
-                                         sofar,
-                                         optFringe);
+                result &= samenessFringe(Array.get(obj, i), sofar, optFringe);
                 if (!result && null == optFringe) {
                     // Report an unresolved promise early
                     return false;
@@ -427,9 +418,7 @@ public final class Equalizer {
         if (obj instanceof Selfless) {
             sofar.put(original, null);
             Selfless a = (Selfless)obj;
-            return samenessFringe(a.getSpreadUncall(),
-                                  sofar,
-                                  optFringe);
+            return samenessFringe(a.getSpreadUncall(), sofar, optFringe);
         }
 
         // Honorary Selfless objects are settled
@@ -518,8 +507,7 @@ public final class Equalizer {
         Boolean optResult = optSame(left, right);
         if (null == optResult) {
             throw new NotSettledException("Not sufficiently settled: " +
-                                          E.toQuote(left) + " == " +
-                                          E.toQuote(right));
+              E.toQuote(left) + " == " + E.toQuote(right));
         } else {
             return optResult.booleanValue();
         }

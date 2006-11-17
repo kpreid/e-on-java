@@ -20,12 +20,12 @@ import org.erights.e.elib.tables.ConstList;
 public interface Astro extends AstroArg {
 
     /**
-     * Builds an Astro tree like this one, but the kind of Astro that's made
-     * by this builder.
+     * Builds an Astro tree like this one, but the kind of Astro that's made by
+     * this builder.
      * <p/>
      * Pattern-wise, the builder functions here as both as a factory, and
-     * sort-of as a visitor. It's not quite a visitor, in that it only sees
-     * the tree in bottom-up order.
+     * sort-of as a visitor. It's not quite a visitor, in that it only sees the
+     * tree in bottom-up order.
      */
     Astro build(AstroBuilder builder);
 
@@ -40,9 +40,9 @@ public interface Astro extends AstroArg {
     short getOptTagCode();
 
     /**
-     * If this Astro represents a literal-data token, then this is
-     * the data, and getTag() must represent the canonical corresponding
-     * token-type for this kind of data in this schema.
+     * If this Astro represents a literal-data token, then this is the data,
+     * and getTag() must represent the canonical corresponding token-type for
+     * this kind of data in this schema.
      * <p/>
      * If the getTag() has no schema, then its getTagName() must be the
      * corresponding token-type name.
@@ -59,8 +59,8 @@ public interface Astro extends AstroArg {
      * <p/>
      * This exists as an optimization for composite Tokens, which act like
      * 1-argument Astros, where the 1-argument is a data argument. This
-     * operation allows us to avoid creating a singleton argument list just
-     * to access this data.
+     * operation allows us to avoid creating a singleton argument list just to
+     * access this data.
      * <p/>
      * getOptArgData/1 should normally be used instead
      */
@@ -77,8 +77,8 @@ public interface Astro extends AstroArg {
     String getOptArgString(short tagCode);
 
     /**
-     * @return :AstroArg[]; In most domains, AstroArg is the
-     *         same as Astro, so this usually returns :Astro[].
+     * @return :AstroArg[]; In most domains, AstroArg is the same as Astro, so
+     *         this usually returns :Astro[].
      */
     ConstList getArgs();
 

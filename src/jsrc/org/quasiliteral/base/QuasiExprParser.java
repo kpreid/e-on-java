@@ -6,9 +6,9 @@ package org.quasiliteral.base;
 import org.erights.e.elib.tables.Twine;
 
 /**
- * Given a template string in the language this quasi parser understands,
- * parse it into a ValueMaker which will generate objects of the form the
- * template describes.
+ * Given a template string in the language this quasi parser understands, parse
+ * it into a ValueMaker which will generate objects of the form the template
+ * describes.
  * <p/>
  * The template language is a value description language augmented with
  * $-holes, representing values to be provided at runtime to the ValueMaker.

@@ -88,11 +88,8 @@ public class Timer {
      *         timeout.
      */
     public Timeout whenAlarm(long absMillis, Runnable target) {
-        Timeout newTimeout = new Timeout(myThread,
-                                         target,
-                                         new Message(null,
-                                                     "run",
-                                                     E.NO_ARGS));
+        Timeout newTimeout =
+          new Timeout(myThread, target, new Message(null, "run", E.NO_ARGS));
         myThread.setAlarm(absMillis, newTimeout);
         return newTimeout;
     }
@@ -101,8 +98,8 @@ public class Timer {
      * When the current time is >= absMillis, evaluate<br>
      * <tt>target&nbsp;&lt;-&nbsp;verb(args...)</tt>.
      * <p/>
-     * Remembers the
-     * {@link org.erights.e.elib.vat.SendingContext SendingContext} info.
+     * Remembers the {@link org.erights.e.elib.vat.SendingContext
+     * SendingContext} info.
      *
      * @return a promise for the result of the send.
      */

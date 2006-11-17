@@ -34,8 +34,8 @@ import java.util.Set;
  *
  * @author Tyler
  */
-public final class Locator implements org.waterken.url.Locator,
-  java.io.Serializable {
+public final class Locator
+  implements org.waterken.url.Locator, java.io.Serializable {
 
     static private final long serialVersionUID = 9148342181345156610L;
 
@@ -64,8 +64,8 @@ public final class Locator implements org.waterken.url.Locator,
      * @param network The underlying network.
      * @param client  The client to authenticate as.
      */
-    public static org.waterken.url.Locator make(
-      final org.waterken.url.Locator network, final Host client) {
+    public static org.waterken.url.Locator make(final org.waterken.url.Locator network,
+                                                final Host client) {
         return new Locator(network, client);
     }
 
@@ -88,7 +88,7 @@ public final class Locator implements org.waterken.url.Locator,
         try {
             final InetSocketAddress addr = (InetSocketAddress)most_recent;
             race.start("http://" + addr.getAddress().getHostAddress() + ":" +
-                       addr.getPort() + "/id/" + key_id, 0);
+              addr.getPort() + "/id/" + key_id, 0);
         } catch (final Exception _) {
         }
 
@@ -163,9 +163,8 @@ public final class Locator implements org.waterken.url.Locator,
             }).start();
         }
 
-        private SSLSocket _connect(final String target, final int depth)
-          throws IOException, NoSuchAlgorithmException,
-          KeyManagementException {
+        private SSLSocket _connect(final String target, final int depth) throws
+          IOException, NoSuchAlgorithmException, KeyManagementException {
 
             // Check that the race is still on.
             if (null != winner) {
@@ -184,8 +183,8 @@ public final class Locator implements org.waterken.url.Locator,
 
             // Build connection.
             final Session session = new Session(network, "HTTP/1.0", true);
-            final Session.Connection connection = session.request(
-              new URL(target));
+            final Session.Connection connection =
+              session.request(new URL(target));
 
             // Setup the upgrade request.
             connection.setRequestProperty("accept", "text/uri-list");
@@ -205,12 +204,15 @@ public final class Locator implements org.waterken.url.Locator,
                     final int status_code = connection.getResponseCode();
                     if (300 == status_code) {
                         // Check for URI list in response body.
-                        final String content_type = connection.getContentType();
+                        final String content_type =
+                          connection.getContentType();
                         if (null != content_type &&
                           content_type.startsWith("text/uri-list")) {
                             // Build the redirect list.
-                            final BufferedReader in = new BufferedReader(new InputStreamReader(
-                              connection.getInputStream(), "US-ASCII"));
+                            final BufferedReader in =
+                              new BufferedReader(new InputStreamReader(
+                                connection.getInputStream(),
+                                "US-ASCII"));
                             for (String s = in.readLine();
                                  null != s;
                                  s = in.readLine()) {
@@ -218,9 +220,8 @@ public final class Locator implements org.waterken.url.Locator,
                                     if (redirect.length == redirect_size) {
                                         System.arraycopy(redirect,
                                                          0,
-                                                         redirect =
-                                                         new String[2 *
-                                                                    redirect_size],
+                                                         redirect = new String[
+                                                           2 * redirect_size],
                                                          0,
                                                          redirect_size);
                                     }
@@ -278,12 +279,12 @@ public final class Locator implements org.waterken.url.Locator,
 
                     // Restrict the acceptable ciphersuites.
                     ssl.setEnabledCipherSuites(new String[]{
-                        "TLS_DHE_RSA_WITH_AES_128_CBC_SHA",
-                        "TLS_DHE_DSS_WITH_AES_128_CBC_SHA",
-                        "TLS_RSA_WITH_AES_128_CBC_SHA",
-                        "SSL_DHE_RSA_WITH_3DES_EDE_CBC_SHA",
-                        "SSL_DHE_DSS_WITH_3DES_EDE_CBC_SHA",
-                        "SSL_RSA_WITH_3DES_EDE_CBC_SHA"});
+                      "TLS_DHE_RSA_WITH_AES_128_CBC_SHA",
+                      "TLS_DHE_DSS_WITH_AES_128_CBC_SHA",
+                      "TLS_RSA_WITH_AES_128_CBC_SHA",
+                      "SSL_DHE_RSA_WITH_3DES_EDE_CBC_SHA",
+                      "SSL_DHE_DSS_WITH_3DES_EDE_CBC_SHA",
+                      "SSL_RSA_WITH_3DES_EDE_CBC_SHA"});
 
                     // Initiate the TLS handshake and verify the signing key
                     // hash.
@@ -299,8 +300,8 @@ public final class Locator implements org.waterken.url.Locator,
                           "Unknown message digest algorithm.");
                     }
                     int i = chain.length;
-                    while (i-- != 0 && !key_id.equals(Base32.encode(hash.digest(
-                      chain[i].getPublicKey().getEncoded())))) {
+                    while (i-- != 0 &&
+                      !key_id.equals(Base32.encode(hash.digest(chain[i].getPublicKey().getEncoded())))) {
                     }
                     if (i < 0) {
                         throw new SSLPeerUnverifiedException(

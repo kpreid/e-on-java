@@ -17,10 +17,11 @@ class TokenRefElement extends GrammarAtom {
         not = inverted;
         TokenSymbol ts = grammar.tokenManager.getTokenSymbol(atomText);
         if (ts == null) {
-            g.antlrTool.error("Undefined token symbol: " + atomText,
-                              grammar.getFilename(),
-                              t.getLine(),
-                              t.getColumn());
+            g.antlrTool
+              .error("Undefined token symbol: " + atomText,
+                     grammar.getFilename(),
+                     t.getLine(),
+                     t.getColumn());
         } else {
             tokenType = ts.getTokenType();
             // set the AST node type to whatever was set in tokens {...}

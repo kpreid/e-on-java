@@ -21,8 +21,8 @@ import java.io.StringWriter;
  * A type description object, as would be created by an "implements"
  * expression.
  * <p/>
- * A TypeDesc describes the protocol that objects of that type respond to,
- * and is used as a Guard to coerce a provided value into an instance of this
+ * A TypeDesc describes the protocol that objects of that type respond to, and
+ * is used as a Guard to coerce a provided value into an instance of this
  * type.
  *
  * @author Mark S. Miller
@@ -62,8 +62,7 @@ public class TypeDesc extends BaseAuditor implements Persistent {
         int len = mTypes.size();
         for (int i = 0; i < len; i++) {
             MessageDesc mType = (MessageDesc)mTypes.get(i);
-            map.put(mType.getVerb() + "/" + mType.getParams().size(),
-                    mType);
+            map.put(mType.getVerb() + "/" + mType.getParams().size(), mType);
         }
         myMTypes = map.snapshot();
     }
@@ -123,8 +122,8 @@ public class TypeDesc extends BaseAuditor implements Persistent {
     /**
      *
      */
-    public UnQuote help(boolean mirandaFlag,
-                        boolean fullFlag) throws IOException {
+    public UnQuote help(boolean mirandaFlag, boolean fullFlag)
+      throws IOException {
         StringWriter strWriter = new StringWriter();
         printHelpOn(mirandaFlag, fullFlag, new TextWriter(strWriter));
         return new UnQuote(strWriter.getBuffer().toString());
@@ -138,8 +137,7 @@ public class TypeDesc extends BaseAuditor implements Persistent {
      */
     public void printHelpOn(boolean mirandaFlag,
                             boolean fullFlag,
-                            TextWriter out)
-      throws IOException {
+                            TextWriter out) throws IOException {
         MessageDesc.synopsize(out, myDocComment);
         out.print("interface ", E.toQuote(myFQName));
         int numSupers = mySupers.size();
@@ -161,8 +159,7 @@ public class TypeDesc extends BaseAuditor implements Persistent {
         MessageDesc[] methTypes =
           (MessageDesc[])getMessageTypes().getValues(MessageDesc.class);
 
-        Script mirandas =
-          ScriptMaker.THE_ONE.instanceScript(Object.class);
+        Script mirandas = ScriptMaker.THE_ONE.instanceScript(Object.class);
 
         for (int i = 0; i < methTypes.length; i++) {
             MessageDesc methType = methTypes[i];

@@ -32,14 +32,14 @@ public interface LexerFace extends PassByProxy {
 
     /**
      * Skip to the end of this line, so that the next character read will be
-     * from the next line, forget any token we may have been in the midst
-     * of, and reset our indentation tracker.
+     * from the next line, forget any token we may have been in the midst of,
+     * and reset our indentation tracker.
      */
     void reset();
 
     /**
-     * XXX Making this public was convenient for ENodeBuilder.varName/1, but
-     * is it inappropriate?
+     * XXX Making this public was convenient for ENodeBuilder.varName/1, but is
+     * it inappropriate?
      */
     Astro composite(short tagCode, Object data, SourceSpan optSpan);
 
@@ -54,8 +54,8 @@ public interface LexerFace extends PassByProxy {
     Astro nextToken() throws IOException, SyntaxException;
 
     /**
-     * Throws a {@link SyntaxException} that also captures the current line
-     * and position as the position of the error.
+     * Throws a {@link SyntaxException} that also captures the current line and
+     * position as the position of the error.
      */
     void syntaxError(String msg) throws SyntaxException;
 
@@ -63,14 +63,13 @@ public interface LexerFace extends PassByProxy {
      * Called when input was otherwise well formed, but ran out, so more is
      * needed.
      * <p/>
-     * Normally, this just turns into an equivalent 'syntaxError(msg)'. But,
-     * if the partial flag is set, meaning that the client wants to prompt
-     * intelligently for more input, then this throws a
-     * {@link NeedMoreException} that explains at what indentation the next
-     * input is expected.
+     * Normally, this just turns into an equivalent 'syntaxError(msg)'. But, if
+     * the partial flag is set, meaning that the client wants to prompt
+     * intelligently for more input, then this throws a {@link
+     * NeedMoreException} that explains at what indentation the next input is
+     * expected.
      */
-    void needMore(String msg)
-      throws NeedMoreException, SyntaxException;
+    void needMore(String msg) throws NeedMoreException, SyntaxException;
 
     /**
      * pretty self explanatory

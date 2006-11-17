@@ -6,12 +6,11 @@ package org.erights.e.elib.oldeio;
 import java.io.IOException;
 
 /**
- * Implement this to be recognized as implementing the Miranda method
- * {@link org.erights.e.elib.prim.MirandaMethods#__printOn
- * __printOn/1}.
+ * Implement this to be recognized as implementing the Miranda method {@link
+ * org.erights.e.elib.prim.MirandaMethods#__printOn __printOn/1}.
  * <p/>
- * Throwables that do their own __printOn must implement EPrintable, so
- * the Miranda unwrapping happens right.
+ * Throwables that do their own __printOn must implement EPrintable, so the
+ * Miranda unwrapping happens right.
  *
  * @author Mark S. Miller
  */

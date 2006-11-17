@@ -11,8 +11,7 @@ import java.io.IOException;
 /**
  * @author Mark S. Miller
  */
-public class ConstSet
-  extends ESet implements PassByConstruction, Selfless {
+public class ConstSet extends ESet implements PassByConstruction, Selfless {
 
     static private final long serialVersionUID = 139247792984994555L;
 
@@ -36,8 +35,8 @@ public class ConstSet
     }
 
     /**
-     * Uses 'elementsList asSet()', where the elementsList is as returned
-     * by getElements.
+     * Uses 'elementsList asSet()', where the elementsList is as returned by
+     * getElements.
      */
     public Object[] getSpreadUncall() {
         Object[] result = {getElements(), "asSet"};
@@ -73,14 +72,12 @@ public class ConstSet
     }
 
     /**
-     * This method enables E's magnitude comparison operators
-     * (&lt;, &lt;=, &lt;=&gt;, &gt;=, &gt;) to express subset-ness of these
-     * sets.
+     * This method enables E's magnitude comparison operators (&lt;, &lt;=,
+     * &lt;=&gt;, &gt;=, &gt;) to express subset-ness of these sets.
      * <p/>
-     * If this set is a strict subset of other's, return -1.0.
-     * If this set has the same elements as other, return 0.0.
-     * If this set is a strict superset of other, return 1.0.
-     * Otherwise return NaN.
+     * If this set is a strict subset of other's, return -1.0. If this set has
+     * the same elements as other, return 0.0. If this set is a strict superset
+     * of other, return 1.0. Otherwise return NaN.
      */
     public double op__cmp(ConstSet other) {
         return getMap().op__cmp(other.getMap());

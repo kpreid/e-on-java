@@ -30,12 +30,11 @@ import java.io.StringWriter;
 
 
 /**
- * This class is used to convert a trace message into a string. It
- * is used (as opposed to toString()) when certain of the fields need
- * to be omitted.
+ * This class is used to convert a trace message into a string. It is used (as
+ * opposed to toString()) when certain of the fields need to be omitted.
  * <p/>
- * Future:  IFC might allow the objects contained in trace messages to
- * be displayed as special glyphs, even clickable buttons.
+ * Future:  IFC might allow the objects contained in trace messages to be
+ * displayed as special glyphs, even clickable buttons.
  * <p/>
  * By default, everything is shown.
  */
@@ -52,15 +51,15 @@ class TraceMessageStringifier {
 
     private boolean myShowLevel = true;
 
-    private final String myLineSeparator = System.getProperty("line.separator");
+    private final String myLineSeparator =
+      System.getProperty("line.separator");
 
     // A minor concession to efficiency, as this is critical path.
     // Used in toString.
     private final StringBuffer myBuffer = new StringBuffer(200);
 
     /**
-     * Should the message include the date at which the
-     * message was created?
+     * Should the message include the date at which the message was created?
      */
 
     void showDate(boolean value) {
@@ -68,8 +67,8 @@ class TraceMessageStringifier {
     }
 
     /**
-     * Should the message include an abbreviated description of
-     * the level at which the message was posted?
+     * Should the message include an abbreviated description of the level at
+     * which the message was posted?
      */
 
     void showLevel(boolean value) {
@@ -77,8 +76,7 @@ class TraceMessageStringifier {
     }
 
     /**
-     * Should the message include the method name, file name, and
-     * line number?
+     * Should the message include the method name, file name, and line number?
      */
 
     void showLocation(boolean value) {
@@ -94,8 +92,7 @@ class TraceMessageStringifier {
     }
 
     /**
-     * Should the message include the time at which the
-     * message was created?
+     * Should the message include the time at which the message was created?
      */
 
     void showTime(boolean value) {
@@ -103,8 +100,8 @@ class TraceMessageStringifier {
     }
 
     /**
-     * Convert the given message into a string, obeying 'show'
-     * controls set earlier.
+     * Convert the given message into a string, obeying 'show' controls set
+     * earlier.
      */
     String toString(TraceMessage message) {
         myBuffer.setLength(0);
@@ -166,7 +163,7 @@ class TraceMessageStringifier {
             }
         } catch (Throwable nest) {
             myBuffer.append("*** nested exception " + nest.getClass() +
-                          " tracing a " + message.object.getClass());
+              " tracing a " + message.object.getClass());
         }
         return myBuffer.toString();
     }

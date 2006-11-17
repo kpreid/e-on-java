@@ -24,8 +24,8 @@ import java.io.Writer;
  */
 public class PreservingFileWriter extends FileWriter {
 
-    protected File target_file;	/// the file we intend to write to
-    protected File tmp_file;		/// the tmp file we create at first
+    protected File target_file;        /// the file we intend to write to
+    protected File tmp_file;                /// the tmp file we create at first
 
     public PreservingFileWriter(String file) throws IOException {
         super(file + ".antlr.tmp");
@@ -92,7 +92,7 @@ public class PreservingFileWriter extends FileWriter {
                         equal = false;
                         break;
                     }
-                    if (cnt1 == -1)		// EOF
+                    if (cnt1 == -1)                // EOF
                     {
                         break;
                     }

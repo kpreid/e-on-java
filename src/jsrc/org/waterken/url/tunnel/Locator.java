@@ -15,8 +15,8 @@ import java.net.SocketAddress;
  *
  * @author Tyler
  */
-public final class Locator implements org.waterken.url.Locator,
-  java.io.Serializable {
+public final class Locator
+  implements org.waterken.url.Locator, java.io.Serializable {
 
     static private final long serialVersionUID = 5008216486101224538L;
 
@@ -45,8 +45,8 @@ public final class Locator implements org.waterken.url.Locator,
      * @param proxy        The proxy locator.
      * @param default_port The default port.
      */
-    public static org.waterken.url.Locator make(
-      final org.waterken.url.Locator proxy, final int default_port) {
+    public static org.waterken.url.Locator make(final org.waterken.url.Locator proxy,
+                                                final int default_port) {
         return new Locator(proxy, default_port);
     }
 
@@ -88,8 +88,8 @@ public final class Locator implements org.waterken.url.Locator,
         while (" \t".indexOf(line.charAt(end_http_version)) == -1) {
             ++end_http_version;
         }
-        final String http_version = line.substring(begin_http_version,
-                                                   end_http_version);
+        final String http_version =
+          line.substring(begin_http_version, end_http_version);
         int begin_status_code = end_http_version + 1;
         while (" \t".indexOf(line.charAt(begin_status_code)) != -1) {
             ++begin_status_code;
@@ -99,8 +99,8 @@ public final class Locator implements org.waterken.url.Locator,
           " \t".indexOf(line.charAt(end_status_code)) == -1) {
             ++end_status_code;
         }
-        final int status_code = Integer.parseInt(line.substring(
-          begin_status_code, end_status_code));
+        final int status_code =
+          Integer.parseInt(line.substring(begin_status_code, end_status_code));
 
         // Any 2xx response indicates a successful tunnel.
         if (status_code < 200 || status_code >= 300) {

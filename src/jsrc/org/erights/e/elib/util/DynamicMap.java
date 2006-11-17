@@ -26,8 +26,8 @@ import org.erights.e.elib.tables.FlexList;
  * A collection of objects which can be iterated through while being added to.
  * This collection is like a set in that a given object can only be in the
  * collection once. It is unlike a set in that is ordered. The enumeration
- * DynamicMapEnumeration allows the set to be extended while it is
- * being enumerated.
+ * DynamicMapEnumeration allows the set to be extended while it is being
+ * enumerated.
  */
 public class DynamicMap {
 

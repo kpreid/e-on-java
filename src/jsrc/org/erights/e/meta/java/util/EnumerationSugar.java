@@ -41,8 +41,8 @@ public class EnumerationSugar {
     }
 
     /**
-     * Enumerates the enumeration. For each element, calls func with the
-     * count as key and the element as value.
+     * Enumerates the enumeration. For each element, calls func with the count
+     * as key and the element as value.
      */
     static public void iterate(Enumeration self, AssocFunc func) {
         int i = 0;

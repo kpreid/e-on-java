@@ -59,15 +59,15 @@ package org.apache.oro.text.regex;
 
 /**
  * The Pattern interface allows multiple representations of a regular
- * expression to be defined. In general, different regular expression
- * compilers will produce different types of pattern representations.
- * Some will produce state transition tables derived from syntax trees,
- * others will produce byte code representations of an NFA, etc. The
- * Pattern interface does not impose any specific internal pattern
- * representation, and consequently, Pattern implementations are not meant
- * to be interchangeable among differing PatternCompiler and PatternMatcher
- * implementations. The documentation accompanying a specific implementation
- * will define what other classes a Pattern can interact with.
+ * expression to be defined. In general, different regular expression compilers
+ * will produce different types of pattern representations. Some will produce
+ * state transition tables derived from syntax trees, others will produce byte
+ * code representations of an NFA, etc. The Pattern interface does not impose
+ * any specific internal pattern representation, and consequently, Pattern
+ * implementations are not meant to be interchangeable among differing
+ * PatternCompiler and PatternMatcher implementations. The documentation
+ * accompanying a specific implementation will define what other classes a
+ * Pattern can interact with.
  *
  * @author <a href="mailto:dfs@savarese.org">Daniel F. Savarese</a>
  * @version $Id: Pattern.java,v 1.4 2001/12/02 06:01:40 markm Exp $
@@ -78,11 +78,11 @@ public interface Pattern {
 
     /**
      * This method returns the string representation of the pattern. Its
-     * purpose is to allow a pattern to be reconstructed after compilation.
-     * In other words, when you compile a pattern, the resulting data
-     * structures bear no relation to the string defining the pattern.
-     * It is often useful to be able to access the string defining a pattern
-     * after it has been compiled.
+     * purpose is to allow a pattern to be reconstructed after compilation. In
+     * other words, when you compile a pattern, the resulting data structures
+     * bear no relation to the string defining the pattern. It is often useful
+     * to be able to access the string defining a pattern after it has been
+     * compiled.
      * <p/>
      *
      * @return The original string representation of the regular expression

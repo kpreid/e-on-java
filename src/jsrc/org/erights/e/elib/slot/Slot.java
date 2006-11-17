@@ -7,8 +7,8 @@ import org.erights.e.elib.oldeio.EPrintable;
 
 
 /**
- * A Slot implements a potentially mutable variable as an object with a
- * "value" property. <p>
+ * A Slot implements a potentially mutable variable as an object with a "value"
+ * property. <p>
  * <p/>
  * This supertype only provides the accessor function, since the setting
  * function is optional.
@@ -23,8 +23,8 @@ public interface Slot extends EPrintable {
     Object getValue();
 
     /**
-     * Sets the current value of the variable to be a coercion of specimen to
-     * a value that meets the constraints represented by this slot.
+     * Sets the current value of the variable to be a coercion of specimen to a
+     * value that meets the constraints represented by this slot.
      * <p/>
      * getValue() will then return this value. If the variable is final
      * (immutable), then throw an informative exception instead.
@@ -34,14 +34,14 @@ public interface Slot extends EPrintable {
     /**
      * Says whether the Slot acts like a {@link FinalSlot} -- successive
      * getValue()s on the same slot will always give the same value.
-     * <p>
+     * <p/>
      * Note that final implies read-only, but read-only does not imply final.
      */
     boolean isFinal();
 
     /**
      * Returns a facet allowing getValue() but not setValue().
-     * <p>
+     * <p/>
      * <tt>slot.readOnly().isFinal()</tt> should be the same as
      * <tt>slot.isFinal()</tt>.
      *

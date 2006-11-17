@@ -31,28 +31,26 @@ import java.io.IOException;
 public interface LineFeeder {
 
     /**
-     * Returns either a Twine containing the next line of input (and
-     * presumably memory of where it came from), or null meaning end of
-     * input (EOF). The parameters are for indentation-smart prompting or
-     * pretty printing.
+     * Returns either a Twine containing the next line of input (and presumably
+     * memory of where it came from), or null meaning end of input (EOF). The
+     * parameters are for indentation-smart prompting or pretty printing.
      *
-     * @param atTop       Is this the beginning of a top-level unit (typically, a
-     *                    top-level expression)?
+     * @param atTop       Is this the beginning of a top-level unit (typically,
+     *                    a top-level expression)?
      * @param quoted      Will this next line be taken as literal text?  If so,
-     *                    then it should not be trimmed or indented. 'quoted' is
-     *                    true between double quotes, or between quasi-quotes when
-     *                    not inside a $ or @ hole.
+     *                    then it should not be trimmed or indented. 'quoted'
+     *                    is true between double quotes, or between
+     *                    quasi-quotes when not inside a $ or @ hole.
      * @param indent      The suggested indentation level for the next line,
      *                    unless the next line begins with closer.
-     * @param closer      The character that would close the most recent unclosed
-     *                    openner.
-     * @param closeIndent The suggested indentation level for the next line
-     *                    if it does begin (after trimming) with closer.
+     * @param closer      The character that would close the most recent
+     *                    unclosed openner.
+     * @param closeIndent The suggested indentation level for the next line if
+     *                    it does begin (after trimming) with closer.
      */
     Twine optNextLine(boolean atTop,
                       boolean quoted,
                       int indent,
                       char closer,
-                      int closeIndent)
-      throws IOException;
+                      int closeIndent) throws IOException;
 }

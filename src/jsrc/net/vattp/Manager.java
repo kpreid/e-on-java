@@ -6,8 +6,8 @@ import org.waterken.uri.Authority;
 import org.waterken.url.Locator;
 import org.waterken.url.tls.Host;
 
-import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLPeerUnverifiedException;
+import javax.net.ssl.SSLSocket;
 import java.io.EOFException;
 import java.io.IOException;
 import java.io.InterruptedIOException;
@@ -16,8 +16,8 @@ import java.net.Socket;
 import java.security.GeneralSecurityException;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A {@link Connection} manager.
@@ -75,15 +75,15 @@ public final class Manager {
                             new Thread() {
                                 public void run() {
                                     try {
-                                        final String x = Host.receive(
-                                          incoming);
+                                        final String x =
+                                          Host.receive(incoming);
                                         if (me.getFingerprint().equals(x)) {
-                                            final SSLSocket s = me.accept(
-                                              incoming, protocol);
+                                            final SSLSocket s =
+                                              me.accept(incoming, protocol);
                                             s.setNeedClientAuth(true);
                                             s.startHandshake();
-                                            final Runnable body = _accept(
-                                              me.identify(s), s);
+                                            final Runnable body =
+                                              _accept(me.identify(s), s);
                                             if (null != body) {
                                                 body.run();
                                             }
@@ -167,8 +167,7 @@ public final class Manager {
         synchronized (connections) {
             r = (Connection)connections.get(peer);
             if (null == r) {
-                final Connection x = new Connection(me.getFingerprint(),
-                                                    peer);
+                final Connection x = new Connection(me.getFingerprint(), peer);
                 connections.put(peer, x);
                 x.whenClosed(new Runnable() {
                     public void run() {
@@ -204,8 +203,9 @@ public final class Manager {
         return _open(peer, new Runnable() {
             public void run() {
                 try {
-                    final Runnable body = _accept(peer, (SSLSocket)me.talk(
-                      network).locate(authority, null));
+                    final Runnable body = _accept(peer,
+                                                  (SSLSocket)me.talk(network)
+                                                    .locate(authority, null));
                     if (null != body) {
                         body.run();
                     }
@@ -246,8 +246,8 @@ public final class Manager {
      */
     public Connection[] list() {
         synchronized (connections) {
-            return (Connection[])connections.values().toArray(
-              new Connection[]{});
+            return (Connection[])connections.values()
+              .toArray(new Connection[]{});
         }
     }
 }

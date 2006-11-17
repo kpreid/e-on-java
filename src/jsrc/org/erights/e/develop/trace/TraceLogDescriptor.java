@@ -34,21 +34,21 @@ import java.io.PrintWriter;
 import java.util.Date;
 
 /**
- * This class describes the file system interface to a log file.
- * The standard format is <tag>.<date>.txt. The standard backup
- * filename format is then <tag>.<date>.<sequence>.txt.
+ * This class describes the file system interface to a log file. The standard
+ * format is <tag>.<date>.txt. The standard backup filename format is then
+ * <tag>.<date>.<sequence>.txt.
  * <p/>
- * The entire format may be overridden, the tag may be changed, or the
- * class can be instructed to use PrintStreamWriter.err().
+ * The entire format may be overridden, the tag may be changed, or the class
+ * can be instructed to use PrintStreamWriter.err().
  * <p/>
- * This class is responsible for opening new files. Importantly, that
- * includes renaming old versions.
+ * This class is responsible for opening new files. Importantly, that includes
+ * renaming old versions.
  */
 class TraceLogDescriptor implements Cloneable, TraceConstants {
 
     /**
-     * The date this trace system was initialized; used as part of the
-     * standard name format.
+     * The date this trace system was initialized; used as part of the standard
+     * name format.
      */
     static private final Date OurInitDate = new Date();
 
@@ -84,8 +84,8 @@ class TraceLogDescriptor implements Cloneable, TraceConstants {
 
 
     /**
-     * This log descriptor always represents standard error.
-     * It should never be modified. It starts out "not in use".
+     * This log descriptor always represents standard error. It should never be
+     * modified. It starts out "not in use".
      */
     static final TraceLogDescriptor OurStderr;
 
@@ -96,12 +96,13 @@ class TraceLogDescriptor implements Cloneable, TraceConstants {
     }
 
     /**
-     * Return the file to use as a backup.
-     * Stdout is never backed up, so useStderr should be false.
+     * Return the file to use as a backup. Stdout is never backed up, so
+     * useStderr should be false.
      *
-     * @param clashAction determines which name the backup file will
-     *                    have. ADD means a file with the next highest sequence number.
-     *                    OVERWRITE means a file with the smallest sequence number.
+     * @param clashAction determines which name the backup file will have. ADD
+     *                    means a file with the next highest sequence number.
+     *                    OVERWRITE means a file with the smallest sequence
+     *                    number.
      */
     private File backupFile(File file, int clashAction) {
         T.test(!myUseStderr);
@@ -117,10 +118,10 @@ class TraceLogDescriptor implements Cloneable, TraceConstants {
     }
 
     /**
-     * A diverge of a TraceLogDescriptor is one that, when startUsing()
-     * is called, will use the same descriptor, be it a file or
-     * PrintStreamWriter.err(). The diverge is not inUse(), even if what it
-     * was cloned from was.
+     * A diverge of a TraceLogDescriptor is one that, when startUsing() is
+     * called, will use the same descriptor, be it a file or
+     * PrintStreamWriter.err(). The diverge is not inUse(), even if what it was
+     * cloned from was.
      */
     Object diverge() {
         try {
@@ -137,10 +138,10 @@ class TraceLogDescriptor implements Cloneable, TraceConstants {
     }
 
     /**
-     * Say what renameToBackupFile will try to do when it's called
-     * by startUsing. This is used
-     * when the log file will be closed before the renaming is done.
-     * It's a way to get some information in the old log file.
+     * Say what renameToBackupFile will try to do when it's called by
+     * startUsing. This is used when the log file will be closed before the
+     * renaming is done. It's a way to get some information in the old log
+     * file.
      */
     void describeFutureBackupAction(int clashAction) {
         if (myUseStderr) {
@@ -158,9 +159,9 @@ class TraceLogDescriptor implements Cloneable, TraceConstants {
     }
 
     /**
-     * Given the current state of this object's fields, construct the
-     * file the user wants. It is a program error to call this
-     * routine if the user wants PrintStreamWriter.err(), not a file.
+     * Given the current state of this object's fields, construct the file the
+     * user wants. It is a program error to call this routine if the user wants
+     * PrintStreamWriter.err(), not a file.
      */
     private File desiredLogFile() {
         T.test(!myUseStderr);
@@ -173,9 +174,8 @@ class TraceLogDescriptor implements Cloneable, TraceConstants {
         } else {
             return new File(myDir,
                             myTag + "." +
-                            TraceDateToString.terseCompleteDateString(
-                              OurInitDate)
-                            + LOG_EXTENSION);
+                              TraceDateToString.terseCompleteDateString(
+                                OurInitDate) + LOG_EXTENSION);
         }
     }
 
@@ -197,12 +197,12 @@ class TraceLogDescriptor implements Cloneable, TraceConstants {
     /**
      * Return a name of this descriptor, suitable for printing.
      * <p/>
-     * PrintStreamWriter.err() is named "standard error". Real files are
-     * named by their canonical pathname (surrounded by single quotes).
+     * PrintStreamWriter.err() is named "standard error". Real files are named
+     * by their canonical pathname (surrounded by single quotes).
      * <p/>
-     * Note that the printname may be the absolute pathname if the
-     * canonical path could not be discovered (which could happen
-     * if the file does not exist.)
+     * Note that the printname may be the absolute pathname if the canonical
+     * path could not be discovered (which could happen if the file does not
+     * exist.)
      */
     String printName() {
         if (myUseStderr) {
@@ -233,15 +233,15 @@ class TraceLogDescriptor implements Cloneable, TraceConstants {
 
     /**
      * Attempt to rename this file to a backup file with a version number.
-     * Returns true iff the rename succeeds. The name of the backup
-     * file is constructed by a TraceVersionName, using the current
-     * name of the file.
+     * Returns true iff the rename succeeds. The name of the backup file is
+     * constructed by a TraceVersionName, using the current name of the file.
      * <p/>
-     * If the backup file does not exist (and can be written), all is
-     * fine. Otherwise:
+     * If the backup file does not exist (and can be written), all is fine.
+     * Otherwise:
      *
      * @param clashAction is ADD if a new backup file should be added,
-     *                    otherwise OVERWRITE if an existing one should be overwritten.
+     *                    otherwise OVERWRITE if an existing one should be
+     *                    overwritten.
      * @return true if the rename was successful.
      */
     private boolean renameToBackup(File file, int clashAction) {
@@ -255,50 +255,52 @@ class TraceLogDescriptor implements Cloneable, TraceConstants {
             T.test(!backupFile.exists());
         }
 
-        Trace.trace.usagem("Renaming previous version of " +
-                           file + " to " + backupFile + ".");
+        Trace.trace
+          .usagem("Renaming previous version of " + file + " to " +
+            backupFile + ".");
         try {
             if (backupFile.exists()) {
                 // clashAction == OVERWRITE
                 if (!backupFile.delete()) {
-                    Trace.trace.warningm("The previous version of " +
-                                         file + " could not be put in backup " +
-                                         "file " + backupFile + " because the " +
-                                         " existing file could not be deleted.");
+                    Trace.trace
+                      .warningm("The previous version of " + file +
+                        " could not be put in backup " + "file " + backupFile +
+                        " because the " +
+                        " existing file could not be deleted.");
                     return false;
                 }
-                Trace.trace.eventm("The previous version of " +
-                                   backupFile + " has been deleted.");
+                Trace.trace
+                  .eventm("The previous version of " + backupFile +
+                    " has been deleted.");
             }
         } catch (SecurityException e) {
-            Trace.trace.warningm("The previous version of " +
-                                 file + " could not be put in backup " +
-                                 "file " + backupFile + " because the " +
-                                 " existing file could not be deleted.");
+            Trace.trace
+              .warningm("The previous version of " + file +
+                " could not be put in backup " + "file " + backupFile +
+                " because the " + " existing file could not be deleted.");
             return false;
         }
 
         try {
             boolean renamed = file.renameTo(backupFile);
             if (!renamed) {
-                Trace.trace.warningm(file +
-                                     " could not be renamed to backup " +
-                                     backupFile);
+                Trace.trace
+                  .warningm(
+                    file + " could not be renamed to backup " + backupFile);
             }
             return renamed;
         } catch (SecurityException e) {
-            Trace.trace.warningm(file +
-                                 " could not be renamed to backup " +
-                                 backupFile +
-                                 " because of a security violation.");
+            Trace.trace
+              .warningm(file + " could not be renamed to backup " +
+                backupFile + " because of a security violation.");
             return false;
         }
     }
 // SETTERS
 
     /**
-     * The user wishes to use a directory component different than
-     * the default. The file used is unchanged.
+     * The user wishes to use a directory component different than the default.
+     * The file used is unchanged.
      */
     void setDir(String value) {
         T.test(value != null);
@@ -310,22 +312,21 @@ class TraceLogDescriptor implements Cloneable, TraceConstants {
             // Don't change value of usePersonalFormat, as the directory
             // is independent of the filename format.
             myDir = new File(value);
-            Trace.trace.eventm("Log directory will be changed to '" +
-                               value + "'.");
+            Trace.trace
+              .eventm("Log directory will be changed to '" + value + "'.");
             if (!myDir.isDirectory()) {
-                Trace.trace.warningm("The log directory was set to '"
-                                     + value + "', " +
-                                     "which is not currently a directory.");
+                Trace.trace
+                  .warningm("The log directory was set to '" + value + "', " +
+                    "which is not currently a directory.");
             }
         }
     }
 
     /**
-     * If the argument is "-", standard error is used. If the argument
-     * is something else, that becomes the complete filename,
-     * overriding the tag, eliminating use of the date/time field, and
-     * not using the default extension. It does not affect the directory
-     * the file is placed in.
+     * If the argument is "-", standard error is used. If the argument is
+     * something else, that becomes the complete filename, overriding the tag,
+     * eliminating use of the date/time field, and not using the default
+     * extension. It does not affect the directory the file is placed in.
      */
     void setName(String value) {
         T.test(value != null);
@@ -337,15 +338,15 @@ class TraceLogDescriptor implements Cloneable, TraceConstants {
             myUseStderr = false;
             myUsePersonalFormat = true;
             myPersonalFile = value;
-            Trace.trace.eventm("Log destination will be changed to " +
-                               "file '" + myPersonalFile + "'.");
+            Trace.trace
+              .eventm("Log destination will be changed to " + "file '" +
+                myPersonalFile + "'.");
         }
     }
 
     /**
-     * The tag is the initial part of the standard filename.
-     * Setting this implies that the date should be included in
-     * the filename.
+     * The tag is the initial part of the standard filename. Setting this
+     * implies that the date should be included in the filename.
      */
     void setTag(String value) {
         T.test(value != null);
@@ -356,25 +357,24 @@ class TraceLogDescriptor implements Cloneable, TraceConstants {
     }
 
     /**
-     * Enables this LogDescriptor for use. Most obvious effect is
-     * that 'stream' is initialized.
+     * Enables this LogDescriptor for use. Most obvious effect is that 'stream'
+     * is initialized.
      *
-     * @param clashAction determines what to do if the target logfile
-     *                    already exists. The two options are ADD (to add a new backup file)
-     *                    or OVERWRITE (to overwrite an existing one).
-     *                    IRRELEVANT should be used when
-     *                    the destination is <em>known</em> to be standard error, which never
+     * @param clashAction determines what to do if the target logfile already
+     *                    exists. The two options are ADD (to add a new backup
+     *                    file) or OVERWRITE (to overwrite an existing one).
+     *                    IRRELEVANT should be used when the destination is
+     *                    <em>known</em> to be standard error, which never
      *                    clashes.
-     * @throws Exception is thrown if a logfile could not be
-     *                   opened. The contents of the exception are irrelevant, as this
+     * @throws Exception is thrown if a logfile could not be opened. The
+     *                   contents of the exception are irrelevant, as this
      *                   method logs the problem.
      */
     void startUsing(int clashAction) throws Exception {
         T.test(!inUse());
 
         if (myUseStderr) {
-            Trace.trace.eventm(
-              "Logging has been directed to standard error.");
+            Trace.trace.eventm("Logging has been directed to standard error.");
             stream = PrintStreamWriter.stderr();
             return;
         }
@@ -382,13 +382,13 @@ class TraceLogDescriptor implements Cloneable, TraceConstants {
         T.test(clashAction == ADD || clashAction == OVERWRITE);
 
         File nextFile = desiredLogFile();
-        Trace.trace.eventm("Logging has been directed to '" +
-                           nextFile + "'.");
+        Trace.trace.eventm("Logging has been directed to '" + nextFile + "'.");
 
         if (nextFile.exists()) {
             if (nextFile.isDirectory()) {
-                Trace.trace.errorm("Attempt to open directory " +
-                                   nextFile + " as a logfile failed.");
+                Trace.trace
+                  .errorm("Attempt to open directory " + nextFile +
+                    " as a logfile failed.");
                 throw new IOException("opening directory as a logfile");
             }
             // Try to back it up. If that fails, oh well. Open
@@ -401,26 +401,26 @@ class TraceLogDescriptor implements Cloneable, TraceConstants {
         try {
             stream = new PrintWriter(new FileOutputStream(nextFile), true);
         } catch (SecurityException e) {
-            Trace.trace.errorm("Security exception when opening new trace file '" +
-                               nextFile + "'.");
+            Trace.trace
+              .errorm("Security exception when opening new trace file '" +
+                nextFile + "'.");
             throw e;
         } catch (FileNotFoundException e) {
-            Trace.trace.errorm("Could not open new trace file '" +
-                               nextFile + "'.");
+            Trace.trace
+              .errorm("Could not open new trace file '" + nextFile + "'.");
             throw e;
         } catch (IOException e) {
-            Trace.trace.errorm("Unknown error when opening new trace file '" +
-                               nextFile + "'.");
+            Trace.trace
+              .errorm("Unknown error when opening new trace file '" +
+                nextFile + "'.");
             throw e;
         }
     }
 
     /**
-     * Cease using this LogDescriptor. The most obvious effect is
-     * that 'stream' is now null. Behind the scenes, any open file is
-     * closed.
-     * You can alternate stopUsing() and
-     * startUsing() an arbitrary number of times.
+     * Cease using this LogDescriptor. The most obvious effect is that 'stream'
+     * is now null. Behind the scenes, any open file is closed. You can
+     * alternate stopUsing() and startUsing() an arbitrary number of times.
      */
     void stopUsing() {
         T.test(inUse());

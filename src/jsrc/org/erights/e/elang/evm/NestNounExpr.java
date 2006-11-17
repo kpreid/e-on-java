@@ -7,7 +7,6 @@ import org.erights.e.elang.scope.ScopeLayout;
 import org.erights.e.elib.base.SourceSpan;
 
 /**
- *
  * @author Mark S. Miller
  */
 abstract class NestNounExpr extends NounExpr {

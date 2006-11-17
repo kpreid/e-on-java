@@ -53,17 +53,16 @@ class ImportVocabTokenManager extends SimpleTokenManager implements Cloneable {
         try {
             Reader fileIn = new BufferedReader(new FileReader(grammarFile));
             ANTLRTokdefLexer tokdefLexer = new ANTLRTokdefLexer(fileIn);
-            ANTLRTokdefParser tokdefParser = new ANTLRTokdefParser(
-              tokdefLexer);
+            ANTLRTokdefParser tokdefParser =
+              new ANTLRTokdefParser(tokdefLexer);
             tokdefParser.setTool(antlrTool);
             tokdefParser.setFilename(filename);
             tokdefParser.file(this);
         } catch (FileNotFoundException fnf) {
             antlrTool.panic("Cannot find importVocab file '" + filename + "'");
         } catch (RecognitionException ex) {
-            antlrTool.panic(
-              "Error parsing importVocab file '" + filename + "': " +
-              ex.toString());
+            antlrTool.panic("Error parsing importVocab file '" + filename +
+              "': " + ex.toString());
         } catch (TokenStreamException ex) {
             antlrTool.panic(
               "Error reading importVocab file '" + filename + "'");
@@ -98,7 +97,9 @@ class ImportVocabTokenManager extends SimpleTokenManager implements Cloneable {
         }
         ts.setTokenType(ttype);
         super.define(ts);
-        maxToken = (ttype + 1) > maxToken ? (ttype + 1) : maxToken;	// record maximum token type
+        maxToken = (ttype + 1) > maxToken ?
+          (ttype + 1) :
+          maxToken;        // record maximum token type
     }
 
     /**

@@ -8,17 +8,16 @@ import org.quasiliteral.astro.AstroBuilder;
 // found at http://www.opensource.org/licenses/mit-license.html ...............
 
 /**
- * AstroBuilder extended with additional building methods for the expression
- * of quasi-literal tree expressions and patterns.
+ * AstroBuilder extended with additional building methods for the expression of
+ * quasi-literal tree expressions and patterns.
  * <p/>
  * These additional methods correspond to the quasi-oriented productions of
- * term.y. XXX Once this is converted to an Antlr-based term.g, then we
- * should use Antlr's support for grammar inheritance to split it up into
- * the base term.y and the derived quasiterm.y. The former can then use only
- * an AstroBuilder for building, and only the latter would require a
- * QuasiBuilder. At such a time, this class should move to the
- * org.quasiliteral.quasiterm package, as that will no longer screw up our
- * layering.
+ * term.y. XXX Once this is converted to an Antlr-based term.g, then we should
+ * use Antlr's support for grammar inheritance to split it up into the base
+ * term.y and the derived quasiterm.y. The former can then use only an
+ * AstroBuilder for building, and only the latter would require a QuasiBuilder.
+ * At such a time, this class should move to the org.quasiliteral.quasiterm
+ * package, as that will no longer screw up our layering.
  *
  * @author Mark S. Miller
  */
@@ -30,9 +29,8 @@ public interface QuasiBuilder extends AstroBuilder {
      * <p/>
      * If this is false, then the only production which work are the ones
      * inherited from AstroBuilder, and this is really an AstroBuilder in
-     * QuasiBuilder clothing. This flag is also, by default, used to tell
-     * the lexer whether to collapse double quasi characters -- '@', '$', and
-     * '`'.
+     * QuasiBuilder clothing. This flag is also, by default, used to tell the
+     * lexer whether to collapse double quasi characters -- '@', '$', and '`'.
      */
     boolean doesQuasis();
 
@@ -45,8 +43,8 @@ public interface QuasiBuilder extends AstroBuilder {
      * Matches anything matched by either leftArg or rightArg.
      * <p/>
      * leftArg and rightArg must be disjoint choices -- it must be statically
-     * impossible for anything to match both, though
-     * XXX this is not yet enforced.
+     * impossible for anything to match both, though XXX this is not yet
+     * enforced.
      * <p/>
      * Adds a "?" to the rank of both arguments.
      */
@@ -55,9 +53,9 @@ public interface QuasiBuilder extends AstroBuilder {
     /**
      * Matches anything matched by either leftArg or rightArg.
      * <p/>
-     * leftArg and rightArg are prioritized choices in the sense of
-     * "packrat parsing" and "Parsing Expression Grammars". If both match, then
-     * the leftArg match is used.
+     * leftArg and rightArg are prioritized choices in the sense of "packrat
+     * parsing" and "Parsing Expression Grammars". If both match, then the
+     * leftArg match is used.
      * <p/>
      * Adds a "?" to the rank of both arguments.
      */
@@ -78,9 +76,8 @@ public interface QuasiBuilder extends AstroBuilder {
      * <p/>
      * If test would match, then fail to match.
      * <p/>
-     * This is a negative syntactic predicate in the sense of
-     * "packrat parsing" and "Parsing Expression Grammars". ANTLR has something
-     * similar.
+     * This is a negative syntactic predicate in the sense of "packrat parsing"
+     * and "Parsing Expression Grammars". ANTLR has something similar.
      * <p/>
      * A positive syntactic predicate is just a double negative, i.e., a
      * <tt>!!&lt;test&gt;</tt> expression.
@@ -102,8 +99,8 @@ public interface QuasiBuilder extends AstroBuilder {
     AstroArg any();
 
     /**
-     * Turns the string into a list of arguments representing each character
-     * as a character literal.
+     * Turns the string into a list of arguments representing each character as
+     * a character literal.
      *
      * @return :Args
      */
@@ -116,20 +113,18 @@ public interface QuasiBuilder extends AstroBuilder {
      * Does not affect the rank of the arguments, since they are still
      * exactly-once.
      * <p/>
-     * XXX rewrite para:
-     * If 'leftArg' is itself a bag (the result of a call to interleave),
-     * then the new effective bag is rightArg + the members of leftArg. This
-     * matches any sequence in which each member of the sequence matches a
-     * unique member of the bag, and all the members of the bag are matched.
+     * XXX rewrite para: If 'leftArg' is itself a bag (the result of a call to
+     * interleave), then the new effective bag is rightArg + the members of
+     * leftArg. This matches any sequence in which each member of the sequence
+     * matches a unique member of the bag, and all the members of the bag are
+     * matched.
      * <p/>
-     * This is inspired by the '&' of <a href=
-     * "http://www.thaiopensource.com/relaxng/nonxml/syntax.html"
+     * This is inspired by the '&' of <a href= "http://www.thaiopensource.com/relaxng/nonxml/syntax.html"
      * >RELAX-NG's Non-XML Syntax</a>, which expands to <a href=
      * "http://www.thaiopensource.com/relaxng/design.html#section:12"
      * >RELAX-NG's "interleave" tag</a>, though we don't yet know how closely
-     * the semantics of the two can correspond. (If 'interleave' can
-     * correspond perfectly to RELAX-NG's interleave tag, then we will so
-     * specify.)
+     * the semantics of the two can correspond. (If 'interleave' can correspond
+     * perfectly to RELAX-NG's interleave tag, then we will so specify.)
      */
     AstroArg interleave(AstroArg leftArg, AstroArg rightArg);
 
@@ -144,8 +139,8 @@ public interface QuasiBuilder extends AstroBuilder {
     /**
      * Matches a consecutive sequence of Terms matched by optSub separated by
      * sep.
-     * <p>
-     * As with {@link #some(AstroArg, char)},  the number matched is
+     * <p/>
+     * As with {@link #some(AstroArg,char)},  the number matched is
      * constrained by quant. Adds quant to the rank of optSub.
      */
     AstroArg some(AstroArg optSub, char quant, AstroArg sep);

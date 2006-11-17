@@ -70,9 +70,8 @@ public class DoubleSugar {
     }
 
     /**
-     * Always gives back a double
-     * This corresponds to the Java floating-point "/" operator
-     * and the E "/" operator.
+     * Always gives back a double This corresponds to the Java floating-point
+     * "/" operator and the E "/" operator.
      */
     static public double approxDivide(double self, double arg) {
         return self / arg;
@@ -215,10 +214,10 @@ public class DoubleSugar {
      *      [-5, 3]: (-2* 3) +  1 == -5
      *      [-5,-3]: ( 1*-3) + -2 == -5
      * </pre><p>
-     * Therefore, if the result is non-zero, the sign of the result must be
-     * the same as the sign of b, and so the result ranges from 0 inclusive
-     * to b exclusive. This corresponds to the E "%%" operator. When
-     * b >= 0, it also corresponds to Java's BigInteger.mod().
+     * Therefore, if the result is non-zero, the sign of the result must be the
+     * same as the sign of b, and so the result ranges from 0 inclusive to b
+     * exclusive. This corresponds to the E "%%" operator. When b >= 0, it also
+     * corresponds to Java's BigInteger.mod().
      */
     static public double mod(double self, double arg) {
         double result = self % arg;
@@ -266,9 +265,8 @@ public class DoubleSugar {
      *      [-5, 3]: (-1* 3) + -2 == -5
      *      [-5,-3]: ( 1*-3) + -2 == -5
      * </pre><p>
-     * Therefore, if the result is non-zero, the sign of the result must
-     * be the same as the sign of a. This corresponds to the Java and
-     * E "%" operator.
+     * Therefore, if the result is non-zero, the sign of the result must be the
+     * same as the sign of a. This corresponds to the Java and E "%" operator.
      */
     static public double remainder(double self, double arg) {
         return self % arg;
@@ -317,24 +315,24 @@ public class DoubleSugar {
     }
 
     /**
-     * Always gives an integer resulting from rounding towards zero,
-     * ie, truncating. This corresponds to the Java integer "/" operator.
+     * Always gives an integer resulting from rounding towards zero, ie,
+     * truncating. This corresponds to the Java integer "/" operator.
      */
     static public long truncDivide(double self, double arg) {
         return (long)(self / arg);
     }
 
     /**
-     * Detect whether this jvm has a known bug in reporting floating
-     * point representation.
+     * Detect whether this jvm has a known bug in reporting floating point
+     * representation.
      */
     static private final long Minus3Bits = Double.doubleToLongBits(-3.0);
 
     /**
      *
      */
-    static private final double AfterMinus3
-      = Double.longBitsToDouble(Minus3Bits + 1);
+    static private final double AfterMinus3 =
+      Double.longBitsToDouble(Minus3Bits + 1);
 
     /**
      *
@@ -342,11 +340,10 @@ public class DoubleSugar {
     static private final boolean NegRepBug = AfterMinus3 < -3.0;
 
     /**
-     * Infinity.next() == Infinity <p>
-     * NaN.next() == NaN <p>
-     * Double.getMAX_VALUE().next() == Infinity <p>
-     * (-Infinity).next() == -(Double.getMAX_VALUE()) <p>
-     * otherwise, *num*.next() == *next representable number*
+     * Infinity.next() == Infinity <p> NaN.next() == NaN <p>
+     * Double.getMAX_VALUE().next() == Infinity <p> (-Infinity).next() ==
+     * -(Double.getMAX_VALUE()) <p> otherwise, *num*.next() == *next
+     * representable number*
      */
     static public double next(double self) {
         if (NegRepBug && self < 0.0) {
@@ -363,19 +360,17 @@ public class DoubleSugar {
         bits++;
         double result = Double.longBitsToDouble(bits);
         if (result <= self) {
-            T.fail("jvm IEEE representation bug: (" +
-                   self + ").next() gave " + result +
-                   ". Please report values.");
+            T.fail("jvm IEEE representation bug: (" + self + ").next() gave " +
+              result + ". Please report values.");
         }
         return result;
     }
 
     /**
-     * (-Infinity).previous() == -Infinity <p>
-     * NaN.previous() == NaN <p>
-     * -(Double.getMAX_VALUE()).previous() == -Infinity <p>
-     * Infinity.previous() == Double.getMAX_VALUE()<p>
-     * otherwise, *num*.previous() == *previous representable number*
+     * (-Infinity).previous() == -Infinity <p> NaN.previous() == NaN <p>
+     * -(Double.getMAX_VALUE()).previous() == -Infinity <p> Infinity.previous()
+     * == Double.getMAX_VALUE()<p> otherwise, *num*.previous() == *previous
+     * representable number*
      */
     static public double previous(double self) {
         if (NegRepBug && self <= 0.0) {
@@ -392,9 +387,8 @@ public class DoubleSugar {
         bits--;
         double result = Double.longBitsToDouble(bits);
         if (result >= self) {
-            T.fail("jvm IEEE representation bug: (" +
-                   self + ").previous() gave " + result +
-                   ". Please report values.");
+            T.fail("jvm IEEE representation bug: (" + self +
+              ").previous() gave " + result + ". Please report values.");
         }
         return result;
     }

@@ -26,11 +26,11 @@ import org.erights.e.elib.tables.ConstList;
 import java.math.BigInteger;
 
 /**
- * The encoding of FarRef over the wire to someone other than the vat
- * it points into. <p>
+ * The encoding of FarRef over the wire to someone other than the vat it points
+ * into. <p>
  * <p/>
- * Can't work until WormholeOp is implemented. Until then use
- * Promise3Desc instead, and suffer from the Lost Resolution bug.
+ * Can't work until WormholeOp is implemented. Until then use Promise3Desc
+ * instead, and suffer from the Lost Resolution bug.
  *
  * @author Mark S. Miller
  */
@@ -88,10 +88,8 @@ class Far3Desc implements ObjectRefDesc {
      *
      */
     public String toString() {
-        return "Far3Desc(" + mySearchPath + ",\n    "
-          + myHostID.substring(0, 4) + ",\n    "
-          + myNonce + ",\n    "
-          + mySwissHash + ",\n    "
-          + myOptFarVine + ")";
+        return "Far3Desc(" + mySearchPath + ",\n    " +
+          myHostID.substring(0, 4) + ",\n    " + myNonce + ",\n    " +
+          mySwissHash + ",\n    " + myOptFarVine + ")";
     }
 }

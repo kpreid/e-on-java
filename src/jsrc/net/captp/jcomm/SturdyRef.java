@@ -153,19 +153,15 @@ public final class SturdyRef
      * Package scope method to produce a URI string for this SturdyRef.
      *
      * @param otherLU A cheap Java-based way to do an amplification test in
-     *                order to fix bug <a href=
-     * "https://bugs.sieve.net/bugs/?func=detailbug&bug_id=125628&group_id=16380"
-     * >SturdyRefs amplify even when they should not</a>
+     *                order to fix bug <a href= "https://bugs.sieve.net/bugs/?func=detailbug&bug_id=125628&group_id=16380"
+     *                >SturdyRefs amplify even when they should not</a>
      * @return A URI string that refers to the same object as this SturdyRef
      *         designates.
      */
     String exportRef(LocatorUnum otherLU) throws MalformedURLException {
         T.require(myLocatorUnum == otherLU,
                   "SturdyRef must be from the same CapTP instance");
-        EARL earl = new EARL(mySearchPath,
-                             myHostID,
-                             mySwissNum,
-                             myExpiration);
+        EARL earl = new EARL(mySearchPath, myHostID, mySwissNum, myExpiration);
         return earl.getURI();
     }
 
@@ -180,10 +176,7 @@ public final class SturdyRef
      * getRcvr only works when we're {@link Introducer#onTheAir onTheAir}.
      */
     public Object getRcvr() throws IOException {
-        return myLocatorUnum.getRcvr(mySearchPath,
-                                     myHostID,
-                                     mySwissNum,
-                                     null);
+        return myLocatorUnum.getRcvr(mySearchPath, myHostID, mySwissNum, null);
     }
 
     /**

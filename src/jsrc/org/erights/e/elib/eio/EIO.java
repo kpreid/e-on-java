@@ -15,8 +15,8 @@ import java.io.Writer;
  * methods, typically for making EIO objects of various kinds.
  *
  * @author Mark S. Miller
- * @see <a href="http://www.erights.org/elib/concurrency/eio/index.html"
- *      >The EIO pages</a>
+ * @see <a href="http://www.erights.org/elib/concurrency/eio/index.html" >The
+ *      EIO pages</a>
  */
 public class EIO {
 
@@ -110,8 +110,8 @@ public class EIO {
 //    }
 
     /**
-     * Makes and returns a pair of an OutStream and a promise for the list
-     * of all the elements written to that writer.
+     * Makes and returns a pair of an OutStream and a promise for the list of
+     * all the elements written to that writer.
      * <p/>
      * Should the OutStream be closed, the promise resolves to the list of all
      * the element that have been written.
@@ -127,8 +127,9 @@ public class EIO {
     }
 
     /**
-     * Like {@link #makeListWriter(int, Class)}, but the elementType is 'char',
-     * and on success the promise resolves to a bare Twine of these characters.
+     * Like {@link #makeListWriter(int,Class)}, but the elementType is 'char',
+     * and on success the promise resolves to a bare Twine of these
+     * characters.
      */
     static public Object[] makeStringWriter(int sizeHint) {
         T.fail("XXX not yet implemented");
@@ -136,7 +137,7 @@ public class EIO {
     }
 
     /**
-     * Like {@link #makeListWriter(int, Class)}, but with elementType 'byte'.
+     * Like {@link #makeListWriter(int,Class)}, but with elementType 'byte'.
      *
      * @return
      */

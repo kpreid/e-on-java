@@ -6,11 +6,11 @@ package org.erights.e.elib.slot;
 import org.erights.e.develop.assertion.T;
 import org.erights.e.develop.exception.ExceptionMgr;
 import org.erights.e.elib.base.ClassDesc;
+import org.erights.e.elib.oldeio.TextWriter;
 import org.erights.e.elib.tables.ConstList;
 import org.erights.e.elib.tables.ConstMap;
 import org.erights.e.elib.util.ArityMismatchException;
 import org.erights.e.elib.util.OneArgFunc;
-import org.erights.e.elib.oldeio.TextWriter;
 
 import java.io.IOException;
 
@@ -27,26 +27,22 @@ public class MapGuard implements Guard {
     /**
      *
      */
-    private MapGuard(Guard optKeyGuard,
-                     Guard optValGuard) {
-        myOptKeyColumnGuard = null == optKeyGuard ? null :
-          ListGuard.THE_BASE.get(optKeyGuard);
-        myOptValColumnGuard = null == optValGuard ? null :
-          ListGuard.THE_BASE.get(optValGuard);
+    private MapGuard(Guard optKeyGuard, Guard optValGuard) {
+        myOptKeyColumnGuard =
+          null == optKeyGuard ? null : ListGuard.THE_BASE.get(optKeyGuard);
+        myOptValColumnGuard =
+          null == optValGuard ? null : ListGuard.THE_BASE.get(optValGuard);
     }
 
     /**
      *
      */
-    public MapGuard get(Guard keyGuard,
-                        Guard valGuard) {
-        T.require(null == myOptKeyColumnGuard &&
-                  null == myOptValColumnGuard,
-                  "Already parameterized: ", this);
-        T.notNull(keyGuard,
-                  "Missing key guard parameter");
-        T.notNull(valGuard,
-                  "Missing value guard parameter");
+    public MapGuard get(Guard keyGuard, Guard valGuard) {
+        T.require(null == myOptKeyColumnGuard && null == myOptValColumnGuard,
+                  "Already parameterized: ",
+                  this);
+        T.notNull(keyGuard, "Missing key guard parameter");
+        T.notNull(valGuard, "Missing value guard parameter");
         return new MapGuard(keyGuard, valGuard);
     }
 
@@ -59,11 +55,10 @@ public class MapGuard implements Guard {
         if (null == myOptKeyColumnGuard && null == myOptValColumnGuard) {
             return map;
         }
-        ConstList keys = (ConstList)myOptKeyColumnGuard.coerce(map.getKeys(),
-                                                               optEjector);
-        ConstList vals = (ConstList)myOptValColumnGuard.coerce(
-          map.getValues(),
-          optEjector);
+        ConstList keys =
+          (ConstList)myOptKeyColumnGuard.coerce(map.getKeys(), optEjector);
+        ConstList vals =
+          (ConstList)myOptValColumnGuard.coerce(map.getValues(), optEjector);
         try {
             return ConstMap.fromColumns(keys, vals);
         } catch (ArityMismatchException e) {

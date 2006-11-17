@@ -37,8 +37,8 @@ class LocalResolver implements Resolver {
     private Ref myOptRef;
 
     /**
-     * Until the promise is done, this holds the buffer of all messages sent
-     * to far.
+     * Until the promise is done, this holds the buffer of all messages sent to
+     * far.
      */
     private FlexList myOptBuf;
 
@@ -48,9 +48,9 @@ class LocalResolver implements Resolver {
     private SendingContext myOptSendingContext;
 
     /**
-     * Makes (what should be) the one resolver for resolving sRef. sRef
-     * should start out switchable, and forwarding to a BufferingRef, for
-     * which 'buf' is the buffer.
+     * Makes (what should be) the one resolver for resolving sRef. sRef should
+     * start out switchable, and forwarding to a BufferingRef, for which 'buf'
+     * is the buffer.
      */
     LocalResolver(Ref sRef, FlexList buf) {
         myOptRef = sRef;
@@ -59,7 +59,6 @@ class LocalResolver implements Resolver {
     }
 
     /**
-     *
      * @param target
      * @param strict
      * @return
@@ -81,7 +80,6 @@ class LocalResolver implements Resolver {
     }
 
     /**
-     *
      * @param target
      */
     public void resolve(Object target) {
@@ -110,8 +108,8 @@ class LocalResolver implements Resolver {
      *
      */
     public void gettingCloser() {
-        myOptSendingContext = new SendingContext("SCcloser",
-                                                 myOptSendingContext);
+        myOptSendingContext =
+          new SendingContext("SCcloser", myOptSendingContext);
     }
 
     /**

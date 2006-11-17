@@ -38,8 +38,8 @@ class SimpleCompFunc implements CompFunc {
     }
 
     /**
-     * E.calls with "op__cmp" and the zero tests to determine
-     * whether to return 0.0, -1.0, 1.0, or NaN.
+     * E.calls with "op__cmp" and the zero tests to determine whether to return
+     * 0.0, -1.0, 1.0, or NaN.
      */
     public double run(Object a, Object b) {
         Object comp = Ref.resolution(E.call(a, "op__cmp", b));

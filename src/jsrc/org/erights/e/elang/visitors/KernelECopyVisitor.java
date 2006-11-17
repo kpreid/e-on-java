@@ -14,6 +14,7 @@ import org.erights.e.elang.evm.EScript;
 import org.erights.e.elang.evm.EscapeExpr;
 import org.erights.e.elang.evm.FinalPattern;
 import org.erights.e.elang.evm.FinallyExpr;
+import org.erights.e.elang.evm.GuardedPattern;
 import org.erights.e.elang.evm.HideExpr;
 import org.erights.e.elang.evm.IfExpr;
 import org.erights.e.elang.evm.IgnorePattern;
@@ -27,9 +28,8 @@ import org.erights.e.elang.evm.SeqExpr;
 import org.erights.e.elang.evm.SimpleNounExpr;
 import org.erights.e.elang.evm.SlotExpr;
 import org.erights.e.elang.evm.SlotPattern;
-import org.erights.e.elang.evm.ViaPattern;
 import org.erights.e.elang.evm.VarPattern;
-import org.erights.e.elang.evm.GuardedPattern;
+import org.erights.e.elang.evm.ViaPattern;
 import org.erights.e.elang.scope.ScopeLayout;
 import org.erights.e.elib.base.SourceSpan;
 
@@ -39,7 +39,6 @@ import java.lang.reflect.Array;
 // found at http://www.opensource.org/licenses/mit-license.html ...............
 
 /**
- *
  * @author Mark S. Miller
  */
 public class KernelECopyVisitor implements ETreeVisitor {
@@ -73,7 +72,7 @@ public class KernelECopyVisitor implements ETreeVisitor {
 
     /**
      * Return the ScopeLayout a newly created ENode should have.
-     * <p>
+     * <p/>
      * The default here just returns null.
      */
     public ScopeLayout getOptScopeLayout() {
@@ -82,10 +81,11 @@ public class KernelECopyVisitor implements ETreeVisitor {
 
     /**
      * Return a version of the receiver for a nested scope.
-     * <p>
+     * <p/>
      * The default is that there is no difference.
-     * <p>
+     * <p/>
      * XXX: this needs to generate a new visitor by talking to the decorator.
+     *
      * @param oName
      */
     KernelECopyVisitor nest(GuardedPattern oName) {
@@ -94,9 +94,9 @@ public class KernelECopyVisitor implements ETreeVisitor {
 
     /**
      * Return a version of the receiver for a nested scope.
-     * <p>
+     * <p/>
      * The default is that there is no difference.
-     * <p>
+     * <p/>
      * XXX: this needs to generate a new visitor by talking to the decorator.
      */
     KernelECopyVisitor nest() {
@@ -117,8 +117,8 @@ public class KernelECopyVisitor implements ETreeVisitor {
         } else {
             ENode[] eNodes = (ENode[])optENode;
             Class elementClass = eNodes.getClass().getComponentType();
-            ENode[] result = (ENode[])Array.newInstance(elementClass,
-                                                        eNodes.length);
+            ENode[] result =
+              (ENode[])Array.newInstance(elementClass, eNodes.length);
             for (int i = 0; i < eNodes.length; i++) {
                 result[i] = (ENode)run(eNodes[i]);
             }
@@ -271,8 +271,7 @@ public class KernelECopyVisitor implements ETreeVisitor {
      *
      */
     public Object visitMetaStateExpr(ENode optOriginal) {
-        return new MetaStateExpr(getOptSpan(optOriginal),
-                                 getOptScopeLayout());
+        return new MetaStateExpr(getOptSpan(optOriginal), getOptScopeLayout());
     }
 
     /**

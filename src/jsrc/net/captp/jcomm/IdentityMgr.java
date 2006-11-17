@@ -33,12 +33,11 @@ import java.net.MalformedURLException;
  * An instance of the object is accessible in the privileged scope under the
  * name "identityMgr".
  * <p/>
- * It represents both more and less authority than the
- * {@link org.erights.e.extern.persist.SturdyRefMaker makeSturdyRef} function.
- * It has more authority in that it allows a form of conversion between
- * capabilities and bits -- specifically SwissBases -- and can therefore not be
- * given to objects you wish to confine in a
- * <a href="http://www.erights.org/elib/capability/dist-confine.html"
+ * It represents both more and less authority than the {@link
+ * org.erights.e.extern.persist.SturdyRefMaker makeSturdyRef} function. It has
+ * more authority in that it allows a form of conversion between capabilities
+ * and bits -- specifically SwissBases -- and can therefore not be given to
+ * objects you wish to confine in a <a href="http://www.erights.org/elib/capability/dist-confine.html"
  * >distributed confinement box</a>.
  * <p/>
  * It allows less authority, in that by itself it cannot cause an object to
@@ -59,7 +58,6 @@ public class IdentityMgr {
     private final Timer myTimer;
 
     /**
-     *
      * @param introducer
      * @param timer
      */
@@ -98,17 +96,16 @@ public class IdentityMgr {
      * expiration time, so that the weak association in the SwissTable will
      * last till then as well.
      * <p/>
-     * If the object is to survive this incarnation, its caller must arrange
-     * to revive or reconstruct the object itself, and then to call
-     * {@link #makeKnownAs} to re-establish the association between the
-     * object and its swissNumber. The CapTP package does not provide such
-     * functionality itself. But
-     * {@link org.erights.e.extern.persist.SturdyRefMaker} builds this
-     * functionality on top of the API listed here.
+     * If the object is to survive this incarnation, its caller must arrange to
+     * revive or reconstruct the object itself, and then to call {@link
+     * #makeKnownAs} to re-establish the association between the object and its
+     * swissNumber. The CapTP package does not provide such functionality
+     * itself. But {@link org.erights.e.extern.persist.SturdyRefMaker} builds
+     * this functionality on top of the API listed here.
      *
      * @param obj               The object for which a SturdyRef is desired
-     * @param swissBase         The hash of which will be the swissNum associated with
-     *                          this object.
+     * @param swissBase         The hash of which will be the swissNum
+     *                          associated with this object.
      * @param optExpirationDate The date after which the SturdyRef will not
      *                          longer be guaranteed to be valid. If
      *                          Long.MAX_VALUE, then it's always valid.
@@ -142,36 +139,33 @@ public class IdentityMgr {
      * vat a newly created object can be made to be the reincarnation of this
      * one (from the perspective of those holding the SturdyRef).
      * <p/>
-     * An object is that which object references to it designate. From one
-     * vat incarnation to another, the only intervat references which survive
-     * are SturdyRefs. When doing identity-persistence (as opposed to object
+     * An object is that which object references to it designate. From one vat
+     * incarnation to another, the only intervat references which survive are
+     * SturdyRefs. When doing identity-persistence (as opposed to object
      * persistence), the application creates the first SturdyRef to a
      * persistent object using makeKnown(..), and makes sure to store the
-     * swissBase somewhere for use during this vat's next incarnation.
-     * (In identity-persistence, where this precious information is stored is
-     * up to the app.)
+     * swissBase somewhere for use during this vat's next incarnation. (In
+     * identity-persistence, where this precious information is stored is up to
+     * the app.)
      * <p/>
      * On the next incarnation of the vat, the app creates a fresh object to
      * serve as the reincarnation of the original object, and calls
-     * makeKnownAs(..) so the old SturdyRef will now designate the new
-     * object.
+     * makeKnownAs(..) so the old SturdyRef will now designate the new object.
      *
      * @param obj               The object for which a SturdyRef is desired
      * @param optExpirationDate The date after which the SturdyRef will not
      *                          longer be guaranteed to be valid. If
      *                          Long.MAX_VALUE, then it's always valid.
-     * @return A triple of <ul>
-     *         <li>A new SturdyRef for 'obj',
-     *         <li>A {@link org.erights.e.extern.timer.Timeout} for cancelling this
-     *         sturdiness of the object. Though, once a SturdyRef has been given
-     *         out promising a given expirationDate, it's considered rude to cancel
-     *         it without coordinating with those other parties.
+     * @return A triple of <ul> <li>A new SturdyRef for 'obj', <li>A {@link
+     *         org.erights.e.extern.timer.Timeout} for cancelling this
+     *         sturdiness of the object. Though, once a SturdyRef has been
+     *         given out promising a given expirationDate, it's considered rude
+     *         to cancel it without coordinating with those other parties.
      *         <p/>
-     *         <i>Note that if an object is sturdified multiple times, cancelling
-     *         a registration only cancels that one registration, leaving the
-     *         others intact.</i>
-     *         <li>A swissBase for reincarnating the identity assigned to 'obj'.
-     *         </ul>
+     *         <i>Note that if an object is sturdified multiple times,
+     *         cancelling a registration only cancels that one registration,
+     *         leaving the others intact.</i> <li>A swissBase for reincarnating
+     *         the identity assigned to 'obj'. </ul>
      */
     public Object[] makeKnown(Object obj, long optExpirationDate)
       throws MalformedURLException {
@@ -199,13 +193,13 @@ public class IdentityMgr {
      * Used by an identity-persistent app (as opposed to an object-persistent
      * app) to cause old SturdyRefs that were given out by a previous
      * incarnation of this vat to continue to function. It's polite for an
-     * identity-peristent app to use an expiration date that's at least as
-     * big as the ones used in previous incarnations. To do otherwise is to
-     * not honor the previously implied obligation.
+     * identity-peristent app to use an expiration date that's at least as big
+     * as the ones used in previous incarnations. To do otherwise is to not
+     * honor the previously implied obligation.
      *
      * @return A pair of a new SturdyRef for obj and a Timeout for cancelling
-     *         this sturdiness of the object, as explained at
-     *         {@link #makeKnown(Object, long)}.
+     *         this sturdiness of the object, as explained at {@link
+     *         #makeKnown(Object,long)}.
      */
     public Object[] makeKnownAs(Object obj,
                                 BigInteger swissBase,

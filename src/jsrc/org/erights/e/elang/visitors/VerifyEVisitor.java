@@ -21,11 +21,11 @@ import org.erights.e.elib.tables.FlexMap;
 /**
  * Transforms Expanded-E or (unbound or bound) Kernel-E to bound Kernel-E,
  * verifying in the process.
- * <p>
+ * <p/>
  * This transformation turns all qualified names into fully qualified names,
  * sets the ScopeLayouts to ScopeLayouts it newly calculates (ignoring the old
- * ones), and expands out certain contructs that are part of Expanded-E but
- * not Kernel-E -- "meta.getState()", circular defines, XXX more to come...
+ * ones), and expands out certain contructs that are part of Expanded-E but not
+ * Kernel-E -- "meta.getState()", circular defines, XXX more to come...
  *
  * @author Mark S. Miller
  */
@@ -56,9 +56,8 @@ public class VerifyEVisitor extends BaseBindVisitor {
      *
      */
     private VerifyEVisitor nestObject(ConstMap newSynEnv) {
-        ScopeLayout inner = ScopeLayout.make(-1,
-                                             newSynEnv,
-                                             myLayout.getFQNPrefix());
+        ScopeLayout inner =
+          ScopeLayout.make(-1, newSynEnv, myLayout.getFQNPrefix());
         return new VerifyEVisitor(inner.nest());
     }
 
@@ -93,9 +92,8 @@ public class VerifyEVisitor extends BaseBindVisitor {
         StaticScope ss = eScript.staticScope();
         ConstMap usedMap = ss.namesUsed();
         String[] used = (String[])usedMap.getKeys(String.class);
-        FlexMap newSynEnv = FlexMap.fromTypes(String.class,
-                                              NounPattern.class,
-                                              used.length);
+        FlexMap newSynEnv =
+          FlexMap.fromTypes(String.class, NounPattern.class, used.length);
         for (int i = 0, max = used.length; i < max; i++) {
             String varName = used[i];
             NounPattern optNamer = t.myLayout.getOptPattern(varName);

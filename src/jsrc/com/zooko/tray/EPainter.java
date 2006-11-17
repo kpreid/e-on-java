@@ -14,14 +14,13 @@ import java.awt.Graphics;
  * override its <tt>paintComponent(Graphics)</tt> method.
  * <p/>
  * This object follows half the E inheritance pattern -- it causes
- * sends-to-self of paintComponent/1 to be delegated to its 'self' object.
- * It doesn't follow the other half -- the self object delegated to has no
- * 'super' object it can invoke to obtain the stock paintComponent/1
- * behavior. In addition, since most contexts at which an instance can appear
- * require an object of Java type JComponent, the instance of EPainter is
- * normally used, rather than the E object providing the paintComponent/1
- * behavior. This is probably an inheritance pattern variation that has
- * other uses as well.
+ * sends-to-self of paintComponent/1 to be delegated to its 'self' object. It
+ * doesn't follow the other half -- the self object delegated to has no 'super'
+ * object it can invoke to obtain the stock paintComponent/1 behavior. In
+ * addition, since most contexts at which an instance can appear require an
+ * object of Java type JComponent, the instance of EPainter is normally used,
+ * rather than the E object providing the paintComponent/1 behavior. This is
+ * probably an inheritance pattern variation that has other uses as well.
  *
  * @author Bryce "Zooko" Wilcox-O'Hearn
  * @author Mods by Mark S. Miller
@@ -40,8 +39,8 @@ public class EPainter extends JPanel {
     private final IPaint mySelf;
 
     /**
-     * Makes an EPainter that delegates
-     * {@link #paintComponent(Graphics) paintComponent/1} to <tt>self</tt>.
+     * Makes an EPainter that delegates {@link #paintComponent(Graphics)
+     * paintComponent/1} to <tt>self</tt>.
      *
      * @param self an E object which has a <tt>paintComponent/1</tt> method
      */

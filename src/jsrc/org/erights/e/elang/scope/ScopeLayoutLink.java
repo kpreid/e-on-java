@@ -10,7 +10,7 @@ import org.erights.e.elib.tables.FlexSet;
 /**
  * A ScopeLayout having at least one varName =&gt; {@link NounPattern}
  * association in the innermost contour.
- * <p>
+ * <p/>
  * Built from a single association and a previous ScopeLayout.
  *
  * @author E. Dean Tribble
@@ -41,7 +41,7 @@ class ScopeLayoutLink extends ScopeLayout {
      * Uses 'myNext.with(myVarName, myNamer, null)'
      */
     public Object[] getSpreadUncall() {
-        Object[] result = { myNext, "with", myVarName, myNamer, null };
+        Object[] result = {myNext, "with", myVarName, myNamer, null};
         return result;
     }
 

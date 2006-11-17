@@ -29,8 +29,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 
 /**
- * A sweetener defining extra messages that may be e-sent to a
- * Reader.
+ * A sweetener defining extra messages that may be e-sent to a Reader.
  *
  * @author Mark S. Miller
  */
@@ -60,8 +59,7 @@ public class BufferedReaderSugar {
      */
     static public void iterate(BufferedReader self,
                                AssocFunc func,
-                               String optURL)
-      throws IOException {
+                               String optURL) throws IOException {
         for (int lineNum = 1; ; lineNum++) {
             String str = self.readLine();
             if (str == null) {
@@ -73,9 +71,12 @@ public class BufferedReaderSugar {
             if (null == optURL) {
                 func.run(lineNumObj, str);
             } else {
-                SourceSpan span = new SourceSpan(optURL, true,
-                                                 lineNum, 0,
-                                                 lineNum, str.length() - 1);
+                SourceSpan span = new SourceSpan(optURL,
+                                                 true,
+                                                 lineNum,
+                                                 0,
+                                                 lineNum,
+                                                 str.length() - 1);
                 Twine line = Twine.fromString(str, span);
                 func.run(lineNumObj, line);
             }
@@ -86,8 +87,7 @@ public class BufferedReaderSugar {
      * Gets the rest of the input as a String (equivalently, bare Twine),
      * normalizing newlines into '\n's.
      */
-    static public String getText(BufferedReader self)
-      throws IOException {
+    static public String getText(BufferedReader self) throws IOException {
         StringBuffer buf = new StringBuffer();
         try {
             for (int lineNum = 1; ; lineNum++) {
@@ -119,9 +119,12 @@ public class BufferedReaderSugar {
                     return Twine.fromParts(parts.snapshot());
                 }
                 str += '\n';
-                SourceSpan span = new SourceSpan(url, true,
-                                                 lineNum, 0,
-                                                 lineNum, str.length() - 1);
+                SourceSpan span = new SourceSpan(url,
+                                                 true,
+                                                 lineNum,
+                                                 0,
+                                                 lineNum,
+                                                 str.length() - 1);
                 Twine line = Twine.fromString(str, span);
                 parts.push(line);
             }

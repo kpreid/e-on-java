@@ -38,8 +38,8 @@ public class MicroTime {
     static {
         try {
             System.loadLibrary("ecutil");
-            nativeStatics = StaticMaker.make(ClassCache.forName(
-              "net.vattp.security.Native"));
+            nativeStatics =
+              StaticMaker.make(ClassCache.forName("net.vattp.security.Native"));
         } catch (UnsatisfiedLinkError ule) {
             //PrintStreamWriter.err().println("not using native timers: " +
             //                                ule);

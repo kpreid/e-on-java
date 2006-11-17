@@ -60,54 +60,49 @@ package org.apache.oro.text.regex;
 import java.util.Vector;
 
 /**
- * Perl5Substitution implements a Substitution consisting of a
- * literal string, but allowing Perl5 variable interpolation referencing
- * saved groups in a match. This class is intended for use with
- * {@link Util#substitute Util.substitute}.
+ * Perl5Substitution implements a Substitution consisting of a literal string,
+ * but allowing Perl5 variable interpolation referencing saved groups in a
+ * match. This class is intended for use with {@link Util#substitute
+ * Util.substitute}.
  * <p/>
- * The substitution string may contain variable interpolations referring
- * to the saved parenthesized groups of the search pattern.
- * A variable interpolation is denoted by <b>$1</b>, or <b>$2</b>,
- * or <b>$3</b>, etc. If you don want such expressions to be
- * interpreted literally, you should set the <b> numInterpolations </b>
- * parameter to <b> INTERPOLATE_NONE </b>. It is easiest to explain
- * what an interpolated variable does by giving an example:
- * <ul>
- * Suppose you have the pattern <b>b\d+:</b> and you want to substitute
- * the <b>b</b>'s for <b>a</b>'s and the colon for a dash in parts of
- * your input matching the pattern. You can do this by changing the
- * pattern to <b>b(\d+):</b> and using the substitution expression
- * <b>a$1-</b>. When a substitution is made, the <b>$1</b> means
- * "Substitute whatever was matched by the first saved group of the
- * matching pattern."  An input of <b>b123:</b> after substitution
- * would yield a result of <b>a123-</b>. But there's a little more
- * to be aware of. If you set the <b>numInterpolations</b> parameter to
- * <b>INTERPOLATE_ALL</b>, then every time a match is found, the
- * interpolation variables are computed relative to that match.
- * But if <b>numInterpolations</b> is set to some positive integer, then
- * only the interpolation variables for the first <b>numInterpolations</b>
- * matches are computed relative to the most recent match. After that,
- * the remaining substitutions have their variable interpolations performed
- * relative to the <b> numInterpolations </b>'th match. So using the
- * previously mentioned pattern and substitution expression, if you have
+ * The substitution string may contain variable interpolations referring to the
+ * saved parenthesized groups of the search pattern. A variable interpolation
+ * is denoted by <b>$1</b>, or <b>$2</b>, or <b>$3</b>, etc. If you don want
+ * such expressions to be interpreted literally, you should set the <b>
+ * numInterpolations </b> parameter to <b> INTERPOLATE_NONE </b>. It is easiest
+ * to explain what an interpolated variable does by giving an example: <ul>
+ * Suppose you have the pattern <b>b\d+:</b> and you want to substitute the
+ * <b>b</b>'s for <b>a</b>'s and the colon for a dash in parts of your input
+ * matching the pattern. You can do this by changing the pattern to
+ * <b>b(\d+):</b> and using the substitution expression <b>a$1-</b>. When a
+ * substitution is made, the <b>$1</b> means "Substitute whatever was matched
+ * by the first saved group of the matching pattern."  An input of <b>b123:</b>
+ * after substitution would yield a result of <b>a123-</b>. But there's a
+ * little more to be aware of. If you set the <b>numInterpolations</b>
+ * parameter to <b>INTERPOLATE_ALL</b>, then every time a match is found, the
+ * interpolation variables are computed relative to that match. But if
+ * <b>numInterpolations</b> is set to some positive integer, then only the
+ * interpolation variables for the first <b>numInterpolations</b> matches are
+ * computed relative to the most recent match. After that, the remaining
+ * substitutions have their variable interpolations performed relative to the
+ * <b> numInterpolations </b>'th match. So using the previously mentioned
+ * pattern and substitution expression, if you have
  * an input of <pre><b>Tank b123: 85  Tank b256: 32  Tank b78: 22</b></pre>
- * and use a <b> numInterpolations </b> value of <b>INTERPOLATE_ALL</b> and
- * <b> numSubs </b> value (see
- * {@link Util#substitute Util.substitute})
- * of <b> SUBSTITUTE_ALL</b>, then your result  will be:
+ * and use a <b> numInterpolations </b> value of <b>INTERPOLATE_ALL</b> and <b>
+ * numSubs </b> value (see {@link Util#substitute Util.substitute}) of <b>
+ * SUBSTITUTE_ALL</b>, then your result  will be:
  * <pre><b>Tank a123- 85  Tank a256- 32  Tank a78- 22</b></pre>
- * But if you set <b> numInterpolations </b> to 2 and keep
- * <b> numSubs </b> with a value of <b>SUBSTITUTE_ALL</b>, your result is:
+ * But if you set <b> numInterpolations </b> to 2 and keep <b> numSubs </b>
+ * with a value of <b>SUBSTITUTE_ALL</b>, your result is:
  * <pre><b>Tank a123- 85  Tank a256- 32  Tank a256- 22</b></pre>
- * Notice how the last substitution uses the same value for <b>$1</b>
- * as the second substitution.
- * </ul>
+ * Notice how the last substitution uses the same value for <b>$1</b> as the
+ * second substitution. </ul>
  * <p/>
  * A final thing to keep in mind is that if you use an interpolation variable
  * that corresponds to a group not contained in the match, then it is
- * interpreted literally. So given the regular expression from the
- * example, and a substitution expression of <b>a$2-</b>, the result
- * of the last sample input would be:
+ * interpreted literally. So given the regular expression from the example, and
+ * a substitution expression of <b>a$2-</b>, the result of the last sample
+ * input would be:
  * <pre><b>Tank a$2- 85  Tank a$2- 32  Tank a$2- 22</b></pre>
  * Also, <b>$0</b> is always interpreted literally.
  *
@@ -123,8 +118,8 @@ public class Perl5Substitution extends StringSubstitution {
 
     /**
      * A constant used when creating a Perl5Substitution indicating that
-     * interpolation variables should be computed relative to the most
-     * recent pattern match.
+     * interpolation variables should be computed relative to the most recent
+     * pattern match.
      */
     static public final int INTERPOLATE_ALL = 0;
 
@@ -178,8 +173,8 @@ public class Perl5Substitution extends StringSubstitution {
                     saveDigits = false;
                 }
 
-                if (str[current] == '$' &&
-                  current + 1 < str.length && str[current + 1] != '0' &&
+                if (str[current] == '$' && current + 1 < str.length &&
+                  str[current + 1] != '0' &&
                   Character.isDigit(str[current + 1])) {
                     saveDigits = true;
                 } else {
@@ -245,18 +240,16 @@ public class Perl5Substitution extends StringSubstitution {
 
 
     /**
-     * Default constructor initializing substitution to a zero length
-     * String and the number of interpolations to
-     * {@link #INTERPOLATE_ALL}.
+     * Default constructor initializing substitution to a zero length String
+     * and the number of interpolations to {@link #INTERPOLATE_ALL}.
      */
     public Perl5Substitution() {
         this("", INTERPOLATE_ALL);
     }
 
     /**
-     * Creates a Perl5Substitution using the specified substitution
-     * and setting the number of interpolations to
-     * {@link #INTERPOLATE_ALL}.
+     * Creates a Perl5Substitution using the specified substitution and setting
+     * the number of interpolations to {@link #INTERPOLATE_ALL}.
      * <p/>
      *
      * @param substitution The string to use as a substitution.
@@ -266,22 +259,25 @@ public class Perl5Substitution extends StringSubstitution {
     }
 
     /**
-     * Creates a Perl5Substitution using the specified substitution
-     * and setting the number of interpolations to the specified value.
+     * Creates a Perl5Substitution using the specified substitution and setting
+     * the number of interpolations to the specified value.
      * <p/>
      *
      * @param substitution      The string to use as a substitution.
-     * @param numInterpolations If set to <b>INTERPOLATE_NONE</b>, interpolation variables are
-     *                          interpreted literally and not as references to the saved
-     *                          parenthesized groups of a pattern match. If set to
-     *                          <b> INTERPOLATE_ALL </b>, all variable interpolations
-     *                          are computed relative to the pattern match responsible for
-     *                          the current substitution. If set to a positive integer,
-     *                          the first <b> numInterpolations </b> substitutions have
-     *                          their variable interpolation performed relative to the
-     *                          most recent match, but the remaining substitutions have
-     *                          their variable interpolations performed relative to the
-     *                          <b> numInterpolations </b>'th match.
+     * @param numInterpolations If set to <b>INTERPOLATE_NONE</b>,
+     *                          interpolation variables are interpreted
+     *                          literally and not as references to the saved
+     *                          parenthesized groups of a pattern match. If set
+     *                          to <b> INTERPOLATE_ALL </b>, all variable
+     *                          interpolations are computed relative to the
+     *                          pattern match responsible for the current
+     *                          substitution. If set to a positive integer, the
+     *                          first <b> numInterpolations </b> substitutions
+     *                          have their variable interpolation performed
+     *                          relative to the most recent match, but the
+     *                          remaining substitutions have their variable
+     *                          interpolations performed relative to the <b>
+     *                          numInterpolations </b>'th match.
      */
     public Perl5Substitution(String substitution, int numInterpolations) {
         setSubstitution(substitution, numInterpolations);
@@ -290,9 +286,8 @@ public class Perl5Substitution extends StringSubstitution {
 
     /**
      * Sets the substitution represented by this Perl5Substitution, also
-     * setting the number of interpolations to
-     * {@link #INTERPOLATE_ALL}.
-     * You should use this method in order to avoid repeatedly allocating new
+     * setting the number of interpolations to {@link #INTERPOLATE_ALL}. You
+     * should use this method in order to avoid repeatedly allocating new
      * Perl5Substitutions. It is recommended that you allocate a single
      * Perl5Substitution and reuse it by using this method when appropriate.
      * <p/>
@@ -306,24 +301,27 @@ public class Perl5Substitution extends StringSubstitution {
 
     /**
      * Sets the substitution represented by this Perl5Substitution, also
-     * setting the number of interpolations to the specified value.
-     * You should use this method in order to avoid repeatedly allocating new
+     * setting the number of interpolations to the specified value. You should
+     * use this method in order to avoid repeatedly allocating new
      * Perl5Substitutions. It is recommended that you allocate a single
      * Perl5Substitution and reuse it by using this method when appropriate.
      * <p/>
      *
      * @param substitution      The string to use as a substitution.
-     * @param numInterpolations If set to <b>INTERPOLATE_NONE</b>, interpolation variables are
-     *                          interpreted literally and not as references to the saved
-     *                          parenthesized groups of a pattern match. If set to
-     *                          <b> INTERPOLATE_ALL </b>, all variable interpolations
-     *                          are computed relative to the pattern match responsible for
-     *                          the current substitution. If set to a positive integer,
-     *                          the first <b> numInterpolations </b> substitutions have
-     *                          their variable interpolation performed relative to the
-     *                          most recent match, but the remaining substitutions have
-     *                          their variable interpolations performed relative to the
-     *                          <b> numInterpolations </b>'th match.
+     * @param numInterpolations If set to <b>INTERPOLATE_NONE</b>,
+     *                          interpolation variables are interpreted
+     *                          literally and not as references to the saved
+     *                          parenthesized groups of a pattern match. If set
+     *                          to <b> INTERPOLATE_ALL </b>, all variable
+     *                          interpolations are computed relative to the
+     *                          pattern match responsible for the current
+     *                          substitution. If set to a positive integer, the
+     *                          first <b> numInterpolations </b> substitutions
+     *                          have their variable interpolation performed
+     *                          relative to the most recent match, but the
+     *                          remaining substitutions have their variable
+     *                          interpolations performed relative to the <b>
+     *                          numInterpolations </b>'th match.
      */
     public void setSubstitution(String substitution, int numInterpolations) {
         super.setSubstitution(substitution);
@@ -340,29 +338,38 @@ public class Perl5Substitution extends StringSubstitution {
 
 
     /**
-     * Appends the substitution to a buffer containing the original input
-     * with substitutions applied for the pattern matches found so far.
-     * See
-     * {@link Substitution#appendSubstitution Substitution.appendSubstition()}
-     * for more details regarding the expected behavior of this method.
+     * Appends the substitution to a buffer containing the original input with
+     * substitutions applied for the pattern matches found so far. See {@link
+     * Substitution#appendSubstitution Substitution.appendSubstition()} for
+     * more details regarding the expected behavior of this method.
      * <p/>
      *
      * @param appendBuffer      The buffer containing the new string resulting
-     *                          from performing substitutions on the original input.
-     * @param match             The current match causing a substitution to be made.
+     *                          from performing substitutions on the original
+     *                          input.
+     * @param match             The current match causing a substitution to be
+     *                          made.
      * @param substitutionCount The number of substitutions that have been
      *                          performed so far by Util.substitute.
-     * @param originalInput     The original input upon which the substitutions are
-     *                          being performed.
-     * @param matcher           The PatternMatcher used to find the current match.
+     * @param originalInput     The original input upon which the substitutions
+     *                          are being performed.
+     * @param matcher           The PatternMatcher used to find the current
+     *                          match.
      * @param pattern           The Pattern used to find the current match.
      */
-    public void appendSubstitution(StringBuffer appendBuffer, MatchResult match,
-                                   int substitutionCount, String originalInput,
-                                   PatternMatcher matcher, Pattern pattern) {
+    public void appendSubstitution(StringBuffer appendBuffer,
+                                   MatchResult match,
+                                   int substitutionCount,
+                                   String originalInput,
+                                   PatternMatcher matcher,
+                                   Pattern pattern) {
         if (_substitutions == null) {
-            super.appendSubstitution(appendBuffer, match, substitutionCount,
-                                     originalInput, matcher, pattern);
+            super.appendSubstitution(appendBuffer,
+                                     match,
+                                     substitutionCount,
+                                     originalInput,
+                                     matcher,
+                                     pattern);
             return;
         }
 

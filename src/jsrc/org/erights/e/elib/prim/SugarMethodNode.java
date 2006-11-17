@@ -27,8 +27,8 @@ import java.lang.reflect.Modifier;
 
 
 /**
- * How a static method of a sugar class is made to appear as an
- * instance method of an instance of the class being sugarred.
+ * How a static method of a sugar class is made to appear as an instance method
+ * of an instance of the class being sugarred.
  *
  * @author Mark S. Miller
  */
@@ -102,8 +102,8 @@ public class SugarMethodNode extends JavaMemberNode {
     /**
      *
      */
-    public Object innerExecute(Object self, Object[] args)
-      throws IllegalAccessException, IllegalArgumentException,
+    public Object innerExecute(Object self, Object[] args) throws
+      IllegalAccessException, IllegalArgumentException,
       InvocationTargetException {
 
         Method meth = (Method)myMember;

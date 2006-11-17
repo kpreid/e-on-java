@@ -90,8 +90,7 @@ public class ReadOnlyFile extends BaseLoader
     /**
      */
     public ReadOnlyFile getAbsoluteFile() {
-        return new ReadOnlyFile(myPrecious.getAbsoluteFile(),
-                                myIsTransitive);
+        return new ReadOnlyFile(myPrecious.getAbsoluteFile(), myIsTransitive);
     }
 
     /**
@@ -103,8 +102,7 @@ public class ReadOnlyFile extends BaseLoader
     /**
      */
     public ReadOnlyFile getCanonicalFile() throws IOException {
-        return new ReadOnlyFile(myPrecious.getCanonicalFile(),
-                                myIsTransitive);
+        return new ReadOnlyFile(myPrecious.getCanonicalFile(), myIsTransitive);
     }
 
     /**
@@ -219,12 +217,11 @@ public class ReadOnlyFile extends BaseLoader
     }
 
     /**
-     * If the file is a directory, enumerate filename =&gt; File
-     * associations for each child of the directory.
+     * If the file is a directory, enumerate filename =&gt; File associations
+     * for each child of the directory.
      * <p/>
-     * Otherwise assume it's a text file and enumerates
-     * lineNumber =&gt; String (text line) associations. Like Perl, each text
-     * line ends with a "\n".
+     * Otherwise assume it's a text file and enumerates lineNumber =&gt; String
+     * (text line) associations. Like Perl, each text line ends with a "\n".
      */
     public void iterate(AssocFunc func) {
         try {
@@ -235,15 +232,14 @@ public class ReadOnlyFile extends BaseLoader
     }
 
     /**
-     * If the file is a directory, enumerate filename =&gt; File
-     * associations for each child of the directory.
+     * If the file is a directory, enumerate filename =&gt; File associations
+     * for each child of the directory.
      * <p/>
-     * Otherwise assume it's a text file and enumerates
-     * lineNumber =&gt; String/Twine (text line) associations. Like Perl,
-     * each text line ends with a "\n".
+     * Otherwise assume it's a text file and enumerates lineNumber =&gt;
+     * String/Twine (text line) associations. Like Perl, each text line ends
+     * with a "\n".
      */
-    public void iterate(AssocFunc func, boolean isLocated)
-      throws IOException {
+    public void iterate(AssocFunc func, boolean isLocated) throws IOException {
         if (myPrecious.isDirectory()) {
             String[] names = myPrecious.list();
             for (int i = 0; i < names.length; i++) {
@@ -262,15 +258,14 @@ public class ReadOnlyFile extends BaseLoader
     }
 
     /**
-     * Open 'self' for reading text, decoding UTF-8 and turning
-     * platform newlines into '\n's
+     * Open 'self' for reading text, decoding UTF-8 and turning platform
+     * newlines into '\n's
      */
     public BufferedReader textReader() throws FileNotFoundException {
         return FileSugar.textReader(myPrecious);
     }
 
     /**
-     *
      * @param uriBody
      */
     public Object get(String uriBody) {
@@ -291,9 +286,8 @@ public class ReadOnlyFile extends BaseLoader
     }
 
     /**
-     * Normalize the E-printed form to use forward slashes as
-     * separators. E'ers can still use getPath() to get the path as
-     * the File object sees it.
+     * Normalize the E-printed form to use forward slashes as separators. E'ers
+     * can still use getPath() to get the path as the File object sees it.
      */
     public void __printOn(TextWriter out) throws IOException {
         out.print(myPrecious);

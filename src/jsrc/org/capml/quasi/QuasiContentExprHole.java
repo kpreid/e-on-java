@@ -27,8 +27,8 @@ public class QuasiContentExprHole extends QuasiContent {
 
     static private final long serialVersionUID = -3526871811031899230L;
 
-    static public final StaticMaker QuasiContentExprHoleMaker
-      = StaticMaker.make(QuasiContentExprHole.class);
+    static public final StaticMaker QuasiContentExprHoleMaker =
+      StaticMaker.make(QuasiContentExprHole.class);
 
     private final int myIndex;
 
@@ -43,9 +43,8 @@ public class QuasiContentExprHole extends QuasiContent {
      * Uses 'QuasiContentExprHoleMaker(myIndex)'
      */
     public Object[] getSpreadUncall() {
-        Object[] result = {QuasiContentExprHoleMaker,
-                           "run",
-                           EInt.valueOf(myIndex)};
+        Object[] result =
+          {QuasiContentExprHoleMaker, "run", EInt.valueOf(myIndex)};
         return result;
     }
 
@@ -71,7 +70,7 @@ public class QuasiContentExprHole extends QuasiContent {
         if (!Ref.isSameEver(left, right)) {
             throw Thrower.toEject(optEjector,
                                   "${" + myIndex + "} (" + left +
-                                  ") isn't the same as (" + right + ")");
+                                    ") isn't the same as (" + right + ")");
         }
     }
 

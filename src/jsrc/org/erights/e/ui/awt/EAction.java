@@ -22,19 +22,18 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 
 /**
- * Enables an E-language programmer to effectively parameterize an
- * {@link javax.swing.AbstractAction}, even though E cannot subclass Java.
+ * Enables an E-language programmer to effectively parameterize an {@link
+ * javax.swing.AbstractAction}, even though E cannot subclass Java.
  * <p/>
- * AbstractAction was designed to be parameterized by subclassing.
- * E-language code cannot subclass Java classes, so EAction provides a bridge
- * between these issues. EAction is a subclass of AbstractAction whose
- * behavior is determined by its properties, which is settable by E language
- * code.
+ * AbstractAction was designed to be parameterized by subclassing. E-language
+ * code cannot subclass Java classes, so EAction provides a bridge between
+ * these issues. EAction is a subclass of AbstractAction whose behavior is
+ * determined by its properties, which is settable by E language code.
  * <p/>
  * In addition, it provides various conveniences absent from Action and
- * AbstractAction, such as the ability to use a description string like
- * "Save &As" to set the Name ("Save As"), action Verb ("doSaveAs"), and
- * mnemonic ('A').
+ * AbstractAction, such as the ability to use a description string like "Save
+ * &As" to set the Name ("Save As"), action Verb ("doSaveAs"), and mnemonic
+ * ('A').
  * <p/>
  * The actual action represented by an EAction is the eventual sending of a
  * message (verb and arguments) to a recipient.
@@ -165,9 +164,9 @@ public class EAction extends AbstractAction implements EPrintable {
      * Sets the name, verb, and mnemonic according to desc, and the action to
      * 'recip <- verb()'.
      * <p/>
-     * For example, 'ea.setDesc(foo, "Save &As")' will set the name to
-     * "Save As", the mnemonic 'A', and the action to be invoked to
-     * 'foo <- doSaveAs()'.
+     * For example, 'ea.setDesc(foo, "Save &As")' will set the name to "Save
+     * As", the mnemonic 'A', and the action to be invoked to 'foo <-
+     * doSaveAs()'.
      */
     public void setDesc(Object recip, String desc) {
         setName(descToName(desc));
@@ -188,8 +187,8 @@ public class EAction extends AbstractAction implements EPrintable {
     }
 
     /**
-     * Sets the action to 'recip <- run()', so action should be a Runnable or
-     * a Thunk.
+     * Sets the action to 'recip <- run()', so action should be a Runnable or a
+     * Thunk.
      */
     public void setAction(Object recip) {
         setAction(recip, "run", E.NO_ARGS);

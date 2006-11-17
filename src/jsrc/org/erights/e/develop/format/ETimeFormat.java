@@ -26,9 +26,9 @@ import java.util.Date;
 import java.util.TimeZone;
 
 /**
- * Just converts back and forth between milliseconds since the epoch
- * (standard binary time representation) and ISO8601/UTC (standard
- * sortable textual respresentation) but enhanced to represent milliseconds.
+ * Just converts back and forth between milliseconds since the epoch (standard
+ * binary time representation) and ISO8601/UTC (standard sortable textual
+ * respresentation) but enhanced to represent milliseconds.
  *
  * @author Mark S. Miller
  * @see <a href="http://www.w3.org/TR/1998/NOTE-datetime-19980827">w3c's
@@ -52,18 +52,17 @@ public class ETimeFormat {
      * <p/>
      * The format must also be independent of Locale, the default current
      * TimeZone, or the current time. In the terminology of <a
-     * href="http://www.w3.org/TR/1998/NOTE-datetime-19980827">ISO601</a>,
-     * the actual format is "YYYY-MM-DDThh:mm:ss.sssTZD", where the value of
-     * TZD (timezone) is "Z", indicating UTC (Universal Standard Time, which
-     * is just another name for GMT).
+     * href="http://www.w3.org/TR/1998/NOTE-datetime-19980827">ISO601</a>, the
+     * actual format is "YYYY-MM-DDThh:mm:ss.sssTZD", where the value of TZD
+     * (timezone) is "Z", indicating UTC (Universal Standard Time, which is
+     * just another name for GMT).
      * <p/>
-     * It would be good if the format returned could also be used
-     * within filenames, but unfortunately this conflicts with the
-     * familiar use of colon (":") to represent clock time, as
-     * mandated by ISO8601. Clients (such as the Trace system) that
-     * need to embed the result in a filename should do a
-     * <tt>.replace(':','_')</tt>. {@link #parseTime(String)}
-     * will handle either colons or underbars in its input.
+     * It would be good if the format returned could also be used within
+     * filenames, but unfortunately this conflicts with the familiar use of
+     * colon (":") to represent clock time, as mandated by ISO8601. Clients
+     * (such as the Trace system) that need to embed the result in a filename
+     * should do a <tt>.replace(':','_')</tt>. {@link #parseTime(String)} will
+     * handle either colons or underbars in its input.
      */
     static public String formatTime(long absMillis) {
         String formatted = SortableFormat.format(new Date(absMillis));

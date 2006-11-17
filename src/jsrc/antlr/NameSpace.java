@@ -33,10 +33,10 @@ public class NameSpace {
     }
 
     /**
-     * Parse a C++ namespace declaration into seperate names splitting on ::
-     * We could easily parameterize this to make the delimiter a
-     * language-specific parameter, or use subclasses to support C++ namespaces
-     * versus java packages. -DAW
+     * Parse a C++ namespace declaration into seperate names splitting on :: We
+     * could easily parameterize this to make the delimiter a language-specific
+     * parameter, or use subclasses to support C++ namespaces versus java
+     * packages. -DAW
      */
     protected void parse(String name) {
         StringTokenizer tok = new StringTokenizer(name, "::");

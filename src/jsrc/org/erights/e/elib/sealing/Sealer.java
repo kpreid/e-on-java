@@ -49,8 +49,8 @@ public final class Sealer implements PassByProxy, Persistent {
     }
 
     /**
-     * @return a SealedBox containing contents that can only be
-     *         unsealed with the {@link Unsealer} of this Brand.
+     * @return a SealedBox containing contents that can only be unsealed with
+     *         the {@link Unsealer} of this Brand.
      */
     public SealedBox seal(Object contents) {
         return new SealedBox(contents, myBrand);

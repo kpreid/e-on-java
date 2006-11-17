@@ -20,14 +20,12 @@ Contributor(s): ______________________________________.
 */
 
 import org.erights.e.develop.assertion.T;
-import org.erights.e.develop.trace.Trace;
 import org.erights.e.elib.ref.Ref;
 
 /**
  * The re-encoding of an exported reference. <p>
  * <p/>
- * Will be decoded into an already existing imported remote
- * reference.
+ * Will be decoded into an already existing imported remote reference.
  *
  * @author Chip Morningstar
  * @author Mark S. Miller
@@ -42,8 +40,7 @@ class ImportDesc implements ObjectRefDesc {
      *
      */
     private void validate() {
-        T.requireSI(myImportPos >= 1,
-                    "must be positive: ", myImportPos);
+        T.requireSI(myImportPos >= 1, "must be positive: ", myImportPos);
     }
 
     /**
@@ -56,7 +53,7 @@ class ImportDesc implements ObjectRefDesc {
 
     /**
      * What the other side exported, we dereference as what we imported.
-     * <p>
+     * <p/>
      * Increments the wireCount
      */
     public Object dereference(CapTPConnection conn) {

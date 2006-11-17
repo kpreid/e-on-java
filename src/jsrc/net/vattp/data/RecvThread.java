@@ -184,8 +184,9 @@ class RecvThread extends Thread {
         if (Trace.comm.verbose && Trace.ON) {
             Trace.comm.verbosem("ProtocolChange, pp=" + protocolParms);
         }
-        T.require(myChangeProtocolIsOk, "Must only be called while caller " +
-                                        "is processing an input message");
+        T.require(myChangeProtocolIsOk,
+                  "Must only be called while caller " +
+                    "is processing an input message");
         // For calculating the header length
         int headerLengthIndex = HEADER_INVALID;
 
@@ -195,26 +196,26 @@ class RecvThread extends Thread {
             mySequence = null;
             headerLengthIndex = HEADER_INT_LENGTH;
             // begin daffE -> E
-        } else if (StartUpProtocol.PROTO_3DES_SDH_M.equals(
-          protocolParms.myProtocolSuite)) {
+        } else if (StartUpProtocol.PROTO_3DES_SDH_M
+          .equals(protocolParms.myProtocolSuite)) {
             myIsAggragating = true;
             MessageDigest md5 = setSHA1(protocolParms);
             headerLengthIndex = HEADER_VLEN_SHA1;
             mySequence = null;
-            byte[] raw_3des_key = TripleDESKeyConstructor.make(
-              protocolParms.myDHSecret);
+            byte[] raw_3des_key =
+              TripleDESKeyConstructor.make(protocolParms.myDHSecret);
             myTransform =
               new Decrypt3DES(raw_3des_key, protocolParms.myIncomingSequence);
             // end daffE -> E
             // begin improved E protocol
-        } else if (StartUpProtocol.PROTO_3DES_SDH_M2.equals(
-          protocolParms.myProtocolSuite)) {
+        } else if (StartUpProtocol.PROTO_3DES_SDH_M2
+          .equals(protocolParms.myProtocolSuite)) {
             myIsAggragating = true;
             MessageDigest md5 = setSHA1(protocolParms);
             headerLengthIndex = HEADER_VLEN_HMAC;
             mySequence = new byte[4];  // Assume initialized to zero
-            byte[] raw_3des_key = TripleDESKeyConstructor.make(
-              protocolParms.myDHSecret);
+            byte[] raw_3des_key =
+              TripleDESKeyConstructor.make(protocolParms.myDHSecret);
             myTransform =
               new Decrypt3DES(raw_3des_key, protocolParms.myIncomingSequence);
             myTransform.init();
@@ -252,10 +253,8 @@ class RecvThread extends Thread {
             byte[] b = (byte[])(itr.nextElement());
             int len = b.length;
             byte[] l = new byte[4];
-            int lenlen = SendThread.msgLength(len,
-                                              l,
-                                              0,
-                                              myIsCompressingMsgLengths);
+            int lenlen =
+              SendThread.msgLength(len, l, 0, myIsCompressingMsgLengths);
             mySHA1.update(l, 0, lenlen);
             mySHA1.update(b);                   // The message
         }
@@ -434,26 +433,30 @@ class RecvThread extends Thread {
                       ((myHeader[2] & 0xff) << 8) | ((myHeader[3] & 0xff));
                     nextItemOffset = 4;
                 } else {
-                    throw new IOException("Invalid compressed length code" + HexStringUtils.bytesToReadableHexStr(
-                      myHeader));
+                    throw new IOException("Invalid compressed length code" +
+                      HexStringUtils.bytesToReadableHexStr(myHeader));
                 }
             }
         } else {
             // Not compressing
             length = ((myHeader[0] & 0xff) << 24) |
-              ((myHeader[1] & 0xff) << 16) | ((myHeader[2] & 0xff) << 8) | (myHeader[3] &
-              0xff);
+              ((myHeader[1] & 0xff) << 16) | ((myHeader[2] & 0xff) << 8) |
+              (myHeader[3] & 0xff);
             nextItemOffset = 4;
         }
         if (Trace.comm.verbose && Trace.ON) {
             Trace.comm.verbosem("incoming packet len = " + length);
         }
         if (length > Msg.MAX_INBOUND_MSG_LENGTH || length < 0) {
-            throw new IOException("Packet too large: " + length + " > " +
-                                  Msg.MAX_INBOUND_MSG_LENGTH);
+            throw new IOException("Packet too large: " + length + " > " + Msg
+              .MAX_INBOUND_MSG_LENGTH);
         }
         if (myIsDoingMac) {
-            System.arraycopy(myHeader, nextItemOffset, myMAC, 0, 20); // Save MAC
+            System.arraycopy(myHeader,
+                             nextItemOffset,
+                             myMAC,
+                             0,
+                             20); // Save MAC
             nextItemOffset += 20;
         }
         if (null != mySequence) {
@@ -518,9 +521,10 @@ class RecvThread extends Thread {
             if (Trace.comm.timing && Trace.ON) {
                 startTime = MicroTime.queryTimer();
             }
-            myTransform.transform(message, (myHeader.length - nextItemOffset), message.length -
-                                                                               (myHeader.length -
-                                                                                nextItemOffset));
+            myTransform.transform(message,
+                                  (myHeader.length - nextItemOffset),
+                                  message.length -
+                                    (myHeader.length - nextItemOffset));
             if (Trace.comm.timing && Trace.ON) {
                 authTime += MicroTime.queryTimer() - startTime;
             }
@@ -561,8 +565,8 @@ class RecvThread extends Thread {
                         length = input & 0x0f;
                         count = 3;
                     } else {
-                        String msg = HexStringUtils.bytesToReadableHexStr(
-                          message);
+                        String msg =
+                          HexStringUtils.bytesToReadableHexStr(message);
                         throw new IOException(
                           "Invalid compressed length code" + msg);
                     }
@@ -576,7 +580,7 @@ class RecvThread extends Thread {
                 }
                 if (length > Msg.MAX_INBOUND_MSG_LENGTH || length < 0) {
                     throw new IOException("Message too large: " + length +
-                                          " > " + Msg.MAX_INBOUND_MSG_LENGTH);
+                      " > " + Msg.MAX_INBOUND_MSG_LENGTH);
                 }
 
                 byte[] emsg = new byte[length];
@@ -589,10 +593,11 @@ class RecvThread extends Thread {
                     offset += read;
                 }
                 if (offset != length) {
-                    throw new IOException("incoming packet not aggragated properly," +
-                                          " expectedLength=" + length +
-                                          " foundLength=" + offset + HexStringUtils.bytesToReadableHexStr(
-                                            message));
+                    throw new IOException(
+                      "incoming packet not aggragated properly," +
+                        " expectedLength=" + length + " foundLength=" +
+                        offset +
+                        HexStringUtils.bytesToReadableHexStr(message));
                 }
                 myMessagesToPass.addElement(emsg);
             }
@@ -791,16 +796,12 @@ class RecvThread extends Thread {
     }
 
     private void traceDebugMsg(byte msg[], int off, int len, String note) {
-        String msgString = HexStringUtils.bytesToReadableHexStr(msg,
-                                                                off,
-                                                                len);
+        String msgString = HexStringUtils.bytesToReadableHexStr(msg, off, len);
         Trace.comm.debugm(note + " (length " + len + ") " + msgString);
     }
 
     private void traceErrorMsg(byte msg[], int off, int len, String note) {
-        String msgString = HexStringUtils.bytesToReadableHexStr(msg,
-                                                                off,
-                                                                len);
+        String msgString = HexStringUtils.bytesToReadableHexStr(msg, off, len);
         Trace.comm.errorm(note + " (length " + len + ") " + msgString);
     }
 }

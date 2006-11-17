@@ -31,9 +31,9 @@ import org.erights.e.develop.assertion.T;
 class TraceLevelTranslator implements TraceConstants {
 
     /**
-     * Convert tracing thresholds into three-character synonyms.
-     * Used when printing trace messages, so it does return the
-     * "TIM" tag to denote a timing message.
+     * Convert tracing thresholds into three-character synonyms. Used when
+     * printing trace messages, so it does return the "TIM" tag to denote a
+     * timing message.
      */
     static String terse(int level) {
         String retval;
@@ -71,9 +71,9 @@ class TraceLevelTranslator implements TraceConstants {
     }
 
     /**
-     * Convert a string into one of the numeric trace levels. Because
-     * this method is used only to identify priority thresholds, it
-     * does not return the TIMING pseudo-level. (See TraceConstants.java.)
+     * Convert a string into one of the numeric trace levels. Because this
+     * method is used only to identify priority thresholds, it does not return
+     * the TIMING pseudo-level. (See TraceConstants.java.)
      *
      * @throws IllegalArgumentException if the string is not recognized.
      */

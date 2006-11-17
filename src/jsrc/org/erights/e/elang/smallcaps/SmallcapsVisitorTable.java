@@ -5,8 +5,8 @@ package org.erights.e.elang.smallcaps;
 
 /**
  * The different types of SmallcapsEncoderVisitor emitting onto a
- * SmallcapsEmitter need to refer to each other. This collects them
- * into one place.
+ * SmallcapsEmitter need to refer to each other. This collects them into one
+ * place.
  *
  * @author Mark S. Miller
  * @author Darius Bacon
@@ -36,7 +36,6 @@ class SmallcapsVisitorTable {
         forControl = new SmallcapsEncoderVisitor(emitter, "FOR_CONTROL", this);
         forFxOnly = new SmallcapsEncoderVisitor(emitter, "FOR_FX_ONLY", this);
     }
-
 
     /**
      *

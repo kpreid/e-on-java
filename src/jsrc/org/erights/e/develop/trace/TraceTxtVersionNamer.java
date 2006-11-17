@@ -26,8 +26,8 @@ Contributor(s): ______________________________________.
 import java.io.File;
 
 /**
- * This class and its subclasses know how to construct backup version
- * Files for files that end in ".txt".
+ * This class and its subclasses know how to construct backup version Files for
+ * files that end in ".txt".
  */
 
 class TraceTxtVersionNamer extends TraceVersionNamer
@@ -57,7 +57,7 @@ class TraceTxtVersionNamer extends TraceVersionNamer
     int getSeq(String filename) {
         String possibleSeqString =
           filename.substring(0, filename.length() - EXTLEN).
-          substring(myBasename.length());
+            substring(myBasename.length());
 
         try {
             return Integer.parseInt(possibleSeqString);

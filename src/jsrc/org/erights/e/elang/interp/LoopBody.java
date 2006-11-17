@@ -5,11 +5,11 @@ package org.erights.e.elang.interp;
 
 /**
  * A no-argument, boolean returning function.
- * <p>
+ * <p/>
  * Used for the body of loops
  *
- * @see Loop
  * @author Mark S. Miller
+ * @see Loop
  */
 public interface LoopBody {
 

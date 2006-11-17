@@ -3,8 +3,8 @@
 
 package org.erights.e.elib.slot;
 
-import org.erights.e.elib.oldeio.TextWriter;
 import org.erights.e.develop.assertion.T;
+import org.erights.e.elib.oldeio.TextWriter;
 
 import java.io.IOException;
 
@@ -26,18 +26,24 @@ public class ReadOnlySlot implements Slot {
         return mySlot.getValue();
     }
 
-    /** Refuses */
+    /**
+     * Refuses
+     */
     public void setValue(Object specimen) {
         T.fail("A ReadOnlySlot may not be assigned to");
 
     }
 
-    /** Asks mySlot */
+    /**
+     * Asks mySlot
+     */
     public boolean isFinal() {
         return mySlot.isFinal();
     }
 
-    /** Returns itself */
+    /**
+     * Returns itself
+     */
     public Slot readOnly() {
         return this;
     }

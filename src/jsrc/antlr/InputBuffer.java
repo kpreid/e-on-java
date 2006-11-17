@@ -14,7 +14,6 @@ package antlr;
 //      There are two subclasses to this: CharBuffer and ByteBuffer
 
 
-
 /**
  * A Stream of characters fed to the lexer from a InputStream that can be
  * rewound via mark()/rewind() methods.

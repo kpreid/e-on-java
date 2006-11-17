@@ -92,9 +92,9 @@ public class ParserMatchEvent extends GuessingEvent {
     }
 
     public String toString() {
-        return "ParserMatchEvent [" + (isMatched() ? "ok," : "bad,") + (isInverse() ?
-          "NOT " :
-          "") +
-          (getType() == TOKEN ? "token," : "bitset,") + getValue() + "," + getTarget() + "," + getGuessing() + "]";
+        return "ParserMatchEvent [" + (isMatched() ? "ok," : "bad,") +
+          (isInverse() ? "NOT " : "") +
+          (getType() == TOKEN ? "token," : "bitset,") + getValue() + "," +
+          getTarget() + "," + getGuessing() + "]";
     }
 }

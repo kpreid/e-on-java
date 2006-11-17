@@ -116,8 +116,7 @@ public class EMethod extends ENode {
      * Uses XXX 'makeFoo(...)'
      */
     public Object[] getSpreadUncall() {
-        return new Object[]{
-          StaticMaker.make(EMethod.class),
+        return new Object[]{StaticMaker.make(EMethod.class),
           "run",
           getOptSpan(),
           myDocComment,

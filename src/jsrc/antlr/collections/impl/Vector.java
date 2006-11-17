@@ -86,7 +86,7 @@ public class Vector implements Cloneable {
             ;
         }
         if (i <= lastElement) { // if found it
-            data[i] = null;		// kill ref for GC
+            data[i] = null;                // kill ref for GC
             int above = lastElement - i;
             if (above > 0) {
                 System.arraycopy(data, i + 1, data, i, above);

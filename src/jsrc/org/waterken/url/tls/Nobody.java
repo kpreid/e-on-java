@@ -15,10 +15,10 @@ public final class Nobody {
     /**
      * The instance.
      */
-    private static final Host INSTANCE = new Host(
-      org.waterken.url.tls.sha1withrsa.Keyspace.make(),
-      null,
-      new javax.net.ssl.KeyManager[]{});
+    private static final Host INSTANCE =
+      new Host(org.waterken.url.tls.sha1withrsa.Keyspace.make(),
+               null,
+               new javax.net.ssl.KeyManager[]{});
 
     /**
      * Constructs a <code>Nobody</code>.

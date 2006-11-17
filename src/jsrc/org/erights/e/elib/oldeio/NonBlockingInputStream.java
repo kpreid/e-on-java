@@ -47,8 +47,8 @@ public class NonBlockingInputStream extends FilterInputStream {
     /**
      * Overridden to read at most available() bytes.
      * <p/>
-     * read(byte[]) isn't explicitly overridden since FilterInputStream
-     * defines it in terms of read(byte[], int, int).
+     * read(byte[]) isn't explicitly overridden since FilterInputStream defines
+     * it in terms of read(byte[], int, int).
      */
     public int read(byte b[], int off, int len) throws IOException {
         return super.read(b, off, StrictMath.min(available(), len));

@@ -55,8 +55,8 @@ public abstract class Grammar {
     protected Token preambleAction = new CommonToken(Token.INVALID_TYPE, "");
     protected String className = null;
     protected String fileName = null;
-    protected Token classMemberAction = new CommonToken(Token.INVALID_TYPE,
-                                                        "");
+    protected Token classMemberAction =
+      new CommonToken(Token.INVALID_TYPE, "");
     protected boolean hasSyntacticPredicate = false;
     protected boolean hasUserErrorHandling = false;
 
@@ -200,19 +200,18 @@ public abstract class Grammar {
                 maxk = getIntegerOption("k");
                 if (maxk <= 0) {
                     antlrTool.error("option 'k' must be greater than 0 (was " +
-                                    value.getText() + ")",
+                      value.getText() + ")",
                                     getFilename(),
                                     value.getLine(),
                                     value.getColumn());
                     maxk = 1;
                 }
             } catch (NumberFormatException e) {
-                antlrTool.error(
-                  "option 'k' must be an integer (was " + value.getText() +
-                  ")",
-                  getFilename(),
-                  value.getLine(),
-                  value.getColumn());
+                antlrTool.error("option 'k' must be an integer (was " +
+                  value.getText() + ")",
+                                getFilename(),
+                                value.getLine(),
+                                value.getColumn());
             }
             return true;
         }
@@ -260,11 +259,10 @@ public abstract class Grammar {
             } else if (s.equals("false")) {
                 analyzerDebug = false;
             } else {
-                antlrTool.error(
-                  "option 'analyzerDebug' must be true or false",
-                  getFilename(),
-                  value.getLine(),
-                  value.getColumn());
+                antlrTool.error("option 'analyzerDebug' must be true or false",
+                                getFilename(),
+                                value.getLine(),
+                                value.getColumn());
             }
             return true;
         }

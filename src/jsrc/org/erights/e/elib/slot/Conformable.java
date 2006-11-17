@@ -4,8 +4,8 @@
 package org.erights.e.elib.slot;
 
 /**
- * Implement this to be recognized as implementing the Miranda method
- * {@link org.erights.e.elib.prim.MirandaMethods#__conformTo __conformTo/1}.
+ * Implement this to be recognized as implementing the Miranda method {@link
+ * org.erights.e.elib.prim.MirandaMethods#__conformTo __conformTo/1}.
  *
  * @author Mark S. Miller
  */

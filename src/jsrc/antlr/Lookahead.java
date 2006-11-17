@@ -119,7 +119,7 @@ public class Lookahead implements Cloneable {
     }
 
     public void combineWith(Lookahead q) {
-        if (cycle == null) {	// track at least one cycle
+        if (cycle == null) {        // track at least one cycle
             cycle = q.cycle;
         }
 

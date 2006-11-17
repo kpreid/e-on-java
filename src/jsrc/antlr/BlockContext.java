@@ -16,7 +16,7 @@ package antlr;
 class BlockContext {
 
     AlternativeBlock block; // current block of alternatives
-    int altNum;				// which alt are we accepting 0..n-1
+    int altNum;                                // which alt are we accepting 0..n-1
     BlockEndElement blockEnd; // used if nested
 
 

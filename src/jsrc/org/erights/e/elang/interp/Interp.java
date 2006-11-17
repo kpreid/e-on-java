@@ -5,8 +5,8 @@ package org.erights.e.elang.interp;
 
 
 /**
- * @deprecated Use {@link Rune}
  * @author Mark S. Miller
+ * @deprecated Use {@link Rune}
  */
 public class Interp {
 

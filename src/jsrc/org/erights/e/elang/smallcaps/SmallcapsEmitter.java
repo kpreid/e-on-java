@@ -11,9 +11,9 @@ import java.math.BigInteger;
 
 /**
  * A code generator driven by abstract Smallcaps instructions.
- * <p>
- * Besides the obvious direct realization, a JVM code generator should
- * be feasible.
+ * <p/>
+ * Besides the obvious direct realization, a JVM code generator should be
+ * feasible.
  *
  * @author Mark S. Miller
  * @author Darius Bacon
@@ -21,9 +21,8 @@ import java.math.BigInteger;
 public interface SmallcapsEmitter {
 
     /**
-     * Return a value representing the current position in the code
-     * buffer.
-     * <p>
+     * Return a value representing the current position in the code buffer.
+     * <p/>
      * This is *not* an address; it's an opaque value used as an argument to
      * emitJump(), etc.
      */

@@ -40,7 +40,7 @@ import java.io.IOException;
 
 /**
  * BNF: eExpr "." verb "(" eExpr* ")"
- * <p>
+ * <p/>
  * A synchronous message call. Tells the expression's value to perform the
  * request now, and to pass an outcome (return a result, throw an exception,
  * non-local escape) synchronously back to the caller.
@@ -88,13 +88,13 @@ public class CallExpr extends EExpr implements EStackItem {
      * Uses XXX 'makeFoo(...)'
      */
     public Object[] getSpreadUncall() {
-        Object[] result = { StaticMaker.make(CallExpr.class),
-                            "run",
-                            getOptSpan(),
-                            myRecipient,
-                            myVerb,
-                            myArgs,
-                            getOptScopeLayout() };
+        Object[] result = {StaticMaker.make(CallExpr.class),
+          "run",
+          getOptSpan(),
+          myRecipient,
+          myVerb,
+          myArgs,
+          getOptScopeLayout()};
         return result;
     }
 
@@ -166,8 +166,8 @@ public class CallExpr extends EExpr implements EStackItem {
                                  bindings);
         if (!myVerb.equals(other.myVerb)) {
             throw Thrower.toEject(optEjector,
-                                  "Mismatch: ." + myVerb +
-                                  " vs ." + other.myVerb);
+                                  "Mismatch: ." + myVerb + " vs ." + other
+                                    .myVerb);
         }
         matchBind(myArgs, args, other.myArgs, optEjector, bindings);
     }

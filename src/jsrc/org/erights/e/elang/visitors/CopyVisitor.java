@@ -49,7 +49,6 @@ public class CopyVisitor extends KernelECopyVisitor {
                                     getOptScopeLayout());
     }
 
-
     /***************************** Patterns *************************/
 
     /**

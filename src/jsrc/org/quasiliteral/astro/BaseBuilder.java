@@ -43,12 +43,12 @@ public abstract class BaseBuilder implements AstroBuilder {
     /**
      * Actually makes the kind of leaf this builder makes.
      * <p/>
-     * This is '*Internal' and 'protected' because it assumes that the
-     * general invariants among the arguments are already ensured. It is up
-     * to the callers of leafInternal to ensure this.
+     * This is '*Internal' and 'protected' because it assumes that the general
+     * invariants among the arguments are already ensured. It is up to the
+     * callers of leafInternal to ensure this.
      *
-     * @param tag     Identifies a token type in a particular grammar or set
-     *                of related grammars.
+     * @param tag     Identifies a token type in a particular grammar or set of
+     *                related grammars.
      * @param optData null, or something that promotes to a {@link Character},
      *                {@link EInt}, {@link Double}, or {@link Twine} presumably
      *                calculated from lexing this token. If not null, then if
@@ -120,9 +120,7 @@ public abstract class BaseBuilder implements AstroBuilder {
     }
 
     public Astro leafTwine(Twine data, SourceSpan optSpan) {
-        return leafInternal(mySchema.getLiteralStringTag(),
-                            data,
-                            optSpan);
+        return leafInternal(mySchema.getLiteralStringTag(), data, optSpan);
     }
 
     public Astro term(Astro functor) {
@@ -130,18 +128,15 @@ public abstract class BaseBuilder implements AstroBuilder {
     }
 
     public Astro tuple(AstroArg args) {
-        return term(leafTag(mySchema.obtainTagForName(".tuple."), null),
-                    args);
+        return term(leafTag(mySchema.obtainTagForName(".tuple."), null), args);
     }
 
     public Astro bag(AstroArg args) {
-        return term(leafTag(mySchema.obtainTagForName(".bag."), null),
-                    args);
+        return term(leafTag(mySchema.obtainTagForName(".bag."), null), args);
     }
 
     public Astro attr(Astro functor, AstroArg value) {
-        return term(leafTag(mySchema.obtainTagForName(".attr."),
-                            null),
+        return term(leafTag(mySchema.obtainTagForName(".attr."), null),
                     term(functor, value));
     }
 
@@ -161,7 +156,8 @@ public abstract class BaseBuilder implements AstroBuilder {
      */
     public AstroArg unpack(Astro litChars) {
         T.require("LiteralChars" == litChars.getTag().getTagName(),
-                  "Expected LiteralChars rather than ", litChars);
+                  "Expected LiteralChars rather than ",
+                  litChars);
         String str = ((Twine)litChars.getOptArgData()).bare();
         AstroArg result = empty();
         for (int i = 0, len = str.length(); i < len; i++) {

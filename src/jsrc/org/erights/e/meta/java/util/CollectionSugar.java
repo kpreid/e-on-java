@@ -5,7 +5,6 @@ package org.erights.e.meta.java.util;
 
 import org.erights.e.elib.tables.AssocFunc;
 
-import java.util.Iterator;
 import java.util.Collection;
 
 /**

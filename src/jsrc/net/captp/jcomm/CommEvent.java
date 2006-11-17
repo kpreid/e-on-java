@@ -67,12 +67,14 @@ public final class CommEvent implements EPrintable {
     public void printContextOn(TextWriter out) throws IOException {
         out.println();
         out.print("comm: ",
-                  myOutgoingID, " -> ", myIncomingID, " #" + myMsgCount);
+                  myOutgoingID,
+                  " -> ",
+                  myIncomingID,
+                  " #" + myMsgCount);
         mySendingContext.printContextOn(out);
     }
 
     /**
-     *
      * @param out
      * @throws java.io.IOException
      */

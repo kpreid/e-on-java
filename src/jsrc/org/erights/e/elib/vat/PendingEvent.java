@@ -35,9 +35,8 @@ public abstract class PendingEvent implements Runnable, EPrintable {
     private final SendingContext mySendingContext;
 
     /**
-     * @param vat The Vat onto which this PendingEvent will be
-     *            queued. Note that this may be different than
-     *            {@link Vat#getCurrentVat()}.
+     * @param vat The Vat onto which this PendingEvent will be queued. Note
+     *            that this may be different than {@link Vat#getCurrentVat()}.
      */
     PendingEvent(String tag, Vat vat) {
         myVat = vat;
@@ -46,11 +45,10 @@ public abstract class PendingEvent implements Runnable, EPrintable {
     }
 
     /**
-     * @param context The context to be recorded as the one causing this
-     *                event to be queued.
-     * @param vat     The Vat onto which this PendingEvent will be
-     *                queued. Note that this may be different than
-     *                {@link Vat#getCurrentVat()}.
+     * @param context The context to be recorded as the one causing this event
+     *                to be queued.
+     * @param vat     The Vat onto which this PendingEvent will be queued. Note
+     *                that this may be different than {@link Vat#getCurrentVat()}.
      */
     PendingEvent(String tag, Vat vat, SendingContext context) {
         myVat = vat;
@@ -125,7 +123,6 @@ public abstract class PendingEvent implements Runnable, EPrintable {
     }
 
     /**
-     *
      * @param out
      * @throws IOException
      */

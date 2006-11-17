@@ -8,7 +8,6 @@ package antlr;
  */
 
 
-
 /**
  * An LL(k) parser.
  *
@@ -59,8 +58,9 @@ public class LLkParser extends Parser {
 
     private void trace(String ee, String rname) throws TokenStreamException {
         traceIndent();
-        System.out.print(
-          ee + rname + ((inputState.guessing > 0) ? "; [guessing]" : "; "));
+        System.out
+          .print(
+            ee + rname + ((inputState.guessing > 0) ? "; [guessing]" : "; "));
         for (int i = 1; i <= k; i++) {
             if (i != 1) {
                 System.out.print(", ");

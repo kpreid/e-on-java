@@ -12,8 +12,8 @@ import org.erights.e.elib.util.OneArgFunc;
 import java.io.IOException;
 
 /**
- * A mutable Slot that remembers a current value, and remembers a Guard
- * for coercing new values.
+ * A mutable Slot that remembers a current value, and remembers a Guard for
+ * coercing new values.
  *
  * @author Mark S. Miller
  */
@@ -27,12 +27,10 @@ public class SettableSlot implements Slot, PassByProxy {
     private Object myValue;
 
     /**
-     * Provide an already coerced value, and therefore don't need to provide
-     * an optEjector.
+     * Provide an already coerced value, and therefore don't need to provide an
+     * optEjector.
      */
-    public SettableSlot(Guard guard,
-                        Object specimen,
-                        OneArgFunc optEjector) {
+    public SettableSlot(Guard guard, Object specimen, OneArgFunc optEjector) {
         myGuard = guard;
         myValue = guard.coerce(specimen, optEjector);
     }

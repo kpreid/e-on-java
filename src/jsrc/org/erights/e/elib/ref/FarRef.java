@@ -29,11 +29,11 @@ Contributor(s): ______________________________________.
  * A FarRef is a EProxy intended to be a Resolved Ref to a particular
  * PassByProxy object in a remote Vat. <p>
  * <p/>
- * A FarRef starts out EVENTUAL but may become BROKEN. However, it continues
- * to have whatever settled identity it was born with, and so may be used as
- * a key in EMaps (hashtables). Once a FarRef becomes BROKEN, it severs its
- * connection with its handler. A FarRef is an HONORARY Selfless object
- * (since it's not transparent -- it encapsulates its myIdentity).
+ * A FarRef starts out EVENTUAL but may become BROKEN. However, it continues to
+ * have whatever settled identity it was born with, and so may be used as a key
+ * in EMaps (hashtables). Once a FarRef becomes BROKEN, it severs its
+ * connection with its handler. A FarRef is an HONORARY Selfless object (since
+ * it's not transparent -- it encapsulates its myIdentity).
  *
  * @author Mark S. Miller
  */
@@ -53,11 +53,11 @@ class FarRef extends EProxy {
     }
 
     /**
-     * As an HONORARY Selfless object, my .equals() and .hashCode()
-     * determine sameness. <p>
+     * As an HONORARY Selfless object, my .equals() and .hashCode() determine
+     * sameness. <p>
      * <p/>
-     * NOTE: Uses myIdentity's .equals(), which is safe, as myIdentity must
-     * be an honorary Selfless object.
+     * NOTE: Uses myIdentity's .equals(), which is safe, as myIdentity must be
+     * an honorary Selfless object.
      */
     public boolean equals(Object other) {
         other = Ref.resolution(other);
@@ -71,8 +71,8 @@ class FarRef extends EProxy {
     }
 
     /**
-     * As an HONORARY Selfless object, my .equals() and .hashCode()
-     * determine sameness. <p>
+     * As an HONORARY Selfless object, my .equals() and .hashCode() determine
+     * sameness. <p>
      * <p/>
      * NOTE: Uses myIdentity's .hashCode(), which is safe, as myIdentity must
      * be an honorary Selfless object.
@@ -114,7 +114,6 @@ class FarRef extends EProxy {
     }
 
     /**
-     *
      * @param out
      * @throws IOException
      */

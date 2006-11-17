@@ -131,7 +131,9 @@ public class TokenMultiBuffer extends TokenBuffer {
             stream = s;
             next = n;
         }
-    };
+    }
+
+    ;
 
     private void trace(String header) {
 //        System.err.print(header + " [" + findName(input));

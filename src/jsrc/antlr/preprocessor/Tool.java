@@ -22,7 +22,7 @@ public class Tool {
     protected Hierarchy theHierarchy;
     protected String grammarFileName;
     protected String[] args;
-    protected int nargs;		// how many args in new args list
+    protected int nargs;                // how many args in new args list
     protected Vector grammars;
     protected antlr.Tool antlrTool;
 
@@ -67,17 +67,19 @@ public class Tool {
         }
         theHierarchy.expandGrammarsInFile(grammarFileName);
         GrammarFile gf = theHierarchy.getFile(grammarFileName);
-        String expandedFileName = gf.nameForExpandedGrammarFile(
-          grammarFileName);
+        String expandedFileName =
+          gf.nameForExpandedGrammarFile(grammarFileName);
 
         // generate the output file if necessary
         if (expandedFileName.equals(grammarFileName)) {
-            args[nargs++] = grammarFileName;			// add to argument list
+            args[nargs++] =
+              grammarFileName;                        // add to argument list
         } else {
             try {
-                gf.generateExpandedFile(); 				// generate file to feed ANTLR
+                gf.generateExpandedFile();                                 // generate file to feed ANTLR
                 args[nargs++] = antlrTool.getOutputDirectory() +
-                  System.getProperty("file.separator") + expandedFileName;		// add to argument list
+                  System.getProperty("file.separator") +
+                  expandedFileName;                // add to argument list
             } catch (IOException io) {
                 antlrTool.toolError(
                   "cannot write expanded grammar file " + expandedFileName);
@@ -139,7 +141,7 @@ public class Tool {
                 if (grammars == null) {
                     grammars = new Vector(10);
                 }
-                grammars.appendElement(grammarFileName);	// process it too
+                grammars.appendElement(grammarFileName);        // process it too
                 if ((i + 1) < incomingArgs.length) {
                     antlrTool.warning(
                       "grammar file must be last; ignoring other arguments...");

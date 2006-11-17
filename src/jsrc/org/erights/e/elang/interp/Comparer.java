@@ -7,7 +7,6 @@ import org.erights.e.elib.prim.E;
 import org.erights.e.elib.prim.Selector;
 
 /**
- *
  * @author Mark S. Miller
  */
 public class Comparer {
@@ -18,7 +17,8 @@ public class Comparer {
     static private final Selector BELOW_ZERO = new Selector("belowZero", 0);
     static private final Selector AT_MOST_ZERO = new Selector("atMostZero", 0);
     static private final Selector IS_ZERO = new Selector("isZero", 0);
-    static private final Selector AT_LEAST_ZERO =new Selector("atLeastZero",0);
+    static private final Selector AT_LEAST_ZERO =
+      new Selector("atLeastZero", 0);
     static private final Selector ABOVE_ZERO = new Selector("aboveZero", 0);
 
     private Comparer() {
@@ -28,7 +28,7 @@ public class Comparer {
      *
      */
     public Object compare(Object a, Object b) {
-        Object[] args = { b };
+        Object[] args = {b};
         return COMPARE_TO.callIt(a, args);
     }
 
@@ -61,7 +61,7 @@ public class Comparer {
     }
 
     /**
-     * 
+     *
      */
     public Object greaterThan(Object a, Object b) {
         return ABOVE_ZERO.callIt(compare(a, b), E.NO_ARGS);

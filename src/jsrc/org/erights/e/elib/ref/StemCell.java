@@ -17,34 +17,34 @@ import java.io.ObjectInputStream;
 import java.io.ObjectInputValidation;
 
 /**
- * An object can writeReplace itself with a StemCell when serialized in
- * order to resolve to the StemCell's readResolve, but with circular
- * references handled as correctly as possible.
+ * An object can writeReplace itself with a StemCell when serialized in order
+ * to resolve to the StemCell's readResolve, but with circular references
+ * handled as correctly as possible.
  * <p/>
- * A known problem with Java Unserialization is that a circular reference to
- * an encoded object A may get bound to A itself rather than what A
- * readResolves to. For statically typed circular references, or circular
- * references that are synchronously used before the cycle is closed, there's
- * nothing we can do about this other than fail safely (which, unlike raw
- * Java serialization, we do).
+ * A known problem with Java Unserialization is that a circular reference to an
+ * encoded object A may get bound to A itself rather than what A readResolves
+ * to. For statically typed circular references, or circular references that
+ * are synchronously used before the cycle is closed, there's nothing we can do
+ * about this other than fail safely (which, unlike raw Java serialization, we
+ * do).
  * <p/>
  * For the sake of other circular references, an unserialized StemCell starts
- * as a promise for what it will readResolve to. Once it readResolves,
- * the promise is also resolved, so further references encoded as references
- * to the StemCell will be decoded as this resolution.
+ * as a promise for what it will readResolve to. Once it readResolves, the
+ * promise is also resolved, so further references encoded as references to the
+ * StemCell will be decoded as this resolution.
  * <p/>
  * On the encoding side, a made StemCell (as opposed to an unserialized
  * StemCell) is a very weird creature. It appears to be an eventual resolved
  * reference (a far reference), but will not deliver any messages, since the
  * object it designates doesn't exist until the StemCell is unserialized. By
- * the same token, we did not make it appear to be a broken reference,
- * because it will become a live reference to the object it makes once it's
- * unserialized. In any case, a made Stem should only be used for an object
- * to instruct its serializer on how to encode it.
+ * the same token, we did not make it appear to be a broken reference, because
+ * it will become a live reference to the object it makes once it's
+ * unserialized. In any case, a made Stem should only be used for an object to
+ * instruct its serializer on how to encode it.
  * <p/>
- * XXX StemCell should be declared abstract, but this is commented out in
- * order to work around a {@link test.foo.Class2 bug} in Sun's j2sdk1.4.1's
- * javac compiler.
+ * XXX StemCell should be declared abstract, but this is commented out in order
+ * to work around a {@link test.foo.Class2 bug} in Sun's j2sdk1.4.1's javac
+ * compiler.
  *
  * @author Mark S. Miller
  */
@@ -54,17 +54,15 @@ public /*abstract*/ class StemCell extends Ref
     static private final long serialVersionUID = 3574625250011981396L;
 
     /**
-     * null on the encoding side for a made StemCell.
-     * Unresolved during the unserializing of the StemCell itself.
-     * Resolved to the StemCell's resolution once the StemCell is fully
-     * unserialized.
+     * null on the encoding side for a made StemCell. Unresolved during the
+     * unserializing of the StemCell itself. Resolved to the StemCell's
+     * resolution once the StemCell is fully unserialized.
      */
     private transient Ref myOptPromise;
 
     /**
-     * Subclasses must define a readResolve() that both returns the
-     * resolution of the StemCell, and resolves this resolver to that
-     * resolution.
+     * Subclasses must define a readResolve() that both returns the resolution
+     * of the StemCell, and resolves this resolver to that resolution.
      */
     protected transient Resolver myOptResolver;
 
@@ -120,9 +118,9 @@ public /*abstract*/ class StemCell extends Ref
      * according to its promise.
      * <p/>
      * All implementations of <tt>resolutionRef/0</tt> must be thread safe, in
-     * order for {@link Ref#resolution() Ref.resolution/0} to be thread
-     * safe: myOptPromise is not meaningfully mutable, so this implementation
-     * is trivially inductively thread safe.
+     * order for {@link Ref#resolution() Ref.resolution/0} to be thread safe:
+     * myOptPromise is not meaningfully mutable, so this implementation is
+     * trivially inductively thread safe.
      */
     Ref resolutionRef() {
         if (null == myOptPromise) {
@@ -200,7 +198,6 @@ public /*abstract*/ class StemCell extends Ref
     }
 
     /**
-     *
      * @throws InvalidObjectException
      */
     public void validateObject() throws InvalidObjectException {

@@ -42,8 +42,8 @@ import java.io.FileReader;
 import java.io.IOException;
 
 /**
- * Breaks textually input into a stream of tokens according to the E
- * language's defined grammar.
+ * Breaks textually input into a stream of tokens according to the E language's
+ * defined grammar.
  *
  * @author Mark S. Miller
  */
@@ -66,8 +66,7 @@ public class ELexer extends BaseLexer {
      */
     public ELexer(LineFeeder optLineFeeder,
                   boolean partialFlag,
-                  boolean noTabsFlag)
-      throws IOException {
+                  boolean noTabsFlag) throws IOException {
         this(optLineFeeder, partialFlag, noTabsFlag, FOR_TERMS);
     }
 
@@ -77,29 +76,22 @@ public class ELexer extends BaseLexer {
     public ELexer(LineFeeder optLineFeeder,
                   boolean partialFlag,
                   boolean noTabsFlag,
-                  AstroBuilder builder)
-      throws IOException {
-        super(optLineFeeder,
-              EParser.EOL,
-              EParser.EOTLU,
-              partialFlag,
-              false, //For E, the quasiFlag is handled instead by wrapping the
+                  AstroBuilder builder) throws IOException {
+        super(optLineFeeder, EParser.EOL, EParser.EOTLU, partialFlag, false,
+              //For E, the quasiFlag is handled instead by wrapping the
               //LineFeeder with a QuasiFeeder
-              noTabsFlag,
-              builder);
+              noTabsFlag, builder);
     }
 
     /**
      * @param sourceCode The source code itself
-     * @param quasiFlag Should doubled @ and $ be collapsed to singles?
-     * @param noTabsFlag Should tabs be rejected as valid whitespace?
-     *                   Assumed to correspond to the e.enable.notabs
-     *                   property.
+     * @param quasiFlag  Should doubled @ and $ be collapsed to singles?
+     * @param noTabsFlag Should tabs be rejected as valid whitespace? Assumed
+     *                   to correspond to the e.enable.notabs property.
      */
     static public ELexer make(Twine sourceCode,
                               boolean quasiFlag,
-                              boolean noTabsFlag)
-      throws IOException {
+                              boolean noTabsFlag) throws IOException {
         LineFeeder lineFeeder = new TwineFeeder(sourceCode);
         if (quasiFlag) {
             lineFeeder = new QuasiFeeder(lineFeeder);
@@ -161,455 +153,401 @@ public class ELexer extends BaseLexer {
         startToken();
 
         switch (myChar) {
-        case ';':
-        case ',':
-        case '~':
-        case '?':
-            {
-                char c = myChar;
+        case';':
+        case',':
+        case'~':
+        case'?': {
+            char c = myChar;
+            nextChar();
+            return leafTag((short)c, endSpan());
+        }
+        case EOFCHAR: {
+            return leafTag(EOFTOK, null);
+        }
+        case'\n': {
+            myDelayedNextChar = true;
+            return leafEOL();
+        }
+        case'(': {
+            return openBracket(')');
+        }
+        case')': {
+            return closeBracket();
+        }
+        case'{': {
+            return openBracket('}');
+        }
+        case'}': {
+            Astro result = closeBracket();
+            myIndenter.popIf('$');
+            return result;
+        }
+        case'[': {
+            return openBracket(']');
+        }
+        case']': {
+            return closeBracket();
+        }
+        case'$': {
+            nextChar();
+            if (myChar == '{') {
+                //A '${' opens a '}'
                 nextChar();
-                return leafTag((short)c, endSpan());
-            }
-        case EOFCHAR:
-            {
-                return leafTag(EOFTOK, null);
-            }
-        case '\n':
-            {
-                myDelayedNextChar = true;
-                return leafEOL();
-            }
-        case '(':
-            {
-                return openBracket(')');
-            }
-        case ')':
-            {
-                return closeBracket();
-            }
-        case '{':
-            {
-                return openBracket('}');
-            }
-        case '}':
-            {
-                Astro result = closeBracket();
+                return openBracket(EParser.DollarOpen, endToken(), '}');
+
+            } else if (isIdentifierStart(myChar)) {
+
+                //A '$<ident>' closes a '$' if there was one.
+                do {
+                    nextChar();
+                } while (isIdentifierPart(myChar));
+                Twine name = endToken();
+                String key = name.bare().substring(1);
+                if (-1 != optKeywordType(key)) {
+                    syntaxError(key + " is a keyword");
+                }
                 myIndenter.popIf('$');
-                return result;
+                return composite(EParser.DollarIdent, key, name.getOptSpan());
             }
-        case '[':
-            {
-                return openBracket(']');
-            }
-        case ']':
-            {
-                return closeBracket();
-            }
-        case '$':
-            {
+            return leafTag((short)'$', endSpan());
+        }
+        case'@': {
+            nextChar();
+            if (myChar == '{') {
+                //A '@{' opens a '}'
                 nextChar();
-                if (myChar == '{') {
-                    //A '${' opens a '}'
-                    nextChar();
-                    return openBracket(EParser.DollarOpen,
-                                       endToken(),
-                                       '}');
+                return openBracket(EParser.AtOpen, endToken(), '}');
 
-                } else if (isIdentifierStart(myChar)) {
+            } else if (myChar == '_' && !isIdentifierPart(peekChar())) {
 
-                    //A '$<ident>' closes a '$' if there was one.
-                    do {
-                        nextChar();
-                    } while (isIdentifierPart(myChar));
-                    Twine name = endToken();
-                    String key = name.bare().substring(1);
-                    if (-1 != optKeywordType(key)) {
-                        syntaxError(key + " is a keyword");
-                    }
-                    myIndenter.popIf('$');
-                    return composite(EParser.DollarIdent,
-                                     key,
-                                     name.getOptSpan());
-                }
-                return leafTag((short)'$', endSpan());
-            }
-        case '@':
-            {
+                //A '@_' closes a '$' if there was one.
                 nextChar();
-                if (myChar == '{') {
-                    //A '@{' opens a '}'
-                    nextChar();
-                    return openBracket(EParser.AtOpen,
-                                       endToken(),
-                                       '}');
+                Twine name = endToken();
+                myIndenter.popIf('$');
+                return composite(EParser.AtIdent, "_", name.getOptSpan());
 
-                } else if (myChar == '_' &&
-                  !isIdentifierPart(peekChar())) {
+            } else if (isIdentifierStart(myChar)) {
 
-                    //A '@_' closes a '$' if there was one.
+                //A '@<ident>' closes a '@' if there was one.
+                do {
                     nextChar();
-                    Twine name = endToken();
-                    myIndenter.popIf('$');
-                    return composite(EParser.AtIdent,
-                                     "_",
-                                     name.getOptSpan());
-
-                } else if (isIdentifierStart(myChar)) {
-
-                    //A '@<ident>' closes a '@' if there was one.
-                    do {
-                        nextChar();
-                    } while (isIdentifierPart(myChar));
-                    Twine name = endToken();
-                    String key = name.bare().substring(1);
-                    if (-1 != optKeywordType(key)) {
-                        syntaxError(key + " is a keyword");
-                    }
-                    myIndenter.popIf('$');
-                    return composite(EParser.AtIdent,
-                                     key,
-                                     name.getOptSpan());
+                } while (isIdentifierPart(myChar));
+                Twine name = endToken();
+                String key = name.bare().substring(1);
+                if (-1 != optKeywordType(key)) {
+                    syntaxError(key + " is a keyword");
                 }
-                return leafTag((short)'@', endSpan());
+                myIndenter.popIf('$');
+                return composite(EParser.AtIdent, key, name.getOptSpan());
             }
-        case '.':
-            {
+            return leafTag((short)'@', endSpan());
+        }
+        case'.': {
+            nextChar();
+            if (myChar == '.') {
                 nextChar();
-                if (myChar == '.') {
+                if (myChar == '!') {
                     nextChar();
-                    if (myChar == '!') {
-                        nextChar();
-                        return leafTag(EParser.OpTill,
-                                       endSpan());
-                    }
-                    return leafTag(EParser.OpThru,
-                                   endSpan());
+                    return leafTag(EParser.OpTill, endSpan());
                 }
-                return leafTag((short)'.', endSpan());
+                return leafTag(EParser.OpThru, endSpan());
             }
-        case '^':
-            {
+            return leafTag((short)'.', endSpan());
+        }
+        case'^': {
+            nextChar();
+            if (myChar == '=') {
                 nextChar();
-                if (myChar == '=') {
-                    nextChar();
-                    return leafTag(EParser.OpAssXor,
-                                   endSpan());
-                }
-                return leafTag((short)'^', endSpan());
+                return leafTag(EParser.OpAssXor, endSpan());
             }
-        case '+':
-            {
+            return leafTag((short)'^', endSpan());
+        }
+        case'+': {
+            nextChar();
+            if (myChar == '=') {
                 nextChar();
-                if (myChar == '=') {
-                    nextChar();
-                    return leafTag(EParser.OpAssAdd,
-                                   endSpan());
-                } else if (myChar == '+') {
-                    nextChar();
-                    syntaxError("token \"++\" is reserved");
-                    return null; //keep compiler happy
-                }
-                return leafTag((short)'+', endSpan());
-            }
-        case '-':
-            {
+                return leafTag(EParser.OpAssAdd, endSpan());
+            } else if (myChar == '+') {
                 nextChar();
-                if (myChar == '=') {
-                    nextChar();
-                    return leafTag(EParser.OpAssSub,
-                                   endSpan());
-                } else if (myChar == '>') {
-                    nextChar();
-                    return leafTag(EParser.OpWhen,
-                                   endSpan());
-                } else if (myChar == '-') {
-                    nextChar();
-                    syntaxError("token \"--\" is reserved");
-                    return null; //keep compiler happy
-                }
-                return leafTag((short)'-', endSpan());
+                syntaxError("token \"++\" is reserved");
+                return null; //keep compiler happy
             }
-        case ':':
-            {
+            return leafTag((short)'+', endSpan());
+        }
+        case'-': {
+            nextChar();
+            if (myChar == '=') {
                 nextChar();
-                if (myChar == '=') {
-                    nextChar();
-                    return leafTag(EParser.OpAss,
-                                   endSpan());
-                } else if (myChar == ':') {
-                    nextChar();
-                    return leafTag(EParser.OpScope,
-                                   endSpan());
-                }
-                return leafTag((short)':', endSpan());
-            }
-        case '<':
-            {
+                return leafTag(EParser.OpAssSub, endSpan());
+            } else if (myChar == '>') {
                 nextChar();
-                if (myChar == '-') {
-                    nextChar();
-                    if (myChar == '*') {
-                        nextChar();
-                        syntaxError("token \"<-*\" is reserved");
-                        return null; //keep compiler happy
-                    }
-                    return leafTag(EParser.Send, endSpan());
-                } else if (myChar == '=') {
-                    nextChar();
-                    if (myChar == '>') {
-                        nextChar();
-                        return leafTag(EParser.OpABA, endSpan());
-                    }
-                    return leafTag(EParser.OpLeq, endSpan());
-                } else if (myChar == '<') {
-                    nextChar();
-                    if (myChar == '=') {
-                        nextChar();
-                        return leafTag(EParser.OpAssAsl, endSpan());
-                    }
-                    return leafTag(EParser.OpAsl, endSpan());
-                } else if (isIdentifierStart(myChar)) {
-                    Astro optResult = optUri();
-                    if (null != optResult) {
-                        return optResult;
-                    }
-                }
-                return leafTag((short)'<', endSpan());
-            }
-        case '>':
-            {
+                return leafTag(EParser.OpWhen, endSpan());
+            } else if (myChar == '-') {
                 nextChar();
-                if (myChar == '=') {
-                    nextChar();
-                    return leafTag(EParser.OpGeq, endSpan());
-                } else if (myChar == '>') {
-                    nextChar();
-                    if (myChar == '=') {
-                        nextChar();
-                        return leafTag(EParser.OpAssAsr, endSpan());
-                    }
-                    return leafTag(EParser.OpAsr, endSpan());
-                }
-                return leafTag((short)'>', endSpan());
+                syntaxError("token \"--\" is reserved");
+                return null; //keep compiler happy
             }
-        case '*':
-            {
+            return leafTag((short)'-', endSpan());
+        }
+        case':': {
+            nextChar();
+            if (myChar == '=') {
+                nextChar();
+                return leafTag(EParser.OpAss, endSpan());
+            } else if (myChar == ':') {
+                nextChar();
+                return leafTag(EParser.OpScope, endSpan());
+            }
+            return leafTag((short)':', endSpan());
+        }
+        case'<': {
+            nextChar();
+            if (myChar == '-') {
                 nextChar();
                 if (myChar == '*') {
                     nextChar();
-                    if (myChar == '=') {
-                        nextChar();
-                        return leafTag(EParser.OpAssPow, endSpan());
-                    }
-                    return leafTag(EParser.OpPow, endSpan());
-                } else if (myChar == '=') {
-                    nextChar();
-                    return leafTag(EParser.OpAssMul, endSpan());
-                } else if (myChar == '-' && peekChar('>')) {
-                    nextChar();
-                    nextChar();
-                    syntaxError("token \"*->\" is reserved");
+                    syntaxError("token \"<-*\" is reserved");
                     return null; //keep compiler happy
-                } else if (myChar == '/') {
-                    nextChar();
-                    syntaxError("'/*..*/' comments are reserved. " +
-                                "Use '#' on each line instead");
                 }
-                return leafTag((short)'*', endSpan());
-            }
-        case '/':
-            {
+                return leafTag(EParser.Send, endSpan());
+            } else if (myChar == '=') {
+                nextChar();
+                if (myChar == '>') {
+                    nextChar();
+                    return leafTag(EParser.OpABA, endSpan());
+                }
+                return leafTag(EParser.OpLeq, endSpan());
+            } else if (myChar == '<') {
                 nextChar();
                 if (myChar == '=') {
                     nextChar();
-                    return leafTag(EParser.OpAssAprxDiv, endSpan());
-                } else if (myChar == '/') {
-                    nextChar();
-                    if (myChar == '=') {
-                        nextChar();
-                        return leafTag(EParser.OpAssFlrDiv, endSpan());
-                    }
-                    return leafTag(EParser.OpFlrDiv, endSpan());
-                } else if (myChar == '*') {
-                    nextChar();
-                    if (myChar == '*') {
-                        nextChar();
-                        return docComment(EParser.DocComment);
-                    }
-                    syntaxError("'/*..*/' comments are reserved. " +
-                                "Use '#' on each line instead," +
-                                " or '/**' for doc-comments.");
+                    return leafTag(EParser.OpAssAsl, endSpan());
                 }
-                return leafTag((short)'/', endSpan());
+                return leafTag(EParser.OpAsl, endSpan());
+            } else if (isIdentifierStart(myChar)) {
+                Astro optResult = optUri();
+                if (null != optResult) {
+                    return optResult;
+                }
             }
-        case '#':
-            {
-                // Skip comment to end of line
+            return leafTag((short)'<', endSpan());
+        }
+        case'>': {
+            nextChar();
+            if (myChar == '=') {
+                nextChar();
+                return leafTag(EParser.OpGeq, endSpan());
+            } else if (myChar == '>') {
+                nextChar();
+                if (myChar == '=') {
+                    nextChar();
+                    return leafTag(EParser.OpAssAsr, endSpan());
+                }
+                return leafTag(EParser.OpAsr, endSpan());
+            }
+            return leafTag((short)'>', endSpan());
+        }
+        case'*': {
+            nextChar();
+            if (myChar == '*') {
+                nextChar();
+                if (myChar == '=') {
+                    nextChar();
+                    return leafTag(EParser.OpAssPow, endSpan());
+                }
+                return leafTag(EParser.OpPow, endSpan());
+            } else if (myChar == '=') {
+                nextChar();
+                return leafTag(EParser.OpAssMul, endSpan());
+            } else if (myChar == '-' && peekChar('>')) {
+                nextChar();
+                nextChar();
+                syntaxError("token \"*->\" is reserved");
+                return null; //keep compiler happy
+            } else if (myChar == '/') {
+                nextChar();
+                syntaxError("'/*..*/' comments are reserved. " +
+                  "Use '#' on each line instead");
+            }
+            return leafTag((short)'*', endSpan());
+        }
+        case'/': {
+            nextChar();
+            if (myChar == '=') {
+                nextChar();
+                return leafTag(EParser.OpAssAprxDiv, endSpan());
+            } else if (myChar == '/') {
+                nextChar();
+                if (myChar == '=') {
+                    nextChar();
+                    return leafTag(EParser.OpAssFlrDiv, endSpan());
+                }
+                return leafTag(EParser.OpFlrDiv, endSpan());
+            } else if (myChar == '*') {
+                nextChar();
+                if (myChar == '*') {
+                    nextChar();
+                    return docComment(EParser.DocComment);
+                }
+                syntaxError("'/*..*/' comments are reserved. " +
+                  "Use '#' on each line instead," +
+                  " or '/**' for doc-comments.");
+            }
+            return leafTag((short)'/', endSpan());
+        }
+        case'#': {
+            // Skip comment to end of line
+            skipLine();
+            return leafEOL();
+        }
+        case'\\': {
+            nextChar();
+            if (myChar == 'u' || myChar == 'U') {
+                syntaxError("\\u... not yet implemented");
+                return null; //keep compiler happy
+            }
+            //an escaped newline is insensitive to trailing
+            //whitespace, since that's invisible anyway.
+            skipWhiteSpace();
+            if (myChar == '\n') {
+                myContinueCount = 2;
                 skipLine();
-                return leafEOL();
-            }
-        case '\\':
-            {
-                nextChar();
-                if (myChar == 'u' || myChar == 'U') {
-                    syntaxError("\\u... not yet implemented");
-                    return null; //keep compiler happy
-                }
-                //an escaped newline is insensitive to trailing
-                //whitespace, since that's invisible anyway.
-                skipWhiteSpace();
-                if (myChar == '\n') {
-                    myContinueCount = 2;
-                    skipLine();
-                    stopToken();
-                    Astro result = getNextToken();
-                    if (result.getOptTagCode() == EOFTOK) {
-                        needMore("continued line");
-                        return null; //make compiler happy
-                    } else {
-                        return result;
-                    }
-                }
-                syntaxError("unrecognized escape");
-                return null; //keep compiler happy
-            }
-        case '%':
-            {
-                nextChar();
-                if (myChar == '%') {
-                    nextChar();
-                    if (myChar == '=') {
-                        // check for "%%="
-                        nextChar();
-                        return leafTag(EParser.OpAssMod, endSpan());
-                    }
-                    return leafTag(EParser.OpMod, endSpan());
-                } else if (myChar == '=') {
-                    // check for "%="
-                    nextChar();
-                    return leafTag(EParser.OpAssRemdr, endSpan());
-                }
-                return leafTag((short)'%', endSpan());
-            }
-        case '!':
-            {
-                nextChar();
-                if (myChar == '=') {
-                    nextChar();
-                    return leafTag(EParser.OpNSame, endSpan());
-                } else if (myChar == '~') {
-                    nextChar();
-                    return leafTag(EParser.MisMatch, endSpan());
-                }
-                return leafTag((short)'!', endSpan());
-            }
-        case '=':
-            {
-                nextChar();
-                if (myChar == '=') {
-                    nextChar();
-                    return leafTag(EParser.OpSame, endSpan());
-                } else if (myChar == '>') {
-                    nextChar();
-                    return leafTag(EParser.MapsTo, endSpan());
-                } else if (myChar == '~') {
-                    nextChar();
-                    return leafTag(EParser.MatchBind, endSpan());
-                }
-                syntaxError
-                  ("use ':=' for assignment, or '==' for equality");
-                return null; //keep compiler happy
-            }
-        case '&':
-            {
-                nextChar();
-                if (myChar == '&') {
-                    nextChar();
-                    return leafTag(EParser.OpLAnd, endSpan());
-                } else if (myChar == '=') {
-                    nextChar();
-                    return leafTag(EParser.OpAssAnd, endSpan());
-                } else if (myChar == '!') {
-                    nextChar();
-                    return leafTag(EParser.OpButNot, endSpan());
-                }
-                return leafTag((short)'&', endSpan());
-            }
-        case '|':
-            {
-                nextChar();
-                if (myChar == '|') {
-                    nextChar();
-                    return leafTag(EParser.OpLOr, endSpan());
-                } else if (myChar == '=') {
-                    nextChar();
-                    return leafTag(EParser.OpAssOr, endSpan());
-                }
-                return leafTag((short)'|', endSpan());
-            }
-        case '\'':
-            {
-                return charLiteral();
-            }
-        case '"':
-            {
-                return stringLiteral();
-            }
-        case '`':
-            {
-                //eat the backquote here so quasiPart can also
-                //be called when we're continuing after a hole, in which
-                //case there is no leading backquote.
-                nextChar();
-                Twine openner = (Twine)myLTwine.run(myOptStartPos, myPos);
-                myIndenter.push(openner, '`', 0);
-                return quasiPart();
-            }
-        case '0':
-        case '1':
-        case '2':
-        case '3':
-        case '4':
-        case '5':
-        case '6':
-        case '7':
-        case '8':
-        case '9':
-            {
-                return numberLiteral();
-            }
-        case '_':
-            {
-                if (isIdentifierPart(peekChar())) {
-                    return identifier();
-                }
-                nextChar();
-                if (myChar == '/') {
-                    syntaxError("For division,\n" +
-                                "use '//' to truncate to the least integer,\n"+
-                                "'truncDivide' to truncate to the int " +
-                                "nearest to zero (least magnitude),\n" +
-                                "and '/' for a float64 approximation.");
-                }
-                return leafTag(EParser._, endSpan());
-            }
-        default:
-            {
-                if (isIdentifierStart(myChar)) {
-                    return identifier();
+                stopToken();
+                Astro result = getNextToken();
+                if (result.getOptTagCode() == EOFTOK) {
+                    needMore("continued line");
+                    return null; //make compiler happy
                 } else {
-                    syntaxError("unrecognized character: '" +
-                                myChar +
-                                "' code: " + (int)myChar);
-                    return null; //keep compiler happy
+                    return result;
                 }
             }
+            syntaxError("unrecognized escape");
+            return null; //keep compiler happy
+        }
+        case'%': {
+            nextChar();
+            if (myChar == '%') {
+                nextChar();
+                if (myChar == '=') {
+                    // check for "%%="
+                    nextChar();
+                    return leafTag(EParser.OpAssMod, endSpan());
+                }
+                return leafTag(EParser.OpMod, endSpan());
+            } else if (myChar == '=') {
+                // check for "%="
+                nextChar();
+                return leafTag(EParser.OpAssRemdr, endSpan());
+            }
+            return leafTag((short)'%', endSpan());
+        }
+        case'!': {
+            nextChar();
+            if (myChar == '=') {
+                nextChar();
+                return leafTag(EParser.OpNSame, endSpan());
+            } else if (myChar == '~') {
+                nextChar();
+                return leafTag(EParser.MisMatch, endSpan());
+            }
+            return leafTag((short)'!', endSpan());
+        }
+        case'=': {
+            nextChar();
+            if (myChar == '=') {
+                nextChar();
+                return leafTag(EParser.OpSame, endSpan());
+            } else if (myChar == '>') {
+                nextChar();
+                return leafTag(EParser.MapsTo, endSpan());
+            } else if (myChar == '~') {
+                nextChar();
+                return leafTag(EParser.MatchBind, endSpan());
+            }
+            syntaxError("use ':=' for assignment, or '==' for equality");
+            return null; //keep compiler happy
+        }
+        case'&': {
+            nextChar();
+            if (myChar == '&') {
+                nextChar();
+                return leafTag(EParser.OpLAnd, endSpan());
+            } else if (myChar == '=') {
+                nextChar();
+                return leafTag(EParser.OpAssAnd, endSpan());
+            } else if (myChar == '!') {
+                nextChar();
+                return leafTag(EParser.OpButNot, endSpan());
+            }
+            return leafTag((short)'&', endSpan());
+        }
+        case'|': {
+            nextChar();
+            if (myChar == '|') {
+                nextChar();
+                return leafTag(EParser.OpLOr, endSpan());
+            } else if (myChar == '=') {
+                nextChar();
+                return leafTag(EParser.OpAssOr, endSpan());
+            }
+            return leafTag((short)'|', endSpan());
+        }
+        case'\'': {
+            return charLiteral();
+        }
+        case'"': {
+            return stringLiteral();
+        }
+        case'`': {
+            //eat the backquote here so quasiPart can also
+            //be called when we're continuing after a hole, in which
+            //case there is no leading backquote.
+            nextChar();
+            Twine openner = (Twine)myLTwine.run(myOptStartPos, myPos);
+            myIndenter.push(openner, '`', 0);
+            return quasiPart();
+        }
+        case'0':
+        case'1':
+        case'2':
+        case'3':
+        case'4':
+        case'5':
+        case'6':
+        case'7':
+        case'8':
+        case'9': {
+            return numberLiteral();
+        }
+        case'_': {
+            if (isIdentifierPart(peekChar())) {
+                return identifier();
+            }
+            nextChar();
+            if (myChar == '/') {
+                syntaxError("For division,\n" +
+                  "use '//' to truncate to the least integer,\n" +
+                  "'truncDivide' to truncate to the int " +
+                  "nearest to zero (least magnitude),\n" +
+                  "and '/' for a float64 approximation.");
+            }
+            return leafTag(EParser._, endSpan());
+        }
+        default: {
+            if (isIdentifierStart(myChar)) {
+                return identifier();
+            } else {
+                syntaxError("unrecognized character: '" + myChar + "' code: " +
+                  (int)myChar);
+                return null; //keep compiler happy
+            }
+        }
         }
     }
 
     /**
      * If 'name' is a keyword, return it's token tag code, else -1.
-     * <p>
+     * <p/>
      * Note that E keywords are case insensitive, so 'name' is first
      * toLowerCase()d.
      */
@@ -624,15 +562,14 @@ public class ELexer extends BaseLexer {
     }
 
     /**
-     * If the verb is a
-     * {@link org.erights.e.elang.syntax.ELexer#isIdentifier valid E
-     * identifier}, then print it, else print it as a quoted string.
+     * If the verb is a {@link org.erights.e.elang.syntax.ELexer#isIdentifier
+     * valid E identifier}, then print it, else print it as a quoted string.
      *
      * @param out
      * @throws java.io.IOException
      */
-    public static void printVerbOn(String verb,
-                                   TextWriter out) throws IOException {
+    public static void printVerbOn(String verb, TextWriter out)
+      throws IOException {
         if (isIdentifier(verb)) {
             out.print(verb);
         } else {
@@ -641,16 +578,15 @@ public class ELexer extends BaseLexer {
     }
 
     /**
-     * If the noun is a
-     * {@link org.erights.e.elang.syntax.ELexer#isIdentifier valid E
-     * identifier}, then print it, else print it as "::" followed by a quoted
-     * string.
+     * If the noun is a {@link org.erights.e.elang.syntax.ELexer#isIdentifier
+     * valid E identifier}, then print it, else print it as "::" followed by a
+     * quoted string.
      *
      * @param out
      * @throws java.io.IOException
      */
-    public static void printNounOn(String noun,
-                                   TextWriter out) throws IOException {
+    public static void printNounOn(String noun, TextWriter out)
+      throws IOException {
         if (isIdentifier(noun)) {
             out.print(noun);
         } else {
@@ -701,9 +637,7 @@ public class ELexer extends BaseLexer {
         Twine source = endToken();
         short tagCode = optKeywordType(source.bare());
         if (-1 == tagCode) {
-            return composite(EParser.ID,
-                             source.bare(),
-                             source.getOptSpan());
+            return composite(EParser.ID, source.bare(), source.getOptSpan());
         } else {
             //keyword
             return leafTag(tagCode, source.getOptSpan());
@@ -711,9 +645,9 @@ public class ELexer extends BaseLexer {
     }
 
     /**
-     * XXX In order to enable optValue to be recovered from tagCode and
-     * source, we need four types rather than the current two: QuasiOpen
-     * and QuasiClose.
+     * XXX In order to enable optValue to be recovered from tagCode and source,
+     * we need four types rather than the current two: QuasiOpen and
+     * QuasiClose.
      * <pre>
      *     &lt;nonender&gt; ::= any character but '$', '@', or '`'
      *     &lt;qconst&gt; ::= &lt;nonender&gt; | "$$" | "@@"
@@ -792,7 +726,7 @@ public class ELexer extends BaseLexer {
 
     /**
      * Eat a URI or a URIGetter.
-     * <p>
+     * <p/>
      * Assumes the '&lt;' is already eaten and myChar is the first character of
      * the protocol identifier. If the identifier is not immediately followed
      * by a ":" or ">", return null and cause no side effects -- in particular,
@@ -821,9 +755,7 @@ public class ELexer extends BaseLexer {
             Twine varName =
               (Twine)token.run(1, token.size() - 1).add("__uriGetter");
             varName = URIKit.normalize(varName);
-            return composite(EParser.ID,
-                             varName,
-                             token.getOptSpan());
+            return composite(EParser.ID, varName, token.getOptSpan());
         }
         if (myLData[pos] != ':') {
             //false alarm
@@ -834,19 +766,18 @@ public class ELexer extends BaseLexer {
         nextChar();
         if (!URIKit.isURIC(myChar)) {
             if (Character.isWhitespace(myChar)) {
-                syntaxError("calc-uri syntax is no longer supported. "+
-                            "Use '<protocol>[expr]' instead.");
+                syntaxError("calc-uri syntax is no longer supported. " +
+                  "Use '<protocol>[expr]' instead.");
             } else {
-                syntaxError("Can't use \"" + myChar +
-                            "\" to start a URI body");
+                syntaxError(
+                  "Can't use \"" + myChar + "\" to start a URI body");
             }
         }
         do {
             nextChar();
         } while (URIKit.isURIC(myChar));
         if (myChar != '>') {
-            syntaxError("Can't use \"" + myChar +
-                        "\" in a URI body");
+            syntaxError("Can't use \"" + myChar + "\" in a URI body");
         }
         nextChar();
         Twine source = endToken();
@@ -871,11 +802,10 @@ public class ELexer extends BaseLexer {
                 }
                 if (myChar == '\t') {
                     if (myNoTabsFlag) {
-                        syntaxError
-                          ("The optional e.enable.notabs" +
-                           " feature (see " + Rune.SYN_PROPS_PATH +
-                           ") is currently on,\n" +
-                           "so tabs are not considered valid whitespace");
+                        syntaxError("The optional e.enable.notabs" +
+                          " feature (see " + Rune.SYN_PROPS_PATH +
+                          ") is currently on,\n" +
+                          "so tabs are not considered valid whitespace");
                     }
                     //else, we should warn, but XXX we don't yet have a
                     //warning mechanism.
@@ -896,8 +826,8 @@ public class ELexer extends BaseLexer {
     }
 
     /**
-     * Just for testing. Reads an input file and prints one token per line
-     * to stdout.
+     * Just for testing. Reads an input file and prints one token per line to
+     * stdout.
      */
     static public void main(String[] args)
       throws IOException, SyntaxException {
@@ -951,8 +881,8 @@ public class ELexer extends BaseLexer {
                 return;
             } catch (Throwable problem) {
                 Throwable leaf = ThrowableSugar.leaf(problem);
-                TextWriter err = new TextWriter(PrintStreamWriter.stderr(),
-                                                true);
+                TextWriter err =
+                  new TextWriter(PrintStreamWriter.stderr(), true);
                 err.indent("# ").print("# ", leaf);
                 err.println();
             }

@@ -17,6 +17,6 @@ public class AuditFailedException extends RuntimeException {
      */
     public AuditFailedException(Auditor auditor, Object objectExpr) {
         super("object expression " + E.toQuote(objectExpr) +
-              " failed audit by " + E.toString(auditor));
+          " failed audit by " + E.toString(auditor));
     }
 }

@@ -20,8 +20,7 @@ class TokenRangeElement extends AlternativeElement {
         begin =
           grammar.tokenManager.getTokenSymbol(t1.getText()).getTokenType();
         beginText = t1.getText();
-        end =
-          grammar.tokenManager.getTokenSymbol(t2.getText()).getTokenType();
+        end = grammar.tokenManager.getTokenSymbol(t2.getText()).getTokenType();
         endText = t2.getText();
         line = t1.getLine();
     }

@@ -32,23 +32,23 @@ import java.io.IOException;
 import java.util.Properties;
 
 /**
- * Demonstrates (and trivially tests) ELib's event-loop concurrency style
- * and its Ref-based optimism. Running
- * "java org.erights.e.elib.prim.tests.ERunDemo" should result in <p>
+ * Demonstrates (and trivially tests) ELib's event-loop concurrency style and
+ * its Ref-based optimism. Running "java org.erights.e.elib.prim.tests.ERunDemo"
+ * should result in <p>
  * <pre>
  * &lt;Promise&gt;, &lt;Unresolved Resolver&gt;, &lt;Promise&gt;
  * near: 4
  * hello world, &lt;Resolved Resolver&gt;, 4
  * </pre>
- * Which does happen under the Cafe debugger. Strangely, when run from bash
- * we get instead:
+ * Which does happen under the Cafe debugger. Strangely, when run from bash we
+ * get instead:
  * <pre>
  * &lt;Promise&gt;, &lt;Unresolved Resolver&gt;, &lt;Promise&gt;
  * hello world, &lt;Resolved Resolver&gt;, &lt;Promise&gt;
  * </pre>
  * So we've got a concurrency bug that doesn't occur under the debugger. Oh
- * joy!  Note: Early indications are that this bug's symptoms have
- * disappeared with the move to Java 2. This isn't necessarily good news!
+ * joy!  Note: Early indications are that this bug's symptoms have disappeared
+ * with the move to Java 2. This isn't necessarily good news!
  *
  * @author Mark S. Miller
  */

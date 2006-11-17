@@ -6,11 +6,11 @@ package org.quasiliteral.base;
 import org.erights.e.elib.tables.Twine;
 
 /**
- * Given a template string in the language this quasi parser understands,
- * parse it into a MatchMaker which will match objects of the form the
- * template describes. The template language is a value description language
- * augmented with $-holes and @-holes, representing values to be provided at
- * runtime to the MatchMaker, or values for it to extract from the specimen,
+ * Given a template string in the language this quasi parser understands, parse
+ * it into a MatchMaker which will match objects of the form the template
+ * describes. The template language is a value description language augmented
+ * with $-holes and @-holes, representing values to be provided at runtime to
+ * the MatchMaker, or values for it to extract from the specimen,
  * respectively.
  *
  * @author Mark S. Miller
@@ -23,8 +23,7 @@ public interface QuasiPatternParser {
      * <p/>
      * '$' characters that don't correspond to positions in dlrHoles are
      * treated as part of the parser's normal language rather than indicating
-     * $-holes. Likewise for embedded '@' characters and positions in
-     * atHoles.
+     * $-holes. Likewise for embedded '@' characters and positions in atHoles.
      */
     MatchMaker matchMaker(Twine template, int[] dlrHoles, int[] atHoles);
 

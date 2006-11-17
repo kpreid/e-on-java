@@ -13,9 +13,11 @@ package antlr;
  */
 public class ActionTransInfo {
 
-    public boolean assignToRoot = false;	// somebody did a "#rule = "
-    public String refRuleRoot = null;		// somebody referenced #rule; string is translated var
-    public String followSetName = null;		// somebody referenced $FOLLOW; string is the name of the lookahead set
+    public boolean assignToRoot = false;        // somebody did a "#rule = "
+    public String refRuleRoot =
+      null;                // somebody referenced #rule; string is translated var
+    public String followSetName =
+      null;                // somebody referenced $FOLLOW; string is the name of the lookahead set
 
     public String toString() {
         return "assignToRoot:" + assignToRoot + ", refRuleRoot:" +

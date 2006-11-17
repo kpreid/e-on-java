@@ -27,11 +27,9 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * In E, "file:" is bound to the FileGetter, which uses the file
- * system.
+ * In E, "file:" is bound to the FileGetter, which uses the file system.
  * <p/>
- * To use the URLGetter for "file:" urls, use "fileUrl:"
- * instead.
+ * To use the URLGetter for "file:" urls, use "fileUrl:" instead.
  *
  * @author Mark S. Miller
  * @see org.erights.e.elang.interp.URLGetter
@@ -59,10 +57,10 @@ public class FileGetter extends BaseLoader {
     }
 
     /**
-     * Turn it into an E-normalized file name. This uses "/" for the
-     * separator (Unix style), is absolute, and ends in a "/" if the path
-     * names a directory. An initial "~/" is expanded using the System
-     * property "user.home", assuming this is the user's home directory.
+     * Turn it into an E-normalized file name. This uses "/" for the separator
+     * (Unix style), is absolute, and ends in a "/" if the path names a
+     * directory. An initial "~/" is expanded using the System property
+     * "user.home", assuming this is the user's home directory.
      */
     static public String normalize(String optPath) {
         if (null == optPath) {
@@ -87,7 +85,7 @@ public class FileGetter extends BaseLoader {
         if ((//it may be a windows 3.1 short filename.
           File.separatorChar == '\\' && path.indexOf('~') != -1) ||
           (//parent pointers are evil
-          path.indexOf("/../") != -1)) {
+            path.indexOf("/../") != -1)) {
             try {
                 path = slash(new File(path).getCanonicalPath());
             } catch (IOException ioe) {
@@ -96,8 +94,7 @@ public class FileGetter extends BaseLoader {
         }
         int len = path.length();
 
-        if (!new File(path).isDirectory() &&
-          path.charAt(len - 1) == '/' &&
+        if (!new File(path).isDirectory() && path.charAt(len - 1) == '/' &&
           path.indexOf('/') < len - 1) {
             //if it's not a directory, but the path ends in the separator,
             //and that separator isn't the first separator, then remove that
@@ -120,7 +117,6 @@ public class FileGetter extends BaseLoader {
     }
 
     /**
-     *
      * @param uriBody
      */
     public Object get(String uriBody) {
@@ -143,7 +139,6 @@ public class FileGetter extends BaseLoader {
     }
 
     /**
-     *
      * @return
      */
     public String toString() {

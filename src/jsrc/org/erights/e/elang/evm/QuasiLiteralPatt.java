@@ -35,10 +35,10 @@ import java.io.IOException;
 
 /**
  * BNF: '$' '{' <number> '}'
- * <p>
- * Not part of a valid E program, but a part of an E parse tree
- * acting as a ValueMaker (for making an E pattern) or a MatchMaker
- * (as a pattern to be matched against an E pattern).
+ * <p/>
+ * Not part of a valid E program, but a part of an E parse tree acting as a
+ * ValueMaker (for making an E pattern) or a MatchMaker (as a pattern to be
+ * matched against an E pattern).
  *
  * @author Mark S. Miller
  */
@@ -60,11 +60,11 @@ public class QuasiLiteralPatt extends Pattern {
      * Uses XXX 'makeFoo(...)'
      */
     public Object[] getSpreadUncall() {
-        Object[] result = { StaticMaker.make(QuasiLiteralPatt.class),
-                            "run",
-                            getOptSpan(),
-                            EInt.valueOf(myIndex),
-                            getOptScopeLayout() };
+        Object[] result = {StaticMaker.make(QuasiLiteralPatt.class),
+          "run",
+          getOptSpan(),
+          EInt.valueOf(myIndex),
+          getOptScopeLayout()};
         return result;
     }
 
@@ -88,19 +88,17 @@ public class QuasiLiteralPatt extends Pattern {
      * throws a IncompleteQuasiException, rather than reporting a problem
      * according to optEjector
      */
-    void testMatch(EvalContext ctx,
-                   Object specimen,
-                   OneArgFunc optEjector) {
-        throw new IncompleteQuasiException
-          ("Can't evaluate programs that still contain bare \"$\"s");
+    void testMatch(EvalContext ctx, Object specimen, OneArgFunc optEjector) {
+        throw new IncompleteQuasiException(
+          "Can't evaluate programs that still contain bare \"$\"s");
     }
 
     /**
      *
      */
     public String getOptName() {
-        throw new IncompleteQuasiException
-          ("Can't use programs that still contain bare \"$\"s");
+        throw new IncompleteQuasiException(
+          "Can't use programs that still contain bare \"$\"s");
     }
 
     /**

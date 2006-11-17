@@ -378,11 +378,11 @@ public final class ScopeSetup {
             optVat = Vat.getCurrentVat();
         }
         // XXX need some decent way to handle magic powers.
-        StaticMaker entropyMaker = StaticMaker.make(getClass(
-          "net.vattp.security.ESecureRandom"));
+        StaticMaker entropyMaker =
+          StaticMaker.make(getClass("net.vattp.security.ESecureRandom"));
         Object optEntropy = E.call(entropyMaker, "getESecureRandom");
-        StaticMaker timerMaker = StaticMaker.make(getClass(
-          "org.erights.e.extern.timer.Timer"));
+        StaticMaker timerMaker =
+          StaticMaker.make(getClass("org.erights.e.extern.timer.Timer"));
         Object optTimer = E.call(timerMaker, "theTimer");
 
         Object optIntroducer = null;

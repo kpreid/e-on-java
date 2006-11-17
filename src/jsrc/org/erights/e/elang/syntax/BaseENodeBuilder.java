@@ -18,6 +18,7 @@ import org.erights.e.elang.evm.EScript;
 import org.erights.e.elang.evm.EscapeExpr;
 import org.erights.e.elang.evm.FinalPattern;
 import org.erights.e.elang.evm.FinallyExpr;
+import org.erights.e.elang.evm.GuardedPattern;
 import org.erights.e.elang.evm.HideExpr;
 import org.erights.e.elang.evm.IfExpr;
 import org.erights.e.elang.evm.IgnorePattern;
@@ -32,9 +33,8 @@ import org.erights.e.elang.evm.SimpleNounExpr;
 import org.erights.e.elang.evm.SlotExpr;
 import org.erights.e.elang.evm.SlotPattern;
 import org.erights.e.elang.evm.StaticScope;
-import org.erights.e.elang.evm.ViaPattern;
 import org.erights.e.elang.evm.VarPattern;
-import org.erights.e.elang.evm.GuardedPattern;
+import org.erights.e.elang.evm.ViaPattern;
 import org.erights.e.elang.interp.Rune;
 import org.erights.e.elib.base.SourceSpan;
 import org.erights.e.elib.base.ValueThunk;
@@ -53,7 +53,6 @@ import org.quasiliteral.syntax.SyntaxException;
 import java.io.IOException;
 
 /**
- *
  * @author Mark S. Miller
  */
 public abstract class BaseENodeBuilder implements BaseEBuilder {
@@ -76,9 +75,7 @@ public abstract class BaseENodeBuilder implements BaseEBuilder {
     /**
      *
      */
-    BaseENodeBuilder(ConstMap props,
-                     LexerFace lexer,
-                     TextWriter warns) {
+    BaseENodeBuilder(ConstMap props, LexerFace lexer, TextWriter warns) {
         myProps = props;
         myLexer = lexer;
         myWarns = warns;
@@ -92,7 +89,8 @@ public abstract class BaseENodeBuilder implements BaseEBuilder {
             return (String)doco;
         } else {
             T.require(doco instanceof Astro,
-                      "unrecognized type of doco: ", doco);
+                      "unrecognized type of doco: ",
+                      doco);
             Astro docTerm = (Astro)doco;
             return docTerm.getOptArgString(EParser.DocComment);
         }
@@ -166,7 +164,7 @@ public abstract class BaseENodeBuilder implements BaseEBuilder {
         Astro astro = (Astro)identOrStr;
         short tagCode = astro.getTag().getOptTagCode();
         String result;
-        if (EParser.ID == tagCode){
+        if (EParser.ID == tagCode) {
             result = astro.getOptArgString(EParser.ID);
         } else if (EParser.LiteralString == tagCode) {
             result = astro.getOptString();
@@ -174,13 +172,11 @@ public abstract class BaseENodeBuilder implements BaseEBuilder {
 //            T.fail("Unrecognized tag: " + astro.getTag());
             result = astro.getTag().getTagName();
         }
-        T.require(null != result,
-                  "Identifier must not be null");
+        T.require(null != result, "Identifier must not be null");
         return result;
     }
 
     /**
-     *
      * @param poser XXX Currently ignored.
      * @param msg
      * @throws SyntaxException
@@ -199,7 +195,6 @@ public abstract class BaseENodeBuilder implements BaseEBuilder {
     }
 
     /**
-     *
      * @param poser
      * @param msg
      */
@@ -237,18 +232,15 @@ public abstract class BaseENodeBuilder implements BaseEBuilder {
         if ("true" == propValue) {
             // succeed silently
         } else if ("warn" == propValue) {
-            warning(poser,
-                    "The optional " + propName +
-                    " feature (see " + Rune.SYN_PROPS_PATH +
-                    ") is set to \"warn\".");
+            warning(poser, "The optional " + propName + " feature (see " + Rune
+              .SYN_PROPS_PATH + ") is set to \"warn\".");
         } else if ("false" == propValue || "allow" == propValue) {
             syntaxError(poser,
-                        "The optional " + propName +
-                        " feature (see " + Rune.SYN_PROPS_PATH +
-                        ") is currently off.");
+                        "The optional " + propName + " feature (see " + Rune
+                          .SYN_PROPS_PATH + ") is currently off.");
         } else {
-            throw new IllegalArgumentException
-              (propValue + " must be 'true', 'false', or 'allow'");
+            throw new IllegalArgumentException(
+              propValue + " must be 'true', 'false', or 'allow'");
         }
     }
 
@@ -261,20 +253,17 @@ public abstract class BaseENodeBuilder implements BaseEBuilder {
           ((String)myProps.fetch(propName, new ValueThunk("false"))).intern();
         if ("true" == propValue) {
             syntaxError(poser,
-                        "The optional " + propName +
-                        " feature (see " + Rune.SYN_PROPS_PATH +
-                        ") is currently on" +
-                        " disallowing this construct.");
+                        "The optional " + propName + " feature (see " + Rune
+                          .SYN_PROPS_PATH + ") is currently on" +
+                          " disallowing this construct.");
         } else if ("warn" == propValue) {
-            warning(poser,
-                    "The optional " + propName +
-                    " feature (see " + Rune.SYN_PROPS_PATH +
-                    ") is set to \"warn\".");
+            warning(poser, "The optional " + propName + " feature (see " + Rune
+              .SYN_PROPS_PATH + ") is set to \"warn\".");
         } else if ("false" == propValue || "allow" == propValue) {
             // succeed silently
         } else {
-            throw new IllegalArgumentException
-              (propValue + " must be 'true', 'false', or 'allow'");
+            throw new IllegalArgumentException(
+              propValue + " must be 'true', 'false', or 'allow'");
         }
     }
 
@@ -386,9 +375,7 @@ public abstract class BaseENodeBuilder implements BaseEBuilder {
     /**
      *
      */
-    public EExpr call(Object recipientExpr,
-                      Object verb,
-                      Object args) {
+    public EExpr call(Object recipientExpr, Object verb, Object args) {
         return new CallExpr(optSpan(verb),
                             forValue(recipientExpr, null),
                             idStr(verb),
@@ -428,7 +415,8 @@ public abstract class BaseENodeBuilder implements BaseEBuilder {
                               (Pattern)pattern,
                               forValue(bodyExpr, StaticScope.EmptyScope),
                               (Pattern)optArgPattern,
-                              (null == optCatcher) ? null :
+                              (null == optCatcher) ?
+                                null :
                                 forValue(optCatcher, StaticScope.EmptyScope),
                               null);
     }
@@ -490,8 +478,7 @@ public abstract class BaseENodeBuilder implements BaseEBuilder {
     /**
      *
      */
-    public EScriptDecl vTable(Object optMethods,
-                              Object matchers) {
+    public EScriptDecl vTable(Object optMethods, Object matchers) {
         return new EScriptDecl((EMethod[])optTypedArray(optMethods,
                                                         EMethod.class),
                                (EMatcher[])optTypedArray(matchers,
@@ -505,12 +492,7 @@ public abstract class BaseENodeBuilder implements BaseEBuilder {
                  GuardedPattern oName,
                  EExpr[] impls,
                  EScript script) {
-        return new ObjectExpr(null,
-                              docComment,
-                              oName,
-                              impls,
-                              script,
-                              null);
+        return new ObjectExpr(null, docComment, oName, impls, script, null);
     }
 
     /**
@@ -523,22 +505,22 @@ public abstract class BaseENodeBuilder implements BaseEBuilder {
     /**
      *
      */
-    public EExpr tryx(Object eExpr,
-                      Object optCatchers,
-                      Object optFinally) {
+    public EExpr tryx(Object eExpr, Object optCatchers, Object optFinally) {
         if (null == optCatchers) {
             if (null == optFinally) {
                 return hide(eExpr);
             } else {
                 return new FinallyExpr(null,
                                        forValue(eExpr, StaticScope.EmptyScope),
-                                       forValue(optFinally, StaticScope.EmptyScope),
+                                       forValue(optFinally,
+                                                StaticScope.EmptyScope),
                                        null);
             }
         } else {
             EMatcher catcher = (EMatcher)optCatchers;
             EExpr result = new CatchExpr(null,
-                                         forValue(eExpr, StaticScope.EmptyScope),
+                                         forValue(eExpr,
+                                                  StaticScope.EmptyScope),
                                          catcher.getPattern(),
                                          catcher.getBody(),
                                          null);
@@ -547,7 +529,8 @@ public abstract class BaseENodeBuilder implements BaseEBuilder {
             } else {
                 return new FinallyExpr(null,
                                        result,
-                                       forValue(optFinally, StaticScope.EmptyScope),
+                                       forValue(optFinally,
+                                                StaticScope.EmptyScope),
                                        null);
             }
         }
@@ -625,18 +608,14 @@ public abstract class BaseENodeBuilder implements BaseEBuilder {
     }
 
     public Pattern ignore(Object optGuardExpr) {
-        return new IgnorePattern(null,
-                                 forValue(optGuardExpr, null),
-                                 null);
+        return new IgnorePattern(null, forValue(optGuardExpr, null), null);
     }
 
     /**
      *
      */
     public ListPattern listPattern(Object subs) {
-        return new ListPattern(null,
-                               optPatterns(subs),
-                               null);
+        return new ListPattern(null, optPatterns(subs), null);
     }
 
     /**

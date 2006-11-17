@@ -32,36 +32,32 @@ import java.io.IOException;
 import java.lang.reflect.Array;
 
 /**
- * A EMap is a finite single-valued map from keys to values.
- * Equivalently, it can be considered a finite set of pairs, where
- * each is a pair of a key and a value, and no two pairs have the
- * same key. 'EMap' is a query-only interface that's agnostic about whether
- * the data can change and whether a EMap can be cast to an object by which
- * to change it. 'EMap' is also agnostic about the basis for equality
- * between tables. Subtypes do pin these issues down: <p>
+ * A EMap is a finite single-valued map from keys to values. Equivalently, it
+ * can be considered a finite set of pairs, where each is a pair of a key and a
+ * value, and no two pairs have the same key. 'EMap' is a query-only interface
+ * that's agnostic about whether the data can change and whether a EMap can be
+ * cast to an object by which to change it. 'EMap' is also agnostic about the
+ * basis for equality between tables. Subtypes do pin these issues down: <p>
  * <p/>
  * ConstMap guarantees immutability, uses value-based equality, and can be
  * transparently passed-by-copy over the network. <p>
  * <p/>
  * FlexMap extends EMap with mutation operations. <p>
  * <p/>
- * Based on java.util.Dictionary, but not polymorphic with it since EMaps
- * don't satisfy Dictionary's contract. In particular, Dictionaries
- * explicitly disallow nulls as keys or values, whereas EMaps explicitly
- * allow them. <p>
+ * Based on java.util.Dictionary, but not polymorphic with it since EMaps don't
+ * satisfy Dictionary's contract. In particular, Dictionaries explicitly
+ * disallow nulls as keys or values, whereas EMaps explicitly allow them. <p>
  * <p/>
- * Actually, for the sake of determinism, an EMap is a sequence of
- * key-value pairs, where this sequence is the enumeration order, and
- * is derived deterministically from the operations that resulted in
- * this map. Putting in a new key adds it to the end of the
- * sequence. Removing a key causes the last key to take the place of
- * the removed key in the sequence. Other operations, like or(),
- * specify how they determine the resulting sequence. <p>
+ * Actually, for the sake of determinism, an EMap is a sequence of key-value
+ * pairs, where this sequence is the enumeration order, and is derived
+ * deterministically from the operations that resulted in this map. Putting in
+ * a new key adds it to the end of the sequence. Removing a key causes the last
+ * key to take the place of the removed key in the sequence. Other operations,
+ * like or(), specify how they determine the resulting sequence. <p>
  * <p/>
- * It is normally considered bad style to attach meaning to the
- * sequence, but is in the contract, so you may if you wish. If you
- * do, document that, since your readers should usually be able to
- * make the no-meaning assumption.
+ * It is normally considered bad style to attach meaning to the sequence, but
+ * is in the contract, so you may if you wish. If you do, document that, since
+ * your readers should usually be able to make the no-meaning assumption.
  *
  * @author Mark S. Miller
  */
@@ -83,29 +79,27 @@ public abstract class EMap implements EPrintable, Persistent, EIteratable {
     }
 
     /**
-     * Returns a ConstMap whose state is a snapshot of the state of this
-     * map at the time of the snapshot() request. A ConstMap returns
-     * itself.
+     * Returns a ConstMap whose state is a snapshot of the state of this map at
+     * the time of the snapshot() request. A ConstMap returns itself.
      */
     public abstract ConstMap snapshot();
 
     /**
-     * Returns a read-only facet on this map. Someone holding this facet
-     * may see changes, but they cannot cause them.
+     * Returns a read-only facet on this map. Someone holding this facet may
+     * see changes, but they cannot cause them.
      */
     public abstract EMap readOnly();
 
     /**
-     * Returns a FlexMap whose initial state is a snapshot of the state of
-     * this map at the time of the diverge() request.
+     * Returns a FlexMap whose initial state is a snapshot of the state of this
+     * map at the time of the diverge() request.
      * <p/>
      * Further changes to the original and/or the new map are independent --
      * they diverge.
      * <p/>
      * The new map is constrained to only hold associations from 'keyType' to
-     * 'valueType'.
-     * XXX keyType and valueType should be declared as Guards rather
-     * than Classes.
+     * 'valueType'. XXX keyType and valueType should be declared as Guards
+     * rather than Classes.
      */
     public FlexMap diverge(Class keyType, Class valueType) {
         FlexMap result = FlexMap.fromTypes(keyType, valueType, size());
@@ -128,8 +122,7 @@ public abstract class EMap implements EPrintable, Persistent, EIteratable {
      * @throws IndexOutOfBoundsException if key doesn't map to anything.
      * @see org.erights.e.elib.ref.Ref#isSettled
      */
-    public Object get(Object key)
-      throws IndexOutOfBoundsException {
+    public Object get(Object key) throws IndexOutOfBoundsException {
         Object result = fetch(key, new ValueThunk(ThePumpkin));
         if (ThePumpkin == result) {
             throw new IndexOutOfBoundsException(E.toQuote(key) + " not found");
@@ -142,10 +135,10 @@ public abstract class EMap implements EPrintable, Persistent, EIteratable {
      * Used by the expansion of map-patterns.
      *
      * @param key nullOk;
-     * @return nullOk; If the key is found, returns a pair of the
-     *         corresponding value and a ConstMap that's a snapshot of this
-     *         one, but {@link #without} that key-value association. If the
-     *         key is not found, optExtract/1 returns null.
+     * @return nullOk; If the key is found, returns a pair of the corresponding
+     *         value and a ConstMap that's a snapshot of this one, but {@link
+     *         #without} that key-value association. If the key is not found,
+     *         optExtract/1 returns null.
      */
     public Object[] optExtract(Object key) {
         Object value = fetch(key, new ValueThunk(ThePumpkin));
@@ -158,14 +151,14 @@ public abstract class EMap implements EPrintable, Persistent, EIteratable {
     }
 
     /**
-     * Like optExtract/1, but allows one to provide a defaultValue for
-     * missing keys.
+     * Like optExtract/1, but allows one to provide a defaultValue for missing
+     * keys.
      *
      * @param key nullOk;
      * @return If the key is found, returns a pair of the corresponding value
-     *         and a ConstMap that's a snapshot of this one, but
-     *         {@link #without} that key-value association. If the key is not
-     *         found, extract/2 returns a pair of defaultValue and this map.
+     *         and a ConstMap that's a snapshot of this one, but {@link
+     *         #without} that key-value association. If the key is not found,
+     *         extract/2 returns a pair of defaultValue and this map.
      */
     public Object[] extract(Object key, Object defaultValue) {
         Object value = fetch(key, new ValueThunk(ThePumpkin));
@@ -220,13 +213,11 @@ public abstract class EMap implements EPrintable, Persistent, EIteratable {
      * Returns a map that has the union of the domains of this map.
      * <p/>
      * If both maps have keys in common, then if strict, throw an exception.
-     * Otherwise, take the value from the receiver (the left-hand operand).
-     * We can think of the receiver as being in front of and occluding
-     * 'behind'.
+     * Otherwise, take the value from the receiver (the left-hand operand). We
+     * can think of the receiver as being in front of and occluding 'behind'.
      * <p/>
-     * In the order, the 'behind' keys come first in their original
-     * order, then the receiver's remaining keys in their original
-     * order.
+     * In the order, the 'behind' keys come first in their original order, then
+     * the receiver's remaining keys in their original order.
      */
     public ConstMap or(EMap behind, boolean strict) {
         if (size() == 0) {
@@ -249,9 +240,9 @@ public abstract class EMap implements EPrintable, Persistent, EIteratable {
     /**
      * The subset of this map whose keys are keys of 'mask'. <p>
      * <p/>
-     * The order of keys in the intersection is taken from the smaller
-     * of the original two. If they're the same size, then the
-     * receiver's order is used.
+     * The order of keys in the intersection is taken from the smaller of the
+     * original two. If they're the same size, then the receiver's order is
+     * used.
      */
     public ConstMap and(EMap mask) {
         EMap bigger;
@@ -282,8 +273,8 @@ public abstract class EMap implements EPrintable, Persistent, EIteratable {
     /**
      * The subset of this map whose keys are not keys of 'mask'. <p>
      * <p/>
-     * The order is the order of the receiver, as modified by removal
-     * of the keys in mask in mask's order.
+     * The order is the order of the receiver, as modified by removal of the
+     * keys in mask in mask's order.
      */
     public ConstMap butNot(EMap mask) {
         if (size() == 0) {
@@ -364,9 +355,9 @@ public abstract class EMap implements EPrintable, Persistent, EIteratable {
      * and getValues(valueType). <p>
      * <p/>
      * Unlike calling them individually, by getting them both together, they
-     * are guaranteed to correspond. The default implementation here does
-     * just call getKeys(keyType), and then calls getValues(valueType), as
-     * that is fine for everything but the WeakValuesMap.
+     * are guaranteed to correspond. The default implementation here does just
+     * call getKeys(keyType), and then calls getValues(valueType), as that is
+     * fine for everything but the WeakValuesMap.
      * <p/>
      * XXX Should keyType and valueType be Guards rather than Classes?
      */
@@ -378,11 +369,11 @@ public abstract class EMap implements EPrintable, Persistent, EIteratable {
 
     /**
      * Returns a ConstMap just like this one, except that 'key' maps to
-     * 'newValue'. The order is the same as the original; if 'key' is
-     * new, it is added to the end of the order. <p>
+     * 'newValue'. The order is the same as the original; if 'key' is new, it
+     * is added to the end of the order. <p>
      * <p/>
-     * This is currently horribly inefficient. Can be made efficient by
-     * using backward deltas.
+     * This is currently horribly inefficient. Can be made efficient by using
+     * backward deltas.
      *
      * @param key      nullOk;
      * @param newValue nullOk;
@@ -394,14 +385,13 @@ public abstract class EMap implements EPrintable, Persistent, EIteratable {
     }
 
     /**
-     * Returns a ConstMap just like this one, except that there is no
-     * ConstMap for 'key'. The order is the same as the original,
-     * except that if 'key' was in the original, the last key in the
-     * ordering is moved into its place (as in the standard removal
-     * spec). <p>
+     * Returns a ConstMap just like this one, except that there is no ConstMap
+     * for 'key'. The order is the same as the original, except that if 'key'
+     * was in the original, the last key in the ordering is moved into its
+     * place (as in the standard removal spec). <p>
      * <p/>
-     * This is currently horribly inefficient. Can be made efficient by
-     * using backward deltas.
+     * This is currently horribly inefficient. Can be made efficient by using
+     * backward deltas.
      *
      * @param key nullOk;
      */
@@ -412,44 +402,42 @@ public abstract class EMap implements EPrintable, Persistent, EIteratable {
     }
 
     /**
-     * Returns a snapshot of this mapping, but reordered so the keys
-     * are in ascending order.
+     * Returns a snapshot of this mapping, but reordered so the keys are in
+     * ascending order.
      */
     public ConstMap sortKeys() {
         return sortKeys(SimpleCompFunc.THE_ONE);
     }
 
     /**
-     * Returns a snapshot of this mapping, but reordered so the keys
-     * are in ascending order according to func.
+     * Returns a snapshot of this mapping, but reordered so the keys are in
+     * ascending order according to func.
      */
     public ConstMap sortKeys(CompFunc func) {
         Object[] pair = getPair();
         Object oldKeys = pair[0];
         Object oldVals = pair[1];
-        Number[] permutation
-          = IndirectCompFunc.indirectSort(oldKeys, func);
+        Number[] permutation = IndirectCompFunc.indirectSort(oldKeys, func);
         return permute(permutation, oldKeys, oldVals);
     }
 
     /**
-     * Returns a snapshot of this mapping, but reordered so the values
-     * are in ascending order.
+     * Returns a snapshot of this mapping, but reordered so the values are in
+     * ascending order.
      */
     public ConstMap sortValues() {
         return sortValues(SimpleCompFunc.THE_ONE);
     }
 
     /**
-     * Returns a snapshot of this mapping, but reordered so the values
-     * are in ascending order according to func.
+     * Returns a snapshot of this mapping, but reordered so the values are in
+     * ascending order according to func.
      */
     public ConstMap sortValues(CompFunc func) {
         Object[] pair = getPair();
         Object oldKeys = pair[0];
         Object oldVals = pair[1];
-        Number[] permutation
-          = IndirectCompFunc.indirectSort(oldVals, func);
+        Number[] permutation = IndirectCompFunc.indirectSort(oldVals, func);
         return permute(permutation, oldKeys, oldVals);
     }
 

@@ -44,8 +44,7 @@ public class TermBuilder extends BaseBuilder {
      *
      */
     public String toString() {
-        return "<building Term trees for " +
-          getSchema().getSchemaName() + ">";
+        return "<building Term trees for " + getSchema().getSchemaName() + ">";
     }
 
     /**
@@ -61,8 +60,7 @@ public class TermBuilder extends BaseBuilder {
      * For Terms, this is non-atomic
      */
     public Astro composite(AstroTag tag, Object data, SourceSpan optSpan) {
-        return term(leafTag(tag, optSpan),
-                    leafData(data, optSpan));
+        return term(leafTag(tag, optSpan), leafData(data, optSpan));
     }
 
     /**

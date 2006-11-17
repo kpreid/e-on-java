@@ -12,7 +12,7 @@ import java.io.Reader;
 
 /**
  * Run in a separate Thread to keep a Process from deadlocking.
- * <p>
+ * <p/>
  * This could be generalized into something useful from E.
  *
  * @author Mark S. Miller

@@ -270,8 +270,8 @@ public abstract class BaseLexer implements LexerFace {
             }
         } else {
             //current token started on this line at myOptStartPos
-            myOptStartText = (Twine)myLTwine.run(myOptStartPos,
-                                                 myLTwine.size());
+            myOptStartText =
+              (Twine)myLTwine.run(myOptStartPos, myLTwine.size());
             myOptStartPos = -1;
         }
         myPos = -1;
@@ -289,11 +289,8 @@ public abstract class BaseLexer implements LexerFace {
         }
         boolean quoted = ('"' == closer || '`' == closer);
         boolean atTop = !quoted && 0 == indent && -1 == myContinueCount;
-        myLTwine = myInput.optNextLine(atTop,
-                                       quoted,
-                                       indent,
-                                       closer,
-                                       closeIndent);
+        myLTwine =
+          myInput.optNextLine(atTop, quoted, indent, closer, closeIndent);
 
         if (null == myLTwine) {
             //don't clear myContinueCount on end-of-file
@@ -376,11 +373,8 @@ public abstract class BaseLexer implements LexerFace {
         }
         start = StrictMath.max(StrictMath.min(start, myPos - 1), 0);
         int bound = StrictMath.max(myPos, start + 1);
-        SyntaxException sex = new SyntaxException(msg,
-                                                  null,
-                                                  myLTwine,
-                                                  start,
-                                                  bound);
+        SyntaxException sex =
+          new SyntaxException(msg, null, myLTwine, start, bound);
         reset();
         throw sex;
     }
@@ -417,7 +411,7 @@ public abstract class BaseLexer implements LexerFace {
     }
 
     /**
-     * Is <tt>c</tt> a {@link Character#digit(char, int) digit} in base
+     * Is <tt>c</tt> a {@link Character#digit(char,int) digit} in base
      * <tt>radix</tt>?
      */
     private boolean isDigitStart(char c, int radix) {
@@ -600,28 +594,28 @@ public abstract class BaseLexer implements LexerFace {
             //Since all the non-error cases below don't involve any
             //quasi-enders, we can ignore myQuasiFlag during the switch.
             switch (myChar) {
-            case 'b':
+            case'b':
                 return (int)'\b';
-            case 't':
+            case't':
                 return (int)'\t';
-            case 'n':
+            case'n':
                 return (int)'\n';
-            case 'f':
+            case'f':
                 return (int)'\f';
-            case 'r':
+            case'r':
                 return (int)'\r';
-            case '"':
+            case'"':
                 return (int)'"';
-            case '\'':
+            case'\'':
                 return (int)'\'';
-            case '\\':
+            case'\\':
                 return (int)'\\';
-            case '\n':
+            case'\n':
                 return -1;
             case EOFCHAR:
                 needMore("End of file in middle of literal");
                 return -1; // make compiler happy
-            case 'u':
+            case'u':
                 syntaxError("XXX escaped uchar codes not yet implemented");
                 return -1; // make compiler happy
             default: {
@@ -768,7 +762,7 @@ public abstract class BaseLexer implements LexerFace {
      *     |                   "-"? &lt;{@link #digits digits(10)}&gt;
      *                             ("." &lt;{@link #digits digits(10)}&gt;)?
      *                             (("e"|"E") "-"? &lt;{@link #digits
-     *
+     * <p/>
      * digits(10)}&gt;)?
      * </pre>
      * A floating point number must have at least a "." or a ("e"|"E"). A

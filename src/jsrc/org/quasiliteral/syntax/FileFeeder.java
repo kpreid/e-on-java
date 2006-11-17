@@ -69,8 +69,7 @@ public class FileFeeder implements LineFeeder {
                              boolean quoted,
                              int indent,
                              char closer,
-                             int closeIndent)
-      throws IOException {
+                             int closeIndent) throws IOException {
         if (myOptReader == null) {
             return null;
         }
@@ -96,7 +95,8 @@ public class FileFeeder implements LineFeeder {
         if (null == optResultStr) {
             return null;
         }
-        SourceSpan span = new SourceSpan(myUrl, true,
+        SourceSpan span = new SourceSpan(myUrl,
+                                         true,
                                          myLineNum,
                                          0,
                                          myLineNum,

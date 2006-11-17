@@ -58,9 +58,12 @@ public class SourceSpan implements Persistent, DeepPassByCopy {
     /**
      *
      */
-    public SourceSpan(String url, boolean isOneToOne,
-                      int startLine, int startCol,
-                      int endLine, int endCol) {
+    public SourceSpan(String url,
+                      boolean isOneToOne,
+                      int startLine,
+                      int startCol,
+                      int endLine,
+                      int endCol) {
         myUrl = url;
         myIsOneToOne = isOneToOne;
         myStartLine = startLine;
@@ -73,21 +76,18 @@ public class SourceSpan implements Persistent, DeepPassByCopy {
     }
 
     /**
-     * '__makeSourceSpan(myUrl, myIsOneToOne,
-     * myStartLine, myStartCol,
+     * '__makeSourceSpan(myUrl, myIsOneToOne, myStartLine, myStartCol,
      * myEndLine, myEndCol)'
      */
     public Object[] getSpreadUncall() {
-        Object[] result = {
-            SourceSpanMaker,
-            "run",
-            myUrl,
-            myIsOneToOne ? Boolean.TRUE : Boolean.FALSE,
-            EInt.valueOf(myStartLine),
-            EInt.valueOf(myStartCol),
-            EInt.valueOf(myEndLine),
-            EInt.valueOf(myEndCol)
-        };
+        Object[] result = {SourceSpanMaker,
+          "run",
+          myUrl,
+          myIsOneToOne ? Boolean.TRUE : Boolean.FALSE,
+          EInt.valueOf(myStartLine),
+          EInt.valueOf(myStartCol),
+          EInt.valueOf(myEndLine),
+          EInt.valueOf(myEndCol)};
         return result;
     }
 
@@ -96,55 +96,55 @@ public class SourceSpan implements Persistent, DeepPassByCopy {
      * <p/>
      * Users of SourceSpan should prevent or prepare for the possibility that
      * the text retrieved from a remembered Url may no longer be the original
-     * version. When possible, version integrity information should be
-     * included in the Url, like a cryptographic hash of the contents.
-     * However, such issues are beyond the scope of SourceSpan or Twine by
-     * themselves. To them, the Url is simply a String.
+     * version. When possible, version integrity information should be included
+     * in the Url, like a cryptographic hash of the contents. However, such
+     * issues are beyond the scope of SourceSpan or Twine by themselves. To
+     * them, the Url is simply a String.
      */
     public String getUrl() {
         return myUrl;
     }
 
     /**
-     * Does each character in that Twine map to the corresponding
-     * source character position? <p>
+     * Does each character in that Twine map to the corresponding source
+     * character position? <p>
      * <p/>
-     * If so, then startLine must be the same as endLine,
-     * and the described Twine's size should be 'endCol - startCol + 1'.
-     * Otherwise, all the characters in the Twine map to all the characters
-     * described by this SourceSpan.
+     * If so, then startLine must be the same as endLine, and the described
+     * Twine's size should be 'endCol - startCol + 1'. Otherwise, all the
+     * characters in the Twine map to all the characters described by this
+     * SourceSpan.
      */
     public boolean isOneToOne() {
         return myIsOneToOne;
     }
 
     /**
-     * Line number of beginning of span, in the text unit
-     * (file?) described by url. Line numbers are counted starting at 1.
+     * Line number of beginning of span, in the text unit (file?) described by
+     * url. Line numbers are counted starting at 1.
      */
     public int getStartLine() {
         return myStartLine;
     }
 
     /**
-     * Position of first character of span within the first
-     * line. Column numbers are couunted starting at 0.
+     * Position of first character of span within the first line. Column
+     * numbers are couunted starting at 0.
      */
     public int getStartCol() {
         return myStartCol;
     }
 
     /**
-     * Line number of line holding the last character of the
-     * span. Note, this is inclusive.
+     * Line number of line holding the last character of the span. Note, this
+     * is inclusive.
      */
     public int getEndLine() {
         return myEndLine;
     }
 
     /**
-     * Position of last character of span within this last
-     * line. Note, this is inclusive.
+     * Position of last character of span within this last line. Note, this is
+     * inclusive.
      */
     public int getEndCol() {
         return myEndCol;
@@ -155,23 +155,23 @@ public class SourceSpan implements Persistent, DeepPassByCopy {
      * <p/>
      * Either input may be null, as may the output. If either input is null,
      * the result is null. If the two don't have the same Url, the result is
-     * null. Finally, the result describes the minimal span that includes
-     * both the originals. Iff the originals are both oneToOne and optB
-     * immediately follows optA on the same line, then the result is also
-     * oneToOne.
+     * null. Finally, the result describes the minimal span that includes both
+     * the originals. Iff the originals are both oneToOne and optB immediately
+     * follows optA on the same line, then the result is also oneToOne.
      */
     static public SourceSpan optCover(SourceSpan optA, SourceSpan optB) {
-        if (null == optA ||
-          null == optB ||
-          !optA.myUrl.equals(optB.myUrl)) {
+        if (null == optA || null == optB || !optA.myUrl.equals(optB.myUrl)) {
             return null;
         }
         if (optA.myIsOneToOne && optB.myIsOneToOne &&
           optA.myEndLine == optB.myStartLine &&
           optA.myEndCol + 1 == optB.myStartCol) {
-            return new SourceSpan(optA.myUrl, true,
-                                  optA.myStartLine, optA.myStartCol,
-                                  optB.myEndLine, optB.myEndCol);
+            return new SourceSpan(optA.myUrl,
+                                  true,
+                                  optA.myStartLine,
+                                  optA.myStartCol,
+                                  optB.myEndLine,
+                                  optB.myEndCol);
         }
 
         int startLine;
@@ -201,9 +201,12 @@ public class SourceSpan implements Persistent, DeepPassByCopy {
             endCol = optA.myEndCol;
         }
 
-        return new SourceSpan(optA.myUrl, false,
-                              startLine, startCol,
-                              endLine, endCol);
+        return new SourceSpan(optA.myUrl,
+                              false,
+                              startLine,
+                              startCol,
+                              endLine,
+                              endCol);
     }
 
     /**
@@ -211,9 +214,12 @@ public class SourceSpan implements Persistent, DeepPassByCopy {
      */
     public SourceSpan notOneToOne() {
         if (myIsOneToOne) {
-            return new SourceSpan(myUrl, false,
-                                  myStartLine, myStartCol,
-                                  myEndLine, myEndCol);
+            return new SourceSpan(myUrl,
+                                  false,
+                                  myStartLine,
+                                  myStartCol,
+                                  myEndLine,
+                                  myEndCol);
         } else {
             return this;
         }
@@ -229,8 +235,7 @@ public class SourceSpan implements Persistent, DeepPassByCopy {
         } else {
             fragType = "blob";
         }
-        return "<" + myUrl + "#:" + fragType +
-          "::" + myStartLine + ":" + myStartCol +
-          "::" + myEndLine + ":" + myEndCol + ">";
+        return "<" + myUrl + "#:" + fragType + "::" + myStartLine + ":" +
+          myStartCol + "::" + myEndLine + ":" + myEndCol + ">";
     }
 }

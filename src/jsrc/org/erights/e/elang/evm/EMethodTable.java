@@ -7,7 +7,7 @@ import org.erights.e.elib.prim.VTable;
 
 /**
  * Overrides VTable in order to remember the ObjectExpr which created it.
- * <p>
+ * <p/>
  * This is probably useful for several reasons, but the reason that caused us
  * to create this class is to prepare for serializing E objects, whether for
  * persistence or passing by copy. The ObjectExpr has the overall ScopeLayout
@@ -25,7 +25,6 @@ class EMethodTable extends VTable {
     private final ObjectExpr myObjExpr;
 
     /**
-     *
      * @param objExpr
      */
     EMethodTable(ObjectExpr objExpr) {
@@ -34,7 +33,6 @@ class EMethodTable extends VTable {
     }
 
     /**
-     *
      * @return
      */
     public ObjectExpr getObjExpr() {

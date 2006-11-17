@@ -1,7 +1,6 @@
 package antlr;
 
 
-
 /**
  * Created by IntelliJ IDEA. User: Dean Tribble Date: Jan 13, 2005 Time:
  * 9:20:54 PM To change this template use Options | File Templates.

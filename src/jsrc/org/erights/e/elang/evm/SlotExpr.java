@@ -36,7 +36,7 @@ import java.io.IOException;
 
 /**
  * BNF: "&" varName
- * <p>
+ * <p/>
  * Returns the slot holding the noun's value
  *
  * @author Mark S. Miller
@@ -60,11 +60,11 @@ public class SlotExpr extends EExpr {
      * Uses XXX 'makeFoo(...)'
      */
     public Object[] getSpreadUncall() {
-        Object[] result = { StaticMaker.make(SlotExpr.class),
-                            "run",
-                            getOptSpan(),
-                            myNoun,
-                            getOptScopeLayout() };
+        Object[] result = {StaticMaker.make(SlotExpr.class),
+          "run",
+          getOptSpan(),
+          myNoun,
+          getOptScopeLayout()};
         return result;
     }
 

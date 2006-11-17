@@ -28,17 +28,16 @@ import java.io.CharArrayWriter;
 import java.io.PrintWriter;
 
 /**
- * This class finds the user method that posted a trace message and
- * provides accessors to useful information.
+ * This class finds the user method that posted a trace message and provides
+ * accessors to useful information.
  * <p/>
- * DANGER: it is HIGHLY dependent on the particular way the
- * implementation prints stack traces. The installation tests
- * ($ROOT/Install) help you check if your VM does
- * things differently. If you change this code, please update the
- * tests (=Tests/TestTraceCaller.java).
+ * DANGER: it is HIGHLY dependent on the particular way the implementation
+ * prints stack traces. The installation tests ($ROOT/Install) help you check
+ * if your VM does things differently. If you change this code, please update
+ * the tests (=Tests/TestTraceCaller.java).
  * <p/>
- * For reference, here's the current expected format. (There's more
- * about this in the code.)
+ * For reference, here's the current expected format. (There's more about this
+ * in the code.)
  * <pre>
  * java.lang.Exception
  *  at Trace.debugm(Trace.java:217)
@@ -46,23 +45,21 @@ import java.io.PrintWriter;
  *  at Test.main(Test.java:20)
  * </pre>
  * <p/>
- * Stack frames from jit-ed code (compiled on the fly) look like:
- * at Trace.debugm(Compiled Code)
- * or
- * at Trace.debugm(TraceBuffer.java, Compiled Code)
+ * Stack frames from jit-ed code (compiled on the fly) look like: at
+ * Trace.debugm(Compiled Code) or at Trace.debugm(TraceBuffer.java, Compiled
+ * Code)
  * <p/>
- * Some VMs use <> pairs instead of parentheses.
- * Some seem to use tabs (?)
+ * Some VMs use <> pairs instead of parentheses. Some seem to use tabs (?)
  * <p/>
- * If the implementation runs into an odd format, it should leave
- * accessors it's not sure of with their initial values.
+ * If the implementation runs into an odd format, it should leave accessors
+ * it's not sure of with their initial values.
  */
 public class TraceCaller {
 
     /**
-     * The name of the method running in the targeted frame.
-     * It is partly qualified, consisting of the last element of the
-     * classname plus the method name (for example, "String.indexOf").
+     * The name of the method running in the targeted frame. It is partly
+     * qualified, consisting of the last element of the classname plus the
+     * method name (for example, "String.indexOf").
      */
     public String methodName = "method?";
 
@@ -77,13 +74,12 @@ public class TraceCaller {
     public String lineNumber = "line?";
 
     /**
-     * Collect an earlier frame's data based on data in the Exception.
-     * If aboveCount is 0, the data from the frame that created the
-     * exception is collected. If 1, the data is from the frame above
-     * that, and so on.
-     * <P>
-     * Leaves fields set to their to original "?" values
-     * if it can't parse the stack.
+     * Collect an earlier frame's data based on data in the Exception. If
+     * aboveCount is 0, the data from the frame that created the exception is
+     * collected. If 1, the data is from the frame above that, and so on.
+     * <p/>
+     * Leaves fields set to their to original "?" values if it can't parse the
+     * stack.
      */
     public TraceCaller(Exception exception) {
         String dump = getStackDump(exception);
@@ -94,9 +90,9 @@ public class TraceCaller {
     }
 
     /**
-     * String dump is a stack dump as retrieved with getStackDump.
-     * Construct the frame data as in previous constructor. This is
-     * used for testing (which is why it's public).
+     * String dump is a stack dump as retrieved with getStackDump. Construct
+     * the frame data as in previous constructor. This is used for testing
+     * (which is why it's public).
      */
     public TraceCaller(String dump) {
         parse(dump);
@@ -137,36 +133,34 @@ public class TraceCaller {
         }
     }
 
-
     /*
-     * Find the boundaries of the line corresponding to the
-     * stack frame we care about in stackDump. Return as a Line object.
-     * Throw exception if parsing fails.
-     *
-     * The target frame is two above the first one containing the string
-     * recordTraceMessageXyzzY. EXCEPT: at least one VM will mislabel
-     * the frame below the target like this:
-     *     recordTraceMessageXyzzY  // not really its name
-     *     recordTraceMessageXyzzY  // the one we really want.
-     *     errorm                   // or some other trace call.
-     *     callerOfErrorm
-     *
-     * That same VM sometimes produces THIS:
-     *  recordTraceMessageXyzzY
-     *  java.lang.Exception.<init>
-     *  TraceMessage.<init>
-     *  recordTraceMessageXyzzY
-     *  Trace.worldm
-     *  Threadzilla.run
-     *
-     * Doesn't this totally lose? For more examples of known lossage,
-     * see the unit tests.
-     */
+    * Find the boundaries of the line corresponding to the
+    * stack frame we care about in stackDump. Return as a Line object.
+    * Throw exception if parsing fails.
+    *
+    * The target frame is two above the first one containing the string
+    * recordTraceMessageXyzzY. EXCEPT: at least one VM will mislabel
+    * the frame below the target like this:
+    *     recordTraceMessageXyzzY  // not really its name
+    *     recordTraceMessageXyzzY  // the one we really want.
+    *     errorm                   // or some other trace call.
+    *     callerOfErrorm
+    *
+    * That same VM sometimes produces THIS:
+    *  recordTraceMessageXyzzY
+    *  java.lang.Exception.<init>
+    *  TraceMessage.<init>
+    *  recordTraceMessageXyzzY
+    *  Trace.worldm
+    *  Threadzilla.run
+    *
+    * Doesn't this totally lose? For more examples of known lossage,
+    * see the unit tests.
+    */
 
     private final String targetMethod = "recordTraceMessageXyzzY";
 
-    private Line findTargetLineBounds(String stackDump)
-      throws Exception {
+    private Line findTargetLineBounds(String stackDump) throws Exception {
         int middle = stackDump.indexOf(targetMethod);
         quitIf(middle == -1);
 
@@ -207,8 +201,7 @@ public class TraceCaller {
      * line. It finds the beginning and "past end" - using newlines as
      * the delimiters.
      */
-    private Line lineFromPoint(String stackDump, int middle)
-      throws Exception {
+    private Line lineFromPoint(String stackDump, int middle) throws Exception {
         Line retval = new Line();
 
         retval.start = stackDump.lastIndexOf('\n', middle);
@@ -285,7 +278,6 @@ public class TraceCaller {
         if (closeParen == -1 || closeParen >= line.pastEnd) {
             closeParen = line.pastEnd;
         }
-
 
         // Note in the above that if the filename/linenumber are
         // screwed up, you lose the chance to collect the

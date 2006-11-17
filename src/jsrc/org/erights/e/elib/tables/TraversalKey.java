@@ -12,13 +12,12 @@ import org.erights.e.elib.ref.Ref;
  * <p/>
  * XXX This class should probably be extended to allow the traversal needed by
  * serialization, but without revealing any encapsulated authority, as
- * explained in the Future Work section of <a href=
- * "http://www.erights.org/data/serial/jhu-paper/index.html"
+ * explained in the Future Work section of <a href= "http://www.erights.org/data/serial/jhu-paper/index.html"
  * >Safe Serialization Under Mutual Suspicion</a>.
  *
  * @author Mark S. Miller
- * @see <a href="http://www.erights.org/elib/equality/same-ref.html"
- *      >Reference Sameness</a>
+ * @see <a href="http://www.erights.org/elib/equality/same-ref.html" >Reference
+ *      Sameness</a>
  */
 public class TraversalKey {
 
@@ -32,15 +31,13 @@ public class TraversalKey {
      * then.
      * <p/>
      * This works below the level of E's semantics. On a VM in which E's
-     * semantics are more primitively supported, such as one in which
-     * promise forwarding is handled automatically, TraversalKey may need a
-     * completely different implementation in order to have the same
-     * E-level semantics.
+     * semantics are more primitively supported, such as one in which promise
+     * forwarding is handled automatically, TraversalKey may need a completely
+     * different implementation in order to have the same E-level semantics.
      */
     private final IdentityMap myFringe;
 
     /**
-     *
      * @param wrapped
      */
     public TraversalKey(Object wrapped) {

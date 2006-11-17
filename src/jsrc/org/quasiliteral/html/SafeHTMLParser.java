@@ -39,24 +39,22 @@ public class SafeHTMLParser extends Parser {
      * <p/>
      * This list is expected to grow over time.
      */
-    static private final String[][] SafeTags = {
-        {"html", "version"},
-        {"head"},
-        {"title"},
-        {"body"},
-        {"h1", "align"},
-        {"h2", "align"},
-        {"h3", "align"},
-        {"h4", "align"},
-        {"h5", "align"},
-        {"h6", "align"},
-        {"h7", "align"},
-        {"h8", "align"},
-        {"h9", "align"},
-        {"p", "align"},
-        {"b"},
-        {"i"}
-    };
+    static private final String[][] SafeTags = {{"html", "version"},
+      {"head"},
+      {"title"},
+      {"body"},
+      {"h1", "align"},
+      {"h2", "align"},
+      {"h3", "align"},
+      {"h4", "align"},
+      {"h5", "align"},
+      {"h6", "align"},
+      {"h7", "align"},
+      {"h8", "align"},
+      {"h9", "align"},
+      {"p", "align"},
+      {"b"},
+      {"i"}};
 
     /**
      *
@@ -64,9 +62,8 @@ public class SafeHTMLParser extends Parser {
     static public final ConstMap SafeTagMap;
 
     static {
-        FlexMap map = FlexMap.fromTypes(String.class,
-                                        ConstSet.class,
-                                        SafeTags.length);
+        FlexMap map =
+          FlexMap.fromTypes(String.class, ConstSet.class, SafeTags.length);
         for (int i = 0, ilen = SafeTags.length; i < ilen; i++) {
             String[] row = SafeTags[i];
             FlexSet set = FlexSet.fromType(String.class, row.length - 1);
@@ -92,8 +89,8 @@ public class SafeHTMLParser extends Parser {
         DTD dtd;
         try {
             dtd = DTD.getDTD("html32.bdtd");
-            InputStream inp = ClassLoader.getSystemResourceAsStream
-              ("javax/swing/text/html/parser/html32.bdtd");
+            InputStream inp = ClassLoader.getSystemResourceAsStream(
+              "javax/swing/text/html/parser/html32.bdtd");
             DataInputStream dis = new DataInputStream(inp);
             dtd.read(dis);
         } catch (IOException ioe) {
@@ -126,10 +123,9 @@ public class SafeHTMLParser extends Parser {
      */
     protected void handleStartTag(TagElement tag) {
         String tagName = tag.getElement().getName();
-        ConstSet optAttrs = (ConstSet)SafeTagMap.fetch(tagName,
-                                                       ValueThunk.NULL_THUNK);
-        T.require(null != optAttrs,
-                  "Tag: '", tagName, "' not declared safe");
+        ConstSet optAttrs =
+          (ConstSet)SafeTagMap.fetch(tagName, ValueThunk.NULL_THUNK);
+        T.require(null != optAttrs, "Tag: '", tagName, "' not declared safe");
         for (AttributeList attr = tag.getElement().atts;
              null != attr;
              attr = attr.next) {
@@ -139,8 +135,11 @@ public class SafeHTMLParser extends Parser {
             Vector optValues = attr.values;
             if (null != optValue || null != optValues) {
                 T.require(optAttrs.contains(name),
-                          "Attr: '", name,
-                          "' of tag: '", tagName, "' not declared safe");
+                          "Attr: '",
+                          name,
+                          "' of tag: '",
+                          tagName,
+                          "' not declared safe");
             }
         }
     }

@@ -13,8 +13,8 @@ import org.erights.e.elib.serial.Replacer;
  * CapTP connection.
  * <p/>
  * When our run method returns an {@link ObjectRefDesc}, the corresponding
- * decoded object is not simply this ObjectRefDesc. It is this ObjectRefDesc
- * as dereferenced by {@link CapTPReviver}.
+ * decoded object is not simply this ObjectRefDesc. It is this ObjectRefDesc as
+ * dereferenced by {@link CapTPReviver}.
  *
  * @author Mark S. Miller
  */
@@ -74,7 +74,7 @@ class CapTPReplacer extends Replacer {
                 return myConn.makeImportingDesc(ref);
             }
             T.fail("the " + clazz +
-                   " is neither PassByConstruction nor PassByProxy");
+              " is neither PassByConstruction nor PassByProxy");
         }
         T.fail("bad state " + ref);
         return null; //make compiler happy

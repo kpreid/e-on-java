@@ -26,17 +26,14 @@ public interface OutStream extends Stream {
      * thrown.
      * <p/>
      * If the stream fails during the write, then some initial subsequence of
-     * the elements may be written in order, and the terminal IOException
-     * must be thrown.
+     * the elements may be written in order, and the terminal IOException must
+     * be thrown.
      * <p/>
-     * If the stream doesn't fail<ul>
-     * <li>If <tt>elements.size() <= w.available()</tt>, then all the
-     * elements must be written in order.
+     * If the stream doesn't fail<ul> <li>If <tt>elements.size() <=
+     * w.available()</tt>, then all the elements must be written in order.
      * <li>If the operation returns normally, then all the elements were
-     * written in order.
-     * <li>If an UnavailableException is thrown, then none of the elements
-     * were written and the stream was not effected.
-     * </ul>
+     * written in order. <li>If an UnavailableException is thrown, then none of
+     * the elements were written and the stream was not effected. </ul>
      *
      * @param elements The elements to place into the stream.
      */
@@ -45,9 +42,7 @@ public interface OutStream extends Stream {
     /**
      * A flush() operation obligates all elements that have already entered the
      * stream to eventually make progress except as limited by failure and
-     * backpressure.
-     * <p>Exerts
-     * <a href="http://www.erights.org/elib/concurrency/eio/goals.html#flush"
+     * backpressure. <p>Exerts <a href="http://www.erights.org/elib/concurrency/eio/goals.html#flush"
      * >flush pressure</a> on all prior elements of the stream. When streams
      * are composed (for example, with pipes and filters), this obligation
      * travels with the elements until they emerge from the plumbing.

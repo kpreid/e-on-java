@@ -11,15 +11,14 @@ import org.erights.e.elang.evm.EMatcher;
 import org.erights.e.elang.evm.EMethod;
 import org.erights.e.elang.evm.ENode;
 import org.erights.e.elang.evm.EScript;
+import org.erights.e.elang.evm.GuardedPattern;
 import org.erights.e.elang.evm.LiteralExpr;
 import org.erights.e.elang.evm.Pattern;
-import org.erights.e.elang.evm.GuardedPattern;
 import org.erights.e.elib.oldeio.TextWriter;
 
 import java.io.IOException;
 
 /**
- *
  * @author Mark S. Miller
  */
 public class CapSlang2JVisitor implements ETreeVisitor {
@@ -68,8 +67,12 @@ public class CapSlang2JVisitor implements ETreeVisitor {
         run(e);
     }
 
-    private void run(Object a, Object b, Object c,
-                     Object d, Object e, Object f) {
+    private void run(Object a,
+                     Object b,
+                     Object c,
+                     Object d,
+                     Object e,
+                     Object f) {
         run(a);
         run(b);
         run(c);
@@ -171,8 +174,7 @@ public class CapSlang2JVisitor implements ETreeVisitor {
     public Object visitEScript(ENode optOriginal,
                                EMethod[] optMethods,
                                EMatcher[] matchers) {
-        T.notNull(optMethods,
-                  "plumbing not (yet?) supported in CapSlang");
+        T.notNull(optMethods, "plumbing not (yet?) supported in CapSlang");
         for (int i = 0, len = optMethods.length; i < len; i++) {
             run(optMethods[i], "\n");
         }

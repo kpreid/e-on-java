@@ -37,9 +37,10 @@ import java.io.IOException;
 
 /**
  * BNF: "meta.getState()"
- * <p>
- * @see org.erights.e.elang.scope.Scope
+ * <p/>
+ *
  * @author Mark S. Miller
+ * @see org.erights.e.elang.scope.Scope
  */
 public class MetaStateExpr extends EExpr {
 
@@ -54,10 +55,10 @@ public class MetaStateExpr extends EExpr {
      * Uses XXX 'makeFoo(...)'
      */
     public Object[] getSpreadUncall() {
-        Object[] result = { StaticMaker.make(MetaStateExpr.class),
-                            "run",
-                            getOptSpan(),
-                            getOptScopeLayout() };
+        Object[] result = {StaticMaker.make(MetaStateExpr.class),
+          "run",
+          getOptSpan(),
+          getOptScopeLayout()};
         return result;
     }
 

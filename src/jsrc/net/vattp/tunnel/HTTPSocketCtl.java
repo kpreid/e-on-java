@@ -122,9 +122,9 @@ public class HTTPSocketCtl extends Thread {
                 return data;
             } catch (IOException e) {
                 try {
-                    byte[] msg = makeSessionMsg(
-                      HTTPMsgID.HTTP_ConnectionFailed,
-                      "Error reading socket " + e);
+                    byte[] msg =
+                      makeSessionMsg(HTTPMsgID.HTTP_ConnectionFailed,
+                                     "Error reading socket " + e);
                     myClient.queueMsg(msg);
                     myClient.close(myConnectionID);
                 } catch (IOException e2) {
@@ -155,13 +155,13 @@ public class HTTPSocketCtl extends Thread {
                 //it's safe to not check optInetAddress() for null, since
                 //address must explicitly have one
                 //XXX is this true?
-                mySocket = new Socket(address.optInetAddress(),
-                                      address.getPort());
+                mySocket =
+                  new Socket(address.optInetAddress(), address.getPort());
             } catch (IOException e2) {
                 try {
-                    byte[] msg = makeSessionMsg(
-                      HTTPMsgID.HTTP_ConnectionFailed,
-                      "Connection Failed " + e2);
+                    byte[] msg =
+                      makeSessionMsg(HTTPMsgID.HTTP_ConnectionFailed,
+                                     "Connection Failed " + e2);
                     myClient.queueMsg(msg);
                 } catch (IOException e) {
                     myClient.disaster(e);
@@ -219,8 +219,10 @@ public class HTTPSocketCtl extends Thread {
     void sendData(byte[] data) {
         if (data.length > myHisSendLimit) {
             try {
-                byte[] msg = makeSessionMsg(HTTPMsgID.HTTP_ConnectionFailed, "Sent more than limit, sent=" +
-                                                                             data.length + " limit=" + myHisSendLimit);
+                byte[] msg = makeSessionMsg(HTTPMsgID.HTTP_ConnectionFailed,
+                                            "Sent more than limit, sent=" +
+                                              data.length + " limit=" +
+                                              myHisSendLimit);
                 myClient.queueMsg(msg);
                 myClient.close(myConnectionID);
             } catch (IOException e) {

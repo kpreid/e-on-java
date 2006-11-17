@@ -22,13 +22,13 @@ Contributor(s): ______________________________________.
 import org.erights.e.elib.serial.PassByConstruction;
 
 /**
- * How non-PassByConstruction objects are passed, ie, how references
- * to them are passed.
+ * How non-PassByConstruction objects are passed, ie, how references to them
+ * are passed.
  * <p/>
- * The sending side should ensure that only the captp comm system
- * itself can cause these to be sent, and that they are always sent in
- * a valid state. The receiving side should always revalidate during
- * dereference (which happens during unserialization).
+ * The sending side should ensure that only the captp comm system itself can
+ * cause these to be sent, and that they are always sent in a valid state. The
+ * receiving side should always revalidate during dereference (which happens
+ * during unserialization).
  * <p/>
  * XXX is a "private void validate()" automatically called during
  * unserialization?  Where does it say this?
@@ -41,8 +41,7 @@ interface ObjectRefDesc extends PassByConstruction {
     long serialVersionUID = -1216565871698747757L;
 
     /**
-     * Return an appropriate object (eg, a Proxy) matching this
-     * description.
+     * Return an appropriate object (eg, a Proxy) matching this description.
      *
      * @param conn The connection over which we are communicating
      */

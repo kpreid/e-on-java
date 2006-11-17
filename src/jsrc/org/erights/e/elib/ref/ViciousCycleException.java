@@ -28,11 +28,10 @@ public class ViciousCycleException extends RuntimeException {
     /**
      * The ViciousCycleException.
      * <p/>
-     * Used to detect vicious forwarding cycles.
-     * XXX should be package scope
+     * Used to detect vicious forwarding cycles. XXX should be package scope
      */
-    static public final ViciousCycleException TheViciousMarker
-      = new ViciousCycleException("Caught in a forwarding loop");
+    static public final ViciousCycleException TheViciousMarker =
+      new ViciousCycleException("Caught in a forwarding loop");
 
     public ViciousCycleException() {
         super();

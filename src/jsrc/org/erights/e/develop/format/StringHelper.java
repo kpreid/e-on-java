@@ -47,7 +47,8 @@ public final class StringHelper {
     }
 
     /**
-     * The string-based replaceAll() supplements the character-based replace().
+     * The string-based replaceAll() supplements the character-based
+     * replace().
      *
      * @see String#replace
      */
@@ -92,59 +93,51 @@ public final class StringHelper {
             char c = self.charAt(i);
             //XXX Mostly redundant with CharacterSugar.escaped(c).
             switch (c) {
-            case '\b':
-                {
-                    buf.append("\\b");
-                    break;
-                }
-            case '\t':
-                {
-                    buf.append("\\t");
-                    break;
-                }
-            case '\n':
-                {
-                    //Output an actual newline, which is legal in a
-                    //literal string in E.
-                    buf.append("\n");
-                    break;
-                }
-            case '\f':
-                {
-                    buf.append("\\f");
-                    break;
-                }
-            case '\r':
-                {
-                    buf.append("\\r");
-                    break;
-                }
-            case '\"':
-                {
-                    buf.append("\\\"");
-                    break;
-                }
+            case'\b': {
+                buf.append("\\b");
+                break;
+            }
+            case'\t': {
+                buf.append("\\t");
+                break;
+            }
+            case'\n': {
+                //Output an actual newline, which is legal in a
+                //literal string in E.
+                buf.append("\n");
+                break;
+            }
+            case'\f': {
+                buf.append("\\f");
+                break;
+            }
+            case'\r': {
+                buf.append("\\r");
+                break;
+            }
+            case'\"': {
+                buf.append("\\\"");
+                break;
+            }
 //            case '\'':
 //                {
 //                    buf.append("\\\'");
 //                    break;
 //                }
-            case '\\':
-                {
-                    buf.append("\\\\");
-                    break;
+            case'\\': {
+                buf.append("\\\\");
+                break;
+            }
+            default: {
+                if (c < 32 || c > 255) {
+                    String num = "0000" + Integer.toHexString(c);
+                    int numlen = num.length();
+                    num = num.substring(numlen - 4, numlen);
+                    buf.append("\\u").append(num);
+                } else {
+                    buf.append(c);
                 }
-            default:
-                {
-                    if (c < 32 || c > 255) {
-                        String num = "0000" + Integer.toHexString(c);
-                        int numlen = num.length();
-                        num = num.substring(numlen - 4, numlen);
-                        buf.append("\\u").append(num);
-                    } else {
-                        buf.append(c);
-                    }
-                }
+            }
             }
         }
         buf.append('\"');

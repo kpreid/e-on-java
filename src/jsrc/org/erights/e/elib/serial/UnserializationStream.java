@@ -29,10 +29,10 @@ import java.io.ObjectInputStream;
  * Made usable from E by parameterization rather than subclassing.
  * <p/>
  * This stream should be used at least for persistence and CapTP. It is
- * specialized by composition rather than subclassing -- by providing a
- * {@link Reviver} rather than overriding the .resolveObject(..)
- * method, as a step towards enabling E programs (which can't subclass Java
- * classes) to specialize serialization behavior.
+ * specialized by composition rather than subclassing -- by providing a {@link
+ * Reviver} rather than overriding the .resolveObject(..) method, as a step
+ * towards enabling E programs (which can't subclass Java classes) to
+ * specialize serialization behavior.
  *
  * @author Mark S. Miller
  */
@@ -45,11 +45,10 @@ public final class UnserializationStream extends ObjectInputStream {
      * <p/>
      * Makes an ObjectInputStream on inp with the following differences: <ul>
      * <li>When you do unserializer.readObject(), rather than the encoded
-     * object, let's say foo, being returned, reviver(foo) is returned,
-     * and likewise for every object reachable from foo.
-     * </ul>
-     * reviver(..) is used as the overriding of .resolveObject(..). See the
-     * Java Serialization spec for the detailed implications of this.
+     * object, let's say foo, being returned, reviver(foo) is returned, and
+     * likewise for every object reachable from foo. </ul> reviver(..) is used
+     * as the overriding of .resolveObject(..). See the Java Serialization spec
+     * for the detailed implications of this.
      */
     UnserializationStream(InputStream inp, Reviver reviver)
       throws IOException {

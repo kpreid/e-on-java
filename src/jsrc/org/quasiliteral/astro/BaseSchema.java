@@ -29,12 +29,8 @@ public class BaseSchema
 
     static private final long serialVersionUID = 3951039891178561818L;
 
-    static private final String[] MinimalTagNames = {
-        ".char.",
-        ".int.",
-        ".float64.",
-        ".String."
-    };
+    static private final String[] MinimalTagNames =
+      {".char.", ".int.", ".float64.", ".String."};
 
     /**
      *
@@ -86,12 +82,7 @@ public class BaseSchema
      * The literal tag names default to their canonical names
      */
     public BaseSchema(String schemaName, ConstList tagNames) {
-        this(schemaName,
-             tagNames,
-             ".char.",
-             ".int.",
-             ".float64.",
-             ".String.");
+        this(schemaName, tagNames, ".char.", ".int.", ".float64.", ".String.");
     }
 
     /**
@@ -106,10 +97,8 @@ public class BaseSchema
         mySchemaName = schemaName.intern();
         myTagNames = tagNames;
 
-        FlexList byCodes = FlexList.fromType(AstroTag.class,
-                                             tagNames.size());
-        FlexMap byNames = FlexMap.interning(AstroTag.class,
-                                            tagNames.size());
+        FlexList byCodes = FlexList.fromType(AstroTag.class, tagNames.size());
+        FlexMap byNames = FlexMap.interning(AstroTag.class, tagNames.size());
 
         literalCharTagName = literalCharTagName.intern();
         literalIntegerTagName = literalIntegerTagName.intern();
@@ -117,39 +106,34 @@ public class BaseSchema
         literalStringTagName = literalStringTagName.intern();
 
         for (short tagCode = 0; tagCode < tagNames.size(); tagCode++) {
-            String optTagName = (String)E.as(tagNames.get(tagCode),
-                                             String.class);
+            String optTagName =
+              (String)E.as(tagNames.get(tagCode), String.class);
             if (null != optTagName) {
                 optTagName = optTagName.intern();
                 AstroTag tag;
 
                 if (optTagName == literalCharTagName) {
-                    tag = new AstroTag(tagCode, optTagName,
-                                       Character.class);
+                    tag = new AstroTag(tagCode, optTagName, Character.class);
                     myLiteralCharTag = tag;
                     literalCharTagName = null;
 
                 } else if (optTagName == literalIntegerTagName) {
-                    tag = new AstroTag(tagCode, optTagName,
-                                       EInt.class);
+                    tag = new AstroTag(tagCode, optTagName, EInt.class);
                     myLiteralIntegerTag = tag;
                     literalIntegerTagName = null;
 
                 } else if (optTagName == literalFloat64TagName) {
-                    tag = new AstroTag(tagCode, optTagName,
-                                       Double.class);
+                    tag = new AstroTag(tagCode, optTagName, Double.class);
                     myLiteralFloat64Tag = tag;
                     literalFloat64TagName = null;
 
                 } else if (optTagName == literalStringTagName) {
-                    tag = new AstroTag(tagCode, optTagName,
-                                       Twine.class);
+                    tag = new AstroTag(tagCode, optTagName, Twine.class);
                     myLiteralStringTag = tag;
                     literalStringTagName = null;
 
                 } else {
-                    tag = new AstroTag(tagCode, optTagName,
-                                       null);
+                    tag = new AstroTag(tagCode, optTagName, null);
                 }
                 byCodes.ensureSize(tagCode);
                 byCodes.put(tagCode, tag);
@@ -157,10 +141,10 @@ public class BaseSchema
             }
         }
         T.require(null == literalCharTagName &&
-                  null == literalIntegerTagName &&
-                  null == literalIntegerTagName &&
-                  null == literalIntegerTagName,
-                  "Unmatched literal name for: ", mySchemaName);
+          null == literalIntegerTagName && null == literalIntegerTagName &&
+          null == literalIntegerTagName,
+                  "Unmatched literal name for: ",
+                  mySchemaName);
         myByTagCode = (AstroTag[])byCodes.getArray(AstroTag.class);
         myByTagName = byNames.snapshot();
     }
@@ -255,16 +239,12 @@ public class BaseSchema
         if (Number.class.isAssignableFrom(clazz)) {
             if (Double.class == clazz || Float.class == clazz) {
                 return myLiteralFloat64Tag;
-            } else if (EInt.class == clazz ||
-              Integer.class == clazz ||
-              BigInteger.class == clazz ||
-              Byte.class == clazz ||
-              Short.class == clazz ||
-              Long.class == clazz) {
+            } else if (EInt.class == clazz || Integer.class == clazz ||
+              BigInteger.class == clazz || Byte.class == clazz ||
+              Short.class == clazz || Long.class == clazz) {
                 return myLiteralIntegerTag;
             } else {
-                T.fail("Unrecognized number type: " +
-                       clazz);
+                T.fail("Unrecognized number type: " + clazz);
             }
         }
         if (String.class == clazz || Twine.class.isAssignableFrom(clazz)) {

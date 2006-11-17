@@ -14,30 +14,39 @@ import antlr.collections.impl.Vector;
  */
 class AlternativeBlock extends AlternativeElement {
 
-    protected String initAction = null;	// string for init action {...}
-    protected Vector alternatives;	// Contains Alternatives
+    protected String initAction = null;        // string for init action {...}
+    protected Vector alternatives;        // Contains Alternatives
 
-    protected String label;			// can label a looping block to break out of it.
+    protected String label;                        // can label a looping block to break out of it.
 
-    protected int alti, altj;		// which alts are being compared at the moment with
+    protected int alti, altj;                // which alts are being compared at the moment with
     // deterministic()?
-    protected int analysisAlt;		// which alt are we computing look on?  Must be alti or altj
+    protected int analysisAlt;                // which alt are we computing look on?  Must be alti or altj
 
-    protected boolean hasAnAction = false;	// does any alt have an action?
-    protected boolean hasASynPred = false;	// does any alt have a syntactic predicate?
+    protected boolean hasAnAction =
+      false;        // does any alt have an action?
+    protected boolean hasASynPred =
+      false;        // does any alt have a syntactic predicate?
 
-    protected int ID = 0;				// used to generate unique variables
-    protected static int nblks;	// how many blocks have we allocated?
-    boolean not = false;				// true if block is inverted.
+    protected int ID =
+      0;                                // used to generate unique variables
+    protected static int nblks;        // how many blocks have we allocated?
+    boolean not =
+      false;                                // true if block is inverted.
 
-    boolean greedy = true;			// Blocks are greedy by default
-    boolean greedySet = false;		// but, if not explicitly greedy, warning might be generated
+    boolean greedy =
+      true;                        // Blocks are greedy by default
+    boolean greedySet =
+      false;                // but, if not explicitly greedy, warning might be generated
 
-    protected boolean doAutoGen = true;	// false if no AST (or text) to be generated for block
+    protected boolean doAutoGen =
+      true;        // false if no AST (or text) to be generated for block
 
-    protected boolean warnWhenFollowAmbig = true; // warn when an empty path or exit path
+    protected boolean warnWhenFollowAmbig =
+      true; // warn when an empty path or exit path
 
-    protected boolean generateAmbigWarnings = true;  // the general warning "shut-up" mechanism
+    protected boolean generateAmbigWarnings =
+      true;  // the general warning "shut-up" mechanism
     // conflicts with alt of subrule.
     // Turning this off will suppress stuff
     // like the if-then-else ambig.
@@ -114,13 +123,14 @@ class AlternativeBlock extends AlternativeElement {
                     RuleRefElement rr = (RuleRefElement)elem;
                     RuleSymbol rs = (RuleSymbol)g.getSymbol(rr.targetRule);
                     if (rs == null) {
-                        grammar.antlrTool.error(
-                          "rule " + rr.targetRule +
-                          " referenced in (...)=>, but not defined");
+                        grammar.antlrTool
+                          .error("rule " + rr.targetRule +
+                            " referenced in (...)=>, but not defined");
                     } else {
                         rs.references.removeElement(rr);
                     }
-                } else if (elem instanceof AlternativeBlock) {// recurse into subrules
+                } else
+                if (elem instanceof AlternativeBlock) {// recurse into subrules
                     ((AlternativeBlock)elem).removeTrackingOfRuleRefs(g);
                 }
                 elem = elem.next;
@@ -151,11 +161,11 @@ class AlternativeBlock extends AlternativeElement {
             } else if (value.getText().equals("false")) {
                 warnWhenFollowAmbig = false;
             } else {
-                grammar.antlrTool.error(
-                  "Value for warnWhenFollowAmbig must be true or false",
-                  grammar.getFilename(),
-                  key.getLine(),
-                  key.getColumn());
+                grammar.antlrTool
+                  .error("Value for warnWhenFollowAmbig must be true or false",
+                         grammar.getFilename(),
+                         key.getLine(),
+                         key.getColumn());
             }
         } else if (key.getText().equals("generateAmbigWarnings")) {
             if (value.getText().equals("true")) {
@@ -163,11 +173,12 @@ class AlternativeBlock extends AlternativeElement {
             } else if (value.getText().equals("false")) {
                 generateAmbigWarnings = false;
             } else {
-                grammar.antlrTool.error(
-                  "Value for generateAmbigWarnings must be true or false",
-                  grammar.getFilename(),
-                  key.getLine(),
-                  key.getColumn());
+                grammar.antlrTool
+                  .error(
+                    "Value for generateAmbigWarnings must be true or false",
+                    grammar.getFilename(),
+                    key.getLine(),
+                    key.getColumn());
             }
         } else if (key.getText().equals("greedy")) {
             if (value.getText().equals("true")) {
@@ -177,18 +188,18 @@ class AlternativeBlock extends AlternativeElement {
                 greedy = false;
                 greedySet = true;
             } else {
-                grammar.antlrTool.error(
-                  "Value for greedy must be true or false",
-                  grammar.getFilename(),
-                  key.getLine(),
-                  key.getColumn());
+                grammar.antlrTool
+                  .error("Value for greedy must be true or false",
+                         grammar.getFilename(),
+                         key.getLine(),
+                         key.getColumn());
             }
         } else {
-            grammar.antlrTool.error(
-              "Invalid subrule option: " + key.getText(),
-              grammar.getFilename(),
-              key.getLine(),
-              key.getColumn());
+            grammar.antlrTool
+              .error("Invalid subrule option: " + key.getText(),
+                     grammar.getFilename(),
+                     key.getLine(),
+                     key.getColumn());
         }
     }
 
@@ -208,9 +219,8 @@ class AlternativeBlock extends AlternativeElement {
             } else {
                 s += " {";
                 for (int j = 1; j <= k; j++) {
-                    s +=
-                      cache[j].toString(",",
-                                        grammar.tokenManager.getVocabulary());
+                    s += cache[j].toString(",",
+                                           grammar.tokenManager.getVocabulary());
                     if (j < k && cache[j + 1] != null) {
                         s += ";";
                     }

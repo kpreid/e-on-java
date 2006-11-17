@@ -246,11 +246,13 @@ public class VatTPMgr {
     void connectionSuspended(VatTPConnection conn, String vatID) {
         VatTPConnection sus = removeSuspending(vatID);
         if (null == sus) {
-            Trace.comm.errorm("Suspended connection not suspending " + conn +
-                              "\n  " + this, new Throwable("locator"));
+            Trace.comm
+              .errorm(
+                "Suspended connection not suspending " + conn + "\n  " + this,
+                new Throwable("locator"));
         } else if (sus != conn) {
-            Trace.comm.errorm(
-              "Suspending ID " + sus + " not one suspended " + conn);
+            Trace.comm
+              .errorm("Suspending ID " + sus + " not one suspended " + conn);
         }
         if (null == mySuspendedConnections) {
             mySuspendedConnections = new Hashtable(1);
@@ -265,14 +267,16 @@ public class VatTPMgr {
      * @param vatID The vatID of the remote end.
      */
     void connectionSuspending(VatTPConnection conn, String vatID) {
-        VatTPConnection run = (VatTPConnection)myRunningDataConnections.remove(
-          vatID);
+        VatTPConnection run =
+          (VatTPConnection)myRunningDataConnections.remove(vatID);
         if (null == run) {
-            Trace.comm.errorm("Suspending connection not running " + conn +
-                              "\n  " + this, new Throwable("locator"));
+            Trace.comm
+              .errorm(
+                "Suspending connection not running " + conn + "\n  " + this,
+                new Throwable("locator"));
         } else if (run != conn) {
-            Trace.comm.errorm(
-              "Running ID " + run + " not one suspending " + conn);
+            Trace.comm
+              .errorm("Running ID " + run + " not one suspending " + conn);
         }
         if (null == mySuspendingConnections) {
             mySuspendingConnections = new Hashtable(1);
@@ -355,38 +359,42 @@ public class VatTPMgr {
         te = myRunningDataConnections.remove(vID);
         if (null != te) {
             if (te != conn) {
-                Trace.comm.errorm("Two DataConnections for one vatID\nA=" +
-                                  conn + "\nB=" + te);
+                Trace.comm
+                  .errorm("Two DataConnections for one vatID\nA=" + conn +
+                    "\nB=" + te);
             }
             return;
         }
         te = removeIdentified(vID);
         if (null != te) {
             if (te != conn) {
-                Trace.comm.errorm("Two DataConnections for one vatID\nA=" +
-                                  conn + "\nB=" + te);
+                Trace.comm
+                  .errorm("Two DataConnections for one vatID\nA=" + conn +
+                    "\nB=" + te);
             }
             return;
         }
         te = removeSuspending(vID);
         if (null != te) {
             if (te != conn) {
-                Trace.comm.errorm("Two DataConnections for one vatID\nA=" +
-                                  conn + "\nB=" + te);
+                Trace.comm
+                  .errorm("Two DataConnections for one vatID\nA=" + conn +
+                    "\nB=" + te);
             }
             return;
         }
         te = removeSuspended(vID);
         if (null != te) {
             if (te != conn) {
-                Trace.comm.errorm("Two DataConnections for one vatID\nA=" +
-                                  conn + "\nB=" + te);
+                Trace.comm
+                  .errorm("Two DataConnections for one vatID\nA=" + conn +
+                    "\nB=" + te);
             }
             return;
         }
-        Trace.comm.errorm(
-          "Unregistered VatTPConnection=" + conn + "\n" + toString(), new Throwable(
-            "locator"));
+        Trace.comm
+          .errorm("Unregistered VatTPConnection=" + conn + "\n" + toString(),
+                  new Throwable("locator"));
     }
 
     /**
@@ -554,8 +562,9 @@ public class VatTPMgr {
                                      path,
                                      EARL.flattenSearchPath(searchPath()),
                                      isIncoming);
-            Trace.comm.debugm("New VatTPConnection " + dc + " for incoming=" +
-                              isIncoming + " " + path);
+            Trace.comm
+              .debugm("New VatTPConnection " + dc + " for incoming=" +
+                isIncoming + " " + path);
             // Insert the VatTPConnection in pending connections
             if (null == myIdentifiedConnections) {
                 myIdentifiedConnections = new Hashtable(1);
@@ -708,8 +717,8 @@ public class VatTPMgr {
         if (null == myIdentifiedConnections) {
             return null;
         }
-        VatTPConnection ret = (VatTPConnection)myIdentifiedConnections.remove(
-          regID);
+        VatTPConnection ret =
+          (VatTPConnection)myIdentifiedConnections.remove(regID);
         if (0 == myIdentifiedConnections.size()) {
             myIdentifiedConnections = null;
         }
@@ -725,8 +734,8 @@ public class VatTPMgr {
         if (null == mySuspendedConnections) {
             return null;
         }
-        VatTPConnection ret = (VatTPConnection)mySuspendedConnections.remove(
-          regID);
+        VatTPConnection ret =
+          (VatTPConnection)mySuspendedConnections.remove(regID);
         if (0 == mySuspendedConnections.size()) {
             mySuspendedConnections = null;
         }
@@ -742,8 +751,8 @@ public class VatTPMgr {
         if (null == mySuspendingConnections) {
             return null;
         }
-        VatTPConnection ret = (VatTPConnection)mySuspendingConnections.remove(
-          regID);
+        VatTPConnection ret =
+          (VatTPConnection)mySuspendingConnections.remove(regID);
         if (0 == mySuspendingConnections.size()) {
             mySuspendingConnections = null;
         }
@@ -815,12 +824,13 @@ public class VatTPMgr {
             dc = removeIdentified(remoteVatID);
         }
         if (null == dc) {
-            Trace.comm.errorm(connection + " Not registered as pending\n" +
-                              this);
+            Trace.comm
+              .errorm(connection + " Not registered as pending\n" + this);
         }
 
-        VatTPConnection oldconn = (VatTPConnection)myRunningDataConnections.put(
-          remoteVatID, connection);
+        VatTPConnection oldconn =
+          (VatTPConnection)myRunningDataConnections.put(remoteVatID,
+                                                        connection);
         if (null != oldconn) {
             Trace.comm.errorm("Overlaying " + oldconn + " with " + connection);
             oldconn.shutDownConnection(new ConnectionShutDownException(
@@ -828,8 +838,9 @@ public class VatTPMgr {
         }
         if (null != myReactor && !isResuming) {
             if (Trace.comm.event && Trace.ON) {
-                Trace.comm.eventm("call NewConnectionReactor " + myReactor +
-                                  " with " + connection);
+                Trace.comm
+                  .eventm("call NewConnectionReactor " + myReactor + " with " +
+                    connection);
             }
             myReactor.reactToNewConnection(connection);
         }
@@ -857,32 +868,32 @@ public class VatTPMgr {
 
         if (null != myUnidentifiedConnections) {
             buf.append("\n" + myUnidentifiedConnections.size() +
-                       " Unidentified Connections\n");
+              " Unidentified Connections\n");
             listState(myUnidentifiedConnections.keys(), buf);
         }
         if (null != myIdentifiedConnections) {
             buf.append("\n" + myIdentifiedConnections.size() +
-                       " Identified Starting Connections\n");
+              " Identified Starting Connections\n");
             listState(myIdentifiedConnections.elements(), buf);
         }
         if (0 != myRunningDataConnections.size()) {
             buf.append("\n" + myRunningDataConnections.size() +
-                       " Running Connections\n");
+              " Running Connections\n");
             listState(myRunningDataConnections.elements(), buf);
         }
         if (null != mySuspendingConnections) {
             buf.append("\n" + mySuspendingConnections.size() +
-                       " Suspending Connections\n");
+              " Suspending Connections\n");
             listState(mySuspendingConnections.elements(), buf);
         }
         if (null != mySuspendedConnections) {
             buf.append("\n" + mySuspendedConnections.size() +
-                       " Suspended Connections\n");
+              " Suspended Connections\n");
             listState(mySuspendedConnections.elements(), buf);
         }
         if (null != myDieingConnections) {
-            buf.append("\n" + myDieingConnections.size() +
-                       " Dieing Connections\n");
+            buf.append(
+              "\n" + myDieingConnections.size() + " Dieing Connections\n");
             listState(myDieingConnections.keys(), buf);
         }
         return buf.toString();
@@ -901,25 +912,28 @@ public class VatTPMgr {
         String remoteAddr = path.getRemoteAddress();
         Object dp = removeUnidentified(path);
         if (null == dp) {
-            Trace.comm.errorm("Dieing DataPath=" + path + " not registered",
-                              new Throwable("locator"));
+            Trace.comm
+              .errorm("Dieing DataPath=" + path + " not registered",
+                      new Throwable("locator"));
             dp = this;      // Something which isn't a resolver
         }
         if (null != problem) {
             if (problem instanceof IOException) {
                 if (Trace.comm.event && Trace.ON) {
-                    Trace.comm.eventm(problem +
-                                      " on unidentified connection to " +
-                                      remoteAddr);
+                    Trace.comm
+                      .eventm(problem + " on unidentified connection to " +
+                        remoteAddr);
                 }
             } else {
-                Trace.comm.errorm("Exception on unidentified connection to " +
-                                  remoteAddr + "\n  " + problem);
+                Trace.comm
+                  .errorm("Exception on unidentified connection to " +
+                    remoteAddr + "\n  " + problem);
             }
         } else if (null != msg) {
             if (Trace.comm.event && Trace.ON) {
-                Trace.comm.eventm("Unidentified connection to " + remoteAddr +
-                                  " died, " + msg);
+                Trace.comm
+                  .eventm("Unidentified connection to " + remoteAddr +
+                    " died, " + msg);
             }
             problem = new Throwable(msg);
         } else {

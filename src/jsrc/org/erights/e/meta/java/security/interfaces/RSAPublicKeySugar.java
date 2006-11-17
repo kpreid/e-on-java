@@ -8,12 +8,13 @@ import org.erights.e.develop.exception.ExceptionMgr;
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.interfaces.RSAPublicKey;
-import java.security.spec.RSAPublicKeySpec;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
+import java.security.spec.RSAPublicKeySpec;
 
 /**
- * XXX Should be made virtually Selfless and implement getSpreadUncall instead.
+ * XXX Should be made virtually Selfless and implement getSpreadUncall
+ * instead.
  *
  * @author Mark S. Miller
  */

@@ -51,7 +51,8 @@ public class CharacterSugar {
         int type = Character.getType(self);
         String optResult = CharacterMakerSugar.CHAR_CAT_PAIRS[type][0];
         T.requireSI(null != optResult,
-                    "internal: Invalid character type: ", type);
+                    "internal: Invalid character type: ",
+                    type);
         return optResult;
     }
 
@@ -63,8 +64,8 @@ public class CharacterSugar {
     }
 
     /**
-     * Kludge to force overload resolution to prevent a char from
-     * successfully Java-coercing, on method.invoke(), to an int.
+     * Kludge to force overload resolution to prevent a char from successfully
+     * Java-coercing, on method.invoke(), to an int.
      */
     static public void add(char self, char other) {
         throw new IllegalArgumentException("Can't add characters");
@@ -125,12 +126,11 @@ public class CharacterSugar {
      * <p/>
      * If you want to print the quoted form, use c.quote() instead.
      * <p/>
-     * Prior to 0.8.26i, the spec used to say:
-     * Unlike Java's Writer.print(char), E's chars print by printing
-     * their quoted form.
+     * Prior to 0.8.26i, the spec used to say: Unlike Java's
+     * Writer.print(char), E's chars print by printing their quoted form.
      * <p/>
-     * If you want to contribute the character itself to a TextWriter,
-     * print it by doing <tt>out.print(""+c)</tt>
+     * If you want to contribute the character itself to a TextWriter, print it
+     * by doing <tt>out.print(""+c)</tt>
      */
     static public void __printOn(char self, TextWriter out)
       throws IOException {
@@ -145,71 +145,61 @@ public class CharacterSugar {
     }
 
     /**
-     * Just the part of a character's quoted form that encodes the
-     * character.
+     * Just the part of a character's quoted form that encodes the character.
      * <p/>
-     * In other words, everything except the enclosing quote signs.
-     * This is used for composing a quoted character. It is mostly redundant
-     * with {@link org.erights.e.elib.tables.Twine#quote} and
-     * {@link org.erights.e.develop.format.StringHelper#quote}, but this one
-     * outputs a backslash-en for a newline, rather than the newline itself.
+     * In other words, everything except the enclosing quote signs. This is
+     * used for composing a quoted character. It is mostly redundant with
+     * {@link org.erights.e.elib.tables.Twine#quote} and {@link
+     * org.erights.e.develop.format.StringHelper#quote}, but this one outputs a
+     * backslash-en for a newline, rather than the newline itself.
      */
     static public String escaped(char self) {
         StringBuffer buf = new StringBuffer();
         //XXX Mostly edundant with the inner loop of Twine.quote() and
         //StringHelper.quote()
         switch (self) {
-        case '\b':
-            {
-                buf.append("\\b");
-                break;
+        case'\b': {
+            buf.append("\\b");
+            break;
+        }
+        case'\t': {
+            buf.append("\\t");
+            break;
+        }
+        case'\n': {
+            buf.append("\\n");
+            break;
+        }
+        case'\f': {
+            buf.append("\\f");
+            break;
+        }
+        case'\r': {
+            buf.append("\\r");
+            break;
+        }
+        case'\"': {
+            buf.append("\\\"");
+            break;
+        }
+        case'\'': {
+            buf.append("\\\'");
+            break;
+        }
+        case'\\': {
+            buf.append("\\\\");
+            break;
+        }
+        default: {
+            if (self < 32 || self > 255) {
+                String num = "0000" + Integer.toHexString(self);
+                int len = num.length();
+                num = num.substring(len - 4, len);
+                buf.append("\\u" + num);
+            } else {
+                buf.append(self);
             }
-        case '\t':
-            {
-                buf.append("\\t");
-                break;
-            }
-        case '\n':
-            {
-                buf.append("\\n");
-                break;
-            }
-        case '\f':
-            {
-                buf.append("\\f");
-                break;
-            }
-        case '\r':
-            {
-                buf.append("\\r");
-                break;
-            }
-        case '\"':
-            {
-                buf.append("\\\"");
-                break;
-            }
-        case '\'':
-            {
-                buf.append("\\\'");
-                break;
-            }
-        case '\\':
-            {
-                buf.append("\\\\");
-                break;
-            }
-        default:
-            {
-                if (self < 32 || self > 255) {
-                    String num = "0000" + Integer.toHexString(self);
-                    int len = num.length();
-                    num = num.substring(len - 4, len);
-                    buf.append("\\u" + num);
-                } else {
-                    buf.append(self);
-                }
-            }
+        }
         }
         return buf.toString();
     }

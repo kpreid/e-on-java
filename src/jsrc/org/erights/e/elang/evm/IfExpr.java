@@ -36,11 +36,10 @@ import java.io.IOException;
 
 /**
  * BNF: "if" "(" cond-expr ")" "{" then-expr "}" "else" "{" else-expr "}"
- * <p>
- * Implements the "if" expression. If the cond-expr evaluates to
- * true, the then-expr is evaluated in a child of the scope
- * produced by the cond-expr. Otherwise, the else-expr is
- * evaluated in a child of the outer scope.
+ * <p/>
+ * Implements the "if" expression. If the cond-expr evaluates to true, the
+ * then-expr is evaluated in a child of the scope produced by the cond-expr.
+ * Otherwise, the else-expr is evaluated in a child of the outer scope.
  *
  * @author Mark S. Miller
  */
@@ -70,13 +69,13 @@ public class IfExpr extends EExpr {
      * Uses XXX 'makeFoo(...)'
      */
     public Object[] getSpreadUncall() {
-        Object[] result = { StaticMaker.make(IfExpr.class),
-                            "run",
-                            getOptSpan(),
-                            myTest,
-                            myThen,
-                            myElse,
-                            getOptScopeLayout() };
+        Object[] result = {StaticMaker.make(IfExpr.class),
+          "run",
+          getOptSpan(),
+          myTest,
+          myThen,
+          myElse,
+          getOptScopeLayout()};
         return result;
     }
 
@@ -147,7 +146,7 @@ public class IfExpr extends EExpr {
     }
 
     /**
-     * @deprecated Use {@link #getElse()} 
+     * @deprecated Use {@link #getElse()}
      */
     public EExpr els() {
         return myElse;

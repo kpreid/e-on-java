@@ -55,9 +55,6 @@ class EScriptDecl {
      *
      */
     EScript makeEScript(ENodeBuilder eBuilder) {
-        return new EScript(null,
-                           myOptMethods,
-                           myMatchers,
-                           null);
+        return new EScript(null, myOptMethods, myMatchers, null);
     }
 }

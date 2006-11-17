@@ -36,15 +36,14 @@ import java.io.IOException;
 
 /**
  * BNF: "try" block "finally" block
- * <p>
- * Evaluates the try-clause, but exiting to the enclosing context also
- * evaluate the finally-clause. If the finally-clause exits normally
- * (evaluates to a value), then the exit of the FinallyExpr as a whole is the
- * exit of the try-clause. In other words, if the try-clause evaluates to a
- * value, then the FinallyExpr evaluates to that same value. If the
- * try-clause throws or escapes, then the FinallyExpr as a whole likewise
- * throws or escapes.
- * <p>
+ * <p/>
+ * Evaluates the try-clause, but exiting to the enclosing context also evaluate
+ * the finally-clause. If the finally-clause exits normally (evaluates to a
+ * value), then the exit of the FinallyExpr as a whole is the exit of the
+ * try-clause. In other words, if the try-clause evaluates to a value, then the
+ * FinallyExpr evaluates to that same value. If the try-clause throws or
+ * escapes, then the FinallyExpr as a whole likewise throws or escapes.
+ * <p/>
  * On the other hand, if the finally-clause does a non-local exit (throws or
  * escapes) then the FinallyExpr as a whole exits in that way. A non-local
  * finally-clause exit replaces the try-clause exit as the means of exiting.
@@ -73,12 +72,12 @@ public class FinallyExpr extends EExpr {
      * Uses XXX 'makeFoo(...)'
      */
     public Object[] getSpreadUncall() {
-        Object[] result = { StaticMaker.make(FinallyExpr.class),
-                            "run",
-                            getOptSpan(),
-                            myAttempt,
-                            myUnwinder,
-                            getOptScopeLayout() };
+        Object[] result = {StaticMaker.make(FinallyExpr.class),
+          "run",
+          getOptSpan(),
+          myAttempt,
+          myUnwinder,
+          getOptScopeLayout()};
         return result;
     }
 
@@ -137,7 +136,7 @@ public class FinallyExpr extends EExpr {
     }
 
     /**
-     * @deprecated Use {@link #getUnwinder()} 
+     * @deprecated Use {@link #getUnwinder()}
      */
     public EExpr unwinder() {
         return myUnwinder;

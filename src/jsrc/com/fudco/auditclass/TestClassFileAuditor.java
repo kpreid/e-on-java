@@ -10,8 +10,7 @@ import java.io.IOException;
 /**
  * Program for testing the Java class file auditor.
  * <p/>
- * Usage:
- * java com.fudco.auditclass.TestClassFileAuditor <classfilename>...
+ * Usage: java com.fudco.auditclass.TestClassFileAuditor <classfilename>...
  */
 public class TestClassFileAuditor {
 
@@ -28,8 +27,8 @@ public class TestClassFileAuditor {
                     System.err.println(args[i] + " is OK");
                 }
             } catch (IOException e) {
-                System.err.println("problem reading class file " + args[i] +
-                                   ": " + e);
+                System.err
+                  .println("problem reading class file " + args[i] + ": " + e);
             }
         }
     }

@@ -13,7 +13,6 @@ public class InstanceTable extends VTable {
     private final Class myDirectClass;
 
     /**
-     *
      * @param directClass
      */
     InstanceTable(Class directClass) {

@@ -30,9 +30,9 @@ import org.erights.e.elib.serial.Persistent;
 public final class Brand implements PassByProxy, Persistent {
 
     /**
-     * @serial The name is only for debugging purposes, but must be
-     * stable over the life of the Brand. Only the Brand's unique
-     * object identity is significant.
+     * @serial The name is only for debugging purposes, but must be stable over
+     * the life of the Brand. Only the Brand's unique object identity is
+     * significant.
      */
     private final String myNickName;
 
@@ -51,8 +51,8 @@ public final class Brand implements PassByProxy, Persistent {
     }
 
     /**
-     * Returns a Sealer/Unsealer pair identified with a new unique
-     * Brand of the specified (non-unique) name.
+     * Returns a Sealer/Unsealer pair identified with a new unique Brand of the
+     * specified (non-unique) name.
      */
     static public Object[] run(String nickName) {
         Brand brand = new Brand(nickName);

@@ -60,7 +60,7 @@ public class BooleanSugar {
 
     /**
      * false &lt; true
-     * <p>
+     * <p/>
      * Therefore, (a &lt= b) === (a implies b). It's a shame that the arrow
      * goes in the wrong direction, but this is probably less confusing than
      * having false &gt; true.

@@ -13,8 +13,8 @@ import org.erights.e.elib.tables.ConstList;
 import java.io.IOException;
 
 /**
- * Records the context it was created in, so that it can be included in a
- * later report.
+ * Records the context it was created in, so that it can be included in a later
+ * report.
  *
  * @author Mark S. Miller
  */

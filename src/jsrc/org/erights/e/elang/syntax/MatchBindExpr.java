@@ -20,8 +20,6 @@ import org.quasiliteral.astro.Astro;
 import java.io.IOException;
 
 /**
- *
- *
  * @author Mark S. Miller
  */
 class MatchBindExpr extends DelayedExpr {
@@ -52,12 +50,12 @@ class MatchBindExpr extends DelayedExpr {
      * Uses 'makeMatchBind(optSpan, specimen, pattern, optScopeLayout)'
      */
     public Object[] getSpreadUncall() {
-        Object[] result = { StaticMaker.make(MatchBindExpr.class),
-                            "run",
-                            getOptSpan(),
-                            mySpecimen,
-                            myPattern,
-                            getOptScopeLayout() };
+        Object[] result = {StaticMaker.make(MatchBindExpr.class),
+          "run",
+          getOptSpan(),
+          mySpecimen,
+          myPattern,
+          getOptScopeLayout()};
         return result;
     }
 

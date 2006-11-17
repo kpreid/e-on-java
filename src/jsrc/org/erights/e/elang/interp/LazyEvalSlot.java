@@ -24,32 +24,28 @@ import org.erights.e.develop.exception.ExceptionMgr;
 import org.erights.e.elang.evm.EExpr;
 import org.erights.e.elang.scope.Scope;
 import org.erights.e.elang.syntax.EParser;
-import org.erights.e.elib.oldeio.EPrintable;
 import org.erights.e.elib.oldeio.TextWriter;
 import org.erights.e.elib.prim.E;
 import org.erights.e.elib.ref.Ref;
 import org.erights.e.elib.ref.Resolver;
+import org.erights.e.elib.serial.Loader;
 import org.erights.e.elib.slot.Slot;
 import org.erights.e.elib.tables.Twine;
-import org.erights.e.elib.serial.Loader;
 
 import java.io.IOException;
 
 /**
- * Exists to allow delaying the work of really importing during
- * ScopeSetup, while also allowing the imported things to be in the
- * scope they are defining.
- * <p>
+ * Exists to allow delaying the work of really importing during ScopeSetup,
+ * while also allowing the imported things to be in the scope they are
+ * defining.
+ * <p/>
  * For example, rx__quasiParser is in the safe scope, but is obtained lazily
- * from
- * <elang:interp.makePerlMatchMaker>. For this
- * import to work, it needs to provide the safe scope to the
- * evaluation of this module. Laziness allows the safe scope to
- * effectively include things that can't be defined until the safe
- * scope exists.
- * <p>
- * Must be made thread-safe for the same reasons as
- * {@link Loader}.
+ * from <elang:interp.makePerlMatchMaker>. For this import to work, it needs to
+ * provide the safe scope to the evaluation of this module. Laziness allows the
+ * safe scope to effectively include things that can't be defined until the
+ * safe scope exists.
+ * <p/>
+ * Must be made thread-safe for the same reasons as {@link Loader}.
  *
  * @author Mark S. Miller
  */
@@ -57,22 +53,28 @@ public class LazyEvalSlot implements Slot {
 
     private final Object myLock;
 
-    /** only meaningful when myOptSource != null */
+    /**
+     * only meaningful when myOptSource != null
+     */
     private Object myOptScope;
 
-    /** to be evaluated in myOptScope */
+    /**
+     * to be evaluated in myOptScope
+     */
     private Twine myOptSource;
 
-    /** only meaningful when myOptSource == null */
+    /**
+     * only meaningful when myOptSource == null
+     */
     private Object myOptValue;
 
     /**
-     * @param scope The scope in which to evaluate the source text. It's
-     *              declared as an Object rather than Scope so that it can be
-     *              a promise for a Scope. This promise must become fulfilled
-     *              before the first getValue() happens.
-     * @param source The source text to be evaluated in the promised scope
-     *               at the time of the first getValue().
+     * @param scope  The scope in which to evaluate the source text. It's
+     *               declared as an Object rather than Scope so that it can be
+     *               a promise for a Scope. This promise must become fulfilled
+     *               before the first getValue() happens.
+     * @param source The source text to be evaluated in the promised scope at
+     *               the time of the first getValue().
      */
     LazyEvalSlot(Object scope, Twine source) {
         myLock = new Object();
@@ -83,7 +85,7 @@ public class LazyEvalSlot implements Slot {
 
     /**
      * Returns the result of evaluating my source text in my scope.
-     * <p>
+     * <p/>
      * This evaluation only happens the first time, after which the value is
      * cached and returned for later requests. If the value isn't
      * DeepPassByCopy, this has security implications, so be careful how you
@@ -164,7 +166,6 @@ public class LazyEvalSlot implements Slot {
     }
 
     /**
-     *
      * @return
      */
     public String toString() {

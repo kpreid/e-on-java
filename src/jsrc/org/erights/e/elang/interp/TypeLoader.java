@@ -96,6 +96,7 @@ class TypeLoader extends BaseLoader {
 
     /**
      * exception if not found
+     *
      * @param uriBody
      */
     public Object get(String uriBody) {

@@ -8,20 +8,20 @@ import org.erights.e.elib.base.SourceSpan;
 /**
  * An element of an {@link Astro} argument list.
  * <p/>
- * XXX Obsolete now that sequences are explicit:
- * Normally this is the same type as {@link Astro} (as in the AST and Term
- * trees). But this is made a separate type for QuasiTerm trees, where they
- * can represent a pattern or generator for some number of Astros. But it is
- * a supertype of Astro, since an Astro can always be provided where an
- * AstroArgs is required -- the Astro represents one AstroArg.
+ * XXX Obsolete now that sequences are explicit: Normally this is the same type
+ * as {@link Astro} (as in the AST and Term trees). But this is made a separate
+ * type for QuasiTerm trees, where they can represent a pattern or generator
+ * for some number of Astros. But it is a supertype of Astro, since an Astro
+ * can always be provided where an AstroArgs is required -- the Astro
+ * represents one AstroArg.
  *
  * @author Mark S. Miller
  */
 public interface AstroArg {
 
     /**
-     * Where was the source text that was originally lexed or parsed to
-     * produce this node?
+     * Where was the source text that was originally lexed or parsed to produce
+     * this node?
      */
     SourceSpan getOptSpan();
 }

@@ -58,8 +58,8 @@ public class InputBufferEvent extends Event {
     }
 
     public String toString() {
-        return "CharBufferEvent [" + (getType() == CONSUME ?
-          "CONSUME, " :
-          "LA, ") + getChar() + "," + getLookaheadAmount() + "]";
+        return "CharBufferEvent [" +
+          (getType() == CONSUME ? "CONSUME, " : "LA, ") + getChar() + "," +
+          getLookaheadAmount() + "]";
     }
 }

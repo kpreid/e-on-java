@@ -34,12 +34,11 @@ public class CF_CONSTANT_Float_info extends CF_cp_info {
     /**
      * Read and return a CONSTANT_Float_info object from a DataInputStream.
      *
-     * @param in The DataInputStream to read from; this should be positioned
-     *           at the first byte after the type code byte of the constant pool entry
-     *           being read.
+     * @param in The DataInputStream to read from; this should be positioned at
+     *           the first byte after the type code byte of the constant pool
+     *           entry being read.
      */
-    static CF_CONSTANT_Float_info read(DataInputStream in)
-      throws IOException {
+    static CF_CONSTANT_Float_info read(DataInputStream in) throws IOException {
         float value = in.readFloat();
         return new CF_CONSTANT_Float_info(value);
     }

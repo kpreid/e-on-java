@@ -6,8 +6,7 @@ package org.erights.e.elang.smallcaps;
 import org.erights.e.elib.util.OneArgFunc;
 
 /**
- * Represents an exception handler/unwinder in the Smallcaps virtual
- * machine.
+ * Represents an exception handler/unwinder in the Smallcaps virtual machine.
  *
  * @author Mark S. Miller
  * @author Darius Bacon

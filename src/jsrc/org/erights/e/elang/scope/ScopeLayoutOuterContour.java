@@ -7,7 +7,7 @@ import org.erights.e.develop.assertion.T;
 
 /**
  * A nested scope for new outer variables.
- * <p>
+ * <p/>
  * This is a peculiar case which exists only to support the interactive
  * cmdLoop, in which each top level expression is in a nested scope.
  *
@@ -21,20 +21,18 @@ class ScopeLayoutOuterContour extends ScopeLayoutContour {
      */
     ScopeLayoutOuterContour(ScopeLayout next) {
         super(next.getOuterCount(), next);
-        T.require(myOuterCount >= 0,
-                  "Scope confusion");
+        T.require(myOuterCount >= 0, "Scope confusion");
     }
 
     /**
      * Uses 'myNext.nestOuter()'
      */
     public Object[] getSpreadUncall() {
-        Object[] result = { myNext, "nestOuter" };
+        Object[] result = {myNext, "nestOuter"};
         return result;
     }
 
     /**
-     *
      * @param fqnPrefix
      * @return
      */

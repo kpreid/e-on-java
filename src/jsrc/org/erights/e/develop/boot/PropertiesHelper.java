@@ -16,17 +16,17 @@ public class PropertiesHelper {
 
     private static final String HELPSTR =
       "java ... org.erights.e.develop.boot.PropertiesHelper [propertyName]\n" +
-      "Given a propertyName, its value is printed out literally.\n" +
-      "If absent, all key-value pairs are printed out escaped.";
+        "Given a propertyName, its value is printed out literally.\n" +
+        "If absent, all key-value pairs are printed out escaped.";
 
     /**
-     * Flattens 'self' into a single Properties containing all the
-     * associations in 'self'
+     * Flattens 'self' into a single Properties containing all the associations
+     * in 'self'
      */
     private static Properties flatten(Properties self) {
         Properties result = new Properties();
-        for (Enumeration iter = self.propertyNames();
-             iter.hasMoreElements();) {
+        for (Enumeration iter = self.propertyNames(); iter.hasMoreElements();)
+        {
             String key = (String)iter.nextElement();
             String value = self.getProperty(key);
             result.setProperty(key, value);

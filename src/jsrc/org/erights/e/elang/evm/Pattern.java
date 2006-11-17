@@ -31,10 +31,9 @@ import java.io.IOException;
 
 
 /**
- * A Pattern 1) "evaluates" in a scope, 2) matches some specimen
- * object, 3) binding names in this scope to values derived (usually
- * extracted) from the specimen, and 4) returns whether the match was
- * successful.
+ * A Pattern 1) "evaluates" in a scope, 2) matches some specimen object, 3)
+ * binding names in this scope to values derived (usually extracted) from the
+ * specimen, and 4) returns whether the match was successful.
  *
  * @author Mark S. Miller
  */
@@ -67,7 +66,7 @@ public abstract class Pattern extends ENode {
     /**
      * If this pattern matches the specimen, add macthing bindings to the
      * scope.
-     * <p>
+     * <p/>
      * Otherwise report the reason why not according to optEjector.
      */
     abstract void testMatch(EvalContext ctx,
@@ -77,7 +76,7 @@ public abstract class Pattern extends ENode {
     /**
      * If this pattern is the binding occurence of a name, and it would bind
      * the name to a coercion of the specimen as a whole, return the name. <p>
-     *
+     * <p/>
      * Else return null. The purpose is to support the extraction of fully
      * qualified names for object-definition expressions
      */

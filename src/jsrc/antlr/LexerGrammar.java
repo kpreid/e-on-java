@@ -142,11 +142,10 @@ class LexerGrammar extends Grammar {
             } else if (s.equals("false")) {
                 caseSensitive = false;
             } else {
-                antlrTool.warning(
-                  "caseSensitive option must be true or false",
-                  getFilename(),
-                  value.getLine(),
-                  value.getColumn());
+                antlrTool.warning("caseSensitive option must be true or false",
+                                  getFilename(),
+                                  value.getLine(),
+                                  value.getColumn());
             }
             return true;
         }

@@ -13,8 +13,8 @@ import org.erights.e.elib.prim.StaticMaker;
 import org.erights.e.elib.prim.Thrower;
 import org.erights.e.elib.ref.Ref;
 import org.erights.e.elib.tables.ConstList;
-import org.erights.e.elib.tables.FlexList;
 import org.erights.e.elib.tables.ConstMap;
+import org.erights.e.elib.tables.FlexList;
 import org.erights.e.elib.util.OneArgFunc;
 import org.quasiliteral.astro.Astro;
 
@@ -38,12 +38,12 @@ class CondOrExpr extends DelayedExpr {
     }
 
     public Object[] getSpreadUncall() {
-        Object[] result = { StaticMaker.make(CondOrExpr.class),
-                            "run",
-                            getOptSpan(),
-                            myLeft,
-                            myRight,
-                            getOptScopeLayout() };
+        Object[] result = {StaticMaker.make(CondOrExpr.class),
+          "run",
+          getOptSpan(),
+          myLeft,
+          myRight,
+          getOptScopeLayout()};
         return result;
     }
 
@@ -77,7 +77,7 @@ class CondOrExpr extends DelayedExpr {
             LiteralExpr rightSkipped = ENodeBuilder.__RIGHT_SKIPPED;
             ConstMap leftOuts = myLeft.staticScope().outNames();
             ConstMap rightOuts = myRight.staticScope().outNames();
-            return b.kdef(slotsPattern(b, null, exports), 
+            return b.kdef(slotsPattern(b, null, exports),
                           b.escape(b.finalPattern(ej1),
                                    b.sequence(b.forControl(myLeft,
                                                            ej1,
@@ -97,8 +97,7 @@ class CondOrExpr extends DelayedExpr {
                                                          null,
                                                          exports,
                                                          rightOuts,
-                                                         br4)))
-            );
+                                                         br4))));
         } else {
             return b.escape(b.finalPattern(ej1),
                             b.forControl(myLeft, ej1, StaticScope.EmptyScope),

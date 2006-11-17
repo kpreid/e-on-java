@@ -9,9 +9,8 @@ package org.erights.e.elib.deflect;
  * invoked.
  *
  * @author Mark S. Miller
- * @see <a href=
- * "https://bugs.sieve.net/bugs/?func=detailbug&bug_id=125634&group_id=16380"
- * >JComboBox prints in the wrong thread</a>
+ * @see <a href= "https://bugs.sieve.net/bugs/?func=detailbug&bug_id=125634&group_id=16380"
+ *      >JComboBox prints in the wrong thread</a>
  */
 public interface Callback {
 

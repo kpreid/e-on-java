@@ -105,8 +105,7 @@ public class QBuilder extends BaseBuilder
      * For QTerms, this is non-atomic
      */
     public Astro composite(AstroTag tag, Object data, SourceSpan optSpan) {
-        return term(leafTag(tag, optSpan),
-                    leafData(data, optSpan));
+        return term(leafTag(tag, optSpan), leafData(data, optSpan));
     }
 
     /**
@@ -118,17 +117,15 @@ public class QBuilder extends BaseBuilder
      * functor-hole.
      */
     public Astro term(Astro functor, AstroArg args) {
-        return new QTerm(myBuilder,
-                         (QAstro)functor,
-                         (QAstroArg)args);
+        return new QTerm(myBuilder, (QAstro)functor, (QAstroArg)args);
     }
 
     /**
      * Just returns 'functor' itself.
      * <p/>
-     * Note that, if 'functor' is a term-hole (one that doesn't constrain
-     * the literal term to be zero-arity), then so will the result, since it's
-     * the same.
+     * Note that, if 'functor' is a term-hole (one that doesn't constrain the
+     * literal term to be zero-arity), then so will the result, since it's the
+     * same.
      */
     public Astro term(Astro functor) {
         return functor;

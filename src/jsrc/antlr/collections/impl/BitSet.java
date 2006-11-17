@@ -109,7 +109,7 @@ public class BitSet implements Cloneable {
 
     public void clear(int el) {
         int n = wordNumber(el);
-        if (n >= bits.length) {	// grow as necessary to accommodate
+        if (n >= bits.length) {        // grow as necessary to accommodate
             growToInclude(el);
         }
         bits[n] &= ~bitMask(el);
@@ -203,8 +203,8 @@ public class BitSet implements Cloneable {
             }
             // found a range
             if (lastInRange - i > 2) {
-                ranges.appendElement(
-                  new IntRange(elems[i], elems[lastInRange]));
+                ranges.appendElement(new IntRange(elems[i],
+                                                  elems[lastInRange]));
             }
         }
         return ranges;
@@ -513,8 +513,9 @@ public class BitSet implements Cloneable {
                 str += formatter.literalChar(elems[i]);
                 str += "..";
                 str += formatter.literalChar(elems[lastInRange]);
-                i = lastInRange;	// skip past end of range for next range
-            } else {	// no range, just print current char and move on
+                i =
+                  lastInRange;        // skip past end of range for next range
+            } else {        // no range, just print current char and move on
                 str += formatter.literalChar(elems[i]);
             }
             i++;

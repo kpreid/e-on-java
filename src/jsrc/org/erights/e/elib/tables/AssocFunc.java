@@ -20,8 +20,8 @@ Contributor(s): ______________________________________.
 */
 
 /**
- * Called with associations from some kind of collection of associations,
- * like Tables. <p>
+ * Called with associations from some kind of collection of associations, like
+ * Tables. <p>
  * <p/>
  * Usually to be implemented by an inner class -- use lightly (avoid class
  * bloat).
@@ -32,8 +32,7 @@ Contributor(s): ______________________________________.
 public interface AssocFunc {
 
     /**
-     * Repeatedly called with successive key-value pairs from some
-     * collection.
+     * Repeatedly called with successive key-value pairs from some collection.
      */
     void run(Object key, Object value);
 }

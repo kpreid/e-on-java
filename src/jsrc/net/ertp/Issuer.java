@@ -14,11 +14,10 @@ import org.erights.e.elib.sealing.UnsealingException;
  * <p/>
  * Issuer subtypes for particular kinds of erights must have
  * 'makeAssay(description...)' messages for making an Assay of this Issuer
- * representing erights according to description arguments. For
- * example, an eright described by a scalar quantity, like money,
- * would have an integer as its description. Since there is no
- * description type universal to all erights, no makeAssay message is
- * included in the generic type 'Issuer'.
+ * representing erights according to description arguments. For example, an
+ * eright described by a scalar quantity, like money, would have an integer as
+ * its description. Since there is no description type universal to all
+ * erights, no makeAssay message is included in the generic type 'Issuer'.
  *
  * @author Mark S. Miller
  */
@@ -32,22 +31,21 @@ public interface Issuer {
      * or a Purse is a representative of this Issuer.
      * <p/>
      * Why do the vouce messages return the vouched-for-object, rather than
-     * returning a boolean indicating that the argument can be
-     * trusted?  In order to allow object some freedom in how they
-     * encode/decode themselves between Vats, we cannot assume that a
-     * trustworthy decoded 'candidate', as seen by a vouch method,
-     * indicates that the object the sender inquired about is actually
-     * trustworthy. A successful vouching cannot assure the sender
-     * that an argument is trustworthy, but does safely assure the
+     * returning a boolean indicating that the argument can be trusted?  In
+     * order to allow object some freedom in how they encode/decode themselves
+     * between Vats, we cannot assume that a trustworthy decoded 'candidate',
+     * as seen by a vouch method, indicates that the object the sender inquired
+     * about is actually trustworthy. A successful vouching cannot assure the
+     * sender that an argument is trustworthy, but does safely assure the
      * sender that the result is trustworthy.
      * <p/>
      * An Issuer must vouch for all the Purses and Assays it issues.
      *
      * @param candidate Does this Issuer stand by this candidate?
      * @return If so, it returns the candidate.
-     * @throws UnsealingException If not, it typically throws
-     *                            UnsealingException, but any thrown problem indicates a failure
-     *                            to vouch.
+     * @throws UnsealingException If not, it typically throws UnsealingException,
+     *                            but any thrown problem indicates a failure to
+     *                            vouch.
      */
     Assay vouchForAssay(Assay candidate) throws UnsealingException;
 

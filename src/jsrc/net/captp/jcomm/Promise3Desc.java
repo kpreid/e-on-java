@@ -24,8 +24,8 @@ import org.erights.e.develop.trace.Trace;
 import org.erights.e.elib.tables.ConstList;
 
 /**
- * The encoding of a RemotePromise over the wire to someone other than the
- * vat it points into.
+ * The encoding of a RemotePromise over the wire to someone other than the vat
+ * it points into.
  *
  * @author Chip Morningstar
  * @author Mark S. Miller
@@ -58,9 +58,8 @@ class Promise3Desc implements ObjectRefDesc {
     }
 
     /**
-     * What the other side imported (from somebody other than
-     * ourselves), we dereference as a RemotePromise to the same
-     * arrowhead.
+     * What the other side imported (from somebody other than ourselves), we
+     * dereference as a RemotePromise to the same arrowhead.
      */
     public Object dereference(CapTPConnection conn) {
         if (Trace.captp.debug && Trace.ON) {
@@ -70,19 +69,15 @@ class Promise3Desc implements ObjectRefDesc {
         if (null != myOptFarVine) {
             optVine = new Vine(myOptFarVine);
         }
-        return conn.getLookup(mySearchPath,
-                              myHostID,
-                              myNonce,
-                              optVine);
+        return conn.getLookup(mySearchPath, myHostID, myNonce, optVine);
     }
 
     /**
      *
      */
     public String toString() {
-        return "Promise3Desc(" + mySearchPath + ",\n    "
-          + myHostID.substring(0, 4) + ",\n    "
-          + myNonce + ",\n    "
-          + myOptFarVine + ")";
+        return "Promise3Desc(" + mySearchPath + ",\n    " +
+          myHostID.substring(0, 4) + ",\n    " + myNonce + ",\n    " +
+          myOptFarVine + ")";
     }
 }

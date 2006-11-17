@@ -33,10 +33,10 @@ import java.io.IOException;
  * A NearRef represents the Ref facet of a promise which has been fulfilled
  * with a local non-Ref object.
  * <p/>
- * In E, a NearRef is forever identical to the object it wraps (the target).
- * In the ELib implementation, NearRefs exist purely for implementation
- * convenience to wrap a non-Ref with a Ref interface. Note that all
- * non-Refs are considered NEAR.
+ * In E, a NearRef is forever identical to the object it wraps (the target). In
+ * the ELib implementation, NearRefs exist purely for implementation
+ * convenience to wrap a non-Ref with a Ref interface. Note that all non-Refs
+ * are considered NEAR.
  *
  * @author Mark S. Miller
  */
@@ -67,8 +67,7 @@ class NearRef extends Ref {
      * Returns <tt>this</tt>, since target isn't a Ref
      * <p/>
      * All implementations of <tt>resolutionRef/0</tt> must be thread safe, in
-     * order for {@link Ref#resolution() Ref.resolution/0} to be thread
-     * safe.
+     * order for {@link Ref#resolution() Ref.resolution/0} to be thread safe.
      *
      * @return <tt>this</tt>.
      */

@@ -170,35 +170,24 @@ public class MismatchedTokenException extends RecognitionException {
 
         switch (mismatchType) {
         case TOKEN:
-            sb.append(
-              "expecting " + tokenName(expecting) + ", found '" + tokenText +
-              "'");
+            sb.append("expecting " + tokenName(expecting) + ", found '" +
+              tokenText + "'");
             break;
         case NOT_TOKEN:
-            sb.append(
-              "expecting anything but " + tokenName(expecting) +
+            sb.append("expecting anything but " + tokenName(expecting) +
               "; got it anyway");
             break;
         case RANGE:
-            sb.append(
-              "expecting token in range: " + tokenName(expecting) + ".." +
-              tokenName(upper) +
-              ", found '" +
-              tokenText +
-              "'");
+            sb.append("expecting token in range: " + tokenName(expecting) +
+              ".." + tokenName(upper) + ", found '" + tokenText + "'");
             break;
         case NOT_RANGE:
-            sb.append(
-              "expecting token NOT in range: " + tokenName(expecting) + ".." +
-              tokenName(upper) +
-              ", found '" +
-              tokenText +
-              "'");
+            sb.append("expecting token NOT in range: " + tokenName(expecting) +
+              ".." + tokenName(upper) + ", found '" + tokenText + "'");
             break;
         case SET:
         case NOT_SET:
-            sb.append(
-              "expecting " + (mismatchType == NOT_SET ? "NOT " : "") +
+            sb.append("expecting " + (mismatchType == NOT_SET ? "NOT " : "") +
               "one of (");
             int[] elems = set.toArray();
             for (int i = 0; i < elems.length; i++) {
@@ -207,7 +196,7 @@ public class MismatchedTokenException extends RecognitionException {
             }
             sb.append("), found '" + tokenText + "'");
             break;
-        default :
+        default:
             sb.append(super.getMessage());
             break;
         }

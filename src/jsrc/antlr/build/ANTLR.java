@@ -13,14 +13,14 @@ public class ANTLR {
     public static String root = ".";
 
     public static String[] srcdir = {"antlr",
-                                     "antlr/actions/cpp",
-                                     "antlr/actions/java",
-                                     "antlr/actions/csharp",
-                                     "antlr/collections",
-                                     "antlr/collections/impl",
-                                     "antlr/debug",
-                                     "antlr/debug/misc",
-                                     "antlr/preprocessor"};
+      "antlr/actions/cpp",
+      "antlr/actions/java",
+      "antlr/actions/csharp",
+      "antlr/collections",
+      "antlr/collections/impl",
+      "antlr/debug",
+      "antlr/debug/misc",
+      "antlr/preprocessor"};
 
     public ANTLR() {
         compiler = System.getProperty("antlr.build.compiler", compiler);
@@ -46,8 +46,8 @@ public class ANTLR {
         tool.antlr(root + "/antlr/actions/cpp/action.g");
         tool.antlr(root + "/antlr/actions/csharp/action.g");
         for (int i = 0; i < srcdir.length; i++) {
-            String cmd = compiler + " -d " + root + " " + root + "/" + srcdir[i] +
-              "/*.java";
+            String cmd = compiler + " -d " + root + " " + root + "/" +
+              srcdir[i] + "/*.java";
             tool.system(cmd);
         }
     }
@@ -77,7 +77,8 @@ public class ANTLR {
         }
         File antlrRootDir = new File(root);
         if (!antlrRootDir.exists()) {
-            tool.error("Property antlr.build.root==" + root + " does not exist");
+            tool.error(
+              "Property antlr.build.root==" + root + " does not exist");
             return false;
         }
         if (!antlrRootDir.isDirectory()) {
@@ -91,17 +92,15 @@ public class ANTLR {
             }
         });
         if (antlrDir == null || antlrDir.length == 0) {
-            tool.error(
-              "Property antlr.build.root==" + root +
+            tool.error("Property antlr.build.root==" + root +
               " does not appear to be a valid ANTLR project root (no antlr subdir)");
             return false;
         }
         File antlrPackageDir = new File(root + "/antlr");
         String[] antlrPackageJavaFiles = antlrPackageDir.list();
-        if (antlrPackageJavaFiles == null || antlrPackageJavaFiles.length ==
-          0) {
-            tool.error(
-              "Property antlr.build.root==" + root +
+        if (antlrPackageJavaFiles == null ||
+          antlrPackageJavaFiles.length == 0) {
+            tool.error("Property antlr.build.root==" + root +
               " does not appear to be a valid ANTLR project root (no .java files in antlr subdir");
             return false;
         }

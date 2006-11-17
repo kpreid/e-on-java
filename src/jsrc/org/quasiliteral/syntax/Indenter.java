@@ -28,9 +28,9 @@ public class Indenter {
      * My top-of-stack is the same as the number of unclosed open bracketing
      * characters.
      * <p/>
-     * The stack keeps track of unclosed open brackets, and what
-     * indent should be assigned to new lines within that bracket (should it
-     * be the most recent -- the top of stack).
+     * The stack keeps track of unclosed open brackets, and what indent should
+     * be assigned to new lines within that bracket (should it be the most
+     * recent -- the top of stack).
      */
     private int myTOS;
 
@@ -56,8 +56,8 @@ public class Indenter {
     /**
      * Was this open bracket also a nesting?
      * <p/>
-     * I.e., was the openner the last character on its line?  If so, then
-     * its popping should also decrement myNest.
+     * I.e., was the openner the last character on its line?  If so, then its
+     * popping should also decrement myNest.
      */
     private boolean[] myNestStack;
 
@@ -128,20 +128,26 @@ public class Indenter {
      * @param closerChar As an error check, 'closerChar' must be the closing
      *                   bracket character needed to close the most recent
      *                   unclosed bracket.
-     * @param closer     Used by some syntax errors to report where the erronous
-     *                   closing text occurs.
+     * @param closer     Used by some syntax errors to report where the
+     *                   erronous closing text occurs.
      */
     public void pop(char closerChar, Twine closer) {
         if (myTOS <= 0) {
-            throw new SyntaxException
-              ("unmatched closing bracket: " + closerChar,
-               null, closer, 0, closer.size());
+            throw new SyntaxException(
+              "unmatched closing bracket: " + closerChar,
+              null,
+              closer,
+              0,
+              closer.size());
         }
         if (myCloserStack[myTOS] != closerChar) {
             Twine openner = myOpennerStack[myTOS];
-            throw new SyntaxException
-              ("mismatch: " + myCloserStack[myTOS] + " vs " + closerChar,
-               openner, closer, 0, closer.size());
+            throw new SyntaxException(
+              "mismatch: " + myCloserStack[myTOS] + " vs " + closerChar,
+              openner,
+              closer,
+              0,
+              closer.size());
         }
         int oldTOS = myTOS;
         myTOS--;
@@ -163,14 +169,14 @@ public class Indenter {
     }
 
     /**
-     * If the tos is closerChar, then process a closing bracket by popping
-     * the stacks.
+     * If the tos is closerChar, then process a closing bracket by popping the
+     * stacks.
      * <p/>
      * If the opening was also a nesting, this decrements the nest level.
      *
-     * @param closerChar Checks whether 'closerChar' is the closing
-     *                   bracket character needed to close the most recent
-     *                   unclosed bracket.
+     * @param closerChar Checks whether 'closerChar' is the closing bracket
+     *                   character needed to close the most recent unclosed
+     *                   bracket.
      */
     public void popIf(char closerChar) {
         if (myTOS <= 0) {

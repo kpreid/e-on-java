@@ -44,10 +44,9 @@ public abstract class VTable implements Script {
     private final String myFQName;
 
     /**
-     * Maps from intered verb strings to either <p>
-     * a MethodNode, for verbs that are only defined for one arity, or <p>
-     * An array of MethodNodes, with a MethodNode for every occupied arity
-     * and a null for the rest.
+     * Maps from intered verb strings to either <p> a MethodNode, for verbs
+     * that are only defined for one arity, or <p> An array of MethodNodes,
+     * with a MethodNode for every occupied arity and a null for the rest.
      */
     private final FlexMap myMethods;
 
@@ -85,15 +84,12 @@ public abstract class VTable implements Script {
      * independent way.
      * <p/>
      * 'verb' may actually be a verb or an mverb (mangled verb). If it's a
-     * mangled verb, this checks that the arities agree. If the optTypedVerb
-     * of the method is accepted by safeJ, then the method is added under the
-     * provided verb. If this verb/arity conflicts with one already in the
-     * map, then the conflict is resolved according to
-     * {@link #resolveConflict}.
+     * mangled verb, this checks that the arities agree. If the optTypedVerb of
+     * the method is accepted by safeJ, then the method is added under the
+     * provided verb. If this verb/arity conflicts with one already in the map,
+     * then the conflict is resolved according to {@link #resolveConflict}.
      */
-    private boolean addMethod(String verb,
-                              MethodNode newMeth,
-                              SafeJ safeJ)
+    private boolean addMethod(String verb, MethodNode newMeth, SafeJ safeJ)
       throws AlreadyDefinedException {
 
         String optTypedVerb = newMeth.getOptTypedVerb();
@@ -141,7 +137,10 @@ public abstract class VTable implements Script {
             if (arityTable.length <= newArity) {
                 //can't fit the new arity, so grow it
                 MethodNode[] newTable = new MethodNode[newArity + 1];
-                System.arraycopy(arityTable, 0, newTable, 0,
+                System.arraycopy(arityTable,
+                                 0,
+                                 newTable,
+                                 0,
                                  arityTable.length);
                 arityTable = newTable;
                 myMethods.put(verb, arityTable);
@@ -195,8 +194,7 @@ public abstract class VTable implements Script {
             selfStr = "<" + StringHelper.aan(typeName) + ">.";
         }
         String diagnostic = selfStr + aVerb + "/" + arity;
-        NoSuchMethodException nsme =
-          new NoSuchMethodException(diagnostic);
+        NoSuchMethodException nsme = new NoSuchMethodException(diagnostic);
         throw ExceptionMgr.asSafe(nsme);
     }
 
@@ -322,8 +320,8 @@ public abstract class VTable implements Script {
     }
 
     /**
-     * XXX cheesy indeed, as it doesn't distinguish inheritance vs override
-     * vs overload
+     * XXX cheesy indeed, as it doesn't distinguish inheritance vs override vs
+     * overload
      */
     private MethodNode resolveConflict(MethodNode a, MethodNode b) {
         if (b instanceof JavaMemberNode || b instanceof OverloaderNode) {

@@ -63,16 +63,15 @@ public class URIKit {
     /**
      * Normalizes an input URI string to the "actual" URI string.
      * <p/>
-     * A backslash ('\\') normalizes to a slash ('/'), and a vertical
-     * bar ('|') normalizes to a colon (':'), leaving only URIC
-     * characters (according to <a href=
-     * "http://www.ics.uci.edu/pub/ietf/uri/rfc2396.txt"
-     * >BNF of opaque URIs (see Appendix A)</a>) and the fragment identifier
+     * A backslash ('\\') normalizes to a slash ('/'), and a vertical bar ('|')
+     * normalizes to a colon (':'), leaving only URIC characters (according to
+     * <a href= "http://www.ics.uci.edu/pub/ietf/uri/rfc2396.txt" >BNF of
+     * opaque URIs (see Appendix A)</a>) and the fragment identifier
      * (sharp-sign ('#')).
      * <p/>
      * XXX An open question is whether normalize/1 should also normalize
-     * '%&lt;hex&gt;&lt;hex&gt;' to the encoded character. Currently
-     * this is not done.
+     * '%&lt;hex&gt;&lt;hex&gt;' to the encoded character. Currently this is
+     * not done.
      */
     static public Twine normalize(Twine uriText) {
         return uriText.replaceAll("\\", "/").replaceAll("|", ":");
@@ -97,14 +96,13 @@ public class URIKit {
     }
 
     /**
-     * According to <a href=
-     * "http://www.ics.uci.edu/pub/ietf/uri/rfc2396.txt"
-     * >BNF of opaque URIs (see Appendix A)</a> these are characters
-     * that can occur within a URI body:
+     * According to <a href= "http://www.ics.uci.edu/pub/ietf/uri/rfc2396.txt"
+     * >BNF of opaque URIs (see Appendix A)</a> these are characters that can
+     * occur within a URI body:
      * <pre>    a-z, A-Z, 0-9, any of ;/?:@&=+$,-_.!~*'()%</pre>
-     * In addition, by special dispensation, we allow '\\', which we
-     * normalize to '/', and '|', which we normalize to ':', and '#'
-     * which is the fragment indicator.
+     * In addition, by special dispensation, we allow '\\', which we normalize
+     * to '/', and '|', which we normalize to ':', and '#' which is the
+     * fragment indicator.
      * <p/>
      * {@link org.erights.e.meta.java.io.FileGetter FileGetter} also does these
      * normalizations dynamically.

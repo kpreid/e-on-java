@@ -39,10 +39,9 @@ public class DictionarySugar {
     }
 
     /**
-     * Enumerates each of the key-value pairs in the Dictionary. XXX
-     * Should enumerate a snapshot of the dictionary, so we're
-     * insulated from side effects to the dictionary during
-     * enumeration.
+     * Enumerates each of the key-value pairs in the Dictionary. XXX Should
+     * enumerate a snapshot of the dictionary, so we're insulated from side
+     * effects to the dictionary during enumeration.
      */
     static public void iterate(Dictionary self, AssocFunc func) {
         Enumeration keys = self.keys();

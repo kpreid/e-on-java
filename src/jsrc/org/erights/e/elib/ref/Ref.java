@@ -186,8 +186,7 @@ public abstract class Ref implements Callable {
         } else if (prevRef instanceof DisconnectedRef) {
             id = ((DisconnectedRef)prevRef).myIdentity;
         } else {
-            T.fail("must be far or disconnected " +
-                   prevRef);
+            T.fail("must be far or disconnected " + prevRef);
             return null; //make compiler happy
         }
         return new DisconnectedRef(problem, id);
@@ -197,7 +196,7 @@ public abstract class Ref implements Callable {
      * Does this reference designate an object in this vat?
      * <p/>
      * <tt>isNear/1</tt> must be thread safe, in order for {@link
-     * #isDeepPassByCopy(Object, IdentityMap) Ref.isDeepPassByCopy/2} to be
+     * #isDeepPassByCopy(Object,IdentityMap) Ref.isDeepPassByCopy/2} to be
      * thread safe.
      *
      * @see #state(Object)
@@ -435,9 +434,9 @@ public abstract class Ref implements Callable {
      * <p/>
      * Far references cannot point at Selfless objects (although RemotePromises
      * can, as a transient state). Therefore, the only case left is a Near
-     * reference to a Selfless object. A Near reference to a Selfless object
-     * is settled iff the Selfless object is settled. Just as two Selfless
-     * objects are the same iff they are of the same types are their parts are
+     * reference to a Selfless object. A Near reference to a Selfless object is
+     * settled iff the Selfless object is settled. Just as two Selfless objects
+     * are the same iff they are of the same types are their parts are
      * recursively the same, a Selfless object is settled when all its parts
      * are recursively settled. For example,
      * <pre>    [x, y]</pre>
@@ -456,10 +455,9 @@ public abstract class Ref implements Callable {
      * A Selfless object only has value-based sameness.
      * <p/>
      * Selfless objects are immutable, and compare for sameness based only on
-     * their type and state. As a result, an E implementation can
-     * transparently copy or merge copies of Selfless objects at will, with no
-     * effect visible from the E language. (XXX talk about rational tree
-     * comparison.)
+     * their type and state. As a result, an E implementation can transparently
+     * copy or merge copies of Selfless objects at will, with no effect visible
+     * from the E language. (XXX talk about rational tree comparison.)
      * <p/>
      * isSelfless of a non-NEAR reference is false. This is a bit weird for
      * FarRef, and DisconnectedRef, as they are listed (for implementation
@@ -497,7 +495,7 @@ public abstract class Ref implements Callable {
      * <p/>
      * Selfish objects have creation-identity, ie, normal EQness. For Selfish
      * objects, Java's "x==y" and E's "x==y" (ie, ELib's "E.same(x,y)") agree.
-     * <p>
+     * <p/>
      * <p/>
      * isSelfish of a non-NEAR reference is false. This is a bit wierd for
      * FarRef and DisconnectedRef, as they both have the creation identity of
@@ -548,8 +546,7 @@ public abstract class Ref implements Callable {
         // treat all non-Selfless non-PBC objects as PassByProxy for now.
 //        return false;
         return !Selfless.class.isAssignableFrom(clazz) &&
-          !Selfless.HONORARY.has(clazz) &&
-          !isPBC(ref);
+          !Selfless.HONORARY.has(clazz) && !isPBC(ref);
     }
 
     /**
@@ -650,7 +647,7 @@ public abstract class Ref implements Callable {
      * Are instances of clazz necessarily DeepPassByCopy?
      * <p/>
      * <tt>isDeepPassByCopyClass/1</tt> must be thread safe, in order for
-     * {@link #isDeepPassByCopy(Object, IdentityMap) Ref.isDeepPassByCopy/2} to
+     * {@link #isDeepPassByCopy(Object,IdentityMap) Ref.isDeepPassByCopy/2} to
      * be thread safe.
      */
     static private boolean isDeepPassByCopyClass(Class clazz) {
@@ -671,8 +668,7 @@ public abstract class Ref implements Callable {
      * Note that optSoFar will always start as null, and therefore will only
      * ever hold a thread-specific map, and so need not itself be thread safe.
      */
-    static private boolean isDeepPassByCopy(Object ref,
-                                            IdentityMap optSofar) {
+    static private boolean isDeepPassByCopy(Object ref, IdentityMap optSofar) {
         ref = resolution(ref);
         if (!isNear(ref)) {
             return false;
@@ -812,8 +808,8 @@ public abstract class Ref implements Callable {
      * href="http://www.erights.org/elang/same-ref.html"> "When Are Two Things
      * the <i>Same</i>?"</a>. <p>
      * <p/>
-     * Sameness is stable, but it is only total among settled references. If
-     * 'x == y' yield true or false then the same comparison must forever
+     * Sameness is stable, but it is only total among settled references. If 'x
+     * == y' yield true or false then the same comparison must forever
      * afterwards yield the same answer. However, if either or both are
      * unsettled, it may throw NotSettledException instead.
      * <p/>
@@ -843,17 +839,14 @@ public abstract class Ref implements Callable {
      * the whenResolved are guaranteed to have been successfully delivered.
      *
      * @return A promise that will resolve to the outcome of calling the
-     *         reactor, as explained <a href=
-     *        "http://www.eros-os.org/pipermail/e-lang/2001-August/005638.html"
+     *         reactor, as explained <a href= "http://www.eros-os.org/pipermail/e-lang/2001-August/005638.html"
      *         >here</a>.
-     * @see #whenBroken(Object, OneArgFunc)
+     * @see #whenBroken(Object,OneArgFunc)
      */
     static public Object whenResolved(Object ref, OneArgFunc reactor) {
         Object[] pair = promise();
         WhenResolvedReactor wrapper =
-          new WhenResolvedReactor(reactor,
-                                  ref,
-                                  (Resolver)pair[1]);
+          new WhenResolvedReactor(reactor, ref, (Resolver)pair[1]);
         Throwable optProblem = E.sendOnly(ref, "__whenMoreResolved", wrapper);
         if (null == optProblem) {
             return pair[0];
@@ -863,7 +856,7 @@ public abstract class Ref implements Callable {
     }
 
     /**
-     * Like {@link #whenResolved(Object, OneArgFunc)} but without a
+     * Like {@link #whenResolved(Object,OneArgFunc)} but without a
      * conventional return result.
      *
      * @return Why wasn't the __whenMoreResolved/1 queued?  It isn't queued if
@@ -872,7 +865,8 @@ public abstract class Ref implements Callable {
      *         event was queued, though it may still not arrive.
      */
     static public Throwable whenResolvedOnly(Object ref, OneArgFunc reactor) {
-        return E.sendOnly(ref, "__whenMoreResolved",
+        return E.sendOnly(ref,
+                          "__whenMoreResolved",
                           new WhenResolvedReactor(reactor, ref, null));
     }
 
@@ -883,22 +877,20 @@ public abstract class Ref implements Callable {
      * <p/>
      * A vat-crossing reference that gets garbage collected before a partition
      * is not broken by that partition, and therefore doesn't need to inform
-     * the reactor. Once a reference is logically garbage (unreachable), it
-     * may or may not have been collected yet, and so may or may not inform the
+     * the reactor. Once a reference is logically garbage (unreachable), it may
+     * or may not have been collected yet, and so may or may not inform the
      * reactor of partitions that happen after it is garbage.
      *
      * @return A promise that will resolve to the outcome of calling the
-     *         reactor, as explained <a href=
-     *        "http://www.eros-os.org/pipermail/e-lang/2001-August/005638.html"
-     *         >here</a>. Note that, if ref becomes near, it'll never break,
-     *         so the returned promise will never be resolved!
-     * @see #whenResolved(Object, OneArgFunc)
+     *         reactor, as explained <a href= "http://www.eros-os.org/pipermail/e-lang/2001-August/005638.html"
+     *         >here</a>. Note that, if ref becomes near, it'll never break, so
+     *         the returned promise will never be resolved!
+     * @see #whenResolved(Object,OneArgFunc)
      */
     static public Object whenBroken(Object ref, OneArgFunc reactor) {
         Object[] pair = promise();
-        WhenBrokenReactor wrapper = new WhenBrokenReactor(reactor,
-                                                          ref,
-                                                          (Resolver)pair[1]);
+        WhenBrokenReactor wrapper =
+          new WhenBrokenReactor(reactor, ref, (Resolver)pair[1]);
         Throwable optProblem = E.sendOnly(ref, "__whenBroken", wrapper);
         if (null == optProblem) {
             return pair[0];
@@ -908,7 +900,7 @@ public abstract class Ref implements Callable {
     }
 
     /**
-     * Like {@link #whenBroken(Object, OneArgFunc)} but without a conventional
+     * Like {@link #whenBroken(Object,OneArgFunc)} but without a conventional
      * return result.
      *
      * @return Why wasn't the __whenBroken/1 queued?  It isn't queued if this
@@ -917,7 +909,8 @@ public abstract class Ref implements Callable {
      *         queued, though it may still not arrive.
      */
     static public Throwable whenBrokenOnly(Object ref, OneArgFunc reactor) {
-        return E.sendOnly(ref, "__whenBroken",
+        return E.sendOnly(ref,
+                          "__whenBroken",
                           new WhenBrokenReactor(reactor, ref, null));
     }
 
@@ -937,8 +930,8 @@ public abstract class Ref implements Callable {
     /**
      * Used to implement resolution(), and for internal use in the promise
      * package. Our subclass must either provide 'this', or a Ref which is
-     * equivalent but less indirect. If the resolutionRef() is 'this', then
-     * our state() must be BROKEN or EVENTUAL.
+     * equivalent but less indirect. If the resolutionRef() is 'this', then our
+     * state() must be BROKEN or EVENTUAL.
      * <p/>
      * All implementations of <tt>resolutionRef/0</tt> must be thread safe, in
      * order for {@link Ref#resolution() Ref.resolution/0} to be thread safe.
@@ -952,8 +945,8 @@ public abstract class Ref implements Callable {
      * Our subclass must either provide 'this', or an object which is
      * equivalent but less indirect. If the resolution() is 'this', then our
      * state() must be BROKEN or EVENTUAL. However, subclasses will typically
-     * only override resolutionRef(). The only difference between the two is
-     * on a NearRef.
+     * only override resolutionRef(). The only difference between the two is on
+     * a NearRef.
      * <p/>
      * All implementations of <tt>resolution/0</tt> must be thread safe, in
      * order for {@link Ref#resolution(Object) Ref.resolution/1} to be thread

@@ -35,35 +35,53 @@ public final class Main {
     public static void main(final String[] args) throws Exception {
 
         // Generate a new identity.
-        final Keyspace crypto = org.waterken.url.tls.sha1withrsa.Keyspace.make();
+        final Keyspace crypto =
+          org.waterken.url.tls.sha1withrsa.Keyspace.make();
         final SecureRandom prng = org.waterken.entropy.Entropy.make();
         final KeyPair identity = crypto.create(prng);
         final Host me = crypto.become(identity);
         System.out.print("*" + me.getFingerprint());
 
         // Get online.
-        final Manager manager = new Manager(me, "ChatTP/1.0", org.waterken.url.dns.Locator.make(
-          80), new Reactor() {
-              public Handler run(final Connection connection) {
-                  System.out.println(connection.getPeer() + " here");
-                  connection.whenClosed(new Runnable() {
-                      public void run() {
-                          System.out.println(connection.getPeer() + " gone");
-                      }
-                  });
-                  return new Handler() {
-                      public void run(final byte[] record, final int len) {
-                          try {
-                              System.out.print(connection.getPeer() + "> ");
-                              System.out.println(
-                                new String(record, 0, len, "UTF-8"));
-                          } catch (final UnsupportedEncodingException _) {
-                              // Should never happen.
-                          }
-                      }
-                  };
-              }
-          });
+        final Manager manager = new Manager(me,
+                                            "ChatTP/1.0",
+                                            org.waterken.url.dns.Locator.make(
+                                              80),
+                                            new Reactor() {
+                                                public Handler run(final Connection connection) {
+                                                    System.out
+                                                      .println(
+                                                        connection.getPeer() +
+                                                          " here");
+                                                    connection.whenClosed(new Runnable() {
+                                                        public void run() {
+                                                            System.out
+                                                              .println(
+                                                                connection.getPeer() +
+                                                                  " gone");
+                                                        }
+                                                    });
+                                                    return new Handler() {
+                                                        public void run(final byte[] record,
+                                                                        final int len) {
+                                                            try {
+                                                                System.out
+                                                                  .print(
+                                                                    connection.getPeer() +
+                                                                      "> ");
+                                                                System.out
+                                                                  .println(new String(
+                                                                    record,
+                                                                    0,
+                                                                    len,
+                                                                    "UTF-8"));
+                                                            } catch (final UnsupportedEncodingException _) {
+                                                                // Should never happen.
+                                                            }
+                                                        }
+                                                    };
+                                                }
+                                            });
         final ServerSocket port = new ServerSocket(0);
         final Thread listener = new Thread(manager.listen(port));
         listener.setDaemon(true);
@@ -76,8 +94,8 @@ public final class Main {
         }
 
         // Start the input loop.
-        final BufferedReader in = new BufferedReader(
-          new InputStreamReader(System.in));
+        final BufferedReader in =
+          new BufferedReader(new InputStreamReader(System.in));
         String line = in.readLine();
         while (!"quit".equals(line)) {
             final byte[] record = line.getBytes("UTF-8");

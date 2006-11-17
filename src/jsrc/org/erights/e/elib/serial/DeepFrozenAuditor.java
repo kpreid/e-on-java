@@ -18,8 +18,7 @@ import java.io.IOException;
  */
 public class DeepFrozenAuditor extends BaseAuditor {
 
-    static public final DeepFrozenAuditor THE_ONE =
-      new DeepFrozenAuditor();
+    static public final DeepFrozenAuditor THE_ONE = new DeepFrozenAuditor();
 
     /**
      *
@@ -28,8 +27,8 @@ public class DeepFrozenAuditor extends BaseAuditor {
     }
 
     /**
-     * Coerces shortSpecimen to be DeepFrozen, which includes types that
-     * are not Java-subtypes of DeepFrozen.
+     * Coerces shortSpecimen to be DeepFrozen, which includes types that are
+     * not Java-subtypes of DeepFrozen.
      * <p/>
      * If shortSpecimen can't be coerced, exit according to optEjector.
      */
@@ -48,7 +47,6 @@ public class DeepFrozenAuditor extends BaseAuditor {
     }
 
     /**
-     *
      * @param out
      * @throws IOException
      */

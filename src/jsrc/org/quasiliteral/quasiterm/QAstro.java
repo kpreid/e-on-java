@@ -3,11 +3,11 @@ package org.quasiliteral.quasiterm;
 import org.erights.e.develop.assertion.T;
 import org.erights.e.elib.base.SourceSpan;
 import org.erights.e.elib.prim.Thrower;
+import org.erights.e.elib.ref.Ref;
 import org.erights.e.elib.tables.ConstList;
 import org.erights.e.elib.tables.FlexList;
 import org.erights.e.elib.tables.Twine;
 import org.erights.e.elib.util.OneArgFunc;
-import org.erights.e.elib.ref.Ref;
 import org.quasiliteral.astro.Astro;
 import org.quasiliteral.astro.AstroBuilder;
 import org.quasiliteral.astro.AstroTag;
@@ -37,8 +37,7 @@ public abstract class QAstro extends QAstroArg
      */
     public Object substitute(ConstList args) {
         ConstList list = substSlice(args, EMPTY_INDEX);
-        T.require(1 == list.size(),
-                  "Must be singleton: ", list);
+        T.require(1 == list.size(), "Must be singleton: ", list);
         return list.get(0);
     }
 
@@ -101,7 +100,9 @@ public abstract class QAstro extends QAstroArg
      */
     public Object getOptArgData(short tagCode) {
         T.require(tagCode == getTag().getOptTagCode(),
-                  "Tag mismatch: ", getTag(), " vs " + tagCode);
+                  "Tag mismatch: ",
+                  getTag(),
+                  " vs " + tagCode);
         return getOptArgData();
     }
 
@@ -113,8 +114,7 @@ public abstract class QAstro extends QAstroArg
     }
 
     /**
-     * Returns a variant of this Astro that may serve as a functor of a
-     * QTerm.
+     * Returns a variant of this Astro that may serve as a functor of a QTerm.
      * <p/>
      * If this Astro (or derivatives) should not be used as a functor, then
      * this operation should throw.
@@ -130,31 +130,24 @@ public abstract class QAstro extends QAstroArg
     }
 
     /**
-     * Does 'termoid' coerced to an Astro match the pattern represented by
-     * this hole?
+     * Does 'termoid' coerced to an Astro match the pattern represented by this
+     * hole?
      * <p/>
      * When this hole is a dollar-hole, termoid will be a substitution-arg.
      * When this hole is an at-hole, termoid will be the specimen. In either
-     * case, the same criteria are applied: <ul>
-     * <li>If termoid doesn't coerce to an Astro, then null -- we have no
-     * match
-     * <li>If we have a tag, and it doesn't match termoid's tag, then
-     * null.
-     * <li>If we are a functor-hole (rather than a term-hole) and termoid has
-     * one or more arguments, then null.
-     * <li>Otherwise, we match, so return the coerced termoid.
-     * </ul>
-     * The coercion rules are:<ul>
-     * <li>An integer coerces to a literal integer term.
-     * <li>A floating point number coerces to a literal float64 term.
-     * <li>A character coerces to a literal character term.
-     * <li>null coerces to term`null`, ie, a term with tag "null" and no
-     * arguments.
-     * <li>A boolean coerces to either term`true` or term`false`.
-     * <li>A String or Twine normally coerces to a zero-arity term whose
-     * tag is that String. But if this hole's tag is ".String.", then
-     * the String will instead convert to a literal string term.
-     * </ul>
+     * case, the same criteria are applied: <ul> <li>If termoid doesn't coerce
+     * to an Astro, then null -- we have no match <li>If we have a tag, and it
+     * doesn't match termoid's tag, then null. <li>If we are a functor-hole
+     * (rather than a term-hole) and termoid has one or more arguments, then
+     * null. <li>Otherwise, we match, so return the coerced termoid. </ul> The
+     * coercion rules are:<ul> <li>An integer coerces to a literal integer
+     * term. <li>A floating point number coerces to a literal float64 term.
+     * <li>A character coerces to a literal character term. <li>null coerces to
+     * term`null`, ie, a term with tag "null" and no arguments. <li>A boolean
+     * coerces to either term`true` or term`false`. <li>A String or Twine
+     * normally coerces to a zero-arity term whose tag is that String. But if
+     * this hole's tag is ".String.", then the String will instead convert to a
+     * literal string term. </ul>
      */
     Astro optCoerce(Object termoid, boolean isFunctorHole, AstroTag optTag) {
         termoid = Ref.resolution(termoid);
@@ -189,8 +182,8 @@ public abstract class QAstro extends QAstroArg
             result = myBuilder.leafData(termoid, null);
 
         } else if (termoid instanceof Character) {
-            result = myBuilder.leafChar(((Character)termoid).charValue(),
-                                        null);
+            result =
+              myBuilder.leafChar(((Character)termoid).charValue(), null);
         } else {
             return null;
         }

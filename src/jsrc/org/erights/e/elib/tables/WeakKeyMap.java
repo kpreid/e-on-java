@@ -13,11 +13,11 @@ import java.io.IOException;
  * A WeakKeyMap is a FlexMap whose keys may be garbage collected.
  * <p/>
  * A WeakKeyMap acts as if an external entity (ie, the garbage collector)
- * shares access to the map and occasionally decides to remove some
- * elements. As a result, a WeakKeyMap which isn't being changed by the
- * program may nevertheless find itself shrinking over time. This external
- * modifications can only occur 1) in their own turn, or 2) at the beginning
- * of any operation that causes an enumeration.
+ * shares access to the map and occasionally decides to remove some elements.
+ * As a result, a WeakKeyMap which isn't being changed by the program may
+ * nevertheless find itself shrinking over time. This external modifications
+ * can only occur 1) in their own turn, or 2) at the beginning of any operation
+ * that causes an enumeration.
  * <p/>
  * The snapshot(), readOnly(), clone(), or diverge() of a WeakKeyMap is not
  * weak.
@@ -111,8 +111,8 @@ public class WeakKeyMap extends FlexMap {
     }
 
     /**
-     * Does not remove garbage first, but cannot retrieve garbage since the
-     * key cannot be supplied.
+     * Does not remove garbage first, but cannot retrieve garbage since the key
+     * cannot be supplied.
      */
     public Object fetch(Object key, Thunk insteadThunk) {
         WeakKey weakKey = new WeakKey(key, myStuff);

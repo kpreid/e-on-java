@@ -40,8 +40,8 @@ class LookupHandler extends RemoteHandler {
     /**
      * Shouldn't get redirected, so always fresh.
      * <p/>
-     * XXX kludge: even though this is made to appear as an unresolved
-     * remote reference, ie, a remote promise.
+     * XXX kludge: even though this is made to appear as an unresolved remote
+     * reference, ie, a remote promise.
      */
     public boolean isFresh() {
         return true;

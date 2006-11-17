@@ -29,8 +29,8 @@ import java.io.IOException;
 
 /**
  * If an E program throws a non-Exception object, a TwineException or
- * RuntimeException is actually thrown using E.toTwine(problem) to convert
- * the object into the exception's message.
+ * RuntimeException is actually thrown using E.toTwine(problem) to convert the
+ * object into the exception's message.
  *
  * @author Mark S. Miller
  */

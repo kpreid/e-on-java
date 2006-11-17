@@ -6,8 +6,8 @@ import test.foo.Class2;
 // found at http://www.opensource.org/licenses/mit-license.html ...............
 
 /**
- * Demonstrates a {@link test.foo.Class2 bug} in Sun's j2sdk1.4.1's
- * javac compiler.
+ * Demonstrates a {@link test.foo.Class2 bug} in Sun's j2sdk1.4.1's javac
+ * compiler.
  *
  * @author Mark S. Miller
  */

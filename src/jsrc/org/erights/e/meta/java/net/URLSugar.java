@@ -41,22 +41,22 @@ import java.security.NoSuchAlgorithmException;
 /**
  * A sweetener defining extra messages that may be e-sent to a URL.
  * <p/>
- * Makes a URL act as if it implements
- * {@link org.erights.e.elib.serial.Loader}.
+ * Makes a URL act as if it implements {@link org.erights.e.elib.serial.Loader}.
  * <p/>
  * Note that a URL of the form <tt>&lt;protocol:path&gt;</tt> grants access
- * only to the resource named "path" starting with that protocol handler.
- * By contrast, a URL of the form <tt>&lt;protocol:path/&gt;</tt> grants access
- * to all resources whose names, starting at that protocol handler, begin with
- * "path/". For example, <tt>&lt;http://www.erights.org&gt;</tt> evaluates to
- * a URL which grants access to the erights.org home page, whereas
- * <tt>&lt;http://www.erights.org/&gt;</tt> grants access to the whole website.
+ * only to the resource named "path" starting with that protocol handler. By
+ * contrast, a URL of the form <tt>&lt;protocol:path/&gt;</tt> grants access to
+ * all resources whose names, starting at that protocol handler, begin with
+ * "path/". For example, <tt>&lt;http://www.erights.org&gt;</tt> evaluates to a
+ * URL which grants access to the erights.org home page, whereas
+ * <tt>&lt;http://www.erights.org/&gt;</tt> grants access to the whole
+ * website.
  * <p/>
- * Note that the
- * {@link org.erights.e.elang.interp.URLGetter fileURL__uriGetter}
- * returns a {@link URL}, which therefore plays by the above rules, but that
- * the {@link FileGetter file__uriGetter} returns a {@link File} which doesn't.
- * A File always allows prefixing separated by "/" but disallowing "..".
+ * Note that the {@link org.erights.e.elang.interp.URLGetter
+ * fileURL__uriGetter} returns a {@link URL}, which therefore plays by the
+ * above rules, but that the {@link FileGetter file__uriGetter} returns a
+ * {@link File} which doesn't. A File always allows prefixing separated by "/"
+ * but disallowing "..".
  */
 public class URLSugar {
 
@@ -67,8 +67,8 @@ public class URLSugar {
     }
 
     /**
-     * Open 'self' for reading text, decoding UTF-8 and turning
-     * platform newlines into '\n's
+     * Open 'self' for reading text, decoding UTF-8 and turning platform
+     * newlines into '\n's
      */
     static public BufferedReader textReader(URL self) throws IOException {
         return new BufferedReader(new InputStreamReader(self.openStream()));
@@ -103,8 +103,8 @@ public class URLSugar {
     }
 
     /**
-     * Gets the contents of the url as String, normalizing newlines
-     * into '\n's.
+     * Gets the contents of the url as String, normalizing newlines into
+     * '\n's.
      */
     static public String getText(URL self) throws IOException {
         return BufferedReaderSugar.getText(textReader(self));
@@ -146,8 +146,7 @@ public class URLSugar {
      */
     static public URL get(URL self, String suffix) {
         String prefix = self.toExternalForm();
-        T.require(prefix.endsWith("/"),
-                  "Traversal not allowed: ", prefix);
+        T.require(prefix.endsWith("/"), "Traversal not allowed: ", prefix);
         try {
             return new URL(prefix + suffix);
         } catch (MalformedURLException e) {
@@ -156,8 +155,8 @@ public class URLSugar {
     }
 
     /**
-     * "implements" {@link org.erights.e.elib.serial.Loader#optUncall},
-     * but only if the body of this URL ends in a "/".
+     * "implements" {@link org.erights.e.elib.serial.Loader#optUncall}, but
+     * only if the body of this URL ends in a "/".
      *
      * @return
      */
@@ -167,8 +166,7 @@ public class URLSugar {
         }
         URL url = (URL)obj;
         String selfStr = self.toExternalForm();
-        T.require(selfStr.endsWith("/"),
-                  "Traversal not allowed: ", selfStr);
+        T.require(selfStr.endsWith("/"), "Traversal not allowed: ", selfStr);
         String urlStr = url.toExternalForm();
         if (!urlStr.startsWith(selfStr)) {
             return null;

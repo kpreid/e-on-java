@@ -16,8 +16,8 @@ import org.quasiliteral.astro.AstroTag;
 
 /**
  * Represents a dollar-hole ("${<hole-num>}") or an at-hole ("@{<hole-num>}")
- * that may be a functor-hole or a term-hole, and that may or may not insist
- * on a tag.
+ * that may be a functor-hole or a term-hole, and that may or may not insist on
+ * a tag.
  *
  * @author Mark S. Miller
  */
@@ -27,24 +27,23 @@ public abstract class QHole extends QAstro {
 
     /**
      * @serial If present, represents the token tag that the corresponding
-     * literal term must have, and this is a tagged-hole. If this is
-     * a dollar-hole, the corresponding literal term must be the
-     * substitution arg at myHoleNum. If this is an at-hole, the
-     * corresponding literal term is the specimen.
+     * literal term must have, and this is a tagged-hole. If this is a
+     * dollar-hole, the corresponding literal term must be the substitution arg
+     * at myHoleNum. If this is an at-hole, the corresponding literal term is
+     * the specimen.
      */
     final AstroTag myOptTag;
 
     /**
-     * @serial Which hole am I?  If this is a dollar-hole, then this
-     * says which substitution-arg. If this is an at-hole, then this
-     * says which binding.
+     * @serial Which hole am I?  If this is a dollar-hole, then this says which
+     * substitution-arg. If this is an at-hole, then this says which binding.
      */
     final int myHoleNum;
 
     /**
-     * @serial If true, then the corresponding literal term must be
-     * 0-arity. If false, then the corresponding literal term may
-     * itself have any argument list, and this is a termHole
+     * @serial If true, then the corresponding literal term must be 0-arity. If
+     * false, then the corresponding literal term may itself have any argument
+     * list, and this is a termHole
      */
     final boolean myIsFunctorHole;
 
@@ -56,18 +55,19 @@ public abstract class QHole extends QAstro {
      * @param builder       Used to build the result of a substitute.
      * @param optTag        If present, represents the token tag that the
      *                      corresponding literal term must have, and this is a
-     *                      tagged-hole. If this is a dollar-hole, the corresponding
-     *                      literal term must be the substitution are at myHoleNum.
-     *                      If this is an at-hole, the corresponding literal term is
-     *                      the specimen.
-     * @param holeNum       Which hole am I?  If this is a dollar-hole, then this
-     *                      says which substitution-arg. If this is an at-hole,
-     *                      then this says which binding.
+     *                      tagged-hole. If this is a dollar-hole, the
+     *                      corresponding literal term must be the substitution
+     *                      are at myHoleNum. If this is an at-hole, the
+     *                      corresponding literal term is the specimen.
+     * @param holeNum       Which hole am I?  If this is a dollar-hole, then
+     *                      this says which substitution-arg. If this is an
+     *                      at-hole, then this says which binding.
      * @param isFunctorHole If true, then the corresponding literal term must
      *                      be 0-arity. If false, then the corresponding
-     *                      literal term may itself have any argument list,
-     *                      and this is a termHole.
-     * @param optSpan       Where was the source text this node was extracted from?
+     *                      literal term may itself have any argument list, and
+     *                      this is a termHole.
+     * @param optSpan       Where was the source text this node was extracted
+     *                      from?
      */
     QHole(AstroBuilder builder,
           AstroTag optTag,
@@ -86,11 +86,11 @@ public abstract class QHole extends QAstro {
      * corresponding element of the list.
      * <p/>
      * For example, if 'args' is [['a','b'],['c','d','e']], 'holeNum' is 1,
-     * 'index' is [2,3], and 'repeat' is true, then the answer should be
-     * 'e', since it's at args[1][2], and the repeat flag allows us to ignore
-     * the 3 when we find that 'e' isn't a list. If 'repeat' had been false,
-     * the presence of an additional step on the index path would have caused
-     * an exception to be thrown. In either case, if an index step is out of
+     * 'index' is [2,3], and 'repeat' is true, then the answer should be 'e',
+     * since it's at args[1][2], and the repeat flag allows us to ignore the 3
+     * when we find that 'e' isn't a list. If 'repeat' had been false, the
+     * presence of an additional step on the index path would have caused an
+     * exception to be thrown. In either case, if an index step is out of
      * bounds, an exception is thrown regardless of the value of 'repeat'.
      */
     static Object multiGet(ConstList args,
@@ -133,11 +133,11 @@ public abstract class QHole extends QAstro {
      * <p/>
      * For example, if 'bindings' is [['a','b'],['c','d','e']] diverge(),
      * 'holeNum' is 1, 'index' is [2], and 'newValue' is 'x', then the 'e'
-     * should be replaced with 'x', since it's at list[1][2]. If any index
-     * step is out of bounds, the corresponding list is grown to include it
-     * (see {@link FlexList#ensureSize(int)} and null is returned.
-     * Alternatively, if an old value is being overwritten, then that old
-     * value is also returned.
+     * should be replaced with 'x', since it's at list[1][2]. If any index step
+     * is out of bounds, the corresponding list is grown to include it (see
+     * {@link FlexList#ensureSize(int)} and null is returned. Alternatively, if
+     * an old value is being overwritten, then that old value is also
+     * returned.
      */
     static Object multiPut(FlexList bindings,
                            int holeNum,
@@ -173,8 +173,7 @@ public abstract class QHole extends QAstro {
      * Tagged holes return their tag, otherwise throws.
      */
     public AstroTag getTag() {
-        T.notNull(myOptTag,
-                  "There ain't no tag on an untagged hole");
+        T.notNull(myOptTag, "There ain't no tag on an untagged hole");
         return myOptTag;
     }
 

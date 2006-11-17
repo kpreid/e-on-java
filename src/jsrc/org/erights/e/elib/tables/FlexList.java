@@ -39,17 +39,17 @@ public abstract class FlexList extends EList implements PassByProxy {
     }
 
     /**
-     * Returns a read-only facet on this list. Someone holding this facet
-     * may see changes, but they cannot cause them.
+     * Returns a read-only facet on this list. Someone holding this facet may
+     * see changes, but they cannot cause them.
      */
     public EList readOnly() {
         return new ROList(this);
     }
 
     /**
-     * Places value at this index. If index is the current size
-     * of the list, the list is extended with this element. Otherwise, if
-     * the index is out of range, throws IndexOutOfBoundsException
+     * Places value at this index. If index is the current size of the list,
+     * the list is extended with this element. Otherwise, if the index is out
+     * of range, throws IndexOutOfBoundsException
      *
      * @throws IndexOutOfBoundsException if index isn't in 0..size
      */
@@ -90,9 +90,9 @@ public abstract class FlexList extends EList implements PassByProxy {
 
     /**
      * Make this list be exactly 'newSize', truncating or extending as
-     * necessary. If this list is extended, what is it filled with?  If it
-     * is of a scalar valueType(), it is filled with the zero element for
-     * that scalar. Otherwise, it is filled with nulls.
+     * necessary. If this list is extended, what is it filled with?  If it is
+     * of a scalar valueType(), it is filled with the zero element for that
+     * scalar. Otherwise, it is filled with nulls.
      */
     public abstract void setSize(int newSize);
 
@@ -118,8 +118,7 @@ public abstract class FlexList extends EList implements PassByProxy {
      * Replace from start..!bound in this list with other.
      */
     public void setRun(int start, int bound, EList other) {
-        replace(start, bound,
-                other, 0, other.size());
+        replace(start, bound, other, 0, other.size());
     }
 
     /**
@@ -132,11 +131,13 @@ public abstract class FlexList extends EList implements PassByProxy {
     }
 
     /**
-     * Replace from start..!bound in this list with lstart..!lbound in
-     * other.
+     * Replace from start..!bound in this list with lstart..!lbound in other.
      */
-    public abstract void replace(int start, int bound,
-                                 EList other, int lstart, int lbound);
+    public abstract void replace(int start,
+                                 int bound,
+                                 EList other,
+                                 int lstart,
+                                 int lbound);
 
     /**
      * Remove and return the run of this list starting at start

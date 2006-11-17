@@ -25,7 +25,7 @@ import org.erights.e.elib.serial.Loader;
 
 /**
  * The subtree of a Loader under a package-prefix.
- * <p>
+ * <p/>
  * As explained in the superclass comment, this must be thread-safe.
  *
  * @author Mark S. Miller
@@ -44,15 +44,15 @@ class PackageLoader extends BaseLoader {
     /**
      *
      */
-    PackageLoader(Loader substrate,
-                  String protocol,
-                  String fqName) {
+    PackageLoader(Loader substrate, String protocol, String fqName) {
         mySubstrate = substrate;
         T.require(protocol.endsWith(":"),
-                  "internal: protocol must end with colon:", protocol);
+                  "internal: protocol must end with colon:",
+                  protocol);
         myProtocol = protocol;
         T.require(fqName.endsWith(".*"),
-                  "internal: bad package name: ", fqName);
+                  "internal: bad package name: ",
+                  fqName);
         //chop off just the "*" (leave the terminal ".")
         myPrefix = fqName.substring(0, fqName.length() - "*".length());
     }

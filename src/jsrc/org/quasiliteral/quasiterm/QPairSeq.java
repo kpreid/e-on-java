@@ -15,8 +15,8 @@ import org.quasiliteral.term.QuasiBuilder;
 import java.io.IOException;
 
 /**
- * A quasi-literal Term sequence, that matches or generates an actual
- * sequence of {@link org.quasiliteral.astro.Astro}s.
+ * A quasi-literal Term sequence, that matches or generates an actual sequence
+ * of {@link org.quasiliteral.astro.Astro}s.
  *
  * @author Mark S. Miller
  */
@@ -49,16 +49,14 @@ public class QPairSeq extends QAstroArg {
     /**
      * Makes a QTerm that matches or generates a Astro.
      * <p/>
-     * The invariants of a QTerm are not checked here, but rather are
-     * enforced by the callers in this class and in QTermBuilder.
+     * The invariants of a QTerm are not checked here, but rather are enforced
+     * by the callers in this class and in QTermBuilder.
      *
      * @param builder Used to build the results of a substitute
      * @param left    Do these first
      * @param right   Then do these
      */
-    private QPairSeq(AstroBuilder builder,
-                     QAstroArg left,
-                     QAstroArg right) {
+    private QPairSeq(AstroBuilder builder, QAstroArg left, QAstroArg right) {
         super(builder, null);
         myLeft = left;
         myRight = right;
@@ -83,9 +81,7 @@ public class QPairSeq extends QAstroArg {
      * Uses 'QPairSeqMaker(myBuilder, myLeft, myRight)'
      */
     public Object[] getSpreadUncall() {
-        Object[] result = {
-            QPairSeqMaker, "run", myBuilder, myLeft, myRight
-        };
+        Object[] result = {QPairSeqMaker, "run", myBuilder, myLeft, myRight};
         return result;
     }
 
@@ -112,18 +108,14 @@ public class QPairSeq extends QAstroArg {
                               ConstList specimenList,
                               FlexList bindings,
                               int[] index) {
-        int leftNum = myLeft.matchBindSlice(args,
-                                            specimenList,
-                                            bindings,
-                                            index);
+        int leftNum =
+          myLeft.matchBindSlice(args, specimenList, bindings, index);
         if (leftNum <= -1) {
             return -1;
         }
         specimenList = specimenList.run(leftNum, specimenList.size());
-        int rightNum = myRight.matchBindSlice(args,
-                                              specimenList,
-                                              bindings,
-                                              index);
+        int rightNum =
+          myRight.matchBindSlice(args, specimenList, bindings, index);
         if (rightNum <= -1) {
             return -1;
         }
@@ -136,8 +128,7 @@ public class QPairSeq extends QAstroArg {
      */
     public int getHeight() {
         if (myHeight <= 0) {
-            myHeight =
-            StrictMath.max(myLeft.getHeight(), myRight.getHeight());
+            myHeight = StrictMath.max(myLeft.getHeight(), myRight.getHeight());
         }
         return myHeight;
     }
@@ -145,8 +136,7 @@ public class QPairSeq extends QAstroArg {
     /**
      *
      */
-    public void prettyPrintOn(TextWriter out)
-      throws IOException {
+    public void prettyPrintOn(TextWriter out) throws IOException {
         int h = getHeight();
         if (h <= 0) {
             T.fail("internal: bad height " + h);
@@ -169,22 +159,14 @@ public class QPairSeq extends QAstroArg {
                    FlexList optBindings,
                    int[] prefix,
                    int shapeSoFar) {
-        shapeSoFar = myLeft.startShape(args,
-                                       optBindings,
-                                       prefix,
-                                       shapeSoFar);
-        return myRight.startShape(args,
-                                  optBindings,
-                                  prefix,
-                                  shapeSoFar);
+        shapeSoFar = myLeft.startShape(args, optBindings, prefix, shapeSoFar);
+        return myRight.startShape(args, optBindings, prefix, shapeSoFar);
     }
 
     /**
      * Just delegate to all children
      */
-    void endShape(FlexList optBindings,
-                  int[] prefix,
-                  int shape) {
+    void endShape(FlexList optBindings, int[] prefix, int shape) {
         myLeft.endShape(optBindings, prefix, shape);
         myRight.endShape(optBindings, prefix, shape);
     }

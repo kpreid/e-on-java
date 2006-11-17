@@ -26,16 +26,15 @@ import org.erights.e.elib.tables.ConstMap;
 /**
  * Defines the protocol of the object known as "interp" in the privileged
  * scope.
- * <p>
+ * <p/>
  * This is the interpreted program's interface to the read-eval-print loop
- * that's driving its evaluation. The spawner of an interpreter will
- * normally control that interpreter through a different interface, the
- * InterpLoop.
+ * that's driving its evaluation. The spawner of an interpreter will normally
+ * control that interpreter through a different interface, the InterpLoop.
  *
- * @see "InterpLoop"
- * @see "org.erights.e.elang.cmdLoopMakerAuthor"
  * @author Mark S. Miller
  * @author Terry Stanley
+ * @see "InterpLoop"
+ * @see "org.erights.e.elang.cmdLoopMakerAuthor"
  */
 public interface CmdLoop extends ControlLoop {
 
@@ -46,36 +45,35 @@ public interface CmdLoop extends ControlLoop {
 
     /**
      * A map from String (property names) to Strings (property values) that's
-     * assumed to reflect System.getProperties(),
-     * org/erights/e/elang/syntax/syntax-props-<major_version>.txt, the
-     * eprops.txt file, the optional ~/.e/user-eprops.txt file, and any
+     * assumed to reflect System.getProperties(), org/erights/e/elang/syntax/syntax-props-<major_version>.txt,
+     * the eprops.txt file, the optional ~/.e/user-eprops.txt file, and any
      * -Dprop=value command line arguments.
      */
     ConstMap getProps();
 
     /**
-     * Should an input expression be echoed as expanded to Kernel-E as well
-     * as evaluated?
-     * <p>
+     * Should an input expression be echoed as expanded to Kernel-E as well as
+     * evaluated?
+     * <p/>
      * If so, the expanded form will be shown in a "# expand: ..." block
      */
     boolean getExpand();
 
     /**
-     * Implementation specific internal diagnostic tool: Should we show
-     * the implementation's expansion to Transformed-E?
+     * Implementation specific internal diagnostic tool: Should we show the
+     * implementation's expansion to Transformed-E?
      */
     boolean getShowTransformed();
 
     /**
      * Should problem reports show their Java stack trace as well as their E
      * stack trace?
-     * <p>
+     * <p/>
      * This switch only makes sense while we're interpreting parse trees,
-     * rather than compiling E to jvm byte codes. While we're interpreting,
-     * the Java stack trace tends to large and uninformative. Once we're
-     * compiling, the Java stack trace should be all there is, and should do
-     * both jobs well. So, at that time, this flag will be ignored.
+     * rather than compiling E to jvm byte codes. While we're interpreting, the
+     * Java stack trace tends to large and uninformative. Once we're compiling,
+     * the Java stack trace should be all there is, and should do both jobs
+     * well. So, at that time, this flag will be ignored.
      */
     boolean getShowJStack();
 
@@ -87,26 +85,26 @@ public interface CmdLoop extends ControlLoop {
     /**
      * A function of a value and a TextWriter that prints the value by writing
      * onto the TextWriter.
-     * <p>
+     * <p/>
      * The default printFunc is:
      * <pre>    def printFunc(value, out :TextWriter) :void {
      *         out.quote(value)
      *     }</pre>
-     * <p>
+     * <p/>
      * Note that the printFunc itself may throw an execption. It is up to the
      * caller of the printFunc to protect itself from this possibility.
-     * <p>
+     * <p/>
      * XXX We should define an interface to represent the result type.
      */
     Object getPrintFunc();
 
     /**
      * Is this a read-eval-print loop for an interactive command line?
-     * <p>
+     * <p/>
      * If so, then the top scope should be mutable, each outcome should be
      * reported, prompts should be generated, and evaluation should continue
      * after errors.
-     * <p>
+     * <p/>
      * "interactive" is an immutable property, since it's too hard to change.
      */
     boolean getInteractive();
@@ -132,7 +130,6 @@ public interface CmdLoop extends ControlLoop {
     void setShowEStack(boolean flag);
 
     /**
-     *
      * @param newPF
      */
     void setPrintFunc(Object newPF);
@@ -150,7 +147,7 @@ public interface CmdLoop extends ControlLoop {
     /**
      * If {@link #setTopScope(Scope)} has not been called, nextScope/1 sets the
      * topScope, presumably for the next turn.
-     * <p>
+     * <p/>
      * If {@link #setTopScope(Scope)} has been called, it sets a flag
      * suppressing the next call to nextScope/1. If nextScope/1 is called while
      * that flag is set, it only clears that flag, so the next call to
@@ -159,11 +156,10 @@ public interface CmdLoop extends ControlLoop {
     void nextScope(Scope newScope);
 
     /**
-     * Returns the result of evaluating i'th most recent command (top
-     * level expression).
-     * <p>
-     * We may move this so that it's only available in an interactive
-     * interp.
+     * Returns the result of evaluating i'th most recent command (top level
+     * expression).
+     * <p/>
+     * We may move this so that it's only available in an interactive interp.
      */
     Object getResult(int i);
 

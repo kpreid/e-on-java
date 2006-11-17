@@ -29,7 +29,8 @@ public class HTMLCodeGenerator extends CodeGenerator {
 
     protected boolean firstElementInAlt;
 
-    protected AlternativeElement prevAltElem = null;	// what was generated last?
+    protected AlternativeElement prevAltElem =
+      null;        // what was generated last?
 
     /**
      * Create a Diagnostic code-generator using the given Grammar The caller
@@ -177,11 +178,8 @@ public class HTMLCodeGenerator extends CodeGenerator {
             _println(HTMLEncode(grammar.comment));
         }
 
-        println(
-          "Definition of lexer " + grammar.getClassName() +
-          ", which is a subclass of " +
-          grammar.getSuperClass() +
-          ".");
+        println("Definition of lexer " + grammar.getClassName() +
+          ", which is a subclass of " + grammar.getSuperClass() + ".");
 
         // Generate user-defined parser class members
         // printAction(grammar.classMemberAction.getText());
@@ -265,11 +263,8 @@ public class HTMLCodeGenerator extends CodeGenerator {
             _println(HTMLEncode(grammar.comment));
         }
 
-        println(
-          "Definition of parser " + grammar.getClassName() +
-          ", which is a subclass of " +
-          grammar.getSuperClass() +
-          ".");
+        println("Definition of parser " + grammar.getClassName() +
+          ", which is a subclass of " + grammar.getSuperClass() + ".");
 
         // Enumerate the parser rules
         Enumeration rules = grammar.rules.elements();
@@ -301,9 +296,8 @@ public class HTMLCodeGenerator extends CodeGenerator {
         RuleSymbol rs = (RuleSymbol)grammar.getSymbol(rr.targetRule);
 
         // Generate the actual rule description
-        _print(
-          "<a href=\"" + grammar.getClassName() + ".html#" + rr.targetRule +
-          "\">");
+        _print("<a href=\"" + grammar.getClassName() + ".html#" + rr
+          .targetRule + "\">");
         _print(rr.targetRule);
         _print("</a>");
         // RK: Leave out args..
@@ -386,11 +380,8 @@ public class HTMLCodeGenerator extends CodeGenerator {
             _println(HTMLEncode(grammar.comment));
         }
 
-        println(
-          "Definition of tree parser " + grammar.getClassName() +
-          ", which is a subclass of " +
-          grammar.getSuperClass() +
-          ".");
+        println("Definition of tree parser " + grammar.getClassName() +
+          ", which is a subclass of " + grammar.getSuperClass() + ".");
 
         // Generate user-defined tree-walker class members
 //		println("");
@@ -474,7 +465,8 @@ public class HTMLCodeGenerator extends CodeGenerator {
 //		if ( blk.initAction!=null ) {
 //			printAction("{" + blk.initAction + "}");
 //		}
-//	}
+
+    //	}
     /**
      * Generate common code for a block of alternatives; return a postscript
      * that needs to be generated at the end of the block.  Other routines may
@@ -496,7 +488,7 @@ public class HTMLCodeGenerator extends CodeGenerator {
             //
             boolean save = firstElementInAlt;
             firstElementInAlt = true;
-            tabs++;	// in case we do a newline in alt, increase the tab indent
+            tabs++;        // in case we do a newline in alt, increase the tab indent
 
             // RK: don't dump semantic/syntactic predicates
             // only obscures grammar.
@@ -577,12 +569,11 @@ public class HTMLCodeGenerator extends CodeGenerator {
         println("<table summary=\"\" border=\"1\" cellpadding=\"5\">");
         println("<tr>");
         println("<td>");
-        println(
-          "<font size=\"+2\">Grammar " + grammar.getClassName() +
+        println("<font size=\"+2\">Grammar " + grammar.getClassName() +
           "</font><br>");
         println(
           "<a href=\"http://www.ANTLR.org\">ANTLR</a>-generated HTML file from " +
-          antlrTool.grammarFile);
+            antlrTool.grammarFile);
         println("<p>");
         println(
           "Terence Parr, <a href=\"http://www.magelang.com\">MageLang Institute</a>");
@@ -657,9 +648,8 @@ public class HTMLCodeGenerator extends CodeGenerator {
 
         // Create the synthesized rule block for nextToken consisting
         // of an alternate block containing all the user-defined lexer rules.
-        RuleBlock blk = MakeGrammar.createNextTokenRule(grammar,
-                                                        grammar.rules,
-                                                        "nextToken");
+        RuleBlock blk =
+          MakeGrammar.createNextTokenRule(grammar, grammar.rules, "nextToken");
 
         // Define the nextToken rule symbol
         RuleSymbol nextTokenRs = new RuleSymbol("mnextToken");
@@ -689,7 +679,7 @@ public class HTMLCodeGenerator extends CodeGenerator {
      */
     public void genRule(RuleSymbol s) {
         if (s == null || !s.isDefined()) {
-            return;	// undefined rule
+            return;        // undefined rule
         }
         println("");
         if (s.comment != null) {
@@ -755,12 +745,10 @@ public class HTMLCodeGenerator extends CodeGenerator {
      */
     protected void genTokenTypes(TokenManager tm) throws IOException {
         // Open the token output TXT file and set the currentOutput stream
-        antlrTool.reportProgress(
-          "Generating " + tm.getName() + TokenTypesFileSuffix +
-          TokenTypesFileExt);
-        currentOutput =
-          antlrTool.openOutputFile(
-            tm.getName() + TokenTypesFileSuffix + TokenTypesFileExt);
+        antlrTool.reportProgress("Generating " + tm.getName() +
+          TokenTypesFileSuffix + TokenTypesFileExt);
+        currentOutput = antlrTool.openOutputFile(
+          tm.getName() + TokenTypesFileSuffix + TokenTypesFileExt);
         //SAS: changed for proper text file io
         tabs = 0;
 
@@ -870,9 +858,9 @@ public class HTMLCodeGenerator extends CodeGenerator {
             if (doingLexRules) {
                 _print(charFormatter.literalChar(elems[i]));
             } else {
-                _print(
-                  (String)grammar.tokenManager.getVocabulary().elementAt(
-                    elems[i]));
+                _print((String)grammar.tokenManager
+                  .getVocabulary()
+                  .elementAt(elems[i]));
             }
             if (i != elems.length - 1) {
                 _print(", ");

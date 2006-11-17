@@ -103,8 +103,7 @@ public final class Host implements java.io.Serializable {
           " \t".indexOf(request_line.charAt(end_method)) == -1) {
             ++end_method;
         }
-        final String method = request_line.substring(start_method,
-                                                     end_method);
+        final String method = request_line.substring(start_method, end_method);
 
         // Skip SP.
         int start_request_uri = end_method;
@@ -119,8 +118,8 @@ public final class Host implements java.io.Serializable {
           " \t".indexOf(request_line.charAt(end_request_uri)) == -1) {
             ++end_request_uri;
         }
-        final String request_uri = request_line.substring(start_request_uri,
-                                                          end_request_uri);
+        final String request_uri =
+          request_line.substring(start_request_uri, end_request_uri);
 
         // Skip SP.
         int start_http_version = end_request_uri;
@@ -137,8 +136,7 @@ public final class Host implements java.io.Serializable {
         if (!"GET".equals(method)) {
             // Notify the client of the invalid method.
             final OutputStream out = incoming.getOutputStream();
-            out.write("HTTP/1.1 405 Method Not Allowed\r\n".getBytes(
-              "US-ASCII"));
+            out.write("HTTP/1.1 405 Method Not Allowed\r\n".getBytes("US-ASCII"));
             out.write("Content-Length: 0\r\n".getBytes("US-ASCII"));
             out.write("Connection: close\r\n".getBytes("US-ASCII"));
             out.write("\r\n".getBytes("US-ASCII"));
@@ -152,12 +150,11 @@ public final class Host implements java.io.Serializable {
         if (!http_version.startsWith("HTTP/0.")) {
             // Check for Upgrade header.
             String header = in.readln();
-            while (!"".equals(header) &&
-              !header.regionMatches(true,
-                                    0,
-                                    "Upgrade:",
-                                    0,
-                                    "Upgrade:".length())) {
+            while (!"".equals(header) && !header.regionMatches(true,
+                                                               0,
+                                                               "Upgrade:",
+                                                               0,
+                                                               "Upgrade:".length())) {
                 header = in.readln();
             }
 
@@ -187,8 +184,8 @@ public final class Host implements java.io.Serializable {
         }
 
         // The key-id is encoded in the last path segment of the Request-URI.
-        final String segment = request_uri.substring(
-          request_uri.lastIndexOf('/') + 1);
+        final String segment =
+          request_uri.substring(request_uri.lastIndexOf('/') + 1);
         return URLDecoder.decode(segment, "US-ASCII").toLowerCase();
     }
 
@@ -233,7 +230,7 @@ public final class Host implements java.io.Serializable {
         // Upgrade the socket.
         final SSLSocket ssl = (SSLSocket)getFactory().createSocket(incoming,
                                                                    incoming.getInetAddress()
-                                                                   .getHostAddress(),
+                                                                     .getHostAddress(),
                                                                    incoming.getPort(),
                                                                    true);
         ssl.setEnabledCipherSuites(getEnabled());
@@ -304,8 +301,7 @@ public final class Host implements java.io.Serializable {
      *
      * @param network The network to communicate on.
      */
-    public org.waterken.url.Locator talk(
-      final org.waterken.url.Locator network) {
+    public org.waterken.url.Locator talk(final org.waterken.url.Locator network) {
         return Locator.make(network, this);
     }
 
@@ -317,49 +313,54 @@ public final class Host implements java.io.Serializable {
     /**
      * Constructs the SSL socket factory.
      */
-    SSLSocketFactory getFactory() throws NoSuchAlgorithmException,
-      KeyManagementException {
+    SSLSocketFactory getFactory()
+      throws NoSuchAlgorithmException, KeyManagementException {
         if (null == ssl_factory) {
             // Build a socket factory that initially trusts anybody with a
             // valid certificate chain.
             final SSLContext context = SSLContext.getInstance("TLSv1");
-            context.init(key_manager, new TrustManager[]{new X509TrustManager() {
-                public void checkClientTrusted(final X509Certificate[] chain,
-                                               final String authType)
-                  throws CertificateException {
-                    checkServerTrusted(chain, authType);
-                }
+            context.init(key_manager,
+                         new TrustManager[]{new X509TrustManager() {
+                             public void checkClientTrusted(final X509Certificate[] chain,
+                                                            final String authType)
+                               throws CertificateException {
+                                 checkServerTrusted(chain, authType);
+                             }
 
-                public void checkServerTrusted(final X509Certificate[] chain,
-                                               final String authType)
-                  throws CertificateException {
-                    // Validate the certificate chain.
-                    try {
-                        final CertPath path = CertificateFactory.getInstance(
-                          "X.509").generateCertPath(Arrays.asList(chain));
-                        final TrustAnchor ta = new TrustAnchor(
-                          chain[chain.length - 1], null);
-                        final PKIXParameters params = new PKIXParameters(
-                          Collections.singleton(ta));
-                        params.setRevocationEnabled(false);
-                        CertPathValidator.getInstance("PKIX").validate(path,
-                                                                       params);
-                    } catch (final NoSuchAlgorithmException e) {
-                        throw (CertificateException)new CertificateException().initCause(
-                          e);
-                    } catch (final InvalidAlgorithmParameterException e) {
-                        throw (CertificateException)new CertificateException().initCause(
-                          e);
-                    } catch (final CertPathValidatorException e) {
-                        throw (CertificateException)new CertificateException().initCause(
-                          e);
-                    }
-                }
+                             public void checkServerTrusted(final X509Certificate[] chain,
+                                                            final String authType)
+                               throws CertificateException {
+                                 // Validate the certificate chain.
+                                 try {
+                                     final CertPath path =
+                                       CertificateFactory.getInstance("X.509")
+                                         .generateCertPath(Arrays.asList(chain));
+                                     final TrustAnchor ta = new TrustAnchor(
+                                       chain[chain.length - 1],
+                                       null);
+                                     final PKIXParameters params =
+                                       new PKIXParameters(Collections.singleton(
+                                         ta));
+                                     params.setRevocationEnabled(false);
+                                     CertPathValidator.getInstance("PKIX")
+                                       .validate(path, params);
+                                 } catch (final NoSuchAlgorithmException e) {
+                                     throw (CertificateException)new CertificateException()
+                                       .initCause(e);
+                                 } catch (final InvalidAlgorithmParameterException e) {
+                                     throw (CertificateException)new CertificateException()
+                                       .initCause(e);
+                                 } catch (final CertPathValidatorException e) {
+                                     throw (CertificateException)new CertificateException()
+                                       .initCause(e);
+                                 }
+                             }
 
-                public X509Certificate[] getAcceptedIssuers() {
-                    return new X509Certificate[]{};
-                }
-            }}, null);
+                             public X509Certificate[] getAcceptedIssuers() {
+                                 return new X509Certificate[]{};
+                             }
+                         }},
+                         null);
             ssl_factory = context.getSocketFactory();
         }
         return ssl_factory;

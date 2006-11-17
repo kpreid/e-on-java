@@ -10,6 +10,7 @@ import org.erights.e.elang.evm.EMethod;
 import org.erights.e.elang.evm.ENode;
 import org.erights.e.elang.evm.EScript;
 import org.erights.e.elang.evm.FinalPattern;
+import org.erights.e.elang.evm.GuardedPattern;
 import org.erights.e.elang.evm.MetaContextExpr;
 import org.erights.e.elang.evm.NounExpr;
 import org.erights.e.elang.evm.NounPattern;
@@ -17,7 +18,6 @@ import org.erights.e.elang.evm.ObjectExpr;
 import org.erights.e.elang.evm.Pattern;
 import org.erights.e.elang.evm.SeqExpr;
 import org.erights.e.elang.evm.StaticScope;
-import org.erights.e.elang.evm.GuardedPattern;
 import org.erights.e.elang.scope.ScopeLayout;
 import org.erights.e.elang.scope.StaticContext;
 import org.erights.e.elib.tables.ConstMap;
@@ -71,9 +71,8 @@ public abstract class BindFramesVisitor extends BaseBindVisitor {
      *
      */
     private BindNestedFramesVisitor nestObject(ConstMap newSynEnv) {
-        ScopeLayout inner = ScopeLayout.make(-1,
-                                             newSynEnv,
-                                             myLayout.getFQNPrefix());
+        ScopeLayout inner =
+          ScopeLayout.make(-1, newSynEnv, myLayout.getFQNPrefix());
         return new BindNestedFramesVisitor(inner.nest(),
                                            0,
                                            myMaxLocalsCell,
@@ -119,9 +118,8 @@ public abstract class BindFramesVisitor extends BaseBindVisitor {
 
         StaticScope ss = eScript.staticScope();
         String[] used = (String[])ss.namesUsed().getKeys(String.class);
-        FlexMap newSynEnv = FlexMap.fromTypes(String.class,
-                                              NounPattern.class,
-                                              used.length);
+        FlexMap newSynEnv =
+          FlexMap.fromTypes(String.class, NounPattern.class, used.length);
         FlexList fields = FlexList.fromType(NounExpr.class, used.length);
         for (int i = 0, max = used.length; i < max; i++) {
             String varName = used[i];
@@ -200,8 +198,6 @@ public abstract class BindFramesVisitor extends BaseBindVisitor {
                             t.maxLocals(),
                             getOptScopeLayout());
     }
-
-
 
     /************************** Optimizations *********************/
 

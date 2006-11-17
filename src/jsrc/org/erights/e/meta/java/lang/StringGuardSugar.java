@@ -20,8 +20,7 @@ public class StringGuardSugar extends ClassDesc {
      */
     public StringGuardSugar(Class clazz) {
         super(clazz);
-        T.require(String.class == clazz,
-                  clazz, " must be String.class");
+        T.require(String.class == clazz, clazz, " must be String.class");
     }
 
     /**

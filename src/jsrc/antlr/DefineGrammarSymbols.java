@@ -39,7 +39,8 @@ public class DefineGrammarSymbols implements ANTLRGrammarParseBehavior {
     // Contains all of the header actions indexed by name
     protected Hashtable headerActions = new Hashtable();
     // Place where preamble is stored until a grammar is defined
-    Token thePreambleAction = new CommonToken(Token.INVALID_TYPE, ""); // init to empty token
+    Token thePreambleAction =
+      new CommonToken(Token.INVALID_TYPE, ""); // init to empty token
     // The target language
     String language = "Java";
 
@@ -184,8 +185,8 @@ public class DefineGrammarSymbols implements ANTLRGrammarParseBehavior {
         // System.out.println("defining " + name + " with literal " + literal);
         //
         if (literal != null) {
-            StringLiteralSymbol sl = (StringLiteralSymbol)grammar.tokenManager.getTokenSymbol(
-              literal);
+            StringLiteralSymbol sl = (StringLiteralSymbol)grammar.tokenManager
+              .getTokenSymbol(literal);
             if (sl != null) {
                 // This literal is known already.
                 // If the literal has no label already, but we can provide
@@ -209,8 +210,8 @@ public class DefineGrammarSymbols implements ANTLRGrammarParseBehavior {
             // if they provide a name/label and that name/label already
             // exists, just hook this literal onto old token.
             if (name != null) {
-                TokenSymbol ts = (TokenSymbol)grammar.tokenManager.getTokenSymbol(
-                  name);
+                TokenSymbol ts =
+                  (TokenSymbol)grammar.tokenManager.getTokenSymbol(name);
                 if (ts != null) {
                     // watch out that the label is not more than just a token.
                     // If it already has a literal attached, then: conflict.
@@ -296,16 +297,16 @@ public class DefineGrammarSymbols implements ANTLRGrammarParseBehavior {
             if (tokenManagers.containsKey(DEFAULT_TOKENMANAGER_NAME)) {
                 // Use the already-defined token manager
                 grammar.exportVocab = DEFAULT_TOKENMANAGER_NAME;
-                TokenManager tm = (TokenManager)tokenManagers.get(
-                  DEFAULT_TOKENMANAGER_NAME);
+                TokenManager tm =
+                  (TokenManager)tokenManagers.get(DEFAULT_TOKENMANAGER_NAME);
                 // System.out.println("No tokenVocabulary for '" + grammar.getClassName() + "', using default '" + tm.getName() + "'");
                 grammar.setTokenManager(tm);
                 return;
             }
             // no shared vocab for file, make new one
             // System.out.println("No exportVocab for '" + grammar.getClassName() + "', creating default '" + grammar.exportVocab + "'");
-            TokenManager tm = new SimpleTokenManager(grammar.exportVocab,
-                                                     tool);
+            TokenManager tm =
+              new SimpleTokenManager(grammar.exportVocab, tool);
             grammar.setTokenManager(tm);
             // Add the token manager to the list of token managers
             tokenManagers.put(grammar.exportVocab, tm);
@@ -319,8 +320,7 @@ public class DefineGrammarSymbols implements ANTLRGrammarParseBehavior {
             grammar.exportVocab = grammar.getClassName();
             // first make sure input!=output
             if (grammar.importVocab.equals(grammar.exportVocab)) {
-                tool.warning(
-                  "Grammar " + grammar.getClassName() +
+                tool.warning("Grammar " + grammar.getClassName() +
                   " cannot have importVocab same as default output vocab (grammar name); ignored.");
                 // kill importVocab option and try again: use default vocab
                 grammar.importVocab = null;
@@ -333,8 +333,8 @@ public class DefineGrammarSymbols implements ANTLRGrammarParseBehavior {
                 // make a copy since we'll be generating a new output vocab
                 // and we don't want to affect this one.  Set the name to
                 // the default output vocab==classname.
-                TokenManager tm = (TokenManager)tokenManagers.get(
-                  grammar.importVocab);
+                TokenManager tm =
+                  (TokenManager)tokenManagers.get(grammar.importVocab);
                 // System.out.println("Duping importVocab of " + grammar.importVocab);
                 TokenManager dup = (TokenManager)tm.clone();
                 dup.setName(grammar.exportVocab);
@@ -347,9 +347,12 @@ public class DefineGrammarSymbols implements ANTLRGrammarParseBehavior {
             // System.out.println("reading in vocab "+grammar.importVocab);
             // Must be a file, go get it.
             ImportVocabTokenManager tm = new ImportVocabTokenManager(grammar,
-                                                                     grammar.importVocab +
-                                                                     CodeGenerator.TokenTypesFileSuffix +
-                                                                     CodeGenerator.TokenTypesFileExt,
+                                                                     grammar
+                                                                       .importVocab +
+                                                                       CodeGenerator
+                                                                         .TokenTypesFileSuffix +
+                                                                       CodeGenerator
+                                                                         .TokenTypesFileExt,
                                                                      grammar.exportVocab,
                                                                      tool);
             tm.setReadOnly(false); // since renamed, can write out
@@ -372,16 +375,16 @@ public class DefineGrammarSymbols implements ANTLRGrammarParseBehavior {
             // share with previous vocab if it exists
             if (tokenManagers.containsKey(grammar.exportVocab)) {
                 // Use the already-defined token manager
-                TokenManager tm = (TokenManager)tokenManagers.get(
-                  grammar.exportVocab);
+                TokenManager tm =
+                  (TokenManager)tokenManagers.get(grammar.exportVocab);
                 // System.out.println("Sharing exportVocab of " + grammar.exportVocab);
                 grammar.setTokenManager(tm);
                 return;
             }
             // create new output vocab
             // System.out.println("Creating exportVocab " + grammar.exportVocab);
-            TokenManager tm = new SimpleTokenManager(grammar.exportVocab,
-                                                     tool);
+            TokenManager tm =
+              new SimpleTokenManager(grammar.exportVocab, tool);
             grammar.setTokenManager(tm);
             // Add the token manager to the list of token managers
             tokenManagers.put(grammar.exportVocab, tm);
@@ -396,16 +399,15 @@ public class DefineGrammarSymbols implements ANTLRGrammarParseBehavior {
         if (grammar.exportVocab != null && grammar.importVocab != null) {
             // don't want input==output
             if (grammar.importVocab.equals(grammar.exportVocab)) {
-                tool.error(
-                  "exportVocab of " + grammar.exportVocab +
+                tool.error("exportVocab of " + grammar.exportVocab +
                   " same as importVocab; probably not what you want");
             }
             // does the input vocab already exist in memory?
             if (tokenManagers.containsKey(grammar.importVocab)) {
                 // make a copy since we'll be generating a new output vocab
                 // and we don't want to affect this one.
-                TokenManager tm = (TokenManager)tokenManagers.get(
-                  grammar.importVocab);
+                TokenManager tm =
+                  (TokenManager)tokenManagers.get(grammar.importVocab);
                 // System.out.println("Duping importVocab of " + grammar.importVocab);
                 TokenManager dup = (TokenManager)tm.clone();
                 dup.setName(grammar.exportVocab);
@@ -417,9 +419,12 @@ public class DefineGrammarSymbols implements ANTLRGrammarParseBehavior {
             }
             // Must be a file, go get it.
             ImportVocabTokenManager tm = new ImportVocabTokenManager(grammar,
-                                                                     grammar.importVocab +
-                                                                     CodeGenerator.TokenTypesFileSuffix +
-                                                                     CodeGenerator.TokenTypesFileExt,
+                                                                     grammar
+                                                                       .importVocab +
+                                                                       CodeGenerator
+                                                                         .TokenTypesFileSuffix +
+                                                                       CodeGenerator
+                                                                         .TokenTypesFileExt,
                                                                      grammar.exportVocab,
                                                                      tool);
             tm.setReadOnly(false); // write it out as we've changed name
@@ -509,7 +514,7 @@ public class DefineGrammarSymbols implements ANTLRGrammarParseBehavior {
                 tool.error(act.getLine() + ": header action already defined");
             } else {
                 tool.error(act.getLine() + ": header action '" + key +
-                           "' already defined");
+                  "' already defined");
             }
         }
         headerActions.put(key, act);
@@ -572,13 +577,7 @@ public class DefineGrammarSymbols implements ANTLRGrammarParseBehavior {
                          boolean inverted,
                          int autoGenType,
                          boolean lastInRule) {
-        _refToken(assignId,
-                  t,
-                  label,
-                  args,
-                  inverted,
-                  autoGenType,
-                  lastInRule);
+        _refToken(assignId, t, label, args, inverted, autoGenType, lastInRule);
     }
 
     public void refTokenRange(Token t1,
@@ -653,8 +652,8 @@ public class DefineGrammarSymbols implements ANTLRGrammarParseBehavior {
         if (key.getText().equals("language")) {
             if (value.getType() == ANTLRParser.STRING_LITERAL) {
                 language =
-                  StringUtils.stripBack(
-                    StringUtils.stripFront(value.getText(), '"'), '"');
+                  StringUtils.stripBack(StringUtils.stripFront(value.getText(),
+                                                               '"'), '"');
             } else if (value.getType() == ANTLRParser.TOKEN_REF ||
               value.getType() == ANTLRParser.RULE_REF) {
                 language = value.getText();
@@ -680,11 +679,12 @@ public class DefineGrammarSymbols implements ANTLRGrammarParseBehavior {
             } else if (value.getText().equals("false")) {
                 tool.upperCaseMangledLiterals = false;
             } else {
-                grammar.antlrTool.error(
-                  "Value for upperCaseMangledLiterals must be true or false",
-                  filename,
-                  key.getLine(),
-                  key.getColumn());
+                grammar.antlrTool
+                  .error(
+                    "Value for upperCaseMangledLiterals must be true or false",
+                    filename,
+                    key.getLine(),
+                    key.getColumn());
             }
         } else if (key.getText().equals("namespaceStd") ||
           key.getText().equals("namespaceAntlr") ||
@@ -708,11 +708,10 @@ public class DefineGrammarSymbols implements ANTLRGrammarParseBehavior {
                 } else if (key.getText().equals("genHashLines")) {
                     if (!(value.getText().equals("true") ||
                       value.getText().equals("false"))) {
-                        tool.error(
-                          "genHashLines option must be true or false",
-                          filename,
-                          value.getLine(),
-                          value.getColumn());
+                        tool.error("genHashLines option must be true or false",
+                                   filename,
+                                   value.getLine(),
+                                   value.getColumn());
                     }
                     tool.genHashLines = value.getText().equals("true");
                 } else {
@@ -732,12 +731,11 @@ public class DefineGrammarSymbols implements ANTLRGrammarParseBehavior {
             }
         } else if (key.getText().equals("namespace")) {
             if (!language.equals("Cpp") && !language.equals("CSharp")) {
-                tool.error(
-                  key.getText() +
+                tool.error(key.getText() +
                   " option only valid for C++ and C# (a.k.a CSharp)",
-                  filename,
-                  key.getLine(),
-                  key.getColumn());
+                           filename,
+                           key.getLine(),
+                           key.getColumn());
             } else {
                 if (value.getType() != ANTLRParser.STRING_LITERAL) {
                     tool.error(key.getText() + " option must be a string",
@@ -770,17 +768,17 @@ public class DefineGrammarSymbols implements ANTLRGrammarParseBehavior {
           key.getText().equals("tokenVocabulary")) {
             tool.error(
               "tokdef/tokenVocabulary options are invalid >= ANTLR 2.6.0.\n" +
-              "  Use importVocab/exportVocab instead.  Please see the documentation.\n" +
-              "  The previous options were so heinous that Terence changed the whole\n" +
-              "  vocabulary mechanism; it was better to change the names rather than\n" +
-              "  subtly change the functionality of the known options.  Sorry!",
+                "  Use importVocab/exportVocab instead.  Please see the documentation.\n" +
+                "  The previous options were so heinous that Terence changed the whole\n" +
+                "  vocabulary mechanism; it was better to change the names rather than\n" +
+                "  subtly change the functionality of the known options.  Sorry!",
               grammar.getFilename(),
               value.getLine(),
               value.getColumn());
         } else if (key.getText().equals("literal") &&
           grammar instanceof LexerGrammar) {
             tool.error("the literal option is invalid >= ANTLR 2.6.0.\n" +
-                       "  Use the \"tokens {...}\" mechanism instead.",
+              "  Use the \"tokens {...}\" mechanism instead.",
                        grammar.getFilename(),
                        value.getLine(),
                        value.getColumn());
@@ -825,8 +823,7 @@ public class DefineGrammarSymbols implements ANTLRGrammarParseBehavior {
                            String superClass,
                            String doc) {
         if (numLexers > 0) {
-            tool.panic(
-              "You may only have one lexer per grammar file: class " +
+            tool.panic("You may only have one lexer per grammar file: class " +
               name.getText());
         }
         numLexers++;
@@ -836,8 +833,7 @@ public class DefineGrammarSymbols implements ANTLRGrammarParseBehavior {
         Grammar g = (Grammar)grammars.get(name);
         if (g != null) {
             if (!(g instanceof LexerGrammar)) {
-                tool.panic(
-                  "'" + name.getText() +
+                tool.panic("'" + name.getText() +
                   "' is already defined as a non-lexer");
             } else {
                 tool.panic(
@@ -845,9 +841,8 @@ public class DefineGrammarSymbols implements ANTLRGrammarParseBehavior {
             }
         } else {
             // Create a new lexer grammar
-            LexerGrammar lg = new LexerGrammar(name.getText(),
-                                               tool,
-                                               superClass);
+            LexerGrammar lg =
+              new LexerGrammar(name.getText(), tool, superClass);
             lg.comment = doc;
             lg.processArguments(args);
             lg.setFilename(file);
@@ -870,7 +865,7 @@ public class DefineGrammarSymbols implements ANTLRGrammarParseBehavior {
         if (numParsers > 0) {
             tool.panic(
               "You may only have one parser per grammar file: class " +
-              name.getText());
+                name.getText());
         }
         numParsers++;
         reset();
@@ -879,8 +874,7 @@ public class DefineGrammarSymbols implements ANTLRGrammarParseBehavior {
         Grammar g = (Grammar)grammars.get(name);
         if (g != null) {
             if (!(g instanceof ParserGrammar)) {
-                tool.panic(
-                  "'" + name.getText() +
+                tool.panic("'" + name.getText() +
                   "' is already defined as a non-parser");
             } else {
                 tool.panic(
@@ -909,7 +903,7 @@ public class DefineGrammarSymbols implements ANTLRGrammarParseBehavior {
         if (numTreeParsers > 0) {
             tool.panic(
               "You may only have one tree parser per grammar file: class " +
-              name.getText());
+                name.getText());
         }
         numTreeParsers++;
         reset();
@@ -918,8 +912,7 @@ public class DefineGrammarSymbols implements ANTLRGrammarParseBehavior {
         Grammar g = (Grammar)grammars.get(name);
         if (g != null) {
             if (!(g instanceof TreeWalkerGrammar)) {
-                tool.panic(
-                  "'" + name.getText() +
+                tool.panic("'" + name.getText() +
                   "' is already defined as a non-tree-walker");
             } else {
                 tool.panic(

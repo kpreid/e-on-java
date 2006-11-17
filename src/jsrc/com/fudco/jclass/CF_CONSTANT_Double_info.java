@@ -32,8 +32,8 @@ public class CF_CONSTANT_Double_info extends CF_cp_info {
     }
 
     /**
-     * Test if this entry is a "double size" entry: longs and doubles take
-     * up two slots in the constant_pool.
+     * Test if this entry is a "double size" entry: longs and doubles take up
+     * two slots in the constant_pool.
      *
      * @return true: a double entry is double sized.
      */
@@ -44,9 +44,9 @@ public class CF_CONSTANT_Double_info extends CF_cp_info {
     /**
      * Read and return a CONSTANT_Double_info object from a DataInputStream.
      *
-     * @param in The DataInputStream to read from; this should be positioned
-     *           at the first byte after the type code byte of the constant pool entry
-     *           being read.
+     * @param in The DataInputStream to read from; this should be positioned at
+     *           the first byte after the type code byte of the constant pool
+     *           entry being read.
      */
     static CF_CONSTANT_Double_info read(DataInputStream in)
       throws IOException {

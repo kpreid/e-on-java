@@ -24,10 +24,10 @@ public interface Purse {
     Assay getAssay();
 
     /**
-     * If src is a Purse acceptable to the Issuer of this Purse,
-     * transfer all of its erights into this Purse, and return an
-     * Assay describing how much was transfered into this Purse (as
-     * opposed to how much was lost from src).
+     * If src is a Purse acceptable to the Issuer of this Purse, transfer all
+     * of its erights into this Purse, and return an Assay describing how much
+     * was transfered into this Purse (as opposed to how much was lost from
+     * src).
      * <p/>
      * Otherwise, throw an UnsealingException
      */

@@ -24,12 +24,11 @@ class ScopeLayoutInnerContour extends ScopeLayoutContour {
      * Uses 'myNext.nest(null)'
      */
     public Object[] getSpreadUncall() {
-        Object[] result = { myNext, "nest", null };
+        Object[] result = {myNext, "nest", null};
         return result;
     }
 
     /**
-     *
      * @param fqnPrefix
      * @return
      */

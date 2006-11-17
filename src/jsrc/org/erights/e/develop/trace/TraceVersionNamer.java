@@ -30,11 +30,11 @@ import java.io.File;
 import java.io.PrintWriter;
 
 /**
- * This class and its subclasses know how to construct backup version
- * Files for given Files.
+ * This class and its subclasses know how to construct backup version Files for
+ * given Files.
  * <p/>
- * This class constructs backup names by appending sequence numbers to
- * the original name.
+ * This class constructs backup names by appending sequence numbers to the
+ * original name.
  */
 class TraceVersionNamer implements TraceConstants {
 
@@ -54,15 +54,13 @@ class TraceVersionNamer implements TraceConstants {
     final String myDir;
 
     /**
-     * The basename is that part of the file that precedes a sequence
-     * number.
+     * The basename is that part of the file that precedes a sequence number.
      */
     final String myBasename;
 
     /**
-     * Create a TraceVersionNamer from the given file. The file
-     * object must have a directory and name component. It may be absolute
-     * or relative.
+     * Create a TraceVersionNamer from the given file. The file object must
+     * have a directory and name component. It may be absolute or relative.
      */
     TraceVersionNamer(File aFile) {
         myFile = aFile;
@@ -73,10 +71,9 @@ class TraceVersionNamer implements TraceConstants {
         T.test(myDir != null);
 
         myBasename = fetchBasename();
-        Trace.trace.debugm("Finding next version of " +
-                           myFile + "(" +
-                           myDir + " " + myName +
-                           " " + myBasename + ")");
+        Trace.trace
+          .debugm("Finding next version of " + myFile + "(" + myDir + " " +
+            myName + " " + myBasename + ")");
     }
 
     /**
@@ -87,8 +84,8 @@ class TraceVersionNamer implements TraceConstants {
     }
 
     /**
-     * Return a TraceTxtVersionNamer if the file ends with ".txt";
-     * otherwise, return a TraceVersionNamer.
+     * Return a TraceTxtVersionNamer if the file ends with ".txt"; otherwise,
+     * return a TraceVersionNamer.
      */
     static TraceVersionNamer factory(File file) {
         if (file.getName().toLowerCase().endsWith(LOG_EXTENSION)) {
@@ -99,8 +96,8 @@ class TraceVersionNamer implements TraceConstants {
     }
 
     /**
-     * The basename of a backup version, including any trailing '.'
-     * separating the basename from the sequence number.
+     * The basename of a backup version, including any trailing '.' separating
+     * the basename from the sequence number.
      */
     String fetchBasename() {
         return myName + ".";
@@ -116,9 +113,9 @@ class TraceVersionNamer implements TraceConstants {
     }
 
     /**
-     * Return a sequence number, if the given file contains one. If
-     * it does not contain one, return -1. Do not call this method
-     * unless mightHaveSeq has approved the filename.
+     * Return a sequence number, if the given file contains one. If it does not
+     * contain one, return -1. Do not call this method unless mightHaveSeq has
+     * approved the filename.
      */
     int getSeq(String filename) {
         String possibleSeqString = filename.substring(myBasename.length());
@@ -149,20 +146,20 @@ class TraceVersionNamer implements TraceConstants {
     }
 
     /**
-     * True iff the filename is of a format that <em>could</em>
-     * be a backup version of the original file. It remains to be
-     * determined whether it truly contains a sequence number.
+     * True iff the filename is of a format that <em>could</em> be a backup
+     * version of the original file. It remains to be determined whether it
+     * truly contains a sequence number.
      * <p/>
-     * In a stunning display of write-once-run-everywhere, the check
-     * is case-insensitive. This obeys Windows conventions about what
-     * "same files" are, not Unix conventions.
+     * In a stunning display of write-once-run-everywhere, the check is
+     * case-insensitive. This obeys Windows conventions about what "same files"
+     * are, not Unix conventions.
      *
      * @param filename a filename, not including any directory part.
      */
     boolean mightHaveSeq(String filename) {
         int minlen = myBasename.length() + 1;
-        return filename.length() >= minlen
-          && filename.toLowerCase().startsWith(myBasename.toLowerCase());
+        return filename.length() >= minlen &&
+          filename.toLowerCase().startsWith(myBasename.toLowerCase());
     }
 
     /**
@@ -183,8 +180,8 @@ class TraceVersionNamer implements TraceConstants {
             if (mightHaveSeq(files[i])) {
                 int possibleSeq = getSeq(files[i]);
                 if (possibleSeq < 0) {
-                    Trace.trace.verbosem(files[i] +
-                                         " has no sequence number.");
+                    Trace.trace
+                      .verbosem(files[i] + " has no sequence number.");
                 } else if (possibleSeq <= highestSeq) {
                     Trace.trace.verbosem(files[i] + " is too low.");
                 } else {
@@ -192,8 +189,8 @@ class TraceVersionNamer implements TraceConstants {
                     Trace.trace.verbosem(highestSeq + " is the best so far.");
                 }
             } else {
-                Trace.trace.verbosem(files[i] +
-                                     " is not in version file format.");
+                Trace.trace
+                  .verbosem(files[i] + " is not in version file format.");
             }
         }
         File retval = constructVersion(highestSeq + 1);

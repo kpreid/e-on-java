@@ -20,18 +20,17 @@ Contributor(s): ______________________________________.
 */
 
 import org.erights.e.develop.assertion.T;
-import org.erights.e.develop.trace.Trace;
 import org.erights.e.elib.ref.Ref;
 
 import java.math.BigInteger;
 
 /**
- * The first-time encoding of an exported pass-by-proxy object over
- * the wire, to be imported as a new Far reference. <p>
+ * The first-time encoding of an exported pass-by-proxy object over the wire,
+ * to be imported as a new Far reference. <p>
  * <p/>
- * This is a separate class because the first time we export we also
- * need to include the swissHash, whereas the rest of the time we
- * can just use ImportDesc(importPos).
+ * This is a separate class because the first time we export we also need to
+ * include the swissHash, whereas the rest of the time we can just use
+ * ImportDesc(importPos).
  *
  * @author Chip Morningstar
  * @author Mark S. Miller
@@ -49,9 +48,11 @@ class NewFarDesc implements ObjectRefDesc {
      */
     private void validate() {
         T.requireSI(myImportPos >= 1,
-                    "importPos must be positive: ", myImportPos);
+                    "importPos must be positive: ",
+                    myImportPos);
         T.require(null != mySwissHash && mySwissHash.signum() >= 1,
-                  "swissHash must be positive: ", mySwissHash);
+                  "swissHash must be positive: ",
+                  mySwissHash);
     }
 
     /**
@@ -64,8 +65,8 @@ class NewFarDesc implements ObjectRefDesc {
     }
 
     /**
-     * What the other side exported, we dereference as the "new" Far
-     * reference we will now import.
+     * What the other side exported, we dereference as the "new" Far reference
+     * we will now import.
      */
     public Object dereference(CapTPConnection conn) {
         validate();

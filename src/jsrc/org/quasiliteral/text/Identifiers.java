@@ -78,8 +78,7 @@ public class Identifiers implements EIteratable {
                     delim.append((char)ch);
                     ch = myReader.read();
                 }
-                while (ch != -1 &&
-                  Character.isJavaIdentifierPart((char)ch)) {
+                while (ch != -1 && Character.isJavaIdentifierPart((char)ch)) {
 
                     ident.append((char)ch);
                     ch = myReader.read();

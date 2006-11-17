@@ -8,8 +8,8 @@ import java.io.InputStream;
 import java.io.Reader;
 import java.util.Hashtable;
 
-public class ANTLRLexer extends antlr.CharScanner implements ANTLRTokenTypes,
-  TokenStream {
+public class ANTLRLexer extends antlr.CharScanner
+  implements ANTLRTokenTypes, TokenStream {
 
     /**
      * Convert 'c' to an integer char value.
@@ -20,24 +20,24 @@ public class ANTLRLexer extends antlr.CharScanner implements ANTLRTokenTypes,
             return 0;
         }
         switch (cs.charAt(2)) {
-        case 'b':
+        case'b':
             return '\b';
-        case 'r':
+        case'r':
             return '\r';
-        case 't':
+        case't':
             return '\t';
-        case 'n':
+        case'n':
             return '\n';
-        case 'f':
+        case'f':
             return '\f';
-        case '"':
+        case'"':
             return '\"';
-        case '\'':
+        case'\'':
             return '\'';
-        case '\\':
+        case'\\':
             return '\\';
 
-        case 'u':
+        case'u':
             // Unicode char
             if (cs.length() != 8) {
                 return 0;
@@ -48,30 +48,29 @@ public class ANTLRLexer extends antlr.CharScanner implements ANTLRTokenTypes,
                   Character.digit(cs.charAt(6), 16);
             }
 
-        case '0':
-        case '1':
-        case '2':
-        case '3':
+        case'0':
+        case'1':
+        case'2':
+        case'3':
             if (cs.length() > 5 && Character.isDigit(cs.charAt(4))) {
                 return (cs.charAt(2) - '0') * 8 * 8 +
-                  (cs.charAt(3) - '0') * 8 +
-                  (cs.charAt(4) - '0');
+                  (cs.charAt(3) - '0') * 8 + (cs.charAt(4) - '0');
             }
             if (cs.length() > 4 && Character.isDigit(cs.charAt(3))) {
                 return (cs.charAt(2) - '0') * 8 + (cs.charAt(3) - '0');
             }
             return cs.charAt(2) - '0';
 
-        case '4':
-        case '5':
-        case '6':
-        case '7':
+        case'4':
+        case'5':
+        case'6':
+        case'7':
             if (cs.length() > 4 && Character.isDigit(cs.charAt(3))) {
                 return (cs.charAt(2) - '0') * 8 + (cs.charAt(3) - '0');
             }
             return cs.charAt(2) - '0';
 
-        default :
+        default:
             return 0;
         }
     }
@@ -111,8 +110,7 @@ public class ANTLRLexer extends antlr.CharScanner implements ANTLRTokenTypes,
         literals.put(new ANTLRHashString("options", this), new Integer(51));
         literals.put(new ANTLRHashString("extends", this), new Integer(11));
         literals.put(new ANTLRHashString("protected", this), new Integer(30));
-        literals.put(new ANTLRHashString("TreeParser", this),
-                     new Integer(13));
+        literals.put(new ANTLRHashString("TreeParser", this), new Integer(13));
         literals.put(new ANTLRHashString("Parser", this), new Integer(29));
         literals.put(new ANTLRHashString("Lexer", this), new Integer(12));
         literals.put(new ANTLRHashString("returns", this), new Integer(35));
@@ -125,273 +123,244 @@ public class ANTLRLexer extends antlr.CharScanner implements ANTLRTokenTypes,
     public Token nextToken() throws TokenStreamException {
         Token theRetToken = null;
         tryAgain:
-            for (; ;) {
-                Token _token = null;
-                int _ttype = Token.INVALID_TYPE;
-                resetText();
-                try {   // for char stream error handling
-                    try {   // for lexical error handling
-                        switch (LA(1)) {
-                        case '\t':
-                        case '\n':
-                        case '\r':
-                        case ' ':
-                            {
-                                mWS(true);
-                                theRetToken = _returnToken;
-                                break;
-                            }
-                        case '/':
-                            {
-                                mCOMMENT(true);
-                                theRetToken = _returnToken;
-                                break;
-                            }
-                        case '<':
-                            {
-                                mOPEN_ELEMENT_OPTION(true);
-                                theRetToken = _returnToken;
-                                break;
-                            }
-                        case '>':
-                            {
-                                mCLOSE_ELEMENT_OPTION(true);
-                                theRetToken = _returnToken;
-                                break;
-                            }
-                        case ',':
-                            {
-                                mCOMMA(true);
-                                theRetToken = _returnToken;
-                                break;
-                            }
-                        case '?':
-                            {
-                                mQUESTION(true);
-                                theRetToken = _returnToken;
-                                break;
-                            }
-                        case '#':
-                            {
-                                mTREE_BEGIN(true);
-                                theRetToken = _returnToken;
-                                break;
-                            }
-                        case '(':
-                            {
-                                mLPAREN(true);
-                                theRetToken = _returnToken;
-                                break;
-                            }
-                        case ')':
-                            {
-                                mRPAREN(true);
-                                theRetToken = _returnToken;
-                                break;
-                            }
-                        case ':':
-                            {
-                                mCOLON(true);
-                                theRetToken = _returnToken;
-                                break;
-                            }
-                        case '*':
-                            {
-                                mSTAR(true);
-                                theRetToken = _returnToken;
-                                break;
-                            }
-                        case '+':
-                            {
-                                mPLUS(true);
-                                theRetToken = _returnToken;
-                                break;
-                            }
-                        case ';':
-                            {
-                                mSEMI(true);
-                                theRetToken = _returnToken;
-                                break;
-                            }
-                        case '^':
-                            {
-                                mCARET(true);
-                                theRetToken = _returnToken;
-                                break;
-                            }
-                        case '!':
-                            {
-                                mBANG(true);
-                                theRetToken = _returnToken;
-                                break;
-                            }
-                        case '|':
-                            {
-                                mOR(true);
-                                theRetToken = _returnToken;
-                                break;
-                            }
-                        case '~':
-                            {
-                                mNOT_OP(true);
-                                theRetToken = _returnToken;
-                                break;
-                            }
-                        case '}':
-                            {
-                                mRCURLY(true);
-                                theRetToken = _returnToken;
-                                break;
-                            }
-                        case '\'':
-                            {
-                                mCHAR_LITERAL(true);
-                                theRetToken = _returnToken;
-                                break;
-                            }
-                        case '"':
-                            {
-                                mSTRING_LITERAL(true);
-                                theRetToken = _returnToken;
-                                break;
-                            }
-                        case '0':
-                        case '1':
-                        case '2':
-                        case '3':
-                        case '4':
-                        case '5':
-                        case '6':
-                        case '7':
-                        case '8':
-                        case '9':
-                            {
-                                mINT(true);
-                                theRetToken = _returnToken;
-                                break;
-                            }
-                        case '[':
-                            {
-                                mARG_ACTION(true);
-                                theRetToken = _returnToken;
-                                break;
-                            }
-                        case '{':
-                            {
-                                mACTION(true);
-                                theRetToken = _returnToken;
-                                break;
-                            }
-                        case 'A':
-                        case 'B':
-                        case 'C':
-                        case 'D':
-                        case 'E':
-                        case 'F':
-                        case 'G':
-                        case 'H':
-                        case 'I':
-                        case 'J':
-                        case 'K':
-                        case 'L':
-                        case 'M':
-                        case 'N':
-                        case 'O':
-                        case 'P':
-                        case 'Q':
-                        case 'R':
-                        case 'S':
-                        case 'T':
-                        case 'U':
-                        case 'V':
-                        case 'W':
-                        case 'X':
-                        case 'Y':
-                        case 'Z':
-                            {
-                                mTOKEN_REF(true);
-                                theRetToken = _returnToken;
-                                break;
-                            }
-                        case 'a':
-                        case 'b':
-                        case 'c':
-                        case 'd':
-                        case 'e':
-                        case 'f':
-                        case 'g':
-                        case 'h':
-                        case 'i':
-                        case 'j':
-                        case 'k':
-                        case 'l':
-                        case 'm':
-                        case 'n':
-                        case 'o':
-                        case 'p':
-                        case 'q':
-                        case 'r':
-                        case 's':
-                        case 't':
-                        case 'u':
-                        case 'v':
-                        case 'w':
-                        case 'x':
-                        case 'y':
-                        case 'z':
-                            {
-                                mRULE_REF(true);
-                                theRetToken = _returnToken;
-                                break;
-                            }
-                        default:
-                            if ((LA(1) == '=') && (LA(2) == '>')) {
-                                mIMPLIES(true);
-                                theRetToken = _returnToken;
-                            } else if ((LA(1) == '.') && (LA(2) == '.')) {
-                                mRANGE(true);
-                                theRetToken = _returnToken;
-                            } else if ((LA(1) == '=') && (true)) {
-                                mASSIGN(true);
-                                theRetToken = _returnToken;
-                            } else if ((LA(1) == '.') && (true)) {
-                                mWILDCARD(true);
-                                theRetToken = _returnToken;
+        for (; ;) {
+            Token _token = null;
+            int _ttype = Token.INVALID_TYPE;
+            resetText();
+            try {   // for char stream error handling
+                try {   // for lexical error handling
+                    switch (LA(1)) {
+                    case'\t':
+                    case'\n':
+                    case'\r':
+                    case' ': {
+                        mWS(true);
+                        theRetToken = _returnToken;
+                        break;
+                    }
+                    case'/': {
+                        mCOMMENT(true);
+                        theRetToken = _returnToken;
+                        break;
+                    }
+                    case'<': {
+                        mOPEN_ELEMENT_OPTION(true);
+                        theRetToken = _returnToken;
+                        break;
+                    }
+                    case'>': {
+                        mCLOSE_ELEMENT_OPTION(true);
+                        theRetToken = _returnToken;
+                        break;
+                    }
+                    case',': {
+                        mCOMMA(true);
+                        theRetToken = _returnToken;
+                        break;
+                    }
+                    case'?': {
+                        mQUESTION(true);
+                        theRetToken = _returnToken;
+                        break;
+                    }
+                    case'#': {
+                        mTREE_BEGIN(true);
+                        theRetToken = _returnToken;
+                        break;
+                    }
+                    case'(': {
+                        mLPAREN(true);
+                        theRetToken = _returnToken;
+                        break;
+                    }
+                    case')': {
+                        mRPAREN(true);
+                        theRetToken = _returnToken;
+                        break;
+                    }
+                    case':': {
+                        mCOLON(true);
+                        theRetToken = _returnToken;
+                        break;
+                    }
+                    case'*': {
+                        mSTAR(true);
+                        theRetToken = _returnToken;
+                        break;
+                    }
+                    case'+': {
+                        mPLUS(true);
+                        theRetToken = _returnToken;
+                        break;
+                    }
+                    case';': {
+                        mSEMI(true);
+                        theRetToken = _returnToken;
+                        break;
+                    }
+                    case'^': {
+                        mCARET(true);
+                        theRetToken = _returnToken;
+                        break;
+                    }
+                    case'!': {
+                        mBANG(true);
+                        theRetToken = _returnToken;
+                        break;
+                    }
+                    case'|': {
+                        mOR(true);
+                        theRetToken = _returnToken;
+                        break;
+                    }
+                    case'~': {
+                        mNOT_OP(true);
+                        theRetToken = _returnToken;
+                        break;
+                    }
+                    case'}': {
+                        mRCURLY(true);
+                        theRetToken = _returnToken;
+                        break;
+                    }
+                    case'\'': {
+                        mCHAR_LITERAL(true);
+                        theRetToken = _returnToken;
+                        break;
+                    }
+                    case'"': {
+                        mSTRING_LITERAL(true);
+                        theRetToken = _returnToken;
+                        break;
+                    }
+                    case'0':
+                    case'1':
+                    case'2':
+                    case'3':
+                    case'4':
+                    case'5':
+                    case'6':
+                    case'7':
+                    case'8':
+                    case'9': {
+                        mINT(true);
+                        theRetToken = _returnToken;
+                        break;
+                    }
+                    case'[': {
+                        mARG_ACTION(true);
+                        theRetToken = _returnToken;
+                        break;
+                    }
+                    case'{': {
+                        mACTION(true);
+                        theRetToken = _returnToken;
+                        break;
+                    }
+                    case'A':
+                    case'B':
+                    case'C':
+                    case'D':
+                    case'E':
+                    case'F':
+                    case'G':
+                    case'H':
+                    case'I':
+                    case'J':
+                    case'K':
+                    case'L':
+                    case'M':
+                    case'N':
+                    case'O':
+                    case'P':
+                    case'Q':
+                    case'R':
+                    case'S':
+                    case'T':
+                    case'U':
+                    case'V':
+                    case'W':
+                    case'X':
+                    case'Y':
+                    case'Z': {
+                        mTOKEN_REF(true);
+                        theRetToken = _returnToken;
+                        break;
+                    }
+                    case'a':
+                    case'b':
+                    case'c':
+                    case'd':
+                    case'e':
+                    case'f':
+                    case'g':
+                    case'h':
+                    case'i':
+                    case'j':
+                    case'k':
+                    case'l':
+                    case'm':
+                    case'n':
+                    case'o':
+                    case'p':
+                    case'q':
+                    case'r':
+                    case's':
+                    case't':
+                    case'u':
+                    case'v':
+                    case'w':
+                    case'x':
+                    case'y':
+                    case'z': {
+                        mRULE_REF(true);
+                        theRetToken = _returnToken;
+                        break;
+                    }
+                    default:
+                        if ((LA(1) == '=') && (LA(2) == '>')) {
+                            mIMPLIES(true);
+                            theRetToken = _returnToken;
+                        } else if ((LA(1) == '.') && (LA(2) == '.')) {
+                            mRANGE(true);
+                            theRetToken = _returnToken;
+                        } else if ((LA(1) == '=') && (true)) {
+                            mASSIGN(true);
+                            theRetToken = _returnToken;
+                        } else if ((LA(1) == '.') && (true)) {
+                            mWILDCARD(true);
+                            theRetToken = _returnToken;
+                        } else {
+                            if (LA(1) == EOF_CHAR) {
+                                uponEOF();
+                                _returnToken = makeToken(Token.EOF_TYPE);
                             } else {
-                                if (LA(1) == EOF_CHAR) {
-                                    uponEOF();
-                                    _returnToken = makeToken(Token.EOF_TYPE);
-                                } else {
-                                    throw new NoViableAltForCharException(
-                                      (char)LA(1),
-                                      getFilename(),
-                                      getLine(),
-                                      getColumn());
-                                }
+                                throw new NoViableAltForCharException((char)LA(
+                                  1), getFilename(), getLine(), getColumn());
                             }
                         }
-                        if (_returnToken == null) {
-                            continue tryAgain; // found SKIP token
-                        }
-                        _ttype = _returnToken.getType();
-                        _returnToken.setType(_ttype);
-                        return _returnToken;
-                    } catch (RecognitionException e) {
-                        throw new TokenStreamRecognitionException(e);
                     }
-                } catch (CharStreamException cse) {
-                    if (cse instanceof CharStreamIOException) {
-                        throw new TokenStreamIOException(
-                          ((CharStreamIOException)cse).io);
-                    } else {
-                        throw new TokenStreamException(cse.getMessage());
+                    if (_returnToken == null) {
+                        continue tryAgain; // found SKIP token
                     }
+                    _ttype = _returnToken.getType();
+                    _returnToken.setType(_ttype);
+                    return _returnToken;
+                } catch (RecognitionException e) {
+                    throw new TokenStreamRecognitionException(e);
+                }
+            } catch (CharStreamException cse) {
+                if (cse instanceof CharStreamIOException) {
+                    throw new TokenStreamIOException(((CharStreamIOException)cse).io);
+                } else {
+                    throw new TokenStreamException(cse.getMessage());
                 }
             }
+        }
     }
 
-    public final void mWS(boolean _createToken) throws RecognitionException,
-      CharStreamException, TokenStreamException {
+    public final void mWS(boolean _createToken)
+      throws RecognitionException, CharStreamException, TokenStreamException {
         int _ttype;
         Token _token = null;
         int _begin = text.length();
@@ -400,22 +369,19 @@ public class ANTLRLexer extends antlr.CharScanner implements ANTLRTokenTypes,
 
         {
             switch (LA(1)) {
-            case ' ':
-                {
-                    match(' ');
-                    break;
-                }
-            case '\t':
-                {
-                    match('\t');
-                    break;
-                }
-            case '\n':
-                {
-                    match('\n');
-                    newline();
-                    break;
-                }
+            case' ': {
+                match(' ');
+                break;
+            }
+            case'\t': {
+                match('\t');
+                break;
+            }
+            case'\n': {
+                match('\n');
+                newline();
+                break;
+            }
             default:
                 if ((LA(1) == '\r') && (LA(2) == '\n')) {
                     match('\r');
@@ -435,8 +401,9 @@ public class ANTLRLexer extends antlr.CharScanner implements ANTLRTokenTypes,
         _ttype = Token.SKIP;
         if (_createToken && _token == null && _ttype != Token.SKIP) {
             _token = makeToken(_ttype);
-            _token.setText(
-              new String(text.getBuffer(), _begin, text.length() - _begin));
+            _token.setText(new String(text.getBuffer(),
+                                      _begin,
+                                      text.length() - _begin));
         }
         _returnToken = _token;
     }
@@ -470,8 +437,9 @@ public class ANTLRLexer extends antlr.CharScanner implements ANTLRTokenTypes,
         }
         if (_createToken && _token == null && _ttype != Token.SKIP) {
             _token = makeToken(_ttype);
-            _token.setText(
-              new String(text.getBuffer(), _begin, text.length() - _begin));
+            _token.setText(new String(text.getBuffer(),
+                                      _begin,
+                                      text.length() - _begin));
         }
         _returnToken = _token;
     }
@@ -517,8 +485,9 @@ public class ANTLRLexer extends antlr.CharScanner implements ANTLRTokenTypes,
         newline();
         if (_createToken && _token == null && _ttype != Token.SKIP) {
             _token = makeToken(_ttype);
-            _token.setText(
-              new String(text.getBuffer(), _begin, text.length() - _begin));
+            _token.setText(new String(text.getBuffer(),
+                                      _begin,
+                                      text.length() - _begin));
         }
         _returnToken = _token;
     }
@@ -533,8 +502,9 @@ public class ANTLRLexer extends antlr.CharScanner implements ANTLRTokenTypes,
 
         match("/*");
         {
-            if (((LA(1) == '*') && ((LA(2) >= '\u0003' && LA(2) <= '\u00ff'))) &&
-              (LA(2) != '/')) {
+            if (
+              ((LA(1) == '*') && ((LA(2) >= '\u0003' && LA(2) <= '\u00ff'))) &&
+                (LA(2) != '/')) {
                 match('*');
                 _ttype = DOC_COMMENT;
             } else if (((LA(1) >= '\u0003' && LA(1) <= '\u00ff')) &&
@@ -579,8 +549,9 @@ public class ANTLRLexer extends antlr.CharScanner implements ANTLRTokenTypes,
         match("*/");
         if (_createToken && _token == null && _ttype != Token.SKIP) {
             _token = makeToken(_ttype);
-            _token.setText(
-              new String(text.getBuffer(), _begin, text.length() - _begin));
+            _token.setText(new String(text.getBuffer(),
+                                      _begin,
+                                      text.length() - _begin));
         }
         _returnToken = _token;
     }
@@ -596,8 +567,9 @@ public class ANTLRLexer extends antlr.CharScanner implements ANTLRTokenTypes,
         match('<');
         if (_createToken && _token == null && _ttype != Token.SKIP) {
             _token = makeToken(_ttype);
-            _token.setText(
-              new String(text.getBuffer(), _begin, text.length() - _begin));
+            _token.setText(new String(text.getBuffer(),
+                                      _begin,
+                                      text.length() - _begin));
         }
         _returnToken = _token;
     }
@@ -613,8 +585,9 @@ public class ANTLRLexer extends antlr.CharScanner implements ANTLRTokenTypes,
         match('>');
         if (_createToken && _token == null && _ttype != Token.SKIP) {
             _token = makeToken(_ttype);
-            _token.setText(
-              new String(text.getBuffer(), _begin, text.length() - _begin));
+            _token.setText(new String(text.getBuffer(),
+                                      _begin,
+                                      text.length() - _begin));
         }
         _returnToken = _token;
     }
@@ -630,8 +603,9 @@ public class ANTLRLexer extends antlr.CharScanner implements ANTLRTokenTypes,
         match(',');
         if (_createToken && _token == null && _ttype != Token.SKIP) {
             _token = makeToken(_ttype);
-            _token.setText(
-              new String(text.getBuffer(), _begin, text.length() - _begin));
+            _token.setText(new String(text.getBuffer(),
+                                      _begin,
+                                      text.length() - _begin));
         }
         _returnToken = _token;
     }
@@ -647,8 +621,9 @@ public class ANTLRLexer extends antlr.CharScanner implements ANTLRTokenTypes,
         match('?');
         if (_createToken && _token == null && _ttype != Token.SKIP) {
             _token = makeToken(_ttype);
-            _token.setText(
-              new String(text.getBuffer(), _begin, text.length() - _begin));
+            _token.setText(new String(text.getBuffer(),
+                                      _begin,
+                                      text.length() - _begin));
         }
         _returnToken = _token;
     }
@@ -664,8 +639,9 @@ public class ANTLRLexer extends antlr.CharScanner implements ANTLRTokenTypes,
         match("#(");
         if (_createToken && _token == null && _ttype != Token.SKIP) {
             _token = makeToken(_ttype);
-            _token.setText(
-              new String(text.getBuffer(), _begin, text.length() - _begin));
+            _token.setText(new String(text.getBuffer(),
+                                      _begin,
+                                      text.length() - _begin));
         }
         _returnToken = _token;
     }
@@ -681,8 +657,9 @@ public class ANTLRLexer extends antlr.CharScanner implements ANTLRTokenTypes,
         match('(');
         if (_createToken && _token == null && _ttype != Token.SKIP) {
             _token = makeToken(_ttype);
-            _token.setText(
-              new String(text.getBuffer(), _begin, text.length() - _begin));
+            _token.setText(new String(text.getBuffer(),
+                                      _begin,
+                                      text.length() - _begin));
         }
         _returnToken = _token;
     }
@@ -698,8 +675,9 @@ public class ANTLRLexer extends antlr.CharScanner implements ANTLRTokenTypes,
         match(')');
         if (_createToken && _token == null && _ttype != Token.SKIP) {
             _token = makeToken(_ttype);
-            _token.setText(
-              new String(text.getBuffer(), _begin, text.length() - _begin));
+            _token.setText(new String(text.getBuffer(),
+                                      _begin,
+                                      text.length() - _begin));
         }
         _returnToken = _token;
     }
@@ -715,14 +693,15 @@ public class ANTLRLexer extends antlr.CharScanner implements ANTLRTokenTypes,
         match(':');
         if (_createToken && _token == null && _ttype != Token.SKIP) {
             _token = makeToken(_ttype);
-            _token.setText(
-              new String(text.getBuffer(), _begin, text.length() - _begin));
+            _token.setText(new String(text.getBuffer(),
+                                      _begin,
+                                      text.length() - _begin));
         }
         _returnToken = _token;
     }
 
-    public final void mSTAR(boolean _createToken) throws RecognitionException,
-      CharStreamException, TokenStreamException {
+    public final void mSTAR(boolean _createToken)
+      throws RecognitionException, CharStreamException, TokenStreamException {
         int _ttype;
         Token _token = null;
         int _begin = text.length();
@@ -732,14 +711,15 @@ public class ANTLRLexer extends antlr.CharScanner implements ANTLRTokenTypes,
         match('*');
         if (_createToken && _token == null && _ttype != Token.SKIP) {
             _token = makeToken(_ttype);
-            _token.setText(
-              new String(text.getBuffer(), _begin, text.length() - _begin));
+            _token.setText(new String(text.getBuffer(),
+                                      _begin,
+                                      text.length() - _begin));
         }
         _returnToken = _token;
     }
 
-    public final void mPLUS(boolean _createToken) throws RecognitionException,
-      CharStreamException, TokenStreamException {
+    public final void mPLUS(boolean _createToken)
+      throws RecognitionException, CharStreamException, TokenStreamException {
         int _ttype;
         Token _token = null;
         int _begin = text.length();
@@ -749,8 +729,9 @@ public class ANTLRLexer extends antlr.CharScanner implements ANTLRTokenTypes,
         match('+');
         if (_createToken && _token == null && _ttype != Token.SKIP) {
             _token = makeToken(_ttype);
-            _token.setText(
-              new String(text.getBuffer(), _begin, text.length() - _begin));
+            _token.setText(new String(text.getBuffer(),
+                                      _begin,
+                                      text.length() - _begin));
         }
         _returnToken = _token;
     }
@@ -766,8 +747,9 @@ public class ANTLRLexer extends antlr.CharScanner implements ANTLRTokenTypes,
         match('=');
         if (_createToken && _token == null && _ttype != Token.SKIP) {
             _token = makeToken(_ttype);
-            _token.setText(
-              new String(text.getBuffer(), _begin, text.length() - _begin));
+            _token.setText(new String(text.getBuffer(),
+                                      _begin,
+                                      text.length() - _begin));
         }
         _returnToken = _token;
     }
@@ -783,14 +765,15 @@ public class ANTLRLexer extends antlr.CharScanner implements ANTLRTokenTypes,
         match("=>");
         if (_createToken && _token == null && _ttype != Token.SKIP) {
             _token = makeToken(_ttype);
-            _token.setText(
-              new String(text.getBuffer(), _begin, text.length() - _begin));
+            _token.setText(new String(text.getBuffer(),
+                                      _begin,
+                                      text.length() - _begin));
         }
         _returnToken = _token;
     }
 
-    public final void mSEMI(boolean _createToken) throws RecognitionException,
-      CharStreamException, TokenStreamException {
+    public final void mSEMI(boolean _createToken)
+      throws RecognitionException, CharStreamException, TokenStreamException {
         int _ttype;
         Token _token = null;
         int _begin = text.length();
@@ -800,8 +783,9 @@ public class ANTLRLexer extends antlr.CharScanner implements ANTLRTokenTypes,
         match(';');
         if (_createToken && _token == null && _ttype != Token.SKIP) {
             _token = makeToken(_ttype);
-            _token.setText(
-              new String(text.getBuffer(), _begin, text.length() - _begin));
+            _token.setText(new String(text.getBuffer(),
+                                      _begin,
+                                      text.length() - _begin));
         }
         _returnToken = _token;
     }
@@ -817,14 +801,15 @@ public class ANTLRLexer extends antlr.CharScanner implements ANTLRTokenTypes,
         match('^');
         if (_createToken && _token == null && _ttype != Token.SKIP) {
             _token = makeToken(_ttype);
-            _token.setText(
-              new String(text.getBuffer(), _begin, text.length() - _begin));
+            _token.setText(new String(text.getBuffer(),
+                                      _begin,
+                                      text.length() - _begin));
         }
         _returnToken = _token;
     }
 
-    public final void mBANG(boolean _createToken) throws RecognitionException,
-      CharStreamException, TokenStreamException {
+    public final void mBANG(boolean _createToken)
+      throws RecognitionException, CharStreamException, TokenStreamException {
         int _ttype;
         Token _token = null;
         int _begin = text.length();
@@ -834,14 +819,15 @@ public class ANTLRLexer extends antlr.CharScanner implements ANTLRTokenTypes,
         match('!');
         if (_createToken && _token == null && _ttype != Token.SKIP) {
             _token = makeToken(_ttype);
-            _token.setText(
-              new String(text.getBuffer(), _begin, text.length() - _begin));
+            _token.setText(new String(text.getBuffer(),
+                                      _begin,
+                                      text.length() - _begin));
         }
         _returnToken = _token;
     }
 
-    public final void mOR(boolean _createToken) throws RecognitionException,
-      CharStreamException, TokenStreamException {
+    public final void mOR(boolean _createToken)
+      throws RecognitionException, CharStreamException, TokenStreamException {
         int _ttype;
         Token _token = null;
         int _begin = text.length();
@@ -851,8 +837,9 @@ public class ANTLRLexer extends antlr.CharScanner implements ANTLRTokenTypes,
         match('|');
         if (_createToken && _token == null && _ttype != Token.SKIP) {
             _token = makeToken(_ttype);
-            _token.setText(
-              new String(text.getBuffer(), _begin, text.length() - _begin));
+            _token.setText(new String(text.getBuffer(),
+                                      _begin,
+                                      text.length() - _begin));
         }
         _returnToken = _token;
     }
@@ -868,8 +855,9 @@ public class ANTLRLexer extends antlr.CharScanner implements ANTLRTokenTypes,
         match('.');
         if (_createToken && _token == null && _ttype != Token.SKIP) {
             _token = makeToken(_ttype);
-            _token.setText(
-              new String(text.getBuffer(), _begin, text.length() - _begin));
+            _token.setText(new String(text.getBuffer(),
+                                      _begin,
+                                      text.length() - _begin));
         }
         _returnToken = _token;
     }
@@ -885,8 +873,9 @@ public class ANTLRLexer extends antlr.CharScanner implements ANTLRTokenTypes,
         match("..");
         if (_createToken && _token == null && _ttype != Token.SKIP) {
             _token = makeToken(_ttype);
-            _token.setText(
-              new String(text.getBuffer(), _begin, text.length() - _begin));
+            _token.setText(new String(text.getBuffer(),
+                                      _begin,
+                                      text.length() - _begin));
         }
         _returnToken = _token;
     }
@@ -902,8 +891,9 @@ public class ANTLRLexer extends antlr.CharScanner implements ANTLRTokenTypes,
         match('~');
         if (_createToken && _token == null && _ttype != Token.SKIP) {
             _token = makeToken(_ttype);
-            _token.setText(
-              new String(text.getBuffer(), _begin, text.length() - _begin));
+            _token.setText(new String(text.getBuffer(),
+                                      _begin,
+                                      text.length() - _begin));
         }
         _returnToken = _token;
     }
@@ -919,8 +909,9 @@ public class ANTLRLexer extends antlr.CharScanner implements ANTLRTokenTypes,
         match('}');
         if (_createToken && _token == null && _ttype != Token.SKIP) {
             _token = makeToken(_ttype);
-            _token.setText(
-              new String(text.getBuffer(), _begin, text.length() - _begin));
+            _token.setText(new String(text.getBuffer(),
+                                      _begin,
+                                      text.length() - _begin));
         }
         _returnToken = _token;
     }
@@ -950,8 +941,9 @@ public class ANTLRLexer extends antlr.CharScanner implements ANTLRTokenTypes,
         match('\'');
         if (_createToken && _token == null && _ttype != Token.SKIP) {
             _token = makeToken(_ttype);
-            _token.setText(
-              new String(text.getBuffer(), _begin, text.length() - _begin));
+            _token.setText(new String(text.getBuffer(),
+                                      _begin,
+                                      text.length() - _begin));
         }
         _returnToken = _token;
     }
@@ -967,144 +959,126 @@ public class ANTLRLexer extends antlr.CharScanner implements ANTLRTokenTypes,
         match('\\');
         {
             switch (LA(1)) {
-            case 'n':
+            case'n': {
+                match('n');
+                break;
+            }
+            case'r': {
+                match('r');
+                break;
+            }
+            case't': {
+                match('t');
+                break;
+            }
+            case'b': {
+                match('b');
+                break;
+            }
+            case'f': {
+                match('f');
+                break;
+            }
+            case'w': {
+                match('w');
+                break;
+            }
+            case'a': {
+                match('a');
+                break;
+            }
+            case'"': {
+                match('"');
+                break;
+            }
+            case'\'': {
+                match('\'');
+                break;
+            }
+            case'\\': {
+                match('\\');
+                break;
+            }
+            case'0':
+            case'1':
+            case'2':
+            case'3': {
                 {
-                    match('n');
-                    break;
+                    matchRange('0', '3');
                 }
-            case 'r':
                 {
-                    match('r');
-                    break;
-                }
-            case 't':
-                {
-                    match('t');
-                    break;
-                }
-            case 'b':
-                {
-                    match('b');
-                    break;
-                }
-            case 'f':
-                {
-                    match('f');
-                    break;
-                }
-            case 'w':
-                {
-                    match('w');
-                    break;
-                }
-            case 'a':
-                {
-                    match('a');
-                    break;
-                }
-            case '"':
-                {
-                    match('"');
-                    break;
-                }
-            case '\'':
-                {
-                    match('\'');
-                    break;
-                }
-            case '\\':
-                {
-                    match('\\');
-                    break;
-                }
-            case '0':
-            case '1':
-            case '2':
-            case '3':
-                {
-                    {
-                        matchRange('0', '3');
-                    }
-                    {
-                        if (((LA(1) >= '0' && LA(1) <= '7')) &&
-                          ((LA(2) >= '\u0003' && LA(2) <= '\u00ff'))) {
-                            matchRange('0', '7');
-                            {
-                                if (((LA(1) >= '0' && LA(1) <= '7')) &&
-                                  ((LA(2) >= '\u0003' && LA(2) <= '\u00ff'))) {
-                                    matchRange('0', '7');
-                                } else if (((LA(1) >= '\u0003' &&
-                                  LA(1) <= '\u00ff')) &&
-                                  (true)) {
-                                } else {
-                                    throw new NoViableAltForCharException(
-                                      (char)LA(1),
-                                      getFilename(),
-                                      getLine(),
-                                      getColumn());
-                                }
-
+                    if (((LA(1) >= '0' && LA(1) <= '7')) &&
+                      ((LA(2) >= '\u0003' && LA(2) <= '\u00ff'))) {
+                        matchRange('0', '7');
+                        {
+                            if (((LA(1) >= '0' && LA(1) <= '7')) &&
+                              ((LA(2) >= '\u0003' && LA(2) <= '\u00ff'))) {
+                                matchRange('0', '7');
+                            } else if (
+                              ((LA(1) >= '\u0003' && LA(1) <= '\u00ff')) &&
+                                (true)) {
+                            } else {
+                                throw new NoViableAltForCharException((char)LA(
+                                  1), getFilename(), getLine(), getColumn());
                             }
-                        } else if (((LA(1) >= '\u0003' && LA(1) <= '\u00ff')) &&
-                          (true)) {
-                        } else {
-                            throw new NoViableAltForCharException(
-                              (char)LA(1),
-                              getFilename(),
-                              getLine(),
-                              getColumn());
-                        }
 
-                    }
-                    break;
-                }
-            case '4':
-            case '5':
-            case '6':
-            case '7':
-                {
-                    {
-                        matchRange('4', '7');
-                    }
-                    {
-                        if (((LA(1) >= '0' && LA(1) <= '7')) &&
-                          ((LA(2) >= '\u0003' && LA(2) <= '\u00ff'))) {
-                            matchRange('0', '7');
-                        } else if (((LA(1) >= '\u0003' && LA(1) <= '\u00ff')) &&
-                          (true)) {
-                        } else {
-                            throw new NoViableAltForCharException(
-                              (char)LA(1),
-                              getFilename(),
-                              getLine(),
-                              getColumn());
                         }
-
+                    } else
+                    if (((LA(1) >= '\u0003' && LA(1) <= '\u00ff')) && (true)) {
+                    } else {
+                        throw new NoViableAltForCharException((char)LA(1),
+                                                              getFilename(),
+                                                              getLine(),
+                                                              getColumn());
                     }
-                    break;
+
                 }
-            case 'u':
+                break;
+            }
+            case'4':
+            case'5':
+            case'6':
+            case'7': {
                 {
-                    match('u');
-                    mXDIGIT(false);
-                    mXDIGIT(false);
-                    mXDIGIT(false);
-                    mXDIGIT(false);
-                    break;
+                    matchRange('4', '7');
                 }
-            default:
                 {
-                    throw new NoViableAltForCharException((char)LA(1),
-                                                          getFilename(),
-                                                          getLine(),
-                                                          getColumn());
+                    if (((LA(1) >= '0' && LA(1) <= '7')) &&
+                      ((LA(2) >= '\u0003' && LA(2) <= '\u00ff'))) {
+                        matchRange('0', '7');
+                    } else
+                    if (((LA(1) >= '\u0003' && LA(1) <= '\u00ff')) && (true)) {
+                    } else {
+                        throw new NoViableAltForCharException((char)LA(1),
+                                                              getFilename(),
+                                                              getLine(),
+                                                              getColumn());
+                    }
+
                 }
+                break;
+            }
+            case'u': {
+                match('u');
+                mXDIGIT(false);
+                mXDIGIT(false);
+                mXDIGIT(false);
+                mXDIGIT(false);
+                break;
+            }
+            default: {
+                throw new NoViableAltForCharException((char)LA(1),
+                                                      getFilename(),
+                                                      getLine(),
+                                                      getColumn());
+            }
             }
         }
         if (_createToken && _token == null && _ttype != Token.SKIP) {
             _token = makeToken(_ttype);
-            _token.setText(
-              new String(text.getBuffer(), _begin, text.length() - _begin));
+            _token.setText(new String(text.getBuffer(),
+                                      _begin,
+                                      text.length() - _begin));
         }
         _returnToken = _token;
     }
@@ -1134,8 +1108,9 @@ public class ANTLRLexer extends antlr.CharScanner implements ANTLRTokenTypes,
         match('"');
         if (_createToken && _token == null && _ttype != Token.SKIP) {
             _token = makeToken(_ttype);
-            _token.setText(
-              new String(text.getBuffer(), _begin, text.length() - _begin));
+            _token.setText(new String(text.getBuffer(),
+                                      _begin,
+                                      text.length() - _begin));
         }
         _returnToken = _token;
     }
@@ -1149,52 +1124,49 @@ public class ANTLRLexer extends antlr.CharScanner implements ANTLRTokenTypes,
         int _saveIndex;
 
         switch (LA(1)) {
-        case '0':
-        case '1':
-        case '2':
-        case '3':
-        case '4':
-        case '5':
-        case '6':
-        case '7':
-        case '8':
-        case '9':
-            {
-                matchRange('0', '9');
-                break;
-            }
-        case 'a':
-        case 'b':
-        case 'c':
-        case 'd':
-        case 'e':
-        case 'f':
-            {
-                matchRange('a', 'f');
-                break;
-            }
-        case 'A':
-        case 'B':
-        case 'C':
-        case 'D':
-        case 'E':
-        case 'F':
-            {
-                matchRange('A', 'F');
-                break;
-            }
-        default:
-            {
-                throw new NoViableAltForCharException((char)LA(1),
-                                                      getFilename(),
-                                                      getLine(),
-                                                      getColumn());
-            }
+        case'0':
+        case'1':
+        case'2':
+        case'3':
+        case'4':
+        case'5':
+        case'6':
+        case'7':
+        case'8':
+        case'9': {
+            matchRange('0', '9');
+            break;
+        }
+        case'a':
+        case'b':
+        case'c':
+        case'd':
+        case'e':
+        case'f': {
+            matchRange('a', 'f');
+            break;
+        }
+        case'A':
+        case'B':
+        case'C':
+        case'D':
+        case'E':
+        case'F': {
+            matchRange('A', 'F');
+            break;
+        }
+        default: {
+            throw new NoViableAltForCharException((char)LA(1),
+                                                  getFilename(),
+                                                  getLine(),
+                                                  getColumn());
+        }
         }
         if (_createToken && _token == null && _ttype != Token.SKIP) {
             _token = makeToken(_ttype);
-            _token.setText(
-              new String(text.getBuffer(), _begin, text.length() - _begin));
+            _token.setText(new String(text.getBuffer(),
+                                      _begin,
+                                      text.length() - _begin));
         }
         _returnToken = _token;
     }
@@ -1210,14 +1182,15 @@ public class ANTLRLexer extends antlr.CharScanner implements ANTLRTokenTypes,
         matchRange('0', '9');
         if (_createToken && _token == null && _ttype != Token.SKIP) {
             _token = makeToken(_ttype);
-            _token.setText(
-              new String(text.getBuffer(), _begin, text.length() - _begin));
+            _token.setText(new String(text.getBuffer(),
+                                      _begin,
+                                      text.length() - _begin));
         }
         _returnToken = _token;
     }
 
-    public final void mINT(boolean _createToken) throws RecognitionException,
-      CharStreamException, TokenStreamException {
+    public final void mINT(boolean _createToken)
+      throws RecognitionException, CharStreamException, TokenStreamException {
         int _ttype;
         Token _token = null;
         int _begin = text.length();
@@ -1246,8 +1219,9 @@ public class ANTLRLexer extends antlr.CharScanner implements ANTLRTokenTypes,
         }
         if (_createToken && _token == null && _ttype != Token.SKIP) {
             _token = makeToken(_ttype);
-            _token.setText(
-              new String(text.getBuffer(), _begin, text.length() - _begin));
+            _token.setText(new String(text.getBuffer(),
+                                      _begin,
+                                      text.length() - _begin));
         }
         _returnToken = _token;
     }
@@ -1264,8 +1238,9 @@ public class ANTLRLexer extends antlr.CharScanner implements ANTLRTokenTypes,
         setText(StringUtils.stripFrontBack(getText(), "[", "]"));
         if (_createToken && _token == null && _ttype != Token.SKIP) {
             _token = makeToken(_ttype);
-            _token.setText(
-              new String(text.getBuffer(), _begin, text.length() - _begin));
+            _token.setText(new String(text.getBuffer(),
+                                      _begin,
+                                      text.length() - _begin));
         }
         _returnToken = _token;
     }
@@ -1283,27 +1258,23 @@ public class ANTLRLexer extends antlr.CharScanner implements ANTLRTokenTypes,
             _loop200:
             do {
                 switch (LA(1)) {
-                case '[':
-                    {
-                        mNESTED_ARG_ACTION(false);
-                        break;
-                    }
-                case '\n':
-                    {
-                        match('\n');
-                        newline();
-                        break;
-                    }
-                case '\'':
-                    {
-                        mCHAR_LITERAL(false);
-                        break;
-                    }
-                case '"':
-                    {
-                        mSTRING_LITERAL(false);
-                        break;
-                    }
+                case'[': {
+                    mNESTED_ARG_ACTION(false);
+                    break;
+                }
+                case'\n': {
+                    match('\n');
+                    newline();
+                    break;
+                }
+                case'\'': {
+                    mCHAR_LITERAL(false);
+                    break;
+                }
+                case'"': {
+                    mSTRING_LITERAL(false);
+                    break;
+                }
                 default:
                     if ((LA(1) == '\r') && (LA(2) == '\n')) {
                         match('\r');
@@ -1324,8 +1295,9 @@ public class ANTLRLexer extends antlr.CharScanner implements ANTLRTokenTypes,
         match(']');
         if (_createToken && _token == null && _ttype != Token.SKIP) {
             _token = makeToken(_ttype);
-            _token.setText(
-              new String(text.getBuffer(), _begin, text.length() - _begin));
+            _token.setText(new String(text.getBuffer(),
+                                      _begin,
+                                      text.length() - _begin));
         }
         _returnToken = _token;
     }
@@ -1359,14 +1331,15 @@ public class ANTLRLexer extends antlr.CharScanner implements ANTLRTokenTypes,
                                         new String(text.getBuffer(),
                                                    _begin,
                                                    text.length() - _begin));
-        t.setLine(actionLine);			// set action line to start
+        t.setLine(actionLine);                        // set action line to start
         t.setColumn(actionColumn);
         _token = t;
 
         if (_createToken && _token == null && _ttype != Token.SKIP) {
             _token = makeToken(_ttype);
-            _token.setText(
-              new String(text.getBuffer(), _begin, text.length() - _begin));
+            _token.setText(new String(text.getBuffer(),
+                                      _begin,
+                                      text.length() - _begin));
         }
         _returnToken = _token;
     }
@@ -1402,11 +1375,10 @@ public class ANTLRLexer extends antlr.CharScanner implements ANTLRTokenTypes,
                             match('\n');
                             newline();
                         } else {
-                            throw new NoViableAltForCharException(
-                              (char)LA(1),
-                              getFilename(),
-                              getLine(),
-                              getColumn());
+                            throw new NoViableAltForCharException((char)LA(1),
+                                                                  getFilename(),
+                                                                  getLine(),
+                                                                  getColumn());
                         }
 
                     }
@@ -1432,8 +1404,9 @@ public class ANTLRLexer extends antlr.CharScanner implements ANTLRTokenTypes,
         match('}');
         if (_createToken && _token == null && _ttype != Token.SKIP) {
             _token = makeToken(_ttype);
-            _token.setText(
-              new String(text.getBuffer(), _begin, text.length() - _begin));
+            _token.setText(new String(text.getBuffer(),
+                                      _begin,
+                                      text.length() - _begin));
         }
         _returnToken = _token;
     }
@@ -1451,97 +1424,93 @@ public class ANTLRLexer extends antlr.CharScanner implements ANTLRTokenTypes,
             _loop209:
             do {
                 switch (LA(1)) {
-                case 'a':
-                case 'b':
-                case 'c':
-                case 'd':
-                case 'e':
-                case 'f':
-                case 'g':
-                case 'h':
-                case 'i':
-                case 'j':
-                case 'k':
-                case 'l':
-                case 'm':
-                case 'n':
-                case 'o':
-                case 'p':
-                case 'q':
-                case 'r':
-                case 's':
-                case 't':
-                case 'u':
-                case 'v':
-                case 'w':
-                case 'x':
-                case 'y':
-                case 'z':
-                    {
-                        matchRange('a', 'z');
-                        break;
-                    }
-                case 'A':
-                case 'B':
-                case 'C':
-                case 'D':
-                case 'E':
-                case 'F':
-                case 'G':
-                case 'H':
-                case 'I':
-                case 'J':
-                case 'K':
-                case 'L':
-                case 'M':
-                case 'N':
-                case 'O':
-                case 'P':
-                case 'Q':
-                case 'R':
-                case 'S':
-                case 'T':
-                case 'U':
-                case 'V':
-                case 'W':
-                case 'X':
-                case 'Y':
-                case 'Z':
-                    {
-                        matchRange('A', 'Z');
-                        break;
-                    }
-                case '_':
-                    {
-                        match('_');
-                        break;
-                    }
-                case '0':
-                case '1':
-                case '2':
-                case '3':
-                case '4':
-                case '5':
-                case '6':
-                case '7':
-                case '8':
-                case '9':
-                    {
-                        matchRange('0', '9');
-                        break;
-                    }
-                default:
-                    {
-                        break _loop209;
-                    }
+                case'a':
+                case'b':
+                case'c':
+                case'd':
+                case'e':
+                case'f':
+                case'g':
+                case'h':
+                case'i':
+                case'j':
+                case'k':
+                case'l':
+                case'm':
+                case'n':
+                case'o':
+                case'p':
+                case'q':
+                case'r':
+                case's':
+                case't':
+                case'u':
+                case'v':
+                case'w':
+                case'x':
+                case'y':
+                case'z': {
+                    matchRange('a', 'z');
+                    break;
+                }
+                case'A':
+                case'B':
+                case'C':
+                case'D':
+                case'E':
+                case'F':
+                case'G':
+                case'H':
+                case'I':
+                case'J':
+                case'K':
+                case'L':
+                case'M':
+                case'N':
+                case'O':
+                case'P':
+                case'Q':
+                case'R':
+                case'S':
+                case'T':
+                case'U':
+                case'V':
+                case'W':
+                case'X':
+                case'Y':
+                case'Z': {
+                    matchRange('A', 'Z');
+                    break;
+                }
+                case'_': {
+                    match('_');
+                    break;
+                }
+                case'0':
+                case'1':
+                case'2':
+                case'3':
+                case'4':
+                case'5':
+                case'6':
+                case'7':
+                case'8':
+                case'9': {
+                    matchRange('0', '9');
+                    break;
+                }
+                default: {
+                    break _loop209;
+                }
                 }
             } while (true);
         }
         _ttype = testLiteralsTable(_ttype);
         if (_createToken && _token == null && _ttype != Token.SKIP) {
             _token = makeToken(_ttype);
-            _token.setText(
-              new String(text.getBuffer(), _begin, text.length() - _begin));
+            _token.setText(new String(text.getBuffer(),
+                                      _begin,
+                                      text.length() - _begin));
         }
         _returnToken = _token;
     }
@@ -1586,8 +1555,9 @@ public class ANTLRLexer extends antlr.CharScanner implements ANTLRTokenTypes,
         }
         if (_createToken && _token == null && _ttype != Token.SKIP) {
             _token = makeToken(_ttype);
-            _token.setText(
-              new String(text.getBuffer(), _begin, text.length() - _begin));
+            _token.setText(new String(text.getBuffer(),
+                                      _begin,
+                                      text.length() - _begin));
         }
         _returnToken = _token;
     }
@@ -1609,97 +1579,93 @@ public class ANTLRLexer extends antlr.CharScanner implements ANTLRTokenTypes,
             _loop219:
             do {
                 switch (LA(1)) {
-                case 'a':
-                case 'b':
-                case 'c':
-                case 'd':
-                case 'e':
-                case 'f':
-                case 'g':
-                case 'h':
-                case 'i':
-                case 'j':
-                case 'k':
-                case 'l':
-                case 'm':
-                case 'n':
-                case 'o':
-                case 'p':
-                case 'q':
-                case 'r':
-                case 's':
-                case 't':
-                case 'u':
-                case 'v':
-                case 'w':
-                case 'x':
-                case 'y':
-                case 'z':
-                    {
-                        matchRange('a', 'z');
-                        break;
-                    }
-                case 'A':
-                case 'B':
-                case 'C':
-                case 'D':
-                case 'E':
-                case 'F':
-                case 'G':
-                case 'H':
-                case 'I':
-                case 'J':
-                case 'K':
-                case 'L':
-                case 'M':
-                case 'N':
-                case 'O':
-                case 'P':
-                case 'Q':
-                case 'R':
-                case 'S':
-                case 'T':
-                case 'U':
-                case 'V':
-                case 'W':
-                case 'X':
-                case 'Y':
-                case 'Z':
-                    {
-                        matchRange('A', 'Z');
-                        break;
-                    }
-                case '_':
-                    {
-                        match('_');
-                        break;
-                    }
-                case '0':
-                case '1':
-                case '2':
-                case '3':
-                case '4':
-                case '5':
-                case '6':
-                case '7':
-                case '8':
-                case '9':
-                    {
-                        matchRange('0', '9');
-                        break;
-                    }
-                default:
-                    {
-                        break _loop219;
-                    }
+                case'a':
+                case'b':
+                case'c':
+                case'd':
+                case'e':
+                case'f':
+                case'g':
+                case'h':
+                case'i':
+                case'j':
+                case'k':
+                case'l':
+                case'm':
+                case'n':
+                case'o':
+                case'p':
+                case'q':
+                case'r':
+                case's':
+                case't':
+                case'u':
+                case'v':
+                case'w':
+                case'x':
+                case'y':
+                case'z': {
+                    matchRange('a', 'z');
+                    break;
+                }
+                case'A':
+                case'B':
+                case'C':
+                case'D':
+                case'E':
+                case'F':
+                case'G':
+                case'H':
+                case'I':
+                case'J':
+                case'K':
+                case'L':
+                case'M':
+                case'N':
+                case'O':
+                case'P':
+                case'Q':
+                case'R':
+                case'S':
+                case'T':
+                case'U':
+                case'V':
+                case'W':
+                case'X':
+                case'Y':
+                case'Z': {
+                    matchRange('A', 'Z');
+                    break;
+                }
+                case'_': {
+                    match('_');
+                    break;
+                }
+                case'0':
+                case'1':
+                case'2':
+                case'3':
+                case'4':
+                case'5':
+                case'6':
+                case'7':
+                case'8':
+                case'9': {
+                    matchRange('0', '9');
+                    break;
+                }
+                default: {
+                    break _loop219;
+                }
                 }
             } while (true);
         }
         t = testLiteralsTable(t);
         if (_createToken && _token == null && _ttype != Token.SKIP) {
             _token = makeToken(_ttype);
-            _token.setText(
-              new String(text.getBuffer(), _begin, text.length() - _begin));
+            _token.setText(new String(text.getBuffer(),
+                                      _begin,
+                                      text.length() - _begin));
         }
         _returnToken = _token;
         return t;
@@ -1717,30 +1683,28 @@ public class ANTLRLexer extends antlr.CharScanner implements ANTLRTokenTypes,
             _loop216:
             do {
                 switch (LA(1)) {
-                case '\t':
-                case '\n':
-                case '\r':
-                case ' ':
-                    {
-                        mWS(false);
-                        break;
-                    }
-                case '/':
-                    {
-                        mCOMMENT(false);
-                        break;
-                    }
-                default:
-                    {
-                        break _loop216;
-                    }
+                case'\t':
+                case'\n':
+                case'\r':
+                case' ': {
+                    mWS(false);
+                    break;
+                }
+                case'/': {
+                    mCOMMENT(false);
+                    break;
+                }
+                default: {
+                    break _loop216;
+                }
                 }
             } while (true);
         }
         if (_createToken && _token == null && _ttype != Token.SKIP) {
             _token = makeToken(_ttype);
-            _token.setText(
-              new String(text.getBuffer(), _begin, text.length() - _begin));
+            _token.setText(new String(text.getBuffer(),
+                                      _begin,
+                                      text.length() - _begin));
         }
         _returnToken = _token;
     }
@@ -1762,8 +1726,9 @@ public class ANTLRLexer extends antlr.CharScanner implements ANTLRTokenTypes,
         }
         if (_createToken && _token == null && _ttype != Token.SKIP) {
             _token = makeToken(_ttype);
-            _token.setText(
-              new String(text.getBuffer(), _begin, text.length() - _begin));
+            _token.setText(new String(text.getBuffer(),
+                                      _begin,
+                                      text.length() - _begin));
         }
         _returnToken = _token;
     }

@@ -63,8 +63,8 @@ public class EMatchersNode implements VTableEntry, EStackItem {
     public EMatchersNode(String typeName, EMatcher[] matchers) {
         myTypeName = typeName;
         myMatchers = matchers;
-        myCallCounter = Profiler.THE_ONE.register(toString(),
-                                                  myMatchers[0].getOptSpan());
+        myCallCounter =
+          Profiler.THE_ONE.register(toString(), myMatchers[0].getOptSpan());
     }
 
     /**
@@ -127,14 +127,11 @@ public class EMatchersNode implements VTableEntry, EStackItem {
                           String verb,
                           Object[] args,
                           OneArgFunc optEjector) {
-        int last = myMatchers.length -1;
+        int last = myMatchers.length - 1;
         for (int i = 0; i < last; i++) {
             Ejector ej = new Ejector("match-dispatch");
             try {
-                Object result = myMatchers[i].execute(optSelf,
-                                                      verb,
-                                                      args,
-                                                      ej);
+                Object result = myMatchers[i].execute(optSelf, verb, args, ej);
                 myCallCounter.bumpOkCount();
                 return result;
             } catch (Throwable ex1) {
@@ -143,10 +140,8 @@ public class EMatchersNode implements VTableEntry, EStackItem {
                 ej.disable();
             }
         }
-        Object result = myMatchers[last].execute(optSelf,
-                                                 verb,
-                                                 args,
-                                                 optEjector);
+        Object result =
+          myMatchers[last].execute(optSelf, verb, args, optEjector);
         myCallCounter.bumpOkCount();
         return result;
     }
@@ -160,10 +155,8 @@ public class EMatchersNode implements VTableEntry, EStackItem {
         }
         Ejector ej = new Ejector("protocol");
         try {
-            Object optType = execute(optSelf,
-                                     "__getAllegedType",
-                                     E.NO_ARGS,
-                                     ej);
+            Object optType =
+              execute(optSelf, "__getAllegedType", E.NO_ARGS, ej);
             TypeDesc optTD = (TypeDesc)E.as(optType, TypeDesc.class);
             if (null == optTD) {
                 return;
@@ -188,10 +181,7 @@ public class EMatchersNode implements VTableEntry, EStackItem {
         Ejector ej = new Ejector("__respondsTo");
         try {
             Object[] args = {verb, EInt.valueOf(arity)};
-            Object optResult = execute(optSelf,
-                                       "__respondsTo",
-                                       args,
-                                       ej);
+            Object optResult = execute(optSelf, "__respondsTo", args, ej);
             if (null == optResult) {
                 return false;
             } else {

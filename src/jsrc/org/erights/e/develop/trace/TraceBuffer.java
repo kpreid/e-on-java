@@ -34,13 +34,13 @@ import java.io.PrintWriter;
 import java.util.Date;
 
 /**
- * Class that controls storing of TraceMessages in core, for later
- * or concurrent display.
+ * Class that controls storing of TraceMessages in core, for later or
+ * concurrent display.
  * <p/>
- * The tracebuffer is a linked list of trace messages. That linked
- * list may be a subset of a larger list. Just because an old message
- * falls off the end of this list does NOT mean it should be destroyed.
- * Someone else (e.g., the inspector) might be using it.
+ * The tracebuffer is a linked list of trace messages. That linked list may be
+ * a subset of a larger list. Just because an old message falls off the end of
+ * this list does NOT mean it should be destroyed. Someone else (e.g., the
+ * inspector) might be using it.
  */
 class TraceBuffer implements TraceMessageAcceptor, TraceConstants {
 
@@ -79,9 +79,8 @@ class TraceBuffer implements TraceMessageAcceptor, TraceConstants {
         // Doing this message initialization this way is pretty icky,
         // but we can't actually *post* this message because
         // the trace system doesn't fully exist yet.
-        TraceMessage message = unpostedTraceMessage(
-          "Transient buffer begins.",
-          WORLD);
+        TraceMessage message =
+          unpostedTraceMessage("Transient buffer begins.", WORLD);
 
         myStart = message;
         myEnd = message;
@@ -119,16 +118,19 @@ class TraceBuffer implements TraceMessageAcceptor, TraceConstants {
                 try {
                     newSize = Integer.parseInt(value);
                 } catch (NumberFormatException e) {
-                    Trace.trace.errorm("Buffer size cannot be changed to illegal value '" +
-                                       value + "'.");
+                    Trace.trace
+                      .errorm(
+                        "Buffer size cannot be changed to illegal value '" +
+                          value + "'.");
                     newSize = myMaxSize;  // leave unchanged.
                 }
             }
 
             if (newSize < 1) {
-                Trace.trace.errorm(value +
-                                   " is too small a threshold size for the log. "
-                                   + "Ignoring.");
+                Trace.trace
+                  .errorm(value +
+                    " is too small a threshold size for the log. " +
+                    "Ignoring.");
                 newSize = myMaxSize;
             }
 
@@ -141,11 +143,11 @@ class TraceBuffer implements TraceMessageAcceptor, TraceConstants {
     }
 
     /**
-     * Dump the buffer to a file. This is a quasi-temporary function.
-     * It would be better (probably) if the buffer were dumped to a
-     * window, which could then be dumped to a file. TraceDisplay.java
-     * is an early attempt at that, but foundered on lack of time and
-     * dependencies on classes that aren't built until long after trace.
+     * Dump the buffer to a file. This is a quasi-temporary function. It would
+     * be better (probably) if the buffer were dumped to a window, which could
+     * then be dumped to a file. TraceDisplay.java is an early attempt at that,
+     * but foundered on lack of time and dependencies on classes that aren't
+     * built until long after trace.
      */
     void dump(String destination) {
 
@@ -170,22 +172,25 @@ class TraceBuffer implements TraceMessageAcceptor, TraceConstants {
                       new FileOutputStream(new File(destination));
                     stream = new PrintWriter(fos, true);
                 } catch (SecurityException e) {
-                    Trace.trace.errorm("Security exception when opening dump file '" +
-                                       outputDestination + "'.");
+                    Trace.trace
+                      .errorm("Security exception when opening dump file '" +
+                        outputDestination + "'.");
                     return;
                 } catch (FileNotFoundException e) {
-                    Trace.trace.errorm("Could not open dump file '" +
-                                       outputDestination + "'.");
+                    Trace.trace
+                      .errorm("Could not open dump file '" +
+                        outputDestination + "'.");
                     return;
                 } catch (IOException e) {
-                    Trace.trace.errorm("Unknown error when opening dump file '" +
-                                       outputDestination + "'.");
+                    Trace.trace
+                      .errorm("Unknown error when opening dump file '" +
+                        outputDestination + "'.");
                     return;
                 }
             }
 
-            Trace.trace.usagem("Dumping internal trace buffer to " +
-                               outputDestination);
+            Trace.trace
+              .usagem("Dumping internal trace buffer to " + outputDestination);
 
             TraceMessageStringifier stringifier =
               new TraceMessageStringifier();
@@ -194,18 +199,19 @@ class TraceBuffer implements TraceMessageAcceptor, TraceConstants {
             // The begin/end lines make the dump easier to see when it and the
             // log are going to the same place (typically stderr).
             stream.println("======================= BEGIN TRACE BUFFER DUMP " +
-                           "=======================");
+              "=======================");
             while (current != null) {
                 String output = stringifier.toString(current);
                 stream.println(output);
                 current = current.next;
             }
             if (stream.checkError()) {
-                Trace.trace.errorm("Could not dump trace buffer to " +
-                                   outputDestination);
+                Trace.trace
+                  .errorm(
+                    "Could not dump trace buffer to " + outputDestination);
             }
             stream.println("======================= END TRACE BUFFER DUMP " +
-                           "=======================");
+              "=======================");
             if (stream != PrintStreamWriter.stderr()) {
                 stream.close();
             }
@@ -223,9 +229,10 @@ class TraceBuffer implements TraceMessageAcceptor, TraceConstants {
             // not have the message end up in this log, which could be
             // confusing.
 
-            TraceMessage traceMessage = unpostedTraceMessage("======================= BEGIN INTERNAL TRACE BUFFER DUMP " +
-                                                             "=======================",
-                                                             ERROR);
+            TraceMessage traceMessage = unpostedTraceMessage(
+              "======================= BEGIN INTERNAL TRACE BUFFER DUMP " +
+                "=======================",
+              ERROR);
             acceptor.accept(traceMessage);
 
             TraceMessage current = myStart;
@@ -233,9 +240,10 @@ class TraceBuffer implements TraceMessageAcceptor, TraceConstants {
                 acceptor.accept(current);
                 current = current.next;
             }
-            traceMessage = unpostedTraceMessage("======================= END INTERNAL TRACE BUFFER DUMP " +
-                                                "=======================",
-                                                ERROR);
+            traceMessage = unpostedTraceMessage(
+              "======================= END INTERNAL TRACE BUFFER DUMP " +
+                "=======================",
+              ERROR);
             acceptor.accept(traceMessage);
         }
     }
@@ -253,23 +261,21 @@ class TraceBuffer implements TraceMessageAcceptor, TraceConstants {
     }
 
     /**
-     * Create a trace message that isn't posted to all the message
-     * acceptors. Used for messages that have one specific
-     * destination.
+     * Create a trace message that isn't posted to all the message acceptors.
+     * Used for messages that have one specific destination.
      */
     private TraceMessage unpostedTraceMessage(String message, int level) {
         return recordTraceMessageXyzzY(message, level);
     }
 
     /**
-     *  What's the deal with the funny name? Why does
-     * unpostedTraceMessage just call this? It's because we parse the
-     * line number for the routine that called a trace method out of
-     * the stack. That parsing code (TraceCaller) looks for this
-     * method name to start walking the stack. The caller function is
-     * expected to be 2 frames above this one's. Hence,
-     * "unpostedTraceMessage" fills the same slot as "errorm" -
-     * something to be skipped on the way to the true caller.
+     * What's the deal with the funny name? Why does unpostedTraceMessage just
+     * call this? It's because we parse the line number for the routine that
+     * called a trace method out of the stack. That parsing code (TraceCaller)
+     * looks for this method name to start walking the stack. The caller
+     * function is expected to be 2 frames above this one's. Hence,
+     * "unpostedTraceMessage" fills the same slot as "errorm" - something to be
+     * skipped on the way to the true caller.
      */
     private TraceMessage recordTraceMessageXyzzY(String message, int level) {
         TraceMessage tm = new TraceMessage();

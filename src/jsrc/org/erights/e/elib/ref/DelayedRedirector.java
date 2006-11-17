@@ -10,8 +10,8 @@ import org.erights.e.elib.util.OneArgFunc;
 
 /**
  * Wraps a EProxyResolver for a RemotePromise in a way suitable for inclusion
- * as an argument in the first __whenMoreResolved message, in order to
- * preserve reference-full-order.
+ * as an argument in the first __whenMoreResolved message, in order to preserve
+ * reference-full-order.
  *
  * @author Mark S. Miller
  */
@@ -39,14 +39,14 @@ public class DelayedRedirector
 
     /**
      * XXX the following documents only the unoptimized case:
-     * <p>
+     * <p/>
      * On the first response, send a second __whenMoreResolved on the original
      * RemotePromise, and then resolve the EProxyResolver to a Promise that
      * will be resolved by the answer to this second __whenMoreResolved.
      * <p/>
      * This ensures that all messages have drained out of the previous path
-     * before enabling the new path. Once I've done my one-time-job, I
-     * become inoperative.
+     * before enabling the new path. Once I've done my one-time-job, I become
+     * inoperative.
      * <p/>
      * The argument of this first response is ignored (thanks Dean!). The
      * argument of the second response is used as the true resolution of my
@@ -60,8 +60,7 @@ public class DelayedRedirector
         }
 
         EProxyHandler handler = myOptResolver.optHandler();
-        if (handler.isFresh() ||
-          handler.sameConnection(target) ||
+        if (handler.isFresh() || handler.sameConnection(target) ||
           Ref.isDeepFrozen(target)) {
             //handler.isFresh():
             //If no messages have yet been sent over my RemotePromise, then

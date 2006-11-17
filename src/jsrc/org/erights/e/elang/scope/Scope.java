@@ -48,10 +48,10 @@ import java.io.StringWriter;
 
 /**
  * A ConstMap (sort of) from names (strings) to {@link Slot}s.
- * <p>
- * Scopes inherit from each other in a tree, so they can
- * be used to model nesting lexical environments. The associations in
- * the most leafward part of a Scope are called "locals". <p>
+ * <p/>
+ * Scopes inherit from each other in a tree, so they can be used to model
+ * nesting lexical environments. The associations in the most leafward part of
+ * a Scope are called "locals". <p>
  *
  * @author E. Dean Tribble
  * @author Mark S. Miller
@@ -73,9 +73,8 @@ public class Scope implements EIteratable {
      * FinalSlot.
      */
     static public ConstMap asSlottedState(ConstMap state) {
-        final FlexMap slottedMap = FlexMap.fromTypes(String.class,
-                                                     Slot.class,
-                                                     state.size());
+        final FlexMap slottedMap =
+          FlexMap.fromTypes(String.class, Slot.class, state.size());
         state.iterate(new AssocFunc() {
             public void run(Object key, Object value) {
                 String k = (String)key;
@@ -94,13 +93,12 @@ public class Scope implements EIteratable {
      * In mixed form, each association is either
      * <pre>    "&amp;"varName =&gt; Slot</pre> or
      * <pre>       varName =&gt; value</pre>
-     * asMixedState(state) always prefers the second form when the slot
-     * {@link Slot#isFinal isFinal}.
+     * asMixedState(state) always prefers the second form when the slot {@link
+     * Slot#isFinal isFinal}.
      */
     static public ConstMap asMixedState(ConstMap state) {
-        final FlexMap mixedMap = FlexMap.fromTypes(String.class,
-                                                   Object.class,
-                                                   state.size());
+        final FlexMap mixedMap =
+          FlexMap.fromTypes(String.class, Object.class, state.size());
         state.iterate(new AssocFunc() {
             public void run(Object key, Object value) {
                 String k = (String)key;
@@ -126,9 +124,8 @@ public class Scope implements EIteratable {
         //implementation should be a specialized form of ScopeMaker
         int len = state.size();
         final FlexList outersList = FlexList.fromType(Slot.class, len);
-        final FlexMap synEnv = FlexMap.fromTypes(String.class,
-                                                 NounPattern.class,
-                                                 len);
+        final FlexMap synEnv =
+          FlexMap.fromTypes(String.class, NounPattern.class, len);
         state.iterate(new AssocFunc() {
             public void run(Object key, Object value) {
                 String name = (String)key;
@@ -150,14 +147,11 @@ public class Scope implements EIteratable {
                 } else {
                     patt = new FinalPattern(null, nounExpr, null, true, null);
                 }
-                synEnv.put(varName,
-                           patt,
-                           true);
+                synEnv.put(varName, patt, true);
             }
         });
-        ScopeLayout layout = ScopeLayout.make(len,
-                                              synEnv.snapshot(),
-                                              fqnPrefix);
+        ScopeLayout layout =
+          ScopeLayout.make(len, synEnv.snapshot(), fqnPrefix);
         //int outerSpace = outerCount + ScopeSetup.OUTER_SPACE;
         Slot[] outers = (Slot[])outersList.getArray(Slot.class);
         return outer(layout, outers);
@@ -189,7 +183,6 @@ public class Scope implements EIteratable {
     }
 
     /**
-     *
      * @param scopeLayout
      * @param evalContext
      */
@@ -201,7 +194,7 @@ public class Scope implements EIteratable {
     /**
      * Returns a new Scope like the current one, but with the new ScopeLayout,
      * which must be an "extension" of the current one.
-     * <p>
+     * <p/>
      * XXX Security Alert: It is assumed, rather than enforced, that the new
      * ScopeLayout is an extension of the current one.
      *
@@ -264,7 +257,7 @@ public class Scope implements EIteratable {
 
     /**
      * Gets the value of the slot associated with varName.
-     * <p>
+     * <p/>
      * Just a convenience implemented out of getSlot/1
      */
     public Object get(String varName) {
@@ -284,8 +277,8 @@ public class Scope implements EIteratable {
     }
 
     /**
-     * The default put/2 is defined in the obvious fashion in
-     * terms of getSlot(varName).setValue(newValue). <p>
+     * The default put/2 is defined in the obvious fashion in terms of
+     * getSlot(varName).setValue(newValue). <p>
      */
     public void put(String varName, Object newValue) {
         getSlot(varName).setValue(newValue);
@@ -326,11 +319,11 @@ public class Scope implements EIteratable {
     }
 
     /**
-     * Returns a string showing the bindings in this scope in a
-     * pleasant, human readable format.
+     * Returns a string showing the bindings in this scope in a pleasant, human
+     * readable format.
      *
-     * @param showSafeFlag If set, then unshadowable names from the safe
-     *                     scope will be shown as well.
+     * @param showSafeFlag If set, then unshadowable names from the safe scope
+     *                     will be shown as well.
      */
     public UnQuote bindings(boolean showSafeFlag) throws IOException {
         StringWriter buf = new StringWriter();

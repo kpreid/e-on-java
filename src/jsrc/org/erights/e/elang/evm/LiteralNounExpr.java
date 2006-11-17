@@ -31,7 +31,7 @@ import org.erights.e.elib.util.AlreadyDefinedException;
 
 /**
  * A noun-expr for compile-time literals, particularly universal constants.
- * <p>
+ * <p/>
  * XXX This is probably not really DeepPassByCopy, in which case we need to
  * consider whether this should exist at all.
  *
@@ -42,7 +42,6 @@ public class LiteralNounExpr extends TopNounExpr {
     private final Object myValue;
 
     /**
-     *
      * @param optSpan
      * @param name
      * @param value
@@ -56,19 +55,20 @@ public class LiteralNounExpr extends TopNounExpr {
         myValue = value;
         // XXX This requirement will usually fail
         T.require(Ref.isDeepPassByCopy(myValue),
-                  "Must be DeepPassByCopy: ", myValue);
+                  "Must be DeepPassByCopy: ",
+                  myValue);
     }
 
     /**
      * Uses XXX 'makeFoo(...)'
      */
     public Object[] getSpreadUncall() {
-        Object[] result = { StaticMaker.make(LiteralNounExpr.class),
-                            "run",
-                            getOptSpan(),
-                            getName(),
-                            myValue,
-                            getOptScopeLayout() };
+        Object[] result = {StaticMaker.make(LiteralNounExpr.class),
+          "run",
+          getOptSpan(),
+          getName(),
+          myValue,
+          getOptScopeLayout()};
         return result;
     }
 
@@ -112,8 +112,8 @@ public class LiteralNounExpr extends TopNounExpr {
      *
      */
     public void initFinal(EvalContext ctx, Object value) {
-        throw new AlreadyDefinedException
-          ("Cannot redefine a universal constant" + getName());
+        throw new AlreadyDefinedException(
+          "Cannot redefine a universal constant" + getName());
     }
 
     /**

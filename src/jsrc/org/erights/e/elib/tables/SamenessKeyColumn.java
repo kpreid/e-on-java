@@ -75,8 +75,6 @@ class SamenessKeyColumn extends KeyColumn {
     }
 
     /**
-     *
-     *
      * @param memberType
      * @param capacity
      */
@@ -108,8 +106,7 @@ class SamenessKeyColumn extends KeyColumn {
      */
 
     Column newVacant(int capacity) {
-        return new SamenessKeyColumn(memberType(),
-                                     capacity);
+        return new SamenessKeyColumn(memberType(), capacity);
     }
 
     /**
@@ -130,9 +127,8 @@ class SamenessKeyColumn extends KeyColumn {
                 return -1;
             }
             Object curKey = myKeys[curPos];
-            if (status >= 0
-              && hash == myHashes[curPos]
-              && Ref.isSameEver(curKey, key)) {
+            if (status >= 0 && hash == myHashes[curPos] &&
+              Ref.isSameEver(curKey, key)) {
                 // we found it.
                 return curPos;
             }
@@ -176,8 +172,8 @@ class SamenessKeyColumn extends KeyColumn {
                     // eventually found
                     firstVacant = curPos;
                 }
-            } else if (hash == myHashes[curPos]
-              && Ref.isSameEver(curKey, key)) {
+            } else
+            if (hash == myHashes[curPos] && Ref.isSameEver(curKey, key)) {
                 // we found it.
                 return curPos;
             }

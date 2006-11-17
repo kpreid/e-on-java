@@ -55,16 +55,15 @@ public class Rune {
      * Processes org/erights/e/elang/syntax/syntax-props-<major_version>.txt,
      * eprops.txt, ~/.e/user-eprops.txt, and initial "-Dprop=value" arguments
      * into the system properties.
-     * <p>
+     * <p/>
      * For use by this and other E-oriented main() methods. If there's no
      * eprops.txt file, then sets those properties that are necessary for
      * running the E installer script.
-     * <p>
-     * Normally, all "-Dprop=value" options would occur to the left of
-     * the main class name, and therefore be processed by the Java
-     * launcher before launching the main class. However, this
-     * may be difficult using some IDEs (like Cafe), so we also
-     * process such options ourselves.
+     * <p/>
+     * Normally, all "-Dprop=value" options would occur to the left of the main
+     * class name, and therefore be processed by the Java launcher before
+     * launching the main class. However, this may be difficult using some IDEs
+     * (like Cafe), so we also process such options ourselves.
      *
      * @return The remaining arguments after the initial "-Dprop=value"
      *         arguments have been consumed.
@@ -157,8 +156,11 @@ public class Rune {
             sysProps.setProperty("e.version", MAJOR_VERSION + ".??");
         } else {
             T.require(optVersion.startsWith(MAJOR_VERSION + "."),
-                      "Inconsistent version: ", E.toQuote(optVersion),
-                      " vs. ", E.toQuote(MAJOR_VERSION), ".\n",
+                      "Inconsistent version: ",
+                      E.toQuote(optVersion),
+                      " vs. ",
+                      E.toQuote(MAJOR_VERSION),
+                      ".\n",
                       "See e/src/Makefile for the other version setting.");
         }
 
@@ -217,8 +219,8 @@ public class Rune {
             Selector.printCacheStats();
             Memoizer.printCacheStats();
             //noinspection UseOfSystemOutOrSystemErr
-            System.err.println("Run after initialization: " +
-                               (stop - start) + " ms");
+            System.err
+              .println("Run after initialization: " + (stop - start) + " ms");
         }
     }
 
@@ -243,9 +245,9 @@ public class Rune {
 
     /**
      * Called to successfully exit the process.
-     * <p>
-     * If e.gui-launch is true and e.onOkGuiExit is "prompt", then this
-     * prompts for a character to be typed before exiting.
+     * <p/>
+     * If e.gui-launch is true and e.onOkGuiExit is "prompt", then this prompts
+     * for a character to be typed before exiting.
      */
     static void okExit(TextWriter errs) {
         try {
@@ -308,11 +310,10 @@ public class Rune {
      */
     static public void main(String[] argArray) {
 
-        final TextWriter errs = new TextWriter(PrintStreamWriter.stderr(),
-                                               true);
+        final TextWriter errs =
+          new TextWriter(PrintStreamWriter.stderr(), true);
         try {
-            TextWriter outs = new TextWriter(PrintStreamWriter.stdout(),
-                                             true);
+            TextWriter outs = new TextWriter(PrintStreamWriter.stdout(), true);
 
             final ConstList args = doProps(ConstList.fromArray(argArray));
 
@@ -379,8 +380,7 @@ public class Rune {
         }
 
         /**
-         * This is the only interp method needed for making the rune
-         * function.
+         * This is the only interp method needed for making the rune function.
          */
         public ConstMap getProps() {
             return myProps;

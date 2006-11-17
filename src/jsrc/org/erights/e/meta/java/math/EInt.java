@@ -5,30 +5,26 @@ package org.erights.e.meta.java.math;
 
 import org.erights.e.elib.prim.Thrower;
 import org.erights.e.elib.util.OneArgFunc;
-import org.erights.e.develop.assertion.T;
 
 import java.math.BigInteger;
 import java.util.Random;
 
 /**
  * Represents the type of E integers, which can concretely be represented by
- * any of {@link Byte}, {@link Short}, {@link Integer}, {@link Long}, or
- * {@link BigInteger}.
+ * any of {@link Byte}, {@link Short}, {@link Integer}, {@link Long}, or {@link
+ * BigInteger}.
  * <p/>
  * From the point of view of the E language programmer, none of these more
  * specific types exist as types. (As guards, all but BigInteger serve as
  * subranges of EInt.) From the point of view of the ELib coercion machinery,
  * EInt is a virtual supertype of these more specific types.
  * <p/>
- * An EInt in <i>normal</i> form:<ul>
- * <li>is an Integer if it fits in an Integer, i.e., if it's between
- * {@link Integer#MIN_VALUE}..{@link Integer#MAX_VALUE}.
- * <li>Else it's a BigInteger.
- * </ul>
- * In addition, if the integer's value fits in a byte, i.e., if it's between
- * -128 and 127, then EInt will avoid allocating a new one by returning a
- * preallocated one. However, a newly allocated Integer is still in normal
- * form.
+ * An EInt in <i>normal</i> form:<ul> <li>is an Integer if it fits in an
+ * Integer, i.e., if it's between {@link Integer#MIN_VALUE}..{@link
+ * Integer#MAX_VALUE}. <li>Else it's a BigInteger. </ul> In addition, if the
+ * integer's value fits in a byte, i.e., if it's between -128 and 127, then
+ * EInt will avoid allocating a new one by returning a preallocated one.
+ * However, a newly allocated Integer is still in normal form.
  * <p/>
  * EInt itself cannot be instantiated or subclassed.
  * <p/>
@@ -68,14 +64,13 @@ public abstract class EInt extends Number {
      * Convert a 6-bits-per-char string to an EInt in normal form.
      *
      * @param s The string in 6-bits-per-char notation, with an optional
-     *          leading '-', in the format produced by
-     *          {@link BigIntegerSugar#toString64(BigInteger)}.
+     *          leading '-', in the format produced by {@link
+     *          BigIntegerSugar#toString64(BigInteger)}.
      * @return an EInt in normal form.
      * @throws NumberFormatException if there is an invalid 6-bits-per-char
      *                               character in the input string.
      */
-    static public Number fromString64(String s)
-      throws NumberFormatException {
+    static public Number fromString64(String s) throws NumberFormatException {
 
         s = s.trim();
         if (s.length() >= 1 && s.charAt(0) == '-') {
@@ -89,9 +84,8 @@ public abstract class EInt extends Number {
         for (int i = 0; ;) {
             int val1 = BASE64.indexOf(in[i]);
             if (val1 < 0) {
-                throw new NumberFormatException
-                  ("Invalid character '" + in[i] +
-                   "' in 6-bits-per-char string");
+                throw new NumberFormatException("Invalid character '" + in[i] +
+                  "' in 6-bits-per-char string");
             }
             if (++i == in.length) {
                 break;
@@ -99,9 +93,8 @@ public abstract class EInt extends Number {
 
             int val2 = BASE64.indexOf(in[i]);
             if (val2 < 0) {
-                throw new NumberFormatException
-                  ("Invalid character '" + in[i] +
-                   "' in 6-bits-per-char string");
+                throw new NumberFormatException("Invalid character '" + in[i] +
+                  "' in 6-bits-per-char string");
             }
             // 6 val1Bits + 2 val2Bits
             b[retIndex++] = (byte)((val1 << 2) + (val2 >> 4));
@@ -112,9 +105,8 @@ public abstract class EInt extends Number {
 
             int val3 = BASE64.indexOf(in[i]);
             if (val3 < 0) {
-                throw new NumberFormatException
-                  ("Invalid character '" + in[i] +
-                   "' in 6-bits-per-char string");
+                throw new NumberFormatException("Invalid character '" + in[i] +
+                  "' in 6-bits-per-char string");
             }
             // 4 val2Bits + 4 val3Bits
             b[retIndex++] = (byte)(((val2 << 4) & 0xf0) + (val3 >> 2));
@@ -125,9 +117,8 @@ public abstract class EInt extends Number {
 
             int val4 = BASE64.indexOf(in[i]);
             if (val4 < 0) {
-                throw new NumberFormatException
-                  ("Invalid character ' '" + in[i] +
-                   "'' in 6-bits-per-char string");
+                throw new NumberFormatException("Invalid character ' '" +
+                  in[i] + "'' in 6-bits-per-char string");
             }
             // 2 val3Bits + 6 val4Bits
             b[retIndex++] = (byte)(((val3 << 6) & 0xc0) + val4);
@@ -142,15 +133,13 @@ public abstract class EInt extends Number {
     /**
      * Convert a YURL32 string to an EInt in normal form.
      *
-     * @param s The string in YURL32 notation, with an optional leading
-     *          '-', in the format produced by
-     *          {@link BigIntegerSugar#toYURL32(BigInteger)}.
+     * @param s The string in YURL32 notation, with an optional leading '-', in
+     *          the format produced by {@link BigIntegerSugar#toYURL32(BigInteger)}.
      * @return an EInt in normal form.
-     * @throws NumberFormatException if there is an invalid YURL32 character
-     *                               in the input string.
+     * @throws NumberFormatException if there is an invalid YURL32 character in
+     *                               the input string.
      */
-    static public Number fromYURL32(String s)
-      throws NumberFormatException {
+    static public Number fromYURL32(String s) throws NumberFormatException {
 
         s = s.trim();
         int numChars = s.length();
@@ -169,8 +158,8 @@ public abstract class EInt extends Number {
             } else if (c >= '2' && c <= '7') {
                 val = 26 + c - '2';
             } else {
-                throw new NumberFormatException
-                  ("Invalid character '" + c + "' in 5-bits-per-char string");
+                throw new NumberFormatException(
+                  "Invalid character '" + c + "' in 5-bits-per-char string");
             }
             int biti = chari * 5;
             int highBytei = biti >> 3;
@@ -179,12 +168,12 @@ public abstract class EInt extends Number {
             b[highBytei] |= (val >>> 8);
             int lowByte = val & 0xFF;
             if (lowByte != 0) {
-                int lowBytei = highBytei +1;
+                int lowBytei = highBytei + 1;
                 if (lowBytei < numBytes) {
                     b[lowBytei] |= lowByte;
                 } else {
-                    throw new NumberFormatException
-                      ("Trailing bits in in 5-bits-per-char string: " + s);
+                    throw new NumberFormatException(
+                      "Trailing bits in in 5-bits-per-char string: " + s);
                 }
             }
         }
@@ -249,9 +238,8 @@ public abstract class EInt extends Number {
                 return new Integer(val);
             }
         } else {
-            ClassCastException prob =
-              new ClassCastException("Must be an EInt: " +
-                                     clazz + "(" + eInt + ")");
+            ClassCastException prob = new ClassCastException(
+              "Must be an EInt: " + clazz + "(" + eInt + ")");
             throw Thrower.toEject(optEjector, prob);
         }
     }
@@ -276,16 +264,13 @@ public abstract class EInt extends Number {
         Class clazz = eInt.getClass();
         if (BigInteger.class == clazz) {
             return (BigInteger)eInt;
-        } else if (Integer.class == clazz ||
-          Byte.class == clazz ||
-          Long.class == clazz ||
-          Short.class == clazz) {
+        } else if (Integer.class == clazz || Byte.class == clazz ||
+          Long.class == clazz || Short.class == clazz) {
 
             return BigInteger.valueOf(eInt.longValue());
         } else {
-            ClassCastException prob =
-              new ClassCastException("Must be an EInt: " +
-                                     clazz + "(" + eInt + ")");
+            ClassCastException prob = new ClassCastException(
+              "Must be an EInt: " + clazz + "(" + eInt + ")");
             throw Thrower.toEject(optEjector, prob);
         }
     }
@@ -314,18 +299,15 @@ public abstract class EInt extends Number {
         Class clazz = num.getClass();
         if (BigInteger.class == clazz) {
             return (BigInteger)num;
-        } else if (Integer.class == clazz ||
-          Byte.class == clazz ||
-          Long.class == clazz ||
-          Short.class == clazz) {
+        } else if (Integer.class == clazz || Byte.class == clazz ||
+          Long.class == clazz || Short.class == clazz) {
 
             return BigInteger.valueOf(num.longValue());
         } else if (Double.class == clazz || Float.class == clazz) {
             return null;
         } else {
-            ClassCastException prob =
-              new ClassCastException("Must be a primitive E number: " +
-                                     clazz + "(" + num + ")");
+            ClassCastException prob = new ClassCastException(
+              "Must be a primitive E number: " + clazz + "(" + num + ")");
             throw Thrower.toEject(optEjector, prob);
         }
     }
@@ -333,9 +315,7 @@ public abstract class EInt extends Number {
     /**
      * optEjector defaults to null.
      */
-    static public long inRange(Number eInt,
-                               long minValue,
-                               long maxValue) {
+    static public long inRange(Number eInt, long minValue, long maxValue) {
         return inRange(eInt, minValue, maxValue, null);
     }
 
@@ -354,8 +334,8 @@ public abstract class EInt extends Number {
             return eInt.longValue();
         } else {
             throw Thrower.toEject(optEjector,
-                                  "" + eInt + " must be in " +
-                                  minValue + ".." + maxValue);
+                                  "" + eInt + " must be in " + minValue +
+                                    ".." + maxValue);
         }
     }
 
@@ -373,8 +353,8 @@ public abstract class EInt extends Number {
     /**
      * Does eInt represent an EInt between minValue and maxValue?
      * <p/>
-     * If it represents an EInt, return whether it's in range.
-     * If it doesn't represent an EInt, complain according to optEjector.
+     * If it represents an EInt, return whether it's in range. If it doesn't
+     * represent an EInt, complain according to optEjector.
      *
      * @return
      */
@@ -388,31 +368,27 @@ public abstract class EInt extends Number {
             return bigInt.compareTo(BigInteger.valueOf(minValue)) >= 0 &&
               bigInt.compareTo(BigInteger.valueOf(maxValue)) <= 0;
 
-        } else if (Integer.class == clazz ||
-          Byte.class == clazz ||
-          Long.class == clazz ||
-          Short.class == clazz) {
+        } else if (Integer.class == clazz || Byte.class == clazz ||
+          Long.class == clazz || Short.class == clazz) {
 
             long val = eInt.longValue();
             return val >= minValue && val <= maxValue;
         } else {
-            ClassCastException prob =
-              new ClassCastException("Must be an EInt: " +
-                                     clazz + "(" + eInt + ")");
+            ClassCastException prob = new ClassCastException(
+              "Must be an EInt: " + clazz + "(" + eInt + ")");
             throw Thrower.toEject(optEjector, prob);
         }
     }
 
     /**
-     * Like {@link #isInInt32(Number, OneArgFunc) isInInt32(num, null)}, except
+     * Like {@link #isInInt32(Number,OneArgFunc) isInInt32(num, null)}, except
      * that if num isn't an EInt, this returns false rather than complaining.
      *
      * @return
      */
     static public boolean intValueOk(Number num) {
         Class clazz = num.getClass();
-        if (Integer.class == clazz ||
-          Byte.class == clazz ||
+        if (Integer.class == clazz || Byte.class == clazz ||
           Short.class == clazz) {
             return true;
 
@@ -431,19 +407,18 @@ public abstract class EInt extends Number {
     }
 
     /**
-     * Does eInt represent an EInt between {@link Integer#MIN_VALUE} and
-     * {@link Integer#MAX_VALUE}?
+     * Does eInt represent an EInt between {@link Integer#MIN_VALUE} and {@link
+     * Integer#MAX_VALUE}?
      * <p/>
      * If it represents an EInt, return whether it's in range, in which case
-     * {@link Number#intValue eInt.intValue()} will give a valid answer.
-     * If it doesn't represent an EInt, complain according to optEjector.
+     * {@link Number#intValue eInt.intValue()} will give a valid answer. If it
+     * doesn't represent an EInt, complain according to optEjector.
      *
      * @return
      */
     static public boolean isInInt32(Number eInt, OneArgFunc optEjector) {
         Class clazz = eInt.getClass();
-        if (Integer.class == clazz ||
-          Byte.class == clazz ||
+        if (Integer.class == clazz || Byte.class == clazz ||
           Short.class == clazz) {
             return true;
 
@@ -458,9 +433,8 @@ public abstract class EInt extends Number {
             return val >= Integer.MIN_VALUE && val <= Integer.MAX_VALUE;
 
         } else {
-            ClassCastException prob =
-              new ClassCastException("Must be an EInt: " +
-                                     clazz + "(" + eInt + ")");
+            ClassCastException prob = new ClassCastException(
+              "Must be an EInt: " + clazz + "(" + eInt + ")");
             throw Thrower.toEject(optEjector, prob);
         }
     }
@@ -476,7 +450,7 @@ public abstract class EInt extends Number {
     }
 
     /**
-     * Like {@link BigInteger#BigInteger(String, int)}, but returns an EInt in
+     * Like {@link BigInteger#BigInteger(String,int)}, but returns an EInt in
      * normal form.
      *
      * @return
@@ -486,7 +460,7 @@ public abstract class EInt extends Number {
     }
 
     /**
-     * Like {@link BigInteger#BigInteger(int, byte[])}, but returns an EInt in
+     * Like {@link BigInteger#BigInteger(int,byte[])}, but returns an EInt in
      * normal form.
      *
      * @return
@@ -496,7 +470,7 @@ public abstract class EInt extends Number {
     }
 
     /**
-     * Like {@link BigInteger#BigInteger(int, Random)}, but returns an EInt in
+     * Like {@link BigInteger#BigInteger(int,Random)}, but returns an EInt in
      * normal form.
      *
      * @return

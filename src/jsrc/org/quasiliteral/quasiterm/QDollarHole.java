@@ -25,12 +25,12 @@ import java.io.IOException;
  * A dollar hole of a quasi-literal term expression is filled in with a
  * substitution arg.
  * <p/>
- * As a ValueMaker, this evaluates to the corresponding substitution arg,
- * given that it meets all encoded conditions (see {@link QHole}).
+ * As a ValueMaker, this evaluates to the corresponding substitution arg, given
+ * that it meets all encoded conditions (see {@link QHole}).
  * <p/>
- * As a MatchMaker, this compares ("&lt;=&gt;") a specimen term against
- * the substitution argument. The substitution argument must again meet all
- * encoded conditions.
+ * As a MatchMaker, this compares ("&lt;=&gt;") a specimen term against the
+ * substitution argument. The substitution argument must again meet all encoded
+ * conditions.
  *
  * @author Mark S. Miller
  */
@@ -64,19 +64,17 @@ public class QDollarHole extends QHole {
     }
 
     /**
-     * Uses 'QDollarHoleMaker(myBuilder, myOptTag, myHoleNum,
-     * myIsFunctorHole, myOptSpan)'
+     * Uses 'QDollarHoleMaker(myBuilder, myOptTag, myHoleNum, myIsFunctorHole,
+     * myOptSpan)'
      */
     public Object[] getSpreadUncall() {
-        Object[] result = {
-            QDollarHoleMaker,
-            "run",
-            myBuilder,
-            myOptTag,
-            EInt.valueOf(myHoleNum),
-            myIsFunctorHole ? Boolean.TRUE : Boolean.FALSE,
-            myOptSpan
-        };
+        Object[] result = {QDollarHoleMaker,
+          "run",
+          myBuilder,
+          myOptTag,
+          EInt.valueOf(myHoleNum),
+          myIsFunctorHole ? Boolean.TRUE : Boolean.FALSE,
+          myOptSpan};
         return result;
     }
 
@@ -96,13 +94,13 @@ public class QDollarHole extends QHole {
     }
 
     /**
-     * If the substitution arg at [myHoleHum]+prefix is actually a list
-     * for further indexing, what's the size of that list?
+     * If the substitution arg at [myHoleHum]+prefix is actually a list for
+     * further indexing, what's the size of that list?
      * <p/>
-     * If it's not a list, it could still act as a list by repetition,
-     * but then it's of indeterminate size, so just return shapeSoFar.
-     * If it is a list, then if shapeSoFar has already been determined (ie,
-     * not -1), then require these to agree.
+     * If it's not a list, it could still act as a list by repetition, but then
+     * it's of indeterminate size, so just return shapeSoFar. If it is a list,
+     * then if shapeSoFar has already been determined (ie, not -1), then
+     * require these to agree.
      */
     int startShape(ConstList args,
                    FlexList optBindings,
@@ -131,9 +129,7 @@ public class QDollarHole extends QHole {
     /**
      * Do nothing.
      */
-    void endShape(FlexList optBindings,
-                  int[] prefix,
-                  int shape) {
+    void endShape(FlexList optBindings, int[] prefix, int shape) {
         // Do nothing.
     }
 
@@ -145,8 +141,7 @@ public class QDollarHole extends QHole {
     public ConstList substSlice(ConstList args, int[] index) {
         Object termoid = multiGet(args, myHoleNum, index, true);
         Astro optTerm = optCoerce(termoid, myIsFunctorHole);
-        T.require(null != optTerm,
-                  "Term ", termoid, " doesn't match ", this);
+        T.require(null != optTerm, "Term ", termoid, " doesn't match ", this);
         return ConstList.EmptyList.with(optTerm);
     }
 
@@ -168,8 +163,7 @@ public class QDollarHole extends QHole {
         Object specimen = specimenList.get(0);
         Object termoid = multiGet(args, myHoleNum, index, true);
         Astro optTerm = optCoerce(termoid, myIsFunctorHole);
-        T.require(null != optTerm,
-                  "Term ", termoid, " doesn't match ", this);
+        T.require(null != optTerm, "Term ", termoid, " doesn't match ", this);
         if (0.0 == E.asFloat64(E.call(optTerm, "op__cmp", specimen))) {
             return 1;
         } else {
@@ -181,8 +175,7 @@ public class QDollarHole extends QHole {
      *
      */
     QHole asTagged(Astro ident) {
-        T.require(null == myOptTag,
-                  "Already tagged: ", this);
+        T.require(null == myOptTag, "Already tagged: ", this);
         return new QDollarHole(myBuilder,
                                ident.getTag(),
                                myHoleNum,
@@ -208,8 +201,7 @@ public class QDollarHole extends QHole {
     /**
      *
      */
-    public void prettyPrintOn(TextWriter out)
-      throws IOException {
+    public void prettyPrintOn(TextWriter out) throws IOException {
         if (null != myOptTag) {
             out.print(myOptTag.getTagName());
         }

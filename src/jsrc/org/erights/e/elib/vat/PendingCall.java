@@ -48,9 +48,9 @@ class PendingCall extends PendingEvent {
     /**
      * Called in the thread doing the now() or callNow(). <p>
      * <p/>
-     * Blocks until myOptTodo completes in the RunnerThread, at which point
-     * the outcome of myOptTodo becomes the outcome of the runNow(), and
-     * therefore the outcome of now().
+     * Blocks until myOptTodo completes in the RunnerThread, at which point the
+     * outcome of myOptTodo becomes the outcome of the runNow(), and therefore
+     * the outcome of now().
      */
     void runNow() {
         synchronized (myLock) {

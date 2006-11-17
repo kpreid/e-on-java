@@ -3,10 +3,10 @@ package org.erights.e.elib.ref;
 // Copyright 2002 Combex, Inc. under the terms of the MIT X license
 // found at http://www.opensource.org/licenses/mit-license.html ...............
 
+import org.erights.e.elib.prim.E;
 import org.erights.e.elib.serial.PassByProxy;
 import org.erights.e.elib.util.DeadManSwitch;
 import org.erights.e.elib.util.OneArgFunc;
-import org.erights.e.elib.prim.E;
 
 /**
  * Wraps a Resolver in a way suitable for inclusion as an argument in a

@@ -15,11 +15,12 @@ public class CF_CONSTANT_Fieldref_info extends CF_cp_ref {
      * Constructor.
      *
      * @param class_index         Index into the constant pool of the
-     *                            CONSTANT_Class_info object for the class relative to
-     *                            which a field reference is being expressed.
+     *                            CONSTANT_Class_info object for the class
+     *                            relative to which a field reference is being
+     *                            expressed.
      * @param name_and_type_index Index into the constant pool of the
-     *                            CONSTANT_NameAndType_info object describing the field being
-     *                            referenced.
+     *                            CONSTANT_NameAndType_info object describing
+     *                            the field being referenced.
      */
     CF_CONSTANT_Fieldref_info(int class_index, int name_and_type_index) {
         super(class_index, name_and_type_index);
@@ -28,9 +29,9 @@ public class CF_CONSTANT_Fieldref_info extends CF_cp_ref {
     /**
      * Read and return a CONSTANT_Fieldref_info object from a DataInputStream.
      *
-     * @param in The DataInputStream to read from; this should be positioned
-     *           at the first byte after the type code byte of the constant pool entry
-     *           being read.
+     * @param in The DataInputStream to read from; this should be positioned at
+     *           the first byte after the type code byte of the constant pool
+     *           entry being read.
      */
     static CF_CONSTANT_Fieldref_info read(DataInputStream in)
       throws IOException {

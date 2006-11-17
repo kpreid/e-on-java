@@ -69,8 +69,7 @@ public class PythonCodeGenerator extends CodeGenerator {
      */
     Hashtable declaredASTVariables = new Hashtable();
 
-    /* Count of unnamed generated variables */
-    int astVarNumber = 1;
+    /* Count of unnamed generated variables */ int astVarNumber = 1;
 
     /**
      * Special value used to mark duplicate in treeVariableMap
@@ -173,7 +172,6 @@ public class PythonCodeGenerator extends CodeGenerator {
             println("from antlr import Token");
             println("### >>>The Known Token Types <<<");
 
-
             /* save current stream */
             PrintWriter cout = currentOutput;
 
@@ -255,8 +253,11 @@ public class PythonCodeGenerator extends CodeGenerator {
             // get the name of the followSet for the current rule so that we
             // can replace $FOLLOW in the .g file.
             ActionTransInfo tInfo = new ActionTransInfo();
-            String actionStr = processActionForSpecialSymbols(
-              action.actionText, action.getLine(), currentRule, tInfo);
+            String actionStr =
+              processActionForSpecialSymbols(action.actionText,
+                                             action.getLine(),
+                                             currentRule,
+                                             tInfo);
 
             if (tInfo.refRuleRoot != null) {
                 // Somebody referenced "#rule", make sure translated var is valid
@@ -273,13 +274,10 @@ public class PythonCodeGenerator extends CodeGenerator {
                 // Somebody did a "#rule=", reset internal currentAST.root
                 println("currentAST.root = " + tInfo.refRuleRoot + "");
 
-                println(
-                  "if (" + tInfo.refRuleRoot + " != None) and (" +
-                  tInfo.refRuleRoot +
-                  ".getFirstChild() != None):");
+                println("if (" + tInfo.refRuleRoot + " != None) and (" + tInfo
+                  .refRuleRoot + ".getFirstChild() != None):");
                 tabs++;
-                println(
-                  "currentAST.child = " + tInfo.refRuleRoot +
+                println("currentAST.child = " + tInfo.refRuleRoot +
                   ".getFirstChild()");
                 tabs--;
                 println("else:");
@@ -354,8 +352,8 @@ public class PythonCodeGenerator extends CodeGenerator {
         }
 
         boolean oldsaveText = saveText;
-        saveText = saveText &&
-          atom.getAutoGenType() == GrammarElement.AUTO_GEN_NONE;
+        saveText =
+          saveText && atom.getAutoGenType() == GrammarElement.AUTO_GEN_NONE;
         genMatch(atom);
         saveText = oldsaveText;
     }
@@ -381,8 +379,8 @@ public class PythonCodeGenerator extends CodeGenerator {
         if (r.getLabel() != null && syntacticPredLevel == 0) {
             println(r.getLabel() + " = " + lt1Value);
         }
-        boolean flag = (grammar instanceof LexerGrammar && (!saveText || r.getAutoGenType() ==
-          GrammarElement.AUTO_GEN_BANG));
+        boolean flag = (grammar instanceof LexerGrammar &&
+          (!saveText || r.getAutoGenType() == GrammarElement.AUTO_GEN_BANG));
         if (flag) {
             println("_saveIndex = self.text.length()");
         }
@@ -412,8 +410,8 @@ public class PythonCodeGenerator extends CodeGenerator {
         //      how the output is generated (for VAJ interface)
         setupOutput(grammar.getClassName());
 
-        genAST = false;	// no way to gen trees.
-        saveText = true;	// save consumed characters.
+        genAST = false;        // no way to gen trees.
+        saveText = true;        // save consumed characters.
 
         tabs = 0;
 
@@ -456,9 +454,8 @@ public class PythonCodeGenerator extends CodeGenerator {
         String prefix = "";
         Token tprefix = (Token)grammar.options.get("classHeaderPrefix");
         if (tprefix != null) {
-            String p = StringUtils.stripFrontBack(tprefix.getText(),
-                                                  "\"",
-                                                  "\"");
+            String p =
+              StringUtils.stripFrontBack(tprefix.getText(), "\"", "\"");
             if (p != null) {
                 prefix = p;
             }
@@ -556,8 +553,7 @@ public class PythonCodeGenerator extends CodeGenerator {
         }
 
         // Generate the bitsets used throughout the lexer
-        genBitsets(bitsetsUsed,
-                   ((LexerGrammar)grammar).charVocabulary.size());
+        genBitsets(bitsetsUsed, ((LexerGrammar)grammar).charVocabulary.size());
         println("");
 
         genHeaderMain(grammar);
@@ -685,12 +681,11 @@ public class PythonCodeGenerator extends CodeGenerator {
         // generate exit test if greedy set to false
         // and an alt is ambiguous with exit branch
         if (generateNonGreedyExitPath) {
-            println(
-              "### nongreedy (...)+ loop; exit depth is " +
-              blk.exitLookaheadDepth);
+            println("### nongreedy (...)+ loop; exit depth is " + blk
+              .exitLookaheadDepth);
 
-            String predictExit = getLookaheadTestExpression(blk.exitCache,
-                                                            nonGreedyExitDepth);
+            String predictExit =
+              getLookaheadTestExpression(blk.exitCache, nonGreedyExitDepth);
 
             println("### nongreedy exit test");
             println("if " + cnt + " >= 1 and " + predictExit + ":");
@@ -787,9 +782,8 @@ public class PythonCodeGenerator extends CodeGenerator {
         String prefix = "";
         Token tprefix = (Token)grammar.options.get("classHeaderPrefix");
         if (tprefix != null) {
-            String p = StringUtils.stripFrontBack(tprefix.getText(),
-                                                  "\"",
-                                                  "\"");
+            String p =
+              StringUtils.stripFrontBack(tprefix.getText(), "\"", "\"");
             if (p != null) {
                 prefix = p;
             }
@@ -839,7 +833,7 @@ public class PythonCodeGenerator extends CodeGenerator {
               "self.astFactory = antlr.ASTFactory(self.getTokenTypeToASTClassMap())");
             if (labeledElementASTType != null) {
                 println("self.astFactory.setASTNodeClass(" +
-                        labeledElementASTType + ")");
+                  labeledElementASTType + ")");
             }
         }
         genHeaderInit(grammar);
@@ -915,12 +909,10 @@ public class PythonCodeGenerator extends CodeGenerator {
 
         // AST value for labeled rule refs in tree walker.
         // This is not AST construction;  it is just the input tree node value.
-        if (grammar instanceof TreeWalkerGrammar && rr.getLabel() != null && syntacticPredLevel ==
-          0) {
-            println(
-              rr.getLabel() + " = antlr.ifelse(_t == antlr.ASTNULL, None, " +
-              lt1Value +
-              ")");
+        if (grammar instanceof TreeWalkerGrammar && rr.getLabel() != null &&
+          syntacticPredLevel == 0) {
+            println(rr.getLabel() +
+              " = antlr.ifelse(_t == antlr.ASTNULL, None, " + lt1Value + ")");
         }
 
         // if in lexer and ! on rule ref or alt or rule, save buffer index to kill later
@@ -943,8 +935,8 @@ public class PythonCodeGenerator extends CodeGenerator {
             _print(rr.idAssign + "=");
         } else {
             // Warn about return value if any, but not inside syntactic predicate
-            if (!(grammar instanceof LexerGrammar) && syntacticPredLevel == 0 &&
-              rs.block.returnAction != null) {
+            if (!(grammar instanceof LexerGrammar) &&
+              syntacticPredLevel == 0 && rs.block.returnAction != null) {
                 antlrTool.warning(
                   "Rule '" + rr.targetRule + "' returns a value",
                   grammar.getFilename(),
@@ -964,9 +956,9 @@ public class PythonCodeGenerator extends CodeGenerator {
 
         // if not in a syntactic predicate
         if (syntacticPredLevel == 0) {
-            boolean doNoGuessTest = (grammar.hasSyntacticPredicate && (grammar.buildAST &&
-              rr.getLabel() != null ||
-              (genAST && rr.getAutoGenType() == GrammarElement.AUTO_GEN_NONE)));
+            boolean doNoGuessTest = (grammar.hasSyntacticPredicate && (
+              grammar.buildAST && rr.getLabel() != null || (genAST &&
+                rr.getAutoGenType() == GrammarElement.AUTO_GEN_NONE)));
             if (doNoGuessTest) {
                 // println("if (inputState.guessing==0) {");
                 // tabs++;
@@ -1021,8 +1013,8 @@ public class PythonCodeGenerator extends CodeGenerator {
 
         // is there a bang on the literal?
         boolean oldsaveText = saveText;
-        saveText = saveText &&
-          atom.getAutoGenType() == GrammarElement.AUTO_GEN_NONE;
+        saveText =
+          saveText && atom.getAutoGenType() == GrammarElement.AUTO_GEN_NONE;
 
         // matching
         genMatch(atom);
@@ -1090,18 +1082,16 @@ public class PythonCodeGenerator extends CodeGenerator {
 
         // If there is a label on the root, then assign that to the variable
         if (t.root.getLabel() != null) {
-            println(
-              t.root.getLabel() +
+            println(t.root.getLabel() +
               " = antlr.ifelse(_t == antlr.ASTNULL, None, _t)");
         }
 
         // check for invalid modifiers ! and ^ on tree element roots
         if (t.root.getAutoGenType() == GrammarElement.AUTO_GEN_BANG) {
-            antlrTool.error(
-              "Suffixing a root node with '!' is not implemented",
-              grammar.getFilename(),
-              t.getLine(),
-              t.getColumn());
+            antlrTool.error("Suffixing a root node with '!' is not implemented",
+                            grammar.getFilename(),
+                            t.getLine(),
+                            t.getColumn());
             t.root.setAutoGenType(GrammarElement.AUTO_GEN_NONE);
         }
         if (t.root.getAutoGenType() == GrammarElement.AUTO_GEN_CARET) {
@@ -1213,9 +1203,8 @@ public class PythonCodeGenerator extends CodeGenerator {
         String prefix = "";
         Token tprefix = (Token)grammar.options.get("classHeaderPrefix");
         if (tprefix != null) {
-            String p = StringUtils.stripFrontBack(tprefix.getText(),
-                                                  "\"",
-                                                  "\"");
+            String p =
+              StringUtils.stripFrontBack(tprefix.getText(), "\"", "\"");
             if (p != null) {
                 prefix = p;
             }
@@ -1287,14 +1276,12 @@ public class PythonCodeGenerator extends CodeGenerator {
             println("raise MismatchedTokenException()");
             tabs--;
         } else if (grammar instanceof LexerGrammar) {
-            if (grammar instanceof LexerGrammar &&
-              (!saveText ||
+            if (grammar instanceof LexerGrammar && (!saveText ||
               wc.getAutoGenType() == GrammarElement.AUTO_GEN_BANG)) {
                 println("_saveIndex = self.text.length()");
             }
             println("self.matchNot(antlr.EOF_CHAR)");
-            if (grammar instanceof LexerGrammar &&
-              (!saveText ||
+            if (grammar instanceof LexerGrammar && (!saveText ||
               wc.getAutoGenType() == GrammarElement.AUTO_GEN_BANG)) {
                 println("self.text.setLength(_saveIndex)"); // kill text atom put in buffer
             }
@@ -1357,11 +1344,12 @@ public class PythonCodeGenerator extends CodeGenerator {
         }
         if (generateNonGreedyExitPath) {
             if (DEBUG_CODE_GENERATOR) {
-                System.out.println("nongreedy (...)* loop; exit depth is " +
-                                   blk.exitLookaheadDepth);
+                System.out
+                  .println("nongreedy (...)* loop; exit depth is " + blk
+                    .exitLookaheadDepth);
             }
-            String predictExit = getLookaheadTestExpression(blk.exitCache,
-                                                            nonGreedyExitDepth);
+            String predictExit =
+              getLookaheadTestExpression(blk.exitCache, nonGreedyExitDepth);
             println("###  nongreedy exit test");
             println("if (" + predictExit + "):");
             tabs++;
@@ -1509,7 +1497,8 @@ public class PythonCodeGenerator extends CodeGenerator {
 
                 // scan to find end of run
                 int j;
-                for (j = i + 1; j < elems.length && elems[j] == elems[i]; j++) {
+                for (j = i + 1; j < elems.length && elems[j] == elems[i]; j++)
+                {
                 }
 
                 long e = elems[i];
@@ -1526,8 +1515,7 @@ public class PythonCodeGenerator extends CodeGenerator {
         tabs--;
 
         // BitSet object
-        println(
-          getBitsetName(id) + " = antlr.BitSet(mk" + getBitsetName(id) +
+        println(getBitsetName(id) + " = antlr.BitSet(mk" + getBitsetName(id) +
           "())");
 
         // restore tabs
@@ -1583,11 +1571,10 @@ public class PythonCodeGenerator extends CodeGenerator {
     protected void genBlockInitAction(AlternativeBlock blk) {
         // dump out init action
         if (blk.initAction != null) {
-            printAction(
-              processActionForSpecialSymbols(blk.initAction,
-                                             blk.getLine(),
-                                             currentRule,
-                                             null));
+            printAction(processActionForSpecialSymbols(blk.initAction,
+                                                       blk.getLine(),
+                                                       currentRule,
+                                                       null));
         }
     }
 
@@ -1604,17 +1591,18 @@ public class PythonCodeGenerator extends CodeGenerator {
             RuleBlock rblk = (RuleBlock)blk;
             if (rblk.labeledElements != null) {
                 for (int i = 0; i < rblk.labeledElements.size(); i++) {
-                    AlternativeElement a = (AlternativeElement)rblk.labeledElements.elementAt(
-                      i);
+                    AlternativeElement a =
+                      (AlternativeElement)rblk.labeledElements.elementAt(i);
                     // System.out.println("looking at labeled element: "+a);
                     // Variables for labeled rule refs and
                     // subrules are different than variables for
                     // grammar atoms.  This test is a little tricky
                     // because we want to get all rule refs and ebnf,
                     // but not rule blocks or syntactic predicates
-                    if (a instanceof RuleRefElement || a instanceof AlternativeBlock &&
-                      !(a instanceof RuleBlock) &&
-                      !(a instanceof SynPredBlock)) {
+                    if (a instanceof RuleRefElement ||
+                      a instanceof AlternativeBlock &&
+                        !(a instanceof RuleBlock) &&
+                        !(a instanceof SynPredBlock)) {
 
                         if (!(a instanceof RuleRefElement) &&
                           ((AlternativeBlock)a).not &&
@@ -1721,7 +1709,8 @@ public class PythonCodeGenerator extends CodeGenerator {
         boolean createdLL1Switch = false;
         int closingBracesOfIFSequence = 0;
 
-        PythonBlockFinishingInfo finishingInfo = new PythonBlockFinishingInfo();
+        PythonBlockFinishingInfo finishingInfo =
+          new PythonBlockFinishingInfo();
 
         // Save the AST generation state, and set it to that of the block
         boolean savegenAST = genAST;
@@ -1731,8 +1720,8 @@ public class PythonCodeGenerator extends CodeGenerator {
         saveText = saveText && blk.getAutoGen();
 
         // Is this block inverted?  If so, generate special-case code
-        if (blk.not &&
-          analyzer.subruleCanBeInverted(blk, grammar instanceof LexerGrammar)) {
+        if (blk.not && analyzer.subruleCanBeInverted(blk,
+                                                     grammar instanceof LexerGrammar)) {
             if (DEBUG_CODE_GENERATOR) {
                 System.out.println("special case: ~(subrule)");
             }
@@ -1751,10 +1740,8 @@ public class PythonCodeGenerator extends CodeGenerator {
             }
 
             // match the bitset for the alternative
-            println(
-              "self.match(" + astArgs +
-              getBitsetName(markBitsetForGen(p.fset)) +
-              ")");
+            println("self.match(" + astArgs +
+              getBitsetName(markBitsetForGen(p.fset)) + ")");
 
             // tack on tree cursor motion if doing a tree walker
             if (grammar instanceof TreeWalkerGrammar) {
@@ -1762,7 +1749,6 @@ public class PythonCodeGenerator extends CodeGenerator {
             }
             return finishingInfo;
         }
-
 
         // Special handling for single alt
         if (blk.getAlternatives().size() == 1) {
@@ -1876,8 +1862,8 @@ public class PythonCodeGenerator extends CodeGenerator {
                 // and that are not giant unicode sets.
                 if (createdLL1Switch && suitableForCaseExpression(alt)) {
                     if (DEBUG_CODE_GENERATOR) {
-                        System.out.println(
-                          "ignoring alt because it was in the switch");
+                        System.out
+                          .println("ignoring alt because it was in the switch");
                     }
                     continue;
                 }
@@ -1902,11 +1888,10 @@ public class PythonCodeGenerator extends CodeGenerator {
                     // the ones we are generating for this iteration.
                     if (effectiveDepth != altDepth) {
                         if (DEBUG_CODE_GENERATOR) {
-                            System.out.println(
-                              "ignoring alt because effectiveDepth!=altDepth" +
-                              effectiveDepth +
-                              "!=" +
-                              altDepth);
+                            System.out
+                              .println(
+                                "ignoring alt because effectiveDepth!=altDepth" +
+                                  effectiveDepth + "!=" + altDepth);
                         }
                         continue;
                     }
@@ -1929,8 +1914,8 @@ public class PythonCodeGenerator extends CodeGenerator {
                         println("<m2> elif " + e + ":");
                     }
                 } else {
-                    if (unpredicted && alt.semPred == null && alt.synPred ==
-                      null) {
+                    if (unpredicted && alt.semPred == null &&
+                      alt.synPred == null) {
                         // The alt has empty prediction set and no
                         // predicate to help out.  if we have not
                         // generated a previous if, just put {...} around
@@ -1955,20 +1940,20 @@ public class PythonCodeGenerator extends CodeGenerator {
                             // references
                             ActionTransInfo tInfo = new ActionTransInfo();
                             String actionStr = processActionForSpecialSymbols(
-                              alt.semPred, blk.line, currentRule, tInfo);
+                              alt.semPred,
+                              blk.line,
+                              currentRule,
+                              tInfo);
                             // ignore translation info...we don't need to
                             // do anything with it.  call that will inform
                             // SemanticPredicateListeners of the result
                             if (((grammar instanceof ParserGrammar) ||
-                              (grammar instanceof LexerGrammar)) &&
-                              grammar.debuggingOutput) {
+                              (grammar instanceof LexerGrammar)) && grammar
+                              .debuggingOutput) {
                                 e = "(" + e +
                                   " and fireSemanticPredicateEvaluated(antlr.debug.SemanticPredicateEvent.PREDICTING, " +
-                                  addSemPred(
-                                    charFormatter.escapeString(actionStr)) +
-                                  ", " +
-                                  actionStr +
-                                  "))";
+                                  addSemPred(charFormatter.escapeString(
+                                    actionStr)) + ", " + actionStr + "))";
                             } else {
                                 e = "(" + e + " and (" + actionStr + "))";
                             }
@@ -2004,7 +1989,8 @@ public class PythonCodeGenerator extends CodeGenerator {
 
                 nIF++;
                 tabs++;
-                genAlt(alt, blk); // this should have generated something. If not
+                genAlt(alt,
+                       blk); // this should have generated something. If not
                 // we could end up in an empty else:
                 tabs--;
             }
@@ -2035,7 +2021,8 @@ public class PythonCodeGenerator extends CodeGenerator {
     }
 
     private static boolean suitableForCaseExpression(Alternative a) {
-        return a.lookaheadDepth == 1 && a.semPred == null && !a.cache[1].containsEpsilon() &&
+        return a.lookaheadDepth == 1 && a.semPred == null &&
+          !a.cache[1].containsEpsilon() &&
           a.cache[1].fset.degree() <= caseSizeThreshold;
     }
 
@@ -2076,8 +2063,8 @@ public class PythonCodeGenerator extends CodeGenerator {
                 needASTDecl = true;
             }
 
-            boolean doNoGuessTest = (grammar.hasSyntacticPredicate &&
-              needASTDecl);
+            boolean doNoGuessTest =
+              (grammar.hasSyntacticPredicate && needASTDecl);
 
             String elementRef;
             String astNameBase;
@@ -2133,10 +2120,8 @@ public class PythonCodeGenerator extends CodeGenerator {
             // so we must initialize the RefAST
             if (el.getLabel() != null) {
                 if (el instanceof GrammarAtom) {
-                    println(
-                      astName + " = " +
-                      getASTCreateString((GrammarAtom)el, elementRef) +
-                      "");
+                    println(astName + " = " +
+                      getASTCreateString((GrammarAtom)el, elementRef) + "");
                 } else {
                     println(
                       astName + " = " + getASTCreateString(elementRef) + "");
@@ -2147,10 +2132,8 @@ public class PythonCodeGenerator extends CodeGenerator {
             if (el.getLabel() == null && needASTDecl) {
                 elementRef = lt1Value;
                 if (el instanceof GrammarAtom) {
-                    println(
-                      astName + " = " +
-                      getASTCreateString((GrammarAtom)el, elementRef) +
-                      "");
+                    println(astName + " = " +
+                      getASTCreateString((GrammarAtom)el, elementRef) + "");
                 } else {
                     println(
                       astName + " = " + getASTCreateString(elementRef) + "");
@@ -2209,8 +2192,8 @@ public class PythonCodeGenerator extends CodeGenerator {
     private void genErrorHandler(ExceptionSpec ex) {
         // Each ExceptionHandler in the ExceptionSpec is a separate catch
         for (int i = 0; i < ex.handlers.size(); i++) {
-            ExceptionHandler handler = (ExceptionHandler)ex.handlers.elementAt(
-              i);
+            ExceptionHandler handler =
+              (ExceptionHandler)ex.handlers.elementAt(i);
             // Generate catch phrase
             println("except " + handler.exceptionTypeAndName.getText() + ":");
             tabs++;
@@ -2221,19 +2204,18 @@ public class PythonCodeGenerator extends CodeGenerator {
 
             // When not guessing, execute user handler action
             ActionTransInfo tInfo = new ActionTransInfo();
-            printAction(processActionForSpecialSymbols(
-              handler.action.getText(),
-              handler.action.getLine(),
-              currentRule,
-              tInfo));
+            printAction(processActionForSpecialSymbols(handler.action.getText(),
+                                                       handler.action.getLine(),
+                                                       currentRule,
+                                                       tInfo));
 
             if (grammar.hasSyntacticPredicate) {
                 tabs--;
                 println("else:");
                 tabs++;
                 // When guessing, rethrow exception
-                println("raise " +
-                        extractIdOfAction(handler.exceptionTypeAndName));
+                println(
+                  "raise " + extractIdOfAction(handler.exceptionTypeAndName));
                 tabs--;
             }
             // Close catch phrase
@@ -2291,9 +2273,9 @@ public class PythonCodeGenerator extends CodeGenerator {
      * Generate a header that is common to all Python files
      */
     protected void genHeader() {
-        println("### $ANTLR " + Tool.version + ": " + "\"" + antlrTool.fileMinusPath(
-          antlrTool.grammarFile) + "\"" +
-                " -> " + "\"" + grammar.getClassName() + ".py\"$");
+        println("### $ANTLR " + Tool.version + ": " + "\"" +
+          antlrTool.fileMinusPath(antlrTool.grammarFile) + "\"" + " -> " +
+          "\"" + grammar.getClassName() + ".py\"$");
     }
 
     /** Generate an iterator method for the Python CharScanner (sub)classes. */
@@ -2373,8 +2355,8 @@ public class PythonCodeGenerator extends CodeGenerator {
         }
 
         // if in lexer and ! on element, save buffer index to kill later
-        if (grammar instanceof LexerGrammar &&
-          (!saveText || atom.getAutoGenType() == GrammarElement.AUTO_GEN_BANG)) {
+        if (grammar instanceof LexerGrammar && (!saveText ||
+          atom.getAutoGenType() == GrammarElement.AUTO_GEN_BANG)) {
             println("_saveIndex = self.text.length()");
         }
 
@@ -2391,9 +2373,9 @@ public class PythonCodeGenerator extends CodeGenerator {
         }
         _println(")");
 
-        if (grammar instanceof LexerGrammar &&
-          (!saveText || atom.getAutoGenType() == GrammarElement.AUTO_GEN_BANG)) {
-            println("self.text.setLength(_saveIndex)");		// kill text atom put in buffer
+        if (grammar instanceof LexerGrammar && (!saveText ||
+          atom.getAutoGenType() == GrammarElement.AUTO_GEN_BANG)) {
+            println("self.text.setLength(_saveIndex)");                // kill text atom put in buffer
         }
     }
 
@@ -2449,9 +2431,8 @@ public class PythonCodeGenerator extends CodeGenerator {
         }
 
         // Create the synthesized nextToken() rule
-        RuleBlock nextTokenBlk = MakeGrammar.createNextTokenRule(grammar,
-                                                                 grammar.rules,
-                                                                 "nextToken");
+        RuleBlock nextTokenBlk =
+          MakeGrammar.createNextTokenRule(grammar, grammar.rules, "nextToken");
 
         // Define the nextToken rule symbol
         RuleSymbol nextTokenRs = new RuleSymbol("mnextToken");
@@ -2484,21 +2465,23 @@ public class PythonCodeGenerator extends CodeGenerator {
             println("self.setCommitToPath(False)");
             if (filterRule != null) {
                 // Here's a good place to ensure that the filter rule actually exists
-                if (!grammar.isDefined(
-                  CodeGenerator.encodeLexerRuleName(filterRule))) {
-                    grammar.antlrTool.error(
-                      "Filter rule " + filterRule +
-                      " does not exist in this lexer");
+                if (!grammar.isDefined(CodeGenerator.encodeLexerRuleName(
+                  filterRule))) {
+                    grammar.antlrTool
+                      .error("Filter rule " + filterRule +
+                        " does not exist in this lexer");
                 } else {
-                    RuleSymbol rs = (RuleSymbol)grammar.getSymbol(
-                      CodeGenerator.encodeLexerRuleName(filterRule));
+                    RuleSymbol rs =
+                      (RuleSymbol)grammar.getSymbol(CodeGenerator.encodeLexerRuleName(
+                        filterRule));
                     if (!rs.isDefined()) {
-                        grammar.antlrTool.error(
-                          "Filter rule " + filterRule +
-                          " does not exist in this lexer");
+                        grammar.antlrTool
+                          .error("Filter rule " + filterRule +
+                            " does not exist in this lexer");
                     } else if (rs.access.equals("public")) {
-                        grammar.antlrTool.error(
-                          "Filter rule " + filterRule + " must be protected");
+                        grammar.antlrTool
+                          .error("Filter rule " + filterRule +
+                            " must be protected");
                     }
                 }
                 println("_m = self.mark()");
@@ -2515,7 +2498,6 @@ public class PythonCodeGenerator extends CodeGenerator {
         tabs++;
         _tabs_ = tabs; // inner try
 
-
         // Test for public lexical rules with empty paths
         for (int i = 0; i < nextTokenBlk.getAlternatives().size(); i++) {
             Alternative a = nextTokenBlk.getAlternativeAt(i);
@@ -2523,8 +2505,7 @@ public class PythonCodeGenerator extends CodeGenerator {
                 //String r = a.head.toString();
                 RuleRefElement rr = (RuleRefElement)a.head;
                 String r = CodeGenerator.decodeLexerRuleName(rr.targetRule);
-                antlrTool.warning(
-                  "public lexical rule " + r +
+                antlrTool.warning("public lexical rule " + r +
                   " is optional (can match \"nothing\")");
             }
         }
@@ -2533,8 +2514,8 @@ public class PythonCodeGenerator extends CodeGenerator {
         String newline = System.getProperty("line.separator");
 
         /* generate the common block */
-        PythonBlockFinishingInfo howToFinish = genCommonBlock(nextTokenBlk,
-                                                              false);
+        PythonBlockFinishingInfo howToFinish =
+          genCommonBlock(nextTokenBlk, false);
 
         /* how to finish the block */
         String errFinish = "";
@@ -2550,8 +2531,7 @@ public class PythonCodeGenerator extends CodeGenerator {
                 errFinish += "self.filterdefault(self.LA(1))";
             } else {
                 errFinish += "self.filterdefault(self.LA(1), self.m" +
-                  filterRule +
-                  ", False)";
+                  filterRule + ", False)";
             }
         } else {
             /* non filter */
@@ -2562,7 +2542,6 @@ public class PythonCodeGenerator extends CodeGenerator {
 
             errFinish = "self.default(self.LA(1))";
         }
-
 
         /* finish the block */
         genBlockFinish1(howToFinish, errFinish);
@@ -2724,7 +2703,6 @@ public class PythonCodeGenerator extends CodeGenerator {
             _print(",");
         }
 
-
         // Gen arguments
         if (rblk.argAction != null) {
             // Has specified arguments
@@ -2772,7 +2750,7 @@ public class PythonCodeGenerator extends CodeGenerator {
             } else {
                 println("_ttype = " + s.getId().substring(1));
             }
-            println("_saveIndex = 0");		// used for element! (so we can kill text matched for element)
+            println("_saveIndex = 0");                // used for element! (so we can kill text matched for element)
         }
 
         // if debugging, write code to mark entry to the rule
@@ -2839,8 +2817,7 @@ public class PythonCodeGenerator extends CodeGenerator {
             // Multiple alternatives -- generate complex form
             boolean ok = grammar.theLLkAnalyzer.deterministic(rblk);
 
-            PythonBlockFinishingInfo howToFinish = genCommonBlock(rblk,
-                                                                  false);
+            PythonBlockFinishingInfo howToFinish = genCommonBlock(rblk, false);
             genBlockFinish(howToFinish, throwNoViable);
         }
         tabs = _tabs_;
@@ -2867,10 +2844,10 @@ public class PythonCodeGenerator extends CodeGenerator {
             println("self.reportError(ex)");
             if (!(grammar instanceof TreeWalkerGrammar)) {
                 // Generate code to consume until token in k==1 follow set
-                Lookahead follow = grammar.theLLkAnalyzer.FOLLOW(1,
-                                                                 rblk.endNode);
-                String followSetName = getBitsetName(
-                  markBitsetForGen(follow.fset));
+                Lookahead follow =
+                  grammar.theLLkAnalyzer.FOLLOW(1, rblk.endNode);
+                String followSetName =
+                  getBitsetName(markBitsetForGen(follow.fset));
                 println("self.consume()");
                 println("self.consumeUntil(" + followSetName + ")");
             } else {
@@ -2992,15 +2969,12 @@ public class PythonCodeGenerator extends CodeGenerator {
         if (rr.args != null) {
             // When not guessing, execute user arg action
             ActionTransInfo tInfo = new ActionTransInfo();
-            String args = processActionForSpecialSymbols(rr.args,
-                                                         0,
-                                                         currentRule,
-                                                         tInfo);
+            String args =
+              processActionForSpecialSymbols(rr.args, 0, currentRule, tInfo);
             if (tInfo.assignToRoot || tInfo.refRuleRoot != null) {
-                antlrTool.error("Arguments of rule reference '" +
-                                rr.targetRule +
-                                "' cannot set or ref #" +
-                                currentRule.getRuleName(),
+                antlrTool.error("Arguments of rule reference '" + rr
+                  .targetRule + "' cannot set or ref #" +
+                  currentRule.getRuleName(),
                                 grammar.getFilename(),
                                 rr.getLine(),
                                 rr.getColumn());
@@ -3046,8 +3020,9 @@ public class PythonCodeGenerator extends CodeGenerator {
         // that can tell SemanticPredicateListeners the result
         if (grammar.debuggingOutput && ((grammar instanceof ParserGrammar) ||
           (grammar instanceof LexerGrammar))) {
-            pred = "fireSemanticPredicateEvaluated(antlr.debug.SemanticPredicateEvent.VALIDATING," +
-              addSemPred(escapedPred) + ", " + pred + ")";
+            pred =
+              "fireSemanticPredicateEvaluated(antlr.debug.SemanticPredicateEvent.VALIDATING," +
+                addSemPred(escapedPred) + ", " + pred + ")";
         }
 
         /* always .. */
@@ -3103,7 +3078,7 @@ public class PythonCodeGenerator extends CodeGenerator {
         syntacticPredLevel++;
         println("try:");
         tabs++;
-        gen((AlternativeBlock)blk);		// gen code to test predicate
+        gen((AlternativeBlock)blk);                // gen code to test predicate
         tabs--;
         println("except " + exceptionThrown + ", pe:");
         tabs++;
@@ -3168,13 +3143,12 @@ public class PythonCodeGenerator extends CodeGenerator {
                 s = "<" + String.valueOf(i) + ">";
             }
             if (!s.startsWith("\"") && !s.startsWith("<")) {
-                TokenSymbol ts = (TokenSymbol)grammar.tokenManager.getTokenSymbol(
-                  s);
+                TokenSymbol ts =
+                  (TokenSymbol)grammar.tokenManager.getTokenSymbol(s);
                 if (ts != null && ts.getParaphrase() != null) {
-                    s =
-                      StringUtils.stripFrontBack(ts.getParaphrase(),
-                                                 "\"",
-                                                 "\"");
+                    s = StringUtils.stripFrontBack(ts.getParaphrase(),
+                                                   "\"",
+                                                   "\"");
                 }
             }
             print(charFormatter.literalString(s));
@@ -3216,7 +3190,7 @@ public class PythonCodeGenerator extends CodeGenerator {
                         generatedNewHashtable = true;
                     }
                     println("self.tokenTypeToASTClassMap[" +
-                            ts.getTokenType() + "] = " + ts.getASTNodeType());
+                      ts.getTokenType() + "] = " + ts.getASTNodeType());
                 }
             }
         }
@@ -3260,8 +3234,8 @@ public class PythonCodeGenerator extends CodeGenerator {
             if (s != null) {
                 if (s.startsWith("\"")) {
                     // a string literal
-                    StringLiteralSymbol sl = (StringLiteralSymbol)tm.getTokenSymbol(
-                      s);
+                    StringLiteralSymbol sl =
+                      (StringLiteralSymbol)tm.getTokenSymbol(s);
                     if (sl == null) {
                         antlrTool.panic(
                           "String literal " + s + " not in symbol table");
@@ -3324,8 +3298,7 @@ public class PythonCodeGenerator extends CodeGenerator {
         if (atom != null && atom.getASTNodeType() != null) {
             // they specified a type either on the reference or in tokens{} section
             return "self.astFactory.create(" + astCtorArgs + ", " +
-              atom.getASTNodeType() +
-              ")";
+              atom.getASTNodeType() + ")";
         } else {
             // must be an action or something since not referencing an atom
             return getASTCreateString(astCtorArgs);
@@ -3368,10 +3341,7 @@ public class PythonCodeGenerator extends CodeGenerator {
                 }
                 if (astNodeType != null) {
                     return "self.astFactory.create(" + astCtorArgs +
-                      emptyText +
-                      ", " +
-                      astNodeType +
-                      ")";
+                      emptyText + ", " + astNodeType + ")";
                 }
                 // fall through and just do a regular create with cast on front
                 // if necessary (it differs from default "AST").
@@ -3498,10 +3468,9 @@ public class PythonCodeGenerator extends CodeGenerator {
         }
         int begin = elems[0];
         int end = elems[elems.length - 1];
-        return "(" + lookaheadString(k) + " >= " + getValueString(begin,
-                                                                  true) +
-          " and " +
-          lookaheadString(k) + " <= " + getValueString(end, true) + ")";
+        return "(" + lookaheadString(k) + " >= " +
+          getValueString(begin, true) + " and " + lookaheadString(k) + " <= " +
+          getValueString(end, true) + ")";
     }
 
     /**
@@ -3618,8 +3587,8 @@ public class PythonCodeGenerator extends CodeGenerator {
                 in_var = true;
             }
             // If the id ends with "_in", then map it to the input variable
-            else if (id.length() > 3 &&
-              id.lastIndexOf("_in") == id.length() - 3) {
+            else
+            if (id.length() > 3 && id.lastIndexOf("_in") == id.length() - 3) {
                 // Strip off the "_in"
                 id = id.substring(0, id.length() - 3);
                 in_var = true;
@@ -3629,8 +3598,8 @@ public class PythonCodeGenerator extends CodeGenerator {
         // Check the rule labels.  If id is a label, then the output
         // variable is label_AST, and the input variable is plain label.
         for (int i = 0; i < currentRule.labeledElements.size(); i++) {
-            AlternativeElement elt = (AlternativeElement)currentRule.labeledElements.elementAt(
-              i);
+            AlternativeElement elt =
+              (AlternativeElement)currentRule.labeledElements.elementAt(i);
             if (elt.getLabel().equals(id)) {
                 return in_var ? id : id + "_AST";
             }
@@ -3644,14 +3613,14 @@ public class PythonCodeGenerator extends CodeGenerator {
             if (s == NONUNIQUE) {
                 // There is more than one element with this id
                 antlrTool.error("Ambiguous reference to AST element " + id +
-                                " in rule " + currentRule.getRuleName());
+                  " in rule " + currentRule.getRuleName());
 
                 return null;
             } else if (s.equals(currentRule.getRuleName())) {
                 // a recursive call to the enclosing rule is
                 // ambiguous with the rule itself.
                 antlrTool.error("Ambiguous reference to AST element " + id +
-                                " in rule " + currentRule.getRuleName());
+                  " in rule " + currentRule.getRuleName());
                 return null;
             } else {
                 return in_var ? s + "_in" : s;
@@ -3735,8 +3704,11 @@ public class PythonCodeGenerator extends CodeGenerator {
         }
 
         // Create a lexer to read an action and return the translated version
-        antlr.actions.python.ActionLexer lexer = new antlr.actions.python.ActionLexer(
-          actionStr, currentRule, this, tInfo);
+        antlr.actions.python.ActionLexer lexer =
+          new antlr.actions.python.ActionLexer(actionStr,
+                                               currentRule,
+                                               this,
+                                               tInfo);
 
         lexer.setLineOffset(line);
         lexer.setFilename(grammar.getFilename());
@@ -3763,18 +3735,16 @@ public class PythonCodeGenerator extends CodeGenerator {
         for (int i = 0; ws && i < s.length(); ++i) {
             c = s.charAt(i);
             switch (c) {
-            case '\n':
-            case '\r':
-            case ' ':
-            case '\t':
-            case '\f':
-                {
-                    break;
-                }
-            default:
-                {
-                    ws = false;
-                }
+            case'\n':
+            case'\r':
+            case' ':
+            case'\t':
+            case'\f': {
+                break;
+            }
+            default: {
+                ws = false;
+            }
             }
         }
         return ws;
@@ -3786,8 +3756,11 @@ public class PythonCodeGenerator extends CodeGenerator {
             return "";
         }
 
-        antlr.actions.python.CodeLexer lexer = new antlr.actions.python.CodeLexer(
-          actionStr, grammar.getFilename(), line, antlrTool);
+        antlr.actions.python.CodeLexer lexer =
+          new antlr.actions.python.CodeLexer(actionStr,
+                                             grammar.getFilename(),
+                                             line,
+                                             antlrTool);
 
         try {
             lexer.mACTION(true);
@@ -3813,8 +3786,10 @@ public class PythonCodeGenerator extends CodeGenerator {
             if (g.hasOption("ASTLabelType")) {
                 Token tsuffix = g.getOption("ASTLabelType");
                 if (tsuffix != null) {
-                    String suffix = StringUtils.stripFrontBack(
-                      tsuffix.getText(), "\"", "\"");
+                    String suffix =
+                      StringUtils.stripFrontBack(tsuffix.getText(),
+                                                 "\"",
+                                                 "\"");
                     if (suffix != null) {
                         labeledElementASTType = suffix;
                     }
@@ -3833,8 +3808,8 @@ public class PythonCodeGenerator extends CodeGenerator {
             if (g.hasOption("className")) {
                 Token tcname = g.getOption("className");
                 if (tcname != null) {
-                    String cname = StringUtils.stripFrontBack(
-                      tcname.getText(), "\"", "\"");
+                    String cname =
+                      StringUtils.stripFrontBack(tcname.getText(), "\"", "\"");
                     if (cname != null) {
                         parserClassName = cname;
                     }
@@ -3857,8 +3832,8 @@ public class PythonCodeGenerator extends CodeGenerator {
             if (g.hasOption("className")) {
                 Token tcname = g.getOption("className");
                 if (tcname != null) {
-                    String cname = StringUtils.stripFrontBack(
-                      tcname.getText(), "\"", "\"");
+                    String cname =
+                      StringUtils.stripFrontBack(tcname.getText(), "\"", "\"");
                     if (cname != null) {
                         lexerClassName = cname;
                     }
@@ -3873,8 +3848,10 @@ public class PythonCodeGenerator extends CodeGenerator {
             if (g.hasOption("ASTLabelType")) {
                 Token tsuffix = g.getOption("ASTLabelType");
                 if (tsuffix != null) {
-                    String suffix = StringUtils.stripFrontBack(
-                      tsuffix.getText(), "\"", "\"");
+                    String suffix =
+                      StringUtils.stripFrontBack(tsuffix.getText(),
+                                                 "\"",
+                                                 "\"");
                     if (suffix != null) {
                         labeledElementASTType = suffix;
                         labeledElementType = suffix;
@@ -3897,8 +3874,8 @@ public class PythonCodeGenerator extends CodeGenerator {
             if (g.hasOption("className")) {
                 Token tcname = g.getOption("className");
                 if (tcname != null) {
-                    String cname = StringUtils.stripFrontBack(
-                      tcname.getText(), "\"", "\"");
+                    String cname =
+                      StringUtils.stripFrontBack(tcname.getText(), "\"", "\"");
                     if (cname != null) {
                         treeWalkerClassName = cname;
                     }
@@ -3923,10 +3900,10 @@ public class PythonCodeGenerator extends CodeGenerator {
     protected boolean isspace(char c) {
         boolean r = true;
         switch (c) {
-        case '\n':
-        case '\r':
-        case ' ':
-        case '\t':
+        case'\n':
+        case'\r':
+        case' ':
+        case'\t':
             break;
         default:
             r = false;
@@ -3960,18 +3937,18 @@ public class PythonCodeGenerator extends CodeGenerator {
         while (start < end && ws) {
             c = s.charAt(start++);
             switch (c) {
-            case '\n':
+            case'\n':
                 offset = start;
                 break;
-            case '\r':
+            case'\r':
                 if ((start) <= end && s.charAt(start) == '\n') {
                     start++;
                 }
                 offset = start;
                 break;
-            case ' ':
+            case' ':
                 break;
-            case '\t':
+            case'\t':
             default:
                 ws = false;
                 break;
@@ -3994,21 +3971,21 @@ public class PythonCodeGenerator extends CodeGenerator {
         for (int i = start; i <= end; ++i) {
             c = s.charAt(i);
             switch (c) {
-            case '\n':
+            case'\n':
                 newline = true;
                 break;
-            case '\r':
+            case'\r':
                 newline = true;
                 if ((i + 1) <= end && s.charAt(i + 1) == '\n') {
                     i++;
                 }
                 break;
-            case '\t':
-                System.err.println(
-                  "warning: tab characters used in Python action");
+            case'\t':
+                System.err
+                  .println("warning: tab characters used in Python action");
                 currentOutput.print("        ");
                 break;
-            case ' ':
+            case' ':
                 currentOutput.print(" ");
                 break;
             default:
@@ -4029,10 +4006,10 @@ public class PythonCodeGenerator extends CodeGenerator {
                         break;
                     }
                     switch (c) {
-                    case '\n':
+                    case'\n':
                         newline = true;
                         break;
-                    case '\r':
+                    case'\r':
                         if ((i + 1) <= end && s.charAt(i + 1) == '\n') {
                             i++;
                         }
@@ -4068,13 +4045,13 @@ public class PythonCodeGenerator extends CodeGenerator {
         for (int j = i; j <= end; ++j) {
             c = s.charAt(j);
             switch (c) {
-            case '\n':
+            case'\n':
                 System.out.print(" nl ");
                 break;
-            case '\t':
+            case'\t':
                 System.out.print(" ht ");
                 break;
-            case ' ':
+            case' ':
                 System.out.print(" sp ");
                 break;
             default:
@@ -4093,11 +4070,10 @@ public class PythonCodeGenerator extends CodeGenerator {
 
     protected void printGrammarAction(Grammar grammar) {
         println("### user action >>>");
-        printAction(processActionForSpecialSymbols(
-          grammar.classMemberAction.getText(),
-          grammar.classMemberAction.getLine(),
-          currentRule,
-          null));
+        printAction(processActionForSpecialSymbols(grammar.classMemberAction.getText(),
+                                                   grammar.classMemberAction.getLine(),
+                                                   currentRule,
+                                                   null));
         println("### user action <<<");
     }
 
@@ -4114,19 +4090,19 @@ public class PythonCodeGenerator extends CodeGenerator {
         for (int i = start; i < end; ++i) {
             c = s.charAt(i);
             switch (c) {
-            case '\n':
+            case'\n':
                 newline = true;
                 break;
-            case '\r':
+            case'\r':
                 newline = true;
                 if ((i + 1) <= end && s.charAt(i + 1) == '\n') {
                     i++;
                 }
                 break;
-            case '\t':
+            case'\t':
                 currentOutput.print("\t");
                 break;
-            case ' ':
+            case' ':
                 currentOutput.print(" ");
                 break;
             default:

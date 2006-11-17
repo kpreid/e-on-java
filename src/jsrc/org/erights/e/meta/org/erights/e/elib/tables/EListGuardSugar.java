@@ -11,8 +11,8 @@ import org.erights.e.elib.tables.Twine;
 import org.erights.e.elib.util.OneArgFunc;
 
 /**
- * Refines the 'coerce/2' behavior of the EList type, so that it may be
- * useful as a Guard.
+ * Refines the 'coerce/2' behavior of the EList type, so that it may be useful
+ * as a Guard.
  *
  * @author Mark S. Miller
  */
@@ -24,7 +24,8 @@ public class EListGuardSugar extends ClassDesc {
     public EListGuardSugar(Class clazz) {
         super(clazz);
         T.require(EList.class.isAssignableFrom(clazz),
-                  clazz, " must be a kind of EList");
+                  clazz,
+                  " must be a kind of EList");
     }
 
     /**

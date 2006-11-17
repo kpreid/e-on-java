@@ -17,9 +17,9 @@ package test.foo;
  * 1 error
  * </pre>
  * This is wrong, because the abstract zip() from {@link Class1} is defined
- * here in Class2. But perhaps because it is package (ie default) scope,
- * and Class3 is in a different package, the compiler misses this when
- * Class2 is abstract.
+ * here in Class2. But perhaps because it is package (ie default) scope, and
+ * Class3 is in a different package, the compiler misses this when Class2 is
+ * abstract.
  *
  * @author Mark S. Miller
  */

@@ -9,7 +9,8 @@ import java.security.KeyFactory;
 
 
 /**
- * XXX Should be made virtually Selfless and implement getSpreadUncall instead.
+ * XXX Should be made virtually Selfless and implement getSpreadUncall
+ * instead.
  *
  * @author Mark S. Miller
  */

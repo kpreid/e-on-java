@@ -27,8 +27,8 @@ import org.erights.e.elib.serial.PassByProxy;
  * An object to hold onto a remote reference so it will be held onto until we
  * grab the next "vine".
  * <p/>
- * When you're swinging through the jungle, it's important to grab the new
- * vine before you let go of the old one. Part of the 3-party live introduction
+ * When you're swinging through the jungle, it's important to grab the new vine
+ * before you let go of the old one. Part of the 3-party live introduction
  * mechanism.
  */
 public class Vine implements PassByProxy, Runnable {

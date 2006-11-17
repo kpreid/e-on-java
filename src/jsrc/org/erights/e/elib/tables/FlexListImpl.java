@@ -85,9 +85,8 @@ class FlexListImpl extends FlexList implements ArrayedList {
      */
     public Object get(int index) throws IndexOutOfBoundsException {
         if (index >= mySize) {
-            throw new IndexOutOfBoundsException(index
-                                                + " must be below "
-                                                + mySize);
+            throw new IndexOutOfBoundsException(
+              index + " must be below " + mySize);
         }
         return Array.get(myVals, index);
     }
@@ -107,20 +106,18 @@ class FlexListImpl extends FlexList implements ArrayedList {
     }
 
     /**
-     * Places value at this index. If index is the current size
-     * of the list, the list is extended with this element. Otherwise, if
-     * the index is out of range, throws IndexOutOfBoundsException
+     * Places value at this index. If index is the current size of the list,
+     * the list is extended with this element. Otherwise, if the index is out
+     * of range, throws IndexOutOfBoundsException
      *
      * @throws IndexOutOfBoundsException if index isn't in 0..size
      */
-    public void put(int index, Object value)
-      throws IndexOutOfBoundsException {
+    public void put(int index, Object value) throws IndexOutOfBoundsException {
         if (index == mySize) {
             setSize(mySize + 1);
         } else if (index > mySize) {
-            throw new IndexOutOfBoundsException(index
-                                                + " must be at most "
-                                                + mySize);
+            throw new IndexOutOfBoundsException(
+              index + " must be at most " + mySize);
         }
         ArrayHelper.arraySet(myVals, index, value);
     }
@@ -174,8 +171,8 @@ class FlexListImpl extends FlexList implements ArrayedList {
                 a[nextAbove] = specimen;
                 nextAbove--;
             } else /* Double.isNaN(comp) */ {
-                throw new IllegalArgumentException
-                  ("partial order not yet implemented");
+                throw new IllegalArgumentException(
+                  "partial order not yet implemented");
             }
         }
         //At this point, start <= nextAbove < nextBelow <= bound
@@ -193,9 +190,9 @@ class FlexListImpl extends FlexList implements ArrayedList {
     }
 
     /**
-     * Overwrites this run with the zero element for my valueType(). May
-     * be called on runs exceeding my size but within my capacity. That's
-     * why it's private.
+     * Overwrites this run with the zero element for my valueType(). May be
+     * called on runs exceeding my size but within my capacity. That's why it's
+     * private.
      */
     private void zero(int start, int bound) {
         Class clazz = valueType();
@@ -214,9 +211,9 @@ class FlexListImpl extends FlexList implements ArrayedList {
 
     /**
      * Make this list be exactly 'newSize', truncating or extending as
-     * necessary. If this list is extended, what is it filled with?
-     * If it is of a scalar valueType(), it is filled with the zero
-     * element for that scalar. Otherwise, it is filled with nulls.
+     * necessary. If this list is extended, what is it filled with? If it is of
+     * a scalar valueType(), it is filled with the zero element for that
+     * scalar. Otherwise, it is filled with nulls.
      */
     public void setSize(int newSize) {
         if (newSize == mySize) {
@@ -232,8 +229,8 @@ class FlexListImpl extends FlexList implements ArrayedList {
                 //This capacity + newSize rule needs to be examined.
                 //It will at least double, and it will be big enough,
                 //so maybe it's fine.
-                Object newVals = ArrayHelper.newArray(valueType(),
-                                                      capacity + newSize);
+                Object newVals =
+                  ArrayHelper.newArray(valueType(), capacity + newSize);
                 System.arraycopy(myVals, 0, newVals, 0, mySize);
                 myVals = newVals;
             }
@@ -242,11 +239,13 @@ class FlexListImpl extends FlexList implements ArrayedList {
     }
 
     /**
-     * Replace from start..!bound in this list with lstart..!lbound in
-     * other.
+     * Replace from start..!bound in this list with lstart..!lbound in other.
      */
-    public void replace(int start, int bound,
-                        EList other, int lstart, int lbound) {
+    public void replace(int start,
+                        int bound,
+                        EList other,
+                        int lstart,
+                        int lbound) {
         int slen1 = bound - start;
         int slen2 = lbound - lstart;
         int diff = slen2 - slen1;
@@ -260,8 +259,7 @@ class FlexListImpl extends FlexList implements ArrayedList {
             //the stuff after my run (the destination) needs to slide
             //over. Note that arraycopy is defined to do the right
             //thing in case of overlap.
-            System.arraycopy(myVals, bound,
-                             myVals, start + slen2, slideSize);
+            System.arraycopy(myVals, bound, myVals, start + slen2, slideSize);
             mySize = newSize;
         }
         //pay no more attention to bound, slen1, or diff. Our size is

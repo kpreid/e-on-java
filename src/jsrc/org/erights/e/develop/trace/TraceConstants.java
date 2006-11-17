@@ -48,10 +48,9 @@ interface TraceConstants {
     String acceptorNames[] = {"log", "trace"};
 
     /**
-     * The different trace thresholds. See the Trace class for
-     * documentation. There is space between the levels for
-     * expansion. If you add or delete a level, you must change
-     * Trace.java to add new methods and variables.
+     * The different trace thresholds. See the Trace class for documentation.
+     * There is space between the levels for expansion. If you add or delete a
+     * level, you must change Trace.java to add new methods and variables.
      */
 
     int ERROR = 10000;  // always set.
@@ -71,21 +70,20 @@ interface TraceConstants {
     int MAX_THRESHOLD = ERROR;
 
     /**
-     * As a late addition, there's a "timing" boolean that can be
-     * set orthogonally from the thresholds. The above values are
-     * overloaded: thresholds, but also identifiers for the original message
-     * (was it sent with errorm(), etc.). The TIMING "level" is added
-     * for the latter purpose, but it has nothing to do with thresholds.
-     * To avoid confusion, it's set negative, thus below the minimum
-     * threshold.
+     * As a late addition, there's a "timing" boolean that can be set
+     * orthogonally from the thresholds. The above values are overloaded:
+     * thresholds, but also identifiers for the original message (was it sent
+     * with errorm(), etc.). The TIMING "level" is added for the latter
+     * purpose, but it has nothing to do with thresholds. To avoid confusion,
+     * it's set negative, thus below the minimum threshold.
      */
     int TIMING = -20;
 
     /**
-     * When referring to thresholds, are we talking about those
-     * from the default thresholds, or ones specific to a subsystem?
-     * XXX These could be interned strings, but interning didn't work
-     * right in 1.0.4. That is, two "default" strings weren't eq.
+     * When referring to thresholds, are we talking about those from the
+     * default thresholds, or ones specific to a subsystem? XXX These could be
+     * interned strings, but interning didn't work right in 1.0.4. That is, two
+     * "default" strings weren't eq.
      */
     int FROM_DEFAULT = 0;
 
@@ -93,13 +91,11 @@ interface TraceConstants {
 
     String reasonNames[] = {"default", "subsystem"};
 
-    /* Trace buffer defaults */
-    int STARTING_TRACE_BUFFER_SIZE = 500;
+    /* Trace buffer defaults */ int STARTING_TRACE_BUFFER_SIZE = 500;
 
     int STARTING_TRACE_THRESHOLD = USAGE;
 
-    /* Trace log defaults. */
-    long STARTING_LOG_SIZE_THRESHOLD = 500000;
+    /* Trace log defaults. */ long STARTING_LOG_SIZE_THRESHOLD = 500000;
 
     long SMALLEST_LOG_SIZE_THRESHOLD = 1000;
 

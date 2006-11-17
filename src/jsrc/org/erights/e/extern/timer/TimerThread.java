@@ -216,8 +216,8 @@ class TimerThread extends Thread {
                                 // Round up in increments of entry.myDelta to
                                 // maintain timebase, but myDelta from "now"
                                 // "now" being rounded up to the timebase
-                                long dist = (now - entry.myWhen) +
-                                  entry.myDelta;
+                                long dist =
+                                  (now - entry.myWhen) + entry.myDelta;
                                 dist = (dist / entry.myDelta) * entry.myDelta;
                                 entry.myWhen = entry.myWhen + dist;
                             }
@@ -266,7 +266,8 @@ class TimerThread extends Thread {
      * Set a timeout event to happen.
      *
      * @param absMillis When the event should happen
-     * @param target    Object which will handle the timeout event when it occurs
+     * @param target    Object which will handle the timeout event when it
+     *                  occurs
      */
     void setAlarm(long absMillis, TimerWatcher target) {
         synchronized (myLock) {
@@ -281,7 +282,8 @@ class TimerThread extends Thread {
     /**
      * Set a timeout event to happen.
      *
-     * @param target      Object which will handle the timeout event when it occurs
+     * @param target      Object which will handle the timeout event when it
+     *                    occurs
      * @param deltaMillis Distance into the future for event to happen
      */
     void setClock(TimerWatcher target, long deltaMillis) {
@@ -312,8 +314,8 @@ class TimerThread extends Thread {
             try {
                 myLock.notify();
             } catch (Throwable t) {
-                ExceptionMgr.reportException
-                  (t, "TimerThread.wakeup() caught exception on notify");
+                ExceptionMgr.reportException(t,
+                                             "TimerThread.wakeup() caught exception on notify");
             }
         }
     }

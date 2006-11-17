@@ -40,8 +40,8 @@ class Native {
             System.loadLibrary("ecutil");
             isLinked = true;
         } catch (UnsatisfiedLinkError e) {
-            PrintStreamWriter.stderr().println("ecutil linkage error: " +
-                                               e.getMessage());
+            PrintStreamWriter.stderr()
+              .println("ecutil linkage error: " + e.getMessage());
         }
         if (isLinked) {
             initializeTimer();
@@ -51,8 +51,8 @@ class Native {
         // uCosm should do it explicitly.
     }
 
-    static private final DecimalFormat myDecimalFormat = new DecimalFormat(
-      "0000000000000000");
+    static private final DecimalFormat myDecimalFormat =
+      new DecimalFormat("0000000000000000");
 
     static public long deltaTimerMSec(long start) {
         return (queryTimer() - start) / 1000;

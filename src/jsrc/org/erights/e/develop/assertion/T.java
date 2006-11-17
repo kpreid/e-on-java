@@ -1,6 +1,5 @@
 package org.erights.e.develop.assertion;
 
-
 /*
 The contents of this file are subject to the Electric Communities E Open
 Source Code License Version 1.0 (the "License"); you may not use this file
@@ -32,8 +31,8 @@ Contributor(s): ______________________________________.
  * stripped from the code. Therefore, the meaning of a program should be
  * insensitive to whether an assertion check (a 'test') is performed.
  * <p/>
- * Calls to static 'require' methods of this class are non-optional -- they
- * are considered part of the program, and may not be removed.
+ * Calls to static 'require' methods of this class are non-optional -- they are
+ * considered part of the program, and may not be removed.
  * <p/>
  * History: Brian Marick wrote the original as the class 'Assertion', designed
  * to work with his unassert utility, which was unfortunately not open sourced
@@ -49,7 +48,9 @@ Contributor(s): ______________________________________.
  */
 public final class T {
 
-    /** suppress instantiation */
+    /**
+     * suppress instantiation
+     */
     private T() {
     }
 
@@ -64,17 +65,17 @@ public final class T {
 
     /**
      * If this method is executed, it throws a RuntimeException with the
-     * message "Failed: 'Unreachable' code was reached."  Plant
-     * such assertions in places the program should never reach (such as
-     * the default case in a switch).
+     * message "Failed: 'Unreachable' code was reached."  Plant such assertions
+     * in places the program should never reach (such as the default case in a
+     * switch).
      */
     static public void fail() {
         fail("'Unreachable' code was reached.");
     }
 
     /**
-     * If this method is executed, it throws a RuntimeException with the
-     * given explanation, prefixed by "Failed: ".
+     * If this method is executed, it throws a RuntimeException with the given
+     * explanation, prefixed by "Failed: ".
      * <p/>
      * Must errors thrown by the E implementation go though this point, so if
      * you're running E in a Java debugger, this is a great place to put a
@@ -95,81 +96,71 @@ public final class T {
     }
 
     /**
-     * If the argument is false, throws a RuntimeException with the
-     * given explanation, prefixed by "Failed: ".
+     * If the argument is false, throws a RuntimeException with the given
+     * explanation, prefixed by "Failed: ".
      */
-    static public void test(boolean mustBeTrue,
-                            String explanation) {
+    static public void test(boolean mustBeTrue, String explanation) {
         if (mustBeTrue == false) {
             fail(explanation);
         }
     }
 
     /**
-     * If the argument is false, throws a RuntimeException with the
-     * given explanation arguments, concatenated as strings and prefixed
-     * by "Failed: ".
+     * If the argument is false, throws a RuntimeException with the given
+     * explanation arguments, concatenated as strings and prefixed by "Failed:
+     * ".
      * <p/>
-     * Use this routine when you need to avoid paying the overhead of
-     * string concatenation ("+") on every test. It does the concatenation
-     * only if the test fails.
+     * Use this routine when you need to avoid paying the overhead of string
+     * concatenation ("+") on every test. It does the concatenation only if the
+     * test fails.
      */
     static public void testSI(boolean mustBeTrue,
                               Object explanation0,
                               int explanation1) {
         if (mustBeTrue == false) {
-            fail("" +
-                 explanation0 +
-                 explanation1);
+            fail("" + explanation0 + explanation1);
         }
     }
 
     /**
-     * If the argument is false, throws a RuntimeException with the
-     * given explanation arguments, concatenated as strings and prefixed
-     * by "Failed: ".
+     * If the argument is false, throws a RuntimeException with the given
+     * explanation arguments, concatenated as strings and prefixed by "Failed:
+     * ".
      * <p/>
-     * Use this routine when you need to avoid paying the overhead of
-     * string concatenation ("+") on every test. It does the concatenation
-     * only if the test fails.
+     * Use this routine when you need to avoid paying the overhead of string
+     * concatenation ("+") on every test. It does the concatenation only if the
+     * test fails.
      */
     static public void test(boolean mustBeTrue,
                             Object explanation0,
                             Object explanation1) {
         if (mustBeTrue == false) {
-            fail("" +
-                 explanation0 +
-                 explanation1);
+            fail("" + explanation0 + explanation1);
         }
     }
 
     /**
-     * If the argument is false, throws a RuntimeException with the
-     * given explanation arguments, concatenated as strings and prefixed
-     * by "Failed: ".
-     * <p> Use this routine when you need to avoid paying the overhead of
-     * string concatenation ("+") on every test. It does the concatenation
-     * only if the test fails.
+     * If the argument is false, throws a RuntimeException with the given
+     * explanation arguments, concatenated as strings and prefixed by "Failed:
+     * ". <p> Use this routine when you need to avoid paying the overhead of
+     * string concatenation ("+") on every test. It does the concatenation only
+     * if the test fails.
      */
     static public void test(boolean mustBeTrue,
                             Object explanation0,
                             Object explanation1,
                             Object explanation2) {
         if (mustBeTrue == false) {
-            fail("" +
-                 explanation0 +
-                 explanation1 +
-                 explanation2);
+            fail("" + explanation0 + explanation1 + explanation2);
         }
     }
 
     /**
-     * If the argument is false, throws a RuntimeException with the
-     * given explanation arguments, concatenated as strings and prefixed
-     * by "Failed: ".
-     * <p> Use this routine when you need to avoid paying the overhead of
-     * string concatenation ("+") on every test. It does the concatenation
-     * only if the test fails.
+     * If the argument is false, throws a RuntimeException with the given
+     * explanation arguments, concatenated as strings and prefixed by "Failed:
+     * ". <p> Use this routine when you need to avoid paying the overhead of
+     * string concatenation ("+") on every test. It does the concatenation only
+     * if the test fails.
      */
     static public void test(boolean mustBeTrue,
                             Object explanation0,
@@ -177,21 +168,17 @@ public final class T {
                             Object explanation2,
                             Object explanation3) {
         if (mustBeTrue == false) {
-            fail("" +
-                 explanation0 +
-                 explanation1 +
-                 explanation2 +
-                 explanation3);
+            fail(
+              "" + explanation0 + explanation1 + explanation2 + explanation3);
         }
     }
 
     /**
-     * If the argument is false, throws a RuntimeException with the
-     * given explanation arguments, concatenated as strings and prefixed
-     * by "Failed: ".
-     * <p> Use this routine when you need to avoid paying the overhead of
-     * string concatenation ("+") on every test. It does the concatenation
-     * only if the test fails.
+     * If the argument is false, throws a RuntimeException with the given
+     * explanation arguments, concatenated as strings and prefixed by "Failed:
+     * ". <p> Use this routine when you need to avoid paying the overhead of
+     * string concatenation ("+") on every test. It does the concatenation only
+     * if the test fails.
      */
     static public void test(boolean mustBeTrue,
                             Object explanation0,
@@ -200,22 +187,17 @@ public final class T {
                             Object explanation3,
                             Object explanation4) {
         if (mustBeTrue == false) {
-            fail("" +
-                 explanation0 +
-                 explanation1 +
-                 explanation2 +
-                 explanation3 +
-                 explanation4);
+            fail("" + explanation0 + explanation1 + explanation2 +
+              explanation3 + explanation4);
         }
     }
 
     /**
-     * If the argument is false, throws a RuntimeException with the
-     * given explanation arguments, concatenated as strings and prefixed
-     * by "Failed: ".
-     * <p> Use this routine when you need to avoid paying the overhead of
-     * string concatenation ("+") on every test. It does the concatenation
-     * only if the test fails.
+     * If the argument is false, throws a RuntimeException with the given
+     * explanation arguments, concatenated as strings and prefixed by "Failed:
+     * ". <p> Use this routine when you need to avoid paying the overhead of
+     * string concatenation ("+") on every test. It does the concatenation only
+     * if the test fails.
      */
     static public void test(boolean mustBeTrue,
                             Object explanation0,
@@ -225,23 +207,17 @@ public final class T {
                             Object explanation4,
                             Object explanation5) {
         if (mustBeTrue == false) {
-            fail("" +
-                 explanation0 +
-                 explanation1 +
-                 explanation2 +
-                 explanation3 +
-                 explanation4 +
-                 explanation5);
+            fail("" + explanation0 + explanation1 + explanation2 +
+              explanation3 + explanation4 + explanation5);
         }
     }
 
     /**
-     * If the argument is false, throws a RuntimeException with the
-     * given explanation arguments, concatenated as strings and prefixed
-     * by "Failed: ".
-     * <p> Use this routine when you need to avoid paying the overhead of
-     * string concatenation ("+") on every test. It does the concatenation
-     * only if the test fails.
+     * If the argument is false, throws a RuntimeException with the given
+     * explanation arguments, concatenated as strings and prefixed by "Failed:
+     * ". <p> Use this routine when you need to avoid paying the overhead of
+     * string concatenation ("+") on every test. It does the concatenation only
+     * if the test fails.
      */
     static public void test(boolean mustBeTrue,
                             Object explanation0,
@@ -252,24 +228,17 @@ public final class T {
                             Object explanation5,
                             Object explanation6) {
         if (mustBeTrue == false) {
-            fail("" +
-                 explanation0 +
-                 explanation1 +
-                 explanation2 +
-                 explanation3 +
-                 explanation4 +
-                 explanation5 +
-                 explanation6);
+            fail("" + explanation0 + explanation1 + explanation2 +
+              explanation3 + explanation4 + explanation5 + explanation6);
         }
     }
 
     /**
-     * If the argument is false, throws a RuntimeException with the
-     * given explanation arguments, concatenated as strings and prefixed
-     * by "Failed: ".
-     * <p> Use this routine when you need to avoid paying the overhead of
-     * string concatenation ("+") on every test. It does the concatenation
-     * only if the test fails.
+     * If the argument is false, throws a RuntimeException with the given
+     * explanation arguments, concatenated as strings and prefixed by "Failed:
+     * ". <p> Use this routine when you need to avoid paying the overhead of
+     * string concatenation ("+") on every test. It does the concatenation only
+     * if the test fails.
      */
     static public void test(boolean mustBeTrue,
                             Object explanation0,
@@ -281,94 +250,78 @@ public final class T {
                             Object explanation6,
                             Object explanation7) {
         if (mustBeTrue == false) {
-            fail("" +
-                 explanation0 +
-                 explanation1 +
-                 explanation2 +
-                 explanation3 +
-                 explanation4 +
-                 explanation5 +
-                 explanation6 +
-                 explanation7);
+            fail("" + explanation0 + explanation1 + explanation2 +
+              explanation3 + explanation4 + explanation5 + explanation6 +
+              explanation7);
         }
     }
 
     /**
-     * If the argument is false, throws a RuntimeException with the
-     * given explanation, prefixed by "Failed: ".
+     * If the argument is false, throws a RuntimeException with the given
+     * explanation, prefixed by "Failed: ".
      */
-    static public void require(boolean mustBeTrue,
-                               String explanation) {
+    static public void require(boolean mustBeTrue, String explanation) {
         if (mustBeTrue == false) {
             fail(explanation);
         }
     }
 
     /**
-     * If the argument is false, throws a RuntimeException with the
-     * given explanation arguments, concatenated as strings and prefixed
-     * by "Failed: ".
+     * If the argument is false, throws a RuntimeException with the given
+     * explanation arguments, concatenated as strings and prefixed by "Failed:
+     * ".
      * <p/>
-     * Use this routine when you need to avoid paying the overhead of
-     * string concatenation ("+") on every test. It does the concatenation
-     * only if the test fails.
+     * Use this routine when you need to avoid paying the overhead of string
+     * concatenation ("+") on every test. It does the concatenation only if the
+     * test fails.
      */
     static public void requireSI(boolean mustBeTrue,
                                  Object explanation0,
                                  int explanation1) {
         if (mustBeTrue == false) {
-            fail("" +
-                 explanation0 +
-                 explanation1);
+            fail("" + explanation0 + explanation1);
         }
     }
 
     /**
-     * If the argument is false, throws a RuntimeException with the
-     * given explanation arguments, concatenated as strings and prefixed
-     * by "Failed: ".
+     * If the argument is false, throws a RuntimeException with the given
+     * explanation arguments, concatenated as strings and prefixed by "Failed:
+     * ".
      * <p/>
-     * Use this routine when you need to avoid paying the overhead of
-     * string concatenation ("+") on every test. It does the concatenation
-     * only if the test fails.
+     * Use this routine when you need to avoid paying the overhead of string
+     * concatenation ("+") on every test. It does the concatenation only if the
+     * test fails.
      */
     static public void require(boolean mustBeTrue,
                                Object explanation0,
                                Object explanation1) {
         if (mustBeTrue == false) {
-            fail("" +
-                 explanation0 +
-                 explanation1);
+            fail("" + explanation0 + explanation1);
         }
     }
 
     /**
-     * If the argument is false, throws a RuntimeException with the
-     * given explanation arguments, concatenated as strings and prefixed
-     * by "Failed: ".
-     * <p> Use this routine when you need to avoid paying the overhead of
-     * string concatenation ("+") on every test. It does the concatenation
-     * only if the test fails.
+     * If the argument is false, throws a RuntimeException with the given
+     * explanation arguments, concatenated as strings and prefixed by "Failed:
+     * ". <p> Use this routine when you need to avoid paying the overhead of
+     * string concatenation ("+") on every test. It does the concatenation only
+     * if the test fails.
      */
     static public void require(boolean mustBeTrue,
                                Object explanation0,
                                Object explanation1,
                                Object explanation2) {
         if (mustBeTrue == false) {
-            fail("" +
-                 explanation0 +
-                 explanation1 +
-                 explanation2);
+            fail("" + explanation0 + explanation1 + explanation2);
         }
     }
 
     /**
-     * If the argument is false, throws a RuntimeException with the
-     * given explanation arguments, concatenated as strings and prefixed
-     * by "Failed: ".
-     * <p> Use this routine when you need to avoid paying the overhead of
-     * string concatenation ("+") on every test. It does the concatenation
-     * only if the test fails.
+     * If the argument is false, throws a RuntimeException with the given
+     * explanation arguments, concatenated as strings and prefixed by "Failed:
+     * ". <p> Use this routine when you need to avoid paying the overhead of
+     * string concatenation ("+") on every test. It does the concatenation only
+     * if the test fails.
      */
     static public void require(boolean mustBeTrue,
                                Object explanation0,
@@ -376,21 +329,17 @@ public final class T {
                                Object explanation2,
                                Object explanation3) {
         if (mustBeTrue == false) {
-            fail("" +
-                 explanation0 +
-                 explanation1 +
-                 explanation2 +
-                 explanation3);
+            fail(
+              "" + explanation0 + explanation1 + explanation2 + explanation3);
         }
     }
 
     /**
-     * If the argument is false, throws a RuntimeException with the
-     * given explanation arguments, concatenated as strings and prefixed
-     * by "Failed: ".
-     * <p> Use this routine when you need to avoid paying the overhead of
-     * string concatenation ("+") on every test. It does the concatenation
-     * only if the test fails.
+     * If the argument is false, throws a RuntimeException with the given
+     * explanation arguments, concatenated as strings and prefixed by "Failed:
+     * ". <p> Use this routine when you need to avoid paying the overhead of
+     * string concatenation ("+") on every test. It does the concatenation only
+     * if the test fails.
      */
     static public void require(boolean mustBeTrue,
                                Object explanation0,
@@ -399,22 +348,17 @@ public final class T {
                                Object explanation3,
                                Object explanation4) {
         if (mustBeTrue == false) {
-            fail("" +
-                 explanation0 +
-                 explanation1 +
-                 explanation2 +
-                 explanation3 +
-                 explanation4);
+            fail("" + explanation0 + explanation1 + explanation2 +
+              explanation3 + explanation4);
         }
     }
 
     /**
-     * If the argument is false, throws a RuntimeException with the
-     * given explanation arguments, concatenated as strings and prefixed
-     * by "Failed: ".
-     * <p> Use this routine when you need to avoid paying the overhead of
-     * string concatenation ("+") on every test. It does the concatenation
-     * only if the test fails.
+     * If the argument is false, throws a RuntimeException with the given
+     * explanation arguments, concatenated as strings and prefixed by "Failed:
+     * ". <p> Use this routine when you need to avoid paying the overhead of
+     * string concatenation ("+") on every test. It does the concatenation only
+     * if the test fails.
      */
     static public void require(boolean mustBeTrue,
                                Object explanation0,
@@ -424,23 +368,17 @@ public final class T {
                                Object explanation4,
                                Object explanation5) {
         if (mustBeTrue == false) {
-            fail("" +
-                 explanation0 +
-                 explanation1 +
-                 explanation2 +
-                 explanation3 +
-                 explanation4 +
-                 explanation5);
+            fail("" + explanation0 + explanation1 + explanation2 +
+              explanation3 + explanation4 + explanation5);
         }
     }
 
     /**
-     * If the argument is false, throws a RuntimeException with the
-     * given explanation arguments, concatenated as strings and prefixed
-     * by "Failed: ".
-     * <p> Use this routine when you need to avoid paying the overhead of
-     * string concatenation ("+") on every test. It does the concatenation
-     * only if the test fails.
+     * If the argument is false, throws a RuntimeException with the given
+     * explanation arguments, concatenated as strings and prefixed by "Failed:
+     * ". <p> Use this routine when you need to avoid paying the overhead of
+     * string concatenation ("+") on every test. It does the concatenation only
+     * if the test fails.
      */
     static public void require(boolean mustBeTrue,
                                Object explanation0,
@@ -451,24 +389,17 @@ public final class T {
                                Object explanation5,
                                Object explanation6) {
         if (mustBeTrue == false) {
-            fail("" +
-                 explanation0 +
-                 explanation1 +
-                 explanation2 +
-                 explanation3 +
-                 explanation4 +
-                 explanation5 +
-                 explanation6);
+            fail("" + explanation0 + explanation1 + explanation2 +
+              explanation3 + explanation4 + explanation5 + explanation6);
         }
     }
 
     /**
-     * If the argument is false, throws a RuntimeException with the
-     * given explanation arguments, concatenated as strings and prefixed
-     * by "Failed: ".
-     * <p> Use this routine when you need to avoid paying the overhead of
-     * string concatenation ("+") on every test. It does the concatenation
-     * only if the test fails.
+     * If the argument is false, throws a RuntimeException with the given
+     * explanation arguments, concatenated as strings and prefixed by "Failed:
+     * ". <p> Use this routine when you need to avoid paying the overhead of
+     * string concatenation ("+") on every test. It does the concatenation only
+     * if the test fails.
      */
     static public void require(boolean mustBeTrue,
                                Object explanation0,
@@ -480,20 +411,13 @@ public final class T {
                                Object explanation6,
                                Object explanation7) {
         if (mustBeTrue == false) {
-            fail("" +
-                 explanation0 +
-                 explanation1 +
-                 explanation2 +
-                 explanation3 +
-                 explanation4 +
-                 explanation5 +
-                 explanation6 +
-                 explanation7);
+            fail("" + explanation0 + explanation1 + explanation2 +
+              explanation3 + explanation4 + explanation5 + explanation6 +
+              explanation7);
         }
     }
 
     /**
-     *
      * @param specimen
      * @param explanation
      */
@@ -504,7 +428,6 @@ public final class T {
     }
 
     /**
-     *
      * @param specimen
      * @param explanation0
      * @param explanation1
@@ -513,9 +436,7 @@ public final class T {
                                Object explanation0,
                                Object explanation1) {
         if (null == specimen) {
-            throw new NullPointerException("" +
-                                           explanation0 +
-                                           explanation1);
+            throw new NullPointerException("" + explanation0 + explanation1);
         }
     }
 }

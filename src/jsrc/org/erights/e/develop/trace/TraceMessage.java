@@ -26,9 +26,9 @@ Contributor(s): ______________________________________.
 import java.util.Date;
 
 /**
- * This class describes a trace message. Its final destination could
- * be an on disk log (called "the log"), or an in-core buffer (called
- * "the buffer") to be retained until the user asks for it.
+ * This class describes a trace message. Its final destination could be an on
+ * disk log (called "the log"), or an in-core buffer (called "the buffer") to
+ * be retained until the user asks for it.
  */
 class TraceMessage {
 
@@ -44,16 +44,16 @@ class TraceMessage {
     public String subsystem;
 
     /**
-     * The Date at which the method was sent (approximately). The Date
-     * is not attached to the message until the message leaves the vat.
-     * (The vat does not let you find out the current time.)
+     * The Date at which the method was sent (approximately). The Date is not
+     * attached to the message until the message leaves the vat. (The vat does
+     * not let you find out the current time.)
      */
     public Date date;
 
     /**
-     * The level ("error", "debug", etc.) at which the message was
-     * sent. This is distinct from the priority threshold that
-     * determines whether the message should be sent.
+     * The level ("error", "debug", etc.) at which the message was sent. This
+     * is distinct from the priority threshold that determines whether the
+     * message should be sent.
      */
     public int level;
 
@@ -63,16 +63,14 @@ class TraceMessage {
     public String message;
 
     /**
-     * An arbitrary object may be attached to the message.
-     * They are usually printed with toString(), but Throwables
-     * are handled specially.
+     * An arbitrary object may be attached to the message. They are usually
+     * printed with toString(), but Throwables are handled specially.
      */
     public Object object;
 
     /**
-     * An exception is generated when the message is created.
-     * This is used to discover the class name, method name,
-     * file name, and line number.
+     * An exception is generated when the message is created. This is used to
+     * discover the class name, method name, file name, and line number.
      */
     public final Exception exception;
 

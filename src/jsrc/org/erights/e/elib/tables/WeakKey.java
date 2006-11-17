@@ -12,15 +12,15 @@ import org.erights.e.elib.vat.WeakPtr;
  * FlexMap. <p>
  * <p/>
  * Holds on to the actual key weakly. Is an HONORARY Selfless object, so it
- * compares based on its equals() and hashCode() methods. A WeakKey is
- * also a Runnable, since it stores itself as the reactor to be informed when
- * its key is collected. <p>
+ * compares based on its equals() and hashCode() methods. A WeakKey is also a
+ * Runnable, since it stores itself as the reactor to be informed when its key
+ * is collected. <p>
  * <p/>
  * WeakKey's implementation of equals and hashCode does not satisfy the
  * contract specified for HONORARY Selfless objects, but that's ok since the
- * WeakKey class is only used in the implementation of WeakKeyMap. It
- * compares the actual keys using identity, which makes sense only for
- * NEAR Selfish objects.
+ * WeakKey class is only used in the implementation of WeakKeyMap. It compares
+ * the actual keys using identity, which makes sense only for NEAR Selfish
+ * objects.
  *
  * @author Mark S. Miller
  */

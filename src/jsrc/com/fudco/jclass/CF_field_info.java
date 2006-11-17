@@ -20,16 +20,21 @@ public class CF_field_info {
      * Constructor.
      *
      * @param access_flags     Flags bits denoting access permissions to and
-     *                         properties of this field; values as defined in ClassFileConstants.
+     *                         properties of this field; values as defined in
+     *                         ClassFileConstants.
      * @param name_index       Index into the constant pool of the
-     *                         CONSTANT_Utf8_info object containing the name of the field, stored
-     *                         as a simple name (a Java identifier) or the special name "<init>".
+     *                         CONSTANT_Utf8_info object containing the name of
+     *                         the field, stored as a simple name (a Java
+     *                         identifier) or the special name "<init>".
      * @param descriptor_index Index into the constant pool of the
-     *                         CONSTANT_Utf8_info object containing the field type signature.
-     * @param attributes       Array of attribute objects describing this field's
-     *                         attributes.
+     *                         CONSTANT_Utf8_info object containing the field
+     *                         type signature.
+     * @param attributes       Array of attribute objects describing this
+     *                         field's attributes.
      */
-    CF_field_info(int access_flags, int name_index, int descriptor_index,
+    CF_field_info(int access_flags,
+                  int name_index,
+                  int descriptor_index,
                   CF_attribute_info attributes[]) {
         myAccess_flags = access_flags;
         myName_index = name_index;
@@ -40,8 +45,8 @@ public class CF_field_info {
     /**
      * Obtain this field's access flags.
      *
-     * @return a number whose bits denote access permissions and properties
-     *         of this field.
+     * @return a number whose bits denote access permissions and properties of
+     *         this field.
      */
     public int access_flags() {
         return myAccess_flags;
@@ -90,11 +95,10 @@ public class CF_field_info {
     /**
      * Read and return a field_info object from a DataInputStream.
      *
-     * @param in The DataInputStream to read from; this should be positioned
-     *           at the first byte of the field descriptor being read.
+     * @param in The DataInputStream to read from; this should be positioned at
+     *           the first byte of the field descriptor being read.
      */
-    static CF_field_info read(DataInputStream in)
-      throws IOException {
+    static CF_field_info read(DataInputStream in) throws IOException {
         int access_flags = in.readUnsignedShort();
         int name_index = in.readUnsignedShort();
         int descriptor_index = in.readUnsignedShort();
@@ -105,7 +109,9 @@ public class CF_field_info {
             attributes[i] = CF_attribute_info.read(in);
         }
 
-        return new CF_field_info(access_flags, name_index, descriptor_index,
+        return new CF_field_info(access_flags,
+                                 name_index,
+                                 descriptor_index,
                                  attributes);
     }
 }

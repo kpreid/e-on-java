@@ -56,8 +56,8 @@ public class CF_CONSTANT_Utf8_info extends CF_cp_info {
     /**
      * Obtain some of the bytes.
      *
-     * @param offset The index (zero-based) into the collection of bytes of
-     *               the first byte desired.
+     * @param offset The index (zero-based) into the collection of bytes of the
+     *               first byte desired.
      * @param length The number of bytes desired, starting at the given offset
      * @return a copy of the indicated sub-section of the array of bytes this
      *         constant contains.
@@ -82,12 +82,11 @@ public class CF_CONSTANT_Utf8_info extends CF_cp_info {
     /**
      * Read and return a CONSTANT_Utf8_info object from a DataInputStream.
      *
-     * @param in The DataInputStream to read from; this should be positioned
-     *           at the first byte after the type code byte of the constant pool entry
-     *           being read.
+     * @param in The DataInputStream to read from; this should be positioned at
+     *           the first byte after the type code byte of the constant pool
+     *           entry being read.
      */
-    static CF_CONSTANT_Utf8_info read(DataInputStream in)
-      throws IOException {
+    static CF_CONSTANT_Utf8_info read(DataInputStream in) throws IOException {
         int length = in.readUnsignedShort();
         byte bytes[] = new byte[length];
         in.readFully(bytes);

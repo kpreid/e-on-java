@@ -57,19 +57,17 @@ import java.io.OptionalDataException;
 import java.math.BigInteger;
 
 /**
- * Object which manages a CapTP protocol connection to a remote
- * vat and which will receive incoming CapTP protocol messages.<p>
+ * Object which manages a CapTP protocol connection to a remote vat and which
+ * will receive incoming CapTP protocol messages.<p>
  * <p/>
- * The processMessage(byte[] message, VatTPConnection) method will be
- * called when a message of type E_MSG is received from the remote vat.<p>
+ * The processMessage(byte[] message, VatTPConnection) method will be called
+ * when a message of type E_MSG is received from the remote vat.<p>
  * <p/>
- * CapTPConnection manages four tables for 2-vat interactions:
- * <UL>
- * <LI>Questions: Handlers for remote objects we requested </LI>
- * <LI>Imports: Handlers for remote objects exported to us unsolicited </LI>
- * <LI>Answers: Answers for remote Questions </LI>
- * <LI>Exports: local objects matching remote Imports </LI>
- * </UL>
+ * CapTPConnection manages four tables for 2-vat interactions: <UL>
+ * <LI>Questions: Handlers for remote objects we requested </LI> <LI>Imports:
+ * Handlers for remote objects exported to us unsolicited </LI> <LI>Answers:
+ * Answers for remote Questions </LI> <LI>Exports: local objects matching
+ * remote Imports </LI> </UL>
  * <p/>
  * The four tables can be arranged into a matrix: <pre>
  * <p/>
@@ -86,17 +84,15 @@ import java.math.BigInteger;
  * --------------------+---------------------+----------------------
  * </pre>
  * <p/>
- * When referencing an object or handler by pos number alone
- * (independent of what table it should be looked up in), we
- * distinguish the table by the sign of pos: Questions and Answers
- * entries are referenced using a negative pos, while Imports and
- * Exports entries use positive pos. The sign of pos is
- * determined by the following rule: when pos is allocated by the
- * outgoing side, it negative; when pos is allocated by the
- * incoming side, pos is positive. The usefulness of this scheme
- * is that whenever we know one axis of this table (which we always
- * know from context), we can be determine the other axis by
- * looking at the sign of pos. <p>
+ * When referencing an object or handler by pos number alone (independent of
+ * what table it should be looked up in), we distinguish the table by the sign
+ * of pos: Questions and Answers entries are referenced using a negative pos,
+ * while Imports and Exports entries use positive pos. The sign of pos is
+ * determined by the following rule: when pos is allocated by the outgoing
+ * side, it negative; when pos is allocated by the incoming side, pos is
+ * positive. The usefulness of this scheme is that whenever we know one axis of
+ * this table (which we always know from context), we can be determine the
+ * other axis by looking at the sign of pos. <p>
  *
  * @author Chip Morningstar
  * @author Bill Frantz
@@ -115,8 +111,8 @@ class CapTPConnection implements MsgHandler {
     /**
      * Queue delivery of message, no answer expected. <p>
      * <p/>
-     * Start counting at 8 since the previous version of the protocol
-     * (0.8.9) stopped at 7.
+     * Start counting at 8 since the previous version of the protocol (0.8.9)
+     * stopped at 7.
      */
     static private final byte DELIVER_ONLY_OP = 8;
 
@@ -128,8 +124,8 @@ class CapTPConnection implements MsgHandler {
     static private final byte DELIVER_OP = 13;
 
     /**
-     * An import on the other has gone away dropping some number of
-     * wireCounts. Clean up the export table.
+     * An import on the other has gone away dropping some number of wireCounts.
+     * Clean up the export table.
      */
     static private final byte GC_EXPORT_OP = 10;
 
@@ -150,14 +146,13 @@ class CapTPConnection implements MsgHandler {
     private final CapTPMgr myCapTPMgr;
 
     /**
-     * Means of communication with our partner at the other end of the
-     * line.
+     * Means of communication with our partner at the other end of the line.
      */
     private final VatTPConnection myDataConnection;
 
     /**
-     * Number of things (XXX what's a "thing"?) which are currently holding
-     * the connection open
+     * Number of things (XXX what's a "thing"?) which are currently holding the
+     * connection open
      */
     private int myUseCount;
 
@@ -184,8 +179,8 @@ class CapTPConnection implements MsgHandler {
     private Throwable myOptProblem;
 
     /**
-     * Resolver of the promise used to buffer lookup requests made in midst
-     * of connection shutdown.
+     * Resolver of the promise used to buffer lookup requests made in midst of
+     * connection shutdown.
      */
     private Resolver myOptBufferedLookups;
 
@@ -202,54 +197,52 @@ class CapTPConnection implements MsgHandler {
     private QuestionsTable myQuestions;
 
     /**
-     * The Answers table: this is the counterpart to the Questions table
-     * at the other end of the connection. <p>
+     * The Answers table: this is the counterpart to the Questions table at the
+     * other end of the connection. <p>
      * <p/>
-     * Messages sent through a handler in the questions table will be
-     * delivered to the corresponding answer.
+     * Messages sent through a handler in the questions table will be delivered
+     * to the corresponding answer.
      */
     private AnswersTable myAnswers;
 
     /**
-     * The Imports table: these are handles to objects the other end
-     * exported. <p>
+     * The Imports table: these are handles to objects the other end exported.
+     * <p>
      * <p/>
      * We just hook up the handler in the specified location.
      */
     private ImportsTable myImports;
 
     /**
-     * The Exports table: this is the counterpart to the Imports table at
-     * the other end of the connection. <p>
+     * The Exports table: this is the counterpart to the Imports table at the
+     * other end of the connection. <p>
      * <p/>
-     * These are objects that have been exported from this end (i.e.,
-     * mentioned by us in the parameters of a message). The other end
-     * installs them in the same spot in its Imports table.
+     * These are objects that have been exported from this end (i.e., mentioned
+     * by us in the parameters of a message). The other end installs them in
+     * the same spot in its Imports table.
      */
     private ExportsTable myExports;
 
     /**
-     * At incoming position 0, for bringing about 3-vat introductions
-     * using nonces.
+     * At incoming position 0, for bringing about 3-vat introductions using
+     * nonces.
      */
     private final NonceLocator myLocalNonceLocator;
 
     /**
-     * A remote reference to the other side's myLocalNonceLocator, at
-     * outgoing position 0, for bringing about 3-vat introductions
-     * using nonces.
+     * A remote reference to the other side's myLocalNonceLocator, at outgoing
+     * position 0, for bringing about 3-vat introductions using nonces.
      */
     private final Object myRemoteNonceLocator;
 
     /**
-     * For bringing about 3-vat introductions of unresolved references
-     * using nonces.
+     * For bringing about 3-vat introductions of unresolved references using
+     * nonces.
      */
     private PromiseGiftTable myPGifts;
 
     /**
-     * For bringing about 3-vat introductions of Near references using
-     * nonces.
+     * For bringing about 3-vat introductions of Near references using nonces.
      */
     private NearGiftTable myNGifts;
 
@@ -264,7 +257,6 @@ class CapTPConnection implements MsgHandler {
     }
 
     /**
-     *
      * @param pos
      * @return
      */
@@ -290,18 +282,17 @@ class CapTPConnection implements MsgHandler {
     }
 
     /**
-     * Makes a CapTPConnection for a particular CapTP instance (capTPMgr) and
-     * a particular VatTP connection (dataConn).
+     * Makes a CapTPConnection for a particular CapTP instance (capTPMgr) and a
+     * particular VatTP connection (dataConn).
      *
      * @param capTPMgr The CapTPMgr managing this connection.
-     * @param dataConn The VatTP-level data connection to be associated
-     *                 with this CapTPConnection.
+     * @param dataConn The VatTP-level data connection to be associated with
+     *                 this CapTPConnection.
      * @param entropy  Where new swiss numbers come from.
      */
     CapTPConnection(CapTPMgr capTPMgr,
                     VatTPConnection dataConn,
-                    ESecureRandom entropy)
-      throws IOException {
+                    ESecureRandom entropy) throws IOException {
         myCapTPMgr = capTPMgr;
         myDataConnection = dataConn;
         myOptProblem = null;
@@ -334,16 +325,14 @@ class CapTPConnection implements MsgHandler {
                                                capTPMgr.getSwissTable());
 
         if (Trace.captp.debug && Trace.ON) {
-            Trace.captp.debugm("Create CapTPConnection " + this +
-                               " mgr=" + capTPMgr +
-                               " dataConn=" + dataConn +
-                               " vat=%" + dataConn.getRemoteVatID() +
-                               "/%" + dataConn.getLocalVatID());
+            Trace.captp
+              .debugm("Create CapTPConnection " + this + " mgr=" + capTPMgr +
+                " dataConn=" + dataConn + " vat=%" +
+                dataConn.getRemoteVatID() + "/%" + dataConn.getLocalVatID());
         }
     }
 
     /**
-     *
      * @return
      */
     public String toString() {
@@ -440,7 +429,6 @@ class CapTPConnection implements MsgHandler {
         return myCapTPMgr.getReferenceMonitor();
     }
 
-
     /************************ Desc Creation *********************/
 
     /**
@@ -475,11 +463,11 @@ class CapTPConnection implements MsgHandler {
 
     /**
      * Returns a NewFarDesc, NewRemotePromiseDesc, or an ImportDesc for
-     * exporting obj, which is assumed to be suitable for being in our
-     * exports table.
+     * exporting obj, which is assumed to be suitable for being in our exports
+     * table.
      * <p/>
-     * obj is assumed to be a Near reference to a PassByProxy object (actual
-     * or HONORARY), or eventual.
+     * obj is assumed to be a Near reference to a PassByProxy object (actual or
+     * HONORARY), or eventual.
      */
     ObjectRefDesc makeImportingDesc(Object obj) {
         T.test(Ref.isNear(obj), "Must be near");
@@ -498,15 +486,15 @@ class CapTPConnection implements MsgHandler {
 
     private Object new3Desc(RemoteHandler handler, Ref ref) {
         if (!DOES_3VAT) {
-            Throwable problem = new RuntimeException
-              ("XXX 3vats not yet implemented");
+            Throwable problem =
+              new RuntimeException("XXX 3vats not yet implemented");
             return Ref.broken(problem);
         }
         CapTPConnection conn = handler.myConn;
         long nonce = myEntropy.nextLong();
         Object toHost = conn.getRemoteNonceLocator();
-        Object remoteVine = E.send(toHost, "provideFor",
-                                   ref, remoteVatID(), new Long(nonce));
+        Object remoteVine =
+          E.send(toHost, "provideFor", ref, remoteVatID(), new Long(nonce));
         Promise3Desc result = new Promise3Desc(conn.remoteSearchPath(),
                                                conn.remoteVatID(),
                                                nonce,
@@ -535,7 +523,6 @@ class CapTPConnection implements MsgHandler {
         }
     }
 
-
 //    /**
 //     *
 //     */
@@ -548,9 +535,9 @@ class CapTPConnection implements MsgHandler {
     /**
      * Dereferencing of a NewFarDesc. <p>
      * <p/>
-     * On entry, importPos may be free, or may be allocated to an entry with
-     * a zero wireCount. (XXX we don't currently check the wirecount.)
-     * In the latter case, the entry is overwritten.
+     * On entry, importPos may be free, or may be allocated to an entry with a
+     * zero wireCount. (XXX we don't currently check the wirecount.) In the
+     * latter case, the entry is overwritten.
      *
      * @param importPos The import position at which a new FarRef should be
      *                  created.
@@ -566,8 +553,8 @@ class CapTPConnection implements MsgHandler {
     /**
      * Dereferencing of a NewRemotePromiseDesc. <p>
      * <p/>
-     * On entry, importPos may be free, or may be allocated to an entry with
-     * a zero wireCount. In the latter case, the entry is overwritten.
+     * On entry, importPos may be free, or may be allocated to an entry with a
+     * zero wireCount. In the latter case, the entry is overwritten.
      *
      * @param importPos The import position at which the new RemotePromise
      *                  should be created.
@@ -577,9 +564,7 @@ class CapTPConnection implements MsgHandler {
      *                  the cryptohash of rdrBase.
      * @return The newly created RemotePromise.
      */
-    Ref newRemotePromise(int importPos,
-                         int rdrPos,
-                         BigInteger rdrBase) {
+    Ref newRemotePromise(int importPos, int rdrPos, BigInteger rdrBase) {
         RemotePromiseHandler handler =
           new RemotePromiseHandler(this, importPos);
         EProxyResolver resolver = handler.myResolver;
@@ -593,15 +578,15 @@ class CapTPConnection implements MsgHandler {
     /**
      * Dereferencing of an ImportDesc. <p>
      * <p/>
-     * On entry, importPos must be allocated, but may be allocated to an
-     * entry with a zero wireCount. <p>
+     * On entry, importPos must be allocated, but may be allocated to an entry
+     * with a zero wireCount. <p>
      * <p/>
-     * Return an imported Proxy, or its resolution, and, if it still has
-     * a handler (ie, it isn't resolved) increment its wire count.
+     * Return an imported Proxy, or its resolution, and, if it still has a
+     * handler (ie, it isn't resolved) increment its wire count.
      *
      * @param importPos The position of the import in the Imports table
-     * @return Whatever the resolution is of the Proxy in the appropriate
-     *         table at importPos
+     * @return Whatever the resolution is of the Proxy in the appropriate table
+     *         at importPos
      */
     Ref getImport(int importPos) {
         EProxyResolver pr = myImports.getProxyResolver(importPos);
@@ -617,10 +602,9 @@ class CapTPConnection implements MsgHandler {
      * <p/>
      * Return an Exports or Answers table entry.
      *
-     * @param incomingPos A positive pos refer to the Exports table, a
-     *                    negative one to the Answers table.
-     * @return Whatever object was in the appropriate table at
-     *         incomingPos.
+     * @param incomingPos A positive pos refer to the Exports table, a negative
+     *                    one to the Answers table.
+     * @return Whatever object was in the appropriate table at incomingPos.
      */
     Object getIncoming(int incomingPos) {
         if (incomingPos > 0) {
@@ -636,10 +620,10 @@ class CapTPConnection implements MsgHandler {
      * Dereferencing of a Promise3Desc
      *
      * @param searchPath hints to find the vat identified by vatID
-     * @param vatID      The fingerprint of the public key of the vat hosting the
-     *                   object to be looked up.
-     * @param nonce      Identifies the object in that vat's appropriate
-     *                   gift table.
+     * @param vatID      The fingerprint of the public key of the vat hosting
+     *                   the object to be looked up.
+     * @param nonce      Identifies the object in that vat's appropriate gift
+     *                   table.
      * @param optFarVine Hold on to this until the object has been retrieved.
      * @return A promise for the looked up object.
      */
@@ -666,14 +650,14 @@ class CapTPConnection implements MsgHandler {
      * Dereferencing of a Far3Desc
      *
      * @param searchPath hints to find the vat identified by vatID
-     * @param vatID      The fingerprint of the public key of the vat hosting the
-     *                   object to be looked up.
-     * @param nonce      Identifies the object in that vat's appropriate
-     *                   gift table.
-     * @param swissHash  Identity of object being looked up. getLookup
-     *                   returns a resolved reference with that identity. If
-     *                   it can't return a FarRef with that identity, then it
-     *                   returns a DisconnectedRef with that identity.
+     * @param vatID      The fingerprint of the public key of the vat hosting
+     *                   the object to be looked up.
+     * @param nonce      Identifies the object in that vat's appropriate gift
+     *                   table.
+     * @param swissHash  Identity of object being looked up. getLookup returns
+     *                   a resolved reference with that identity. If it can't
+     *                   return a FarRef with that identity, then it returns a
+     *                   DisconnectedRef with that identity.
      * @param optFarVine Hold on to this until the object has been retrieved.
      * @return A promise for the looked up object.
      */
@@ -692,7 +676,6 @@ class CapTPConnection implements MsgHandler {
     LocatorUnum getLocatorUnum() {
         return myCapTPMgr.getLocatorUnum();
     }
-
 
     /***************************** receiving ************************/
 
@@ -726,8 +709,7 @@ class CapTPConnection implements MsgHandler {
 
             /* The message type (the first byte) should *always* be E_MSG */
             if ((byte)bis.read() != Msg.E_MSG) {
-                T.fail
-                  ("CapTPConnection was handed a non-E_MSG message");
+                T.fail("CapTPConnection was handed a non-E_MSG message");
             }
 
             //Read the command byte *before* starting to interpret the stream
@@ -735,8 +717,9 @@ class CapTPConnection implements MsgHandler {
             byte cmd = (byte)bis.read();
 
             if (Trace.captp.debug && Trace.ON) {
-                Trace.captp.debugm(
-                  "CapTPConnection " + this + " receive msg cmd=" + cmd);
+                Trace.captp
+                  .debugm(
+                    "CapTPConnection " + this + " receive msg cmd=" + cmd);
             }
 
             Reviver reviver = new CapTPReviver(this);
@@ -754,62 +737,54 @@ class CapTPConnection implements MsgHandler {
     private void receiveMsg(byte cmd, UnserializationStream uns)
       throws IOException, ClassNotFoundException, OptionalDataException {
         switch (cmd) {
-        case DELIVER_ONLY_OP:
-            {
-                int recipPos = uns.readInt();
-                String verb = uns.readUTF().intern();
-                try {
-                    Object[] args = (Object[])uns.readObject();
+        case DELIVER_ONLY_OP: {
+            int recipPos = uns.readInt();
+            String verb = uns.readUTF().intern();
+            try {
+                Object[] args = (Object[])uns.readObject();
 
-                    execDeliverOnlyOp(recipPos, verb, args);
-                } catch (Throwable problem) {
-                    whyNoDeliverOnlyOp(recipPos, verb, problem);
-                }
-                break;
+                execDeliverOnlyOp(recipPos, verb, args);
+            } catch (Throwable problem) {
+                whyNoDeliverOnlyOp(recipPos, verb, problem);
             }
-        case DELIVER_OP:
-            {
-                int answerPos = uns.readInt();
-                Object rdr = uns.readObject();
-                int recipPos = uns.readInt();
-                String verb = uns.readUTF().intern();
-                try {
-                    Object[] args = (Object[])uns.readObject();
+            break;
+        }
+        case DELIVER_OP: {
+            int answerPos = uns.readInt();
+            Object rdr = uns.readObject();
+            int recipPos = uns.readInt();
+            String verb = uns.readUTF().intern();
+            try {
+                Object[] args = (Object[])uns.readObject();
 
-                    execDeliverOp(answerPos, rdr,
-                                  recipPos, verb, args);
-                } catch (Throwable problem) {
-                    whyNoDeliverOp(answerPos, rdr,
-                                   recipPos, verb, problem);
-                }
-                break;
+                execDeliverOp(answerPos, rdr, recipPos, verb, args);
+            } catch (Throwable problem) {
+                whyNoDeliverOp(answerPos, rdr, recipPos, verb, problem);
             }
-        case GC_EXPORT_OP:
-            {
-                int exportPos = uns.readInt();
-                int wireCount = uns.readInt();
+            break;
+        }
+        case GC_EXPORT_OP: {
+            int exportPos = uns.readInt();
+            int wireCount = uns.readInt();
 
-                execGCExportOp(exportPos, wireCount);
-                break;
-            }
-        case GC_ANSWER_OP:
-            {
-                int answerPos = uns.readInt();
+            execGCExportOp(exportPos, wireCount);
+            break;
+        }
+        case GC_ANSWER_OP: {
+            int answerPos = uns.readInt();
 
-                execGCAnswerOp(answerPos);
-                break;
-            }
-        case SHUTDOWN_OP:
-            {
-                int receivedCount = uns.readInt();
+            execGCAnswerOp(answerPos);
+            break;
+        }
+        case SHUTDOWN_OP: {
+            int receivedCount = uns.readInt();
 
-                execShutdownOp(receivedCount);
-                break;
-            }
-        default:
-            {
-                T.fail("Invalid command byte " + cmd);
-            }
+            execShutdownOp(receivedCount);
+            break;
+        }
+        default: {
+            T.fail("Invalid command byte " + cmd);
+        }
         }
     }
 
@@ -830,9 +805,7 @@ class CapTPConnection implements MsgHandler {
     /**
      *
      */
-    private void execDeliverOnlyOp(int recipPos,
-                                   String verb,
-                                   Object[] args) {
+    private void execDeliverOnlyOp(int recipPos, String verb, Object[] args) {
         if (Trace.causality.debug && Trace.ON) {
             CommEvent commEvent = new CommEvent(remoteVatID(),
                                                 localVatID(),
@@ -841,9 +814,9 @@ class CapTPConnection implements MsgHandler {
             Trace.causality.debugm("", commEvent);
         }
         if (debug(recipPos)) {
-            debugm(recipPos, "exec DeliverOnlyOp(" + recipPos + ", " + verb +
-                             ", " +
-                             argsString(args) + ")");
+            debugm(recipPos,
+                   "exec DeliverOnlyOp(" + recipPos + ", " + verb + ", " +
+                     argsString(args) + ")");
         }
 
         Object recip = getIncoming(recipPos);
@@ -877,12 +850,9 @@ class CapTPConnection implements MsgHandler {
     /**
      *
      */
-    private void execDeliverOp(int answerPos,
-                               Object rdr,
+    private void execDeliverOp(int answerPos, Object rdr,
 
-                               int recipPos,
-                               String verb,
-                               Object[] args) {
+                               int recipPos, String verb, Object[] args) {
         if (Trace.causality.debug && Trace.ON) {
             CommEvent commEvent = new CommEvent(remoteVatID(),
                                                 localVatID(),
@@ -891,10 +861,9 @@ class CapTPConnection implements MsgHandler {
             Trace.causality.debugm("", commEvent);
         }
         if (debug(recipPos)) {
-            debugm(recipPos, "exec DeliverOp(" + answerPos + ", " + rdr +
-                             ",\n  " +
-                             recipPos + ", " + verb + ", " +
-                             argsString(args) + ")");
+            debugm(recipPos,
+                   "exec DeliverOp(" + answerPos + ", " + rdr + ",\n  " +
+                     recipPos + ", " + verb + ", " + argsString(args) + ")");
         }
 
         Object recip = getIncoming(recipPos);
@@ -906,19 +875,15 @@ class CapTPConnection implements MsgHandler {
     /**
      *
      */
-    private void whyNoDeliverOp(int answerPos,
-                                Object rdr,
+    private void whyNoDeliverOp(int answerPos, Object rdr,
 
-                                int recipPos,
-                                String verb,
-                                Throwable problem) {
+                                int recipPos, String verb, Throwable problem) {
         Ref broke = Ref.broken(problem);
         //Note: trace level is warning
         if (Trace.captp.warning && Trace.ON) {
-            Trace.captp.warningm("whyNoDeliverOp(" + answerPos + ", " + rdr +
-                                 ",\n  " +
-                                 recipPos + ", " + verb + ", ???)",
-                                 problem);
+            Trace.captp
+              .warningm("whyNoDeliverOp(" + answerPos + ", " + rdr + ",\n  " +
+                recipPos + ", " + verb + ", ???)", problem);
         }
         myAnswers.put(-answerPos, broke, true);
         E.sendOnly(broke, "__whenMoreResolved", rdr);
@@ -977,11 +942,9 @@ class CapTPConnection implements MsgHandler {
         }
 
         if (mySendCount <= receivedCount) {
-            killConnection(new IOException("received shutdown request"),
-                           true);
+            killConnection(new IOException("received shutdown request"), true);
         }
     }
-
 
     /************************** sending ************************/
 
@@ -1004,8 +967,8 @@ class CapTPConnection implements MsgHandler {
         ser.flush();
         byte[] msg = bos.toByteArray();
         if (Trace.captp.debug && Trace.ON) {
-            Trace.captp.debugm(
-              "CapTPConnection " + this + " sendMsg cmd=" + msg[1]);
+            Trace.captp
+              .debugm("CapTPConnection " + this + " sendMsg cmd=" + msg[1]);
         }
         ++mySendCount;
         myDataConnection.sendMsg(msg);
@@ -1014,9 +977,7 @@ class CapTPConnection implements MsgHandler {
     /**
      *
      */
-    void sendDeliverOnlyOp(int recipPos,
-                           String verb,
-                           Object[] args) {
+    void sendDeliverOnlyOp(int recipPos, String verb, Object[] args) {
         if (Trace.causality.debug && Trace.ON) {
             CommEvent commEvent = new CommEvent(localVatID(),
                                                 remoteVatID(),
@@ -1025,9 +986,9 @@ class CapTPConnection implements MsgHandler {
             Trace.causality.debugm("", commEvent);
         }
         if (debug(recipPos)) {
-            debugm(recipPos, "send DeliverOnlyOp(" + recipPos + ", " + verb +
-                             ", " +
-                             argsString(args) + ")");
+            debugm(recipPos,
+                   "send DeliverOnlyOp(" + recipPos + ", " + verb + ", " +
+                     argsString(args) + ")");
         }
 
         if (null != myOptProblem) {
@@ -1061,12 +1022,9 @@ class CapTPConnection implements MsgHandler {
     /**
      *
      */
-    void sendDeliverOp(int answerPos,
-                       Object rdr,
+    void sendDeliverOp(int answerPos, Object rdr,
 
-                       int recipPos,
-                       String verb,
-                       Object[] args) {
+                       int recipPos, String verb, Object[] args) {
         if (Trace.causality.debug && Trace.ON) {
             CommEvent commEvent = new CommEvent(localVatID(),
                                                 remoteVatID(),
@@ -1075,10 +1033,9 @@ class CapTPConnection implements MsgHandler {
             Trace.causality.debugm("", commEvent);
         }
         if (debug(recipPos)) {
-            debugm(recipPos, "send DeliverOp(" + answerPos + ", " + rdr +
-                             ",\n  " +
-                             recipPos + ", " + verb + ", " +
-                             argsString(args) + ")");
+            debugm(recipPos,
+                   "send DeliverOp(" + answerPos + ", " + rdr + ",\n  " +
+                     recipPos + ", " + verb + ", " + argsString(args) + ")");
         }
 
         if (null != myOptProblem) {
@@ -1200,7 +1157,6 @@ class CapTPConnection implements MsgHandler {
         }
     }
 
-
     /**************** lookup, gc, & shutdown *****************/
 
     /**
@@ -1232,20 +1188,19 @@ class CapTPConnection implements MsgHandler {
     public void connectionDead(VatTPConnection dataConn, Throwable problem) {
         T.require(dataConn == myDataConnection,
                   "dead VatTPConnection doesn't match");
-        killConnection(new NestedException(problem,
-                                           "# lost " + dataConn),
+        killConnection(new NestedException(problem, "# lost " + dataConn),
                        myShuttingDownFlag);
     }
 
     /**
-     * Terminate this connection in the case where something
-     * unrecoverable has gone wrong. <p>
+     * Terminate this connection in the case where something unrecoverable has
+     * gone wrong. <p>
      * <p/>
      * "A coward dies a thousand deaths, a hero dies but once." <p>
      * <p/>
-     * Our error handling is cowardly -- if anything goes wrong during
-     * I/O we assume we are dead. Thus we can be caused to die more
-     * than once, but we need to actually die only once...
+     * Our error handling is cowardly -- if anything goes wrong during I/O we
+     * assume we are dead. Thus we can be caused to die more than once, but we
+     * need to actually die only once...
      *
      * @param problem What went wrong
      */

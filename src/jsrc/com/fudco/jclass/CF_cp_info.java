@@ -21,8 +21,8 @@ public abstract class CF_cp_info implements ClassFileConstants {
     }
 
     /**
-     * Test if this entry is a "double size" entry: longs and doubles take
-     * up two slots in the constant_pool.
+     * Test if this entry is a "double size" entry: longs and doubles take up
+     * two slots in the constant_pool.
      *
      * @return false: the base case is that an entry is not double sized.
      */
@@ -40,8 +40,8 @@ public abstract class CF_cp_info implements ClassFileConstants {
      * aren't doing and it's unambiguous because the static reference has to
      * explicitly mention the class name anyway. Grrr.)
      *
-     * @param in The DataInputStream to read from; this should be positioned
-     *           at the first byte of the constant pool entry being read.
+     * @param in The DataInputStream to read from; this should be positioned at
+     *           the first byte of the constant pool entry being read.
      * @return a cp_info object representing the contant pool entry read from
      *         'in'.
      */

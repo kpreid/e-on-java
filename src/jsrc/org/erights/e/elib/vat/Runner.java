@@ -23,8 +23,8 @@ import java.util.Hashtable;
 /**
  * Runs when it can, but never on empty.
  * <p/>
- * The dequeueing end of a {@link Vat} -- an event loop & thread servicing
- * a queue of {@link PendingEvent}s.
+ * The dequeueing end of a {@link Vat} -- an event loop & thread servicing a
+ * queue of {@link PendingEvent}s.
  *
  * @author Mark S. Miller
  */
@@ -33,12 +33,11 @@ public abstract class Runner {
     /**
      * Maps from runnerKinds to fqns of RunnerMgrs.
      */
-    static private final String[][] RUNNER_KINDS = {
-        {"headless", "org.erights.e.elib.vat.HeadlessRunnerMgr"},
-        {"awt", "org.erights.e.ui.awt.AWTRunnerMgr"},
-        {"swt", "org.erights.e.ui.swt.SWTRunnerMgr"},
-        {"dead", "org.erights.e.elib.vat.DeadRunnerMgr"}
-    };
+    static private final String[][] RUNNER_KINDS = {{"headless",
+      "org.erights.e.elib.vat.HeadlessRunnerMgr"},
+      {"awt", "org.erights.e.ui.awt.AWTRunnerMgr"},
+      {"swt", "org.erights.e.ui.swt.SWTRunnerMgr"},
+      {"dead", "org.erights.e.elib.vat.DeadRunnerMgr"}};
 
     /**
      * Maps from runnerKinds to RunnerMgrs.
@@ -75,7 +74,8 @@ public abstract class Runner {
     }
 
     /**
-     * Turning this off and recompiling results in approximately a 10% speedup.
+     * Turning this off and recompiling results in approximately a 10%
+     * speedup.
      * <p/>
      * Turning this on allows the reporting of causality trace info, as needed
      * by the upcoming Causeway tool.
@@ -132,24 +132,20 @@ public abstract class Runner {
     }
 
     /**
-     * If called from within a thread servicing a Runner, returns that
-     * Runner; otherwise it's an external thread and we return null.
+     * If called from within a thread servicing a Runner, returns that Runner;
+     * otherwise it's an external thread and we return null.
      * <p/>
      * There are two kinds of threads which we take to be servicing a Runner.
-     * <ul>
-     * <li>A {@link RunnerThread} created to service a Runner, currently
-     * used for the "headless" and "swt" runnerKinds.
-     * <li>A pre-existing thread servicing a pre-existing event-queue
-     * mechanism, managing some device or system of devices that one
-     * might want to synchronously access from E, or (via callbacks) have
-     * synchronous access to E. This is currently used for the "awt"
-     * runnerKind.
-     * </ul>
-     * Let's call a thread not servicing a Runner an <i>external
-     * thread</i>, since it is external in some sense to E. (E-language code
-     * and normal ELib code should never execute in an external thread.)
-     * <tt>getOptCurrentRunner() == null</tt> iff it's invoked from an
-     * external thread.
+     * <ul> <li>A {@link RunnerThread} created to service a Runner, currently
+     * used for the "headless" and "swt" runnerKinds. <li>A pre-existing thread
+     * servicing a pre-existing event-queue mechanism, managing some device or
+     * system of devices that one might want to synchronously access from E, or
+     * (via callbacks) have synchronous access to E. This is currently used for
+     * the "awt" runnerKind. </ul> Let's call a thread not servicing a Runner
+     * an <i>external thread</i>, since it is external in some sense to E.
+     * (E-language code and normal ELib code should never execute in an
+     * external thread.) <tt>getOptCurrentRunner() == null</tt> iff it's
+     * invoked from an external thread.
      */
     static Runner getOptCurrentRunner() {
         Thread t = Thread.currentThread();
@@ -169,20 +165,19 @@ public abstract class Runner {
     }
 
     /**
-     * If called from within a thread servicing a Runner, returns that
-     * Runner; otherwise it's an external thread and we throw an exception.
+     * If called from within a thread servicing a Runner, returns that Runner;
+     * otherwise it's an external thread and we throw an exception.
      */
     static Runner getCurrentRunner() {
         Runner result = getOptCurrentRunner();
-        T.notNull(result,
-                  "Must be called from a Runner's thread");
+        T.notNull(result, "Must be called from a Runner's thread");
         return result;
     }
 
     /**
      * optName defaults to null
      *
-     * @see #obtainRunner(String, String)
+     * @see #obtainRunner(String,String)
      */
     static Runner obtainRunner(String runnerKind) {
         return obtainRunner(runnerKind, null);
@@ -192,8 +187,8 @@ public abstract class Runner {
      * Gets or makes a Runner of the specified kind.
      * <p/>
      *
-     * @param runnerKind says which {@link #getRunnerKind kind} of
-     *                   Runner to make.
+     * @param runnerKind says which {@link #getRunnerKind kind} of Runner to
+     *                   make.
      * @param optName    If we are making a new Runner, the name is used to tag
      *                   it and its thread for debugging purposes.
      */
@@ -294,8 +289,8 @@ public abstract class Runner {
     }
 
     /**
-     * If x.shorten() != x, then this Runner is no more, and should not
-     * be used. This can happen only to {@link HeadlessRunner}s.
+     * If x.shorten() != x, then this Runner is no more, and should not be
+     * used. This can happen only to {@link HeadlessRunner}s.
      *
      * @return The end of the merge chain. The default implementation here in
      *         Runner just returns <tt>this</tt>.
@@ -315,16 +310,15 @@ public abstract class Runner {
     protected abstract void setPriority(int newPriority);
 
     /**
-     * Performs a Thread.stop(t) on the thread executing the current
-     * event.
+     * Performs a Thread.stop(t) on the thread executing the current event.
      * <p/>
      * Note that Thread.stop() does not stop the thread (obvious huh?), but
      * rather causes that thread to experience a "spontaneously" thrown
      * exception.
      *
-     * @deprecated Since {@link Thread#stop(Throwable)} is also deprecated,
-     *             but will be available as long as Thread.stop(Throwable)
-     *             remains available.
+     * @deprecated Since {@link Thread#stop(Throwable)} is also deprecated, but
+     *             will be available as long as Thread.stop(Throwable) remains
+     *             available.
      */
     protected abstract void disturbEvent(Throwable t);
 
@@ -343,8 +337,8 @@ public abstract class Runner {
      * The ticket number of the event currently being run(), or -1 if idle.
      * <p/>
      * Used for causality tracing. The serving ticket count was dispensed by
-     * one of my enqueueing Vats and can only be understood relative to
-     * that Vat. Use {@link #getOptServingVat()} to get that Vat.
+     * one of my enqueueing Vats and can only be understood relative to that
+     * Vat. Use {@link #getOptServingVat()} to get that Vat.
      */
     long servingTicket() {
         return myServingTicket;
@@ -356,10 +350,9 @@ public abstract class Runner {
      * A kind of Runner determines which kind of "devices" (eg, AWT or SWT
      * widgets) may be synchronously accessed from within this Runner
      *
-     * @return one of "awt", "swt", "dead", or "headless". If "headless",
-     *         this makes an HeadlessRunner, which may later be
-     *         redirected, so use with caution. This list may be extended
-     *         over time.
+     * @return one of "awt", "swt", "dead", or "headless". If "headless", this
+     *         makes an HeadlessRunner, which may later be redirected, so use
+     *         with caution. This list may be extended over time.
      */
     protected abstract String getRunnerKind();
 
@@ -369,8 +362,8 @@ public abstract class Runner {
      * <p/>
      * If it is, we say we are executing <i>inside</i> this Runner.
      * <p/>
-     * <tt>r.isCurrent()</tt> implies
-     * <tt>{@link Runner#getCurrentRunner()} == r</tt>.
+     * <tt>r.isCurrent()</tt> implies <tt>{@link Runner#getCurrentRunner()} ==
+     * r</tt>.
      */
     protected abstract boolean isCurrent();
 
@@ -378,13 +371,11 @@ public abstract class Runner {
      * If not {@link #isCurrent()}, throw an exception
      */
     void requireCurrent() {
-        T.require(isCurrent(),
-                  "Must only be called from ", this, "'s thread");
+        T.require(isCurrent(), "Must only be called from ", this, "'s thread");
     }
 
     /**
-     * Remember the deadManSwitch, so that if I'm shut down, I can notify
-     * him.
+     * Remember the deadManSwitch, so that if I'm shut down, I can notify him.
      * <p/>
      * The deadManSwitch is only notified if it's be a boot-ref (a Ref handled
      * by a {@link BootRefHandler} whose target's vat is a vat handled by a

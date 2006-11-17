@@ -72,10 +72,10 @@ public class HexStringUtils {
     /**
      * Convert a byte array to a formated hex string suitable for printing.
      * <p/>
-     * The output is divided into lines. Each line has a 4 character hex
-     * offset in string, followed by the hex representation of 16 bytes of
-     * the input, grouped into 8 hex character groups, followed by an ascii
-     * interpretion of the 16 bytes.
+     * The output is divided into lines. Each line has a 4 character hex offset
+     * in string, followed by the hex representation of 16 bytes of the input,
+     * grouped into 8 hex character groups, followed by an ascii interpretion
+     * of the 16 bytes.
      *
      * @param msg The hex string.
      */
@@ -86,19 +86,17 @@ public class HexStringUtils {
     /**
      * Convert a byte array to a formated hex string suitable for printing.
      * <p/>
-     * The output is divided into lines. Each line has a 4 character hex
-     * offset in string, followed by the hex representation of 16 bytes of
-     * the input, grouped into 8 hex character groups, followed by an ascii
-     * interpretion of the 16 bytes.
+     * The output is divided into lines. Each line has a 4 character hex offset
+     * in string, followed by the hex representation of 16 bytes of the input,
+     * grouped into 8 hex character groups, followed by an ascii interpretion
+     * of the 16 bytes.
      *
      * @param msg The hex string.
      * @param off the offset in msg to start converting. The offsets included
-     *            in the output will start with 0000 regardless of the value of off.
-     *            &param len the number of bytes to convert.
+     *            in the output will start with 0000 regardless of the value of
+     *            off. &param len the number of bytes to convert.
      */
-    static public String bytesToReadableHexStr(byte msg[],
-                                               int off,
-                                               int len) {
+    static public String bytesToReadableHexStr(byte msg[], int off, int len) {
         StringBuffer msgString = new StringBuffer(len * 59 + 2);
         msgString.append("\n");
 

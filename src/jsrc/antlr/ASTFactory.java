@@ -33,8 +33,8 @@ public class ASTFactory {
     protected Class theASTNodeTypeClass = null;
 
     /**
-     * How to specify the classname to create for a particular token type.
-     * Note that ANTLR allows you to say, for example,
+     * How to specify the classname to create for a particular token type. Note
+     * that ANTLR allows you to say, for example,
      * <p/>
      * tokens { PLUS<AST=PLUSNode>; ... }
      * <p/>
@@ -102,8 +102,8 @@ public class ASTFactory {
     public Class getASTNodeType(int tokenType) {
         // try node specific class
         if (tokenTypeToASTClassMap != null) {
-            Class c = (Class)tokenTypeToASTClassMap.get(
-              new Integer(tokenType));
+            Class c =
+              (Class)tokenTypeToASTClassMap.get(new Integer(tokenType));
             if (c != null) {
                 return c;
             }
@@ -168,8 +168,8 @@ public class ASTFactory {
     /**
      * Create an AST node with the token type and text passed in, but with a
      * specific Java object type. Typically called when you say
-     * @[PLUS,"+",PLUSNode] in an antlr action.
      *
+     * @[PLUS,"+",PLUSNode] in an antlr action.
      * @since 2.7.2
      */
     public AST create(int type, String txt, String className) {
@@ -186,7 +186,7 @@ public class ASTFactory {
      */
     public AST create(AST tr) {
         if (tr == null) {
-            return null;		// create(null) == null
+            return null;                // create(null) == null
         }
         AST t = create(tr.getType());
         if (t != null) {
@@ -241,7 +241,8 @@ public class ASTFactory {
             Class[] tokenArgType = new Class[]{antlr.Token.class};
             try {
                 Constructor ctor = c.getConstructor(tokenArgType);
-                t = (AST)ctor.newInstance(new Object[]{token}); // make a new one
+                t =
+                  (AST)ctor.newInstance(new Object[]{token}); // make a new one
             } catch (NoSuchMethodException e) {
                 // just do the regular thing if you can't find the ctor
                 // Your AST must have default ctor to use this.
@@ -294,9 +295,10 @@ public class ASTFactory {
     public AST dupList(AST t) {
         AST result = dupTree(t);            // if t == null, then result==null
         AST nt = result;
-        while (t != null) {						// for each sibling of the root
+        while (t !=
+          null) {                                                // for each sibling of the root
             t = t.getNextSibling();
-            nt.setNextSibling(dupTree(t));	// dup each subtree, building new tree
+            nt.setNextSibling(dupTree(t));        // dup each subtree, building new tree
             nt = nt.getNextSibling();
         }
         return result;
@@ -307,7 +309,7 @@ public class ASTFactory {
      * that node and what's below; ignore siblings of root node.
      */
     public AST dupTree(AST t) {
-        AST result = dup(t);		// make copy of root
+        AST result = dup(t);                // make copy of root
         // copy all children of root.
         if (t != null) {
             result.setFirstChild(dupList(t.getFirstChild()));
@@ -328,12 +330,12 @@ public class ASTFactory {
         AST root = nodes[0];
         AST tail = null;
         if (root != null) {
-            root.setFirstChild(null);	// don't leave any old pointers set
+            root.setFirstChild(null);        // don't leave any old pointers set
         }
         // link in children;
         for (int i = 1; i < nodes.length; i++) {
             if (nodes[i] == null) {
-                continue;	// ignore null nodes
+                continue;        // ignore null nodes
             }
             if (root == null) {
                 // Set the root and set it up for a flat list

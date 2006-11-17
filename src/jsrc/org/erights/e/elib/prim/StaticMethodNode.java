@@ -26,8 +26,8 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
 /**
- * How a java static is made to appear as an instance method of an
- * StaticMaker when seen thru E.call*() or E.send*().
+ * How a java static is made to appear as an instance method of an StaticMaker
+ * when seen thru E.call*() or E.send*().
  *
  * @author Mark S. Miller
  */
@@ -51,9 +51,7 @@ public class StaticMethodNode extends JavaMemberNode {
     /**
      *
      */
-    static public void defineMembers(VTable vTable,
-                                     Class clazz,
-                                     SafeJ safeJ)
+    static public void defineMembers(VTable vTable, Class clazz, SafeJ safeJ)
       throws AlreadyDefinedException {
         if (!Modifier.isPublic(clazz.getModifiers())) {
             return;
@@ -108,8 +106,8 @@ public class StaticMethodNode extends JavaMemberNode {
     /**
      *
      */
-    public Object innerExecute(Object self, Object[] args)
-      throws IllegalAccessException, IllegalArgumentException,
+    public Object innerExecute(Object self, Object[] args) throws
+      IllegalAccessException, IllegalArgumentException,
       InvocationTargetException {
 
         return ((Method)myMember).invoke(null, args);
@@ -144,8 +142,8 @@ public class StaticMethodNode extends JavaMemberNode {
     }
 
     /**
-     * This indirect nonesense is needed because static init
-     * expressions may not have Exceptions in need of declaration.
+     * This indirect nonesense is needed because static init expressions may
+     * not have Exceptions in need of declaration.
      */
     static private MethodNode wrapMethod(String verb) {
         Method meth;

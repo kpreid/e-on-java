@@ -9,7 +9,7 @@ package antlr;
 
 abstract class BlockWithImpliedExitPath extends AlternativeBlock {
 
-    protected int exitLookaheadDepth;	// lookahead needed to handle optional path
+    protected int exitLookaheadDepth;        // lookahead needed to handle optional path
     /**
      * lookahead to bypass block; set by deterministic().  1..k of Lookahead
      */

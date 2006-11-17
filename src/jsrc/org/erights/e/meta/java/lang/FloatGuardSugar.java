@@ -5,8 +5,8 @@ package org.erights.e.meta.java.lang;
 
 import org.erights.e.develop.assertion.T;
 import org.erights.e.elib.base.ClassDesc;
-import org.erights.e.elib.util.OneArgFunc;
 import org.erights.e.elib.oldeio.TextWriter;
+import org.erights.e.elib.util.OneArgFunc;
 
 import java.io.IOException;
 
@@ -20,8 +20,7 @@ public class FloatGuardSugar extends ClassDesc {
      */
     public FloatGuardSugar(Class clazz) {
         super(clazz);
-        T.require(Float.class == clazz,
-                  clazz, " must be a float32 type");
+        T.require(Float.class == clazz, clazz, " must be a float32 type");
     }
 
     /**

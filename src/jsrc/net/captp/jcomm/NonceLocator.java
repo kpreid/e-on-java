@@ -70,9 +70,7 @@ public class NonceLocator {
     /**
      *
      */
-    public Vine provideFor(Object gift,
-                           String recipID,
-                           long nonce) {
+    public Vine provideFor(Object gift, String recipID, long nonce) {
         return myPGifts.provideFor(gift, recipID, nonce);
     }
 
@@ -83,14 +81,12 @@ public class NonceLocator {
                            String recipID,
                            long nonce,
                            BigInteger swissHash) {
-        T.require(Ref.isNear(gift),
-                  "Must be Near: ", gift);
+        T.require(Ref.isNear(gift), "Must be Near: ", gift);
         //If gift isn't Selfish, this will throw an exception,
         //which is as it should be.
         BigInteger giftSwiss = mySwissTable.getIdentity(gift);
         BigInteger giftHash = BigIntegerSugar.cryptoHash(giftSwiss);
-        T.require(giftHash.equals(swissHash),
-                  "wrong hash: ", swissHash);
+        T.require(giftHash.equals(swissHash), "wrong hash: ", swissHash);
         return myNGifts.provideFor(gift, recipID, nonce, swissHash);
     }
 
@@ -105,8 +101,7 @@ public class NonceLocator {
     public Object acceptFrom(ConstList donorPath,
                              String donorID,
                              long nonce,
-                             Object optFarVine)
-      throws IOException {
+                             Object optFarVine) throws IOException {
         CapTPConnection optDonorConn =
           myCapTPMgr.getOrMakeProxyConnection(donorPath, donorID);
         if (null == optDonorConn) {
@@ -131,8 +126,7 @@ public class NonceLocator {
                              String donorID,
                              long nonce,
                              BigInteger swissHash,
-                             Object optFarVine)
-      throws IOException {
+                             Object optFarVine) throws IOException {
         CapTPConnection optDonorConn =
           myCapTPMgr.getOrMakeProxyConnection(donorPath, donorID);
         if (null == optDonorConn) {
@@ -141,16 +135,14 @@ public class NonceLocator {
         NearGiftTable donorTable = optDonorConn.getNearGiftTable();
         Object result = donorTable.acceptFor(myOwnID, nonce, swissHash);
         if (!Ref.isNear(result)) {
-            T.fail("internal: non-near gift for " +
-                   swissHash);
+            T.fail("internal: non-near gift for " + swissHash);
         }
         //If result isn't Selfish, this will throw an exception,
         //which is as it should be.
         BigInteger id = mySwissTable.getIdentity(result);
         BigInteger idHash = BigIntegerSugar.cryptoHash(id);
         if (!swissHash.equals(idHash)) {
-            T.fail("internal: hash mismatch: " +
-                   swissHash);
+            T.fail("internal: hash mismatch: " + swissHash);
         }
         return result;
     }
@@ -158,8 +150,8 @@ public class NonceLocator {
     /**
      * Do nothing, letting the argument become garbage. <p>
      * <p/>
-     * The purpose of the message is to ensure that the argument isn't
-     * garbage until the message is delivered.
+     * The purpose of the message is to ensure that the argument isn't garbage
+     * until the message is delivered.
      */
     public void ignore(Object optFarVine) {
     }
@@ -174,9 +166,9 @@ public class NonceLocator {
     /**
      * Enables our counterparty to log a message to our tracing system.
      * <p/>
-     * These messages are tagged with the vatID of our counterparty. They
-     * are logged at debug level, and currently to the "captp" subsystem.
-     * These should probably instead have their own subsystem.
+     * These messages are tagged with the vatID of our counterparty. They are
+     * logged at debug level, and currently to the "captp" subsystem. These
+     * should probably instead have their own subsystem.
      */
     public void traceRemote(String message) {
         if (Trace.captp.debug && Trace.ON) {

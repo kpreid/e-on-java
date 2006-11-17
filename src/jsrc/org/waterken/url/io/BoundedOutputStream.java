@@ -57,8 +57,7 @@ public final class BoundedOutputStream extends OutputStream {
     public void close() throws IOException {
         if (null != out) {
             if (remaining != 0) {
-                throw new IOException(
-                  "Invalid Content-Length request header!");
+                throw new IOException("Invalid Content-Length request header!");
             }
             out.close();
             out = null;

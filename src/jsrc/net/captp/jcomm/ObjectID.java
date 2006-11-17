@@ -27,8 +27,8 @@ import org.erights.e.meta.java.math.BigIntegerSugar;
 import java.math.BigInteger;
 
 /**
- * A pairing of a VatID and a SwissHash, uniquely identifying a Selfish
- * object without providing access to the object. <p>
+ * A pairing of a VatID and a SwissHash, uniquely identifying a Selfish object
+ * without providing access to the object. <p>
  *
  * @author Chip Morningstar
  * @author Mark S. Miller

@@ -73,17 +73,14 @@ public abstract class MethodNode implements VTableEntry {
     public abstract void addJavaMemberNodesToMap(FlexMap map);
 
     /**
-     * Returns a description of the message this method responds to.
-     * Should be overridden by subclasses that can be more informative
+     * Returns a description of the message this method responds to. Should be
+     * overridden by subclasses that can be more informative
      */
     public MessageDesc makeMessageType(String verb) {
         Guard any = AnyGuard.THE_ONE;
         ParamDesc[] pType1 = {new ParamDesc(null, any)};
         ConstList pTypes = ConstList.fromArray(pType1).multiply(getArity());
-        return new MessageDesc(getDocComment(),
-                               verb,
-                               pTypes,
-                               any);
+        return new MessageDesc(getDocComment(), verb, pTypes, any);
     }
 
     /**

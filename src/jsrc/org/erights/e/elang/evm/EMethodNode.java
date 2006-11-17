@@ -40,9 +40,9 @@ import java.io.IOException;
 /**
  * Adapt to a method defined in E.
  *
- * @see org.erights.e.elib.prim.VTable
  * @author Mark S. Miller
  * @author E. Dean Tribble
+ * @see org.erights.e.elib.prim.VTable
  */
 public class EMethodNode extends MethodNode implements EStackItem {
 
@@ -69,8 +69,8 @@ public class EMethodNode extends MethodNode implements EStackItem {
         myVerb = verb.intern();
         myArity = arity;
         myMethod = method;
-        myCallCounter = Profiler.THE_ONE.register(toString(),
-                                                  myMethod.getOptSpan());
+        myCallCounter =
+          Profiler.THE_ONE.register(toString(), myMethod.getOptSpan());
     }
 
     /**
@@ -88,7 +88,6 @@ public class EMethodNode extends MethodNode implements EStackItem {
     }
 
     /**
-     *
      * @param optShortSelf
      * @return
      */
@@ -123,11 +122,11 @@ public class EMethodNode extends MethodNode implements EStackItem {
      *
      */
     public Object execute(Object optSelf, String verb, Object[] args) {
-        if (myArity != args.length
-          || (myVerb != verb && !myVerb.equals(verb))) {
+        if (myArity != args.length ||
+          (myVerb != verb && !myVerb.equals(verb))) {
 
-            NoSuchMethodException nsme = new NoSuchMethodException
-              ("internal: " + verb + "/" + args.length);
+            NoSuchMethodException nsme = new NoSuchMethodException(
+              "internal: " + verb + "/" + args.length);
             throw myCallCounter.bumpBadCount(nsme, optSelf, verb, args);
         }
         Runner.pushEStackItem(this);
@@ -212,7 +211,6 @@ public class EMethodNode extends MethodNode implements EStackItem {
     }
 
     /**
-     *
      * @return
      */
     public SourceSpan getOptSpan() {

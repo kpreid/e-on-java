@@ -20,18 +20,18 @@ public final class Locator {
     private static final org.waterken.url.Locator INSTANCE;
 
     static {
-        org.waterken.url.Locator locator = org.waterken.url.dns.Locator.make(
-          DEFAULT_PORT);
+        org.waterken.url.Locator locator =
+          org.waterken.url.dns.Locator.make(DEFAULT_PORT);
 
         // Check for proxy settings.
         final String host = System.getProperty("http.proxyHost");
         if (null != host) {
             final String port = System.getProperty("http.proxyPort");
-            locator = org.waterken.url.proxy.Locator.make(locator, null !=
-                                                                   port ?
-                                                                   host + ":" +
-                                                                   port :
-                                                                   host);
+            locator = org.waterken
+              .url
+              .proxy
+              .Locator
+              .make(locator, null != port ? host + ":" + port : host);
         }
 
         INSTANCE = locator;

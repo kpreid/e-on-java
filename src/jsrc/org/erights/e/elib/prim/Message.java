@@ -31,9 +31,8 @@ import java.io.IOException;
  * A message consists of the verb, the args, and the optional Resolver for
  * reporting the outcome of delivering the message.
  * <p/>
- * In other words, it contains all the non-debugging parts of a
- * PendingDelivery except for the object to which the message should be
- * delivered.
+ * In other words, it contains all the non-debugging parts of a PendingDelivery
+ * except for the object to which the message should be delivered.
  *
  * @author Mark S. Miller
  */
@@ -50,9 +49,7 @@ public class Message implements EPrintable {
     /**
      * Remembers the current vat
      */
-    public Message(Resolver optResolver,
-                   String verb,
-                   Object[] args) {
+    public Message(Resolver optResolver, String verb, Object[] args) {
         super();
         myOptResolver = optResolver;
         myVerb = verb;

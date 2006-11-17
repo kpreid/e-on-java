@@ -22,16 +22,14 @@ Contributor(s): ______________________________________.
 
 /**
  * TestMultiQMain -- test elib message sending using two run queues.
- * Functionality tested:
- * org.erights.e.elib.prim.E.sendOnly()
- * org.erights.e.elib.vat.Vat  - multiple threads.
- * org.erights.e.elib.helpers.ExternalRef
+ * Functionality tested: org.erights.e.elib.prim.E.sendOnly()
+ * org.erights.e.elib.vat.Vat  - multiple threads. org.erights.e.elib.helpers.ExternalRef
  * High level bits: We create two objects (TestMultiQ) that keep a counter.
- * Each object will get a reference to the other. One object will be told
- * to start sending to the other object. When the message is received, the
+ * Each object will get a reference to the other. One object will be told to
+ * start sending to the other object. When the message is received, the
  * receiver will increment a count, and send the same message to the other
- * object. The result is that the two counts just keep increasing.
- * See source comments for more info.
+ * object. The result is that the two counts just keep increasing. See source
+ * comments for more info.
  */
 public class TestMultiQMain {
 

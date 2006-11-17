@@ -9,7 +9,7 @@ package antlr;
 
 public class RecognitionException extends ANTLRException {
 
-    public String fileName;		// not used by treeparsers
+    public String fileName;                // not used by treeparsers
     public int line;
     public int column;
 
@@ -34,7 +34,7 @@ public class RecognitionException extends ANTLRException {
 
     /**
      * @deprecated As of ANTLR 2.7.2 use {@see #RecognitionException(char,
-      *             String, int, int) }
+     *String,int,int) }
      */
     public RecognitionException(String s, String fileName_, int line_) {
         this(s, fileName_, line_, -1);
@@ -75,8 +75,7 @@ public class RecognitionException extends ANTLRException {
     }
 
     public String toString() {
-        return FileLineFormatter.getFormatter().getFormatString(fileName,
-                                                                line,
-                                                                column) + getMessage();
+        return FileLineFormatter.getFormatter()
+          .getFormatString(fileName, line, column) + getMessage();
     }
 }

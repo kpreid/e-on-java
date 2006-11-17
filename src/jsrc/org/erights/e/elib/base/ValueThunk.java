@@ -19,7 +19,6 @@ public class ValueThunk implements Thunk, Selfless, PassByConstruction {
     private final Object myValue;
 
     /**
-     *
      * @param value
      */
     public ValueThunk(Object value) {
@@ -30,9 +29,7 @@ public class ValueThunk implements Thunk, Selfless, PassByConstruction {
      * Uses 'makeValueThunk(value)'
      */
     public Object[] getSpreadUncall() {
-        Object[] result = {
-            StaticMaker.make(ValueThunk.class), "run", myValue
-        };
+        Object[] result = {StaticMaker.make(ValueThunk.class), "run", myValue};
         return result;
     }
 

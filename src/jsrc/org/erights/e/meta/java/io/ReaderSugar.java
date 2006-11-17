@@ -28,8 +28,7 @@ import java.io.IOException;
 import java.io.Reader;
 
 /**
- * A sweetener defining extra messages that may be e-sent to a
- * Reader.
+ * A sweetener defining extra messages that may be e-sent to a Reader.
  *
  * @author Mark S. Miller
  */
@@ -90,11 +89,10 @@ public class ReaderSugar {
     }
 
     /**
-     * Reads no more than 'size' characters from the file, and return
-     * them as a String. If at end-of-file, return null.
+     * Reads no more than 'size' characters from the file, and return them as a
+     * String. If at end-of-file, return null.
      */
-    static public String readString(Reader self, int size)
-      throws IOException {
+    static public String readString(Reader self, int size) throws IOException {
         char[] cbuf = new char[size];
         int numRead = self.read(cbuf);
         if (numRead == -1) {

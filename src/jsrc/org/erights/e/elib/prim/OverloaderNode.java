@@ -154,10 +154,10 @@ public class OverloaderNode extends MethodNode {
                 optNewArgs = optArgs;
                 index = i;
             } else {
-                IllegalArgumentException iae = new IllegalArgumentException
-                  ("Ambiguous overload on " + optSelf.getClass() + ": " +
-                   myNodes[index].getOptTypedVerb() + " vs " +
-                   myNodes[i].getOptTypedVerb());
+                IllegalArgumentException iae = new IllegalArgumentException(
+                  "Ambiguous overload on " + optSelf.getClass() + ": " +
+                    myNodes[index].getOptTypedVerb() + " vs " +
+                    myNodes[i].getOptTypedVerb());
                 throw myCallCounter.bumpBadCount(iae, optSelf, verb, args);
             }
         }

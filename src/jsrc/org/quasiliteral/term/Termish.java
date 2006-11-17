@@ -55,7 +55,7 @@ public abstract class Termish extends SamenessHashCacher
 
     /**
      * Without the surrounding "term`" and "`".
-     * <p>
+     * <p/>
      * quasiFlag defaults to false.
      */
     public String asText() {

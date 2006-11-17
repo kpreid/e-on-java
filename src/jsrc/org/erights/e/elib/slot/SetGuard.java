@@ -6,9 +6,9 @@ package org.erights.e.elib.slot;
 import org.erights.e.develop.assertion.T;
 import org.erights.e.elib.base.ClassDesc;
 import org.erights.e.elib.oldeio.TextWriter;
+import org.erights.e.elib.tables.AssocFunc;
 import org.erights.e.elib.tables.ConstList;
 import org.erights.e.elib.tables.ConstSet;
-import org.erights.e.elib.tables.AssocFunc;
 import org.erights.e.elib.util.OneArgFunc;
 
 import java.io.IOException;
@@ -17,9 +17,9 @@ import java.io.IOException;
  * Wraps an element guard, in order to coerce a set into a set in which each
  * element has been coerced by the element guard.
  * <p/>
- * In the E language, <tt>Set[eelemGuard]</tt>
- * evaluates to a SetGuard wrapping elemGuard. Read as a type declaration, it
- * means "a ConstSet of elements satisfying elemGuard".
+ * In the E language, <tt>Set[eelemGuard]</tt> evaluates to a SetGuard wrapping
+ * elemGuard. Read as a type declaration, it means "a ConstSet of elements
+ * satisfying elemGuard".
  *
  * @author Mark S. Miller
  */
@@ -40,10 +40,8 @@ public class SetGuard implements Guard {
      * @return
      */
     public SetGuard get(Guard elemGuard) {
-        T.require(null == myOptElemGuard,
-                  "Already parameterized: ", this);
-        T.notNull(elemGuard,
-                  "Missing element guard parameter");
+        T.require(null == myOptElemGuard, "Already parameterized: ", this);
+        T.notNull(elemGuard, "Missing element guard parameter");
         return new SetGuard(elemGuard);
     }
 
@@ -52,8 +50,7 @@ public class SetGuard implements Guard {
      */
     public Object coerce(Object specimen, final OneArgFunc optEjector) {
         ClassDesc ConstSetGuard = ClassDesc.make(ConstSet.class);
-        ConstSet set =
-          (ConstSet)ConstSetGuard.coerce(specimen, optEjector);
+        ConstSet set = (ConstSet)ConstSetGuard.coerce(specimen, optEjector);
         if (null == myOptElemGuard) {
             return set;
         }
@@ -64,7 +61,8 @@ public class SetGuard implements Guard {
         final int[] i = {0};
         set.iterate(new AssocFunc() {
             public void run(Object key, Object value) {
-                result[i[0]++] = myOptElemGuard.coerce(value, optEjector);;
+                result[i[0]++] = myOptElemGuard.coerce(value, optEjector);
+                ;
             }
         });
         return ConstList.fromArray(result).asSet();

@@ -8,9 +8,9 @@ import antlr.LexerSharedInputState;
 import java.io.InputStream;
 
 /**
- * Extension of {@link LexerSharedInputState} that is aware of
- * file names and can annotate {@link AstroToken}s with them and
- * with end position information.
+ * Extension of {@link LexerSharedInputState} that is aware of file names and
+ * can annotate {@link AstroToken}s with them and with end position
+ * information.
  *
  * @author based on Dan Bornstein's ExtentLexerSharedInputState
  * @author Mark S. Miller
@@ -34,8 +34,7 @@ public class AstroLexerSharedInputState extends LexerSharedInputState {
     }
 
     /**
-     * Construct an instance. The file name is set to <tt>null</tt>
-     * initially.
+     * Construct an instance. The file name is set to <tt>null</tt> initially.
      *
      * @param s the input stream to use
      */
@@ -79,8 +78,8 @@ public class AstroLexerSharedInputState extends LexerSharedInputState {
     }
 
     /**
-     * Annotate an {@link AstroToken} based on this instance. It sets
-     * the end position information as well as the file name.
+     * Annotate an {@link AstroToken} based on this instance. It sets the end
+     * position information as well as the file name.
      *
      * @param token non-null; the token to annotate
      */

@@ -18,8 +18,8 @@ import java.awt.Toolkit;
  * Uses the AWT Event Thread as a virtual RunnerThread, so that AWT/Swing
  * widgets can be invoked synchronously from this Runner.
  * <p/>
- * XXX Dean says it's possible to create multiple AWT event threads. If we
- * ever decide to support that, this Runner should be largely rewritten.
+ * XXX Dean says it's possible to create multiple AWT event threads. If we ever
+ * decide to support that, this Runner should be largely rewritten.
  *
  * @author Mark S. Miller
  * @author With crucial help from Dean Tribble.
@@ -79,8 +79,8 @@ final class AWTRunner extends Runner {
     /**
      * Gets the one canonical AWTRunner.
      * <p/>
-     * The Runner is created the first time this is called. At that time,
-     * the look-n-feel is set according to the System properties.
+     * The Runner is created the first time this is called. At that time, the
+     * look-n-feel is set according to the System properties.
      */
     static AWTRunner getDefault() {
         synchronized (OUR_LOCK) {
@@ -103,10 +103,10 @@ final class AWTRunner extends Runner {
      * doing a <tt>EventQueue.isDispatchThread()</tt> (or any other AWT
      * operation) if no AWTRunner has yet been created.
      * <p/>
-     * Believe it or not, this is the key to getting SWT working on Linux.
-     * On Linux, once an AWT operation has been invoked (or, at least, this
-     * one), then SWT no longer seems to be able to work. This seems to
-     * correspond to the SWT documentation.
+     * Believe it or not, this is the key to getting SWT working on Linux. On
+     * Linux, once an AWT operation has been invoked (or, at least, this one),
+     * then SWT no longer seems to be able to work. This seems to correspond to
+     * the SWT documentation.
      */
     static boolean isAWTCurrent() {
         if (null == THE_DEFAULT) {
@@ -131,18 +131,18 @@ final class AWTRunner extends Runner {
     }
 
     /**
-     * XXX Doesn't do anything, since I can't figure out how to get my hands
-     * on {@link EventQueue#getDispatchThread()}, which isn't public.
+     * XXX Doesn't do anything, since I can't figure out how to get my hands on
+     * {@link EventQueue#getDispatchThread()}, which isn't public.
      * <p/>
-     * Note that this is about the thread's priority, and not the AWT notion
-     * of priority among events within a thread.
+     * Note that this is about the thread's priority, and not the AWT notion of
+     * priority among events within a thread.
      */
     protected void setPriority(int newPriority) {
     }
 
     /**
-     * XXX Doesn't do anything, since I can't figure out how to get my hands
-     * on {@link EventQueue#getDispatchThread()}, which isn't public.
+     * XXX Doesn't do anything, since I can't figure out how to get my hands on
+     * {@link EventQueue#getDispatchThread()}, which isn't public.
      */
     protected void disturbEvent(Throwable t) {
     }

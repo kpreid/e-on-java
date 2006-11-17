@@ -28,8 +28,9 @@ public class Mint {
         private class Decr {
 
             public void decr(BigInteger amount) {
-                T.require(amount.signum() >= 0 &&
-                          amount.compareTo(myBalance) <= 0, "oops");
+                T.require(
+                  amount.signum() >= 0 && amount.compareTo(myBalance) <= 0,
+                  "oops");
                 myBalance = myBalance.subtract(amount);
             }
         }
@@ -96,8 +97,8 @@ class Bob {
     }
 
     public void accept(Mint.Purse payment) {
-        Ref ackVow = E.send(myPurse, "deposit",
-                            BigInteger.valueOf(10), payment);
+        Ref ackVow =
+          E.send(myPurse, "deposit", BigInteger.valueOf(10), payment);
         Ref.whenResolvedOnly(ackVow, new OneArgFunc() {
             public Object run(Object ack) {
                 T.require(!Ref.isBroken(ack), "oops");

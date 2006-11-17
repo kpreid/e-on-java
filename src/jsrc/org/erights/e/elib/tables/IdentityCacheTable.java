@@ -27,12 +27,12 @@ Contributor(s): ______________________________________.
  * Used to memoize the source strings/twine fed to QuasiParsers, and the
  * mapping to the ValueMaker or MatchMaker it generated.
  * <p/>
- * Once we go to the new hole-array protocol, this will have to be added to
- * the memoization as well.
+ * Once we go to the new hole-array protocol, this will have to be added to the
+ * memoization as well.
  * <p/>
- * Because IdentityCacheTable exposes EQ-ness of the keys, it is
- * unsafe, and so (until we can audit for determinism) can only be used by
- * trusted quasiParsers.
+ * Because IdentityCacheTable exposes EQ-ness of the keys, it is unsafe, and so
+ * (until we can audit for determinism) can only be used by trusted
+ * quasiParsers.
  * <p/>
  * Note: keys may not be null, but values may be null
  *

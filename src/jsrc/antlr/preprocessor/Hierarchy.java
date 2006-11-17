@@ -23,8 +23,8 @@ public class Hierarchy {
     protected Grammar LexerRoot = null;
     protected Grammar ParserRoot = null;
     protected Grammar TreeParserRoot = null;
-    protected Hashtable symbols;	// table of grammars
-    protected Hashtable files;	// table of grammar files read in
+    protected Hashtable symbols;        // table of grammars
+    protected Hashtable files;        // table of grammar files read in
     protected antlr.Tool antlrTool;
 
     public Hierarchy(antlr.Tool tool) {
@@ -59,21 +59,21 @@ public class Hierarchy {
 
     public void expandGrammarsInFile(String fileName) {
         GrammarFile f = getFile(fileName);
-        for (Enumeration e = f.getGrammars().elements();
-             e.hasMoreElements();) {
+        for (Enumeration e = f.getGrammars().elements(); e.hasMoreElements();)
+        {
             Grammar g = (Grammar)e.nextElement();
             g.expandInPlace();
         }
     }
 
     public Grammar findRoot(Grammar g) {
-        if (g.getSuperGrammarName() == null) {		// at root
+        if (g.getSuperGrammarName() == null) {                // at root
             return g;
         }
         // return root of super.
         Grammar sg = g.getSuperGrammar();
         if (sg == null) {
-            return g;		// return this grammar if super missing
+            return g;                // return this grammar if super missing
         }
         return findRoot(sg);
     }
@@ -89,8 +89,8 @@ public class Hierarchy {
     public static String optionsToString(IndexedVector options) {
         String s = "options {" + System.getProperty("line.separator");
         for (Enumeration e = options.elements(); e.hasMoreElements();) {
-            s += (Option)e.nextElement() +
-              System.getProperty("line.separator");
+            s +=
+              (Option)e.nextElement() + System.getProperty("line.separator");
         }
         s += "}" + System.getProperty("line.separator") +
           System.getProperty("line.separator");
@@ -128,7 +128,7 @@ public class Hierarchy {
         for (Enumeration e = symbols.elements(); e.hasMoreElements();) {
             Grammar c = (Grammar)e.nextElement();
             if (c.getSuperGrammarName() == null) {
-                continue;		// at root: ignore predefined roots
+                continue;                // at root: ignore predefined roots
             }
             Grammar superG = c.getSuperGrammar();
             if (superG == null) {
@@ -149,7 +149,7 @@ public class Hierarchy {
         for (Enumeration e = symbols.elements(); e.hasMoreElements();) {
             Grammar c = (Grammar)e.nextElement();
             if (c.getSuperGrammarName() == null) {
-                continue;		// ignore predefined roots
+                continue;                // ignore predefined roots
             }
             c.setType(findRoot(c).getName());
         }

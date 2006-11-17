@@ -7,11 +7,11 @@ package org.erights.e.elang.interp;
 /**
  * An StaticMaker on this class is the function named "__loop" in the
  * universalScope (and therefore also in the safeScope). <p>
- *
- * This wrapper is used as the E language's primitive looping construct.
- * When called as a one-argument function, it just repeatedly calls its
- * argument as a zero-argument, bool-returning function until that function
- * returns 'false'.
+ * <p/>
+ * This wrapper is used as the E language's primitive looping construct. When
+ * called as a one-argument function, it just repeatedly calls its argument as
+ * a zero-argument, bool-returning function until that function returns
+ * 'false'.
  *
  * @author Mark S. Miller.
  */

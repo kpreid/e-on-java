@@ -25,8 +25,7 @@ public class ArrayGuardSugar extends ClassDesc {
      */
     public ArrayGuardSugar(Class clazz) {
         super(clazz);
-        T.require(clazz.isArray(),
-                  clazz, " must be an array type");
+        T.require(clazz.isArray(), clazz, " must be an array type");
     }
 
     /**

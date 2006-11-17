@@ -22,9 +22,9 @@ public interface Audition {
     /**
      * This is the source for the ObjectExpr as a whole.
      * <p/>
-     * The return value is typed "Object" rather than "ObjectExpr" to avoid
-     * an upward layer dependency from elib to elang.
-     * <p>
+     * The return value is typed "Object" rather than "ObjectExpr" to avoid an
+     * upward layer dependency from elib to elang.
+     * <p/>
      * Note that the relevant scope for {@link #getOptGuard(String)} is the
      * script rather that the ObjectExpr as a whole.
      */

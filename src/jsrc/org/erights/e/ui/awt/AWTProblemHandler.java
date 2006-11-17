@@ -6,28 +6,24 @@ package org.erights.e.ui.awt;
 import org.erights.e.develop.trace.Trace;
 
 /**
- * As mandated by JDK1.3's {@link
- * java.awt.EventDispatchThread#handleException(Throwable)}
+ * As mandated by JDK1.3's {@link java.awt.EventDispatchThread#handleException(Throwable)}
  *
  * @author Mark S. Miller
  */
 class AWTProblemHandler {
 
     /**
-     * As mandated by JDK1.3's {@link
-     * java.awt.EventDispatchThread#handleException(Throwable)}
+     * As mandated by JDK1.3's {@link java.awt.EventDispatchThread#handleException(Throwable)}
      */
     public AWTProblemHandler() {
     }
 
     /**
-     * As mandated by JDK1.3's {@link
-     * java.awt.EventDispatchThread#handleException(Throwable)}
+     * As mandated by JDK1.3's {@link java.awt.EventDispatchThread#handleException(Throwable)}
      */
     public void handle(Throwable problem) {
         if (Trace.causality.warning && Trace.ON) {
-            Trace.causality.warningm("While dispatching awt event",
-                                     problem);
+            Trace.causality.warningm("While dispatching awt event", problem);
         }
     }
 }

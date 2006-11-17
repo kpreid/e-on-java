@@ -5,8 +5,8 @@ package org.erights.e.elang.syntax;
 
 import org.erights.e.develop.assertion.T;
 import org.erights.e.elang.evm.EExpr;
-import org.erights.e.elang.evm.Pattern;
 import org.erights.e.elang.evm.IgnorePattern;
+import org.erights.e.elang.evm.Pattern;
 import org.erights.e.elib.base.SourceSpan;
 
 /**

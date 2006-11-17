@@ -165,7 +165,7 @@ class UnconnectedRef extends Ref implements Persistent, PassByConstruction {
     }
 
     /**
-     * 
+     *
      */
     public SealedBox __optSealedDispatch(Object brand) {
         return MirandaMethods.__optSealedDispatch(this, brand);

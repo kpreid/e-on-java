@@ -10,24 +10,20 @@ import org.erights.e.elib.util.DeadManSwitch;
 import org.erights.e.elib.util.OneArgFunc;
 
 /**
- * Used to implement {@link Ref#whenBroken(Object, Object)}.
+ * Used to implement {@link Ref#whenBroken(Object,Object)}.
  * <p/>
  * Wraps a 'done' function (the second argument of whenBroken), so that the
- * done function will eventually be invoked with the original reference
- * exactly once under the following conditions:
- * <ul>
- * <li>The original reference is broken
- * </ul>
- * This object is woken up by __reactToLostClient and the response to
- * __whenBroken, but in both cases it ignores the argument and treats the
+ * done function will eventually be invoked with the original reference exactly
+ * once under the following conditions: <ul> <li>The original reference is
+ * broken </ul> This object is woken up by __reactToLostClient and the response
+ * to __whenBroken, but in both cases it ignores the argument and treats the
  * message just as a wakeup call.
  *
  * @author Mark S. Miller
  * @author Terry Stanley
  * @see WhenResolvedReactor
  */
-class WhenBrokenReactor
-  implements DeadManSwitch, OneArgFunc, PassByProxy {
+class WhenBrokenReactor implements DeadManSwitch, OneArgFunc, PassByProxy {
 
     private boolean myIsDone;
 
@@ -58,8 +54,8 @@ class WhenBrokenReactor
      * <p/>
      * If myRef is broken, then invoke myOptWrapped once (resolving
      * myOptResolver to the outcome), and remember not to invoke it again (by
-     * forgetting it). Also forget myRef and myOptResolver, since we won't
-     * need them again. Further invocations silently return null rather than
+     * forgetting it). Also forget myRef and myOptResolver, since we won't need
+     * them again. Further invocations silently return null rather than
      * complaining.
      * <p/>
      * If myRef is not resolved, then send a new <pre>
@@ -68,8 +64,8 @@ class WhenBrokenReactor
      * </pre> message whose response should wake me up again. If myRef is
      * resolved but not broken, then be clever.
      *
-     * @return Always returns null, irrespective of what
-     *         myOptWrapped.run(arg) returns.
+     * @return Always returns null, irrespective of what myOptWrapped.run(arg)
+     *         returns.
      */
     public Object run(Object ignored) {
         if (myIsDone) {

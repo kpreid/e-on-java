@@ -51,17 +51,14 @@ class ConstructorNode extends JavaMemberNode {
     /**
      *
      */
-    static public void defineMembers(VTable vTable,
-                                     Class clazz,
-                                     SafeJ safeJ)
+    static public void defineMembers(VTable vTable, Class clazz, SafeJ safeJ)
       throws AlreadyDefinedException {
         if (!Modifier.isPublic(clazz.getModifiers())) {
             return;
         }
         Constructor[] constrs = clazz.getConstructors();
         for (int i = 0; i < constrs.length; i++) {
-            vTable.addMethod(new ConstructorNode(constrs[i], "run"),
-                             safeJ);
+            vTable.addMethod(new ConstructorNode(constrs[i], "run"), safeJ);
         }
     }
 
@@ -84,9 +81,8 @@ class ConstructorNode extends JavaMemberNode {
                 myOptSelf = ((StaticTable)vTable).getSelf();
                 return this;
             } else {
-                VTableEntry result = new ConstructorNode(
-                  (Constructor)myMember,
-                  myVerb);
+                VTableEntry result =
+                  new ConstructorNode((Constructor)myMember, myVerb);
                 return result.forVTable(vTable);
             }
         } else {
@@ -97,9 +93,9 @@ class ConstructorNode extends JavaMemberNode {
     /**
      *
      */
-    public Object innerExecute(Object self, Object[] args)
-      throws InstantiationException, IllegalAccessException,
-      IllegalArgumentException, InvocationTargetException {
+    public Object innerExecute(Object self, Object[] args) throws
+      InstantiationException, IllegalAccessException, IllegalArgumentException,
+      InvocationTargetException {
 
         return ((Constructor)myMember).newInstance(args);
     }

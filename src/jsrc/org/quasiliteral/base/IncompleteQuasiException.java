@@ -5,8 +5,8 @@ package org.quasiliteral.base;
 
 /**
  * Thrown by a non-filled in quasi data structure (a data structure acting in
- * the role of ValueMaker or MatchMaker) when an operation is
- * performed that requires a complete (non-quasi) data structure.
+ * the role of ValueMaker or MatchMaker) when an operation is performed that
+ * requires a complete (non-quasi) data structure.
  *
  * @author Mark S. Miller
  */

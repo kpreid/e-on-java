@@ -12,9 +12,9 @@ interface Forbidifier {
     /**
      * Test if a class is forbidden from use.
      *
-     * @param className The name of the class to test. This will be in
-     *                  internal form, e.g., the class java.lang.System will be represented
-     *                  by the string "java/lang/System"
+     * @param className The name of the class to test. This will be in internal
+     *                  form, e.g., the class java.lang.System will be
+     *                  represented by the string "java/lang/System"
      * @return true if the class should be forbidden, false if it is acceptable
      *         to use.
      */
@@ -28,16 +28,18 @@ interface Forbidifier {
      * class itself for acceptability here.
      *
      * @param className  The name of the class whose member is being tested.
-     *                   This will be in internal form, e.g., the class java.lang.System will
-     *                   be represented by the string "java/lang/System"
+     *                   This will be in internal form, e.g., the class
+     *                   java.lang.System will be represented by the string
+     *                   "java/lang/System"
      * @param memberName The name of the member (field or method) being tested
      * @param signature  The type signature of the member. This will be in
-     *                   internal form, e.g., a method taking an int parameter and returning
-     *                   a PrintStream will have a signature of the form
-     *                   "(I)Ljava/io/PrintStream;".
+     *                   internal form, e.g., a method taking an int parameter
+     *                   and returning a PrintStream will have a signature of
+     *                   the form "(I)Ljava/io/PrintStream;".
      * @return true if use of the member should be forbidden, false if it is
      *         acceptable to use.
      */
-    boolean forbiddenMember(String className, String memberName,
+    boolean forbiddenMember(String className,
+                            String memberName,
                             String signature);
 }

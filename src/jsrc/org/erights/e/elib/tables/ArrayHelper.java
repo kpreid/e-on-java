@@ -29,17 +29,17 @@ public class ArrayHelper {
     /**
      *
      */
-    static private final Class[][] ArrayTypes = {
-        {Boolean.class, Boolean.TYPE},
-        {Byte.class, Byte.TYPE},
-        {Character.class, Character.TYPE},
-        {Double.class, Double.TYPE},
-        {Float.class, Float.TYPE},
-        {Integer.class, Integer.TYPE},
-        {Long.class, Long.TYPE},
-        {Short.class, Short.TYPE},
-        {EInt.class, BigInteger.class},
-        {Void.TYPE, Void.class}, //notice reversal
+    static private final Class[][] ArrayTypes = {{Boolean.class, Boolean.TYPE},
+      {Byte.class, Byte.TYPE},
+      {Character.class, Character.TYPE},
+      {Double.class, Double.TYPE},
+      {Float.class, Float.TYPE},
+      {Integer.class, Integer.TYPE},
+      {Long.class, Long.TYPE},
+      {Short.class, Short.TYPE},
+      {EInt.class, BigInteger.class},
+      {Void.TYPE, Void.class},
+      //notice reversal
     };
     /**
      *
@@ -54,8 +54,8 @@ public class ArrayHelper {
 
     /**
      * We use a Hashtable rather than one of our own in order to avoid a
-     * circular init-time dependency, since our tables depend on mapping
-     * scalar types.
+     * circular init-time dependency, since our tables depend on mapping scalar
+     * types.
      */
     static private Hashtable initArrayTypeMap(int from, int to) {
         Hashtable result = new Hashtable(ArrayTypes.length * 2);
@@ -69,10 +69,10 @@ public class ArrayHelper {
      * Given a class, return a preferred class for making an array of
      * (abstractly) the kinds of values described by the argument class.
      * <p/>
-     * It maps {@link Void}.TYPE to Void.class.<br>
-     * It maps boxed scalar types, like {@link Integer}.class, to the
-     * corresponding primitive (unboxed) scalar type, like Integer.TYPE.
-     * Otherwise, it just returns its argument.
+     * It maps {@link Void}.TYPE to Void.class.<br> It maps boxed scalar types,
+     * like {@link Integer}.class, to the corresponding primitive (unboxed)
+     * scalar type, like Integer.TYPE. Otherwise, it just returns its
+     * argument.
      */
     static public Class typeForArray(Class elType) {
         Class result = (Class)ArrayTypeMap.get(elType);
@@ -84,7 +84,7 @@ public class ArrayHelper {
     }
 
     /**
-     * Like {@link Array#newInstance(Class, int)}, but the type is first
+     * Like {@link Array#newInstance(Class,int)}, but the type is first
      * converted according to {@link #typeForArray(Class)}.
      */
     static public Object newArray(Class elType, int size) {
@@ -113,8 +113,8 @@ public class ArrayHelper {
      * <p/>
      * If newLen is larger than the original length, then the extra slots are
      * filled with the zero element for this type. This is null for any Java
-     * reference type (and non-primitive class), and 0, '\0', 0.0, or false,
-     * as appropriate, for corresponding scalar types.
+     * reference type (and non-primitive class), and 0, '\0', 0.0, or false, as
+     * appropriate, for corresponding scalar types.
      * <p/>
      * If newLen is smaller than the original, the extra elements are dropped.
      */
@@ -126,16 +126,19 @@ public class ArrayHelper {
         //EList.newArray(..) since arraycopy won't work between, for example,
         //an int[23] and a Integer[23]. Bletch!
         Object result = Array.newInstance(valType, newLen);
-        System.arraycopy(oldArray, 0, result, 0,
+        System.arraycopy(oldArray,
+                         0,
+                         result,
+                         0,
                          StrictMath.min(oldLen, newLen));
         return result;
     }
 
     /**
-     * Returns a copy of the part of oldArray between start inclusive and
-     * bound exclusive.
+     * Returns a copy of the part of oldArray between start inclusive and bound
+     * exclusive.
      * <p/>
-     * Like {@link EList#run(int, int)}, but for arrays.
+     * Like {@link EList#run(int,int)}, but for arrays.
      */
     static public Object slice(Object oldArray, int start, int bound) {
         //is it really this much trouble just to clone an array?
@@ -154,7 +157,7 @@ public class ArrayHelper {
     static private final boolean GCJ_WORKAROUND = true;
 
     /**
-     * Like {@link Array#set(Object, int, Object)}, but automatically coerces
+     * Like {@link Array#set(Object,int,Object)}, but automatically coerces
      * if necessary, and is void/null tolerant.
      */
     static public void arraySet(Object array, int index, Object val) {
@@ -178,18 +181,19 @@ public class ArrayHelper {
             } catch (IllegalArgumentException iae2) {
                 throw new NestedException(iae2,
                                           "# Can't fit " + E.toQuote(val) +
-                                          " into array of " +
-                                          type);
+                                            " into array of " + type);
             }
         }
     }
 
     /**
-     * Like {@link System#arraycopy(Object, int, Object, int, int)}, but
+     * Like {@link System#arraycopy(Object,int,Object,int,int)}, but
      * automatically coerces if necessary, and is void/null tolerant.
      */
-    static public void arraycopy(Object src, int src_position,
-                                 Object dst, int dst_position,
+    static public void arraycopy(Object src,
+                                 int src_position,
+                                 Object dst,
+                                 int dst_position,
                                  int length) {
         Class srcType = src.getClass().getComponentType();
         Class dstType = dst.getClass().getComponentType();

@@ -206,8 +206,8 @@ public abstract class Parser {
      * an exception upon mismatch, which is catch by either the error handler
      * or by the syntactic predicate.
      */
-    public void match(int t) throws MismatchedTokenException,
-      TokenStreamException {
+    public void match(int t)
+      throws MismatchedTokenException, TokenStreamException {
         if (LA(1) != t) {
             throw new MismatchedTokenException(tokenNames,
                                                LT(1),
@@ -226,8 +226,8 @@ public abstract class Parser {
      * exception upon mismatch, which is catch by either the error handler or
      * by the syntactic predicate.
      */
-    public void match(BitSet b) throws MismatchedTokenException,
-      TokenStreamException {
+    public void match(BitSet b)
+      throws MismatchedTokenException, TokenStreamException {
         if (!b.member(LA(1))) {
             throw new MismatchedTokenException(tokenNames,
                                                LT(1),
@@ -241,8 +241,8 @@ public abstract class Parser {
         }
     }
 
-    public void matchNot(int t) throws MismatchedTokenException,
-      TokenStreamException {
+    public void matchNot(int t)
+      throws MismatchedTokenException, TokenStreamException {
         if (LA(1) == t)
         // Throws inverted-sense exception
         {
@@ -413,14 +413,16 @@ public abstract class Parser {
     public void traceIn(String rname) throws TokenStreamException {
         traceDepth += 1;
         traceIndent();
-        System.out.println("> " + rname + "; LA(1)==" + LT(1).getText() +
-                           ((inputState.guessing > 0) ? " [guessing]" : ""));
+        System.out
+          .println("> " + rname + "; LA(1)==" + LT(1).getText() +
+            ((inputState.guessing > 0) ? " [guessing]" : ""));
     }
 
     public void traceOut(String rname) throws TokenStreamException {
         traceIndent();
-        System.out.println("< " + rname + "; LA(1)==" + LT(1).getText() +
-                           ((inputState.guessing > 0) ? " [guessing]" : ""));
+        System.out
+          .println("< " + rname + "; LA(1)==" + LT(1).getText() +
+            ((inputState.guessing > 0) ? " [guessing]" : ""));
         traceDepth -= 1;
     }
 }

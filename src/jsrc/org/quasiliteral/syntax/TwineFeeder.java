@@ -22,8 +22,8 @@ Contributor(s): ______________________________________.
 import org.erights.e.elib.tables.Twine;
 
 /**
- * For feeding in one line of Twine at a time taken from a dynamically
- * provided Twine source.
+ * For feeding in one line of Twine at a time taken from a dynamically provided
+ * Twine source.
  *
  * @author Mark S. Miller
  */

@@ -19,8 +19,7 @@ public class ClassGuardSugar extends ClassDesc {
      */
     public ClassGuardSugar(Class clazz) {
         super(clazz);
-        T.require(Class.class == clazz,
-                  clazz, " must be Class.class");
+        T.require(Class.class == clazz, clazz, " must be Class.class");
     }
 
     /**

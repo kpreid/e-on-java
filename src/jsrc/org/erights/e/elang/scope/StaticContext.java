@@ -10,8 +10,6 @@ import org.erights.e.elib.serial.DeepPassByCopy;
 import org.erights.e.elib.tables.ConstMap;
 
 /**
- *
- *
  * @author Mark S. Miller
  */
 public class StaticContext implements DeepPassByCopy {
@@ -26,7 +24,6 @@ public class StaticContext implements DeepPassByCopy {
     private final ObjectExpr myOptSource;
 
     /**
-     *
      * @param FQNPrefix
      * @param optSource
      * @param synEnv
@@ -43,15 +40,12 @@ public class StaticContext implements DeepPassByCopy {
      * Uses 'StaticContextMaker(myFQNPrefix, mySynEnv, myOptSource)'
      */
     public Object[] getSpreadUncall() {
-        Object[] result = { StaticContextMaker, "run",
-                            myFQNPrefix,
-                            mySynEnv,
-                            myOptSource };
+        Object[] result =
+          {StaticContextMaker, "run", myFQNPrefix, mySynEnv, myOptSource};
         return result;
     }
 
     /**
-     *
      * @return
      */
     public ObjectExpr getOptSource() {
@@ -59,7 +53,6 @@ public class StaticContext implements DeepPassByCopy {
     }
 
     /**
-     *
      * @return
      */
     public ObjectExpr getSource() {
@@ -68,7 +61,6 @@ public class StaticContext implements DeepPassByCopy {
     }
 
     /**
-     *
      * @return
      */
     public String getFQNPrefix() {

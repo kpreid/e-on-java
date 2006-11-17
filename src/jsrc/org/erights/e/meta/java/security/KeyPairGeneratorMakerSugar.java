@@ -5,17 +5,19 @@ package org.erights.e.meta.java.security;
 
 import org.erights.e.develop.exception.ExceptionMgr;
 
-import java.security.KeyPairGenerator;
-import java.security.SecureRandom;
-import java.security.NoSuchAlgorithmException;
 import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 
 /**
  * @author Mark S. Miller
  */
 public class KeyPairGeneratorMakerSugar {
 
-    /** prevent instantiation */
+    /**
+     * prevent instantiation
+     */
     private KeyPairGeneratorMakerSugar() {
     }
 

@@ -23,7 +23,7 @@ public class GrammarFile {
     protected String headerAction = "";
     protected IndexedVector options;
     protected IndexedVector grammars;
-    protected boolean expanded = false;	// any grammars expanded within?
+    protected boolean expanded = false;        // any grammars expanded within?
     protected antlr.Tool tool;
 
     public GrammarFile(antlr.Tool tool, String f) {
@@ -38,7 +38,7 @@ public class GrammarFile {
 
     public void generateExpandedFile() throws IOException {
         if (!expanded) {
-            return;	// don't generate if nothing got expanded
+            return;        // don't generate if nothing got expanded
         }
         String expandedFileName = nameForExpandedGrammarFile(this.getName());
 

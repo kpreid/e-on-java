@@ -30,30 +30,37 @@ public class StaticScope {
 
     //XXX should really use an identity map, and nouns (variable
     //names) should be interned.
-    private static final ConstMap
-      EmptyMap = FlexMap.fromTypes(String.class, Void.class).snapshot();
+    private static final ConstMap EmptyMap =
+      FlexMap.fromTypes(String.class, Void.class).snapshot();
 
     static public final StaticScope EmptyScope =
       new StaticScope(EmptyMap, EmptyMap, false, EmptyMap, EmptyMap);
     private static final StaticScope META_SCOPE =
       new StaticScope(EmptyMap, EmptyMap, true, EmptyMap, EmptyMap);
 
-    /** Maps from each name to the internal NounExpr of its first use. */
+    /**
+     * Maps from each name to the internal NounExpr of its first use.
+     */
     private final ConstMap myNamesRead;
 
-    /** Maps from each name to the internal NounExpr of its first use. */
+    /**
+     * Maps from each name to the internal NounExpr of its first use.
+     */
     private final ConstMap myNamesSet;
 
     private final boolean myMetaStateExprFlag;
 
-    /** Maps from each name to the internal NounPattern of its definition. */
+    /**
+     * Maps from each name to the internal NounPattern of its definition.
+     */
     private final ConstMap myDefNames;
 
-    /** Maps from each name to the internal NounPattern of its definition. */
+    /**
+     * Maps from each name to the internal NounPattern of its definition.
+     */
     private final ConstMap myVarNames;
 
     /**
-     *
      * @param namesRead
      * @param namesSet
      * @param metaStateExprFlag
@@ -120,15 +127,13 @@ public class StaticScope {
     }
 
     /**
-     * For processing normal expressions left to right, where all
-     * definitions are exported, but uses are hidden by definitions
-     * to their left.
+     * For processing normal expressions left to right, where all definitions
+     * are exported, but uses are hidden by definitions to their left.
      */
     public StaticScope add(StaticScope right) {
         ConstMap rightNamesRead =
           right.namesRead().butNot(myDefNames).butNot(myVarNames);
-        ConstMap rightNamesSet =
-          right.namesSet().butNot(myVarNames);
+        ConstMap rightNamesSet = right.namesSet().butNot(myVarNames);
         ConstMap badAssigns = rightNamesSet.and(myDefNames);
         if (badAssigns.size() >= 1) {
             // XXX We could report a bad assignment here if we could figure out
@@ -179,7 +184,7 @@ public class StaticScope {
     /**
      * What are the names of variables read by this expression that refer to
      * variables defined outside this expression?
-     * <p>
+     * <p/>
      * Maps from each name to the internal NounExpr of its first use.
      */
     public ConstMap namesRead() {
@@ -189,7 +194,7 @@ public class StaticScope {
     /**
      * What are the names of variables assigned to by this expression that
      * refer to variables defined outside this expression?
-     * <p>
+     * <p/>
      * Maps from each name to the internal NounExpr of its first use.
      */
     public ConstMap namesSet() {
@@ -199,9 +204,9 @@ public class StaticScope {
     /**
      * What are the names of variables used by this expression that refer to
      * variables defined outside this expression?
-     * <p>
+     * <p/>
      * Union of namesRead() and namesSet().
-     * <p>
+     * <p/>
      * Maps from each name to the internal NounExpr of its first use.
      */
     public ConstMap namesUsed() {
@@ -211,7 +216,7 @@ public class StaticScope {
     /**
      * What variables are directly defined (by a FinalPattern) in this
      * expression that are visible after this expression (i.e., to its right)?
-     * <p>
+     * <p/>
      * Maps from each name to the internal FinalPattern of its definition.
      */
     public ConstMap defNames() {
@@ -222,7 +227,7 @@ public class StaticScope {
      * What variables are indirectly defined in this expression (by a
      * SlotPattern) that are visible after this expression (i.e., to its
      * right)?
-     * <p>
+     * <p/>
      * Maps from each name to the internal SlotPattern of its definition.
      */
     public ConstMap varNames() {
@@ -232,9 +237,9 @@ public class StaticScope {
     /**
      * What variables are defined in this expression that are visible after
      * this expression (i.e., to its right)?
-     * <p>
+     * <p/>
      * Union of defNames() and varNames()
-     * <p>
+     * <p/>
      * Maps from each name to the internal NounPattern of its definition.
      */
     public ConstMap outNames() {
@@ -253,11 +258,10 @@ public class StaticScope {
      *
      */
     public String toString() {
-        return "<" + E.toString(myNamesSet.getKeys()) +
-          " := " + E.toString(myNamesRead.getKeys()) +
-          " =~ " + E.toString(myDefNames.getKeys()) +
-          " + var " + E.toString(myVarNames.getKeys()) +
-          (myMetaStateExprFlag ? ", meta.getState()" : "") +
-          ">";
+        return "<" + E.toString(myNamesSet.getKeys()) + " := " +
+          E.toString(myNamesRead.getKeys()) + " =~ " +
+          E.toString(myDefNames.getKeys()) + " + var " +
+          E.toString(myVarNames.getKeys()) +
+          (myMetaStateExprFlag ? ", meta.getState()" : "") + ">";
     }
 }

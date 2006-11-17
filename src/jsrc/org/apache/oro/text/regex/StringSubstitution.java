@@ -58,9 +58,9 @@ package org.apache.oro.text.regex;
  */
 
 /**
- * StringSubstitution implements a Substitution consisting of a simple
- * literal string. This class is intended for use with
- * {@link Util#substitute Util.substitute}.
+ * StringSubstitution implements a Substitution consisting of a simple literal
+ * string. This class is intended for use with {@link Util#substitute
+ * Util.substitute}.
  *
  * @author <a href="mailto:dfs@savarese.org">Daniel F. Savarese</a>
  * @version $Id: StringSubstitution.java,v 1.4 2001/12/02 06:01:41 markm Exp $
@@ -77,8 +77,7 @@ public class StringSubstitution implements Substitution {
     String _substitution;
 
     /**
-     * Default constructor initializing substitution to a zero length
-     * String.
+     * Default constructor initializing substitution to a zero length String.
      */
     public StringSubstitution() {
         this("");
@@ -96,8 +95,8 @@ public class StringSubstitution implements Substitution {
 
 
     /**
-     * Sets the substitution represented by this StringSubstitution. You
-     * should use this method in order to avoid repeatedly allocating new
+     * Sets the substitution represented by this StringSubstitution. You should
+     * use this method in order to avoid repeatedly allocating new
      * StringSubstitutions. It is recommended that you allocate a single
      * StringSubstitution and reuse it by using this method when appropriate.
      * <p/>
@@ -130,21 +129,23 @@ public class StringSubstitution implements Substitution {
     }
 
     /**
-     * Appends the substitution to a buffer containing the original input
-     * with substitutions applied for the pattern matches found so far.
-     * See
-     * {@link Substitution#appendSubstitution Substitution.appendSubstition()}
-     * for more details regarding the expected behavior of this method.
+     * Appends the substitution to a buffer containing the original input with
+     * substitutions applied for the pattern matches found so far. See {@link
+     * Substitution#appendSubstitution Substitution.appendSubstition()} for
+     * more details regarding the expected behavior of this method.
      * <p/>
      *
      * @param appendBuffer      The buffer containing the new string resulting
-     *                          from performing substitutions on the original input.
-     * @param match             The current match causing a substitution to be made.
+     *                          from performing substitutions on the original
+     *                          input.
+     * @param match             The current match causing a substitution to be
+     *                          made.
      * @param substitutionCount The number of substitutions that have been
      *                          performed so far by Util.substitute.
-     * @param originalInput     The original input upon which the substitutions are
-     *                          being performed.
-     * @param matcher           The PatternMatcher used to find the current match.
+     * @param originalInput     The original input upon which the substitutions
+     *                          are being performed.
+     * @param matcher           The PatternMatcher used to find the current
+     *                          match.
      * @param pattern           The Pattern used to find the current match.
      */
     public void appendSubstitution(StringBuffer appendBuffer,

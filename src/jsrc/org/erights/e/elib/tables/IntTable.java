@@ -21,8 +21,7 @@ Contributor(s): ______________________________________.
 
 
 /**
- * An optimization to provide a non-boxing protocol for int gets and
- * puts.
+ * An optimization to provide a non-boxing protocol for int gets and puts.
  *
  * @author Mark S. Miller
  */
@@ -59,19 +58,15 @@ public class IntTable extends FlexMapImpl {
     }
 
     /**
-     * JAY -- had to add this to clear up a foo2j bug where it was not
-     * finding constructor
-     * XXX Is this still necessary?  --MarkM
+     * JAY -- had to add this to clear up a foo2j bug where it was not finding
+     * constructor XXX Is this still necessary?  --MarkM
      */
 
     private IntTable(KeyColumn keys,
                      Column values,
                      float loadFactor,
                      ShareCount shareCount) {
-        super(keys,
-              values,
-              loadFactor,
-              shareCount);
+        super(keys, values, loadFactor, shareCount);
     }
 
     /**
@@ -81,10 +76,7 @@ public class IntTable extends FlexMapImpl {
                      IntColumn values,
                      float loadFactor,
                      ShareCount shareCount) {
-        super(keys,
-              values,
-              loadFactor,
-              shareCount);
+        super(keys, values, loadFactor, shareCount);
     }
 
     /**

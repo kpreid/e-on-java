@@ -42,8 +42,8 @@ public class Switcher implements EPrintable {
     private Ref myOptRef;
 
     /**
-     * sRef should still be in a swicthable state, and this should be its
-     * only resolver.
+     * sRef should still be in a swicthable state, and this should be its only
+     * resolver.
      */
     Switcher(Ref sRef) {
         myOptRef = sRef;

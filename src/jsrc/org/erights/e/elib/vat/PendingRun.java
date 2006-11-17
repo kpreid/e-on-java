@@ -8,8 +8,8 @@ import java.io.IOException;
 // found at http://www.opensource.org/licenses/mit-license.html ...............
 
 /**
- * Just wraps a Runnable to enqueue it for execution with debugging info
- * turned on.
+ * Just wraps a Runnable to enqueue it for execution with debugging info turned
+ * on.
  *
  * @author Mark S. Miller
  */

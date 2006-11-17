@@ -61,21 +61,19 @@ package org.apache.oro.text.regex;
  * The MatchResult interface allows PatternMatcher implementors to return
  * results storing match information in whatever format they like, while
  * presenting a consistent way of accessing that information. However,
- * MatchResult implementations should strictly follow the behavior
- * described for the interface methods.
+ * MatchResult implementations should strictly follow the behavior described
+ * for the interface methods.
  * <p/>
  * <p/>
- * A MatchResult instance contains a pattern match and its saved groups.
- * You can access the entire match directly using the
- * {@link #group(int)} method with an argument of 0,
- * or by the {@link #toString()} method which is
- * defined to return the same thing. It is also possible to obtain
- * the beginning and ending offsets of a match relative to the input
- * producing the match by using the
- * {@link #beginOffset(int)} and {@link #endOffset(int)} methods. The
- * {@link #begin(int)} and {@link #end(int)} are useful in some
- * circumstances and return the begin and end offsets of the subgroups
- * of a match relative to the beginning of the match.
+ * A MatchResult instance contains a pattern match and its saved groups. You
+ * can access the entire match directly using the {@link #group(int)} method
+ * with an argument of 0, or by the {@link #toString()} method which is defined
+ * to return the same thing. It is also possible to obtain the beginning and
+ * ending offsets of a match relative to the input producing the match by using
+ * the {@link #beginOffset(int)} and {@link #endOffset(int)} methods. The
+ * {@link #begin(int)} and {@link #end(int)} are useful in some circumstances
+ * and return the begin and end offsets of the subgroups of a match relative to
+ * the beginning of the match.
  * <p/>
  * <p/>
  * You might use a MatchResult as follows:
@@ -131,10 +129,10 @@ package org.apache.oro.text.regex;
 public interface MatchResult {
 
     /**
-     * A convenience method returning the length of the entire match.
-     * If you want to get the length of a particular subgroup you should
-     * use the {@link #group(int)} method to get
-     * the string and then access its length() method as follows:
+     * A convenience method returning the length of the entire match. If you
+     * want to get the length of a particular subgroup you should use the
+     * {@link #group(int)} method to get the string and then access its
+     * length() method as follows:
      * <p/>
      * <blockquote><pre>
      * int length = -1; // Use -1 to indicate group doesn't exist
@@ -164,30 +162,28 @@ public interface MatchResult {
 
     /**
      * @return The number of groups contained in the result. This number
-     *         includes the 0th group. In other words, the result refers
-     *         to the number of parenthesized subgroups plus the entire match
-     *         itself.
+     *         includes the 0th group. In other words, the result refers to the
+     *         number of parenthesized subgroups plus the entire match itself.
      */
     public int groups();
 
     /**
-     * Returns the contents of the parenthesized subgroups of a match,
-     * counting parentheses from left to right and starting from 1.
-     * Group 0 always refers to the entire match. For example, if the
-     * pattern <code> foo(\d+) </code> is used to extract a match
-     * from the input <code> abfoo123 </code>, then <code> group(0) </code>
-     * will return <code> foo123 </code> and <code> group(1) </code> will
-     * return <code> 123 </code>. <code> group(2) </code> will return
-     * <code> null </code> because there is only one subgroup in the original
-     * pattern.
+     * Returns the contents of the parenthesized subgroups of a match, counting
+     * parentheses from left to right and starting from 1. Group 0 always
+     * refers to the entire match. For example, if the pattern <code> foo(\d+)
+     * </code> is used to extract a match from the input <code> abfoo123
+     * </code>, then <code> group(0) </code> will return <code> foo123 </code>
+     * and <code> group(1) </code> will return <code> 123 </code>. <code>
+     * group(2) </code> will return <code> null </code> because there is only
+     * one subgroup in the original pattern.
      * <p/>
      *
      * @param group The pattern subgroup to return.
-     * @return A string containing the indicated pattern subgroup. Group
-     *         0 always refers to the entire match. If a group was never
-     *         matched, it returns null. This is not to be confused with
-     *         a group matching the null string, which will return a String
-     *         of length 0.
+     * @return A string containing the indicated pattern subgroup. Group 0
+     *         always refers to the entire match. If a group was never matched,
+     *         it returns null. This is not to be confused with a group
+     *         matching the null string, which will return a String of length
+     *         0.
      */
     public String group(int group);
 
@@ -195,11 +191,11 @@ public interface MatchResult {
     /**
      * @param group The pattern subgroup.
      * @return The offset into group 0 of the first token in the indicated
-     *         pattern subgroup. If a group was never matched or does
-     *         not exist, returns -1. Be aware that a group that matches
-     *         the null string at the end of a match will have an offset
-     *         equal to the length of the string, so you shouldn't blindly
-     *         use the offset to index an array or String.
+     *         pattern subgroup. If a group was never matched or does not
+     *         exist, returns -1. Be aware that a group that matches the null
+     *         string at the end of a match will have an offset equal to the
+     *         length of the string, so you shouldn't blindly use the offset to
+     *         index an array or String.
      */
     public int begin(int group);
 
@@ -207,38 +203,35 @@ public interface MatchResult {
     /**
      * @param group The pattern subgroup.
      * @return Returns one plus the offset into group 0 of the last token in
-     *         the indicated pattern subgroup. If a group was never matched
-     *         or does not exist, returns -1. A group matching the null
-     *         string will return its start offset.
+     *         the indicated pattern subgroup. If a group was never matched or
+     *         does not exist, returns -1. A group matching the null string
+     *         will return its start offset.
      */
     public int end(int group);
 
 
     /**
-     * Returns an offset marking the beginning of the pattern match
-     * relative to the beginning of the input from which the match
-     * was extracted.
+     * Returns an offset marking the beginning of the pattern match relative to
+     * the beginning of the input from which the match was extracted.
      * <p/>
      *
      * @param group The pattern subgroup.
-     * @return The offset of the first token in the indicated
-     *         pattern subgroup. If a group was never matched or does
-     *         not exist, returns -1.
+     * @return The offset of the first token in the indicated pattern subgroup.
+     *         If a group was never matched or does not exist, returns -1.
      */
     public int beginOffset(int group);
 
 
     /**
-     * Returns an offset marking the end of the pattern match
-     * relative to the beginning of the input from which the match was
-     * extracted.
+     * Returns an offset marking the end of the pattern match relative to the
+     * beginning of the input from which the match was extracted.
      * <p/>
      *
      * @param group The pattern subgroup.
-     * @return Returns one plus the offset of the last token in
-     *         the indicated pattern subgroup. If a group was never matched
-     *         or does not exist, returns -1. A group matching the null
-     *         string will return its start offset.
+     * @return Returns one plus the offset of the last token in the indicated
+     *         pattern subgroup. If a group was never matched or does not
+     *         exist, returns -1. A group matching the null string will return
+     *         its start offset.
      */
     public int endOffset(int group);
 

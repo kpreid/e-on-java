@@ -23,8 +23,8 @@ import org.erights.e.elib.serial.PassByProxy;
 import org.erights.e.elib.serial.Persistent;
 
 /**
- * Carries a reference, but reveals it only to one who has this
- * Brand's Unsealer.
+ * Carries a reference, but reveals it only to one who has this Brand's
+ * Unsealer.
  *
  * @author Mark S. Miller
  */
@@ -36,9 +36,9 @@ public class SealedBox implements PassByProxy, Persistent {
     final Object myContents;
 
     /**
-     * @serial The Brand of the {@link Sealer} that sealed this box,
-     * and therefore the Brand of the {@link Unsealer} required to
-     * obtain myContents.
+     * @serial The Brand of the {@link Sealer} that sealed this box, and
+     * therefore the Brand of the {@link Unsealer} required to obtain
+     * myContents.
      */
     private final Brand myBrand;
 
@@ -51,9 +51,8 @@ public class SealedBox implements PassByProxy, Persistent {
     }
 
     /**
-     * The Brand of the {@link Sealer} that sealed this box,
-     * and therefore the Brand of the {@link Unsealer} required to
-     * obtain my contents.
+     * The Brand of the {@link Sealer} that sealed this box, and therefore the
+     * Brand of the {@link Unsealer} required to obtain my contents.
      */
     public Brand getBrand() {
         return myBrand;

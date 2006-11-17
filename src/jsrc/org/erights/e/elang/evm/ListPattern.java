@@ -37,7 +37,7 @@ import java.io.IOException;
 
 /**
  * BNF: "[" sub-patterns "]"
- * <p>
+ * <p/>
  * The list only matches of it has exactly as many elements as there are
  * sub-patterns, and each subpattern matches its corresponding element.
  *
@@ -69,11 +69,11 @@ public class ListPattern extends Pattern {
      * Uses XXX 'makeFoo(...)'
      */
     public Object[] getSpreadUncall() {
-        Object[] result = { StaticMaker.make(ListPattern.class),
-                            "run",
-                            getOptSpan(),
-                            mySubPatterns,
-                            getOptScopeLayout() };
+        Object[] result = {StaticMaker.make(ListPattern.class),
+          "run",
+          getOptSpan(),
+          mySubPatterns,
+          getOptScopeLayout()};
         return result;
     }
 
@@ -120,17 +120,15 @@ public class ListPattern extends Pattern {
     /**
      *
      */
-    void testMatch(EvalContext ctx,
-                   Object specimen,
-                   OneArgFunc optEjector) {
+    void testMatch(EvalContext ctx, Object specimen, OneArgFunc optEjector) {
         EList list = (EList)EListGuard.coerce(specimen, optEjector);
 
         int len = list.size();
         if (len != mySubPatterns.length) {
             throw Thrower.toEject(optEjector,
-                                  "a " + len +
-                                  " size list doesn't match a " +
-                                  mySubPatterns.length + " size list pattern");
+                                  "a " + len + " size list doesn't match a " +
+                                    mySubPatterns.length +
+                                    " size list pattern");
         }
         for (int i = 0, max = mySubPatterns.length; i < max; i++) {
             mySubPatterns[i].testMatch(ctx, list.get(i), optEjector);

@@ -8,7 +8,6 @@ package antlr.preprocessor;
  */
 
 
-
 class Option {
 
     protected String name;

@@ -51,9 +51,9 @@ public class SmallcapsEncoder implements SmallcapsOps, SmallcapsEmitter {
     }
 
     /**
-     * Return a value representing the current position in the code
-     * buffer. This is *not* an address; it's an opaque value used
-     * as an argument to emitJump(), etc.
+     * Return a value representing the current position in the code buffer.
+     * This is *not* an address; it's an opaque value used as an argument to
+     * emitJump(), etc.
      */
     public int getLabel() {
         return myCodeSize;
@@ -267,15 +267,13 @@ public class SmallcapsEncoder implements SmallcapsOps, SmallcapsEmitter {
     }
 
     /**
-     * How many bytes are needed to represent the whole number wholeNum in
-     * <a href=
-     * "http://waterken.com/dev/Doc/doc-code/index.html#ExtensionNumber"
+     * How many bytes are needed to represent the whole number wholeNum in <a
+     * href= "http://waterken.com/dev/Doc/doc-code/index.html#ExtensionNumber"
      * >Waterken Doc ExtensionNumber</a> format?
      */
     static int numDocBytes(BigInteger wholeNum) {
         int signum = wholeNum.signum();
-        T.require(signum >= 0,
-                  "Non-negative integer expected: ", wholeNum);
+        T.require(signum >= 0, "Non-negative integer expected: ", wholeNum);
         if (signum == 0) {
             return 1;
         }
@@ -295,21 +293,21 @@ public class SmallcapsEncoder implements SmallcapsOps, SmallcapsEmitter {
 
     /**
      * Encodes a whole number (a non-negative integer) using the <a href=
-     * "http://www.waterken.com/dev/Doc/code/#ExtensionNumber"
-     * >Waterken Doc ExtensionNumber</a> format, zero-extended to fit into
-     * numBytes bytes.
-     * <p>
+     * "http://www.waterken.com/dev/Doc/code/#ExtensionNumber" >Waterken Doc
+     * ExtensionNumber</a> format, zero-extended to fit into numBytes bytes.
+     * <p/>
      * numBytes must be large enough, and therefore must be &gt;= 1 even if
      * wholeNum == 0. By "zero extended", we mean extended with leading 0x80
      * bytes, in keeping with the ExtensionNumber format.
      */
     void writeWholeNum(BigInteger wholeNum, int numBytes) {
         int signum = wholeNum.signum();
-        T.require(signum >= 0,
-                  "Non-negative integer expected: ", wholeNum);
+        T.require(signum >= 0, "Non-negative integer expected: ", wholeNum);
         T.require(numBytes >= numDocBytes(wholeNum),
-                  "Can't fit ", wholeNum,
-                  " into " + numBytes, " 7-bit bytes");
+                  "Can't fit ",
+                  wholeNum,
+                  " into " + numBytes,
+                  " 7-bit bytes");
 
         //Just write the least significant 7 bits
         writeByte(wholeNum.intValue() & 0x7F);
@@ -331,8 +329,8 @@ public class SmallcapsEncoder implements SmallcapsOps, SmallcapsEmitter {
     }
 
     /**
-     * Just like {@link #writeWholeNum(BigInteger, int)}, but when the
-     * argument already fits in a Java <tt>int</tt>.
+     * Just like {@link #writeWholeNum(BigInteger,int)}, but when the argument
+     * already fits in a Java <tt>int</tt>.
      */
     void writeWholeNum(int wholeNum, int numBytes) {
         writeWholeNum(BigInteger.valueOf(wholeNum), numBytes);

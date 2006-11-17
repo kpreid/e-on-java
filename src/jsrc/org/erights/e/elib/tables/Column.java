@@ -22,9 +22,9 @@ Contributor(s): ______________________________________.
 /**
  * A column of a FlexMapImpl. <p>
  * <p/>
- * A FlexMapImpl has a KeyColumn for the keys that it
- * maps from, and a Column for the values being mapped to. The
- * indices into a column are called positions.
+ * A FlexMapImpl has a KeyColumn for the keys that it maps from, and a Column
+ * for the values being mapped to. The indices into a column are called
+ * positions.
  *
  * @author Mark S. Miller
  */
@@ -37,8 +37,8 @@ abstract class Column implements Cloneable {
     }
 
     /**
-     * A shallow copy of the column. The members are shared, not copied.
-     * The new Column is restricted to only holding members of type membType.
+     * A shallow copy of the column. The members are shared, not copied. The
+     * new Column is restricted to only holding members of type membType.
      */
     protected abstract Column diverge(Class membType);
 
@@ -62,8 +62,8 @@ abstract class Column implements Cloneable {
     abstract Class memberType();
 
     /**
-     * Makes a new column just like this one, except of the specified
-     * size and without any members.
+     * Makes a new column just like this one, except of the specified size and
+     * without any members.
      */
 
     abstract Column newVacant(int capacity);
@@ -81,8 +81,8 @@ abstract class Column implements Cloneable {
     abstract void put(int pos, Object value);
 
     /**
-     * Stop pointing at an object from this pos. If this is a scalar
-     * column, does nothing
+     * Stop pointing at an object from this pos. If this is a scalar column,
+     * does nothing
      */
 
     abstract void vacate(int pos);
@@ -96,8 +96,8 @@ abstract class Column implements Cloneable {
 
     /**
      * Make a value-column that can only hold values that conform to
-     * 'memberType' and has 'capacity' positions. If the memberType is a
-     * scalar type, the column will represent these values unboxed.
+     * 'memberType' and has 'capacity' positions. If the memberType is a scalar
+     * type, the column will represent these values unboxed.
      */
     static public Column values(Class memberType, int capacity) {
 

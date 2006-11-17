@@ -64,7 +64,7 @@ public class LLkAnalyzer implements LLkGrammarAnalyzer {
      */
     public boolean deterministic(AlternativeBlock blk) {
         /** The lookahead depth for this decision */
-        int k = 1;	// start at k=1
+        int k = 1;        // start at k=1
         if (DEBUG_ANALYZER) {
             System.out.println("deterministic(" + blk + ")");
         }
@@ -91,158 +91,166 @@ public class LLkAnalyzer implements LLkGrammarAnalyzer {
             AlternativeElement e = blk.getAlternativeAt(0).head;
             currentBlock.alti = 0;
             blk.getAlternativeAt(0).cache[1] = e.look(1);
-            blk.getAlternativeAt(0).lookaheadDepth = 1;	// set lookahead to LL(1)
+            blk.getAlternativeAt(0).lookaheadDepth =
+              1;        // set lookahead to LL(1)
             currentBlock = saveCurrentBlock;
-            return true;	// always deterministic for one alt
+            return true;        // always deterministic for one alt
         }
 
         outer:
-            for (int i = 0; i < nalts - 1; i++) {
-                currentBlock.alti = i;
-                currentBlock.analysisAlt = i;	// which alt are we analyzing?
-                currentBlock.altj = i + 1;		// reset this alt.  Haven't computed yet,
-                // but we need the alt number.
-                inner:
-                    // compare against other alternatives with lookahead depth k
-                    for (int j = i + 1; j < nalts; j++) {
-                        currentBlock.altj = j;
+        for (int i = 0; i < nalts - 1; i++) {
+            currentBlock.alti = i;
+            currentBlock.analysisAlt = i;        // which alt are we analyzing?
+            currentBlock.altj =
+              i + 1;                // reset this alt.  Haven't computed yet,
+            // but we need the alt number.
+            inner:
+            // compare against other alternatives with lookahead depth k
+            for (int j = i + 1; j < nalts; j++) {
+                currentBlock.altj = j;
+                if (DEBUG_ANALYZER) {
+                    System.out.println("comparing " + i + " against alt " + j);
+                }
+                currentBlock.analysisAlt =
+                  j;        // which alt are we analyzing?
+                k = 1;        // always attempt minimum lookahead possible.
+
+                // check to see if there is a lookahead depth that distinguishes
+                // between alternatives i and j.
+                Lookahead[] r = new Lookahead[grammar.maxk + 1];
+                boolean haveAmbiguity;
+                do {
+                    haveAmbiguity = false;
+                    if (DEBUG_ANALYZER) {
+                        System.out
+                          .println(
+                            "checking depth " + k + "<=" + grammar.maxk);
+                    }
+                    Lookahead p, q;
+                    p = getAltLookahead(blk, i, k);
+                    q = getAltLookahead(blk, j, k);
+
+                    // compare LOOK(alt i) with LOOK(alt j).  Is there an intersection?
+                    // Lookahead must be disjoint.
+                    if (DEBUG_ANALYZER) {
+                        System.out
+                          .println(
+                            "p is " + p.toString(",", charFormatter, grammar));
+                    }
+                    if (DEBUG_ANALYZER) {
+                        System.out
+                          .println(
+                            "q is " + q.toString(",", charFormatter, grammar));
+                    }
+                    // r[i] = p.fset.and(q.fset);
+                    r[k] = p.intersection(q);
+                    if (DEBUG_ANALYZER) {
+                        System.out
+                          .println("intersection at depth " + k + " is " +
+                            r[k].toString());
+                    }
+                    if (!r[k].nil()) {
+                        haveAmbiguity = true;
+                        k++;
+                    }
+                    // go until no more lookahead to use or no intersection
+                } while (haveAmbiguity && k <= grammar.maxk);
+
+                Alternative ai = blk.getAlternativeAt(i);
+                Alternative aj = blk.getAlternativeAt(j);
+                if (haveAmbiguity) {
+                    det = false;
+                    ai.lookaheadDepth = NONDETERMINISTIC;
+                    aj.lookaheadDepth = NONDETERMINISTIC;
+
+                    /* if ith alt starts with a syntactic predicate, computing the
+                    * lookahead is still done for code generation, but messages
+                    * should not be generated when comparing against alt j.
+                    * Alternatives with syn preds that are unnecessary do
+                    * not result in syn pred try-blocks.
+                    */
+                    if (ai.synPred != null) {
                         if (DEBUG_ANALYZER) {
-                            System.out.println(
-                              "comparing " + i + " against alt " + j);
+                            System.out.println("alt " + i + " has a syn pred");
                         }
-                        currentBlock.analysisAlt = j;	// which alt are we analyzing?
-                        k = 1;	// always attempt minimum lookahead possible.
+                        // The alt with the (...)=> block is nondeterministic for sure.
+                        // If the (...)=> conflicts with alt j, j is nondeterministic.
+                        // This prevents alt j from being in any switch statements.
+                        // move on to next alternative=>no possible ambiguity!
+                        //						continue inner;
+                    }
 
-                        // check to see if there is a lookahead depth that distinguishes
-                        // between alternatives i and j.
-                        Lookahead[] r = new Lookahead[grammar.maxk + 1];
-                        boolean haveAmbiguity;
-                        do {
-                            haveAmbiguity = false;
-                            if (DEBUG_ANALYZER) {
-                                System.out.println(
-                                  "checking depth " + k + "<=" + grammar.maxk);
-                            }
-                            Lookahead p, q;
-                            p = getAltLookahead(blk, i, k);
-                            q = getAltLookahead(blk, j, k);
-
-                            // compare LOOK(alt i) with LOOK(alt j).  Is there an intersection?
-                            // Lookahead must be disjoint.
-                            if (DEBUG_ANALYZER) {
-                                System.out.println(
-                                  "p is " +
-                                  p.toString(",", charFormatter, grammar));
-                            }
-                            if (DEBUG_ANALYZER) {
-                                System.out.println(
-                                  "q is " +
-                                  q.toString(",", charFormatter, grammar));
-                            }
-                            // r[i] = p.fset.and(q.fset);
-                            r[k] = p.intersection(q);
-                            if (DEBUG_ANALYZER) {
-                                System.out.println("intersection at depth " +
-                                                   k +
-                                                   " is " +
-                                                   r[k].toString());
-                            }
-                            if (!r[k].nil()) {
-                                haveAmbiguity = true;
-                                k++;
-                            }
-                            // go until no more lookahead to use or no intersection
-                        } while (haveAmbiguity && k <= grammar.maxk);
-
-                        Alternative ai = blk.getAlternativeAt(i);
-                        Alternative aj = blk.getAlternativeAt(j);
-                        if (haveAmbiguity) {
-                            det = false;
-                            ai.lookaheadDepth = NONDETERMINISTIC;
-                            aj.lookaheadDepth = NONDETERMINISTIC;
-
-                            /* if ith alt starts with a syntactic predicate, computing the
-                             * lookahead is still done for code generation, but messages
-                             * should not be generated when comparing against alt j.
-                             * Alternatives with syn preds that are unnecessary do
-                             * not result in syn pred try-blocks.
-                             */
-                            if (ai.synPred != null) {
-                                if (DEBUG_ANALYZER) {
-                                    System.out.println(
-                                      "alt " + i + " has a syn pred");
-                                }
-                                // The alt with the (...)=> block is nondeterministic for sure.
-                                // If the (...)=> conflicts with alt j, j is nondeterministic.
-                                // This prevents alt j from being in any switch statements.
-                                // move on to next alternative=>no possible ambiguity!
-                                //						continue inner;
-                            }
-
-                            /* if ith alt starts with a semantic predicate, computing the
-                             * lookahead is still done for code generation, but messages
-                             * should not be generated when comparing against alt j.
-                             */
-                            else if (ai.semPred != null) {
-                                if (DEBUG_ANALYZER) {
-                                    System.out.println(
-                                      "alt " + i + " has a sem pred");
-                                }
-                            }
-
-                            /* if jth alt is exactly the wildcard or wildcard root of tree,
-                             * then remove elements from alt i lookahead from alt j's lookahead.
-                             * Don't do an ambiguity warning.
-                             */
-                            else if (altUsesWildcardDefault(aj)) {
-                                // System.out.println("removing pred sets");
-                                // removeCompetingPredictionSetsFromWildcard(aj.cache, aj.head, grammar.maxk);
-                                wildcardAlt = aj;
-                            }
-
-                            /* If the user specified warnWhenFollowAmbig=false, then we
-                             * can turn off this warning IFF one of the alts is empty;
-                             * that is, it points immediately at the end block.
-                             */
-                            else if (!blk.warnWhenFollowAmbig && (ai.head instanceof BlockEndElement ||
-                              aj.head instanceof BlockEndElement)) {
-                                // System.out.println("ai.head pts to "+ai.head.getClass());
-                                // System.out.println("aj.head pts to "+aj.head.getClass());
-                            }
-
-                            /* If they have the generateAmbigWarnings option off for the block
-                             * then don't generate a warning.
-                             */
-                            else if (!blk.generateAmbigWarnings) {
-                            }
-
-                            /* If greedy=true and *one* empty alt shut off warning. */
-                            else if (blk.greedySet && blk.greedy && ((ai.head instanceof BlockEndElement &&
-                              !(aj.head instanceof BlockEndElement)) || (aj.head instanceof BlockEndElement &&
-                              !(ai.head instanceof BlockEndElement)))) {
-                                // System.out.println("greedy set to true; one alt empty");
-                            }
-
-
-                            /* We have no choice, but to report a nondetermism */
-                            else {
-                                tool.errorHandler.warnAltAmbiguity(grammar, blk, // the block
-                                                                   lexicalAnalysis, // true if lexical
-                                                                   grammar.maxk, // depth of ambiguity
-                                                                   r, // set of linear ambiguities
-                                                                   i, // first ambiguous alternative
-                                                                   j				// second ambiguous alternative
-                                );
-                            }
-                        } else {
-                            // a lookahead depth, k, was found where i and j do not conflict
-                            ai.lookaheadDepth =
-                              Math.max(ai.lookaheadDepth, k);
-                            aj.lookaheadDepth =
-                              Math.max(aj.lookaheadDepth, k);
+                    /* if ith alt starts with a semantic predicate, computing the
+                    * lookahead is still done for code generation, but messages
+                    * should not be generated when comparing against alt j.
+                    */
+                    else if (ai.semPred != null) {
+                        if (DEBUG_ANALYZER) {
+                            System.out.println("alt " + i + " has a sem pred");
                         }
                     }
+
+                    /* if jth alt is exactly the wildcard or wildcard root of tree,
+                    * then remove elements from alt i lookahead from alt j's lookahead.
+                    * Don't do an ambiguity warning.
+                    */
+                    else if (altUsesWildcardDefault(aj)) {
+                        // System.out.println("removing pred sets");
+                        // removeCompetingPredictionSetsFromWildcard(aj.cache, aj.head, grammar.maxk);
+                        wildcardAlt = aj;
+                    }
+
+                    /* If the user specified warnWhenFollowAmbig=false, then we
+                    * can turn off this warning IFF one of the alts is empty;
+                    * that is, it points immediately at the end block.
+                    */
+                    else if (!blk.warnWhenFollowAmbig && (
+                      ai.head instanceof BlockEndElement ||
+                        aj.head instanceof BlockEndElement)) {
+                        // System.out.println("ai.head pts to "+ai.head.getClass());
+                        // System.out.println("aj.head pts to "+aj.head.getClass());
+                    }
+
+                    /* If they have the generateAmbigWarnings option off for the block
+                    * then don't generate a warning.
+                    */
+                    else if (!blk.generateAmbigWarnings) {
+                    }
+
+                    /* If greedy=true and *one* empty alt shut off warning. */
+                    else if (blk.greedySet && blk.greedy && ((
+                      ai.head instanceof BlockEndElement &&
+                        !(aj.head instanceof BlockEndElement)) || (
+                      aj.head instanceof BlockEndElement &&
+                        !(ai.head instanceof BlockEndElement)))) {
+                        // System.out.println("greedy set to true; one alt empty");
+                    }
+
+                    /* We have no choice, but to report a nondetermism */
+                    else {
+                        tool.errorHandler
+                          .warnAltAmbiguity(grammar,
+                                            blk,
+                                            // the block
+                                            lexicalAnalysis,
+                                            // true if lexical
+                                            grammar.maxk,
+                                            // depth of ambiguity
+                                            r,
+                                            // set of linear ambiguities
+                                            i,
+                                            // first ambiguous alternative
+                                            j
+                                            // second ambiguous alternative
+                          );
+                    }
+                } else {
+                    // a lookahead depth, k, was found where i and j do not conflict
+                    ai.lookaheadDepth = Math.max(ai.lookaheadDepth, k);
+                    aj.lookaheadDepth = Math.max(aj.lookaheadDepth, k);
+                }
             }
+        }
 
         // finished with block.
 
@@ -306,12 +314,14 @@ public class LLkAnalyzer implements LLkGrammarAnalyzer {
         boolean det = true;
         Vector alts = blk.getAlternatives();
         int nalts = alts.size();
-        currentBlock.altj = -1;	// comparing against implicit optional/exit alt
+        currentBlock.altj =
+          -1;        // comparing against implicit optional/exit alt
 
         if (DEBUG_ANALYZER) {
             System.out.println("deterministicImpliedPath");
         }
-        for (int i = 0; i < nalts; i++) {		// check follow against all alts
+        for (int i = 0; i < nalts; i++)
+        {                // check follow against all alts
             Alternative alt = blk.getAlternativeAt(i);
 
             if (alt.head instanceof BlockEndElement) {
@@ -322,7 +332,8 @@ public class LLkAnalyzer implements LLkGrammarAnalyzer {
                   blk.getColumn());
             }
 
-            k = 1;							// assume eac alt is LL(1) with exit branch
+            k =
+              1;                                                        // assume eac alt is LL(1) with exit branch
             // check to see if there is a lookahead depth that distinguishes
             // between alternative i and the exit branch.
             Lookahead[] r = new Lookahead[grammar.maxk + 1];
@@ -330,8 +341,8 @@ public class LLkAnalyzer implements LLkGrammarAnalyzer {
             do {
                 haveAmbiguity = false;
                 if (DEBUG_ANALYZER) {
-                    System.out.println(
-                      "checking depth " + k + "<=" + grammar.maxk);
+                    System.out
+                      .println("checking depth " + k + "<=" + grammar.maxk);
                 }
                 Lookahead p;
                 Lookahead follow = blk.next.look(k);
@@ -340,19 +351,20 @@ public class LLkAnalyzer implements LLkGrammarAnalyzer {
                 p = getAltLookahead(blk, i, k);
 
                 if (DEBUG_ANALYZER) {
-                    System.out.println(
-                      "follow is " +
-                      follow.toString(",", charFormatter, grammar));
+                    System.out
+                      .println("follow is " +
+                        follow.toString(",", charFormatter, grammar));
                 }
                 if (DEBUG_ANALYZER) {
-                    System.out.println(
-                      "p is " + p.toString(",", charFormatter, grammar));
+                    System.out
+                      .println(
+                        "p is " + p.toString(",", charFormatter, grammar));
                 }
                 //r[k] = follow.fset.and(p.fset);
                 r[k] = follow.intersection(p);
                 if (DEBUG_ANALYZER) {
-                    System.out.println(
-                      "intersection at depth " + k + " is " + r[k]);
+                    System.out
+                      .println("intersection at depth " + k + " is " + r[k]);
                 }
                 if (!r[k].nil()) {
                     haveAmbiguity = true;
@@ -403,9 +415,9 @@ public class LLkAnalyzer implements LLkGrammarAnalyzer {
                     if (!lookaheadEquivForApproxAndFullAnalysis(blk.exitCache,
                                                                 grammar.maxk)) {
                         tool.warning(new String[]{
-                            "nongreedy block may exit incorrectly due",
-                            "\tto limitations of linear approximate lookahead (first k-1 sets",
-                            "\tin lookahead not singleton)."},
+                          "nongreedy block may exit incorrectly due",
+                          "\tto limitations of linear approximate lookahead (first k-1 sets",
+                          "\tin lookahead not singleton)."},
                                      grammar.getFilename(),
                                      blk.getLine(),
                                      blk.getColumn());
@@ -414,12 +426,19 @@ public class LLkAnalyzer implements LLkGrammarAnalyzer {
 
                 // no choice but to generate a warning
                 else {
-                    tool.errorHandler.warnAltExitAmbiguity(grammar, blk, // the block
-                                                           lexicalAnalysis, // true if lexical
-                                                           grammar.maxk, // depth of ambiguity
-                                                           r, // set of linear ambiguities
-                                                           i		// ambiguous alternative
-                    );
+                    tool.errorHandler
+                      .warnAltExitAmbiguity(grammar,
+                                            blk,
+                                            // the block
+                                            lexicalAnalysis,
+                                            // true if lexical
+                                            grammar.maxk,
+                                            // depth of ambiguity
+                                            r,
+                                            // set of linear ambiguities
+                                            i
+                                            // ambiguous alternative
+                      );
                 }
             } else {
                 alt.lookaheadDepth = Math.max(alt.lookaheadDepth, k);
@@ -459,9 +478,9 @@ public class LLkAnalyzer implements LLkGrammarAnalyzer {
         // Check to see if there is cached value
         if (end.cache[k] != null) {
             if (DEBUG_ANALYZER) {
-                System.out.println(
-                  "cache entry FOLLOW(" + k + ") for " + rule + ": " +
-                  end.cache[k].toString(",", charFormatter, grammar));
+                System.out
+                  .println("cache entry FOLLOW(" + k + ") for " + rule + ": " +
+                    end.cache[k].toString(",", charFormatter, grammar));
             }
             // if the cache is a complete computation then simply return entry
             if (end.cache[k].cycle == null) {
@@ -477,13 +496,13 @@ public class LLkAnalyzer implements LLkGrammarAnalyzer {
                 return (Lookahead)end.cache[k].clone();
             } else {
                 if (DEBUG_ANALYZER) {
-                    System.out.println(
-                      "combining FOLLOW(" + k + ") for " + rule + ": from " +
-                      end.cache[k].toString(",", charFormatter, grammar) +
-                      " with FOLLOW for " +
-                      ((RuleBlock)re.block).getRuleName() +
-                      ": " +
-                      re.cache[k].toString(",", charFormatter, grammar));
+                    System.out
+                      .println("combining FOLLOW(" + k + ") for " + rule +
+                        ": from " +
+                        end.cache[k].toString(",", charFormatter, grammar) +
+                        " with FOLLOW for " +
+                        ((RuleBlock)re.block).getRuleName() + ": " +
+                        re.cache[k].toString(",", charFormatter, grammar));
                 }
                 // combine results from other rule's FOLLOW
                 if (re.cache[k].cycle == null) {
@@ -503,9 +522,10 @@ public class LLkAnalyzer implements LLkGrammarAnalyzer {
                     end.cache[k].cycle = refFOLLOW.cycle;
                 }
                 if (DEBUG_ANALYZER) {
-                    System.out.println(
-                      "saving FOLLOW(" + k + ") for " + rule + ": from " +
-                      end.cache[k].toString(",", charFormatter, grammar));
+                    System.out
+                      .println("saving FOLLOW(" + k + ") for " + rule +
+                        ": from " +
+                        end.cache[k].toString(",", charFormatter, grammar));
                 }
                 // Return the updated cache entry associated
                 // with the cycle reference.
@@ -513,7 +533,7 @@ public class LLkAnalyzer implements LLkGrammarAnalyzer {
             }
         }
 
-        end.lock[k] = true;	// prevent FOLLOW computation cycles
+        end.lock[k] = true;        // prevent FOLLOW computation cycles
 
         Lookahead p = new Lookahead();
 
@@ -523,26 +543,27 @@ public class LLkAnalyzer implements LLkGrammarAnalyzer {
         for (int i = 0; i < rs.numReferences(); i++) {
             RuleRefElement rr = rs.getReference(i);
             if (DEBUG_ANALYZER) {
-                System.out.println(
-                  "next[" + rule + "] is " + rr.next.toString());
+                System.out
+                  .println("next[" + rule + "] is " + rr.next.toString());
             }
             Lookahead q = rr.next.look(k);
             if (DEBUG_ANALYZER) {
-                System.out.println(
-                  "FIRST of next[" + rule + "] ptr is " + q.toString());
+                System.out
+                  .println(
+                    "FIRST of next[" + rule + "] ptr is " + q.toString());
             }
             /* If there is a cycle then if the cycle is to the rule for
 			 * this end block, you have a cycle to yourself.  Remove the
 			 * cycle indication--the lookahead is complete.
 			 */
             if (q.cycle != null && q.cycle.equals(rule)) {
-                q.cycle = null;	// don't want cycle to yourself!
+                q.cycle = null;        // don't want cycle to yourself!
             }
             // add the lookahead into the current FOLLOW computation set
             p.combineWith(q);
             if (DEBUG_ANALYZER) {
-                System.out.println(
-                  "combined FOLLOW[" + rule + "] is " + p.toString());
+                System.out
+                  .println("combined FOLLOW[" + rule + "] is " + p.toString());
             }
         }
 
@@ -570,9 +591,9 @@ public class LLkAnalyzer implements LLkGrammarAnalyzer {
 
         // Cache the result of the FOLLOW computation
         if (DEBUG_ANALYZER) {
-            System.out.println(
-              "saving FOLLOW(" + k + ") for " + rule + ": " +
-              p.toString(",", charFormatter, grammar));
+            System.out
+              .println("saving FOLLOW(" + k + ") for " + rule + ": " +
+                p.toString(",", charFormatter, grammar));
         }
         end.cache[k] = (Lookahead)p.clone();
 
@@ -632,15 +653,17 @@ public class LLkAnalyzer implements LLkGrammarAnalyzer {
         if (k == 1 && blk.not && subruleCanBeInverted(blk, lexicalAnalysis)) {
             // Invert the lookahead set
             if (lexicalAnalysis) {
-                BitSet b = (BitSet)((LexerGrammar)grammar).charVocabulary.clone();
+                BitSet b =
+                  (BitSet)((LexerGrammar)grammar).charVocabulary.clone();
                 int[] elems = p.fset.toArray();
                 for (int j = 0; j < elems.length; j++) {
                     b.remove(elems[j]);
                 }
                 p.fset = b;
             } else {
-                p.fset.notInPlace(Token.MIN_USER_TYPE,
-                                  grammar.tokenManager.maxTokenType());
+                p.fset
+                  .notInPlace(Token.MIN_USER_TYPE,
+                              grammar.tokenManager.maxTokenType());
             }
         }
         currentBlock = saveCurrentBlock;
@@ -659,9 +682,9 @@ public class LLkAnalyzer implements LLkGrammarAnalyzer {
      */
     public Lookahead look(int k, BlockEndElement end) {
         if (DEBUG_ANALYZER) {
-            System.out.println("lookBlockEnd(" + k + ", " + end.block +
-                               "); lock is " +
-                               end.lock[k]);
+            System.out
+              .println("lookBlockEnd(" + k + ", " + end.block + "); lock is " +
+                end.lock[k]);
         }
         if (end.lock[k]) {
             // computation in progress => the tokens we would have
@@ -739,15 +762,18 @@ public class LLkAnalyzer implements LLkGrammarAnalyzer {
         }
         if (lexicalAnalysis) {
             if (atom.not) {
-                BitSet b = (BitSet)((LexerGrammar)grammar).charVocabulary.clone();
+                BitSet b =
+                  (BitSet)((LexerGrammar)grammar).charVocabulary.clone();
                 if (DEBUG_ANALYZER) {
                     System.out.println("charVocab is " + b.toString());
                 }
                 // remove stuff predicted by preceding alts and follow of block
                 removeCompetingPredictionSets(b, atom);
                 if (DEBUG_ANALYZER) {
-                    System.out.println("charVocab after removal of prior alt lookahead " +
-                                       b.toString());
+                    System.out
+                      .println(
+                        "charVocab after removal of prior alt lookahead " +
+                          b.toString());
                 }
                 // now remove element that is stated not to be in the set
                 b.clear(atom.getType());
@@ -780,8 +806,8 @@ public class LLkAnalyzer implements LLkGrammarAnalyzer {
 
     public Lookahead look(int k, GrammarAtom atom) {
         if (DEBUG_ANALYZER) {
-            System.out.println(
-              "look(" + k + "," + atom + "[" + atom.getType() + "])");
+            System.out
+              .println("look(" + k + "," + atom + "[" + atom.getType() + "])");
         }
 
         if (lexicalAnalysis) {
@@ -855,10 +881,9 @@ public class LLkAnalyzer implements LLkGrammarAnalyzer {
      */
     public Lookahead look(int k, RuleEndElement end) {
         if (DEBUG_ANALYZER) {
-            System.out.println(
-              "lookRuleBlockEnd(" + k + "); noFOLLOW=" + end.noFOLLOW +
-              "; lock is " +
-              end.lock[k]);
+            System.out
+              .println("lookRuleBlockEnd(" + k + "); noFOLLOW=" + end
+                .noFOLLOW + "; lock is " + end.lock[k]);
         }
         if (/*lexicalAnalysis ||*/ end.noFOLLOW) {
             Lookahead p = new Lookahead();
@@ -912,8 +937,7 @@ public class LLkAnalyzer implements LLkGrammarAnalyzer {
         // check for infinite recursion.  If a cycle is returned: trouble!
         if (p.cycle != null) {
             tool.error("infinite recursion to rule " + p.cycle +
-                       " from rule " +
-                       rr.enclosingRuleName,
+              " from rule " + rr.enclosingRuleName,
                        grammar.getFilename(),
                        rr.getLine(),
                        rr.getColumn());
@@ -922,9 +946,9 @@ public class LLkAnalyzer implements LLkGrammarAnalyzer {
         // is the local FOLLOW required?
         if (p.containsEpsilon()) {
             if (DEBUG_ANALYZER) {
-                System.out.println("rule ref to " + rr.targetRule +
-                                   " has eps, depth: " +
-                                   p.epsilonDepth);
+                System.out
+                  .println("rule ref to " + rr.targetRule +
+                    " has eps, depth: " + p.epsilonDepth);
             }
 
             // remove epsilon
@@ -933,10 +957,11 @@ public class LLkAnalyzer implements LLkGrammarAnalyzer {
 
             // for each lookahead depth that saw epsilon
             int[] depths = p.epsilonDepth.toArray();
-            p.epsilonDepth = null;		// clear all epsilon stuff
+            p.epsilonDepth = null;                // clear all epsilon stuff
             for (int i = 0; i < depths.length; i++) {
                 int rk = k - (k - depths[i]);
-                Lookahead q = rr.next.look(rk);	// see comments in Lookahead
+                Lookahead q =
+                  rr.next.look(rk);        // see comments in Lookahead
                 p.combineWith(q);
             }
             // note: any of these look() computations for local follow can
@@ -1003,8 +1028,9 @@ public class LLkAnalyzer implements LLkGrammarAnalyzer {
 
     public Lookahead look(int k, TreeElement t) {
         if (DEBUG_ANALYZER) {
-            System.out.println(
-              "look(" + k + "," + t.root + "[" + t.root.getType() + "])");
+            System.out
+              .println(
+                "look(" + k + "," + t.root + "[" + t.root.getType() + "])");
         }
         if (k > 1) {
             return t.next.look(k - 1);
@@ -1043,8 +1069,8 @@ public class LLkAnalyzer implements LLkGrammarAnalyzer {
             int maxToken = grammar.tokenManager.maxTokenType();
             b.notInPlace(Token.MIN_USER_TYPE, maxToken);
             if (DEBUG_ANALYZER) {
-                System.out.println(
-                  "look(" + k + "," + wc + ") after not: " + b);
+                System.out
+                  .println("look(" + k + "," + wc + ") after not: " + b);
             }
         }
 
@@ -1086,8 +1112,8 @@ public class LLkAnalyzer implements LLkGrammarAnalyzer {
 
         if (rb.lock[k]) {
             if (DEBUG_ANALYZER) {
-                System.out.println(
-                  "infinite recursion to rule " + rb.getRuleName());
+                System.out
+                  .println("infinite recursion to rule " + rb.getRuleName());
             }
             return new Lookahead(rule);
         }
@@ -1095,10 +1121,10 @@ public class LLkAnalyzer implements LLkGrammarAnalyzer {
         // have we computed it before?
         if (rb.cache[k] != null) {
             if (DEBUG_ANALYZER) {
-                System.out.println(
-                  "found depth " + k + " result in FIRST " + rule +
-                  " cache: " +
-                  rb.cache[k].toString(",", charFormatter, grammar));
+                System.out
+                  .println("found depth " + k + " result in FIRST " + rule +
+                    " cache: " +
+                    rb.cache[k].toString(",", charFormatter, grammar));
             }
             return (Lookahead)rb.cache[k].clone();
         }
@@ -1110,9 +1136,10 @@ public class LLkAnalyzer implements LLkGrammarAnalyzer {
         // cache results
         rb.cache[k] = (Lookahead)p.clone();
         if (DEBUG_ANALYZER) {
-            System.out.println(
-              "saving depth " + k + " result in FIRST " + rule + " cache: " +
-              rb.cache[k].toString(",", charFormatter, grammar));
+            System.out
+              .println("saving depth " + k + " result in FIRST " + rule +
+                " cache: " +
+                rb.cache[k].toString(",", charFormatter, grammar));
         }
         return p;
     }
@@ -1121,8 +1148,8 @@ public class LLkAnalyzer implements LLkGrammarAnalyzer {
      * If the first k-1 sets are singleton sets, the appoximate lookahead
      * analysis is equivalent to full lookahead analysis.
      */
-    public static boolean lookaheadEquivForApproxAndFullAnalysis(
-      Lookahead[] bset, int k) {
+    public static boolean lookaheadEquivForApproxAndFullAnalysis(Lookahead[] bset,
+                                                                 int k) {
         // first k-1 sets degree 1?
         for (int i = 1; i <= k - 1; i++) {
             BitSet look = bset[i].fset;
@@ -1146,9 +1173,9 @@ public class LLkAnalyzer implements LLkGrammarAnalyzer {
                                                AlternativeElement el) {
         // Only do this if the element is the first element of the alt,
         // because we are making an implicit assumption that k==1.
-        GrammarElement head = currentBlock.getAlternativeAt(
-          currentBlock.analysisAlt)
-          .head;
+        GrammarElement head =
+          currentBlock.getAlternativeAt(currentBlock.analysisAlt)
+            .head;
         // if element is #(. blah) then check to see if el is root
         if (head instanceof TreeElement) {
             if (((TreeElement)head).root != el) {
@@ -1208,7 +1235,8 @@ public class LLkAnalyzer implements LLkGrammarAnalyzer {
 
     public boolean subruleCanBeInverted(AlternativeBlock blk,
                                         boolean forLexer) {
-        if (blk instanceof ZeroOrMoreBlock || blk instanceof OneOrMoreBlock || blk instanceof SynPredBlock) {
+        if (blk instanceof ZeroOrMoreBlock || blk instanceof OneOrMoreBlock ||
+          blk instanceof SynPredBlock) {
             return false;
         }
         // Cannot invert an empty subrule
@@ -1230,7 +1258,8 @@ public class LLkAnalyzer implements LLkGrammarAnalyzer {
               elt instanceof TokenRefElement ||
               elt instanceof CharRangeElement ||
               elt instanceof TokenRangeElement ||
-              (elt instanceof StringLiteralElement && !forLexer)) || !(elt.next instanceof BlockEndElement) ||
+              (elt instanceof StringLiteralElement && !forLexer)) ||
+              !(elt.next instanceof BlockEndElement) ||
               elt.getAutoGenType() != GrammarElement.AUTO_GEN_NONE) {
                 return false;
             }

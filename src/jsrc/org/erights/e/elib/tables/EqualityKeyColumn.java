@@ -71,8 +71,6 @@ class EqualityKeyColumn extends KeyColumn {
     }
 
     /**
-     *
-     *
      * @param memberType
      * @param capacity
      */
@@ -104,8 +102,7 @@ class EqualityKeyColumn extends KeyColumn {
      */
 
     Column newVacant(int capacity) {
-        return new EqualityKeyColumn(memberType(),
-                                     capacity);
+        return new EqualityKeyColumn(memberType(), capacity);
     }
 
     /**
@@ -129,9 +126,8 @@ class EqualityKeyColumn extends KeyColumn {
                 return -1;
             }
             Object curKey = myKeys[curPos];
-            if (status >= 0
-              && hash == myHashes[curPos]
-              && curKey.equals(key)) {
+            if (status >= 0 && hash == myHashes[curPos] &&
+              curKey.equals(key)) {
                 // we found it.
                 return curPos;
             }

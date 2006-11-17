@@ -21,8 +21,8 @@ Contributor(s): ______________________________________.
 
 import org.erights.e.develop.assertion.T;
 import org.erights.e.develop.trace.Trace;
-import org.erights.e.elib.prim.E;
 import org.erights.e.elib.base.ClassDesc;
+import org.erights.e.elib.prim.E;
 import org.erights.e.meta.java.lang.CharacterMakerSugar;
 import org.erights.e.meta.java.lang.DoubleSugar;
 
@@ -57,9 +57,8 @@ public class BigIntegerSugar {
     }
 
     /**
-     * Always gives back a Double
-     * This corresponds to the Java floating-point "/" operator
-     * and the E "/" operator.
+     * Always gives back a Double This corresponds to the Java floating-point
+     * "/" operator and the E "/" operator.
      */
     static public double approxDivide(double self, double arg) {
         return self / arg;
@@ -75,9 +74,9 @@ public class BigIntegerSugar {
 
     /**
      * Returns the "best" IEEE double precision floating point equivalent to
-     * this number. If this number is representable in IEEE double
-     * precision, then that IEEE value is returned. Otherwise, convert by
-     * rounding to even.
+     * this number. If this number is representable in IEEE double precision,
+     * then that IEEE value is returned. Otherwise, convert by rounding to
+     * even.
      */
     static public double asFloat64(double self) {
         return self;
@@ -126,10 +125,10 @@ public class BigIntegerSugar {
     }
 
     /**
-     * Defined both here and in DoubleSugar, so you can use this to
-     * get a ceil'ed integer no matter what kind of number you start
-     * with. Similarly, the "doubleValue" message will get you a
-     * floating point value no matter what you start with.
+     * Defined both here and in DoubleSugar, so you can use this to get a
+     * ceil'ed integer no matter what kind of number you start with. Similarly,
+     * the "doubleValue" message will get you a floating point value no matter
+     * what you start with.
      */
     static public BigInteger ceil(BigInteger self) {
         return self;
@@ -165,10 +164,10 @@ public class BigIntegerSugar {
     }
 
     /**
-     * Defined both here and in DoubleSugar, so you can use this to
-     * get a floor'ed integer no matter what kind of number you start
-     * with. Similarly, the "doubleValue" message will get you a
-     * floating point value no matter what you start with.
+     * Defined both here and in DoubleSugar, so you can use this to get a
+     * floor'ed integer no matter what kind of number you start with.
+     * Similarly, the "doubleValue" message will get you a floating point value
+     * no matter what you start with.
      */
     static public BigInteger floor(BigInteger self) {
         return self;
@@ -209,30 +208,30 @@ public class BigIntegerSugar {
     }
 
     /**
-     * Defined both here and in DoubleSugar, so you can use this to
-     * get round'ed integer no matter what kind of number you start
-     * with. Similarly, the "doubleValue" message will get you a
-     * floating point value no matter what you start with.
+     * Defined both here and in DoubleSugar, so you can use this to get
+     * round'ed integer no matter what kind of number you start with.
+     * Similarly, the "doubleValue" message will get you a floating point value
+     * no matter what you start with.
      */
     static public BigInteger round(BigInteger self) {
         return self;
     }
 
     /**
-     * Defined both here and in DoubleSugar, so you can use this to
-     * get truncate'd integer no matter what kind of number you start
-     * with. Similarly, the "doubleValue" message will get you a
-     * floating point value no matter what you start with.
+     * Defined both here and in DoubleSugar, so you can use this to get
+     * truncate'd integer no matter what kind of number you start with.
+     * Similarly, the "doubleValue" message will get you a floating point value
+     * no matter what you start with.
      */
     static public BigInteger truncate(BigInteger self) {
         return self;
     }
 
     /**
-     * Always gives an integer resulting from rounding towards zero,
-     * ie, truncating. This corresponds to the Java integer "/" operator.
-     * BigInteger's existing 'remainder' gives the correct remainder from
-     * the truncDivide operation. <p>
+     * Always gives an integer resulting from rounding towards zero, ie,
+     * truncating. This corresponds to the Java integer "/" operator.
+     * BigInteger's existing 'remainder' gives the correct remainder from the
+     * truncDivide operation. <p>
      * <p/>
      * <pre>
      *      (a truncDivide b)*b + (a remainder b) == a
@@ -242,9 +241,8 @@ public class BigIntegerSugar {
      *      [-5,-3]: ( 1*-3) + -2 == -5
      * </pre><p>
      * <p/>
-     * Therefore, if the result is non-zero, the sign of the result must
-     * be the same as the sign of a. This corresponds to the Java and
-     * E "%" operator.
+     * Therefore, if the result is non-zero, the sign of the result must be the
+     * same as the sign of a. This corresponds to the Java and E "%" operator.
      */
     static public Number truncDivide(BigInteger self, Number o) {
         BigInteger optOther = EInt.optBig(o);
@@ -275,20 +273,16 @@ public class BigIntegerSugar {
      * minus sign.
      * <p/>
      * A negative integer is encoded as a "-" followed by the encoding of the
-     * absolute magnitude. For a positive integer, the encoded length will
-     * be (4 * b.length)/3, rounded up to the next integral (non-fractional)
+     * absolute magnitude. For a positive integer, the encoded length will be
+     * (4 * b.length)/3, rounded up to the next integral (non-fractional)
      * character length.
      * <p/>
-     * Each 6-bit-unit is encoded by one of the characters <ul>
-     * <li>'0'..'9' for 0..9
-     * <li>'A'..'Z' for 10..35
-     * <li>'a'..'z' for 37..61
-     * <li>'='      for 62
-     * <li>'_'      for 63
-     * </pre>
+     * Each 6-bit-unit is encoded by one of the characters <ul> <li>'0'..'9'
+     * for 0..9 <li>'A'..'Z' for 10..35 <li>'a'..'z' for 37..61 <li>'='
+     * for 62 <li>'_'      for 63 </pre>
      *
      * @return a string which represents the integer in 6-bits-per-char
-     * encoding.
+     *         encoding.
      */
     static public String toString64(BigInteger self) {
         if (self.signum() < 0) {
@@ -302,10 +296,10 @@ public class BigIntegerSugar {
 
         for (i = 0; i + 2 < b.length; i += 3) {
             ob.append(BASE64.charAt((b[i] & 0xfc) >> 2));
-            ob.append(BASE64.charAt(((b[i] & 0x03) << 4) |
-                                    ((b[i + 1] & 0xf0) >> 4)));
-            ob.append(BASE64.charAt(((b[i + 1] & 0x0f) << 2) |
-                                    ((b[i + 2] & 0xC0) >> 6)));
+            ob.append(BASE64.charAt(
+              ((b[i] & 0x03) << 4) | ((b[i + 1] & 0xf0) >> 4)));
+            ob.append(BASE64.charAt(
+              ((b[i + 1] & 0x0f) << 2) | ((b[i + 2] & 0xC0) >> 6)));
             ob.append(BASE64.charAt((b[i + 2] & 0x3F)));
         }
         switch (b.length - i) {
@@ -317,8 +311,8 @@ public class BigIntegerSugar {
             break;
         case 2:
             ob.append(BASE64.charAt((b[i] & 0xfc) >> 2));
-            ob.append(BASE64.charAt(((b[i] & 0x03) << 4) |
-                                    ((b[i + 1] & 0xf0) >> 4)));
+            ob.append(BASE64.charAt(
+              ((b[i] & 0x03) << 4) | ((b[i + 1] & 0xf0) >> 4)));
             ob.append(BASE64.charAt(((b[i + 1] & 0x0f) << 2)));
             break;
         default:
@@ -334,9 +328,8 @@ public class BigIntegerSugar {
      * Negative numbers are shown with an optional leading minus sign.
      *
      * @return
-     * @see <a href="http://www.waterken.com/dev/Enc/base32/"
-     *      >Waterken<font size="-1"><sup>TM</sup></font> Enc base32
-     *      Encoding</a>
+     * @see <a href="http://www.waterken.com/dev/Enc/base32/" >Waterken<font
+     *      size="-1"><sup>TM</sup></font> Enc base32 Encoding</a>
      */
     static public String toYURL32(BigInteger self) {
         if (self.signum() < 0) {
@@ -366,24 +359,22 @@ public class BigIntegerSugar {
 
     /**
      * Returns the base-2 magnitude of self, which must be non-negative.
-     * <p>
-     * The returned form is compatible with the
-     * {@link BigInteger#BigInteger(int, byte[]) BigInteger(1, byteArray)}
-     * constructor
+     * <p/>
+     * The returned form is compatible with the {@link BigInteger#BigInteger(int,
+     *byte[]) BigInteger(1, byteArray)} constructor
      *
      * @return
      */
     static public byte[] toBase2ByteArray(BigInteger self) {
-        T.require(self.signum() >= 0,
-                  "Must be non-negative: ", self);
+        T.require(self.signum() >= 0, "Must be non-negative: ", self);
         byte[] result = self.toByteArray();
         int numBytes = result.length;
         if (numBytes >= 2 && 0 == result[0]) {
             //In this case, the first byte is an artifact of toByteArray()
             // returning two's complement rather than magnitude, so we remove
             // it.
-            byte[] newResult = new byte[numBytes -1];
-            System.arraycopy(result, 1, newResult, 0, numBytes -1);
+            byte[] newResult = new byte[numBytes - 1];
+            System.arraycopy(result, 1, newResult, 0, numBytes - 1);
             return newResult;
         } else {
             return result;
@@ -392,7 +383,7 @@ public class BigIntegerSugar {
 
     /**
      * Actually, a SHA hash.
-     * <p>
+     * <p/>
      * Hashes the two's complement representation, with the hash as the
      * magnitude of a non-negative number.
      */
@@ -526,10 +517,10 @@ public class BigIntegerSugar {
      *      [-5, 3]: (-2* 3) +  1 == -5
      *      [-5,-3]: ( 1*-3) + -2 == -5
      * </pre><p>
-     * Therefore, if the result is non-zero, the sign of the result must be
-     * the same as the sign of b, and so the result ranges from 0 inclusive
-     * to b exclusive. This corresponds to the E "%%" operator. When
-     * b >= 0, it also corresponds to Java's BigInteger.mod().
+     * Therefore, if the result is non-zero, the sign of the result must be the
+     * same as the sign of b, and so the result ranges from 0 inclusive to b
+     * exclusive. This corresponds to the E "%%" operator. When b >= 0, it also
+     * corresponds to Java's BigInteger.mod().
      */
     static public Number mod(BigInteger self, Number o) {
         BigInteger optOther = EInt.optBig(o);
@@ -552,7 +543,8 @@ public class BigIntegerSugar {
     }
 
     /**
-     * Override {@link BigInteger#modPow} in order to coerce if arg is float64.
+     * Override {@link BigInteger#modPow} in order to coerce if arg is
+     * float64.
      *
      * @return
      */

@@ -28,14 +28,13 @@ import java.io.Writer;
 
 
 /**
- * This class shouldn't need to exist, but {@link System#out} and
- * {@link System#err} are both {@link PrintStream}s, and PrintStream is
- * deprecated in favor of {@link PrintWriter}.
+ * This class shouldn't need to exist, but {@link System#out} and {@link
+ * System#err} are both {@link PrintStream}s, and PrintStream is deprecated in
+ * favor of {@link PrintWriter}.
  * <p/>
- * XXX How should one obtain a Writer or PrintWriter to stdout and stderr?
- * As long as we're at it, we also provide a static method for accessing
- * System.in as a non-buffering BufferedReader (so that readline() is
- * available).
+ * XXX How should one obtain a Writer or PrintWriter to stdout and stderr? As
+ * long as we're at it, we also provide a static method for accessing System.in
+ * as a non-buffering BufferedReader (so that readline() is available).
  * <p/>
  * Note that there is no reason to use this class as a type in a type
  * declaration. No one should ever see any instances of it. Only its static
@@ -43,8 +42,8 @@ import java.io.Writer;
  * <p/>
  * Note: As of some recent version of Java &lt;= 1.3, PrintStream is no longer
  * officially deprecated, probably because of System.out and System.err.
- * However, E's TextWriters still need to wrap Writers, not PrintStreams, so
- * we still need PrintStreamWriter.
+ * However, E's TextWriters still need to wrap Writers, not PrintStreams, so we
+ * still need PrintStreamWriter.
  *
  * @author Mark S. Miller
  */
@@ -106,8 +105,8 @@ public final class PrintStreamWriter extends Writer {
     static public BufferedReader stdin() {
         if (System.in != lastInStream) {
             lastInStream = System.in;
-            lastInReader
-            = new BufferedReader(new InputStreamReader(lastInStream), 1);
+            lastInReader =
+              new BufferedReader(new InputStreamReader(lastInStream), 1);
         }
         return lastInReader;
     }

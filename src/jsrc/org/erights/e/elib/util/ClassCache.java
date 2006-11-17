@@ -22,14 +22,13 @@ Contributor(s): ______________________________________.
 import java.util.Hashtable;
 
 /**
- * A performance optimizing hack: by hanging onto classes that are looked up
- * by name, we can spare Java's overhead if they ever have to be looked up
- * again.
+ * A performance optimizing hack: by hanging onto classes that are looked up by
+ * name, we can spare Java's overhead if they ever have to be looked up again.
  * <p/>
  * Also recognizes the names for the scalar types and "void".
  * <p/>
- * XXX The original motivation -- the surprising overhead of Java's
- * {@link Class#forName(String)} may have been long fixed, in which case this
+ * XXX The original motivation -- the surprising overhead of Java's {@link
+ * Class#forName(String)} may have been long fixed, in which case this
  * implementation should do less.
  *
  * @author Mark S. Miller

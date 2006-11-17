@@ -49,7 +49,7 @@ public class RuinedSlot implements Slot {
 
     /**
      * A RuinedSlot is read-only, and so returns itself.
-     * 
+     *
      * @return
      */
     public Slot readOnly() {

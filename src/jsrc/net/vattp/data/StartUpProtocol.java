@@ -63,7 +63,6 @@ public class StartUpProtocol implements MsgHandler {
      * Constants for the connection startup protocol.
      */
 
-
     /*
     * States for the connection startup state machine. Current state
     * is in myState below.
@@ -183,22 +182,22 @@ public class StartUpProtocol implements MsgHandler {
 
     /* String names for the Tokens for use in trace messages */
     static private final String[] tokNames = {"TOK_BYE",
-                                              "TOK_DUP",
-                                              "TOK_GIVEINFO",
-                                              "TOK_GO",
-                                              "TOK_GOTOO",
-                                              "TOK_IAM",
-                                              "TOK_IWANT",
-                                              "TOK_NOT_ME",
-                                              "TOK_REPLYINFO",
-                                              "TOK_TRY",
-                                              "TOK_RESUME",
-                                              "TOK_YOUCHOSE"};
+      "TOK_DUP",
+      "TOK_GIVEINFO",
+      "TOK_GO",
+      "TOK_GOTOO",
+      "TOK_IAM",
+      "TOK_IWANT",
+      "TOK_NOT_ME",
+      "TOK_REPLYINFO",
+      "TOK_TRY",
+      "TOK_RESUME",
+      "TOK_YOUCHOSE"};
 
     static private final String[] errTokNames = {"***Unassigned***",
-                                                 "TOK_ERR_PROTOCOL",
-                                                 "TOK_ERR_WRONG_ID",
-                                                 "TOK_ERR_INTERNAL"};
+      "TOK_ERR_PROTOCOL",
+      "TOK_ERR_WRONG_ID",
+      "TOK_ERR_INTERNAL"};
 
 
     /**
@@ -299,14 +298,13 @@ public class StartUpProtocol implements MsgHandler {
 
     static private final BigInteger g = new BigInteger("2");
 
-    static private final BigInteger modulus = new BigInteger("11973791477546250983817043765044391637751157152328012" +
-                                                             "72278994477192940843207042535379780702841268263028" +
-                                                             "59486033998465467188646855777933154987304015680716" +
-                                                             "74391647223805124273032053960564348124852668624831" +
-                                                             "01273341734490560148744399254916528366159159380290" +
-                                                             "29782321539388697349613396698017627677439533107752" +
-                                                             "978203");
-
+    static private final BigInteger modulus = new BigInteger(
+      "11973791477546250983817043765044391637751157152328012" +
+        "72278994477192940843207042535379780702841268263028" +
+        "59486033998465467188646855777933154987304015680716" +
+        "74391647223805124273032053960564348124852668624831" +
+        "01273341734490560148744399254916528366159159380290" +
+        "29782321539388697349613396698017627677439533107752" + "978203");
 
 // Constructors
 
@@ -396,8 +394,8 @@ public class StartUpProtocol implements MsgHandler {
      *                             remote end. An ERR_PROTOCOL message is sent
      *                             to the remote end.
      */
-    private void checkProtocolVersion(DataInputStream packetIn,
-                                      byte[] packet) throws IOException {
+    private void checkProtocolVersion(DataInputStream packetIn, byte[] packet)
+      throws IOException {
         hisMessagesToSign.addElement(packet);
         // To save their supported versions in case of error
         Vector versions = new Vector(10);
@@ -455,7 +453,8 @@ public class StartUpProtocol implements MsgHandler {
         myEMsgProtocolVersion = protocol;
         packetIn.close();
     }
-// Method from the MsgHandler interface.
+
+    // Method from the MsgHandler interface.
     /**
      * Process a connection failure
      */
@@ -477,9 +476,9 @@ public class StartUpProtocol implements MsgHandler {
         x = new BigInteger(256, ESecureRandom.getESecureRandom());
         byte[] ans = g.modPow(x, modulus).toByteArray();
         if (Trace.comm.timing && Trace.ON) {
-            Trace.comm.timingm("FirstDiffieHellman time " +
-                               (MicroTime.queryTimer() - startTime) +
-                               " microseconds");
+            Trace.comm
+              .timingm("FirstDiffieHellman time " +
+                (MicroTime.queryTimer() - startTime) + " microseconds");
         }
         return ans;
     }
@@ -493,8 +492,8 @@ public class StartUpProtocol implements MsgHandler {
     private String formatStartupPacket(byte[] packet) {
         String ret = "";
         try {
-            ByteArrayInputStream byteArrayIn = new ByteArrayInputStream(
-              packet);
+            ByteArrayInputStream byteArrayIn =
+              new ByteArrayInputStream(packet);
             DataInputStream packetIn = new DataInputStream(byteArrayIn);
             byte msgType = packetIn.readByte();
             ret = "0x" + Integer.toHexString(msgType) + " ";
@@ -511,7 +510,8 @@ public class StartUpProtocol implements MsgHandler {
         }
         return ret + "\n" + HexStringUtils.bytesToReadableHexStr(packet);
     }
-// Method for use by DataPath
+
+    // Method for use by DataPath
     /**
      * Return the connection startup state
      *
@@ -560,41 +560,37 @@ public class StartUpProtocol implements MsgHandler {
                                                 myRemoteVatID,
                                                 remoteSearchPath);
             switch (i) {
-            case VatTPMgr.LIVES_CONTINUE:
-                {
-                    myState = ST_INCOMING_EXPECT_GO;
-                    sendReplyInfo();
-                    break;
-                }
-            case VatTPMgr.LIVES_DUP:
-                {
-                    myDataPath.stopStartUpProtocol();
-                    startupError(TOK_DUP, "Crossed connections");
-                    break;
-                }
-            case VatTPMgr.LIVES_NOTIFY:
-                {
-                    myState = ST_INCOMING_EXPECT_GO;
-                    sendYouChose();
-                    break;
-                }
-            default:
-                {
-                    Trace.comm.errorm("Invalid return code=" + i);
-                    startupError(TOK_ERR_INTERNAL,
-                                 "Internal error at my end");
-                    break;
-                }
+            case VatTPMgr.LIVES_CONTINUE: {
+                myState = ST_INCOMING_EXPECT_GO;
+                sendReplyInfo();
+                break;
+            }
+            case VatTPMgr.LIVES_DUP: {
+                myDataPath.stopStartUpProtocol();
+                startupError(TOK_DUP, "Crossed connections");
+                break;
+            }
+            case VatTPMgr.LIVES_NOTIFY: {
+                myState = ST_INCOMING_EXPECT_GO;
+                sendYouChose();
+                break;
+            }
+            default: {
+                Trace.comm.errorm("Invalid return code=" + i);
+                startupError(TOK_ERR_INTERNAL, "Internal error at my end");
+                break;
+            }
             }
         } else if (token == TOK_DUP) {
-            myDataPath.duplicatePath("Incoming crossed connections" +
-                                     formatStartupPacket(packet), false);
+            myDataPath.duplicatePath(
+              "Incoming crossed connections" + formatStartupPacket(packet),
+              false);
         } else if (token == TOK_NOT_ME) {
             startupLocalError("Other end tried to connect to self");
         } else {
-            startupError(TOK_ERR_PROTOCOL, "Expected " +
-                                           tokName(TOK_GIVEINFO) + " got " + formatStartupPacket(
-                                             packet));
+            startupError(TOK_ERR_PROTOCOL,
+                         "Expected " + tokName(TOK_GIVEINFO) + " got " +
+                           formatStartupPacket(packet));
         }
     }
 
@@ -662,12 +658,13 @@ public class StartUpProtocol implements MsgHandler {
                 startupError(TOK_BYE, "wrong suspend id");
             }
         } else if (token == TOK_DUP) {
-            myDataPath.duplicatePath("Incoming crossed connections " +
-                                     formatStartupPacket(packet), true);
+            myDataPath.duplicatePath(
+              "Incoming crossed connections " + formatStartupPacket(packet),
+              true);
         } else {
-            startupError(TOK_ERR_PROTOCOL, "Expected " + tokName(TOK_GO) +
-                                           " got " + formatStartupPacket(
-                                             packet));
+            startupError(TOK_ERR_PROTOCOL,
+                         "Expected " + tokName(TOK_GO) + " got " +
+                           formatStartupPacket(packet));
         }
     }
 
@@ -693,9 +690,9 @@ public class StartUpProtocol implements MsgHandler {
         }
         if (token != TOK_IWANT) {
             /* IWANT <id> */
-            startupError(TOK_ERR_PROTOCOL, "Expected " + tokName(TOK_IWANT) +
-                                           " got " + formatStartupPacket(
-                                             packet));
+            startupError(TOK_ERR_PROTOCOL,
+                         "Expected " + tokName(TOK_IWANT) + " got " +
+                           formatStartupPacket(packet));
             return;
         }
         String wantedVatID = packetIn.readUTF();
@@ -715,16 +712,18 @@ public class StartUpProtocol implements MsgHandler {
             }
         }
         if (Trace.comm.debug && Trace.ON) {
-            Trace.comm.debugm("got request for " + wantedVatID +
-                              " when I am " + myLocalVatID);
+            Trace.comm
+              .debugm("got request for " + wantedVatID + " when I am " +
+                myLocalVatID);
         }
         startupError(TOK_NOT_ME, "I don't know " + wantedVatID);
     }
+
     /*
-     * GOTOO
-     *   -or-
-     * BYE
-     */
+    * GOTOO
+    *   -or-
+    * BYE
+    */
     /**
      * Process expecting a GOTOO <auth suite> <DH parameter> -or- BYE message.
      *
@@ -766,9 +765,9 @@ public class StartUpProtocol implements MsgHandler {
         } else if (token == TOK_BYE) {
             myDataPath.cantResume(formatStartupPacket(packet));
         } else {
-            startupError(TOK_ERR_PROTOCOL, "Expected " + tokName(TOK_GOTOO) +
-                                           " got " + formatStartupPacket(
-                                             packet));
+            startupError(TOK_ERR_PROTOCOL,
+                         "Expected " + tokName(TOK_GOTOO) + " got " +
+                           formatStartupPacket(packet));
         }
     }
 
@@ -844,12 +843,13 @@ public class StartUpProtocol implements MsgHandler {
             myState = ST_TRY_NEXT;
             startupLocalError("got " + formatStartupPacket(packet));
         } else if (token == TOK_DUP) {
-            myDataPath.duplicatePath("outgoing crossed connections" +
-                                     formatStartupPacket(packet), true);
+            myDataPath.duplicatePath(
+              "outgoing crossed connections" + formatStartupPacket(packet),
+              true);
         } else {
-            startupError(TOK_ERR_PROTOCOL, "Expected " + tokName(TOK_IAM) +
-                                           " got " + formatStartupPacket(
-                                             packet));
+            startupError(TOK_ERR_PROTOCOL,
+                         "Expected " + tokName(TOK_IAM) + " got " +
+                           formatStartupPacket(packet));
         }
     }
 
@@ -922,13 +922,14 @@ public class StartUpProtocol implements MsgHandler {
                 }
             }
         } else if (token == TOK_DUP) {
-            myDataPath.duplicatePath("Outgoing crossed connections " +
-                                     formatStartupPacket(packet), true);
+            myDataPath.duplicatePath(
+              "Outgoing crossed connections " + formatStartupPacket(packet),
+              true);
             return;
         } else {
-            startupError(TOK_ERR_PROTOCOL, "Expected " +
-                                           tokName(TOK_REPLYINFO) + " got " +
-                                           formatStartupPacket(packet));
+            startupError(TOK_ERR_PROTOCOL,
+                         "Expected " + tokName(TOK_REPLYINFO) + " got " +
+                           formatStartupPacket(packet));
             return;
         }
     }
@@ -1024,9 +1025,9 @@ public class StartUpProtocol implements MsgHandler {
             recvIV = subbytearray(ivs, 8, 8);
         }
         if (Trace.comm.timing && Trace.ON) {
-            Trace.comm.timingm("SecondDiffieHellman time " +
-                               (MicroTime.queryTimer() - startTime) +
-                               " microseconds");
+            Trace.comm
+              .timingm("SecondDiffieHellman time " +
+                (MicroTime.queryTimer() - startTime) + " microseconds");
         }
         myDataPath.setAuthorizationSecrets(dhSecret, sendIV, recvIV);
         return true;
@@ -1123,7 +1124,8 @@ public class StartUpProtocol implements MsgHandler {
         md5.update(mdConst);
         return md5.digest(data);
     }
-// Method from the MsgHandler interface.
+
+    // Method from the MsgHandler interface.
     /**
      * Process the next packet of the connection startup protocol.
      *
@@ -1131,13 +1133,13 @@ public class StartUpProtocol implements MsgHandler {
      */
     public void processMessage(byte packetArray[],
                                VatTPConnection /*nullOK*/willBeNull) {
-        ByteArrayInputStream byteArrayIn = new ByteArrayInputStream(
-          packetArray);
+        ByteArrayInputStream byteArrayIn =
+          new ByteArrayInputStream(packetArray);
         DataInputStream packetIn = new DataInputStream(byteArrayIn);
 
         if (Trace.comm.verbose && Trace.ON) {
-            Trace.comm.verbosem(
-              HexStringUtils.bytesToReadableHexStr(packetArray));
+            Trace.comm
+              .verbosem(HexStringUtils.bytesToReadableHexStr(packetArray));
         }
 
         try {
@@ -1154,14 +1156,14 @@ public class StartUpProtocol implements MsgHandler {
                     byte token = packetIn.readByte();
 
                     if (Trace.comm.verbose && Trace.ON) {
-                        Trace.comm.verbosem("received startup packet " +
-                                            formatStartupPacket(packetArray));
+                        Trace.comm
+                          .verbosem("received startup packet " +
+                            formatStartupPacket(packetArray));
                     }
 
                     if (token < 0) {
                         startupLocalError("Error " + tokName(token) +
-                                          " from other side: " +
-                                          packetIn.readUTF());
+                          " from other side: " + packetIn.readUTF());
                         return;
                     }
 
@@ -1198,13 +1200,15 @@ public class StartUpProtocol implements MsgHandler {
                         break;
                     case ST_DEAD:
                         if (Trace.comm.debug && Trace.ON) {
-                            Trace.comm.debugm("dead MsgConnection ignoring startup packet " +
-                                              formatStartupPacket(packetArray));
+                            Trace.comm
+                              .debugm(
+                                "dead MsgConnection ignoring startup packet " +
+                                  formatStartupPacket(packetArray));
                         }
                         break;
                     default:
-                        startupLocalError("state machine confused, in state " +
-                                          myState);
+                        startupLocalError(
+                          "state machine confused, in state " + myState);
                         break;
                     }
                     packetIn.close();
@@ -1215,16 +1219,16 @@ public class StartUpProtocol implements MsgHandler {
                                  "Exception handling packet: ",
                                  e);
                 } catch (IOException e2) {
-                    Trace.comm.errorm("IOException " + e2 +
-                                      " handling exception", e);
+                    Trace.comm
+                      .errorm("IOException " + e2 + " handling exception", e);
                 }
             }
         } catch (Exception e) {
-            Trace.comm.errorm("Exception during startup for\n  " + myDataPath,
-                              e);
+            Trace.comm
+              .errorm("Exception during startup for\n  " + myDataPath, e);
             if (!myStop) {
-                myDataPath.tryNext(e.toString() + "\n" +
-                                   ThrowableSugar.javaStack(e));
+                myDataPath.tryNext(
+                  e.toString() + "\n" + ThrowableSugar.javaStack(e));
             } else {
                 myDataPath.shutDownPath();
             }
@@ -1531,9 +1535,9 @@ public class StartUpProtocol implements MsgHandler {
             return null;
         }
         if (Trace.comm.timing && Trace.ON) {
-            Trace.comm.timingm("Signing time " +
-                               (MicroTime.queryTimer() - startTime) +
-                               " microseconds");
+            Trace.comm
+              .timingm("Signing time " + (MicroTime.queryTimer() - startTime) +
+                " microseconds");
         }
         return signature;
     }
@@ -1607,7 +1611,8 @@ public class StartUpProtocol implements MsgHandler {
 
         myDataPath.startupSuccessful(myEMsgProtocolVersion, myProtocolSuite);
     }
-// Method for use by DataPath
+
+    // Method for use by DataPath
     /**
      * Stop the start up protocol. This method is called by the DataPath
      * relaying a call from the VatTPMgr when it determines that there are two

@@ -113,10 +113,10 @@ public class Tool {
             } else {
                 proc = rt.exec(cmd);
             }
-            StreamScarfer stderrScarfer = new StreamScarfer(
-              proc.getErrorStream(), "stderr", this);
-            StreamScarfer stdoutScarfer = new StreamScarfer(
-              proc.getInputStream(), "stdout", this);
+            StreamScarfer stderrScarfer =
+              new StreamScarfer(proc.getErrorStream(), "stderr", this);
+            StreamScarfer stdoutScarfer =
+              new StreamScarfer(proc.getInputStream(), "stdout", this);
             stderrScarfer.start();
             stdoutScarfer.start();
             int exitVal = proc.waitFor();
@@ -142,8 +142,9 @@ public class Tool {
         if (path != null) {
             log("java antlr.Tool -o " + path + " " + fullyQualifiedFilename);
             antlr.Tool theTool = new antlr.Tool();
-            theTool.doEverything(
-              new String[]{"-o", path, fullyQualifiedFilename});
+            theTool.doEverything(new String[]{"-o",
+              path,
+              fullyQualifiedFilename});
         }
     }
 

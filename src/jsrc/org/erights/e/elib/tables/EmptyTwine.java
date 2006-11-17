@@ -103,8 +103,8 @@ public class EmptyTwine extends Twine {
         if (0 == start && 0 == bound) {
             return this;
         } else {
-            throw new IndexOutOfBoundsException
-              ("running on empty " + start + "..!" + bound);
+            throw new IndexOutOfBoundsException(
+              "running on empty " + start + "..!" + bound);
         }
     }
 

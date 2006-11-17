@@ -41,12 +41,12 @@ import java.io.Writer;
  * Writes all strings with "\n" replaced with the 'newline' string (typically
  * "\n" followed by zero or more spaces). <p>
  * <p/>
- * If the *print*(obj) methods detect they are asked to print an
- * object they are already in the middle of printing, they print
- * "***CYCLE***" instead. <p>
+ * If the *print*(obj) methods detect they are asked to print an object they
+ * are already in the middle of printing, they print "***CYCLE***" instead.
+ * <p>
  * <p/>
- * Asks the object to print itself with E.call(obj, "__printOn", this)
- * rather than String.valueOf(obj). <p>
+ * Asks the object to print itself with E.call(obj, "__printOn", this) rather
+ * than String.valueOf(obj). <p>
  *
  * @author Mark S. Miller
  */
@@ -74,32 +74,23 @@ public final class TextWriter extends FilterWriter {
     }
 
     /**
-     * Initial newline defaults to "\n".
-     * autoflush and closes default to false.
+     * Initial newline defaults to "\n". autoflush and closes default to
+     * false.
      */
     public TextWriter(Writer out) {
-        this(out,
-             "\n",
-             false,
-             false,
-             null);
+        this(out, "\n", false, false, null);
     }
 
     /**
-     * Initial newline defaults to "\n".
-     * closes default to false.
+     * Initial newline defaults to "\n". closes default to false.
      */
     public TextWriter(Writer out, boolean autoflush) {
-        this(out,
-             "\n",
-             autoflush,
-             false,
-             null);
+        this(out, "\n", autoflush, false, null);
     }
 
     /**
-     * Returns a writer that wraps 'out', and writes all strings with
-     * "\n" replaced with the 'newline' string. <p>
+     * Returns a writer that wraps 'out', and writes all strings with "\n"
+     * replaced with the 'newline' string. <p>
      * <p/>
      * If autoflush, flush()es after outputting each newline.
      */
@@ -120,8 +111,8 @@ public final class TextWriter extends FilterWriter {
     }
 
     /**
-     * XXX Does NOT close the underlying stream, since that might be
-     * separately accessed.
+     * XXX Does NOT close the underlying stream, since that might be separately
+     * accessed.
      * <p/>
      * Does flush and invalidate this TextWriter.
      */
@@ -144,9 +135,8 @@ public final class TextWriter extends FilterWriter {
     }
 
     /**
-     * Returns a new TextWriter just like this one, but with
-     * morePrefix added on. Note that these share the context
-     * used to break cycles.
+     * Returns a new TextWriter just like this one, but with morePrefix added
+     * on. Note that these share the context used to break cycles.
      */
     public TextWriter indent(String morePrefix) {
         //Since none of the TextWriters do their own buffering, they
@@ -183,11 +173,8 @@ public final class TextWriter extends FilterWriter {
                 return;
             }
             myContext.put(key, null);
-            TextWriter sub = new TextWriter(out,
-                                            myNewline,
-                                            myAutoflush,
-                                            false,
-                                            myContext);
+            TextWriter sub =
+              new TextWriter(out, myNewline, myAutoflush, false, myContext);
             try {
                 if (obj instanceof Throwable) {
                     Throwable leaf = ThrowableSugar.leaf((Throwable)obj);
@@ -213,8 +200,10 @@ public final class TextWriter extends FilterWriter {
                 }
                 String oClassName = ClassDesc.simpleSig(obj.getClass());
                 String pClassName = ClassDesc.simpleSig(leaf.getClass());
-                print("<***", StringHelper.aan(oClassName),
-                      " throws ", StringHelper.aan(pClassName),
+                print("<***",
+                      StringHelper.aan(oClassName),
+                      " throws ",
+                      StringHelper.aan(pClassName),
                       " when printed***>");
             } finally {
                 sub.close();
@@ -224,9 +213,9 @@ public final class TextWriter extends FilterWriter {
     }
 
     /**
-     * quote(obj) differs from print(obj) in that the quoted form of the
-     * object is printed. Currently, the quoted & non quoted printed forms
-     * differ only for String and Twine.
+     * quote(obj) differs from print(obj) in that the quoted form of the object
+     * is printed. Currently, the quoted & non quoted printed forms differ only
+     * for String and Twine.
      */
     public void quote(Object original) throws IOException {
         Object obj = Ref.resolution(original);
@@ -255,8 +244,7 @@ public final class TextWriter extends FilterWriter {
     /**
      *
      */
-    public void print(Object a, Object b)
-      throws IOException {
+    public void print(Object a, Object b) throws IOException {
         print(a);
         print(b);
     }
@@ -264,8 +252,7 @@ public final class TextWriter extends FilterWriter {
     /**
      *
      */
-    public void print(Object a, Object b, Object c)
-      throws IOException {
+    public void print(Object a, Object b, Object c) throws IOException {
         print(a);
         print(b);
         print(c);
@@ -297,9 +284,12 @@ public final class TextWriter extends FilterWriter {
     /**
      *
      */
-    public void print(Object a, Object b, Object c, Object d, Object e,
-                      Object f)
-      throws IOException {
+    public void print(Object a,
+                      Object b,
+                      Object c,
+                      Object d,
+                      Object e,
+                      Object f) throws IOException {
         print(a);
         print(b);
         print(c);
@@ -311,9 +301,13 @@ public final class TextWriter extends FilterWriter {
     /**
      *
      */
-    public void print(Object a, Object b, Object c, Object d, Object e,
-                      Object f, Object g)
-      throws IOException {
+    public void print(Object a,
+                      Object b,
+                      Object c,
+                      Object d,
+                      Object e,
+                      Object f,
+                      Object g) throws IOException {
         print(a);
         print(b);
         print(c);

@@ -11,25 +11,25 @@ import java.io.IOException;
 import java.io.Reader;
 
 /**
- * A non-blocking {@link Reader} for reading the text that appears in a
- * shared {@link StringBuffer}.
+ * A non-blocking {@link Reader} for reading the text that appears in a shared
+ * {@link StringBuffer}.
  * <p/>
  * This class in intended to be thread-safe, and to be used both from inside
- * and outside a vat. When used in conjunction with {@link
- * StringWriter} or our own {@link TextWriter}, the pair is
- * like a non-blocking variant of {@link java.io.PipedReader
- * PipedReader}/{@link java.io.PipedWriter PipedWriter}. The sharing must be
- * set up at creation time, as a TextReader encapsulates its StringBuffer.
+ * and outside a vat. When used in conjunction with {@link StringWriter} or our
+ * own {@link TextWriter}, the pair is like a non-blocking variant of {@link
+ * java.io.PipedReader PipedReader}/{@link java.io.PipedWriter PipedWriter}.
+ * The sharing must be set up at creation time, as a TextReader encapsulates
+ * its StringBuffer.
  * <p/>
  * In order to be non-blocking, we make the following change to the Reader
- * contract: If a read(..) is attempted on a non-ready TextReader, it
- * will throw an IOException, rather than blocking or returning zero.
+ * contract: If a read(..) is attempted on a non-ready TextReader, it will
+ * throw an IOException, rather than blocking or returning zero.
  * <p/>
  * In order to be thread-safe, it uses the StringBuffer as its {@link
  * Reader#lock}.
  * <p/>
- * This class does no newline conversion. This should normally be done by
- * the object that writes into the shared StringBuffer.
+ * This class does no newline conversion. This should normally be done by the
+ * object that writes into the shared StringBuffer.
  *
  * @author Mark S. Miller
  * @author Terry Stanley
@@ -73,11 +73,10 @@ public class TextReader extends Reader {
      * @param buf       The StringBuffer to read from, and to synchronize on.
      * @param optFiller When a read is attempted but 'buf' is empty, then
      *                  optFiller is called to refill 'buf' and to provide a
-     *                  successor to itself, which may be null. The next
-     *                  refill will be to this successor. If the buffer goes
-     *                  empty and the current filler is null, then the
-     *                  TextReader reports end-of-stream (ie, further
-     *                  reads will return -1).
+     *                  successor to itself, which may be null. The next refill
+     *                  will be to this successor. If the buffer goes empty and
+     *                  the current filler is null, then the TextReader reports
+     *                  end-of-stream (ie, further reads will return -1).
      */
     TextReader(StringBuffer buf, Thunk optFiller) {
         super(buf); //use buf as the lock
@@ -106,13 +105,12 @@ public class TextReader extends Reader {
     /**
      * How many characters are immediately available?
      * <p/>
-     * If the buffer is empty, then give the filler one chance and try
-     * again. If instead you want to know the largest number of characters
-     * that are available, and buffer then as a result, then call fill()
-     * first.
+     * If the buffer is empty, then give the filler one chance and try again.
+     * If instead you want to know the largest number of characters that are
+     * available, and buffer then as a result, then call fill() first.
      * <p/>
-     * Currently, this entire operation is performed with 'lock' held.
-     * XXX Should we release 'lock' around the call to myOptFiller?
+     * Currently, this entire operation is performed with 'lock' held. XXX
+     * Should we release 'lock' around the call to myOptFiller?
      */
     public int available() throws IOException {
         synchronized (lock) {
@@ -190,8 +188,7 @@ public class TextReader extends Reader {
             myNext += len;
         } else {
             if (0 != myNext) {
-                throw new RuntimeException
-                  ("internal: unmarked next must be 0");
+                throw new RuntimeException("internal: unmarked next must be 0");
             }
             myOptBuf.delete(0, len);
         }
@@ -269,8 +266,8 @@ public class TextReader extends Reader {
     }
 
     /**
-     * Reads no more than 'size' characters from the file, and return
-     * them as a String. If at end-of-file, return null.
+     * Reads no more than 'size' characters from the file, and return them as a
+     * String. If at end-of-file, return null.
      */
     public String readString(int size) throws IOException {
         char[] cbuf = new char[size];
@@ -302,18 +299,18 @@ public class TextReader extends Reader {
     /**
      * Reads everything else and returns it.
      * <p/>
-     * If everything else isn't yet available, then throws rather than
-     * blocking or returning something funny, but characters have still been
-     * consumed anyway. If this doesn't suit you, use mark() and reset() to
-     * protect yourself.
+     * If everything else isn't yet available, then throws rather than blocking
+     * or returning something funny, but characters have still been consumed
+     * anyway. If this doesn't suit you, use mark() and reset() to protect
+     * yourself.
      */
     public String readText() throws IOException {
         synchronized (lock) {
             String result = readReady();
             if (!isDone()) {
                 if (ready()) {
-                    throw new RuntimeException
-                      ("internal: readReady must finish the job");
+                    throw new RuntimeException(
+                      "internal: readReady must finish the job");
                 } else {
                     throw new IOException("would block");
                 }

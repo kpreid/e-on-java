@@ -22,8 +22,8 @@ Contributor(s): ______________________________________.
 import org.erights.e.develop.assertion.T;
 import org.erights.e.elang.scope.EvalContext;
 import org.erights.e.elang.scope.ScopeLayout;
-import org.erights.e.elang.visitors.ETreeVisitor;
 import org.erights.e.elang.syntax.ELexer;
+import org.erights.e.elang.visitors.ETreeVisitor;
 import org.erights.e.elib.base.SourceSpan;
 import org.erights.e.elib.oldeio.TextWriter;
 import org.erights.e.elib.prim.Thrower;
@@ -38,7 +38,7 @@ import java.io.IOException;
 
 /**
  * BNF: varName
- * <p>
+ * <p/>
  * Returns the value of the variable of this name in the current scope.
  *
  * @author Mark S. Miller
@@ -57,8 +57,9 @@ public abstract class NounExpr extends AtomicExpr {
     NounExpr(SourceSpan optSpan, String name, ScopeLayout optScopeLayout) {
         super(optSpan, optScopeLayout);
         myName = name;
-        T.require(! name.startsWith("&"),
-                  "Internal: Name vs Slot confusion: ", name);
+        T.require(!name.startsWith("&"),
+                  "Internal: Name vs Slot confusion: ",
+                  name);
     }
 
     /**
@@ -120,8 +121,8 @@ public abstract class NounExpr extends AtomicExpr {
         }
         if (!myName.equals(other.myName)) {
             throw Thrower.toEject(optEjector,
-                                  "Mismatch: " + myName +
-                                  " vs " + other.myName);
+                                  "Mismatch: " + myName + " vs " + other
+                                    .myName);
         }
     }
 
@@ -144,12 +145,12 @@ public abstract class NounExpr extends AtomicExpr {
     }
 
     /**
-     * Return the kind of object that should be stored in a frame, assuming
-     * an accessor of the same type as the receiver.
-     * <p>
-     * Default implementation of getRespresentation in terms of the slot.
-     * Used for transferring the contents of the slot into a frame field
-     * from an outer scope.
+     * Return the kind of object that should be stored in a frame, assuming an
+     * accessor of the same type as the receiver.
+     * <p/>
+     * Default implementation of getRespresentation in terms of the slot. Used
+     * for transferring the contents of the slot into a frame field from an
+     * outer scope.
      */
     public Object getRepresentation(EvalContext ctx) {
         return getSlot(ctx);
@@ -176,8 +177,8 @@ public abstract class NounExpr extends AtomicExpr {
     public abstract void initSlot(EvalContext ctx, Slot slot);
 
     /**
-     * Return a slot object from the EvalContext for the noun designated by
-     * the receiver.
+     * Return a slot object from the EvalContext for the noun designated by the
+     * receiver.
      */
     public abstract Slot getSlot(EvalContext ctx);
 
@@ -187,8 +188,8 @@ public abstract class NounExpr extends AtomicExpr {
     public abstract boolean isOuter();
 
     /**
-     * Return a noun that could access the representation of the receiver if
-     * it were at in a frame at the given index. This is used to maintain
+     * Return a noun that could access the representation of the receiver if it
+     * were at in a frame at the given index. This is used to maintain
      * final/var distinctions as slots are copied into frames.
      */
     public abstract NounExpr asFieldAt(int index);

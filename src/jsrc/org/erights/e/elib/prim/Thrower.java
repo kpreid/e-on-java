@@ -33,9 +33,9 @@ public class Thrower {
     /**
      * Exits according to optEjector with the provided value, for use from E.
      * <p/>
-     * If optEjector is null, then throws 'value' as a throwable problem
-     * that doesn't need to be declared. Otherwise, optEjector should eject
-     * rather than returning. If it does return, then 'eject' does its own
+     * If optEjector is null, then throws 'value' as a throwable problem that
+     * doesn't need to be declared. Otherwise, optEjector should eject rather
+     * than returning. If it does return, then 'eject' does its own
      * (backtraced) throw rather than returning.
      */
     public void eject(OneArgFunc optEjector, RuntimeException problem) {
@@ -46,17 +46,17 @@ public class Thrower {
      * Exits according to optEjector with the provided value, for use from
      * Java. <p>
      * <p/>
-     * If optEjector is null, then returns 'value' as a throwable problem
-     * that doesn't need to be declared. Otherwise, optEjector should eject
-     * rather than returning. If it does return, then 'toEject' does its own
+     * If optEjector is null, then returns 'value' as a throwable problem that
+     * doesn't need to be declared. Otherwise, optEjector should eject rather
+     * than returning. If it does return, then 'toEject' does its own
      * (backtraced) throw rather than returning. <p>
      * <p/>
      * The caller should typically say <pre>
      * <p/>
      *     throw Thrower.toEject(optEjector, problem);
      * </pre>
-     * One of the reasons why 'toEject' has its caller do a throw is to
-     * provide the Java compiler with better control flow information.
+     * One of the reasons why 'toEject' has its caller do a throw is to provide
+     * the Java compiler with better control flow information.
      */
     static public RuntimeException toEject(OneArgFunc optEjector,
                                            Object prob) {

@@ -9,7 +9,8 @@ package antlr;
 
 public abstract class FileLineFormatter {
 
-    private static FileLineFormatter formatter = new DefaultFileLineFormatter();
+    private static FileLineFormatter formatter =
+      new DefaultFileLineFormatter();
 
     public static FileLineFormatter getFormatter() {
         return formatter;

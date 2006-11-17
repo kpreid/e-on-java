@@ -19,30 +19,42 @@ public class CompositeSugar {
     }
 
     /**
-     * If 'self' is the parent of both 'above' and 'optBelow', then
-     * does an 'above.{@link Control#moveAbove(Control) moveAbove}(optBelow)'
+     * If 'self' is the parent of both 'above' and 'optBelow', then does an
+     * 'above.{@link Control#moveAbove(Control) moveAbove}(optBelow)'
      */
     static public void moveAbove(Composite self,
                                  Control above,
                                  Control optBelow) {
         T.require(above.getParent() == self,
-                  "'self' must be 'above's parent: ", self, ", ", above);
+                  "'self' must be 'above's parent: ",
+                  self,
+                  ", ",
+                  above);
         T.require(null == optBelow || optBelow.getParent() == self,
-                  "'self' must be 'optBelow's parent: ", self, ", ", optBelow);
+                  "'self' must be 'optBelow's parent: ",
+                  self,
+                  ", ",
+                  optBelow);
         above.moveAbove(optBelow);
     }
 
     /**
-     * If 'self' is the parent of both 'below' and 'optAbove', then
-     * does an 'below.{@link Control#moveBelow(Control) moveBelow}(optAbove)'
+     * If 'self' is the parent of both 'below' and 'optAbove', then does an
+     * 'below.{@link Control#moveBelow(Control) moveBelow}(optAbove)'
      */
     static public void moveBelow(Composite self,
                                  Control below,
                                  Control optAbove) {
         T.require(below.getParent() == self,
-                  "'self' must be 'below's parent: ", self, ", ", below);
+                  "'self' must be 'below's parent: ",
+                  self,
+                  ", ",
+                  below);
         T.require(null == optAbove || optAbove.getParent() == self,
-                  "'self' must be 'optAbove's parent: ", self, ", ", optAbove);
+                  "'self' must be 'optAbove's parent: ",
+                  self,
+                  ", ",
+                  optAbove);
         below.moveBelow(optAbove);
     }
 }

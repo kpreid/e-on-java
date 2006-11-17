@@ -75,8 +75,8 @@ public class ControlMakerSugar {
     }
 
     /**
-     * If any of the sources were the active shell, then make dest the
-     * active shell.
+     * If any of the sources were the active shell, then make dest the active
+     * shell.
      * <p/>
      * Neither dest nor any of the sources may be null.
      */

@@ -52,31 +52,30 @@ public abstract class ESet implements EPrintable, Persistent, EIteratable {
     }
 
     /**
-     * Returns a ConstSet whose state is a snapshot of the state of this
-     * set at the time of the snapshot() request. A ConstSet returns
-     * itself.
+     * Returns a ConstSet whose state is a snapshot of the state of this set at
+     * the time of the snapshot() request. A ConstSet returns itself.
      */
     public ConstSet snapshot() {
         return ConstSet.make(myMap.snapshot());
     }
 
     /**
-     * Returns a read-only facet on this set. Someone holding this facet
-     * may see changes, but they cannot cause them.
+     * Returns a read-only facet on this set. Someone holding this facet may
+     * see changes, but they cannot cause them.
      */
     public ESet readOnly() {
         return ROSet.make(myMap);
     }
 
     /**
-     * Returns a FlexSet whose initial state is a snapshot of the state of
-     * this set at the time of the diverge() request.
+     * Returns a FlexSet whose initial state is a snapshot of the state of this
+     * set at the time of the diverge() request.
      * <p/>
      * Further changes to the original and/or the new set are independent --
      * they diverge.
      * <p/>
-     * The new set is constrained to only hold object of type 'type'.
-     * XXX 'type' should be declared as a Guard rather than Class.
+     * The new set is constrained to only hold object of type 'type'. XXX
+     * 'type' should be declared as a Guard rather than Class.
      */
     public FlexSet diverge(Class type) {
         return FlexSet.make(myMap.diverge(type, Void.class));
@@ -122,9 +121,8 @@ public abstract class ESet implements EPrintable, Persistent, EIteratable {
      * <p/>
      * If sets intersect, then if strict, throw an exception.
      * <p/>
-     * In the order, the 'behind' keys come first in their original
-     * order, then the receiver's remaining keys in their original
-     * order.
+     * In the order, the 'behind' keys come first in their original order, then
+     * the receiver's remaining keys in their original order.
      */
     public ConstSet or(ESet behind, boolean strict) {
         return ConstSet.make(myMap.or(behind.myMap, strict));
@@ -140,9 +138,8 @@ public abstract class ESet implements EPrintable, Persistent, EIteratable {
     /**
      * The intersection of the sets.
      * <p/>
-     * The order in the intersection is taken from the smaller
-     * of the original two. If they're the same size, then the
-     * receiver's order is used.
+     * The order in the intersection is taken from the smaller of the original
+     * two. If they're the same size, then the receiver's order is used.
      */
     public ConstSet and(ESet mask) {
         return ConstSet.make(myMap.and(mask.myMap));
@@ -151,8 +148,8 @@ public abstract class ESet implements EPrintable, Persistent, EIteratable {
     /**
      * The subset of this set not in 'mask'. <p>
      * <p/>
-     * The order is the order of the receiver, as modified by removal
-     * of the elements in mask in mask's order.
+     * The order is the order of the receiver, as modified by removal of the
+     * elements in mask in mask's order.
      */
     public ConstSet butNot(ESet mask) {
         return ConstSet.make(myMap.butNot(mask.myMap));
@@ -177,8 +174,8 @@ public abstract class ESet implements EPrintable, Persistent, EIteratable {
     /**
      * Returns a ConstSet just like this one, except containing newElement.
      * <p/>
-     * The order is the same as the original; if 'newElement' is
-     * new, it is added to the end of the order. <p>
+     * The order is the same as the original; if 'newElement' is new, it is
+     * added to the end of the order. <p>
      *
      * @param newElement nullOk;
      */
@@ -187,14 +184,13 @@ public abstract class ESet implements EPrintable, Persistent, EIteratable {
     }
 
     /**
-     * Returns a ConstSet just like this one, except that there is no
-     * ConstSet for 'key'. The order is the same as the original,
-     * except that if 'key' was in the original, the last key in the
-     * ordering is moved into its place (as in the standard removal
-     * spec). <p>
+     * Returns a ConstSet just like this one, except that there is no ConstSet
+     * for 'key'. The order is the same as the original, except that if 'key'
+     * was in the original, the last key in the ordering is moved into its
+     * place (as in the standard removal spec). <p>
      * <p/>
-     * This is currently horribly inefficient. Can be made efficient by
-     * using backward deltas.
+     * This is currently horribly inefficient. Can be made efficient by using
+     * backward deltas.
      *
      * @param element nullOk;
      */
@@ -203,16 +199,16 @@ public abstract class ESet implements EPrintable, Persistent, EIteratable {
     }
 
     /**
-     * Returns a snapshot of this set, but reordered so the elements
-     * are in ascending order.
+     * Returns a snapshot of this set, but reordered so the elements are in
+     * ascending order.
      */
     public ConstSet sort() {
         return sort(SimpleCompFunc.THE_ONE);
     }
 
     /**
-     * Returns a snapshot of this set, but reordered so the elements
-     * are in ascending order according to func.
+     * Returns a snapshot of this set, but reordered so the elements are in
+     * ascending order according to func.
      */
     public ConstSet sort(CompFunc func) {
         return ConstSet.make(myMap.sortKeys(func));
@@ -230,10 +226,7 @@ public abstract class ESet implements EPrintable, Persistent, EIteratable {
     /**
      * Onto out, print 'left' element0 'sep' ... 'right'
      */
-    public void printOn(String left,
-                        String sep,
-                        String right,
-                        TextWriter out)
+    public void printOn(String left, String sep, String right, TextWriter out)
       throws IOException {
         ConstList.fromArray(getElements()).printOn(left, sep, right, out);
     }

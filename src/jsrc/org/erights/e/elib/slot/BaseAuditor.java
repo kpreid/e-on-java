@@ -1,9 +1,9 @@
 package org.erights.e.elib.slot;
 
 import org.erights.e.elib.base.Ejector;
-import org.erights.e.elib.prim.Thrower;
 import org.erights.e.elib.prim.E;
 import org.erights.e.elib.prim.MirandaMethods;
+import org.erights.e.elib.prim.Thrower;
 import org.erights.e.elib.ref.Ref;
 import org.erights.e.elib.util.OneArgFunc;
 
@@ -13,8 +13,8 @@ import org.erights.e.elib.util.OneArgFunc;
 /**
  * Most Auditors will also double as Guards in a stereotyped way.
  * <p/>
- * This base class is just a convenience for such combined Auditor/Guards
- * that fit this pattern.
+ * This base class is just a convenience for such combined Auditor/Guards that
+ * fit this pattern.
  *
  * @author Mark S. Miller
  */
@@ -43,12 +43,10 @@ public abstract class BaseAuditor implements Guard, Auditor {
     /**
      * If at first you don't succeed, try again exactly once.
      * <p/>
-     * The default implementation here is
-     * <a href="http://www.sims.berkeley.edu/~ping/auditors/">Gozarian</a>
+     * The default implementation here is <a href="http://www.sims.berkeley.edu/~ping/auditors/">Gozarian</a>
      * -- if we don't succeed when we {@link #tryCoerceR try to coerce} the
-     * object, it is asked to
-     * {@link MirandaMethods#__conformTo
-     * __conformTo/1} this guard and given a second chance
+     * object, it is asked to {@link MirandaMethods#__conformTo __conformTo/1}
+     * this guard and given a second chance
      */
     public Object coerce(Object specimen, OneArgFunc optEjector) {
         //shorten first
@@ -84,9 +82,9 @@ public abstract class BaseAuditor implements Guard, Auditor {
      * the approval of our auditor, the specimen itself is returned. Otherwise,
      * a coercion failure is reported.
      * <p/>
-     * The uppercase "R" suffix indicate that this method's callers must
-     * ensure that the "short" arguments are already in the form that would
-     * be returned by {@link org.erights.e.elib.ref.Ref#resolution
+     * The uppercase "R" suffix indicate that this method's callers must ensure
+     * that the "short" arguments are already in the form that would be
+     * returned by {@link org.erights.e.elib.ref.Ref#resolution
      * Ref.resolution/1}.
      */
     protected Object tryCoerceR(Object shortSpecimen, OneArgFunc optEjector) {

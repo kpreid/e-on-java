@@ -23,19 +23,19 @@ import org.erights.e.elang.scope.EvalContext;
 import org.erights.e.elang.scope.ScopeLayout;
 import org.erights.e.elang.visitors.ETreeVisitor;
 import org.erights.e.elib.base.SourceSpan;
+import org.erights.e.elib.oldeio.TextWriter;
 import org.erights.e.elib.prim.StaticMaker;
 import org.erights.e.elib.prim.Thrower;
 import org.erights.e.elib.tables.ConstList;
 import org.erights.e.elib.tables.FlexList;
 import org.erights.e.elib.util.OneArgFunc;
-import org.erights.e.elib.oldeio.TextWriter;
 
 import java.io.IOException;
 
 
 /**
  * BNF: ID (':' expr)?
- * <p>
+ * <p/>
  * The initialValue (as described by {@link NounPattern}) becomes the initial
  * and final value of the named variable.
  *
@@ -68,13 +68,14 @@ public final class FinalPattern extends NounPattern {
      * Uses XXX 'makeFoo(...)'
      */
     public Object[] getSpreadUncall() {
-        Object[] result = { StaticMaker.make(FinalPattern.class),
-                            "run",
-                            getOptSpan(),
-                            getNoun(),
-                            getOptGuardExpr(),
-                            Boolean.TRUE, // XXX Is this a good idea?
-                            getOptScopeLayout() };
+        Object[] result = {StaticMaker.make(FinalPattern.class),
+          "run",
+          getOptSpan(),
+          getNoun(),
+          getOptGuardExpr(),
+          Boolean.TRUE,
+          // XXX Is this a good idea?
+          getOptScopeLayout()};
         return result;
     }
 
@@ -118,9 +119,7 @@ public final class FinalPattern extends NounPattern {
     /**
      *
      */
-    void testMatch(EvalContext ctx,
-                   Object specimen,
-                   OneArgFunc optEjector) {
+    void testMatch(EvalContext ctx, Object specimen, OneArgFunc optEjector) {
         getNoun().initFinal(ctx, coercedSpecimen(ctx, specimen, optEjector));
     }
 
@@ -128,9 +127,8 @@ public final class FinalPattern extends NounPattern {
      *
      */
     public NounPattern withNounExpr(NounExpr newNounExpr) {
-        return new FinalPattern(getOptSpan(),
-                                newNounExpr,
-                                null, // XXX is this right?
+        return new FinalPattern(getOptSpan(), newNounExpr, null,
+                                // XXX is this right?
                                 getOptScopeLayout());
     }
 

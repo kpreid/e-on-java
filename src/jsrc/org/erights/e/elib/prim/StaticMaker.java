@@ -51,46 +51,42 @@ import java.lang.reflect.Modifier;
  *
  * @author Mark S. Miller
  */
-public class StaticMaker
-  implements Callable, Persistent, PassByConstruction {
+public class StaticMaker implements Callable, Persistent, PassByConstruction {
 
     static private final long serialVersionUID = -9145754747555989915L;
 
     /**
      *
      */
-    static private final String[][] Sugarings = {
-        {"java.awt.Color",
-         "org.erights.e.meta.java.awt.ColorMakerSugar"},
-        {"java.awt.Component",
-         "org.erights.e.meta.java.awt.ComponentMakerSugar"},
+    static private final String[][] Sugarings = {{"java.awt.Color",
+      "org.erights.e.meta.java.awt.ColorMakerSugar"},
+      {"java.awt.Component",
+        "org.erights.e.meta.java.awt.ComponentMakerSugar"},
 
-        {"java.lang.Character",
-         "org.erights.e.meta.java.lang.CharacterMakerSugar"},
+      {"java.lang.Character",
+        "org.erights.e.meta.java.lang.CharacterMakerSugar"},
 
-        {"java.math.BigInteger",
-         "org.erights.e.meta.java.math.EInt"},
+      {"java.math.BigInteger", "org.erights.e.meta.java.math.EInt"},
 
-        {"java.security.KeyPairGenerator",
-         "org.erights.e.meta.java.security.KeyPairGeneratorMakerSugar"},
+      {"java.security.KeyPairGenerator",
+        "org.erights.e.meta.java.security.KeyPairGeneratorMakerSugar"},
 
-        {"javax.swing.ImageIcon",
-         "org.erights.e.meta.javax.swing.ImageIconMakerSugar"},
-        {"javax.swing.text.JTextComponent",
-         "org.erights.e.meta.javax.swing.text.JTextComponentMakerSugar"},
+      {"javax.swing.ImageIcon",
+        "org.erights.e.meta.javax.swing.ImageIconMakerSugar"},
+      {"javax.swing.text.JTextComponent",
+        "org.erights.e.meta.javax.swing.text.JTextComponentMakerSugar"},
 
-        {"org.eclipse.swt.graphics.Image",
-         "org.erights.e.meta.org.eclipse.swt.graphics.ImageMakerSugar"},
-        {"org.eclipse.swt.widgets.Control",
-         "org.erights.e.meta.org.eclipse.swt.widgets.ControlMakerSugar"},
-        {"org.eclipse.swt.widgets.Shell",
-         "org.erights.e.meta.org.eclipse.swt.widgets.ShellMakerSugar"}
-    };
+      {"org.eclipse.swt.graphics.Image",
+        "org.erights.e.meta.org.eclipse.swt.graphics.ImageMakerSugar"},
+      {"org.eclipse.swt.widgets.Control",
+        "org.erights.e.meta.org.eclipse.swt.widgets.ControlMakerSugar"},
+      {"org.eclipse.swt.widgets.Shell",
+        "org.erights.e.meta.org.eclipse.swt.widgets.ShellMakerSugar"}};
 
     /**
      * Maps fq class names to the fqName of the classes that sugar the maker
-     * for that class. TheSugars is initialized lazily in order to avoid
-     * a fatal circular static initialization dependency with ConstMap.
+     * for that class. TheSugars is initialized lazily in order to avoid a
+     * fatal circular static initialization dependency with ConstMap.
      */
     static private EMap TheSugars = null;
 
@@ -130,39 +126,30 @@ public class StaticMaker
 //            safeJ = safeJ.or(more, false);
         }
         try {
-            SugarMethodNode.defineMembers(myVTable,
-                                          MirandaMethods.class);
+            SugarMethodNode.defineMembers(myVTable, MirandaMethods.class);
             //constructors come first so a static 'run' will override a
             //constructor
-            ConstructorNode.defineMembers(myVTable,
-                                          clazz,
-                                          safeJ);
-            StaticMethodNode.defineMembers(myVTable,
-                                           clazz,
-                                           safeJ);
+            ConstructorNode.defineMembers(myVTable, clazz, safeJ);
+            StaticMethodNode.defineMembers(myVTable, clazz, safeJ);
             if (null != optSugar) {
                 //note that the static methods for sugaring a maker are used
                 //as StaticMethodNodes, not as SugarMethodNodes.
-                StaticMethodNode.defineMembers(myVTable,
-                                               optSugar,
-                                               SafeJ.ALL);
+                StaticMethodNode.defineMembers(myVTable, optSugar, SafeJ.ALL);
             }
         } catch (AlreadyDefinedException ade) {
-            throw new NestedException(ade,
-                                      "# can't wrap class: " + clazz);
+            throw new NestedException(ade, "# can't wrap class: " + clazz);
         }
     }
 
     /**
      * Add methods for sugaring the class's maker behavior
      */
-    static public Class OptSugar(Class clazz)
-      throws AlreadyDefinedException {
+    static public Class OptSugar(Class clazz) throws AlreadyDefinedException {
         if (null == TheSugars) {
             TheSugars = FlexMap.fromPairs(Sugarings, true).snapshot();
         }
-        String sugarName = (String)TheSugars.fetch(clazz.getName(),
-                                                   ValueThunk.NULL_THUNK);
+        String sugarName =
+          (String)TheSugars.fetch(clazz.getName(), ValueThunk.NULL_THUNK);
         if (sugarName == null) {
             return null;
         }
@@ -181,14 +168,16 @@ public class StaticMaker
         StaticMaker result;
         //Need to synchronize since this is inter-vat mutable state
         synchronized (MakerCache) {
-            result = (StaticMaker)MakerCache.fetch(clazz,
-                                                   ValueThunk.NULL_THUNK);
+            result =
+              (StaticMaker)MakerCache.fetch(clazz, ValueThunk.NULL_THUNK);
         }
         if (null != result) {
             return result;
         }
         T.require(Modifier.isPublic(clazz.getModifiers()),
-                  "'", clazz.getName(), "' must be public");
+                  "'",
+                  clazz.getName(),
+                  "' must be public");
 
         result = new StaticMaker(clazz);
         synchronized (MakerCache) {
@@ -249,10 +238,8 @@ public class StaticMaker
         FlexList mTypes = FlexList.fromType(MessageDesc.class);
         myVTable.protocol(this, mTypes);
         return new TypeDesc(" Missing docComment ", //XXX for now
-                            getClassSig(),
-                            null, //XXX for now
-                            ConstList.EmptyList,
-                            mTypes.snapshot());
+                            getClassSig(), null, //XXX for now
+                            ConstList.EmptyList, mTypes.snapshot());
     }
 
     /**

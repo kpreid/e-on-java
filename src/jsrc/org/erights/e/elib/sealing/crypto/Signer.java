@@ -5,19 +5,18 @@ package org.erights.e.elib.sealing.crypto;
 
 import org.erights.e.develop.exception.ExceptionMgr;
 
-import java.security.Signature;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
-import java.security.PrivateKey;
-import java.security.SignatureException;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
+import java.security.Signature;
+import java.security.SignatureException;
 
 /**
  * The class java.security.Signature is used in one of two disjoint ways, so
- * rather than tame it, we split its tamed functionality into Signer and
- * {@link Verifier}.
+ * rather than tame it, we split its tamed functionality into Signer and {@link
+ * Verifier}.
  *
  * @author Mark S. Miller
  */
@@ -37,13 +36,12 @@ public class Signer {
 
     /**
      * The algorithm must be compatible with the algorithm of the key.
-     * <p>
-     * For example, if the key's algorithm is RSA, the signing algorithm may
-     * be SHA1withRSA.
+     * <p/>
+     * For example, if the key's algorithm is RSA, the signing algorithm may be
+     * SHA1withRSA.
      *
      * @param privateKey
      * @param algorithm
-
      */
     public Signer(PrivateKey privateKey, String algorithm) {
         try {
@@ -95,7 +93,6 @@ public class Signer {
     }
 
     /**
-     *
      * @return
      */
     public String getAlgorithm() {

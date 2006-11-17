@@ -1,7 +1,5 @@
 package org.erights.e.develop.exception;
 
-
-
 /*
 The contents of this file are subject to the Electric Communities E Open
 Source Code License Version 1.0 (the "License"); you may not use this file
@@ -24,8 +22,8 @@ Contributor(s): ______________________________________.
 /**
  * Nested version of the Java RuntimeException class.
  */
-public class NestedException
-  extends RuntimeException implements NestedThrowable {
+public class NestedException extends RuntimeException
+  implements NestedThrowable {
 
     private final Throwable myContainedThrowable;
 

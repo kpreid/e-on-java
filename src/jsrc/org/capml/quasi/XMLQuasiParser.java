@@ -12,9 +12,9 @@ import org.erights.e.elib.tables.Twine;
 import org.erights.e.meta.java.math.EInt;
 
 /**
- * A StaticMaker on this class is bound to "xml__quasiParser" in the
- * universal namespace, enabling sml`...` expressions in E containing
- * quasi-literal Minimal-XML (which used to be known as SML). <p>
+ * A StaticMaker on this class is bound to "xml__quasiParser" in the universal
+ * namespace, enabling sml`...` expressions in E containing quasi-literal
+ * Minimal-XML (which used to be known as SML). <p>
  * <p/>
  * Each parse is actually performed by an instance of this class.
  *
@@ -32,14 +32,14 @@ public final class XMLQuasiParser {
     /**
      * Caches previous simple parses (as is used for quasi-parsing)
      */
-    static private final IdentityCacheTable OurCache
-      = new IdentityCacheTable(QuasiContent.class, 100);
+    static private final IdentityCacheTable OurCache =
+      new IdentityCacheTable(QuasiContent.class, 100);
 
     /**
      * Given a string representing a template, written in post-extraction
      * quasi-literal XML syntax, return a ValueMaker which will substitute
-     * arguments into the template in order to construct a concrete XML
-     * content (list of Nodes), based on that template.
+     * arguments into the template in order to construct a concrete XML content
+     * (list of Nodes), based on that template.
      */
     static public QuasiContent valueMaker(Twine template) {
         return matchMaker(template);
@@ -71,8 +71,8 @@ public final class XMLQuasiParser {
     private int myPos;
 
     /**
-     * Should eventually provide source filename and pos mappings for
-     * debugging info.
+     * Should eventually provide source filename and pos mappings for debugging
+     * info.
      */
     private XMLQuasiParser(char[] source) {
         mySource = source;
@@ -95,16 +95,14 @@ public final class XMLQuasiParser {
      *
      */
     private void syntaxError(String err) {
-        T.fail("syntax error: " + err +
-               " at " + myPos);
+        T.fail("syntax error: " + err + " at " + myPos);
     }
 
     /**
-     * If there's any text in textBuf, make a QuasiText out of it, push it
-     * on qcList, and reset textBuf.
+     * If there's any text in textBuf, make a QuasiText out of it, push it on
+     * qcList, and reset textBuf.
      */
-    static private void gatherText(FlexList qcList,
-                                   StringBuffer textBuf) {
+    static private void gatherText(FlexList qcList, StringBuffer textBuf) {
         if (textBuf.length() >= 1) {
             qcList.push(new QuasiText(textBuf.toString()));
             textBuf.setLength(0);
@@ -220,8 +218,7 @@ public final class XMLQuasiParser {
                 myPos++;
                 return result;
             } else {
-                syntaxError("expected '" + terminator +
-                            "', not '" + c1 + "'");
+                syntaxError("expected '" + terminator + "', not '" + c1 + "'");
             }
         }
         syntaxError("ended without '" + terminator + "'");

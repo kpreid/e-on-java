@@ -179,11 +179,8 @@ public class DiagnosticCodeGenerator extends CodeGenerator {
 
         // Generate lexer class definition
         println("");
-        println(
-          "*** Your lexer class is called '" + grammar.getClassName() +
-          "' and is a subclass of '" +
-          grammar.getSuperClass() +
-          "'.");
+        println("*** Your lexer class is called '" + grammar.getClassName() +
+          "' and is a subclass of '" + grammar.getSuperClass() + "'.");
 
         // Generate user-defined parser class members
         println("");
@@ -202,8 +199,7 @@ public class DiagnosticCodeGenerator extends CodeGenerator {
         println(
           "An actual code generator would arrange to place these literals");
         println("into a table in the generated lexer, so that actions in the");
-        println(
-          "generated lexer could match token text against the literals.");
+        println("generated lexer could match token text against the literals.");
         println(
           "String literals used in the lexer are not listed here, as they");
         println("are incorporated into the mainstream lexer processing.");
@@ -296,11 +292,8 @@ public class DiagnosticCodeGenerator extends CodeGenerator {
 
         // Generate parser class definition
         println("");
-        println(
-          "*** Your parser class is called '" + grammar.getClassName() +
-          "' and is a subclass of '" +
-          grammar.getSuperClass() +
-          "'.");
+        println("*** Your parser class is called '" + grammar.getClassName() +
+          "' and is a subclass of '" + grammar.getSuperClass() + "'.");
 
         // Generate user-defined parser class members
         println("");
@@ -360,8 +353,7 @@ public class DiagnosticCodeGenerator extends CodeGenerator {
 
         // Perform diagnostics
         if (rs == null || !rs.isDefined()) {
-            println(
-              "Rule '" + rr.targetRule +
+            println("Rule '" + rr.targetRule +
               "' is referenced, but that rule is not defined.");
             println(
               "\tPerhaps the rule is misspelled, or you forgot to define it.");
@@ -369,22 +361,20 @@ public class DiagnosticCodeGenerator extends CodeGenerator {
         }
         if (!(rs instanceof RuleSymbol)) {
             // Should this ever happen??
-            println(
-              "Rule '" + rr.targetRule +
+            println("Rule '" + rr.targetRule +
               "' is referenced, but that is not a grammar rule.");
             return;
         }
         if (rr.idAssign != null) {
             // Warn if the rule has no return type
             if (rs.block.returnAction == null) {
-                println(
-                  "Error: You assigned from Rule '" + rr.targetRule +
+                println("Error: You assigned from Rule '" + rr.targetRule +
                   "', but that rule has no return type.");
             }
         } else {
             // Warn about return value if any, but not inside syntactic predicate
-            if (!(grammar instanceof LexerGrammar) && syntacticPredLevel == 0 &&
-              rs.block.returnAction != null) {
+            if (!(grammar instanceof LexerGrammar) &&
+              syntacticPredLevel == 0 && rs.block.returnAction != null) {
                 println(
                   "Warning: Rule '" + rr.targetRule + "' returns a value");
             }
@@ -472,11 +462,9 @@ public class DiagnosticCodeGenerator extends CodeGenerator {
 
         // Generate tree-walker class definition
         println("");
-        println(
-          "*** Your tree-walker class is called '" + grammar.getClassName() +
-          "' and is a subclass of '" +
-          grammar.getSuperClass() +
-          "'.");
+        println("*** Your tree-walker class is called '" +
+          grammar.getClassName() + "' and is a subclass of '" +
+          grammar.getSuperClass() + "'.");
 
         // Generate user-defined tree-walker class members
         println("");
@@ -673,9 +661,8 @@ public class DiagnosticCodeGenerator extends CodeGenerator {
      * Generate a header that is common to all TXT files
      */
     protected void genHeader() {
-        println(
-          "ANTLR-generated file resulting from grammar " +
-          antlrTool.grammarFile);
+        println("ANTLR-generated file resulting from grammar " + antlrTool
+          .grammarFile);
         println("Diagnostic output");
         println("");
         println("Terence Parr, MageLang Institute");
@@ -751,9 +738,8 @@ public class DiagnosticCodeGenerator extends CodeGenerator {
 
         // Create the synthesized rule block for nextToken consisting
         // of an alternate block containing all the user-defined lexer rules.
-        RuleBlock blk = MakeGrammar.createNextTokenRule(grammar,
-                                                        grammar.rules,
-                                                        "nextToken");
+        RuleBlock blk =
+          MakeGrammar.createNextTokenRule(grammar, grammar.rules, "nextToken");
 
         // Define the nextToken rule symbol
         RuleSymbol nextTokenRs = new RuleSymbol("mnextToken");
@@ -764,8 +750,7 @@ public class DiagnosticCodeGenerator extends CodeGenerator {
 
         // Analyze the synthesized block
         if (!grammar.theLLkAnalyzer.deterministic(blk)) {
-            println(
-              "The grammar analyzer has determined that the synthesized");
+            println("The grammar analyzer has determined that the synthesized");
             println(
               "nextToken rule is non-deterministic (i.e., it has ambiguities)");
             println("This means that there is some overlap of the character");
@@ -854,12 +839,10 @@ public class DiagnosticCodeGenerator extends CodeGenerator {
                     println("");
                 }
 
-                ExceptionHandler handler = (ExceptionHandler)unlabeledUserSpec.handlers.elementAt(
-                  i);
-                println(
-                  "Error-handler(" + (i + 1) + ") catches [" +
-                  handler.exceptionTypeAndName.getText() +
-                  "] and executes:");
+                ExceptionHandler handler =
+                  (ExceptionHandler)unlabeledUserSpec.handlers.elementAt(i);
+                println("Error-handler(" + (i + 1) + ") catches [" +
+                  handler.exceptionTypeAndName.getText() + "] and executes:");
                 printAction(handler.action.getText());
             }
             tabs--;
@@ -901,12 +884,10 @@ public class DiagnosticCodeGenerator extends CodeGenerator {
      */
     protected void genTokenTypes(TokenManager tm) throws IOException {
         // Open the token output TXT file and set the currentOutput stream
-        antlrTool.reportProgress(
-          "Generating " + tm.getName() + TokenTypesFileSuffix +
-          TokenTypesFileExt);
-        currentOutput =
-          antlrTool.openOutputFile(
-            tm.getName() + TokenTypesFileSuffix + TokenTypesFileExt);
+        antlrTool.reportProgress("Generating " + tm.getName() +
+          TokenTypesFileSuffix + TokenTypesFileExt);
+        currentOutput = antlrTool.openOutputFile(
+          tm.getName() + TokenTypesFileSuffix + TokenTypesFileExt);
         //SAS: changed for proper text file io
         tabs = 0;
 
@@ -1017,9 +998,9 @@ public class DiagnosticCodeGenerator extends CodeGenerator {
             if (doingLexRules) {
                 _print(charFormatter.literalChar(elems[i]));
             } else {
-                _print(
-                  (String)grammar.tokenManager.getVocabulary().elementAt(
-                    elems[i]));
+                _print((String)grammar.tokenManager
+                  .getVocabulary()
+                  .elementAt(elems[i]));
             }
             if (i != elems.length - 1) {
                 _print(", ");

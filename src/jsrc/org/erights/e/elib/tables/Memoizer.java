@@ -13,7 +13,7 @@ import org.erights.e.meta.java.lang.DoubleSugar;
  * Given a suppossedly deterministic {@link OneArgFunc} which only accepts
  * DeepFrozen args and only returns DeepPassByCopy results, return a memoizing
  * wrapper for that function which should be semantically identical (except
- * that its not {@link Equalizer#isSameEver(Object, Object) the same}).
+ * that its not {@link Equalizer#isSameEver(Object,Object) the same}).
  * <p/>
  * Until we use auditors to verify the above constraints, we make Memoizer be
  * unsafe; and rely on its clients to use it only in ways that match the above
@@ -34,7 +34,7 @@ public class Memoizer implements OneArgFunc {
 
     private final OneArgFunc myFunc;
 //    private final Object[] myIdentKeys;
-//    private final Object[] myIdentValues;
+    //    private final Object[] myIdentValues;
     private final Object[] myKeys;
     private final Object[] myValues;
 
@@ -92,9 +92,8 @@ public class Memoizer implements OneArgFunc {
     static public void printCacheStats() {
         double total = myIdentHits + myHits + myMisses;
         double percent = (((myIdentHits + myHits) * 100.0) / total);
-        System.err.println("Memoizer idHits: " + myIdentHits +
-                           " hits: " + myHits +
-                           " misses: " + myMisses + " (" +
-                           DoubleSugar.round(percent) + "%)");
+        System.err
+          .println("Memoizer idHits: " + myIdentHits + " hits: " + myHits +
+            " misses: " + myMisses + " (" + DoubleSugar.round(percent) + "%)");
     }
 }

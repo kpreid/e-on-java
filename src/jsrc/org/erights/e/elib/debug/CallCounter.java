@@ -76,10 +76,9 @@ public class CallCounter {
      * Besides bumping myBadCount, this also return problem annotated with
      * myProfKey for use from {@link ThrowableSugar#eStack}.
      * <p/>
-     * If the problem's {@link ThrowableSugar#leaf leaf} is an
-     * {@link Ejection}, then we instead bump myOkCount and return the
-     * Ejection, since we really have a case of successful (even if abrupt)
-     * completion.
+     * If the problem's {@link ThrowableSugar#leaf leaf} is an {@link
+     * Ejection}, then we instead bump myOkCount and return the Ejection, since
+     * we really have a case of successful (even if abrupt) completion.
      */
     public RuntimeException bumpBadCount(Throwable problem) {
         Throwable leaf = ThrowableSugar.leaf(problem);
@@ -121,14 +120,14 @@ public class CallCounter {
     void report(double thresh, double total, FlexList result) {
         if (myOkCount >= thresh) {
             Object[] entry = {new Long(myOkCount),
-                              NF.format(myOkCount / total),
-                              "ok " + myProfKey};
+              NF.format(myOkCount / total),
+              "ok " + myProfKey};
             result.push(entry);
         }
         if (myBadCount >= thresh) {
             Object[] entry = {new Long(myBadCount),
-                              NF.format(myBadCount / total),
-                              "bad " + myProfKey};
+              NF.format(myBadCount / total),
+              "bad " + myProfKey};
             result.push(entry);
         }
     }

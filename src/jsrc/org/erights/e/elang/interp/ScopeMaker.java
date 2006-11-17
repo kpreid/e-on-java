@@ -19,7 +19,7 @@ import org.erights.e.elib.tables.Twine;
 
 /**
  * Used to make {@link org.erights.e.elang.scope.Scope Scope}s.
- * <p>
+ * <p/>
  * Note that you can use a ScopeMaker to make scopes containing unshadowable
  * names. This is how the safeScope itself is built.
  *
@@ -31,11 +31,10 @@ class ScopeMaker {
 
     /**
      * A list of slots to be accessed by indexing into the outer scope.
-     * <p>
-     * These are the ones defined by {@link #init(String, Object) init/2},
-     * {@link #init(String, Object, String) init/3},
-     * {@link #initSlot}, or
-     * {@link #ruin}.
+     * <p/>
+     * These are the ones defined by {@link #init(String,Object) init/2},
+     * {@link #init(String,Object,String) init/3}, {@link #initSlot}, or {@link
+     * #ruin}.
      */
     private final FlexList myOuters;
 
@@ -55,10 +54,9 @@ class ScopeMaker {
     }
 
     /**
-     *
      * @param outers
      * @param synEnv Must be a map in which each association is
-     * <pre>    varName =&gt; {@link NounPattern}</pre>
+     *               <pre>    varName =&gt; {@link NounPattern}</pre>
      */
     private ScopeMaker(FlexList outers, FlexMap synEnv) {
         myOuters = outers;
@@ -85,17 +83,16 @@ class ScopeMaker {
      *
      */
     public Scope make(String fqnPrefix) {
-        ScopeLayout layout = ScopeLayout.make(myOuters.size(),
-                                              mySynEnv.snapshot(),
-                                              fqnPrefix);
+        ScopeLayout layout =
+          ScopeLayout.make(myOuters.size(), mySynEnv.snapshot(), fqnPrefix);
         //int outerSpace = outerCount + ScopeSetup.OUTER_SPACE;
         Slot[] outers = (Slot[])myOuters.getArray(Slot.class);
         return Scope.outer(layout, outers);
     }
 
     /**
-     * Generate a bindings for a noun that will be compiled into
-     * transformed code.
+     * Generate a bindings for a noun that will be compiled into transformed
+     * code.
      */
     public void comp(String name, Object value) {
         // XXX Optimization turned off until we reconcile with DeepPassByCopy

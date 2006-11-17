@@ -16,7 +16,6 @@ import org.erights.e.elang.scope.ScopeLayout;
 import org.erights.e.elib.base.SourceSpan;
 
 /**
- *
  * @author Mark S. Miller
  * @author Based on {@link BindFramesVisitor} by Dean Tribble
  */
@@ -25,7 +24,6 @@ public abstract class BaseBindVisitor extends KernelECopyVisitor {
     ScopeLayout myLayout;
 
     /**
-     *
      * @param layout
      */
     BaseBindVisitor(ScopeLayout layout) {
@@ -50,7 +48,6 @@ public abstract class BaseBindVisitor extends KernelECopyVisitor {
      */
     abstract NounExpr newVar(SourceSpan optSpan, String varName);
 
-
     /**************************** EExprs **************************/
 
     /**
@@ -73,12 +70,9 @@ public abstract class BaseBindVisitor extends KernelECopyVisitor {
         String varName = noun.asNoun().getName();
         NounPattern optNPatt = myLayout.getOptPattern(varName);
         if (optNPatt != null && optNPatt instanceof FinalPattern) {
-            ParseNode.fail("Can't assign to final variable: " + varName,
-                           noun);
+            ParseNode.fail("Can't assign to final variable: " + varName, noun);
         }
-        return super.visitAssignExpr(optOriginal,
-                                     noun,
-                                     rValue);
+        return super.visitAssignExpr(optOriginal, noun, rValue);
     }
 
     /***************************** Patterns *************************/

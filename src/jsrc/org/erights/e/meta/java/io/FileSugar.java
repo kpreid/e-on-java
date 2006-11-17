@@ -43,8 +43,7 @@ import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
 
 /**
- * A sweetener defining extra messages that may be e-sent to a
- * File.
+ * A sweetener defining extra messages that may be e-sent to a File.
  * <p/>
  * Since File isn't final, and none of its public instance methods are final,
  * it would seem we should subclass it instead of sugarring it. However, our
@@ -52,10 +51,9 @@ import java.security.NoSuchAlgorithmException;
  * Unfortunately, URL is declared final, and so must be dealt with by
  * sugarring. Therefore, we continue to do so for File as well.
  * <p/>
- * A File is made to act like it implements
- * {@link org.erights.e.elib.serial.Loader}, which we would do if we were
- * defining a subclass. It "implements" Loader to provide a loader specific to
- * the directory tree rooted in itself.
+ * A File is made to act like it implements {@link org.erights.e.elib.serial.Loader},
+ * which we would do if we were defining a subclass. It "implements" Loader to
+ * provide a loader specific to the directory tree rooted in itself.
  *
  * @author Mark S. Miller
  */
@@ -64,8 +62,7 @@ public class FileSugar {
     /**
      * platform newlines
      */
-    static private final String NEWLINE =
-      System.getProperty("line.separator");
+    static private final String NEWLINE = System.getProperty("line.separator");
 
     /**
      * prevent instantiation
@@ -98,8 +95,7 @@ public class FileSugar {
 
     /**
      * Append to the file so the additional contents represents the string
-     * 'text', turning '\n's into platform newlines, and converting to
-     * UTF-8
+     * 'text', turning '\n's into platform newlines, and converting to UTF-8
      */
     static public void appendText(File self, String text) throws IOException {
         writeText(self, text, true);
@@ -122,8 +118,7 @@ public class FileSugar {
     /**
      *
      */
-    static public String getCanonicalPath(File self)
-      throws IOException {
+    static public String getCanonicalPath(File self) throws IOException {
         return FileGetter.normalize(self.getCanonicalPath());
     }
 
@@ -142,8 +137,8 @@ public class FileSugar {
     }
 
     /**
-     * Is this a "normal" file?  (ie, a non-directory)  This is the
-     * same test as self.isFile(), but less confusingly named.
+     * Is this a "normal" file?  (ie, a non-directory)  This is the same test
+     * as self.isFile(), but less confusingly named.
      */
     static public boolean isNormal(File self) {
         return self.isFile();
@@ -157,8 +152,8 @@ public class FileSugar {
     }
 
     /**
-     * Open 'self' for reading text, decoding UTF-8 and turning
-     * platform newlines into '\n's
+     * Open 'self' for reading text, decoding UTF-8 and turning platform
+     * newlines into '\n's
      */
     static public BufferedReader textReader(File self)
       throws FileNotFoundException {
@@ -175,16 +170,16 @@ public class FileSugar {
     }
 
     /**
-     * If the file is a directory, enumerate filename =&gt; File
-     * associations for each child of the directory.
+     * If the file is a directory, enumerate filename =&gt; File associations
+     * for each child of the directory.
      * <p/>
-     * Otherwise assume it's a text file and enumerates
-     * lineNumber =&gt; String/Twine (text line) associations. Like Perl,
-     * each text line ends with a "\n".
+     * Otherwise assume it's a text file and enumerates lineNumber =&gt;
+     * String/Twine (text line) associations. Like Perl, each text line ends
+     * with a "\n".
      *
-     * @param isLocated If true, and if self is a non-directory, then
-     *                  enumerate text lines as Twine with location info
-     *                  rather than bare Strings.
+     * @param isLocated If true, and if self is a non-directory, then enumerate
+     *                  text lines as Twine with location info rather than bare
+     *                  Strings.
      */
     static public void iterate(File self, AssocFunc func, boolean isLocated)
       throws IOException {
@@ -289,9 +284,9 @@ public class FileSugar {
                     } else {
                         throw Thrower.toEject(optEjector,
                                               "Can't copy directory " +
-                                              E.toQuote(self) +
-                                              " to non-directory " +
-                                              E.toQuote(dest));
+                                                E.toQuote(self) +
+                                                " to non-directory " +
+                                                E.toQuote(dest));
                     }
                 } else {
                     mkdirs(dest, optEjector);
@@ -314,9 +309,8 @@ public class FileSugar {
     }
 
     /**
-     * Write the file so that its contents represents the string
-     * 'text', turning '\n's into platform newlines, and converting to
-     * UTF-8.
+     * Write the file so that its contents represents the string 'text',
+     * turning '\n's into platform newlines, and converting to UTF-8.
      * <p/>
      * Not atomic or crash safe. If you want atomicity, consider using
      * makeAtomicFile.
@@ -333,8 +327,8 @@ public class FileSugar {
     }
 
     /**
-     * Open 'self' for writing of appending text, encoded as UTF-8,
-     * with '\n's written as platform newlines.
+     * Open 'self' for writing of appending text, encoded as UTF-8, with '\n's
+     * written as platform newlines.
      */
     static public TextWriter textWriter(File self, boolean append)
       throws IOException {
@@ -346,9 +340,9 @@ public class FileSugar {
     }
 
     /**
-     * Write the file (or append to the file) so that its contents
-     * represents the string 'text', turning '\n's into platform
-     * newlines, and converting to UTF-8
+     * Write the file (or append to the file) so that its contents represents
+     * the string 'text', turning '\n's into platform newlines, and converting
+     * to UTF-8
      * <p/>
      * Not atomic or crash safe. If you want atomicity, consider using
      * makeAtomicFile.
@@ -368,8 +362,7 @@ public class FileSugar {
      */
     static public File get(File self, String name) {
         if (self.exists() && !self.isDirectory()) {
-            T.fail(E.toString(self) +
-                   " is a non-directory");
+            T.fail(E.toString(self) + " is a non-directory");
         }
         name = name.replace(File.separatorChar, '/');
         name = name.replace('\\', '/');
@@ -410,12 +403,11 @@ public class FileSugar {
     }
 
     /**
-     * Normalize the E-printed form to use forward slashes as
-     * separators.
+     * Normalize the E-printed form to use forward slashes as separators.
      * <p/>
      * Also, E URI expressions have angle brackets around them, so file objects
-     * print that way too. E'ers can still use getPath() to get the path as
-     * the File object sees it.
+     * print that way too. E'ers can still use getPath() to get the path as the
+     * File object sees it.
      */
     static public void __printOn(File self, TextWriter out)
       throws IOException {
@@ -424,15 +416,15 @@ public class FileSugar {
 
     /**
      * Like {@link File#createNewFile()}, but under conditions where that
-     * method would return false, this one instead does a
-     * {@link Thrower#eject non-local exit} according to optEjector.
+     * method would return false, this one instead does a {@link Thrower#eject
+     * non-local exit} according to optEjector.
      */
     static public void createNewFile(File self, OneArgFunc optEjector) {
         try {
             if (!self.createNewFile()) {
                 throw Thrower.toEject(optEjector,
                                       "Can't createNewFile " +
-                                      E.toQuote(getPath(self)));
+                                        E.toQuote(getPath(self)));
             }
         } catch (IOException e) {
             throw ExceptionMgr.asSafe(e);
@@ -440,15 +432,14 @@ public class FileSugar {
     }
 
     /**
-     * Like {@link File#delete()}, but under conditions where that
-     * method would return false, this one instead does a
-     * {@link Thrower#eject non-local exit} according to optEjector.
+     * Like {@link File#delete()}, but under conditions where that method would
+     * return false, this one instead does a {@link Thrower#eject non-local
+     * exit} according to optEjector.
      */
     static public void delete(File self, OneArgFunc optEjector) {
         if (!self.delete()) {
             throw Thrower.toEject(optEjector,
-                                  "Can't delete " +
-                                  E.toQuote(getPath(self)));
+                                  "Can't delete " + E.toQuote(getPath(self)));
         }
     }
 
@@ -467,8 +458,7 @@ public class FileSugar {
             return true;
         } else {
             throw Thrower.toEject(optEjector,
-                                  "Can't mkdir " +
-                                  E.toQuote(getPath(self)));
+                                  "Can't mkdir " + E.toQuote(getPath(self)));
         }
     }
 
@@ -487,28 +477,27 @@ public class FileSugar {
             return true;
         } else {
             throw Thrower.toEject(optEjector,
-                                  "Can't mkdirs " +
-                                  E.toQuote(getPath(self)));
+                                  "Can't mkdirs " + E.toQuote(getPath(self)));
         }
     }
 
     /**
-     * Like {@link File#renameTo}, but under conditions where that
-     * method would return false, this one instead does a
-     * {@link Thrower#eject non-local exit} according to optEjector.
+     * Like {@link File#renameTo}, but under conditions where that method would
+     * return false, this one instead does a {@link Thrower#eject non-local
+     * exit} according to optEjector.
      */
     static public void renameTo(File self, File dest, OneArgFunc optEjector) {
         if (!self.renameTo(dest)) {
             throw Thrower.toEject(optEjector,
                                   "Can't renameTo " +
-                                  E.toQuote(getPath(self)));
+                                    E.toQuote(getPath(self)));
         }
     }
 
     /**
      * Like {@link File#setLastModified}, but under conditions where that
-     * method would return false, this one instead does a
-     * {@link Thrower#eject non-local exit} according to optEjector.
+     * method would return false, this one instead does a {@link Thrower#eject
+     * non-local exit} according to optEjector.
      */
     static public void setLastModified(File self,
                                        long absMillis,
@@ -516,20 +505,20 @@ public class FileSugar {
         if (!self.setLastModified(absMillis)) {
             throw Thrower.toEject(optEjector,
                                   "Can't setLastModified " +
-                                  E.toQuote(getPath(self)));
+                                    E.toQuote(getPath(self)));
         }
     }
 
     /**
-     * Like {@link File#setReadOnly()}, but under conditions where that
-     * method would return false, this one instead does a
-     * {@link Thrower#eject non-local exit} according to optEjector.
+     * Like {@link File#setReadOnly()}, but under conditions where that method
+     * would return false, this one instead does a {@link Thrower#eject
+     * non-local exit} according to optEjector.
      */
     static public void setReadOnly(File self, OneArgFunc optEjector) {
         if (!self.setReadOnly()) {
             throw Thrower.toEject(optEjector,
                                   "Can't setReadOnly " +
-                                  E.toQuote(getPath(self)));
+                                    E.toQuote(getPath(self)));
         }
     }
 }

@@ -35,7 +35,7 @@ import java.io.IOException;
 
 /**
  * BNF: eExpr "\n" eExpr
- * <p>
+ * <p/>
  * Do one and then the other. Evaluates to the value of the second.
  *
  * @author Mark S. Miller
@@ -60,11 +60,11 @@ public class SeqExpr extends EExpr {
      * Uses XXX 'makeFoo(...)'
      */
     public Object[] getSpreadUncall() {
-        Object[] result = { StaticMaker.make(SeqExpr.class),
-                            "run",
-                            getOptSpan(),
-                            mySubs,
-                            getOptScopeLayout() };
+        Object[] result = {StaticMaker.make(SeqExpr.class),
+          "run",
+          getOptSpan(),
+          mySubs,
+          getOptScopeLayout()};
         return result;
     }
 
@@ -120,8 +120,8 @@ public class SeqExpr extends EExpr {
         int spLen = spSubs.length;
         if (len > spLen) {
             throw Thrower.toEject(optEjector,
-                                  "Arity mismatch: " + mySubs +
-                                  " vs " + other.mySubs);
+                                  "Arity mismatch: " + mySubs + " vs " + other
+                                    .mySubs);
         }
         if (len < spLen) {
             // The specimen is longer than the pattern, so group the extra
@@ -163,7 +163,7 @@ public class SeqExpr extends EExpr {
     }
 
     /**
-     * @deprecated Use {@link #getSubs()} 
+     * @deprecated Use {@link #getSubs()}
      */
     public EExpr[] subs() {
         return mySubs;

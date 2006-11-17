@@ -14,15 +14,15 @@ import org.erights.e.elib.util.OneArgFunc;
 import java.io.IOException;
 
 /**
- * Represents a list of QuasiContents, none of which are themselves actually
- * a QuasiContentList, but which may nevertheless represent a list of Nodes.
+ * Represents a list of QuasiContents, none of which are themselves actually a
+ * QuasiContentList, but which may nevertheless represent a list of Nodes.
  * <p/>
  * <p/>
  * When matching a QuasiContentList against a ContentList, we could get fancy
- * and do all sorts of backtracking. However, for Elements for now we choose
- * to define a simple rule: All but the last QuasiContent in the
- * QuasiContentList has to match pairwise with their corresponding Node. The
- * last QuasiContent is then matched against the list of remaining Nodes. <p>
+ * and do all sorts of backtracking. However, for Elements for now we choose to
+ * define a simple rule: All but the last QuasiContent in the QuasiContentList
+ * has to match pairwise with their corresponding Node. The last QuasiContent
+ * is then matched against the list of remaining Nodes. <p>
  * <p/>
  * Unfortunately, Text cannot be handled so simply. Nevertheless, since our
  * only need right now is the compiler, we XXX ignore this issue for now.
@@ -34,8 +34,8 @@ public class QuasiContentList extends QuasiContent {
 
     static private final long serialVersionUID = -3122022149910166996L;
 
-    static public final StaticMaker QuasiContentListMaker
-      = StaticMaker.make(QuasiContentList.class);
+    static public final StaticMaker QuasiContentListMaker =
+      StaticMaker.make(QuasiContentList.class);
 
     /**
      *
@@ -85,8 +85,8 @@ public class QuasiContentList extends QuasiContent {
             //With our current simple rule (see class comment) there aren't
             //enough nodes to match against.
             throw Thrower.toEject(optEjector,
-                                  "Not enough nodes: " +
-                                  len + " vs " + others.size());
+                                  "Not enough nodes: " + len + " vs " +
+                                    others.size());
         }
         for (int i = 0; i < len - 1; i++) {
             QuasiContent quasi = (QuasiContent)myQuasis.get(i);

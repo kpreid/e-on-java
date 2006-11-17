@@ -15,10 +15,8 @@ import java.io.InputStream;
  * UnserializationStream will probably need more parameters, but we should add
  * them as we find we need them, rather than create another subclass.
  * <p/>
- * Likely additional parameters: <ul>
- * <li>Name of format and version (a string)
- * <li>optional ClassLoader
- * </ul>
+ * Likely additional parameters: <ul> <li>Name of format and version (a string)
+ * <li>optional ClassLoader </ul>
  *
  * @author Mark S. Miller
  */

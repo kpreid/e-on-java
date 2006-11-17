@@ -25,10 +25,9 @@ public final class Location {
     public static String host(final String location) {
         final int end_host = location.indexOf(':');
         try {
-            return URLDecoder.decode(-1 == end_host ?
-                                     location :
-                                     location.substring(0, end_host),
-                                     "UTF-8")
+            return URLDecoder.decode(
+              -1 == end_host ? location : location.substring(0, end_host),
+              "UTF-8")
               .toLowerCase();
         } catch (final UnsupportedEncodingException e) {
             // Should never happen.

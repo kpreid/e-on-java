@@ -33,17 +33,15 @@ import org.erights.e.elib.tables.FlexSet;
 final class HeadlessRunner extends Runner implements Runnable {
 
     /**
-     * The number of Runnables to dequeue and run in one go.
-     * Must be >= 1.
+     * The number of Runnables to dequeue and run in one go. Must be >= 1.
      */
     static private final int DEQUEUE_GRANULARITY = 25;
 
     /**
      * The RunnerThread servicing this Runner's queue.
      * <p/>
-     * If we ever go orthogonal again, myOptThread must not be
-     * checkpointed. Ie, it must be a DISALLOWED_FIELD or 'transient'
-     * or something.
+     * If we ever go orthogonal again, myOptThread must not be checkpointed.
+     * Ie, it must be a DISALLOWED_FIELD or 'transient' or something.
      */
     private transient RunnerThread myOptThread;
 
@@ -185,10 +183,9 @@ final class HeadlessRunner extends Runner implements Runnable {
                 } while (null != optTodo);
             } catch (Throwable t) {
                 if (Trace.causality.error) {
-                    Trace.causality.errorm
-                      ("Exception made it all the way out of the run " +
-                       "loop. Restarting it.",
-                       t);
+                    Trace.causality
+                      .errorm("Exception made it all the way out of the run " +
+                        "loop. Restarting it.", t);
                 }
             }
         }
@@ -199,22 +196,19 @@ final class HeadlessRunner extends Runner implements Runnable {
      * newRunner's queue, and remember to redirect all further requests to
      * newRunner.
      * <p/>
-     * The enabling conditions are <ul>
-     * <li>This Runner isn't already redirected.
-     * <li>newRunner isn't already redirected to this Runner. (If it is, we
-     * throw a {@link ViciousCycleException}.)
-     * </ul>
-     * XXX Should we instead have an operation that only requeues the events
-     * queued by a given Vat, allowing Vats to migrate rather than merge?
+     * The enabling conditions are <ul> <li>This Runner isn't already
+     * redirected. <li>newRunner isn't already redirected to this Runner. (If
+     * it is, we throw a {@link ViciousCycleException}.) </ul> XXX Should we
+     * instead have an operation that only requeues the events queued by a
+     * given Vat, allowing Vats to migrate rather than merge?
      */
     Runner redirect(Runner newRunner) {
         synchronized (myQLock) {
-            T.require(null == myOptTarget,
-                      "Already redirected: ", this);
+            T.require(null == myOptTarget, "Already redirected: ", this);
             Runner result = newRunner.shorten();
             if (this == result) {
-                throw new ViciousCycleException
-                  ("Cyclic Runner merge not allowed: " + this);
+                throw new ViciousCycleException(
+                  "Cyclic Runner merge not allowed: " + this);
             }
             //empty my queue into his
             SynchQueue q = myOptQ;

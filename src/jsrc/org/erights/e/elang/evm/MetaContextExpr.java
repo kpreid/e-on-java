@@ -39,9 +39,10 @@ import java.io.IOException;
 
 /**
  * BNF: "meta.context()"
- * <p>
- * @see Scope
+ * <p/>
+ *
  * @author Mark S. Miller
+ * @see Scope
  */
 public class MetaContextExpr extends EExpr {
 
@@ -69,11 +70,11 @@ public class MetaContextExpr extends EExpr {
      * Uses XXX 'makeFoo(...)'
      */
     public Object[] getSpreadUncall() {
-        Object[] result = { StaticMaker.make(MetaContextExpr.class),
-                            "run",
-                            getOptSpan(),
-                            myOptContext,
-                            getOptScopeLayout() };
+        Object[] result = {StaticMaker.make(MetaContextExpr.class),
+          "run",
+          getOptSpan(),
+          myOptContext,
+          getOptScopeLayout()};
         return result;
     }
 
@@ -95,8 +96,7 @@ public class MetaContextExpr extends EExpr {
      *
      */
     protected Object subEval(EvalContext ctx, boolean forValue) {
-        T.notNull(myOptContext,
-                  "Internal: Not yet verified: ", this);
+        T.notNull(myOptContext, "Internal: Not yet verified: ", this);
         return myOptContext;
     }
 

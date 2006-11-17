@@ -46,8 +46,8 @@ public abstract class QAstroArg
     final AstroBuilder myBuilder;
 
     /**
-     * @serial What source text was originally lexed or parsed to produce
-     * this node?
+     * @serial What source text was originally lexed or parsed to produce this
+     * node?
      */
     final SourceSpan myOptSpan;
 
@@ -62,14 +62,14 @@ public abstract class QAstroArg
 
     /**
      * @param args  Each arg[i] is of a type matched to the corresponding
-     *              dollar-hole. For example, if dollar-hole 3 (ie "${3}")
-     *              has rank "?*+", then args[3] must be a list of lists of
-     *              lists of terms, for which the outer list may only be zero
-     *              or one long, the middle lists may be any length, and the
-     *              inner lists must all have at least one element.
-     * @param index Further indexes after a hole's hole-num. For example,
-     *              If a dollar-hole's hole-num is 3 and index is [4,5], then
-     *              the dollar-hole would evaluate to args[3][4][5].
+     *              dollar-hole. For example, if dollar-hole 3 (ie "${3}") has
+     *              rank "?*+", then args[3] must be a list of lists of lists
+     *              of terms, for which the outer list may only be zero or one
+     *              long, the middle lists may be any length, and the inner
+     *              lists must all have at least one element.
+     * @param index Further indexes after a hole's hole-num. For example, If a
+     *              dollar-hole's hole-num is 3 and index is [4,5], then the
+     *              dollar-hole would evaluate to args[3][4][5].
      * @return :Astro[]
      */
     public abstract ConstList substSlice(ConstList args, int[] index);
@@ -78,11 +78,11 @@ public abstract class QAstroArg
      * @param args         See the doc on 'args' in {@link #substSlice}.
      * @param specimenList :Astro[];
      * @param bindings     Like 'args', but by extraction from specimen
-     * @param index        Further indexes after a hole's hole-num. For example,
-     *                     If a dollar-hole's hole-num is 3 and index is [4,5], then
-     *                     the dollar-hole would access args[3][4][5]. Similarly,
-     *                     an at-hole with hole-num 3 would store into
-     *                     bindings[3][4][5].
+     * @param index        Further indexes after a hole's hole-num. For
+     *                     example, If a dollar-hole's hole-num is 3 and index
+     *                     is [4,5], then the dollar-hole would access
+     *                     args[3][4][5]. Similarly, an at-hole with hole-num 3
+     *                     would store into bindings[3][4][5].
      * @return How many elements of specimen are matched?  Zero indicates a
      *         successful match of no elements, so -1 is used to instead
      *         indicate a failed match.
@@ -93,8 +93,8 @@ public abstract class QAstroArg
                                        int[] index);
 
     /**
-     * For this substree and this index-prefix, what's the most number of
-     * index elements that should be enumerated?
+     * For this substree and this index-prefix, what's the most number of index
+     * elements that should be enumerated?
      * <p/>
      * If this subtree has no dollar-holes, it should just return shapeSoFar.
      * The initial shapeSoFar is -1 (meaning "indeterminate"), so a tree with
@@ -102,8 +102,8 @@ public abstract class QAstroArg
      * QTerm) just asks all its children, passing to each the shapeSoFar from
      * the previous.
      * <p/>
-     * All the rest of the semantics is specific to dollar-hole, at-hole, or
-     * to raking nodes, so see the documentation there.
+     * All the rest of the semantics is specific to dollar-hole, at-hole, or to
+     * raking nodes, so see the documentation there.
      */
     abstract int startShape(ConstList args,
                             FlexList optBindings,
@@ -111,19 +111,17 @@ public abstract class QAstroArg
                             int shapeSoFar);
 
     /**
-     * For this subtree and this index elements, 'shape' is the number of
-     * index elements that have been successfully enumerated.
+     * For this subtree and this index elements, 'shape' is the number of index
+     * elements that have been successfully enumerated.
      * <p/>
      * For each prefix, startShape and endShape form the openning and closing
      * brackets around calls to matchBindSlice or substSlice.
      */
-    abstract void endShape(FlexList optBindings,
-                           int[] prefix,
-                           int shape);
+    abstract void endShape(FlexList optBindings, int[] prefix, int shape);
 
     /**
-     * What source text was originally lexed or parsed to produce this node,
-     * or a representative token of this node?
+     * What source text was originally lexed or parsed to produce this node, or
+     * a representative token of this node?
      */
     public SourceSpan getOptSpan() {
         return myOptSpan;
@@ -137,8 +135,8 @@ public abstract class QAstroArg
     /**
      * What's the longest distance to the bottom?
      * <p/>
-     * A leaf node is height 1. All other nodes are one more than the height
-     * of their highest child. This is used for pretty printing.
+     * A leaf node is height 1. All other nodes are one more than the height of
+     * their highest child. This is used for pretty printing.
      */
     public abstract int getHeight();
 
@@ -174,6 +172,5 @@ public abstract class QAstroArg
     /**
      *
      */
-    public abstract void prettyPrintOn(TextWriter out)
-      throws IOException;
+    public abstract void prettyPrintOn(TextWriter out) throws IOException;
 }

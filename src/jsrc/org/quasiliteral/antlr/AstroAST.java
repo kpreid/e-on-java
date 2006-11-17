@@ -20,13 +20,12 @@ import org.quasiliteral.astro.AstroTag;
 /**
  * AST node implementation which stores tokens explicitly.
  * <p/>
- * This is handy if you'd rather derive information from tokens on an
- * as-needed basis instead of snarfing data from a token as an AST
- * is being built.
+ * This is handy if you'd rather derive information from tokens on an as-needed
+ * basis instead of snarfing data from a token as an AST is being built.
  * <p/>
  * In keeping with the nature of Antlr ASTs, AstroASTs are mutable. The
- * corresponding immutable, Persistent, & PassByCopy type is the
- * {@link org.quasiliteral.term.Term}.
+ * corresponding immutable, Persistent, & PassByCopy type is the {@link
+ * org.quasiliteral.term.Term}.
  *
  * @author Mark S. Miller
  * @author Based on Danfuzz Bornstein's TokenAST
@@ -39,8 +38,8 @@ public class AstroAST extends BaseAST implements Astro {
     private AstroToken myOptToken;
 
     /**
-     * Construct an instance which (at least initially) is not associated
-     * with a token.
+     * Construct an instance which (at least initially) is not associated with
+     * a token.
      */
     public AstroAST() {
         myOptToken = null;
@@ -86,17 +85,16 @@ public class AstroAST extends BaseAST implements Astro {
     }
 
     /**
-     * Since not all {@link AST}s are Astros, this static method
-     * provides the equivalent of the build/1 instance method for ASTs in
-     * general.
+     * Since not all {@link AST}s are Astros, this static method provides the
+     * equivalent of the build/1 instance method for ASTs in general.
      * <p/>
-     * In the understanding of non-Astro ASTs used here, their functor is
-     * only according to the AST's type code, for the tag, the optSpan is
-     * null (since a generic AST doesn't provide an API for source position,
-     * and the implementation generally don't record it either), and the data
-     * is the AST's getText(). This choice for data will often be a mistake,
-     * but there's no generic way to make a better decision. For grammars
-     * where this is wrong, you should build a grammar-specific converter.
+     * In the understanding of non-Astro ASTs used here, their functor is only
+     * according to the AST's type code, for the tag, the optSpan is null
+     * (since a generic AST doesn't provide an API for source position, and the
+     * implementation generally don't record it either), and the data is the
+     * AST's getText(). This choice for data will often be a mistake, but
+     * there's no generic way to make a better decision. For grammars where
+     * this is wrong, you should build a grammar-specific converter.
      * <p/>
      * XXX This should probably be made into a sugar-instance-method of AST.
      */
@@ -122,8 +120,8 @@ public class AstroAST extends BaseAST implements Astro {
 
     /**
      * Get the token text for this instance. If there is no token associated
-     * with this instance, then this returns the empty string
-     * (<tt>""</tt>), not <tt>null</tt>.
+     * with this instance, then this returns the empty string (<tt>""</tt>),
+     * not <tt>null</tt>.
      *
      * @return non-null; the token text
      */
@@ -153,8 +151,8 @@ public class AstroAST extends BaseAST implements Astro {
      * Get the token associated with this instance. If there is no token
      * associated with this instance, then this returns <tt>null</tt>.
      *
-     * @return The token associated with this instance, or <tt>mull</tt>
-     *         if there is no associated token
+     * @return The token associated with this instance, or <tt>mull</tt> if
+     *         there is no associated token
      */
     public AstroToken getOptToken() {
         return myOptToken;
@@ -182,13 +180,14 @@ public class AstroAST extends BaseAST implements Astro {
             return;
         }
         T.require(myOptToken.getTag().isTagForData(myOptToken.getOptData()),
-                  "Must break apart composites: ", myOptToken);
+                  "Must break apart composites: ",
+                  myOptToken);
     }
 
     /**
-     * Initialize this instance with the given token type and text.
-     * This will construct a new {@link CommonToken} with the given
-     * parameters and associate this instance with it.
+     * Initialize this instance with the given token type and text. This will
+     * construct a new {@link CommonToken} with the given parameters and
+     * associate this instance with it.
      *
      * @param type    the token type
      * @param optText The token text, or null
@@ -198,12 +197,11 @@ public class AstroAST extends BaseAST implements Astro {
     }
 
     /**
-     * Initialize this instance based on the given {@link AST}.
-     * If the given <tt>AST</tt> is in fact an instance of
-     * <tt>AstroAST</tt>, then this instance will be initialized
-     * to point at the same token as the given one. If not, then this
-     * instance will be initialized with the same token type and text
-     * as the given one.
+     * Initialize this instance based on the given {@link AST}. If the given
+     * <tt>AST</tt> is in fact an instance of <tt>AstroAST</tt>, then this
+     * instance will be initialized to point at the same token as the given
+     * one. If not, then this instance will be initialized with the same token
+     * type and text as the given one.
      *
      * @param ast non-null; the <tt>AST</tt> to base this instance on
      */
@@ -216,10 +214,10 @@ public class AstroAST extends BaseAST implements Astro {
     }
 
     /**
-     * Set the token text for this node. If this instance is already
-     * associated with a token, then that token is destructively modified
-     * by this operation. If not, then a new token is constructed with
-     * the type {@link Token#INVALID_TYPE} and the given text.
+     * Set the token text for this node. If this instance is already associated
+     * with a token, then that token is destructively modified by this
+     * operation. If not, then a new token is constructed with the type {@link
+     * Token#INVALID_TYPE} and the given text.
      *
      * @param text the new token text
      */
@@ -232,11 +230,10 @@ public class AstroAST extends BaseAST implements Astro {
     }
 
     /**
-     * Set the token type for this node. If this instance is already
-     * associated with a token, then that token is destructively modified
-     * by this operation. If not, then a new token is constructed with
-     * the given type and an empty (<tt>""</tt>, not <tt>null</tt>)
-     * text string.
+     * Set the token type for this node. If this instance is already associated
+     * with a token, then that token is destructively modified by this
+     * operation. If not, then a new token is constructed with the given type
+     * and an empty (<tt>""</tt>, not <tt>null</tt>) text string.
      *
      * @param type the new token type
      */
@@ -270,7 +267,9 @@ public class AstroAST extends BaseAST implements Astro {
 
     public Object getOptArgData(short tagCode) {
         T.require(getTag().getOptTagCode() == tagCode,
-                  "Tag mismatch: ", getTag(), " vs " + tagCode);
+                  "Tag mismatch: ",
+                  getTag(),
+                  " vs " + tagCode);
         return getOptArgData();
     }
 

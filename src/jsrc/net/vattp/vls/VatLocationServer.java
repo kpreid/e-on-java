@@ -82,8 +82,8 @@ class VatLocationServer implements VatLocationLookup {
      * XXX Will currently only return either a zero or a one element array.
      */
     public String[] getLocations(String vatID) {
-        String optLocation = (String)myRegistrations.fetch(vatID,
-                                                           ValueThunk.NULL_THUNK);
+        String optLocation =
+          (String)myRegistrations.fetch(vatID, ValueThunk.NULL_THUNK);
         if (null == optLocation) {
             return NO_LOCATIONS;
         } else {

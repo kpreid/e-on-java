@@ -72,8 +72,8 @@ public final class VatTPConnection {
     /**
      * Array of MsgHandlers indexed by message type
      */
-    private final MsgHandler[] myMsgHandlers = new MsgHandler[Msg.HIGH_MSG_TYPE +
-      1];
+    private final MsgHandler[] myMsgHandlers =
+      new MsgHandler[Msg.HIGH_MSG_TYPE + 1];
 
     /**
      * An enumeration of the places to search for the remote vat
@@ -205,7 +205,6 @@ public final class VatTPConnection {
      */
     private AuthSecrets myProtocolParms;
 
-
     // The following fields contain performance counters
 
     /**
@@ -286,8 +285,8 @@ public final class VatTPConnection {
         myFlattenedRemoteSearchPath = flattenedRemoteSearchPath;
         //Make a list of locations to try for the new connection
         // myFirstAddressToTry will always be "" here.
-        DynamicMap searchCollection = new DynamicMap(
-          EARL.parseSearchPath(myFlattenedRemoteSearchPath));
+        DynamicMap searchCollection =
+          new DynamicMap(EARL.parseSearchPath(myFlattenedRemoteSearchPath));
         mySiteSearch = searchCollection.elems();
         myAddressesTried = new Hashtable(1);
 
@@ -406,8 +405,9 @@ public final class VatTPConnection {
             ret = VatTPMgr.LIVES_DUP;    //Outgoing is too far along.
         } else if (StartUpProtocol.ST_EXPECT_MESSAGE == outState) {
             if (Trace.comm.debug && Trace.ON) {
-                Trace.comm.debugm("Killing incoming\n  " + incomingPath +
-                                  "\n  in favor of\n  " + myDataPath);
+                Trace.comm
+                  .debugm("Killing incoming\n  " + incomingPath +
+                    "\n  in favor of\n  " + myDataPath);
             }
             ret = VatTPMgr.LIVES_DUP;    //Outgoing is too far along.
         } else if (0 < myRemoteVatID.compareTo(myLocalVatID)) {
@@ -420,8 +420,9 @@ public final class VatTPConnection {
             // We must decide. Outbound not EXPECT_GOTO or EXPECT_MESSAGE,
             // That means we keep the incoming and stop the outgoing.
             if (Trace.comm.debug && Trace.ON) {
-                Trace.comm.debugm("Killing outgoing\n  " + myDataPath +
-                                  "\n  in favor of\n  " + incomingPath);
+                Trace.comm
+                  .debugm("Killing outgoing\n  " + myDataPath +
+                    "\n  in favor of\n  " + incomingPath);
             }
             myDataPath.stopStartUpProtocol();
             myDataPath = incomingPath;
@@ -457,8 +458,8 @@ public final class VatTPConnection {
      */
     private void enqueue(Object message) throws IOException {
         if (DEAD == myState || DIEING == myState) {
-            throw new IOException("Dead or dying VatTPConnection, state=" +
-                                  myState);
+            throw new IOException(
+              "Dead or dying VatTPConnection, state=" + myState);
         }
         if (RUNNING == myState) {
             int sus = myDataPath.getStartupState();
@@ -632,8 +633,9 @@ public final class VatTPConnection {
                 myDataPath.connectConnection(this, myProtocolParms);
                 return true;        //Incoming is too far along.
             } else if (StartUpProtocol.ST_EXPECT_MESSAGE == inState) {
-                Trace.comm.errorm("Incoming running, why are we chosing?" +
-                                  " IncomingState=" + inState);
+                Trace.comm
+                  .errorm("Incoming running, why are we chosing?" +
+                    " IncomingState=" + inState);
                 myDataPath.stopStartUpProtocol();
                 myDataPath = myIncomingDataPath;
                 myIncomingDataPath = null;
@@ -718,8 +720,9 @@ public final class VatTPConnection {
             if (null != handler) {
                 if (Trace.comm.event && Trace.ON) {
                     String msg = HexStringUtils.bytesToReadableHexStr(message);
-                    Trace.comm.eventm(this + " calls processMessage in " +
-                                      handler + "\n" + msg);
+                    Trace.comm
+                      .eventm(this + " calls processMessage in " + handler +
+                        "\n" + msg);
                 }
                 handler.processMessage(message, this);
                 return;
@@ -729,8 +732,9 @@ public final class VatTPConnection {
                 return;
             }
         }
-        Trace.comm.errorm("No handler for incoming message type\n" +
-                          HexStringUtils.bytesToReadableHexStr(message));
+        Trace.comm
+          .errorm("No handler for incoming message type\n" +
+            HexStringUtils.bytesToReadableHexStr(message));
     }
 
     /**
@@ -749,8 +753,9 @@ public final class VatTPConnection {
         case RESUMING:  // Same as STARTING
         case STARTING:
             if (Trace.comm.debug && Trace.ON) {
-                Trace.comm.debugm(
-                  "accumulating problem report: " + this + ": ", problem);
+                Trace.comm
+                  .debugm("accumulating problem report: " + this + ": ",
+                          problem);
             }
             recordConnectionFailure(problem);
             break;
@@ -833,9 +838,9 @@ public final class VatTPConnection {
       throws IOException {
         myVat.requireCurrent();
         if (Trace.comm.event && Trace.ON) {
-            Trace.comm.eventm("registerMsgHandler=" + msgType + "(" + handler +
-                              ") on " +
-                              this);
+            Trace.comm
+              .eventm("registerMsgHandler=" + msgType + "(" + handler +
+                ") on " + this);
         }
         T.require(msgType > 0 || msgType <= Msg.HIGH_MSG_TYPE,
                   "msgType=" + msgType,
@@ -848,8 +853,7 @@ public final class VatTPConnection {
         if (null != myMsgHandlers[msgType] &&
           myMsgHandlers[msgType] != handler) {
             throw new IOException(myMsgHandlers[msgType] +
-                                  " already registered for msgType=" +
-                                  msgType);
+              " already registered for msgType=" + msgType);
         }
         myMsgHandlers[msgType] = handler;
     }
@@ -890,22 +894,23 @@ public final class VatTPConnection {
     public void sendMsg(byte[] message) throws IOException {
         myVat.requireCurrent();
         if (Trace.comm.event && Trace.ON) {
-            Trace.comm.eventm("sendMsg on " + this + "\n" +
-                              HexStringUtils.bytesToReadableHexStr(message));
+            Trace.comm
+              .eventm("sendMsg on " + this + "\n" +
+                HexStringUtils.bytesToReadableHexStr(message));
         }
         if (message.length > Msg.MAX_OUTBOUND_MSG_LENGTH) {
             throw new IOException("Outbound message length=" + message.length +
-                                  " greater than limit=" +
-                                  Msg.MAX_OUTBOUND_MSG_LENGTH);
+              " greater than limit=" + Msg.MAX_OUTBOUND_MSG_LENGTH);
         }
         if (Trace.comm.debug && Trace.ON) {
-            Trace.comm.debugm("enqueueing to " + myRemoteAddr + "\n" +
-                              HexStringUtils.bytesToReadableHexStr(message));
+            Trace.comm
+              .debugm("enqueueing to " + myRemoteAddr + "\n" +
+                HexStringUtils.bytesToReadableHexStr(message));
         }
         int msgType = message[0] & 0xff;
         if (msgType > Msg.HIGH_MSG_TYPE || null == myMsgHandlers[msgType]) {
-            throw new IOException("No MsgHandler registered for message type=" +
-                                  msgType);
+            throw new IOException(
+              "No MsgHandler registered for message type=" + msgType);
         }
         enqueue(message);
     }
@@ -936,28 +941,28 @@ public final class VatTPConnection {
      * @see Msg
      */
 
-    public void sendMsg(byte[] message,
-                        Runnable notification,
-                        Vat placeToRun) throws IOException {
+    public void sendMsg(byte[] message, Runnable notification, Vat placeToRun)
+      throws IOException {
         myVat.requireCurrent();
         if (Trace.comm.event && Trace.ON) {
-            Trace.comm.eventm("sendMsg, Notify=" + notification + " Vat=" +
-                              placeToRun + " on " + this + "\n" +
-                              HexStringUtils.bytesToReadableHexStr(message));
+            Trace.comm
+              .eventm("sendMsg, Notify=" + notification + " Vat=" +
+                placeToRun + " on " + this + "\n" +
+                HexStringUtils.bytesToReadableHexStr(message));
         }
         if (message.length > Msg.MAX_OUTBOUND_MSG_LENGTH) {
             throw new IOException("Outbound message length=" + message.length +
-                                  " greater than limit=" +
-                                  Msg.MAX_OUTBOUND_MSG_LENGTH);
+              " greater than limit=" + Msg.MAX_OUTBOUND_MSG_LENGTH);
         }
         if (Trace.comm.debug && Trace.ON) {
-            Trace.comm.debugm("enqueueing to " + myRemoteAddr + "\n" +
-                              HexStringUtils.bytesToReadableHexStr(message));
+            Trace.comm
+              .debugm("enqueueing to " + myRemoteAddr + "\n" +
+                HexStringUtils.bytesToReadableHexStr(message));
         }
         int msgType = message[0] & 0xff;
         if (msgType > Msg.HIGH_MSG_TYPE || null == myMsgHandlers[msgType]) {
-            throw new IOException("No MsgHandler registered for message type=" +
-                                  msgType);
+            throw new IOException(
+              "No MsgHandler registered for message type=" + msgType);
         }
         enqueue(new StreamMessage(message, notification, placeToRun));
     }
@@ -1027,12 +1032,13 @@ public final class VatTPConnection {
               null != myShutdownReason) ? myShutdownReason : reason;
             if (Trace.comm.usage && Trace.ON) {
                 if (Trace.comm.event) {
-                    Trace.comm.eventm("Connection died " + this + "\n" +
-                                      myConnMgr.toString() +
-                                      "\n" + rr);
+                    Trace.comm
+                      .eventm("Connection died " + this + "\n" +
+                        myConnMgr.toString() + "\n" + rr);
                 } else {
-                    Trace.comm.usagem("Connection died " + myRemoteAddr + "|" +
-                                      myRemoteVatID + "\n" + rr);
+                    Trace.comm
+                      .usagem("Connection died " + myRemoteAddr + "|" +
+                        myRemoteVatID + "\n" + rr);
                 }
             }
             handleConnectionDeath(rr);
@@ -1052,8 +1058,8 @@ public final class VatTPConnection {
         String path = (myFirstAddressToTry.equals("") ?
           myFlattenedRemoteSearchPath :
           myFirstAddressToTry + ";" + myFlattenedRemoteSearchPath);
-        DynamicMap searchCollection = new DynamicMap(
-          EARL.parseSearchPath(path));
+        DynamicMap searchCollection =
+          new DynamicMap(EARL.parseSearchPath(path));
         mySiteSearch = searchCollection.elems();
         myAddressesTried = new Hashtable(1);
 
@@ -1119,14 +1125,16 @@ public final class VatTPConnection {
         }
         if (RESUMING == myState) {
             if (Trace.comm.debug && Trace.ON) {
-                Trace.comm.debugm("\nResume successfull after:\n" +
-                                  makeConnectionStatusReport());
+                Trace.comm
+                  .debugm("\nResume successfull after:\n" +
+                    makeConnectionStatusReport());
             }
         } else {
             new Suspend(this);  // Object to handle SUSPEND messages
             if (Trace.comm.debug && Trace.ON) {
-                Trace.comm.debugm("\nStartup successfull after:\n" +
-                                  makeConnectionStatusReport());
+                Trace.comm
+                  .debugm("\nStartup successfull after:\n" +
+                    makeConnectionStatusReport());
             }
         }
         myConnMgr.startupSuccessful(this, myRemoteVatID, RESUMING == myState);
@@ -1158,8 +1166,8 @@ public final class VatTPConnection {
     public void suspend() throws IOException {
         myVat.requireCurrent();
         if (RUNNING != myState) {
-            throw new IOException("Attempt to suspend a non-running connection, state=" +
-                                  myState);
+            throw new IOException(
+              "Attempt to suspend a non-running connection, state=" + myState);
         }
         myLocalSuspendID = new byte[20];
 
@@ -1168,8 +1176,9 @@ public final class VatTPConnection {
 
         entropy.nextBytes(myLocalSuspendID);
         if (Trace.comm.debug && Trace.ON) {
-            Trace.comm.debugm("Suspend Connection " + this + HexStringUtils.bytesToReadableHexStr(
-              myLocalSuspendID));
+            Trace.comm
+              .debugm("Suspend Connection " + this +
+                HexStringUtils.bytesToReadableHexStr(myLocalSuspendID));
         }
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         DataOutputStream os = new DataOutputStream(baos);
@@ -1215,9 +1224,9 @@ public final class VatTPConnection {
         } else {
             String report = makeConnectionStatusReport();
             if (Trace.comm.usage && Trace.ON) {
-                Trace.comm.usagem(toString() +
-                                  "\nConnection attempt failed, " +
-                                  "search path exhausted\n" + report);
+                Trace.comm
+                  .usagem(toString() + "\nConnection attempt failed, " +
+                    "search path exhausted\n" + report);
             }
             handleConnectionDeath(new IOException(report));
         }
@@ -1239,18 +1248,19 @@ public final class VatTPConnection {
       throws IOException {
         myVat.requireCurrent();
         if (Trace.comm.event && Trace.ON) {
-            Trace.comm.eventm("unRegisterMsgHandler=" + msgType + "(" +
-                              handler + ") on " + this);
+            Trace.comm
+              .eventm("unRegisterMsgHandler=" + msgType + "(" + handler +
+                ") on " + this);
         }
         if (msgType <= 0 || msgType > Msg.HIGH_MSG_TYPE) {
-            Trace.comm.errorm("msgType=" + msgType + " out of range (1 .. " +
-                              Msg.HIGH_MSG_TYPE);
+            Trace.comm
+              .errorm("msgType=" + msgType + " out of range (1 .. " + Msg
+                .HIGH_MSG_TYPE);
             Trace.comm.notifyFatal();
         }
         if (handler != myMsgHandlers[msgType]) {
             throw new IOException("Registered=" + myMsgHandlers[msgType] +
-                                  " is not the same as " + handler +
-                                  " for msgType=" + msgType);
+              " is not the same as " + handler + " for msgType=" + msgType);
         }
         myMsgHandlers[msgType] = null;
     }

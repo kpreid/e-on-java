@@ -15,9 +15,8 @@ import org.erights.e.elib.util.AlreadyDefinedException;
  * A mutable single valued mapping whose <>trijective</i> inverse is also a
  * mutable single valued mapping.
  * <p/>
- * Given two sets X and Y, a function f that maps from X to Y, and a function
- * g that maps from Y to X; f and g are
- * <a href="http://mathworld.wolfram.com/Bijective.html"
+ * Given two sets X and Y, a function f that maps from X to Y, and a function g
+ * that maps from Y to X; f and g are <a href="http://mathworld.wolfram.com/Bijective.html"
  * >bijective</a> inverses of each other iff<pre>
  *     for all x in X { g(f(x)) == x } &amp;&amp;
  *     for all y in Y { f(g(y)) == y }.</pre>
@@ -35,9 +34,9 @@ import org.erights.e.elib.util.AlreadyDefinedException;
  * FlexTrijection are facets on the same mutable state, so you can query and
  * update this state through either or both. The facet representing f will
  * operates on all of X as its domain, but only on that subset of Y that's in
- * the range of f -- those y's in Y for which there's an x in X such that
- * f(x) == y. Likewise, the facet representing g operated on all of Y as its
- * domain, but only on that subset of X that's in the range of g.
+ * the range of f -- those y's in Y for which there's an x in X such that f(x)
+ * == y. Likewise, the facet representing g operated on all of Y as its domain,
+ * but only on that subset of X that's in the range of g.
  * <p/>
  * A Trijection generally has many trijective inverses, but only has one
  * minimal trijective inverse. g is a minimal trijective inverse of f if the
@@ -71,7 +70,6 @@ public class FlexTrijection extends FlexMap {
     private final FlexTrijection myInverse;
 
     /**
-     *
      * @param domainGuard
      * @param rangeGuard
      * @param forwardMap
@@ -94,8 +92,7 @@ public class FlexTrijection extends FlexMap {
      * @param optDomainGuard defaults to :any
      * @param optRangeGuard  defaults to :any
      */
-    public FlexTrijection(Guard optDomainGuard,
-                          Guard optRangeGuard) {
+    public FlexTrijection(Guard optDomainGuard, Guard optRangeGuard) {
         if (null == optDomainGuard) {
             myDomainGuard = AnyGuard.THE_ONE;
         } else {
@@ -136,8 +133,7 @@ public class FlexTrijection extends FlexMap {
                 throw new AlreadyDefinedException("present: " + key);
             }
         } else {
-            T.require(Ref.isSettled(key),
-                      "Must be settled: ", key);
+            T.require(Ref.isSettled(key), "Must be settled: ", key);
         }
         myBackMap.put(value, key, strict);
         myForwardMap.put(key, value, strict);

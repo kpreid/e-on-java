@@ -45,7 +45,7 @@ import java.net.URL;
 
 /**
  * The Loader bound to import__uriGetter.
- * <p>
+ * <p/>
  * As explained in the superclass comment, this must be thread-safe.
  *
  * @author Mark S. Miller
@@ -55,8 +55,8 @@ class ImportLoader extends BaseLoader {
 
     /**
      * The only thing we do with this is diverge from it, so diverge must be
-     * thread-safe, and it must be thread-safe to mutate each diverged
-     * scope in a separate thread.
+     * thread-safe, and it must be thread-safe to mutate each diverged scope in
+     * a separate thread.
      */
     private final Scope mySafeScope;
 
@@ -66,10 +66,10 @@ class ImportLoader extends BaseLoader {
     private final ClassLoader myOptLoader;
 
     /**
-     * The values in the slots are either EStaticWrappers on Class objects
-     * (for safe classes), PackageScopes (for packages), or whatever value a
-     * .emaker file evaluated to, when interpreted in the safeScope.
-     * <p>
+     * The values in the slots are either EStaticWrappers on Class objects (for
+     * safe classes), PackageScopes (for packages), or whatever value a .emaker
+     * file evaluated to, when interpreted in the safeScope.
+     * <p/>
      * Must synchronize access to this
      */
     private final FlexMap myAlreadyImported;
@@ -91,8 +91,7 @@ class ImportLoader extends BaseLoader {
     }
 
     /**
-     * A step towards fixing
-     * http://sourceforge.net/tracker/index.php?func=detail&aid=1212444&group_id=75274&atid=551529
+     * A step towards fixing http://sourceforge.net/tracker/index.php?func=detail&aid=1212444&group_id=75274&atid=551529
      */
     static String getOptJFQName(String fqName) {
         String flatName = ClassDesc.flatName(fqName);
@@ -115,7 +114,9 @@ class ImportLoader extends BaseLoader {
     }
 
 
-    /** returns null if not found */
+    /**
+     * returns null if not found
+     */
     private URL optResource(String rName) {
         if (myOptLoader == null) {
             return ClassLoader.getSystemResource(rName);
@@ -124,7 +125,9 @@ class ImportLoader extends BaseLoader {
         }
     }
 
-    /** returns null if not found */
+    /**
+     * returns null if not found
+     */
     private Twine optESource(String fqName) {
         String rName = fqName.replace('.', '/') + ".emaker";
         URL resource = optResource(rName);
@@ -139,7 +142,9 @@ class ImportLoader extends BaseLoader {
         }
     }
 
-    /** null if not found. Thrown exception if found but unsafe. */
+    /**
+     * null if not found. Thrown exception if found but unsafe.
+     */
     private StaticMaker getOptStaticMaker(String fqName) {
         Class clazz;
         try {
@@ -157,7 +162,7 @@ class ImportLoader extends BaseLoader {
 
     /**
      * Gets the value at fqName, and indicate whether it is itself DeepFrozen.
-     * <p>
+     * <p/>
      * If not found, throws an exception. Sets isConfinedPtr[0] according to
      * whether the result is itself DeepFrozen (transitively immutable, or safe
      * to treat as such).
@@ -186,10 +191,9 @@ class ImportLoader extends BaseLoader {
 
                 if (Trace.eruntime.warning && Trace.ON) {
                     if (null != optESource(fqName)) {
-                        Trace.eruntime.warningm(
-                          "Ignoring interpreted " + fqName +
-                            " in favor of compiled one."
-                        );
+                        Trace.eruntime
+                          .warningm("Ignoring interpreted " + fqName +
+                            " in favor of compiled one.");
                     }
                 }
 
@@ -226,14 +230,13 @@ class ImportLoader extends BaseLoader {
                 String goodFQName = getFQName(fqName);
                 StackContext sc =
                   new StackContext("Importing " + fqName, true, true);
-                Trace.eruntime.warningm("Import " + goodFQName + " instead",
-                                        sc);
+                Trace.eruntime
+                  .warningm("Import " + goodFQName + " instead", sc);
             }
         }
     }
 
     /**
-     *
      * @param uriBody
      */
     public Object get(String uriBody) {
@@ -247,8 +250,8 @@ class ImportLoader extends BaseLoader {
 //System.err.println("ImportLoader.getting: " + fqName);
         Slot result;
         synchronized (myAlreadyImported) {
-            result = (Slot)myAlreadyImported.fetch(fqName,
-                                                   ValueThunk.NULL_THUNK);
+            result =
+              (Slot)myAlreadyImported.fetch(fqName, ValueThunk.NULL_THUNK);
         }
         if (null != result) {
             //XXX Once we detect that an emaker is DeepFrozen and cache it for

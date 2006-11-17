@@ -60,30 +60,25 @@ package org.apache.oro.text.regex;
 import java.util.Vector;
 
 /**
- * The Util class is a holder for useful static utility methods that can
- * be generically applied to Pattern and PatternMatcher instances.
- * This class cannot and is not meant to be instantiated.
- * The Util class currently contains versions of the split() and substitute()
- * methods inspired by Perl's split function and <b>s</b> operation
- * respectively, although they are implemented in such a way as not to
- * rely on the Perl5 implementations of the OROMatcher packages regular
- * expression interfaces. They may operate on any interface implementations
- * conforming to the OROMatcher API specification for the PatternMatcher,
- * Pattern, and MatchResult interfaces. Future versions of the class may
- * include additional utility methods.
+ * The Util class is a holder for useful static utility methods that can be
+ * generically applied to Pattern and PatternMatcher instances. This class
+ * cannot and is not meant to be instantiated. The Util class currently
+ * contains versions of the split() and substitute() methods inspired by Perl's
+ * split function and <b>s</b> operation respectively, although they are
+ * implemented in such a way as not to rely on the Perl5 implementations of the
+ * OROMatcher packages regular expression interfaces. They may operate on any
+ * interface implementations conforming to the OROMatcher API specification for
+ * the PatternMatcher, Pattern, and MatchResult interfaces. Future versions of
+ * the class may include additional utility methods.
  * <p/>
- * A grep method is not included for two reasons:
- * <ol>
- * <li> The details of reading a line at a time from an input stream
- * differ in JDK 1.0.2 and JDK 1.1, making it difficult to
- * retain compatibility across both Java releases.
- * <li> Grep style processing is trivial for the programmer to implement
- * in a while loop. Rarely does anyone want to retrieve all
- * occurences of a pattern and then process them. More often a
- * programmer will retrieve pattern matches and process them as they
- * are retrieved, which is more efficient than storing them all in a
- * Vector and then accessing them.
- * </ol>
+ * A grep method is not included for two reasons: <ol> <li> The details of
+ * reading a line at a time from an input stream differ in JDK 1.0.2 and JDK
+ * 1.1, making it difficult to retain compatibility across both Java releases.
+ * <li> Grep style processing is trivial for the programmer to implement in a
+ * while loop. Rarely does anyone want to retrieve all occurences of a pattern
+ * and then process them. More often a programmer will retrieve pattern matches
+ * and process them as they are retrieved, which is more efficient than storing
+ * them all in a Vector and then accessing them. </ol>
  *
  * @author <a href="mailto:dfs@savarese.org">Daniel F. Savarese</a>
  * @version $Id: Util.java,v 1.5 2001/12/02 06:01:41 markm Exp $
@@ -93,22 +88,20 @@ import java.util.Vector;
 public final class Util {
 
     /**
-     * A constant passed to the {@link #substitute substitute()}
-     * methods indicating that all occurrences of a pattern should be
-     * substituted.
+     * A constant passed to the {@link #substitute substitute()} methods
+     * indicating that all occurrences of a pattern should be substituted.
      */
     static public final int SUBSTITUTE_ALL = -1;
 
     /**
-     * A constant passed to the {@link #split split()} methods
-     * indicating that all occurrences of a pattern should be used to
-     * split a string.
+     * A constant passed to the {@link #split split()} methods indicating that
+     * all occurrences of a pattern should be used to split a string.
      */
     static public final int SPLIT_ALL = 0;
 
     /**
-     * The default destructor for the Util class. It is made private
-     * to prevent the instantiation of the class.
+     * The default destructor for the Util class. It is made private to prevent
+     * the instantiation of the class.
      */
     private Util() {
     }
@@ -116,28 +109,23 @@ public final class Util {
     /**
      * Splits up a <code>String</code> instance into strings contained in a
      * <code>Vector</code> of size not greater than a specified limit. The
-     * string is split with a regular expression as the delimiter.
-     * The <b>limit</b> parameter essentially says to split the
-     * string only on at most the first <b>limit - 1</b> number of pattern
-     * occurences.
+     * string is split with a regular expression as the delimiter. The
+     * <b>limit</b> parameter essentially says to split the string only on at
+     * most the first <b>limit - 1</b> number of pattern occurences.
      * <p/>
      * This method is inspired by the Perl split() function and behaves
      * identically to it when used in conjunction with the Perl5Matcher and
-     * Perl5Pattern classes except for the following difference:
-     * <ul><p>
-     * In Perl, if the split expression contains parentheses, the split()
-     * method creates additional list elements from each of the matching
-     * subgroups in the pattern. In other words:
-     * <ul><p><code>split("/([,-])/", "8-12,15,18")</code></ul>
-     * <p> produces the Vector containing:
-     * <ul><p><code> { "8", "-", "12", ",", "15", ",", "18" } </code> </ul>
-     * <p> The OROMatcher split method does not follow this behavior. The
-     * following Vector would be produced by OROMatcher:
-     * <ul><p><code> { "8", "12",  "15", "18" } </code> </ul>
-     * <p> To obtain the Perl behavior, use split method in the PerlTools
-     * package available from
-     * <a href="http://www.oroinc.com/"> http://www.oroinc.com/ </a>.
-     * </ul>
+     * Perl5Pattern classes except for the following difference: <ul><p> In
+     * Perl, if the split expression contains parentheses, the split() method
+     * creates additional list elements from each of the matching subgroups in
+     * the pattern. In other words: <ul><p><code>split("/([,-])/",
+     * "8-12,15,18")</code></ul> <p> produces the Vector containing:
+     * <ul><p><code> { "8", "-", "12", ",", "15", ",", "18" } </code> </ul> <p>
+     * The OROMatcher split method does not follow this behavior. The following
+     * Vector would be produced by OROMatcher: <ul><p><code> { "8", "12",
+     * "15", "18" } </code> </ul> <p> To obtain the Perl behavior, use split
+     * method in the PerlTools package available from <a
+     * href="http://www.oroinc.com/"> http://www.oroinc.com/ </a>. </ul>
      * <p/>
      *
      * @param matcher The regular expression matcher to execute the split.
@@ -148,8 +136,9 @@ public final class Util {
      *                <b>SPLIT_ALL</b> constant which causes the limit to be
      *                ignored and splits to be performed on all occurrences of
      *                the pattern. You should use the <b>SPLIT_ALL</b> constant
-     *                to achieve this behavior instead of relying on the default
-     *                behavior associated with non-positive limit values.
+     *                to achieve this behavior instead of relying on the
+     *                default behavior associated with non-positive limit
+     *                values.
      * @return A <code>Vector</code> containing the substrings of the input
      *         that occur between the regular expression delimiter occurences.
      *         The input will not be split into any more substrings than the
@@ -157,8 +146,10 @@ public final class Util {
      *         only the first <code>limit - 1</code> matches of the delimiting
      *         regular expression will be used to split the input.
      */
-    static public Vector split(PatternMatcher matcher, Pattern pattern,
-                               String input, int limit) {
+    static public Vector split(PatternMatcher matcher,
+                               Pattern pattern,
+                               String input,
+                               int limit) {
         int beginOffset;
         Vector results = new Vector(20);
         MatchResult currentResult;
@@ -180,26 +171,22 @@ public final class Util {
 
 
     /**
-     * Splits up a <code>String</code> instance into a <code>Vector</code>
-     * of all its substrings using a regular expression as the delimiter.
-     * This method is inspired by the Perl split() function and behaves
-     * identically to it when used in conjunction with the Perl5Matcher and
-     * Perl5Pattern classes except for the following difference:
+     * Splits up a <code>String</code> instance into a <code>Vector</code> of
+     * all its substrings using a regular expression as the delimiter. This
+     * method is inspired by the Perl split() function and behaves identically
+     * to it when used in conjunction with the Perl5Matcher and Perl5Pattern
+     * classes except for the following difference:
      * <p/>
-     * <ul>
-     * In Perl, if the split expression contains parentheses, the split()
+     * <ul> In Perl, if the split expression contains parentheses, the split()
      * method creates additional list elements from each of the matching
-     * subgroups in the pattern. In other words:
-     * <ul><p><code>split("/([,-])/", "8-12,15,18")</code></ul>
-     * <p> produces the Vector containing:
-     * <ul><p><code> { "8", "-", "12", ",", "15", ",", "18" } </code> </ul>
-     * <p> The OROMatcher split method does not follow this behavior. The
-     * following Vector would be produced by OROMatcher:
-     * <ul><p><code> { "8", "12",  "15", "18" } </code> </ul>
-     * <p> To obtain the Perl behavior, use split method in the PerlTools
-     * package available from
-     * <a href="http://www.oroinc.com/"> http://www.oroinc.com/ </a>.
-     * </ul>
+     * subgroups in the pattern. In other words: <ul><p><code>split("/([,-])/",
+     * "8-12,15,18")</code></ul> <p> produces the Vector containing:
+     * <ul><p><code> { "8", "-", "12", ",", "15", ",", "18" } </code> </ul> <p>
+     * The OROMatcher split method does not follow this behavior. The following
+     * Vector would be produced by OROMatcher: <ul><p><code> { "8", "12",
+     * "15", "18" } </code> </ul> <p> To obtain the Perl behavior, use split
+     * method in the PerlTools package available from <a
+     * href="http://www.oroinc.com/"> http://www.oroinc.com/ </a>. </ul>
      * <p/>
      * This method is identical to calling:
      * <blockquote><pre>
@@ -213,18 +200,19 @@ public final class Util {
      * @return A <code>Vector</code> containing all the substrings of the input
      *         that occur between the regular expression delimiter occurences.
      */
-    static public Vector split(PatternMatcher matcher, Pattern pattern,
+    static public Vector split(PatternMatcher matcher,
+                               Pattern pattern,
                                String input) {
         return split(matcher, pattern, input, SPLIT_ALL);
     }
 
 
     /**
-     * Searches a string for a pattern and replaces the first occurrences
-     * of the pattern with a Substitution up to the number of
-     * substitutions specified by the <b>numSubs</b> parameter. A
-     * <b>numSubs</b> value of <b>SUBSTITUTE_ALL</b> will cause all occurrences
-     * of the pattern to be replaced.
+     * Searches a string for a pattern and replaces the first occurrences of
+     * the pattern with a Substitution up to the number of substitutions
+     * specified by the <b>numSubs</b> parameter. A <b>numSubs</b> value of
+     * <b>SUBSTITUTE_ALL</b> will cause all occurrences of the pattern to be
+     * replaced.
      * <p/>
      *
      * @param matcher The regular expression matcher to execute the pattern
@@ -232,14 +220,15 @@ public final class Util {
      * @param pattern The regular expression to search for and substitute
      *                occurrences of.
      * @param sub     The Substitution used to substitute pattern occurences.
-     * @param input   The <code>String</code> on which to perform substitutions.
-     * @param numSubs The number of substitutions to perform. Only the
-     *                first <b> numSubs </b> patterns encountered are
-     *                substituted. If you want to substitute all occurences
-     *                set this parameter to <b> SUBSTITUTE_ALL </b>.
-     * @return A String comprising the input string with the substitutions,
-     *         if any, made. If no substitutions are made, the returned String
-     *         is the original input String.
+     * @param input   The <code>String</code> on which to perform
+     *                substitutions.
+     * @param numSubs The number of substitutions to perform. Only the first
+     *                <b> numSubs </b> patterns encountered are substituted. If
+     *                you want to substitute all occurences set this parameter
+     *                to <b> SUBSTITUTE_ALL </b>.
+     * @return A String comprising the input string with the substitutions, if
+     *         any, made. If no substitutions are made, the returned String is
+     *         the original input String.
      */
     static public String substitute(PatternMatcher matcher,
                                     Pattern pattern,
@@ -262,8 +251,12 @@ public final class Util {
             currentResult = matcher.getMatch();
             buffer.append(input.substring(beginOffset,
                                           currentResult.beginOffset(0)));
-            sub.appendSubstitution(buffer, currentResult, subCount,
-                                   input, matcher, pattern);
+            sub.appendSubstitution(buffer,
+                                   currentResult,
+                                   subCount,
+                                   input,
+                                   matcher,
+                                   pattern);
             beginOffset = currentResult.endOffset(0);
         }
 
@@ -279,8 +272,8 @@ public final class Util {
     }
 
     /**
-     * Searches a string for a pattern and substitutes only the first
-     * occurence of the pattern.
+     * Searches a string for a pattern and substitutes only the first occurence
+     * of the pattern.
      * <p/>
      * This method is identical to calling:
      * <blockquote><pre>
@@ -293,13 +286,16 @@ public final class Util {
      * @param pattern The regular expression to search for and substitute
      *                occurrences of.
      * @param sub     The Substitution used to substitute pattern occurences.
-     * @param input   The <code>String</code> on which to perform substitutions.
-     * @return A String comprising the input string with the substitutions,
-     *         if any, made. If no substitutions are made, the returned String
-     *         is the original input String.
+     * @param input   The <code>String</code> on which to perform
+     *                substitutions.
+     * @return A String comprising the input string with the substitutions, if
+     *         any, made. If no substitutions are made, the returned String is
+     *         the original input String.
      */
-    static public String substitute(PatternMatcher matcher, Pattern pattern,
-                                    Substitution sub, String input) {
+    static public String substitute(PatternMatcher matcher,
+                                    Pattern pattern,
+                                    Substitution sub,
+                                    String input) {
         return substitute(matcher, pattern, sub, input, 1);
     }
 

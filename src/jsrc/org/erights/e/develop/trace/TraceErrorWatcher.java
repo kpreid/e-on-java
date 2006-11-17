@@ -25,8 +25,8 @@ Contributor(s): ______________________________________.
 
 
 /**
- * The interface for any object that wishes to be informed when a program
- * error has been logged. To register, the caller should call:
+ * The interface for any object that wishes to be informed when a program error
+ * has been logged. To register, the caller should call:
  * <p/>
  * TraceController.errorWatcher(this, true);
  * <p/>
@@ -37,14 +37,13 @@ Contributor(s): ______________________________________.
 public interface TraceErrorWatcher {
 
     /**
-     * Notify a user that a fatal error has happened. Tell her how to
-     * report the bug. Does not return.
+     * Notify a user that a fatal error has happened. Tell her how to report
+     * the bug. Does not return.
      */
     public void notifyFatal();
 
     /**
-     * If the user wants to hear about nonfatal bugs, notify her.
-     * Does return.
+     * If the user wants to hear about nonfatal bugs, notify her. Does return.
      */
     public void notifyOptional();
 }

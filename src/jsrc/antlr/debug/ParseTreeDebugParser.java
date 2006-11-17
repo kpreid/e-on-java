@@ -69,20 +69,20 @@ public class ParseTreeDebugParser extends LLkParser {
         return numberOfDerivationSteps;
     }
 
-    public void match(int i) throws MismatchedTokenException,
-      TokenStreamException {
+    public void match(int i)
+      throws MismatchedTokenException, TokenStreamException {
         addCurrentTokenToParseTree();
         super.match(i);
     }
 
-    public void match(BitSet bitSet) throws MismatchedTokenException,
-      TokenStreamException {
+    public void match(BitSet bitSet)
+      throws MismatchedTokenException, TokenStreamException {
         addCurrentTokenToParseTree();
         super.match(bitSet);
     }
 
-    public void matchNot(int i) throws MismatchedTokenException,
-      TokenStreamException {
+    public void matchNot(int i)
+      throws MismatchedTokenException, TokenStreamException {
         addCurrentTokenToParseTree();
         super.matchNot(i);
     }

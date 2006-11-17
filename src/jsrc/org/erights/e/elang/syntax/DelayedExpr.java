@@ -5,9 +5,9 @@ package org.erights.e.elang.syntax;
 
 import org.erights.e.develop.assertion.T;
 import org.erights.e.elang.evm.EExpr;
+import org.erights.e.elang.evm.NounExpr;
 import org.erights.e.elang.evm.Pattern;
 import org.erights.e.elang.evm.StaticScope;
-import org.erights.e.elang.evm.NounExpr;
 import org.erights.e.elang.scope.EvalContext;
 import org.erights.e.elang.scope.ScopeLayout;
 import org.erights.e.elang.visitors.ETreeVisitor;
@@ -17,17 +17,16 @@ import org.quasiliteral.astro.Astro;
 
 /**
  * Represents an E expression whose expansion to Kernel-E depends on context.
- * <p>
+ * <p/>
  * In E-on-Java as parsed by the byacc/J-generated parser, most expansion
- * happens immediately during parsing. A DelayedExpr represents an
- * expression whose expansion should be delayed, so that it can be
- * based on information from its context.
- * <p>
+ * happens immediately during parsing. A DelayedExpr represents an expression
+ * whose expansion should be delayed, so that it can be based on information
+ * from its context.
+ * <p/>
  * If optUsed is null, then all exported bindings must indeed be exported.
- * Otherwise, optUsed represents the bindings used by the expressions to
- * the "right" of this one in its scope box. The expansion of this
- * expression need then export only the intersection of its apparent exports
- * and optUsed.
+ * Otherwise, optUsed represents the bindings used by the expressions to the
+ * "right" of this one in its scope box. The expansion of this expression need
+ * then export only the intersection of its apparent exports and optUsed.
  *
  * @author Mark S. Miller
  */
@@ -48,9 +47,9 @@ abstract class DelayedExpr extends EExpr {
     EExpr broke(ENodeBuilder b, Astro br, EExpr problem) {
         return b.kdef(b.finalPattern(br),
                       b.call(ENodeBuilder.REF,
-                             this,"broken",
-                             b.list(problem))
-        );
+                             this,
+                             "broken",
+                             b.list(problem)));
     }
 
     NounExpr noun(Object identOrStr) {
@@ -76,8 +75,8 @@ abstract class DelayedExpr extends EExpr {
             if (null != optExportsOk && !optExportsOk.maps(export)) {
                 nameExprs[offset + i] = noun(optBr);
             } else {
-                nameExprs[offset + i] = b.slotExpr(BaseEBuilder.NO_POSER,
-                                                   noun(export));
+                nameExprs[offset + i] =
+                  b.slotExpr(BaseEBuilder.NO_POSER, noun(export));
             }
         }
         return b.tuple(nameExprs);
@@ -111,7 +110,7 @@ abstract class DelayedExpr extends EExpr {
 
     /**
      * Expand to an expression whose value is correct.
-     * <p>
+     * <p/>
      * The default implementation here expands to<pre>
      *     escape ej1 {
      *         forControl(expr,ej1)
@@ -150,9 +149,7 @@ abstract class DelayedExpr extends EExpr {
                                                            br3)));
             return b.sequence(b.kdef(slotsPattern(b,
                                                   b.finalPattern(rs4),
-                                                  exports),
-                                     escExpr
-            ),
+                                                  exports), escExpr),
                               noun(rs4));
         } else {
             return b.escape(b.finalPattern(ej1),
@@ -168,7 +165,7 @@ abstract class DelayedExpr extends EExpr {
     /**
      * Expand to an expression whose value is not used, and which therefore
      * need not be the same as the original expression.
-     * <p>
+     * <p/>
      * The default implementation here expands to<pre>
      *     escape ej1 {
      *         forControl(expr,ej1)
@@ -190,41 +187,30 @@ abstract class DelayedExpr extends EExpr {
             Astro br3 = b.newTemp("br");
             return b.kdef(slotsPattern(b, null, exports),
                           b.escape(b.finalPattern(ej1),
-                                   b.sequence(forControl(b,
-                                                         ej1,
-                                                         optUsed),
-                                              slotsTuple(b,
-                                                         null,
-                                                         exports)),
+                                   b.sequence(forControl(b, ej1, optUsed),
+                                              slotsTuple(b, null, exports)),
                                    b.finalPattern(ex2),
-                                   b.sequence(broke(b,
-                                                    br3,
-                                                    noun(ex2)),
+                                   b.sequence(broke(b, br3, noun(ex2)),
                                               mixedTuple(b,
                                                          null,
                                                          exports,
                                                          ConstMap.EmptyMap,
-                                                         br3)))
-            );
+                                                         br3))));
         } else {
             return b.escape(b.finalPattern(ej1),
-                            forControl(b,
-                                       ej1,
-                                       StaticScope.EmptyScope),
+                            forControl(b, ej1, StaticScope.EmptyScope),
                             null);
         }
     }
 
     /**
      * Expand to an expression whose value is only branched on.
-     * <p>
-     * If the expression's value is true, fall through into a context
-     * described by optUsed. If false, eject to ej. Otherwise, throw
-     * a complaint that the value isn't boolean.
+     * <p/>
+     * If the expression's value is true, fall through into a context described
+     * by optUsed. If false, eject to ej. Otherwise, throw a complaint that the
+     * value isn't boolean.
      */
-    abstract EExpr forControl(ENodeBuilder b,
-                              Astro ej,
-                              StaticScope optUsed);
+    abstract EExpr forControl(ENodeBuilder b, Astro ej, StaticScope optUsed);
 
     /**
      * Complain that a DelayedExpr isn't eval-able

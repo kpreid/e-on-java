@@ -33,9 +33,7 @@ public class TokenWithIndex extends CommonToken {
     }
 
     public String toString() {
-        return "[" + index + ":\"" + getText() + "\",<" + getType() + ">,line=" +
-          line +
-          ",col=" +
-          col + "]\n";
+        return "[" + index + ":\"" + getText() + "\",<" + getType() +
+          ">,line=" + line + ",col=" + col + "]\n";
     }
 }

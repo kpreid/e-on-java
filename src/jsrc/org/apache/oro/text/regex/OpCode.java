@@ -59,8 +59,8 @@ package org.apache.oro.text.regex;
 
 /**
  * The OpCode class should not be instantiated. It is a holder of various
- * constants and static methods pertaining to the manipulation of the
- * op-codes used in a compiled regular expression.
+ * constants and static methods pertaining to the manipulation of the op-codes
+ * used in a compiled regular expression.
  *
  * @author <a href="mailto:dfs@savarese.org">Daniel F. Savarese</a>
  * @version $Id: OpCode.java,v 1.5 2001/12/02 06:01:40 markm Exp $
@@ -75,61 +75,119 @@ final class OpCode {
     // regcomp.h in the Perl source tree by Larry Wall.
     static final char  // Has Operand   Meaning
       _END = 0,   // no       End of program.
-    _BOL = 1,   // no       Match "" at beginning of line.
-    _MBOL = 2,   // no       Same, assuming multiline.
-    _SBOL = 3,   // no       Same, assuming singleline.
-    _EOL = 4,   // no       Match "" at end of line.
-    _MEOL = 5,   // no       Same, assuming multiline.
-    _SEOL = 6,   // no       Same, assuming singleline.
-    _ANY = 7,   // no       Match any one character (except newline).
-    _SANY = 8,   // no       Match any one character.
-    _ANYOF = 9,   // yes      Match character in (or not in) this class.
-    _CURLY = 10,  // yes      Match this simple thing {n,m} times.
-    _CURLYX = 11,  // yes      Match this complex thing {n,m} times.
-    _BRANCH = 12,  // yes      Match this alternative, or the next...
-    _BACK = 13,  // no       Match "", "next" ptr points backward.
-    _EXACTLY = 14,  // yes      Match this string (preceded by length).
-    _NOTHING = 15,  // no       Match empty string.
-    _STAR = 16,  // yes      Match this (simple) thing 0 or more times.
-    _PLUS = 17,  // yes      Match this (simple) thing 1 or more times.
-    _ALNUM = 18,  // no       Match any alphanumeric character
-    _NALNUM = 19,  // no       Match any non-alphanumeric character
-    _BOUND = 20,  // no       Match "" at any word boundary
-    _NBOUND = 21,  // no       Match "" at any word non-boundary
-    _SPACE = 22,  // no       Match any whitespace character
-    _NSPACE = 23,  // no       Match any non-whitespace character
-    _DIGIT = 24,  // no       Match any numeric character
-    _NDIGIT = 25,  // no       Match any non-numeric character
-    _REF = 26,  // yes      Match some already matched string
-    _OPEN = 27,  // yes      Mark this point in input as start of #n.
-    _CLOSE = 28,  // yes      Analogous to OPEN.
-    _MINMOD = 29,  // no       Next operator is not greedy.
-    _GBOL = 30,  // no       Matches where last m//g left off.
-    _IFMATCH = 31,  // no       Succeeds if the following matches.
-    _UNLESSM = 32,  // no       Fails if the following matches.
-    _SUCCEED = 33,  // no       Return from a subroutine, basically.
-    _WHILEM = 34;  // no       Do curly processing and see if rest matches.
+      _BOL = 1,   // no       Match "" at beginning of line.
+      _MBOL = 2,   // no       Same, assuming multiline.
+      _SBOL = 3,   // no       Same, assuming singleline.
+      _EOL = 4,   // no       Match "" at end of line.
+      _MEOL = 5,   // no       Same, assuming multiline.
+      _SEOL = 6,   // no       Same, assuming singleline.
+      _ANY = 7,   // no       Match any one character (except newline).
+      _SANY = 8,   // no       Match any one character.
+      _ANYOF = 9,   // yes      Match character in (or not in) this class.
+      _CURLY = 10,  // yes      Match this simple thing {n,m} times.
+      _CURLYX = 11,  // yes      Match this complex thing {n,m} times.
+      _BRANCH = 12,  // yes      Match this alternative, or the next...
+      _BACK = 13,  // no       Match "", "next" ptr points backward.
+      _EXACTLY = 14,  // yes      Match this string (preceded by length).
+      _NOTHING = 15,  // no       Match empty string.
+      _STAR = 16,  // yes      Match this (simple) thing 0 or more times.
+      _PLUS = 17,  // yes      Match this (simple) thing 1 or more times.
+      _ALNUM = 18,  // no       Match any alphanumeric character
+      _NALNUM = 19,  // no       Match any non-alphanumeric character
+      _BOUND = 20,  // no       Match "" at any word boundary
+      _NBOUND = 21,  // no       Match "" at any word non-boundary
+      _SPACE = 22,  // no       Match any whitespace character
+      _NSPACE = 23,  // no       Match any non-whitespace character
+      _DIGIT = 24,  // no       Match any numeric character
+      _NDIGIT = 25,  // no       Match any non-numeric character
+      _REF = 26,  // yes      Match some already matched string
+      _OPEN = 27,  // yes      Mark this point in input as start of #n.
+      _CLOSE = 28,  // yes      Analogous to OPEN.
+      _MINMOD = 29,  // no       Next operator is not greedy.
+      _GBOL = 30,  // no       Matches where last m//g left off.
+      _IFMATCH = 31,  // no       Succeeds if the following matches.
+      _UNLESSM = 32,  // no       Fails if the following matches.
+      _SUCCEED = 33,  // no       Return from a subroutine, basically.
+      _WHILEM = 34;  // no       Do curly processing and see if rest matches.
 
     // Lengths of the various operands.
-    static final int _operandLength[] = {
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0
-    };
+    static final int _operandLength[] = {0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      2,
+      2,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0};
 
-    static final char _opType[] = {
-        _END, _BOL, _BOL, _BOL, _EOL, _EOL, _EOL, _ANY, _ANY, _ANYOF, _CURLY,
-        _CURLY, _BRANCH, _BACK, _EXACTLY, _NOTHING, _STAR, _PLUS, _ALNUM,
-        _NALNUM, _BOUND, _NBOUND, _SPACE, _NSPACE, _DIGIT, _NDIGIT, _REF,
-        _OPEN, _CLOSE, _MINMOD, _BOL, _BRANCH, _BRANCH, _END, _WHILEM
-    };
+    static final char _opType[] = {_END,
+      _BOL,
+      _BOL,
+      _BOL,
+      _EOL,
+      _EOL,
+      _EOL,
+      _ANY,
+      _ANY,
+      _ANYOF,
+      _CURLY,
+      _CURLY,
+      _BRANCH,
+      _BACK,
+      _EXACTLY,
+      _NOTHING,
+      _STAR,
+      _PLUS,
+      _ALNUM,
+      _NALNUM,
+      _BOUND,
+      _NBOUND,
+      _SPACE,
+      _NSPACE,
+      _DIGIT,
+      _NDIGIT,
+      _REF,
+      _OPEN,
+      _CLOSE,
+      _MINMOD,
+      _BOL,
+      _BRANCH,
+      _BRANCH,
+      _END,
+      _WHILEM};
 
-    static final char _opLengthVaries[] = {
-        _BRANCH, _BACK, _STAR, _PLUS, _CURLY, _CURLYX, _REF, _WHILEM
-    };
+    static final char _opLengthVaries[] =
+      {_BRANCH, _BACK, _STAR, _PLUS, _CURLY, _CURLYX, _REF, _WHILEM};
 
-    static final char _opLengthOne[] = {
-        _ANY, _SANY, _ANYOF, _ALNUM, _NALNUM, _SPACE, _NSPACE, _DIGIT, _NDIGIT
-    };
+    static final char _opLengthOne[] =
+      {_ANY, _SANY, _ANYOF, _ALNUM, _NALNUM, _SPACE, _NSPACE, _DIGIT, _NDIGIT};
 
     static final int _NULL_OFFSET = -1;
 
@@ -192,8 +250,7 @@ final class OpCode {
     // depend on Perl5Compiler
     static final boolean _isWordCharacter(char token) {
         return ((token >= 'a' && token <= 'z') ||
-          (token >= 'A' && token <= 'Z') ||
-          (token >= '0' && token <= '9') ||
+          (token >= 'A' && token <= 'Z') || (token >= '0' && token <= '9') ||
           (token == '_'));
     }
 }

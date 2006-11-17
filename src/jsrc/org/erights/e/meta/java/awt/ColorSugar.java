@@ -24,8 +24,7 @@ public final class ColorSugar {
      * as the last float[] argument.
      * <p/>
      *
-     * @see <a href=
-     *      "https://bugs.sieve.net/bugs/?func=detailbug&bug_id=125618&group_id=16380"
+     * @see <a href= "https://bugs.sieve.net/bugs/?func=detailbug&bug_id=125618&group_id=16380"
      *      >Taming bug: java.awt.Color.getComponents and related</a>
      */
     static public float[] getRGBComponents(Color self) {
@@ -37,8 +36,7 @@ public final class ColorSugar {
      * as the last float[] argument.
      * <p/>
      *
-     * @see <a href=
-     *      "https://bugs.sieve.net/bugs/?func=detailbug&bug_id=125618&group_id=16380"
+     * @see <a href= "https://bugs.sieve.net/bugs/?func=detailbug&bug_id=125618&group_id=16380"
      *      >Taming bug: java.awt.Color.getComponents and related</a>
      */
     static public float[] getRGBColorComponents(Color self) {
@@ -50,8 +48,7 @@ public final class ColorSugar {
      * as the last float[] argument.
      * <p/>
      *
-     * @see <a href=
-     *      "https://bugs.sieve.net/bugs/?func=detailbug&bug_id=125618&group_id=16380"
+     * @see <a href= "https://bugs.sieve.net/bugs/?func=detailbug&bug_id=125618&group_id=16380"
      *      >Taming bug: java.awt.Color.getComponents and related</a>
      */
     static public float[] getComponents(Color self) {
@@ -63,8 +60,7 @@ public final class ColorSugar {
      * as the last float[] argument.
      * <p/>
      *
-     * @see <a href=
-     *      "https://bugs.sieve.net/bugs/?func=detailbug&bug_id=125618&group_id=16380"
+     * @see <a href= "https://bugs.sieve.net/bugs/?func=detailbug&bug_id=125618&group_id=16380"
      *      >Taming bug: java.awt.Color.getComponents and related</a>
      */
     static public float[] getColorComponents(Color self) {
@@ -76,8 +72,7 @@ public final class ColorSugar {
      * as the last float[] argument.
      * <p/>
      *
-     * @see <a href=
-     *      "https://bugs.sieve.net/bugs/?func=detailbug&bug_id=125618&group_id=16380"
+     * @see <a href= "https://bugs.sieve.net/bugs/?func=detailbug&bug_id=125618&group_id=16380"
      *      >Taming bug: java.awt.Color.getComponents and related</a>
      */
     static public float[] getComponents(Color self, ColorSpace cspace) {
@@ -92,8 +87,7 @@ public final class ColorSugar {
      * as the last float[] argument.
      * <p/>
      *
-     * @see <a href=
-     *      "https://bugs.sieve.net/bugs/?func=detailbug&bug_id=125618&group_id=16380"
+     * @see <a href= "https://bugs.sieve.net/bugs/?func=detailbug&bug_id=125618&group_id=16380"
      *      >Taming bug: java.awt.Color.getComponents and related</a>
      */
     static public float[] getColorComponents(Color self, ColorSpace cspace) {

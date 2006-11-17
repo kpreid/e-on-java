@@ -189,7 +189,6 @@ class DataPath implements MsgHandler, TickReactor {
      */
     private StartUpProtocol myStartUpProtocol;
 
-
 //The following fields are used only to create the StartUpProtocol object.
 
     /**
@@ -203,7 +202,6 @@ class DataPath implements MsgHandler, TickReactor {
      * Values for autherization parameters and protocol versions
      */
     private AuthSecrets myProtocolParms;
-
 
     // The following fields contain performance counters
 
@@ -272,13 +270,10 @@ class DataPath implements MsgHandler, TickReactor {
 
         myConnMgr = connMgr;
         myIsIncoming = true;
-        SynchQueue reader = commonConstructionSetup(identityKeys,
-                                                    localVatID,
-                                                    null,
-                                                    //no suspendID, incoming
-                                                    vat,
-                                                    localFlattenedSearchPath,
-                                                    vls);
+        SynchQueue reader =
+          commonConstructionSetup(identityKeys, localVatID, null,
+                                  //no suspendID, incoming
+                                  vat, localFlattenedSearchPath, vls);
 
         myRemoteAddr = tcpConnection.getInetAddress().getHostAddress();
 
@@ -348,7 +343,12 @@ class DataPath implements MsgHandler, TickReactor {
         } else {
             myProtocolParms = protocolParms;
         }
-        SynchQueue reader = commonConstructionSetup(identityKeys, localVatID, outgoingSuspendID, vat, localFlattenedSearchPath, //no VLS for outgoing connections
+        SynchQueue reader = commonConstructionSetup(identityKeys,
+                                                    localVatID,
+                                                    outgoingSuspendID,
+                                                    vat,
+                                                    localFlattenedSearchPath,
+                                                    //no VLS for outgoing connections
                                                     null);
 
         myRemoteAddr = remoteAddr;
@@ -362,11 +362,8 @@ class DataPath implements MsgHandler, TickReactor {
         //Build the SendThread and RecvThread for this address
 
         //Build a SendThread to handle the messages
-        mySendThread = new SendThread(remoteAddr,
-                                      this,
-                                      reader,
-                                      myVat,
-                                      addressesTried);
+        mySendThread =
+          new SendThread(remoteAddr, this, reader, myVat, addressesTried);
 
         if (Trace.comm.debug && Trace.ON) {
             Trace.comm.debugm("DataPath constructor done " + this);
@@ -701,15 +698,16 @@ class DataPath implements MsgHandler, TickReactor {
             MsgHandler handler = myMsgHandlers[msgType];
             if (null != handler) {
                 if (Trace.comm.debug && Trace.ON) {
-                    Trace.comm.debugm(this + " calls processMessage in " +
-                                      handler + "\n" + msg);
+                    Trace.comm
+                      .debugm(this + " calls processMessage in " + handler +
+                        "\n" + msg);
                 }
                 handler.processMessage(message, myDataConnection);
                 return;
             }
         }
-        Trace.comm.errorm(
-          "No handler for incoming message type\n  " + this + msg);
+        Trace.comm
+          .errorm("No handler for incoming message type\n  " + this + msg);
     }
 
     /**
@@ -752,8 +750,8 @@ class DataPath implements MsgHandler, TickReactor {
                     } else if ((now - timePingSent) > (2 * Msg.PING_TIMEOUT)) {
                         if (null != myClock) {
                             Trace.comm.errorm("Shutdown timeout " + this);
-                            Exception reason = new IOException(
-                              "Shutdown Timeout");
+                            Exception reason =
+                              new IOException("Shutdown Timeout");
                             //XXX Thread.stop() has been deprecated
                             mySendThread.stop(reason);
                             myProtocolParms = null;
@@ -767,7 +765,8 @@ class DataPath implements MsgHandler, TickReactor {
             timePingSent = 0;
         }
     }
-//Methods from the MsgHandler interface.
+
+    //Methods from the MsgHandler interface.
     /**
      * Process an incoming message from the VatTPConnection.
      *
@@ -822,9 +821,9 @@ class DataPath implements MsgHandler, TickReactor {
     void registerMsgHandler(int msgType, MsgHandler handler)
       throws IOException {
         if (Trace.comm.debug && Trace.ON) {
-            Trace.comm.debugm("registerMsgHandler=" + msgType + "(" + handler +
-                              ") on " +
-                              this);
+            Trace.comm
+              .debugm("registerMsgHandler=" + msgType + "(" + handler +
+                ") on " + this);
         }
         T.require(msgType > 0 || msgType <= Msg.HIGH_MSG_TYPE,
                   "msgType=" + msgType,
@@ -832,8 +831,7 @@ class DataPath implements MsgHandler, TickReactor {
                   ")");
         if (null != myMsgHandlers[msgType]) {
             throw new IOException(myMsgHandlers[msgType] +
-                                  " already registered for msgType=" +
-                                  msgType);
+              " already registered for msgType=" + msgType);
         }
         myMsgHandlers[msgType] = handler;
     }
@@ -912,8 +910,8 @@ class DataPath implements MsgHandler, TickReactor {
                 MsgHandler h = myMsgHandlers[i];
                 if (null != h) {
                     if (Trace.comm.debug && Trace.ON) {
-                        Trace.comm.debugm(
-                          this + " calls connectionDead in " + h);
+                        Trace.comm
+                          .debugm(this + " calls connectionDead in " + h);
                     }
                     h.connectionDead(myDataConnection, reason);
                 }
@@ -932,8 +930,8 @@ class DataPath implements MsgHandler, TickReactor {
      */
     void shutDownPath() {
         if (Trace.comm.debug && Trace.ON) {
-            Trace.comm.debugm("shutDownPath " + this + "\nfor " +
-                              myDataConnection);
+            Trace.comm
+              .debugm("shutDownPath " + this + "\nfor " + myDataConnection);
         }
         // Enqueue a shutdown to have the SendThread send the queued messages
         // and then shutdown. SendThread will call shutdownFinished when the
@@ -984,11 +982,10 @@ class DataPath implements MsgHandler, TickReactor {
         myDataConnection.registerMsgHandler(Msg.PONG, this);
 
         if (Trace.comm.usage && Trace.ON) {
-            Trace.comm.usagem("Link to " + myRemoteVatID +
-                              " uses CommProtocol " +
-                              myProtocolParms.myProtocolSuite +
-                              ", Emsg protocol=" +
-                              myProtocolParms.myEProtocolVersion);
+            Trace.comm
+              .usagem("Link to " + myRemoteVatID + " uses CommProtocol " +
+                myProtocolParms.myProtocolSuite + ", Emsg protocol=" +
+                myProtocolParms.myEProtocolVersion);
         }
 
         myDataConnection.startupSuccessful(this,
@@ -1054,18 +1051,19 @@ class DataPath implements MsgHandler, TickReactor {
     void unRegisterMsgHandler(int msgType, MsgHandler handler)
       throws IOException {
         if (Trace.comm.debug && Trace.ON) {
-            Trace.comm.debugm("unRegisterMsgHandler=" + msgType + "(" +
-                              handler + ") on " + this);
+            Trace.comm
+              .debugm("unRegisterMsgHandler=" + msgType + "(" + handler +
+                ") on " + this);
         }
         if (msgType <= 0 || msgType > Msg.HIGH_MSG_TYPE) {
-            Trace.comm.errorm("msgType=" + msgType + " out of range (1 .. " +
-                              Msg.HIGH_MSG_TYPE);
+            Trace.comm
+              .errorm("msgType=" + msgType + " out of range (1 .. " + Msg
+                .HIGH_MSG_TYPE);
             Trace.comm.notifyFatal();
         }
         if (handler != myMsgHandlers[msgType]) {
             throw new IOException("Registered=" + myMsgHandlers[msgType] +
-                                  " is not the same as " + handler +
-                                  " for msgType=" + msgType);
+              " is not the same as " + handler + " for msgType=" + msgType);
         }
         myMsgHandlers[msgType] = null;
     }

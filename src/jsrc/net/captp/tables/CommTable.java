@@ -13,7 +13,7 @@ import java.lang.reflect.Array;
 
 /**
  * Just some common mechanism made available to the CommTable implementations.
- * <p>
+ * <p/>
  * <p/>
  * CommTables are defined in terms of indices (always positive), not position.
  * At a higher level, positions use positive or negative to encode choice of

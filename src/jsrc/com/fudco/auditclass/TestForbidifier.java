@@ -25,7 +25,8 @@ class TestForbidifier implements Forbidifier {
         return goofyTest(className);
     }
 
-    public boolean forbiddenMember(String className, String memberName,
+    public boolean forbiddenMember(String className,
+                                   String memberName,
                                    String signature) {
         return goofyTest(memberName);
     }

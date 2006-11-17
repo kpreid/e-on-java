@@ -34,7 +34,6 @@ public class Msg {
      */
     static final String[] Version = {"E0", "E0"};
 
-
 // Valid initial bytes in calls to VatTPConnection.sendMsg(...)
 
     // Value zero is not defined as an error check to make sure callers

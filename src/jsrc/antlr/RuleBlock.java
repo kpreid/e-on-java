@@ -17,18 +17,20 @@ import java.util.Hashtable;
 public class RuleBlock extends AlternativeBlock {
 
     protected String ruleName;
-    protected String argAction = null;	// string for rule arguments [...]
+    protected String argAction =
+      null;        // string for rule arguments [...]
     protected String throwsSpec = null;
-    protected String returnAction = null;// string for rule return type(s) <...>
-    protected RuleEndElement endNode;	// which node ends this rule?
+    protected String returnAction =
+      null;// string for rule return type(s) <...>
+    protected RuleEndElement endNode;        // which node ends this rule?
 
     // Generate literal-testing code for lexer rule?
     protected boolean testLiterals = false;
 
-    Vector labeledElements;	// List of labeled elements found in this rule
+    Vector labeledElements;        // List of labeled elements found in this rule
     // This is a list of AlternativeElement (or subclass)
 
-    protected boolean[] lock;	// for analysis; used to avoid infinite loops
+    protected boolean[] lock;        // for analysis; used to avoid infinite loops
     // 1..k
     protected Lookahead cache[];// Each rule can cache it's lookahead computation.
 
@@ -38,7 +40,7 @@ public class RuleBlock extends AlternativeBlock {
     // The FIRST(rule) is stored in this cache; 1..k
     // This set includes FIRST of all alts.
 
-    Hashtable exceptionSpecs;		// table of String-to-ExceptionSpec.
+    Hashtable exceptionSpecs;                // table of String-to-ExceptionSpec.
 
     // grammar-settable options
     protected boolean defaultErrorHandler = true;
@@ -68,13 +70,14 @@ public class RuleBlock extends AlternativeBlock {
     public void addExceptionSpec(ExceptionSpec ex) {
         if (findExceptionSpec(ex.label) != null) {
             if (ex.label != null) {
-                grammar.antlrTool.error(
-                  "Rule '" + ruleName +
-                  "' already has an exception handler for label: " +
-                  ex.label);
+                grammar.antlrTool
+                  .error("Rule '" + ruleName +
+                    "' already has an exception handler for label: " + ex
+                    .label);
             } else {
-                grammar.antlrTool.error(
-                  "Rule '" + ruleName + "' already has an exception handler");
+                grammar.antlrTool
+                  .error("Rule '" + ruleName +
+                    "' already has an exception handler");
             }
         } else {
             exceptionSpecs.put((ex.label == null ? "" : ex.label.getText()),
@@ -144,55 +147,56 @@ public class RuleBlock extends AlternativeBlock {
             } else if (value.getText().equals("false")) {
                 defaultErrorHandler = false;
             } else {
-                grammar.antlrTool.error(
-                  "Value for defaultErrorHandler must be true or false",
-                  grammar.getFilename(),
-                  key.getLine(),
-                  key.getColumn());
+                grammar.antlrTool
+                  .error("Value for defaultErrorHandler must be true or false",
+                         grammar.getFilename(),
+                         key.getLine(),
+                         key.getColumn());
             }
         } else if (key.getText().equals("testLiterals")) {
             if (!(grammar instanceof LexerGrammar)) {
-                grammar.antlrTool.error(
-                  "testLiterals option only valid for lexer rules",
-                  grammar.getFilename(),
-                  key.getLine(),
-                  key.getColumn());
+                grammar.antlrTool
+                  .error("testLiterals option only valid for lexer rules",
+                         grammar.getFilename(),
+                         key.getLine(),
+                         key.getColumn());
             } else {
                 if (value.getText().equals("true")) {
                     testLiterals = true;
                 } else if (value.getText().equals("false")) {
                     testLiterals = false;
                 } else {
-                    grammar.antlrTool.error(
-                      "Value for testLiterals must be true or false",
-                      grammar.getFilename(),
-                      key.getLine(),
-                      key.getColumn());
+                    grammar.antlrTool
+                      .error("Value for testLiterals must be true or false",
+                             grammar.getFilename(),
+                             key.getLine(),
+                             key.getColumn());
                 }
             }
         } else if (key.getText().equals("ignore")) {
             if (!(grammar instanceof LexerGrammar)) {
-                grammar.antlrTool.error(
-                  "ignore option only valid for lexer rules",
-                  grammar.getFilename(),
-                  key.getLine(),
-                  key.getColumn());
+                grammar.antlrTool
+                  .error("ignore option only valid for lexer rules",
+                         grammar.getFilename(),
+                         key.getLine(),
+                         key.getColumn());
             } else {
                 ignoreRule = value.getText();
             }
         } else if (key.getText().equals("paraphrase")) {
             if (!(grammar instanceof LexerGrammar)) {
-                grammar.antlrTool.error(
-                  "paraphrase option only valid for lexer rules",
-                  grammar.getFilename(),
-                  key.getLine(),
-                  key.getColumn());
+                grammar.antlrTool
+                  .error("paraphrase option only valid for lexer rules",
+                         grammar.getFilename(),
+                         key.getLine(),
+                         key.getColumn());
             } else {
                 // find token def associated with this rule
                 TokenSymbol ts = grammar.tokenManager.getTokenSymbol(ruleName);
                 if (ts == null) {
-                    grammar.antlrTool.panic(
-                      "cannot find token associated with rule " + ruleName);
+                    grammar.antlrTool
+                      .panic(
+                        "cannot find token associated with rule " + ruleName);
                 }
                 ts.setParaphrase(value.getText());
             }
@@ -202,17 +206,19 @@ public class RuleBlock extends AlternativeBlock {
             } else if (value.getText().equals("false")) {
                 generateAmbigWarnings = false;
             } else {
-                grammar.antlrTool.error(
-                  "Value for generateAmbigWarnings must be true or false",
-                  grammar.getFilename(),
-                  key.getLine(),
-                  key.getColumn());
+                grammar.antlrTool
+                  .error(
+                    "Value for generateAmbigWarnings must be true or false",
+                    grammar.getFilename(),
+                    key.getLine(),
+                    key.getColumn());
             }
         } else {
-            grammar.antlrTool.error("Invalid rule option: " + key.getText(),
-                                    grammar.getFilename(),
-                                    key.getLine(),
-                                    key.getColumn());
+            grammar.antlrTool
+              .error("Invalid rule option: " + key.getText(),
+                     grammar.getFilename(),
+                     key.getLine(),
+                     key.getColumn());
         }
     }
 

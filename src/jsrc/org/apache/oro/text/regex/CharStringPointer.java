@@ -58,9 +58,9 @@ package org.apache.oro.text.regex;
  */
 
 /**
- * The CharStringPointer class is used to facilitate traversal of a char[]
- * in the manner pointer traversals of strings are performed in C/C++.
- * It is expected that the compiler will inline all the functions.
+ * The CharStringPointer class is used to facilitate traversal of a char[] in
+ * the manner pointer traversals of strings are performed in C/C++. It is
+ * expected that the compiler will inline all the functions.
  *
  * @author <a href="mailto:dfs@savarese.org">Daniel F. Savarese</a>
  * @version $Id: CharStringPointer.java,v 1.5 2001/12/02 06:01:40 markm Exp $

@@ -31,7 +31,7 @@ import org.erights.e.elib.util.ClassCache;
 
 /**
  * The Loader bound to unsafe__uriGetter.
- * <p>
+ * <p/>
  * As explained in the superclass comment, this must be thread-safe.
  *
  * @author Mark S. Miller
@@ -43,14 +43,15 @@ class UnsafeLoader extends BaseLoader {
 
     /**
      * We assume that ClassLoaders are thread-safe
+     *
      * @noinspection UNUSED_SYMBOL,FieldCanBeLocal
      */
     private final ClassLoader myOptLoader;
 
     /**
-     * The values in the slots are either ESTaticWrappers around Class
-     * objects (for classes), PackageScopes (for packages).
-     * <p>
+     * The values in the slots are either ESTaticWrappers around Class objects
+     * (for classes), PackageScopes (for packages).
+     * <p/>
      * Must synchronize access to this
      */
     private final FlexMap myLocals;
@@ -70,7 +71,9 @@ class UnsafeLoader extends BaseLoader {
         this(null);
     }
 
-    /** exception if not found */
+    /**
+     * exception if not found
+     */
     private Object getWrapped(String fqName) {
         if ("*".equals(fqName)) {
             return this;

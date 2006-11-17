@@ -171,7 +171,7 @@ public class TokenStreamRewriteEngine implements TokenStream {
                 if (t.getType() != Token.EOF_TYPE) {
                     tokens.add(t);  // track all tokens except EOF
                 }
-                index++;			// move to next position
+                index++;                        // move to next position
             }
         } while (t != null && discardMask.member(t.getType()));
         return t;
@@ -379,11 +379,11 @@ public class TokenStreamRewriteEngine implements TokenStream {
         int rewriteOpIndex = 0;
 
         int tokenCursor = start;
-        while (tokenCursor >= MIN_TOKEN_INDEX && tokenCursor <= end && tokenCursor <
-          tokens.size()) {
+        while (tokenCursor >= MIN_TOKEN_INDEX && tokenCursor <= end &&
+          tokenCursor < tokens.size()) {
             if (rewriteOpIndex < rewrites.size()) {
-                RewriteOperation op = (RewriteOperation)rewrites.get(
-                  rewriteOpIndex);
+                RewriteOperation op =
+                  (RewriteOperation)rewrites.get(rewriteOpIndex);
                 while (tokenCursor == op.index &&
                   rewriteOpIndex < rewrites.size()) {
                     /*

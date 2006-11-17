@@ -19,8 +19,11 @@ public final class E4E {
     static private final ClassDesc STRING_DESC = ClassDesc.make(String.class);
     static private final ClassDesc ARGS_DESC = ClassDesc.make(Object[].class);
 
-    /** prevent instantiation */
-    private E4E() {}
+    /**
+     * prevent instantiation
+     */
+    private E4E() {
+    }
 
     static public Object call(Object rec, String verb, Object[] args) {
         return E.callAll(rec, verb, args);

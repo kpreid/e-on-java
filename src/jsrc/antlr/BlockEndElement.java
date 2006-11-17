@@ -13,7 +13,7 @@ package antlr;
  */
 class BlockEndElement extends AlternativeElement {
 
-    protected boolean[] lock;	// for analysis; used to avoid infinite loops
+    protected boolean[] lock;        // for analysis; used to avoid infinite loops
     protected AlternativeBlock block;// ending blocks know what block they terminate
 
 

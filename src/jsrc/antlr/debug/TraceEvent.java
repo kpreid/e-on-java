@@ -48,6 +48,8 @@ public class TraceEvent extends GuessingEvent {
     }
 
     public String toString() {
-        return "ParserTraceEvent [" + (getType() == ENTER ? "enter," : "exit,") + getRuleNum() + "," + getGuessing() + "]";
+        return "ParserTraceEvent [" +
+          (getType() == ENTER ? "enter," : "exit,") + getRuleNum() + "," +
+          getGuessing() + "]";
     }
 }

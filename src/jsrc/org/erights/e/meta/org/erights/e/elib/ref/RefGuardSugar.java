@@ -9,13 +9,13 @@ import org.erights.e.elib.ref.Ref;
 import org.erights.e.elib.util.OneArgFunc;
 
 /**
- * Refines the 'coerce/2' behavior of the Ref type, so that it may be useful
- * as a Guard.
+ * Refines the 'coerce/2' behavior of the Ref type, so that it may be useful as
+ * a Guard.
  * <p/>
  * The E programmer is never expected to see 'Ref' as a guard, since this
  * wouldn't be meaningful in E. Rather, this guard behavior is supported so
- * that other values are coerces to NearRefs on deflection, when 'Ref' is
- * used as a parameter of return type in a Java interface.
+ * that other values are coerces to NearRefs on deflection, when 'Ref' is used
+ * as a parameter of return type in a Java interface.
  *
  * @author Mark S. Miller
  */
@@ -27,7 +27,8 @@ public class RefGuardSugar extends ClassDesc {
     public RefGuardSugar(Class clazz) {
         super(clazz);
         T.require(Ref.class.isAssignableFrom(clazz),
-                  clazz, " must be a kind of Ref");
+                  clazz,
+                  " must be a kind of Ref");
     }
 
     /**

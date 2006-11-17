@@ -140,9 +140,8 @@ class TraceSubsystemMediator implements TraceConstants {
              acceptorIndex < myThresholds.length;
              acceptorIndex++) {
 
-            if (myThresholds[acceptorIndex] <= message.level || (message.level ==
-              TIMING &&
-              myTimingBooleans[acceptorIndex])) {
+            if (myThresholds[acceptorIndex] <= message.level ||
+              (message.level == TIMING && myTimingBooleans[acceptorIndex])) {
                 for (int variant = 0;
                      variant < myAcceptors[acceptorIndex].length;
                      variant++) {
@@ -189,8 +188,9 @@ class TraceSubsystemMediator implements TraceConstants {
     void newCache(Trace newCache) {
         newCache.myMediator = this;
         if (Trace.trace != null) {
-            Trace.trace.debugm("The common Threshold is " +
-                               TraceLevelTranslator.terse(commonThreshold()));
+            Trace.trace
+              .debugm("The common Threshold is " +
+                TraceLevelTranslator.terse(commonThreshold()));
         }
         updateOneThresholdCache(newCache, commonThreshold());
         updateOneTimingCache(newCache, commonTiming());
@@ -208,11 +208,11 @@ class TraceSubsystemMediator implements TraceConstants {
      *                      a specific value.
      */
     void setOneThreshold(int acceptorIndex, int newValue, int reason) {
-        Trace.trace.eventm("Subsystem " + mySubsystem + "'s " +
-                           acceptorNames[acceptorIndex] +
-                           " threshold is being set to " +
-                           TraceLevelTranslator.terse(newValue) +
-                           " because of " + reasonNames[reason] + " change.");
+        Trace.trace
+          .eventm("Subsystem " + mySubsystem + "'s " +
+            acceptorNames[acceptorIndex] + " threshold is being set to " +
+            TraceLevelTranslator.terse(newValue) + " because of " +
+            reasonNames[reason] + " change.");
         myDeferToDefaultThreshold[acceptorIndex] = (reason == FROM_DEFAULT);
 
         // We don't need to go through the following rigamarole
@@ -231,10 +231,10 @@ class TraceSubsystemMediator implements TraceConstants {
         int currCommonThresh = commonThreshold();
 
         if (currCommonThresh != prevCommonThresh) {
-            Trace.trace.debugm("Updating caches from " +
-                               TraceLevelTranslator.terse(prevCommonThresh) +
-                               " to " +
-                               TraceLevelTranslator.terse(currCommonThresh));
+            Trace.trace
+              .debugm("Updating caches from " +
+                TraceLevelTranslator.terse(prevCommonThresh) + " to " +
+                TraceLevelTranslator.terse(currCommonThresh));
             Enumeration e = myCaches.elements();
             while (e.hasMoreElements()) {
                 Trace tr = (Trace)e.nextElement();
@@ -251,17 +251,19 @@ class TraceSubsystemMediator implements TraceConstants {
      * @param newValue      to what value.
      */
     void setTiming(int acceptorIndex, boolean newValue) {
-        Trace.trace.eventm("Subsystem " + mySubsystem + "'s " +
-                           acceptorNames[acceptorIndex] +
-                           " timing value is being set to " + newValue + ".");
+        Trace.trace
+          .eventm("Subsystem " + mySubsystem + "'s " +
+            acceptorNames[acceptorIndex] + " timing value is being set to " +
+            newValue + ".");
 
         boolean previousCommonTiming = commonTiming();
         myTimingBooleans[acceptorIndex] = newValue;
         boolean currentCommonTiming = commonTiming();
 
         if (currentCommonTiming != previousCommonTiming) {
-            Trace.trace.debugm("Updating timing caches from " +
-                               previousCommonTiming + " to " + currentCommonTiming);
+            Trace.trace
+              .debugm("Updating timing caches from " + previousCommonTiming +
+                " to " + currentCommonTiming);
             Enumeration e = myCaches.elements();
             while (e.hasMoreElements()) {
                 Trace tr = (Trace)e.nextElement();
@@ -285,11 +287,12 @@ class TraceSubsystemMediator implements TraceConstants {
      */
     private void updateOneThresholdCache(Trace tr, int commonThreshold) {
         if (Trace.trace != null) {
-            Trace.trace.debugm("Updating " + tr + " to " +
-                               TraceLevelTranslator.terse(commonThreshold));
+            Trace.trace
+              .debugm("Updating " + tr + " to " +
+                TraceLevelTranslator.terse(commonThreshold));
         }
-        tr.verbose = tr.debug = tr.event = tr.usage = tr.warning = tr.error =
-          false;
+        tr.verbose =
+          tr.debug = tr.event = tr.usage = tr.warning = tr.error = false;
         switch (commonThreshold) {
         case VERBOSE:
             tr.verbose = true;  // fallthrough intentional

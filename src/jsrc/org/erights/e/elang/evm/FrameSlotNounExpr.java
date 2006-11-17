@@ -50,12 +50,12 @@ public class FrameSlotNounExpr extends NestNounExpr {
      * Uses XXX 'makeFoo(...)'
      */
     public Object[] getSpreadUncall() {
-        Object[] result = { StaticMaker.make(FrameSlotNounExpr.class),
-                            "run",
-                            getOptSpan(),
-                            getName(),
-                            EInt.valueOf(myIndex),
-                            getOptScopeLayout() };
+        Object[] result = {StaticMaker.make(FrameSlotNounExpr.class),
+          "run",
+          getOptSpan(),
+          getName(),
+          EInt.valueOf(myIndex),
+          getOptScopeLayout()};
         return result;
     }
 

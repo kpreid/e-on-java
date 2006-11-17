@@ -65,8 +65,10 @@ public final class Path {
 
         // Unwind a trailing "..".
         if (path.endsWith("/..")) {
-            path = path.substring(0, path.lastIndexOf('/', path.length() -
-                                                           "x/..".length()) + 1);
+            path = path.substring(0,
+                                  path.lastIndexOf('/',
+                                                   path.length() -
+                                                     "x/..".length()) + 1);
         }
 
         // Make sure it's not an absolute path.
@@ -95,8 +97,8 @@ public final class Path {
      */
     public static String name(final String path) {
         try {
-            return URLDecoder.decode(
-              path.substring(path.lastIndexOf('/') + 1), "US-ASCII");
+            return URLDecoder.decode(path.substring(path.lastIndexOf('/') + 1),
+                                     "US-ASCII");
         } catch (final java.io.UnsupportedEncodingException e) {
             // Should never happen.
             // US-ASCII is a required charset.

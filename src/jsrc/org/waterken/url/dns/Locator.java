@@ -12,8 +12,8 @@ import java.net.SocketAddress;
  *
  * @author Tyler
  */
-public final class Locator implements org.waterken.url.Locator,
-  java.io.Serializable {
+public final class Locator
+  implements org.waterken.url.Locator, java.io.Serializable {
 
     static private final long serialVersionUID = 1616824535748530028L;
 
@@ -60,10 +60,11 @@ public final class Locator implements org.waterken.url.Locator,
             final String host = -1 == end_host ?
               authority.substring(start_host) :
               authority.substring(start_host, end_host);
-            final int port = -1 == end_host ? default_port : (end_host + 1 ==
-              authority.length() ?
+            final int port = -1 == end_host ?
               default_port :
-              Integer.parseInt(authority.substring(end_host + 1)));
+              (end_host + 1 == authority.length() ?
+                default_port :
+                Integer.parseInt(authority.substring(end_host + 1)));
 
             // Search the DNS for an address.
             final InetAddress[] address = InetAddress.getAllByName(host);

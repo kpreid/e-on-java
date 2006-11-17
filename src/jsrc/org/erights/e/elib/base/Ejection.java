@@ -37,9 +37,8 @@ public class Ejection extends RuntimeException {
      * unwrapped and optMsg is ignored.
      *
      * @param optMsg may equivalently be null or "", in which case it will be
-     *               ignored by eStack(). See
-     *               {@link org.erights.e.develop.exception.NestedThrowable} for the
-     *               convention that optMsg should follow.
+     *               ignored by eStack(). See {@link org.erights.e.develop.exception.NestedThrowable}
+     *               for the convention that optMsg should follow.
      */
     static public RuntimeException backtrace(Throwable problem,
                                              String optMsg) {
@@ -63,7 +62,6 @@ public class Ejection extends RuntimeException {
     }
 
     /**
-     *
      * @param s
      */
     public Ejection(String s) {
@@ -78,7 +76,6 @@ public class Ejection extends RuntimeException {
     }
 
     /**
-     *
      * @param s
      */
     public void printStackTrace(java.io.PrintWriter s) {

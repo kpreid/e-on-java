@@ -9,7 +9,7 @@ import org.erights.e.elib.tables.ConstList;
 
 /**
  * Used to install, and as a "rune" driver for rune-ing a spawned jvm.
- * <p>
+ * <p/>
  * This class is also the "Main-Class" in the e.jar manifest, in order to
  * install E by double-clicking on e.jar. Therefore, when it's main() is
  * invoked with no arguments, it runs the install script.
@@ -20,21 +20,20 @@ public class MetaRune {
 
     static private final String USAGE =
       "Given <prelude> ::= java -jar <j-opt>* <ehome>/e.jar <prop>*\n" +
-      "Usage is one of:\n" +
-      "    <prelude> --install <arg>*   Installs E\n" +
-      "    <prelude>                    Defaults to --install\n" +
-      "    <prelude> --rune <m-opts> --? (<fname> <arg>*)?\n" +
-      "                                 Runs in this jvm without SWT.\n" +
-      "    <prelude> --spawn <s-opt>* --? (<fname> <arg>*)?\n" +
-      "                                 Runs in a spawned jvm.\n" +
-      "    <prelude> --help             Prints this text\n" +
-      "    <prelude> --version          Identical to \n" +
-      "                                   \"<prelude> --rune --version\"\n" +
-      "Especially for the \"--rune\" or \"--spawn\" cases, it's helpful if\n" +
-      "the <j-opt> list includes \"-De.home=<ehome>\" or for the current\n" +
-      "directory to be <ehome>. So, for example, for more usage help, say\n" +
-      "  $ cd <ehome>\n" +
-      "  $ java -jar e.jar --rune --help";
+        "Usage is one of:\n" +
+        "    <prelude> --install <arg>*   Installs E\n" +
+        "    <prelude>                    Defaults to --install\n" +
+        "    <prelude> --rune <m-opts> --? (<fname> <arg>*)?\n" +
+        "                                 Runs in this jvm without SWT.\n" +
+        "    <prelude> --spawn <s-opt>* --? (<fname> <arg>*)?\n" +
+        "                                 Runs in a spawned jvm.\n" +
+        "    <prelude> --help             Prints this text\n" +
+        "    <prelude> --version          Identical to \n" +
+        "                                   \"<prelude> --rune --version\"\n" +
+        "Especially for the \"--rune\" or \"--spawn\" cases, it's helpful if\n" +
+        "the <j-opt> list includes \"-De.home=<ehome>\" or for the current\n" +
+        "directory to be <ehome>. So, for example, for more usage help, say\n" +
+        "  $ cd <ehome>\n" + "  $ java -jar e.jar --rune --help";
 
     /**
      * Prevents instantiation.
@@ -102,19 +101,17 @@ public class MetaRune {
     }
 
     /**
-     *
      * @param argArray
      */
     static public void main(String[] argArray) {
-        final TextWriter errs = new TextWriter(PrintStreamWriter.stderr(),
-                                               true);
+        final TextWriter errs =
+          new TextWriter(PrintStreamWriter.stderr(), true);
         try {
-            final TextWriter outs = new TextWriter(PrintStreamWriter.stdout(),
-                                                   true);
+            final TextWriter outs =
+              new TextWriter(PrintStreamWriter.stdout(), true);
 //            final BufferedReader ins = PrintStreamWriter.stdin();
 
-            ConstList argList =
-              Rune.doProps(ConstList.fromArray(argArray));
+            ConstList argList = Rune.doProps(ConstList.fromArray(argArray));
 
             if (argList.size() == 0) {
                 String[] args = {installerPath()};
@@ -150,10 +147,6 @@ public class MetaRune {
             errs.print("Not understood: ", argList, "\n");
             errs.println(USAGE);
             System.exit(-1);
-
-
-
-
 
 //            final String[] args = argArray;
 //

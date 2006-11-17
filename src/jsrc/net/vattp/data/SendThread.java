@@ -214,8 +214,8 @@ class SendThread extends Thread {
         if (elem instanceof byte[]) {
             byte[] b = (byte[])elem;
             if (Trace.comm.verbose && Trace.ON) {
-                Trace.comm.verbosem(
-                  "to=" + myRemoteAddr + " addElement=" + b.length);
+                Trace.comm
+                  .verbosem("to=" + myRemoteAddr + " addElement=" + b.length);
             }
             if (!myIsAggragating ||
               myAggragateLength + b.length + 4 > myAggragation.length) {
@@ -237,8 +237,8 @@ class SendThread extends Thread {
             StreamMessage sm = (StreamMessage)elem;
             byte[] b = sm.myMessage;
             if (Trace.comm.verbose && Trace.ON) {
-                Trace.comm.verbosem(
-                  "to=" + myRemoteAddr + " addElement=" + b.length);
+                Trace.comm
+                  .verbosem("to=" + myRemoteAddr + " addElement=" + b.length);
             }
             if (!myIsAggragating ||
               myAggragateLength + b.length + 4 > myAggragation.length) {
@@ -272,45 +272,45 @@ class SendThread extends Thread {
             flushElements();    // Write previous stuff under old rules
             if (!(elem instanceof AuthSecrets)) {
                 T.fail("" + elem +
-                       (null == elem ? "" : (" type " + elem.getClass())) +
-                       " unrecognized");
+                  (null == elem ? "" : (" type " + elem.getClass())) +
+                  " unrecognized");
             }
             AuthSecrets c = (AuthSecrets)elem;
             if (Trace.comm.debug && Trace.ON) {
-                Trace.comm.debugm("to=" + myRemoteAddr +
-                                  " doing ProtocolChange, protocolSuite=" +
-                                  c.myProtocolSuite);
+                Trace.comm
+                  .debugm("to=" + myRemoteAddr +
+                    " doing ProtocolChange, protocolSuite=" + c
+                    .myProtocolSuite);
             }
             if (StartUpProtocol.PROTO_NONE.equals(c.myProtocolSuite)) {
                 myIsAggragating = false;
                 myIsDoingMac = false;
                 // begin daffE -> E
-            } else if (StartUpProtocol.PROTO_3DES_SDH_M.equals(
-              c.myProtocolSuite)) {
+            } else
+            if (StartUpProtocol.PROTO_3DES_SDH_M.equals(c.myProtocolSuite)) {
                 myIsAggragating = true;
                 myIsDoingMac = true;
                 myMACKey = c.myMacKey;
                 myMacLen = 20;
-                byte[] raw_3des_key = TripleDESKeyConstructor.make(
-                  c.myDHSecret);
+                byte[] raw_3des_key =
+                  TripleDESKeyConstructor.make(c.myDHSecret);
                 myTransform =
                   new Encrypt3DES(raw_3des_key, c.myOutgoingSequence, false);
                 mySequence = null;
                 setSHA1();
                 // end daffE -> E
                 // Begin improved E protocol
-            } else if (StartUpProtocol.PROTO_3DES_SDH_M2.equals(
-              c.myProtocolSuite)) {
+            } else
+            if (StartUpProtocol.PROTO_3DES_SDH_M2.equals(c.myProtocolSuite)) {
                 myIsAggragating = true;
                 myIsDoingMac = true;
                 myMACKey = c.myMacKey;
                 myMacLen = 20;
                 myIsDoingHMAC = true;
-                byte[] raw_3des_key = TripleDESKeyConstructor.make(
-                  c.myDHSecret);
-                myTransform = new Encrypt3DES(raw_3des_key,
-                                              c.myOutgoingSequence,
-                                              true);
+                byte[] raw_3des_key =
+                  TripleDESKeyConstructor.make(c.myDHSecret);
+                myTransform =
+                  new Encrypt3DES(raw_3des_key, c.myOutgoingSequence, true);
                 myTransform.init();
                 myIsStandardCBC = true;
                 mySequence = new byte[4]; // Assume initialized to zero
@@ -334,8 +334,9 @@ class SendThread extends Thread {
         try {
             myVat.now(thunk);
         } catch (Throwable t) {
-            Trace.comm.errorm("to=" + myRemoteAddr + " Error while calling " +
-                              thunk, t);
+            Trace.comm
+              .errorm("to=" + myRemoteAddr + " Error while calling " + thunk,
+                      t);
             if (t instanceof VirtualMachineError) {
                 throw (VirtualMachineError)t;
             }
@@ -348,15 +349,13 @@ class SendThread extends Thread {
         }
     }
 
-    private byte[] computeMAC(byte[] b,
-                              int off,
-                              int len,
+    private byte[] computeMAC(byte[] b, int off, int len,
                               /*NilOK*/byte[] lenField) {
         if (Trace.comm.verbose && Trace.ON) {
             String bstr = HexStringUtils.bytesToReadableHexStr(b, off, len);
-            Trace.comm.verbosem("to=" + myRemoteAddr +
-                                " Calculating MAC on (length " + len + "):" +
-                                bstr);
+            Trace.comm
+              .verbosem("to=" + myRemoteAddr + " Calculating MAC on (length " +
+                len + "):" + bstr);
         }
         mySHA1.reset();                 //Initialize a new hash
         if (myIsDoingHMAC) {
@@ -394,8 +393,9 @@ class SendThread extends Thread {
 
     private void flushElements() throws IOException {
         if (Trace.comm.verbose && Trace.ON) {
-            Trace.comm.verbosem("to=" + myRemoteAddr + " flushElements=" +
-                                myAggragateLength);
+            Trace.comm
+              .verbosem(
+                "to=" + myRemoteAddr + " flushElements=" + myAggragateLength);
         }
         if (0 != myAggragateLength) {
             sendBytes(myAggragation,
@@ -513,8 +513,8 @@ class SendThread extends Thread {
                 buf[off++] = (byte)((len >> 8) & 0xff);
                 buf[off++] = (byte)(len & 0xff);
             } else {
-                throw new IOException("Packet too large: " + len +
-                                      " >= 2,097,152");
+                throw new IOException(
+                  "Packet too large: " + len + " >= 2,097,152");
             }
         } else {
             buf[off++] = (byte)((len >> 24) & 0xff);
@@ -545,8 +545,9 @@ class SendThread extends Thread {
             NetAddr remoteNetAddr;
             if (null == mySocket) {
                 if (Trace.comm.debug && Trace.ON) {
-                    Trace.comm.debugm("Attempting outgoing connection to " +
-                                      myRemoteAddr);
+                    Trace.comm
+                      .debugm(
+                        "Attempting outgoing connection to " + myRemoteAddr);
                 }
                 long startTime = 0;
                 if (Trace.comm.timing && Trace.ON) {
@@ -560,32 +561,33 @@ class SendThread extends Thread {
                     throw new NoRouteToHostException("Already failed once");
                 }
                 try {
-                    mySocket = new Socket(remoteInetAddress,
-                                          remoteNetAddr.getPort());
+                    mySocket =
+                      new Socket(remoteInetAddress, remoteNetAddr.getPort());
                     if (Trace.comm.timing && Trace.ON) {
-                        Trace.comm.timingm("Socket build time=" +
-                                           (MicroTime.queryTimer() -
-                                            startTime) +
-                                           " microseconds");
+                        Trace.comm
+                          .timingm("Socket build time=" +
+                            (MicroTime.queryTimer() - startTime) +
+                            " microseconds");
                     }
                 } catch (NoRouteToHostException he) {
-                    myAddressesTried.put(remoteInetAddress,
-                                         remoteInetAddress);
+                    myAddressesTried.put(remoteInetAddress, remoteInetAddress);
                     throw he;
                 } catch (BindException be) {
-                    throw new NestedIOException(be, "BindException binding to " +
-                                                    remoteNetAddr);
+                    throw new NestedIOException(be,
+                                                "BindException binding to " +
+                                                  remoteNetAddr);
                 }
             } else {
-                remoteNetAddr = new NetAddr(mySocket.getInetAddress(),
-                                            mySocket.getPort());
+                remoteNetAddr =
+                  new NetAddr(mySocket.getInetAddress(), mySocket.getPort());
             }
-            myLocalAddr = new NetAddr(mySocket.getLocalAddress(),
-                                      mySocket.getLocalPort());
+            myLocalAddr =
+              new NetAddr(mySocket.getLocalAddress(), mySocket.getLocalPort());
 
             if (Trace.comm.debug && Trace.ON) {
-                Trace.comm.debugm("Acquired outgoing connection to " +
-                                  myRemoteAddr + " from " + myLocalAddr);
+                Trace.comm
+                  .debugm("Acquired outgoing connection to " + myRemoteAddr +
+                    " from " + myLocalAddr);
             }
             try {
                 mySocket.setTcpNoDelay(true);   // Set for send immediately
@@ -623,10 +625,11 @@ class SendThread extends Thread {
             if (Trace.comm.debug && Trace.ON) {
                 Trace.comm.debugm("to=" + myRemoteAddr + " running...");
             }
-            getchunks: while (true) {
+            getchunks:
+            while (true) {
                 if (Trace.comm.verbose && Trace.ON) {
-                    Trace.comm.verbosem("to=" + myRemoteAddr +
-                                        " getting chunk");
+                    Trace.comm
+                      .verbosem("to=" + myRemoteAddr + " getting chunk");
                 }
                 chunk = myReader.dequeue(); // Block here
                 if (!(chunk instanceof Number)) {
@@ -648,13 +651,14 @@ class SendThread extends Thread {
             myOutputStream.flush();
 
             if (Trace.comm.debug && Trace.ON) {
-                Trace.comm.debugm("to=" + myRemoteAddr +
-                                  " I've been asked to shutdown");
+                Trace.comm
+                  .debugm(
+                    "to=" + myRemoteAddr + " I've been asked to shutdown");
             }
         } catch (Exception e) {
             if (Trace.comm.debug && Trace.ON) {
-                Trace.comm.debugm(
-                  "to=" + myRemoteAddr + " caught exception: ", e);
+                Trace.comm
+                  .debugm("to=" + myRemoteAddr + " caught exception: ", e);
             }
             noticeProblem(e);
             shutDownReason = e;
@@ -662,8 +666,8 @@ class SendThread extends Thread {
         try {
             mySocket.close();   // Close the socket
         } catch (IOException e) {
-            Trace.comm.errorm("to=" + myRemoteAddr +
-                              " Exception closing socket", e);
+            Trace.comm
+              .errorm("to=" + myRemoteAddr + " Exception closing socket", e);
             if (null == shutDownReason) {
                 shutDownReason = e;
             }
@@ -695,11 +699,9 @@ class SendThread extends Thread {
      * @param lenField  The compressed length field for the message
      * @param rawLength The length to use for comm statistics
      */
-    private void sendBytes(byte[] b,
-                           int off,
-                           int len,
-                           /*NilOK*/byte[] lenField,
-                           int rawLength) throws IOException {
+    private void sendBytes(byte[] b, int off, int len,
+                           /*NilOK*/byte[] lenField, int rawLength)
+      throws IOException {
 
         if (Trace.comm.verbose && Trace.ON) {
             Trace.comm.verbosem("to=" + myRemoteAddr + " sendBytes=" + len);
@@ -713,8 +715,9 @@ class SendThread extends Thread {
                 lineLen += lenField.length;
             }
             if (Trace.comm.event && Trace.ON) {
-                Trace.comm.eventm("to=" + myRemoteAddr +
-                                  " Sending message len=" + len);
+                Trace.comm
+                  .eventm(
+                    "to=" + myRemoteAddr + " Sending message len=" + len);
             }
             writeAndRecordProgress(b, off, len);
             callDataPath(new DataCommThunk(myDataPath,
@@ -751,8 +754,8 @@ class SendThread extends Thread {
         } else if (commLength < 2097152) {
             offset = 1;
         } else {
-            throw new IOException("Packet too large: " + commLength +
-                                  " >= 2,097,152");
+            throw new IOException(
+              "Packet too large: " + commLength + " >= 2,097,152");
         }
         // If not a multiple of 64 bits (8 bytes), pad to 8 bytes
         if ((myIsCompressingMsgLengths || null != myTransform) &&
@@ -800,11 +803,14 @@ class SendThread extends Thread {
                 startTime = MicroTime.queryTimer();
             }
             if (Trace.comm.verbose && Trace.ON) {
-                String dStr = HexStringUtils.bytesToReadableHexStr(data, offset, data.length -
-                                                                                 offset);
-                Trace.comm.verbosem("to=" + myRemoteAddr + " authenticating " +
-                                    (data.length - offset) + " bytes: " +
-                                    dStr);
+                String dStr = HexStringUtils.bytesToReadableHexStr(data,
+                                                                   offset,
+                                                                   data
+                                                                     .length -
+                                                                     offset);
+                Trace.comm
+                  .verbosem("to=" + myRemoteAddr + " authenticating " +
+                    (data.length - offset) + " bytes: " + dStr);
             }
             if (!myIsStandardCBC) {
                 myTransform.init();
@@ -853,8 +859,9 @@ class SendThread extends Thread {
     private void sendBytesWithLength(byte[] b) throws IOException {
 
         if (Trace.comm.verbose && Trace.ON) {
-            Trace.comm.verbosem("to=" + myRemoteAddr +
-                                " sendBytesWithLength=" + b.length);
+            Trace.comm
+              .verbosem(
+                "to=" + myRemoteAddr + " sendBytesWithLength=" + b.length);
         }
         byte[] len = new byte[4];
         int lenlen = msgLength(b.length, len, 0, myIsCompressingMsgLengths);
@@ -871,8 +878,8 @@ class SendThread extends Thread {
         try {
             mySHA1 = MessageDigest.getInstance("SHA");
         } catch (NoSuchAlgorithmException e) {
-            Trace.comm.errorm("to=" + myRemoteAddr + " Unable to build SHA",
-                              e);
+            Trace.comm
+              .errorm("to=" + myRemoteAddr + " Unable to build SHA", e);
             Trace.comm.notifyFatal();
         }
     }

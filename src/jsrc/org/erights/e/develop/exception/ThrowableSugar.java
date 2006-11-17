@@ -60,15 +60,13 @@ public class ThrowableSugar {
      * <p/>
      * If self is an instance of RuntimeException, but not of any subclass of
      * RuntimeException, then it prints as 'problem: msg' (since the type
-     * RuntimeException isn't interesting). This behavior really should be
-     * in a separate RuntimeExceptionSugar class, but is placed here to avoid
+     * RuntimeException isn't interesting). This behavior really should be in a
+     * separate RuntimeExceptionSugar class, but is placed here to avoid
      * creating that sugar class for only this purpose.
      * <p/>
-     * This really should be
-     * {@link org.erights.e.elib.oldeio.EPrintable#__printOn __printOn}, but
-     * because of layering issues, we rename it and make a special case in the
-     * implementation of
-     * {@link org.erights.e.elib.prim.MirandaMethods#__printOn
+     * This really should be {@link org.erights.e.elib.oldeio.EPrintable#__printOn
+     * __printOn}, but because of layering issues, we rename it and make a
+     * special case in the implementation of {@link org.erights.e.elib.prim.MirandaMethods#__printOn
      * MirandaMethods.__printOn}.
      */
     static public void printThrowableOn(Throwable self, Writer out) {
@@ -79,9 +77,8 @@ public class ThrowableSugar {
         Class type = self.getClass();
         String optMsg = self.getMessage();
         if (null != optMsg) {
-            optMsg = StringHelper.replaceAll(optMsg,
-                                             "\n",
-                                             "\n" + ProblemIndent);
+            optMsg =
+              StringHelper.replaceAll(optMsg, "\n", "\n" + ProblemIndent);
         }
         if (RuntimeException.class == type && null != optMsg) {
             pw.print(optMsg);
@@ -130,8 +127,8 @@ public class ThrowableSugar {
 
     /**
      * Returns the backtrace annotations wrapping the leaf exception, one per
-     * line. Empty backtrace annotations are skipped.
-     * Each line is *preceded* by a newline.
+     * line. Empty backtrace annotations are skipped. Each line is *preceded*
+     * by a newline.
      */
     static public String eStack(Throwable self) {
         String result = "";
@@ -149,8 +146,8 @@ public class ThrowableSugar {
     }
 
     /**
-     * Returns the java backtrace stack of the leaf throwable with all
-     * newlines as '\n's.
+     * Returns the java backtrace stack of the leaf throwable with all newlines
+     * as '\n's.
      */
     static public String javaStack(Throwable self) {
         StringWriter sw = new StringWriter();

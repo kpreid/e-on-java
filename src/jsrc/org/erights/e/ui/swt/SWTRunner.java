@@ -3,9 +3,9 @@ package org.erights.e.ui.swt;
 // Copyright 2002 Combex, Inc. under the terms of the MIT X license
 // found at http://www.opensource.org/licenses/mit-license.html ...............
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.internal.Library;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.SWT;
 import org.erights.e.develop.assertion.T;
 import org.erights.e.develop.trace.Trace;
 import org.erights.e.elib.vat.PendingEvent;
@@ -34,9 +34,8 @@ final class SWTRunner extends Runner implements Runnable {
     /**
      * The RunnerThread servicing this Runner's queue.
      * <p/>
-     * If we ever go orthogonal again, myThread must not be
-     * checkpointed. Ie, it must be a DISALLOWED_FIELD or 'transient'
-     * or something.
+     * If we ever go orthogonal again, myThread must not be checkpointed. Ie,
+     * it must be a DISALLOWED_FIELD or 'transient' or something.
      */
     private final transient RunnerThread myThread;
 
@@ -74,14 +73,13 @@ final class SWTRunner extends Runner implements Runnable {
     }
 
     /**
-     * Returns the default SWTRunner -- the one managing the default
-     * Display.
+     * Returns the default SWTRunner -- the one managing the default Display.
      * <p/>
-     * The first time this is called, it will create the default
-     * SWTRunner. The first thing the runner's new thread does when it's
-     * scheduled is create a Display. If this is the first Display created
-     * in this jvm, then it will be the SWT default Display, so you should
-     * not create any Display objects before the first time this is called.
+     * The first time this is called, it will create the default SWTRunner. The
+     * first thing the runner's new thread does when it's scheduled is create a
+     * Display. If this is the first Display created in this jvm, then it will
+     * be the SWT default Display, so you should not create any Display objects
+     * before the first time this is called.
      */
     static Runner getDefault() {
         synchronized (OUR_LOCK) {
@@ -108,7 +106,7 @@ final class SWTRunner extends Runner implements Runnable {
                 THE_DEFAULT = new SWTRunner("Default SWT Vat");
 
                 // XXX Happens too late to effect rune(["--version"])
-                System.setProperty("e.swtVersion", ""+SWT.getVersion());
+                System.setProperty("e.swtVersion", "" + SWT.getVersion());
                 // XXX doesn't work on gcj
 //              System.setProperty("e.swtRevision", ""+Library.getRevision());
                 System.setProperty("e.swtPlatform", SWT.getPlatform());
@@ -120,13 +118,12 @@ final class SWTRunner extends Runner implements Runnable {
     /**
      * Makes an SWTRunner managing a non-default Display.
      * <p/>
-     * This should only be called once there is a default Display (as a
-     * result of {@link #getDefault()}). Non-default Displays are not
-     * supported by SWT on all platforms.
+     * This should only be called once there is a default Display (as a result
+     * of {@link #getDefault()}). Non-default Displays are not supported by SWT
+     * on all platforms.
      */
     static Runner make(String name) {
-        T.notNull(THE_DEFAULT,
-                  "The default SWTRunner must be created first");
+        T.notNull(THE_DEFAULT, "The default SWTRunner must be created first");
         return new SWTRunner(name);
     }
 
@@ -191,10 +188,9 @@ final class SWTRunner extends Runner implements Runnable {
                 }
             } catch (Throwable t) {
                 if (Trace.causality.error) {
-                    Trace.causality.errorm
-                      ("Exception made it all the way out of the run " +
-                       "loop. Restarting it.",
-                       t);
+                    Trace.causality
+                      .errorm("Exception made it all the way out of the run " +
+                        "loop. Restarting it.", t);
                 }
             }
         }

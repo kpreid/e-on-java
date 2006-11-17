@@ -11,7 +11,6 @@ import org.erights.e.elib.slot.Slot;
 // found at http://www.opensource.org/licenses/mit-license.html ...............
 
 /**
- *
  * @author Mark S. Miller
  */
 public class SimpleNounExpr extends NounExpr {
@@ -29,16 +28,15 @@ public class SimpleNounExpr extends NounExpr {
      * Uses XXX 'makeFoo(...)'
      */
     public Object[] getSpreadUncall() {
-        Object[] result = { StaticMaker.make(SimpleNounExpr.class),
-                            "run",
-                            getOptSpan(),
-                            getName(),
-                            getOptScopeLayout() };
+        Object[] result = {StaticMaker.make(SimpleNounExpr.class),
+          "run",
+          getOptSpan(),
+          getName(),
+          getOptScopeLayout()};
         return result;
     }
 
     /**
-     *
      * @return
      */
     public boolean isOuter() {
@@ -66,9 +64,7 @@ public class SimpleNounExpr extends NounExpr {
      *
      */
     public NounExpr withScopeLayout(ScopeLayout optScopeLayout) {
-        return new SimpleNounExpr(getOptSpan(),
-                                  getName(),
-                                  optScopeLayout);
+        return new SimpleNounExpr(getOptSpan(), getName(), optScopeLayout);
     }
 
     /**

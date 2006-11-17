@@ -27,51 +27,44 @@ import org.quasiliteral.astro.AstroBuilder;
 import java.io.IOException;
 
 /**
- * This represents text that appears between a start-tag and end-tag,
- * after all escapes and whitespace have been processed. <p>
+ * This represents text that appears between a start-tag and end-tag, after all
+ * escapes and whitespace have been processed. <p>
  * <p/>
- * This is a substantial revision by ERights.org of the file as
- * released by the w3c, as is allowed by the license. See the package
- * comment. For this dom, the only kind of character-data is text, so we
- * folded together the original superclass CharacterData into its
- * subclass Text. <p>
+ * This is a substantial revision by ERights.org of the file as released by the
+ * w3c, as is allowed by the license. See the package comment. For this dom,
+ * the only kind of character-data is text, so we folded together the original
+ * superclass CharacterData into its subclass Text. <p>
  * <p/>
  * Original comment from CharacterData: <p>
  * <p/>
- * <blockquote>
- * The <tt>CharacterData</tt> interface extends Node with a set of
- * attributes and methods for accessing character data in the DOM. For
- * clarity this set is defined here rather than on each object that uses
- * these attributes and methods. No DOM objects correspond directly to
- * <tt>CharacterData</tt> , though <tt>Text</tt> and others do
- * inherit the interface from it. All <tt>offsets</tt> in this interface
- * start from 0.
- * <p> As explained in the <tt>DOMString</tt> interface, text strings in
- * the DOM are represented in UTF-16, i.e. as a sequence of 16-bit units. In
- * the following, the term  16-bit units is used whenever necessary to
- * indicate that indexing on CharacterData is done in 16-bit units. <p>
- * </blockquote>
+ * <blockquote> The <tt>CharacterData</tt> interface extends Node with a set of
+ * attributes and methods for accessing character data in the DOM. For clarity
+ * this set is defined here rather than on each object that uses these
+ * attributes and methods. No DOM objects correspond directly to
+ * <tt>CharacterData</tt> , though <tt>Text</tt> and others do inherit the
+ * interface from it. All <tt>offsets</tt> in this interface start from 0. <p>
+ * As explained in the <tt>DOMString</tt> interface, text strings in the DOM
+ * are represented in UTF-16, i.e. as a sequence of 16-bit units. In the
+ * following, the term  16-bit units is used whenever necessary to indicate
+ * that indexing on CharacterData is done in 16-bit units. <p> </blockquote>
  * <p/>
  * Original comment of Text: <p>
  * <p/>
- * <blockquote>
- * The <tt>Text</tt> interface inherits from <tt>CharacterData</tt>
- * and represents the textual content (termed  character  data in XML) of an
- * <tt>Element</tt> or <tt>Attr</tt> . If there is no markup inside
- * an element's content, the text is contained in a single object
+ * <blockquote> The <tt>Text</tt> interface inherits from
+ * <tt>CharacterData</tt> and represents the textual content (termed  character
+ *  data in XML) of an <tt>Element</tt> or <tt>Attr</tt> . If there is no
+ * markup inside an element's content, the text is contained in a single object
  * implementing the <tt>Text</tt> interface that is the only child of the
  * element. If there is markup, it is parsed into the  information items
- * (elements,  comments, etc.) and <tt>Text</tt>  nodes that form the
- * list of children of the element.
- * <p> When a document is first made available via the DOM, there is  only one
- * <tt>Text</tt> node for each block of text. Users may create  adjacent
- * <tt>Text</tt> nodes that represent the  contents of a given element
- * without any intervening markup, but should be aware that there is no way
- * to represent the separations between these nodes in XML or HTML, so they
+ * (elements,  comments, etc.) and <tt>Text</tt>  nodes that form the list of
+ * children of the element. <p> When a document is first made available via the
+ * DOM, there is  only one <tt>Text</tt> node for each block of text. Users may
+ * create  adjacent <tt>Text</tt> nodes that represent the  contents of a given
+ * element without any intervening markup, but should be aware that there is no
+ * way to represent the separations between these nodes in XML or HTML, so they
  * will not (in general) persist between DOM editing sessions. The
- * <tt>normalize()</tt> method on <tt>Element</tt> merges any such
- * adjacent <tt>Text</tt> objects into a single node for each block of
- * text.
+ * <tt>normalize()</tt> method on <tt>Element</tt> merges any such adjacent
+ * <tt>Text</tt> objects into a single node for each block of text.
  * </blockquote>
  *
  * @deprecated Use Term trees instead.
@@ -83,8 +76,7 @@ public class Text extends Node {
     /**
      *
      */
-    static public final StaticMaker TextMaker
-      = StaticMaker.make(Text.class);
+    static public final StaticMaker TextMaker = StaticMaker.make(Text.class);
 
     /**
      *
@@ -128,11 +120,11 @@ public class Text extends Node {
     /**
      * The character data of the node that implements this interface. The DOM
      * implementation may not put arbitrary limits on the amount of data that
-     * may be stored in a  <tt>CharacterData</tt> node. However,
-     * implementation limits may  mean that the entirety of a node's data may
-     * not fit into a single <tt>DOMString</tt> . In such cases, the user
-     * may call <tt>substringData</tt> to retrieve the data in
-     * appropriately sized pieces.
+     * may be stored in a  <tt>CharacterData</tt> node. However, implementation
+     * limits may  mean that the entirety of a node's data may not fit into a
+     * single <tt>DOMString</tt> . In such cases, the user may call
+     * <tt>substringData</tt> to retrieve the data in appropriately sized
+     * pieces.
      */
     public String getData() {
         return myData;
@@ -172,8 +164,7 @@ public class Text extends Node {
      * text (as a leaf) and zero arguments.
      */
     public Astro build(AstroBuilder builder) {
-        return builder.term(builder.leafString(myData, null),
-                            builder.empty());
+        return builder.term(builder.leafString(myData, null), builder.empty());
     }
 
     /**

@@ -13,8 +13,8 @@ import org.quasiliteral.astro.AstroSchema;
 import org.quasiliteral.astro.AstroTag;
 
 /**
- * Wraps an {@link AstroBuilder} to pretend to be of type
- * {@link QuasiBuilder}.
+ * Wraps an {@link AstroBuilder} to pretend to be of type {@link
+ * QuasiBuilder}.
  * <p/>
  * This kludge exists only until we switch to Antlr, and make use of its
  * support for grammar inheritance. Until then, the one grammar, term.y, must

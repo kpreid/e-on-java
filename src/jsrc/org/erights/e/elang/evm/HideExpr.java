@@ -36,7 +36,7 @@ import java.io.IOException;
 
 /**
  * BNF: '{' expr '}'
- * <p>
+ * <p/>
  * Evaluates expr in a lexically nested scope
  *
  * @author Mark S. Miller
@@ -59,11 +59,11 @@ public class HideExpr extends EExpr {
      * Uses XXX 'makeFoo(...)'
      */
     public Object[] getSpreadUncall() {
-        Object[] result = { StaticMaker.make(HideExpr.class),
-                            "run",
-                            getOptSpan(),
-                            myBlock,
-                            getOptScopeLayout() };
+        Object[] result = {StaticMaker.make(HideExpr.class),
+          "run",
+          getOptSpan(),
+          myBlock,
+          getOptScopeLayout()};
         return result;
     }
 

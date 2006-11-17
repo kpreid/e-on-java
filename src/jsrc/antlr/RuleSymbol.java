@@ -11,13 +11,13 @@ import antlr.collections.impl.Vector;
 
 class RuleSymbol extends GrammarSymbol {
 
-    RuleBlock block;	// list of alternatives
-    boolean defined;	// has the rule been defined yet?
-    Vector references;	// list of all nodes referencing this rule
+    RuleBlock block;        // list of alternatives
+    boolean defined;        // has the rule been defined yet?
+    Vector references;        // list of all nodes referencing this rule
     // not strictly needed by generic symbol table
     // but we will almost always analyze/gen code
-    String access;	// access specifier for this rule
-    String comment;	// A javadoc comment if any.
+    String access;        // access specifier for this rule
+    String comment;        // A javadoc comment if any.
 
     public RuleSymbol(String r) {
         super(r);

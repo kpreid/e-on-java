@@ -31,7 +31,7 @@ public class ASTBuilder extends BaseBuilder {
      */
     static public final ASTBuilder FOR_ASTS =
       new ASTBuilder(TermParser.DEFAULT_SCHEMA);
-    
+
     /**
      *
      */
@@ -81,8 +81,8 @@ public class ASTBuilder extends BaseBuilder {
     }
 
     /**
-     * Modifies the last sibling in 'first' to be 'second', which itself is
-     * XXX (probably wrongly) modified to not have any further siblings.
+     * Modifies the last sibling in 'first' to be 'second', which itself is XXX
+     * (probably wrongly) modified to not have any further siblings.
      *
      * @param first  :(AstroAST | null)
      * @param second :AstroAST

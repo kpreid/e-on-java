@@ -8,8 +8,8 @@ import javax.swing.text.JTextComponent;
 import javax.swing.text.Keymap;
 
 /**
- * Methods for sweetening the JTextComponent maker (the tamed static methods
- * of {@link JTextComponent}).
+ * Methods for sweetening the JTextComponent maker (the tamed static methods of
+ * {@link JTextComponent}).
  *
  * @author Mark S. Miller
  */

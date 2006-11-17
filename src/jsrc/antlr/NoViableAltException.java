@@ -12,7 +12,7 @@ import antlr.collections.AST;
 public class NoViableAltException extends RecognitionException {
 
     public Token token;
-    public AST node;	// handles parsing and treeparsing
+    public AST node;        // handles parsing and treeparsing
 
     public NoViableAltException(AST t) {
         super("NoViableAlt", "<AST>", t.getLine(), t.getColumn());

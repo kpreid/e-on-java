@@ -55,17 +55,16 @@ public class Help implements EPrintable {
     /**
      *
      */
-    public UnQuote run(Object subject,
-                       boolean mirandaFlag) throws IOException {
+    public UnQuote run(Object subject, boolean mirandaFlag)
+      throws IOException {
         return run(subject, mirandaFlag, false);
     }
 
     /**
      *
      */
-    public UnQuote run(Object subject,
-                       boolean mirandaFlag,
-                       boolean fullFlag) throws IOException {
+    public UnQuote run(Object subject, boolean mirandaFlag, boolean fullFlag)
+      throws IOException {
         StringWriter strWriter = new StringWriter();
         printHelpOn(subject, mirandaFlag, fullFlag, new TextWriter(strWriter));
         StringBuffer buf = strWriter.getBuffer();
@@ -78,8 +77,7 @@ public class Help implements EPrintable {
     public void printHelpOn(Object subject,
                             boolean mirandaFlag,
                             boolean fullFlag,
-                            TextWriter out)
-      throws IOException {
+                            TextWriter out) throws IOException {
         subject = Ref.resolution(subject);
         if (null == subject) {
             out.println("a null");
@@ -108,16 +106,13 @@ public class Help implements EPrintable {
      * text would not be helpful to a Java-level programmer.
      */
     public void __printOn(TextWriter out) throws IOException {
-        out.print(
-          "? help\n" +
-          "    Shows this message.\n" +
+        out.print("? help\n" + "    Shows this message.\n" +
           "? help(<expression>)\n" +
           "    Shows what messages the expression's value responds to.\n" +
 //          "? meta.getState().bindings()\n" +
 //          "    Shows variable bindings in the current scope.\n" +
           "? rune([\"--help\"])\n" +
-          "    For help on running external commands\n" +
-          "$ rune --help\n" +
+          "    For help on running external commands\n" + "$ rune --help\n" +
           "    How you get help on \"rune\" from an external shell.\n" +
           "Documentation on the E Language can be found at\n" +
           "    http://www.erights.org/elang/help.html");

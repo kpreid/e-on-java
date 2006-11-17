@@ -63,8 +63,7 @@ public class JavaCodeGenerator extends CodeGenerator {
      */
     Hashtable declaredASTVariables = new Hashtable();
 
-    /* Count of unnamed generated variables */
-    int astVarNumber = 1;
+    /* Count of unnamed generated variables */ int astVarNumber = 1;
 
     /**
      * Special value used to mark duplicate in treeVariableMap
@@ -163,16 +162,18 @@ public class JavaCodeGenerator extends CodeGenerator {
             // get the name of the followSet for the current rule so that we
             // can replace $FOLLOW in the .g file.
             ActionTransInfo tInfo = new ActionTransInfo();
-            String actionStr = processActionForSpecialSymbols(
-              action.actionText, action.getLine(), currentRule, tInfo);
+            String actionStr =
+              processActionForSpecialSymbols(action.actionText,
+                                             action.getLine(),
+                                             currentRule,
+                                             tInfo);
 
             if (tInfo.refRuleRoot != null) {
                 // Somebody referenced "#rule", make sure translated var is valid
                 // assignment to #rule is left as a ref also, meaning that assignments
                 // with no other refs like "#rule = foo();" still forces this code to be
                 // generated (unnecessarily).
-                println(
-                  tInfo.refRuleRoot + " = (" + labeledElementASTType +
+                println(tInfo.refRuleRoot + " = (" + labeledElementASTType +
                   ")currentAST.root;");
             }
 
@@ -183,15 +184,12 @@ public class JavaCodeGenerator extends CodeGenerator {
                 // Somebody did a "#rule=", reset internal currentAST.root
                 println("currentAST.root = " + tInfo.refRuleRoot + ";");
                 // reset the child pointer too to be last sibling in sibling list
-                println(
-                  "currentAST.child = " + tInfo.refRuleRoot + "!=null &&" +
-                  tInfo.refRuleRoot +
+                println("currentAST.child = " + tInfo.refRuleRoot +
+                  "!=null &&" + tInfo.refRuleRoot +
                   ".getFirstChild()!=null ?");
                 tabs++;
-                println(
-                  tInfo.refRuleRoot + ".getFirstChild() : " +
-                  tInfo.refRuleRoot +
-                  ";");
+                println(tInfo.refRuleRoot + ".getFirstChild() : " + tInfo
+                  .refRuleRoot + ";");
                 tabs--;
                 println("currentAST.advanceChildToEnd();");
             }
@@ -261,8 +259,8 @@ public class JavaCodeGenerator extends CodeGenerator {
         }
 
         boolean oldsaveText = saveText;
-        saveText = saveText &&
-          atom.getAutoGenType() == GrammarElement.AUTO_GEN_NONE;
+        saveText =
+          saveText && atom.getAutoGenType() == GrammarElement.AUTO_GEN_NONE;
         genMatch(atom);
         saveText = oldsaveText;
     }
@@ -276,8 +274,8 @@ public class JavaCodeGenerator extends CodeGenerator {
         if (r.getLabel() != null && syntacticPredLevel == 0) {
             println(r.getLabel() + " = " + lt1Value + ";");
         }
-        boolean flag = (grammar instanceof LexerGrammar && (!saveText || r.getAutoGenType() ==
-          GrammarElement.AUTO_GEN_BANG));
+        boolean flag = (grammar instanceof LexerGrammar &&
+          (!saveText || r.getAutoGenType() == GrammarElement.AUTO_GEN_BANG));
         if (flag) {
             println("_saveIndex=text.length();");
         }
@@ -307,8 +305,8 @@ public class JavaCodeGenerator extends CodeGenerator {
         //      how the output is generated (for VAJ interface)
         setupOutput(grammar.getClassName());
 
-        genAST = false;	// no way to gen trees.
-        saveText = true;	// save consumed characters.
+        genAST = false;        // no way to gen trees.
+        saveText = true;        // save consumed characters.
 
         tabs = 0;
 
@@ -363,9 +361,8 @@ public class JavaCodeGenerator extends CodeGenerator {
         String prefix = "public";
         Token tprefix = (Token)grammar.options.get("classHeaderPrefix");
         if (tprefix != null) {
-            String p = StringUtils.stripFrontBack(tprefix.getText(),
-                                                  "\"",
-                                                  "\"");
+            String p =
+              StringUtils.stripFrontBack(tprefix.getText(), "\"", "\"");
             if (p != null) {
                 prefix = p;
             }
@@ -373,27 +370,24 @@ public class JavaCodeGenerator extends CodeGenerator {
 
         print(prefix + " ");
         print("class " + grammar.getClassName() + " extends " + sup);
-        println(
-          " implements " + grammar.tokenManager.getName() +
-          TokenTypesFileSuffix +
-          ", TokenStream");
+        println(" implements " + grammar.tokenManager.getName() +
+          TokenTypesFileSuffix + ", TokenStream");
         Token tsuffix = (Token)grammar.options.get("classHeaderSuffix");
         if (tsuffix != null) {
-            String suffix = StringUtils.stripFrontBack(tsuffix.getText(),
-                                                       "\"",
-                                                       "\"");
+            String suffix =
+              StringUtils.stripFrontBack(tsuffix.getText(), "\"", "\"");
             if (suffix != null) {
-                print(", " + suffix);	// must be an interface name for Java
+                print(
+                  ", " + suffix);        // must be an interface name for Java
             }
         }
         println(" {");
 
         // Generate user-defined lexer class members
-        print(
-          processActionForSpecialSymbols(grammar.classMemberAction.getText(),
-                                         grammar.classMemberAction.getLine(),
-                                         currentRule,
-                                         null));
+        print(processActionForSpecialSymbols(grammar.classMemberAction.getText(),
+                                             grammar.classMemberAction.getLine(),
+                                             currentRule,
+                                             null));
 
         //
         // Generate the constructor from InputStream, which in turn
@@ -430,8 +424,7 @@ public class JavaCodeGenerator extends CodeGenerator {
         //
         // Generate the constructor from InputBuffer (char or byte)
         //
-        println(
-          "public " + grammar.getClassName() +
+        println("public " + grammar.getClassName() +
           "(LexerSharedInputState state) {");
         tabs++;
 
@@ -463,11 +456,8 @@ public class JavaCodeGenerator extends CodeGenerator {
             TokenSymbol sym = grammar.tokenManager.getTokenSymbol(key);
             if (sym instanceof StringLiteralSymbol) {
                 StringLiteralSymbol s = (StringLiteralSymbol)sym;
-                println(
-                  "literals.put(new ANTLRHashString(" + s.getId() +
-                  ", this), new Integer(" +
-                  s.getTokenType() +
-                  "));");
+                println("literals.put(new ANTLRHashString(" + s.getId() +
+                  ", this), new Integer(" + s.getTokenType() + "));");
             }
         }
         tabs--;
@@ -513,8 +503,7 @@ public class JavaCodeGenerator extends CodeGenerator {
         }
 
         // Generate the bitsets used throughout the lexer
-        genBitsets(bitsetsUsed,
-                   ((LexerGrammar)grammar).charVocabulary.size());
+        genBitsets(bitsetsUsed, ((LexerGrammar)grammar).charVocabulary.size());
 
         println("");
         println("}");
@@ -589,23 +578,21 @@ public class JavaCodeGenerator extends CodeGenerator {
         // and an alt is ambiguous with exit branch
         if (generateNonGreedyExitPath) {
             if (DEBUG_CODE_GENERATOR) {
-                System.out.println("nongreedy (...)+ loop; exit depth is " +
-                                   blk.exitLookaheadDepth);
+                System.out
+                  .println("nongreedy (...)+ loop; exit depth is " + blk
+                    .exitLookaheadDepth);
             }
-            String predictExit = getLookaheadTestExpression(blk.exitCache,
-                                                            nonGreedyExitDepth);
+            String predictExit =
+              getLookaheadTestExpression(blk.exitCache, nonGreedyExitDepth);
             println("// nongreedy exit test");
-            println(
-              "if ( " + cnt + ">=1 && " + predictExit + ") break " + label +
-              ";");
+            println("if ( " + cnt + ">=1 && " + predictExit + ") break " +
+              label + ";");
         }
 
         JavaBlockFinishingInfo howToFinish = genCommonBlock(blk, false);
         genBlockFinish(howToFinish,
                        "if ( " + cnt + ">=1 ) { break " + label +
-                       "; } else {" +
-                       throwNoViable +
-                       "}");
+                         "; } else {" + throwNoViable + "}");
 
         println(cnt + "++;");
         tabs--;
@@ -687,9 +674,8 @@ public class JavaCodeGenerator extends CodeGenerator {
         String prefix = "public";
         Token tprefix = (Token)grammar.options.get("classHeaderPrefix");
         if (tprefix != null) {
-            String p = StringUtils.stripFrontBack(tprefix.getText(),
-                                                  "\"",
-                                                  "\"");
+            String p =
+              StringUtils.stripFrontBack(tprefix.getText(), "\"", "\"");
             if (p != null) {
                 prefix = p;
             }
@@ -697,17 +683,16 @@ public class JavaCodeGenerator extends CodeGenerator {
 
         print(prefix + " ");
         print("class " + grammar.getClassName() + " extends " + sup);
-        println(
-          "       implements " + grammar.tokenManager.getName() +
+        println("       implements " + grammar.tokenManager.getName() +
           TokenTypesFileSuffix);
 
         Token tsuffix = (Token)grammar.options.get("classHeaderSuffix");
         if (tsuffix != null) {
-            String suffix = StringUtils.stripFrontBack(tsuffix.getText(),
-                                                       "\"",
-                                                       "\"");
+            String suffix =
+              StringUtils.stripFrontBack(tsuffix.getText(), "\"", "\"");
             if (suffix != null) {
-                print(", " + suffix);	// must be an interface name for Java
+                print(
+                  ", " + suffix);        // must be an interface name for Java
             }
         }
         println(" {");
@@ -729,16 +714,14 @@ public class JavaCodeGenerator extends CodeGenerator {
         }
 
         // Generate user-defined parser class members
-        print(
-          processActionForSpecialSymbols(grammar.classMemberAction.getText(),
-                                         grammar.classMemberAction.getLine(),
-                                         currentRule,
-                                         null));
+        print(processActionForSpecialSymbols(grammar.classMemberAction.getText(),
+                                             grammar.classMemberAction.getLine(),
+                                             currentRule,
+                                             null));
 
         // Generate parser class constructor from TokenBuffer
         println("");
-        println(
-          "protected " + grammar.getClassName() +
+        println("protected " + grammar.getClassName() +
           "(TokenBuffer tokenBuf, int k) {");
         println("  super(tokenBuf,k);");
         println("  tokenNames = _tokenNames;");
@@ -764,8 +747,7 @@ public class JavaCodeGenerator extends CodeGenerator {
         println("");
 
         // Generate parser class constructor from TokenStream
-        println(
-          "protected " + grammar.getClassName() +
+        println("protected " + grammar.getClassName() +
           "(TokenStream lexer, int k) {");
         println("  super(lexer,k);");
         println("  tokenNames = _tokenNames;");
@@ -790,8 +772,7 @@ public class JavaCodeGenerator extends CodeGenerator {
         println("}");
         println("");
 
-        println(
-          "public " + grammar.getClassName() +
+        println("public " + grammar.getClassName() +
           "(ParserSharedInputState state) {");
         println("  super(state," + grammar.maxk + ");");
         println("  tokenNames = _tokenNames;");
@@ -871,8 +852,8 @@ public class JavaCodeGenerator extends CodeGenerator {
 
         // AST value for labeled rule refs in tree walker.
         // This is not AST construction;  it is just the input tree node value.
-        if (grammar instanceof TreeWalkerGrammar && rr.getLabel() != null && syntacticPredLevel ==
-          0) {
+        if (grammar instanceof TreeWalkerGrammar && rr.getLabel() != null &&
+          syntacticPredLevel == 0) {
             println(
               rr.getLabel() + " = _t==ASTNULL ? null : " + lt1Value + ";");
         }
@@ -897,8 +878,8 @@ public class JavaCodeGenerator extends CodeGenerator {
             _print(rr.idAssign + "=");
         } else {
             // Warn about return value if any, but not inside syntactic predicate
-            if (!(grammar instanceof LexerGrammar) && syntacticPredLevel == 0 &&
-              rs.block.returnAction != null) {
+            if (!(grammar instanceof LexerGrammar) &&
+              syntacticPredLevel == 0 && rs.block.returnAction != null) {
                 antlrTool.warning(
                   "Rule '" + rr.targetRule + "' returns a value",
                   grammar.getFilename(),
@@ -918,9 +899,9 @@ public class JavaCodeGenerator extends CodeGenerator {
 
         // if not in a syntactic predicate
         if (syntacticPredLevel == 0) {
-            boolean doNoGuessTest = (grammar.hasSyntacticPredicate && (grammar.buildAST &&
-              rr.getLabel() != null ||
-              (genAST && rr.getAutoGenType() == GrammarElement.AUTO_GEN_NONE)));
+            boolean doNoGuessTest = (grammar.hasSyntacticPredicate && (
+              grammar.buildAST && rr.getLabel() != null || (genAST &&
+                rr.getAutoGenType() == GrammarElement.AUTO_GEN_NONE)));
             if (doNoGuessTest) {
                 // println("if (inputState.guessing==0) {");
                 // tabs++;
@@ -928,8 +909,7 @@ public class JavaCodeGenerator extends CodeGenerator {
 
             if (grammar.buildAST && rr.getLabel() != null) {
                 // always gen variable for rule return on labeled rules
-                println(
-                  rr.getLabel() + "_AST = (" + labeledElementASTType +
+                println(rr.getLabel() + "_AST = (" + labeledElementASTType +
                   ")returnAST;");
             }
             if (genAST) {
@@ -980,8 +960,8 @@ public class JavaCodeGenerator extends CodeGenerator {
 
         // is there a bang on the literal?
         boolean oldsaveText = saveText;
-        saveText = saveText &&
-          atom.getAutoGenType() == GrammarElement.AUTO_GEN_NONE;
+        saveText =
+          saveText && atom.getAutoGenType() == GrammarElement.AUTO_GEN_NONE;
 
         // matching
         genMatch(atom);
@@ -1049,19 +1029,16 @@ public class JavaCodeGenerator extends CodeGenerator {
 
         // If there is a label on the root, then assign that to the variable
         if (t.root.getLabel() != null) {
-            println(
-              t.root.getLabel() + " = _t==ASTNULL ? null :(" +
-              labeledElementASTType +
-              ")_t;");
+            println(t.root.getLabel() + " = _t==ASTNULL ? null :(" +
+              labeledElementASTType + ")_t;");
         }
 
         // check for invalid modifiers ! and ^ on tree element roots
         if (t.root.getAutoGenType() == GrammarElement.AUTO_GEN_BANG) {
-            antlrTool.error(
-              "Suffixing a root node with '!' is not implemented",
-              grammar.getFilename(),
-              t.getLine(),
-              t.getColumn());
+            antlrTool.error("Suffixing a root node with '!' is not implemented",
+                            grammar.getFilename(),
+                            t.getLine(),
+                            t.getColumn());
             t.root.setAutoGenType(GrammarElement.AUTO_GEN_NONE);
         }
         if (t.root.getAutoGenType() == GrammarElement.AUTO_GEN_CARET) {
@@ -1169,9 +1146,8 @@ public class JavaCodeGenerator extends CodeGenerator {
         String prefix = "public";
         Token tprefix = (Token)grammar.options.get("classHeaderPrefix");
         if (tprefix != null) {
-            String p = StringUtils.stripFrontBack(tprefix.getText(),
-                                                  "\"",
-                                                  "\"");
+            String p =
+              StringUtils.stripFrontBack(tprefix.getText(), "\"", "\"");
             if (p != null) {
                 prefix = p;
             }
@@ -1179,26 +1155,24 @@ public class JavaCodeGenerator extends CodeGenerator {
 
         print(prefix + " ");
         print("class " + grammar.getClassName() + " extends " + sup);
-        println(
-          "       implements " + grammar.tokenManager.getName() +
+        println("       implements " + grammar.tokenManager.getName() +
           TokenTypesFileSuffix);
         Token tsuffix = (Token)grammar.options.get("classHeaderSuffix");
         if (tsuffix != null) {
-            String suffix = StringUtils.stripFrontBack(tsuffix.getText(),
-                                                       "\"",
-                                                       "\"");
+            String suffix =
+              StringUtils.stripFrontBack(tsuffix.getText(), "\"", "\"");
             if (suffix != null) {
-                print(", " + suffix);	// must be an interface name for Java
+                print(
+                  ", " + suffix);        // must be an interface name for Java
             }
         }
         println(" {");
 
         // Generate user-defined parser class members
-        print(
-          processActionForSpecialSymbols(grammar.classMemberAction.getText(),
-                                         grammar.classMemberAction.getLine(),
-                                         currentRule,
-                                         null));
+        print(processActionForSpecialSymbols(grammar.classMemberAction.getText(),
+                                             grammar.classMemberAction.getLine(),
+                                             currentRule,
+                                             null));
 
         // Generate default parser class constructor
         println("public " + grammar.getClassName() + "() {");
@@ -1253,14 +1227,12 @@ public class JavaCodeGenerator extends CodeGenerator {
         if (grammar instanceof TreeWalkerGrammar) {
             println("if ( _t==null ) throw new MismatchedTokenException();");
         } else if (grammar instanceof LexerGrammar) {
-            if (grammar instanceof LexerGrammar &&
-              (!saveText ||
+            if (grammar instanceof LexerGrammar && (!saveText ||
               wc.getAutoGenType() == GrammarElement.AUTO_GEN_BANG)) {
                 println("_saveIndex=text.length();");
             }
             println("matchNot(EOF_CHAR);");
-            if (grammar instanceof LexerGrammar &&
-              (!saveText ||
+            if (grammar instanceof LexerGrammar && (!saveText ||
               wc.getAutoGenType() == GrammarElement.AUTO_GEN_BANG)) {
                 println("text.setLength(_saveIndex);"); // kill text atom put in buffer
             }
@@ -1329,11 +1301,12 @@ public class JavaCodeGenerator extends CodeGenerator {
         }
         if (generateNonGreedyExitPath) {
             if (DEBUG_CODE_GENERATOR) {
-                System.out.println("nongreedy (...)* loop; exit depth is " +
-                                   blk.exitLookaheadDepth);
+                System.out
+                  .println("nongreedy (...)* loop; exit depth is " + blk
+                    .exitLookaheadDepth);
             }
-            String predictExit = getLookaheadTestExpression(blk.exitCache,
-                                                            nonGreedyExitDepth);
+            String predictExit =
+              getLookaheadTestExpression(blk.exitCache, nonGreedyExitDepth);
             println("// nongreedy exit test");
             println("if (" + predictExit + ") break " + label + ";");
         }
@@ -1387,9 +1360,8 @@ public class JavaCodeGenerator extends CodeGenerator {
                     // println("if ( inputState.guessing==0 ) {");
                     // tabs++;
                 }
-                println(
-                  rblk.getRuleName() + "_AST = (" + labeledElementASTType +
-                  ")currentAST.root;");
+                println(rblk.getRuleName() + "_AST = (" +
+                  labeledElementASTType + ")currentAST.root;");
                 if (grammar.hasSyntacticPredicate) {
                     // --tabs;
                     // println("}");
@@ -1478,8 +1450,7 @@ public class JavaCodeGenerator extends CodeGenerator {
                     }
                     // j-1 is last member of run
                     println("\tfor (int i = " + i + "; i<=" + (j - 1) +
-                            "; i++) { data[i]=" +
-                            elems[i] + "L; }");
+                      "; i++) { data[i]=" + elems[i] + "L; }");
                     i = j;
                 }
             }
@@ -1489,8 +1460,7 @@ public class JavaCodeGenerator extends CodeGenerator {
         println("}");
         // BitSet object
         println("public static final BitSet " + getBitsetName(id) +
-                " = new BitSet(" +
-                "mk" + getBitsetName(id) + "()" + ");");
+          " = new BitSet(" + "mk" + getBitsetName(id) + "()" + ");");
     }
 
     /**
@@ -1529,11 +1499,10 @@ public class JavaCodeGenerator extends CodeGenerator {
     protected void genBlockInitAction(AlternativeBlock blk) {
         // dump out init action
         if (blk.initAction != null) {
-            printAction(
-              processActionForSpecialSymbols(blk.initAction,
-                                             blk.getLine(),
-                                             currentRule,
-                                             null));
+            printAction(processActionForSpecialSymbols(blk.initAction,
+                                                       blk.getLine(),
+                                                       currentRule,
+                                                       null));
         }
     }
 
@@ -1550,17 +1519,18 @@ public class JavaCodeGenerator extends CodeGenerator {
             RuleBlock rblk = (RuleBlock)blk;
             if (rblk.labeledElements != null) {
                 for (int i = 0; i < rblk.labeledElements.size(); i++) {
-                    AlternativeElement a = (AlternativeElement)rblk.labeledElements.elementAt(
-                      i);
+                    AlternativeElement a =
+                      (AlternativeElement)rblk.labeledElements.elementAt(i);
                     // System.out.println("looking at labeled element: "+a);
                     // Variables for labeled rule refs and
                     // subrules are different than variables for
                     // grammar atoms.  This test is a little tricky
                     // because we want to get all rule refs and ebnf,
                     // but not rule blocks or syntactic predicates
-                    if (a instanceof RuleRefElement || a instanceof AlternativeBlock &&
-                      !(a instanceof RuleBlock) &&
-                      !(a instanceof SynPredBlock)) {
+                    if (a instanceof RuleRefElement ||
+                      a instanceof AlternativeBlock &&
+                        !(a instanceof RuleBlock) &&
+                        !(a instanceof SynPredBlock)) {
 
                         if (!(a instanceof RuleRefElement) &&
                           ((AlternativeBlock)a).not &&
@@ -1569,10 +1539,8 @@ public class JavaCodeGenerator extends CodeGenerator {
                             // Special case for inverted subrules that
                             // will be inlined.  Treat these like
                             // token or char literal references
-                            println(
-                              labeledElementType + " " + a.getLabel() + " = " +
-                              labeledElementInit +
-                              ";");
+                            println(labeledElementType + " " + a.getLabel() +
+                              " = " + labeledElementInit + ";");
                             if (grammar.buildAST) {
                                 genASTDeclaration(a);
                             }
@@ -1589,20 +1557,16 @@ public class JavaCodeGenerator extends CodeGenerator {
                             if (grammar instanceof TreeWalkerGrammar) {
                                 // always generate rule-ref variables
                                 // for tree walker
-                                println(
-                                  labeledElementType + " " + a.getLabel() +
-                                  " = " +
-                                  labeledElementInit +
+                                println(labeledElementType + " " +
+                                  a.getLabel() + " = " + labeledElementInit +
                                   ";");
                             }
                         }
                     } else {
                         // It is a token or literal reference.  Generate the
                         // correct variable type for this grammar
-                        println(
-                          labeledElementType + " " + a.getLabel() + " = " +
-                          labeledElementInit +
-                          ";");
+                        println(labeledElementType + " " + a.getLabel() +
+                          " = " + labeledElementInit + ";");
 
                         // In addition, generate *_AST variables if
                         // building ASTs
@@ -1687,8 +1651,8 @@ public class JavaCodeGenerator extends CodeGenerator {
         saveText = saveText && blk.getAutoGen();
 
         // Is this block inverted?  If so, generate special-case code
-        if (blk.not &&
-          analyzer.subruleCanBeInverted(blk, grammar instanceof LexerGrammar)) {
+        if (blk.not && analyzer.subruleCanBeInverted(blk,
+                                                     grammar instanceof LexerGrammar)) {
             if (DEBUG_CODE_GENERATOR) {
                 System.out.println("special case: ~(subrule)");
             }
@@ -1707,9 +1671,8 @@ public class JavaCodeGenerator extends CodeGenerator {
             }
 
             // match the bitset for the alternative
-            println(
-              "match(" + astArgs + getBitsetName(markBitsetForGen(p.fset)) +
-              ");");
+            println("match(" + astArgs +
+              getBitsetName(markBitsetForGen(p.fset)) + ");");
 
             // tack on tree cursor motion if doing a tree walker
             if (grammar instanceof TreeWalkerGrammar) {
@@ -1823,8 +1786,8 @@ public class JavaCodeGenerator extends CodeGenerator {
                 // and that are not giant unicode sets.
                 if (createdLL1Switch && suitableForCaseExpression(alt)) {
                     if (DEBUG_CODE_GENERATOR) {
-                        System.out.println(
-                          "ignoring alt because it was in the switch");
+                        System.out
+                          .println("ignoring alt because it was in the switch");
                     }
                     continue;
                 }
@@ -1849,11 +1812,10 @@ public class JavaCodeGenerator extends CodeGenerator {
                     // the ones we are generating for this iteration.
                     if (effectiveDepth != altDepth) {
                         if (DEBUG_CODE_GENERATOR) {
-                            System.out.println(
-                              "ignoring alt because effectiveDepth!=altDepth;" +
-                              effectiveDepth +
-                              "!=" +
-                              altDepth);
+                            System.out
+                              .println(
+                                "ignoring alt because effectiveDepth!=altDepth;" +
+                                  effectiveDepth + "!=" + altDepth);
                         }
                         continue;
                     }
@@ -1873,8 +1835,8 @@ public class JavaCodeGenerator extends CodeGenerator {
                     } else {
                         println("else if " + e + " {");
                     }
-                } else if (unpredicted && alt.semPred == null && alt.synPred ==
-                  null) {
+                } else if (unpredicted && alt.semPred == null &&
+                  alt.synPred == null) {
                     // The alt has empty prediction set and no
                     // predicate to help out.  if we have not
                     // generated a previous if, just put {...} around
@@ -1894,21 +1856,21 @@ public class JavaCodeGenerator extends CodeGenerator {
                         // predicate in a method translate $ and #
                         // references
                         ActionTransInfo tInfo = new ActionTransInfo();
-                        String actionStr = processActionForSpecialSymbols(
-                          alt.semPred, blk.line, currentRule, tInfo);
+                        String actionStr =
+                          processActionForSpecialSymbols(alt.semPred,
+                                                         blk.line,
+                                                         currentRule,
+                                                         tInfo);
                         // ignore translation info...we don't need to
                         // do anything with it.  call that will inform
                         // SemanticPredicateListeners of the result
                         if (((grammar instanceof ParserGrammar) ||
-                          (grammar instanceof LexerGrammar)) &&
-                          grammar.debuggingOutput) {
+                          (grammar instanceof LexerGrammar)) && grammar
+                          .debuggingOutput) {
                             e = "(" + e +
                               "&& fireSemanticPredicateEvaluated(antlr.debug.SemanticPredicateEvent.PREDICTING," +
-                              addSemPred(
-                                charFormatter.escapeString(actionStr)) +
-                              "," +
-                              actionStr +
-                              "))";
+                              addSemPred(charFormatter.escapeString(actionStr)) +
+                              "," + actionStr + "))";
                         } else {
                             e = "(" + e + "&&(" + actionStr + "))";
                         }
@@ -1975,7 +1937,8 @@ public class JavaCodeGenerator extends CodeGenerator {
     }
 
     private static boolean suitableForCaseExpression(Alternative a) {
-        return a.lookaheadDepth == 1 && a.semPred == null && !a.cache[1].containsEpsilon() &&
+        return a.lookaheadDepth == 1 && a.semPred == null &&
+          !a.cache[1].containsEpsilon() &&
           a.cache[1].fset.degree() <= caseSizeThreshold;
     }
 
@@ -1998,10 +1961,8 @@ public class JavaCodeGenerator extends CodeGenerator {
                 // Map the generated AST variable in the alternate
                 mapTreeVariable(el, astName);
                 // Generate an "input" AST variable also
-                println(
-                  labeledElementASTType + " " + astName + "_in = " +
-                  elementRef +
-                  ";");
+                println(labeledElementASTType + " " + astName + "_in = " +
+                  elementRef + ";");
             }
             return;
         }
@@ -2019,8 +1980,8 @@ public class JavaCodeGenerator extends CodeGenerator {
                 needASTDecl = true;
             }
 
-            boolean doNoGuessTest = (grammar.hasSyntacticPredicate &&
-              needASTDecl);
+            boolean doNoGuessTest =
+              (grammar.hasSyntacticPredicate && needASTDecl);
 
             String elementRef;
             String astNameBase;
@@ -2079,10 +2040,8 @@ public class JavaCodeGenerator extends CodeGenerator {
             // so we must initialize the RefAST
             if (el.getLabel() != null) {
                 if (el instanceof GrammarAtom) {
-                    println(
-                      astName + " = " +
-                      getASTCreateString((GrammarAtom)el, elementRef) +
-                      ";");
+                    println(astName + " = " +
+                      getASTCreateString((GrammarAtom)el, elementRef) + ";");
                 } else {
                     println(
                       astName + " = " + getASTCreateString(elementRef) + ";");
@@ -2093,10 +2052,8 @@ public class JavaCodeGenerator extends CodeGenerator {
             if (el.getLabel() == null && needASTDecl) {
                 elementRef = lt1Value;
                 if (el instanceof GrammarAtom) {
-                    println(
-                      astName + " = " +
-                      getASTCreateString((GrammarAtom)el, elementRef) +
-                      ";");
+                    println(astName + " = " +
+                      getASTCreateString((GrammarAtom)el, elementRef) + ";");
                 } else {
                     println(
                       astName + " = " + getASTCreateString(elementRef) + ";");
@@ -2159,8 +2116,8 @@ public class JavaCodeGenerator extends CodeGenerator {
     private void genErrorHandler(ExceptionSpec ex) {
         // Each ExceptionHandler in the ExceptionSpec is a separate catch
         for (int i = 0; i < ex.handlers.size(); i++) {
-            ExceptionHandler handler = (ExceptionHandler)ex.handlers.elementAt(
-              i);
+            ExceptionHandler handler =
+              (ExceptionHandler)ex.handlers.elementAt(i);
             // Generate catch phrase
             println(
               "catch (" + handler.exceptionTypeAndName.getText() + ") {");
@@ -2172,11 +2129,10 @@ public class JavaCodeGenerator extends CodeGenerator {
 
             // When not guessing, execute user handler action
             ActionTransInfo tInfo = new ActionTransInfo();
-            printAction(processActionForSpecialSymbols(
-              handler.action.getText(),
-              handler.action.getLine(),
-              currentRule,
-              tInfo));
+            printAction(processActionForSpecialSymbols(handler.action.getText(),
+                                                       handler.action.getLine(),
+                                                       currentRule,
+                                                       tInfo));
 
             if (grammar.hasSyntacticPredicate) {
                 tabs--;
@@ -2184,7 +2140,7 @@ public class JavaCodeGenerator extends CodeGenerator {
                 tabs++;
                 // When guessing, rethrow exception
                 println("throw " +
-                        extractIdOfAction(handler.exceptionTypeAndName) + ";");
+                  extractIdOfAction(handler.exceptionTypeAndName) + ";");
                 tabs--;
                 println("}");
             }
@@ -2244,9 +2200,9 @@ public class JavaCodeGenerator extends CodeGenerator {
      * Generate a header that is common to all Java files
      */
     protected void genHeader() {
-        println("// $ANTLR " + Tool.version + ": " + "\"" + antlrTool.fileMinusPath(
-          antlrTool.grammarFile) + "\"" +
-                " -> " + "\"" + grammar.getClassName() + ".java\"$");
+        println("// $ANTLR " + Tool.version + ": " + "\"" +
+          antlrTool.fileMinusPath(antlrTool.grammarFile) + "\"" + " -> " +
+          "\"" + grammar.getClassName() + ".java\"$");
     }
 
     private void genLiteralsTest() {
@@ -2290,8 +2246,8 @@ public class JavaCodeGenerator extends CodeGenerator {
         }
 
         // if in lexer and ! on element, save buffer index to kill later
-        if (grammar instanceof LexerGrammar &&
-          (!saveText || atom.getAutoGenType() == GrammarElement.AUTO_GEN_BANG)) {
+        if (grammar instanceof LexerGrammar && (!saveText ||
+          atom.getAutoGenType() == GrammarElement.AUTO_GEN_BANG)) {
             println("_saveIndex=text.length();");
         }
 
@@ -2307,9 +2263,9 @@ public class JavaCodeGenerator extends CodeGenerator {
         }
         _println(");");
 
-        if (grammar instanceof LexerGrammar &&
-          (!saveText || atom.getAutoGenType() == GrammarElement.AUTO_GEN_BANG)) {
-            println("text.setLength(_saveIndex);");		// kill text atom put in buffer
+        if (grammar instanceof LexerGrammar && (!saveText ||
+          atom.getAutoGenType() == GrammarElement.AUTO_GEN_BANG)) {
+            println("text.setLength(_saveIndex);");                // kill text atom put in buffer
         }
     }
 
@@ -2360,9 +2316,8 @@ public class JavaCodeGenerator extends CodeGenerator {
         }
 
         // Create the synthesized nextToken() rule
-        RuleBlock nextTokenBlk = MakeGrammar.createNextTokenRule(grammar,
-                                                                 grammar.rules,
-                                                                 "nextToken");
+        RuleBlock nextTokenBlk =
+          MakeGrammar.createNextTokenRule(grammar, grammar.rules, "nextToken");
         // Define the nextToken rule symbol
         RuleSymbol nextTokenRs = new RuleSymbol("mnextToken");
         nextTokenRs.setDefined();
@@ -2391,21 +2346,23 @@ public class JavaCodeGenerator extends CodeGenerator {
             println("setCommitToPath(false);");
             if (filterRule != null) {
                 // Here's a good place to ensure that the filter rule actually exists
-                if (!grammar.isDefined(
-                  CodeGenerator.encodeLexerRuleName(filterRule))) {
-                    grammar.antlrTool.error(
-                      "Filter rule " + filterRule +
-                      " does not exist in this lexer");
+                if (!grammar.isDefined(CodeGenerator.encodeLexerRuleName(
+                  filterRule))) {
+                    grammar.antlrTool
+                      .error("Filter rule " + filterRule +
+                        " does not exist in this lexer");
                 } else {
-                    RuleSymbol rs = (RuleSymbol)grammar.getSymbol(
-                      CodeGenerator.encodeLexerRuleName(filterRule));
+                    RuleSymbol rs =
+                      (RuleSymbol)grammar.getSymbol(CodeGenerator.encodeLexerRuleName(
+                        filterRule));
                     if (!rs.isDefined()) {
-                        grammar.antlrTool.error(
-                          "Filter rule " + filterRule +
-                          " does not exist in this lexer");
+                        grammar.antlrTool
+                          .error("Filter rule " + filterRule +
+                            " does not exist in this lexer");
                     } else if (rs.access.equals("public")) {
-                        grammar.antlrTool.error(
-                          "Filter rule " + filterRule + " must be protected");
+                        grammar.antlrTool
+                          .error("Filter rule " + filterRule +
+                            " must be protected");
                     }
                 }
                 println("int _m;");
@@ -2428,27 +2385,29 @@ public class JavaCodeGenerator extends CodeGenerator {
                 //String r = a.head.toString();
                 RuleRefElement rr = (RuleRefElement)a.head;
                 String r = CodeGenerator.decodeLexerRuleName(rr.targetRule);
-                antlrTool.warning(
-                  "public lexical rule " + r +
+                antlrTool.warning("public lexical rule " + r +
                   " is optional (can match \"nothing\")");
             }
         }
 
         // Generate the block
         String newline = System.getProperty("line.separator");
-        JavaBlockFinishingInfo howToFinish = genCommonBlock(nextTokenBlk,
-                                                            false);
-        String errFinish = "if (LA(1)==EOF_CHAR) {uponEOF(); _returnToken = makeToken(Token.EOF_TYPE);}";
+        JavaBlockFinishingInfo howToFinish =
+          genCommonBlock(nextTokenBlk, false);
+        String errFinish =
+          "if (LA(1)==EOF_CHAR) {uponEOF(); _returnToken = makeToken(Token.EOF_TYPE);}";
         errFinish += newline + "\t\t\t\t";
         if (((LexerGrammar)grammar).filterMode) {
             if (filterRule == null) {
                 errFinish += "else {consume(); continue tryAgain;}";
             } else {
-                errFinish += "else {" + newline + "\t\t\t\t\tcommit();" + newline + "\t\t\t\t\ttry {m" + filterRule + "(false);}" + newline +
-                  "\t\t\t\t\tcatch(RecognitionException e) {" + newline +
-                  "\t\t\t\t\t	// catastrophic failure" + newline +
+                errFinish += "else {" + newline + "\t\t\t\t\tcommit();" +
+                  newline + "\t\t\t\t\ttry {m" + filterRule + "(false);}" +
+                  newline + "\t\t\t\t\tcatch(RecognitionException e) {" +
+                  newline + "\t\t\t\t\t	// catastrophic failure" + newline +
                   "\t\t\t\t\t	reportError(e);" + newline +
-                  "\t\t\t\t\t	consume();" + newline + "\t\t\t\t\t}" + newline + "\t\t\t\t\tcontinue tryAgain;" + newline + "\t\t\t\t}";
+                  "\t\t\t\t\t	consume();" + newline + "\t\t\t\t\t}" + newline +
+                  "\t\t\t\t\tcontinue tryAgain;" + newline + "\t\t\t\t}";
             }
         } else {
             errFinish += "else {" + throwNoViable + "}";
@@ -2586,11 +2545,9 @@ public class JavaCodeGenerator extends CodeGenerator {
         // Gen method return type (note lexer return action set at rule creation)
         if (rblk.returnAction != null) {
             // Has specified return value
-            _print(
-              extractTypeOfAction(rblk.returnAction,
-                                  rblk.getLine(),
-                                  rblk.getColumn()) +
-              " ");
+            _print(extractTypeOfAction(rblk.returnAction,
+                                       rblk.getLine(),
+                                       rblk.getColumn()) + " ");
         } else {
             // No specified return value
             _print("void ");
@@ -2630,7 +2587,7 @@ public class JavaCodeGenerator extends CodeGenerator {
             if (grammar instanceof LexerGrammar) {
                 antlrTool.error(
                   "user-defined throws spec not allowed (yet) for lexer rule " +
-                  rblk.ruleName);
+                    rblk.ruleName);
             } else {
                 _print(", " + rblk.throwsSpec);
             }
@@ -2663,7 +2620,7 @@ public class JavaCodeGenerator extends CodeGenerator {
             } else {
                 println("_ttype = " + s.getId().substring(1) + ";");
             }
-            println("int _saveIndex;");		// used for element! (so we can kill text matched for element)
+            println("int _saveIndex;");                // used for element! (so we can kill text matched for element)
             /*
 			 println("boolean old_saveConsumedInput=saveConsumedInput;");
 			 if ( !rblk.getAutoGen() ) {		// turn off "save input" if ! on rule
@@ -2690,10 +2647,8 @@ public class JavaCodeGenerator extends CodeGenerator {
         // Initialize AST variables
         if (grammar instanceof TreeWalkerGrammar) {
             // "Input" value for rule
-            println(
-              labeledElementASTType + " " + s.getId() +
-              "_AST_in = (_t == ASTNULL) ? null : (" +
-              labeledElementASTType +
+            println(labeledElementASTType + " " + s.getId() +
+              "_AST_in = (_t == ASTNULL) ? null : (" + labeledElementASTType +
               ")_t;");
         }
         if (grammar.buildAST) {
@@ -2765,10 +2720,10 @@ public class JavaCodeGenerator extends CodeGenerator {
             println("reportError(ex);");
             if (!(grammar instanceof TreeWalkerGrammar)) {
                 // Generate code to consume until token in k==1 follow set
-                Lookahead follow = grammar.theLLkAnalyzer.FOLLOW(1,
-                                                                 rblk.endNode);
-                String followSetName = getBitsetName(
-                  markBitsetForGen(follow.fset));
+                Lookahead follow =
+                  grammar.theLLkAnalyzer.FOLLOW(1, rblk.endNode);
+                String followSetName =
+                  getBitsetName(markBitsetForGen(follow.fset));
                 println("recover(ex," + followSetName + ");");
             } else {
                 // Just consume one token
@@ -2818,12 +2773,9 @@ public class JavaCodeGenerator extends CodeGenerator {
 
         // Gen the return statement if there is one (lexer has hard-wired return action)
         if (rblk.returnAction != null) {
-            println(
-              "return " +
-              extractIdOfAction(rblk.returnAction,
-                                rblk.getLine(),
-                                rblk.getColumn()) +
-              ";");
+            println("return " + extractIdOfAction(rblk.returnAction,
+                                                  rblk.getLine(),
+                                                  rblk.getColumn()) + ";");
         }
 
         if (grammar.debuggingOutput || grammar.traceRules) {
@@ -2891,15 +2843,12 @@ public class JavaCodeGenerator extends CodeGenerator {
         if (rr.args != null) {
             // When not guessing, execute user arg action
             ActionTransInfo tInfo = new ActionTransInfo();
-            String args = processActionForSpecialSymbols(rr.args,
-                                                         0,
-                                                         currentRule,
-                                                         tInfo);
+            String args =
+              processActionForSpecialSymbols(rr.args, 0, currentRule, tInfo);
             if (tInfo.assignToRoot || tInfo.refRuleRoot != null) {
-                antlrTool.error("Arguments of rule reference '" +
-                                rr.targetRule +
-                                "' cannot set or ref #" +
-                                currentRule.getRuleName(),
+                antlrTool.error("Arguments of rule reference '" + rr
+                  .targetRule + "' cannot set or ref #" +
+                  currentRule.getRuleName(),
                                 grammar.getFilename(),
                                 rr.getLine(),
                                 rr.getColumn());
@@ -2944,8 +2893,9 @@ public class JavaCodeGenerator extends CodeGenerator {
         // that can tell SemanticPredicateListeners the result
         if (grammar.debuggingOutput && ((grammar instanceof ParserGrammar) ||
           (grammar instanceof LexerGrammar))) {
-            pred = "fireSemanticPredicateEvaluated(antlr.debug.SemanticPredicateEvent.VALIDATING," +
-              addSemPred(escapedPred) + "," + pred + ")";
+            pred =
+              "fireSemanticPredicateEvaluated(antlr.debug.SemanticPredicateEvent.VALIDATING," +
+                addSemPred(escapedPred) + "," + pred + ")";
         }
         println("if (!(" + pred + "))");
         println("  throw new SemanticException(\"" + escapedPred + "\");");
@@ -2995,7 +2945,7 @@ public class JavaCodeGenerator extends CodeGenerator {
         syntacticPredLevel++;
         println("try {");
         tabs++;
-        gen((AlternativeBlock)blk);		// gen code to test predicate
+        gen((AlternativeBlock)blk);                // gen code to test predicate
         tabs--;
         //println("System.out.println(\"pred "+blk+" succeeded\");");
         println("}");
@@ -3058,13 +3008,12 @@ public class JavaCodeGenerator extends CodeGenerator {
                 s = "<" + String.valueOf(i) + ">";
             }
             if (!s.startsWith("\"") && !s.startsWith("<")) {
-                TokenSymbol ts = (TokenSymbol)grammar.tokenManager.getTokenSymbol(
-                  s);
+                TokenSymbol ts =
+                  (TokenSymbol)grammar.tokenManager.getTokenSymbol(s);
                 if (ts != null && ts.getParaphrase() != null) {
-                    s =
-                      StringUtils.stripFrontBack(ts.getParaphrase(),
-                                                 "\"",
-                                                 "\"");
+                    s = StringUtils.stripFrontBack(ts.getParaphrase(),
+                                                   "\"",
+                                                   "\"");
                 }
             }
             print(charFormatter.literalString(s));
@@ -3105,9 +3054,8 @@ public class JavaCodeGenerator extends CodeGenerator {
                         generatedNewHashtable = true;
                     }
                     println("tokenTypeToASTClassMap.put(new Integer(" +
-                            ts.getTokenType() +
-                            "), " +
-                            ts.getASTNodeType() + ".class);");
+                      ts.getTokenType() + "), " + ts.getASTNodeType() +
+                      ".class);");
                 }
             }
         }
@@ -3154,8 +3102,8 @@ public class JavaCodeGenerator extends CodeGenerator {
             if (s != null) {
                 if (s.startsWith("\"")) {
                     // a string literal
-                    StringLiteralSymbol sl = (StringLiteralSymbol)tm.getTokenSymbol(
-                      s);
+                    StringLiteralSymbol sl =
+                      (StringLiteralSymbol)tm.getTokenSymbol(s);
                     if (sl == null) {
                         antlrTool.panic(
                           "String literal " + s + " not in symbol table");
@@ -3200,7 +3148,7 @@ public class JavaCodeGenerator extends CodeGenerator {
         }
         StringBuffer buf = new StringBuffer();
         buf.append("(" + labeledElementASTType +
-                   ")astFactory.make( (new ASTArray(" + v.size() + "))");
+          ")astFactory.make( (new ASTArray(" + v.size() + "))");
         for (int i = 0; i < v.size(); i++) {
             buf.append(".add(" + v.elementAt(i) + ")");
         }
@@ -3218,9 +3166,8 @@ public class JavaCodeGenerator extends CodeGenerator {
         //System.out.println("getASTCreateString("+atom+","+astCtorArgs+")");
         if (atom != null && atom.getASTNodeType() != null) {
             // they specified a type either on the reference or in tokens{} section
-            return "(" + atom.getASTNodeType() + ")" + "astFactory.create(" + astCtorArgs + ",\"" +
-              atom.getASTNodeType() +
-              "\")";
+            return "(" + atom.getASTNodeType() + ")" + "astFactory.create(" +
+              astCtorArgs + ",\"" + atom.getASTNodeType() + "\")";
         } else {
             // must be an action or something since not referencing an atom
             return getASTCreateString(astCtorArgs);
@@ -3266,11 +3213,8 @@ public class JavaCodeGenerator extends CodeGenerator {
                     emptyText = ",\"\"";
                 }
                 if (astNodeType != null) {
-                    return "(" + astNodeType + ")" + "astFactory.create(" + astCtorArgs +
-                      emptyText +
-                      ",\"" +
-                      astNodeType +
-                      "\")";
+                    return "(" + astNodeType + ")" + "astFactory.create(" +
+                      astCtorArgs + emptyText + ",\"" + astNodeType + "\")";
                 }
 // fall through and just do a regular create with cast on front
 // if necessary (it differs from default "AST").
@@ -3278,12 +3222,12 @@ public class JavaCodeGenerator extends CodeGenerator {
             if (labeledElementASTType.equals("AST")) {
                 return "astFactory.create(" + astCtorArgs + ")";
             }
-            return "(" + labeledElementASTType + ")" + "astFactory.create(" + astCtorArgs + ")";
+            return "(" + labeledElementASTType + ")" + "astFactory.create(" +
+              astCtorArgs + ")";
         }
         // create default type or (since 2.7.2) 3rd arg is classname
         return "(" + labeledElementASTType + ")astFactory.create(" +
-          astCtorArgs +
-          ")";
+          astCtorArgs + ")";
     }
 
     protected String getLookaheadTestExpression(Lookahead[] look, int k) {
@@ -3397,8 +3341,7 @@ public class JavaCodeGenerator extends CodeGenerator {
         int begin = elems[0];
         int end = elems[elems.length - 1];
         return "(" + lookaheadString(k) + " >= " + getValueString(begin) +
-          " && " +
-          lookaheadString(k) + " <= " + getValueString(end) + ")";
+          " && " + lookaheadString(k) + " <= " + getValueString(end) + ")";
     }
 
     /**
@@ -3506,8 +3449,8 @@ public class JavaCodeGenerator extends CodeGenerator {
                 in_var = true;
             }
             // If the id ends with "_in", then map it to the input variable
-            else if (id.length() > 3 &&
-              id.lastIndexOf("_in") == id.length() - 3) {
+            else
+            if (id.length() > 3 && id.lastIndexOf("_in") == id.length() - 3) {
                 // Strip off the "_in"
                 id = id.substring(0, id.length() - 3);
                 in_var = true;
@@ -3517,8 +3460,8 @@ public class JavaCodeGenerator extends CodeGenerator {
         // Check the rule labels.  If id is a label, then the output
         // variable is label_AST, and the input variable is plain label.
         for (int i = 0; i < currentRule.labeledElements.size(); i++) {
-            AlternativeElement elt = (AlternativeElement)currentRule.labeledElements.elementAt(
-              i);
+            AlternativeElement elt =
+              (AlternativeElement)currentRule.labeledElements.elementAt(i);
             if (elt.getLabel().equals(id)) {
                 return in_var ? id : id + "_AST";
             }
@@ -3531,17 +3474,15 @@ public class JavaCodeGenerator extends CodeGenerator {
         if (s != null) {
             if (s == NONUNIQUE) {
                 // There is more than one element with this id
-                antlrTool.error(
-                  "Ambiguous reference to AST element " + id + " in rule " +
-                  currentRule.getRuleName());
+                antlrTool.error("Ambiguous reference to AST element " + id +
+                  " in rule " + currentRule.getRuleName());
 
                 return null;
             } else if (s.equals(currentRule.getRuleName())) {
                 // a recursive call to the enclosing rule is
                 // ambiguous with the rule itself.
-                antlrTool.error(
-                  "Ambiguous reference to AST element " + id + " in rule " +
-                  currentRule.getRuleName());
+                antlrTool.error("Ambiguous reference to AST element " + id +
+                  " in rule " + currentRule.getRuleName());
                 return null;
             } else {
                 return in_var ? s + "_in" : s;
@@ -3621,11 +3562,16 @@ public class JavaCodeGenerator extends CodeGenerator {
 
         // see if we have anything to do...
         if ((grammar.buildAST && actionStr.indexOf('#') != -1) ||
-          grammar instanceof TreeWalkerGrammar || ((grammar instanceof LexerGrammar ||
-          grammar instanceof ParserGrammar) && actionStr.indexOf('$') != -1)) {
+          grammar instanceof TreeWalkerGrammar || ((
+          grammar instanceof LexerGrammar ||
+            grammar instanceof ParserGrammar) &&
+          actionStr.indexOf('$') != -1)) {
             // Create a lexer to read an action and return the translated version
-            antlr.actions.java.ActionLexer lexer = new antlr.actions.java.ActionLexer(
-              actionStr, currentRule, this, tInfo);
+            antlr.actions.java.ActionLexer lexer =
+              new antlr.actions.java.ActionLexer(actionStr,
+                                                 currentRule,
+                                                 this,
+                                                 tInfo);
 
             lexer.setLineOffset(line);
             lexer.setFilename(grammar.getFilename());
@@ -3656,8 +3602,10 @@ public class JavaCodeGenerator extends CodeGenerator {
             if (g.hasOption("ASTLabelType")) {
                 Token tsuffix = g.getOption("ASTLabelType");
                 if (tsuffix != null) {
-                    String suffix = StringUtils.stripFrontBack(
-                      tsuffix.getText(), "\"", "\"");
+                    String suffix =
+                      StringUtils.stripFrontBack(tsuffix.getText(),
+                                                 "\"",
+                                                 "\"");
                     if (suffix != null) {
                         labeledElementASTType = suffix;
                     }
@@ -3689,8 +3637,10 @@ public class JavaCodeGenerator extends CodeGenerator {
             if (g.hasOption("ASTLabelType")) {
                 Token tsuffix = g.getOption("ASTLabelType");
                 if (tsuffix != null) {
-                    String suffix = StringUtils.stripFrontBack(
-                      tsuffix.getText(), "\"", "\"");
+                    String suffix =
+                      StringUtils.stripFrontBack(tsuffix.getText(),
+                                                 "\"",
+                                                 "\"");
                     if (suffix != null) {
                         labeledElementASTType = suffix;
                         labeledElementType = suffix;

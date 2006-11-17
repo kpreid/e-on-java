@@ -32,11 +32,10 @@ import java.util.Enumeration;
 import java.util.Properties;
 
 /**
- * A ConstMap is a finite single-valued map from keys to values.
- * Equivalently, it can be considered a finite set of pairs, where
- * each is a pair of a key and a value, and no two pairs have the
- * same key. ConstMaps are the same based on whether their contents are
- * the same. <p>
+ * A ConstMap is a finite single-valued map from keys to values. Equivalently,
+ * it can be considered a finite set of pairs, where each is a pair of a key
+ * and a value, and no two pairs have the same key. ConstMaps are the same
+ * based on whether their contents are the same. <p>
  * <p/>
  * ConstMaps must be immutable, and so can be passed-by-copy. Together with
  * value-based equality, ConstMaps can be passed-by-copy over the network
@@ -44,8 +43,8 @@ import java.util.Properties;
  *
  * @author Mark S. Miller
  */
-public abstract class ConstMap
-  extends EMap implements PassByConstruction, Selfless {
+public abstract class ConstMap extends EMap
+  implements PassByConstruction, Selfless {
 
     static private final long serialVersionUID = -6424210992869387563L;
 
@@ -55,8 +54,8 @@ public abstract class ConstMap
     static private StaticMaker ConstMapMaker = null;
 
     /**
-     * The static variable cache is initialized lazily to avoid circular
-     * static initialization dependency with StaticMaker.
+     * The static variable cache is initialized lazily to avoid circular static
+     * initialization dependency with StaticMaker.
      */
     static public StaticMaker GetMaker() {
         if (null == ConstMapMaker) {
@@ -68,8 +67,8 @@ public abstract class ConstMap
     /**
      * The canonical empty ConstMap
      */
-    static public final ConstMap
-      EmptyMap = new ConstMapImpl(new FlexMapImpl());
+    static public final ConstMap EmptyMap =
+      new ConstMapImpl(new FlexMapImpl());
 
 
     /**
@@ -83,10 +82,7 @@ public abstract class ConstMap
      * Uses 'ConstMapMaker.fromColumns(key, values)'
      */
     public Object[] getSpreadUncall() {
-        Object[] result = {GetMaker(),
-                           "fromColumns",
-                           getKeys(),
-                           getValues()};
+        Object[] result = {GetMaker(), "fromColumns", getKeys(), getValues()};
         return result;
     }
 
@@ -114,21 +110,20 @@ public abstract class ConstMap
     }
 
     /**
-     * This method enables E's magnitude comparison operators
-     * (&lt;, &lt;=, &lt;=&gt;, &gt;=, &gt;) to express subset-ness of the
-     * domains of ConstMaps. <p>
+     * This method enables E's magnitude comparison operators (&lt;, &lt;=,
+     * &lt;=&gt;, &gt;=, &gt;) to express subset-ness of the domains of
+     * ConstMaps. <p>
      * <p/>
-     * If this ConstMap's domain is a strict subset of other's, return -1.0.
-     * If this ConstMap has the same domain as other, return 0.0.
-     * If this ConstMap's domain is a strict superset of other's, return 1.0.
-     * Otherwise return NaN.
+     * If this ConstMap's domain is a strict subset of other's, return -1.0. If
+     * this ConstMap has the same domain as other, return 0.0. If this
+     * ConstMap's domain is a strict superset of other's, return 1.0. Otherwise
+     * return NaN.
      * <p/>
-     * The canonical implementation of ConstMap (ConstMapImpl)
-     * recursively turns the question around of this ConstMap's size()
-     * is smaller that other's. Therefore, the base case is one in
-     * which this ConstMap's size() is &gt;= other's. Therefore,
-     * alternate implementations of ConstMaps must also treat this as
-     * the base case. XXX security implications?
+     * The canonical implementation of ConstMap (ConstMapImpl) recursively
+     * turns the question around of this ConstMap's size() is smaller that
+     * other's. Therefore, the base case is one in which this ConstMap's size()
+     * is &gt;= other's. Therefore, alternate implementations of ConstMaps must
+     * also treat this as the base case. XXX security implications?
      */
     public double op__cmp(ConstMap other) {
         int sz = size();
@@ -195,8 +190,8 @@ public abstract class ConstMap
      * into a map.
      *
      * @param strict If two keys collide, then, if strict, an exception is
-     *               thrown. If not strict, then the later association for that key
-     *               wins.
+     *               thrown. If not strict, then the later association for that
+     *               key wins.
      */
     static public ConstMap fromIteratable(EIteratable iteratable,
                                           final boolean strict) {
@@ -213,9 +208,8 @@ public abstract class ConstMap
      *
      */
     static public ConstMap fromProperties(Properties props) {
-        FlexMap result = FlexMap.fromTypes(String.class,
-                                           String.class,
-                                           props.size());
+        FlexMap result =
+          FlexMap.fromTypes(String.class, String.class, props.size());
         Enumeration iter = props.propertyNames();
         while (iter.hasMoreElements()) {
             String key = (String)iter.nextElement();
@@ -241,8 +235,8 @@ public abstract class ConstMap
     /**
      * Test the setting of a boolean property.
      * <p/>
-     * A boolean property is true if its (String) value is "true", and false
-     * if it's absent, or if its string value is "false" or "allow".
+     * A boolean property is true if its (String) value is "true", and false if
+     * it's absent, or if its string value is "false" or "allow".
      * <p/>
      * XXX ConstMap is a silly place for this method, but where should it go?
      * XXX Should the comparison be case insensitive?
@@ -250,8 +244,8 @@ public abstract class ConstMap
      * @param props    A ConstMap representing the Properties
      * @param propName The name of the property to test
      * @return the value of the property as a boolean.
-     * @throws IllegalArgumentException if propValue is neither "true",
-     *                                  nor "false", nor "allow"
+     * @throws IllegalArgumentException if propValue is neither "true", nor
+     *                                  "false", nor "allow"
      */
     static public boolean testProp(ConstMap props, String propName) {
         String propValue =
@@ -263,8 +257,8 @@ public abstract class ConstMap
         } else if ("allow" == propValue) {
             return false;
         } else {
-            throw new IllegalArgumentException
-              (propValue + " must be 'true', 'false', or 'allow'");
+            throw new IllegalArgumentException(
+              propValue + " must be 'true', 'false', or 'allow'");
         }
     }
 }

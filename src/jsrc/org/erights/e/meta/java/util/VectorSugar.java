@@ -39,8 +39,8 @@ public class VectorSugar {
     }
 
     /**
-     * If the index is in bounds, return the corresponding element.
-     * Otherwise throw an IndexOutOfBoundsException
+     * If the index is in bounds, return the corresponding element. Otherwise
+     * throw an IndexOutOfBoundsException
      */
     static public Object get(Vector self, int index)
       throws IndexOutOfBoundsException {
@@ -48,11 +48,11 @@ public class VectorSugar {
     }
 
     /**
-     * Considered as a map, a Vector is a map from indices to
-     * values, so iterate() will call func with each successive pair of
-     * index and value, in ascending index order. It does this over a
-     * snapshot of the Vector, so that changes to the Vector during
-     * enumeration don't effect the enumeration.
+     * Considered as a map, a Vector is a map from indices to values, so
+     * iterate() will call func with each successive pair of index and value,
+     * in ascending index order. It does this over a snapshot of the Vector, so
+     * that changes to the Vector during enumeration don't effect the
+     * enumeration.
      */
     static public void iterate(Vector self, AssocFunc func) {
         Object[] elements = self.toArray();

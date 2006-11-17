@@ -118,7 +118,8 @@ public final class Session {
             }
 
             int i = response_headers;
-            while (i-- != 0 && !name.equalsIgnoreCase(response_header_key[i])) {
+            while (i-- != 0 &&
+              !name.equalsIgnoreCase(response_header_key[i])) {
             }
             return i < 0 ? null : response_header_value[i];
         }
@@ -186,13 +187,13 @@ public final class Session {
                     System.arraycopy(request_header_key,
                                      0,
                                      request_header_key =
-                                     new String[2 * request_headers],
+                                       new String[2 * request_headers],
                                      0,
                                      request_headers);
                     System.arraycopy(request_header_value,
                                      0,
                                      request_header_value =
-                                     new String[2 * request_headers],
+                                       new String[2 * request_headers],
                                      0,
                                      request_headers);
                 }
@@ -222,13 +223,13 @@ public final class Session {
                     System.arraycopy(request_header_key,
                                      0,
                                      request_header_key =
-                                     new String[2 * request_headers],
+                                       new String[2 * request_headers],
                                      0,
                                      request_headers);
                     System.arraycopy(request_header_value,
                                      0,
                                      request_header_value =
-                                     new String[2 * request_headers],
+                                       new String[2 * request_headers],
                                      0,
                                      request_headers);
                 }
@@ -305,11 +306,12 @@ public final class Session {
                     // Parse the Status-Line.
                     final int begin_http_version = 0;
                     int end_http_version = "HTTP/1.".length();
-                    while (" \t".indexOf(line.charAt(end_http_version)) == -1) {
+                    while (" \t".indexOf(line.charAt(end_http_version)) ==
+                      -1) {
                         ++end_http_version;
                     }
-                    http_version = line.substring(begin_http_version,
-                                                  end_http_version);
+                    http_version =
+                      line.substring(begin_http_version, end_http_version);
                     int begin_status = end_http_version + 1;
                     while (" \t".indexOf(line.charAt(begin_status)) != -1) {
                         ++begin_status;
@@ -319,8 +321,9 @@ public final class Session {
                       " \t".indexOf(line.charAt(end_status)) == -1) {
                         ++end_status;
                     }
-                    responseCode = Integer.parseInt(line.substring(
-                      begin_status, end_status));
+                    responseCode =
+                      Integer.parseInt(line.substring(begin_status,
+                                                      end_status));
                     responseMessage = line.substring(end_status).trim();
                     response_header_value[0] = line;
                     response_headers = 1;
@@ -334,19 +337,20 @@ public final class Session {
                     // Check for informational response.
                     if (responseCode >= 100 && responseCode < 200) {
                         switch (responseCode) {
-                        case 101:
-                            {
-                                // Switching protocols.
-                                if (!do_not_pipeline) {
-                                    throw new IOException(
-                                      "No Upgrade on pipelined connection!");
-                                }
-                                final Socket socket = this.socket;
-                                this.socket = null;
-                                closed = true;
-                                throw new UpgradeProtocol(socket, TokenList.decode(getHeaderField(
-                                  "Upgrade")));
+                        case 101: {
+                            // Switching protocols.
+                            if (!do_not_pipeline) {
+                                throw new IOException(
+                                  "No Upgrade on pipelined connection!");
                             }
+                            final Socket socket = this.socket;
+                            this.socket = null;
+                            closed = true;
+                            throw new UpgradeProtocol(socket,
+                                                      TokenList.decode(
+                                                        getHeaderField(
+                                                          "Upgrade")));
+                        }
                         default:
                             // RFC 2616, section 10.1:
                             // Unexpected 1xx status responses MAY be ignored
@@ -369,8 +373,8 @@ public final class Session {
                         for (int i = response_headers; i-- != 0;) {
                             if ("Connection".equalsIgnoreCase(
                               response_header_key[i])) {
-                                final String[] token = TokenList.decode(
-                                  response_header_value[i]);
+                                final String[] token =
+                                  TokenList.decode(response_header_value[i]);
 
                                 // Remove the Connection header.
                                 System.arraycopy(response_header_key,
@@ -389,8 +393,8 @@ public final class Session {
                                 for (int j = token.length; j-- != 0;) {
                                     if ("close".equalsIgnoreCase(token[j])) {
                                         close = true;
-                                    } else if ("keep-alive".equalsIgnoreCase(
-                                      token[j])) {
+                                    } else
+                                    if ("keep-alive".equalsIgnoreCase(token[j])) {
                                         close = false;
                                     }
 
@@ -450,40 +454,42 @@ public final class Session {
                         for (int i = response_headers; i-- != 0;) {
                             if ("Transfer-Encoding".equalsIgnoreCase(
                               response_header_key[i])) {
-                                final String[] token = TokenList.decode(
-                                  response_header_value[i]);
+                                final String[] token =
+                                  TokenList.decode(response_header_value[i]);
                                 for (int j = token.length; j-- != 0;) {
                                     if ("chunked".equalsIgnoreCase(token[j])) {
                                         if (!(message instanceof Closer)) {
                                             throw new IOException(
                                               "First token must be: chunked");
                                         }
-                                        message = ChunkedInputStream.make(new FilterInputStream(
-                                          message) {
-
-                                            public void close()
-                                              throws IOException {
-                                                // Read in the entity-header
-                                                // trailers.
-                                                _readHeaders(new LineInput(
-                                                  this.in, 128));
-                                                super.close();
-                                            }
-                                        });
-                                    } else if ("gzip".equalsIgnoreCase(
-                                      token[j])) {
                                         message =
-                                          new GZIPInputStream(message);
-                                    } else if ("deflate".equalsIgnoreCase(
-                                      token[j])) {
+                                          ChunkedInputStream.make(new FilterInputStream(
+                                            message) {
+
+                                              public void close()
+                                                throws IOException {
+                                                  // Read in the entity-header
+                                                  // trailers.
+                                                  _readHeaders(new LineInput(
+                                                    this.in,
+                                                    128));
+                                                  super.close();
+                                              }
+                                          });
+                                    } else
+                                    if ("gzip".equalsIgnoreCase(token[j])) {
+                                        message = new GZIPInputStream(message);
+                                    } else
+                                    if ("deflate".equalsIgnoreCase(token[j])) {
                                         message =
                                           new InflaterInputStream(message);
-                                    } else if ("identity".equalsIgnoreCase(
-                                      token[j])) {
+                                    } else
+                                    if ("identity".equalsIgnoreCase(token[j])) {
                                         message = message;
                                     } else {
-                                        throw new IOException("Unrecognized transfer-coding: " +
-                                                              token[j]);
+                                        throw new IOException(
+                                          "Unrecognized transfer-coding: " +
+                                            token[j]);
                                     }
                                 }
 
@@ -511,9 +517,8 @@ public final class Session {
                             } else {
                                 final int content_length = getContentLength();
                                 if (content_length != -1) {
-                                    message =
-                                      BoundedInputStream.make(message,
-                                                              content_length);
+                                    message = BoundedInputStream.make(message,
+                                                                      content_length);
                                 } else {
                                     // Response terminated by connection close.
                                     do_not_pipeline = true;
@@ -599,13 +604,13 @@ public final class Session {
                     System.arraycopy(response_header_key,
                                      0,
                                      response_header_key =
-                                     new String[2 * response_headers],
+                                       new String[2 * response_headers],
                                      0,
                                      response_headers);
                     System.arraycopy(response_header_value,
                                      0,
                                      response_header_value =
-                                     new String[2 * response_headers],
+                                       new String[2 * response_headers],
                                      0,
                                      response_headers);
                 }
@@ -651,9 +656,8 @@ public final class Session {
                         if (null == socket) {
                             socket = locator.locate(url.getAuthority(), null);
                         } else if (socket.isClosed()) {
-                            socket =
-                              locator.locate(url.getAuthority(),
-                                             socket.getRemoteSocketAddress());
+                            socket = locator.locate(url.getAuthority(),
+                                                    socket.getRemoteSocketAddress());
                         } else {
                             // Check that input is still live.
                             int so_timeout = socket.getSoTimeout();
@@ -665,9 +669,8 @@ public final class Session {
 
                                 // EOF found, open a new socket.
                                 socket.close();
-                                socket =
-                                  locator.locate(url.getAuthority(),
-                                                 socket.getRemoteSocketAddress());
+                                socket = locator.locate(url.getAuthority(),
+                                                        socket.getRemoteSocketAddress());
                             } catch (final java.net.SocketTimeoutException _) {
                                 // Assume socket is still live.
                                 socket.setSoTimeout(so_timeout);
@@ -720,8 +723,7 @@ public final class Session {
                     for (int i = 0; i != request_headers; ++i) {
                         out.write(request_header_key[i].getBytes("US-ASCII"));
                         out.write(": ".getBytes("US-ASCII"));
-                        out.write(
-                          request_header_value[i].getBytes("US-ASCII"));
+                        out.write(request_header_value[i].getBytes("US-ASCII"));
                         out.write("\r\n".getBytes("US-ASCII"));
                     }
 
@@ -758,8 +760,8 @@ public final class Session {
                         }
                     };
                     if (doOutput) {
-                        final String content_length = getRequestProperty(
-                          "Content-Length");
+                        final String content_length =
+                          getRequestProperty("Content-Length");
                         if (null != content_length) {
                             // End the headers.
                             out.write("\r\n".getBytes("US-ASCII"));
@@ -768,40 +770,43 @@ public final class Session {
                               request_message,
                               Integer.parseInt(content_length));
                         } else {
-                            if (http_version.compareTo("HTTP/1.0") <= 0 || "application/x-www-form-urlencoded".equalsIgnoreCase(getRequestProperty(
-                              "Content-Type"))) {
+                            if (http_version.compareTo("HTTP/1.0") <= 0 ||
+                              "application/x-www-form-urlencoded".equalsIgnoreCase(
+                                getRequestProperty("Content-Type"))) {
                                 // Server might not support chunked encoding,
                                 // so buffer the message to determine the
                                 // length.
-                                request_message = new ByteArrayOutputStream(
-                                  1024) {
+                                request_message =
+                                  new ByteArrayOutputStream(1024) {
 
-                                    private OutputStream base = request_message;
+                                      private OutputStream base =
+                                        request_message;
 
-                                    public void close() throws IOException {
-                                        if (null != base) {
-                                            // End the headers.
-                                            out.write(("Content-Length: " +
-                                                       count + "\r\n").getBytes(
-                                                         "US-ASCII"));
-                                            out.write("\r\n".getBytes(
-                                              "US-ASCII"));
+                                      public void close() throws IOException {
+                                          if (null != base) {
+                                              // End the headers.
+                                              out.write(("Content-Length: " +
+                                                count + "\r\n").getBytes(
+                                                "US-ASCII"));
+                                              out.write("\r\n".getBytes(
+                                                "US-ASCII"));
 
-                                            base.write(buf, 0, count);
-                                            base.flush();
-                                            base.close();
-                                            base = null;
-                                        }
-                                    }
-                                };
+                                              base.write(buf, 0, count);
+                                              base.flush();
+                                              base.close();
+                                              base = null;
+                                          }
+                                      }
+                                  };
                             } else {
                                 // Server supports chunked encoding.
                                 out.write("Transfer-Encoding: chunked\r\n".getBytes(
                                   "US-ASCII"));
                                 out.write("\r\n".getBytes("US-ASCII"));
 
-                                request_message = ChunkedOutputStream.make(
-                                  1024, request_message);
+                                request_message =
+                                  ChunkedOutputStream.make(1024,
+                                                           request_message);
                             }
                         }
                     } else {

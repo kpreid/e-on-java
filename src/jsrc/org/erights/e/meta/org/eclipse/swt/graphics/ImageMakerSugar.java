@@ -3,22 +3,26 @@
 
 package org.erights.e.meta.org.eclipse.swt.graphics;
 
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Device;
+import org.eclipse.swt.graphics.Image;
 
-import java.net.URL;
 import java.io.IOException;
+import java.net.URL;
 
 /**
  * @author Mark S. Miller
  */
 public class ImageMakerSugar {
 
-    /** prevents instantiation */
+    /**
+     * prevents instantiation
+     */
     private ImageMakerSugar() {
     }
 
-    /** To make up for the removed makeImage(device, filename) */
+    /**
+     * To make up for the removed makeImage(device, filename)
+     */
     static public Image run(Device device, URL resource) throws IOException {
         return new Image(device, resource.openStream());
     }

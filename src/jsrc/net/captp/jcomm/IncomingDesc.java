@@ -20,15 +20,14 @@ Contributor(s): ______________________________________.
 */
 
 import org.erights.e.develop.assertion.T;
-import org.erights.e.develop.trace.Trace;
 
 /**
- * The encoding of an remote ref over the wire to the ref's
- * originator, to be imported as the object designated by that ref. <p>
+ * The encoding of an remote ref over the wire to the ref's originator, to be
+ * imported as the object designated by that ref. <p>
  * <p/>
- * If myIncomingPos > 0, it decodes to an export-table entry. <br>
- * If myIncomingPos == 0, an invalid way to refer to the nonce locator.<br>
- * If myIncomingPos < 0, it decodes to an answers-table entry. <p>
+ * If myIncomingPos > 0, it decodes to an export-table entry. <br> If
+ * myIncomingPos == 0, an invalid way to refer to the nonce locator.<br> If
+ * myIncomingPos < 0, it decodes to an answers-table entry. <p>
  *
  * @author Chip Morningstar
  * @author Mark S. Miller
@@ -44,7 +43,8 @@ class IncomingDesc implements ObjectRefDesc {
      */
     private void validate() {
         T.requireSI(myIncomingPos != 0,
-                    "can't directly reify nonce locator: ", myIncomingPos);
+                    "can't directly reify nonce locator: ",
+                    myIncomingPos);
     }
 
     /**

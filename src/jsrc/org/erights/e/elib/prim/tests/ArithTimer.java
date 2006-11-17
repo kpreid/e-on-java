@@ -31,16 +31,18 @@ public class ArithTimer {
             for (i = 0; i < LOOP_COUNT; i++) {
                 a = b + c;
             }
-            System.out.println("End, elapse " +
-                               (System.currentTimeMillis() - startTime));
+            System.out
+              .println(
+                "End, elapse " + (System.currentTimeMillis() - startTime));
 
             System.out.println("Start int subroutine test");
             startTime = System.currentTimeMillis();
             for (i = 0; i < LOOP_COUNT; i++) {
                 a = intAdd(b, c);
             }
-            System.out.println("End, elapse " +
-                               (System.currentTimeMillis() - startTime));
+            System.out
+              .println(
+                "End, elapse " + (System.currentTimeMillis() - startTime));
 
             Integer ia;
             Integer ib = new Integer(5);
@@ -50,16 +52,18 @@ public class ArithTimer {
             for (i = 0; i < LOOP_COUNT; i++) {
                 ia = new Integer(ib.intValue() + ic.intValue());
             }
-            System.out.println("End, elapse " +
-                               (System.currentTimeMillis() - startTime));
+            System.out
+              .println(
+                "End, elapse " + (System.currentTimeMillis() - startTime));
 
             System.out.println("Start Integer Subroutine test");
             startTime = System.currentTimeMillis();
             for (i = 0; i < LOOP_COUNT; i++) {
                 ia = integerAdd(ib, ic);
             }
-            System.out.println("End, elapse " +
-                               (System.currentTimeMillis() - startTime));
+            System.out
+              .println(
+                "End, elapse " + (System.currentTimeMillis() - startTime));
 
             System.out.println("Start Integer CRAPI test");
             startTime = System.currentTimeMillis();
@@ -74,8 +78,9 @@ public class ArithTimer {
                     break;
                 }
             }
-            System.out.println("End, elapse " +
-                               (System.currentTimeMillis() - startTime));
+            System.out
+              .println(
+                "End, elapse " + (System.currentTimeMillis() - startTime));
 
             System.out.print("Start Integer cached CRAPI test");
             Method integerAddMeth = null;
@@ -97,8 +102,9 @@ public class ArithTimer {
                     break;
                 }
             }
-            System.out.println("End, elapse " +
-                               (System.currentTimeMillis() - startTime));
+            System.out
+              .println(
+                "End, elapse " + (System.currentTimeMillis() - startTime));
 
             System.out.print("Start int cached CRAPI test");
             Method intAddMeth = null;
@@ -119,8 +125,9 @@ public class ArithTimer {
                     break;
                 }
             }
-            System.out.println("End, elapse " +
-                               (System.currentTimeMillis() - startTime));
+            System.out
+              .println(
+                "End, elapse " + (System.currentTimeMillis() - startTime));
 
             System.out.print("Start E.call Integer test");
             StaticMaker sm = StaticMaker.make(ArithTimer.class);
@@ -134,8 +141,9 @@ public class ArithTimer {
                     break;
                 }
             }
-            System.out.println("End, elapse " +
-                               (System.currentTimeMillis() - startTime));
+            System.out
+              .println(
+                "End, elapse " + (System.currentTimeMillis() - startTime));
 
             System.out.print("Start cached E.call Integer test");
             MethodNode mn = sm.getVTable().optMethod("intAdd", 2);
@@ -149,8 +157,9 @@ public class ArithTimer {
                     break;
                 }
             }
-            System.out.println("End, elapse " +
-                               (System.currentTimeMillis() - startTime));
+            System.out
+              .println(
+                "End, elapse " + (System.currentTimeMillis() - startTime));
 
             System.out.print("Start E.call BigInteger test");
             BigInteger bib = BigInteger.valueOf(b);
@@ -165,8 +174,9 @@ public class ArithTimer {
                     break;
                 }
             }
-            System.out.println("End, elapse " +
-                               (System.currentTimeMillis() - startTime));
+            System.out
+              .println(
+                "End, elapse " + (System.currentTimeMillis() - startTime));
         }
     }
 

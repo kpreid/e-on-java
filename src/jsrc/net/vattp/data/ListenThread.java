@@ -88,8 +88,9 @@ class ListenThread extends Thread {
         start();
 
         if (Trace.comm.verbose && Trace.ON) {
-            Trace.comm.verbosem("ListenThread started because...",
-                                new Error("where?"));
+            Trace.comm
+              .verbosem("ListenThread started because...",
+                        new Error("where?"));
         }
     }
 
@@ -152,8 +153,7 @@ class ListenThread extends Thread {
                 try {
                     clientSocket = myListenServerSocket.accept();
                 } catch (IOException e) {
-                    Trace.comm.errorm("exception in ListenThread accept()",
-                                      e);
+                    Trace.comm.errorm("exception in ListenThread accept()", e);
                     //XXX do we really want to "continue" ???
                     continue;
                 }

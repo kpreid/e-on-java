@@ -30,214 +30,215 @@ public final class SafeJ {
     /**
      * For classes for which there's no safej file.
      * <p/>
-     * XXX What happens if a class has a safej file and is listed here as well?
+     * XXX What happens if a class has a safej file and is listed here as
+     * well?
      */
-    static private final String[] ApprovedClassList = {
-        "boolean",
-        "char",
-        "byte",
-        "short",
-        "int",
-        "long",
-        "float",
-        "double",
-        "void",
+    static private final String[] ApprovedClassList = {"boolean",
+      "char",
+      "byte",
+      "short",
+      "int",
+      "long",
+      "float",
+      "double",
+      "void",
 
-        "java.lang.Boolean",
-        "java.lang.Byte",
-        "java.lang.Character",
-        "java.lang.Comparable",
-        "java.lang.Double",
-        "java.lang.Float",
-        "java.lang.Integer",
-        "java.lang.Long",
-        "java.lang.Number",
-        "java.lang.Object",
-        "java.lang.Runnable",
-        "java.lang.RuntimeException", //must enforce DeepPassByCopy
-        "java.lang.Short",
-        "java.lang.StrictMath",
-        "java.lang.String",
-        "java.lang.StringBuffer",
-        "java.lang.Throwable", //XXX must enforce DeepPassByCopy
-        "java.lang.Void",
+      "java.lang.Boolean",
+      "java.lang.Byte",
+      "java.lang.Character",
+      "java.lang.Comparable",
+      "java.lang.Double",
+      "java.lang.Float",
+      "java.lang.Integer",
+      "java.lang.Long",
+      "java.lang.Number",
+      "java.lang.Object",
+      "java.lang.Runnable",
+      "java.lang.RuntimeException",
+      //must enforce DeepPassByCopy
+      "java.lang.Short",
+      "java.lang.StrictMath",
+      "java.lang.String",
+      "java.lang.StringBuffer",
+      "java.lang.Throwable",
+      //XXX must enforce DeepPassByCopy
+      "java.lang.Void",
 
-        "java.math.BigInteger",
+      "java.math.BigInteger",
 
-        "java.io.ByteArrayInputStream",
-        "java.io.ByteArrayOutputStream",
-        "java.io.DataInputStream",
-        "java.io.DataOutputStream",
+      "java.io.ByteArrayInputStream",
+      "java.io.ByteArrayOutputStream",
+      "java.io.DataInputStream",
+      "java.io.DataOutputStream",
 
-        "java.security.KeyFactory",
-        "java.security.KeyPair",
-        "java.security.spec.DSAPrivateKeySpec",
-        "java.security.spec.DSAPublicKeySpec",
-        "java.security.spec.RSAPrivateKeySpec",
-        "java.security.spec.RSAPublicKeySpec",
+      "java.security.KeyFactory",
+      "java.security.KeyPair",
+      "java.security.spec.DSAPrivateKeySpec",
+      "java.security.spec.DSAPublicKeySpec",
+      "java.security.spec.RSAPrivateKeySpec",
+      "java.security.spec.RSAPublicKeySpec",
 
-        "net.captp.jcomm.SturdyRef",
-        "net.captp.jcomm.ObjectID",
-        "net.vattp.data.NetConfig",
+      "net.captp.jcomm.SturdyRef",
+      "net.captp.jcomm.ObjectID",
+      "net.vattp.data.NetConfig",
 
-        "org.apache.oro.text.regex.Perl5Compiler",
-        "org.apache.oro.text.regex.Perl5Matcher",
-        "org.apache.oro.text.regex.PatternMatcherInput",
+      "org.apache.oro.text.regex.Perl5Compiler",
+      "org.apache.oro.text.regex.Perl5Matcher",
+      "org.apache.oro.text.regex.PatternMatcherInput",
 
-        "org.capml.dom.Element",
-        "org.capml.dom.Text",
-        "org.capml.quasi.QuasiContentExprHole",
-        "org.capml.quasi.QuasiContentList",
-        "org.capml.quasi.QuasiContentPattHole",
-        "org.capml.quasi.QuasiElement",
-        "org.capml.quasi.QuasiText",
-        "org.capml.quasi.XMLQuasiParser",
+      "org.capml.dom.Element",
+      "org.capml.dom.Text",
+      "org.capml.quasi.QuasiContentExprHole",
+      "org.capml.quasi.QuasiContentList",
+      "org.capml.quasi.QuasiContentPattHole",
+      "org.capml.quasi.QuasiElement",
+      "org.capml.quasi.QuasiText",
+      "org.capml.quasi.XMLQuasiParser",
 
-        "org.erights.e.develop.format.ETimeFormat",
+      "org.erights.e.develop.format.ETimeFormat",
 
-        "org.erights.e.elang.evm.AssignExpr",
-        "org.erights.e.elang.evm.CallExpr",
-        "org.erights.e.elang.evm.CatchExpr",
-        "org.erights.e.elang.evm.DefineExpr",
-        "org.erights.e.elang.evm.EMatcher",
-        "org.erights.e.elang.evm.EMethod",
-        "org.erights.e.elang.evm.EMethodNode",
-        "org.erights.e.elang.evm.ENode",
-        "org.erights.e.elang.evm.EscapeExpr",
-        "org.erights.e.elang.evm.EScript",
-        "org.erights.e.elang.evm.FinallyExpr",
-        "org.erights.e.elang.evm.FinalPattern",
-        "org.erights.e.elang.evm.FrameFinalNounExpr",
-        "org.erights.e.elang.evm.FrameSlotNounExpr",
-        "org.erights.e.elang.evm.HideExpr",
-        "org.erights.e.elang.evm.IfExpr",
-        "org.erights.e.elang.evm.IgnorePattern",
-        "org.erights.e.elang.evm.ListPattern",
-        "org.erights.e.elang.evm.LiteralExpr",
-        "org.erights.e.elang.evm.LiteralNounExpr",
-        "org.erights.e.elang.evm.LiteralSlotNounExpr",
-        "org.erights.e.elang.evm.LocalFinalNounExpr",
-        "org.erights.e.elang.evm.LocalSlotNounExpr",
-        "org.erights.e.elang.evm.MetaContextExpr",
-        "org.erights.e.elang.evm.MetaStateExpr",
-        "org.erights.e.elang.evm.NounExpr",
-        "org.erights.e.elang.evm.NounPattern",
-        "org.erights.e.elang.evm.ObjectExpr",
-        "org.erights.e.elang.evm.OuterNounExpr",
-        "org.erights.e.elang.evm.QuasiLiteralExpr",
-        "org.erights.e.elang.evm.QuasiLiteralPatt",
-        "org.erights.e.elang.evm.QuasiPatternExpr",
-        "org.erights.e.elang.evm.QuasiPatternPatt",
-        "org.erights.e.elang.evm.ParseNode",
-        "org.erights.e.elang.evm.SeqExpr",
-        "org.erights.e.elang.evm.SimpleNounExpr",
-        "org.erights.e.elang.evm.SlotExpr",
-        "org.erights.e.elang.evm.SlotPattern",
-        "org.erights.e.elang.evm.StaticScope",
+      "org.erights.e.elang.evm.AssignExpr",
+      "org.erights.e.elang.evm.CallExpr",
+      "org.erights.e.elang.evm.CatchExpr",
+      "org.erights.e.elang.evm.DefineExpr",
+      "org.erights.e.elang.evm.EMatcher",
+      "org.erights.e.elang.evm.EMethod",
+      "org.erights.e.elang.evm.EMethodNode",
+      "org.erights.e.elang.evm.ENode",
+      "org.erights.e.elang.evm.EscapeExpr",
+      "org.erights.e.elang.evm.EScript",
+      "org.erights.e.elang.evm.FinallyExpr",
+      "org.erights.e.elang.evm.FinalPattern",
+      "org.erights.e.elang.evm.FrameFinalNounExpr",
+      "org.erights.e.elang.evm.FrameSlotNounExpr",
+      "org.erights.e.elang.evm.HideExpr",
+      "org.erights.e.elang.evm.IfExpr",
+      "org.erights.e.elang.evm.IgnorePattern",
+      "org.erights.e.elang.evm.ListPattern",
+      "org.erights.e.elang.evm.LiteralExpr",
+      "org.erights.e.elang.evm.LiteralNounExpr",
+      "org.erights.e.elang.evm.LiteralSlotNounExpr",
+      "org.erights.e.elang.evm.LocalFinalNounExpr",
+      "org.erights.e.elang.evm.LocalSlotNounExpr",
+      "org.erights.e.elang.evm.MetaContextExpr",
+      "org.erights.e.elang.evm.MetaStateExpr",
+      "org.erights.e.elang.evm.NounExpr",
+      "org.erights.e.elang.evm.NounPattern",
+      "org.erights.e.elang.evm.ObjectExpr",
+      "org.erights.e.elang.evm.OuterNounExpr",
+      "org.erights.e.elang.evm.QuasiLiteralExpr",
+      "org.erights.e.elang.evm.QuasiLiteralPatt",
+      "org.erights.e.elang.evm.QuasiPatternExpr",
+      "org.erights.e.elang.evm.QuasiPatternPatt",
+      "org.erights.e.elang.evm.ParseNode",
+      "org.erights.e.elang.evm.SeqExpr",
+      "org.erights.e.elang.evm.SimpleNounExpr",
+      "org.erights.e.elang.evm.SlotExpr",
+      "org.erights.e.elang.evm.SlotPattern",
+      "org.erights.e.elang.evm.StaticScope",
 
-        "org.erights.e.elang.interp.E4E",
-        "org.erights.e.elang.interp.Loop",
-        "org.erights.e.elang.interp.ProtocolDesc",
+      "org.erights.e.elang.interp.E4E",
+      "org.erights.e.elang.interp.Loop",
+      "org.erights.e.elang.interp.ProtocolDesc",
 
 //        "org.erights.e.elang.scope.Scope",
-        "org.erights.e.elang.scope.ScopeLayout",
-        "org.erights.e.elang.scope.StaticContext",
+      "org.erights.e.elang.scope.ScopeLayout",
+      "org.erights.e.elang.scope.StaticContext",
 
-        "org.erights.e.elang.smallcaps.SmallcapsExpr",
+      "org.erights.e.elang.smallcaps.SmallcapsExpr",
 
-        "org.erights.e.elang.syntax.ELexer",
-        "org.erights.e.elang.syntax.EParser",
-        "org.erights.e.elang.syntax.PrettyFeeder",
+      "org.erights.e.elang.syntax.ELexer",
+      "org.erights.e.elang.syntax.EParser",
+      "org.erights.e.elang.syntax.PrettyFeeder",
 
-        "org.erights.e.elang.visitors.VerifyEVisitor",
-        "org.erights.e.elang.visitors.KernelECopyVisitor",
+      "org.erights.e.elang.visitors.VerifyEVisitor",
+      "org.erights.e.elang.visitors.KernelECopyVisitor",
 
-        "org.erights.e.elib.base.MessageDesc",
-        "org.erights.e.elib.base.ParamDesc",
-        "org.erights.e.elib.base.SourceSpan",
-        "org.erights.e.elib.base.ValueThunk",
+      "org.erights.e.elib.base.MessageDesc",
+      "org.erights.e.elib.base.ParamDesc",
+      "org.erights.e.elib.base.SourceSpan",
+      "org.erights.e.elib.base.ValueThunk",
 
-        "org.erights.e.elib.deflect.Callback",
-        "org.erights.e.elib.deflect.Deflector",
+      "org.erights.e.elib.deflect.Callback",
+      "org.erights.e.elib.deflect.Deflector",
 
-        "org.erights.e.elib.eio.EIO",
+      "org.erights.e.elib.eio.EIO",
 
-        "org.erights.e.elib.oldeio.TextWriter",
-        "org.erights.e.elib.oldeio.UnQuote",
+      "org.erights.e.elib.oldeio.TextWriter",
+      "org.erights.e.elib.oldeio.UnQuote",
 
-        "org.erights.e.elib.prim.E",
-        "org.erights.e.elib.prim.Selector",
-        "org.erights.e.elib.prim.Thrower",
+      "org.erights.e.elib.prim.E",
+      "org.erights.e.elib.prim.Selector",
+      "org.erights.e.elib.prim.Thrower",
 
-        "org.erights.e.elib.ref.Ref",
+      "org.erights.e.elib.ref.Ref",
 
-        "org.erights.e.elib.sealing.Brand",
-        "org.erights.e.elib.sealing.crypto.Signer",
-        "org.erights.e.elib.sealing.crypto.Verifier",
+      "org.erights.e.elib.sealing.Brand",
+      "org.erights.e.elib.sealing.crypto.Signer",
+      "org.erights.e.elib.sealing.crypto.Verifier",
 
-        "org.erights.e.elib.serial.Loader",
-        "org.erights.e.elib.serial.PersistentAuditor",
-        "org.erights.e.elib.serial.RemoteCall",
-        "org.erights.e.elib.serial.RemoteDelivery",
-        "org.erights.e.elib.serial.Serializer",
-        "org.erights.e.elib.serial.Uncaller",
-        "org.erights.e.elib.serial.Unserializer",
+      "org.erights.e.elib.serial.Loader",
+      "org.erights.e.elib.serial.PersistentAuditor",
+      "org.erights.e.elib.serial.RemoteCall",
+      "org.erights.e.elib.serial.RemoteDelivery",
+      "org.erights.e.elib.serial.Serializer",
+      "org.erights.e.elib.serial.Uncaller",
+      "org.erights.e.elib.serial.Unserializer",
 
-        "org.erights.e.elib.slot.AnyGuard",
-        "org.erights.e.elib.slot.BaseAuditor",
-        "org.erights.e.elib.slot.FinalSlot",
-        "org.erights.e.elib.slot.ListGuard",
-        "org.erights.e.elib.slot.MapGuard",
-        "org.erights.e.elib.slot.NullOkGuard",
-        "org.erights.e.elib.slot.SimpleSlot",
-        "org.erights.e.elib.slot.SettableSlot",
-        "org.erights.e.elib.slot.TupleGuard",
-        "org.erights.e.elib.slot.VoidGuard",
+      "org.erights.e.elib.slot.AnyGuard",
+      "org.erights.e.elib.slot.BaseAuditor",
+      "org.erights.e.elib.slot.FinalSlot",
+      "org.erights.e.elib.slot.ListGuard",
+      "org.erights.e.elib.slot.MapGuard",
+      "org.erights.e.elib.slot.NullOkGuard",
+      "org.erights.e.elib.slot.SimpleSlot",
+      "org.erights.e.elib.slot.SettableSlot",
+      "org.erights.e.elib.slot.TupleGuard",
+      "org.erights.e.elib.slot.VoidGuard",
 
-        "org.erights.e.elib.tables.ConstList",
-        "org.erights.e.elib.tables.ConstMap",
-        "org.erights.e.elib.tables.ConstSet",
-        "org.erights.e.elib.tables.TraversalKey",
-        "org.erights.e.elib.tables.EList",
-        "org.erights.e.elib.tables.EMap",
-        "org.erights.e.elib.tables.ESet",
-        "org.erights.e.elib.tables.FlexTrijection",
-        "org.erights.e.elib.tables.FlexList",
-        "org.erights.e.elib.tables.FlexMap",
-        "org.erights.e.elib.tables.FlexSet",
-        "org.erights.e.elib.tables.Twine",
-        "org.erights.e.elib.vat.Queue",
+      "org.erights.e.elib.tables.ConstList",
+      "org.erights.e.elib.tables.ConstMap",
+      "org.erights.e.elib.tables.ConstSet",
+      "org.erights.e.elib.tables.TraversalKey",
+      "org.erights.e.elib.tables.EList",
+      "org.erights.e.elib.tables.EMap",
+      "org.erights.e.elib.tables.ESet",
+      "org.erights.e.elib.tables.FlexTrijection",
+      "org.erights.e.elib.tables.FlexList",
+      "org.erights.e.elib.tables.FlexMap",
+      "org.erights.e.elib.tables.FlexSet",
+      "org.erights.e.elib.tables.Twine",
+      "org.erights.e.elib.vat.Queue",
 
-        //must enforce DeepPassByCopy
-        "org.erights.e.elib.util.TwineException",
+      //must enforce DeepPassByCopy
+      "org.erights.e.elib.util.TwineException",
 
-        "org.erights.e.meta.java.math.EInt",
+      "org.erights.e.meta.java.math.EInt",
 
-        "org.quasiliteral.astro.AstroTag",
+      "org.quasiliteral.astro.AstroTag",
 
-        "org.quasiliteral.quasiterm.QAtHole",
-        "org.quasiliteral.quasiterm.QBuilder",
-        "org.quasiliteral.quasiterm.QDollarHole",
-        "org.quasiliteral.quasiterm.QEmptySeq",
-        "org.quasiliteral.quasiterm.QFunctor",
-        "org.quasiliteral.quasiterm.QPairSeq",
-        "org.quasiliteral.quasiterm.QSome",
-        "org.quasiliteral.quasiterm.QTerm",
+      "org.quasiliteral.quasiterm.QAtHole",
+      "org.quasiliteral.quasiterm.QBuilder",
+      "org.quasiliteral.quasiterm.QDollarHole",
+      "org.quasiliteral.quasiterm.QEmptySeq",
+      "org.quasiliteral.quasiterm.QFunctor",
+      "org.quasiliteral.quasiterm.QPairSeq",
+      "org.quasiliteral.quasiterm.QSome",
+      "org.quasiliteral.quasiterm.QTerm",
 
-        "org.quasiliteral.syntax.URIKit",
-        "org.quasiliteral.syntax.TwineFeeder",
+      "org.quasiliteral.syntax.URIKit",
+      "org.quasiliteral.syntax.TwineFeeder",
 
-        "org.quasiliteral.term.GrammarParser",
-        "org.quasiliteral.term.QuasiBuilderAdapter",
-        "org.quasiliteral.term.Term",
-        "org.quasiliteral.term.TermBuilder",
-        "org.quasiliteral.term.TermLexer",
-        "org.quasiliteral.term.TermParser",
+      "org.quasiliteral.term.GrammarParser",
+      "org.quasiliteral.term.QuasiBuilderAdapter",
+      "org.quasiliteral.term.Term",
+      "org.quasiliteral.term.TermBuilder",
+      "org.quasiliteral.term.TermLexer",
+      "org.quasiliteral.term.TermParser",
 
-        "org.quasiliteral.text.FirstCharSplitter",
-        "org.quasiliteral.text.Identifiers",
-        "org.quasiliteral.text.Substituter",
-    };
+      "org.quasiliteral.text.FirstCharSplitter",
+      "org.quasiliteral.text.Identifiers",
+      "org.quasiliteral.text.Substituter",};
 
     static private final FlexSet ApprovedClasses;
 
@@ -252,19 +253,17 @@ public final class SafeJ {
     /**
      *
      */
-    static private final String[] ALWAYS_REMOVE = {
-        "clone()",
-        "equals(Object)",
-        "finalize()",
-        "getClass()",
-        "hashCode()",
-        "notify()",
-        "notifyAll()",
-        "toString()",
-        "wait()",
-        "wait(long)",
-        "wait(long, int)"
-    };
+    static private final String[] ALWAYS_REMOVE = {"clone()",
+      "equals(Object)",
+      "finalize()",
+      "getClass()",
+      "hashCode()",
+      "notify()",
+      "notifyAll()",
+      "toString()",
+      "wait()",
+      "wait(long)",
+      "wait(long, int)"};
 
     /**
      *
@@ -272,9 +271,8 @@ public final class SafeJ {
     static private final ConstMap AlwaysRemove;
 
     static {
-        FlexMap map = FlexMap.fromTypes(String.class,
-                                        String.class,
-                                        ALWAYS_REMOVE.length);
+        FlexMap map =
+          FlexMap.fromTypes(String.class, String.class, ALWAYS_REMOVE.length);
         for (int i = 0, len = ALWAYS_REMOVE.length; i < len; i++) {
             map.put(ALWAYS_REMOVE[i], "reject", true);
         }
@@ -409,9 +407,8 @@ public final class SafeJ {
             return false;
         }
         if (safe) {
-            return null != AstroTag.optFirstAttribute(optTerm,
-                                                      "class",
-                                                      "safe");
+            return null !=
+              AstroTag.optFirstAttribute(optTerm, "class", "safe");
         } else {
             return true;
         }
@@ -420,9 +417,7 @@ public final class SafeJ {
     /**
      *
      */
-    static SafeJ getSafeJ(Class clazz,
-                          Class optSugar,
-                          boolean staticFlag) {
+    static SafeJ getSafeJ(Class clazz, Class optSugar, boolean staticFlag) {
         SafeJ result = ALL;
         Term optSafeJTerm = getOptSafeJTerm(clazz.getName());
         if (null != optSafeJTerm) {
@@ -447,12 +442,12 @@ public final class SafeJ {
                         optSig = methArg1.getOptString();
                     }
                     T.require(optSig.indexOf('(') >= 1,
-                              "Must be a method signature: ", optSig);
+                              "Must be a method signature: ",
+                              optSig);
                     safeJMap.put(optSig, arg0tag, true);
                 }
-                result = new SafeJ(clazz.getName(),
-                                   safeJMap.snapshot(),
-                                   false);
+                result =
+                  new SafeJ(clazz.getName(), safeJMap.snapshot(), false);
             }
         }
         return result;
@@ -530,36 +525,29 @@ public final class SafeJ {
 
     /**
      * An optional mapping from flat signatures to interned strings
-     * representing an enumeration of cases of what to do with methods
-     * matching that signature.
-     * <p><ul>
-     * <li>If myOptMap is null, then all methods may be added or
-     * inherited.
-     * <li>If the signature is absent or maps to null, then the method may be
-     * inherited but not added. This corresponds to the absence of an
-     * entry for the method in the safej file, but does not correspond
-     * to the absence of a tag on the method. The absence of a tag is
-     * treated as an implicit "allow" and translated on input.
-     * <li>If the signature maps to <b>allow</b>, then the method may be
-     * added or inherited. "allow" should only be used where the
-     * method is introduced, or a warning will be traced. The signature
-     * should only be enumerated by subclasses of the introducing class in
-     * order to "reject" it.
-     * <li>If the signature maps to <b>suppress</b>, then the method not may
-     * be added, or inherited. "suppress" should only be used where
-     * the method is introduced, not where it is inherited, or a warning
-     * will be traced. In order to suppress the inheriting of a method
-     * allowed by a supertype, one should use "reject" instead.
-     * <li>If the signature maps to <b>reject</b>, then the method not may
-     * be added, or inherited. "reject" should only be used where
-     * the method is inherited, not where it is introduced, or a warning
-     * will be traced. In order to suppress the introduction of a method,
-     * one should use "suppress" instead.
-     * <li>If the signature maps to anything else, an error is traced and the
-     * method may not be added or inherited.
-     * </ul>
-     * XXX Some of the warnings above are not yet implemented, and will
-     * require enhancements to this API in order to support.
+     * representing an enumeration of cases of what to do with methods matching
+     * that signature. <p><ul> <li>If myOptMap is null, then all methods may be
+     * added or inherited. <li>If the signature is absent or maps to null, then
+     * the method may be inherited but not added. This corresponds to the
+     * absence of an entry for the method in the safej file, but does not
+     * correspond to the absence of a tag on the method. The absence of a tag
+     * is treated as an implicit "allow" and translated on input. <li>If the
+     * signature maps to <b>allow</b>, then the method may be added or
+     * inherited. "allow" should only be used where the method is introduced,
+     * or a warning will be traced. The signature should only be enumerated by
+     * subclasses of the introducing class in order to "reject" it. <li>If the
+     * signature maps to <b>suppress</b>, then the method not may be added, or
+     * inherited. "suppress" should only be used where the method is
+     * introduced, not where it is inherited, or a warning will be traced. In
+     * order to suppress the inheriting of a method allowed by a supertype, one
+     * should use "reject" instead. <li>If the signature maps to <b>reject</b>,
+     * then the method not may be added, or inherited. "reject" should only be
+     * used where the method is inherited, not where it is introduced, or a
+     * warning will be traced. In order to suppress the introduction of a
+     * method, one should use "suppress" instead. <li>If the signature maps to
+     * anything else, an error is traced and the method may not be added or
+     * inherited. </ul> XXX Some of the warnings above are not yet implemented,
+     * and will require enhancements to this API in order to support.
      */
     public ConstMap getOptMap() {
         return myOptMap;
@@ -594,9 +582,9 @@ public final class SafeJ {
         if ("suppress" == optVal) {
             if (myInheritFlag) {
                 //XXX should use the tracing system
-                System.err.println("*** safej warning: should reject " +
-                                   "rather than suppress " +
-                                   myBaseName + "." + flatSig);
+                System.err
+                  .println("*** safej warning: should reject " +
+                    "rather than suppress " + myBaseName + "." + flatSig);
             }
             return false;
         }
@@ -609,8 +597,9 @@ public final class SafeJ {
             }
             return false;
         }
-        System.err.println("*** safej error: unrecognized tag \"" + optVal +
-                           " for " + myBaseName + "." + flatSig);
+        System.err
+          .println("*** safej error: unrecognized tag \"" + optVal + " for " +
+            myBaseName + "." + flatSig);
         return false;
     }
 

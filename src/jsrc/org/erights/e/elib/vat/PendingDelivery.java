@@ -31,10 +31,9 @@ import java.io.IOException;
  * <p/>
  * A PendingDelivery is a pair of a Message and the object to deliver it to.
  * <p/>
- * NOTE!  All the methods of this class trust their callers to 1) only
- * provide interned strings as verb, and 2) not modify an args array after
- * passing it in. Btw, all source code literal strings are automatically
- * intern()ed.
+ * NOTE!  All the methods of this class trust their callers to 1) only provide
+ * interned strings as verb, and 2) not modify an args array after passing it
+ * in. Btw, all source code literal strings are automatically intern()ed.
  *
  * @author Mark S. Miller
  */
@@ -53,9 +52,8 @@ class PendingDelivery extends PendingEvent {
     /**
      * Reify a pending delivery as sent by the current context.
      *
-     * @param vat The Vat onto which this PendingEvent will be
-     *            queued. Note that this may be different than
-     *            {@link Vat#getCurrentVat()}.
+     * @param vat The Vat onto which this PendingEvent will be queued. Note
+     *            that this may be different than {@link Vat#getCurrentVat()}.
      */
     PendingDelivery(Vat vat,
                     Object rec,
@@ -75,14 +73,10 @@ class PendingDelivery extends PendingEvent {
     /**
      * Reify a pending delivery as sent by msg's sending context.
      *
-     * @param vat The Vat onto which this PendingEvent will be
-     *            queued. Note that this may be different than
-     *            {@link Vat#getCurrentVat()}.
+     * @param vat The Vat onto which this PendingEvent will be queued. Note
+     *            that this may be different than {@link Vat#getCurrentVat()}.
      */
-    public PendingDelivery(Vat vat,
-                           Object rec,
-                           boolean nowFlag,
-                           Message msg) {
+    public PendingDelivery(Vat vat, Object rec, boolean nowFlag, Message msg) {
         super("SCresolve", vat, msg.getSendingContext());
         myReceiver = rec;
         myOptResolver = msg.getOptResolver();

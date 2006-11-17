@@ -27,18 +27,18 @@ import java.util.Enumeration;
 import java.util.NoSuchElementException;
 
 /**
- * A conventional fifo queue in which dequeued items are removed in
- * the same order they were enqueued.
+ * A conventional fifo queue in which dequeued items are removed in the same
+ * order they were enqueued.
  * <p/>
- * An untyped queue can hold any object (except null). A queue can be
- * created with a dynamic type, in which case, at no extra overhead,
- * enqueue will only enqueue objects of that type (or a subtype, but
- * not null). This check imposes no *extra* overhead, since java
- * always makes us pay for a dynamic type check on array store anyway.
+ * An untyped queue can hold any object (except null). A queue can be created
+ * with a dynamic type, in which case, at no extra overhead, enqueue will only
+ * enqueue objects of that type (or a subtype, but not null). This check
+ * imposes no *extra* overhead, since java always makes us pay for a dynamic
+ * type check on array store anyway.
  * <p/>
- * The class Queue itself is no longer thread safe, instead being
- * optimized for using inside one vat. See the subclass {@link
- * SynchQueue} for a thread-safe variant with a blocking operation.
+ * The class Queue itself is no longer thread safe, instead being optimized for
+ * using inside one vat. See the subclass {@link SynchQueue} for a thread-safe
+ * variant with a blocking operation.
  *
  * @author Mark S. Miller
  * @see org.erights.e.elib.vat.Vat
@@ -71,8 +71,8 @@ public class Queue implements Enumeration {
      */
     public Queue(Class elementType) {
         if (elementType.isPrimitive()) {
-            throw new IllegalArgumentException("must be reference type: " +
-                                               elementType);
+            throw new IllegalArgumentException(
+              "must be reference type: " + elementType);
         }
         myStuff = (Object[])ArrayHelper.newArray(elementType, INITIAL_SIZE);
         myMaxSize = INITIAL_SIZE;
@@ -86,8 +86,9 @@ public class Queue implements Enumeration {
      *
      * @param newElement the object to be added to the end of the queue.
      * @throws NullPointerException thrown if newElement is null
-     * @throws ArrayStoreException  thrown if newElement does not coerce
-     *                              to the elementType specified in the Queue constructor.
+     * @throws ArrayStoreException  thrown if newElement does not coerce to the
+     *                              elementType specified in the Queue
+     *                              constructor.
      */
     public void enqueue(Object newElement) {
         T.notNull(newElement, "cannot enqueue a null");
@@ -95,15 +96,14 @@ public class Queue implements Enumeration {
         if (myCurSize == myMaxSize) {
             int newSize = (myMaxSize * 3) / 2 + 10;
             Class elementType = myStuff.getClass().getComponentType();
-            Object[] stuff = (Object[])ArrayHelper.newArray(elementType,
-                                                            newSize);
+            Object[] stuff =
+              (Object[])ArrayHelper.newArray(elementType, newSize);
 
             // note: careful code to avoid inadvertantly
             // reordrering messages
             System.arraycopy(myStuff, myOut, stuff, 0, myMaxSize - myOut);
             if (myOut != 0) {
-                System.arraycopy(myStuff, 0, stuff, myMaxSize - myOut,
-                                 myOut);
+                System.arraycopy(myStuff, 0, stuff, myMaxSize - myOut, myOut);
             }
             myOut = 0;
             myIn = myMaxSize;
@@ -127,8 +127,8 @@ public class Queue implements Enumeration {
     }
 
     /**
-     * Check to see if the queue has more elements. This method
-     * allows a Queue to be used as an Enumeration.
+     * Check to see if the queue has more elements. This method allows a Queue
+     * to be used as an Enumeration.
      *
      * @return is false if the queue is empty, otherwise true
      */
@@ -137,9 +137,9 @@ public class Queue implements Enumeration {
     }
 
     /**
-     * Get the least-recently-added element off of the queue. If the queue
-     * is currently empty, throw NoSuchElementException. This method
-     * allows a Queue to be used as an Enumeration.
+     * Get the least-recently-added element off of the queue. If the queue is
+     * currently empty, throw NoSuchElementException. This method allows a
+     * Queue to be used as an Enumeration.
      */
     public Object nextElement() throws NoSuchElementException {
         Object result = optDequeue();
@@ -150,8 +150,8 @@ public class Queue implements Enumeration {
     }
 
     /**
-     * Get the least-recently-added element off of the queue, or null
-     * if the queue is currently empty.
+     * Get the least-recently-added element off of the queue, or null if the
+     * queue is currently empty.
      */
     public Object optDequeue() {
         //NOTE: This depends on the java & jvm guarantee that int read

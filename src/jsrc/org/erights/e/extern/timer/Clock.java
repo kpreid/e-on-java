@@ -71,16 +71,15 @@ public class Clock extends TimerWatcher {
     /**
      * Called by the Timer.every() method. <p>
      * <p/>
-     * Captures the current Vat, so must be called from within the
-     * vat-thread holding target.
+     * Captures the current Vat, so must be called from within the vat-thread
+     * holding target.
      *
      * @param thread     The timer thread we are running with
      * @param resolution How often we are to get tick events
-     * @param arg        An arbitrary object to be passed along with the tick events
+     * @param arg        An arbitrary object to be passed along with the tick
+     *                   events
      */
-    Clock(TimerThread thread,
-          long resolution,
-          TickReactor target) {
+    Clock(TimerThread thread, long resolution, TickReactor target) {
         myThread = thread;
         myResolution = resolution;
         amTicking = false;
@@ -123,8 +122,7 @@ public class Clock extends TimerWatcher {
     }
 
     /**
-     * Stops the clock from ticking. The clock can be restarted with
-     * start().
+     * Stops the clock from ticking. The clock can be restarted with start().
      */
     public void stop() {
         if (!amTicking) {

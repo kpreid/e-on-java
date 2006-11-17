@@ -26,19 +26,19 @@ class CppCharFormatter implements CharFormatter {
     public String escapeChar(int c, boolean forCharLiteral) {
         // System.out.println("CppCharFormatter.escapeChar("+c+")");
         switch (c) {
-        case '\n':
+        case'\n':
             return "\\n";
-        case '\t':
+        case'\t':
             return "\\t";
-        case '\r':
+        case'\r':
             return "\\r";
-        case '\\':
+        case'\\':
             return "\\\\";
-        case '\'':
+        case'\'':
             return "\\'";
-        case '"':
+        case'"':
             return "\\\"";
-        default :
+        default:
             if (c < ' ' || c > 126) {
                 if (c > 255) {
                     String s = Integer.toString(c, 16);

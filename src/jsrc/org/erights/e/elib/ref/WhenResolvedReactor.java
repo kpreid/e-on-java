@@ -10,30 +10,25 @@ import org.erights.e.elib.util.DeadManSwitch;
 import org.erights.e.elib.util.OneArgFunc;
 
 /**
- * Used to implement {@link Ref#whenResolved(Object, OneArgFunc)}, which is
- * used to implement the <a
- * href="http://www.skyhunter.com/marcs/ewalnut.html#SEC20">when-catch</a>
+ * Used to implement {@link Ref#whenResolved(Object,OneArgFunc)}, which is
+ * used to implement the <a href="http://www.skyhunter.com/marcs/ewalnut.html#SEC20">when-catch</a>
  * construct.
  * <p/>
  * Wraps a 'done' function (the second argument of whenResolved, which is the
- * right side of the "->" of a when-catch construct), so that the done
- * function will eventually be invoked with the original reference exactly
- * once under the following conditions:
- * <ul>
- * <li>The original reference is resolved
+ * right side of the "->" of a when-catch construct), so that the done function
+ * will eventually be invoked with the original reference exactly once under
+ * the following conditions: <ul> <li>The original reference is resolved
  * <li>Either all prior messages sent on the original reference are already
- * delivered, or the original reference has become broken.
- * </ul>
- * This object is woken up by __reactToLostClient and the response to
- * __whenMoreResolved, but in both cases it ignores the argument and treats the
- * message just as a wakeup call.
+ * delivered, or the original reference has become broken. </ul> This object is
+ * woken up by __reactToLostClient and the response to __whenMoreResolved, but
+ * in both cases it ignores the argument and treats the message just as a
+ * wakeup call.
  *
  * @author Mark S. Miller
  * @author Terry Stanley
  * @see WhenBrokenReactor
  */
-class WhenResolvedReactor
-  implements DeadManSwitch, OneArgFunc, PassByProxy {
+class WhenResolvedReactor implements DeadManSwitch, OneArgFunc, PassByProxy {
 
     private boolean myIsDone;
 
@@ -50,9 +45,7 @@ class WhenResolvedReactor
      * Assumes a first __whenMoreResolved will be sent with this
      * WhenResolvedReactor as argument.
      */
-    WhenResolvedReactor(OneArgFunc wrapped,
-                        Object ref,
-                        Resolver optResolver) {
+    WhenResolvedReactor(OneArgFunc wrapped, Object ref, Resolver optResolver) {
         myIsDone = false;
         myOptWrapped = wrapped;
         myRef = ref;
@@ -64,8 +57,8 @@ class WhenResolvedReactor
      * <p/>
      * If myRef is resolved, then invoke myOptWrapped once (resolving
      * myOptResolver to the outcome), and remember not to invoke it again (by
-     * forgetting it). Also forget myRef and myOptResolver, since we won't
-     * need them again. Further invocations silently return null rather than
+     * forgetting it). Also forget myRef and myOptResolver, since we won't need
+     * them again. Further invocations silently return null rather than
      * complaining.
      * <p/>
      * If myRef is not resolved, then send a new <pre>
@@ -73,8 +66,8 @@ class WhenResolvedReactor
      *     myRef <- __whenMoreResolved(this)
      * </pre> message whose response should wake me up again.
      *
-     * @return Always returns null, irrespective of what
-     *         myOptWrapped.run(...) returns.
+     * @return Always returns null, irrespective of what myOptWrapped.run(...)
+     *         returns.
      */
     public Object run(Object ignored) {
         if (myIsDone) {

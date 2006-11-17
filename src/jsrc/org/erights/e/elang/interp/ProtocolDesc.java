@@ -5,8 +5,8 @@ package org.erights.e.elang.interp;
 
 import org.erights.e.develop.assertion.T;
 import org.erights.e.elib.base.TypeDesc;
-import org.erights.e.elib.prim.StaticMaker;
 import org.erights.e.elib.prim.E;
+import org.erights.e.elib.prim.StaticMaker;
 import org.erights.e.elib.slot.Audition;
 import org.erights.e.elib.slot.Auditor;
 import org.erights.e.elib.tables.ConstList;
@@ -14,7 +14,7 @@ import org.erights.e.elib.tables.ConstList;
 /**
  * A type description object, as would be created by an <tt>interface</tt>
  * expression.
- * <p>
+ * <p/>
  * A type so defined is used both as an audtitor, to check type conformance,
  * and as a Guard to check that the value provided is an instance of an audited
  * type.
@@ -26,26 +26,24 @@ public class ProtocolDesc extends TypeDesc {
 
     /**
      * Determines whether this ProtocolDesc is Auditor, Guard, or both.
-     * <p>
-     * If the value of the myOptAuditor variable...<ul>
-     * <li>...is this ProtocolDesc itself, then this ProtocolDesc is both an
-     *     Auditor and a Guard, corresponding to single key authentication.
-     * <li>...is null, then this ProtocolDesc is just an Auditor, corresponding
-     *     to the signing key of a signing key pair.
-     * <li>...is neither null nor this ProtocolDesc, then ProtocolDesc is just
-     *     a Guard, corresponding to the signature verification key of a
-     *     signing key pair. In this case, the value of this variable is the
-     *     corresponding Auditor, whose value for this variable is null.
-     * </ul>
-     * This is actually a rather kludgy representation. A guard-only object
-     * should not be of type Auditor, and vice versa.
+     * <p/>
+     * If the value of the myOptAuditor variable...<ul> <li>...is this
+     * ProtocolDesc itself, then this ProtocolDesc is both an Auditor and a
+     * Guard, corresponding to single key authentication. <li>...is null, then
+     * this ProtocolDesc is just an Auditor, corresponding to the signing key
+     * of a signing key pair. <li>...is neither null nor this ProtocolDesc,
+     * then ProtocolDesc is just a Guard, corresponding to the signature
+     * verification key of a signing key pair. In this case, the value of this
+     * variable is the corresponding Auditor, whose value for this variable is
+     * null. </ul> This is actually a rather kludgy representation. A
+     * guard-only object should not be of type Auditor, and vice versa.
      */
     private final ProtocolDesc myOptAuditor;
 
     /**
      * Makes a single type description object that can be used both as a
      * rubber-stamping auditor and as a guard.
-     * <p>
+     * <p/>
      * This can be used for the object-equivalent of single-key
      * authentication.
      */
@@ -91,7 +89,7 @@ public class ProtocolDesc extends TypeDesc {
                                               auditors,
                                               mTypes,
                                               stamp);
-        Object[] result = { guard, stamp };
+        Object[] result = {guard, stamp};
         return result;
     }
 

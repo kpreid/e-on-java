@@ -19,17 +19,15 @@ Copyright (C) 1998 Electric Communities. All Rights Reserved.
 Contributor(s): ______________________________________.
 */
 
-
 //import org.erights.e.elib.ref.ExternalRef;
 
 /**
- * Worker classes for the mult-queue tester. This class is instantiated
- * by TestMultiQMain.java.
- * TestMultiQ is a simple class that 1) receives a reference to another
- * "partner" TestMultiQ class, and 2) upon receiving a message to add an integer
- * value to an internal counter, testMultiQ updates the internal counter, and then
- * sends the same message to its partner instance (otherRef).
- * See TestMultiQMain for the top level story.
+ * Worker classes for the mult-queue tester. This class is instantiated by
+ * TestMultiQMain.java. TestMultiQ is a simple class that 1) receives a
+ * reference to another "partner" TestMultiQ class, and 2) upon receiving a
+ * message to add an integer value to an internal counter, testMultiQ updates
+ * the internal counter, and then sends the same message to its partner
+ * instance (otherRef). See TestMultiQMain for the top level story.
  */
 public class TestMultiQ {
 

@@ -53,8 +53,8 @@ class AuditUtils implements ClassFileConstants {
      * @return a prettified version of the parameters.
      *         <p/>
      *         For example, if passed "(I)Lcom/fudco/foo/Bar;", "Wingo", and
-     *         "lmf", the result will be the string
-     *         "com.fudco.foo.Bar Wingo.lmf(int)"
+     *         "lmf", the result will be the string "com.fudco.foo.Bar
+     *         Wingo.lmf(int)"
      */
     static String pSig(String in, String baseClass, String name) {
         int inptr[] = {0};
@@ -64,57 +64,58 @@ class AuditUtils implements ClassFileConstants {
     /**
      * Internal worker routine in support of pSig()
      */
-    static String pSigScan(String in, int inptr[], String baseClass,
+    static String pSigScan(String in,
+                           int inptr[],
+                           String baseClass,
                            String name) {
         String pre;
         String post = "";
 
         switch (in.charAt(inptr[0]++)) {
-        case 'B':
+        case'B':
             pre = "byte";
             break;
-        case 'C':
+        case'C':
             pre = "char";
             break;
-        case 'D':
+        case'D':
             pre = "double";
             break;
-        case 'F':
+        case'F':
             pre = "float";
             break;
-        case 'I':
+        case'I':
             pre = "int";
             break;
-        case 'J':
+        case'J':
             pre = "long";
             break;
-        case 'S':
+        case'S':
             pre = "short";
             break;
-        case 'V':
+        case'V':
             pre = "void";
             break;
-        case 'Z':
+        case'Z':
             pre = "boolean";
             break;
-        case '[':
+        case'[':
             pre = pSigScan(in, inptr, null, null) + "[]";
             break;
-        case 'L':
-            {
-                char c = in.charAt(inptr[0]++);
-                pre = "";
-                while (c != ';') {
-                    if (c == '/') {
-                        pre += '.';
-                    } else {
-                        pre += c;
-                    }
-                    c = in.charAt(inptr[0]++);
+        case'L': {
+            char c = in.charAt(inptr[0]++);
+            pre = "";
+            while (c != ';') {
+                if (c == '/') {
+                    pre += '.';
+                } else {
+                    pre += c;
                 }
-                break;
+                c = in.charAt(inptr[0]++);
             }
-        case '(':
+            break;
+        }
+        case'(':
             post = "(";
             while (in.charAt(inptr[0]) != ')') {
                 if (post.length() > 1) {

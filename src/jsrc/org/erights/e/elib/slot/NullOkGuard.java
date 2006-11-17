@@ -20,10 +20,10 @@ Contributor(s): ______________________________________.
 */
 
 import org.erights.e.develop.assertion.T;
+import org.erights.e.elib.oldeio.TextWriter;
 import org.erights.e.elib.prim.Thrower;
 import org.erights.e.elib.ref.Ref;
 import org.erights.e.elib.util.OneArgFunc;
-import org.erights.e.elib.oldeio.TextWriter;
 
 import java.io.IOException;
 
@@ -33,10 +33,10 @@ import java.io.IOException;
  * <p/>
  * As a Guard, "nullOk" accepts only null as a valid value.
  * <p/>
- * As a Guard template, "nullOk[subGuard]" produces a Guard. (This
- * object is also an instance of NullOkGuard, but no one should care.)  As a
- * Guard, this object accepts null and whatever the subGuard
- * accepts. Non-null values are coerced according to the provided subGuard.
+ * As a Guard template, "nullOk[subGuard]" produces a Guard. (This object is
+ * also an instance of NullOkGuard, but no one should care.)  As a Guard, this
+ * object accepts null and whatever the subGuard accepts. Non-null values are
+ * coerced according to the provided subGuard.
  *
  * @author Mark S. Miller
  */
@@ -76,10 +76,8 @@ public class NullOkGuard implements Guard {
      * Non-null values are coerced by the argument.
      */
     public NullOkGuard get(Guard subGuard) {
-        T.require(null == myOptSubGuard,
-                  "can only combine with one Guard");
-        T.notNull(subGuard,
-                  "Missing sub-guard parameter");
+        T.require(null == myOptSubGuard, "can only combine with one Guard");
+        T.notNull(subGuard, "Missing sub-guard parameter");
         return new NullOkGuard(subGuard);
     }
 

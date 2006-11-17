@@ -4,9 +4,9 @@ package org.erights.e.meta.java.lang;
 // found at http://www.opensource.org/licenses/mit-license.html ...............
 
 import org.erights.e.develop.assertion.T;
+import org.erights.e.elib.oldeio.TextWriter;
 import org.erights.e.elib.prim.Thrower;
 import org.erights.e.elib.util.OneArgFunc;
-import org.erights.e.elib.oldeio.TextWriter;
 import org.erights.e.meta.java.math.BaseEIntGuardSugar;
 import org.erights.e.meta.java.math.EInt;
 
@@ -22,8 +22,7 @@ public class IntegerGuardSugar extends BaseEIntGuardSugar {
      */
     public IntegerGuardSugar(Class clazz) {
         super(clazz);
-        T.require(Integer.class == clazz,
-                  clazz, " must be an 'int32' type");
+        T.require(Integer.class == clazz, clazz, " must be an 'int32' type");
     }
 
     /**
@@ -36,9 +35,8 @@ public class IntegerGuardSugar extends BaseEIntGuardSugar {
                 return EInt.valueOf(eInt.intValue());
             } else {
                 throw Thrower.toEject(optEjector,
-                                      "" + eInt + " must be in " +
-                                      Integer.MIN_VALUE + ".." +
-                                      Integer.MAX_VALUE);
+                                      "" + eInt + " must be in " + Integer
+                                        .MIN_VALUE + ".." + Integer.MAX_VALUE);
             }
         }
         throw doesntCoerceR(shortSpecimen, optEjector);

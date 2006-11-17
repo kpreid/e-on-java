@@ -28,8 +28,8 @@ public class QEmptySeq extends QAstroArg {
     /**
      * Makes a QTerm that matches or generates a Astro.
      * <p/>
-     * The invariants of a QTerm are not checked here, but rather are
-     * enforced by the callers in this class and in QTermBuilder.
+     * The invariants of a QTerm are not checked here, but rather are enforced
+     * by the callers in this class and in QTermBuilder.
      *
      * @param builder Used to build the results of a substitute
      */
@@ -41,9 +41,7 @@ public class QEmptySeq extends QAstroArg {
      * Uses 'QEmptySeqMaker(myBuilder)'
      */
     public Object[] getSpreadUncall() {
-        Object[] result = {
-            QEmptySeqMaker, "run", myBuilder
-        };
+        Object[] result = {QEmptySeqMaker, "run", myBuilder};
         return result;
     }
 
@@ -97,8 +95,6 @@ public class QEmptySeq extends QAstroArg {
     /**
      * Does nothing
      */
-    void endShape(FlexList optBindings,
-                  int[] prefix,
-                  int shape) {
+    void endShape(FlexList optBindings, int[] prefix, int shape) {
     }
 }

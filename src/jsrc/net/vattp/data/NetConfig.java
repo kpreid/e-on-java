@@ -27,8 +27,8 @@ public class NetConfig implements Persistent, DeepPassByCopy, EPrintable {
     /**
      *
      */
-    static public final StaticMaker NetConfigMaker = StaticMaker.make(
-      NetConfig.class);
+    static public final StaticMaker NetConfigMaker =
+      StaticMaker.make(NetConfig.class);
 
     /**
      * @serial Where I register so others can find me. <p>
@@ -64,8 +64,8 @@ public class NetConfig implements Persistent, DeepPassByCopy, EPrintable {
      * port. </ul>
      */
     static public NetConfig make(ConstMap optProps) {
-        String flattenedVLSPath = (String)optProps.fetch("e.VLSPath",
-                                                         new ValueThunk(""));
+        String flattenedVLSPath =
+          (String)optProps.fetch("e.VLSPath", new ValueThunk(""));
         ConstList vlsPath = EARL.parseSearchPath(flattenedVLSPath);
 
         String flattenedSearchPath = (String)optProps.fetch("e.SearchPath",
@@ -73,16 +73,16 @@ public class NetConfig implements Persistent, DeepPassByCopy, EPrintable {
                                                               flattenedVLSPath));
         ConstList searchPath = EARL.parseSearchPath(flattenedSearchPath);
 
-        String flattenedListenAddrPath = (String)optProps.fetch(
-          "e.ListenAddressPath", new ValueThunk(""));
-        String optListenAddr = (String)optProps.fetch("e.ListenAddress",
-                                                      ValueThunk.NULL_THUNK);
+        String flattenedListenAddrPath =
+          (String)optProps.fetch("e.ListenAddressPath", new ValueThunk(""));
+        String optListenAddr =
+          (String)optProps.fetch("e.ListenAddress", ValueThunk.NULL_THUNK);
         if (null != optListenAddr) {
             T.fail("'e.ListenAddress' is no longer supported. Use " +
-                   "'e.ListenAddressPath' instead");
+              "'e.ListenAddressPath' instead");
         }
-        ConstList listenAddrPath = EARL.parseSearchPath(
-          flattenedListenAddrPath);
+        ConstList listenAddrPath =
+          EARL.parseSearchPath(flattenedListenAddrPath);
 
         return new NetConfig(vlsPath, searchPath, listenAddrPath);
     }
@@ -109,11 +109,8 @@ public class NetConfig implements Persistent, DeepPassByCopy, EPrintable {
      * Uses 'NetConfigMaker(vlsPath, searchPath, listenAddrPath)'.
      */
     public Object[] getSpreadUncall() {
-        Object[] result = {NetConfigMaker,
-                           "run",
-                           myVLSPath,
-                           mySearchPath,
-                           myListenAddrPath};
+        Object[] result =
+          {NetConfigMaker, "run", myVLSPath, mySearchPath, myListenAddrPath};
         return result;
     }
 

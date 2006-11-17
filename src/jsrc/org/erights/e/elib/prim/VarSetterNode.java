@@ -23,8 +23,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
 /**
- * A java public non-final instance variable becomes a one argument
- * method for setting its value
+ * A java public non-final instance variable becomes a one argument method for
+ * setting its value
  *
  * @author Mark S. Miller
  */

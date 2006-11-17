@@ -34,8 +34,8 @@ public class UnionGuard implements Guard {
                   "UnionGuard unneeded any[",
                   subGuards,
                   "]");
-        final FlexList guardList = FlexList.fromType(Guard.class,
-                                                     subGuards.size());
+        final FlexList guardList =
+          FlexList.fromType(Guard.class, subGuards.size());
         subGuards.iterate(new AssocFunc() {
             public void run(Object key, Object value) {
                 if (value instanceof UnionGuard) {

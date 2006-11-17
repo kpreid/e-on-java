@@ -35,10 +35,9 @@ public class ClassFileAuditor implements ClassFileConstants {
     }
 
     /**
-     * Perform the audit. The audit checks for:
-     * -- non-final static fields
-     * -- static native methods
-     * -- class and member references that the forbidifier finds unacceptable
+     * Perform the audit. The audit checks for: -- non-final static fields --
+     * static native methods -- class and member references that the
+     * forbidifier finds unacceptable
      * <p/>
      * Since this is a reference implementation, it finds all problems rather
      * than rejecting the class file upon detection of the first problem. It
@@ -77,11 +76,12 @@ public class ClassFileAuditor implements ClassFileConstants {
     private boolean auditField(CF_field_info field) {
         int flags = field.access_flags();
         if ((flags & ACC_STATIC) != 0 && (flags & ACC_FINAL) == 0) {
-            System.err.println("non-final static field: " +
-                               AuditUtils.pSig(
-                                 u.pString(field.descriptor_index()),
-                                 null,
-                                 u.pString(field.name_index())));
+            System.err
+              .println("non-final static field: " + AuditUtils.pSig(u.pString(
+                field.descriptor_index()),
+                                                                    null,
+                                                                    u.pString(
+                                                                      field.name_index())));
             return true;
         } else {
             return false;
@@ -96,30 +96,32 @@ public class ClassFileAuditor implements ClassFileConstants {
      * @return true if the reference is unacceptable, false if it is OK.
      */
     private boolean auditMemberRef(CF_cp_ref ref) {
-        CF_CONSTANT_Class_info classInfo = (CF_CONSTANT_Class_info)
-          myClassFile.constant_pool(ref.class_index());
+        CF_CONSTANT_Class_info classInfo =
+          (CF_CONSTANT_Class_info)myClassFile.constant_pool(ref.class_index());
         String className =
-          ((CF_CONSTANT_Utf8_info)
-          myClassFile.constant_pool(classInfo.name_index())).asString();
+          ((CF_CONSTANT_Utf8_info)myClassFile.constant_pool(classInfo.name_index()))
+            .asString();
         if (myForbidifier.forbiddenClass(className)) {
-            System.err.println("forbidden unsafe class: " +
-                               AuditUtils.pClass(className));
+            System.err
+              .println(
+                "forbidden unsafe class: " + AuditUtils.pClass(className));
             return true;
         }
 
-        CF_CONSTANT_NameAndType_info ntInfo = (CF_CONSTANT_NameAndType_info)
-          myClassFile.constant_pool(ref.name_and_type_index());
+        CF_CONSTANT_NameAndType_info ntInfo =
+          (CF_CONSTANT_NameAndType_info)myClassFile.constant_pool(ref.name_and_type_index());
         String memberName =
-          ((CF_CONSTANT_Utf8_info)
-          myClassFile.constant_pool(ntInfo.name_index())).asString();
+          ((CF_CONSTANT_Utf8_info)myClassFile.constant_pool(ntInfo.name_index()))
+            .asString();
         String signature =
-          ((CF_CONSTANT_Utf8_info)
-          myClassFile.constant_pool(ntInfo.descriptor_index())).asString();
+          ((CF_CONSTANT_Utf8_info)myClassFile.constant_pool(ntInfo.descriptor_index()))
+            .asString();
         if (myForbidifier.forbiddenMember(className, memberName, signature)) {
-            System.err.println("forbidden unsafe member: " +
-                               AuditUtils.pSig(signature,
-                                               AuditUtils.pClass(className),
-                                               memberName));
+            System.err
+              .println("forbidden unsafe member: " + AuditUtils.pSig(signature,
+                                                                     AuditUtils.pClass(
+                                                                       className),
+                                                                     memberName));
             return true;
         }
         return false;
@@ -135,11 +137,12 @@ public class ClassFileAuditor implements ClassFileConstants {
     private boolean auditMethod(CF_method_info method) {
         int flags = method.access_flags();
         if ((flags & ACC_STATIC) != 0 && (flags & ACC_NATIVE) != 0) {
-            System.err.println("static native method: " +
-                               AuditUtils.pSig(
-                                 u.pString(method.descriptor_index()),
-                                 null,
-                                 u.pString(method.name_index())));
+            System.err
+              .println("static native method: " + AuditUtils.pSig(u.pString(
+                method.descriptor_index()),
+                                                                  null,
+                                                                  u.pString(
+                                                                    method.name_index())));
             return true;
         } else {
             return false;

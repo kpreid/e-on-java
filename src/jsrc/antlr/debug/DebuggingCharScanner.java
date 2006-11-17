@@ -11,8 +11,8 @@ import antlr.collections.impl.BitSet;
 public abstract class DebuggingCharScanner extends CharScanner
   implements DebuggingParser {
 
-    private ParserEventSupport parserEventSupport = new ParserEventSupport(
-      this);
+    private ParserEventSupport parserEventSupport =
+      new ParserEventSupport(this);
     private boolean _notDebugMode = false;
     protected String ruleNames[];
     protected String semPredNames[];
@@ -95,22 +95,19 @@ public abstract class DebuggingCharScanner extends CharScanner
 
     protected void fireSyntacticPredicateFailed() {
         if (isDebugMode()) {
-            parserEventSupport.fireSyntacticPredicateFailed(
-              inputState.guessing);
+            parserEventSupport.fireSyntacticPredicateFailed(inputState.guessing);
         }
     }
 
     protected void fireSyntacticPredicateStarted() {
         if (isDebugMode()) {
-            parserEventSupport.fireSyntacticPredicateStarted(
-              inputState.guessing);
+            parserEventSupport.fireSyntacticPredicateStarted(inputState.guessing);
         }
     }
 
     protected void fireSyntacticPredicateSucceeded() {
         if (isDebugMode()) {
-            parserEventSupport.fireSyntacticPredicateSucceeded(
-              inputState.guessing);
+            parserEventSupport.fireSyntacticPredicateSucceeded(inputState.guessing);
         }
     }
 
@@ -157,8 +154,8 @@ public abstract class DebuggingCharScanner extends CharScanner
         return super.makeToken(t);
     }
 
-    public void match(char c) throws MismatchedCharException,
-      CharStreamException {
+    public void match(char c)
+      throws MismatchedCharException, CharStreamException {
         char la_1 = LA(1);
         try {
             super.match(c);
@@ -171,8 +168,8 @@ public abstract class DebuggingCharScanner extends CharScanner
         }
     }
 
-    public void match(BitSet b) throws MismatchedCharException,
-      CharStreamException {
+    public void match(BitSet b)
+      throws MismatchedCharException, CharStreamException {
         String text = this.text.toString();
         char la_1 = LA(1);
         try {
@@ -189,8 +186,8 @@ public abstract class DebuggingCharScanner extends CharScanner
         }
     }
 
-    public void match(String s) throws MismatchedCharException,
-      CharStreamException {
+    public void match(String s)
+      throws MismatchedCharException, CharStreamException {
         StringBuffer la_s = new StringBuffer("");
         int len = s.length();
         // peek at the next len worth of characters
@@ -215,8 +212,8 @@ public abstract class DebuggingCharScanner extends CharScanner
 
     }
 
-    public void matchNot(char c) throws MismatchedCharException,
-      CharStreamException {
+    public void matchNot(char c)
+      throws MismatchedCharException, CharStreamException {
         char la_1 = LA(1);
         try {
             super.matchNot(c);
@@ -232,12 +229,14 @@ public abstract class DebuggingCharScanner extends CharScanner
 
     }
 
-    public void matchRange(char c1, char c2) throws MismatchedCharException,
-      CharStreamException {
+    public void matchRange(char c1, char c2)
+      throws MismatchedCharException, CharStreamException {
         char la_1 = LA(1);
         try {
             super.matchRange(c1, c2);
-            parserEventSupport.fireMatch(la_1, "" + c1 + c2, inputState.guessing);
+            parserEventSupport.fireMatch(la_1,
+                                         "" + c1 + c2,
+                                         inputState.guessing);
         } catch (MismatchedCharException e) {
             if (inputState.guessing == 0) {
                 parserEventSupport.fireMismatch(la_1,

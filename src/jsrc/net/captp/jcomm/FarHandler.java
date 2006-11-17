@@ -40,12 +40,8 @@ class FarHandler extends RemoteHandler {
      * @param swissHash The identity (within the connection's remote vat) of
      *                  the object this FarRef designates.
      */
-    FarHandler(CapTPConnection conn,
-               int pos,
-               BigInteger swissHash) {
-        super(conn,
-              pos,
-              new ObjectID(conn.remoteVatID(), swissHash));
+    FarHandler(CapTPConnection conn, int pos, BigInteger swissHash) {
+        super(conn, pos, new ObjectID(conn.remoteVatID(), swissHash));
 //        mySwissHash = swissHash;
     }
 

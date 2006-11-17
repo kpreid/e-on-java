@@ -16,7 +16,6 @@ import org.erights.e.elib.util.OneArgFunc;
 import java.io.IOException;
 
 /**
- *
  * @author Mark S. Miller
  * @author Darius Bacon
  */
@@ -45,10 +44,8 @@ public class SmallcapsExpr extends EExpr {
      * Uses XXX 'makeFoo(...)'
      */
     public Object[] getSpreadUncall() {
-        Object[] result = { StaticMaker.make(SmallcapsExpr.class),
-                            "run",
-                            myExprTree,
-                            myCode };
+        Object[] result =
+          {StaticMaker.make(SmallcapsExpr.class), "run", myExprTree, myCode};
         return result;
     }
 
@@ -98,8 +95,7 @@ public class SmallcapsExpr extends EExpr {
     /**
      *
      */
-    public void subPrintOn(TextWriter out, int priority)
-      throws IOException {
+    public void subPrintOn(TextWriter out, int priority) throws IOException {
         myExprTree.subPrintOn(out, priority);
     }
 }

@@ -34,14 +34,14 @@ import java.lang.reflect.Array;
  * <p/>
  * A ConstList can be compared for partial ordering with other ConstLists.
  * <p/>
- * As a special case, a ConstList all of whose elements are DeepPassByCopy
- * is itself considered to be DeepPassByCopy by
- * {@link org.erights.e.elib.ref.Ref#isDeepPassByCopy Ref.isDeepPassByCopy/1}.
+ * As a special case, a ConstList all of whose elements are DeepPassByCopy is
+ * itself considered to be DeepPassByCopy by {@link org.erights.e.elib.ref.Ref#isDeepPassByCopy
+ * Ref.isDeepPassByCopy/1}.
  *
  * @author Mark S. Miller
  */
-public abstract class ConstList
-  extends EList implements PassByConstruction, Selfless {
+public abstract class ConstList extends EList
+  implements PassByConstruction, Selfless {
 
     static private final long serialVersionUID = -4704670888158933364L;
 
@@ -134,10 +134,10 @@ public abstract class ConstList
     }
 
     /**
-     * Ordered by lexicographic ordering of the elements. In other words,
-     * the ordering is the same as the ordering of the first unequal
-     * comparison, in left-to-right order. If all compare equal but one list
-     * is shorter, the shorter list is less than the longer list.
+     * Ordered by lexicographic ordering of the elements. In other words, the
+     * ordering is the same as the ordering of the first unequal comparison, in
+     * left-to-right order. If all compare equal but one list is shorter, the
+     * shorter list is less than the longer list.
      */
     public double op__cmp(ConstList other) {
         return op__cmp(other, SimpleCompFunc.THE_ONE);
@@ -164,8 +164,8 @@ public abstract class ConstList
      * Ensure the public overrides in non-public subclasses are actually
      * public.
      * <p/>
-     * The default implementation here just delegates to
-     * {@link MirandaMethods#__optUncall}.
+     * The default implementation here just delegates to {@link
+     * MirandaMethods#__optUncall}.
      */
     public Object[] __optUncall() {
         return MirandaMethods.__optUncall(this);

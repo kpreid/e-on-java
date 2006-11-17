@@ -32,8 +32,6 @@ import org.erights.e.meta.java.math.EInt;
 import java.io.IOException;
 
 /**
- *
- *
  * @author E. Dean Tribble
  */
 public class LocalFinalNounExpr extends NestNounExpr {
@@ -52,12 +50,12 @@ public class LocalFinalNounExpr extends NestNounExpr {
      * Uses XXX 'makeFoo(...)'
      */
     public Object[] getSpreadUncall() {
-        Object[] result = { StaticMaker.make(LocalFinalNounExpr.class),
-                            "run",
-                            getOptSpan(),
-                            getName(),
-                            EInt.valueOf(myIndex),
-                            getOptScopeLayout() };
+        Object[] result = {StaticMaker.make(LocalFinalNounExpr.class),
+          "run",
+          getOptSpan(),
+          getName(),
+          EInt.valueOf(myIndex),
+          getOptScopeLayout()};
         return result;
     }
 
@@ -76,8 +74,8 @@ public class LocalFinalNounExpr extends NestNounExpr {
     }
 
     /**
-     * Return the kind of object that should be stored in a frame, assuming
-     * an accessor of the same type as the receiver.
+     * Return the kind of object that should be stored in a frame, assuming an
+     * accessor of the same type as the receiver.
      */
     public Object getRepresentation(EvalContext ctx) {
         return ctx.local(myIndex);

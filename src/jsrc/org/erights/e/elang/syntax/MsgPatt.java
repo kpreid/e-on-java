@@ -22,7 +22,6 @@ Contributor(s): ______________________________________.
 import org.erights.e.elang.evm.EExpr;
 import org.erights.e.elang.evm.Pattern;
 import org.erights.e.elib.base.SourceSpan;
-import org.quasiliteral.astro.Astro;
 
 
 /**
@@ -53,7 +52,6 @@ class MsgPatt {
     }
 
     /**
-     *
      * @return
      */
     public SourceSpan getOptSpan() {
@@ -61,7 +59,6 @@ class MsgPatt {
     }
 
     /**
-     *
      * @return
      */
     public String getVerb() {
@@ -69,7 +66,6 @@ class MsgPatt {
     }
 
     /**
-     *
      * @return
      */
     public Pattern[] getPatterns() {
@@ -77,7 +73,6 @@ class MsgPatt {
     }
 
     /**
-     *
      * @return
      */
     public EExpr getOptResultGuard() {

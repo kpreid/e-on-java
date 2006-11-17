@@ -64,11 +64,8 @@ public class PrettyFeeder implements LineFeeder {
                              int indent,
                              char closer,
                              int closeIndent) {
-        Twine result = myWrapped.optNextLine(atTop,
-                                             quoted,
-                                             indent,
-                                             closer,
-                                             closeIndent);
+        Twine result =
+          myWrapped.optNextLine(atTop, quoted, indent, closer, closeIndent);
         if (null == result) {
             return null;
         }

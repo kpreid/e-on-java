@@ -24,9 +24,9 @@ import org.erights.e.develop.trace.Trace;
 import org.erights.e.elib.base.SourceSpan;
 import org.erights.e.elib.prim.E;
 import org.erights.e.elib.prim.StaticMaker;
+import org.erights.e.elib.ref.Ref;
 import org.erights.e.elib.serial.DeepPassByCopy;
 import org.erights.e.elib.vat.StackContext;
-import org.erights.e.elib.ref.Ref;
 import org.erights.e.meta.java.io.InputStreamSugar;
 import org.erights.e.meta.java.lang.CharacterMakerSugar;
 
@@ -39,17 +39,16 @@ import java.security.NoSuchAlgorithmException;
 /**
  * Like a String, except that it keeps track of original source positions.
  * <p/>
- * Twine has exactly three immediate subclasses -- EmptyTwine, AtomicTwine
- * and CompositeTwine. These will give their contents as a list of
- * AtomicTwine. Only AtomicTwine gives accurate source positions, so to be
- * accurate you have to enumerate these. (EmptyTwine has no source
- * position.)
+ * Twine has exactly three immediate subclasses -- EmptyTwine, AtomicTwine and
+ * CompositeTwine. These will give their contents as a list of AtomicTwine.
+ * Only AtomicTwine gives accurate source positions, so to be accurate you have
+ * to enumerate these. (EmptyTwine has no source position.)
  * <p/>
  * To the E programmer, Twine will act like a String and automagically coerce
- * to String (the String part of the twine). A String will also
- * automagically coerce to a SimpleTwine (an AtomicTwine with no source
- * info) or an EmptyTwine. As a ConstList, Twine acts just like a list of
- * the Characters from the String part.
+ * to String (the String part of the twine). A String will also automagically
+ * coerce to a SimpleTwine (an AtomicTwine with no source info) or an
+ * EmptyTwine. As a ConstList, Twine acts just like a list of the Characters
+ * from the String part.
  * <p/>
  * Twine and its subclasses replace the old ConstString and StringSugar while
  * doing a lot more.
@@ -65,6 +64,7 @@ public abstract class Twine extends ConstList implements DeepPassByCopy {
 
     /**
      * Initialized lazily to avoid a circular initialization problem
+     *
      * @noinspection StaticNonFinalField
      */
     static private StaticMaker OptTwineMaker = null;
@@ -72,6 +72,7 @@ public abstract class Twine extends ConstList implements DeepPassByCopy {
     /**
      * Package scoped to deter the creation of any other immediate subclasses
      * besides AtomicTwine and CompositeTwine.
+     *
      * @noinspection ConstructorNotProtectedInAbstractClass
      */
     Twine() {
@@ -91,10 +92,9 @@ public abstract class Twine extends ConstList implements DeepPassByCopy {
     /**
      * Make a Twine whose parts are this list of AtomicTwines. <p>
      * <p/>
-     * The list of parts is assumed to already be maximally merged. If it's
-     * an empty list, return the EmptyTwine. If it's
-     * a singleton list, return that part. Otherwise return a CompositeTwine
-     * on these parts.
+     * The list of parts is assumed to already be maximally merged. If it's an
+     * empty list, return the EmptyTwine. If it's a singleton list, return that
+     * part. Otherwise return a CompositeTwine on these parts.
      */
     static public Twine fromParts(ConstList parts) {
         if (0 == parts.size()) {
@@ -111,8 +111,8 @@ public abstract class Twine extends ConstList implements DeepPassByCopy {
     /**
      * Makes a Twine with no information besides str. <p>
      * <p/>
-     * If str is empty, returns the empty CompositeTwine. Otherwise, returns
-     * a new SimpleTwine on str.
+     * If str is empty, returns the empty CompositeTwine. Otherwise, returns a
+     * new SimpleTwine on str.
      */
     static public Twine fromString(String str) {
         return fromString(str, null);
@@ -121,8 +121,8 @@ public abstract class Twine extends ConstList implements DeepPassByCopy {
     /**
      * Makes a Twine on str from optSourceSpan. <p>
      * <p/>
-     * If str is empty, returns the EmptyTwine. Otherwise, returns
-     * a new SimpleTwine on str or a LocatedTwine on both args.
+     * If str is empty, returns the EmptyTwine. Otherwise, returns a new
+     * SimpleTwine on str or a LocatedTwine on both args.
      */
     static public Twine fromString(String str, SourceSpan optSourceSpan) {
         if (0 == str.length()) {
@@ -150,9 +150,9 @@ public abstract class Twine extends ConstList implements DeepPassByCopy {
     }
 
     /**
-     * Returns a new Twine on the same underlying bare String as this one,
-     * but marked as being contiguous text starting at the position
-     * described by the argument.
+     * Returns a new Twine on the same underlying bare String as this one, but
+     * marked as being contiguous text starting at the position described by
+     * the argument.
      */
     public Twine asFrom(String url, int startLine, int startCol) {
         FlexList parts = FlexList.fromType(AtomicTwine.class);
@@ -168,9 +168,12 @@ public abstract class Twine extends ConstList implements DeepPassByCopy {
                 //the loop.
             }
             int endCol = startCol + j - i;
-            SourceSpan span = new SourceSpan(url, true,
-                                             startLine, startCol,
-                                             startLine, endCol);
+            SourceSpan span = new SourceSpan(url,
+                                             true,
+                                             startLine,
+                                             startCol,
+                                             startLine,
+                                             endCol);
             parts.push(fromString(str.substring(i, j + 1), span));
             startLine++;
             startCol = 0;
@@ -179,18 +182,16 @@ public abstract class Twine extends ConstList implements DeepPassByCopy {
     }
 
     /**
-     * @return A list of AtomicTwines. An empty Twine returns the empty
-     *         list.
+     * @return A list of AtomicTwines. An empty Twine returns the empty list.
      */
     public abstract ConstList getParts();
 
     /**
-     * If pos is a position within this Twine, return a pair consisting of
-     * the index in the getParts() list of the AtomicTwine containing this
+     * If pos is a position within this Twine, return a pair consisting of the
+     * index in the getParts() list of the AtomicTwine containing this
      * position, and the offset into this part of this position.
      */
-    public int[] getPartAt(int pos)
-      throws IndexOutOfBoundsException {
+    public int[] getPartAt(int pos) throws IndexOutOfBoundsException {
         if (-1 >= pos) {
             throw new IndexOutOfBoundsException(Integer.toString(pos));
         }
@@ -213,12 +214,12 @@ public abstract class Twine extends ConstList implements DeepPassByCopy {
      * they came from. <p>
      * <p/>
      * Unfortunately, because of the way the E implementation is layered, the
-     * keys in this mapping cannot be int-regions (as these are
-     * implemented in the E language, which is in a layer that depends on
-     * this layer, and we're trying to avoid inter-layer cyclic
-     * dependencies). Instead, the keys are represented as a pair of ints
-     * representing start..!bound. Note that this is inclusive-exclusive,
-     * while the info in the spans are inclusive-inclusive. <p>
+     * keys in this mapping cannot be int-regions (as these are implemented in
+     * the E language, which is in a layer that depends on this layer, and
+     * we're trying to avoid inter-layer cyclic dependencies). Instead, the
+     * keys are represented as a pair of ints representing start..!bound. Note
+     * that this is inclusive-exclusive, while the info in the spans are
+     * inclusive-inclusive. <p>
      * <p/>
      * The mapping is ordered to facilitate binary search. Intervals with no
      * SourceSpan information are left out of the map.
@@ -226,9 +227,8 @@ public abstract class Twine extends ConstList implements DeepPassByCopy {
     public ConstMap getSourceMap() {
         ConstList parts = getParts();
         int numParts = parts.size();
-        FlexMap result = FlexMap.fromTypes(int[].class,
-                                           SourceSpan.class,
-                                           numParts);
+        FlexMap result =
+          FlexMap.fromTypes(int[].class, SourceSpan.class, numParts);
         int offset = 0;
         for (int i = 0; i < numParts; i++) {
             AtomicTwine part = (AtomicTwine)parts.get(i);
@@ -260,11 +260,11 @@ public abstract class Twine extends ConstList implements DeepPassByCopy {
      * Gets the sourceSpan part of the twine, if it's there. <p>
      * <p/>
      * If this is an AtomicTwine, then, if the SourceSpan is there, it's as
-     * accurate as you're going to get. If this is a CompositeTwine, then,
-     * if the SourceSpan is there, it describes a span that includes all the
-     * individual spans. If a CompositeTwine returns null, there may still
-     * be SourceSpans on the atomic parts, but they couldn't all be
-     * summarized into one covering span.
+     * accurate as you're going to get. If this is a CompositeTwine, then, if
+     * the SourceSpan is there, it describes a span that includes all the
+     * individual spans. If a CompositeTwine returns null, there may still be
+     * SourceSpans on the atomic parts, but they couldn't all be summarized
+     * into one covering span.
      */
     public abstract SourceSpan getOptSpan();
 
@@ -298,20 +298,19 @@ public abstract class Twine extends ConstList implements DeepPassByCopy {
      *
      * @param str      The string to annotate with source-span info from this
      *                 Twine.
-     * @param oneToOne If true, the two strings must be the same size, in
-     *                 which case this Twine's source-span info is mapped
-     *                 one to one onto the new string. If false, then the
-     *                 new string will only get a non-oneToOne form of this
-     *                 Twine's overall source-span.
+     * @param oneToOne If true, the two strings must be the same size, in which
+     *                 case this Twine's source-span info is mapped one to one
+     *                 onto the new string. If false, then the new string will
+     *                 only get a non-oneToOne form of this Twine's overall
+     *                 source-span.
      */
     public Twine infect(String str, boolean oneToOne) {
         if (oneToOne) {
             if (str.length() == size()) {
                 return infectOneToOne(str);
             } else {
-                T.fail(E.toQuote(str) + " and " +
-                       quote() + " must be the " +
-                       "same size");
+                T.fail(E.toQuote(str) + " and " + quote() + " must be the " +
+                  "same size");
                 return null; //make compiler happy
             }
         } else {
@@ -324,8 +323,8 @@ public abstract class Twine extends ConstList implements DeepPassByCopy {
     }
 
     /**
-     * Return a new Twine that represents a concatenation of the parts of
-     * this and other. <p>
+     * Return a new Twine that represents a concatenation of the parts of this
+     * and other. <p>
      * <p/>
      * The last part of this may be merged with the first part of other.
      */
@@ -340,8 +339,8 @@ public abstract class Twine extends ConstList implements DeepPassByCopy {
             // Must honor the EList contract when it would succeed
             ConstList result = super.add(other);
             if (Trace.eruntime.warning && Trace.ON) {
-                StackContext sc = new StackContext(E.toQuote(result).bare(),
-                                                   true, true);
+                StackContext sc =
+                  new StackContext(E.toQuote(result).bare(), true, true);
                 Trace.eruntime.warningm("Twine + non-Twine EList", sc);
             }
             return result;
@@ -413,57 +412,49 @@ public abstract class Twine extends ConstList implements DeepPassByCopy {
             String newStr = null;
             //XXX Mostly redundant with CharacterSugar.escaped(c).
             switch (c) {
-            case '\b':
-                {
-                    newStr = "\\b";
-                    break;
-                }
-            case '\t':
-                {
-                    newStr = "\\t";
-                    break;
-                }
-            case '\n':
-                {
-                    //Output an actual newline, which is legal in a
-                    //literal string in E.
-                    newStr = "\n";
-                    break;
-                }
-            case '\f':
-                {
-                    newStr = "\\f";
-                    break;
-                }
-            case '\r':
-                {
-                    newStr = "\\r";
-                    break;
-                }
-            case '\"':
-                {
-                    newStr = "\\\"";
-                    break;
-                }
+            case'\b': {
+                newStr = "\\b";
+                break;
+            }
+            case'\t': {
+                newStr = "\\t";
+                break;
+            }
+            case'\n': {
+                //Output an actual newline, which is legal in a
+                //literal string in E.
+                newStr = "\n";
+                break;
+            }
+            case'\f': {
+                newStr = "\\f";
+                break;
+            }
+            case'\r': {
+                newStr = "\\r";
+                break;
+            }
+            case'\"': {
+                newStr = "\\\"";
+                break;
+            }
 //            case '\'':
 //                {
 //                    newStr = "\\\'";
 //                    break;
 //                }
-            case '\\':
-                {
-                    newStr = "\\\\";
-                    break;
+            case'\\': {
+                newStr = "\\\\";
+                break;
+            }
+            default: {
+                if (32 > (int)c || 255 < (int)c) {
+                    String num = "0000" + Integer.toHexString(c);
+                    int numlen = num.length();
+                    num = num.substring(numlen - 4, numlen);
+                    newStr = "\\u" + num;
                 }
-            default:
-                {
-                    if (32 > (int)c || 255 < (int)c) {
-                        String num = "0000" + Integer.toHexString(c);
-                        int numlen = num.length();
-                        num = num.substring(numlen - 4, numlen);
-                        newStr = "\\u" + num;
-                    }
-                }
+            }
             }
             if (null != newStr) {
                 result = (Twine)result.add(run(p1, p2));
@@ -584,10 +575,10 @@ public abstract class Twine extends ConstList implements DeepPassByCopy {
     }
 
     /**
-     * Just like {@link #startOf(EList, int)}, but with a String argument for
+     * Just like {@link #startOf(EList,int)}, but with a String argument for
      * convenience of the Java programmer.
      *
-     * @deprecated Use {@link #startOf(EList, int)} instead.
+     * @deprecated Use {@link #startOf(EList,int)} instead.
      */
     public int indexOf(String str, int fromIndex) {
         return bare().indexOf(str, fromIndex);
@@ -614,7 +605,7 @@ public abstract class Twine extends ConstList implements DeepPassByCopy {
     }
 
     /**
-     * Just like {@link #lastStartOf(EList, int)}, but with a String argument
+     * Just like {@link #lastStartOf(EList,int)}, but with a String argument
      * for convenience of the Java programmer.
      */
     public int lastIndexOf(String str, int fromIndex) {
@@ -638,9 +629,9 @@ public abstract class Twine extends ConstList implements DeepPassByCopy {
      * character-based replace(). <p>
      * <p/>
      * For each match, the source info from the twine matching oldStr infects
-     * the substituted newStr. Ignoring the source info,
-     * 'str replaceAll(oldStr, newStr)' should be equivalent to
-     * 'newStr rjoin(str split(oldStr))'. <p>
+     * the substituted newStr. Ignoring the source info, 'str
+     * replaceAll(oldStr, newStr)' should be equivalent to 'newStr rjoin(str
+     * split(oldStr))'. <p>
      * <p/>
      * If oldStr is the null string (""), replaceAll() throws an
      * IllegalArgumentException.
@@ -651,8 +642,8 @@ public abstract class Twine extends ConstList implements DeepPassByCopy {
         Twine result = EmptyTwine.THE_ONE;
         int oldLen = oldStr.length();
         if (0 == oldLen) {
-            throw new IllegalArgumentException
-              ("oldStr must not be the null string");
+            throw new IllegalArgumentException(
+              "oldStr must not be the null string");
         }
         int p1 = 0;
         for (int p2 = indexOf(oldStr); -1 != p2; p2 = indexOf(oldStr, p1)) {
@@ -667,8 +658,8 @@ public abstract class Twine extends ConstList implements DeepPassByCopy {
     }
 
     /**
-     * Like Python's splitFields(), this returns a list of the "fields" of
-     * this twine (substrings of this twine), using 'sep' as a separator. <p>
+     * Like Python's splitFields(), this returns a list of the "fields" of this
+     * twine (substrings of this twine), using 'sep' as a separator. <p>
      * <p/>
      * The returned list will have one more element than the number of
      * non-overlapping occurrences of 'sep'. <p>
@@ -680,8 +671,8 @@ public abstract class Twine extends ConstList implements DeepPassByCopy {
         FlexList result = FlexList.fromType(Twine.class);
         int sepLen = sep.length();
         if (0 == sepLen) {
-            throw new IllegalArgumentException
-              ("sep must not be the null string");
+            throw new IllegalArgumentException(
+              "sep must not be the null string");
         }
         int p1 = 0;
         for (int p2 = indexOf(sep); -1 != p2; p2 = indexOf(sep, p1)) {
@@ -693,8 +684,8 @@ public abstract class Twine extends ConstList implements DeepPassByCopy {
     }
 
     /**
-     * Like Python's joinFields(), but with the receiver and argument
-     * reversed (hence the initial "r").
+     * Like Python's joinFields(), but with the receiver and argument reversed
+     * (hence the initial "r").
      * <p/>
      * Concatenates the fields with this twine as the intervening separator.
      * Ignoring source info, and if 'sep' is not the null string,

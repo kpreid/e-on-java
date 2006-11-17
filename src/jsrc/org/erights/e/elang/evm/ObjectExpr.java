@@ -46,21 +46,20 @@ import java.io.IOException;
 
 /**
  * BNF: "def" oName ("implements" eExpr+)? "{" method* matcher* "}"
- * <p>
- * Yields an object that closes over the current scope, and responds
- * to requests by dispatching to one of its matching methods, or to
- * a matcher if provided and no methods match.
+ * <p/>
+ * Yields an object that closes over the current scope, and responds to
+ * requests by dispatching to one of its matching methods, or to a matcher if
+ * provided and no methods match.
  *
- * @see DefineExpr
  * @author Mark S. Miller
+ * @see DefineExpr
  */
 public class ObjectExpr extends EExpr {
 
     /**
      *
      */
-    static private final Guard AuditorGuard =
-      ClassDesc.make(Auditor.class);
+    static private final Guard AuditorGuard = ClassDesc.make(Auditor.class);
 
     static private final Auditor[] NO_AUDITORS = {};
 
@@ -127,11 +126,13 @@ public class ObjectExpr extends EExpr {
     private void ensureWellFormed() {
         T.notNull(myDocComment, "docComment may be empty, but not null");
         T.require(null == myOName.getOptGuardExpr(),
-                  "ObjExpr oName cannot be guarded", myOName);
+                  "ObjExpr oName cannot be guarded",
+                  myOName);
         StaticScope audScope = staticScopeOfList(myAuditorExprs);
         ConstMap selfNames = myOName.staticScope().outNames();
         T.require(!selfNames.intersects(audScope.namesUsed()),
-                  "Auditors can't use self: ", myOName);
+                  "Auditors can't use self: ",
+                  myOName);
 //        ConstMap freeNames = myEScript.staticScope().namesUsed();
 //        ConstMap conflicts = audScope.outNames().and(freeNames);
 //        T.require(conflicts.size() == 0,
@@ -139,28 +140,25 @@ public class ObjectExpr extends EExpr {
     }
 
     /**
-     * Uses 'makeObjectExpr(...)' for either
-     * {@link #ObjectExpr(SourceSpan, String, GuardedPattern, EExpr[],
-     * EScript, ScopeLayout) the regular constructor} or the
-     * {@link #ObjectExpr(SourceSpan, String, GuardedPattern, EExpr[],
-     * EScript, NounExpr[], ObjectExpr, ScopeLayout) the Transformed-E
-     * constructor}.
+     * Uses 'makeObjectExpr(...)' for either {@link #ObjectExpr(SourceSpan,
+     *String,GuardedPattern,EExpr[],EScript,ScopeLayout) the regular
+     * constructor} or the {@link #ObjectExpr(SourceSpan,String,
+     *GuardedPattern,EExpr[],EScript,NounExpr[],ObjectExpr,ScopeLayout) the
+     * Transformed-E constructor}.
      */
     public Object[] getSpreadUncall() {
         Object[] result;
         if (null == myOptSource) {
-            result = new Object[] {
-              StaticMaker.make(ObjectExpr.class),
+            result = new Object[]{StaticMaker.make(ObjectExpr.class),
               "run",
               getOptSpan(),
               myDocComment,
               myOName,
               myAuditorExprs,
               myEScript,
-              getOptScopeLayout() };
+              getOptScopeLayout()};
         } else {
-            result = new Object[] {
-              StaticMaker.make(ObjectExpr.class),
+            result = new Object[]{StaticMaker.make(ObjectExpr.class),
               "run",
               getOptSpan(),
               myDocComment,
@@ -169,7 +167,7 @@ public class ObjectExpr extends EExpr {
               myEScript,
               myOptFieldInits,
               myOptSource,
-              getOptScopeLayout() };
+              getOptScopeLayout()};
         }
         return result;
     }
@@ -187,10 +185,10 @@ public class ObjectExpr extends EExpr {
 
     /**
      * The left-to-right sum of the oName + auditors + the eScript.
-     * <p>
+     * <p/>
      * Note that the instance variable are only the variables used by the
-     * eScript, not the variables used by the objectExpr as a whole, since
-     * the auditor expressions are evaluated in the instantiating environment.
+     * eScript, not the variables used by the objectExpr as a whole, since the
+     * auditor expressions are evaluated in the instantiating environment.
      */
     protected StaticScope computeStaticScope() {
         StaticScope result = myOName.staticScope();
@@ -240,10 +238,8 @@ public class ObjectExpr extends EExpr {
         }
 
         Object[] fields = new Object[numFields];
-        Object result = new EImplByProxy(approvals,
-                                         fields,
-                                         ctx.outers(),
-                                         eMethodTable());
+        Object result =
+          new EImplByProxy(approvals, fields, ctx.outers(), eMethodTable());
         myOName.testMatch(ctx, result, null);
         for (int i = 0; i < numFields; i++) {
             fields[i] = myOptFieldInits[i].getRepresentation(ctx);
@@ -345,7 +341,7 @@ public class ObjectExpr extends EExpr {
 
     /**
      * Is the name fully qualified?
-     * <p>
+     * <p/>
      * Currently, if it is a "_" or starts with a "$", then it's not fully
      * qualified. Otherwise it is.
      */
@@ -379,9 +375,9 @@ public class ObjectExpr extends EExpr {
     }
 
     /**
-     * Return the nouns used to initialize instance
-     * fields from the outer scope. <p>
-     *
+     * Return the nouns used to initialize instance fields from the outer
+     * scope. <p>
+     * <p/>
      * Will be non-null after the appropriate compilation transformation.
      */
     NounExpr[] optFieldNouns() {
@@ -418,16 +414,16 @@ public class ObjectExpr extends EExpr {
                 SugarMethodNode.defineMembers(eMTableCache,
                                               MirandaMethods.class);
                 for (int i = 0, max = optMeths.length; i < max; i++) {
-                    EMethodNode methNode = new EMethodNode(getFQName(),
-                                                           optMeths[i]);
+                    EMethodNode methNode =
+                      new EMethodNode(getFQName(), optMeths[i]);
                     eMTableCache.addMethod(methNode, SafeJ.NONE);
                 }
             }
 
             EMatcher[] matchers = myEScript.myMatchers;
             if (matchers.length >= 1) {
-                EMatchersNode matchersNode = new EMatchersNode(getFQName(),
-                                                               matchers);
+                EMatchersNode matchersNode =
+                  new EMatchersNode(getFQName(), matchers);
                 eMTableCache.setOptOtherwise(matchersNode);
             }
             myOptEMTableCache = eMTableCache;
@@ -441,6 +437,6 @@ public class ObjectExpr extends EExpr {
     String getFQName() {
         String fqnPrefix = myEScript.getOptScopeLayout().getFQNPrefix();
         T.require(fqnPrefix.endsWith("$"), "Bad fqnPrefix: ", fqnPrefix);
-        return fqnPrefix.substring(0, fqnPrefix.length() -1);
+        return fqnPrefix.substring(0, fqnPrefix.length() - 1);
     }
 }

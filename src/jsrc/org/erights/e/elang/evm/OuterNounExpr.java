@@ -31,8 +31,6 @@ import org.erights.e.meta.java.math.EInt;
 import java.io.IOException;
 
 /**
- *
- *
  * @author E. Dean Tribble
  */
 public class OuterNounExpr extends TopNounExpr {
@@ -40,7 +38,6 @@ public class OuterNounExpr extends TopNounExpr {
     private final int myIndex;
 
     /**
-     *
      * @param optSpan
      * @param name
      * @param index
@@ -58,12 +55,12 @@ public class OuterNounExpr extends TopNounExpr {
      * Uses XXX 'makeFoo(...)'
      */
     public Object[] getSpreadUncall() {
-        Object[] result = { StaticMaker.make(OuterNounExpr.class),
-                            "run",
-                            getOptSpan(),
-                            getName(),
-                            EInt.valueOf(myIndex),
-                            getOptScopeLayout() };
+        Object[] result = {StaticMaker.make(OuterNounExpr.class),
+          "run",
+          getOptSpan(),
+          getName(),
+          EInt.valueOf(myIndex),
+          getOptScopeLayout()};
         return result;
     }
 
@@ -82,8 +79,8 @@ public class OuterNounExpr extends TopNounExpr {
     }
 
     /**
-     * Return the kind of object that should be stored in a frame, assuming
-     * an accessor of the same type as the receiver.
+     * Return the kind of object that should be stored in a frame, assuming an
+     * accessor of the same type as the receiver.
      */
     public Object getRepresentation(EvalContext ctx) {
         return ctx.outer(myIndex);

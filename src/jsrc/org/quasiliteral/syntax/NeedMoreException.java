@@ -20,8 +20,8 @@ Contributor(s): ______________________________________.
 */
 
 /**
- * Thrown if the input end sooner than expected, to suggest how much the
- * next line of input should be indented.
+ * Thrown if the input end sooner than expected, to suggest how much the next
+ * line of input should be indented.
  *
  * @author Mark S. Miller
  */
@@ -41,15 +41,15 @@ public class NeedMoreException extends RuntimeException {
      *
      * @param msg         is the normal Exception message
      * @param quoted      Will this next line be taken as literal text?  If so,
-     *                    then it should not be trimmed or indented. 'quoted' is
-     *                    true between double quotes, or between quasi-quotes when
-     *                    not inside a $ or @ hole.
+     *                    then it should not be trimmed or indented. 'quoted'
+     *                    is true between double quotes, or between
+     *                    quasi-quotes when not inside a $ or @ hole.
      * @param indent      The suggested indentation level for the next line,
      *                    unless the next line begins with closer.
-     * @param closer      The character that would close the most recent unclosed
-     *                    openner.
-     * @param closeIndent The suggested indentation level for the next line
-     *                    if it does begin (after trimming) with closer.
+     * @param closer      The character that would close the most recent
+     *                    unclosed openner.
+     * @param closeIndent The suggested indentation level for the next line if
+     *                    it does begin (after trimming) with closer.
      */
     public NeedMoreException(String msg,
                              boolean quoted,

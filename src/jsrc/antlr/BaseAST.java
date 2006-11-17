@@ -180,8 +180,8 @@ public abstract class BaseAST implements AST, Serializable {
             }
             // if roots match, do partial list match test on children.
             if (sibling.getFirstChild() != null) {
-                if (!sibling.getFirstChild().equalsListPartial(
-                  sub.getFirstChild())) {
+                if (!sibling.getFirstChild()
+                  .equalsListPartial(sub.getFirstChild())) {
                     return false;
                 }
             }
@@ -253,7 +253,9 @@ public abstract class BaseAST implements AST, Serializable {
             return null;
         }
 
-        doWorkForFindAll(roots, target, false);  // find all matches recursively
+        doWorkForFindAll(roots,
+                         target,
+                         false);  // find all matches recursively
 
         return new ASTEnumerator(roots);
     }
@@ -364,8 +366,9 @@ public abstract class BaseAST implements AST, Serializable {
         // if verbose and type name not same as text (keyword probably)
         if (verboseStringConversion &&
           !getText().equalsIgnoreCase(tokenNames[getType()]) &&
-          !getText().equalsIgnoreCase(
-            StringUtils.stripFrontBack(tokenNames[getType()], "\"", "\""))) {
+          !getText().equalsIgnoreCase(StringUtils.stripFrontBack(tokenNames[getType()],
+                                                                 "\"",
+                                                                 "\""))) {
             b.append('[');
             b.append(getText());
             b.append(",<");
@@ -435,12 +438,12 @@ public abstract class BaseAST implements AST, Serializable {
                 } else if (c1 == 'g' && c2 == 't' && c3 == ';') {
                     n.append(">");
                     i += 4;
-                } else if (c1 == 'q' && c2 == 'u' && c3 == 'o' && c4 == 't' && c5 ==
-                  ';') {
+                } else if (c1 == 'q' && c2 == 'u' && c3 == 'o' && c4 == 't' &&
+                  c5 == ';') {
                     n.append("\"");
                     i += 6;
-                } else if (c1 == 'a' && c2 == 'p' && c3 == 'o' && c4 == 's' && c5 ==
-                  ';') {
+                } else if (c1 == 'a' && c2 == 'p' && c3 == 'o' && c4 == 's' &&
+                  c5 == ';') {
                     n.append("'");
                     i += 6;
                 } else {
@@ -459,36 +462,30 @@ public abstract class BaseAST implements AST, Serializable {
         for (int i = 0; i < text.length(); i++) {
             c = text.charAt(i);
             switch (c) {
-            case '&':
-                {
-                    n.append("&amp;");
-                    break;
-                }
-            case '<':
-                {
-                    n.append("&lt;");
-                    break;
-                }
-            case '>':
-                {
-                    n.append("&gt;");
-                    break;
-                }
-            case '"':
-                {
-                    n.append("&quot;");
-                    break;
-                }
-            case '\'':
-                {
-                    n.append("&apos;");
-                    break;
-                }
-            default :
-                {
-                    n.append(c);
-                    break;
-                }
+            case'&': {
+                n.append("&amp;");
+                break;
+            }
+            case'<': {
+                n.append("&lt;");
+                break;
+            }
+            case'>': {
+                n.append("&gt;");
+                break;
+            }
+            case'"': {
+                n.append("&quot;");
+                break;
+            }
+            case'\'': {
+                n.append("&apos;");
+                break;
+            }
+            default: {
+                n.append(c);
+                break;
+            }
             }
         }
         return new String(n);
@@ -498,7 +495,8 @@ public abstract class BaseAST implements AST, Serializable {
         StringBuffer buf = new StringBuffer(100);
         buf.append("<");
         buf.append(getClass().getName() + " ");
-        buf.append("text=\"" + encode(getText()) + "\" type=\"" + getType() + "\"/>");
+        buf.append(
+          "text=\"" + encode(getText()) + "\" type=\"" + getType() + "\"/>");
         out.write(buf.toString());
     }
 
@@ -506,7 +504,8 @@ public abstract class BaseAST implements AST, Serializable {
         StringBuffer buf = new StringBuffer(100);
         buf.append("<");
         buf.append(getClass().getName() + " ");
-        buf.append("text=\"" + encode(getText()) + "\" type=\"" + getType() + "\">\n");
+        buf.append(
+          "text=\"" + encode(getText()) + "\" type=\"" + getType() + "\">\n");
         out.write(buf.toString());
     }
 

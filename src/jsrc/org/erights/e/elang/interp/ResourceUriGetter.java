@@ -29,20 +29,19 @@ public class ResourceUriGetter extends BaseLoader {
      */
     public Object get(String uriBody) {
         URL result = ClassLoader.getSystemResource(uriBody);
-        T.notNull(result,
-                  "Resource not found: ", uriBody);
+        T.notNull(result, "Resource not found: ", uriBody);
         return result;
     }
 
     /**
      * XXX This one is unimplemented, and we should expect it to be
      * unimplemented for awhile, as it's hard.
-     * <p>
+     * <p/>
      * The problem is, the URL returned {@link ClassLoader#getSystemResource}
      * is not one that necessarily came from that source. For example,
      * &lt;resource:scripts/eBrowser.e-awt&gt; just returns a URL that could
-     * have been returned by &lt;fileURL:.../scripts/eBrowser.e-awt&gt; and
-     * can be uncalled by fileURL__uriGetter.
+     * have been returned by &lt;fileURL:.../scripts/eBrowser.e-awt&gt; and can
+     * be uncalled by fileURL__uriGetter.
      */
     public Object[] optUncall(Object obj) {
         T.fail("XXX not yet implemented");

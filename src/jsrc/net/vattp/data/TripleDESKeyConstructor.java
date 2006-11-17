@@ -61,8 +61,8 @@ final class TripleDESKeyConstructor {
         try {
             final byte[] raw_key = new byte[TRIPLE_DES_KEY_LENGTH];
             final byte[] buffer = new byte[KEY_PAD_LENGTH];
-            final MessageDigest md = MessageDigest.getInstance(
-              DIGEST_ALGORITHM_NAME);
+            final MessageDigest md =
+              MessageDigest.getInstance(DIGEST_ALGORITHM_NAME);
             fill(buffer, (byte)0x55);
             md.update(buffer);
             byte[] key12 = md.digest(dhSecret);

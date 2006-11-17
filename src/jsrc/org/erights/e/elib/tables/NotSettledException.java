@@ -12,7 +12,7 @@ package org.erights.e.elib.tables;
  * @author Mark S. Miller
  * @see org.erights.e.elib.ref.Ref#isSettled
  * @see org.erights.e.elib.tables.EMap#get(java.lang.Object)
- * @see org.erights.e.elib.tables.FlexMap#put(Object, Object, boolean)
+ * @see org.erights.e.elib.tables.FlexMap#put(Object,Object,boolean)
  */
 public class NotSettledException extends Exception {
 

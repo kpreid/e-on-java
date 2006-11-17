@@ -16,8 +16,8 @@ import antlr.collections.AST;
  */
 public class ASTPair {
 
-    public AST root;		// current root of tree
-    public AST child;		// current child to which siblings are added
+    public AST root;                // current root of tree
+    public AST child;                // current child to which siblings are added
 
     /**
      * Make sure that child is the last sibling

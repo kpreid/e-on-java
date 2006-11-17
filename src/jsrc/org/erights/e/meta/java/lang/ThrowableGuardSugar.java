@@ -44,7 +44,8 @@ public class ThrowableGuardSugar extends ClassDesc {
     public ThrowableGuardSugar(Class clazz) {
         super(clazz);
         T.require(Throwable.class.isAssignableFrom(clazz),
-                  clazz, " must be a type of Throwable");
+                  clazz,
+                  " must be a type of Throwable");
     }
 
     /**
@@ -66,7 +67,7 @@ public class ThrowableGuardSugar extends ClassDesc {
             Throwable leaf = ThrowableSugar.leaf((Throwable)shortSpecimen);
             if (leaf instanceof Ejection) {
                 T.fail("Internal: An Ejection should not be reifiable: " +
-                       shortSpecimen + ", leaf:" + leaf);
+                  shortSpecimen + ", leaf:" + leaf);
             }
             return ExceptionMgr.asSafe((Throwable)shortSpecimen);
         }

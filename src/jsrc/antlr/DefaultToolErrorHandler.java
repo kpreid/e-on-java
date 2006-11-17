@@ -8,7 +8,6 @@ package antlr;
  */
 
 
-
 class DefaultToolErrorHandler implements ToolErrorHandler {
 
     DefaultToolErrorHandler(antlr.Tool tool) {
@@ -41,8 +40,8 @@ class DefaultToolErrorHandler implements ToolErrorHandler {
         for (int i = 1; i <= depth; i++) {
             line.append("k==").append(i).append(':');
             if (lexicalAnalysis) {
-                String bits = sets[i].fset.toStringWithRanges(",",
-                                                              javaCharFormatter);
+                String bits =
+                  sets[i].fset.toStringWithRanges(",", javaCharFormatter);
                 if (sets[i].containsEpsilon()) {
                     line.append("<end-of-token>");
                     if (bits.length() > 0) {
@@ -51,9 +50,8 @@ class DefaultToolErrorHandler implements ToolErrorHandler {
                 }
                 line.append(bits);
             } else {
-                line.append(
-                  sets[i].fset.toString(",",
-                                        grammar.tokenManager.getVocabulary()));
+                line.append(sets[i].fset.toString(",",
+                                                  grammar.tokenManager.getVocabulary()));
             }
             output[outputStartIndex++] = line.toString();
             line.setLength(0);
@@ -126,11 +124,11 @@ class DefaultToolErrorHandler implements ToolErrorHandler {
                                      Lookahead[] sets,
                                      int altIdx) {
         String[] output = new String[depth + 2];
-        output[0] = (lexicalAnalysis ? "lexical " : "") +
-          "nondeterminism upon";
+        output[0] =
+          (lexicalAnalysis ? "lexical " : "") + "nondeterminism upon";
         dumpSets(output, 1, grammar, lexicalAnalysis, depth, sets);
-        output[depth + 1] = "between alt " + (altIdx + 1) +
-          " and exit branch of block";
+        output[depth + 1] =
+          "between alt " + (altIdx + 1) + " and exit branch of block";
         antlrTool.warning(output,
                           grammar.getFilename(),
                           blk.getLine(),

@@ -8,7 +8,6 @@ package antlr;
  */
 
 
-
 interface ToolErrorHandler {
 
 

@@ -261,8 +261,10 @@ public interface EBuilder extends BaseEBuilder {
      * @param mBody      The body of the for-loop.
      * @param optCatcher The optional
      *                   <pre>    &quot;catch&quot; <i>pattern</i
-     *                                         > &quot;{&quot; <i>eExpr</i>
-     *                   &quot;}&quot;</pre>
+     *
+     *                      >
+     *                                     &quot;{&quot; <i>eExpr</i>
+     *                                                       &quot;}&quot;</pre>
      *                   following the for loop for receiving the break
      *                   argument.
      * @return The expression for computing the for-loop.
@@ -399,10 +401,10 @@ public interface EBuilder extends BaseEBuilder {
 
     /**
      * '["k" => p            ] | r' to 'via (__extract("k")) [p, r]' '["k" => p
-     * default {e}] | r' to 'via (__extract("k", fn {e})) [p, r]' '["k" => p
-     *    := e ] | r' to 'via (__extract.depr("k", e)) [p, r]' </pre> Note that
-     * the ':=' syntax for default values is deprecated. Should this be
-     * removed, the depr/2 method may be removed as well.
+     * default {e}] | r' to 'via (__extract("k", fn {e})) [p, r]' '["k" => p :=
+     * e ] | r' to 'via (__extract.depr("k", e)) [p, r]' </pre> Note that the
+     * ':=' syntax for default values is deprecated. Should this be removed,
+     * the depr/2 method may be removed as well.
      * <p/>
      * When the original has no rest pattern, the expanded rest pattern is
      * ':__Empty'.

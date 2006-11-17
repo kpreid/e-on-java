@@ -98,8 +98,7 @@ public class ReplayLexer implements LexerFace {
             String printrep = token.toString();
             throw new SyntaxException(msg,
                                       null,
-                                      Twine.fromString(printrep,
-                                                       optSpan),
+                                      Twine.fromString(printrep, optSpan),
                                       0,
                                       printrep.length());
         } else {

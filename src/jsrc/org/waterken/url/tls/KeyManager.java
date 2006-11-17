@@ -10,8 +10,8 @@ import java.security.cert.X509Certificate;
 /**
  * A single key {@link javax.net.ssl.X509KeyManager}.
  */
-public final class KeyManager implements javax.net.ssl.X509KeyManager,
-  java.io.Serializable {
+public final class KeyManager
+  implements javax.net.ssl.X509KeyManager, java.io.Serializable {
 
     static private final long serialVersionUID = -4659593570639874485L;
 

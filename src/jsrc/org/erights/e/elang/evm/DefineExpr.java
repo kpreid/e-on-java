@@ -70,13 +70,13 @@ public class DefineExpr extends EExpr {
      * Uses 'makeDefineExpr(optSpan, patt, optEj, rValue, optScope)'
      */
     public Object[] getSpreadUncall() {
-        Object[] result = { StaticMaker.make(DefineExpr.class),
-                            "run",
-                            getOptSpan(),
-                            myPattern,
-                            myOptEjectorExpr,
-                            myRValue,
-                            getOptScopeLayout() };
+        Object[] result = {StaticMaker.make(DefineExpr.class),
+          "run",
+          getOptSpan(),
+          myPattern,
+          myOptEjectorExpr,
+          myRValue,
+          getOptScopeLayout()};
         return result;
     }
 
@@ -87,8 +87,7 @@ public class DefineExpr extends EExpr {
         return visitor.visitDefineExpr(this,
                                        myPattern,
                                        myOptEjectorExpr,
-                                       myRValue
-        );
+                                       myRValue);
     }
 
     /**

@@ -38,9 +38,8 @@ public final class PipelineInputStream extends InputStream {
         return r;
     }
 
-    public synchronized int read(final byte[] b,
-                                 final int off,
-                                 final int len) throws IOException {
+    public synchronized int read(final byte[] b, final int off, final int len)
+      throws IOException {
         final int r = in.read(b, off, len);
         if (r != -1 && marked) {
             marked_offset += r;

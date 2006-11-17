@@ -154,8 +154,7 @@ public class Tool {
             }
             if (!source_file.canRead()) {
                 throw new FileCopyException(
-                  "FileCopy: source file " + "is unreadable: " +
-                  source_name);
+                  "FileCopy: source file " + "is unreadable: " + source_name);
             }
 
             // If the destination exists, make sure it is a writeable file
@@ -167,9 +166,8 @@ public class Tool {
                     String response;
 
                     if (!destination_file.canWrite()) {
-                        throw new FileCopyException(
-                          "FileCopy: destination " + "file is unwriteable: " +
-                          dest_name);
+                        throw new FileCopyException("FileCopy: destination " +
+                          "file is unwriteable: " + dest_name);
                     }
                     /*
                       System.out.print("File " + dest_name +
@@ -180,29 +178,25 @@ public class Tool {
                       throw new FileCopyException("FileCopy: copy cancelled.");
                     */
                 } else {
-                    throw new FileCopyException(
-                      "FileCopy: destination " + "is not a file: " +
-                      dest_name);
+                    throw new FileCopyException("FileCopy: destination " +
+                      "is not a file: " + dest_name);
                 }
             } else {
                 File parentdir = parent(destination_file);
                 if (!parentdir.exists()) {
                     throw new FileCopyException("FileCopy: destination " +
-                                                "directory doesn't exist: " +
-                                                dest_name);
+                      "directory doesn't exist: " + dest_name);
                 }
                 if (!parentdir.canWrite()) {
                     throw new FileCopyException("FileCopy: destination " +
-                                                "directory is unwriteable: " +
-                                                dest_name);
+                      "directory is unwriteable: " + dest_name);
                 }
             }
 
             // If we've gotten this far, then everything is okay; we can
             // copy the file.
             source = new BufferedReader(new FileReader(source_file));
-            destination =
-              new BufferedWriter(new FileWriter(destination_file));
+            destination = new BufferedWriter(new FileWriter(destination_file));
 
             buffer = new char[1024];
             while (true) {
@@ -213,7 +207,7 @@ public class Tool {
                 destination.write(buffer, 0, bytes_read);
             }
         }
-          // No matter what happens, always close any streams we've opened.
+        // No matter what happens, always close any streams we've opened.
         finally {
             if (source != null) {
                 try {
@@ -234,8 +228,9 @@ public class Tool {
 
     /**
      * Perform processing on the grammar file.  Can only be called from main()
+     *
      * @param args The command-line arguments passed to main().  This wrapper
-     * does the System.exit for use with command-line.
+     *             does the System.exit for use with command-line.
      */
     public void doEverythingWrapper(String[] args) {
         int exitCode = doEverything(args);
@@ -251,8 +246,8 @@ public class Tool {
 
         // Start preprocessor. This strips generates an argument list
         // without -glib options (inside preTool)
-        antlr.preprocessor.Tool preTool = new antlr.preprocessor.Tool(this,
-                                                                      args);
+        antlr.preprocessor.Tool preTool =
+          new antlr.preprocessor.Tool(this, args);
 
         boolean preprocess_ok = preTool.preprocess();
         String[] modifiedArgs = preTool.preprocessedArgList();
@@ -284,8 +279,8 @@ public class Tool {
 
             // SAS: created getLanguage() method so subclass can override
             //      (necessary for VAJ interface)
-            String codeGenClassName = "antlr." + getLanguage(behavior) +
-              "CodeGenerator";
+            String codeGenClassName =
+              "antlr." + getLanguage(behavior) + "CodeGenerator";
             try {
                 Class codeGenClass = Class.forName(codeGenClassName);
                 codeGen = (CodeGenerator)codeGenClass.newInstance();
@@ -303,8 +298,7 @@ public class Tool {
                 panic(
                   "Cannot instantiate code-generator: " + codeGenClassName);
             } catch (IllegalAccessException iae) {
-                panic(
-                  "code-generator class '" + codeGenClassName +
+                panic("code-generator class '" + codeGenClassName +
                   "' is not accessible");
             }
         } catch (RecognitionException pe) {
@@ -337,8 +331,9 @@ public class Tool {
      */
     public void error(String s, String file, int line, int column) {
         hasError = true;
-        System.err.println(FileLineFormatter.getFormatter().getFormatString(
-          file, line, column) + s);
+        System.err
+          .println(FileLineFormatter.getFormatter()
+            .getFormatString(file, line, column) + s);
     }
 
     /**
@@ -398,32 +393,41 @@ public class Tool {
 
     private static void help() {
         System.err.println("usage: java antlr.Tool [args] file.g");
-        System.err.println(
-          "  -o outputDir       specify output directory where all output generated.");
-        System.err.println(
-          "  -glib superGrammar specify location of supergrammar file.");
-        System.err.println(
-          "  -debug             launch the ParseView debugger upon parser invocation.");
-        System.err.println(
-          "  -html              generate a html file from your grammar.");
-        System.err.println(
-          "  -docbook           generate a docbook sgml file from your grammar.");
-        System.err.println(
-          "  -diagnostic        generate a textfile with diagnostics.");
-        System.err.println(
-          "  -trace             have all rules call traceIn/traceOut.");
-        System.err.println(
-          "  -traceLexer        have lexer rules call traceIn/traceOut.");
-        System.err.println(
-          "  -traceParser       have parser rules call traceIn/traceOut.");
-        System.err.println(
-          "  -traceTreeParser   have tree parser rules call traceIn/traceOut.");
+        System.err
+          .println(
+            "  -o outputDir       specify output directory where all output generated.");
+        System.err
+          .println(
+            "  -glib superGrammar specify location of supergrammar file.");
+        System.err
+          .println(
+            "  -debug             launch the ParseView debugger upon parser invocation.");
+        System.err
+          .println(
+            "  -html              generate a html file from your grammar.");
+        System.err
+          .println(
+            "  -docbook           generate a docbook sgml file from your grammar.");
+        System.err
+          .println("  -diagnostic        generate a textfile with diagnostics.");
+        System.err
+          .println("  -trace             have all rules call traceIn/traceOut.");
+        System.err
+          .println(
+            "  -traceLexer        have lexer rules call traceIn/traceOut.");
+        System.err
+          .println(
+            "  -traceParser       have parser rules call traceIn/traceOut.");
+        System.err
+          .println(
+            "  -traceTreeParser   have tree parser rules call traceIn/traceOut.");
         System.err.println("  -h|-help|--help    this message");
     }
 
     public static void main(String[] args) {
-        System.err.println("ANTLR Parser Generator   Version " +
-                           Version.project_version + "   1989-2005 jGuru.com");
+        System.err
+          .println("ANTLR Parser Generator   Version " + Version
+            .project_version + "   1989-2005 jGuru.com");
         version = Version.project_version;
 
         try {
@@ -432,8 +436,8 @@ public class Tool {
                 System.exit(1);
             }
             for (int i = 0; i < args.length; ++i) {
-                if (args[i].equals("-h") || args[i].equals("-help") || args[i].equals(
-                  "--help")) {
+                if (args[i].equals("-h") || args[i].equals("-help") ||
+                  args[i].equals("--help")) {
                     help();
                     System.exit(1);
                 }
@@ -443,13 +447,15 @@ public class Tool {
             theTool.doEverything(args);
             theTool = null;
         } catch (Exception e) {
-            System.err.println(System.getProperty("line.separator") +
-                               System.getProperty("line.separator"));
+            System.err
+              .println(System.getProperty("line.separator") +
+                System.getProperty("line.separator"));
             System.err.println("#$%%*&@# internal error: " + e.toString());
             System.err.println("[complain to nearest government official");
             System.err.println(" or send hate-mail to parrt@jguru.com;");
-            System.err.println(" please send stack trace with report.]" +
-                               System.getProperty("line.separator"));
+            System.err
+              .println(" please send stack trace with report.]" +
+                System.getProperty("line.separator"));
             e.printStackTrace();
         }
         System.exit(0);
@@ -466,9 +472,8 @@ public class Tool {
                 out_dir.mkdirs();
             }
         }
-        return new PrintWriter(
-          new PreservingFileWriter(
-            outputDir + System.getProperty("file.separator") + f));
+        return new PrintWriter(new PreservingFileWriter(
+          outputDir + System.getProperty("file.separator") + f));
     }
 
     public Reader getGrammarReader() {
@@ -487,9 +492,10 @@ public class Tool {
      * @since 2.7.2
      */
     public void reportException(Exception e, String message) {
-        System.err.println(message == null ?
-                           e.getMessage() :
-                           message + ": " + e.getMessage());
+        System.err
+          .println(message == null ?
+            e.getMessage() :
+            message + ": " + e.getMessage());
     }
 
     /**
@@ -563,9 +569,8 @@ public class Tool {
      * elements.
      */
     public static Vector parseSeparatedList(String list, char separator) {
-        java.util.StringTokenizer st = new java.util.StringTokenizer(list,
-                                                                     String.valueOf(
-                                                                       separator));
+        java.util.StringTokenizer st =
+          new java.util.StringTokenizer(list, String.valueOf(separator));
         Vector v = new Vector(10);
         while (st.hasMoreTokens()) {
             v.appendElement(st.nextToken());
@@ -666,12 +671,9 @@ public class Tool {
      *               (or -1)
      */
     public void warning(String s, String file, int line, int column) {
-        System.err.println(
-          FileLineFormatter.getFormatter().getFormatString(file,
-                                                           line,
-                                                           column) +
-          "warning:" +
-          s);
+        System.err
+          .println(FileLineFormatter.getFormatter()
+            .getFormatString(file, line, column) + "warning:" + s);
     }
 
     /**
@@ -685,19 +687,13 @@ public class Tool {
         if (s == null || s.length == 0) {
             panic("bad multi-line message to Tool.warning");
         }
-        System.err.println(
-          FileLineFormatter.getFormatter().getFormatString(file,
-                                                           line,
-                                                           column) +
-          "warning:" +
-          s[0]);
+        System.err
+          .println(FileLineFormatter.getFormatter()
+            .getFormatString(file, line, column) + "warning:" + s[0]);
         for (int i = 1; i < s.length; i++) {
-            System.err.println(
-              FileLineFormatter.getFormatter().getFormatString(file,
-                                                               line,
-                                                               column) +
-              "    " +
-              s[i]);
+            System.err
+              .println(FileLineFormatter.getFormatter()
+                .getFormatString(file, line, column) + "    " + s[i]);
         }
     }
 

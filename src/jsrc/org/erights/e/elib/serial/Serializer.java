@@ -10,14 +10,14 @@ import org.erights.e.elib.util.IdentityFunc;
 import org.erights.e.elib.util.OneArgFunc;
 
 /**
- * A SerializationStream as specialized by a Serializer should represent
- * no magic authority -- the serialized infomation it produces should only
- * include information obtainable by unprivileged code all written in E.
+ * A SerializationStream as specialized by a Serializer should represent no
+ * magic authority -- the serialized infomation it produces should only include
+ * information obtainable by unprivileged code all written in E.
  * <p/>
  * Therefore, we declare the class Serializer to be safe.
  * <p/>
- * Serializer is specializable from E by providing replaceFunc(ref) so that,
- * on checkpointing for example, a live object may be replaced by a different
+ * Serializer is specializable from E by providing replaceFunc(ref) so that, on
+ * checkpointing for example, a live object may be replaced by a different
  * object to be checkpointed as its representative.
  * <p/>
  * The corresponding revived object is not simply this representative. It is
@@ -36,7 +36,6 @@ public final class Serializer extends Replacer {
     private final OneArgFunc myReplaceFunc;
 
     /**
-     *
      * @param replaceFunc
      */
     public Serializer(OneArgFunc replaceFunc) {

@@ -27,7 +27,7 @@ public class CodeLexer extends antlr.CharScanner
   implements CodeLexerTokenTypes, TokenStream {
 
     protected int lineOffset = 0;
-    private Tool antlrTool;	// The ANTLR tool
+    private Tool antlrTool;        // The ANTLR tool
 
     public CodeLexer(String s, String fname, int line, Tool tool) {
         this(new StringReader(s));
@@ -81,35 +81,34 @@ public class CodeLexer extends antlr.CharScanner
     public Token nextToken() throws TokenStreamException {
         Token theRetToken = null;
         tryAgain:
-                for (; ;) {
-                    Token _token = null;
-                    int _ttype = Token.INVALID_TYPE;
-                    resetText();
-                    try {   // for char stream error handling
-                        try {   // for lexical error handling
-                            {
-                                mACTION(true);
-                                theRetToken = _returnToken;
-                            }
-
-                            if (_returnToken == null) {
-                                continue tryAgain; // found SKIP token
-                            }
-                            _ttype = _returnToken.getType();
-                            _returnToken.setType(_ttype);
-                            return _returnToken;
-                        } catch (RecognitionException e) {
-                            throw new TokenStreamRecognitionException(e);
-                        }
-                    } catch (CharStreamException cse) {
-                        if (cse instanceof CharStreamIOException) {
-                            throw new TokenStreamIOException(
-                              ((CharStreamIOException)cse).io);
-                        } else {
-                            throw new TokenStreamException(cse.getMessage());
-                        }
+        for (; ;) {
+            Token _token = null;
+            int _ttype = Token.INVALID_TYPE;
+            resetText();
+            try {   // for char stream error handling
+                try {   // for lexical error handling
+                    {
+                        mACTION(true);
+                        theRetToken = _returnToken;
                     }
+
+                    if (_returnToken == null) {
+                        continue tryAgain; // found SKIP token
+                    }
+                    _ttype = _returnToken.getType();
+                    _returnToken.setType(_ttype);
+                    return _returnToken;
+                } catch (RecognitionException e) {
+                    throw new TokenStreamRecognitionException(e);
                 }
+            } catch (CharStreamException cse) {
+                if (cse instanceof CharStreamIOException) {
+                    throw new TokenStreamIOException(((CharStreamIOException)cse).io);
+                } else {
+                    throw new TokenStreamException(cse.getMessage());
+                }
+            }
+        }
     }
 
     public final void mACTION(boolean _createToken)
@@ -133,8 +132,9 @@ public class CodeLexer extends antlr.CharScanner
         }
         if (_createToken && _token == null && _ttype != Token.SKIP) {
             _token = makeToken(_ttype);
-            _token.setText(
-              new String(text.getBuffer(), _begin, text.length() - _begin));
+            _token.setText(new String(text.getBuffer(),
+                                      _begin,
+                                      text.length() - _begin));
         }
         _returnToken = _token;
     }
@@ -176,8 +176,9 @@ public class CodeLexer extends antlr.CharScanner
 
         if (_createToken && _token == null && _ttype != Token.SKIP) {
             _token = makeToken(_ttype);
-            _token.setText(
-              new String(text.getBuffer(), _begin, text.length() - _begin));
+            _token.setText(new String(text.getBuffer(),
+                                      _begin,
+                                      text.length() - _begin));
         }
         _returnToken = _token;
     }
@@ -203,8 +204,9 @@ public class CodeLexer extends antlr.CharScanner
 
         if (_createToken && _token == null && _ttype != Token.SKIP) {
             _token = makeToken(_ttype);
-            _token.setText(
-              new String(text.getBuffer(), _begin, text.length() - _begin));
+            _token.setText(new String(text.getBuffer(),
+                                      _begin,
+                                      text.length() - _begin));
         }
         _returnToken = _token;
     }
@@ -260,8 +262,9 @@ public class CodeLexer extends antlr.CharScanner
 
         if (_createToken && _token == null && _ttype != Token.SKIP) {
             _token = makeToken(_ttype);
-            _token.setText(
-              new String(text.getBuffer(), _begin, text.length() - _begin));
+            _token.setText(new String(text.getBuffer(),
+                                      _begin,
+                                      text.length() - _begin));
         }
         _returnToken = _token;
     }
@@ -339,8 +342,9 @@ public class CodeLexer extends antlr.CharScanner
         text.setLength(_saveIndex);
         if (_createToken && _token == null && _ttype != Token.SKIP) {
             _token = makeToken(_ttype);
-            _token.setText(
-              new String(text.getBuffer(), _begin, text.length() - _begin));
+            _token.setText(new String(text.getBuffer(),
+                                      _begin,
+                                      text.length() - _begin));
         }
         _returnToken = _token;
     }
@@ -370,8 +374,9 @@ public class CodeLexer extends antlr.CharScanner
         }
         if (_createToken && _token == null && _ttype != Token.SKIP) {
             _token = makeToken(_ttype);
-            _token.setText(
-              new String(text.getBuffer(), _begin, text.length() - _begin));
+            _token.setText(new String(text.getBuffer(),
+                                      _begin,
+                                      text.length() - _begin));
         }
         _returnToken = _token;
     }

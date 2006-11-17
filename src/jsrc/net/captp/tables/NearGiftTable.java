@@ -16,9 +16,9 @@ import java.math.BigInteger;
  * speak of the Donor (VatA) giving to the Recipient (VatB) a reference to the
  * Gift (Carol) residing on the Host (VatC). There is one NearGiftTable in the
  * Host per Donor. The Donor associates the gift with a Nonce, the Recipient's
- * ID, and the SwissHash of the gift. She then tells the Nonce and swissHash
- * to the Recipient. The Recipient asks the Host "What gift has Donor
- * (identified by DonorID) deposited for me at this Nonce and swissHash?".
+ * ID, and the SwissHash of the gift. She then tells the Nonce and swissHash to
+ * the Recipient. The Recipient asks the Host "What gift has Donor (identified
+ * by DonorID) deposited for me at this Nonce and swissHash?".
  * <p/>
  * A Nonce is a use-once unique number. It only needs to be "impossible" to
  * collide under benevolent assumptions; it doesn't need to be unguessable, so
@@ -27,8 +27,8 @@ import java.math.BigInteger;
  * When the donor registers the gift, the swissHash should be verified (by the
  * NearGiftTable's immediate client, the NonceLocator) to correspond to the
  * gift, which should be Near. The key under which the gift is stored is the
- * triple [recipient ID, nonce, swissHash]. The corresponding loopup must
- * match on all three, and must be satisfied immediately. To <a href=
+ * triple [recipient ID, nonce, swissHash]. The corresponding loopup must match
+ * on all three, and must be satisfied immediately. To <a href=
  * "http://www.erights.org/elib/distrib/captp/WormholeOp.html">Allow services
  * with Near arguments</a> the recipient's Far reference must be made to
  * correspond to a local Near reference, or it must become a DisconnectedRef.
@@ -90,16 +90,14 @@ public class NearGiftTable {
      * <p/>
      * Note that this message is named "acceptFor" whereas the corresponding
      * NonceLocator message is named "acceptFrom". In acceptFor, the recipient
-     * is explicit and the donor implicit. In acceptFrom, the donor is
-     * explicit and the recipient implicit.
+     * is explicit and the donor implicit. In acceptFrom, the donor is explicit
+     * and the recipient implicit.
      *
      * @param recipID The vatID of the vat (Bob, the gift recipient) that the
      *                gift is being picked up for.
      * @param nonce   Identifies (together with the recipID) the gift.
      */
-    public Object acceptFor(String recipID,
-                            long nonce,
-                            BigInteger swissHash) {
+    public Object acceptFor(String recipID, long nonce, BigInteger swissHash) {
         Object[] keyTriple = {recipID, BigInteger.valueOf(nonce), swissHash};
         //if absent, get/1 will throw
         Object result = myStuff.get(keyTriple);
@@ -113,9 +111,7 @@ public class NearGiftTable {
      * The Donor is able to call this as well, which isn't appropriate, but
      * isn't dangerous, so what the hell.
      */
-    public void drop(String recipID,
-                     long nonce,
-                     BigInteger swissHash) {
+    public void drop(String recipID, long nonce, BigInteger swissHash) {
         Object[] keyTriple = {recipID, BigInteger.valueOf(nonce), swissHash};
         myStuff.removeKey(keyTriple);
     }

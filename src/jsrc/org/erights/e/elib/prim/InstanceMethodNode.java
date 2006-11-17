@@ -49,9 +49,7 @@ class InstanceMethodNode extends JavaMemberNode {
     /**
      *
      */
-    static public void defineMembers(VTable vTable,
-                                     Class clazz,
-                                     SafeJ safeJ)
+    static public void defineMembers(VTable vTable, Class clazz, SafeJ safeJ)
       throws AlreadyDefinedException {
         if (!Modifier.isPublic(clazz.getModifiers())) {
             return;
@@ -106,8 +104,8 @@ class InstanceMethodNode extends JavaMemberNode {
     /**
      *
      */
-    public Object innerExecute(Object self, Object[] args)
-      throws IllegalAccessException, IllegalArgumentException,
+    public Object innerExecute(Object self, Object[] args) throws
+      IllegalAccessException, IllegalArgumentException,
       InvocationTargetException {
 
         return ((Method)myMember).invoke(self, args);

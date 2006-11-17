@@ -43,13 +43,11 @@ import java.io.StringWriter;
 public class Substituter implements ValueMaker, MatchMaker {
 
     /**
-     * A template is "compiled" into an array of three kinds of
-     * elements: <p>
-     * A Twine represents a literal string segment. <p>
-     * A positive Integer represents a position into which to
-     * substitute an arg. <p>
-     * A negative Integer represents a pattern position (XXX needs
-     * a real explanation). <p>
+     * A template is "compiled" into an array of three kinds of elements: <p> A
+     * Twine represents a literal string segment. <p> A positive Integer
+     * represents a position into which to substitute an arg. <p> A negative
+     * Integer represents a pattern position (XXX needs a real explanation).
+     * <p>
      * <p/>
      * XXX this representation is a kludge
      */
@@ -123,8 +121,8 @@ public class Substituter implements ValueMaker, MatchMaker {
     }
 
     /**
-     * As a quasi-pattern, "first" replace all ${i}s with args[i]s,
-     * then see if the speciman matches the pattern.
+     * As a quasi-pattern, "first" replace all ${i}s with args[i]s, then see if
+     * the speciman matches the pattern.
      * <p/>
      * If so, return an array in which the i'th element is the part of the
      * specimen that matched @{i}.
@@ -184,13 +182,13 @@ public class Substituter implements ValueMaker, MatchMaker {
             //pattern fully matched, but with specimen left over
             throw Thrower.toEject(optEjector,
                                   "Excess unmatched: " +
-                                  specstr.run(s, specstr.size()));
+                                    specstr.run(s, specstr.size()));
         }
     }
 
     /**
-     * If the iPtr[0]'th segment is a pattern, then return null and
-     * leave iPtr alone.
+     * If the iPtr[0]'th segment is a pattern, then return null and leave iPtr
+     * alone.
      * <p/>
      * Otherwise, return the list of consecutive non-pattern segments starting
      * with the iPtr[0]'th segment, and modify iPtr[0] to be the following
@@ -227,8 +225,8 @@ public class Substituter implements ValueMaker, MatchMaker {
     }
 
     /**
-     * If the iPtr[0]'th segment is a pattern, then return null and
-     * leave iPtr alone.
+     * If the iPtr[0]'th segment is a pattern, then return null and leave iPtr
+     * alone.
      * <p/>
      * Otherwise, return the string gotten by appending the consecutive
      * non-pattern segments starting with the iPtr[0]'th segment, and modify
@@ -237,14 +235,12 @@ public class Substituter implements ValueMaker, MatchMaker {
      * Note that if we're at the end, then we return an empty string rather
      * than null, since the iPtr[0]'th segment is indeed not a pattern. (This
      * may not be useful, but it is consistent.) Note further that this isn't
-     * the only circumstance in which we return an empty string: A dollar
-     * hole may be filled by an expression whose value is the empty string.
+     * the only circumstance in which we return an empty string: A dollar hole
+     * may be filled by an expression whose value is the empty string.
      *
-     * @see <a href=
-     *      "http://bugs.sieve.net/bugs/?func=detailbug&bug_id=125589&group_id=16380
+     * @see <a href= "http://bugs.sieve.net/bugs/?func=detailbug&bug_id=125589&group_id=16380
      *      ">simple__quasiParser fails on empty quasi string (``)</a>
-     * @see <a href=
-     *      "http://bugs.sieve.net/bugs/?func=detailbug&bug_id=125595&group_id=16380
+     * @see <a href= "http://bugs.sieve.net/bugs/?func=detailbug&bug_id=125595&group_id=16380
      *      ">CapDesk fails on new simple__quasiParser bug</a>
      */
     private Twine optSegments(int[] iPtr, ConstList args) {
@@ -285,8 +281,8 @@ public class Substituter implements ValueMaker, MatchMaker {
     public int numArgs() {
         int result = 0;
         for (int i = 0; i < myTemplate.length; i++) {
-            if (myTemplate[i] instanceof Integer
-              && ((Integer)myTemplate[i]).intValue() >= 0) {
+            if (myTemplate[i] instanceof Integer &&
+              ((Integer)myTemplate[i]).intValue() >= 0) {
 
                 result++;
             }
@@ -300,8 +296,8 @@ public class Substituter implements ValueMaker, MatchMaker {
     public int numPatterns() {
         int result = 0;
         for (int i = 0; i < myTemplate.length; i++) {
-            if (myTemplate[i] instanceof Integer
-              && ((Integer)myTemplate[i]).intValue() < 0) {
+            if (myTemplate[i] instanceof Integer &&
+              ((Integer)myTemplate[i]).intValue() < 0) {
 
                 result++;
             }

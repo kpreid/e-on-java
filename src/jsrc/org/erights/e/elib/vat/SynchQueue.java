@@ -1,6 +1,5 @@
 package org.erights.e.elib.vat;
 
-
 /*
 The contents of this file are subject to the Electric Communities E Open
 Source Code License Version 1.0 (the "License"); you may not use this file
@@ -21,8 +20,8 @@ Contributor(s): ______________________________________.
 */
 
 /**
- * A SynchQueue is a thread-safe Queue, providing its own lock, and a
- * blocking dequeue() operation.
+ * A SynchQueue is a thread-safe Queue, providing its own lock, and a blocking
+ * dequeue() operation.
  * <p/>
  * Since it provides a blocking operation, it is not E-safe. For an E-safe
  * variant suitable for use inside one vat, see the superclass {@link Queue}.
@@ -62,9 +61,8 @@ public class SynchQueue extends Queue {
     }
 
     /**
-     * Get the least-recently-added element off of the queue. If the queue
-     * is currently empty, block until there is an element that can be
-     * dequeued.
+     * Get the least-recently-added element off of the queue. If the queue is
+     * currently empty, block until there is an element that can be dequeued.
      */
     public Object dequeue() {
         synchronized (myQLock) {
@@ -94,8 +92,8 @@ public class SynchQueue extends Queue {
     }
 
     /**
-     * Check to see if the queue has more elements. This method
-     * allows a Queue to be used as an Enumeration.
+     * Check to see if the queue has more elements. This method allows a Queue
+     * to be used as an Enumeration.
      *
      * @return is false if the queue is empty, otherwise true
      */

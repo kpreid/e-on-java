@@ -19,7 +19,8 @@ public class TypeDescGuardSugar extends ClassDesc {
     public TypeDescGuardSugar(Class clazz) {
         super(clazz);
         T.require(TypeDesc.class.isAssignableFrom(clazz),
-                  clazz, " must be a kind of TypeDesc");
+                  clazz,
+                  " must be a kind of TypeDesc");
     }
 
     /**

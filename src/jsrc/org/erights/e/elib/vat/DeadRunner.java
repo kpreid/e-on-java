@@ -8,8 +8,7 @@ import org.erights.e.elib.ref.Ref;
 import org.erights.e.elib.sealing.Unsealer;
 
 /**
- * To shutdown a Vat is to {@link Vat#mergeInto merge it into} a
- * DeadRunner.
+ * To shutdown a Vat is to {@link Vat#mergeInto merge it into} a DeadRunner.
  * <p/>
  * Since a DeadRunner is immutable, it needs no synchronization.
  *

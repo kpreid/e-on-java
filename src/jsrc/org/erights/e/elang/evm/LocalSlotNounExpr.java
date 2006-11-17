@@ -30,8 +30,6 @@ import org.erights.e.meta.java.math.EInt;
 import java.io.IOException;
 
 /**
- *
- *
  * @author E. Dean Tribble
  */
 public class LocalSlotNounExpr extends NestNounExpr {
@@ -50,12 +48,12 @@ public class LocalSlotNounExpr extends NestNounExpr {
      * Uses XXX 'makeFoo(...)'
      */
     public Object[] getSpreadUncall() {
-        Object[] result = { StaticMaker.make(LocalSlotNounExpr.class),
-                            "run",
-                            getOptSpan(),
-                            getName(),
-                            EInt.valueOf(myIndex),
-                            getOptScopeLayout() };
+        Object[] result = {StaticMaker.make(LocalSlotNounExpr.class),
+          "run",
+          getOptSpan(),
+          getName(),
+          EInt.valueOf(myIndex),
+          getOptScopeLayout()};
         return result;
     }
 

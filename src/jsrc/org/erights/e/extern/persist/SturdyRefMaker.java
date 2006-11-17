@@ -60,7 +60,6 @@ public class SturdyRefMaker {
     private Object myOptTimeMachine = null;
 
     /**
-     *
      * @param introducer
      * @param timer
      * @param identityMgr
@@ -75,7 +74,7 @@ public class SturdyRefMaker {
     }
 
     /**
-     * @deprecated Use {@link #tearOffRoots(FlexMap, Object) tearOffRoots/2}
+     * @deprecated Use {@link #tearOffRoots(FlexMap,Object) tearOffRoots/2}
      *             instead.
      */
     public FlexMap tearOffRoots(FlexMap optOldRoots) {
@@ -102,11 +101,10 @@ public class SturdyRefMaker {
      * @return
      */
     public FlexMap tearOffRoots(FlexMap optOldRoots, Object optTimeMachine) {
-        T.require(null == myOptSwissRetainers,
-                  "Already torn off");
+        T.require(null == myOptSwissRetainers, "Already torn off");
         if (null == optOldRoots) {
-            myOptSwissRetainers = FlexMap.fromTypes(SwissRetainer.class,
-                                                    Object.class);
+            myOptSwissRetainers =
+              FlexMap.fromTypes(SwissRetainer.class, Object.class);
         } else {
             myOptSwissRetainers = optOldRoots;
             SwissRetainer[] retainers =
@@ -134,8 +132,7 @@ public class SturdyRefMaker {
     /**
      * Produce a non-cancellable persistent SturdyRef for an object.
      * <p/>
-     * Equivalent to<br>
-     * <tt>make(obj,optExpirationDate)[0]</tt>.
+     * Equivalent to<br> <tt>make(obj,optExpirationDate)[0]</tt>.
      */
     public SturdyRef run(Object obj, long optExpirationDate)
       throws MalformedURLException {
@@ -162,8 +159,8 @@ public class SturdyRefMaker {
      * SturdyRefs are available to be given out.
      * <p/>
      * XXX We should extend the behavior of this to allow it to be called
-     * before the introducer is identified or onTheAir, it which case it
-     * should wait for that before internally making the SturdyRef.
+     * before the introducer is identified or onTheAir, it which case it should
+     * wait for that before internally making the SturdyRef.
      *
      * @param obj The object for which a SturdyRef is desired
      * @return A vow for a new SturdyRef for the indicated object
@@ -201,9 +198,9 @@ public class SturdyRefMaker {
      * Produce a SturdyRef for a persistence-capable object, thereby making it
      * persistent.
      * <p/>
-     * The SturdyRef will designate the object across time and space, at
-     * least until the expiration time, so long as the hosting vat (this vat)
-     * is accessible.
+     * The SturdyRef will designate the object across time and space, at least
+     * until the expiration time, so long as the hosting vat (this vat) is
+     * accessible.
      *
      * @param obj               The object for which a SturdyRef is desired
      * @param optExpirationDate The date after which the SturdyRef will not
@@ -218,7 +215,7 @@ public class SturdyRefMaker {
 
         T.notNull(myOptSwissRetainers,
                   "TimeMachine must be made non-Ephemeral first.\n" +
-                  "Or use makeSturdyRef.temp(...) instead if suitable.");
+                    "Or use makeSturdyRef.temp(...) instead if suitable.");
 
         BigInteger swissBase = myIdentityMgr.nextSwiss();
         SwissRetainer retainer = new SwissRetainer(myTimer,
@@ -229,9 +226,8 @@ public class SturdyRefMaker {
                                                    swissBase);
         myOptSwissRetainers.put(retainer, obj);
         retainer.init(myOptSwissRetainers);
-        SturdyRef sr = myIdentityMgr.makeSturdyRef(obj,
-                                                   swissBase,
-                                                   optExpirationDate);
+        SturdyRef sr =
+          myIdentityMgr.makeSturdyRef(obj, swissBase, optExpirationDate);
         Object[] result = {sr, retainer};
         return result;
     }
@@ -257,10 +253,10 @@ public class SturdyRefMaker {
      * of this incarnation of its hosting vat. Typically, it is used only for
      * ephemeral vats -- vats which themselves are never made persistent.
      * <p/>
-     * Because temporary SturdyRefs are not used as roots for persistence,
-     * the <tt>temp</tt> methods accept argument objects which cannot be
-     * serialized for persistence. Conceivably, this even has utility in the
-     * context of a persistent vat.
+     * Because temporary SturdyRefs are not used as roots for persistence, the
+     * <tt>temp</tt> methods accept argument objects which cannot be serialized
+     * for persistence. Conceivably, this even has utility in the context of a
+     * persistent vat.
      * <p/>
      * Equivalent to
      * <pre>    identityMgr.makeKnown(obj,optExpirationDate)[0]</pre>.
@@ -275,8 +271,8 @@ public class SturdyRefMaker {
      * <pre>    reactor <- verb(args...)</pre>
      * following future revivals.
      * <p/>
-     * Once this notification is no longer needed on further revivals,
-     * the notification action should use the returned persistent Runnable to
+     * Once this notification is no longer needed on further revivals, the
+     * notification action should use the returned persistent Runnable to
      * cancel them.
      *
      * @return

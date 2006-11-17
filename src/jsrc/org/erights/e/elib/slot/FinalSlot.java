@@ -27,7 +27,6 @@ public final class FinalSlot
     private final Object myValue;
 
     /**
-     *
      * @param initValue
      */
     public FinalSlot(Object initValue) {

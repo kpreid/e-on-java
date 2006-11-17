@@ -29,9 +29,9 @@ Contributor(s): ______________________________________.
  * A RemotePromise is a EProxy intended to represent a promise that will be
  * resolved remotely (in another vat).
  * <p/>
- * A RemotePromise is born handled (delegating to its EProxyHandler).
- * While it is handled, it is EVENTUAL and has no identity. It is
- * therefore also unsettled.
+ * A RemotePromise is born handled (delegating to its EProxyHandler). While it
+ * is handled, it is EVENTUAL and has no identity. It is therefore also
+ * unsettled.
  *
  * @author Mark S. Miller
  */
@@ -70,7 +70,7 @@ class RemotePromise extends EProxy {
         newTarget = newTarget.resolutionRef();
         if (newTarget == TheViciousRef) {
             myOptTarget =
-            new UnconnectedRef(new ViciousCycleException("Ref loop"));
+              new UnconnectedRef(new ViciousCycleException("Ref loop"));
         } else {
             myOptTarget = newTarget;
         }
@@ -79,7 +79,6 @@ class RemotePromise extends EProxy {
     }
 
     /**
-     *
      * @param out
      * @throws java.io.IOException
      */

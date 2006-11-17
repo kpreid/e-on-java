@@ -107,8 +107,8 @@ public class CapTPMgr implements NewConnectionReactor {
         myConnMgr.addNewConnectionReactor(this);
 
         mySwissTable = swissTable;
-        myProxyConnections = FlexMap.fromTypes(VatTPConnection.class,
-                                               CapTPConnection.class);
+        myProxyConnections =
+          FlexMap.fromTypes(VatTPConnection.class, CapTPConnection.class);
         myEntropy = entropy;
 
         Object[] pair = Brand.run("captp");
@@ -120,8 +120,8 @@ public class CapTPMgr implements NewConnectionReactor {
         myRefmon = refmon;
 
         if (Trace.captp.debug && Trace.ON) {
-            Trace.captp.debugm("Create CapTPMgr " + this +
-                               " connMgr=" + myConnMgr);
+            Trace.captp
+              .debugm("Create CapTPMgr " + this + " connMgr=" + myConnMgr);
         }
     }
 
@@ -145,9 +145,9 @@ public class CapTPMgr implements NewConnectionReactor {
             myProxyConnections.put(dataConn, proxyConn);
         }
         if (Trace.captp.debug && Trace.ON) {
-            Trace.captp.debugm("CapTPMgr " + this +
-                               " arrangeConnection " +
-                               dataConn + "->" + proxyConn);
+            Trace.captp
+              .debugm("CapTPMgr " + this + " arrangeConnection " + dataConn +
+                "->" + proxyConn);
         }
         return proxyConn;
     }
@@ -195,10 +195,10 @@ public class CapTPMgr implements NewConnectionReactor {
      */
     public void reactToNewConnection(VatTPConnection connection) {
         if (Trace.captp.debug && Trace.ON) {
-            Trace.captp.debugm("CapTPMgr " + this +
-                               " reactToNewConnection " + connection +
-                               " rvat=%" + connection.getRemoteVatID() +
-                               " lvat=%" + connection.getLocalVatID());
+            Trace.captp
+              .debugm("CapTPMgr " + this + " reactToNewConnection " +
+                connection + " rvat=%" + connection.getRemoteVatID() +
+                " lvat=%" + connection.getLocalVatID());
         }
         try {
             arrangeProxyConnection(connection);
@@ -227,8 +227,7 @@ public class CapTPMgr implements NewConnectionReactor {
      * vatID. <p>
      */
     CapTPConnection getOrMakeProxyConnection(ConstList searchPath,
-                                             String vatID)
-      throws IOException {
+                                             String vatID) throws IOException {
         VatTPConnection optDataConn =
           myConnMgr.getConnection(vatID, searchPath);
         if (null == optDataConn) {

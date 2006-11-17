@@ -33,8 +33,7 @@ import org.quasiliteral.base.ValueMaker;
  *
  * @author Mark S. Miller
  */
-public class SimpleQuasiParser
-  implements QuasiExprParser, QuasiPatternParser {
+public class SimpleQuasiParser implements QuasiExprParser, QuasiPatternParser {
 
     static public final SimpleQuasiParser THE_ONE = new SimpleQuasiParser();
 

@@ -36,7 +36,7 @@ import java.io.IOException;
 
 /**
  * BNF: '&' ID (':' expr)?
- * <p>
+ * <p/>
  * Defines an indirect variable whose slot is the specimen (as coerced by the
  * guard, if any).
  *
@@ -45,11 +45,11 @@ import java.io.IOException;
 public final class SlotPattern extends NounPattern {
 
     /**
-     * If 'varName' would shadow a non-shadowable, throw a (XXX to be
-     * defined) exception instead.
-     * <p>
-     * If the SlotPattern would not be well-formed, throw a (XXX to be
-     * defined) exception instead.
+     * If 'varName' would shadow a non-shadowable, throw a (XXX to be defined)
+     * exception instead.
+     * <p/>
+     * If the SlotPattern would not be well-formed, throw a (XXX to be defined)
+     * exception instead.
      */
     public SlotPattern(SourceSpan optSpan,
                        AtomicExpr noun,
@@ -73,12 +73,12 @@ public final class SlotPattern extends NounPattern {
      * Uses XXX 'makeFoo(...)'
      */
     public Object[] getSpreadUncall() {
-        Object[] result = { StaticMaker.make(SlotPattern.class),
-                            "run",
-                            getOptSpan(),
-                            getNoun(),
-                            getOptGuardExpr(),
-                            getOptScopeLayout() };
+        Object[] result = {StaticMaker.make(SlotPattern.class),
+          "run",
+          getOptSpan(),
+          getNoun(),
+          getOptGuardExpr(),
+          getOptScopeLayout()};
         return result;
     }
 
@@ -125,9 +125,7 @@ public final class SlotPattern extends NounPattern {
     /**
      *
      */
-    void testMatch(EvalContext ctx,
-                      Object specimen,
-                      OneArgFunc optEjector) {
+    void testMatch(EvalContext ctx, Object specimen, OneArgFunc optEjector) {
         getNoun().initSlot(ctx,
                            (Slot)E.as(coercedSpecimen(ctx,
                                                       specimen,
@@ -139,9 +137,8 @@ public final class SlotPattern extends NounPattern {
      *
      */
     public NounPattern withNounExpr(NounExpr newNounExpr) {
-        return new SlotPattern(getOptSpan(),
-                               newNounExpr,
-                               null, // XXX is this right?
+        return new SlotPattern(getOptSpan(), newNounExpr, null,
+                               // XXX is this right?
                                getOptScopeLayout());
     }
 

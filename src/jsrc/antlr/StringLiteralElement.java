@@ -19,10 +19,11 @@ class StringLiteralElement extends GrammarAtom {
             // lexer does not have token types for string literals
             TokenSymbol ts = grammar.tokenManager.getTokenSymbol(atomText);
             if (ts == null) {
-                g.antlrTool.error("Undefined literal: " + atomText,
-                                  grammar.getFilename(),
-                                  t.getLine(),
-                                  t.getColumn());
+                g.antlrTool
+                  .error("Undefined literal: " + atomText,
+                         grammar.getFilename(),
+                         t.getLine(),
+                         t.getColumn());
             } else {
                 tokenType = ts.getTokenType();
             }
@@ -39,13 +40,13 @@ class StringLiteralElement extends GrammarAtom {
                     i++;
                     c = atomText.charAt(i);
                     switch (c) {
-                    case 'n':
+                    case'n':
                         c = '\n';
                         break;
-                    case 'r':
+                    case'r':
                         c = '\r';
                         break;
-                    case 't':
+                    case't':
                         c = '\t';
                         break;
                     }

@@ -90,8 +90,8 @@ class Decrypt3DES extends MsgTransformer {
     void transform(byte[] buffer, int off, int len) {
 
         long startTime = Trace.comm.timing ? MicroTime.queryTimer() : 0;
-        T.require(0 == (len & 0x7), "Buffer length not a multiple of 8, len = " +
-                                    len);
+        T.require(0 == (len & 0x7),
+                  "Buffer length not a multiple of 8, len = " + len);
 
         for (int cursor = off; cursor < off + len; cursor += 8) {
             //Save current block's cyphertext for CBC mode
@@ -104,9 +104,9 @@ class Decrypt3DES extends MsgTransformer {
             System.arraycopy(myCurrentBlock, 0, myPreviousBlock, 0, 8);
         }
         if (Trace.comm.timing && Trace.ON) {
-            Trace.comm.timingm("Pkt3DESDecrypt(" + buffer.length + "), time " +
-                               (MicroTime.queryTimer() - startTime) +
-                               " microseconds");
+            Trace.comm
+              .timingm("Pkt3DESDecrypt(" + buffer.length + "), time " +
+                (MicroTime.queryTimer() - startTime) + " microseconds");
         }
     }
 

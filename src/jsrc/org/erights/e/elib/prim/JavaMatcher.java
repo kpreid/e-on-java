@@ -74,8 +74,8 @@ public abstract class JavaMatcher implements VTableEntry, EStackItem {
      * JavaMatcher.
      *
      * @param self The object whose matcher is being invoked.
-     * @param pair A pair of a String and a ConstList, representing the
-     *             verb and args of the original message, respectively.
+     * @param pair A pair of a String and a ConstList, representing the verb
+     *             and args of the original message, respectively.
      */
     abstract Object innerExecute(Object self, Object[] pair);
 
@@ -98,7 +98,6 @@ public abstract class JavaMatcher implements VTableEntry, EStackItem {
     }
 
     /**
-     *
      * @param optSelf
      * @param mTypes
      */
@@ -106,8 +105,8 @@ public abstract class JavaMatcher implements VTableEntry, EStackItem {
         if (null == optSelf) {
             return;
         }
-        TypeDesc oType
-          = (TypeDesc)execute(optSelf, "__getAllegedType", E.NO_ARGS);
+        TypeDesc oType =
+          (TypeDesc)execute(optSelf, "__getAllegedType", E.NO_ARGS);
         Object[] rest = (Object[])oType.getMessageTypes().getValues();
         mTypes.append(ConstList.fromArray(rest));
     }

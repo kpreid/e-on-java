@@ -17,7 +17,8 @@ public class CF_CONSTANT_String_info extends CF_cp_info {
      * Constructor.
      *
      * @param string_index Index into the constant pool of the
-     *                     CONSTANT_Utf8_info object containing the String's value.
+     *                     CONSTANT_Utf8_info object containing the String's
+     *                     value.
      */
     CF_CONSTANT_String_info(int string_index) {
         myString_index = string_index;
@@ -36,9 +37,9 @@ public class CF_CONSTANT_String_info extends CF_cp_info {
     /**
      * Read and return a CONSTANT_String_info object from a DataInputStream.
      *
-     * @param in The DataInputStream to read from; this should be positioned
-     *           at the first byte after the type code byte of the constant pool entry
-     *           being read.
+     * @param in The DataInputStream to read from; this should be positioned at
+     *           the first byte after the type code byte of the constant pool
+     *           entry being read.
      */
     static CF_CONSTANT_String_info read(DataInputStream in)
       throws IOException {

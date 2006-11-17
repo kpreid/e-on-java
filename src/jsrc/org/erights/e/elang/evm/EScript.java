@@ -66,14 +66,14 @@ public class EScript extends ENode {
         myMatchers = matchers;
 
         if (null != optMethods) {
-            FlexSet mverbs =
-              FlexSet.fromType(String.class, optMethods.length);
+            FlexSet mverbs = FlexSet.fromType(String.class, optMethods.length);
             for (int i = 0, len = optMethods.length; i < len; i++) {
                 EMethod meth = optMethods[i];
                 String mverb =
                   meth.getVerb() + "/" + meth.getPatterns().length;
                 T.require(!mverbs.contains(mverb),
-                          "Conflicting definitions of ", mverb);
+                          "Conflicting definitions of ",
+                          mverb);
                 mverbs.addElement(mverb);
             }
         }
@@ -83,12 +83,12 @@ public class EScript extends ENode {
      * Uses XXX 'makeFoo(...)'
      */
     public Object[] getSpreadUncall() {
-        Object[] result = { StaticMaker.make(EScript.class),
-                            "run",
-                            getOptSpan(),
-                            myOptMethods,
-                            myMatchers,
-                            getOptScopeLayout() };
+        Object[] result = {StaticMaker.make(EScript.class),
+          "run",
+          getOptSpan(),
+          myOptMethods,
+          myMatchers,
+          getOptScopeLayout()};
         return result;
     }
 
@@ -138,11 +138,7 @@ public class EScript extends ENode {
                   other.myOptMethods,
                   optEjector,
                   bindings);
-        matchBind(myMatchers,
-                  args,
-                  other.myMatchers,
-                  optEjector,
-                  bindings);
+        matchBind(myMatchers, args, other.myMatchers, optEjector, bindings);
     }
 
     /**

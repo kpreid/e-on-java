@@ -10,8 +10,8 @@ import org.erights.e.elib.base.SourceSpan;
 import org.erights.e.elib.tables.ConstMap;
 
 /**
- * Those ParseNodes that--after expansion--define the kernel
- * nodes evaluated by the E Virtual Machine.
+ * Those ParseNodes that--after expansion--define the kernel nodes evaluated by
+ * the E Virtual Machine.
  *
  * @author Mark S. Miller
  */
@@ -24,7 +24,6 @@ public abstract class ENode extends ParseNode {
     private transient ConstMap myOptSynEnv = null;
 
     /**
-     *
      * @param optSpan
      * @param optScopeLayout By convention, this parameter should remain last
      *                       in all subclass constructors, to make it
@@ -38,20 +37,19 @@ public abstract class ENode extends ParseNode {
     }
 
     /**
-     * A node welcomes a visitor by asking the visitor to visit it in
-     * detail.
-     * <p>
-     * For example, a FooNode with parts myBar and myBaz might welcome
-     * the visitor by asking it to visitFooNode(this, myBar, myBaz). What
-     * this visit request returns it what welcome should return. The
-     * starting point for this pattern is the "Visitor" pattern from
-     * the "Design Patterns" book.
+     * A node welcomes a visitor by asking the visitor to visit it in detail.
+     * <p/>
+     * For example, a FooNode with parts myBar and myBaz might welcome the
+     * visitor by asking it to visitFooNode(this, myBar, myBaz). What this
+     * visit request returns it what welcome should return. The starting point
+     * for this pattern is the "Visitor" pattern from the "Design Patterns"
+     * book.
      */
     public abstract Object welcome(ETreeVisitor visitor);
 
     /**
-     * Return a static scope analysis of a subtree that doesn't
-     * depend on the enclosing context.
+     * Return a static scope analysis of a subtree that doesn't depend on the
+     * enclosing context.
      */
     public final StaticScope staticScope() {
         if (myOptStaticScope == null) {
@@ -62,8 +60,8 @@ public abstract class ENode extends ParseNode {
 
     /**
      * When staticScope() is first requested on a given node, it calls
-     * computeStaticScope() to do the actual computation, which is
-     * then remembered.
+     * computeStaticScope() to do the actual computation, which is then
+     * remembered.
      */
     protected abstract StaticScope computeStaticScope();
 
@@ -76,14 +74,14 @@ public abstract class ENode extends ParseNode {
                 return ScopeLayout.EMPTY;
             } else {
                 T.notNull(myOptScopeLayout,
-                          "internal: Missing ScopeLayout in ", this);
+                          "internal: Missing ScopeLayout in ",
+                          this);
             }
         }
         return myOptScopeLayout;
     }
 
     /**
-     *
      * @return
      */
     public final ScopeLayout getOptScopeLayout() {
@@ -92,7 +90,7 @@ public abstract class ENode extends ParseNode {
 
     /**
      * Get the syntactic environment for this node.
-     * <p>
+     * <p/>
      * This query should only be asked of a {@link ETreeVisitor Bound-E} node.
      *
      * @return A mapping from each varName used freely in this node to the
@@ -100,8 +98,7 @@ public abstract class ENode extends ParseNode {
      */
     public ConstMap getSynEnv() {
         if (null == myOptSynEnv) {
-            T.notNull(myOptScopeLayout,
-                      "Must be a Bound-E node: ", this);
+            T.notNull(myOptScopeLayout, "Must be a Bound-E node: ", this);
             ConstMap freeNames = staticScope().namesUsed();
             myOptSynEnv = myOptScopeLayout.getSynEnv().and(freeNames);
         }

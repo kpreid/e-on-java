@@ -4,11 +4,11 @@ package org.erights.e.elib.serial;
 // found at http://www.opensource.org/licenses/mit-license.html ...............
 
 import org.erights.e.elib.base.ClassDesc;
+import org.erights.e.elib.oldeio.TextWriter;
 import org.erights.e.elib.prim.Thrower;
 import org.erights.e.elib.ref.Ref;
-import org.erights.e.elib.util.OneArgFunc;
-import org.erights.e.elib.oldeio.TextWriter;
 import org.erights.e.elib.slot.Guard;
+import org.erights.e.elib.util.OneArgFunc;
 
 import java.io.IOException;
 
@@ -22,8 +22,7 @@ import java.io.IOException;
  */
 public final class PassByProxyGuard implements Guard {
 
-    static public final PassByProxyGuard THE_ONE =
-      new PassByProxyGuard();
+    static public final PassByProxyGuard THE_ONE = new PassByProxyGuard();
 
     /**
      *
@@ -32,10 +31,9 @@ public final class PassByProxyGuard implements Guard {
     }
 
     /**
-     * Coerces specimen to be
-     * pass-by-proxy, which includes types that are not Java-subtypes of
-     * PassByProxy. If the specimen can't be coerced, exit according
-     * to optEjector.
+     * Coerces specimen to be pass-by-proxy, which includes types that are not
+     * Java-subtypes of PassByProxy. If the specimen can't be coerced, exit
+     * according to optEjector.
      */
     public Object coerce(Object specimen, OneArgFunc optEjector) {
         //shorten first
@@ -44,9 +42,9 @@ public final class PassByProxyGuard implements Guard {
             return specimen;
         } else {
             throw Thrower.toEject(optEjector,
-                                  new ClassCastException(ClassDesc.sig(
-                                    specimen.getClass()) +
-                                                         " isn't PassByProxy"));
+                                  new ClassCastException(
+                                    ClassDesc.sig(specimen.getClass()) +
+                                      " isn't PassByProxy"));
         }
     }
 

@@ -138,8 +138,7 @@ class ROMap extends EMap implements Amplifiable, PassByProxy {
     }
 
     /**
-     * Divulges itself only to a holder of
-     * {@link PersistentKeyHolder#THE_UNSEALER}.
+     * Divulges itself only to a holder of {@link PersistentKeyHolder#THE_UNSEALER}.
      * <p/>
      * XXX Should provide an optional creation-time parameter of a Sealer to
      * use in addition (or instead?) as a secret divulging channel.

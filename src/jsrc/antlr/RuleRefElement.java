@@ -10,8 +10,10 @@ package antlr;
 class RuleRefElement extends AlternativeElement {
 
     protected String targetRule; // which rule is being called?
-    protected String args = null;		 // were any args passed to rule?
-    protected String idAssign = null;	 // is the return type assigned to a variable?
+    protected String args =
+      null;                 // were any args passed to rule?
+    protected String idAssign =
+      null;         // is the return type assigned to a variable?
     protected String label;
 
 

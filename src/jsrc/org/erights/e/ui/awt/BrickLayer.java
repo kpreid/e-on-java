@@ -25,8 +25,8 @@ import java.awt.GridBagLayout;
 
 
 /**
- * Presents a simple to use abstraction of some of the functionality
- * of GridBagLayout
+ * Presents a simple to use abstraction of some of the functionality of
+ * GridBagLayout
  *
  * @author Mark S. Miller
  */

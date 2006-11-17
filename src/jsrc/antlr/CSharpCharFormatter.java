@@ -28,19 +28,19 @@ class CSharpCharFormatter implements CharFormatter {
     public String escapeChar(int c, boolean forCharLiteral) {
         switch (c) {
         //		case GrammarAnalyzer.EPSILON_TYPE : return "<end-of-token>";
-        case '\n':
+        case'\n':
             return "\\n";
-        case '\t':
+        case'\t':
             return "\\t";
-        case '\r':
+        case'\r':
             return "\\r";
-        case '\\':
+        case'\\':
             return "\\\\";
-        case '\'':
+        case'\'':
             return forCharLiteral ? "\\'" : "'";
-        case '"':
+        case'"':
             return forCharLiteral ? "\"" : "\\\"";
-        default :
+        default:
             if (c < ' ' || c > 126) {
                 if ((0x0000 <= c) && (c <= 0x000F)) {
                     return "\\u000" + Integer.toString(c, 16);

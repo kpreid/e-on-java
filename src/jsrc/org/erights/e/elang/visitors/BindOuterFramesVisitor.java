@@ -4,14 +4,13 @@ package org.erights.e.elang.visitors;
 // found at http://www.opensource.org/licenses/mit-license.html ...............
 
 import org.erights.e.develop.assertion.T;
+import org.erights.e.elang.evm.GuardedPattern;
 import org.erights.e.elang.evm.NounExpr;
 import org.erights.e.elang.evm.OuterNounExpr;
-import org.erights.e.elang.evm.GuardedPattern;
 import org.erights.e.elang.scope.ScopeLayout;
 import org.erights.e.elib.base.SourceSpan;
 
 /**
- *
  * @author E. Dean Tribble
  */
 class BindOuterFramesVisitor extends BindFramesVisitor {
@@ -55,8 +54,7 @@ class BindOuterFramesVisitor extends BindFramesVisitor {
      */
     NounExpr newVar(SourceSpan optSpan, String varName) {
         int outerCount = myLayout.getOuterCount();
-        T.require(outerCount >= 0,
-                  "internal: scope confusion: ", varName);
+        T.require(outerCount >= 0, "internal: scope confusion: ", varName);
         return new OuterNounExpr(optSpan,
                                  varName,
                                  outerCount,

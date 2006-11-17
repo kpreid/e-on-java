@@ -19,10 +19,10 @@ Copyright (C) 1998 Electric Communities. All Rights Reserved.
 Contributor(s): ______________________________________.
 */
 
+import org.erights.e.elib.prim.MirandaMethods;
 import org.erights.e.elib.ref.Ref;
 import org.erights.e.elib.serial.PassByProxy;
 import org.erights.e.elib.serial.Persistent;
-import org.erights.e.elib.prim.MirandaMethods;
 
 /**
  * Corresponds to a decrypting or signature-verifying key
@@ -37,7 +37,6 @@ public final class Unsealer implements PassByProxy, Persistent {
     private final Brand myBrand;
 
     /**
-     *
      * @param brand
      */
     Unsealer(Brand brand) {
@@ -52,15 +51,14 @@ public final class Unsealer implements PassByProxy, Persistent {
     }
 
     /**
-     * If box was sealed by the Sealer of the same Brand, return its
-     * contents. Otherwise throw UnsealingException.
+     * If box was sealed by the Sealer of the same Brand, return its contents.
+     * Otherwise throw UnsealingException.
      */
     public Object unseal(SealedBox box) throws UnsealingException {
         if (myBrand == box.getBrand()) {
             return box.myContents;
         } else {
-            throw new UnsealingException
-              ("" + this + " can't unseal " + box);
+            throw new UnsealingException("" + this + " can't unseal " + box);
         }
     }
 
@@ -86,14 +84,14 @@ public final class Unsealer implements PassByProxy, Persistent {
     /**
      * Used in an Unsealer's role as a Guard.
      * <p/>
-     * A specimen is amplified to the contents of the SealedBox it
-     * {@link MirandaMethods#__optSealedDispatch offers} for being unsealed by
-     * this sealer.
+     * A specimen is amplified to the contents of the SealedBox it {@link
+     * MirandaMethods#__optSealedDispatch offers} for being unsealed by this
+     * sealer.
      *
      * @return Either null, to indicate that no box was offered, or a singleton
      *         list containing the contents of the box. The contents are
-     *         enclosed in a list so that null can be used to indicate lack
-     *         of match, without being confused with null as the box contents.
+     *         enclosed in a list so that null can be used to indicate lack of
+     *         match, without being confused with null as the box contents.
      * @throws UnsealingException If optBox isn't null but fails to unseal,
      *                            that's a thrown exception rather than a
      *                            polite report of failure.

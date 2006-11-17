@@ -26,15 +26,12 @@ class ScopeLayoutBase extends ScopeLayout {
     private final String myFQNPrefix;
 
     /**
-     *
      * @param outerCount
-     * @param synEnv Must be a map in which each association is
-     * <pre>    varName =&gt; {@link org.erights.e.elang.evm.NounPattern}</pre>
+     * @param synEnv     Must be a map in which each association is
+     *                   <pre>    varName =&gt; {@link org.erights.e.elang.evm.NounPattern}</pre>
      * @param fqnPrefix
      */
-    ScopeLayoutBase(int outerCount,
-                    ConstMap synEnv,
-                    String fqnPrefix) {
+    ScopeLayoutBase(int outerCount, ConstMap synEnv, String fqnPrefix) {
         super(outerCount);
         mySynEnv = synEnv;
         myFQNPrefix = fqnPrefix;
@@ -42,15 +39,14 @@ class ScopeLayoutBase extends ScopeLayout {
     }
 
     /**
-     * Uses 'ScopeLayoutMaker.make(myOuterCount,
-     *                             mySynEnv,
-     *                             myFQNPrefix)'
+     * Uses 'ScopeLayoutMaker.make(myOuterCount, mySynEnv, myFQNPrefix)'
      */
     public Object[] getSpreadUncall() {
-        Object[] result = { ScopeLayoutMaker, "make",
-                            EInt.valueOf(myOuterCount),
-                            mySynEnv,
-                            myFQNPrefix };
+        Object[] result = {ScopeLayoutMaker,
+          "make",
+          EInt.valueOf(myOuterCount),
+          mySynEnv,
+          myFQNPrefix};
         return result;
     }
 
@@ -72,9 +68,7 @@ class ScopeLayoutBase extends ScopeLayout {
      *
      */
     public ScopeLayout withPrefix(String fqnPrefix) {
-        return new ScopeLayoutBase(myOuterCount,
-                                   mySynEnv,
-                                   fqnPrefix);
+        return new ScopeLayoutBase(myOuterCount, mySynEnv, fqnPrefix);
     }
 
     /**

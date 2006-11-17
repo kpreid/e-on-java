@@ -39,9 +39,8 @@ public class IntegerSugar {
     }
 
     /**
-     * Always gives back a Double
-     * This corresponds to the Java floating-point "/" operator
-     * and the E "/" operator.
+     * Always gives back a Double This corresponds to the Java floating-point
+     * "/" operator and the E "/" operator.
      */
     static public double approxDivide(int self, double arg) {
         return (double)self / arg;
@@ -55,8 +54,8 @@ public class IntegerSugar {
     }
 
     /**
-     * Returns the IEEE double precision floating point equivalent to
-     * this number.
+     * Returns the IEEE double precision floating point equivalent to this
+     * number.
      */
     static public double asFloat64(int self) {
         return (double)self;
@@ -105,10 +104,10 @@ public class IntegerSugar {
     }
 
     /**
-     * Defined both here and in DoubleSugar, so you can use this to
-     * get a ceil'ed integer no matter what kind of number you start
-     * with. Similarly, the "doubleValue" message will get you a
-     * floating point value no matter what you start with.
+     * Defined both here and in DoubleSugar, so you can use this to get a
+     * ceil'ed integer no matter what kind of number you start with. Similarly,
+     * the "doubleValue" message will get you a floating point value no matter
+     * what you start with.
      */
     static public int ceil(int self) {
         return self;
@@ -128,10 +127,10 @@ public class IntegerSugar {
     }
 
     /**
-     * Defined both here and in DoubleSugar, so you can use this to
-     * get a floor'ed integer no matter what kind of number you start
-     * with. Similarly, the "doubleValue" message will get you a
-     * floating point value no matter what you start with.
+     * Defined both here and in DoubleSugar, so you can use this to get a
+     * floor'ed integer no matter what kind of number you start with.
+     * Similarly, the "doubleValue" message will get you a floating point value
+     * no matter what you start with.
      */
     static public int floor(int self) {
         return self;
@@ -188,10 +187,10 @@ public class IntegerSugar {
      *      [-5, 3]: (-2* 3) +  1 == -5
      *      [-5,-3]: ( 1*-3) + -2 == -5
      * </pre><p>
-     * Therefore, if the result is non-zero, the sign of the result must be
-     * the same as the sign of b, and so the result ranges from 0 inclusive
-     * to b exclusive. This corresponds to the E "%%" operator. When
-     * b >= 0, it also corresponds to Java's int.mod().
+     * Therefore, if the result is non-zero, the sign of the result must be the
+     * same as the sign of b, and so the result ranges from 0 inclusive to b
+     * exclusive. This corresponds to the E "%%" operator. When b >= 0, it also
+     * corresponds to Java's int.mod().
      */
     static public Number mod(int self, Number o) {
         if (EInt.intValueOk(o)) {
@@ -211,30 +210,30 @@ public class IntegerSugar {
     }
 
     /**
-     * Defined both here and in DoubleSugar, so you can use this to
-     * get round'ed integer no matter what kind of number you start
-     * with. Similarly, the "doubleValue" message will get you a
-     * floating point value no matter what you start with.
+     * Defined both here and in DoubleSugar, so you can use this to get
+     * round'ed integer no matter what kind of number you start with.
+     * Similarly, the "doubleValue" message will get you a floating point value
+     * no matter what you start with.
      */
     static public int round(int self) {
         return self;
     }
 
     /**
-     * Defined both here and in DoubleSugar, so you can use this to
-     * get truncate'd integer no matter what kind of number you start
-     * with. Similarly, the "doubleValue" message will get you a
-     * floating point value no matter what you start with.
+     * Defined both here and in DoubleSugar, so you can use this to get
+     * truncate'd integer no matter what kind of number you start with.
+     * Similarly, the "doubleValue" message will get you a floating point value
+     * no matter what you start with.
      */
     static public int truncate(int self) {
         return self;
     }
 
     /**
-     * Always gives an integer resulting from rounding towards zero,
-     * ie, truncating. This corresponds to the Java integer "/" operator.
-     * int's existing 'remainder' gives the correct remainder from
-     * the truncDivide operation. <p>
+     * Always gives an integer resulting from rounding towards zero, ie,
+     * truncating. This corresponds to the Java integer "/" operator. int's
+     * existing 'remainder' gives the correct remainder from the truncDivide
+     * operation. <p>
      * <p/>
      * <pre>
      *      (a truncDivide b)*b + (a remainder b) == a
@@ -244,9 +243,8 @@ public class IntegerSugar {
      *      [-5,-3]: ( 1*-3) + -2 == -5
      * </pre><p>
      * <p/>
-     * Therefore, if the result is non-zero, the sign of the result must
-     * be the same as the sign of a. This corresponds to the Java and
-     * E "%" operator.
+     * Therefore, if the result is non-zero, the sign of the result must be the
+     * same as the sign of a. This corresponds to the Java and E "%" operator.
      */
     static public Number truncDivide(int self, Number o) {
         if (EInt.intValueOk(o)) {
@@ -279,7 +277,6 @@ public class IntegerSugar {
     }
 
     /**
-     *
      * @param self
      * @return
      */
@@ -290,7 +287,6 @@ public class IntegerSugar {
     ////////////////////////// Methods from BigInteger ////////////////////
 
     /**
-     *
      * @param self
      * @return
      */
@@ -419,9 +415,7 @@ public class IntegerSugar {
     /**
      * @return
      */
-    static public Number modPow(BigInteger self,
-                                Number exponent,
-                                Number m) {
+    static public Number modPow(BigInteger self, Number exponent, Number m) {
         return BigIntegerSugar.modPow(self, exponent, m);
     }
 

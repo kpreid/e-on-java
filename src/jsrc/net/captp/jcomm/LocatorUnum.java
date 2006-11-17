@@ -17,15 +17,14 @@ import java.math.BigInteger;
  * <p/>
  * For Una in general: To hold a reference to any presence of the Unum is
  * conceptually to hold a reference to the Unum as a whole. Therefore, a
- * reference to the Unum may as well always be a reference to a local
- * presence of the Unum. Since it can be, and since this would provide better
- * service, we specify that all references to an Unum will be local.
+ * reference to the Unum may as well always be a reference to a local presence
+ * of the Unum. Since it can be, and since this would provide better service,
+ * we specify that all references to an Unum will be local.
  * <p/>
  * Therefore, an encoded reference to a presence of Unum that's local to the
  * sending side will be decoded as a reference to a presence of the same Unum
  * local to the receiving side. Therefore, a fulfilled reference to an Unum is
- * always
- * <a href="http://www.erights.org/elib/concurrency/refmech.html">Near</a>,
+ * always <a href="http://www.erights.org/elib/concurrency/refmech.html">Near</a>,
  * and therefore a reference to an Unum is always eventually Near or Broken.
  * <p/>
  * The LocatorUnum is the only Unum built into E itself, and the only Unum
@@ -49,7 +48,6 @@ public class LocatorUnum implements PassByConstruction {
     final Introducer myIntroducer;
 
     /**
-     *
      * @param introducer
      */
     public LocatorUnum(Introducer introducer) {
@@ -85,9 +83,9 @@ public class LocatorUnum implements PassByConstruction {
                           Object optFarVine)
       throws IOException, IndexOutOfBoundsException {
         if (Trace.captp.debug && Trace.ON) {
-            Trace.captp.debugm
-              ("" + this + ".getRcvr(" + searchPath + ", " + vatID +
-               ", " + swissNum + ", " + optFarVine + ")");
+            Trace.captp
+              .debugm("" + this + ".getRcvr(" + searchPath + ", " + vatID +
+                ", " + swissNum + ", " + optFarVine + ")");
         }
         if (vatID.equals(myIntroducer.getVatID())) {
 
@@ -95,13 +93,9 @@ public class LocatorUnum implements PassByConstruction {
             //If not found, it'll throw an IndexOutOfBoundsException
             return myIntroducer.getSwissTable().lookupSwiss(swissNum);
         }
-        CapTPConnection optProxyConn =
-          myIntroducer.getCapTPMgr().getOrMakeProxyConnection(searchPath,
-                                                              vatID);
+        CapTPConnection optProxyConn = myIntroducer.getCapTPMgr()
+          .getOrMakeProxyConnection(searchPath, vatID);
         Object remoteNonceLocator = optProxyConn.getRemoteNonceLocator();
-        return E.send(remoteNonceLocator,
-                      "lookupSwiss",
-                      swissNum,
-                      optFarVine);
+        return E.send(remoteNonceLocator, "lookupSwiss", swissNum, optFarVine);
     }
 }

@@ -25,8 +25,7 @@ import org.erights.e.develop.exception.ThrowableSugar;
 import org.erights.e.elib.util.OneArgFunc;
 
 /**
- * An Ejector implements a non-local exit construct that can return a
- * value.
+ * An Ejector implements a non-local exit construct that can return a value.
  * <p/>
  * It works with an EscapeExpr to cause an escape to take place. When used
  * directly from Java, a typical pattern is:
@@ -59,7 +58,6 @@ public class Ejector implements OneArgFunc, Runnable {
     private Ejection myEjection;
 
     /**
-     *
      * @param optName
      */
     public Ejector(String optName) {
@@ -77,8 +75,8 @@ public class Ejector implements OneArgFunc, Runnable {
     }
 
     /**
-     * To avoid confusion, one should always disable an Ejector in a
-     * finally block on the way out of its catching context.
+     * To avoid confusion, one should always disable an Ejector in a finally
+     * block on the way out of its catching context.
      */
     public void disable() {
         myIsEnabled = false;
@@ -87,8 +85,8 @@ public class Ejector implements OneArgFunc, Runnable {
     }
 
     /**
-     * Broken out into a separate public test so Ejection catchers can
-     * easily test against several Ejectors.
+     * Broken out into a separate public test so Ejection catchers can easily
+     * test against several Ejectors.
      */
     public boolean isMine(Throwable t) {
         Throwable leaf = ThrowableSugar.leaf(t);
@@ -97,9 +95,9 @@ public class Ejector implements OneArgFunc, Runnable {
 
     /**
      * Having caught a possible Ejection, the catcher asks an Ejector for the
-     * result corresponding to that Ejection. If this Ejection was
-     * indeed thrown by this Ejector, the corresponding result
-     * returned. Otherwise, the Throwable is rethrown.
+     * result corresponding to that Ejection. If this Ejection was indeed
+     * thrown by this Ejector, the corresponding result returned. Otherwise,
+     * the Throwable is rethrown.
      */
     public Object result(Throwable t) {
         if (!isMine(t)) {

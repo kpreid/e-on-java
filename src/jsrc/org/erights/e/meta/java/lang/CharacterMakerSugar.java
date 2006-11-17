@@ -12,44 +12,41 @@ import org.erights.e.elib.tables.FlexMap;
  */
 public final class CharacterMakerSugar {
 
-    static final String[][] CHAR_CAT_PAIRS = {
-        {"Cn", "UNASSIGNED"},
-        {"Lu", "UPPERCASE_LETTER"},
-        {"Ll", "LOWERCASE_LETTER"},
-        {"Lt", "TITLECASE_LETTER"},
-        {"Lm", "MODIFIER_LETTER"},
-        {"Lo", "OTHER_LETTER"},
-        {"Mn", "NON_SPACING_MARK"},
-        {"Me", "ENCLOSING_MARK"},
-        {"Mc", "COMBINING_SPACING_MARK"},
-        {"Nd", "DECIMAL_DIGIT_NUMBER"},
-        {"Nl", "LETTER_NUMBER"},
-        {"No", "OTHER_NUMBER"},
-        {"Zs", "SPACE_SEPARATOR"},
-        {"Zl", "LINE_SEPARATOR"},
-        {"Zp", "PARAGRAPH_SEPARATOR"},
-        {"Cc", "CONTROL"},
-        {"Cf", "FORMAT"},
-        null,
-        {"Co", "PRIVATE_USE"},
-        {"Cs", "SURROGATE"},
-        {"Pd", "DASH_PUNCTUATION"},
-        {"Ps", "START_PUNCTUATION"},
-        {"Pe", "END_PUNCTUATION"},
-        {"Pc", "CONNECTOR_PUNCTUATION"},
-        {"Po", "OTHER_PUNCTUATION"},
-        {"Sm", "MATH_SYMBOL"},
-        {"Sc", "CURRENCY_SYMBOL"},
-        {"Sk", "MODIFIER_SYMBOL"},
-        {"So", "OTHER_SYMBOL"},
-        {"Pi", "INITIAL_QUOTE_PUNCTUATION"},
-        {"Pf", "FINAL_QUOTE_PUNCTUATION"}
-    };
+    static final String[][] CHAR_CAT_PAIRS = {{"Cn", "UNASSIGNED"},
+      {"Lu", "UPPERCASE_LETTER"},
+      {"Ll", "LOWERCASE_LETTER"},
+      {"Lt", "TITLECASE_LETTER"},
+      {"Lm", "MODIFIER_LETTER"},
+      {"Lo", "OTHER_LETTER"},
+      {"Mn", "NON_SPACING_MARK"},
+      {"Me", "ENCLOSING_MARK"},
+      {"Mc", "COMBINING_SPACING_MARK"},
+      {"Nd", "DECIMAL_DIGIT_NUMBER"},
+      {"Nl", "LETTER_NUMBER"},
+      {"No", "OTHER_NUMBER"},
+      {"Zs", "SPACE_SEPARATOR"},
+      {"Zl", "LINE_SEPARATOR"},
+      {"Zp", "PARAGRAPH_SEPARATOR"},
+      {"Cc", "CONTROL"},
+      {"Cf", "FORMAT"},
+      null,
+      {"Co", "PRIVATE_USE"},
+      {"Cs", "SURROGATE"},
+      {"Pd", "DASH_PUNCTUATION"},
+      {"Ps", "START_PUNCTUATION"},
+      {"Pe", "END_PUNCTUATION"},
+      {"Pc", "CONNECTOR_PUNCTUATION"},
+      {"Po", "OTHER_PUNCTUATION"},
+      {"Sm", "MATH_SYMBOL"},
+      {"Sc", "CURRENCY_SYMBOL"},
+      {"Sk", "MODIFIER_SYMBOL"},
+      {"So", "OTHER_SYMBOL"},
+      {"Pi", "INITIAL_QUOTE_PUNCTUATION"},
+      {"Pf", "FINAL_QUOTE_PUNCTUATION"}};
 
 
     /**
-     * Maps from the
-     * <a href="http://www.unicode.org/glossary/#general_category"
+     * Maps from the <a href="http://www.unicode.org/glossary/#general_category"
      * >two letter standard general category name</a> to the name used by
      * Java's {@link Character Character} class.
      */

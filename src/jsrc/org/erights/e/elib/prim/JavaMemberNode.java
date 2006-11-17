@@ -161,12 +161,12 @@ public abstract class JavaMemberNode extends MethodNode implements EStackItem {
 
     /**
      * @throws IllegalArgumentException if the number of actual and formal
-     *                                  parameters differ, or if an unwrapping  or method
-     *                                  invocation conversion fails.
+     *                                  parameters differ, or if an unwrapping
+     *                                  or method invocation conversion fails.
      */
-    abstract Object innerExecute(Object self, Object[] args)
-      throws InstantiationException, IllegalAccessException,
-      IllegalArgumentException, InvocationTargetException;
+    abstract Object innerExecute(Object self, Object[] args) throws
+      InstantiationException, IllegalAccessException, IllegalArgumentException,
+      InvocationTargetException;
 
     /**
      *
@@ -251,7 +251,6 @@ public abstract class JavaMemberNode extends MethodNode implements EStackItem {
     }
 
     /**
-     *
      * @param propName
      * @return
      */
@@ -261,7 +260,6 @@ public abstract class JavaMemberNode extends MethodNode implements EStackItem {
     }
 
     /**
-     *
      * @param propName
      * @return
      */

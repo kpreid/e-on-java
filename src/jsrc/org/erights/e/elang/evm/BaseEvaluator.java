@@ -7,7 +7,6 @@ import org.erights.e.develop.assertion.T;
 import org.erights.e.elib.tables.ConstMap;
 
 /**
- *
  * @author Mark S. Miller
  */
 public class BaseEvaluator implements Evaluator {
@@ -21,7 +20,6 @@ public class BaseEvaluator implements Evaluator {
     }
 
     /**
-     *
      * @param eExpr
      * @param bindingsIn
      * @param forValue
@@ -38,7 +36,6 @@ public class BaseEvaluator implements Evaluator {
     }
 
     /**
-     *
      * @param eExpr
      * @param bindingsIn
      * @param forValue
@@ -55,7 +52,6 @@ public class BaseEvaluator implements Evaluator {
     }
 
     /**
-     *
      * @param pattern
      * @param bindingsIn
      * @param forTest

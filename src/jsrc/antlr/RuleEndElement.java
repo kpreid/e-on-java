@@ -13,7 +13,7 @@ package antlr;
  */
 class RuleEndElement extends BlockEndElement {
 
-    protected Lookahead[] cache;	// Each rule can cache it's lookahead computation.
+    protected Lookahead[] cache;        // Each rule can cache it's lookahead computation.
     // The FOLLOW(rule) is stored in this cache.
     // 1..k
     protected boolean noFOLLOW;

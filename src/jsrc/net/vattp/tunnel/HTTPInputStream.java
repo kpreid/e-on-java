@@ -88,8 +88,8 @@ public class HTTPInputStream extends InputStream {
         }
         int ret = myStream.read();
         if (-1 == ret) {
-            throw new IOException("Early EOF, expected " + myLengthLimit +
-                                  " bytes");
+            throw new IOException(
+              "Early EOF, expected " + myLengthLimit + " bytes");
         }
         return ret;
     }

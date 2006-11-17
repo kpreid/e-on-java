@@ -15,14 +15,13 @@ import org.quasiliteral.syntax.SyntaxException;
 // found at http://www.opensource.org/licenses/mit-license.html ...............
 
 /**
- *
  * @author Mark S. Miller
  */
 public interface BaseEBuilder {
 
     /**
-     * Used to mark places where we should be providing a poser (an object
-     * from which source position info can be derived).
+     * Used to mark places where we should be providing a poser (an object from
+     * which source position info can be derived).
      */
     Object NO_POSER = null;
 
@@ -43,7 +42,7 @@ public interface BaseEBuilder {
 
     /**
      * Complain unless this feature is enabled.
-     * <p>
+     * <p/>
      * If property <tt>e.enable.<i>pName</i></tt> is true, then return
      * silently. Warn if set to "warn". Otherwise, complain.
      */
@@ -51,9 +50,9 @@ public interface BaseEBuilder {
 
     /**
      * Complain if this feature is enabled.
-     * <p>
-     * If property <tt>e.enable.<i>pName</i></tt> is true, then complain.
-     * Warn if set to "warn". Otherwise, return silently.
+     * <p/>
+     * If property <tt>e.enable.<i>pName</i></tt> is true, then complain. Warn
+     * if set to "warn". Otherwise, return silently.
      */
     void antiPocket(Object poser, String pName);
 
@@ -103,8 +102,8 @@ public interface BaseEBuilder {
     LiteralExpr literal(Object tokenOrData);
 
     /**
-     * Either makes a kernel assignment expression, or expands a
-     * non-kernel one, depending on the lValue.
+     * Either makes a kernel assignment expression, or expands a non-kernel
+     * one, depending on the lValue.
      * <pre>
      *  x := z                is kernel if x is a variable name
      *  x.get(y) := z         expands approximately to    x.put(y, z)
@@ -114,7 +113,7 @@ public interface BaseEBuilder {
      * The actual expansion introduces a temporary variable to capture the
      * value of z, and to have that be the value of the assignment expression
      * as a whole.
-     * <p>
+     * <p/>
      * Any lValue other than those listed above is rejected. Remember that
      * <pre>
      *  x[y]     expands to  x.get(y)
@@ -127,9 +126,7 @@ public interface BaseEBuilder {
     /**
      * Makes a kernel immediate-call expression
      */
-    EExpr call(Object recipientExpr,
-               Object verb,
-               Object args);
+    EExpr call(Object recipientExpr, Object verb, Object args);
 
     /**
      *
@@ -167,15 +164,12 @@ public interface BaseEBuilder {
     /**
      *
      */
-    MsgPatt methHead(Object verb,
-                     Object patts,
-                     Object optResultGuard);
+    MsgPatt methHead(Object verb, Object patts, Object optResultGuard);
 
     /**
      *
      */
-    EScriptDecl vTable(Object optMethods,
-                       Object matchers);
+    EScriptDecl vTable(Object optMethods, Object matchers);
 
     /**
      * XXX Currently, parts.length must be >= 1
@@ -183,12 +177,10 @@ public interface BaseEBuilder {
     EExpr sequence(EExpr[] parts);
 
     /**
-     * XXX Here at the base, we should break this up into separate methods
-     * for building a CatchExpr and a FinallyExpr.
+     * XXX Here at the base, we should break this up into separate methods for
+     * building a CatchExpr and a FinallyExpr.
      */
-    EExpr tryx(Object eExpr,
-               Object optCatchers,
-               Object optFinally);
+    EExpr tryx(Object eExpr, Object optCatchers, Object optFinally);
 
     /**
      *

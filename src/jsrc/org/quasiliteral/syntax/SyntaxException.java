@@ -33,8 +33,7 @@ import java.io.IOException;
  *
  * @author Mark S. Miller
  */
-public class SyntaxException
-  extends RuntimeException implements EPrintable {
+public class SyntaxException extends RuntimeException implements EPrintable {
 
     private final Twine myOptOpenner;
 
@@ -130,8 +129,8 @@ public class SyntaxException
       StringHelper.multiply(" ", ErrPrefix.length());
 
     /**
-     * Prints as "syntax error: " followed by an optional message, and then
-     * an optional indication of the location of the error.
+     * Prints as "syntax error: " followed by an optional message, and then an
+     * optional indication of the location of the error.
      */
     public void __printOn(TextWriter out) throws IOException {
         out.print(ErrPrefix);

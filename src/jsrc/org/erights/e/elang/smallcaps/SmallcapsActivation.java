@@ -19,7 +19,7 @@ import java.math.BigInteger;
 
 /**
  * The state of one activation frame in a Smallcaps call stack.
- * <p>
+ * <p/>
  * XXX This is an incomplete, broken reference implementation -- fix me!
  *
  * @author Mark S. Miller
@@ -30,14 +30,12 @@ public class SmallcapsActivation implements SmallcapsOps {
     /**
      * Needed for list-pattern matching.
      */
-    static private final ClassDesc EListGuard =
-      ClassDesc.make(EList.class);
+    static private final ClassDesc EListGuard = ClassDesc.make(EList.class);
 
     /**
      * Needed from branching
      */
-    static private final ClassDesc BooleanGuard =
-      ClassDesc.make(Boolean.TYPE);
+    static private final ClassDesc BooleanGuard = ClassDesc.make(Boolean.TYPE);
 
     /**
      *
@@ -105,7 +103,6 @@ public class SmallcapsActivation implements SmallcapsOps {
     }
 
     /**
-     *
      * @param n How many to pop
      * @return An n-element array of the popped elements, from bottom-most to
      *         top-most.
@@ -135,7 +132,7 @@ public class SmallcapsActivation implements SmallcapsOps {
     /**
      * Handle the problem using optEjector, if it's not null, or the top
      * handler on the handler stack if optEjector is null.
-     * <p>
+     * <p/>
      * optEjector may include user-defined behavior. If optEjector returns
      * normally, then invoke the top handler on the handler stack to handle
      * this inappropriate return.
@@ -163,7 +160,6 @@ public class SmallcapsActivation implements SmallcapsOps {
     }
 
     /**
-     *
      * @param ejector
      */
     private void pushHandler(OneArgFunc ejector) {
@@ -171,7 +167,6 @@ public class SmallcapsActivation implements SmallcapsOps {
     }
 
     /**
-     *
      * @param label
      */
     private void pushTryHandler(int label) {
@@ -179,7 +174,6 @@ public class SmallcapsActivation implements SmallcapsOps {
     }
 
     /**
-     *
      * @return
      */
     private OneArgFunc makeEjectorOnly(int label) {
@@ -188,7 +182,6 @@ public class SmallcapsActivation implements SmallcapsOps {
     }
 
     /**
-     *
      * @return
      */
     private OneArgFunc makeEjector(int label) {
@@ -227,15 +220,13 @@ public class SmallcapsActivation implements SmallcapsOps {
                 // The high 7 bits must be zero, because they're about to fall
                 // off. The next highest bit must be zero because otherwise
                 // it'll turn the number negative.
-                T.requireSI(0 == (result & 0xFF000000),
-                            "Overflow at: ", myPC);
+                T.requireSI(0 == (result & 0xFF000000), "Overflow at: ", myPC);
                 result <<= 7;
             }
         }
     }
 
     /**
-     *
      * @return
      */
     private int readLabel() {
@@ -243,7 +234,6 @@ public class SmallcapsActivation implements SmallcapsOps {
     }
 
     /**
-     *
      * @return
      */
     private String readUTF() {
@@ -259,7 +249,6 @@ public class SmallcapsActivation implements SmallcapsOps {
     }
 
     /**
-     *
      * @return
      */
     private char readChar() {
@@ -270,7 +259,6 @@ public class SmallcapsActivation implements SmallcapsOps {
     }
 
     /**
-     *
      * @return
      */
     private double readFloat64() {
@@ -291,271 +279,270 @@ public class SmallcapsActivation implements SmallcapsOps {
 
             case OP_DUP:
                 // [x],[] => OP_DUP => [x, x],[]
-                {
-                    Object x = pop();
-                    push(x);
-                    push(x);
-                    break;
-                }
+            {
+                Object x = pop();
+                push(x);
+                push(x);
+                break;
+            }
 
             case OP_POP:
                 // [x],[] => OP_POP => [],[]
-                {
-                    pop();
-                    break;
-                }
+            {
+                pop();
+                break;
+            }
 
             case OP_SWAP:
                 // [x, y],[] => OP_SWAP => [y, x],[]
-                {
-                    Object y = pop();
-                    Object x = pop();
-                    push(y);
-                    push(x);
-                    break;
-                }
+            {
+                Object y = pop();
+                Object x = pop();
+                push(y);
+                push(x);
+                break;
+            }
 
             case OP_ROT:
                 // [x, y, z],[] => OP_ROT => [y, z, x],[]
-                {
-                    Object z = pop();
-                    Object y = pop();
-                    Object x = pop();
-                    push(y);
-                    push(z);
-                    push(x);
-                    break;
-                }
+            {
+                Object z = pop();
+                Object y = pop();
+                Object x = pop();
+                push(y);
+                push(z);
+                push(x);
+                break;
+            }
 
             case OP_RETURN:
                 // [x],[] => OP_RETURN
-                {
-                    return pop();
-                }
+            {
+                return pop();
+            }
 
             case OP_JUMP:
                 // [],[] => OP_JUMP(label) => [],[]
-                {
-                    int offset = readLabel();
-                    myPC += offset;
-                    break;
-                }
+            {
+                int offset = readLabel();
+                myPC += offset;
+                break;
+            }
 
             case OP_BRANCH:
                 // [optEjector, flag],[] => OP_BRANCH => [],[]
-                {
-                    Object flag = pop();
-                    OneArgFunc optEjector = (OneArgFunc)pop();
-                    Ejector ej = new Ejector("op_branch");
-                    Boolean bb;
-                    try {
-                        // This is a proper E coercion, and so may call user
-                        // code.
-                        bb = (Boolean)BooleanGuard.coerce(flag, ej);
-                    } catch (Throwable th) {
-                        Object problem = ej.result(th);
-                        handle(problem);
-                        break;
-                    }
-                    if (!bb.booleanValue()) {
-                        handle(optEjector, "not true");
-                    }
+            {
+                Object flag = pop();
+                OneArgFunc optEjector = (OneArgFunc)pop();
+                Ejector ej = new Ejector("op_branch");
+                Boolean bb;
+                try {
+                    // This is a proper E coercion, and so may call user
+                    // code.
+                    bb = (Boolean)BooleanGuard.coerce(flag, ej);
+                } catch (Throwable th) {
+                    Object problem = ej.result(th);
+                    handle(problem);
                     break;
                 }
+                if (!bb.booleanValue()) {
+                    handle(optEjector, "not true");
+                }
+                break;
+            }
 
             case OP_CALL_ONLY:
                 // [recip, args...],[] =>OP_CALL_ONLY(verb, arity)=> [],[]
-                {
-                    String verb = readUTF();
-                    int arity = readWholeInt();
-                    Object[] args = popN(arity);
-                    Object recip = pop();
-                    E.callAll(recip, verb, args);
-                    break;
-                }
+            {
+                String verb = readUTF();
+                int arity = readWholeInt();
+                Object[] args = popN(arity);
+                Object recip = pop();
+                E.callAll(recip, verb, args);
+                break;
+            }
 
             case OP_CALL:
                 // [recip, args...],[] =>OP_CALL(verb, arity)=> [result],[]
-                {
-                    String verb = readUTF();
-                    int arity = readWholeInt();
-                    Object[] args = popN(arity);
-                    Object recip = pop();
-                    Object result = E.callAll(recip, verb, args);
-                    push(result);
-                    break;
-                }
+            {
+                String verb = readUTF();
+                int arity = readWholeInt();
+                Object[] args = popN(arity);
+                Object recip = pop();
+                Object result = E.callAll(recip, verb, args);
+                push(result);
+                break;
+            }
 
             case OP_EJECTOR_ONLY:
                 // [],[] => OP_EJECTOR_ONLY(label) => [ejector],[handler]
-                {
-                    int label = readLabel();
-                    OneArgFunc ejector = makeEjectorOnly(label);
-                    pushHandler(ejector);
-                    push(ejector);
-                    break;
-                }
+            {
+                int label = readLabel();
+                OneArgFunc ejector = makeEjectorOnly(label);
+                pushHandler(ejector);
+                push(ejector);
+                break;
+            }
 
             case OP_EJECTOR:
                 // [],[] => OP_EJECTOR(label) => [ejector],[handler]
-                {
-                    int label = readLabel();
-                    OneArgFunc ejector = makeEjector(label);
-                    pushHandler(ejector);
-                    push(ejector);
-                    break;
-                }
+            {
+                int label = readLabel();
+                OneArgFunc ejector = makeEjector(label);
+                pushHandler(ejector);
+                push(ejector);
+                break;
+            }
 
             case OP_TRY:
                 // [],[] => OP_TRY(label) => [],[handler]
-                {
-                    int label = readLabel();
-                    pushTryHandler(label);
-                    break;
-                }
+            {
+                int label = readLabel();
+                pushTryHandler(label);
+                break;
+            }
 
             case OP_UNWIND:
                 // [],[] => OP_UNWIND(label) => [],[handler]
                 // [...],[...] => handler(arg) => [rethrower(arg)],[]
                 // [...],[...] => handler.drop(pc) => [returner(pc)],[]
-                {
-                    int label = readLabel();
-                    T.fail("XXX unimplemented");
-                    break;
-                }
+            {
+                int label = readLabel();
+                T.fail("XXX unimplemented");
+                break;
+            }
 
             case OP_END_HANDLER:
                 // [],[handler] => OP_END_HANDLER => [],[]
-                {
-                    popHandler();
-                    break;
-                }
+            {
+                popHandler();
+                break;
+            }
 
             case OP_WHOLE_NUM:
                 // [],[] => OP_WHOLE_NUM(wholeNum) => [wholeNum],[]
-                {
-                    push(readWholeNum());
-                    break;
-                }
+            {
+                push(readWholeNum());
+                break;
+            }
 
             case OP_NEG_INT:
                 // [],[] => OP_NEG_INT(wholeNum) => [-wholeNum],[]
-                {
-                    push(readWholeNum().negate());
-                    break;
-                }
+            {
+                push(readWholeNum().negate());
+                break;
+            }
 
             case OP_FLOAT64:
                 // [],[] => OP_FLOAT64(float64) => [float64],[]
-                {
-                    push(new Double(readFloat64()));
-                    break;
-                }
+            {
+                push(new Double(readFloat64()));
+                break;
+            }
 
             case OP_CHAR:
                 // [],[] => OP_CHAR(chr) => [chr],[]
-                {
-                    push(CharacterMakerSugar.valueOf(readChar()));
-                    break;
-                }
+            {
+                push(CharacterMakerSugar.valueOf(readChar()));
+                break;
+            }
 
             case OP_STRING:
                 // [],[] => OP_STRING(str) => [str],[]
-                {
-                    push(readUTF());
-                    break;
-                }
+            {
+                push(readUTF());
+                break;
+            }
 
             case OP_TWINE:
                 // [],[] => OP_TWINE(twine) => [twine],[]
-                {
-                    T.fail("XXX Reserved instruction");
-                    break;
-                }
+            {
+                T.fail("XXX Reserved instruction");
+                break;
+            }
 
             case OP_TRUE:
                 // [],[] => OP_TRUE => [true],[]
-                {
-                    push(Boolean.TRUE);
-                    break;
-                }
+            {
+                push(Boolean.TRUE);
+                break;
+            }
 
             case OP_FALSE:
                 // [],[] => OP_FALSE => [false],[]
-                {
-                    push(Boolean.FALSE);
-                    break;
-                }
+            {
+                push(Boolean.FALSE);
+                break;
+            }
 
             case OP_NULL:
                 // [],[] => OP_NULL => [null],[]
-                {
-                    push(null);
-                    break;
-                }
+            {
+                push(null);
+                break;
+            }
 
             case OP_SCOPE:
                 // [],[] => OP_SCOPE => [scope],[]
-                {
-                    T.fail("XXX unimplemented");
-                    break;
-                }
+            {
+                T.fail("XXX unimplemented");
+                break;
+            }
 
             case OP_OBJECT:
                 // [ivars..., auditors...],[]
                 // => OP_OBJECT(<i>seeBelow</i>) => [object],[]
-                {
-                    // XXX to be written
-                    T.fail("XXX unimplemented");
-                    break;
-                }
+            {
+                // XXX to be written
+                T.fail("XXX unimplemented");
+                break;
+            }
 
             case OP_LIST_PATT:
                 // [optEjector, specimen],[] =>OP_LIST(n)=>
                 // [optEjector, specimen[n-1], ... optEjector, specimen[0]],[]
-                {
-                    int n = readWholeInt();
-                    Object specimen = pop();
-                    OneArgFunc optEjector = (OneArgFunc)pop();
-                    EList list = (EList)EListGuard.coerce(specimen,
-                                                          optEjector);
-                    int len = list.size();
-                    if (len != n)
-                        throw Thrower.toEject(optEjector,
-                                              "a " + len +
-                                              " size list doesn't match a " +
-                                              n + " size list pattern");
-                    for (int i = n - 1; 0 <= i; i--) {
-                        push(optEjector);
-                        push(list.get(i));
-                    }
-                    break;
+            {
+                int n = readWholeInt();
+                Object specimen = pop();
+                OneArgFunc optEjector = (OneArgFunc)pop();
+                EList list = (EList)EListGuard.coerce(specimen, optEjector);
+                int len = list.size();
+                if (len != n) {
+                    throw Thrower.toEject(optEjector,
+                                          "a " + len +
+                                            " size list doesn't match a " + n +
+                                            " size list pattern");
                 }
+                for (int i = n - 1; 0 <= i; i--) {
+                    push(optEjector);
+                    push(list.get(i));
+                }
+                break;
+            }
 
             case OP_CDR_PATT:
                 // [optEjector, specimen],[] =>OP_CDR_PATT(n)=>
                 // [optEjector, specimen(n,specimen.size()),
                 //  optEjector, specimen[n-1], ... optEjector, specimen[0]],[]
-                {
-                    int n = readWholeInt();
-                    Object specimen = pop();
-                    OneArgFunc optEjector = (OneArgFunc)pop();
-                    EList list = (EList)EListGuard.coerce(specimen,
-                                                          optEjector);
-                    int len = list.size();
-                    String problem = "a " + len +
-                      " size list doesn't match a >= " +
-                      n + " size list pattern";
-                    if (len < n)
-                        throw Thrower.toEject(optEjector, problem);
-                    push(optEjector);
-                    push(list.run(n, len));
-                    for (int i = n - 1; 0 <= i; i--) {
-                        push(optEjector);
-                        push(list.get(i));
-                    }
-                    break;
+            {
+                int n = readWholeInt();
+                Object specimen = pop();
+                OneArgFunc optEjector = (OneArgFunc)pop();
+                EList list = (EList)EListGuard.coerce(specimen, optEjector);
+                int len = list.size();
+                String problem = "a " + len +
+                  " size list doesn't match a >= " + n + " size list pattern";
+                if (len < n) {
+                    throw Thrower.toEject(optEjector, problem);
                 }
+                push(optEjector);
+                push(list.run(n, len));
+                for (int i = n - 1; 0 <= i; i--) {
+                    push(optEjector);
+                    push(list.get(i));
+                }
+                break;
+            }
 
             case OP_NOUN + ADDR_FRAME:
             case OP_NOUN + ADDR_FRAME_SLOT:
@@ -564,10 +551,10 @@ public class SmallcapsActivation implements SmallcapsOps {
             case OP_NOUN + ADDR_LITERAL: // XXX what's this for?
             case OP_NOUN + ADDR_OUTER_SLOT:
                 // [],[] => (OP_NOUN+addrMode)(index) => [value],[]
-                {
-                    T.fail("XXX unimplemented");
-                    break;
-                }
+            {
+                T.fail("XXX unimplemented");
+                break;
+            }
 
             case OP_SLOT + ADDR_FRAME:
             case OP_SLOT + ADDR_FRAME_SLOT:
@@ -576,10 +563,10 @@ public class SmallcapsActivation implements SmallcapsOps {
             case OP_SLOT + ADDR_LITERAL: // XXX what's this for?
             case OP_SLOT + ADDR_OUTER_SLOT:
                 // [],[] => (OP_SLOT+addrMode)(index) => [slot],[]
-                {
-                    T.fail("XXX unimplemented");
-                    break;
-                }
+            {
+                T.fail("XXX unimplemented");
+                break;
+            }
 
             case OP_ASSIGN + ADDR_FRAME:
             case OP_ASSIGN + ADDR_FRAME_SLOT:
@@ -588,10 +575,10 @@ public class SmallcapsActivation implements SmallcapsOps {
             case OP_ASSIGN + ADDR_LITERAL: // XXX what's this for?
             case OP_ASSIGN + ADDR_OUTER_SLOT:
                 // [rValue],[] => (OP_ASSIGN+addrMode)(index) => [],[]
-                {
-                    T.fail("XXX unimplemented");
-                    break;
-                }
+            {
+                T.fail("XXX unimplemented");
+                break;
+            }
 
             case OP_BIND + ADDR_FRAME:
             case OP_BIND + ADDR_FRAME_SLOT:
@@ -600,10 +587,10 @@ public class SmallcapsActivation implements SmallcapsOps {
             case OP_BIND + ADDR_LITERAL: // XXX what's this for?
             case OP_BIND + ADDR_OUTER_SLOT:
                 // [rValue],[] => (OP_BIND+addrMode)(index) => [],[]
-                {
-                    T.fail("XXX unimplemented");
-                    break;
-                }
+            {
+                T.fail("XXX unimplemented");
+                break;
+            }
 
             case OP_BIND_SLOT + ADDR_FRAME:
             case OP_BIND_SLOT + ADDR_FRAME_SLOT:
@@ -612,10 +599,10 @@ public class SmallcapsActivation implements SmallcapsOps {
             case OP_BIND_SLOT + ADDR_LITERAL: // XXX what's this for?
             case OP_BIND_SLOT + ADDR_OUTER_SLOT:
                 // [rValue],[] => (OP_BIND_SLOT+addrMode)(index) => [],[]
-                {
-                    T.fail("XXX unimplemented");
-                    break;
-                }
+            {
+                T.fail("XXX unimplemented");
+                break;
+            }
 
             default:
                 T.fail("Unknown instruction");

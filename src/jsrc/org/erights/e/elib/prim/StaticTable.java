@@ -12,7 +12,6 @@ public class StaticTable extends VTable {
     private final StaticMaker mySelf;
 
     /**
-     *
      * @param self
      */
     StaticTable(String fqName, StaticMaker self) {

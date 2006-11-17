@@ -14,9 +14,9 @@ import org.erights.e.elib.util.OneArgFunc;
  * <p/>
  * Therefore, we declare the class Unserializer to be safe.
  * <p/>
- * Unserializer is specializable from E by providing a reviveFunc so
- * that, on reincarnating for example, a restored object may be revives as a
- * different object to be checkpointed as its representative.
+ * Unserializer is specializable from E by providing a reviveFunc so that, on
+ * reincarnating for example, a restored object may be revives as a different
+ * object to be checkpointed as its representative.
  *
  * @author Mark S. Miller
  */
@@ -31,7 +31,6 @@ public class Unserializer extends Reviver {
     private final OneArgFunc myReviveFunc;
 
     /**
-     *
      * @param reviveFunc
      */
     public Unserializer(OneArgFunc reviveFunc) {
@@ -42,8 +41,8 @@ public class Unserializer extends Reviver {
      * Currently, just returns reviveFunc(ref).
      * <p/>
      * XXX Bug: Must make sure that classes are safe and that (therefore?)
-     * instances are instances of classes that grant no authority by virtue
-     * of creation.
+     * instances are instances of classes that grant no authority by virtue of
+     * creation.
      */
     public Object substitute(Object ref) {
         return myReviveFunc.run(ref);

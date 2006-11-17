@@ -26,8 +26,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
 /**
- * A java public instance variable becomes an E zero-arg method which
- * reads its value
+ * A java public instance variable becomes an E zero-arg method which reads its
+ * value
  *
  * @author Mark S. Miller
  */
@@ -153,9 +153,8 @@ class VarGetterNode extends JavaMemberNode {
                 if (Modifier.isStatic(mods) != isStatic) {
                     continue;
                 }
-                for (int propCase = 0;
-                     propCase < PropFlags.length;
-                     propCase++) {
+                for (int propCase = 0; propCase < PropFlags.length; propCase++)
+                {
 
                     boolean propFlag = PropFlags[propCase];
                     MethodNode getter = new VarGetterNode(field, propFlag);

@@ -53,14 +53,14 @@ public class ExportsTable extends CommTable {
     }
 
     /**
-     * Allocates and returns the index of a newly exported local
-     * PassByProxy object.
-     * <p>
+     * Allocates and returns the index of a newly exported local PassByProxy
+     * object.
+     * <p/>
      * The wireCount is initialized to one
      *
      * @param pbp The local PassByProxy object to be exported
-     * @return The index of the FarRef to be created-imported on the
-     *         other end.
+     * @return The index of the FarRef to be created-imported on the other
+     *         end.
      */
     public int newFarPos(Object pbp) {
         pbp = PassByProxyGuard.THE_ONE.coerce(pbp, null);

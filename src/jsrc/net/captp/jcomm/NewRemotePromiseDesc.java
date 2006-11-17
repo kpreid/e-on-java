@@ -20,17 +20,16 @@ Contributor(s): ______________________________________.
 */
 
 import org.erights.e.develop.assertion.T;
-import org.erights.e.develop.trace.Trace;
 
 import java.math.BigInteger;
 
 /**
- * The first-time encoding of an exported Promise over the wire,
- * received as an imported RemotePromise. <p>
+ * The first-time encoding of an exported Promise over the wire, received as an
+ * imported RemotePromise. <p>
  * <p/>
- * This is a separate class because the first time we export we also
- * need to hook up the redirector, whereas the rest of the time we
- * can just use ImportDesc(importPos).
+ * This is a separate class because the first time we export we also need to
+ * hook up the redirector, whereas the rest of the time we can just use
+ * ImportDesc(importPos).
  *
  * @author Chip Morningstar
  * @author Mark S. Miller
@@ -50,11 +49,12 @@ class NewRemotePromiseDesc implements ObjectRefDesc {
      */
     private void validate() {
         T.requireSI(myImportPos >= 1,
-                    "importPos must be positive: ", myImportPos);
-        T.requireSI(myRdrPos <= -1,
-                    "rdrPos must be negative: ", myRdrPos);
+                    "importPos must be positive: ",
+                    myImportPos);
+        T.requireSI(myRdrPos <= -1, "rdrPos must be negative: ", myRdrPos);
         T.require(null != myRdrBase && myRdrBase.signum() >= 1,
-                  "rdrBase must be positive: ", myRdrBase);
+                  "rdrBase must be positive: ",
+                  myRdrBase);
     }
 
     /**
@@ -68,14 +68,13 @@ class NewRemotePromiseDesc implements ObjectRefDesc {
     }
 
     /**
-     * What the other side exported, we dereference as the RemotePromise
-     * we will now import.
+     * What the other side exported, we dereference as the RemotePromise we
+     * will now import.
      */
     public Object dereference(CapTPConnection conn) {
 
-        Object result = conn.newRemotePromise(myImportPos,
-                                              myRdrPos,
-                                              myRdrBase);
+        Object result =
+          conn.newRemotePromise(myImportPos, myRdrPos, myRdrBase);
 
         if (conn.debug(myImportPos)) {
             conn.debugm(myImportPos, "deref " + toString());
@@ -87,8 +86,7 @@ class NewRemotePromiseDesc implements ObjectRefDesc {
      *
      */
     public String toString() {
-        return "NewRemotePromiseDesc(" + myImportPos + ", " +
-          myRdrPos + ", " +
+        return "NewRemotePromiseDesc(" + myImportPos + ", " + myRdrPos + ", " +
           myRdrBase + ")";
     }
 }

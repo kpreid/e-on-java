@@ -37,10 +37,10 @@ import java.io.IOException;
 
 /**
  * BNF: '$' '{' <number> '}'
- * <p>
- * Not part of a valid E program, but a part of an E parse tree
- * acting as a ValueMaker (for making an E program) or a MatchMaker
- * (as a pattern to be matched against an E program).
+ * <p/>
+ * Not part of a valid E program, but a part of an E parse tree acting as a
+ * ValueMaker (for making an E program) or a MatchMaker (as a pattern to be
+ * matched against an E program).
  *
  * @author Mark S. Miller
  */
@@ -62,11 +62,11 @@ public class QuasiLiteralExpr extends AtomicExpr {
      * Uses XXX 'makeFoo(...)'
      */
     public Object[] getSpreadUncall() {
-        Object[] result = { StaticMaker.make(QuasiLiteralExpr.class),
-                            "run",
-                            getOptSpan(),
-                            EInt.valueOf(myIndex),
-                            getOptScopeLayout() };
+        Object[] result = {StaticMaker.make(QuasiLiteralExpr.class),
+          "run",
+          getOptSpan(),
+          EInt.valueOf(myIndex),
+          getOptScopeLayout()};
         return result;
     }
 
@@ -90,8 +90,8 @@ public class QuasiLiteralExpr extends AtomicExpr {
      *
      */
     protected Object subEval(EvalContext ctx, boolean forValue) {
-        throw new IncompleteQuasiException
-          ("Can't evaluate programs that still contain bare \"$\"s");
+        throw new IncompleteQuasiException(
+          "Can't evaluate programs that still contain bare \"$\"s");
     }
 
     /**

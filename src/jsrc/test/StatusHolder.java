@@ -15,24 +15,28 @@ interface Listener {
  * @author Mark S. Miller
  */
 public class StatusHolder {
+
     private Object myStatus;
-    private final ArrayList/*<Listener>*/ myListeners
-                      = new ArrayList/*<Listener>*/();
+    private final ArrayList/*<Listener>*/ myListeners =
+      new ArrayList/*<Listener>*/();
 
     public StatusHolder(Object status) {
         myStatus = status;
     }
+
     public void addListener(Listener newListener) {
         myListeners.add(newListener);
     }
+
     public Object getStatus() {
         return myStatus;
     }
+
     public void setStatus(Object newStatus) {
         ArrayList/*<Listener>*/ listeners;
         synchronized (this) {
             myStatus = newStatus;
-            listeners = (ArrayList/*<Listener>*/) myListeners.clone();
+            listeners = (ArrayList/*<Listener>*/)myListeners.clone();
         }
 //        for (Listener listener: listeners) {
         for (Iterator iter = listeners.iterator(); iter.hasNext();) {

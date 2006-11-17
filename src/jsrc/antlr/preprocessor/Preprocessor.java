@@ -137,21 +137,18 @@ public class Preprocessor extends antlr.LLkParser
             }
             {
                 switch (LA(1)) {
-                case OPTIONS_START:
-                    {
-                        opt = optionSpec(null);
-                        break;
-                    }
+                case OPTIONS_START: {
+                    opt = optionSpec(null);
+                    break;
+                }
                 case EOF:
                 case ACTION:
-                case LITERAL_class:
-                    {
-                        break;
-                    }
-                default:
-                    {
-                        throw new NoViableAltException(LT(1), getFilename());
-                    }
+                case LITERAL_class: {
+                    break;
+                }
+                default: {
+                    throw new NoViableAltException(LT(1), getFilename());
+                }
                 }
             }
             {
@@ -203,21 +200,18 @@ public class Preprocessor extends antlr.LLkParser
                         rhs = LT(1);
                         match(ASSIGN_RHS);
 
-                        Option newOp = new Option(op.getText(),
-                                                  rhs.getText(),
-                                                  gr);
+                        Option newOp =
+                          new Option(op.getText(), rhs.getText(), gr);
                         options.appendElement(newOp.getName(), newOp);
                         if (gr != null && op.getText().equals("importVocab")) {
                             gr.specifiedVocabulary = true;
                             gr.importVocab = rhs.getText();
-                        } else if (gr != null &&
-                          op.getText().equals("exportVocab")) {
+                        } else
+                        if (gr != null && op.getText().equals("exportVocab")) {
                             // don't want ';' included in outputVocab.
                             // This is heinously inconsistent!  Ugh.
-                            gr.exportVocab =
-                              rhs.getText().substring(0,
-                                                      rhs.getText().length() -
-                                                      1);
+                            gr.exportVocab = rhs.getText()
+                              .substring(0, rhs.getText().length() - 1);
                             gr.exportVocab = gr.exportVocab.trim();
                         }
 
@@ -255,20 +249,17 @@ public class Preprocessor extends antlr.LLkParser
         try {      // for error handling
             {
                 switch (LA(1)) {
-                case ACTION:
-                    {
-                        preamble = LT(1);
-                        match(ACTION);
-                        break;
-                    }
-                case LITERAL_class:
-                    {
-                        break;
-                    }
-                default:
-                    {
-                        throw new NoViableAltException(LT(1), getFilename());
-                    }
+                case ACTION: {
+                    preamble = LT(1);
+                    match(ACTION);
+                    break;
+                }
+                case LITERAL_class: {
+                    break;
+                }
+                default: {
+                    throw new NoViableAltException(LT(1), getFilename());
+                }
                 }
             }
             match(LITERAL_class);
@@ -279,19 +270,16 @@ public class Preprocessor extends antlr.LLkParser
             match(ID);
             {
                 switch (LA(1)) {
-                case SUBRULE_BLOCK:
-                    {
-                        sc = superClass();
-                        break;
-                    }
-                case SEMI:
-                    {
-                        break;
-                    }
-                default:
-                    {
-                        throw new NoViableAltException(LT(1), getFilename());
-                    }
+                case SUBRULE_BLOCK: {
+                    sc = superClass();
+                    break;
+                }
+                case SEMI: {
+                    break;
+                }
+                default: {
+                    throw new NoViableAltException(LT(1), getFilename());
+                }
                 }
             }
             match(SEMI);
@@ -306,11 +294,10 @@ public class Preprocessor extends antlr.LLkParser
                   sub.getLine(),
                   sub.getColumn());
             } else {
-                gr =
-                  new Grammar(hier.getTool(),
-                              sub.getText(),
-                              sup.getText(),
-                              rules);
+                gr = new Grammar(hier.getTool(),
+                                 sub.getText(),
+                                 sup.getText(),
+                                 rules);
                 gr.superClass = sc;
                 if (preamble != null) {
                     gr.setPreambleAction(preamble.getText());
@@ -319,24 +306,21 @@ public class Preprocessor extends antlr.LLkParser
 
             {
                 switch (LA(1)) {
-                case OPTIONS_START:
-                    {
-                        classOptions = optionSpec(gr);
-                        break;
-                    }
+                case OPTIONS_START: {
+                    classOptions = optionSpec(gr);
+                    break;
+                }
                 case ACTION:
                 case ID:
                 case TOKENS_SPEC:
                 case LITERAL_protected:
                 case LITERAL_private:
-                case LITERAL_public:
-                    {
-                        break;
-                    }
-                default:
-                    {
-                        throw new NoViableAltException(LT(1), getFilename());
-                    }
+                case LITERAL_public: {
+                    break;
+                }
+                default: {
+                    throw new NoViableAltException(LT(1), getFilename());
+                }
                 }
             }
 
@@ -346,47 +330,41 @@ public class Preprocessor extends antlr.LLkParser
 
             {
                 switch (LA(1)) {
-                case TOKENS_SPEC:
-                    {
-                        tk = LT(1);
-                        match(TOKENS_SPEC);
-                        gr.setTokenSection(tk.getText());
-                        break;
-                    }
+                case TOKENS_SPEC: {
+                    tk = LT(1);
+                    match(TOKENS_SPEC);
+                    gr.setTokenSection(tk.getText());
+                    break;
+                }
                 case ACTION:
                 case ID:
                 case LITERAL_protected:
                 case LITERAL_private:
-                case LITERAL_public:
-                    {
-                        break;
-                    }
-                default:
-                    {
-                        throw new NoViableAltException(LT(1), getFilename());
-                    }
+                case LITERAL_public: {
+                    break;
+                }
+                default: {
+                    throw new NoViableAltException(LT(1), getFilename());
+                }
                 }
             }
             {
                 switch (LA(1)) {
-                case ACTION:
-                    {
-                        memberA = LT(1);
-                        match(ACTION);
-                        gr.setMemberAction(memberA.getText());
-                        break;
-                    }
+                case ACTION: {
+                    memberA = LT(1);
+                    match(ACTION);
+                    gr.setMemberAction(memberA.getText());
+                    break;
+                }
                 case ID:
                 case LITERAL_protected:
                 case LITERAL_private:
-                case LITERAL_public:
-                    {
-                        break;
-                    }
-                default:
-                    {
-                        throw new NoViableAltException(LT(1), getFilename());
-                    }
+                case LITERAL_public: {
+                    break;
+                }
+                default: {
+                    throw new NoViableAltException(LT(1), getFilename());
+                }
                 }
             }
             {
@@ -415,8 +393,8 @@ public class Preprocessor extends antlr.LLkParser
         return gr;
     }
 
-    public final String superClass() throws RecognitionException,
-      TokenStreamException {
+    public final String superClass()
+      throws RecognitionException, TokenStreamException {
         String sup;
 
         sup = LT(1).getText();
@@ -431,8 +409,8 @@ public class Preprocessor extends antlr.LLkParser
         return sup;
     }
 
-    public final void rule(Grammar gr) throws RecognitionException,
-      TokenStreamException {
+    public final void rule(Grammar gr)
+      throws RecognitionException, TokenStreamException {
 
         Token r = null;
         Token arg = null;
@@ -440,7 +418,7 @@ public class Preprocessor extends antlr.LLkParser
         Token init = null;
         Token blk = null;
 
-        IndexedVector o = null;	// options for rule
+        IndexedVector o = null;        // options for rule
         String vis = null;
         boolean bang = false;
         String eg = null, thr = "";
@@ -449,156 +427,133 @@ public class Preprocessor extends antlr.LLkParser
         try {      // for error handling
             {
                 switch (LA(1)) {
-                case LITERAL_protected:
-                    {
-                        match(LITERAL_protected);
-                        vis = "protected";
-                        break;
-                    }
-                case LITERAL_private:
-                    {
-                        match(LITERAL_private);
-                        vis = "private";
-                        break;
-                    }
-                case LITERAL_public:
-                    {
-                        match(LITERAL_public);
-                        vis = "public";
-                        break;
-                    }
-                case ID:
-                    {
-                        break;
-                    }
-                default:
-                    {
-                        throw new NoViableAltException(LT(1), getFilename());
-                    }
+                case LITERAL_protected: {
+                    match(LITERAL_protected);
+                    vis = "protected";
+                    break;
+                }
+                case LITERAL_private: {
+                    match(LITERAL_private);
+                    vis = "private";
+                    break;
+                }
+                case LITERAL_public: {
+                    match(LITERAL_public);
+                    vis = "public";
+                    break;
+                }
+                case ID: {
+                    break;
+                }
+                default: {
+                    throw new NoViableAltException(LT(1), getFilename());
+                }
                 }
             }
             r = LT(1);
             match(ID);
             {
                 switch (LA(1)) {
-                case BANG:
-                    {
-                        match(BANG);
-                        bang = true;
-                        break;
-                    }
+                case BANG: {
+                    match(BANG);
+                    bang = true;
+                    break;
+                }
                 case ACTION:
                 case OPTIONS_START:
                 case ARG_ACTION:
                 case LITERAL_returns:
                 case RULE_BLOCK:
-                case LITERAL_throws:
-                    {
-                        break;
-                    }
-                default:
-                    {
-                        throw new NoViableAltException(LT(1), getFilename());
-                    }
+                case LITERAL_throws: {
+                    break;
+                }
+                default: {
+                    throw new NoViableAltException(LT(1), getFilename());
+                }
                 }
             }
             {
                 switch (LA(1)) {
-                case ARG_ACTION:
-                    {
-                        arg = LT(1);
-                        match(ARG_ACTION);
-                        break;
-                    }
+                case ARG_ACTION: {
+                    arg = LT(1);
+                    match(ARG_ACTION);
+                    break;
+                }
                 case ACTION:
                 case OPTIONS_START:
                 case LITERAL_returns:
                 case RULE_BLOCK:
-                case LITERAL_throws:
-                    {
-                        break;
-                    }
-                default:
-                    {
-                        throw new NoViableAltException(LT(1), getFilename());
-                    }
+                case LITERAL_throws: {
+                    break;
+                }
+                default: {
+                    throw new NoViableAltException(LT(1), getFilename());
+                }
                 }
             }
             {
                 switch (LA(1)) {
-                case LITERAL_returns:
-                    {
-                        match(LITERAL_returns);
-                        ret = LT(1);
-                        match(ARG_ACTION);
-                        break;
-                    }
+                case LITERAL_returns: {
+                    match(LITERAL_returns);
+                    ret = LT(1);
+                    match(ARG_ACTION);
+                    break;
+                }
                 case ACTION:
                 case OPTIONS_START:
                 case RULE_BLOCK:
-                case LITERAL_throws:
-                    {
-                        break;
-                    }
-                default:
-                    {
-                        throw new NoViableAltException(LT(1), getFilename());
-                    }
+                case LITERAL_throws: {
+                    break;
+                }
+                default: {
+                    throw new NoViableAltException(LT(1), getFilename());
+                }
                 }
             }
             {
                 switch (LA(1)) {
-                case LITERAL_throws:
-                    {
-                        thr = throwsSpec();
-                        break;
-                    }
+                case LITERAL_throws: {
+                    thr = throwsSpec();
+                    break;
+                }
                 case ACTION:
                 case OPTIONS_START:
-                case RULE_BLOCK:
-                    {
-                        break;
-                    }
-                default:
-                    {
-                        throw new NoViableAltException(LT(1), getFilename());
-                    }
+                case RULE_BLOCK: {
+                    break;
+                }
+                default: {
+                    throw new NoViableAltException(LT(1), getFilename());
+                }
                 }
             }
             {
                 switch (LA(1)) {
-                case OPTIONS_START:
-                    {
-                        o = optionSpec(null);
-                        break;
-                    }
+                case OPTIONS_START: {
+                    o = optionSpec(null);
+                    break;
+                }
                 case ACTION:
-                case RULE_BLOCK:
-                    {
-                        break;
-                    }
-                default:
-                    {
-                        throw new NoViableAltException(LT(1), getFilename());
-                    }
+                case RULE_BLOCK: {
+                    break;
+                }
+                default: {
+                    throw new NoViableAltException(LT(1), getFilename());
+                }
                 }
             }
             {
                 switch (LA(1)) {
-                case ACTION:
-                    {
-                        init = LT(1);
-                        match(ACTION);
-                        break;
-                    }
-                case RULE_BLOCK:
-                    {
-                        break;
-                    }
-                default:
-                    {
-                        throw new NoViableAltException(LT(1), getFilename());
-                    }
+                case ACTION: {
+                    init = LT(1);
+                    match(ACTION);
+                    break;
+                }
+                case RULE_BLOCK: {
+                    break;
+                }
+                default: {
+                    throw new NoViableAltException(LT(1), getFilename());
+                }
                 }
             }
             blk = LT(1);
@@ -632,8 +587,8 @@ public class Preprocessor extends antlr.LLkParser
         }
     }
 
-    public final String throwsSpec() throws RecognitionException,
-      TokenStreamException {
+    public final String throwsSpec()
+      throws RecognitionException, TokenStreamException {
         String t;
 
         Token a = null;
@@ -667,8 +622,8 @@ public class Preprocessor extends antlr.LLkParser
         return t;
     }
 
-    public final String exceptionGroup() throws RecognitionException,
-      TokenStreamException {
+    public final String exceptionGroup()
+      throws RecognitionException, TokenStreamException {
         String g;
 
         String e = null;
@@ -695,8 +650,8 @@ public class Preprocessor extends antlr.LLkParser
         return g;
     }
 
-    public final String exceptionSpec() throws RecognitionException,
-      TokenStreamException {
+    public final String exceptionSpec()
+      throws RecognitionException, TokenStreamException {
         String es;
 
         Token aa = null;
@@ -708,13 +663,12 @@ public class Preprocessor extends antlr.LLkParser
             match(LITERAL_exception);
             {
                 switch (LA(1)) {
-                case ARG_ACTION:
-                    {
-                        aa = LT(1);
-                        match(ARG_ACTION);
-                        es += aa.getText();
-                        break;
-                    }
+                case ARG_ACTION: {
+                    aa = LT(1);
+                    match(ARG_ACTION);
+                    es += aa.getText();
+                    break;
+                }
                 case EOF:
                 case ACTION:
                 case LITERAL_class:
@@ -723,14 +677,12 @@ public class Preprocessor extends antlr.LLkParser
                 case LITERAL_private:
                 case LITERAL_public:
                 case LITERAL_exception:
-                case LITERAL_catch:
-                    {
-                        break;
-                    }
-                default:
-                    {
-                        throw new NoViableAltException(LT(1), getFilename());
-                    }
+                case LITERAL_catch: {
+                    break;
+                }
+                default: {
+                    throw new NoViableAltException(LT(1), getFilename());
+                }
                 }
             }
             {
@@ -753,8 +705,8 @@ public class Preprocessor extends antlr.LLkParser
         return es;
     }
 
-    public final String exceptionHandler() throws RecognitionException,
-      TokenStreamException {
+    public final String exceptionHandler()
+      throws RecognitionException, TokenStreamException {
         String h;
 
         Token a1 = null;
@@ -767,7 +719,8 @@ public class Preprocessor extends antlr.LLkParser
             match(ARG_ACTION);
             a2 = LT(1);
             match(ACTION);
-            h = System.getProperty("line.separator") + "catch " + a1.getText() + " " + a2.getText();
+            h = System.getProperty("line.separator") + "catch " +
+              a1.getText() + " " + a2.getText();
         } catch (RecognitionException ex) {
             reportError(ex);
             consume();
@@ -778,48 +731,48 @@ public class Preprocessor extends antlr.LLkParser
 
 
     public static final String[] _tokenNames = {"<0>",
-                                                "EOF",
-                                                "<2>",
-                                                "NULL_TREE_LOOKAHEAD",
-                                                "\"tokens\"",
-                                                "HEADER_ACTION",
-                                                "SUBRULE_BLOCK",
-                                                "ACTION",
-                                                "\"class\"",
-                                                "ID",
-                                                "\"extends\"",
-                                                "SEMI",
-                                                "TOKENS_SPEC",
-                                                "OPTIONS_START",
-                                                "ASSIGN_RHS",
-                                                "RCURLY",
-                                                "\"protected\"",
-                                                "\"private\"",
-                                                "\"public\"",
-                                                "BANG",
-                                                "ARG_ACTION",
-                                                "\"returns\"",
-                                                "RULE_BLOCK",
-                                                "\"throws\"",
-                                                "COMMA",
-                                                "\"exception\"",
-                                                "\"catch\"",
-                                                "ALT",
-                                                "ELEMENT",
-                                                "LPAREN",
-                                                "RPAREN",
-                                                "ID_OR_KEYWORD",
-                                                "CURLY_BLOCK_SCARF",
-                                                "WS",
-                                                "NEWLINE",
-                                                "COMMENT",
-                                                "SL_COMMENT",
-                                                "ML_COMMENT",
-                                                "CHAR_LITERAL",
-                                                "STRING_LITERAL",
-                                                "ESC",
-                                                "DIGIT",
-                                                "XDIGIT"};
+      "EOF",
+      "<2>",
+      "NULL_TREE_LOOKAHEAD",
+      "\"tokens\"",
+      "HEADER_ACTION",
+      "SUBRULE_BLOCK",
+      "ACTION",
+      "\"class\"",
+      "ID",
+      "\"extends\"",
+      "SEMI",
+      "TOKENS_SPEC",
+      "OPTIONS_START",
+      "ASSIGN_RHS",
+      "RCURLY",
+      "\"protected\"",
+      "\"private\"",
+      "\"public\"",
+      "BANG",
+      "ARG_ACTION",
+      "\"returns\"",
+      "RULE_BLOCK",
+      "\"throws\"",
+      "COMMA",
+      "\"exception\"",
+      "\"catch\"",
+      "ALT",
+      "ELEMENT",
+      "LPAREN",
+      "RPAREN",
+      "ID_OR_KEYWORD",
+      "CURLY_BLOCK_SCARF",
+      "WS",
+      "NEWLINE",
+      "COMMENT",
+      "SL_COMMENT",
+      "ML_COMMENT",
+      "CHAR_LITERAL",
+      "STRING_LITERAL",
+      "ESC",
+      "DIGIT",
+      "XDIGIT"};
 
     private static final long[] mk_tokenSet_0() {
         long[] data = {2L, 0L};

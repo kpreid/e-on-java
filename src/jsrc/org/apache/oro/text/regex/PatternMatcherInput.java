@@ -58,20 +58,19 @@ package org.apache.oro.text.regex;
  */
 
 /**
- * The PatternMatcherInput class is used to preserve state across
- * calls to the <code>contains()</code> methods of PatternMatcher instances.
- * It is also used to specify that only a subregion of a string
- * should be used as input when looking for a pattern match. All that
- * is meant by preserving state is that the end offset of the last match
- * is remembered, so that the next match is performed from that point
- * where the last match left off. This offset can be accessed from
- * the {@link #getCurrentOffset()} method and can be set with the
+ * The PatternMatcherInput class is used to preserve state across calls to the
+ * <code>contains()</code> methods of PatternMatcher instances. It is also used
+ * to specify that only a subregion of a string should be used as input when
+ * looking for a pattern match. All that is meant by preserving state is that
+ * the end offset of the last match is remembered, so that the next match is
+ * performed from that point where the last match left off. This offset can be
+ * accessed from the {@link #getCurrentOffset()} method and can be set with the
  * {@link #setCurrentOffset(int)} method.
  * <p/>
- * You would use a PatternMatcherInput object when you want to search for
- * more than just the first occurrence of a pattern in a string, or when
- * you only want to search a subregion of the string for a match. An
- * example of its most common use is:
+ * You would use a PatternMatcherInput object when you want to search for more
+ * than just the first occurrence of a pattern in a string, or when you only
+ * want to search a subregion of the string for a match. An example of its most
+ * common use is:
  * <blockquote><pre>
  * PatternMatcher matcher;
  * PatternCompiler compiler;
@@ -111,7 +110,8 @@ package org.apache.oro.text.regex;
  * </pre></blockquote>
  *
  * @author <a href="mailto:dfs@savarese.org">Daniel F. Savarese</a>
- * @version $Id: PatternMatcherInput.java,v 1.4 2001/12/02 06:01:40 markm Exp $
+ * @version $Id: PatternMatcherInput.java,v 1.4 2001/12/02 06:01:40 markm Exp
+ *          $
  * @see PatternMatcher
  */
 public final class PatternMatcherInput {
@@ -126,16 +126,15 @@ public final class PatternMatcherInput {
 
     /**
      * Creates a PatternMatcherInput object, associating a region of a String
-     * as input to be used for pattern matching by PatternMatcher objects.
-     * A copy of the string is not made, therefore you should not modify
-     * the string unless you know what you are doing.
-     * The current offset of the PatternMatcherInput is set to the begin
-     * offset of the region.
+     * as input to be used for pattern matching by PatternMatcher objects. A
+     * copy of the string is not made, therefore you should not modify the
+     * string unless you know what you are doing. The current offset of the
+     * PatternMatcherInput is set to the begin offset of the region.
      * <p/>
      *
      * @param input  The input to associate with the PatternMatcherInput.
-     * @param begin  The offset into the char[] to use as the beginning of
-     *               the input.
+     * @param begin  The offset into the char[] to use as the beginning of the
+     *               input.
      * @param length The length of the reegion starting from the begin offset
      *               to use as the input for pattern matching purposes.
      */
@@ -159,17 +158,16 @@ public final class PatternMatcherInput {
 
     /**
      * Creates a PatternMatcherInput object, associating a region of a string
-     * (represented as a char[]) as input
-     * to be used for pattern matching by PatternMatcher objects.
-     * A copy of the string is not made, therefore you should not modify
-     * the string unless you know what you are doing.
-     * The current offset of the PatternMatcherInput is set to the begin
-     * offset of the region.
+     * (represented as a char[]) as input to be used for pattern matching by
+     * PatternMatcher objects. A copy of the string is not made, therefore you
+     * should not modify the string unless you know what you are doing. The
+     * current offset of the PatternMatcherInput is set to the begin offset of
+     * the region.
      * <p/>
      *
      * @param input  The input to associate with the PatternMatcherInput.
-     * @param begin  The offset into the char[] to use as the beginning of
-     *               the input.
+     * @param begin  The offset into the char[] to use as the beginning of the
+     *               input.
      * @param length The length of the reegion starting from the begin offset
      *               to use as the input for pattern matching purposes.
      */
@@ -193,8 +191,8 @@ public final class PatternMatcherInput {
 
     /**
      * @return The length of the region to be considered input for pattern
-     *         matching purposes. Essentially this is then end offset minus
-     *         the begin offset.
+     *         matching purposes. Essentially this is then end offset minus the
+     *         begin offset.
      */
     public int length() {
         return (_endOffset - _beginOffset);
@@ -203,15 +201,14 @@ public final class PatternMatcherInput {
 
 
     /**
-     * Associates a region of a String as input
-     * to be used for pattern matching by PatternMatcher objects.
-     * The current offset of the PatternMatcherInput is set to the begin
-     * offset of the region.
+     * Associates a region of a String as input to be used for pattern matching
+     * by PatternMatcher objects. The current offset of the PatternMatcherInput
+     * is set to the begin offset of the region.
      * <p/>
      *
      * @param input  The input to associate with the PatternMatcherInput.
-     * @param begin  The offset into the String to use as the beginning of
-     *               the input.
+     * @param begin  The offset into the String to use as the beginning of the
+     *               input.
      * @param length The length of the reegion starting from the begin offset
      *               to use as the input for pattern matching purposes.
      */
@@ -240,17 +237,16 @@ public final class PatternMatcherInput {
 
 
     /**
-     * Associates a region of a string (represented as a char[]) as input
-     * to be used for pattern matching by PatternMatcher objects.
-     * A copy of the string is not made, therefore you should not modify
-     * the string unless you know what you are doing.
-     * The current offset of the PatternMatcherInput is set to the begin
-     * offset of the region.
+     * Associates a region of a string (represented as a char[]) as input to be
+     * used for pattern matching by PatternMatcher objects. A copy of the
+     * string is not made, therefore you should not modify the string unless
+     * you know what you are doing. The current offset of the
+     * PatternMatcherInput is set to the begin offset of the region.
      * <p/>
      *
      * @param input  The input to associate with the PatternMatcherInput.
-     * @param begin  The offset into the char[] to use as the beginning of
-     *               the input.
+     * @param begin  The offset into the char[] to use as the beginning of the
+     *               input.
      * @param length The length of the reegion starting from the begin offset
      *               to use as the input for pattern matching purposes.
      */
@@ -283,8 +279,8 @@ public final class PatternMatcherInput {
      * offset of the input.
      * <p/>
      *
-     * @param offset The offset at which to fetch a character (relative to
-     *               the beginning offset.
+     * @param offset The offset at which to fetch a character (relative to the
+     *               beginning offset.
      * @return The character at a particular offset.
      * @throws ArrayIndexOutOfBoundsException If the offset does not occur
      *                                        within the bounds of the input.
@@ -295,28 +291,32 @@ public final class PatternMatcherInput {
 
     /**
      * Returns a new string that is a substring of the PatternMatcherInput
-     * instance. The substring begins at the specified beginOffset relative
-     * to the begin offset and extends to the specified endOffset - 1
-     * relative to the begin offset of the PatternMatcherInput instance.
+     * instance. The substring begins at the specified beginOffset relative to
+     * the begin offset and extends to the specified endOffset - 1 relative to
+     * the begin offset of the PatternMatcherInput instance.
      * <p/>
      *
      * @param beginOffset The offset relative to the begin offset of the
-     *                    PatternMatcherInput at which to start the substring (inclusive).
+     *                    PatternMatcherInput at which to start the substring
+     *                    (inclusive).
      * @param endOffset   The offset relative to the begin offset of the
-     *                    PatternMatcherInput at which to end the substring (exclusive).
+     *                    PatternMatcherInput at which to end the substring
+     *                    (exclusive).
      * @return The specified substring.
-     * @throws ArrayIndexOutOfBoundsException If one of the offsets does
-     *                                        not occur within the bounds of the input.
+     * @throws ArrayIndexOutOfBoundsException If one of the offsets does not
+     *                                        occur within the bounds of the
+     *                                        input.
      */
     public String substring(int beginOffset, int endOffset) {
-        return new String(_originalBuffer, _beginOffset + beginOffset,
+        return new String(_originalBuffer,
+                          _beginOffset + beginOffset,
                           endOffset - beginOffset);
     }
 
     /**
      * Returns a new string that is a substring of the PatternMatcherInput
-     * instance. The substring begins at the specified beginOffset relative
-     * to the begin offset and extends to the end offset of the
+     * instance. The substring begins at the specified beginOffset relative to
+     * the begin offset and extends to the end offset of the
      * PatternMatcherInput.
      * <p/>
      *
@@ -328,17 +328,18 @@ public final class PatternMatcherInput {
      */
     public String substring(int beginOffset) {
         beginOffset += _beginOffset;
-        return new String(_originalBuffer, beginOffset,
+        return new String(_originalBuffer,
+                          beginOffset,
                           _endOffset - beginOffset);
     }
 
 
     /**
      * Retrieves the original input used to initialize the PatternMatcherInput
-     * instance. If a String was used, the String instance will be returned.
-     * If a char[] was used, a char instance will be returned. This violates
-     * data encapsulation and hiding principles, but it is a great convenience
-     * for the programmer.
+     * instance. If a String was used, the String instance will be returned. If
+     * a char[] was used, a char instance will be returned. This violates data
+     * encapsulation and hiding principles, but it is a great convenience for
+     * the programmer.
      * <p/>
      *
      * @return The String or char[] input used to initialize the
@@ -353,8 +354,8 @@ public final class PatternMatcherInput {
 
     /**
      * Retrieves the char[] buffer to be used used as input by PatternMatcher
-     * implementations to look for matches. This array should be treated
-     * as read only by the programmer.
+     * implementations to look for matches. This array should be treated as
+     * read only by the programmer.
      * <p/>
      *
      * @return The char[] buffer to be used as input by PatternMatcher
@@ -368,8 +369,8 @@ public final class PatternMatcherInput {
      * Returns whether or not the end of the input has been reached.
      * <p/>
      *
-     * @return True if the current offset is greater than or equal to the
-     *         end offset.
+     * @return True if the current offset is greater than or equal to the end
+     *         offset.
      */
     public boolean endOfInput() {
         return (_currentOffset >= _endOffset);
@@ -377,19 +378,18 @@ public final class PatternMatcherInput {
 
 
     /**
-     * @return The offset of the input that should be considered the start
-     *         of the region to be considered as input by PatternMatcher
-     *         methods.
+     * @return The offset of the input that should be considered the start of
+     *         the region to be considered as input by PatternMatcher methods.
      */
     public int getBeginOffset() {
         return _beginOffset;
     }
 
     /**
-     * @return The offset of the input that should be considered the end
-     *         of the region to be considered as input by PatternMatcher
-     *         methods. This offset is actually 1 plus the last offset
-     *         that is part of the input region.
+     * @return The offset of the input that should be considered the end of the
+     *         region to be considered as input by PatternMatcher methods. This
+     *         offset is actually 1 plus the last offset that is part of the
+     *         input region.
      */
     public int getEndOffset() {
         return _endOffset;
@@ -405,10 +405,9 @@ public final class PatternMatcherInput {
     }
 
     /**
-     * Sets the offset of the input that should be considered the start
-     * of the region to be considered as input by PatternMatcher
-     * methods. In other words, everything before this offset is ignored
-     * by a PatternMatcher.
+     * Sets the offset of the input that should be considered the start of the
+     * region to be considered as input by PatternMatcher methods. In other
+     * words, everything before this offset is ignored by a PatternMatcher.
      * <p/>
      *
      * @param offset The offset to use as the beginning of the input.
@@ -418,10 +417,9 @@ public final class PatternMatcherInput {
     }
 
     /**
-     * Sets the offset of the input that should be considered the end
-     * of the region to be considered as input by PatternMatcher
-     * methods. This offset is actually 1 plus the last offset
-     * that is part of the input region.
+     * Sets the offset of the input that should be considered the end of the
+     * region to be considered as input by PatternMatcher methods. This offset
+     * is actually 1 plus the last offset that is part of the input region.
      * <p/>
      *
      * @param offset The offset to use as the end of the input.
@@ -432,11 +430,11 @@ public final class PatternMatcherInput {
 
     /**
      * Sets the offset of the input that should be considered the current
-     * offset where PatternMatcher methods should start looking for
-     * matches. Also resets all match offset information to -1. By calling
-     * this method, you invalidate all previous match information. Therefore
-     * a PatternMatcher implementation must call this method before setting
-     * match offset information.
+     * offset where PatternMatcher methods should start looking for matches.
+     * Also resets all match offset information to -1. By calling this method,
+     * you invalidate all previous match information. Therefore a
+     * PatternMatcher implementation must call this method before setting match
+     * offset information.
      * <p/>
      *
      * @param offset The offset to use as the current offset.
@@ -460,52 +458,55 @@ public final class PatternMatcherInput {
 
     /**
      * A convenience method returning the part of the input occurring before
-     * the last match found by a call to a Perl5Matcher
-     * {@link Perl5Matcher#contains contains} method.
+     * the last match found by a call to a Perl5Matcher {@link
+     * Perl5Matcher#contains contains} method.
      * <p/>
      *
      * @return The input preceeding a match.
      */
     public String preMatch() {
-        return new String(_originalBuffer, _beginOffset,
+        return new String(_originalBuffer,
+                          _beginOffset,
                           _matchBeginOffset - _beginOffset);
     }
 
 
     /**
-     * A convenience method returning the part of the input occurring after
-     * the last match found by a call to a Perl5Matcher
-     * {@link Perl5Matcher#contains contains} method.
+     * A convenience method returning the part of the input occurring after the
+     * last match found by a call to a Perl5Matcher {@link
+     * Perl5Matcher#contains contains} method.
      * <p/>
      *
      * @return The input succeeding a contains() match.
      */
     public String postMatch() {
-        return new String(_originalBuffer, _matchEndOffset,
+        return new String(_originalBuffer,
+                          _matchEndOffset,
                           _endOffset - _matchEndOffset);
     }
 
 
     /**
-     * A convenience method returning the part of the input corresponding
-     * to the last match found by a call to a Perl5Matcher
-     * {@link Perl5Matcher#contains contains} method.
-     * The method is not called getMatch() so as not to confuse it
-     * with Perl5Matcher's getMatch() which returns a MatchResult instance
-     * and also for consistency with preMatch() and postMatch().
+     * A convenience method returning the part of the input corresponding to
+     * the last match found by a call to a Perl5Matcher {@link
+     * Perl5Matcher#contains contains} method. The method is not called
+     * getMatch() so as not to confuse it with Perl5Matcher's getMatch() which
+     * returns a MatchResult instance and also for consistency with preMatch()
+     * and postMatch().
      * <p/>
      *
      * @return The input consisting of the match found by contains().
      */
     public String match() {
-        return new String(_originalBuffer, _matchBeginOffset,
+        return new String(_originalBuffer,
+                          _matchBeginOffset,
                           _matchEndOffset - _matchBeginOffset);
     }
 
 
     /**
-     * This method is intended for use by PatternMatcher implementations.
-     * It is necessary to record the location of the previous match so that
+     * This method is intended for use by PatternMatcher implementations. It is
+     * necessary to record the location of the previous match so that
      * consecutive contains() matches involving null string matches are
      * properly handled. If you are not implementing a PatternMatcher, forget
      * this method exists. If you use it outside of its intended context, you
@@ -517,7 +518,8 @@ public final class PatternMatcherInput {
      * contains() matches.
      * <p/>
      *
-     * @param matchBeginOffset The begin offset of a match found by contains().
+     * @param matchBeginOffset The begin offset of a match found by
+     *                         contains().
      * @param matchEndOffset   The end offset of a match found by contains().
      */
     public void setMatchOffsets(int matchBeginOffset, int matchEndOffset) {

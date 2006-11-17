@@ -26,18 +26,20 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
- * An instance of this exists for each of the standard URL protocol,
- * and is bound to corresponding protocol name. For example, "http:"
- * is bound to a URLGetter for the http protocol. By special
- * dispensation, the URLGetter for the "file:" protocol is bound to
- * "fileUrl:", since "file:" is reserved for the FileGetter.
+ * An instance of this exists for each of the standard URL protocol, and is
+ * bound to corresponding protocol name. For example, "http:" is bound to a
+ * URLGetter for the http protocol. By special dispensation, the URLGetter for
+ * the "file:" protocol is bound to "fileUrl:", since "file:" is reserved for
+ * the FileGetter.
  *
- * @see org.erights.e.meta.java.io.FileGetter
  * @author Mark S. Miller
+ * @see org.erights.e.meta.java.io.FileGetter
  */
 public class URLGetter extends BaseLoader {
 
-    /** "protocol" as in "file:" or "http:" */
+    /**
+     * "protocol" as in "file:" or "http:"
+     */
     private final String myProtocol;
 
     /**
@@ -48,7 +50,6 @@ public class URLGetter extends BaseLoader {
     }
 
     /**
-     *
      * @param uriBody
      */
     public Object get(String uriBody) {
@@ -60,7 +61,6 @@ public class URLGetter extends BaseLoader {
     }
 
     /**
-     *
      * @param obj
      * @return
      */

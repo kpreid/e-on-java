@@ -4,12 +4,12 @@ package org.erights.e.elib.slot;
 // found at http://www.opensource.org/licenses/mit-license.html ...............
 
 import org.erights.e.elib.base.ClassDesc;
+import org.erights.e.elib.oldeio.TextWriter;
 import org.erights.e.elib.prim.E;
 import org.erights.e.elib.prim.StaticMaker;
 import org.erights.e.elib.prim.Thrower;
 import org.erights.e.elib.tables.ConstList;
 import org.erights.e.elib.util.OneArgFunc;
-import org.erights.e.elib.oldeio.TextWriter;
 
 import java.io.IOException;
 
@@ -37,8 +37,7 @@ public class TupleGuard implements Guard {
     static public Object match(String verb, ConstList args)
       throws NoSuchMethodException {
         if ("get".equals(verb)) {
-            return new TupleGuard((Guard[])E.as(args,
-                                                     Guard[].class));
+            return new TupleGuard((Guard[])E.as(args, Guard[].class));
         }
         if ("__respondsTo".equals(verb) && args.size() == 2) {
             //XXX should say yes if args[0] =~ `get`
@@ -67,9 +66,8 @@ public class TupleGuard implements Guard {
           (ConstList)ConstListGuard.coerce(specimen, optEjector);
         int len = myElemGuards.length;
         if (len != list.size()) {
-            RuntimeException problem =
-              new RuntimeException("Need " + len + " element list: " +
-                                   specimen);
+            RuntimeException problem = new RuntimeException(
+              "Need " + len + " element list: " + specimen);
             Thrower.THE_ONE.eject(optEjector, problem);
         }
         Object[] result = new Object[len];

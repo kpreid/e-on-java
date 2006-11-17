@@ -24,8 +24,8 @@ import org.erights.e.elib.util.OneArgFunc;
 
 /**
  * Sends a message to target containing a cheap 1-argument function as
- * argument. When this function is called it calls a method
- * on the reactor with its argument. It's like the following E code:
+ * argument. When this function is called it calls a method on the reactor with
+ * its argument. It's like the following E code:
  * <pre>
  * <p/>
  *     def OneArgFuncAdapter adapt(target, whenVerb, reactor, onVerb) {
@@ -57,8 +57,10 @@ public class OneArgFuncAdapter implements OneArgFunc {
     /**
      *
      */
-    static public Throwable adapt(Object target, String whenVerb,
-                                  Object reactor, String onVerb) {
+    static public Throwable adapt(Object target,
+                                  String whenVerb,
+                                  Object reactor,
+                                  String onVerb) {
         return E.sendOnly(target,
                           whenVerb,
                           new OneArgFuncAdapter(reactor, onVerb));

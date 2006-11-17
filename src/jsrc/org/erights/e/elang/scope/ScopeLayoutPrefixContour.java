@@ -30,7 +30,7 @@ class ScopeLayoutPrefixContour extends ScopeLayoutContour {
      * Uses 'myNext.nest(myFQNPrefix)'
      */
     public Object[] getSpreadUncall() {
-        Object[] result = { myNext, "nest", myFQNPrefix };
+        Object[] result = {myNext, "nest", myFQNPrefix};
         return result;
     }
 

@@ -17,8 +17,8 @@ import java.io.IOException;
 /**
  * Represents contiguous literal text with a quasi-literal XML tree. <p>
  * <p/>
- * As a ValueMaker, it simply evaluates to the corresponding Text object.
- * As a MatchMaker, it checks that the specimen is the corresponding Text.
+ * As a ValueMaker, it simply evaluates to the corresponding Text object. As a
+ * MatchMaker, it checks that the specimen is the corresponding Text.
  *
  * @author Mark S. Miller
  * @deprecated Use Term trees instead.
@@ -27,8 +27,8 @@ public class QuasiText extends QuasiContent {
 
     static private final long serialVersionUID = -1744822228049984960L;
 
-    static public final StaticMaker QuasiTextMaker
-      = StaticMaker.make(QuasiText.class);
+    static public final StaticMaker QuasiTextMaker =
+      StaticMaker.make(QuasiText.class);
 
     private final String myData;
 
@@ -67,8 +67,7 @@ public class QuasiText extends QuasiContent {
                           FlexList bindings) {
         Node other = optTheOne(specimen);
         if (null == other || !(other instanceof Text)) {
-            throw Thrower.toEject(optEjector,
-                                  "Must be Text: " + other);
+            throw Thrower.toEject(optEjector, "Must be Text: " + other);
         }
         //and only if they have the same String data
         String otherData = ((Text)other).getData();

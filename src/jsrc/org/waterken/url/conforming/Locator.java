@@ -19,7 +19,8 @@ public final class Locator {
      * @param default_port The default port.
      */
     public static org.waterken.url.Locator make(final int default_port) {
-        final org.waterken.url.Locator http = org.waterken.url.http.Locator.make();
+        final org.waterken.url.Locator http =
+          org.waterken.url.http.Locator.make();
         return http instanceof org.waterken.url.proxy.Locator ?
           org.waterken.url.tunnel.Locator.make(http, default_port) :
           org.waterken.url.dns.Locator.make(default_port);

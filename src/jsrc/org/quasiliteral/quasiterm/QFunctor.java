@@ -25,8 +25,8 @@ import java.io.IOException;
  * A quasi-literal functor of a {@link Term Term}.
  * <p/>
  * As a ValueMaker, this acts like a 0-arity Term. As a MatchMaker, this
- * matches only the functor info of a specimen term, and ignores the
- * specimen's arguments.
+ * matches only the functor info of a specimen term, and ignores the specimen's
+ * arguments.
  *
  * @author Mark S. Miller
  */
@@ -46,27 +46,27 @@ public class QFunctor extends QAstro {
     private final AstroTag myTag;
 
     /**
-     * @serial If the functor represents a literal-data token, then this is
-     * the data, and myTag must represent the cononical corresponding
-     * token-type for this kind of data in this schema.
+     * @serial If the functor represents a literal-data token, then this is the
+     * data, and myTag must represent the cononical corresponding token-type
+     * for this kind of data in this schema.
      */
     private final Object myOptData;
 
     /**
      * Makes a QTerm that matches or generates a Astro.
      * <p/>
-     * The invariants of a QTerm are not checked here, but rather are
-     * enforced by the callers in this class and in QTermBuilder.
+     * The invariants of a QTerm are not checked here, but rather are enforced
+     * by the callers in this class and in QTermBuilder.
      *
      * @param builder Used to build the result of a substitute
-     * @param tag     Identifies a token type in a particular grammar or set
-     *                of related grammars, used as the functor (or "label") of
+     * @param tag     Identifies a token type in a particular grammar or set of
+     *                related grammars, used as the functor (or "label") of
      *                this QTerm
      * @param optData Either something that promotes to a {@link Character},
-     *                {@link EInt EInt},
-     *                {@link Double}, or {@link Twine} or null. If not null,
-     *                then the tag must represent the canonical literal type
-     *                for this kind of data in this schema.
+     *                {@link EInt EInt}, {@link Double}, or {@link Twine} or
+     *                null. If not null, then the tag must represent the
+     *                canonical literal type for this kind of data in this
+     *                schema.
      * @param optSpan Where is the source text this node was extracted from?
      */
     QFunctor(AstroBuilder builder,
@@ -83,9 +83,8 @@ public class QFunctor extends QAstro {
      * Uses 'QFunctorMaker(myBuilder, myTag, myOptData, myOptSpan)'
      */
     public Object[] getSpreadUncall() {
-        Object[] result = {
-            QFunctorMaker, "run", myBuilder, myTag, myOptData, myOptSpan
-        };
+        Object[] result =
+          {QFunctorMaker, "run", myBuilder, myTag, myOptData, myOptSpan};
         return result;
     }
 
@@ -109,9 +108,8 @@ public class QFunctor extends QAstro {
     }
 
     /**
-     * Either literal data or null. If not null, then the tag
-     * must represent the canonical literal type for this
-     * kind of data in this schema.
+     * Either literal data or null. If not null, then the tag must represent
+     * the canonical literal type for this kind of data in this schema.
      */
     public Object getOptData() {
         return myOptData;
@@ -210,8 +208,7 @@ public class QFunctor extends QAstro {
     /**
      *
      */
-    public void prettyPrintOn(TextWriter out)
-      throws IOException {
+    public void prettyPrintOn(TextWriter out) throws IOException {
         String label = myTag.getTagName();
         if (null != myOptData) {
             label = E.toQuote(myOptData).bare();
@@ -242,9 +239,7 @@ public class QFunctor extends QAstro {
     /**
      * Do nothing.
      */
-    void endShape(FlexList optBindings,
-                  int[] prefix,
-                  int shape) {
+    void endShape(FlexList optBindings, int[] prefix, int shape) {
         // Do nothing.
     }
 

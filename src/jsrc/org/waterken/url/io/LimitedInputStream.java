@@ -51,9 +51,8 @@ public final class LimitedInputStream extends InputStream {
         if (0 == limit) {
             throw new TooMuchData();
         }
-        final int n = limit < b.length ?
-          in.read(b, 0, (int)limit) :
-          in.read(b);
+        final int n =
+          limit < b.length ? in.read(b, 0, (int)limit) : in.read(b);
         if (n != -1) {
             limit -= n;
         }

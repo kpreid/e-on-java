@@ -46,8 +46,8 @@ public final class URI {
     }
 
     private static boolean isComponentSymbol(final char c) {
-        return ('a' <= c && 'z' >= c) || ('A' <= c && 'Z' >= c) || ('0' <= c &&
-          '9' >= c) || '+' == c || '.' == c || '-' == c;
+        return ('a' <= c && 'z' >= c) || ('A' <= c && 'Z' >= c) ||
+          ('0' <= c && '9' >= c) || '+' == c || '.' == c || '-' == c;
     }
 
     /**
@@ -78,8 +78,9 @@ public final class URI {
     private static int hierarchy_end(final String uri, final int first) {
         final int query = uri.indexOf('?', first);
         final int fragment = uri.indexOf('#', first);
-        return -1 == query ? (-1 == fragment ? uri.length() : fragment) : (-1 ==
-          fragment ? query : (query < fragment ? query : fragment));
+        return -1 == query ?
+          (-1 == fragment ? uri.length() : fragment) :
+          (-1 == fragment ? query : (query < fragment ? query : fragment));
     }
 
     /**
@@ -112,9 +113,9 @@ public final class URI {
             r = otherwise;
         } else {
             final int end = uri.indexOf('#');
-            r = -1 == end ? uri.substring(start + 1) : (start < end ?
-              uri.substring(start + 1, end) :
-              otherwise);
+            r = -1 == end ?
+              uri.substring(start + 1) :
+              (start < end ? uri.substring(start + 1, end) : otherwise);
         }
         return r;
     }
@@ -192,11 +193,11 @@ public final class URI {
             final String base_path = base_path_last != base_path_first ?
               base.substring(base_path_first + 1, base_path_last) :
               "";
-            final String base_folder = base_path.substring(0, base_path.lastIndexOf(
-              '/') + 1);
+            final String base_folder =
+              base_path.substring(0, base_path.lastIndexOf('/') + 1);
             final int relative_path_last = hierarchy_end(relative, 0);
-            final String relative_path = relative.substring(0,
-                                                            relative_path_last);
+            final String relative_path =
+              relative.substring(0, relative_path_last);
             final String path = Path.vouch(base_folder + relative_path);
             final String absolute_path = "".equals(path) ? "" : "/" + path;
             final String tail = relative.substring(relative_path_last);
@@ -228,9 +229,9 @@ public final class URI {
             if (-1 == j) {
                 // Compare the last segment.
                 j = last - first;
-                if (path.regionMatches(i, target, first + i, j - i) && (last ==
-                  target.length() || '?' == target.charAt(last) || '#' ==
-                  target.charAt(last))) {
+                if (path.regionMatches(i, target, first + i, j - i) && (
+                  last == target.length() || '?' == target.charAt(last) ||
+                    '#' == target.charAt(last))) {
                     // Compare the query.
                     int f = base.indexOf('#', last);
                     if (-1 == f) {

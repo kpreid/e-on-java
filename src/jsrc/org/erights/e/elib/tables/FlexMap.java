@@ -70,19 +70,18 @@ public abstract class FlexMap extends EMap implements PassByProxy {
     }
 
     /**
-     * Causes 'key' to map to 'value'. If 'strict' is false (the
-     * default), this will overwrite a previous value if necessary.
-     * If 'strict' is true, this only succeeds if there is not already
-     * an association for 'key' in the map. If 'strict' is true and
-     * there is an already an association, even to the same value,
-     * this throws an Exception instead (XXX currently an
+     * Causes 'key' to map to 'value'. If 'strict' is false (the default), this
+     * will overwrite a previous value if necessary. If 'strict' is true, this
+     * only succeeds if there is not already an association for 'key' in the
+     * map. If 'strict' is true and there is an already an association, even to
+     * the same value, this throws an Exception instead (XXX currently an
      * IllegalArgumentException) and leaves the map unmodified. <p>
      * <p/>
-     * Unlike Dictionary, this doesn't return the old value. If you
-     * want it, use 'get' first. <p>
+     * Unlike Dictionary, this doesn't return the old value. If you want it,
+     * use 'get' first. <p>
      * <p/>
-     * If the key is overwritten, then the key order is unchanged. If
-     * the key is novel, it's added to the end of the order.
+     * If the key is overwritten, then the key order is unchanged. If the key
+     * is novel, it's added to the end of the order.
      *
      * @throws NotSettledException if the key is not settled
      * @see org.erights.e.elib.ref.Ref#isSettled
@@ -97,11 +96,11 @@ public abstract class FlexMap extends EMap implements PassByProxy {
     }
 
     /**
-     * Add all the associations of 'other' to this map. If there's a
-     * conflict, blow up if we're strict. Otherwise overwrite. <p>
+     * Add all the associations of 'other' to this map. If there's a conflict,
+     * blow up if we're strict. Otherwise overwrite. <p>
      * <p/>
-     * The order of the original keys is unchanged. This order is
-     * followed by the novel keys in their order in 'other'.
+     * The order of the original keys is unchanged. This order is followed by
+     * the novel keys in their order in 'other'.
      */
     public void putAll(EMap other, boolean strict) {
         Object[] pair = other.getPair();
@@ -121,19 +120,18 @@ public abstract class FlexMap extends EMap implements PassByProxy {
     }
 
     /**
-     * Removes the given key (or its equivalent, according to the
-     * equal function) from the collection. If 'strict' is false (the
-     * default), this does nothing if 'key' is not currently a key in
-     * the collection. If 'strict' is true and 'key' isn't already
-     * there to be removed, this throws an Exception (XXX currently an
-     * IllegalArgumentException). <p>
+     * Removes the given key (or its equivalent, according to the equal
+     * function) from the collection. If 'strict' is false (the default), this
+     * does nothing if 'key' is not currently a key in the collection. If
+     * 'strict' is true and 'key' isn't already there to be removed, this
+     * throws an Exception (XXX currently an IllegalArgumentException). <p>
      * <p/>
-     * Unlike Dictionary, this does not return the old value. If you
-     * want this for a FlexMap, use 'get' first. <p>
+     * Unlike Dictionary, this does not return the old value. If you want this
+     * for a FlexMap, use 'get' first. <p>
      * <p/>
-     * If 'key' wasn't in the table, the table (including its order)
-     * is unmodified. Otherwise, the last key in the table is moved
-     * in the ordering to take the place of the removed 'key'.
+     * If 'key' wasn't in the table, the table (including its order) is
+     * unmodified. Otherwise, the last key in the table is moved in the
+     * ordering to take the place of the removed 'key'.
      *
      * @param key the key to remove
      */
@@ -147,11 +145,10 @@ public abstract class FlexMap extends EMap implements PassByProxy {
     }
 
     /**
-     * Remove from this map all associations whose key is in
-     * 'mask'. <p>
+     * Remove from this map all associations whose key is in 'mask'. <p>
      * <p/>
-     * The order is the original order modified by successive removals
-     * of keys in mask's order.
+     * The order is the original order modified by successive removals of keys
+     * in mask's order.
      */
     public void removeKeys(EMap mask, boolean strict) {
         Object keys = mask.getKeys();
@@ -162,12 +159,11 @@ public abstract class FlexMap extends EMap implements PassByProxy {
     }
 
     /**
-     * Removes all associations from this map, leaving this map
-     * empty. <p>
+     * Removes all associations from this map, leaving this map empty. <p>
      * <p/>
-     * Rather than doing a write-fault (which would make a private
-     * copy to be immediately dropped) this decrements the sharing
-     * count and re-initializes.
+     * Rather than doing a write-fault (which would make a private copy to be
+     * immediately dropped) this decrements the sharing count and
+     * re-initializes.
      */
     public abstract void removeAll();
 
@@ -232,7 +228,7 @@ public abstract class FlexMap extends EMap implements PassByProxy {
     }
 
     /**
-     * @see #interning(Class, int)
+     * @see #interning(Class,int)
      */
     static public FlexMap interning(Class valType) {
         return new FlexMapImpl(String.class, valType);
@@ -244,12 +240,12 @@ public abstract class FlexMap extends EMap implements PassByProxy {
      * <p/>
      * A good strategy would be to use an IdentityKeyColumn internally, and
      * first try looking up the presented key by identity. If this fails,
-     * intern the key and try again. Only interned keys would be stored.
-     * XXX We currently don't do any such optimization.
+     * intern the key and try again. Only interned keys would be stored. XXX We
+     * currently don't do any such optimization.
      * <p/>
      * Were we to do this optimization, the interned keys may not ever be
-     * garbage collected. One would hope that Java's interning table were
-     * weak, but no where does it state this in the spec.
+     * garbage collected. One would hope that Java's interning table were weak,
+     * but no where does it state this in the spec.
      */
     static public FlexMap interning(Class valType, int capacity) {
         return new FlexMapImpl(String.class, valType, capacity);

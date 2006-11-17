@@ -60,8 +60,8 @@ public class ESecureRandom extends SecureRandom {
      * static entropy generator reference to start the entropy generation
      * thread
      */
-    static private TimerJitterEntropy theTimeJitterEntropy = new TimerJitterEntropy(
-      "TimerJitterEntropy");
+    static private TimerJitterEntropy theTimeJitterEntropy =
+      new TimerJitterEntropy("TimerJitterEntropy");
 
     /**
      * The instance of this singleton class
@@ -98,7 +98,8 @@ public class ESecureRandom extends SecureRandom {
     static private final int MIN_ENTROPY = 160;     //Bits
 
     //State
-    private final transient byte[] myEntropyPool = new byte[MAX_ENTROPY / 8]; //Where we keep acculminated entropy
+    private final transient byte[] myEntropyPool =
+      new byte[MAX_ENTROPY / 8]; //Where we keep acculminated entropy
 
     private transient int myPoolCursor = 0;    //Next place in the pool
 
@@ -120,7 +121,6 @@ public class ESecureRandom extends SecureRandom {
      * The buffer we keep for entropy before adding it to the pool
      */
     private byte[] myEntropyBuffer = new byte[HASH_SIZE];
-
 
     //Constructors
 
@@ -228,9 +228,8 @@ public class ESecureRandom extends SecureRandom {
             long waitSeedTime = 0;
             int seedLength = 0;
             while (myAvailableEntropy < MIN_ENTROPY) { // Wait for seeding
-                long startTime = Trace.entropy.event ?
-                  System.currentTimeMillis() :
-                  0;
+                long startTime =
+                  Trace.entropy.event ? System.currentTimeMillis() : 0;
                 TimerJitterEntropy tje = theTimeJitterEntropy;
                 while (null != tje && !tje.isStarted() && tje.isAlive()) {
                     Thread.yield(); // Wait until it's state has stablized
@@ -266,14 +265,14 @@ public class ESecureRandom extends SecureRandom {
                 }
             }
             if (Trace.entropy.event && waitSeedTime > 450) {
-                Trace.entropy.eventm("TimerJitterEntropy Seeding delay " +
-                                     (waitSeedTime) + " milliseconds");
+                Trace.entropy
+                  .eventm("TimerJitterEntropy Seeding delay " +
+                    (waitSeedTime) + " milliseconds");
             }
             if (Trace.entropy.event && genSeedTime > 0) {
-                Trace.entropy.eventm("SecureRandomCrewSeedIt getSeed(" +
-                                     seedLength +
-                                     "), time " +
-                                     genSeedTime + " milliseconds");
+                Trace.entropy
+                  .eventm("SecureRandomCrewSeedIt getSeed(" + seedLength +
+                    "), time " + genSeedTime + " milliseconds");
             }
         }
 
@@ -283,8 +282,8 @@ public class ESecureRandom extends SecureRandom {
                 myDigestNumber++;
                 myMD.update(long2bytes(MicroTime.queryTimer()));
                 byte[] rand = myMD.digest(myEntropyPool);
-                int len = java.lang.StrictMath.min(rand.length,
-                                                   bytes.length - cursor);
+                int len =
+                  java.lang.StrictMath.min(rand.length, bytes.length - cursor);
                 System.arraycopy(rand, 0, bytes, cursor, len);
                 cursor += len;
             }
@@ -332,18 +331,17 @@ public class ESecureRandom extends SecureRandom {
         }
 
         byte[] seed = {(byte)((key >> 8) & 0xff),
-                       (byte)((key) & 0xff),
-                       (byte)((modifiers >> 8) & 0xff),
-                       (byte)((modifiers) & 0xff),
-                       (byte)((type >> 8) & 0xff),
-                       (byte)((type) & 0xff)};
+          (byte)((key) & 0xff),
+          (byte)((modifiers >> 8) & 0xff),
+          (byte)((modifiers) & 0xff),
+          (byte)((type >> 8) & 0xff),
+          (byte)((type) & 0xff)};
 
         provideEntropy(seed, 1);
         if (Trace.entropy.verbose && Trace.ON) {
-            Trace.entropy.verbosem("setKeySeed: key=" + key + " modifiers=" +
-                                   modifiers +
-                                   " type=" +
-                                   type);
+            Trace.entropy
+              .verbosem("setKeySeed: key=" + key + " modifiers=" + modifiers +
+                " type=" + type);
         }
     }
 
@@ -372,20 +370,20 @@ public class ESecureRandom extends SecureRandom {
         theLastDY = ddy;
 
         byte[] seed = {(byte)((x >> 24) & 0xff),
-                       (byte)((x >> 16) & 0xff),
-                       (byte)((x >> 8) & 0xff),
-                       (byte)((x) & 0xff),
-                       (byte)((y >> 24) & 0xff),
-                       (byte)((y >> 16) & 0xff),
-                       (byte)((y >> 8) & 0xff),
-                       (byte)((y) & 0xff),
-                       (byte)((type >> 8) & 0xff),
-                       (byte)((type) & 0xff)};
+          (byte)((x >> 16) & 0xff),
+          (byte)((x >> 8) & 0xff),
+          (byte)((x) & 0xff),
+          (byte)((y >> 24) & 0xff),
+          (byte)((y >> 16) & 0xff),
+          (byte)((y >> 8) & 0xff),
+          (byte)((y) & 0xff),
+          (byte)((type >> 8) & 0xff),
+          (byte)((type) & 0xff)};
 
         provideEntropy(seed, 1);
         if (Trace.entropy.verbose && Trace.ON) {
-            Trace.entropy.verbosem(
-              "setMouseSeed: x=" + x + " y=" + y + " type=" + type);
+            Trace.entropy
+              .verbosem("setMouseSeed: x=" + x + " y=" + y + " type=" + type);
         }
     }
     //Manipulators

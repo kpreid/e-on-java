@@ -45,20 +45,20 @@ import java.security.KeyPair;
  * <tt>introducer</tt>.
  * <p/>
  * An Introducer may already have an identity assigned, in which case it's
- * identified; or not, in which case it's unidentified. Introducers start
- * off unidentified, but once identified, always identified.
+ * identified; or not, in which case it's unidentified. Introducers start off
+ * unidentified, but once identified, always identified.
  * <p/>
  * An Introducer may be on-the-air or off-the-air. If an unidentified
  * Introducer goes on-the-air, it will first (privately) generate an identity
- * to identify itself. Since only an identified Introducer may be
- * on-the-air, we have three states altogether. For now, an on-the-air
- * Introducer doesn't yet have a way to go back off-the-air, but we expect to
- * add such an operation.
+ * to identify itself. Since only an identified Introducer may be on-the-air,
+ * we have three states altogether. For now, an on-the-air Introducer doesn't
+ * yet have a way to go back off-the-air, but we expect to add such an
+ * operation.
  * <p/>
- * An Introducer isn't itself Persistent, but the relevant instance is
- * expected to be an unscope-key, so a persistent object holding a persistent
- * pointer to that Introducer will likely revive holding instead an
- * appropriate substitute Introducer.
+ * An Introducer isn't itself Persistent, but the relevant instance is expected
+ * to be an unscope-key, so a persistent object holding a persistent pointer to
+ * that Introducer will likely revive holding instead an appropriate substitute
+ * Introducer.
  *
  * @author Mark S. Miller
  */
@@ -101,10 +101,8 @@ public class Introducer extends BaseLoader implements PassByProxy {
     }
 
     /**
-     * Returns a pair of <ul>
-     * <li>a new Introducer,
-     * <li>a corresponding IdentityMgr.
-     * </ul>
+     * Returns a pair of <ul> <li>a new Introducer, <li>a corresponding
+     * IdentityMgr. </ul>
      */
     static public Object[] makePair(ConstMap optProps,
                                     ESecureRandom entropy,
@@ -123,25 +121,24 @@ public class Introducer extends BaseLoader implements PassByProxy {
     }
 
     /**
-     * Configuration parameter set as a JavaBeans property, so long as
-     * we are off the air.
+     * Configuration parameter set as a JavaBeans property, so long as we are
+     * off the air.
      */
     public void setNetConfig(NetConfig newNetConfig) {
         if (isOnTheAir()) {
-            throw new SecurityException
-              ("Must be off the air to change NetConfig parameters");
+            throw new SecurityException(
+              "Must be off the air to change NetConfig parameters");
         }
         myNetConfig = newNetConfig;
     }
 
     /**
-     *
      * @param refmon
      */
     public void setReferenceMonitor(ReferenceMonitor refmon) {
         if (isOnTheAir()) {
-            throw new SecurityException
-              ("Must be off the air to set a reference monitor");
+            throw new SecurityException(
+              "Must be off the air to set a reference monitor");
         }
         myRefmon = refmon;
     }
@@ -161,8 +158,7 @@ public class Introducer extends BaseLoader implements PassByProxy {
      * This pair conveys the authority to claim to be this vat, so guard it
      * well.
      *
-     * @throws SecurityException if an identity has already been
-     *                           determined.
+     * @throws SecurityException if an identity has already been determined.
      */
     public KeyPair newVatIdentity() {
         if (hasIdentity()) {
@@ -177,14 +173,12 @@ public class Introducer extends BaseLoader implements PassByProxy {
      * If no identity has yet been determined, become identified as the
      * identity represented by this key pair.
      * <p/>
-     * To implement identity-persistence, the birth incarnation of a vat
-     * should do a newVatIdentity and remember the resulting key pair.
-     * Reincarnations of the "same" vat should then do a setVatIdentity with
-     * the saved identity, in order to be the reincarnation of the previous
-     * vat.
+     * To implement identity-persistence, the birth incarnation of a vat should
+     * do a newVatIdentity and remember the resulting key pair. Reincarnations
+     * of the "same" vat should then do a setVatIdentity with the saved
+     * identity, in order to be the reincarnation of the previous vat.
      *
-     * @throws SecurityException if an identity has already been
-     *                           determined.
+     * @throws SecurityException if an identity has already been determined.
      */
     public void setVatIdentity(KeyPair identity) {
         if (hasIdentity()) {
@@ -229,16 +223,15 @@ public class Introducer extends BaseLoader implements PassByProxy {
     /**
      * Become able to communicate. <p>
      * <p/>
-     * Change NetConfig according to the listen addresses we actually
-     * acquired. Return the list of negotiable protocols. <p>
+     * Change NetConfig according to the listen addresses we actually acquired.
+     * Return the list of negotiable protocols. <p>
      * <p/>
-     * If not yet identified, this will privately generate a new vat
-     * identity, but not reveal it through any public protocol. Therefore,
-     * applications that wish to do their own identity-persistence must first
-     * call either newVatIdentity() or setVatIdentity(..).
+     * If not yet identified, this will privately generate a new vat identity,
+     * but not reveal it through any public protocol. Therefore, applications
+     * that wish to do their own identity-persistence must first call either
+     * newVatIdentity() or setVatIdentity(..).
      */
-    public ConstList onTheAir()
-      throws UnknownHostException, IOException {
+    public ConstList onTheAir() throws UnknownHostException, IOException {
         if (isOnTheAir()) {
             return negotiable();
         }
@@ -309,8 +302,9 @@ public class Introducer extends BaseLoader implements PassByProxy {
     }
 
     /**
-     * Same as sturdyFromURI, but named get/1 so the introducer can be used
-     * as a URIGetter.
+     * Same as sturdyFromURI, but named get/1 so the introducer can be used as
+     * a URIGetter.
+     *
      * @param uriBody
      */
     public Object get(String uriBody) {

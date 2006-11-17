@@ -20,16 +20,21 @@ public class CF_method_info {
      * Constructor.
      *
      * @param access_flags     Flags bits denoting access permissions to and
-     *                         properties of this method; values as defined in ClassFileConstants.
+     *                         properties of this method; values as defined in
+     *                         ClassFileConstants.
      * @param name_index       Index into the constant pool of the
-     *                         CONSTANT_Utf8_info object containing the name of the method, stored
-     *                         as a simple name (a Java identifier) or the special name "<init>".
+     *                         CONSTANT_Utf8_info object containing the name of
+     *                         the method, stored as a simple name (a Java
+     *                         identifier) or the special name "<init>".
      * @param descriptor_index Index into the constant pool of the
-     *                         CONSTANT_Utf8_info object containing the method type signature.
-     * @param attributes       Array of attribute objects describing this method's
-     *                         attributes.
+     *                         CONSTANT_Utf8_info object containing the method
+     *                         type signature.
+     * @param attributes       Array of attribute objects describing this
+     *                         method's attributes.
      */
-    CF_method_info(int access_flags, int name_index, int descriptor_index,
+    CF_method_info(int access_flags,
+                   int name_index,
+                   int descriptor_index,
                    CF_attribute_info attributes[]) {
         myAccess_flags = access_flags;
         myName_index = name_index;
@@ -40,8 +45,8 @@ public class CF_method_info {
     /**
      * Obtain this method's access flags.
      *
-     * @return a number whose bits denote access permissions and properties
-     *         of this method.
+     * @return a number whose bits denote access permissions and properties of
+     *         this method.
      */
     public int access_flags() {
         return myAccess_flags;
@@ -90,11 +95,10 @@ public class CF_method_info {
     /**
      * Read and return a method_info object from a DataInputStream.
      *
-     * @param in The DataInputStream to read from; this should be positioned
-     *           at the first byte of the method descriptor being read.
+     * @param in The DataInputStream to read from; this should be positioned at
+     *           the first byte of the method descriptor being read.
      */
-    static CF_method_info read(DataInputStream in)
-      throws IOException {
+    static CF_method_info read(DataInputStream in) throws IOException {
         int access_flags = in.readUnsignedShort();
         int name_index = in.readUnsignedShort();
         int descriptor_index = in.readUnsignedShort();
@@ -105,7 +109,9 @@ public class CF_method_info {
             attributes[i] = CF_attribute_info.read(in);
         }
 
-        return new CF_method_info(access_flags, name_index, descriptor_index,
+        return new CF_method_info(access_flags,
+                                  name_index,
+                                  descriptor_index,
                                   attributes);
     }
 }

@@ -32,11 +32,9 @@ class eMain {
     public static void processOne(File f) throws Exception {
         if (f.isFile()) {
             String arg = f.getName();
-            if (arg.endsWith(".e") ||
-                  arg.endsWith(".e-awt") ||
-                  arg.endsWith(".e-swt") ||
-                  arg.endsWith(".caplet") ||
-                  arg.endsWith(".emaker")) {
+            if (arg.endsWith(".e") || arg.endsWith(".e-awt") ||
+              arg.endsWith(".e-swt") || arg.endsWith(".caplet") ||
+              arg.endsWith(".emaker")) {
 
                 parseOne(f);
             }

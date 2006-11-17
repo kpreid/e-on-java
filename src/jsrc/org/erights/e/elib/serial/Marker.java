@@ -4,8 +4,7 @@ package org.erights.e.elib.serial;
 // found at http://www.opensource.org/licenses/mit-license.html ...............
 
 /**
- * An interface declares itself to be a marker interface by extending
- * Marker.
+ * An interface declares itself to be a marker interface by extending Marker.
  * <p/>
  * A marker interface is used to declare that a type, or objects of a
  * particular type, have some property associated with the marker interface.

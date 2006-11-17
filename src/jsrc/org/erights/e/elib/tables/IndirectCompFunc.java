@@ -8,11 +8,10 @@ import org.erights.e.meta.java.math.EInt;
 import java.lang.reflect.Array;
 
 /**
- * Created with knowledge of an underlying array that must remain
- * stable during the sort (or whatever), and of a comparison function
- * to be applied to elements of that array. Compares two ints
- * according the the comparison of the array elements at those
- * indices.
+ * Created with knowledge of an underlying array that must remain stable during
+ * the sort (or whatever), and of a comparison function to be applied to
+ * elements of that array. Compares two ints according the the comparison of
+ * the array elements at those indices.
  */
 
 

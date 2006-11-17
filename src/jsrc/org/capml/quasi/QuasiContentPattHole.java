@@ -26,8 +26,8 @@ public class QuasiContentPattHole extends QuasiContent {
 
     static private final long serialVersionUID = -2774222631122956274L;
 
-    static public final StaticMaker QuasiContentPattHoleMaker
-      = StaticMaker.make(QuasiContentPattHole.class);
+    static public final StaticMaker QuasiContentPattHoleMaker =
+      StaticMaker.make(QuasiContentPattHole.class);
 
     private final int myIndex;
 
@@ -42,9 +42,8 @@ public class QuasiContentPattHole extends QuasiContent {
      * Uses 'QuasiContentPattHoleMaker(myIndex)'
      */
     public Object[] getSpreadUncall() {
-        Object[] result = {QuasiContentPattHoleMaker,
-                           "run",
-                           EInt.valueOf(myIndex)};
+        Object[] result =
+          {QuasiContentPattHoleMaker, "run", EInt.valueOf(myIndex)};
         return result;
     }
 
@@ -53,8 +52,7 @@ public class QuasiContentPattHole extends QuasiContent {
      * IncompleteQuasiException
      */
     public Object substitute(Object[] args) {
-        throw new IncompleteQuasiException
-          ("can't have @-holes in a ValueMaker");
+        throw new IncompleteQuasiException("can't have @-holes in a ValueMaker");
     }
 
     /**

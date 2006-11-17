@@ -42,11 +42,11 @@ import java.io.IOException;
  * &quot;}&quot; (&quot;catch&quot; pattern2 &quot;{&quot;
  *     expr2
  * &quot;}&quot;)?</pre>
- *
- * Evaluates 'expr1' in an environment where 'pattern1' is bound to an
- * Ejector. If the Ejector is never called, expr1 evalutes normally to the
- * outcome of the EscapeExpr.
- * <p>
+ * <p/>
+ * Evaluates 'expr1' in an environment where 'pattern1' is bound to an Ejector.
+ * If the Ejector is never called, expr1 evalutes normally to the outcome of
+ * the EscapeExpr.
+ * <p/>
  * If Ejector is called during the execution of the expr1, expr1 exits, running
  * any finally clauses on the way out. If we are still exiting for the same
  * reason (i.e., given that non of the intervening finally clauses performed
@@ -54,9 +54,9 @@ import java.io.IOException;
  * argument and, in the resulting scope, expr2 is evaluated to the outcome of
  * the escape expression.
  *
+ * @author Mark S. Miller
  * @see org.erights.e.elang.evm.CatchExpr
  * @see org.erights.e.elang.evm.FinallyExpr
- * @author Mark S. Miller
  */
 public class EscapeExpr extends EExpr {
 
@@ -69,7 +69,6 @@ public class EscapeExpr extends EExpr {
     private final EExpr myOptCatcher;
 
     /**
-     *
      * @param optSpan
      * @param exitPatt
      * @param rValue
@@ -101,14 +100,14 @@ public class EscapeExpr extends EExpr {
      * Uses XXX 'makeFoo(...)'
      */
     public Object[] getSpreadUncall() {
-        Object[] result = { StaticMaker.make(EscapeExpr.class),
-                            "run",
-                            getOptSpan(),
-                            myExitPatt,
-                            myRValue,
-                            myOptArgPattern,
-                            myOptCatcher,
-                            getOptScopeLayout() };
+        Object[] result = {StaticMaker.make(EscapeExpr.class),
+          "run",
+          getOptSpan(),
+          myExitPatt,
+          myRValue,
+          myOptArgPattern,
+          myOptCatcher,
+          getOptScopeLayout()};
         return result;
     }
 
@@ -217,7 +216,6 @@ public class EscapeExpr extends EExpr {
     }
 
     /**
-     *
      * @return
      */
     public Pattern getOptArgPattern() {
@@ -225,7 +223,6 @@ public class EscapeExpr extends EExpr {
     }
 
     /**
-     *
      * @return
      */
     public EExpr getOptCatcher() {

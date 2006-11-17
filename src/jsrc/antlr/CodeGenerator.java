@@ -19,9 +19,9 @@ import java.io.PrintWriter;
  * <p/>
  * <p/>
  * A CodeGenerator knows about a Grammar data structure and a grammar analyzer.
- *  The Grammar is walked to generate the appropriate code for both a parser
- * and lexer (if present). This interface may change slightly so that the lexer
- * is itself living inside of a Grammar object (in which case, this class
+ * The Grammar is walked to generate the appropriate code for both a parser and
+ * lexer (if present). This interface may change slightly so that the lexer is
+ * itself living inside of a Grammar object (in which case, this class
  * generates only one recognizer).  The main method to call is <tt>gen()</tt>,
  * which initiates all code gen.
  * <p/>
@@ -172,10 +172,10 @@ public abstract class CodeGenerator {
             i++;
             boolean newline = false;
             switch (c) {
-            case '\n':
+            case'\n':
                 newline = true;
                 break;
-            case '\r':
+            case'\r':
                 if (i <= end && s.charAt(i) == '\n') {
                     i++;
                 }
@@ -271,7 +271,8 @@ public abstract class CodeGenerator {
         // beginning of the identifier
         for (int i = s.length() - 2; i >= 0; i--) {
             // TODO: make this work for language-independent identifiers?
-            if (!Character.isLetterOrDigit(s.charAt(i)) && s.charAt(i) != '_') {
+            if (!Character.isLetterOrDigit(s.charAt(i)) &&
+              s.charAt(i) != '_') {
                 // Found end of type part
                 return s.substring(i + 1);
             }
@@ -313,7 +314,8 @@ public abstract class CodeGenerator {
         // beginning of the identifier
         for (int i = s.length() - 2; i >= 0; i--) {
             // TODO: make this work for language-independent identifiers?
-            if (!Character.isLetterOrDigit(s.charAt(i)) && s.charAt(i) != '_') {
+            if (!Character.isLetterOrDigit(s.charAt(i)) &&
+              s.charAt(i) != '_') {
                 // Found end of type part
                 return s.substring(0, i + 1);
             }
@@ -446,12 +448,12 @@ public abstract class CodeGenerator {
      */
     protected void genTokenInterchange(TokenManager tm) throws IOException {
         // Open the token output Java file and set the currentOutput stream
-        String fName = tm.getName() + TokenTypesFileSuffix +
-          TokenTypesFileExt;
+        String fName = tm.getName() + TokenTypesFileSuffix + TokenTypesFileExt;
         currentOutput = antlrTool.openOutputFile(fName);
 
         println("// $ANTLR " + antlrTool.version + ": " +
-                antlrTool.fileMinusPath(antlrTool.grammarFile) + " -> " + fName + "$");
+          antlrTool.fileMinusPath(antlrTool.grammarFile) + " -> " + fName +
+          "$");
 
         tabs = 0;
 
@@ -468,8 +470,8 @@ public abstract class CodeGenerator {
             if (s != null && !s.startsWith("<")) {
                 // if literal, find label
                 if (s.startsWith("\"")) {
-                    StringLiteralSymbol sl = (StringLiteralSymbol)tm.getTokenSymbol(
-                      s);
+                    StringLiteralSymbol sl =
+                      (StringLiteralSymbol)tm.getTokenSymbol(s);
                     if (sl != null && sl.label != null) {
                         print(sl.label + "=");
                     }

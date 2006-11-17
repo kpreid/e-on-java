@@ -36,21 +36,18 @@ import org.erights.e.elib.vat.Vat;
 import java.io.StringWriter;
 
 /**
- * This class is most of the <a href=
- * "{@docroot}/../e/semantics.html"
- * >normal application programmer's API</a> to
- * the ELib functionality. In particular, the send methods below are
- * what E's "<-" turn into. <p>
+ * This class is most of the <a href= "{@docroot}/../e/semantics.html" >normal
+ * application programmer's API</a> to the ELib functionality. In particular,
+ * the send methods below are what E's "<-" turn into. <p>
  * <p/>
- * NOTE!  All the methods of this class trust their callers to 1) only
- * provide interned strings as verbs, and 2) not modify an args array
- * after passing it in. Btw, all source code literal strings are
- * automatically intern()ed. ELib itself will never modify a
- * passed-in args array. <p>
+ * NOTE!  All the methods of this class trust their callers to 1) only provide
+ * interned strings as verbs, and 2) not modify an args array after passing it
+ * in. Btw, all source code literal strings are automatically intern()ed. ELib
+ * itself will never modify a passed-in args array. <p>
  * <p/>
  * This class is not intended to be used directly from E-language programs.
- * Rather, the name "E" in the safe scope contains a thin wrapper for
- * this class for the E language programmer to use instead.
+ * Rather, the name "E" in the safe scope contains a thin wrapper for this
+ * class for the E language programmer to use instead.
  *
  * @author Mark S. Miller
  */
@@ -74,7 +71,7 @@ public class E {
     /**
      * A 0-argument immediate call
      *
-     * @see #callAll(Object, String, Object[])
+     * @see #callAll(Object,String,Object[])
      */
     static public Object call(Object rec, String verb) {
         return callAll(rec, verb, NO_ARGS);
@@ -83,10 +80,9 @@ public class E {
     /**
      * A 1-argument immediate call
      *
-     * @see #callAll(Object, String, Object[])
+     * @see #callAll(Object,String,Object[])
      */
-    static public Object call(Object rec, String verb,
-                              Object arg1) {
+    static public Object call(Object rec, String verb, Object arg1) {
         Object[] args = {arg1};
         return callAll(rec, verb, args);
     }
@@ -94,9 +90,10 @@ public class E {
     /**
      * A 2-argument immediate call
      *
-     * @see #callAll(Object, String, Object[])
+     * @see #callAll(Object,String,Object[])
      */
-    static public Object call(Object rec, String verb,
+    static public Object call(Object rec,
+                              String verb,
                               Object arg1,
                               Object arg2) {
         Object[] args = {arg1, arg2};
@@ -106,9 +103,10 @@ public class E {
     /**
      * A 3-argument immediate call
      *
-     * @see #callAll(Object, String, Object[])
+     * @see #callAll(Object,String,Object[])
      */
-    static public Object call(Object rec, String verb,
+    static public Object call(Object rec,
+                              String verb,
                               Object arg1,
                               Object arg2,
                               Object arg3) {
@@ -119,9 +117,10 @@ public class E {
     /**
      * A 4-argument immediate call
      *
-     * @see #callAll(Object, String, Object[])
+     * @see #callAll(Object,String,Object[])
      */
-    static public Object call(Object rec, String verb,
+    static public Object call(Object rec,
+                              String verb,
                               Object arg1,
                               Object arg2,
                               Object arg3,
@@ -133,9 +132,10 @@ public class E {
     /**
      * A 5-argument immediate call
      *
-     * @see #callAll(Object, String, Object[])
+     * @see #callAll(Object,String,Object[])
      */
-    static public Object call(Object rec, String verb,
+    static public Object call(Object rec,
+                              String verb,
                               Object arg1,
                               Object arg2,
                               Object arg3,
@@ -146,16 +146,13 @@ public class E {
     }
 
     /**
-     * An E immediate call -- ask 'rec' to immediately do the request
-     * described by 'verb' using the supplied 'args'. <p>
+     * An E immediate call -- ask 'rec' to immediately do the request described
+     * by 'verb' using the supplied 'args'. <p>
      *
-     * @see <a href=
-     *      "http://www.erights.org/elib/concurrency/msg-passing.html#call"
+     * @see <a href= "http://www.erights.org/elib/concurrency/msg-passing.html#call"
      *      >The Immediate Call</a>
      */
-    static public Object callAll(Object rec,
-                                 String verb,
-                                 Object[] args) {
+    static public Object callAll(Object rec, String verb, Object[] args) {
         Class recClass;
         if (rec == null) {
             recClass = Object.class;
@@ -185,9 +182,8 @@ public class E {
 
         if (okStrLen < strLen) {
             int segLen = okStrLen / 2 - 2;
-            str = str.substring(0, segLen)
-              + "..."
-              + str.substring(strLen - segLen);
+            str = str.substring(0, segLen) + "..." +
+              str.substring(strLen - segLen);
         }
         buf.append(str);
     }
@@ -202,26 +198,18 @@ public class E {
         int[] budget = {0, 120 / (args.length + 1)};
         StringBuffer buf = new StringBuffer();
 
-        abbrev(buf,
-               toQuote(rec).bare(),
-               budget);
+        abbrev(buf, toQuote(rec).bare(), budget);
 
         if (!"run".equals(verb)) {
-            abbrev(buf,
-                   callMarker + verb,
-                   budget);
+            abbrev(buf, callMarker + verb, budget);
         }
         buf.append('(');
 
         if (args.length >= 1) {
             for (int i = 0; i < args.length - 1; i++) {
-                abbrev(buf,
-                       toQuote(args[i]).bare() + ", ",
-                       budget);
+                abbrev(buf, toQuote(args[i]).bare() + ", ", budget);
             }
-            abbrev(buf,
-                   toQuote(args[args.length - 1]).bare(),
-                   budget);
+            abbrev(buf, toQuote(args[args.length - 1]).bare(), budget);
         }
         buf.append(')');
         return buf.toString();
@@ -229,12 +217,13 @@ public class E {
 
     /**
      * XXX SECURITY ALERT: This is a semantically visible mutable static
-     * variable, used to suppress infinite regress when the attempt to
-     * generate a meaningful backtrace string results in another exception
-     * that needs to be backtraced. <p>
+     * variable, used to suppress infinite regress when the attempt to generate
+     * a meaningful backtrace string results in another exception that needs to
+     * be backtraced. <p>
      * <p/>
      * This is a rare case of something I don't know how to do as well in a
      * pure capability pattern.
+     *
      * @noinspection StaticNonFinalField
      */
     static private boolean Backtracing = false;
@@ -243,9 +232,10 @@ public class E {
      * Return 'ex' annotated with a compact description of 'rec.verb(args)'.
      *
      * @return a RuntimeException that wraps ex with a description of the call
-     *         'rec.verb(args...)', without a preceding "***". the description is a
-     *         line of text approximately in E call notation, but abbreviated to fit
-     *         on one long line. Removed text is replaced with "...".
+     *         'rec.verb(args...)', without a preceding "***". the description
+     *         is a line of text approximately in E call notation, but
+     *         abbreviated to fit on one long line. Removed text is replaced
+     *         with "...".
      */
     static public RuntimeException backtrace(Throwable ex,
                                              Object rec,
@@ -276,7 +266,7 @@ public class E {
     /**
      * A 0-argument eventual send
      *
-     * @see #sendAll(Object, String, Object[])
+     * @see #sendAll(Object,String,Object[])
      */
     static public Ref send(Object rec, String verb) {
         return sendAll(rec, verb, NO_ARGS);
@@ -285,10 +275,9 @@ public class E {
     /**
      * A 1-argument eventual send
      *
-     * @see #sendAll(Object, String, Object[])
+     * @see #sendAll(Object,String,Object[])
      */
-    static public Ref send(Object rec, String verb,
-                           Object arg1) {
+    static public Ref send(Object rec, String verb, Object arg1) {
         Object[] args = {arg1};
         return sendAll(rec, verb, args);
     }
@@ -296,11 +285,9 @@ public class E {
     /**
      * A 2-argument eventual send
      *
-     * @see #sendAll(Object, String, Object[])
+     * @see #sendAll(Object,String,Object[])
      */
-    static public Ref send(Object rec, String verb,
-                           Object arg1,
-                           Object arg2) {
+    static public Ref send(Object rec, String verb, Object arg1, Object arg2) {
         Object[] args = {arg1, arg2};
         return sendAll(rec, verb, args);
     }
@@ -308,9 +295,10 @@ public class E {
     /**
      * A 3-argument eventual send
      *
-     * @see #sendAll(Object, String, Object[])
+     * @see #sendAll(Object,String,Object[])
      */
-    static public Ref send(Object rec, String verb,
+    static public Ref send(Object rec,
+                           String verb,
                            Object arg1,
                            Object arg2,
                            Object arg3) {
@@ -321,9 +309,10 @@ public class E {
     /**
      * A 4-argument eventual send
      *
-     * @see #sendAll(Object, String, Object[])
+     * @see #sendAll(Object,String,Object[])
      */
-    static public Ref send(Object rec, String verb,
+    static public Ref send(Object rec,
+                           String verb,
                            Object arg1,
                            Object arg2,
                            Object arg3,
@@ -343,8 +332,7 @@ public class E {
      * This should only synchronously throw an exception if invoked while
      * there's no current Vat.
      *
-     * @see <a href=
-     *      "http://www.erights.org/elib/concurrency/msg-passing.html#pipe-send"
+     * @see <a href= "http://www.erights.org/elib/concurrency/msg-passing.html#pipe-send"
      *      >The Pipelined Send</a>
      */
     static public Ref sendAll(Object rec, String verb, Object[] args) {
@@ -358,7 +346,7 @@ public class E {
     /**
      * A 0-argument eventual sendOnly
      *
-     * @see #sendAllOnly(Object, String, Object[])
+     * @see #sendAllOnly(Object,String,Object[])
      */
     static public Throwable sendOnly(Object rec, String verb) {
         return sendAllOnly(rec, verb, NO_ARGS);
@@ -367,10 +355,9 @@ public class E {
     /**
      * A 1-argument eventual sendOnly
      *
-     * @see #sendAllOnly(Object, String, Object[])
+     * @see #sendAllOnly(Object,String,Object[])
      */
-    static public Throwable sendOnly(Object rec, String verb,
-                                     Object arg1) {
+    static public Throwable sendOnly(Object rec, String verb, Object arg1) {
         Object[] args = {arg1};
         return sendAllOnly(rec, verb, args);
     }
@@ -378,9 +365,10 @@ public class E {
     /**
      * A 2-argument eventual sendOnly
      *
-     * @see #sendAllOnly(Object, String, Object[])
+     * @see #sendAllOnly(Object,String,Object[])
      */
-    static public Throwable sendOnly(Object rec, String verb,
+    static public Throwable sendOnly(Object rec,
+                                     String verb,
                                      Object arg1,
                                      Object arg2) {
         Object[] args = {arg1, arg2};
@@ -390,9 +378,10 @@ public class E {
     /**
      * A 3-argument eventual sendOnly
      *
-     * @see #sendAllOnly(Object, String, Object[])
+     * @see #sendAllOnly(Object,String,Object[])
      */
-    static public Throwable sendOnly(Object rec, String verb,
+    static public Throwable sendOnly(Object rec,
+                                     String verb,
                                      Object arg1,
                                      Object arg2,
                                      Object arg3) {
@@ -403,9 +392,10 @@ public class E {
     /**
      * A 4-argument eventual sendOnly
      *
-     * @see #sendAllOnly(Object, String, Object[])
+     * @see #sendAllOnly(Object,String,Object[])
      */
-    static public Throwable sendOnly(Object rec, String verb,
+    static public Throwable sendOnly(Object rec,
+                                     String verb,
                                      Object arg1,
                                      Object arg2,
                                      Object arg3,
@@ -416,15 +406,14 @@ public class E {
 
     /**
      * Like sendAll(rec, verb, args), except that "Only" means we don't care
-     * about the result (including whether it succeeded), as is appropriate
-     * for event notifications.
+     * about the result (including whether it succeeded), as is appropriate for
+     * event notifications.
      *
-     * @return Why wasn't this event queued?  It isn't queued if this
-     *         vat or comm connection is shut down, in which case the returned
-     *         problem explains why. If null is returned, then the event was
-     *         queued, though it may still not arrive.
-     * @see <a href=
-     *      "http://www.erights.org/elib/concurrency/msg-passing.html#sendOnly"
+     * @return Why wasn't this event queued?  It isn't queued if this vat or
+     *         comm connection is shut down, in which case the returned problem
+     *         explains why. If null is returned, then the event was queued,
+     *         though it may still not arrive.
+     * @see <a href= "http://www.erights.org/elib/concurrency/msg-passing.html#sendOnly"
      *      >The Eventual Send: sendOnly</a>
      */
     static public Throwable sendAllOnly(Object rec,
@@ -455,15 +444,13 @@ public class E {
      * Prints obj into a Twine if necessary, and returns this printed form.
      * <p/>
      * <p/>
-     * E programmers should generally call "E.toTwine(obj)", rather
-     * than "obj.toString()". This applies both to E language
-     * programmers and to ELib programmers. However, E programmers
-     * should not generally call E.toTwine(obj) from within
-     * __printOn(TextWriter) methods, as that will circumvent the
-     * cycle-breaking logic in TextWriter. Instead, you should
-     * usually call a TextWriter.*print*(obj) method, as it
-     * will check for a cycle before calling __printOn(TextWriter) on
-     * its argument.
+     * E programmers should generally call "E.toTwine(obj)", rather than
+     * "obj.toString()". This applies both to E language programmers and to
+     * ELib programmers. However, E programmers should not generally call
+     * E.toTwine(obj) from within __printOn(TextWriter) methods, as that will
+     * circumvent the cycle-breaking logic in TextWriter. Instead, you should
+     * usually call a TextWriter.*print*(obj) method, as it will check for a
+     * cycle before calling __printOn(TextWriter) on its argument.
      */
     static public Twine toTwine(Object obj) {
         if (obj instanceof Twine) {
@@ -491,8 +478,8 @@ public class E {
     }
 
     /**
-     * These are E's implicit coercions to Java Class types, using Java's
-     * (not E's) null and non-near acceptance behavior.
+     * These are E's implicit coercions to Java Class types, using Java's (not
+     * E's) null and non-near acceptance behavior.
      * <p/>
      * Given that specimen is NEAR, when targType isPrimitive(), then
      * <pre>    E.as(specimen, targType)</pre>
@@ -575,12 +562,12 @@ public class E {
     /**
      * If cond isn't true, report problem or problem().
      * <p/>
-     * If problem coerces to a Thunk, then reassign problem to be the result
-     * of calling this thunk with 'run()'. Then, in either case, coerce this
+     * If problem coerces to a Thunk, then reassign problem to be the result of
+     * calling this thunk with 'run()'. Then, in either case, coerce this
      * problem to a RuntimeException and throw it.
      * <p/>
-     * This is used by the implementation of the 'require' function in the
-     * E language's universal scope.
+     * This is used by the implementation of the 'require' function in the E
+     * language's universal scope.
      */
     static public void require(boolean cond, Object problem) {
         if (cond) {

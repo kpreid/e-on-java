@@ -44,8 +44,7 @@ public class CommonToken extends Token {
 
     public String toString() {
         return "[\"" + getText() + "\",<" + type + ">,line=" + line + ",col=" +
-          col +
-          "]";
+          col + "]";
     }
 
     /**

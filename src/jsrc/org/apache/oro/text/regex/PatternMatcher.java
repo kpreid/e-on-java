@@ -58,22 +58,21 @@ package org.apache.oro.text.regex;
  */
 
 /**
- * The PatternMatcher interface defines the operations a regular
- * expression matcher must implement. However, the types of the Pattern
- * implementations recognized by a matcher are not restricted. Typically
- * PatternMatcher instances will only recognize a specific type of Pattern.
- * For example, the Perl5Matcher only recognizes Perl5Pattern instances.
- * However, none of the PatternMatcher methods are required to throw an
- * exception in case of the use of an invalid pattern. This is done for
- * efficiency reasons, although usually a CastClassException will be
- * thrown by the Java runtime system if you use the wrong Pattern
- * implementation. It is the responsibility of the programmer to make
- * sure he uses the correct Pattern instance with a given PatternMatcher
- * instance. The current version of this package only contains the Perl5
- * suite of pattern matching classes, but future ones for other regular
- * expression grammars may be added and users may also create their own
- * implementations of the provided interfaces. Therefore the programmer
- * should be careful not to mismatch classes.
+ * The PatternMatcher interface defines the operations a regular expression
+ * matcher must implement. However, the types of the Pattern implementations
+ * recognized by a matcher are not restricted. Typically PatternMatcher
+ * instances will only recognize a specific type of Pattern. For example, the
+ * Perl5Matcher only recognizes Perl5Pattern instances. However, none of the
+ * PatternMatcher methods are required to throw an exception in case of the use
+ * of an invalid pattern. This is done for efficiency reasons, although usually
+ * a CastClassException will be thrown by the Java runtime system if you use
+ * the wrong Pattern implementation. It is the responsibility of the programmer
+ * to make sure he uses the correct Pattern instance with a given
+ * PatternMatcher instance. The current version of this package only contains
+ * the Perl5 suite of pattern matching classes, but future ones for other
+ * regular expression grammars may be added and users may also create their own
+ * implementations of the provided interfaces. Therefore the programmer should
+ * be careful not to mismatch classes.
  *
  * @author <a href="mailto:dfs@savarese.org">Daniel F. Savarese</a>
  * @version $Id: PatternMatcher.java,v 1.3 2001/12/02 06:01:40 markm Exp $
@@ -84,14 +83,13 @@ package org.apache.oro.text.regex;
 public interface PatternMatcher {
 
     /**
-     * Determines if a prefix of a string (represented as a char[])
-     * matches a given pattern, starting from a given offset into the string.
-     * If a prefix of the string matches the pattern, a MatchResult instance
-     * representing the match is made accesible via
-     * {@link #getMatch()}.
+     * Determines if a prefix of a string (represented as a char[]) matches a
+     * given pattern, starting from a given offset into the string. If a prefix
+     * of the string matches the pattern, a MatchResult instance representing
+     * the match is made accesible via {@link #getMatch()}.
      * <p/>
-     * This method is useful for certain common token identification tasks
-     * that are made more difficult without this functionality.
+     * This method is useful for certain common token identification tasks that
+     * are made more difficult without this functionality.
      * <p/>
      *
      * @param input   The char[] to test for a prefix match.
@@ -102,13 +100,12 @@ public interface PatternMatcher {
     public boolean matchesPrefix(char[] input, Pattern pattern, int offset);
 
     /**
-     * Determines if a prefix of a string matches a given pattern.
-     * If a prefix of the string matches the pattern, a MatchResult instance
-     * representing the match is made accesible via
-     * {@link #getMatch()}.
+     * Determines if a prefix of a string matches a given pattern. If a prefix
+     * of the string matches the pattern, a MatchResult instance representing
+     * the match is made accesible via {@link #getMatch()}.
      * <p/>
-     * This method is useful for certain common token identification tasks
-     * that are made more difficult without this functionality.
+     * This method is useful for certain common token identification tasks that
+     * are made more difficult without this functionality.
      * <p/>
      *
      * @param input   The String to test for a prefix match.
@@ -118,14 +115,13 @@ public interface PatternMatcher {
     public boolean matchesPrefix(String input, Pattern pattern);
 
     /**
-     * Determines if a prefix of a string (represented as a char[])
-     * matches a given pattern.
-     * If a prefix of the string matches the pattern, a MatchResult instance
-     * representing the match is made accesible via
-     * {@link #getMatch()}.
+     * Determines if a prefix of a string (represented as a char[]) matches a
+     * given pattern. If a prefix of the string matches the pattern, a
+     * MatchResult instance representing the match is made accesible via {@link
+     * #getMatch()}.
      * <p/>
-     * This method is useful for certain common token identification tasks
-     * that are made more difficult without this functionality.
+     * This method is useful for certain common token identification tasks that
+     * are made more difficult without this functionality.
      * <p/>
      *
      * @param input   The char[] to test for a prefix match.
@@ -135,18 +131,16 @@ public interface PatternMatcher {
     public boolean matchesPrefix(char[] input, Pattern pattern);
 
     /**
-     * Determines if a prefix of a PatternMatcherInput instance
-     * matches a given pattern. If there is a match, a MatchResult instance
-     * representing the match is made accesible via
-     * {@link #getMatch()}. Unlike the
-     * {@link #contains(PatternMatcherInput, Pattern)}
-     * method, the current offset of the PatternMatcherInput argument
-     * is not updated. You should remember that the region starting
-     * from the begin offset of the PatternMatcherInput will be
-     * tested for a prefix match.
+     * Determines if a prefix of a PatternMatcherInput instance matches a given
+     * pattern. If there is a match, a MatchResult instance representing the
+     * match is made accesible via {@link #getMatch()}. Unlike the {@link
+     * #contains(PatternMatcherInput,Pattern)} method, the current offset of
+     * the PatternMatcherInput argument is not updated. You should remember
+     * that the region starting from the begin offset of the
+     * PatternMatcherInput will be tested for a prefix match.
      * <p/>
-     * This method is useful for certain common token identification tasks
-     * that are made more difficult without this functionality.
+     * This method is useful for certain common token identification tasks that
+     * are made more difficult without this functionality.
      * <p/>
      *
      * @param input   The PatternMatcherInput to test for a prefix match.
@@ -156,10 +150,9 @@ public interface PatternMatcher {
     public boolean matchesPrefix(PatternMatcherInput input, Pattern pattern);
 
     /**
-     * Determines if a string exactly matches a given pattern. If
-     * there is an exact match, a MatchResult instance
-     * representing the match is made accesible via
-     * {@link #getMatch()}.
+     * Determines if a string exactly matches a given pattern. If there is an
+     * exact match, a MatchResult instance representing the match is made
+     * accesible via {@link #getMatch()}.
      * <p/>
      *
      * @param input   The String to test for an exact match.
@@ -169,10 +162,9 @@ public interface PatternMatcher {
     public boolean matches(String input, Pattern pattern);
 
     /**
-     * Determines if a string (represented as a char[]) exactly matches
-     * a given pattern. If there is an exact match, a MatchResult
-     * instance representing the match is made accesible via
-     * {@link #getMatch()}.
+     * Determines if a string (represented as a char[]) exactly matches a given
+     * pattern. If there is an exact match, a MatchResult instance representing
+     * the match is made accesible via {@link #getMatch()}.
      * <p/>
      *
      * @param input   The char[] to test for a match.
@@ -182,16 +174,13 @@ public interface PatternMatcher {
     public boolean matches(char[] input, Pattern pattern);
 
     /**
-     * Determines if the contents of a PatternMatcherInput instance
-     * exactly matches a given pattern. If
-     * there is an exact match, a MatchResult instance
-     * representing the match is made accesible via
-     * {@link #getMatch()}. Unlike the
-     * {@link #contains(PatternMatcherInput, Pattern)}
-     * method, the current offset of the PatternMatcherInput argument
-     * is not updated. You should remember that the region between
-     * the begin and end offsets of the PatternMatcherInput will be
-     * tested for an exact match.
+     * Determines if the contents of a PatternMatcherInput instance exactly
+     * matches a given pattern. If there is an exact match, a MatchResult
+     * instance representing the match is made accesible via {@link
+     * #getMatch()}. Unlike the {@link #contains(PatternMatcherInput,Pattern)}
+     * method, the current offset of the PatternMatcherInput argument is not
+     * updated. You should remember that the region between the begin and end
+     * offsets of the PatternMatcherInput will be tested for an exact match.
      * <p/>
      *
      * @param input   The PatternMatcherInput to test for a match.
@@ -201,15 +190,15 @@ public interface PatternMatcher {
     public boolean matches(PatternMatcherInput input, Pattern pattern);
 
     /**
-     * Determines if a string contains a pattern. If the pattern is
-     * matched by some substring of the input, a MatchResult instance
-     * representing the <b> first </b> such match is made acessible via
-     * {@link #getMatch()}. If you want to access
-     * subsequent matches you should either use a PatternMatcherInput object
-     * or use the offset information in the MatchResult to create a substring
-     * representing the remaining input. Using the MatchResult offset
-     * information is the recommended method of obtaining the parts of the
-     * string preceeding the match and following the match.
+     * Determines if a string contains a pattern. If the pattern is matched by
+     * some substring of the input, a MatchResult instance representing the <b>
+     * first </b> such match is made acessible via {@link #getMatch()}. If you
+     * want to access subsequent matches you should either use a
+     * PatternMatcherInput object or use the offset information in the
+     * MatchResult to create a substring representing the remaining input.
+     * Using the MatchResult offset information is the recommended method of
+     * obtaining the parts of the string preceeding the match and following the
+     * match.
      * <p/>
      *
      * @param input   The String to test for a match.
@@ -219,15 +208,15 @@ public interface PatternMatcher {
     public boolean contains(String input, Pattern pattern);
 
     /**
-     * Determines if a string (represented as a char[]) contains a pattern.
-     * If the pattern is matched by some substring of the input, a MatchResult
+     * Determines if a string (represented as a char[]) contains a pattern. If
+     * the pattern is matched by some substring of the input, a MatchResult
      * instance representing the <b>first</b> such match is made acessible via
-     * {@link #getMatch()}. If you want to access
-     * subsequent matches you should either use a PatternMatcherInput object
-     * or use the offset information in the MatchResult to create a substring
-     * representing the remaining input. Using the MatchResult offset
-     * information is the recommended method of obtaining the parts of the
-     * string preceeding the match and following the match.
+     * {@link #getMatch()}. If you want to access subsequent matches you should
+     * either use a PatternMatcherInput object or use the offset information in
+     * the MatchResult to create a substring representing the remaining input.
+     * Using the MatchResult offset information is the recommended method of
+     * obtaining the parts of the string preceeding the match and following the
+     * match.
      * <p/>
      *
      * @param input   The String to test for a match.
@@ -238,20 +227,19 @@ public interface PatternMatcher {
 
     /**
      * Determines if the contents of a PatternMatcherInput, starting from the
-     * current offset of the input contains a pattern.
-     * If a pattern match is found, a MatchResult
-     * instance representing the <b>first</b> such match is made acessible via
-     * {@link #getMatch()}. The current offset of the
-     * PatternMatcherInput is set to the offset corresponding to the end
-     * of the match, so that a subsequent call to this method will continue
-     * searching where the last call left off. You should remember that the
-     * region between the begin and end offsets of the PatternMatcherInput are
-     * considered the input to be searched, and that the current offset
-     * of the PatternMatcherInput reflects where a search will start from.
-     * Matches extending beyond the end offset of the PatternMatcherInput
-     * will not be matched. In other words, a match must occur entirely
-     * between the begin and end offsets of the input. See
-     * {@link PatternMatcherInput} for more details.
+     * current offset of the input contains a pattern. If a pattern match is
+     * found, a MatchResult instance representing the <b>first</b> such match
+     * is made acessible via {@link #getMatch()}. The current offset of the
+     * PatternMatcherInput is set to the offset corresponding to the end of the
+     * match, so that a subsequent call to this method will continue searching
+     * where the last call left off. You should remember that the region
+     * between the begin and end offsets of the PatternMatcherInput are
+     * considered the input to be searched, and that the current offset of the
+     * PatternMatcherInput reflects where a search will start from. Matches
+     * extending beyond the end offset of the PatternMatcherInput will not be
+     * matched. In other words, a match must occur entirely between the begin
+     * and end offsets of the input. See {@link PatternMatcherInput} for more
+     * details.
      * <p/>
      * This method is usually used in a loop as follows:
      * <blockquote><pre>
@@ -293,10 +281,9 @@ public interface PatternMatcher {
      * method.
      * <p/>
      *
-     * @return A MatchResult instance containing the pattern match found
-     *         by the last call to any one of the matches() or contains()
-     *         methods. If no match was found by the last call,
-     *         returns null.
+     * @return A MatchResult instance containing the pattern match found by the
+     *         last call to any one of the matches() or contains() methods. If
+     *         no match was found by the last call, returns null.
      */
     public MatchResult getMatch();
 }

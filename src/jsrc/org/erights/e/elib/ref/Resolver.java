@@ -31,7 +31,7 @@ Contributor(s): ______________________________________.
 public interface Resolver {
 
     /**
-     * The <tt>strict</tt> flag of {@link #resolve(Object, boolean) resolve/2}
+     * The <tt>strict</tt> flag of {@link #resolve(Object,boolean) resolve/2}
      * defaults to <b><tt>true</tt></b>.
      * <p/>
      * Since a successful return indicates a successful resolution, this is a
@@ -57,7 +57,7 @@ public interface Resolver {
     boolean resolve(Object target, boolean strict);
 
     /**
-     * @deprecated Use <tt>{@link #resolve(Object, boolean) resolve}(...,
+     * @deprecated Use <tt>{@link #resolve(Object,boolean) resolve}(...,
      *             false)</tt> instead.
      */
     boolean resolveRace(Object target);
@@ -68,7 +68,7 @@ public interface Resolver {
      * "r.smash(p)" is equivalent to "r.resolve(Ref.broken(p), false)".
      *
      * @return Whether this smash(..) caused this Resolver to become done.
-     * @see #resolve(Object, boolean)
+     * @see #resolve(Object,boolean)
      */
     boolean smash(Throwable problem);
 

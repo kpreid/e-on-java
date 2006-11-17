@@ -14,11 +14,11 @@ import java.io.IOException;
  * A WeakValueMap is FlexMap whose values may be garbage collected.
  * <p/>
  * A WeakValueMap acts as if an external entity (ie, the garbage collector)
- * shares access to the map and occasionally decides to remove some
- * elements. As a result, a WeakValueMap which isn't being changed by the
- * program may nevertheless find itself shrinking over time. This external
- * modifications can only occur 1) in their own turn, or 2) at the beginning
- * of any operation that causes an enumeration.
+ * shares access to the map and occasionally decides to remove some elements.
+ * As a result, a WeakValueMap which isn't being changed by the program may
+ * nevertheless find itself shrinking over time. This external modifications
+ * can only occur 1) in their own turn, or 2) at the beginning of any operation
+ * that causes an enumeration.
  * <p/>
  * The snapshot(), readOnly(), clone(), or diverge() of a WeakValueMap is not
  * weak.

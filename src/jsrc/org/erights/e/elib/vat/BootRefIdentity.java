@@ -26,8 +26,7 @@ class BootRefIdentity {
      *
      */
     BootRefIdentity(Object actual) {
-        T.require(Ref.isPassByProxy(actual),
-                  "Must be PassByProxy: ", actual);
+        T.require(Ref.isPassByProxy(actual), "Must be PassByProxy: ", actual);
         myActual = actual;
     }
 

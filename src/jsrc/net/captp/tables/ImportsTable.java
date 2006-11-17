@@ -6,7 +6,6 @@ package net.captp.tables;
 import org.erights.e.elib.ref.EProxyHandler;
 import org.erights.e.elib.ref.EProxyResolver;
 import org.erights.e.elib.ref.Ref;
-import org.erights.e.develop.assertion.T;
 
 /**
  *
@@ -20,7 +19,6 @@ public class ImportsTable extends CommTable {
     }
 
     /**
-     *
      * @param index
      * @param value
      */

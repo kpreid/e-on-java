@@ -17,7 +17,8 @@ public abstract class CharScanner implements TokenStream {
     public static final char EOF_CHAR = (char)-1;
     protected ANTLRStringBuffer text; // text of current token
 
-    protected boolean saveConsumedInput = true; // does consume() save characters?
+    protected boolean saveConsumedInput =
+      true; // does consume() save characters?
     protected Class tokenObjectClass; // what kind of tokens to create?
     protected boolean caseSensitive = true;
     protected boolean caseSensitiveLiterals = true;
@@ -29,7 +30,8 @@ public abstract class CharScanner implements TokenStream {
      */
     protected int tabsize = 8;
 
-    protected Token _returnToken = null; // used to return tokens w/o using return val.
+    protected Token _returnToken =
+      null; // used to return tokens w/o using return val.
 
     // Hash string used so we don't new one every time to check literals table
     protected ANTLRHashString hashString;
@@ -195,16 +197,16 @@ public abstract class CharScanner implements TokenStream {
         return inputState.input.mark();
     }
 
-    public void match(char c) throws MismatchedCharException,
-      CharStreamException {
+    public void match(char c)
+      throws MismatchedCharException, CharStreamException {
         if (LA(1) != c) {
             throw new MismatchedCharException(LA(1), c, false, this);
         }
         consume();
     }
 
-    public void match(BitSet b) throws MismatchedCharException,
-      CharStreamException {
+    public void match(BitSet b)
+      throws MismatchedCharException, CharStreamException {
         if (!b.member(LA(1))) {
             throw new MismatchedCharException(LA(1), b, false, this);
         } else {
@@ -212,8 +214,8 @@ public abstract class CharScanner implements TokenStream {
         }
     }
 
-    public void match(String s) throws MismatchedCharException,
-      CharStreamException {
+    public void match(String s)
+      throws MismatchedCharException, CharStreamException {
         int len = s.length();
         for (int i = 0; i < len; i++) {
             if (LA(1) != s.charAt(i)) {
@@ -226,16 +228,16 @@ public abstract class CharScanner implements TokenStream {
         }
     }
 
-    public void matchNot(char c) throws MismatchedCharException,
-      CharStreamException {
+    public void matchNot(char c)
+      throws MismatchedCharException, CharStreamException {
         if (LA(1) == c) {
             throw new MismatchedCharException(LA(1), c, true, this);
         }
         consume();
     }
 
-    public void matchRange(char c1, char c2) throws MismatchedCharException,
-      CharStreamException {
+    public void matchRange(char c1, char c2)
+      throws MismatchedCharException, CharStreamException {
         if (LA(1) < c1 || LA(1) > c2) {
             throw new MismatchedCharException(LA(1), c1, c2, false, this);
         }
@@ -253,7 +255,8 @@ public abstract class CharScanner implements TokenStream {
      */
     public void tab() {
         int c = getColumn();
-        int nc = (((c - 1) / tabsize) + 1) * tabsize + 1;  // calculate tab stop
+        int nc =
+          (((c - 1) / tabsize) + 1) * tabsize + 1;  // calculate tab stop
         setColumn(nc);
     }
 
@@ -397,9 +400,9 @@ public abstract class CharScanner implements TokenStream {
     public void traceIn(String rname) throws CharStreamException {
         traceDepth += 1;
         traceIndent();
-        System.out.println(
-          "> lexer " + rname + "; c==" + LA(1) + ";" + inputState.tokenStartLine + "@" +
-          inputState.tokenStartColumn);
+        System.out
+          .println("> lexer " + rname + "; c==" + LA(1) + ";" + inputState
+            .tokenStartLine + "@" + inputState.tokenStartColumn);
     }
 
     public void traceOut(String rname) throws CharStreamException {

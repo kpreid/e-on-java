@@ -17,11 +17,12 @@ public abstract class CF_cp_ref extends CF_cp_info {
      * Common constructor.
      *
      * @param class_index         Index into the constant pool of the
-     *                            CONSTANT_Class_info object for the class or interface relative to
-     *                            which a reference is being expressed.
+     *                            CONSTANT_Class_info object for the class or
+     *                            interface relative to which a reference is
+     *                            being expressed.
      * @param name_and_type_index Index into the constant pool of the
-     *                            CONSTANT_NameAndType_info object describing the method or field being
-     *                            referenced.
+     *                            CONSTANT_NameAndType_info object describing
+     *                            the method or field being referenced.
      */
     CF_cp_ref(int class_index, int name_and_type_index) {
         myClass_index = class_index;
@@ -32,8 +33,8 @@ public abstract class CF_cp_ref extends CF_cp_info {
      * Obtain the class index for this reference.
      *
      * @return the index into the constant pool of the CONSTANT_Class_info
-     *         entry describing the class relative to which this reference is being
-     *         expressed.
+     *         entry describing the class relative to which this reference is
+     *         being expressed.
      */
     public int class_index() {
         return myClass_index;
@@ -42,9 +43,8 @@ public abstract class CF_cp_ref extends CF_cp_info {
     /**
      * Obtain the name-and-type index for this reference.
      *
-     * @return the index into the constant pool of the
-     *         CONSTANT_NameAndType_info entry describing the method or field being *
-     *         referenced.
+     * @return the index into the constant pool of the CONSTANT_NameAndType_info
+     *         entry describing the method or field being * referenced.
      */
     public int name_and_type_index() {
         return myName_and_type_index;

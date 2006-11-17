@@ -27,15 +27,16 @@ public class Retainer implements Persistent, Runnable {
     protected final long myOptExpirationDate;
 
     /**
-     * optExpirationDate defaults to forever
-     * ({@link java.lang.Long#MAX_VALUE}), so optTimer also defaults to null.
+     * optExpirationDate defaults to forever ({@link java.lang.Long#MAX_VALUE}),
+     * so optTimer also defaults to null.
      */
     public Retainer() {
         this(null, Long.MAX_VALUE);
     }
 
     /**
-     * @param optTimer May be null ONLY if optExpirationDate is Long.MAX_VALUE.
+     * @param optTimer May be null ONLY if optExpirationDate is
+     *                 Long.MAX_VALUE.
      */
     public Retainer(Timer optTimer, long optExpirationDate) {
         if (Long.MAX_VALUE == optExpirationDate) {
@@ -48,8 +49,8 @@ public class Retainer implements Persistent, Runnable {
 
     /**
      * After construction or unserialization, the Retainer isn't in a valid
-     * state until init() is called. We don't automate this with
-     * readResolve() in order to avoid a circular unserialization bug.
+     * state until init() is called. We don't automate this with readResolve()
+     * in order to avoid a circular unserialization bug.
      *
      * @param retainers This retainer will remove itself as a key from
      *                  retainers when it expires or is invoked.

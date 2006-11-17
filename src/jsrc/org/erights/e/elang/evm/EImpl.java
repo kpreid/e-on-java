@@ -89,7 +89,8 @@ public abstract class EImpl extends Auditable implements Callable {
         String fqName = myScript.getFQName();
         return new ProtocolDesc(myScript.getObjExpr().getDocComment(),
                                 fqName,
-                                null, //XXX for now
+                                null,
+                                //XXX for now
                                 ConstList.EmptyList,
                                 mTypes.snapshot());
     }
@@ -145,7 +146,7 @@ public abstract class EImpl extends Auditable implements Callable {
     }
 
     /**
-     * 
+     *
      */
     public void mirandaPrintOn(TextWriter out) throws IOException {
         out.print("<", ClassDesc.simpleName(myScript.getFQName()), ">");

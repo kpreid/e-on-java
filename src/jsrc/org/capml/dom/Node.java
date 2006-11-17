@@ -31,31 +31,28 @@ import org.quasiliteral.astro.AstroBuilder;
 import java.io.IOException;
 
 /**
- * The document tree is a tree of <tt>Node</tt>s -- the supertype
- * of the individual types of nodes. <p>
+ * The document tree is a tree of <tt>Node</tt>s -- the supertype of the
+ * individual types of nodes. <p>
  * <p/>
- * This is a substantial revision by ERights.org of the file as
- * released by the w3c, as is allowed by the license. See the package
- * comment. The original comment: <p>
+ * This is a substantial revision by ERights.org of the file as released by the
+ * w3c, as is allowed by the license. See the package comment. The original
+ * comment: <p>
  * <p/>
- * <blockquote>
- * The <tt>Node</tt> interface is the primary datatype for the entire
- * Document Object Model. It represents a single node in the document tree.
- * While all objects implementing the <tt>Node</tt> interface expose
+ * <blockquote> The <tt>Node</tt> interface is the primary datatype for the
+ * entire Document Object Model. It represents a single node in the document
+ * tree. While all objects implementing the <tt>Node</tt> interface expose
  * methods for dealing with children, not all objects implementing the
- * <tt>Node</tt> interface may have children. For example,
- * <tt>Text</tt> nodes may not have children, and adding children to such
- * nodes results in a <tt>DOMException</tt> being raised.
- * <p> The attributes <tt>nodeName</tt> , <tt>nodeValue</tt> and
- * <tt>attributes</tt> are included as a mechanism to get at node
- * information without casting down to the specific derived interface. In
- * cases where there is no obvious mapping of these attributes for a specific
- * <tt>nodeType</tt> (e.g., <tt>nodeValue</tt> for an
- * <tt>Element</tt> or <tt>attributes</tt> for a <tt>Comment</tt>
- * ), this returns <tt>null</tt> . Note that the specialized interfaces
- * may contain additional and more convenient mechanisms to get and set the
- * relevant information.
- * </blockquote>
+ * <tt>Node</tt> interface may have children. For example, <tt>Text</tt> nodes
+ * may not have children, and adding children to such nodes results in a
+ * <tt>DOMException</tt> being raised. <p> The attributes <tt>nodeName</tt> ,
+ * <tt>nodeValue</tt> and <tt>attributes</tt> are included as a mechanism to
+ * get at node information without casting down to the specific derived
+ * interface. In cases where there is no obvious mapping of these attributes
+ * for a specific <tt>nodeType</tt> (e.g., <tt>nodeValue</tt> for an
+ * <tt>Element</tt> or <tt>attributes</tt> for a <tt>Comment</tt> ), this
+ * returns <tt>null</tt> . Note that the specialized interfaces may contain
+ * additional and more convenient mechanisms to get and set the relevant
+ * information. </blockquote>
  *
  * @deprecated Use Term trees instead.
  */
@@ -92,18 +89,17 @@ public abstract class Node
     public abstract short getNodeType();
 
     /**
-     * Modified to return an ConstList of Nodes rather than a
-     * NodeList. The original documantation: <p>
+     * Modified to return an ConstList of Nodes rather than a NodeList. The
+     * original documantation: <p>
      * <p/>
-     * A <tt>NodeList</tt> that contains all children of this node. If
-     * there are no children, this is a <tt>NodeList</tt> containing no
-     * nodes. The content of the returned <tt>NodeList</tt> is "live" in
-     * the sense that, for instance, changes to the children of the node
-     * object that it was created from are immediately reflected in the nodes
-     * returned by the <tt>NodeList</tt> accessors; it is not a static
-     * snapshot of the content of the node. This is true for every
-     * <tt>NodeList</tt> , including the ones returned by the
-     * <tt>getElementsByTagName</tt> method.
+     * A <tt>NodeList</tt> that contains all children of this node. If there
+     * are no children, this is a <tt>NodeList</tt> containing no nodes. The
+     * content of the returned <tt>NodeList</tt> is "live" in the sense that,
+     * for instance, changes to the children of the node object that it was
+     * created from are immediately reflected in the nodes returned by the
+     * <tt>NodeList</tt> accessors; it is not a static snapshot of the content
+     * of the node. This is true for every <tt>NodeList</tt> , including the
+     * ones returned by the <tt>getElementsByTagName</tt> method.
      */
     public abstract ConstList getChildNodes();
 
@@ -115,9 +111,9 @@ public abstract class Node
     }
 
     /**
-     * The classic visitor pattern from the patterns literature, except that
-     * we don't dispatch on the type of the node, but, for Elements, on a
-     * verb generated from the tag name. <p>
+     * The classic visitor pattern from the patterns literature, except that we
+     * don't dispatch on the type of the node, but, for Elements, on a verb
+     * generated from the tag name. <p>
      * <p/>
      * In order to call the visitor with generated names, we call the visitor
      * with E.call().
@@ -132,11 +128,11 @@ public abstract class Node
      *                which can be passed to the method <tt>hasFeature</tt> on
      *                <tt>DOMImplementation</tt> .
      * @param version This is the version number of the feature to test. In
-     *                Level 2, version 1, this is the string "2.0". If the version is not
-     *                specified, supporting any version of the feature will cause the
-     *                method to return <tt>true</tt> .
-     * @return Returns <tt>true</tt> if the specified feature is supported
-     *         on this node, <tt>false</tt> otherwise.
+     *                Level 2, version 1, this is the string "2.0". If the
+     *                version is not specified, supporting any version of the
+     *                feature will cause the method to return <tt>true</tt> .
+     * @return Returns <tt>true</tt> if the specified feature is supported on
+     *         this node, <tt>false</tt> otherwise.
      * @since DOM Level 2
      */
     public boolean supports(String feature, String version) {
@@ -149,8 +145,8 @@ public abstract class Node
     public abstract Astro build(AstroBuilder builder);
 
     /**
-     * Asks this Node to return a minimal form of the optional node to the
-     * left of itself and itself.
+     * Asks this Node to return a minimal form of the optional node to the left
+     * of itself and itself.
      * <p/>
      * If the node to the left is provided (ie, if 'optLeft' isn't null), then
      * this node may safely assume that this provided sibling has already been
@@ -161,10 +157,10 @@ public abstract class Node
      * sub-Elements, all pure-whitespace Texts that it also contains may be
      * gotten rid of.
      * <p/>
-     * The number of nodes returned cannot exceed the number examined. In
-     * other words, if 'optLeft' is null, only zero or one node may be
-     * returned. If 'optLeft' isn't null, the number returned may only be
-     * zero, one, or two.
+     * The number of nodes returned cannot exceed the number examined. In other
+     * words, if 'optLeft' is null, only zero or one node may be returned. If
+     * 'optLeft' isn't null, the number returned may only be zero, one, or
+     * two.
      *
      * @return A list of nodes to replace 'optLeft' and itself.
      */
@@ -181,14 +177,15 @@ public abstract class Node
             return new Text("");
         } else {
             T.require(result.length == 1,
-                      "Internal: minimization shouldn't expand: ", this);
+                      "Internal: minimization shouldn't expand: ",
+                      this);
             return result[0];
         }
     }
 
     /**
-     * Prints as "sml`...`", where pretty printed XML appears between
-     * the backquotes
+     * Prints as "sml`...`", where pretty printed XML appears between the
+     * backquotes
      */
     public void __printOn(TextWriter out) throws IOException {
         out.print("sml`");

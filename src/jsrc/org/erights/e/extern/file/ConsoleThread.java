@@ -27,14 +27,14 @@ import java.io.PrintWriter;
 
 /**
  * Implements a seperate thread to manage the user console (i.e., the keyboard
- * and tty). This needs to be in its own thread so that the user pondering
- * what to type next doesn't block the entire E runQ! <p>
+ * and tty). This needs to be in its own thread so that the user pondering what
+ * to type next doesn't block the entire E runQ! <p>
  * <p/>
  * The console is given an input handler when it is created, which is an object
  * that implements the ConsoleInputHandler interface. Each line of input typed
  * on the console is sent as a String in an E-message to the input handler. End
- * of file is signalled to the input handler by sending it a null. If a
- * problem is thrown while reading, the handler is asked to handle it as well.
+ * of file is signalled to the input handler by sending it a null. If a problem
+ * is thrown while reading, the handler is asked to handle it as well.
  */
 public class ConsoleThread implements Runnable {
 

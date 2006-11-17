@@ -6,11 +6,11 @@ package org.erights.e.meta.java.math;
 import org.erights.e.develop.assertion.T;
 import org.erights.e.develop.format.StringHelper;
 import org.erights.e.elib.base.ClassDesc;
-import org.erights.e.elib.prim.Thrower;
+import org.erights.e.elib.oldeio.TextWriter;
 import org.erights.e.elib.prim.E;
+import org.erights.e.elib.prim.Thrower;
 import org.erights.e.elib.ref.Ref;
 import org.erights.e.elib.util.OneArgFunc;
-import org.erights.e.elib.oldeio.TextWriter;
 
 import java.io.IOException;
 
@@ -24,8 +24,7 @@ public class EIntGuardSugar extends BaseEIntGuardSugar {
      */
     public EIntGuardSugar(Class clazz) {
         super(clazz);
-        T.require(EInt.class == clazz,
-                  clazz, " must be type EInt");
+        T.require(EInt.class == clazz, clazz, " must be type EInt");
     }
 
     /**
@@ -36,8 +35,7 @@ public class EIntGuardSugar extends BaseEIntGuardSugar {
     protected Object tryCoerceR(Object shortSpecimen, OneArgFunc optEjector) {
         if (null == shortSpecimen) {
             throw Thrower.toEject(optEjector,
-                                  new NullPointerException(
-                                    "must be " +
+                                  new NullPointerException("must be " +
                                     StringHelper.aan(E.toString(this)) +
                                     " rather than null"));
         }

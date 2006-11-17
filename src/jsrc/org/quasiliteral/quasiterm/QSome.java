@@ -28,8 +28,7 @@ public class QSome extends QAstroArg {
     /**
      *
      */
-    static public final StaticMaker QSomeMaker =
-      StaticMaker.make(QSome.class);
+    static public final StaticMaker QSomeMaker = StaticMaker.make(QSome.class);
 
     /**
      *
@@ -57,14 +56,12 @@ public class QSome extends QAstroArg {
      * Uses 'QSomeMaker(myBuilder, myOptSubPattern, myQuant, myOptSpan)'
      */
     public Object[] getSpreadUncall() {
-        Object[] result = {
-            QSomeMaker,
-            "run",
-            myBuilder,
-            myOptSubPattern,
-            CharacterMakerSugar.valueOf(myQuant),
-            myOptSpan
-        };
+        Object[] result = {QSomeMaker,
+          "run",
+          myBuilder,
+          myOptSubPattern,
+          CharacterMakerSugar.valueOf(myQuant),
+          myOptSpan};
         return result;
     }
 
@@ -73,11 +70,11 @@ public class QSome extends QAstroArg {
      */
     static private boolean inBounds(int num, char quant) {
         switch (quant) {
-        case '?':
+        case'?':
             return num == 0 || num == 1;
-        case '+':
+        case'+':
             return num >= 1;
-        case '*':
+        case'*':
             return num >= 0;
         default:
             T.fail("Must be '?', '+', or '*': " + quant);
@@ -90,10 +87,10 @@ public class QSome extends QAstroArg {
      */
     public ConstList substSlice(ConstList args, int[] index) {
         T.notNull(myOptSubPattern,
-                  "A ValueMaker must have a sub-pattern: ", this);
+                  "A ValueMaker must have a sub-pattern: ",
+                  this);
         int shape = myOptSubPattern.startShape(args, null, index, -1);
-        T.require(shape >= 0,
-                  "Indeterminate repetition: ", this);
+        T.require(shape >= 0, "Indeterminate repetition: ", this);
         FlexList result = FlexList.fromType(Astro.class, shape);
         int lastDim = index.length;
         int[] subIndex = (int[])ArrayHelper.resize(index, lastDim + 1);
@@ -104,7 +101,8 @@ public class QSome extends QAstroArg {
         }
         myOptSubPattern.endShape(null, index, shape);
         T.require(inBounds(result.size(), myQuant),
-                  "Improper quantity: " + shape, " vs " + myQuant);
+                  "Improper quantity: " + shape,
+                  " vs " + myQuant);
         return result.snapshot();
     }
 
@@ -118,11 +116,11 @@ public class QSome extends QAstroArg {
         if (null == myOptSubPattern) {
             int result = specimenList.size();
             switch (myQuant) {
-            case '?':
+            case'?':
                 return StrictMath.min(result, 1);
-            case '+':
+            case'+':
                 return result <= 0 ? -1 : result;
-            case '*':
+            case'*':
                 return result;
             default:
                 T.fail("Unrecognized: " + myQuant);
@@ -151,13 +149,16 @@ public class QSome extends QAstroArg {
             }
             T.require(more >= 1 || maxShape != -1,
                       "Patterns of indeterminate rank must make progress: ",
-                      this, " vs ", specimenList);
+                      this,
+                      " vs ",
+                      specimenList);
             result += more;
             specimenList = specimenList.run(more, specimenList.size());
         }
         myOptSubPattern.endShape(bindings, index, shapeSoFar);
         T.require(inBounds(result, myQuant),
-                  "Improper quantity: " + result, " vs " + myQuant);
+                  "Improper quantity: " + result,
+                  " vs " + myQuant);
         return result;
     }
 
@@ -183,9 +184,7 @@ public class QSome extends QAstroArg {
      *
      */
 
-    void endShape(FlexList optBindings,
-                  int[] prefix,
-                  int shape) {
+    void endShape(FlexList optBindings, int[] prefix, int shape) {
         if (null == myOptSubPattern) {
             // Do nothing.
         } else {
@@ -222,8 +221,7 @@ public class QSome extends QAstroArg {
     /**
      *
      */
-    public void prettyPrintOn(TextWriter out)
-      throws IOException {
+    public void prettyPrintOn(TextWriter out) throws IOException {
         if (null != myOptSubPattern) {
             myOptSubPattern.prettyPrintOn(out);
         }

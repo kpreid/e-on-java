@@ -37,16 +37,16 @@ public class Profiler {
     }
 
     /**
-     * Note that multiple registrations of the same profKey will share the
-     * same CallCounter -- this is on purpose.
+     * Note that multiple registrations of the same profKey will share the same
+     * CallCounter -- this is on purpose.
      * <p/>
-     * EMethodNode and EMatcher use this by providing their printstring as
-     * the profKey, and pointing at the CallCounter. This means that multiple
-     * EMethodNodes with the same printstring will increment the same
-     * counters, and that the CallCounter object will not prevent these
-     * EMethodNodes from being garbage collected. A dynamic number of
-     * EMethodNodes with a static number of names will still only cause a
-     * static number of CallCounters to be allocated.
+     * EMethodNode and EMatcher use this by providing their printstring as the
+     * profKey, and pointing at the CallCounter. This means that multiple
+     * EMethodNodes with the same printstring will increment the same counters,
+     * and that the CallCounter object will not prevent these EMethodNodes from
+     * being garbage collected. A dynamic number of EMethodNodes with a static
+     * number of names will still only cause a static number of CallCounters to
+     * be allocated.
      * <p/>
      * Should we start using multiple Java ClassLoaders, then we probably want
      * to change JavaMemberNode and OverloaderNode to use the same trick.

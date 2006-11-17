@@ -24,8 +24,7 @@ import org.erights.e.elib.tables.ConstSubclassSet;
 import java.io.Serializable;
 
 /**
- * Marker interface that makes objects passable-by-construction via
- * CapTP.
+ * Marker interface that makes objects passable-by-construction via CapTP.
  *
  * @author Mark S. Miller
  * @author Terry Stanley
@@ -42,32 +41,30 @@ public interface PassByConstruction extends Serializable, Marker {
      * equally obviously want people to be able to use them as if we had.
      */
     String[] HONORED_NAMES = {
-        //also Transparent & Selfless, and so PassByCopy
-        "java.lang.Boolean",
-        "java.lang.Character",
-        "java.lang.String",
-        "java.lang.Number",
+      //also Transparent & Selfless, and so PassByCopy
+      "java.lang.Boolean",
+      "java.lang.Character",
+      "java.lang.String",
+      "java.lang.Number",
 
-        //We would like Throwable to be transitively PassByCopy, but it
-        //doesn't provide its own equals() and hashCode(), so it can't be
-        //made even honorarily Selfless, it's not really transparent because
-        //of the stack trace, and we currently have no way to enforce the
-        //transitive adherence to any rules by Throwable subclasses.
-        "java.lang.Throwable",
+      //We would like Throwable to be transitively PassByCopy, but it
+      //doesn't provide its own equals() and hashCode(), so it can't be
+      //made even honorarily Selfless, it's not really transparent because
+      //of the stack trace, and we currently have no way to enforce the
+      //transitive adherence to any rules by Throwable subclasses.
+      "java.lang.Throwable",
 
-        //since JDK1.4. See
-        // bugs.sieve.net/bugs/?func=detailbug&bug_id=125434&group_id=16380
-        "java.lang.StackTraceElement",
+      //since JDK1.4. See
+      // bugs.sieve.net/bugs/?func=detailbug&bug_id=125434&group_id=16380
+      "java.lang.StackTraceElement",
 
-        "java.security.Key",
-        "java.security.KeyPair",
-        "COM.rsa.jsafe.SunJSSE_l"
-    };
+      "java.security.Key",
+      "java.security.KeyPair",
+      "COM.rsa.jsafe.SunJSSE_l"};
 
     /**
      * HONORARY (effectively) contains all the classes named in HONORED_NAMES
      * and all their subclasses.
      */
-    ConstSubclassSet HONORARY
-      = ConstSubclassSet.make(HONORED_NAMES);
+    ConstSubclassSet HONORARY = ConstSubclassSet.make(HONORED_NAMES);
 }

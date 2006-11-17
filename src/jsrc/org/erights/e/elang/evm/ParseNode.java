@@ -24,8 +24,8 @@ import org.erights.e.develop.exception.NestedException;
 import org.erights.e.elib.base.SourceSpan;
 import org.erights.e.elib.oldeio.EPrintable;
 import org.erights.e.elib.oldeio.TextWriter;
-import org.erights.e.elib.prim.Thrower;
 import org.erights.e.elib.prim.E;
+import org.erights.e.elib.prim.Thrower;
 import org.erights.e.elib.ref.Ref;
 import org.erights.e.elib.serial.DeepPassByCopy;
 import org.erights.e.elib.tables.ConstList;
@@ -38,7 +38,7 @@ import java.io.IOException;
 
 /**
  * A ParseNode of a program written in Expanded-E, Kernel-E, etc.
- * <p>
+ * <p/>
  * A program written in E is immediately expanded to Expanded-E, hopefully
  * passing source position through successfully.
  *
@@ -47,10 +47,14 @@ import java.io.IOException;
 public abstract class ParseNode extends SamenessHashCacher
   implements MatchMaker, EPrintable, DeepPassByCopy {
 
-    /** lowest priority */
+    /**
+     * lowest priority
+     */
     protected static final int PR_START = 0;
 
-    /** lowest priority expression */
+    /**
+     * lowest priority expression
+     */
     protected static final int PR_EEXPR = 0;
 
     protected static final int PR_ASSIGN = 1;
@@ -61,10 +65,14 @@ public abstract class ParseNode extends SamenessHashCacher
 
     protected static final int PR_CALL = 4;
 
-    /** highest priority expression */
+    /**
+     * highest priority expression
+     */
     protected static final int PR_PRIM = 5;
 
-    /** lowest priority pattern */
+    /**
+     * lowest priority pattern
+     */
     protected static final int PR_PATTERN = 0;
 
     protected static final int PR_LISTPATT = 1;
@@ -75,9 +83,8 @@ public abstract class ParseNode extends SamenessHashCacher
     private final SourceSpan myOptSpan;
 
     /**
-     * A bit of a kludge, but we initialize the source after
-     * construction to avoid propogating source-tracking logic through
-     * all subclasses.
+     * A bit of a kludge, but we initialize the source after construction to
+     * avoid propogating source-tracking logic through all subclasses.
      */
     protected ParseNode(SourceSpan optSpan) {
         myOptSpan = optSpan;
@@ -92,10 +99,10 @@ public abstract class ParseNode extends SamenessHashCacher
 
     /**
      * Onto out, first print a newline, then spaces to the designated indent
-     * level, then pretty print this parse node. "subPrintOn" vs "lnPrintOn"
-     * is much like the conventional disctinction between "print" and
-     * "println", except that the newlines come first (hence the weird
-     * spelling), and the newline is followed by indentation.
+     * level, then pretty print this parse node. "subPrintOn" vs "lnPrintOn" is
+     * much like the conventional disctinction between "print" and "println",
+     * except that the newlines come first (hence the weird spelling), and the
+     * newline is followed by indentation.
      */
     public void lnPrintOn(TextWriter out, int priority) throws IOException {
         out.println();
@@ -124,8 +131,7 @@ public abstract class ParseNode extends SamenessHashCacher
                           FlexList bindings) {
         optSpecimen = Ref.resolution(optSpecimen);
         if (null == optSpecimen) {
-            throw Thrower.toEject(optEjector,
-                                  "Must not be null");
+            throw Thrower.toEject(optEjector, "Must not be null");
         }
         subMatchBind(args, optSpecimen, optEjector, bindings);
     }
@@ -142,8 +148,8 @@ public abstract class ParseNode extends SamenessHashCacher
     }
 
     /**
-     * Convenience method for matching corresponding arrays. null
-     * members must match exactly.
+     * Convenience method for matching corresponding arrays. null members must
+     * match exactly.
      */
     static void matchBind(ParseNode[] templates,
                           ConstList args,
@@ -154,14 +160,10 @@ public abstract class ParseNode extends SamenessHashCacher
         if (len != specimens.length) {
             throw Thrower.toEject(optEjector,
                                   "Arity mismatch: " + E.toQuote(templates) +
-                                  " vs " + E.toQuote(specimens));
+                                    " vs " + E.toQuote(specimens));
         }
         for (int i = 0; i < len; i++) {
-            matchBind(templates[i],
-                      args,
-                      specimens[i],
-                      optEjector,
-                      bindings);
+            matchBind(templates[i], args, specimens[i], optEjector, bindings);
         }
     }
 
@@ -179,10 +181,7 @@ public abstract class ParseNode extends SamenessHashCacher
                                       "Must be null: " + optSpecimen);
             }
         } else {
-            optTemplate.matchBind(args,
-                                  optSpecimen,
-                                  optEjector,
-                                  bindings);
+            optTemplate.matchBind(args, optSpecimen, optEjector, bindings);
         }
     }
 
@@ -210,16 +209,15 @@ public abstract class ParseNode extends SamenessHashCacher
     }
 
     /**
-     * Print the left bracket, then the nodes separated by sep, and
-     * then the right bracket
+     * Print the left bracket, then the nodes separated by sep, and then the
+     * right bracket
      */
     static public void printListOn(String left,
                                    ParseNode[] nodes,
                                    String sep,
                                    String right,
                                    TextWriter out,
-                                   int priority)
-      throws IOException {
+                                   int priority) throws IOException {
         out.print(left);
         if (nodes.length >= 1) {
             int last = nodes.length - 1;
@@ -233,17 +231,18 @@ public abstract class ParseNode extends SamenessHashCacher
     }
 
     /**
-     * Pretty print this syntactic construct assuming the specified
-     * ambient indent level. The convention is that any leading or trailing
-     * whitespace (newlines, indentation, etc...) is handled by my caller.
-     * I just print from my first printing character to my last one, indenting
-     * as appropriate for internal newlines.
+     * Pretty print this syntactic construct assuming the specified ambient
+     * indent level. The convention is that any leading or trailing whitespace
+     * (newlines, indentation, etc...) is handled by my caller. I just print
+     * from my first printing character to my last one, indenting as
+     * appropriate for internal newlines.
      */
     public abstract void subPrintOn(TextWriter out, int priority)
       throws IOException;
 
     /**
      * Overridden in EExpr & Pattern
+     *
      * @see #subPrintOn
      */
     public void __printOn(TextWriter out) throws IOException {

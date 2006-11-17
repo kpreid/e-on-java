@@ -36,13 +36,13 @@ import java.io.IOException;
 
 /**
  * BNF: varName ":=" eExpr
- * <p>
- * Changes the binding for 'varName' in the current environment to be the
- * value of 'eExpr'. 'varName' must already be bound. Equivalent to
+ * <p/>
+ * Changes the binding for 'varName' in the current environment to be the value
+ * of 'eExpr'. 'varName' must already be bound. Equivalent to
  * <pre>    (&varName).setValue(eExpr); eExpr</pre>
- * except that eExpr is only evaluated once. Therefore, the value returned
- * is the value of eExpr, rather than the value stored in the slot (since
- * setValue may do arbitrary coercions).
+ * except that eExpr is only evaluated once. Therefore, the value returned is
+ * the value of eExpr, rather than the value stored in the slot (since setValue
+ * may do arbitrary coercions).
  *
  * @author Mark S. Miller
  */
@@ -71,12 +71,12 @@ public class AssignExpr extends EExpr {
      * Uses 'makeAssignExpr(optSpan, optScopeLayout, noun, rValue)'
      */
     public Object[] getSpreadUncall() {
-        Object[] result = { AssignExprMaker,
-                            "run",
-                            getOptSpan(),
-                            myNoun,
-                            myRValue,
-                            getOptScopeLayout() };
+        Object[] result = {AssignExprMaker,
+          "run",
+          getOptSpan(),
+          myNoun,
+          myRValue,
+          getOptScopeLayout()};
         return result;
     }
 

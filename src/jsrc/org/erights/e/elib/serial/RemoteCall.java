@@ -21,8 +21,8 @@ import java.io.ObjectStreamException;
  * capability constraints. All pointers serialized as pointers to the
  * RemoteCall will be deserialized as pointing to the result of the call, or,
  * if the unserializtion of the RemoteCall is in progress, to a promise for
- * this result. This may violate static types or other constraints, and
- * cause deserialization to fail.
+ * this result. This may violate static types or other constraints, and cause
+ * deserialization to fail.
  * <p/>
  * If the call throws a problem, then the resolution is a reference broken by
  * that problem.
@@ -56,9 +56,7 @@ public class RemoteCall extends StemCell {
      * @param verb      the message name (selector, method name)
      * @param args      the message arguments
      */
-    public RemoteCall(Object recipient,
-                      String verb,
-                      Object[] args) {
+    public RemoteCall(Object recipient, String verb, Object[] args) {
         myRecipient = recipient;
         myVerb = verb;
         myArgs = args;
@@ -90,14 +88,11 @@ public class RemoteCall extends StemCell {
             return null;
         }
         RemoteCall self = (RemoteCall)candidate;
-        Object[] result = {self.myRecipient,
-                           self.myVerb,
-                           self.myArgs};
+        Object[] result = {self.myRecipient, self.myVerb, self.myArgs};
         return result;
     }
 
     /**
-     *
      * @param out
      * @throws IOException
      */

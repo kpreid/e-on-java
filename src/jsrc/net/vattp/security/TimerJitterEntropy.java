@@ -51,9 +51,10 @@ class TimerJitterEntropy extends Thread {
             setPriority(Thread.MAX_PRIORITY);
             theIsStarted = true;
         } else {
-            Trace.entropy.eventm("Resources for TimeJitterEntropy not available " +
-                                 ("x86".equals(System.getProperty("os.arch"))) +
-                                 " " + (MicroTime.isHiRes()));
+            Trace.entropy
+              .eventm("Resources for TimeJitterEntropy not available " +
+                ("x86".equals(System.getProperty("os.arch"))) + " " +
+                (MicroTime.isHiRes()));
         }
         start();
     }

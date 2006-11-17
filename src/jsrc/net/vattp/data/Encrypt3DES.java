@@ -106,9 +106,9 @@ class Encrypt3DES extends MsgTransformer {
             System.arraycopy(buffer, cursor, myPreviousBlock, 0, 8);
         }
         if (Trace.comm.timing && Trace.ON) {
-            Trace.comm.timingm("Pkt3DESEncrypt(" + buffer.length + "), time " +
-                               (MicroTime.queryTimer() - startTime) +
-                               " microseconds");
+            Trace.comm
+              .timingm("Pkt3DESEncrypt(" + buffer.length + "), time " +
+                (MicroTime.queryTimer() - startTime) + " microseconds");
         }
     }
 

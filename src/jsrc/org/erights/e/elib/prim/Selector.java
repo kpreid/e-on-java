@@ -32,9 +32,9 @@ public class Selector implements DeepPassByCopy {
      */
     static public void printCacheStats() {
         double percent = ((MyHitCount * 100.0) / (MyHitCount + MyMISSCount));
-        System.err.println("Call site cache hits: " + MyHitCount +
-                           " misses: " + MyMISSCount + " (" +
-                           DoubleSugar.round(percent) + "%)");
+        System.err
+          .println("Call site cache hits: " + MyHitCount + " misses: " +
+            MyMISSCount + " (" + DoubleSugar.round(percent) + "%)");
     }
 
     /**
@@ -51,7 +51,6 @@ public class Selector implements DeepPassByCopy {
     private transient Script myOptLastScript = null;
 
     /**
-     *
      * @param verb
      * @param arity
      */
@@ -64,10 +63,8 @@ public class Selector implements DeepPassByCopy {
      * Uses 'makeSelector(verb, arity)'
      */
     public Object[] getSpreadUncall() {
-        Object[] result = {SelectorMaker,
-                           "run",
-                           myVerb,
-                           EInt.valueOf(myArity)};
+        Object[] result =
+          {SelectorMaker, "run", myVerb, EInt.valueOf(myArity)};
         return result;
     }
 

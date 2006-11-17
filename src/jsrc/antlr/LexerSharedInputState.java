@@ -12,7 +12,7 @@ import java.io.Reader;
 
 /**
  * This object contains the data associated with an input stream of characters.
- *  Multiple lexers share a single LexerSharedInputState to lex the same input
+ * Multiple lexers share a single LexerSharedInputState to lex the same input
  * stream.
  */
 public class LexerSharedInputState {

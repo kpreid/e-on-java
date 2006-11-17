@@ -42,6 +42,7 @@ public class SemanticPredicateEvent extends GuessingEvent {
     }
 
     public String toString() {
-        return "SemanticPredicateEvent [" + getCondition() + "," + getResult() + "," + getGuessing() + "]";
+        return "SemanticPredicateEvent [" + getCondition() + "," +
+          getResult() + "," + getGuessing() + "]";
     }
 }

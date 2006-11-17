@@ -13,12 +13,14 @@ import antlr.collections.impl.Vector;
 
 public class MakeGrammar extends DefineGrammarSymbols {
 
-    protected Stack blocks = new LList(); // track subrules--Stack<BlockContext>
+    protected Stack blocks =
+      new LList(); // track subrules--Stack<BlockContext>
     protected RuleRefElement lastRuleRef;
 
     protected RuleEndElement ruleEnd;   // used if not nested
-    protected RuleBlock ruleBlock;		// points to block of current rule.
-    protected int nested = 0;			// nesting inside a subrule
+    protected RuleBlock ruleBlock;                // points to block of current rule.
+    protected int nested =
+      0;                        // nesting inside a subrule
     protected boolean grammarError = false;
 
     ExceptionSpec currentExceptionSpec = null;
@@ -72,9 +74,9 @@ public class MakeGrammar extends DefineGrammarSymbols {
     public void beginExceptionSpec(Token label) {
         // Hack the label string a bit to remove leading/trailing space.
         if (label != null) {
-            label.setText(
-              StringUtils.stripFront(
-                StringUtils.stripBack(label.getText(), " \n\r\t"), " \n\r\t"));
+            label.setText(StringUtils.stripFront(StringUtils.stripBack(label.getText(),
+                                                                       " \n\r\t"),
+                                                 " \n\r\t"));
         }
         super.beginExceptionSpec(label);
         // Don't check for currentExceptionSpec!=null because syntax errors
@@ -123,8 +125,8 @@ public class MakeGrammar extends DefineGrammarSymbols {
 
     /**
      * Used to build nextToken() for the lexer. This builds a rule which has
-     * every "public" rule in the given Vector of rules as it's alternate.
-     * Each rule ref generates a Token object.
+     * every "public" rule in the given Vector of rules as it's alternate. Each
+     * rule ref generates a Token object.
      *
      * @param g        The Grammar that is being processed
      * @param lexRules A vector of lexer rules that will be used to create an
@@ -144,18 +146,20 @@ public class MakeGrammar extends DefineGrammarSymbols {
         for (int i = 0; i < lexRules.size(); i++) {
             RuleSymbol r = (RuleSymbol)lexRules.elementAt(i);
             if (!r.isDefined()) {
-                g.antlrTool.error(
-                  "Lexer rule " + r.id.substring(1) + " is not defined");
+                g.antlrTool
+                  .error(
+                    "Lexer rule " + r.id.substring(1) + " is not defined");
             } else {
                 if (r.access.equals("public")) {
-                    Alternative alt = new Alternative(); // create alt we'll add to ref rule
+                    Alternative alt =
+                      new Alternative(); // create alt we'll add to ref rule
                     RuleBlock targetRuleBlock = r.getBlock();
                     Vector targetRuleAlts = targetRuleBlock.getAlternatives();
                     // collect a sem pred if only one alt and it's at the start;
                     // simple, but faster to implement until real hoisting
                     if (targetRuleAlts != null && targetRuleAlts.size() == 1) {
-                        Alternative onlyAlt = (Alternative)targetRuleAlts.elementAt(
-                          0);
+                        Alternative onlyAlt =
+                          (Alternative)targetRuleAlts.elementAt(0);
                         if (onlyAlt.semPred != null) {
                             // ok, has sem pred, make this rule ref alt have a pred
                             alt.semPred = onlyAlt.semPred;
@@ -175,15 +179,15 @@ public class MakeGrammar extends DefineGrammarSymbols {
                     rr.setLabel("theRetToken");
                     rr.enclosingRuleName = "nextToken";
                     rr.next = ruleEnd;
-                    alt.addElement(rr);  		// add rule ref to alt
-                    alt.setAutoGen(true);		// keep text of elements
-                    rb.addAlternative(alt);		// add alt to rule block
-                    r.addReference(rr);			// track ref to this rule in rule blk
+                    alt.addElement(rr);                  // add rule ref to alt
+                    alt.setAutoGen(true);                // keep text of elements
+                    rb.addAlternative(alt);                // add alt to rule block
+                    r.addReference(rr);                        // track ref to this rule in rule blk
                 }
             }
         }
 
-        rb.setAutoGen(true);		// keep text of elements
+        rb.setAutoGen(true);                // keep text of elements
         rb.prepareForAnalysis();
         //System.out.println(rb);
         return rb;
@@ -197,7 +201,8 @@ public class MakeGrammar extends DefineGrammarSymbols {
         AlternativeBlock blk = new AlternativeBlock(grammar, start, false);
 
         // Make sure rule is defined
-        String mrule = CodeGenerator.encodeLexerRuleName(rule); // can only be a lexer rule!
+        String mrule =
+          CodeGenerator.encodeLexerRuleName(rule); // can only be a lexer rule!
         if (!grammar.isDefined(mrule)) {
             grammar.define(new RuleSymbol(mrule));
         }
@@ -207,15 +212,15 @@ public class MakeGrammar extends DefineGrammarSymbols {
         Token t = new CommonToken(ANTLRTokenTypes.TOKEN_REF, rule);
         t.setLine(start.getLine());
         t.setLine(start.getColumn());
-        RuleRefElement rref = new RuleRefElement(grammar,
-                                                 t,
-                                                 GrammarElement.AUTO_GEN_NONE);
+        RuleRefElement rref =
+          new RuleRefElement(grammar, t, GrammarElement.AUTO_GEN_NONE);
 
         rref.enclosingRuleName = ruleBlock.ruleName;
 
         // Make the end of block element
         BlockEndElement end = new BlockEndElement(grammar);
-        end.block = blk;		// end block points back to start of blk
+        end.block =
+          blk;                // end block points back to start of blk
 
         // Make an alternative, putting the rule ref into it
         Alternative alt = new Alternative(rref);
@@ -226,7 +231,7 @@ public class MakeGrammar extends DefineGrammarSymbols {
 
         // create an empty (optional) alt and add to blk
         Alternative optAlt = new Alternative();
-        optAlt.addElement(end);	// points immediately to end of block
+        optAlt.addElement(end);        // points immediately to end of block
 
         blk.addAlternative(optAlt);
 
@@ -241,18 +246,17 @@ public class MakeGrammar extends DefineGrammarSymbols {
         //		if ( Character.isUpperCase(r.getText().charAt(0)) ) {
         if (r.type == ANTLRTokenTypes.TOKEN_REF) {
             if (!(grammar instanceof LexerGrammar)) {
-                tool.error("Lexical rule " + r.getText() +
-                           " defined outside of lexer",
-                           grammar.getFilename(),
-                           r.getLine(),
-                           r.getColumn());
+                tool.error(
+                  "Lexical rule " + r.getText() + " defined outside of lexer",
+                  grammar.getFilename(),
+                  r.getLine(),
+                  r.getColumn());
                 r.setText(r.getText().toLowerCase());
             }
         } else {
             if (grammar instanceof LexerGrammar) {
                 tool.error("Lexical rule names must be upper case, '" +
-                           r.getText() +
-                           "' is not",
+                  r.getText() + "' is not",
                            grammar.getFilename(),
                            r.getLine(),
                            r.getColumn());
@@ -267,10 +271,8 @@ public class MakeGrammar extends DefineGrammarSymbols {
             id = CodeGenerator.encodeLexerRuleName(id);
         }
         RuleSymbol rs = (RuleSymbol)grammar.getSymbol(id);
-        RuleBlock rb = new RuleBlock(grammar,
-                                     r.getText(),
-                                     r.getLine(),
-                                     ruleAutoGen);
+        RuleBlock rb =
+          new RuleBlock(grammar, r.getText(), r.getLine(), ruleAutoGen);
 
         // Lexer rules do not generate default error handling
         rb.setDefaultErrorHandler(grammar.getDefaultErrorHandler());
@@ -286,7 +288,7 @@ public class MakeGrammar extends DefineGrammarSymbols {
 
     public void endAlt() {
         super.endAlt();
-        if (nested == 0) {	// all rule-level alts link to ruleEnd node
+        if (nested == 0) {        // all rule-level alts link to ruleEnd node
             addElementToCurrentAlt(ruleEnd);
         } else {
             addElementToCurrentAlt(context().blockEnd);
@@ -317,16 +319,14 @@ public class MakeGrammar extends DefineGrammarSymbols {
         }
         if (context().block instanceof RuleBlock) {
             // Named rule
-            ((RuleBlock)context().block).addExceptionSpec(
-              currentExceptionSpec);
+            ((RuleBlock)context().block).addExceptionSpec(currentExceptionSpec);
         } else {
             // It must be a plain-old alternative block
             if (context().currentAlt().exceptionSpec != null) {
-                tool.error(
-                  "Alternative already has an exception specification",
-                  grammar.getFilename(),
-                  context().block.getLine(),
-                  context().block.getColumn());
+                tool.error("Alternative already has an exception specification",
+                           grammar.getFilename(),
+                           context().block.getLine(),
+                           context().block.getColumn());
             } else {
                 context().currentAlt().exceptionSpec = currentExceptionSpec;
             }
@@ -347,7 +347,7 @@ public class MakeGrammar extends DefineGrammarSymbols {
 
     public void endRule(String rule) {
         super.endRule(rule);
-        BlockContext ctx = (BlockContext)blocks.pop();	// remove scope
+        BlockContext ctx = (BlockContext)blocks.pop();        // remove scope
         // record the start of this block in the ending node
         ruleEnd.block = ctx.block;
         ruleEnd.block.prepareForAnalysis();
@@ -369,14 +369,14 @@ public class MakeGrammar extends DefineGrammarSymbols {
             if (!analyzer.subruleCanBeInverted(block,
                                                grammar instanceof LexerGrammar)) {
                 String newline = System.getProperty("line.separator");
-                tool.error("This subrule cannot be inverted.  Only subrules of the form:" +
-                           newline +
-                           "    (T1|T2|T3...) or" + newline +
-                           "    ('c1'|'c2'|'c3'...)" + newline +
-                           "may be inverted (ranges are also allowed).",
-                           grammar.getFilename(),
-                           block.getLine(),
-                           block.getColumn());
+                tool.error(
+                  "This subrule cannot be inverted.  Only subrules of the form:" +
+                    newline + "    (T1|T2|T3...) or" + newline +
+                    "    ('c1'|'c2'|'c3'...)" + newline +
+                    "may be inverted (ranges are also allowed).",
+                  grammar.getFilename(),
+                  block.getLine(),
+                  block.getColumn());
             }
         }
 
@@ -398,7 +398,7 @@ public class MakeGrammar extends DefineGrammarSymbols {
     public void endTree() {
         super.endTree();
         BlockContext ctx = (BlockContext)blocks.pop();
-        addElementToCurrentAlt(ctx.block);		// add new TreeElement to enclosing alt.
+        addElementToCurrentAlt(ctx.block);                // add new TreeElement to enclosing alt.
     }
 
     /**
@@ -412,16 +412,15 @@ public class MakeGrammar extends DefineGrammarSymbols {
         if (label != null) {
             // Does this label already exist?
             for (int i = 0; i < ruleBlock.labeledElements.size(); i++) {
-                AlternativeElement altEl = (AlternativeElement)ruleBlock.labeledElements.elementAt(
-                  i);
+                AlternativeElement altEl =
+                  (AlternativeElement)ruleBlock.labeledElements.elementAt(i);
                 String l = altEl.getLabel();
                 if (l != null && l.equals(label.getText())) {
-                    tool.error(
-                      "Label '" + label.getText() +
+                    tool.error("Label '" + label.getText() +
                       "' has already been defined",
-                      grammar.getFilename(),
-                      label.getLine(),
-                      label.getColumn());
+                               grammar.getFilename(),
+                               label.getLine(),
+                               label.getColumn());
                     return;
                 }
             }
@@ -447,7 +446,8 @@ public class MakeGrammar extends DefineGrammarSymbols {
         // copy any init action also.
         OneOrMoreBlock b = new OneOrMoreBlock(grammar);
         setBlock(b, context().block);
-        BlockContext old = (BlockContext)blocks.pop(); // remove old scope; we want new type of subrule
+        BlockContext old =
+          (BlockContext)blocks.pop(); // remove old scope; we want new type of subrule
         blocks.push(new BlockContext());
         context().block = b;
         context().blockEnd = old.blockEnd;
@@ -563,10 +563,8 @@ public class MakeGrammar extends DefineGrammarSymbols {
         }
 
         super.refCharRange(t1, t2, label, autoGenType, lastInRule);
-        CharRangeElement cr = new CharRangeElement((LexerGrammar)grammar,
-                                                   t1,
-                                                   t2,
-                                                   autoGenType);
+        CharRangeElement cr =
+          new CharRangeElement((LexerGrammar)grammar, t1, t2, autoGenType);
         addElementToCurrentAlt(cr);
         labelElement(cr, label);
 
@@ -584,19 +582,19 @@ public class MakeGrammar extends DefineGrammarSymbols {
 		System.out.println("setting tokens spec option for "+tok.getText());
 		System.out.println(option.getText()+","+value.getText());
 		*/
-        TokenSymbol ts = (TokenSymbol)grammar.tokenManager.getTokenSymbol(
-          tok.getText());
+        TokenSymbol ts =
+          (TokenSymbol)grammar.tokenManager.getTokenSymbol(tok.getText());
         if (ts == null) {
             tool.panic("cannot find " + tok.getText() + "in tokens {...}");
         }
         if (option.getText().equals("AST")) {
             ts.setASTNodeType(value.getText());
         } else {
-            grammar.antlrTool.error("invalid tokens {...} element option:" +
-                                    option.getText(),
-                                    grammar.getFilename(),
-                                    option.getLine(),
-                                    option.getColumn());
+            grammar.antlrTool
+              .error("invalid tokens {...} element option:" + option.getText(),
+                     grammar.getFilename(),
+                     option.getLine(),
+                     option.getColumn());
         }
     }
 
@@ -606,11 +604,12 @@ public class MakeGrammar extends DefineGrammarSymbols {
 		System.out.println(option.getText()+","+value.getText());
 		*/
         AlternativeElement e = context().currentElement();
-        if (e instanceof StringLiteralElement || e instanceof TokenRefElement || e instanceof WildcardElement) {
+        if (e instanceof StringLiteralElement ||
+          e instanceof TokenRefElement || e instanceof WildcardElement) {
             ((GrammarAtom)e).setOption(option, value);
         } else {
             tool.error("cannot use element option (" + option.getText() +
-                       ") for this kind of element",
+              ") for this kind of element",
                        grammar.getFilename(),
                        option.getLine(),
                        option.getColumn());
@@ -625,8 +624,8 @@ public class MakeGrammar extends DefineGrammarSymbols {
         if (currentExceptionSpec == null) {
             tool.panic("exception handler processing internal error");
         }
-        currentExceptionSpec.addHandler(
-          new ExceptionHandler(exTypeAndName, action));
+        currentExceptionSpec.addHandler(new ExceptionHandler(exTypeAndName,
+                                                             action));
     }
 
     public void refInitAction(Token action) {
@@ -645,15 +644,14 @@ public class MakeGrammar extends DefineGrammarSymbols {
     // Only called for rule blocks
     public void refReturnAction(Token returnAction) {
         if (grammar instanceof LexerGrammar) {
-            String name = CodeGenerator.encodeLexerRuleName(
-              ((RuleBlock)context().block).getRuleName());
+            String name =
+              CodeGenerator.encodeLexerRuleName(((RuleBlock)context().block).getRuleName());
             RuleSymbol rs = (RuleSymbol)grammar.getSymbol(name);
             if (rs.access.equals("public")) {
-                tool.warning(
-                  "public Lexical rules cannot specify return type",
-                  grammar.getFilename(),
-                  returnAction.getLine(),
-                  returnAction.getColumn());
+                tool.warning("public Lexical rules cannot specify return type",
+                             grammar.getFilename(),
+                             returnAction.getLine(),
+                             returnAction.getColumn());
                 return;
             }
         }
@@ -728,9 +726,8 @@ public class MakeGrammar extends DefineGrammarSymbols {
                        lit.getLine(),
                        lit.getColumn());
         }
-        StringLiteralElement sl = new StringLiteralElement(grammar,
-                                                           lit,
-                                                           autoGenType);
+        StringLiteralElement sl =
+          new StringLiteralElement(grammar, lit, autoGenType);
 
         // If case-insensitive, then check each char of the stirng literal
         if (grammar instanceof LexerGrammar &&
@@ -808,10 +805,8 @@ public class MakeGrammar extends DefineGrammarSymbols {
                            inverted,
                            autoGenType,
                            lastInRule);
-            TokenRefElement te = new TokenRefElement(grammar,
-                                                     t,
-                                                     inverted,
-                                                     autoGenType);
+            TokenRefElement te =
+              new TokenRefElement(grammar, t, inverted, autoGenType);
             addElementToCurrentAlt(te);
             labelElement(te, label);
         }
@@ -830,10 +825,8 @@ public class MakeGrammar extends DefineGrammarSymbols {
             return;
         }
         super.refTokenRange(t1, t2, label, autoGenType, lastInRule);
-        TokenRangeElement tr = new TokenRangeElement(grammar,
-                                                     t1,
-                                                     t2,
-                                                     autoGenType);
+        TokenRangeElement tr =
+          new TokenRangeElement(grammar, t1, t2, autoGenType);
         if (tr.end < tr.begin) {
             tool.error("Malformed range.",
                        grammar.getFilename(),
@@ -910,7 +903,8 @@ public class MakeGrammar extends DefineGrammarSymbols {
         // copy any init action also.
         SynPredBlock b = new SynPredBlock(grammar);
         setBlock(b, context().block);
-        BlockContext old = (BlockContext)blocks.pop(); // remove old scope; we want new type of subrule
+        BlockContext old =
+          (BlockContext)blocks.pop(); // remove old scope; we want new type of subrule
         blocks.push(new BlockContext());
         context().block = b;
         context().blockEnd = old.blockEnd;
@@ -929,7 +923,8 @@ public class MakeGrammar extends DefineGrammarSymbols {
         // copy any init action also.
         ZeroOrMoreBlock b = new ZeroOrMoreBlock(grammar);
         setBlock(b, context().block);
-        BlockContext old = (BlockContext)blocks.pop(); // remove old scope; we want new type of subrule
+        BlockContext old =
+          (BlockContext)blocks.pop(); // remove old scope; we want new type of subrule
         blocks.push(new BlockContext());
         context().block = b;
         context().blockEnd = old.blockEnd;

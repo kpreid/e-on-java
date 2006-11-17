@@ -38,8 +38,7 @@ public class SwissRetainer extends Retainer implements Amplifiable {
 
                          Object payload,
                          IdentityMgr identityMgr,
-                         BigInteger swissBase)
-      throws MalformedURLException {
+                         BigInteger swissBase) throws MalformedURLException {
         super(optTimer, optExpirationDate);
         myPayload = payload;
         myIdentityMgr = identityMgr;
@@ -69,17 +68,15 @@ public class SwissRetainer extends Retainer implements Amplifiable {
     }
 
     /**
-     * 
+     *
      */
     public SealedBox __optSealedDispatch(Object brand) {
         if (PersistentKeyHolder.THE_BRAND == brand) {
-            Object[] args = {
-                myOptTimer,
-                EInt.valueOf(myOptExpirationDate),
-                myPayload,
-                myIdentityMgr,
-                mySwissBase
-            };
+            Object[] args = {myOptTimer,
+              EInt.valueOf(myOptExpirationDate),
+              myPayload,
+              myIdentityMgr,
+              mySwissBase};
             Object[] uncall = {SwissRetainerMaker, "run", args};
             return PersistentKeyHolder.THE_SEALER.seal(uncall);
         } else {

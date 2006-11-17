@@ -25,8 +25,8 @@ import org.quasiliteral.syntax.LineFeeder;
 import java.io.IOException;
 
 /**
- * Like LineFeeder, but collapses @@ to @ and $$ to $. For use as input to
- * the E lexer/parser used as a quasi-parser.
+ * Like LineFeeder, but collapses @@ to @ and $$ to $. For use as input to the
+ * E lexer/parser used as a quasi-parser.
  *
  * @author Mark S. Miller
  */
@@ -52,14 +52,10 @@ public class QuasiFeeder implements LineFeeder {
                              boolean quoted,
                              int indent,
                              char closer,
-                             int closeIndent)
-      throws IOException {
+                             int closeIndent) throws IOException {
         //XXX thread blockage point:
-        Twine optResult = myWrapped.optNextLine(atTop,
-                                                quoted,
-                                                indent,
-                                                closer,
-                                                closeIndent);
+        Twine optResult =
+          myWrapped.optNextLine(atTop, quoted, indent, closer, closeIndent);
 
         if (null == optResult) {
             return null;

@@ -7,12 +7,12 @@ import org.erights.e.develop.exception.ExceptionMgr;
 import org.erights.e.meta.java.math.BigIntegerSugar;
 
 import java.io.UnsupportedEncodingException;
+import java.math.BigInteger;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
 import java.security.Signature;
 import java.security.SignatureException;
-import java.math.BigInteger;
 
 /**
  * The class java.security.Signature is used in one of two disjoint ways, so
@@ -39,9 +39,9 @@ public class Verifier {
      * The algorithm must be compatible with the algorithm of the key, and be
      * the same as the algorithm used to generate the signatures we're
      * checking.
-     * <p>
-     * For example, if the key's algorithm is RSA, the signing algorithm may
-     * be SHA1withRSA.
+     * <p/>
+     * For example, if the key's algorithm is RSA, the signing algorithm may be
+     * SHA1withRSA.
      *
      * @param publicKey
      * @param algorithm
@@ -99,7 +99,6 @@ public class Verifier {
     }
 
     /**
-     *
      * @return
      */
     public String getAlgorithm() {

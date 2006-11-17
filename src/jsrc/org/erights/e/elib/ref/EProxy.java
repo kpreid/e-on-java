@@ -30,19 +30,18 @@ import org.erights.e.elib.slot.Guard;
  * another vat, and which will therefore pass messages sent on to that other
  * vat.
  * <p/>
- * However, a EProxy delegates most of its behavior to its EProxyHandler,
- * which may be untrusted code. Therefore, the EProxy itself has
- * responsibility for adhering to the Ref contract despite arbitrary
- * behavior by its handler. This is a step toward reimplementing
- * CapTP in the E language.
+ * However, a EProxy delegates most of its behavior to its EProxyHandler, which
+ * may be untrusted code. Therefore, the EProxy itself has responsibility for
+ * adhering to the Ref contract despite arbitrary behavior by its handler. This
+ * is a step toward reimplementing CapTP in the E language.
  * <p/>
  * A EProxyHandler should create and point at its EProxy only using
- * EProxyResolver, so it can find out when the EProxy has been GCed, be able
- * to resolve it, and be able to transparently revive it.
+ * EProxyResolver, so it can find out when the EProxy has been GCed, be able to
+ * resolve it, and be able to transparently revive it.
  * <p/>
- * A Settled EProxy (one with sameness identity) is represented by the
- * subclass FarRef. An Unsettled EProxy (one without such identity, and
- * therefore a Promise) is represented by the subclass RemotePromise.
+ * A Settled EProxy (one with sameness identity) is represented by the subclass
+ * FarRef. An Unsettled EProxy (one without such identity, and therefore a
+ * Promise) is represented by the subclass RemotePromise.
  *
  * @author Mark S. Miller
  */
@@ -71,12 +70,11 @@ abstract class EProxy extends Ref {
      * handlerClass, then return that handler; else null.
      * <p/>
      * All implementations of <tt>getOptProxyHandler/1</tt> must be thread
-     * safe, in order for
-     * {-@link BootRefHandler#getOptBootRefHandler(Object)
-     * BootRefHandler.getOptBootRefHandler/1}
-     * to be thread safe: myOptHandler only makes one transition from non-null
-     * to null. This implementation samples it once, and then proceeds with the
-     * possibly slightly stale sample.
+     * safe, in order for {-@link BootRefHandler#getOptBootRefHandler(Object)
+     * BootRefHandler.getOptBootRefHandler/1} to be thread safe: myOptHandler
+     * only makes one transition from non-null to null. This implementation
+     * samples it once, and then proceeds with the possibly slightly stale
+     * sample.
      */
     public EProxyHandler getOptProxyHandler(Class handlerClass) {
         EProxyHandler result = myOptHandler;
@@ -109,10 +107,10 @@ abstract class EProxy extends Ref {
      * whatever it's been shortened to.
      * <p/>
      * All implementations of <tt>resolutionRef/0</tt> must be thread safe, in
-     * order for {@link Ref#resolution() Ref.resolution/0} to be thread
-     * safe: If resolutionRef/0 is called from another thread while this
-     * proxy is in the middle of being shortened, then resolutionRef/0 must
-     * return either <tt>this</tt> or what this proxy is being shortened to.
+     * order for {@link Ref#resolution() Ref.resolution/0} to be thread safe:
+     * If resolutionRef/0 is called from another thread while this proxy is in
+     * the middle of being shortened, then resolutionRef/0 must return either
+     * <tt>this</tt> or what this proxy is being shortened to.
      * <p/>
      * XXX Although the implementation doesn't synchronize, it is inductively
      * thread safe given a simple memory model. Is it safe in Java's complex
@@ -190,8 +188,8 @@ abstract class EProxy extends Ref {
                 //A sendAllOnly's report back to its caller is normally
                 //ignored, so a possibly ignored throw should be traced.
                 if (Trace.causality.warning && Trace.ON) {
-                    Trace.causality.warningm("ignored from handler: ",
-                                             problem);
+                    Trace.causality
+                      .warningm("ignored from handler: ", problem);
                 }
                 return problem;
             }

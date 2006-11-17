@@ -18,7 +18,8 @@ public class CF_attribute_info {
      * Constructor.
      *
      * @param attribute_name_index Index into the constant pool of the
-     *                             CONSTANT_Utf8_info object containing the attribute name.
+     *                             CONSTANT_Utf8_info object containing the
+     *                             attribute name.
      * @param info                 The bytes of the attribute info themselves.
      */
     CF_attribute_info(int attribute_name_index, byte info[]) {
@@ -39,8 +40,8 @@ public class CF_attribute_info {
     /**
      * Obtain the number of bytes of attribute data.
      *
-     * @return the number of bytes in the collection of attribute data bytes
-     *         in this attribute.
+     * @return the number of bytes in the collection of attribute data bytes in
+     *         this attribute.
      */
     public int info_count() {
         return myInfo.length;
@@ -60,8 +61,8 @@ public class CF_attribute_info {
     /**
      * Obtain some of the attribute bytes.
      *
-     * @param offset The index (zero-based) into the attribute bytes of
-     *               the first byte desired.
+     * @param offset The index (zero-based) into the attribute bytes of the
+     *               first byte desired.
      * @param length The number of bytes desired, starting at the given offset
      * @return a copy of the indicated sub-section of the array of data bytes
      *         for this attribute.
@@ -86,8 +87,8 @@ public class CF_attribute_info {
     /**
      * Read and return an attribute_info object from a DataInputStream.
      *
-     * @param in The DataInputStream to read from; this should be positioned
-     *           at the first byte of the method descriptor being read.
+     * @param in The DataInputStream to read from; this should be positioned at
+     *           the first byte of the method descriptor being read.
      */
     static public CF_attribute_info read(DataInputStream in)
       throws IOException {

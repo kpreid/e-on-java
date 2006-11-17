@@ -30,8 +30,7 @@ public class QTerm extends QAstro {
     /**
      *
      */
-    static public final StaticMaker QTermMaker =
-      StaticMaker.make(QTerm.class);
+    static public final StaticMaker QTermMaker = StaticMaker.make(QTerm.class);
 
     /**
      * @serial The functor info
@@ -46,8 +45,8 @@ public class QTerm extends QAstro {
     /**
      * Makes a QTerm that matches or generates a Astro.
      * <p/>
-     * The invariants of a QTerm are not checked here, but rather are
-     * enforced by the callers in this class and in QTermBuilder.
+     * The invariants of a QTerm are not checked here, but rather are enforced
+     * by the callers in this class and in QTermBuilder.
      *
      * @param builder  Used to build the results of a substitute
      * @param qFunctor Matches of generates functor information
@@ -64,9 +63,7 @@ public class QTerm extends QAstro {
      * Uses 'QTermMaker(myBuilder, myQFunctor, myQArgs)'
      */
     public Object[] getSpreadUncall() {
-        Object[] result = {
-            QTermMaker, "run", myBuilder, myQFunctor, myQArgs
-        };
+        Object[] result = {QTermMaker, "run", myBuilder, myQFunctor, myQArgs};
         return result;
     }
 
@@ -93,9 +90,8 @@ public class QTerm extends QAstro {
     }
 
     /**
-     * Either literal data or null. If not null, then the tag
-     * must represent the canonical literal type for this
-     * kind of data in this schema.
+     * Either literal data or null. If not null, then the tag must represent
+     * the canonical literal type for this kind of data in this schema.
      */
     public Object getOptData() {
         return myQFunctor.getOptData();
@@ -176,7 +172,8 @@ public class QTerm extends QAstro {
             return -1;
         }
         T.requireSI(1 == matches,
-                    "Functor may only match 0 or 1 specimen: ", matches);
+                    "Functor may only match 0 or 1 specimen: ",
+                    matches);
         ConstList tArgs = optSpecimen.getArgs();
         int num = myQArgs.matchBindSlice(args, tArgs, bindings, index);
         if (tArgs.size() == num) {
@@ -196,8 +193,7 @@ public class QTerm extends QAstro {
     /**
      *
      */
-    public void prettyPrintOn(TextWriter out)
-      throws IOException {
+    public void prettyPrintOn(TextWriter out) throws IOException {
         String label = myQFunctor.toString();
         out.print(label);
         String spaces = StringHelper.multiply(" ", label.length() + 1);
@@ -212,7 +208,8 @@ public class QTerm extends QAstro {
      */
     QAstro asFunctor() {
         T.require(1 == myQArgs.getHeight(),
-                  "Terms with args can't be used as functors: ", this);
+                  "Terms with args can't be used as functors: ",
+                  this);
         //could 'return this;', but may as well shed unnecessary structure
         return myQFunctor;
     }
@@ -224,23 +221,16 @@ public class QTerm extends QAstro {
                    FlexList optBindings,
                    int[] prefix,
                    int shapeSoFar) {
-        shapeSoFar = myQFunctor.startShape(args,
-                                           optBindings,
-                                           prefix,
-                                           shapeSoFar);
-        shapeSoFar = myQArgs.startShape(args,
-                                        optBindings,
-                                        prefix,
-                                        shapeSoFar);
+        shapeSoFar =
+          myQFunctor.startShape(args, optBindings, prefix, shapeSoFar);
+        shapeSoFar = myQArgs.startShape(args, optBindings, prefix, shapeSoFar);
         return shapeSoFar;
     }
 
     /**
      * Just delegate to all children
      */
-    void endShape(FlexList optBindings,
-                  int[] prefix,
-                  int shape) {
+    void endShape(FlexList optBindings, int[] prefix, int shape) {
         myQFunctor.endShape(optBindings, prefix, shape);
         myQArgs.endShape(optBindings, prefix, shape);
     }

@@ -176,18 +176,16 @@ public class TreeParser {
     public void traceIn(String rname, AST t) {
         traceDepth += 1;
         traceIndent();
-        System.out.println("> " + rname + "(" + (t != null ?
-                                                 t.toString() :
-                                                 "null") + ")" +
-                           ((inputState.guessing > 0) ? " [guessing]" : ""));
+        System.out
+          .println("> " + rname + "(" + (t != null ? t.toString() : "null") +
+            ")" + ((inputState.guessing > 0) ? " [guessing]" : ""));
     }
 
     public void traceOut(String rname, AST t) {
         traceIndent();
-        System.out.println("< " + rname + "(" + (t != null ?
-                                                 t.toString() :
-                                                 "null") + ")" +
-                           ((inputState.guessing > 0) ? " [guessing]" : ""));
+        System.out
+          .println("< " + rname + "(" + (t != null ? t.toString() : "null") +
+            ")" + ((inputState.guessing > 0) ? " [guessing]" : ""));
         traceDepth--;
     }
 }

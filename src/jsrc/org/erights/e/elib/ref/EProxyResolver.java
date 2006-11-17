@@ -35,8 +35,8 @@ import java.io.IOException;
  * A maker on demand of a EProxy as well as the resolver of this EProxy.
  * <p/>
  * I use a WeakPtr to point at my Ref so it may be GCed. Note that
- * EProxyResolver exposes its EProxyHandler. If this isn't suitable for
- * you, wrap it.
+ * EProxyResolver exposes its EProxyHandler. If this isn't suitable for you,
+ * wrap it.
  *
  * @author Mark S. Miller
  */
@@ -64,20 +64,20 @@ public class EProxyResolver implements Resolver, EPrintable {
     /**
      * @param handler     Delegates delegatable eventual-ref behavior to the
      *                    handler.
-     * @param optIdentity If null, the handled reference will be unresolved
-     *                    (a RemotePromise). If non-null, the optIdentity must
-     *                    be an honorary {@link Selfless} object. This
-     *                    includes {@link java.math.BigInteger} and
-     *                    {@link net.captp.jcomm.ObjectID}. The identity
-     *                    object serves as the basis for the sameness identity
-     *                    of the resulting handled resolved reference
-     *                    (FarRef).
+     * @param optIdentity If null, the handled reference will be unresolved (a
+     *                    RemotePromise). If non-null, the optIdentity must be
+     *                    an honorary {@link Selfless} object. This includes
+     *                    {@link java.math.BigInteger} and {@link
+     *                    net.captp.jcomm.ObjectID}. The identity object serves
+     *                    as the basis for the sameness identity of the
+     *                    resulting handled resolved reference (FarRef).
      */
     public EProxyResolver(EProxyHandler handler, Object optIdentity) {
         optIdentity = Ref.resolution(optIdentity);
-        T.require(null == optIdentity ||
-                  Selfless.HONORARY.has(optIdentity.getClass()),
-                  optIdentity, " must be an honorary Selfless object");
+        T.require(
+          null == optIdentity || Selfless.HONORARY.has(optIdentity.getClass()),
+          optIdentity,
+          " must be an honorary Selfless object");
         myOptHandler = handler;
         myOptIdentity = optIdentity;
         myOptRefPtr = null;
@@ -119,9 +119,8 @@ public class EProxyResolver implements Resolver, EPrintable {
     }
 
     /**
-     * Gets my Ref, or quietly remakes it if the old one is gone. This
-     * enables imports to be quietly revived when DGC-ships cross in the
-     * night.
+     * Gets my Ref, or quietly remakes it if the old one is gone. This enables
+     * imports to be quietly revived when DGC-ships cross in the night.
      */
     public Ref getProxy() {
         Ref result = getOptRef();
@@ -151,12 +150,12 @@ public class EProxyResolver implements Resolver, EPrintable {
     /**
      * Automatically eventually invoked when one of my Refs have gone away.
      * <p/>
-     * Normally just forwards the reactToGC() to myOptHandler. But, in order
-     * to avoid a race condition, it only does so if there's no current Ref.
-     * There might be a current Ref if getProxy() was called after the
-     * old Ref was GCed, but before I was notified. Note that multiple Refs
-     * might be created and GCed before I get notified, in which case I might
-     * notify myOptHandler multiple times.
+     * Normally just forwards the reactToGC() to myOptHandler. But, in order to
+     * avoid a race condition, it only does so if there's no current Ref. There
+     * might be a current Ref if getProxy() was called after the old Ref was
+     * GCed, but before I was notified. Note that multiple Refs might be
+     * created and GCed before I get notified, in which case I might notify
+     * myOptHandler multiple times.
      */
     public void reactToGC() {
         if (null == myOptHandler) {
@@ -177,10 +176,9 @@ public class EProxyResolver implements Resolver, EPrintable {
      * Resolves the proxy to become the target.
      * <p/>
      * In CapTP, there are two reasons this might normally happen:<ol>
-     * <li>Communications failure making us BROKEN, or
-     * <li>the target of a EProxy responded to a __whenMoreResolved/1, of which
-     * this EProxyResolver is the argument. XXX
-     * </ol>
+     * <li>Communications failure making us BROKEN, or <li>the target of a
+     * EProxy responded to a __whenMoreResolved/1, of which this EProxyResolver
+     * is the argument. XXX </ol>
      */
     public boolean resolve(Object target, boolean strict) {
         Ref optRef = getOptRef();
@@ -197,7 +195,6 @@ public class EProxyResolver implements Resolver, EPrintable {
     }
 
     /**
-     *
      * @param target
      */
     public void resolve(Object target) {

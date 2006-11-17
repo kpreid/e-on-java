@@ -51,7 +51,7 @@ final class CompositeTwine extends Twine {
      * '__makeTwine fromParts(myParts)'
      */
     public Object[] getSpreadUncall() {
-        return new Object[]{ GetTwineMaker(), "fromParts", getParts()};
+        return new Object[]{GetTwineMaker(), "fromParts", getParts()};
     }
 
     /**

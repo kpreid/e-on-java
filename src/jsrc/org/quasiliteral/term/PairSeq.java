@@ -31,10 +31,8 @@ public class PairSeq extends Termish {
     public PairSeq(Termish left, Termish right) {
         myLeft = left;
         myRight = right;
-        T.require(!(myLeft instanceof EmptySeq),
-                  "May not be empty");
-        T.require(!(myRight instanceof EmptySeq),
-                  "May not be empty");
+        T.require(!(myLeft instanceof EmptySeq), "May not be empty");
+        T.require(!(myRight instanceof EmptySeq), "May not be empty");
     }
 
     /**
@@ -61,7 +59,6 @@ public class PairSeq extends Termish {
     }
 
     /**
-     *
      * @param list
      */
     void getTerms(FlexList list) {
@@ -84,7 +81,6 @@ public class PairSeq extends Termish {
     }
 
     /**
-     *
      * @param out
      * @param quasiFlag
      * @throws java.io.IOException

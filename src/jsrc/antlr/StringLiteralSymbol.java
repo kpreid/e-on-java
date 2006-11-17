@@ -9,7 +9,7 @@ package antlr;
 
 class StringLiteralSymbol extends TokenSymbol {
 
-    protected String label;	// was this string literal labeled?
+    protected String label;        // was this string literal labeled?
 
 
     public StringLiteralSymbol(String r) {

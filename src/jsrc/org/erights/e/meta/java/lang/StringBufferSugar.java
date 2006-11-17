@@ -19,8 +19,8 @@ Copyright (C) 1998 Electric Communities. All Rights Reserved.
 Contributor(s): ______________________________________.
 */
 
-import org.erights.e.elib.tables.AssocFunc;
 import org.erights.e.elib.oldeio.TextWriter;
+import org.erights.e.elib.tables.AssocFunc;
 import org.erights.e.meta.java.math.EInt;
 
 import java.io.IOException;
@@ -47,9 +47,9 @@ public class StringBufferSugar {
     }
 
     /**
-     * Considered as a map, an array is a ConstMap from indices to
-     * values, so iterate() will call func with each successive pair of
-     * index and value, in ascending index order.
+     * Considered as a map, an array is a ConstMap from indices to values, so
+     * iterate() will call func with each successive pair of index and value,
+     * in ascending index order.
      */
     static public void iterate(StringBuffer self, AssocFunc func) {
         int len = self.length();
@@ -75,7 +75,6 @@ public class StringBufferSugar {
     }
 
     /**
-     *
      * @param self
      * @param out
      */

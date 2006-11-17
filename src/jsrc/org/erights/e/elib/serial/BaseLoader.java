@@ -28,8 +28,8 @@ public abstract class BaseLoader implements Loader {
      * <pre>    [self, "get", [shortName]]</pre>
      * Otherwise, it returns null.
      * <p/>
-     * See {@link Uncaller#optUncall} for the security constraint that
-     * would typically cause one to use this method.
+     * See {@link Uncaller#optUncall} for the security constraint that would
+     * typically cause one to use this method.
      * <p/>
      *
      * @param self    The authority-diminishing facet we're going to portray
@@ -55,8 +55,7 @@ public abstract class BaseLoader implements Loader {
             return null;
         }
         String fullName = (String)fullArgs[0];
-        if (wrapped == optFullDesc[0] &&
-          "get".equals(optFullDesc[1]) &&
+        if (wrapped == optFullDesc[0] && "get".equals(optFullDesc[1]) &&
           fullName.startsWith(prefix)) {
 
             String shortName = fullName.substring(prefix.length());
@@ -67,15 +66,13 @@ public abstract class BaseLoader implements Loader {
 
     /**
      * Even though it would seem more natural to implement optUncall out of
-     * optUnget, it should actually go the other way for reasons explained
-     * <a href=
-     * "http://www.erights.org/data/serial/jhu-paper/subgraph-security.html"
+     * optUnget, it should actually go the other way for reasons explained <a
+     * href= "http://www.erights.org/data/serial/jhu-paper/subgraph-security.html"
      * >here</a>.
      */
     public String optUnget(Object child) {
         Object[] optPortrayal = optUncall(child);
-        if (null != optPortrayal &&
-          this == optPortrayal[0] &&
+        if (null != optPortrayal && this == optPortrayal[0] &&
           "get".equals(optPortrayal[1])) {
 
             return (String)optPortrayal[2];

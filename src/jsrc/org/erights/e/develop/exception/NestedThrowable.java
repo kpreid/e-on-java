@@ -24,15 +24,11 @@ Contributor(s): ______________________________________.
  * order to add backtrace info, or both.
  * <p/>
  * For a NestedThrowable, the convention for the message is that it should be
- * empty, or each line should begin with
- * <ul>
- * <li>"# " to indicate a message intended only for human parsing.
- * <li>". " to indicate a printing of a problematic call's value
- * <li>"@ " to indicate where the problem occurred
- * <li>"- " to indicate what was called.
- * </ul>
- * If the message is empty, it will be ignored by
- * {@link ThrowableSugar#eStack}.
+ * empty, or each line should begin with <ul> <li>"# " to indicate a message
+ * intended only for human parsing. <li>". " to indicate a printing of a
+ * problematic call's value <li>"@ " to indicate where the problem occurred
+ * <li>"- " to indicate what was called. </ul> If the message is empty, it will
+ * be ignored by {@link ThrowableSugar#eStack}.
  *
  * @author modification by Mark S. Miller
  */

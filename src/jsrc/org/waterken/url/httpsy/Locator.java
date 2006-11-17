@@ -20,9 +20,12 @@ public final class Locator {
     /**
      * The instance.
      */
-    private static final org.waterken.url.Locator INSTANCE = org.waterken.url.tls.Locator.make(
-      org.waterken.url.conforming.Locator.make(DEFAULT_PORT),
-      org.waterken.url.tls.Nobody.make());
+    private static final org.waterken.url.Locator INSTANCE = org.waterken
+      .url
+      .tls
+      .Locator
+      .make(org.waterken.url.conforming.Locator.make(DEFAULT_PORT),
+            org.waterken.url.tls.Nobody.make());
 
     /**
      * Constructs an HTTPSY locator.

@@ -4,8 +4,8 @@ package org.erights.e.meta.java.lang;
 // found at http://www.opensource.org/licenses/mit-license.html ...............
 
 import org.erights.e.develop.assertion.T;
-import org.erights.e.elib.util.OneArgFunc;
 import org.erights.e.elib.oldeio.TextWriter;
+import org.erights.e.elib.util.OneArgFunc;
 import org.erights.e.meta.java.math.BaseEIntGuardSugar;
 import org.erights.e.meta.java.math.EInt;
 
@@ -21,8 +21,7 @@ public class ShortGuardSugar extends BaseEIntGuardSugar {
      */
     public ShortGuardSugar(Class clazz) {
         super(clazz);
-        T.require(Short.class == clazz,
-                  clazz, " must be a 'short' type");
+        T.require(Short.class == clazz, clazz, " must be a 'short' type");
     }
 
     /**

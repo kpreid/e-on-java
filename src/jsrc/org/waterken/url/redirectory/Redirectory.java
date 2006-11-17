@@ -31,8 +31,9 @@ public final class Redirectory {
     public static String define(final String cap,
                                 final String mid,
                                 final String name) throws IOException {
-        final String args = "<doc schema=\"http://web-calculus.org/string/String\">" +
-          name + "</doc>\n";
+        final String args =
+          "<doc schema=\"http://web-calculus.org/string/String\">" + name +
+            "</doc>\n";
         return AMP.invoke(cap, mid, args.getBytes("UTF-8"));
     }
 
@@ -54,9 +55,10 @@ public final class Redirectory {
             args = "<doc schema=\"http://web-calculus.org/pointer/Embed\">\n" +
               "\t<target>" + location[0] + "</target>\n" + "</doc>\n";
         } else {
-            args = "<doc schema=\"http://web-calculus.org/pointer/Balance\">\n" +
-              "\t<super schema=\"http://web-calculus.org/pointer/Embed\">\n" +
-              "\t\t<target>" + location[0] + "</target>\n" + "\t</super>\n";
+            args =
+              "<doc schema=\"http://web-calculus.org/pointer/Balance\">\n" +
+                "\t<super schema=\"http://web-calculus.org/pointer/Embed\">\n" +
+                "\t\t<target>" + location[0] + "</target>\n" + "\t</super>\n";
             for (int i = 0; i != location.length; ++i) {
                 args += "\t<option>" + location[i] + "</option>\n";
             }

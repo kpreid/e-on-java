@@ -19,6 +19,7 @@ Copyright (C) 1998 Electric Communities. All Rights Reserved.
 Contributor(s): ______________________________________.
 */
 
+import org.erights.e.develop.assertion.T;
 import org.erights.e.elang.scope.EvalContext;
 import org.erights.e.elang.scope.Scope;
 import org.erights.e.elang.scope.ScopeLayout;
@@ -29,19 +30,18 @@ import org.erights.e.elib.base.SourceSpan;
 import org.erights.e.elib.oldeio.TextWriter;
 import org.erights.e.elib.prim.E;
 import org.erights.e.elib.ref.Ref;
+import org.erights.e.elib.serial.DeepPassByCopy;
 import org.erights.e.elib.tables.ConstList;
 import org.erights.e.elib.tables.FlexList;
 import org.erights.e.elib.tables.Memoizer;
 import org.erights.e.elib.util.OneArgFunc;
-import org.erights.e.elib.serial.DeepPassByCopy;
 import org.erights.e.meta.java.math.EInt;
-import org.erights.e.develop.assertion.T;
 
 import java.io.IOException;
 
 /**
- * Those ParseNodes that--after expansion--define the kernel
- * expressions evaluated by the E Virtual Machine.
+ * Those ParseNodes that--after expansion--define the kernel expressions
+ * evaluated by the E Virtual Machine.
  *
  * @author Mark S. Miller
  * @author E. Dean Tribble
@@ -64,11 +64,9 @@ public abstract class EExpr extends ENode {
             BindFramesVisitor bfv = BindFramesVisitor.make(scopeLayout);
             EExpr realExpr = bfv.xformEExpr(verifiedExpr);
 
-            Object[] result = {
-                realExpr,
-                bfv.getOptScopeLayout(),
-                EInt.valueOf(bfv.maxLocals())
-            };
+            Object[] result = {realExpr,
+              bfv.getOptScopeLayout(),
+              EInt.valueOf(bfv.maxLocals())};
             return result;
         }
 
@@ -113,38 +111,36 @@ public abstract class EExpr extends ENode {
     /**
      * Verifies and Transforms from Expanded-E or Kernel-E to the internal
      * Transformed-E.
-     * <p>
+     * <p/>
      * The transform method was factored out from eval so that the interpreter
      * loop can print the transformed expression for debugging purposes.
-     * <p>
+     * <p/>
      * Now that this only takes a ScopeLayout as argument (rather than a
-     * Scope), the [Expanded-E, ScopeLayout] => Transformed-E mapping
-     * can be memoized. Once we compile Transformed-E to JVM bytecodes, this
-     * will allow us to cache the class files and classes as well.
+     * Scope), the [Expanded-E, ScopeLayout] => Transformed-E mapping can be
+     * memoized. Once we compile Transformed-E to JVM bytecodes, this will
+     * allow us to cache the class files and classes as well.
      *
-     * @return A triple of <ul>
-     *         <li>a Transformed-E expression,
-     *         <li>the new ScopeLayout, and
-     *         <li>the number of locals it needs to evaluate.
+     * @return A triple of <ul> <li>a Transformed-E expression, <li>the new
+     *         ScopeLayout, and <li>the number of locals it needs to evaluate.
      *         </ul>
      */
     static private Object[] transform(EExpr self, ScopeLayout scopeLayout) {
-        Object[] args = { self, scopeLayout };
+        Object[] args = {self, scopeLayout};
         return (Object[])((ConstList)OurTransformer.run(args)).getArray();
     }
 
     /**
      * To be invoked only on a Transformed-E expression to do the actual
      * evaluation.
-     * <p>
+     * <p/>
      * This is the rest of {@link #eval(Scope) eval/1} after factoring out
-     * {@link #transform(EExpr, ScopeLayout) transform/2}, and is likewise
+     * {@link #transform(EExpr,ScopeLayout) transform/2}, and is likewise
      * public only for debugging purposes.
-     * <p>
+     * <p/>
      * XXX We need to enforce that this is only invoked on a Transformed-E
-     * expression. The Transformed-E EExpr should probably remember the
-     * number of locals it needs, so we don't have to worry about a bad value
-     * being passed in.
+     * expression. The Transformed-E EExpr should probably remember the number
+     * of locals it needs, so we don't have to worry about a bad value being
+     * passed in.
      */
     static private Object eval(EExpr self, Scope scope, int maxLocals) {
         EvalContext ctx = scope.newContext(maxLocals);
@@ -169,7 +165,7 @@ public abstract class EExpr extends ENode {
         Scope newScope = scope.update((ScopeLayout)triple[1]);
         int maxLocals = ((Integer)triple[2]).intValue();
         Object value = eval(realExpr, newScope, maxLocals);
-        Object[] result = { value, newScope };
+        Object[] result = {value, newScope};
         return result;
     }
 
@@ -210,7 +206,7 @@ public abstract class EExpr extends ENode {
      * Recursively append all the supplied nodes to accum.
      *
      * @param accum the List to accumulate the results into.
-     * @param all the EExprs to accumulate.
+     * @param all   the EExprs to accumulate.
      */
     static void appendAllTo(FlexList accum, EExpr[] all) {
         for (int i = 0, max = all.length; i < max; i++) {

@@ -15,18 +15,20 @@ import java.util.Enumeration;
 class Grammar {
 
     protected String name;
-    protected String fileName;		// where does it come from?
-    protected String superGrammar;	// null if no super class
-    protected String type;				// lexer? parser? tree parser?
-    protected IndexedVector rules;	// text of rules as they were read in
+    protected String fileName;                // where does it come from?
+    protected String superGrammar;        // null if no super class
+    protected String type;                                // lexer? parser? tree parser?
+    protected IndexedVector rules;        // text of rules as they were read in
     protected IndexedVector options;// rule options
-    protected String tokenSection;	// the tokens{} stuff
+    protected String tokenSection;        // the tokens{} stuff
     protected String preambleAction;// action right before grammar
-    protected String memberAction;	// action inside grammar
-    protected Hierarchy hier;			// hierarchy of grammars
-    protected boolean predefined = false;	// one of the predefined grammars?
+    protected String memberAction;        // action inside grammar
+    protected Hierarchy hier;                        // hierarchy of grammars
+    protected boolean predefined =
+      false;        // one of the predefined grammars?
     protected boolean alreadyExpanded = false;
-    protected boolean specifiedVocabulary = false;	// found importVocab option?
+    protected boolean specifiedVocabulary =
+      false;        // found importVocab option?
 
     /**
      * if not derived from another grammar, might still specify a non-ANTLR
@@ -49,7 +51,7 @@ class Grammar {
     }
 
     public void addOption(Option o) {
-        if (options == null) {	// if not already there, create it
+        if (options == null) {        // if not already there, create it
             options = new IndexedVector();
         }
         options.appendElement(o.getName(), o);
@@ -112,18 +114,17 @@ class Grammar {
         if ((options != null && options.getElement("importVocab") == null) ||
           options == null) {
             // no importVocab found, add one that grabs superG's output vocab
-            Option inputV = new Option("importVocab",
-                                       superG.exportVocab + ";",
-                                       this);
+            Option inputV =
+              new Option("importVocab", superG.exportVocab + ";", this);
             addOption(inputV);
             // copy output vocab file to current dir
             String originatingGrFileName = superG.getFileName();
             String path = antlrTool.pathToFile(originatingGrFileName);
             String superExportVocabFileName = path + superG.exportVocab +
-              antlr.CodeGenerator.TokenTypesFileSuffix +
-              antlr.CodeGenerator.TokenTypesFileExt;
-            String newImportVocabFileName = antlrTool.fileMinusPath(
-              superExportVocabFileName);
+              antlr.CodeGenerator.TokenTypesFileSuffix + antlr.CodeGenerator
+              .TokenTypesFileExt;
+            String newImportVocabFileName =
+              antlrTool.fileMinusPath(superExportVocabFileName);
             if (path.equals("." + System.getProperty("file.separator"))) {
                 // don't copy tokdef file onto itself (must be current directory)
                 // System.out.println("importVocab file same dir; leaving as " + superExportVocabFileName);
@@ -132,8 +133,7 @@ class Grammar {
                     antlrTool.copyFile(superExportVocabFileName,
                                        newImportVocabFileName);
                 } catch (IOException io) {
-                    antlrTool.toolError(
-                      "cannot find/copy importVocab file " +
+                    antlrTool.toolError("cannot find/copy importVocab file " +
                       superExportVocabFileName);
                     return;
                 }
@@ -184,12 +184,12 @@ class Grammar {
         }
 
         Option overriddenOption = null;
-        if (options != null) {	// do we even have options?
+        if (options != null) {        // do we even have options?
             overriddenOption = (Option)options.getElement(o.getName());
         }
         // if overridden, do not add to this grammar
         if (overriddenOption == null) { // not overridden
-            addOption(o);	// copy option into this grammar--not overridden
+            addOption(o);        // copy option into this grammar--not overridden
         }
     }
 
@@ -200,11 +200,9 @@ class Grammar {
             // rule is overridden in this grammar.
             if (!overriddenRule.sameSignature(r)) {
                 // warn if different sig
-                antlrTool.warning(
-                  "rule " + getName() + "." + overriddenRule.getName() +
-                  " has different signature than " +
-                  superG.getName() + "." +
-                  overriddenRule.getName());
+                antlrTool.warning("rule " + getName() + "." +
+                  overriddenRule.getName() + " has different signature than " +
+                  superG.getName() + "." + overriddenRule.getName());
             }
         } else {  // not overridden, copy rule into this
             addRule(r);
@@ -213,9 +211,10 @@ class Grammar {
 
     public void inherit(String memberAction, Grammar superG) {
         if (this.memberAction != null) {
-            return;	// do nothing if already have member action
+            return;        // do nothing if already have member action
         }
-        if (memberAction != null) { // don't have one here, use supergrammar's action
+        if (memberAction !=
+          null) { // don't have one here, use supergrammar's action
             this.memberAction = memberAction;
         }
     }
@@ -272,7 +271,7 @@ class Grammar {
             s.append("class " + name + " extends " + type + ";");
         }
         s.append(System.getProperty("line.separator") +
-                 System.getProperty("line.separator"));
+          System.getProperty("line.separator"));
         if (options != null) {
             s.append(Hierarchy.optionsToString(options));
         }
@@ -285,12 +284,12 @@ class Grammar {
         for (int i = 0; i < rules.size(); i++) {
             Rule r = (Rule)rules.elementAt(i);
             if (!getName().equals(r.enclosingGrammar.getName())) {
-                s.append(
-                  "// inherited from grammar " + r.enclosingGrammar.getName() +
+                s.append("// inherited from grammar " +
+                  r.enclosingGrammar.getName() +
                   System.getProperty("line.separator"));
             }
             s.append(r + System.getProperty("line.separator") +
-                     System.getProperty("line.separator"));
+              System.getProperty("line.separator"));
         }
         return s.toString();
     }

@@ -37,11 +37,11 @@ import java.io.IOException;
 
 /**
  * BNF: "match" pattern "{" expr "}"
- * <p>
- * Used as a clause in a switch (until transformed away), and used as
- * the otherwise case within a dispatch. In this latter role, it's
- * pattern is matched against a pair of the message verb and array of
- * arguments, and then the body is evaluated in a child of that scope.
+ * <p/>
+ * Used as a clause in a switch (until transformed away), and used as the
+ * otherwise case within a dispatch. In this latter role, it's pattern is
+ * matched against a pair of the message verb and array of arguments, and then
+ * the body is evaluated in a child of that scope.
  *
  * @author Mark S. Miller
  */
@@ -81,13 +81,13 @@ public class EMatcher extends ENode {
      * Uses XXX 'makeFoo(...)'
      */
     public Object[] getSpreadUncall() {
-        Object[] result = { StaticMaker.make(EMatcher.class),
-                            "run",
-                            getOptSpan(),
-                            myPattern,
-                            myBody,
-                            EInt.valueOf(myLocalCount),
-                            getOptScopeLayout() };
+        Object[] result = {StaticMaker.make(EMatcher.class),
+          "run",
+          getOptSpan(),
+          myPattern,
+          myBody,
+          EInt.valueOf(myLocalCount),
+          getOptScopeLayout()};
         return result;
     }
 
@@ -114,8 +114,8 @@ public class EMatcher extends ENode {
 
     /**
      * When staticScope() is first requested on a given node, it calls
-     * computeStaticScope() to do the actual computation, which is
-     * then remembered.
+     * computeStaticScope() to do the actual computation, which is then
+     * remembered.
      */
     protected StaticScope computeStaticScope() {
         StaticScope result = myPattern.staticScope();
@@ -133,9 +133,7 @@ public class EMatcher extends ENode {
         Object[] message = {verb, ConstList.fromArray(args)};
         EImpl self = (EImpl)Ref.resolution(optSelf);
         EvalContext ctx = self.newContext(myLocalCount);
-        myPattern.testMatch(ctx,
-                            ConstList.fromArray(message),
-                            optEjector);
+        myPattern.testMatch(ctx, ConstList.fromArray(message), optEjector);
         return myBody.subEval(ctx, true);
     }
 

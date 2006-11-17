@@ -35,20 +35,20 @@ import org.erights.e.elib.tables.FlexList;
 /**
  * Handles the tail-ends of remote references. <p>
  * <p/>
- * There is a 3x2 taxonomy of RemoteHandlers. The first distinction is
- * between a) handlers in the Imports table (or "imported handlers"), for
- * which the position is positive, b) handlers in the questions table (or
- * "question handlers"), for which the position is negative, and c) the
- * handler of the other side's NonceLocator, for which the position is zero.
+ * There is a 3x2 taxonomy of RemoteHandlers. The first distinction is between
+ * a) handlers in the Imports table (or "imported handlers"), for which the
+ * position is positive, b) handlers in the questions table (or "question
+ * handlers"), for which the position is negative, and c) the handler of the
+ * other side's NonceLocator, for which the position is zero.
  * <p/>
  * <p/>
  * The second distinction is between handlers for resolved remote references,
- * represented by the concrete subclass FarHandler, and handlers for
- * remote references that aren't yet resolved, represented by the concrete
- * subclass RemotePromiseHandler. As a special case, the handler at zero for
- * the other side's NonceLocator is a RemotePromiseHandler, since shutdown
- * attempts may cause it to be retargeted at a newly incarnated NonceLocator
- * from the other side, which may have a new identity.
+ * represented by the concrete subclass FarHandler, and handlers for remote
+ * references that aren't yet resolved, represented by the concrete subclass
+ * RemotePromiseHandler. As a special case, the handler at zero for the other
+ * side's NonceLocator is a RemotePromiseHandler, since shutdown attempts may
+ * cause it to be retargeted at a newly incarnated NonceLocator from the other
+ * side, which may have a new identity.
  *
  * @author Mark S. Miller
  */
@@ -62,10 +62,9 @@ abstract class RemoteHandler implements EProxyHandler {
     /**
      * My outgoing position. <p>
      * <p/>
-     * If < 0, in the Questions table.
-     * If == 0, the special RemotePromiseHandler for the other side's
-     * NonceLocator.
-     * If > 0, in the Imports table.
+     * If < 0, in the Questions table. If == 0, the special
+     * RemotePromiseHandler for the other side's NonceLocator. If > 0, in the
+     * Imports table.
      */
     private final int myPos;
 
@@ -90,12 +89,9 @@ abstract class RemoteHandler implements EProxyHandler {
      *
      * @param conn        The CapTPConnection to communicate via
      * @param pos         The Imports or Questions map pos of the object
-     * @param optIdentity null, or the sameness identity of the far
-     *                    reference.
+     * @param optIdentity null, or the sameness identity of the far reference.
      */
-    RemoteHandler(CapTPConnection conn,
-                  int pos,
-                  Object optIdentity) {
+    RemoteHandler(CapTPConnection conn, int pos, Object optIdentity) {
         myConn = conn;
         myPos = pos;
         myWireCount = 1;
@@ -105,7 +101,7 @@ abstract class RemoteHandler implements EProxyHandler {
     }
 
     /**
-     * 
+     *
      */
     public EProxyHandler unwrap() {
         return this;
@@ -130,8 +126,8 @@ abstract class RemoteHandler implements EProxyHandler {
      * The default implementation up here tries to deliver-only the
      * __whenMoreResolved, but if that throws an exception back at us, ie, if
      * the __whenMoreResolved message seems to be unable to get through, we
-     * report a broken reference (broken by that problen) to the reactor as
-     * the resolution, and return that problem.
+     * report a broken reference (broken by that problen) to the reactor as the
+     * resolution, and return that problem.
      */
     Throwable handleWhenMoreResolved(Object reactor) {
         reactor = Ref.resolution(reactor);
@@ -291,7 +287,8 @@ abstract class RemoteHandler implements EProxyHandler {
      */
     public void mustBeDisposable() {
         T.requireSI(0 == myWireCount,
-                    "wireCount must be 0 rather than ", myWireCount);
+                    "wireCount must be 0 rather than ",
+                    myWireCount);
     }
 
     /**

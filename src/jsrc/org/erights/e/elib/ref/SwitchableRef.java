@@ -29,12 +29,12 @@ import org.erights.e.elib.slot.Guard;
 import java.io.IOException;
 
 /**
- * All message asyncronously delivered to a SwitchableRef will be forwarded
- * its current target. A SwitchableRef starts out switchable, in which
- * case it stays EVENTUAL and does not reveal its current target. While it
- * is switchable, its Resolver can change its target, and can make it
- * unswitchable. Once it's unswitchable, its Resolver can do neither, and
- * the SwitchableRef becomes equivalent to its target -- ie, it can shorten.
+ * All message asyncronously delivered to a SwitchableRef will be forwarded its
+ * current target. A SwitchableRef starts out switchable, in which case it
+ * stays EVENTUAL and does not reveal its current target. While it is
+ * switchable, its Resolver can change its target, and can make it
+ * unswitchable. Once it's unswitchable, its Resolver can do neither, and the
+ * SwitchableRef becomes equivalent to its target -- ie, it can shorten.
  *
  * @author Mark S. Miller
  */
@@ -79,10 +79,10 @@ class SwitchableRef extends Ref {
      * target; else return <tt>this</tt>.
      * <p/>
      * All implementations of <tt>resolutionRef/0</tt> must be thread safe, in
-     * order for {@link Ref#resolution() Ref.resolution/0} to be thread
-     * safe: If resolutionRef/0 is called from another thread while this
-     * ref is in the middle of being shortened, then resolutionRef/0 must
-     * return either <tt>this</tt> or what this ref is being shortened to.
+     * order for {@link Ref#resolution() Ref.resolution/0} to be thread safe:
+     * If resolutionRef/0 is called from another thread while this ref is in
+     * the middle of being shortened, then resolutionRef/0 must return either
+     * <tt>this</tt> or what this ref is being shortened to.
      * <p/>
      * XXX Although the implementation doesn't synchronize, it is inductively
      * thread safe given a simple memory model. Is it safe in Java's complex
@@ -198,14 +198,14 @@ class SwitchableRef extends Ref {
         newTarget = newTarget.resolutionRef();
         if (newTarget == TheViciousRef) {
             myTarget =
-            new UnconnectedRef(new ViciousCycleException("Ref loop"));
+              new UnconnectedRef(new ViciousCycleException("Ref loop"));
         } else {
             myTarget = newTarget;
         }
     }
 
     /**
-     * 
+     *
      */
     public SealedBox __optSealedDispatch(Object brand) {
         if (myIsSwitchable) {

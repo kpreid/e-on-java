@@ -24,8 +24,8 @@ import org.erights.e.elib.tables.ConstSubclassSet;
 /**
  * Marker interface that makes objects passable-by-proxy via captp.
  * <p/>
- * When such objects are passed between vats, the recipients ends up with a
- * Far reference to the PassByProxy object.
+ * When such objects are passed between vats, the recipients ends up with a Far
+ * reference to the PassByProxy object.
  * <p/>
  * PassByProxy objects (actual or HONORARY) may not be Selfless (actual or
  * HONORARY). XXX Must find a way to enforce this.
@@ -40,16 +40,13 @@ public interface PassByProxy extends Marker {
      * modify them to implement the PassByProxy interface, but we equally
      * obviously want people to be able to use them as if we had. <p>
      */
-    static final String[] HONORED_NAMES = {
-        "java.io.File",
-        "java.net.URL",
-        "java.rmi.Remote",
-    };
+    static final String[] HONORED_NAMES =
+      {"java.io.File", "java.net.URL", "java.rmi.Remote",};
 
     /**
      * HONORARY (effectively) contains all the classes named in HONORED_NAMES
      * and all their subclasses.
      */
-    static public final ConstSubclassSet HONORARY
-      = ConstSubclassSet.make(HONORED_NAMES);
+    static public final ConstSubclassSet HONORARY =
+      ConstSubclassSet.make(HONORED_NAMES);
 }

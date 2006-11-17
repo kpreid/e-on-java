@@ -3,16 +3,15 @@ package org.erights.e.elang.visitors;
 // Copyright 2002 Combex, Inc. under the terms of the MIT X license
 // found at http://www.opensource.org/licenses/mit-license.html ...............
 
+import org.erights.e.elang.evm.GuardedPattern;
 import org.erights.e.elang.evm.LocalFinalNounExpr;
 import org.erights.e.elang.evm.LocalSlotNounExpr;
 import org.erights.e.elang.evm.NounExpr;
 import org.erights.e.elang.evm.ObjectExpr;
-import org.erights.e.elang.evm.GuardedPattern;
 import org.erights.e.elang.scope.ScopeLayout;
 import org.erights.e.elib.base.SourceSpan;
 
 /**
- *
  * @author E. Dean Tribble
  */
 class BindNestedFramesVisitor extends BindFramesVisitor {

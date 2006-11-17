@@ -35,8 +35,8 @@ import java.io.ObjectStreamException;
  * allowing arbitrary execution *after* deserialization, but only within
  * capability constraints. All pointers serialized as pointers to the
  * RemoteDelivery will be deserialized as pointing to the promise for the
- * result of the send. This may violate static types or other constraints,
- * and cause deserialization to fail.
+ * result of the send. This may violate static types or other constraints, and
+ * cause deserialization to fail.
  *
  * @author Mark S. Miller
  */
@@ -67,9 +67,7 @@ public class RemoteDelivery extends StemCell {
      * @param verb      the message name (selector, method name)
      * @param args      the message arguments
      */
-    public RemoteDelivery(Object recipient,
-                          String verb,
-                          Object[] args) {
+    public RemoteDelivery(Object recipient, String verb, Object[] args) {
         myRecipient = recipient;
         myVerb = verb;
         myArgs = args;
@@ -86,7 +84,6 @@ public class RemoteDelivery extends StemCell {
     }
 
     /**
-     *
      * @param out
      * @throws IOException
      */

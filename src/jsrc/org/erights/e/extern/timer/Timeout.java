@@ -38,8 +38,8 @@ public class Timeout extends TimerWatcher implements Runnable {
     /**
      * Creates a new Timeout object. <p>
      * <p/>
-     * Captures the current Vat, so must be called from within the
-     * vat-thread holding target.
+     * Captures the current Vat, so must be called from within the vat-thread
+     * holding target.
      *
      * @param thread The timer thread responsible for us
      * @param target The object to be notified at timeout time

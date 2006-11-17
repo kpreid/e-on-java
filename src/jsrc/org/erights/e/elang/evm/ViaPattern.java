@@ -60,10 +60,7 @@ public final class ViaPattern extends Pattern {
             //to pay for the test in the cast anyway
             throw Thrower.toEject(optEjector, cce);
         }
-        myViaExpr.subMatchBind(args,
-                                 other.myViaExpr,
-                                 optEjector,
-                                 bindings);
+        myViaExpr.subMatchBind(args, other.myViaExpr, optEjector, bindings);
 
         mySubPattern.subMatchBind(args,
                                   other.mySubPattern,
@@ -76,11 +73,11 @@ public final class ViaPattern extends Pattern {
      */
     public Object[] getSpreadUncall() {
         Object[] result = {StaticMaker.make(ViaPattern.class),
-                           "run",
-                           getOptSpan(),
-                           myViaExpr,
-                           mySubPattern,
-                           getOptScopeLayout()};
+          "run",
+          getOptSpan(),
+          myViaExpr,
+          mySubPattern,
+          getOptScopeLayout()};
         return result;
     }
 

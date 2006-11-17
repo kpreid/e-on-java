@@ -63,8 +63,8 @@ public class HTTPServeMain {
                 T.fail("listenPort must be between 1 and 2**16-1");
             }
         } catch (Exception e) {
-            System.err.println("Exception " + e +
-                               "parsing httpPort and listenPort");
+            System.err
+              .println("Exception " + e + "parsing httpPort and listenPort");
             System.exit(1);
             return;
         }
@@ -86,10 +86,10 @@ public class HTTPServeMain {
             return;
         }
 
-        TCPConnectionListener tcpListener = new TCPConnectionListener(listen,
-                                                                      vats);
-        String tcpListenAddress = listen.getInetAddress().getHostName() + ':' +
-          listen.getLocalPort();
+        TCPConnectionListener tcpListener =
+          new TCPConnectionListener(listen, vats);
+        String tcpListenAddress =
+          listen.getInetAddress().getHostName() + ':' + listen.getLocalPort();
 
         try {
             while (true) {
@@ -101,8 +101,7 @@ public class HTTPServeMain {
                                           tcpListenAddress);
             }
         } catch (IOException e) {
-            Trace.tunnel.errorm("Exception listening for HTTP connections",
-                                e);
+            Trace.tunnel.errorm("Exception listening for HTTP connections", e);
             System.exit(1);
         }
     }

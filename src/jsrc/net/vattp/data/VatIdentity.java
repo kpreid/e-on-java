@@ -88,8 +88,8 @@ public class VatIdentity {
         String vid = BigIntegerSugar.toYURL32(hash);
 
         if (Trace.comm.debug && Trace.ON) {
-            Trace.comm.debugm(
-              "calculated vat Id " + vid + " from PublicKey " + key);
+            Trace.comm
+              .debugm("calculated vat Id " + vid + " from PublicKey " + key);
         }
         return vid;
     }

@@ -64,7 +64,7 @@ public class ASTIterator {
         AST t = null;
         AST sibling = null;
 
-        if (cursor == null) {	// do nothing if no tree to work on
+        if (cursor == null) {        // do nothing if no tree to work on
             return null;
         }
 

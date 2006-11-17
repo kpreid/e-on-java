@@ -8,7 +8,6 @@ package antlr;
  */
 
 
-
 /**
  * Intermediate data class holds information about an alternative
  */
@@ -25,15 +24,15 @@ class Alternative {
     // Exception specification if non-null
     protected ExceptionSpec exceptionSpec;
     // Init action if non-null;
-    protected Lookahead[] cache;	// lookahead for alt.  Filled in by
+    protected Lookahead[] cache;        // lookahead for alt.  Filled in by
     // deterministic() only!!!!!!!  Used for
     // code gen after calls to deterministic()
     // and used by deterministic for (...)*, (..)+,
     // and (..)? blocks.  1..k
-    protected int lookaheadDepth;	// each alt has different look depth possibly.
+    protected int lookaheadDepth;        // each alt has different look depth possibly.
     // depth can be NONDETERMINISTIC too.
     // 0..n-1
-// If non-null, Tree specification ala -> A B C (not implemented)
+    // If non-null, Tree specification ala -> A B C (not implemented)
     protected Token treeSpecifier = null;
     // True of AST generation is on for this alt
     private boolean doAutoGen;

@@ -17,8 +17,7 @@ class SacrificialComponent extends Component {
     /**
      *
      */
-    static final SacrificialComponent THE_ONE =
-      new SacrificialComponent();
+    static final SacrificialComponent THE_ONE = new SacrificialComponent();
 
     /**
      *

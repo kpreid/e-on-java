@@ -4,8 +4,8 @@ package net.caprest;
 // found at http://www.opensource.org/licenses/mit-license.html ...............
 
 /**
- * XXX Talk about the "robust server" constraint from Language Design and
- * Open Systems.
+ * XXX Talk about the "robust server" constraint from Language Design and Open
+ * Systems.
  *
  * @author Mark S. Miller
  */

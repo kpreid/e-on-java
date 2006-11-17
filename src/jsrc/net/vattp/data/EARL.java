@@ -95,8 +95,8 @@ public class EARL {
         mySwissStr = BigIntegerSugar.toYURL32(swissNum);
         myExpiration = expiration;
         String flattenedSearchPath = flattenSearchPath(mySearchPath);
-        myURI = "captp://*" + vatID + "@" + flattenedSearchPath + "/" +
-          mySwissStr;
+        myURI =
+          "captp://*" + vatID + "@" + flattenedSearchPath + "/" + mySwissStr;
         if (Long.MAX_VALUE != expiration) {
             myURI += "#" + ETimeFormat.formatTime(expiration);
         }
@@ -216,8 +216,8 @@ public class EARL {
             try {
                 myExpiration = ETimeFormat.parseTime(rest);
             } catch (ParseException e) {
-                throw new MalformedURLException("Parsing expiration date \"" +
-                                                rest + "\" " + e);
+                throw new MalformedURLException(
+                  "Parsing expiration date \"" + rest + "\" " + e);
             }
         } else {
             myExpiration = Long.MAX_VALUE;
@@ -225,11 +225,11 @@ public class EARL {
 
         if (Trace.comm.debug && Trace.ON) {
             for (i = 0; i < mySearchPath.size(); i++) {
-                Trace.comm.debugm("mySearchPath[" + i + "]=" +
-                                  mySearchPath.get(i));
+                Trace.comm
+                  .debugm("mySearchPath[" + i + "]=" + mySearchPath.get(i));
             }
-            Trace.comm.debugm(
-              "myVatID=" + myVatID + " mySwissStr=" + mySwissStr);
+            Trace.comm
+              .debugm("myVatID=" + myVatID + " mySwissStr=" + mySwissStr);
         }
     }
 

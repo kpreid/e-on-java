@@ -19,18 +19,16 @@ public class JavaInstanceMatcher extends JavaMatcher {
     private transient Class myOptDirectClass = null;
 
     /**
-     *
      * @param method
      */
     public JavaInstanceMatcher(Method method) {
         super(method);
-        T.require(isMatcher(method),
-                  "Not matcher: ", method);
+        T.require(isMatcher(method), "Not matcher: ", method);
     }
 
     /**
      * @return
-     * @see JavaMatcher#isMatcher(Method, int)
+     * @see JavaMatcher#isMatcher(Method,int)
      */
     static boolean isMatcher(Method method) {
         if (!isMatcher(method, 0)) {

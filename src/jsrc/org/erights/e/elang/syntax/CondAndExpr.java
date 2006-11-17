@@ -36,12 +36,12 @@ class CondAndExpr extends DelayedExpr {
     }
 
     public Object[] getSpreadUncall() {
-        Object[] result = { StaticMaker.make(CondAndExpr.class),
-                            "run",
-                            getOptSpan(),
-                            myLeft,
-                            myRight,
-                            getOptScopeLayout() };
+        Object[] result = {StaticMaker.make(CondAndExpr.class),
+          "run",
+          getOptSpan(),
+          myLeft,
+          myRight,
+          getOptScopeLayout()};
         return result;
     }
 

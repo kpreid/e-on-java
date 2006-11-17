@@ -39,16 +39,12 @@ public interface InStream extends Stream {
      * Else, if insufficient elements are currently ready, and if this InStream
      * supports waiting, then the calling vat/runner/thread is blocked until
      * this operation can immediately complete. The wrappers of java.io streams
-     * support waiting.
-     * <p>m
-     * This should normally only be used when<ul>
-     * <li>The programmer knows the source to be prompt even though the
-     * underlying java.io stream doesn't.
-     * <li>This vat exists for the purpose of building one
-     * <i>virtual device</i> from some underlying non-prompt stream, as
+     * support waiting. <p>m This should normally only be used when<ul> <li>The
+     * programmer knows the source to be prompt even though the underlying
+     * java.io stream doesn't. <li>This vat exists for the purpose of building
+     * one <i>virtual device</i> from some underlying non-prompt stream, as
      * with a one-top-level-expr-at-a-time parser parsing an InStream of
-     * characters.
-     * </ul>
+     * characters. </ul>
      */
     static public final String WAIT = "WAIT";
 
@@ -104,8 +100,8 @@ public interface InStream extends Stream {
      *                other non-negative integer means "That many elements, or
      *                all remaining elements, whichever comes first."
      * @param atMost  Must be &gt;= atLeast or {@link EIO#ALL}. Indicates the
-     *                largest number of elements this obtain operation
-     *                may obtain.
+     *                largest number of elements this obtain operation may
+     *                obtain.
      *                <p/>
      *                A <b><i>sufficient</i></b> number of elements is a number
      *                in the range of size that may be obtain according to
@@ -119,33 +115,33 @@ public interface InStream extends Stream {
      *                <p/>
      *                If not, then this is a <i>peeking</i> operation and
      *                should be side-effect free.
-     * @param report  Are the obtain elements gathered into a list and returned?
-     *                If not, then this is a <i>skipping</i> operation. If both
-     *                proceed and report are false, then this is an operation
-     *                for checking when new data <i>becomesReady</i>.
-     * @return If sched is LATER, then return a vow for the result. Else
-     *         return the result. If report is true, then the result will be
-     *         a list of a sufficient number of elements; else the result will
-     *         be null. If this operation fails, the vow should resolve to a
-     *         reference broken by the problem that would have been thrown.
-     * @throws UnavailableException If sched==NOW, sufficient elements were
-     *                              not ready, and none were consumed.
-     * @throws IOException          If any other I/O problems occur, or if the stream
-     *                              has already failed. If this is thrown because the
-     *                              stream has already failed, this should be the
-     *                              stream's terminal problem.
+     * @param report  Are the obtain elements gathered into a list and
+     *                returned? If not, then this is a <i>skipping</i>
+     *                operation. If both proceed and report are false, then
+     *                this is an operation for checking when new data
+     *                <i>becomesReady</i>.
+     * @return If sched is LATER, then return a vow for the result. Else return
+     *         the result. If report is true, then the result will be a list of
+     *         a sufficient number of elements; else the result will be null.
+     *         If this operation fails, the vow should resolve to a reference
+     *         broken by the problem that would have been thrown.
+     * @throws UnavailableException If sched==NOW, sufficient elements were not
+     *                              ready, and none were consumed.
+     * @throws IOException          If any other I/O problems occur, or if the
+     *                              stream has already failed. If this is
+     *                              thrown because the stream has already
+     *                              failed, this should be the stream's
+     *                              terminal problem.
      */
     Object obtain(int atLeast,
                   int atMost,
                   String sched,
                   String proceed,
-                  String report)
-      throws UnavailableException, IOException;
+                  String report) throws UnavailableException, IOException;
 
     /**
      * Immediately reads, consumes, and returns the next N elements of the
-     * stream, where N is in the range defined by
-     * <tt>atLeast..atMost</tt>.
+     * stream, where N is in the range defined by <tt>atLeast..atMost</tt>.
      * <pre>    i.read(atLeast,atMost)</pre>
      * is defined by equivalence to
      * <pre>    i.obtain(atLeast,atMost,NOW,true,true)</pre>
@@ -156,8 +152,7 @@ public interface InStream extends Stream {
     /**
      * Blocks the vat if necessary until it can "immediately" read, consume,
      * and return the next N elements of the stream, where N is in the range
-     * defined by
-     * <tt>atLeast..atMost</tt>.
+     * defined by <tt>atLeast..atMost</tt>.
      * <pre>    i.read(atLeast,atMost)</pre>
      * is defined by equivalence to
      * <pre>    i.obtain(atLeast,atMost,WAIT,true,true)</pre>
@@ -167,8 +162,7 @@ public interface InStream extends Stream {
 
     /**
      * Immediately reads, consumes, and returns the next N elements of the
-     * stream, where N is in the range defined by
-     * <tt>atLeast..atMost</tt>.
+     * stream, where N is in the range defined by <tt>atLeast..atMost</tt>.
      * <pre>    i.readLater(atLeast,atMost)</pre>
      * is defined by equivalence to
      * <pre>    i.obtain(atLeast,atMost,LATER,true,true)</pre>
@@ -191,8 +185,7 @@ public interface InStream extends Stream {
      * is also a valid element of this stream, readOptOne's caller must be
      * aware that a null may be returned for either reason.
      */
-    Object readOptOne()
-      throws UnavailableException, IOException;
+    Object readOptOne() throws UnavailableException, IOException;
 
     /**
      * Immediately reads, consumes, and returns all remaining elements of the
@@ -201,8 +194,7 @@ public interface InStream extends Stream {
      * is defined by equivalence to
      * <pre>    i.obtain(ALL,ALL,NOW,true,true)</pre>
      */
-    ConstList readAll()
-      throws UnavailableException, IOException;
+    ConstList readAll() throws UnavailableException, IOException;
 
     /**
      * Immediately reads, consumes, and returns all remaining elements of the
@@ -211,8 +203,7 @@ public interface InStream extends Stream {
      * is defined by equivalence to
      * <pre>    i.obtain(ALL,ALL,LATER,true,true)</pre>
      */
-    Object readAllLater()
-      throws UnavailableException, IOException;
+    Object readAllLater() throws UnavailableException, IOException;
 
     /**
      * Immediately reads and returns, but does not consume, the next N elements
@@ -231,8 +222,7 @@ public interface InStream extends Stream {
      * is defined by equivalence to
      * <pre>    i.obtain(num,num,LATER,true,false)</pre>
      */
-    Object skip(int num)
-      throws UnavailableException, IOException;
+    Object skip(int num) throws UnavailableException, IOException;
 
     /**
      * Returns a vow that's resolved once the next <tt>num</tt> elements from
@@ -241,8 +231,7 @@ public interface InStream extends Stream {
      * is defined by equivalence to
      * <pre>    i.obtain(num,num,LATER,false,false)</pre>
      */
-    Object becomesReady(int num)
-      throws IOException;
+    Object becomesReady(int num) throws IOException;
 
     /**
      * Reliquish the ability to obtain any further elements from the stream,
@@ -252,8 +241,7 @@ public interface InStream extends Stream {
      * is defined by equivalence to
      * <pre>    i.obtain(ALL,ALL,LATER,true,false)</pre>
      */
-    Object close()
-      throws IOException;
+    Object close() throws IOException;
 
     /**
      * Reliquish the ability to obtain any further elements from the stream,
@@ -263,8 +251,7 @@ public interface InStream extends Stream {
      * is defined by equivalence to
      * <pre>    i.obtain(ALL,ALL,LATER,true,false)</pre>
      */
-    Object terminates()
-      throws IOException;
+    Object terminates() throws IOException;
 
     /**
      * How many elements remain in the stream?

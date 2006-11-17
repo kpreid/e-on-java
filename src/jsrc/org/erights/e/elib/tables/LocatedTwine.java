@@ -86,9 +86,12 @@ final class LocatedTwine extends AtomicTwine {
         if (mySpan.isOneToOne()) {
             int startCol = mySpan.getStartCol() + start;
             int endCol = startCol + (bound - start) - 1;
-            span = new SourceSpan(mySpan.getUrl(), true,
-                                  mySpan.getStartLine(), startCol,
-                                  mySpan.getEndLine(), endCol);
+            span = new SourceSpan(mySpan.getUrl(),
+                                  true,
+                                  mySpan.getStartLine(),
+                                  startCol,
+                                  mySpan.getEndLine(),
+                                  endCol);
         } else {
             span = mySpan;
         }

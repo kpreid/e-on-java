@@ -46,7 +46,8 @@ public class HTTPClient {
 
     private final byte[] mySessionID;
 
-    private final ByteArrayOutputStream myResponses = new ByteArrayOutputStream();
+    private final ByteArrayOutputStream myResponses =
+      new ByteArrayOutputStream();
 
 
     HTTPClient(byte[] sessionID) {

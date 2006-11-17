@@ -20,11 +20,11 @@ Contributor(s): ______________________________________.
 */
 
 import org.erights.e.develop.assertion.T;
-import org.erights.e.elib.util.OneArgFunc;
 import org.erights.e.elib.oldeio.TextWriter;
+import org.erights.e.elib.util.OneArgFunc;
 
-import java.math.BigInteger;
 import java.io.IOException;
+import java.math.BigInteger;
 
 /**
  * @author Mark S. Miller
@@ -37,7 +37,8 @@ public class BigIntegerGuardSugar extends BaseEIntGuardSugar {
     public BigIntegerGuardSugar(Class clazz) {
         super(clazz);
         T.require(BigInteger.class == clazz,
-                  clazz, " must be represent the BigInteger type");
+                  clazz,
+                  " must be represent the BigInteger type");
     }
 
     /**

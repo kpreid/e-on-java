@@ -31,13 +31,13 @@ import java.util.Date;
 /**
  * Convert java.util.Dates into suitable Strings for the Trace system.
  * <p/>
- * Note that times are printed in local time rather than GMT. People
- * get confused when looking at log files that are not in the local
- * time - they know something bad happened at 4 o'clock, but there's
- * nothing in the log for that time.
+ * Note that times are printed in local time rather than GMT. People get
+ * confused when looking at log files that are not in the local time - they
+ * know something bad happened at 4 o'clock, but there's nothing in the log for
+ * that time.
  * <p/>
- * For synchronizing trace logs from different time zones, this is
- * inadequate. We'll deal with that when we come to it.
+ * For synchronizing trace logs from different time zones, this is inadequate.
+ * We'll deal with that when we come to it.
  * <p/>
  * Note that the construction of strings in this class is one of the
  * bottlenecks in this code.
@@ -58,8 +58,8 @@ class TraceDateToString {
     }
 
     /**
-     * This must return one that can be used within a filename, so
-     * convert ":"s to "_"s.
+     * This must return one that can be used within a filename, so convert ":"s
+     * to "_"s.
      */
     final static String terseCompleteDateString(Date date) {
         return ETimeFormat.formatTime(date.getTime()).replace(':', '_');

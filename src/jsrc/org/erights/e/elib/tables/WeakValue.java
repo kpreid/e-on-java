@@ -8,13 +8,13 @@ import org.erights.e.elib.prim.E;
 import org.erights.e.elib.vat.WeakPtr;
 
 /**
- * Used to implement a key in a WeakValueMap implementation by being a value
- * in a FlexMap. <p>
+ * Used to implement a key in a WeakValueMap implementation by being a value in
+ * a FlexMap. <p>
  * <p/>
  * Holds on to the actual value weakly. Is an HONORARY Selfless object, so it
- * compares based on its equals() and hashCode() methods. A WeakValue is
- * also a Runnable, since it stores itself as the reactor to be informed when
- * its value is collected. <p>
+ * compares based on its equals() and hashCode() methods. A WeakValue is also a
+ * Runnable, since it stores itself as the reactor to be informed when its
+ * value is collected. <p>
  * <p/>
  * WeakValue's implementation of equals and hashCode does not satisfy the
  * contract specified for HONORARY Selfless objects, but that's ok since the

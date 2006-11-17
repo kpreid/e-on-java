@@ -32,10 +32,10 @@ import java.io.IOException;
 /**
  * A EList is a sequence of values.
  * <p/>
- * 'EList' is a query-only interface that's agnostic about whether
- * the data can change and whether a EList can be cast to an object by which
- * to change it. 'EList' is also agnostic about the basis for equality
- * between tables. Subtypes do pin these issues down: <p>
+ * 'EList' is a query-only interface that's agnostic about whether the data can
+ * change and whether a EList can be cast to an object by which to change it.
+ * 'EList' is also agnostic about the basis for equality between tables.
+ * Subtypes do pin these issues down: <p>
  * <p/>
  * ConstList guarantees immutability, uses value-based equality, and can be
  * transparently passed-by-copy over the network. <p>
@@ -46,8 +46,7 @@ import java.io.IOException;
  * @see org.erights.e.elib.tables.ConstList
  * @see org.erights.e.elib.tables.FlexList
  */
-public abstract class EList
-  implements EPrintable, Persistent, EIteratable {
+public abstract class EList implements EPrintable, Persistent, EIteratable {
 
     static private final long serialVersionUID = 4755060696966322025L;
 
@@ -58,27 +57,26 @@ public abstract class EList
     }
 
     /**
-     * Returns a ConstList whose state is a snapshot of the state of this
-     * list at the time of the snapshot() request. A ConstList returns
-     * itself.
+     * Returns a ConstList whose state is a snapshot of the state of this list
+     * at the time of the snapshot() request. A ConstList returns itself.
      */
     public abstract ConstList snapshot();
 
     /**
-     * Returns a read-only facet on this list. Someone holding this facet
-     * may see changes, but they cannot cause them.
+     * Returns a read-only facet on this list. Someone holding this facet may
+     * see changes, but they cannot cause them.
      */
     public abstract EList readOnly();
 
     /**
-     * Returns a FlexList whose initial state is a snapshot of the
-     * state of this list at the time of the diverge() request.
+     * Returns a FlexList whose initial state is a snapshot of the state of
+     * this list at the time of the diverge() request.
      * <p/>
-     * Further changes to the original and/or the new list are
-     * independent -- they diverge.
+     * Further changes to the original and/or the new list are independent --
+     * they diverge.
      * <p/>
-     * The new list is constrained to only hold values of 'valueType'.
-     * XXX valueType should be of type Guard rather than Class.
+     * The new list is constrained to only hold values of 'valueType'. XXX
+     * valueType should be of type Guard rather than Class.
      */
     public FlexList diverge(Class valueType) {
         FlexList result = FlexList.fromType(valueType, size());
@@ -101,8 +99,7 @@ public abstract class EList
     }
 
     /**
-     * A snapshot of the list sorted into ascending order according to
-     * func
+     * A snapshot of the list sorted into ascending order according to func
      */
     public ConstList sort(CompFunc func) {
         FlexList flex = diverge();
@@ -205,8 +202,8 @@ public abstract class EList
      * <p/>
      * XXX If they have a common class, we should use it.
      * <p/>
-     * The default implementation here insists that other coerces to an
-     * EList, but this is overridden in the Twine subclass.
+     * The default implementation here insists that other coerces to an EList,
+     * but this is overridden in the Twine subclass.
      */
     public ConstList add(Object other) {
         EList otherList = (EList)E.as(other, EList.class);
@@ -224,9 +221,9 @@ public abstract class EList
     }
 
     /**
-     * A ConstList equivalent to 'this snapshot() + [value]'
-     * (unless this.snapshot() is a Twine, in which case "+" will concatenate
-     * the printed form of the [value] list).
+     * A ConstList equivalent to 'this snapshot() + [value]' (unless
+     * this.snapshot() is a Twine, in which case "+" will concatenate the
+     * printed form of the [value] list).
      */
     public ConstList with(Object value) {
         FlexList flex = diverge();
@@ -235,8 +232,8 @@ public abstract class EList
     }
 
     /**
-     * Return a ConstList just like this list except that the element at
-     * index is value.
+     * Return a ConstList just like this list except that the element at index
+     * is value.
      * <p/>
      * To do the side-effect-free operation corresponding to the
      * conventional <pre>
@@ -348,8 +345,8 @@ public abstract class EList
     }
 
     /**
-     * The first index >= 'start' at which 'candidate' appears in this list,
-     * or -1 if none.
+     * The first index >= 'start' at which 'candidate' appears in this list, or
+     * -1 if none.
      */
     public int indexOf1(Object candidate, int start) {
         int len = size();
@@ -365,19 +362,19 @@ public abstract class EList
      * The last index at which 'candidate' appears in this list, or -1 if
      * none.
      * <p/>
-     * Note that choosing '-1' leads to a programming pun that's
-     * too tempting to avoid (though it should be documented). If you want
-     * the index of, for example, the beginning of the last dot-separated
-     * substring of a string, you can say "lastIndexOf1('.')+1". If there is
-     * no dot, this returns 0, which is the correct answer for this case.
+     * Note that choosing '-1' leads to a programming pun that's too tempting
+     * to avoid (though it should be documented). If you want the index of, for
+     * example, the beginning of the last dot-separated substring of a string,
+     * you can say "lastIndexOf1('.')+1". If there is no dot, this returns 0,
+     * which is the correct answer for this case.
      */
     public int lastIndexOf1(Object candidate) {
         return lastIndexOf1(candidate, size() - 1);
     }
 
     /**
-     * The last index <= 'start' at which 'candidate' appears in this list,
-     * or -1 if none.
+     * The last index <= 'start' at which 'candidate' appears in this list, or
+     * -1 if none.
      */
     public int lastIndexOf1(Object candidate, int start) {
         for (int i = start; i >= 0; i--) {
@@ -389,8 +386,8 @@ public abstract class EList
     }
 
     /**
-     * The first index at which 'candidate' begins as a sub-list of this
-     * list, or -1 if none.
+     * The first index at which 'candidate' begins as a sub-list of this list,
+     * or -1 if none.
      */
     public int startOf(EList candidate) {
         return startOf(candidate, 0);
@@ -414,7 +411,8 @@ public abstract class EList
         Object elem = candidate.get(0);
         for (int i = start; i < bound; i++) {
             if (Ref.isSameEver(get(i), elem)) {
-                match: {
+                match:
+                {
                     for (int j = 1; j < len2; j++) {
                         if (!Ref.isSameEver(get(i + j), candidate.get(j))) {
                             //go on to the next i
@@ -431,8 +429,8 @@ public abstract class EList
     }
 
     /**
-     * The last index at which 'candidate' begins as a sub-list of this
-     * list, or -1 if none.
+     * The last index at which 'candidate' begins as a sub-list of this list,
+     * or -1 if none.
      */
     public int lastStartOf(EList candidate) {
         return lastStartOf(candidate, size());
@@ -456,7 +454,8 @@ public abstract class EList
         Object elem = candidate.get(0);
         for (int i = start; i >= 0; i--) {
             if (Ref.isSameEver(get(i), elem)) {
-                match: {
+                match:
+                {
                     for (int j = 1; j < len2; j++) {
                         if (!Ref.isSameEver(get(i + j), candidate.get(j))) {
                             //go on to the next i

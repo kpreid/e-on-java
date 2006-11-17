@@ -13,7 +13,8 @@ package antlr;
 public class ANTLRStringBuffer {
 
     protected char[] buffer = null;
-    protected int length = 0;		// length and also where to store next char
+    protected int length =
+      0;                // length and also where to store next char
 
 
     public ANTLRStringBuffer() {

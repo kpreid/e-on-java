@@ -35,7 +35,7 @@ import java.io.IOException;
 
 /**
  * BNF: "_"
- * <p>
+ * <p/>
  * Matches anything succesfully, but binds nothing.
  *
  * @author Mark S. Miller
@@ -55,12 +55,11 @@ public class IgnorePattern extends GuardedPattern {
      * Uses 'makeIgnorePattern(optSpan, myOptGuardExpr, optScopeLayout)'
      */
     public Object[] getSpreadUncall() {
-        Object[] result = {
-          StaticMaker.make(IgnorePattern.class),
+        Object[] result = {StaticMaker.make(IgnorePattern.class),
           "run",
           getOptSpan(),
           getOptGuardExpr(),
-          getOptScopeLayout() };
+          getOptScopeLayout()};
         return result;
     }
 
@@ -105,9 +104,7 @@ public class IgnorePattern extends GuardedPattern {
     /**
      *
      */
-    void testMatch(EvalContext ctx,
-                   Object specimen,
-                   OneArgFunc optEjector) {
+    void testMatch(EvalContext ctx, Object specimen, OneArgFunc optEjector) {
         coercedSpecimen(ctx, specimen, optEjector);
     }
 

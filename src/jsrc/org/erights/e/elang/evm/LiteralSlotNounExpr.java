@@ -52,19 +52,20 @@ public class LiteralSlotNounExpr extends TopNounExpr {
         mySlot = slot;
         // XXX This requirement will always fail
         T.require(Ref.isDeepPassByCopy(mySlot),
-                  "Must be DeepPassByCopy: ", mySlot);
+                  "Must be DeepPassByCopy: ",
+                  mySlot);
     }
 
     /**
      * Uses XXX 'makeFoo(...)'
      */
     public Object[] getSpreadUncall() {
-        Object[] result = { StaticMaker.make(LiteralSlotNounExpr.class),
-                            "run",
-                            getOptSpan(),
-                            getName(),
-                            mySlot,
-                            getOptScopeLayout() };
+        Object[] result = {StaticMaker.make(LiteralSlotNounExpr.class),
+          "run",
+          getOptSpan(),
+          getName(),
+          mySlot,
+          getOptScopeLayout()};
         return result;
     }
 
@@ -104,8 +105,8 @@ public class LiteralSlotNounExpr extends TopNounExpr {
      *
      */
     public void initFinal(EvalContext ctx, Object value) {
-        throw new AlreadyDefinedException
-          ("Cannot redefine a universal constant" + getName());
+        throw new AlreadyDefinedException(
+          "Cannot redefine a universal constant" + getName());
     }
 
     /**

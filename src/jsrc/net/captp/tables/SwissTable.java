@@ -19,9 +19,9 @@ import java.math.BigInteger;
  * A weak-value table mapping from SwissNumbers to references.
  * <p/>
  * There are two cases: 1) NEAR references to Selfish objects. 2) Everything
- * else. For case #1, a backwards weak-key table is also maintained, such
- * that multiple registrations of a NEAR Selfish object will always yield the
- * same SwissNumber. This SwissNumber can then be (and is) used remotely to
+ * else. For case #1, a backwards weak-key table is also maintained, such that
+ * multiple registrations of a NEAR Selfish object will always yield the same
+ * SwissNumber. This SwissNumber can then be (and is) used remotely to
  * represent the sameness identity of resolved references to this Selfish
  * object. Case #1 is used for both live and sturdy references.
  * <p/>
@@ -102,11 +102,11 @@ public class SwissTable {
      * When the SwissTable's lookupSwiss fails to find the swissNum in the
      * internal table, it invokes each of its registered swissDBs with a hash
      * of the swissNumber being looked up. This is known as a swissHash, and
-     * represents the identity of the object without providing any authority
-     * to access the object. A swissDB which has stored a representation of
-     * the object elsewhere should then register the object using
-     * registerIdentity or registerSwiss, both of which require the swissBase
-     * -- the archash of the swissNumber being looked up. In other words,
+     * represents the identity of the object without providing any authority to
+     * access the object. A swissDB which has stored a representation of the
+     * object elsewhere should then register the object using registerIdentity
+     * or registerSwiss, both of which require the swissBase -- the archash of
+     * the swissNumber being looked up. In other words,
      * <pre>
      *     swissBase cryptoHash() -> swissNum
      *     swissNum crytoHash()   -> swissHash
@@ -134,9 +134,9 @@ public class SwissTable {
      * <p/>
      * If not 'Ref.isSelfish(obj)", then this will throw an Exception.
      * <p/>
-     * This returns the unique SwissNumber which represents the designated
-     * near selfish object's unique identity within this vat. If the object
-     * wasn't yet associated with a SwissNumber, it will be now.
+     * This returns the unique SwissNumber which represents the designated near
+     * selfish object's unique identity within this vat. If the object wasn't
+     * yet associated with a SwissNumber, it will be now.
      */
     public BigInteger getIdentity(Object obj) {
         obj = Ref.resolution(obj);
@@ -176,17 +176,17 @@ public class SwissTable {
     /**
      * Registers obj to have the identity 'swissBase.cryptoHash()'. <p>
      * <p/>
-     * The cryptoHash of a SwissBase is a SwissNumber, so we also say that
-     * the archash of a SwissNumber is a SwissBase. (Of course, our security
-     * rests on the assumption that the archash is infeasible to compute.)
-     * Since an unconfined client of an object can often get its SwissNumber,
-     * something more is needed to establish authority to associate an object
-     * with a SwissNumber. For this "something more", we use knowledge of
-     * the archash of the number. <p>
+     * The cryptoHash of a SwissBase is a SwissNumber, so we also say that the
+     * archash of a SwissNumber is a SwissBase. (Of course, our security rests
+     * on the assumption that the archash is infeasible to compute.) Since an
+     * unconfined client of an object can often get its SwissNumber, something
+     * more is needed to establish authority to associate an object with a
+     * SwissNumber. For this "something more", we use knowledge of the archash
+     * of the number. <p>
      * <p/>
-     * The object is given the new identity 'swissBase cryptoHash()',
-     * assuming this doesn't conflict with any existing registrations. If it
-     * does, an exception is thrown.
+     * The object is given the new identity 'swissBase cryptoHash()', assuming
+     * this doesn't conflict with any existing registrations. If it does, an
+     * exception is thrown.
      */
     public BigInteger registerIdentity(Object obj, BigInteger swissBase) {
         obj = Ref.resolution(obj);
@@ -213,10 +213,9 @@ public class SwissTable {
      * Registers ref at 'swissBase.cryptoHash()'.
      * <p/>
      * registerNewSwiss() is to registerIdentity() as getNewSwiss() is to
-     * getIdentity(). 'swissBase.cryptoHash()' must not already be
-     * registered, or an exception will be thrown. If ref is null, an
-     * exception is thrown (since we assume its infeasible to find the
-     * archash of zero).
+     * getIdentity(). 'swissBase.cryptoHash()' must not already be registered,
+     * or an exception will be thrown. If ref is null, an exception is thrown
+     * (since we assume its infeasible to find the archash of zero).
      */
     public BigInteger registerNewSwiss(Object ref, BigInteger swissBase) {
         ref = Ref.resolution(ref);
@@ -240,18 +239,18 @@ public class SwissTable {
         } else {
             BigInteger swissHash = BigIntegerSugar.cryptoHash(result);
             T.fail("An object with swissHash " + swissHash +
-                   "is already registered");
+              "is already registered");
         }
         return result;
     }
 
     /**
-     * A convenience method typically used to obtain new SwissBases
-     * (archashes of SwissNumbers).
+     * A convenience method typically used to obtain new SwissBases (archashes
+     * of SwissNumbers).
      * <p/>
-     * Since a client of SwissTable can obtain such entropy from the
-     * SwissTable anyway, by registering objects, there's no loss of security
-     * in providing this convenience method.
+     * Since a client of SwissTable can obtain such entropy from the SwissTable
+     * anyway, by registering objects, there's no loss of security in providing
+     * this convenience method.
      */
     public BigInteger nextSwiss() {
         return myEntropy.nextSwiss();

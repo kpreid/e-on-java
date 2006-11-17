@@ -25,37 +25,33 @@ Contributor(s): ______________________________________.
 
 
 /**
- * This interface represents objects that accept messages and do
- * something useful with them. A TraceMessageAcceptor lives in two
- * main states: prior to its starting environment being set up, and
- * after that environment is set up. A TraceMessageAcceptor <i>may</i>
- * choose to accept messages prior to the completion of setup, but it
- * may not make them available to a user.
+ * This interface represents objects that accept messages and do something
+ * useful with them. A TraceMessageAcceptor lives in two main states: prior to
+ * its starting environment being set up, and after that environment is set up.
+ * A TraceMessageAcceptor <i>may</i> choose to accept messages prior to the
+ * completion of setup, but it may not make them available to a user.
  */
 
 interface TraceMessageAcceptor {
 
     /**
-     * Accept a message and do whatever is appropriate to make it
-     * visible to a user, either now or later.
+     * Accept a message and do whatever is appropriate to make it visible to a
+     * user, either now or later.
      * <p/>
-     * Note that this method should be called AFTER the message passes
-     * a priority threshold check. MessageAcceptors don't know about
-     * priorities.
+     * Note that this method should be called AFTER the message passes a
+     * priority threshold check. MessageAcceptors don't know about priorities.
      * <p/>
-     * The TraceMessageAcceptor is allowed to unilaterally discard
-     * the message. Generally, this is done only if it was turned off
-     * by another thread.
+     * The TraceMessageAcceptor is allowed to unilaterally discard the message.
+     * Generally, this is done only if it was turned off by another thread.
      */
     void accept(TraceMessage message);
 
     /**
-     * After this call, the TraceMessageAcceptor must obey settings from
-     * the environment. Before this call, it must defer taking any
-     * visible action, because it can't yet know what action is appropriate.
-     * Note that the message acceptor may (is encouraged to) accept messages
-     * before setup is complete, because some of those trace messages might
-     * be useful.
+     * After this call, the TraceMessageAcceptor must obey settings from the
+     * environment. Before this call, it must defer taking any visible action,
+     * because it can't yet know what action is appropriate. Note that the
+     * message acceptor may (is encouraged to) accept messages before setup is
+     * complete, because some of those trace messages might be useful.
      * <p/>
      * It is an error to call this method more than once.
      */

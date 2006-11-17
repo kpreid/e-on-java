@@ -20,11 +20,11 @@ public interface EverReactor {
      * local numbering.
      * <p/>
      * <tt>optNewReporter</tt> is typically, but not necessarily, the same
-     * reporter we subscribed to. When we re-subscribe, we should
-     * subscribe with optNewReporter, as that is the reporter we should
-     * use <i>according to</i> our original reporter. If we're not trying to
-     * subscribe persistently, this means we don't need to remember who we
-     * subscribed to once we send off a subscription request.
+     * reporter we subscribed to. When we re-subscribe, we should subscribe
+     * with optNewReporter, as that is the reporter we should use <i>according
+     * to</i> our original reporter. If we're not trying to subscribe
+     * persistently, this means we don't need to remember who we subscribed to
+     * once we send off a subscription request.
      * <p/>
      * If this Reactor is also a Reporter (with further downstream Reactors),
      * then, on receiving this report, it should in turn report to its

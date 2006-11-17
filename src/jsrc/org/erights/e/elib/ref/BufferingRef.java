@@ -32,8 +32,8 @@ import java.io.IOException;
 import java.lang.ref.WeakReference;
 
 /**
- * A BufferingRef, although a proper Ref, is intended for use (by
- * composition) only within other Ref implementations.
+ * A BufferingRef, although a proper Ref, is intended for use (by composition)
+ * only within other Ref implementations.
  * <p/>
  * A BufferingRef is forever EVENTUAL, and simply stores all Messages
  * asynchronously sent to it in a buffer, a FlexList of Messages, acting in the
@@ -44,10 +44,10 @@ import java.lang.ref.WeakReference;
  * <p/>
  * A BufferingRef points at its buffer weakly, since if no one else still has
  * ahold of the buffer, there's no reason to keep it. In this case, incoming
- * messages are silently ignored with no externally visible effect.
- * Therefore, even though the non-determinism of GC timing is visible within
- * the implementation of a buffering promise, it presents its clients with a
- * fully deterministic contract.
+ * messages are silently ignored with no externally visible effect. Therefore,
+ * even though the non-determinism of GC timing is visible within the
+ * implementation of a buffering promise, it presents its clients with a fully
+ * deterministic contract.
  *
  * @author Mark S. Miller
  */
@@ -78,8 +78,7 @@ class BufferingRef extends Ref {
      * Returns <tt>this</tt>.
      * <p/>
      * All implementations of <tt>resolutionRef/0</tt> must be thread safe, in
-     * order for {@link Ref#resolution() Ref.resolution/0} to be thread
-     * safe.
+     * order for {@link Ref#resolution() Ref.resolution/0} to be thread safe.
      *
      * @return <tt>this</tt>.
      */

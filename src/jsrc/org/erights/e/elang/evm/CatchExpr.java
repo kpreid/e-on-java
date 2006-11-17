@@ -76,8 +76,7 @@ public class CatchExpr extends EExpr {
      * Uses XXX 'makeFoo(...)'
      */
     public Object[] getSpreadUncall() {
-        return new Object[]{
-          StaticMaker.make(CatchExpr.class),
+        return new Object[]{StaticMaker.make(CatchExpr.class),
           "run",
           getOptSpan(),
           myAttempt,

@@ -15,8 +15,8 @@ import java.io.IOException;
  * http://java.sun.com/docs/books/vmspec/2nd-edition/html/ClassFile.doc.html
  * <p/>
  * Method names follow the naming convention used in the Java class file spec
- * rather than what I would consider ideal Java method naming practice. This
- * is done to make clear the parallel between the various entities here and the
+ * rather than what I would consider ideal Java method naming practice. This is
+ * done to make clear the parallel between the various entities here and the
  * various entities in the spec document.
  */
 public class ClassFile {
@@ -42,14 +42,17 @@ public class ClassFile {
      * @param major_version Major version number of this class file
      * @param constant_pool Array of the entries in the class' constant pool
      * @param access_flags  Flags bits denoting access permissions to and
-     *                      properties of this class; values as defined in ClassFileConstants.
+     *                      properties of this class; values as defined in
+     *                      ClassFileConstants.
      * @param this_class    Index into the constant pool of the
-     *                      CONSTANT_Class_info object representing this class itself.
+     *                      CONSTANT_Class_info object representing this class
+     *                      itself.
      * @param super_class   Index into the constant pool of the
-     *                      CONSTANT_Class_info object representing the superclass of this class.
+     *                      CONSTANT_Class_info object representing the
+     *                      superclass of this class.
      * @param interfaces    Array of indexes into the constant pool of
-     *                      CONSTANT_Class_info objects describing interfaces implemented by this
-     *                      class.
+     *                      CONSTANT_Class_info objects describing interfaces
+     *                      implemented by this class.
      * @param fields        Array of field_info objects describing this class'
      *                      fields.
      * @param methods       Array of method_info objects describing this class'
@@ -57,10 +60,17 @@ public class ClassFile {
      * @param attributes    Array of attribute objects describing this class'
      *                      attributes.
      */
-    ClassFile(int magic, int minor_version, int major_version,
-              CF_cp_info constant_pool[], int access_flags, int this_class,
-              int super_class, int interfaces[], CF_field_info fields[],
-              CF_method_info methods[], CF_attribute_info attributes[]) {
+    ClassFile(int magic,
+              int minor_version,
+              int major_version,
+              CF_cp_info constant_pool[],
+              int access_flags,
+              int this_class,
+              int super_class,
+              int interfaces[],
+              CF_field_info fields[],
+              CF_method_info methods[],
+              CF_attribute_info attributes[]) {
         myMagic = magic;
         myMinor_version = minor_version;
         myMajor_version = major_version;
@@ -126,8 +136,8 @@ public class ClassFile {
     /**
      * Obtain this class' access flags.
      *
-     * @return a number whose bits denote access permissions and properties
-     *         of this class.
+     * @return a number whose bits denote access permissions and properties of
+     *         this class.
      */
     public int access_flags() {
         return myAccess_flags;
@@ -147,8 +157,8 @@ public class ClassFile {
      * Obtain the constant pool index for this class' superclass descriptor.
      *
      * @return the index into the constant pool of a CONSTANT_Class_info entry
-     *         describing this class's superclass (this will be 0 if this is class
-     *         java.lang.Object).
+     *         describing this class's superclass (this will be 0 if this is
+     *         class java.lang.Object).
      */
     public int super_class() {
         return mySuper_class;
@@ -240,8 +250,8 @@ public class ClassFile {
      * Read a class file from a DataInputStream and return the resulting
      * descriptor object.
      *
-     * @param in The DataInputStream to read from; this should be positioned
-     *           at the first byte of the class file being read.
+     * @param in The DataInputStream to read from; this should be positioned at
+     *           the first byte of the class file being read.
      * @return a ClassFile object representing the class file information read
      *         from 'in'.
      */
@@ -289,9 +299,16 @@ public class ClassFile {
             attributes[i] = CF_attribute_info.read(in);
         }
 
-        return new ClassFile(magic, minor_version, major_version,
-                             constant_pool, access_flags, this_class,
-                             super_class, interfaces, fields, methods,
+        return new ClassFile(magic,
+                             minor_version,
+                             major_version,
+                             constant_pool,
+                             access_flags,
+                             this_class,
+                             super_class,
+                             interfaces,
+                             fields,
+                             methods,
                              attributes);
     }
 
@@ -304,8 +321,8 @@ public class ClassFile {
      */
     public static ClassFile read(String filename) throws IOException {
         DataInputStream in =
-          new DataInputStream(new BufferedInputStream(
-            new FileInputStream(filename)));
+          new DataInputStream(new BufferedInputStream(new FileInputStream(
+            filename)));
         return read(in);
     }
 }

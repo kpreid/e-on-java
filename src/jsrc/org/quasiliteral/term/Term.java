@@ -40,7 +40,7 @@ import java.math.BigInteger;
  * contexts. <li>The functor is a {@link Term}, which is likewise like an Antlr
  * {@link antlr.Token}, rather than just storing a String and an int. <li>It
  * has a more conventional printed form, like a prolog term tree. </ul>
- *
+ * <p/>
  * New: A Term may not have both data and children. In other words,
  * data-holding terms are leaves, so only tag-terms can have a non-empty list
  * of children.
@@ -163,7 +163,9 @@ public final class Term extends Termish
         myArgs = (ConstList)ListOfTermsGuard().coerce(args, null);
 
         T.require(null == optData || 0 == args.size(),
-                  "Term ", tag, " can't have both data and children");
+                  "Term ",
+                  tag,
+                  " can't have both data and children");
     }
 
     /**

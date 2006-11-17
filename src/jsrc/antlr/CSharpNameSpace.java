@@ -13,7 +13,6 @@ package antlr;
  * $Id:$
  */
 
-
 //
 // ANTLR C# Code Generator by Micheal Jordan
 //                            Kunle Odutola       : kunle UNDERSCORE odutola AT hotmail DOT com

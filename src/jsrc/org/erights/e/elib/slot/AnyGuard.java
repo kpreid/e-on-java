@@ -30,8 +30,8 @@ import java.io.IOException;
 /**
  * The "any" guard behavior -- don't worry, be happy.
  * <p/>
- * As a Guard, accepts everything without any coercion (the identity
- * coercion). The object named "any" is the one AnyGuard.
+ * As a Guard, accepts everything without any coercion (the identity coercion).
+ * The object named "any" is the one AnyGuard.
  *
  * @author Mark S. Miller
  */

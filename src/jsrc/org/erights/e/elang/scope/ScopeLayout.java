@@ -18,19 +18,19 @@ import org.erights.e.elib.tables.SamenessHashCacher;
 
 /**
  * Static information about the runtime representation of a {@link Scope}.
- * <p>
+ * <p/>
  * A ScopeLayout and an {@link EvalContext} together form a Scope. The
  * ScopeLayout maps from names to their defining {@link NounPattern}s (or
- * equivalent) whose {@link NounExpr} which will retrieve the
- * corresponding {@link org.erights.e.elib.slot.Slot Slot} or value from a
- * corresponding EvalContext. Each EvalContext can be seen as an instantiation
- * of a ScopeLayout.
- * <p>
+ * equivalent) whose {@link NounExpr} which will retrieve the corresponding
+ * {@link org.erights.e.elib.slot.Slot Slot} or value from a corresponding
+ * EvalContext. Each EvalContext can be seen as an instantiation of a
+ * ScopeLayout.
+ * <p/>
  * A ScopeLayout is built out of layered binding contours, with the layers
- * separated by {@link ScopeLayoutContour}s. At the lowest layer is a
- * {@link ScopeLayoutBase} that may contain many bindings; each additional
- * binding is added in a {@link ScopeLayoutLink}.
- * <p>
+ * separated by {@link ScopeLayoutContour}s. At the lowest layer is a {@link
+ * ScopeLayoutBase} that may contain many bindings; each additional binding is
+ * added in a {@link ScopeLayoutLink}.
+ * <p/>
  * For example, if a, b, and c are extant in the outermost scope, and
  * declarations are added like this:
  * <pre>
@@ -72,8 +72,8 @@ public abstract class ScopeLayout extends SamenessHashCacher
 
     /**
      * @param outerCount
-     * @param synEnv must be a map in which each association is
-     * <pre>    "varName =&gt; {@link NounPattern}</pre>
+     * @param synEnv     must be a map in which each association is
+     *                   <pre>    "varName =&gt; {@link NounPattern}</pre>
      * @param fqnPrefix
      * @return The ScopeLayout representing exactly this mapping as a single
      *         contour
@@ -81,9 +81,7 @@ public abstract class ScopeLayout extends SamenessHashCacher
     static public ScopeLayout make(int outerCount,
                                    ConstMap synEnv,
                                    String fqnPrefix) {
-        return new ScopeLayoutBase(outerCount,
-                                   synEnv,
-                                   fqnPrefix);
+        return new ScopeLayoutBase(outerCount, synEnv, fqnPrefix);
     }
 
     /**
@@ -91,14 +89,11 @@ public abstract class ScopeLayout extends SamenessHashCacher
      */
     static void ensureValidFQNPrefix(String fqnPrefix) {
         T.notNull(fqnPrefix, "fqnPrefix may not be null");
-        T.require("".equals(fqnPrefix) ||
-          fqnPrefix.endsWith(".") ||
-          fqnPrefix.endsWith("$"),
-                  "unrecognized prefix: ", fqnPrefix);
+        T.require("".equals(fqnPrefix) || fqnPrefix.endsWith(".") ||
+          fqnPrefix.endsWith("$"), "unrecognized prefix: ", fqnPrefix);
     }
 
     /**
-     *
      * @param outerCount
      */
     ScopeLayout(int outerCount) {
@@ -115,7 +110,7 @@ public abstract class ScopeLayout extends SamenessHashCacher
 
     /**
      * The optional fully qualified prefix.
-     * <p>
+     * <p/>
      * If not null, a fully qualified prefix must end with a "." or "$".
      */
     public abstract String getFQNPrefix();
@@ -129,8 +124,8 @@ public abstract class ScopeLayout extends SamenessHashCacher
     }
 
     /**
-     * withPrefix/1 may only be used on an outer Scope (and therefore
-     * a ScopeLayout representing an outer Scope).
+     * withPrefix/1 may only be used on an outer Scope (and therefore a
+     * ScopeLayout representing an outer Scope).
      */
     public abstract ScopeLayout withPrefix(String fqnPrefix);
 
@@ -147,7 +142,8 @@ public abstract class ScopeLayout extends SamenessHashCacher
     public NounPattern getPattern(String varName) {
         NounPattern optResult = getOptPattern(varName);
         T.notNull(optResult,
-                  "Internal: Variable definition not found: ", varName);
+                  "Internal: Variable definition not found: ",
+                  varName);
         return optResult;
     }
 
@@ -178,19 +174,16 @@ public abstract class ScopeLayout extends SamenessHashCacher
     abstract boolean contains(String varName);
 
     /**
-     * Returns a ScopeLayout just like this one, but with a new
-     * varName => NounPattern mapping added to the innermost contour.
-     * <p>
+     * Returns a ScopeLayout just like this one, but with a new varName =>
+     * NounPattern mapping added to the innermost contour.
+     * <p/>
      * This does not create a new contour, so this operation is rejected if
      * varName is already defined in the innermost contour.
      */
     public ScopeLayout with(String varName, NounPattern namer) {
         requireShadowable(varName, namer.getNoun());
         int outerCount = -1 == myOuterCount ? -1 : myOuterCount + 1;
-        return new ScopeLayoutLink(outerCount,
-                                   this,
-                                   varName,
-                                   namer);
+        return new ScopeLayoutLink(outerCount, this, varName, namer);
     }
 
     /**
@@ -252,9 +245,9 @@ public abstract class ScopeLayout extends SamenessHashCacher
     /**
      * Throw an exception if the varName may not be shadowed because it is
      * already defined in the current (i.e. innermost) contour.
-     * <p>
-     * If varName may not be shadowed because it is reserved, this is caught
-     * in {@link NounPattern} rather than here.
+     * <p/>
+     * If varName may not be shadowed because it is reserved, this is caught in
+     * {@link NounPattern} rather than here.
      */
     public abstract void requireShadowable(String varName, ParseNode optPoser);
 }

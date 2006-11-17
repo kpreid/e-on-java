@@ -20,7 +20,6 @@ public class PublicKeySugar {
     }
 
     /**
-     *
      * @param self
      * @return
      */

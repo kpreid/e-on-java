@@ -12,8 +12,7 @@ import org.erights.e.elib.base.Thunk;
  * Not for general purpose use. This uses the underlying primitive pointer
  * identity (Lisp EQ or Java ==) rather that E's sameness. Since this former
  * depends on the implementation in ways not deterministically derivable from
- * the E spec, this class is
- * <a href="http://www.erights.org/elib/legacy/taming.html">unsafe</a>.
+ * the E spec, this class is <a href="http://www.erights.org/elib/legacy/taming.html">unsafe</a>.
  *
  * @author Mark S. Miller
  */
@@ -30,9 +29,8 @@ public class IdentityMap implements EIteratable {
     private Column myValues;
 
     /**
-     * The current size threshold for the map, that is, the number
-     * of elements to hold before growing. It is calculated as
-     * capacity * myLoadFactor.
+     * The current size threshold for the map, that is, the number of elements
+     * to hold before growing. It is calculated as capacity * myLoadFactor.
      */
     private int mySizeThreshold;
 
@@ -70,10 +68,7 @@ public class IdentityMap implements EIteratable {
      * Reasonable defaults
      */
     public IdentityMap(int initialCapacity, float loadFactor) {
-        this(Object.class,
-             Object.class,
-             initialCapacity,
-             loadFactor);
+        this(Object.class, Object.class, initialCapacity, loadFactor);
     }
 
     /**
@@ -99,10 +94,7 @@ public class IdentityMap implements EIteratable {
     private IdentityMap(IdentityKeyColumn keys,
                         Column values,
                         float loadFactor) {
-        this(keys,
-             values,
-             loadFactor,
-             new ShareCount());
+        this(keys, values, loadFactor, new ShareCount());
     }
 
     /**
@@ -113,15 +105,14 @@ public class IdentityMap implements EIteratable {
                         float loadFactor,
                         ShareCount shareCount) {
         if (keys.capacity() != values.capacity()) {
-            throw new IllegalArgumentException
-              ("columns must be same size");
+            throw new IllegalArgumentException("columns must be same size");
         }
         myKeys = keys;
         myValues = values;
 
         if (loadFactor <= 0.0 || 1.0 < loadFactor) {
-            throw new IllegalArgumentException
-              ("Bad value for loadFactor" + loadFactor);
+            throw new IllegalArgumentException(
+              "Bad value for loadFactor" + loadFactor);
         }
         myLoadFactor = loadFactor;
         mySizeThreshold = (int)(myKeys.capacity() * myLoadFactor);
@@ -135,9 +126,7 @@ public class IdentityMap implements EIteratable {
     /**
      *
      */
-    public IdentityMap(Class keyType,
-                       Class valueType,
-                       int initCapacity) {
+    public IdentityMap(Class keyType, Class valueType, int initCapacity) {
         this(keyType,
              valueType,
              initCapacity,
@@ -153,12 +142,12 @@ public class IdentityMap implements EIteratable {
                        float loadFactor) {
 
         if (initCapacity <= 0) {
-            throw new IllegalArgumentException
-              ("bad initialCapacity " + initCapacity);
+            throw new IllegalArgumentException(
+              "bad initialCapacity " + initCapacity);
         }
         if (loadFactor <= 0.0 || 1.0 < loadFactor) {
-            throw new IllegalArgumentException
-              ("Bad value for loadFactor" + loadFactor);
+            throw new IllegalArgumentException(
+              "Bad value for loadFactor" + loadFactor);
         }
         myLoadFactor = loadFactor;
         myKeys = new IdentityKeyColumn(keyType, 1 + initCapacity);
@@ -173,10 +162,10 @@ public class IdentityMap implements EIteratable {
 
 
     /**
-     * Returns the value to which the key is mapped in this map.
-     * Unlike java.util.Dictionary, a map doesn't indicate a lookup
-     * failure by returning null, since null is a valid value.
-     * map throws an exception instead.
+     * Returns the value to which the key is mapped in this map. Unlike
+     * java.util.Dictionary, a map doesn't indicate a lookup failure by
+     * returning null, since null is a valid value. map throws an exception
+     * instead.
      */
     public Object get(Object key) throws IndexOutOfBoundsException {
         int pos = myKeys.findPosOf(key);
@@ -187,8 +176,8 @@ public class IdentityMap implements EIteratable {
     }
 
     /**
-     * Returns the value to which the key is mapped in this map.
-     * If key is not mapped, return <tt>insteadThunk()</tt> instead.
+     * Returns the value to which the key is mapped in this map. If key is not
+     * mapped, return <tt>insteadThunk()</tt> instead.
      */
     public Object fetch(Object key, Thunk insteadThunk) {
         int pos = myKeys.findPosOf(key);
@@ -232,8 +221,8 @@ public class IdentityMap implements EIteratable {
     }
 
     /**
-     * Returns true if the specified object is a key in the
-     * collection, as defined by the equality function of the collection.
+     * Returns true if the specified object is a key in the collection, as
+     * defined by the equality function of the collection.
      *
      * @param key the object to look for
      * @return true if the key is in the collection
@@ -313,9 +302,8 @@ public class IdentityMap implements EIteratable {
         }
         KeyColumn keys = myKeys;
         Column values = myValues;
-        int capacity = 1 +
-          StrictMath.max((keys.capacity() * 3) / 2,
-                         (keys.numTaken() / mySizeThreshold));
+        int capacity = 1 + StrictMath.max((keys.capacity() * 3) / 2,
+                                          (keys.numTaken() / mySizeThreshold));
         myKeys = (IdentityKeyColumn)keys.newVacant(capacity);
         capacity = myKeys.capacity();
         myValues = myValues.newVacant(capacity);
@@ -353,9 +341,9 @@ public class IdentityMap implements EIteratable {
     }
 
     /**
-     * Rather than doing a write-fault (which would make a private
-     * copy to be immediately dropped) this decrements the sharing
-     * count and re-initializes.
+     * Rather than doing a write-fault (which would make a private copy to be
+     * immediately dropped) this decrements the sharing count and
+     * re-initializes.
      */
     public void removeAll() {
         myShareCount = myShareCount.release();
@@ -365,9 +353,9 @@ public class IdentityMap implements EIteratable {
     }
 
     /**
-     * Unlike java.util.Hashtable, this part efficiently makes a lazy
-     * copy by copy-on-write sharing. Modify operations on a shared
-     * map then cause the delayed copy to happen.
+     * Unlike java.util.Hashtable, this part efficiently makes a lazy copy by
+     * copy-on-write sharing. Modify operations on a shared map then cause the
+     * delayed copy to happen.
      */
     public IdentityMap diverge(Class kType, Class vType) {
 

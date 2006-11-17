@@ -23,25 +23,21 @@ Contributor(s): ______________________________________.
 
 
 /**
- * An implementation of FlexMap by MarkM & Sidney, based on an earlier
- * design by Dan.
+ * An implementation of FlexMap by MarkM & Sidney, based on an earlier design
+ * by Dan.
  *
  * @author Mark S. Miller
  */
 class FlexMapImpl extends FlexMap {
 
     /**
-     * This default load factor is calculated to preserve the same
-     * marginal space cost per hash map entry as
-     * java.util.Hashtable, given its default load factor of 0.75.
-     * For a map of 100 entries, assuming only one word of hidden
-     * boxing overhead, java.util.Hastable uses:
+     * This default load factor is calculated to preserve the same marginal
+     * space cost per hash map entry as java.util.Hashtable, given its default
+     * load factor of 0.75. For a map of 100 entries, assuming only one word of
+     * hidden boxing overhead, java.util.Hastable uses:
      * <p/>
-     * sizeof(HashtableEntry) == 5*4 == 20
-     * 100 * 20 == 2000
-     * (capacity = 100 / 0.75 == 133)
-     * capacity * 4 = 533
-     * bytes per entry == 25.33
+     * sizeof(HashtableEntry) == 5*4 == 20 100 * 20 == 2000 (capacity = 100 /
+     * 0.75 == 133) capacity * 4 = 533 bytes per entry == 25.33
      * <p/>
      * FlexMapImpl, by contrast, uses 13 bytes per unit capacity (pos)
      * irrespective of how many are occupied.
@@ -51,16 +47,15 @@ class FlexMapImpl extends FlexMap {
     static public final float DEFAULT_LOAD_FACTOR = 0.52f;
 
     /**
-     * Similarly, the default initial capacity of java.util.Hashtable
-     * is 101. 101 * 0.75 / 0.52 == 146 (approx). But we're using 10
-     * instead.
+     * Similarly, the default initial capacity of java.util.Hashtable is 101.
+     * 101 * 0.75 / 0.52 == 146 (approx). But we're using 10 instead.
      */
     static public final int DEFAULT_INIT_CAPACITY = /*146*/ 10;
 
     /**
-     * For either map, multiplying the two defaults gives the same
-     * default threshold -- how many a default map can hold without
-     * growing: 75. But we're using 5 instead.
+     * For either map, multiplying the two defaults gives the same default
+     * threshold -- how many a default map can hold without growing: 75. But
+     * we're using 5 instead.
      */
     static private final int DEFAULT_THRESH = /*75*/ 5;
 
@@ -75,9 +70,8 @@ class FlexMapImpl extends FlexMap {
     Column myValues;
 
     /**
-     * The current size threshold for the map, that is, the number
-     * of elements to hold before growing. It is calculated as
-     * capacity * myLoadFactor.
+     * The current size threshold for the map, that is, the number of elements
+     * to hold before growing. It is calculated as capacity * myLoadFactor.
      */
     int mySizeThreshold;
 
@@ -105,30 +99,21 @@ class FlexMapImpl extends FlexMap {
      * Reasonable defaults
      */
     public FlexMapImpl(int initialCapacity) {
-        this(Object.class,
-             Object.class,
-             initialCapacity,
-             DEFAULT_LOAD_FACTOR);
+        this(Object.class, Object.class, initialCapacity, DEFAULT_LOAD_FACTOR);
     }
 
     /**
      * Reasonable defaults
      */
     public FlexMapImpl(int initialCapacity, float loadFactor) {
-        this(Object.class,
-             Object.class,
-             initialCapacity,
-             loadFactor);
+        this(Object.class, Object.class, initialCapacity, loadFactor);
     }
 
     /**
      * Reasonable defaults
      */
     public FlexMapImpl(Class keyType, Class valueType) {
-        this(keyType,
-             valueType,
-             DEFAULT_INIT_CAPACITY,
-             DEFAULT_LOAD_FACTOR);
+        this(keyType, valueType, DEFAULT_INIT_CAPACITY, DEFAULT_LOAD_FACTOR);
     }
 
     /**
@@ -141,13 +126,8 @@ class FlexMapImpl extends FlexMap {
     /**
      *
      */
-    FlexMapImpl(KeyColumn keys,
-                Column values,
-                float loadFactor) {
-        this(keys,
-             values,
-             loadFactor,
-             new ShareCount());
+    FlexMapImpl(KeyColumn keys, Column values, float loadFactor) {
+        this(keys, values, loadFactor, new ShareCount());
     }
 
     /**
@@ -158,15 +138,14 @@ class FlexMapImpl extends FlexMap {
                 float loadFactor,
                 ShareCount shareCount) {
         if (keys.capacity() != values.capacity()) {
-            throw new IllegalArgumentException
-              ("columns must be same size");
+            throw new IllegalArgumentException("columns must be same size");
         }
         myKeys = keys;
         myValues = values;
 
         if (loadFactor <= 0.0 || 1.0 < loadFactor) {
-            throw new IllegalArgumentException
-              ("Bad value for loadFactor" + loadFactor);
+            throw new IllegalArgumentException(
+              "Bad value for loadFactor" + loadFactor);
         }
         myLoadFactor = loadFactor;
         mySizeThreshold = (int)(myKeys.capacity() * myLoadFactor);
@@ -180,13 +159,8 @@ class FlexMapImpl extends FlexMap {
     /**
      *
      */
-    public FlexMapImpl(Class keyType,
-                       Class valueType,
-                       int initCapacity) {
-        this(keyType,
-             valueType,
-             initCapacity,
-             DEFAULT_LOAD_FACTOR);
+    public FlexMapImpl(Class keyType, Class valueType, int initCapacity) {
+        this(keyType, valueType, initCapacity, DEFAULT_LOAD_FACTOR);
     }
 
     /**
@@ -198,8 +172,8 @@ class FlexMapImpl extends FlexMap {
                        float loadFactor) {
         if (initCapacity <= 0) {
             if (initCapacity < 0) {
-                throw new IllegalArgumentException
-                  ("bad initialCapacity " + initCapacity);
+                throw new IllegalArgumentException(
+                  "bad initialCapacity " + initCapacity);
             } else {
                 //XXX Is this a kludge?  It seems so, but it might be
                 //the right thing
@@ -207,8 +181,8 @@ class FlexMapImpl extends FlexMap {
             }
         }
         if (loadFactor <= 0.0 || 1.0 < loadFactor) {
-            throw new IllegalArgumentException
-              ("Bad value for loadFactor" + loadFactor);
+            throw new IllegalArgumentException(
+              "Bad value for loadFactor" + loadFactor);
         }
         myLoadFactor = loadFactor;
 
@@ -223,10 +197,10 @@ class FlexMapImpl extends FlexMap {
     }
 
     /**
-     * Returns the value to which the key is mapped in this map.
-     * Unlike java.util.Dictionary, a map doesn't indicate a lookup
-     * failure by returning null, since null is a valid value.
-     * map throws an exception instead.
+     * Returns the value to which the key is mapped in this map. Unlike
+     * java.util.Dictionary, a map doesn't indicate a lookup failure by
+     * returning null, since null is a valid value. map throws an exception
+     * instead.
      */
     public Object get(Object key) throws IndexOutOfBoundsException {
         int pos = myKeys.findPosOf(key);
@@ -237,8 +211,8 @@ class FlexMapImpl extends FlexMap {
     }
 
     /**
-     * Returns the value to which the key is mapped in this map.
-     * If key is not mapped, return <tt>insteadThunk()</tt> instead.
+     * Returns the value to which the key is mapped in this map. If key is not
+     * mapped, return <tt>insteadThunk()</tt> instead.
      */
     public Object fetch(Object key, Thunk insteadThunk) {
         int pos = myKeys.findPosOf(key);
@@ -277,8 +251,8 @@ class FlexMapImpl extends FlexMap {
     }
 
     /**
-     * Returns true if the specified object is a key in the
-     * collection, as defined by the equality function of the collection.
+     * Returns true if the specified object is a key in the collection, as
+     * defined by the equality function of the collection.
      *
      * @param key the object to look for
      * @return true if the key is in the collection
@@ -351,9 +325,8 @@ class FlexMapImpl extends FlexMap {
         }
         KeyColumn keys = myKeys;
         Column values = myValues;
-        int capacity = 1 +
-          StrictMath.max((keys.capacity() * 3) / 2,
-                         (keys.numTaken() / mySizeThreshold));
+        int capacity = 1 + StrictMath.max((keys.capacity() * 3) / 2,
+                                          (keys.numTaken() / mySizeThreshold));
         myKeys = (KeyColumn)keys.newVacant(capacity);
         capacity = myKeys.capacity();
         myValues = myValues.newVacant(capacity);
@@ -384,9 +357,9 @@ class FlexMapImpl extends FlexMap {
     }
 
     /**
-     * Rather than doing a write-fault (which would make a private
-     * copy to be immediately dropped) this decrements the sharing
-     * count and re-initializes.
+     * Rather than doing a write-fault (which would make a private copy to be
+     * immediately dropped) this decrements the sharing count and
+     * re-initializes.
      */
     public void removeAll() {
         myShareCount = myShareCount.release();
@@ -396,9 +369,9 @@ class FlexMapImpl extends FlexMap {
     }
 
     /**
-     * Unlike java.util.Hashtable, this part efficiently makes a lazy
-     * copy by copy-on-write sharing. Modify operations on a shared
-     * map then cause the delayed copy to happen.
+     * Unlike java.util.Hashtable, this part efficiently makes a lazy copy by
+     * copy-on-write sharing. Modify operations on a shared map then cause the
+     * delayed copy to happen.
      */
     public FlexMap diverge(Class kType, Class vType) {
 

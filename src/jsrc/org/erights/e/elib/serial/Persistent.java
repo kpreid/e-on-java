@@ -19,8 +19,8 @@ Copyright (C) 1998 Electric Communities. All Rights Reserved.
 Contributor(s): ______________________________________.
 */
 
-import org.erights.e.elib.tables.ConstSubclassSet;
 import org.erights.e.elib.ref.Ref;
+import org.erights.e.elib.tables.ConstSubclassSet;
 
 import java.io.Serializable;
 
@@ -45,40 +45,34 @@ public interface Persistent extends Serializable, Marker {
      * obviously want people to be able to use them as if we had.
      */
     String[] HONORED_NAMES = {
-        //also PBC, Transparent, & Selfless, and so PassByCopy
-        "java.lang.Boolean",
-        "java.lang.Character",
-        "java.lang.String",
+      //also PBC, Transparent, & Selfless, and so PassByCopy
+      "java.lang.Boolean", "java.lang.Character", "java.lang.String",
 
-        //also PBC, Transparent, & Selfless, and so PassByCopy
-        "java.lang.Number",
+      //also PBC, Transparent, & Selfless, and so PassByCopy
+      "java.lang.Number",
 
-        //also PBC & Selfless, but not Transparent or PassByCopy
-        "net.captp.jcomm.SturdyRef",
+      //also PBC & Selfless, but not Transparent or PassByCopy
+      "net.captp.jcomm.SturdyRef",
 
-        //We would like Throwable to be transitively PassByCopy, but it
-        //doesn't provide its own equals() and hashCode(), so it can't be
-        //made even honorarily Selfless, it's not really transparent because
-        //of the stack trace, and we currently have no way to enforce the
-        //transitive adherence to any rules by Throwable subclasses.
-        "java.lang.Throwable",
-        "java.lang.StackTraceElement",
+      //We would like Throwable to be transitively PassByCopy, but it
+      //doesn't provide its own equals() and hashCode(), so it can't be
+      //made even honorarily Selfless, it's not really transparent because
+      //of the stack trace, and we currently have no way to enforce the
+      //transitive adherence to any rules by Throwable subclasses.
+      "java.lang.Throwable", "java.lang.StackTraceElement",
 
-        //We'd like these to be (at least honorarily) Selfless, and therefore
-        //PassByCopy, but they don't implement their own equals() and
-        //hashCode(), and there doesn't seem to be any generic way to get
-        //their contents and restore them from their contents. However,
-        //KeySpec looks like a hopeful solution someday.
-        //News: progress has been made towards using KeySpecs. See the
-        //org.erights.e.meta.java.security.**Sugar classes.
-        "java.security.Key",
-        "java.security.KeyPair",
-    };
+      //We'd like these to be (at least honorarily) Selfless, and therefore
+      //PassByCopy, but they don't implement their own equals() and
+      //hashCode(), and there doesn't seem to be any generic way to get
+      //their contents and restore them from their contents. However,
+      //KeySpec looks like a hopeful solution someday.
+      //News: progress has been made towards using KeySpecs. See the
+      //org.erights.e.meta.java.security.**Sugar classes.
+      "java.security.Key", "java.security.KeyPair",};
 
     /**
      * HONORARY (effectively) contains all the classes named in HONORED_NAMES
      * and all their subclasses.
      */
-    ConstSubclassSet HONORARY
-      = ConstSubclassSet.make(HONORED_NAMES);
+    ConstSubclassSet HONORARY = ConstSubclassSet.make(HONORED_NAMES);
 }

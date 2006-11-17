@@ -24,7 +24,6 @@ abstract class ScopeLayoutContour extends ScopeLayout {
     }
 
     /**
-     *
      * @return
      */
     public String getFQNPrefix() {
