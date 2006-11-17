@@ -6,51 +6,51 @@
     ? pragma.syntax("0.9")
     ?
     ? def m := meta.getState()
-    # value: an InnerScope
-    #            makeCommand
-    #                an EImplByProxy
-    #            JPanel__quasiParser
-    #                an EImplByProxy
-    #            awt__uriGetter
-    #                a SwitchableRef
-    #            captp__uriGetter
-    #                an Introducer
-    #            entropy
-    #                an ESecureRandom
-    #            fileURL__uriGetter
-    #                an URLGetter
-    #            file__uriGetter
-    #                a StaticMaker
-    #            ftp__uriGetter
-    #                an URLGetter
-    #            gopher__uriGetter
-    #                an URLGetter
-    #            http__uriGetter
-    #                an URLGetter
-    #            interp
-    #                a SwitchableRef
-    #            introducer
-    #                an Introducer
-    #            m
-    #                an InnerScope
-    #            makeSturdyRef
-    #                a SturdyRefMaker
-    #            news__uriGetter
-    #                an URLGetter
-    #            print
-    #                an EImplByProxy
-    #            println
-    #                an EImplByProxy
-    #            stderr
-    #                a TextWriter
-    #            stdout
-    #                a TextWriter
-    #            swing__uriGetter
-    #                a SwitchableRef
-    #            timer
-    #                a Timer
-    #            unsafe__uriGetter
-    #                an UnsafeLoaderScope
+    # example value: an InnerScope
+    #                    makeCommand
+    #                        an EImplByProxy
+    #                    JPanel__quasiParser
+    #                        an EImplByProxy
+    #                    awt__uriGetter
+    #                        a SwitchableRef
+    #                    captp__uriGetter
+    #                        an Introducer
+    #                    entropy
+    #                        an ESecureRandom
+    #                    fileURL__uriGetter
+    #                        an URLGetter
+    #                    file__uriGetter
+    #                        a StaticMaker
+    #                    ftp__uriGetter
+    #                        an URLGetter
+    #                    gopher__uriGetter
+    #                        an URLGetter
+    #                    http__uriGetter
+    #                        an URLGetter
+    #                    interp
+    #                        a SwitchableRef
+    #                    introducer
+    #                        an Introducer
+    #                    m
+    #                        an InnerScope
+    #                    makeSturdyRef
+    #                        a SturdyRefMaker
+    #                    news__uriGetter
+    #                        an URLGetter
+    #                    print
+    #                        an EImplByProxy
+    #                    println
+    #                        an EImplByProxy
+    #                    stderr
+    #                        a TextWriter
+    #                    stdout
+    #                        a TextWriter
+    #                    swing__uriGetter
+    #                        a SwitchableRef
+    #                    timer
+    #                        a Timer
+    #                    unsafe__uriGetter
+    #                        an UnsafeLoaderScope
     #
 
     ? def func() :any {
@@ -60,13 +60,15 @@
     # value: <func>
 
     ? def scp := func()
-    yup
-    # value: an InnerScope
-    #            println
-    #                an EImplByProxy
+    # stdout: yup
     #
 
-    ? scp["println"]
+    # value: ["&null" => <& null>, \
+    #         "&println" => <has <println>>, \
+    #         "&any" => <& any>, \
+    #         "&__return" => <& <__return: disabled Ejector>>]
+
+    ? scp["&println"].getValue()
     # value: <println>
 
     ?

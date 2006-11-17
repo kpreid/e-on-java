@@ -34,7 +34,7 @@
 
 ? timeMachine.createAs(vatFile)
 ? [p,sr]
-# value: [null, <a SturdyRef>]
+# value: [null, <SturdyRef to 3>]
 
 ? def makeBootServer := <elang:interp.makeServerAuthor>.boot(<unsafe>)
 # value: <makeServer>

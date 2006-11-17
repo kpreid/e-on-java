@@ -40,17 +40,12 @@
 
     ? pt2 := null
     # problem: Not audited by Point
-    #
-    #   assigning pt2
-    #   <interactive interp> evalPrint(e`pt2 := null`)
 
     ? interface Foo {}
     # value: Foo
 
     ? def f :Foo := pt1
     # problem: Not audited by Foo
-    #
-    #   <interactive interp> evalPrint(e`def f :Foo := pt1`)
 
     ? def f2 implements Foo {}
     # value: <f2>
@@ -69,8 +64,5 @@
 
     ? xVar := 3
     # problem: couldn't coerce to: X
-    #
-    #   assigning xVar
-    #   <interactive interp> evalPrint(e`xVar := 3`)
 
     ?

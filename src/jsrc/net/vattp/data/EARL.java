@@ -181,7 +181,7 @@ public class EARL {
         }
         if (!rest.startsWith("//*")) {
             throw new MalformedURLException(
-              "URI " + uri + " does not start with captp://*");
+              "URI " + uri + " does not start with \"captp://*\"");
         }
         rest = rest.substring("//*".length());
         int i = rest.indexOf('@');

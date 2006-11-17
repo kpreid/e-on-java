@@ -12,7 +12,7 @@
     ? def [ap,ar] := Ref.promise()
     # value: [<Promise>, <Resolver>]
 
-    ? def apURI := introducer.sturdyToURI(makeSturdyRef(ap))
+    ? def apURI := introducer.sturdyToURI(makeSturdyRef.temp(ap))
 
     ? <file:~/Desktop/ap.cap>.setText(apURI)
 
@@ -26,7 +26,7 @@
     ? def [bp,br] := Ref.promise()
     # value: [<Promise>, <Resolver>]
 
-    ? def bpURI := introducer.sturdyToURI(makeSturdyRef(bp))
+    ? def bpURI := introducer.sturdyToURI(makeSturdyRef.temp(bp))
 
     ? <file:~/Desktop/bp.cap>.setText(bpURI)
 

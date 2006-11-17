@@ -22,16 +22,18 @@
     # value: ["echo is a shell builtin
     #        ", ""]
 
+When rune is launched under cygwin, we get the following value. When
+it's launched directly (as with the "rune" shortcut), we get the
+following problem. XXX There's probably some environment variable issue,
+like $PATH, which we need to set up correctly.
+
     ? bash("-c", "cygpath -w `type -p echo.exe`")
     # problem: c:/cygwin/bin/bash.exe failed with(127,,/usr/bin/bash: \
     # cygpath: command not found
     #          )
-    #
-    #   <elang:interp.Thrower>("c:/cygwin/bin/bash.exe failed with(...sh: \
-    #   cygpath: command not found\n\ )")
-    #   <exec c:/cygwin/bin/bash.exe args...>("-c", \
-    #   "cygpath -w `type -p echo.exe`")
-    #   <interp> evalPrint(e`bash run("-c", "cygpath -w `type -p echo.exe`")`)
+
+    # value: ["C:\\cygwin\\bin\\echo.exe
+    #        ", ""]
 
     ?
 

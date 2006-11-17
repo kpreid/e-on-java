@@ -59,6 +59,11 @@ def is {
 
     ? interp.setExpand(true)
     ? 3 =~ ==3
-    # expansion: 3 =~ via (__is.run(3)) _
+    # expansion: escape ej__1 {
+    #                def via (__is.run(3)) _ exit ej__1 := 3
+    #                true
+    #            } catch _ {
+    #                false
+    #            }
 
     # value: true

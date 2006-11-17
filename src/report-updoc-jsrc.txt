@@ -1,7 +1,7 @@
 
 updoc: started
 
-c:/Documents and Settings/millerm1/e/src/jsrc/com/zooko/tray/EPainter.updoc:Exception in thread "AWT-EventQueue-0" java.lang.RuntimeException: Failed: Must only be called from <runs in home>'s thread
+c:/Documents and Settings/millerm1/e/src/jsrc/com/zooko/tray/EPainter.updoc:......java.lang.RuntimeException: Failed: Must only be called from <DeadRunner java.lang.RuntimeException: makeEvaluator shutdown>'s thread
 	at org.erights.e.develop.assertion.T.fail(T.java:84)
 	at org.erights.e.develop.assertion.T.require(T.java:358)
 	at org.erights.e.elib.vat.Runner.requireCurrent(Runner.java:381)
@@ -9,172 +9,65 @@ c:/Documents and Settings/millerm1/e/src/jsrc/com/zooko/tray/EPainter.updoc:Exce
 	at org.erights.e.elib.deflect.Deflector.invoke(Deflector.java:216)
 	at $Proxy9.paintComponent(Unknown Source)
 	at com.zooko.tray.EPainter.paintComponent(EPainter.java:56)
-	at javax.swing.JComponent.paint(JComponent.java:1005)
-	at javax.swing.JComponent.paintChildren(JComponent.java:842)
-	at javax.swing.JComponent.paint(JComponent.java:1014)
-	at javax.swing.JLayeredPane.paint(JLayeredPane.java:559)
-	at javax.swing.JComponent.paintChildren(JComponent.java:842)
-	at javax.swing.JComponent.paintWithOffscreenBuffer(JComponent.java:4970)
-	at javax.swing.JComponent.paintDoubleBuffered(JComponent.java:4916)
-	at javax.swing.JComponent.paint(JComponent.java:995)
+	at javax.swing.JComponent.paint(JComponent.java:808)
+	at javax.swing.JComponent.paintChildren(JComponent.java:647)
+	at javax.swing.JComponent.paint(JComponent.java:817)
+	at javax.swing.JLayeredPane.paint(JLayeredPane.java:557)
+	at javax.swing.JComponent.paintChildren(JComponent.java:647)
+	at javax.swing.JComponent.paintWithOffscreenBuffer(JComponent.java:4794)
+	at javax.swing.JComponent.paintDoubleBuffered(JComponent.java:4740)
+	at javax.swing.JComponent.paint(JComponent.java:798)
 	at java.awt.GraphicsCallback$PaintCallback.run(GraphicsCallback.java:21)
 	at sun.awt.SunGraphicsCallback.runOneComponent(SunGraphicsCallback.java:60)
 	at sun.awt.SunGraphicsCallback.runComponents(SunGraphicsCallback.java:97)
-	at java.awt.Container.paint(Container.java:1709)
-	at sun.awt.RepaintArea.paintComponent(RepaintArea.java:248)
-	at sun.awt.RepaintArea.paint(RepaintArea.java:224)
-	at sun.awt.windows.WComponentPeer.handleEvent(WComponentPeer.java:254)
-	at java.awt.Component.dispatchEventImpl(Component.java:4031)
-	at java.awt.Container.dispatchEventImpl(Container.java:2024)
-	at java.awt.Window.dispatchEventImpl(Window.java:1778)
-	at java.awt.Component.dispatchEvent(Component.java:3803)
-	at java.awt.EventQueue.dispatchEvent(EventQueue.java:463)
-	at java.awt.EventDispatchThread.pumpOneEventForHierarchy(EventDispatchThread.java:242)
-	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:163)
-	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:157)
-	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:149)
-	at java.awt.EventDispatchThread.run(EventDispatchThread.java:110)
-......
-c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/jcomm/bad-resolve.updoc:..............................................***-----------------------***
-*** Trace data written to ***
-'C:/Documents and Settings/millerm1/.e/etrace/etrace.2006-11-12T06_51_12.744Z.txt'
-***-----------------------***
+	at java.awt.Container.paint(Container.java:1312)
+	at sun.awt.RepaintArea.paint(RepaintArea.java:177)
+	at sun.awt.windows.WComponentPeer.handleEvent(WComponentPeer.java:260)
+	at java.awt.Component.dispatchEventImpl(Component.java:3678)
+	at java.awt.Container.dispatchEventImpl(Container.java:1627)
+	at java.awt.Window.dispatchEventImpl(Window.java:1606)
+	at java.awt.Component.dispatchEvent(Component.java:3477)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:480)
+	at java.awt.EventDispatchThread.pumpOneEventForHierarchy(EventDispatchThread.java:201)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:151)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:145)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:137)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:100)
 
+c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/jcomm/bad-resolve.updoc:..............................................
 c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/jcomm/multi-test.updoc:.......................
 c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/jcomm/refmon.updoc:..............
 at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/jcomm/refmon.updoc#:span::64:6::64:10>
 expr: trace
 original and new value differ
 original value: "++++.run/1.run/1+.run/1+.run/1"
-     new value: "++++.run/1.run/1+.run/1"
+     new value: "++.run/1++.run/1+.run/1"
 .....
 at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/jcomm/refmon.updoc#:span::79:6::79:10>
 expr: trace
 original and new value differ
 original value: "++++.run/1.run/1+.run/1+.run/1
                 =add/2+.__whenMoreResolved/1.__whenMoreResolved/1"
-     new value: "++++.run/1.run/1+.run/1
+     new value: "++.run/1++.run/1+.run/1
                 =add/2+.__whenMoreResolved/1"
 
 c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc:.......................................
-c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/scope/meta-context.updoc:...
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/scope/meta-context.updoc#:span::21:2::21:19>
-expr: def [s,c] := foo()
-original and new value differ
-original value: [["&__makeList" => <& <import:org.erights.e.elib.tables.ConstList>>, "&any" => <& <any>>, "&__return" => <& <__return: disabled Ejector>>], <StaticContext>]
-     new value: [["&__makeList" => <& <makeConstList>>, "&any" => <& any>, "&__return" => <& <__return: disabled Ejector>>], <static __main$foo$, 3 s>]
-
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/scope/meta-context.updoc#:span::29:2::29:14>
-expr: c.getSource()
-original and new value differ
-original value: e`def "__main$foo__C" {
-                
-                /**
-                * Invoke as a function
-                */
-                method run() :any {
-                escape __return {
-                __makeList.run(meta.getState(), meta.context())
-                }
-                }
-                }`
-     new value: e`def foo {
-                
-                method run() :any {
-                escape __return {
-                __return.run(__makeList.run(meta.getState(), meta.context()))
-                }
-                }
-                }`
-..
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/scope/meta-context.updoc#:span::56:2::56:17>
-expr: c.getFQNPrefix()
-original and new value differ
-original value: "__main$foo__C$"
-     new value: "__main$foo$"
-
-c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/scope/meta-scope.updoc:..
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/scope/meta-scope.updoc#:span::8:6::8:29>
-expr: def m := meta.getState()
-original and new value differ
-original value: an InnerScope
-                makeCommand
-                an EImplByProxy
-                JPanel__quasiParser
-                an EImplByProxy
-                awt__uriGetter
-                a SwitchableRef
-                captp__uriGetter
-                an Introducer
-                entropy
-                an ESecureRandom
-                fileURL__uriGetter
-                an URLGetter
-                file__uriGetter
-                a StaticMaker
-                ftp__uriGetter
-                an URLGetter
-                gopher__uriGetter
-                an URLGetter
-                http__uriGetter
-                an URLGetter
-                interp
-                a SwitchableRef
-                introducer
-                an Introducer
-                m
-                an InnerScope
-                makeSturdyRef
-                a SturdyRefMaker
-                news__uriGetter
-                an URLGetter
-                print
-                an EImplByProxy
-                println
-                an EImplByProxy
-                stderr
-                a TextWriter
-                stdout
-                a TextWriter
-                swing__uriGetter
-                a SwitchableRef
-                timer
-                a Timer
-                unsafe__uriGetter
-                an UnsafeLoaderScope
-                
-     new value: ["&null" => <& null>, "&false" => <& false>, "&true" => <& true>, "&throw" => <& throw>, "&__loop" => <& <__loop>>, "&__makeList" => <& <makeConstList>>, "&__makeMap" => <& <makeConstMap>>, "&__makeProtocolDesc" => <& <makeProtocolDesc>>, "&__makeMessageDesc" => <& <makeMessageDesc>>, "&__makeParamDesc" => <& <makeParamDesc>>, "&any" => <& any>, "&void" => <& void>, "&boolean" => <& Boolean>, "&__makeOrderedSpace" => <lazy eval slot>, "&Guard" => <& Guard>, "&require" => <lazy eval slot>, "&__makeVerbFacet" => <lazy eval slot>, "&__MatchContext" => <lazy eval slot>, "&__is" => <lazy eval slot>, "&__splitList" => <lazy eval slot>, "&__suchThat" => <lazy eval slot>, "&__bind" => <lazy eval slot>, "&__extract" => <lazy eval slot>, "&__Empty" => <lazy eval slot>, "&__matchBind" => <lazy eval slot>, "&__Test" => <lazy eval slot>, "&NaN" => <& NaN>, "&Infinity" => <& Infinity>, "&__identityFunc" => <& <an IdentityFunc>>, "&__makeInt" => <lazy eval slot>, "&__makeFinalSlot" => <& <makeFinalSlot>>, "&__makeTwine" => <& <makeTwine>>, "&__makeSourceSpan" => <& <makeSourceSpan>>, "&__auditedBy" => <& <an AuditChecker>>, "&near" => <lazy eval slot>, "&pbc" => <& pbc>, "&PassByCopy" => <& PassByCopy>, "&DeepPassByCopy" => <& DeepPassByCopy>, "&Data" => <& DeepPassByCopy>, "&Persistent" => <& Persistent>, "&DeepFrozen" => <& DeepFrozen>, "&int" => <lazy eval slot>, "&float64" => <lazy eval slot>, "&char" => <lazy eval slot>, "&String" => <& String>, "&Twine" => <& Twine>, "&TextWriter" => <& TextWriter>, "&List" => <& List>, "&Map" => <& Map>, "&Set" => <& Set>, "&nullOk" => <& nullOk>, "&Tuple" => <& <makeTupleGuard>>, "&__Portrayal" => <lazy eval slot>, "&notNull" => <lazy eval slot>, "&vow" => <lazy eval slot>, "&rcvr" => <lazy eval slot>, "&SturdyRef" => <lazy eval slot>, "&simple__quasiParser" => <& <a SimpleQuasiParser>>, "&twine__quasiParser" => <lazy eval slot>, "&rx__quasiParser" => <lazy eval slot>, "&olde__quasiParser" => <& <makeEParser>>, "&e__quasiParser" => <& <makeEParser>>, "&epatt__quasiParser" => <lazy eval slot>, "&sml__quasiParser" => <lazy eval slot>, "&term__quasiParser" => <& <a QBuilder>>, "&__equalizer" => <& <an Equalizer>>, "&__comparer" => <& <a Comparer>>, "&Ref" => <& <makeRef>>, "&E" => <lazy eval slot>, "&promiseAllFulfilled" => <lazy eval slot>, "&EIO" => <& <makeEIO>>, "&help" => <& ? help
-                Shows this message.
-                ? help(<expression>)
-                Shows what messages the expression's value responds to.
-                ? rune(["--help"])
-                For help on running external commands
-                $ rune --help
-                How you get help on "rune" from an external shell.
-                Documentation on the E Language can be found at
-                http://www.erights.org/elang/help.html>, "&safeScope" => <& <a Scope>>, "&__eval" => <& <a BaseEvaluator>>, "&resource__uriGetter" => <& <resource>>, "&type__uriGetter" => <& <type>>, "&import__uriGetter" => <& <import>>, "&elib__uriGetter" => <lazy eval slot>, "&elang__uriGetter" => <lazy eval slot>, "&opaque__uriGetter" => <lazy eval slot>, "&__abortIncarnation" => <& <ref broken by problem: XXX __abortIncarnation not yet implemented>>, "&file__uriGetter" => <& <file>>, "&fileURL__uriGetter" => <& <file>>, "&jar__uriGetter" => <& <jar>>, "&http__uriGetter" => <& <http>>, "&ftp__uriGetter" => <& <ftp>>, "&gopher__uriGetter" => <& <gopher>>, "&news__uriGetter" => <& <news>>, "&captp__uriGetter" => <& <Off The Air>>, "&makeCommand" => <lazy eval slot>, "&stdout" => <& <a TextWriter>>, "&stderr" => <& <a TextWriter>>, "&stdin" => <& <ref broken by problem: XXX stdin not yet implemented>>, "&print" => <lazy eval slot>, "&println" => <lazy eval slot>, "&interp" => <& <cmdLoop>>, "&entropy" => <& <an ESecureRandom>>, "&timer" => <& <a Timer>>, "&introducer" => <& <Off The Air>>, "&identityMgr" => <& <IdentityMgr Off The Air>>, "&makeSturdyRef" => <lazy eval slot>, "&timeMachine" => <lazy eval slot>, "&unsafe__uriGetter" => <& <unsafe>>, "&currentVat" => <& <Vat home in <runs in home>>>, "&rune" => <lazy eval slot>, "&awt__uriGetter" => <lazy eval slot>, "&swing__uriGetter" => <lazy eval slot>, "&JPanel__quasiParser" => <lazy eval slot>, "&swt__uriGetter" => <lazy eval slot>, "&currentDisplay" => <lazy eval slot>, "&swtGrid__quasiParser" => <lazy eval slot>, "&swtWatch" => <lazy eval slot>, "&privilegedScope" => <& <a Scope>>, "&m" => null]
-..
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/scope/meta-scope.updoc#:span::69:6::69:19>
-expr: scp["println"]
-missing new value
-original value: <println>
-missing original problem
-new problem: <IndexOutOfBoundsException: "println" not found>
-
+c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/scope/meta-context.updoc:........
+c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/scope/meta-scope.updoc:.......
 c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/scope/redef.updoc:........
 c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/syntax/exporter.updoc:...........
 c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/syntax/lambdaArg.updoc:.............
-c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/sealing/amplify.updoc:.....
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/sealing/amplify.updoc#:span::28:2::28:43>
-expr: def makeUncall := <elib:serial.makeUncall>
+c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/sealing/amplify.updoc:......
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/sealing/amplify.updoc#:span::31:2::31:52>
+expr: def uncall := makeAnUncaller([<import>], xUnsealer)
 missing new value
-original value: <makeUncall>
+original value: <uncall>
 missing original problem
-new problem: Failed: org.erights.e.elib.serial.makeUncall not found
+new problem: <NoSuchMethodException: <a makeAnUncaller>.run/2>
 
 c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/sealing/crypto/signing.updoc:.....
 c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/sealing/point.updoc:.............
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/sealing/point.updoc#:span::64:6::64:31>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/sealing/point.updoc#:span::59:6::59:31>
 expr: def x implements XStamp {}
 missing new value
 original value: <x>
@@ -182,7 +75,7 @@ missing original problem
 new problem: <ClassCastException: Sealer doesn't coerce to an Auditor>
 
 c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker.updoc:..
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker.updoc#:span::12:6::12:33>
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker.updoc#:span::11:6::11:33>
 expr: def cb := makeTraversalKey()
 missing new value
 original value: <TraversalKey>
@@ -191,18 +84,49 @@ new problem: <NoSuchMethodException: <a TraversalKey__Maker>.run/0>
 
 c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker2.updoc:.....................
 c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/FlexList.updoc:.......
-c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/trijection.updoc:............
-c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc:...
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::20:6::20:59>
-expr: def miniSchema := <astro:makeBaseSchema>.new("mini", [
-          "tag",
-          ".char.",
-          ".int.",
-          ".float64.",
-          ".String."])
+c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/trijection.updoc:............java.lang.RuntimeException: Failed: Must only be called from <DeadRunner java.lang.RuntimeException: makeEvaluator shutdown>'s thread
+	at org.erights.e.develop.assertion.T.fail(T.java:84)
+	at org.erights.e.develop.assertion.T.require(T.java:358)
+	at org.erights.e.elib.vat.Runner.requireCurrent(Runner.java:381)
+	at org.erights.e.elib.vat.Vat.callAll(Vat.java:491)
+	at org.erights.e.elib.deflect.Deflector.invoke(Deflector.java:216)
+	at $Proxy9.paintComponent(Unknown Source)
+	at com.zooko.tray.EPainter.paintComponent(EPainter.java:56)
+	at javax.swing.JComponent.paint(JComponent.java:808)
+	at javax.swing.JComponent.paintChildren(JComponent.java:647)
+	at javax.swing.JComponent.paint(JComponent.java:817)
+	at javax.swing.JLayeredPane.paint(JLayeredPane.java:557)
+	at javax.swing.JComponent.paintChildren(JComponent.java:647)
+	at javax.swing.JComponent.paintWithOffscreenBuffer(JComponent.java:4794)
+	at javax.swing.JComponent.paintDoubleBuffered(JComponent.java:4740)
+	at javax.swing.JComponent.paint(JComponent.java:798)
+	at java.awt.GraphicsCallback$PaintCallback.run(GraphicsCallback.java:21)
+	at sun.awt.SunGraphicsCallback.runOneComponent(SunGraphicsCallback.java:60)
+	at sun.awt.SunGraphicsCallback.runComponents(SunGraphicsCallback.java:97)
+	at java.awt.Container.paint(Container.java:1312)
+	at sun.awt.RepaintArea.paint(RepaintArea.java:177)
+	at sun.awt.windows.WComponentPeer.handleEvent(WComponentPeer.java:260)
+	at java.awt.Component.dispatchEventImpl(Component.java:3678)
+	at java.awt.Container.dispatchEventImpl(Container.java:1627)
+	at java.awt.Window.dispatchEventImpl(Window.java:1606)
+	at java.awt.Component.dispatchEvent(Component.java:3477)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:480)
+	at java.awt.EventDispatchThread.pumpOneEventForHierarchy(EventDispatchThread.java:201)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:151)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:145)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:137)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:100)
+
+c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc:***-----------------------***
+*** Trace data written to ***
+'C:/Documents and Settings/millerm1/.e/etrace/etrace.2006-11-17T00_51_55.045Z.txt'
+***-----------------------***
+....
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::28:6::28:54>
+expr: def miniBuilder := <term:TermBuilder>(miniSchema)
 missing new value
-original value: <Schema for mini>
+original value: <building Term trees for mini>
 missing original problem
-new problem: Failed: Undefined variable: astro__uriGetter
+new problem: Failed: Undefined variable: term__uriGetter
 
 c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/toy-grammar.updoc:....

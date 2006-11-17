@@ -13,7 +13,7 @@
     >      to setX(newX) :void { x := newX }
     >      to getX()      :any { x }
     >  }
-    >  def sr := makeSturdyRef(bob, timer.now() + 3_600_000)
+    >  def sr := makeSturdyRef.temp(bob, timer.now() + 3_600_000)
     >  def uri := introducer.sturdyToURI(sr)
     >  <file:~/Desktop/bob.cap>.setText(uri))
 
@@ -39,12 +39,12 @@
     # value: true
 
     ? farBob <- setX(carol)
-    # value: <Eventual ref>
+    # value: <Remote Promise>
 
 ?? in vat vatB
 
     ? def answer := x <- bar()
-    # value: <Eventual ref>
+    # value: <Remote Promise>
 
     ? interp.waitAtTop(answer)
 

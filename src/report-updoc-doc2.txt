@@ -1,3 +1,7 @@
+***-----------------------***
+*** Trace data written to ***
+'C:/Documents and Settings/millerm1/.e/etrace/etrace.2006-11-17T01_07_58.946Z.txt'
+***-----------------------***
 
 updoc: started
 

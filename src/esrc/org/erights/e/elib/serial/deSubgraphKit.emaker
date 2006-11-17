@@ -224,7 +224,7 @@ def deSubgraphKit {
     /**
      *
      */
-    to getDefaultUncallers() :Uncaller[] { defaultUncallers }
+    to getDefaultUncallers() :List[Uncaller] { defaultUncallers }
 
     /**
      * Makes a builder which evaluates a Data-E tree in the default scope to a

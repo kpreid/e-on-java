@@ -62,7 +62,7 @@ def extract {
     # expansion: def via (__extract.run("x")) \
     #              [x, via (__extract.run("y")) \
     #                [y, via (__extract.depr("z", 3)) \
-    #                  [z, :__Empty]]] := \
+    #                  [z, _ :__Empty]]] := \
     #              __makeMap.fromPairs(__makeList.run(__makeList.run("x", a), \
     #                                  __makeList.run("y", b)))
 
@@ -82,7 +82,7 @@ def extract {
     ? def ["i" => j, (j) => k] := ["i" => "foo", "foo" => "bar"]
     # expansion: def via (__extract.run("i")) \
     #              [j, via (__extract.run(j)) \
-    #                [k, :__Empty]] := \
+    #                [k, _ :__Empty]] := \
     #         __makeMap.fromPairs(__makeList.run(__makeList.run("i", "foo"), \
     #                                            __makeList.run("foo", "bar")))
 

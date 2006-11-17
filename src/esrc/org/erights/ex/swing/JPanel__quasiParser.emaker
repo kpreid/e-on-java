@@ -116,7 +116,8 @@ def JPanel__quasiParser {
 
     ? pragma.syntax("0.8")
 
-    ? def fr := <import:javax.swing.makeJFrame>(); null
+    ? interp.waitAtTop(currentVat.morphInto("awt"))
+    ? def fr := <swing:makeJFrame>(); null
     ? fr.setSize(300,300)
     ? fr.show()
     ? def button(name) :any { <import:javax.swing.makeJButton>(name) }

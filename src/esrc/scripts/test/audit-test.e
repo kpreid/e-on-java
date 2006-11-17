@@ -121,6 +121,6 @@ def good implements DeepFrozen0 {
 
 ? def bad implements failer { }
 # problem: <AuditFailedException: object expression \
-#            <main>.bad__C failed audit by <failer>>
+#            <main>.bad failed audit by <failer>>
 
 ?

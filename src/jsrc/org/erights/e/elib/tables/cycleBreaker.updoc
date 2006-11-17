@@ -5,8 +5,7 @@
 
     ? pragma.syntax("0.8")
 
-    ? def makeTraversalKey := 
-    >   <unsafe:org.erights.e.elib.tables.makeTraversalKey>
+    ? def makeTraversalKey := <elib:tables.makeTraversalKey>
     # value: <makeTraversalKey>
 
     ? def cb := makeTraversalKey()

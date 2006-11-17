@@ -12,9 +12,9 @@
     >     "file" => <file>,
     >     "http" => <http>,
     >     "ftp"  => <ftp>]
-    # value: ["file" => <a FileGetter>, \
-    #         "http" => http__uriGetter, \
-    #         "ftp" => ftp__uriGetter]
+    # value: ["file" => <file>, \
+    #         "http" => <http>, \
+    #         "ftp" => <ftp>]
 
     ? def exportCap := makeCapExporter(introducer, <file>, uriGetters)
     # value: <exportCap>

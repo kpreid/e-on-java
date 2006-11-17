@@ -8,7 +8,7 @@ pragma.syntax("0.9")
 /**
  * Defines the builtin '__suchThat' via function and via function template.
  * <p>
- * __suchThat is provided only to support the deprecated such-that pattern.
+ * __suchThat is provided only to support the such-that pattern.
  * 'p ? e' expands to 'via (__suchThat) [p, via (__suchThat(e)) _]'
  *
  * @author Mark S. Miller
@@ -33,13 +33,18 @@ def suchThat0 {
     ? interp.setExpand(true)
 
     ? def foo(G1, G2, x :G1 ? (x =~ y :G2)) :any { return [x, y] }
-    # expansion: def foo := def "__main$foo__C" {
+    # expansion: def foo {
     #
-    #                method run(G1,
-    #                           G2,
-    #                           via (__suchThat)
-    #                             [x :G1,
-    #                              via (__suchThat.run(x =~ y :G2)) _]) :any {
+    #                method run(G1, G2, via (__suchThat) [x :G1, via (\
+    #                    __suchThat.run(def [rs__9, &y] := escape ej__3 {
+    #                        def y :G2 exit ej__3 := x
+    #                        __makeList.run(true, &y)
+    #                    } catch ex__5 {
+    #                        def br__7 := Ref.broken(ex__5)
+    #                        __makeList.run(false, br__7)
+    #                    }
+    #                    rs__9)\
+    #                ) _]) :any {
     #                    escape __return {
     #                        __return.run(__makeList.run(x, y))
     #                    }

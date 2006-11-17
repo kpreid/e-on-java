@@ -21,22 +21,19 @@
 ? def [s,c] := foo()
 # expansion: def [s, c] := foo.run()
 
-# value: [["&__makeList" => <& <import:org.erights.e.elib.tables.ConstList>>, \
-#          "&any" => <& <any>>, \
+# value: [["&__makeList" => <& <makeConstList>>, \
+#          "&any" => <& any>, \
 #          "&__return" => <& <__return: disabled Ejector>>], \
-#         <StaticContext>]
+#         <static __main$foo$, 3 s>]
 
 ? c.getSource()
 # expansion: c.getSource()
 
-# value: e`def "__main$foo__C" {
+# value: e`def foo {
 #
-#            /**
-#             * Invoke as a function
-#             */
 #            method run() :any {
 #                escape __return {
-#                    __makeList.run(meta.getState(), meta.context())
+#                    __return.run(__makeList.run(meta.getState(), meta.context()))
 #                }
 #            }
 #        }`
@@ -56,4 +53,4 @@
 ? c.getFQNPrefix()
 # expansion: c.getFQNPrefix()
 
-# value: "__main$foo__C$"
+# value: "__main$foo$"

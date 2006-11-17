@@ -90,4 +90,4 @@ def promiseAllResolved {
 
     ? interp.waitAtTop(timer.whenPast(timer.now() + 100, fn{}))
     ? a
-    # value: [4, <ref broken by problem: boom>, [***CYCLE***]]
+    # value: [4, <ref broken by problem: boom>, [<***CYCLE***>]]

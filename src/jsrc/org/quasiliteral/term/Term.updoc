@@ -17,7 +17,7 @@
     #                y
     #            </tag>`
 
-    ? def miniSchema := <qq:astro.makeBaseSchema>.new("mini", [
+    ? def miniSchema := <qq:astro.makeBaseSchema>("mini", [
     >     "tag",
     >     ".char.",
     >     ".int.",
@@ -25,7 +25,7 @@
     >     ".String."])
     # value: <Schema for mini>
 
-    ? def miniBuilder := <term:TermBuilder>.new(miniSchema)
+    ? def miniBuilder := <term:TermBuilder>(miniSchema)
     # value: <building Term trees for mini>
 
     ? def term := dom.build(miniBuilder)
@@ -33,7 +33,7 @@
     #                 foo("x@@z"),
     #                 "y")`
 
-    ? def safejSchema := <qq:astro.makeBaseSchema>.new("safej", [
+    ? def safejSchema := <qq:astro.makeBaseSchema>("safej", [
     >     ".char.",
     >     ".int.",
     >     ".float64.",
@@ -53,7 +53,7 @@
     >     "safe"])
     # value: <Schema for safej>
 
-    ? def safejBuilder := <qq:term.TermBuilder>.new(safejSchema)
+    ? def safejBuilder := <qq:term.TermBuilder>(safejSchema)
     # value: <building Term trees for safej>
 
     ? def testSmlFile :=

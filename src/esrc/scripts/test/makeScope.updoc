@@ -16,14 +16,14 @@ From http://www.eros-os.org/pipermail/e-lang/2004-January/009423.html
   >     ["y", "any", "x", "__makeList", "&uc_construct"],
   >     [6, any, 5, __makeList, __makeFinalSlot(uc_construct)]
   >   ),
-  >   "__main$makePoint__C$point__C$")
+  >   "__main$makePoint$point$")
   # value: <a Scope>
 
   ? for k => v in demoScope { println(k, " ", v) }
   # stdout: &y <& 6>
   #         &any <& <any>>
   #         &x <& 5>
-  #         &__makeList <& <import:org.erights.e.elib.tables.ConstList>>
+  #         &__makeList <& <makeConstList>>
   #         &uc_construct <& <uc_construct>>
   #
 

@@ -44,16 +44,15 @@ def makeSchema {
     >     <expr> ::= <id> | <expr> "+" <expr> | "-" <expr> | <expr> "-" <expr>;
     > `)
     # value: term`schema(production(tag("<expr>"),
-    #                               seq(onlyChoice(tag("<id>"),
+    #                               onlyChoice(tag("<id>"),
+    #                                          seq(tag("<expr>"),
+    #                                              data("+"),
     #                                              tag("<expr>")),
-    #                                   data("+"),
-    #                                   onlyChoice(tag("<expr>"),
-    #                                              data("-")),
-    #                                   onlyChoice(tag("<expr>"),
+    #                                          seq(data("-"),
     #                                              tag("<expr>")),
-    #                                   data("-"),
-    #                                   tag("<expr>"))))`
-
+    #                                          seq(tag("<expr>"),
+    #                                              data("-"),
+    #                                              tag("<expr>")))))`
 
 ? makeSchema.parseSchema(makeSchema.getMetaSchemaSrc())
 # value: term`schema(production(tag("<schema>"),

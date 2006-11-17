@@ -39,14 +39,14 @@ def makeAnUncaller {
     /**
      * [minimalUncaller, <import>]
      */
-    to getMinimalUncallers() :Uncaller[] { minimalUncallers }
+    to getMinimalUncallers() :List[Uncaller] { minimalUncallers }
 
     /**
      * [<type>, minimalUncaller, <import>]
      * <p>
      * Over time, we expect to add other uriGetters from the safeScope
      */
-    to getDefaultUncallers() :Uncaller[] { defaultUncallers }
+    to getDefaultUncallers() :List[Uncaller] { defaultUncallers }
 
     /**
      * Makes an amplifyingUncall to implement selective transparency.

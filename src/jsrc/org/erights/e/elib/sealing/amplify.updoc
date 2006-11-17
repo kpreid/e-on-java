@@ -25,10 +25,10 @@
 ? xUnsealer.amplify(forXsEyesOnly)
 # value: [[3, "add", [4]]]
 
-? def makeUncall := <elib:serial.makeUncall>
-# value: <makeUncall>
+? def makeAnUncaller := <elib:serial.makeAnUncaller>
+# value: <makeAnUncaller>
 
-? def uncall := makeUncall([<import>], xUnsealer)
+? def uncall := makeAnUncaller([<import>], xUnsealer)
 # value: <uncall>
 
 ? uncall(forXsEyesOnly)

@@ -11,32 +11,39 @@
 ? def whenever := <elib:slot.whenever>
 # value: <whenever>
 
-? def forever := <elib:slot.forever>
-# value: <trackLamportSlot>
-
 ? def &x := makeLamportSlot(3)
 # value: 3
 
 ? def &y := makeLamportSlot(5)
 # value: 5
 
-? def &z := whenever(&x) + &y
+? def &z := whenever([&x,&y], 
+>                    fn{x+y})
 # value: <everFormula_19>
 
-? forever(&stdout).println(&z)
-8
+? whenever([&z],
+>          fn{println(z)},
+>          fn{true})
+# stdout: 8
+#
+
 ? x := "foo"
 # value: "foo"
 
-foo5
+# stdout: foo5
+#
+
 ? y := "bar"
 # value: "bar"
 
-foobar
+# stdout: foobar
+#
+
 ? x := 33
 # value: 33
 
-<ref broken by problem: <ClassCastException: String doesn't coerce to an int>>
+# stderr: <ref broken by problem: <ClassCastException: String doesn't coerce to an int>>
+
 ? z
 # value: <ref broken by problem: <ClassCastException: \
 #        String doesn't coerce to an int>>
@@ -44,5 +51,7 @@ foobar
 ? y := 3.4
 # value: 3.4
 
-36.4
+# stdout: 36.4
+#
+
 ?

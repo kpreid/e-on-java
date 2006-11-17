@@ -38,7 +38,7 @@ def near0 implements Guard {
     # value: 4
 
     ? def [p,r] := Ref.promise()
-    # value: [<Promise>, <Unresolved Resolver>]
+    # value: [<Promise>, <Resolver>]
 
     ? x := p
     # problem: not near
@@ -50,13 +50,13 @@ def near0 implements Guard {
     #   <interp> evalPrint(e`e`x` := p`)
 
     ? x := r
-    # value: <Unresolved Resolver>
+    # value: <Resolver>
 
     ? r.resolve(44)
     ? x := p
     # value: 44
 
-    ? def y := null
+    ? var y := null
     ? def foo() :nr { y }
     # value: <foo>
 
@@ -68,7 +68,7 @@ def near0 implements Guard {
     # value: 3
 
     ? def [p2,r2] := Ref.promise()
-    # value: [<Promise>, <Unresolved Resolver>]
+    # value: [<Promise>, <Resolver>]
 
     ? y := p2
     # value: <Promise>
