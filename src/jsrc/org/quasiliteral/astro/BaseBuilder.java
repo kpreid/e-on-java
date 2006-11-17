@@ -135,9 +135,9 @@ public abstract class BaseBuilder implements AstroBuilder {
         return term(leafTag(mySchema.obtainTagForName(".bag."), null), args);
     }
 
-    public Astro attr(Astro functor, AstroArg value) {
+    public Astro attr(Astro key, Astro value) {
         return term(leafTag(mySchema.obtainTagForName(".attr."), null),
-                    term(functor, value));
+                    seq(key, value));
     }
 
     public AstroArg seq(AstroArg first, AstroArg second, AstroArg third) {

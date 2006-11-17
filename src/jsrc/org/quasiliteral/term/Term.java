@@ -164,7 +164,7 @@ public final class Term extends Termish
 
         T.require(null == optData || 0 == args.size(),
                   "Term ",
-                  tag,
+                  tag.getTagName(),
                   " can't have both data and children");
     }
 
@@ -397,8 +397,9 @@ public final class Term extends Termish
         int h = getHeight();
         int reps;
         String open;
+        String sep;
         String close;
-        ConstList args = myArgs;
+        int numArgs = myArgs.size();
         if (".tuple.".equals(label)) {
             if (1 >= h) {
                 out.print("[]");
@@ -406,6 +407,7 @@ public final class Term extends Termish
             }
             reps = 1;
             open = "[";
+            sep = ",";
             close = "]";
         } else if (".bag.".equals(label)) {
             if (1 >= h) {
@@ -414,27 +416,24 @@ public final class Term extends Termish
             }
             reps = 1;
             open = "{";
+            sep = ",";
             close = "}";
 
-        } else if (1 == myArgs.size() &&
+        } else if (1 == numArgs &&
           ".bag.".equals(((Term)myArgs.get(0)).getTag().getTagName())) {
 
             out.print(label);
             reps = label.length();
             open = "";
+            sep = null; // Never used
             close = "";
 
-        } else if (".attr.".equals(label) && 1 == myArgs.size() &&
-          1 == ((Term)myArgs.get(0)).getArgs().size()) {
+        } else if (2 == numArgs && ".attr.".equals(label)) {
 
-            Term child = (Term)myArgs.get(0);
-            Term childFunctor = (Term)child.withoutArgs();
-            label = childFunctor.asText(quasiFlag);
-            out.print(label);
-            reps = label.length() + 2;
-            open = ": ";
+            reps = 4;
+            open = "";
+            sep = ":";
             close = "";
-            args = child.getArgs();
 
         } else {
             out.print(label);
@@ -444,15 +443,16 @@ public final class Term extends Termish
             }
             reps = label.length() + 1;
             open = "(";
+            sep = ",";
             close = ")";
         }
         if (2 == h) {
             //If it only contains leaves, do it on one line
             out.print(open);
-            ((Term)args.get(0)).prettyPrintOn(out, quasiFlag);
-            for (int i = 1; i < args.size(); i++) {
-                out.print(", ");
-                ((Term)args.get(i)).prettyPrintOn(out, quasiFlag);
+            ((Term)myArgs.get(0)).prettyPrintOn(out, quasiFlag);
+            for (int i = 1; i < numArgs; i++) {
+                out.print(sep, " ");
+                ((Term)myArgs.get(i)).prettyPrintOn(out, quasiFlag);
             }
             out.print(close);
             return;
@@ -462,10 +462,10 @@ public final class Term extends Termish
         String spaces = StringHelper.multiply(" ", reps);
         TextWriter sub = out.indent(spaces);
 
-        ((Term)args.get(0)).prettyPrintOn(sub, quasiFlag);
-        for (int i = 1; i < args.size(); i++) {
-            sub.println(",");
-            ((Term)args.get(i)).prettyPrintOn(sub, quasiFlag);
+        ((Term)myArgs.get(0)).prettyPrintOn(sub, quasiFlag);
+        for (int i = 1; i < numArgs; i++) {
+            sub.println(sep);
+            ((Term)myArgs.get(i)).prettyPrintOn(sub, quasiFlag);
         }
         sub.print(close);
     }

@@ -2,12 +2,16 @@ package org.quasiliteral.quasiterm;
 
 import org.erights.e.develop.assertion.T;
 import org.erights.e.elib.base.SourceSpan;
+import org.erights.e.elib.base.ClassDesc;
+import org.erights.e.elib.base.Ejector;
 import org.erights.e.elib.prim.Thrower;
 import org.erights.e.elib.ref.Ref;
 import org.erights.e.elib.tables.ConstList;
 import org.erights.e.elib.tables.FlexList;
 import org.erights.e.elib.tables.Twine;
 import org.erights.e.elib.util.OneArgFunc;
+import org.erights.e.elib.slot.Guard;
+import org.erights.e.meta.org.quasiliteral.astro.AstroGuardSugar;
 import org.quasiliteral.astro.Astro;
 import org.quasiliteral.astro.AstroBuilder;
 import org.quasiliteral.astro.AstroTag;
@@ -25,11 +29,15 @@ public abstract class QAstro extends QAstroArg
 
     static private final long serialVersionUID = 7338296043865833760L;
 
+    private final Guard myAstroGuard;
+
     /**
      *
      */
     QAstro(AstroBuilder builder, SourceSpan optSpan) {
         super(builder, optSpan);
+        AstroGuardSugar guard = (AstroGuardSugar)ClassDesc.make(Astro.class);
+        myAstroGuard = guard.get(builder);
     }
 
     /**
@@ -139,8 +147,9 @@ public abstract class QAstro extends QAstroArg
      * to an Astro, then null -- we have no match <li>If we have a tag, and it
      * doesn't match termoid's tag, then null. <li>If we are a functor-hole
      * (rather than a term-hole) and termoid has one or more arguments, then
-     * null. <li>Otherwise, we match, so return the coerced termoid. </ul> The
-     * coercion rules are:<ul> <li>An integer coerces to a literal integer
+     * null. <li>Otherwise, we match, so return the coerced termoid. </ul>
+     * <p/>
+     * The coercion rules are:<ul> <li>An integer coerces to a literal integer
      * term. <li>A floating point number coerces to a literal float64 term.
      * <li>A character coerces to a literal character term. <li>null coerces to
      * term`null`, ie, a term with tag "null" and no arguments. <li>A boolean
@@ -150,47 +159,44 @@ public abstract class QAstro extends QAstroArg
      * literal string term. </ul>
      */
     Astro optCoerce(Object termoid, boolean isFunctorHole, AstroTag optTag) {
-        termoid = Ref.resolution(termoid);
         Astro result;
-        if (null == termoid) {
-            result = leafTag("null", null);
-
-        } else if (termoid instanceof Astro) {
-            result = (Astro)termoid;
-
-        } else if (termoid instanceof String) {
-            if (null != optTag && Twine.class == optTag.getOptDataType()) {
-                result = myBuilder.leafString((String)termoid, null);
-            } else {
+        if (isFunctorHole) {
+            termoid = Ref.resolution(termoid);
+            if (null == termoid) {
+                result = leafTag("null", null);
+            } else if (termoid instanceof Astro) {
+                result = (Astro)termoid;
+                if (0 != result.getArgs().size()) {
+                    return null;
+                }
+            } else if (termoid instanceof String) {
                 result = leafTag((String)termoid, null);
-            }
-        } else if (termoid instanceof Twine) {
-            Twine twine = (Twine)termoid;
-            if (null != optTag && Twine.class == optTag.getOptDataType()) {
-                result = myBuilder.leafTwine(twine, null);
-            } else {
+            } else if (termoid instanceof Twine) {
+                Twine twine = (Twine)termoid;
                 result = leafTag(twine.bare(), twine.getOptSpan());
-            }
-
-        } else if (termoid instanceof Boolean) {
-            if (((Boolean)termoid).booleanValue()) {
-                result = leafTag("true", null);
+            } else if (termoid instanceof Boolean) {
+                if (((Boolean)termoid).booleanValue()) {
+                    result = leafTag("true", null);
+                } else {
+                    result = leafTag("false", null);
+                }
             } else {
-                result = leafTag("false", null);
+                return null;
             }
-        } else if (termoid instanceof Number) {
-            result = myBuilder.leafData(termoid, null);
-
-        } else if (termoid instanceof Character) {
-            result =
-              myBuilder.leafChar(((Character)termoid).charValue(), null);
         } else {
-            return null;
+            Ejector ej = new Ejector("term coercion");
+            try {
+                result = (Astro)myAstroGuard.coerce(termoid, ej);
+            } catch (Throwable ex) {
+                // XXX complaint really should get reported
+//                Object complaint = ej.result(ex);
+                ej.result(ex);
+                return null;
+            } finally {
+                ej.disable();
+            }
         }
         if (null != optTag && 0.0 != optTag.op__cmp(result.getTag())) {
-            return null;
-        }
-        if (isFunctorHole && 0 != result.getArgs().size()) {
             return null;
         }
         return result;

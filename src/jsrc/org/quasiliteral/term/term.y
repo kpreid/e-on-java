@@ -56,7 +56,6 @@ import java.io.IOException;
  *             functor                  # sugar for: <functor>()
  *      |      functor '(' rhs ')'
  *      |      '[' rhs ']'              # sugar for: .tuple.(<rhs>)
- *      |      functor ':' prim         # sugar for: .attr.(<functor>(<prim>))
  *      |      '{' rhs '}'              # sugar for: .bag.(<rhs>)
  *      |      functor '{' rhs '}'      # sugar for: <functor>({<rhs>})
  *      ;
@@ -73,9 +72,14 @@ import java.io.IOException;
  *      ;
  *
  *     prim:
- *             term
+ *             attr
  *      |      LiteralChars             # 'xyz' expands to: ('x', 'y', 'z')
  *      |      '(' rhs ')'
+ *      ;
+ *
+ *     attr:
+ *             term
+ *      |      term ':' term            # sugar for: .attr.(<term>, <term>)
  *      ;
  *
  *     functor:
@@ -109,7 +113,6 @@ term:
         functor                 { $$ = b.term((Astro)$1); }
  |      functor '(' rhs ')'     { $$ = b.term((Astro)$1, (AstroArg)$3); }
  |      '[' rhs ']'             { $$ = b.tuple((AstroArg)$2); }
- |      functor ':' prim        { $$ = b.attr((Astro)$1, (AstroArg)$3); }
  |      bag
  |      functor bag             { $$ = b.term((Astro)$1, (Astro)$2); }
  ;
@@ -186,12 +189,17 @@ quant:
  ;
 
 prim:
-        term                    // An Astro is already a fine AstroArg
+        attr                    // An Astro is already a fine AstroArg
  |      '.'                     { $$ = b.any(); }
  |      literal OpThru literal  { $$ = b.range((Astro)$1, (Astro)$3); }
  |      LiteralChars            { $$ = b.unpack((Astro)$1); }
  |      '^' LiteralString       { $$ = b.anyOf((Astro)$2); }
  |      '(' rhs ')'             { $$ = $2; }
+ ;
+
+attr:
+        term
+ |      term ':' term           { $$ = b.attr((Astro)$1, (Astro)$3); }
  ;
 
 literal:

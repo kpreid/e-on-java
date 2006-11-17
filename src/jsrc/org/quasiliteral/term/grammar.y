@@ -71,7 +71,6 @@ production:
 
 term:
         functor                 { $$ = b.term((Astro)$1); }
- |      functor ':' prim        { $$ = b.attr((Astro)$1, (AstroArg)$3); }
  ;
 
 functor:
@@ -137,12 +136,17 @@ quant:
  ;
 
 prim:
-        term                    // An Astro is already a fine AstroArg
+        attr                    // An Astro is already a fine AstroArg
  |      '.'                     { $$ = b.any(); }
  |      literal OpThru literal  { $$ = b.range((Astro)$1, (Astro)$3); }
  |      LiteralChars            { $$ = b.unpack((Astro)$1); }
  |      '^' LiteralString       { $$ = b.anyOf((Astro)$2); }
  |      '(' rhs ')'             { $$ = $2; }
+ ;
+
+attr:
+        term
+ |      term ':' term           { $$ = b.attr((Astro)$1, (Astro)$3); }
  ;
 
 literal:

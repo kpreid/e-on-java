@@ -99,8 +99,9 @@ def quasiMetaBuilder extends
         return term`term(tag(".bag."), $args)`
     }
 
-    to attr(functor :Term, value :Term) :Term {
-        return term`term(tag(".attr."), term($functor, $value))`
+    to attr(key :Term, value :Term) :Term {
+        def args := quasiMetaBuilder.seq(key, value)
+        return term`term(tag(".attr."), $args)`
     }
 
     to empty() :Term {

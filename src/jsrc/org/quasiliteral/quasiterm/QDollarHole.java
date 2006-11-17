@@ -53,7 +53,6 @@ public class QDollarHole extends QHole {
      * For the meanings of the parameters, see the {@link QHole} constructor,
      * which has the same parameters.
      */
-
     QDollarHole(AstroBuilder builder,
                 AstroTag optTag,
                 int holeNum,

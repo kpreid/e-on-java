@@ -157,11 +157,19 @@ public interface AstroBuilder {
      * field or attribute.
      * <p/>
      * This is equivalent to
-     * <pre>    term(leafTag(".attr."), term(functor, value))</pre>
+     * <pre>    term(leafTag(".attr."), seq(key, value))</pre>
      * although an individual builder/schema may have its own idea about what
      * tagName to use to mark an attribute.
+     * <p/>
+     * Note that this is a change since 0.8.37b, in order to simultaneously
+     * support <ol> <li>the new Term coercion rules, which prohibits a term
+     * from having both data and children, and <li>intuitive handling of JSON
+     * data, where a map looks like term`{"key": "value"}`. </ol> In the old
+     * translation, this was equivalent to term`.attr.("key"("value"))`, which
+     * is now illegal, since "key" has both data (the string "key") and
+     * children. Instead, this now translates to term`.attr.("key", "value")`.
      */
-    Astro attr(Astro functor, AstroArg value);
+    Astro attr(Astro key, Astro value);
 
     /**
      * The empty args list

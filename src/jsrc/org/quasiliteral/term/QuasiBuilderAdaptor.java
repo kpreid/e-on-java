@@ -110,8 +110,8 @@ public class QuasiBuilderAdaptor implements QuasiBuilder {
         return myBuilder.bag(args);
     }
 
-    public Astro attr(Astro functor, AstroArg value) {
-        return myBuilder.attr(functor, value);
+    public Astro attr(Astro key, Astro value) {
+        return myBuilder.attr(key, value);
     }
 
     public AstroArg empty() {
