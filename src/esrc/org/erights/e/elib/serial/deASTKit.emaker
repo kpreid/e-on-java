@@ -92,14 +92,14 @@ def deASTKit {
 
             to buildLiteral(value) :Term {
                 if (value =~ str :String) {
-                    term`.String.$str`
+                    term`$str`
                 } else {
                     term`$value`
                 }
             }
 
             to buildImport(varName :String) :Term {
-                term`import(.String.$varName)`
+                term`import($varName)`
             }
 
             to buildIbid(tempIndex :int) :Term {
@@ -111,7 +111,7 @@ def deASTKit {
             }
 
             to buildCall(rec :Term, verb :String, args :List[Term]) :Term {
-                term`call($rec, .String.$verb, [$args*])`
+                term`call($rec, $verb, [$args*])`
             }
 
             to buildDefine(rValue :Term) :Tuple[Term, int] {

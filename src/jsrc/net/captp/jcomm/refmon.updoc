@@ -62,7 +62,7 @@
 ?? in vat AliceVat
 
     ? trace
-    # value: "++++.run/1.run/1+.run/1+.run/1"
+    # example value: "++++.run/1.run/1+.run/1+.run/1"
 
     ? x
     # value: <Far ref>
@@ -77,6 +77,6 @@
     ? interp.waitAtTop(timer.whenPast(timer.now() + 5000, fn{}))
 
     ? trace
-    # value: "++++.run/1.run/1+.run/1+.run/1
-    #         =add/2+.__whenMoreResolved/1.__whenMoreResolved/1"
+    # example value: "++++.run/1.run/1+.run/1+.run/1
+    #                 =add/2+.__whenMoreResolved/1.__whenMoreResolved/1"
 

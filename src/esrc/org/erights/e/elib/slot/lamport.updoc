@@ -12,14 +12,14 @@
 # value: <whenever>
 
 ? def &x := makeLamportSlot(3)
-# value: 3
+# value: <lamport 3 as of 0>
 
 ? def &y := makeLamportSlot(5)
-# value: 5
+# value: <lamport 5 as of 0>
 
 ? def &z := whenever([&x,&y], 
 >                    fn{x+y})
-# value: <everFormula_19>
+# value: <_>
 
 ? whenever([&z],
 >          fn{println(z)},

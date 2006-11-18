@@ -698,12 +698,12 @@ def abstractJedAuthor(display,
             to run() :void {
                 def appName := self.getAppName()
                 makeDialogVow(`About $appName`,
-                              term`text(b(.String.$appName),
+                              term`text(b($appName),
                                    "
 by Mark S. Miller and Marc Stiegler
 
 ",
-                                   .String.${doAbout.getVersionString()})`,
+                                   ${doAbout.getVersionString()})`,
                               null,
                               ["Ok"])
             }

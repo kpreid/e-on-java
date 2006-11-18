@@ -284,13 +284,13 @@ def makeNavShellAuthor(display,
                         traceline(`$path, $canonical, $fileSize, $modDate`)
                         def textTree :=
                             term`text(b("\nFull Path:\n    "),
-                                .String.${`$path`},
+                                ${`$path`},
                                 b("\n\nCanonical Path:\n    "),
-                                .String.${`$canonical`},
+                                ${`$canonical`},
                                 b("\n\nSize:\n    "),
-                                .String.${`$fileSize`},
+                                ${`$fileSize`},
                                 b("\n\nLast Modified:\n    "),
-                                .String.${`$modDate`})`
+                                ${`$modDate`})`
                         def tempTree := `Canonical Path: $canonical$\nSize: $fileSize$\nLast Mod: $modDate`
                         makeDialogVow ("Properties For " + name, textTree, null, ["OK"])
                         setStatus("")

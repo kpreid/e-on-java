@@ -672,12 +672,12 @@ def causewayEditorAuthor(rezKit,
             to run() :void {
 #                def appName := self.getAppName()
 #                makeDialogVow(`About $appName`,
-#                              term`text(b(.String.$appName),
+#                              term`text(b($appName),
 #                                   "
                 #by Terry Stanley and Mark S. Miller
                 #
                 #",
-#                                   .String.${doAbout.getVersionString()})`,
+#                                   ${doAbout.getVersionString()})`,
 #                              null,
 #                              ["Ok"])
             }

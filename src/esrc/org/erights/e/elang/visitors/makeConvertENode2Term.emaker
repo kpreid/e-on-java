@@ -46,7 +46,7 @@ def makeConvertENode2Term() :any {
                          verb :String,
                          args :List[EExpr]) :Term {
             return term`CallExpr(${convert(recip)},
-                                 .String.$verb,
+                                 $verb,
                                  [${convert(args)}*])`
         }
 
@@ -87,7 +87,7 @@ def makeConvertENode2Term() :any {
         to visitLiteralExpr(optOriginal :nullOk[ENode],
                             data) :Term {
             def litData := if (data =~ str :String) {
-                term`.String.$data`
+                term`$data`
             } else {
                 term`$data`
             }
@@ -96,7 +96,7 @@ def makeConvertENode2Term() :any {
 
         to visitNounExpr(optOriginal :nullOk[ENode],
                          varName :String) :Term {
-            return term`NounExpr(.String.$varName)`
+            return term`NounExpr($varName)`
         }
 
 
@@ -105,8 +105,8 @@ def makeConvertENode2Term() :any {
                            qualifiedName :String,
                            auditors :List[EExpr],
                            eScript :EScript) :Term {
-            return term`ObjectExpr(.String.$docComment,
-                                   .String.$qualifiedName,
+            return term`ObjectExpr($docComment,
+                                   $qualifiedName,
                                    [${convert(auditors)}*],
                                    ${convert(eScript)})`
         }
@@ -228,8 +228,8 @@ def makeConvertENode2Term() :any {
                         patterns :List[Pattern],
                         optResultGuard :nullOk[EExpr],
                         body :EExpr) :Term {
-            return term`EMethod(.String.$docComment,
-                                .String.$verb,
+            return term`EMethod($docComment,
+                                $verb,
                                 [${convert(patterns)}*],
                                 ${convert(optResultGuard)},
                                 ${convert(body)})`

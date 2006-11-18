@@ -29,7 +29,7 @@ def assoc(functor :Term, left :Term, right :Term) :Term {
 }
 
 def tagName(term :Term) :Term {
-    return term`.String.${term.getTag().getTagName()}`
+    return term`${term.getTag().getTagName()}`
 }
 
 def quasiMetaBuilder extends

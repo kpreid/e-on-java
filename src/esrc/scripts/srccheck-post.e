@@ -6,11 +6,11 @@ pragma.syntax("0.8")
 # found at http://www.opensource.org/licenses/mit-license.html ................
 
 # Change Schema:
-# change ::= change(.String.$relpath,
+# change ::= change($relpath,
 #                   .int.$lineNo,
 #                   .int.$start,
 #                   .int.$bound,
-#                   .String.$newText)
+#                   $newText)
 
 ? pragma.syntax("0.8")
 
@@ -115,11 +115,11 @@ def eatReports(reportFile, oldPrefix, newPrefix) :void {
                                 continue
                             }
                             def newText := `$left.$right`
-                            changes.push(term`change(.String.$relpath,
+                            changes.push(term`change($relpath,
                                                      .int.$lineNo,
                                                      .int.${startCol -2},
                                                      .int.${endCol +1},
-                                                     .String.$newText)`)
+                                                     $newText)`)
                         }
                     }
                     match `@_ e.enable.explicit-result-guard @_` {
@@ -127,11 +127,11 @@ def eatReports(reportFile, oldPrefix, newPrefix) :void {
                         def oldText := optLine(startCol -2, endCol +1)
                         if (oldText =~ `) {`) {
                             def newText := `) :void {`
-                            changes.push(term`change(.String.$relpath,
+                            changes.push(term`change($relpath,
                                                      .int.$lineNo,
                                                      .int.${startCol -2},
                                                      .int.${endCol +1},
-                                                     .String.$newText)`)
+                                                     $newText)`)
                         }
                     }
                     match _ {}

@@ -1,7 +1,7 @@
 
 updoc: started
 
-c:/Documents and Settings/millerm1/e/src/jsrc/com/zooko/tray/EPainter.updoc:java.lang.RuntimeException: Failed: Must only be called from <runs in home>'s thread
+c:/Documents and Settings/millerm1/e/src/jsrc/com/zooko/tray/EPainter.updoc:......java.lang.RuntimeException: Failed: Must only be called from <DeadRunner java.lang.RuntimeException: makeEvaluator shutdown>'s thread
 	at org.erights.e.develop.assertion.T.fail(T.java:85)
 	at org.erights.e.develop.assertion.T.require(T.java:315)
 	at org.erights.e.elib.vat.Runner.requireCurrent(Runner.java:374)
@@ -33,28 +33,14 @@ c:/Documents and Settings/millerm1/e/src/jsrc/com/zooko/tray/EPainter.updoc:java
 	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:145)
 	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:137)
 	at java.awt.EventDispatchThread.run(EventDispatchThread.java:100)
-......
+
 c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/jcomm/bad-resolve.updoc:..............................................
-c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/jcomm/multi-test.updoc:.......................***-----------------------***
+c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/jcomm/multi-test.updoc:.......................
+c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/jcomm/refmon.updoc:***-----------------------***
 *** Trace data written to ***
-'C:/Documents and Settings/millerm1/.e/etrace/etrace.2006-11-17T10_20_54.848Z.txt'
+'C:/Documents and Settings/millerm1/.e/etrace/etrace.2006-11-18T19_18_00.913Z.txt'
 ***-----------------------***
-
-c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/jcomm/refmon.updoc:..............
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/jcomm/refmon.updoc#:span::64:6::64:10>
-expr: trace
-original and new value differ
-original value: "++++.run/1.run/1+.run/1+.run/1"
-     new value: "++++.run/1.run/1+.run/1"
-.....
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/jcomm/refmon.updoc#:span::79:6::79:10>
-expr: trace
-original and new value differ
-original value: "++++.run/1.run/1+.run/1+.run/1
-                =add/2+.__whenMoreResolved/1.__whenMoreResolved/1"
-     new value: "++++.run/1.run/1+.run/1
-                =add/2+.__whenMoreResolved/1"
-
+.....................
 c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc:.......................................
 c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/scope/meta-context.updoc:........
 c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/scope/meta-scope.updoc:.......

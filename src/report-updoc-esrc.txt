@@ -10,11 +10,12 @@ missing original problem
 new problem: <NoSuchMethodException: <an issuer>.makeAccountMgr/1>
 ***-----------------------***
 *** Trace data written to ***
-'C:/Documents and Settings/millerm1/.e/etrace/etrace.2006-11-17T10_26_34.176Z.txt'
+'C:/Documents and Settings/millerm1/.e/etrace/etrace.2006-11-18T19_23_25.500Z.txt'
 ***-----------------------***
 
 c:/Documents and Settings/millerm1/e/src/esrc/com/hp/orc/orc.updoc:.................................
 c:/Documents and Settings/millerm1/e/src/esrc/com/opencola/drm/example/MintMaker.updoc:....
+c:/Documents and Settings/millerm1/e/src/esrc/com/skyhunter/capDesk/makeNavShellAuthor.emaker:
 c:/Documents and Settings/millerm1/e/src/esrc/com/skyhunter/convertForEDoc/bounds.updoc:......
 c:/Documents and Settings/millerm1/e/src/esrc/com/skyhunter/convertForEDoc/edoc.updoc:......
 c:/Documents and Settings/millerm1/e/src/esrc/edu/jhu/cs448/contact/contactKit.updoc:bp: Pong received "I am Ping"
@@ -122,6 +123,7 @@ new problem: Failed: not synchronously callable
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/promiseAllResolved.emaker:.............
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/require.emaker:......
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/syntax/termE__quasiParser.emaker:.......
+c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/visitors/makeConvertENode2Term.emaker:
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/visitors/makeMetaEval.emaker:........
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/extern/CommandMakerAuthor.updoc:......
 at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/extern/CommandMakerAuthor.updoc#:span::30:6::30:48>
@@ -132,26 +134,8 @@ original problem: c:/cygwin/bin/bash.exe failed with(127,,/usr/bin/bash: cygpath
 .
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/ref/makeLazyPromiseAuthor.emaker:.........
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/sealing/makeVOCPair.emaker:.............
-c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/lamport.updoc:...
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/lamport.updoc#:span::14:2::14:29>
-expr: def &x := makeLamportSlot(3)
-original and new value differ
-original value: 3
-     new value: <lamport 3 as of 0>
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/lamport.updoc#:span::17:2::17:29>
-expr: def &y := makeLamportSlot(5)
-original and new value differ
-original value: 5
-     new value: <lamport 5 as of 0>
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/lamport.updoc#:span::20:2::20:28>
-expr: def &z := whenever([&x,&y],
-                         fn{x+y})
-original and new value differ
-original value: <everFormula_19>
-     new value: <_>
-.
+c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/serial/deASTKit.emaker:
+c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/lamport.updoc:.......
 at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/lamport.updoc#:span::30:2::30:11>
 expr: x := "foo"
 original and new stdout differ
@@ -209,6 +193,7 @@ original value: <exportCap>
 missing original problem
 new problem: <NoSuchMethodException: <a makeCapExporter>.run/3>
 
+c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/tools/causeway/causewayEditorAuthor.emaker:
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/tools/collect/propUtils.updoc:.....
 at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/tools/collect/propUtils.updoc#:span::24:6::24:47>
 expr: propUtils.testProp(props, "e.enable.bind")
@@ -226,6 +211,8 @@ missing new A bug we're just going to live with for now
 original A bug we're just going to live with for now: 
 ...
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/tools/java/fixImports.emaker:...
+c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/tools/updoc/makeUpdocParserAuthor.emaker:
+c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/ui/jed/abstractJedAuthor.emaker:
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/ui/swt/watchAuthor.emaker:.........
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/ex/swing/JPanel__quasiParser.emaker:.........
 at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/ex/swing/JPanel__quasiParser.emaker#:span::132:6::132:18>
@@ -376,6 +363,7 @@ original value: term`schema(production(tag("<schema>"),
                 tag(".float64."),
                 tag(".String."))))`
 
+c:/Documents and Settings/millerm1/e/src/esrc/org/quasiliteral/schema/quasiMetaBuilder.emaker:
 c:/Documents and Settings/millerm1/e/src/esrc/scripts/ButtonPointer.e:...
 at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/ButtonPointer.e#:span::63:2::63:12>
 expr: getLine(tr)
@@ -392,6 +380,7 @@ original value: <a SturdyRef>
 missing original problem
 new problem: <MalformedURLException: URI captp://213.130.163.34:4451/0Bg1bGDtCQCmpMvfBJ8wvl6dmRHH/08tjK7_p7d8G8u7OfaVHFr6quSvx does not start with "captp://*">
 
+c:/Documents and Settings/millerm1/e/src/esrc/scripts/eBrowser.e-swt:
 c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc:..
 at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::11:2::11:94>
 expr: def sr := <captp://192.168.0.21:1043/5UmFAqXbepvCOwuSHCEGHt5V1wC/Ray1=9hgEHkC8i_DRs5WKfsLnji>
@@ -446,23 +435,7 @@ original and new value differ
 original value: [<Promise>, <Closed Resolver>, <Promise>]
      new value: [<Remote Promise>, <Closed Resolver>, <Remote Promise>]
 
-c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/makeScope.updoc:...
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/makeScope.updoc#:span::22:4::22:49>
-expr: for k => v in demoScope { println(k, " ", v) }
-original and new stdout differ
-original stdout: &y <& 6>
-                 &any <& <any>>
-                 &x <& 5>
-                 &__makeList <& <makeConstList>>
-                 &uc_construct <& <uc_construct>>
-                 
-     new stdout: &y <& 6>
-                 &any <& any>
-                 &x <& 5>
-                 &__makeList <& <makeConstList>>
-                 &uc_construct <& <uc_construct>>
-                 
-...
+c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/makeScope.updoc:.......
 c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/mod.updoc:......
 c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/updoc/abc.updoc:............
 c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/updoc/FlexList.updoc:.......
