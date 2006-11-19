@@ -23,7 +23,8 @@ def emacsify(file) {
             continue
         }
         if (line =~ `@{pre}org.erights.@qname(@className.java:@num)@post`) {
-            if (qname.replaceAll(".","/") =~ `@pkg/$className/@meth`) {
+            def slashed := qname.replaceAll(".","/").replaceAll("$","/")
+            if (slashed =~ `@pkg/$className/@_`) {
                 stderr.println(`~/e/src/jsrc/org/erights/$pkg/$className.java($num)`)
                 stderr.println(`$pre $post`)
                 continue

@@ -1,53 +1,19 @@
 
 updoc: started
 
-c:/Documents and Settings/millerm1/e/src/jsrc/com/zooko/tray/EPainter.updoc:......java.lang.RuntimeException: Failed: Must only be called from <runs in home>'s thread
-	at org.erights.e.develop.assertion.T.fail(T.java:85)
-	at org.erights.e.develop.assertion.T.require(T.java:315)
-	at org.erights.e.elib.vat.Runner.requireCurrent(Runner.java:374)
-	at org.erights.e.elib.vat.Vat.callAll(Vat.java:482)
-	at org.erights.e.elib.deflect.Deflector.invoke(Deflector.java:211)
-	at $Proxy9.paintComponent(Unknown Source)
-	at com.zooko.tray.EPainter.paintComponent(EPainter.java:55)
-	at javax.swing.JComponent.paint(JComponent.java:808)
-	at javax.swing.JComponent.paintChildren(JComponent.java:647)
-	at javax.swing.JComponent.paint(JComponent.java:817)
-	at javax.swing.JLayeredPane.paint(JLayeredPane.java:557)
-	at javax.swing.JComponent.paintChildren(JComponent.java:647)
-	at javax.swing.JComponent.paintWithOffscreenBuffer(JComponent.java:4794)
-	at javax.swing.JComponent.paintDoubleBuffered(JComponent.java:4740)
-	at javax.swing.JComponent.paint(JComponent.java:798)
-	at java.awt.GraphicsCallback$PaintCallback.run(GraphicsCallback.java:21)
-	at sun.awt.SunGraphicsCallback.runOneComponent(SunGraphicsCallback.java:60)
-	at sun.awt.SunGraphicsCallback.runComponents(SunGraphicsCallback.java:97)
-	at java.awt.Container.paint(Container.java:1312)
-	at sun.awt.RepaintArea.paint(RepaintArea.java:177)
-	at sun.awt.windows.WComponentPeer.handleEvent(WComponentPeer.java:260)
-	at java.awt.Component.dispatchEventImpl(Component.java:3678)
-	at java.awt.Container.dispatchEventImpl(Container.java:1627)
-	at java.awt.Window.dispatchEventImpl(Window.java:1606)
-	at java.awt.Component.dispatchEvent(Component.java:3477)
-	at java.awt.EventQueue.dispatchEvent(EventQueue.java:480)
-	at java.awt.EventDispatchThread.pumpOneEventForHierarchy(EventDispatchThread.java:201)
-	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:151)
-	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:145)
-	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:137)
-	at java.awt.EventDispatchThread.run(EventDispatchThread.java:100)
+c:/Documents and Settings/millerm1/e/src/jsrc/com/zooko/tray/EPainter.updoc:.......***-----------------------***
+*** Trace data written to ***
+'C:/Documents and Settings/millerm1/.e/etrace/etrace.2006-11-19T20_30_07.341Z.txt'
+***-----------------------***
 
 c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/jcomm/bad-resolve.updoc:..............................................
-c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/jcomm/multi-test.updoc:.............
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/jcomm/multi-test.updoc#:span::74:6::74:6>
-expr: x
-missing new value
-original value: <Remote Promise>
-.........
+c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/jcomm/multi-test.updoc:.......................
 c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/jcomm/refmon.updoc:.....................
 c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc:.......................................
 c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/scope/meta-context.updoc:........
 c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/scope/meta-scope.updoc:.......
 c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/scope/redef.updoc:........
 c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/syntax/exporter.updoc:...........
-c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/syntax/lambdaArg.updoc:.............
 c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/sealing/amplify.updoc:......
 at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/sealing/amplify.updoc#:span::31:2::31:52>
 expr: def uncall := makeAnUncaller([<import>], xUnsealer)

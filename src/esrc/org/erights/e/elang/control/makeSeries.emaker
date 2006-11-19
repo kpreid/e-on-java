@@ -8,6 +8,11 @@ pragma.enable("explicit-result-guard")
 
 def EIteratable := <type:org.erights.e.elib.tables.EIteratable>
 
+    ? pragma.syntax("0.9")
+    ? pragma.enable("lambda-args")
+
+    ? def makeSeries := <elang:control.makeSeries>
+
 /**
  * Inspired by <a href=
  * "http://www.cs.cmu.edu/Groups/AI/html/cltl/clm/node347.html">Series</a>.

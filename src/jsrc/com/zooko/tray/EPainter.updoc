@@ -6,33 +6,40 @@
  * (BSD-style).
  */
 
+def x := rune(["~/e/src/jsrc/com/zooko/tray/EPainter.updoc"])
+
     ? pragma.syntax("0.8")
 
-    ? (def makeJFrame := <unsafe:javax.swing.makeJFrame>
-    >  def ColorBlack := <unsafe:java.awt.makeColor>.getBlack()
+    ? interp.waitAtTop(currentVat.morphInto("awt"))
+
+    ? (def makeJFrame := <swing:makeJFrame>
+    >  def ColorBlack := <awt:makeColor>.getBlack()
     >  def makeEPainter := <unsafe:com.zooko.tray.makeEPainter>)
     # value: <makeEPainter>
-    
+
     ? def helloer {
     >     to paintComponent(g) :void {
-    >         println("mubmle\n")
+    >         println("mubmle")
     >         g.setColor(ColorBlack)
     >         E.call(g, "drawString(String, int, int)", ["hello", 10, 10])
     >         g.fillOval(10, 10, 100, 100)
     >     }
     > }
     # value: <helloer>
-    
+
     ? (def myep := makeEPainter(helloer)
     >  def myjf := makeJFrame()
     >  myep.setOpaque(false)
     >  myjf.setContentPane(myep)
     >  myjf.setSize(256, 256)
     >  myjf.setVisible(true))
-    ? 
-    mubmle
-    
-    ? 
+    ?
+    # stdout: mubmle
+    #
+
+    ? (interp.blockAtTop()
+    >  timer.whenPast(timer.now() + 5000, fn{interp.continueAtTop()})
+    > )
 
 /*
  * Copyright (c) 2002 Bryce "Zooko" Wilcox-O'Hearn

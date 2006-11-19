@@ -4,8 +4,7 @@
 # found at http://www.opensource.org/licenses/mit-license.html ................
 
 
-def x := rune(["~/e/src/esrc/scripts/updoc.e",
-               "~/e/src/esrc/com/hp/orc/orc.updoc"])
+def x := rune(["~/e/src/esrc/com/hp/orc/orc.updoc"])
 
     ? pragma.syntax("0.9")
     ? def orc := <import:com.hp.orc.orc>
@@ -59,9 +58,9 @@ orc: def newsLoop(t) := newsOnce >> Rtimer(t) >> newsLoop(t)
     > }
     # value: <newsLoop>
 
-orc: zero() where x (newsLoop(3) | Rtimer(20))
+orc: never() where x (newsLoop(3) | Rtimer(20))
 
-    ? def someNews := orc.where(fn x{orc.call(orc.zero,[])},
+    ? def someNews := orc.where(fn x{orc.call(orc.never,[])},
     >                           orc.par(newsLoop(3),
     >                                   orc.call(orcShell.rtimer,[20])))
     # value: <whereAgent>
@@ -88,12 +87,12 @@ orc: zero() where x (newsLoop(3) | Rtimer(20))
     # value: []
 
 orc bounded metronome:
-def bm(0) := zero()
+def bm(0) := never()
 def bm(n) := Signal() | Rtimer(1) >> bm(n-1)
 
     ? def bm(n) {
     >     if (n <= 0) {
-    >         return orc.call(orc.zero,[])
+    >         return orc.call(orc.never,[])
     >     } else {
     >         return orc.par(orc.call(orc.signal,[]),
     >                        orc.pipe(orc.call(orcShell.rtimer,[1]),
@@ -165,34 +164,27 @@ def barrier(m,n,f,g) := ((let(u,v) where u m()) where v n())
     > }
     # value: <barrier>
 
-    ? def isValid(config) {
-    >     switch (config) {
-    >         match [] { return true }
-    >         match [p] + rest {
-    >             if (!isValid(rest)) { return false }
-    >             for i in 1..rest.size() {
-    >                 def q := config[i]
-    >                 if (q == p || q == p+i || q == p-i) {
-    >                     return false
-    >                 }
-    >             }
-    >             return true
+As originally specified, valid checks if an entire configuration is valid,
+which causes O(N) more work than needed. Clearly, what was meant was for valid
+to check if the new row p is valid given that the rest of the configuration is
+assumed valid.
+
+    ? def valid(p,z) {
+    >     for i => q in z {
+    >         if (q == p || q == p+i+1 || q == p-(i+1)) {
+    >             return orc.never()
     >         }
     >     }
-    > }
-    # value: <isValid>
-
-    ? def valid(config) {
-    >     return if (isValid(config)) { config } else { orc.zero() }
+    >     return [p] + z
     > }
     # value: <valid>
 
     ? def extend(z,n) {
     >     if (n == 1) {
-    >         var result := orc.call(orc.zero,[])
+    >         var result := orc.call(orc.never,[])
     >         for p in 0..7 {
     >             result := orc.par(result,
-    >                               orc.call(valid,[[p] + z]))
+    >                               orc.call(valid,[p,z]))
     >         }
     >         return result
     >     } else {
@@ -210,9 +202,19 @@ Is it possible to write choose1 in orc itself? I'm not sure.
     > }
     # value: <choose1>
 
-8 Queens seems to work, but it takes too long, so here's 5 queens (on the last
-5 columns of an 8x8 board).
-
-    ? interp.waitAtTop(def results := orcShell(choose1(extend([],5))))
+    ? interp.waitAtTop(def results := orcShell(choose1(extend([],8))))
     ? results
-    # value: [[6, 4, 7, 5, 3]]
+    # value: [[3, 1, 6, 2, 5, 7, 4, 0]]
+
+    ? for p in results[0] {
+    >     println("."*p, "Q", "."*(7-p))
+    > }
+    # stdout: ...Q....
+    #         .Q......
+    #         ......Q.
+    #         ..Q.....
+    #         .....Q..
+    #         .......Q
+    #         ....Q...
+    #         Q.......
+    #

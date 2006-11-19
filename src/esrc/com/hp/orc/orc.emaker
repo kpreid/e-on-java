@@ -94,8 +94,8 @@ def orc {
 
     ####################### built in sites ########################
 
-    /** orc`0` (bold, not number) => e`orc.zero` */
-    to zero() { return NEVER }
+    /** orc`0` (bold, not number) => e`orc.never` */
+    to never() { return NEVER }
 
     /** orc`Signal` => e`orc.signal` */
     to signal() { return UNIT }
