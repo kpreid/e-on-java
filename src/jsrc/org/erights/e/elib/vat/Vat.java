@@ -242,6 +242,7 @@ public class Vat {
      * and so must be understood relative to the enqueueing Vat.
      */
     long takeTicket() {
+        //noinspection ValueOfIncrementOrDecrementUsed
         return myNextTicket++;
     }
 
@@ -543,7 +544,7 @@ public class Vat {
      *         fails.
      */
     public Ref mergeInto(Vat other) {
-        Runnable todo = new VatRedirector(other.getRunner());
+        Runnable todo = new VatRedirector(this, other.getRunner());
         return qSendAll(todo, true, "run", E.NO_ARGS);
     }
 
@@ -558,7 +559,7 @@ public class Vat {
      * @return As with {@link #mergeInto}
      */
     public Ref orderlyShutdown(Throwable problem) {
-        Runnable todo = new VatRedirector(new DeadRunner(problem));
+        Runnable todo = new VatRedirector(this, new DeadRunner(problem));
         return qSendAll(todo, true, "run", E.NO_ARGS);
     }
 
@@ -590,7 +591,7 @@ public class Vat {
      */
     public Ref morphInto(String runnerKind, String optName) {
         Runner runner = Runner.obtainRunner(runnerKind, optName);
-        Runnable todo = new VatRedirector(runner);
+        Runnable todo = new VatRedirector(this, runner);
         return qSendAll(todo, true, "run", E.NO_ARGS);
     }
 
@@ -598,18 +599,20 @@ public class Vat {
      * Does the redirection scheduled by {@link #mergeInto}, {@link
      * #morphInto}, and {@link #orderlyShutdown}.
      */
-    private class VatRedirector implements Runnable {
+    private static class VatRedirector implements Runnable {
 
         /**
          *
          */
         private final Runner myNewRunner;
+        private Vat myVat;
 
         /**
          *
          */
-        public VatRedirector(Runner newRunner) {
+        VatRedirector(Vat vat, Runner newRunner) {
             myNewRunner = newRunner;
+            myVat = vat;
         }
 
         /**
@@ -617,13 +620,12 @@ public class Vat {
          * worry about synchronizing {@link #myIsMergeable}.
          */
         public void run() {
-            Vat self = Vat.this;
-            T.require(myIsMergeable, "Not mergeable: ", self);
-            HeadlessRunner runner = (HeadlessRunner)getRunner();
-            myRunner = runner.redirect(myNewRunner);
+            T.require(myVat.myIsMergeable, "Not mergeable: ", myVat);
+            HeadlessRunner runner = (HeadlessRunner)myVat.getRunner();
+            myVat.myRunner = runner.redirect(myNewRunner);
             //This assumes that if Runner#redirect exits abruptly, then it
             //hasn't done anything. XXX This assumption is dangerous.
-            myIsMergeable = false;
+            myVat.myIsMergeable = false;
         }
     }
 }
