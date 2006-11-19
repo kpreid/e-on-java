@@ -11,8 +11,8 @@ a format emacs expects for compiler output -- where the source positions are
 turned into a format emacs \"C-x `\" recognizes.
 "
 
-def OLD := "c:/Documents and Settings/millerm1/e"
-def NEW := "~/e"
+def OLD := "c:/Documents and Settings/millerm1"
+def NEW := "~"
 
 def emacsify(file) {
     for rawline in file {

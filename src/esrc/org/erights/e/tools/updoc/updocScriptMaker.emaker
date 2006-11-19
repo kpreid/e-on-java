@@ -5,9 +5,20 @@ pragma.syntax("0.8")
 # Copyright 2002 Combex, Inc. under the terms of the MIT X license
 # found at http://www.opensource.org/licenses/mit-license.html ................
 
-def withoutSuffix := <import:org.erights.e.tools.text.withoutSuffix>
+# XXX The following two flags should be passed in as parameters, and controlled
+# by command-line options.
 
-def LENIENT := true
+# If the test case when run produces a new value-block where the updoc script
+# has none, this says whether this case should be ignored.
+def IGNORE_VALUE := true
+
+# When encountering a new problem-block where the updoc script has none, should
+# this abort further (reporting) of this updoc run?
+def STOP_EARLY := false
+
+
+
+def withoutSuffix := <import:org.erights.e.tools.text.withoutSuffix>
 
 def getOptFirstSpan(str :Twine) :near {
     if (str.getOptSpan() =~ span :notNull) { return span }
@@ -38,7 +49,7 @@ def printBlock(keyword, str, out) :void {
  * @author Mark S. Miller
  */
 def updocScriptMaker {
-
+    
     /**
      * <tt>makeScript</tt>
      *
@@ -47,9 +58,9 @@ def updocScriptMaker {
      * @return
      */
     to makeScript(vatNames :List[String], sequences) :near {
-
+        
         def script {
-
+            
             /**
              * <tt>__printOn</tt>
              *
@@ -60,7 +71,7 @@ def updocScriptMaker {
                     out.print(sequence)
                 }
             }
-
+            
             /**
              * <tt>getVatNames</tt>
              *
@@ -69,7 +80,7 @@ def updocScriptMaker {
             to getVatNames() :List[String] {
                 vatNames
             }
-
+            
             /**
              * <tt>getSequences</tt>
              *
@@ -78,7 +89,7 @@ def updocScriptMaker {
             to getSequences() :near {
                 sequences
             }
-
+            
             /**
              * Was there any updoc code in there?
              */
@@ -87,7 +98,7 @@ def updocScriptMaker {
             }
         }
     }
-
+    
     /**
      * <tt>makeVatDirective</tt>
      *
@@ -96,7 +107,7 @@ def updocScriptMaker {
      */
     to makeVatDirective(name) :near {
         def vatDirective {
-
+            
             /**
              * <tt>__printOn</tt>
              *
@@ -106,7 +117,7 @@ def updocScriptMaker {
                 out.lnPrint(`?? in vat $name`)
                 out.println()
             }
-
+            
             /**
              * <tt>getVatName</tt>
              *
@@ -117,7 +128,7 @@ def updocScriptMaker {
             }
         }
     }
-
+    
     /**
      * <tt>makeSequence</tt>
      *
@@ -126,9 +137,9 @@ def updocScriptMaker {
      * @return
      */
     to makeSequence(directive, testcases) :near {
-
+        
         def sequence {
-
+            
             /**
              * <tt>__printOn</tt>
              *
@@ -140,7 +151,7 @@ def updocScriptMaker {
                     out.print(tc)
                 }
             }
-
+            
             /**
              * <tt>getVatDirective</tt>
              *
@@ -149,7 +160,7 @@ def updocScriptMaker {
             to getVatDirective() :near {
                 directive
             }
-
+            
             /**
              * <tt>getTestcases</tt>
              *
@@ -160,7 +171,7 @@ def updocScriptMaker {
             }
         }
     }
-
+    
     /**
      * <tt>makeTestcase</tt>
      *
@@ -169,7 +180,7 @@ def updocScriptMaker {
      * @return A <tt>testcase</tt> object
      */
     to makeTestcase(expr :Twine, answers) :near {
-
+        
         /**
          * <tt>printExpr</tt>
          *
@@ -183,7 +194,7 @@ def updocScriptMaker {
             # blank line for removed newline
             out.println()
         }
-
+        
         /**
          * <tt>printAnswers</tt>
          *
@@ -204,9 +215,9 @@ def updocScriptMaker {
                 out.println()
             }
         }
-
+        
         def testcase {
-
+            
             /**
              * <tt>__printOn</tt>
              *
@@ -216,7 +227,7 @@ def updocScriptMaker {
                 printExpr(expr, out)
                 printAnswers(answers, out)
             }
-
+            
             /**
              * <tt>getExpr</tt>
              *
@@ -225,12 +236,13 @@ def updocScriptMaker {
             to getExpr() :Twine {
                 expr
             }
-
+            
             /**
              * <tt>printDiffsOn</tt>
              *
              * @param newAnswers
              * @param out
+             * @return Whether to terminate early.
              */
             to printDiffsOn(newAnswers, out) :boolean {
                 # Only prints the first time
@@ -251,7 +263,7 @@ def updocScriptMaker {
                     def optNewAnswer := newAnswers.fetch(keyword, fn{})
                     if (optNewAnswer == null) {
                         if (keyword =~ `example @rest` &&
-                              null != newAnswers.fetch(rest, fn{})) {
+                              newAnswers.maps(rest)) {
                             # e.g.,   '#example stdout: xx'
                             # matches '#stdout: yy'
                         } else {
@@ -261,35 +273,38 @@ def updocScriptMaker {
                             printBlock(`original $keyword`, answer, out)
                         }
                     } else if (! (answer <=> optNewAnswer)) {
-                        if (keyword == "problem" && LENIENT) {
-                            # Ignore diffs in what's said about a problem
-                        } else {
-                            # show differences
-                            printExprOnce(expr, out)
-                            out.println(`original and new $keyword differ`)
-                            printBlock(`original $keyword`,
-                                       answers[keyword],
-                                       out)
-                            printBlock(`     new $keyword`,
-                                       newAnswers[keyword],
-                                       out)
-                        }
+                        # show differences
+                        printExprOnce(expr, out)
+                        out.println(`original and new $keyword differ`)
+                        printBlock(`original $keyword`,
+                                   answers[keyword],
+                                   out)
+                        printBlock(`     new $keyword`,
+                                   newAnswers[keyword],
+                                   out)
                     }
                 }
-                for keyword => answer in newAnswers {
-                    if (! (answers.maps(keyword))) {
-                        if (keyword != "value" && keyword != "stdout") {
-                            # missing old case
-                            printExprOnce(expr, out)
-                            out.println(`missing original $keyword`)
-                            printBlock(`new $keyword`, answer, out)
-                        }
-                        if (keyword == "problem" ||
-                              keyword == "syntax error") {
-                            # After encountering an actual problem, we can
+                for newKeyword => newAnswer in newAnswers {
+                    if (answers.maps(newKeyword)) {
+                        # ignore
+                    } else if (answers.maps(`example $newKeyword`)) {
+                        # ignore
+                    } else if (IGNORE_VALUE && newKeyword == "value") {
+                        # ignore
+                    } else if (newKeyword == "stdout") {
+                        # ignore
+                    } else {
+                        # missing old case
+                        printExprOnce(expr, out)
+                        out.println(`missing original $newKeyword`)
+                        printBlock(`new $newKeyword`, newAnswer, out)
+                        
+                        if (STOP_EARLY && (newKeyword == "problem" ||
+                                             newKeyword == "syntax error")) {
+                            # After encountering a new problem, we can
                             # skip showing the rest of the script.
-                            # XXX We instead skip playing the rest of the
-                            # script, not just showing it.
+                            # XXX We instead should skip playing the rest of
+                            # the script, not just showing it.
                             return true
                         }
                     }

@@ -14,9 +14,9 @@ def makeOldUpdocParser := <import:org.erights.e.tools.updoc.makeOldUpdocParser>
  * @return A <tt>vatSwitcher</tt> object
  */
 def makeVatSwitcher(name) :near {
-    
+
     def vatSwitcher {
-        
+
         /**
          * <tt>getEvaluator</tt>
          *
@@ -39,20 +39,21 @@ def makeVatSwitcher(name) :near {
  */
 def makeTestcasePlayer(testcase) :near {
     var report := null
-    
+
     def testcasePlayer {
-        
+
         /**
          * <tt>reportResults</tt>
          *
          * @param out
+         * @return Whether to terminate early
          */
         to reportResults(out) :boolean {
             def parser := makeOldUpdocParser(report)
             def newAnswers := parser.readAnswers()
             return testcase.printDiffsOn(newAnswers, out)
         }
-        
+
         /**
          * <tt>replay</tt>
          *
@@ -83,9 +84,9 @@ def makeTestcasePlayer(testcase) :near {
  */
 def makeSequencePlayer(sequence) :any {
     def players := [].diverge()
-    
+
     def sequencePlayer {
-        
+
         /**
          * <tt>reportResults</tt>
          *
@@ -98,7 +99,7 @@ def makeSequencePlayer(sequence) :any {
                 }
             }
         }
-        
+
         /**
          * <tt>replaySequence</tt>
          *
@@ -111,14 +112,14 @@ def makeSequencePlayer(sequence) :any {
          */
         to replaySequence(vatSwitcher, vatMap) :vow {
             def [resultVow, resolver] := Ref.promise()
-            
+
             def testcases := sequence.getTestcases()
             for tc in testcases {
                 players.push(makeTestcasePlayer(tc))
             }
-            
+
             def evaluator := vatSwitcher.getEvaluator(vatMap)
-            
+
             def doReplay(i) :void {
                 if (i < players.size()) {
                     when (players[i].replay(evaluator)) -> done(_) :void {
@@ -133,7 +134,7 @@ def makeSequencePlayer(sequence) :any {
             doReplay(0)
             resultVow
         }
-        
+
         /**
          * <tt>replay</tt>
          *
@@ -143,10 +144,10 @@ def makeSequencePlayer(sequence) :any {
          *         or becomes broken with a problem.
          */
         to replay(vatMap) :vow {
-            
+
             def vatName := sequence.getVatDirective().getVatName()
             def switcher := makeVatSwitcher(vatName)
-            
+
             sequencePlayer.replaySequence(switcher, vatMap)
         }
     }
@@ -162,9 +163,9 @@ def makeSequencePlayer(sequence) :any {
  */
 def makeScriptPlayer(script) :any {
     def players := [].diverge()
-    
+
     def scriptPlayer {
-        
+
         /**
          * <tt>reportResults</tt>
          *
@@ -175,7 +176,7 @@ def makeScriptPlayer(script) :any {
                 p.reportResults(out)
             }
         }
-        
+
         /**
          * <tt>replayScript</tt>
          *
@@ -186,12 +187,12 @@ def makeScriptPlayer(script) :any {
          */
         to replayScript(vatMap) :vow {
             def [resultVow, resolver] := Ref.promise()
-            
+
             def sequences := script.getSequences()
             for s in sequences {
                 players.push(makeSequencePlayer(s))
             }
-            
+
             def doReplay(i) :void {
                 if (i < players.size()) {
                     when (players[i].replay(vatMap)) -> done(_) :void {
@@ -206,7 +207,7 @@ def makeScriptPlayer(script) :any {
             doReplay(0)
             resultVow
         }
-        
+
         /**
          * <tt>replay</tt>
          *
@@ -219,9 +220,9 @@ def makeScriptPlayer(script) :any {
          */
         to replay(evalServerPool, args, props, out) :vow {
             def [resultVow, resolver] := Ref.promise()
-            
+
             def vatNames :List[String] := script.getVatNames()
-            
+
             when (evalServerPool <-
                     requestEvalServerSet(vatNames)) ->
               done(var makers) :void {
@@ -241,7 +242,7 @@ def makeScriptPlayer(script) :any {
                     def makerRcvr := makers[i]
                     def evaluator := makerRcvr <- run(args, props)
                     vatMap.put(name, evaluator, true)
-                    
+
                     Ref.whenBroken(makerRcvr, def rewind(_) :void {
                         if (release()) {
                             def player := makeScriptPlayer(script)
@@ -251,7 +252,7 @@ def makeScriptPlayer(script) :any {
                         }
                     })
                 }
-                
+
                 when (scriptPlayer.replayScript(vatMap)) -> done(_) :void {
                     if (release()) {
                         try {
