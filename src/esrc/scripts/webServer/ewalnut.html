@@ -309,13 +309,21 @@ interpreter by going into the <span class="e"><em>E </em></span>directory
 and typing</p> 
 <blockquote><pre>java -jar e.jar --rune
 </pre></blockquote>
- <p>Rune
-will be your friend for experimentation as you learn<span class="e"><em> E</em></span>. Indeed, you may find,
-as others have, that rune is useful even when developing ordinary Java: with
-this scratchpad you can quickly explore what the API for Java really does when
-you use it, quickly and easily, before you put Java code into the middle of a
-program that is difficult to test.</p>
-
+ 
+<p>Rune will be your friend for experimentation as you learn<span class="e"><em> 
+  E</em></span>. Indeed, you may find, as others have, that rune is useful even 
+  when developing ordinary Java: with this scratchpad you can quickly explore 
+  what the API for Java really does when you use it, quickly and easily, before 
+  you put Java code into the middle of a program that is difficult to test.</p>
+<p class="warn"><em>Crucial note: At the time of this writing, <span class="e"><em>E</em></span> 
+  is in transition to a return-keyword based syntax for returning values from 
+  methods and functions. The following examples will only work if you put the 
+  following pragmas at the top of <span class="e"><em>E</em></span> source files: 
+  </em></p>
+<blockquote> 
+  <pre># E sample
+pragma.syntax(&quot;0.9")</pre>
+</blockquote>
 <p>Using Rune: One-line commands start with a question mark prompt and return the
 result on the next line in a comment:</p>
 <blockquote><pre>? 2 + 2
@@ -605,22 +613,11 @@ testing tool, to enable execution of all the upcoming code that depends on Swing
 
 <h3><a href="#TOC11" name="SEC11">Objects and Functions</a></h3>
 
-<p class="warn"><em>Crucial note: At the time of this writing, <span class="e"><em>E</em></span> 
-  is in transition to a return-keyword based syntax for returning values from 
-  methods and functions. The following examples will only work if you put the 
-  following pragmas at the top of <span class="e"><em>E</em></span> source files: 
-  </em></p>
+<p class="warn">As noted earlier, if the file is to use the Swing gui toolkit, 
+  it must have a suffix of ".e-awt". If the file is to use the SWT gui toolkit, 
+  it must have a suffix of ".e-swt". If the file will run headless, it should 
+  be placed in a file with suffix ".e". </p>
 
-
-<blockquote>
-  <pre># E sample
-pragma.syntax(&quot;0.9")
-</pre>
-</blockquote> 
-
-As noted earlier, if the file is to use the Swing gui toolkit, it must have a suffix of ".e-awt".
-If the file is to use the SWT gui toolkit, it must have a suffix of ".e-swt".
-If the file will run headless, it should be placed in a file with suffix ".e".
 
 <h4><a name="Functions">Functions</a></h4>
 

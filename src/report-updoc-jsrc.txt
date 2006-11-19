@@ -1,11 +1,11 @@
 
 updoc: started
 
-c:/Documents and Settings/millerm1/e/src/jsrc/com/zooko/tray/EPainter.updoc:......java.lang.RuntimeException: Failed: Must only be called from <DeadRunner java.lang.RuntimeException: makeEvaluator shutdown>'s thread
+c:/Documents and Settings/millerm1/e/src/jsrc/com/zooko/tray/EPainter.updoc:......java.lang.RuntimeException: Failed: Must only be called from <runs in home>'s thread
 	at org.erights.e.develop.assertion.T.fail(T.java:85)
 	at org.erights.e.develop.assertion.T.require(T.java:315)
 	at org.erights.e.elib.vat.Runner.requireCurrent(Runner.java:374)
-	at org.erights.e.elib.vat.Vat.callAll(Vat.java:481)
+	at org.erights.e.elib.vat.Vat.callAll(Vat.java:482)
 	at org.erights.e.elib.deflect.Deflector.invoke(Deflector.java:211)
 	at $Proxy9.paintComponent(Unknown Source)
 	at com.zooko.tray.EPainter.paintComponent(EPainter.java:55)
@@ -35,12 +35,13 @@ c:/Documents and Settings/millerm1/e/src/jsrc/com/zooko/tray/EPainter.updoc:....
 	at java.awt.EventDispatchThread.run(EventDispatchThread.java:100)
 
 c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/jcomm/bad-resolve.updoc:..............................................
-c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/jcomm/multi-test.updoc:.......................
-c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/jcomm/refmon.updoc:***-----------------------***
-*** Trace data written to ***
-'C:/Documents and Settings/millerm1/.e/etrace/etrace.2006-11-18T19_18_00.913Z.txt'
-***-----------------------***
-.....................
+c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/jcomm/multi-test.updoc:.............
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/jcomm/multi-test.updoc#:span::74:6::74:6>
+expr: x
+missing new value
+original value: <Remote Promise>
+.........
+c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/jcomm/refmon.updoc:.....................
 c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc:.......................................
 c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/scope/meta-context.updoc:........
 c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/scope/meta-scope.updoc:.......

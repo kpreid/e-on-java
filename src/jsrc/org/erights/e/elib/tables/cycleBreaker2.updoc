@@ -31,7 +31,7 @@
     # value: [<Promise>, <***CYCLE***>, 3]
 
     ? x == y
-    # problem: <NotSettledException: Not sufficuently settled: \
+    # problem: <NotSettledException: Not sufficiently settled: \
     #     [<Promise>, <***CYCLE***>, 3] == [<Promise>, <***CYCLE***>, 3]>
 
     ? [x => "foo"]

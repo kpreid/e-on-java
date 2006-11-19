@@ -13,13 +13,7 @@
     # value: false
 
     ? propUtils.testProp(props, "e.version")
-    # problem: 0.8.9zb must be true or false
-    #
-    #   throw("0.8.9zb must be true or false")
-    #   <propUtils> testProp(["java.vendor" => "Sun Microsystems Inc.", \
-    #   "e.e...", "e.javacmd" => "d:/jdk1.3.1/bin/java.exe"], "e.version")
-    #   <interactive interp> evalPrint(e`propUtils testProp(props, \
-    #                                                       "e.version")`)
+    # example problem: 0.8.9zb must be true or false
 
     ? propUtils.testProp(props, "e.enable.bind")
     # value: true

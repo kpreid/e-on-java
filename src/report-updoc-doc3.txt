@@ -9,10 +9,40 @@ c:/Documents and Settings/millerm1/e/doc/elang/blocks/delegation.html:......
 c:/Documents and Settings/millerm1/e/doc/elang/blocks/escapeExpr.html:.....
 c:/Documents and Settings/millerm1/e/doc/elang/blocks/forExpr.html:...
 c:/Documents and Settings/millerm1/e/doc/elang/blocks/forKVExpr.html:.............
-c:/Documents and Settings/millerm1/e/doc/elang/blocks/miranda.html:***-----------------------***
-*** Trace data written to ***
-'C:/Documents and Settings/millerm1/.e/etrace/etrace.2006-11-18T19_55_10.559Z.txt'
-***-----------------------***
+c:/Documents and Settings/millerm1/e/doc/elang/blocks/miranda.html:=== 2006-11-19T05:36:49.241Z (PendingEvent.report:PendingEvent.java:107) WRN
+causality: Problem in turn <<Vat home in <runs in home>>,116>: 
+--vvvv--
+/ by zero
+
+- static IntegerSugar#floorDivide(Number)
+. 6.floorDivide(0)
+- static MirandaMethods#__order(String, Object[])
+. 6.__order("floorDivide", [0])
+
+java.lang.ArithmeticException: / by zero
+	at org.erights.e.meta.java.lang.IntegerSugar.floorDivide(IntegerSugar.java:162)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:324)
+	at org.erights.e.elib.prim.SugarMethodNode.innerExecute(SugarMethodNode.java:113)
+	at org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:183)
+	at org.erights.e.elib.prim.E.callAll(E.java:164)
+	at org.erights.e.elib.prim.MirandaMethods.__order(MirandaMethods.java:132)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:324)
+	at org.erights.e.elib.prim.SugarMethodNode.innerExecute(SugarMethodNode.java:113)
+	at org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:190)
+	at org.erights.e.elib.prim.E.callAll(E.java:164)
+	at org.erights.e.elib.vat.PendingDelivery.innerRun(PendingDelivery.java:96)
+	at org.erights.e.elib.vat.PendingEvent.run(PendingEvent.java:74)
+	at org.erights.e.elib.vat.HeadlessRunner.run(HeadlessRunner.java:174)
+	at java.lang.Thread.run(Thread.java:534)
+
+--^^^^--
+
 .........
 c:/Documents and Settings/millerm1/e/doc/elang/blocks/whileExpr.html:....
 c:/Documents and Settings/millerm1/e/doc/elang/collect/EList.html:..
@@ -22,7 +52,37 @@ c:/Documents and Settings/millerm1/e/doc/elang/collect/table-ref.html:....
 c:/Documents and Settings/millerm1/e/doc/elang/collect/tables.html:.......................................
 c:/Documents and Settings/millerm1/e/doc/elang/concurrency/epimenides.html:.....
 c:/Documents and Settings/millerm1/e/doc/elang/concurrency/introducer.html:..........................
-c:/Documents and Settings/millerm1/e/doc/elang/concurrency/race.html:.................................
+c:/Documents and Settings/millerm1/e/doc/elang/concurrency/race.html:=== 2006-11-19T05:38:12.030Z (PendingEvent.report:PendingEvent.java:107) WRN
+causality: Problem in turn <<Vat home in <runs in home>>,438>: 
+--vvvv--
+time's up
+
+- Thrower#run(RuntimeException)
+. throw("time's up")
+@ run/1: <file:c:/Documents and Settings/millerm1/e/doc/elang/concurrency/race.html#:span::254:46::254:46>
+- __main$timeBomb$_#run/0: <file:c:/Documents and Settings/millerm1/e/doc/elang/concurrency/race.html#:span::253:96::253:97>
+. <_>()
+
+java.lang.RuntimeException: time's up
+	at org.erights.e.meta.java.lang.ThrowableGuardSugar.subCoerceR(ThrowableGuardSugar.java:61)
+	at org.erights.e.elib.base.ClassDesc.tryCoerceR(ClassDesc.java:331)
+	at org.erights.e.elib.slot.BaseAuditor.coerce(BaseAuditor.java:57)
+	at org.erights.e.elib.prim.E.as(E.java:517)
+	at org.erights.e.elib.prim.JavaMemberNode.coerceArgs(JavaMemberNode.java:143)
+	at org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:188)
+	at org.erights.e.elib.prim.Selector.callIt(Selector.java:96)
+	at org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:132)
+	at org.erights.e.elang.evm.EMethod.execute(EMethod.java:169)
+	at org.erights.e.elang.evm.EMethodNode.execute(EMethodNode.java:135)
+	at org.erights.e.elib.prim.E.callAll(E.java:164)
+	at org.erights.e.elib.vat.PendingDelivery.innerRun(PendingDelivery.java:96)
+	at org.erights.e.elib.vat.PendingEvent.run(PendingEvent.java:74)
+	at org.erights.e.elib.vat.HeadlessRunner.run(HeadlessRunner.java:174)
+	at java.lang.Thread.run(Thread.java:534)
+
+--^^^^--
+
+.................................
 c:/Documents and Settings/millerm1/e/doc/elang/echat/index.html:..................
 c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/exercises/hyper-hash.e:..
 at: <file:c:/Documents and Settings/millerm1/e/doc/elang/examples/jhu-cs448/exercises/hyper-hash.e#:span::137:2::137:51>

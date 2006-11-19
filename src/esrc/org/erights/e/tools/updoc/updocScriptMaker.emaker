@@ -14,7 +14,7 @@ def IGNORE_VALUE := true
 
 # When encountering a new problem-block where the updoc script has none, should
 # this abort further (reporting) of this updoc run?
-def STOP_EARLY := false
+def STOP_EARLY := true
 
 
 
@@ -49,7 +49,7 @@ def printBlock(keyword, str, out) :void {
  * @author Mark S. Miller
  */
 def updocScriptMaker {
-    
+
     /**
      * <tt>makeScript</tt>
      *
@@ -58,9 +58,9 @@ def updocScriptMaker {
      * @return
      */
     to makeScript(vatNames :List[String], sequences) :near {
-        
+
         def script {
-            
+
             /**
              * <tt>__printOn</tt>
              *
@@ -71,7 +71,7 @@ def updocScriptMaker {
                     out.print(sequence)
                 }
             }
-            
+
             /**
              * <tt>getVatNames</tt>
              *
@@ -80,7 +80,7 @@ def updocScriptMaker {
             to getVatNames() :List[String] {
                 vatNames
             }
-            
+
             /**
              * <tt>getSequences</tt>
              *
@@ -89,7 +89,7 @@ def updocScriptMaker {
             to getSequences() :near {
                 sequences
             }
-            
+
             /**
              * Was there any updoc code in there?
              */
@@ -98,7 +98,7 @@ def updocScriptMaker {
             }
         }
     }
-    
+
     /**
      * <tt>makeVatDirective</tt>
      *
@@ -107,7 +107,7 @@ def updocScriptMaker {
      */
     to makeVatDirective(name) :near {
         def vatDirective {
-            
+
             /**
              * <tt>__printOn</tt>
              *
@@ -117,7 +117,7 @@ def updocScriptMaker {
                 out.lnPrint(`?? in vat $name`)
                 out.println()
             }
-            
+
             /**
              * <tt>getVatName</tt>
              *
@@ -128,7 +128,7 @@ def updocScriptMaker {
             }
         }
     }
-    
+
     /**
      * <tt>makeSequence</tt>
      *
@@ -137,9 +137,9 @@ def updocScriptMaker {
      * @return
      */
     to makeSequence(directive, testcases) :near {
-        
+
         def sequence {
-            
+
             /**
              * <tt>__printOn</tt>
              *
@@ -151,7 +151,7 @@ def updocScriptMaker {
                     out.print(tc)
                 }
             }
-            
+
             /**
              * <tt>getVatDirective</tt>
              *
@@ -160,7 +160,7 @@ def updocScriptMaker {
             to getVatDirective() :near {
                 directive
             }
-            
+
             /**
              * <tt>getTestcases</tt>
              *
@@ -171,7 +171,7 @@ def updocScriptMaker {
             }
         }
     }
-    
+
     /**
      * <tt>makeTestcase</tt>
      *
@@ -180,7 +180,7 @@ def updocScriptMaker {
      * @return A <tt>testcase</tt> object
      */
     to makeTestcase(expr :Twine, answers) :near {
-        
+
         /**
          * <tt>printExpr</tt>
          *
@@ -194,7 +194,7 @@ def updocScriptMaker {
             # blank line for removed newline
             out.println()
         }
-        
+
         /**
          * <tt>printAnswers</tt>
          *
@@ -215,9 +215,9 @@ def updocScriptMaker {
                 out.println()
             }
         }
-        
+
         def testcase {
-            
+
             /**
              * <tt>__printOn</tt>
              *
@@ -227,7 +227,7 @@ def updocScriptMaker {
                 printExpr(expr, out)
                 printAnswers(answers, out)
             }
-            
+
             /**
              * <tt>getExpr</tt>
              *
@@ -236,7 +236,7 @@ def updocScriptMaker {
             to getExpr() :Twine {
                 expr
             }
-            
+
             /**
              * <tt>printDiffsOn</tt>
              *
@@ -298,7 +298,7 @@ def updocScriptMaker {
                         printExprOnce(expr, out)
                         out.println(`missing original $newKeyword`)
                         printBlock(`new $newKeyword`, newAnswer, out)
-                        
+
                         if (STOP_EARLY && (newKeyword == "problem" ||
                                              newKeyword == "syntax error")) {
                             # After encountering a new problem, we can
