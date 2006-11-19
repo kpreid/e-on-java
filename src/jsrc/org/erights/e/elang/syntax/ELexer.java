@@ -803,8 +803,8 @@ public class ELexer extends BaseLexer {
                 if (myChar == '\t') {
                     if (myNoTabsFlag) {
                         syntaxError("The optional e.enable.notabs" +
-                          " feature (see " + Rune.SYN_PROPS_PATH +
-                          ") is currently on,\n" +
+                          " feature " + Rune.SYN_PROPS_EXPLAIN +
+                          " is currently on,\n" +
                           "so tabs are not considered valid whitespace");
                     }
                     //else, we should warn, but XXX we don't yet have a

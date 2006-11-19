@@ -232,12 +232,11 @@ public abstract class BaseENodeBuilder implements BaseEBuilder {
         if ("true" == propValue) {
             // succeed silently
         } else if ("warn" == propValue) {
-            warning(poser, "The optional " + propName + " feature (see " + Rune
-              .SYN_PROPS_PATH + ") is set to \"warn\".");
+            warning(poser, "The optional " + propName + " feature " + Rune
+              .SYN_PROPS_EXPLAIN + " is set to \"warn\".");
         } else if ("false" == propValue || "allow" == propValue) {
-            syntaxError(poser,
-                        "The optional " + propName + " feature (see " + Rune
-                          .SYN_PROPS_PATH + ") is currently off.");
+            syntaxError(poser, "The optional " + propName + " feature " + Rune
+              .SYN_PROPS_EXPLAIN + " is currently off.");
         } else {
             throw new IllegalArgumentException(
               propValue + " must be 'true', 'false', or 'allow'");
@@ -253,12 +252,13 @@ public abstract class BaseENodeBuilder implements BaseEBuilder {
           ((String)myProps.fetch(propName, new ValueThunk("false"))).intern();
         if ("true" == propValue) {
             syntaxError(poser,
-                        "The optional " + propName + " feature (see " + Rune
-                          .SYN_PROPS_PATH + ") is currently on" +
+                        "The optional " + propName + " feature " + Rune
+                          .SYN_PROPS_EXPLAIN + " is currently on" +
                           " disallowing this construct.");
         } else if ("warn" == propValue) {
-            warning(poser, "The optional " + propName + " feature (see " + Rune
-              .SYN_PROPS_PATH + ") is set to \"warn\".");
+            warning(poser,
+                    "The optional " + propName + " feature " + Rune
+                      .SYN_PROPS_EXPLAIN + " is set to \"warn\".");
         } else if ("false" == propValue || "allow" == propValue) {
             // succeed silently
         } else {

@@ -517,8 +517,8 @@ public class ENodeBuilder extends BaseENodeBuilder implements EBuilder {
                     } else if ("false" == propVal) {
                         syntaxError(verb,
                                     "The optional " + propName +
-                                      " feature (see " + Rune.SYN_PROPS_PATH +
-                                      ") is currently not 'allow'ed.");
+                                      " feature " + Rune.SYN_PROPS_EXPLAIN +
+                                      " is currently not 'allow'ed.");
                     }
                 } else if ("warn" == verbStr) {
                     LiteralExpr lit = (LiteralExpr)exprs[0];
@@ -539,8 +539,8 @@ public class ENodeBuilder extends BaseENodeBuilder implements EBuilder {
                     } else if ("false" == propVal) {
                         syntaxError(verb,
                                     "The optional " + propName +
-                                      " feature (see " + Rune.SYN_PROPS_PATH +
-                                      ") is currently not 'allow'ed.");
+                                      " feature " + Rune.SYN_PROPS_EXPLAIN +
+                                      " is currently not 'allow'ed.");
                     }
                 } else if ("disable" == verbStr) {
                     LiteralExpr lit = (LiteralExpr)exprs[0];
