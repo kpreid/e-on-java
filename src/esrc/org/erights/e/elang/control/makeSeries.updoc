@@ -1,0 +1,67 @@
+#!/usr/bin/env rune
+
+# Copyright 2006 Hewlett Packard, under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+rune(["~/e/src/esrc/org/erights/e/elang/control/makeSeries.updoc"])
+
+The standard example of list comprehensions,
+    [[x,y] for x in (1..6) for y in (1..x) if (x+y < 10)]
+done using series.
+
+    ? pragma.syntax("0.9")
+    ? pragma.enable("lambda-args")
+
+    ? def makeSeries := <elang:control.makeSeries>
+
+    ? makeSeries(1..6).splice(fn x {
+    >     makeSeries(1..x).filter(fn y {x+y < 10}).map(fn y {[x,y]})
+    > }).asList()
+    # value: [[1, 1], [2, 1], [2, 2], \
+    #         [3, 1], [3, 2], [3, 3], [4, 1], [4, 2], [4, 3], [4, 4], \
+    #         [5, 1], [5, 2], [5, 3], [5, 4], [6, 1], [6, 2], [6, 3]]
+
+using ::"for", which uses series:
+
+XXX Doesn't yet work
+#    ? ::"for" (1..6) splice x {
+#    >     ::"for" (1..x) filter y {x+y < 10} map y {[x,y]}
+#    > }
+#    # value: [[1, 1], [2, 1], [2, 2], \
+#    #         [3, 1], [3, 2], [3, 3], [4, 1], [4, 2], [4, 3], [4, 4], \
+#    #         [5, 1], [5, 2], [5, 3], [5, 4], [6, 1], [6, 2], [6, 3]]
+
+The squares below 100.
+
+    ? def x := makeSeries.naturalNums().map(fn x{x*x}).until(fn x {x >= 100})
+    # value: <series>
+
+    ? x.asList()
+    # value: [0, 1, 4, 9, 16, 25, 36, 49, 64, 81]
+
+    ? x.asMap()
+    # value: [0 => 0, 1 => 1, 2 => 4, 3 => 9, 4 => 16, 5 => 25, \
+    #         6 => 36, 7 => 49, 8 => 64, 9 => 81]
+
+    ? x.sum()
+    # value: 285
+
+XXX Doesn't yet work
+#    ? ::"for" (makeSeries.naturalNums()) map x {x*x} until x {x >= 100}
+#    # value: [0, 1, 4, 9, 16, 25, 36, 49, 64, 81]
+
+Haskell-style quicksort,
+    qsort []     = []
+    qsort (x:xs) = qsort (filter (< x) xs) ++ [x] ++ qsort (filter (>= x) xs)
+
+    ? def qsort(list) {
+    >     return if (list =~ [head] + tail) {
+    >         qsort(::"for" (tail) filter elem {elem < head}) +
+    >           [head] +
+    >           qsort(::"for" (tail) filter elem {elem >= head})
+    >     } else {[]}
+    > }
+    # value: <qsort>
+
+    ? qsort([34, 29, 44, 100, 5])
+    # value: [5, 29, 34, 44, 100]

@@ -16,7 +16,7 @@ def makeWhenControl(refFn) :any {
             return refFn()
         }
 
-        /** __when ... resolved {resolvedExpr} ... */
+        /** ::"when" ... resolved {resolvedExpr} ... */
         to resolved__control_0(resolvedFn) :any {
             def whenResolvedFn() :any {
                 def ref := refFn()
@@ -25,7 +25,7 @@ def makeWhenControl(refFn) :any {
             return makeWhenControl(whenResolvedFn)
         }
 
-        /** __when ... -> {fulfilledExpr} ... */
+        /** ::"when" ... -> {fulfilledExpr} ... */
         to "->__control_0"(fulfilledFn) :any {
             def whenFulfilledFn() :any {
                 def ref := refFn()
@@ -41,24 +41,24 @@ def makeWhenControl(refFn) :any {
         }
 
         /**
-         * __when ... catch problem {handlerExpr} ...
+         * ::"when" ... catch problem {handlerExpr} ...
          */
         to catch__control_1(handlerFn) :any {
-            throw("XXX '__when .. catch ...' not yet implemented")
+            throw(`XXX '::"when" .. catch ...' not yet implemented`)
         }
 
         /**
-         * __when ... finally {finallyExpr} ...
+         * ::"when" ... finally {finallyExpr} ...
          */
         to finally__control_0(finallyFn) :any {
-            throw("XXX '__when ... finally ...' not yet implemented")
+            throw(`XXX '::"when" ... finally ...' not yet implemented`)
         }
 
         /**
-         * __when ... broken problem {handlerExpr} ...
+         * ::"when" ... broken problem {handlerExpr} ...
          * <p>
          * This syntactically resembles
-         * <pre>    __when  ... broken problem {...} ...</pre>
+         * <pre>    ::"when"  ... broken problem {...} ...</pre>
          * but is otherwise quite different.
          *
          * @see Ref#whenBroken/2

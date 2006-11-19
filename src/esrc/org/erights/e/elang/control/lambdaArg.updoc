@@ -3,7 +3,7 @@
 # Copyright 2005 Mark S. Miller, under the terms of the MIT X license
 # found at http://www.opensource.org/licenses/mit-license.html ................
 
-# rune(["~/e/src/jsrc/org/erights/e/elang/syntax/lambdaArg.updoc"])
+rune(["~/e/src/esrc/org/erights/e/elang/control/lambdaArg.updoc"])
 
 Note: be sure to read this message in a font where () and {} are
 clearly distinct.
@@ -131,16 +131,9 @@ control flow sugars as functions:
     ? pragma.syntax("0.9")
     ? pragma.enable("lambda-args")
 
-    ? def __escape := <elang:control.__escape>
-    ? def __for := <elang:control.__for>
-    ? def __if := <elang:control.__if>
-    ? def __try := <elang:control.__try>
-    ? def __when := <elang:control.__when>
-    ? def __while := <elang:control.__while>
+::"if" relies on boolean. (the guard on the test parameter below)
 
-__if relies on boolean. (the guard on the test parameter below)
-
-    ? __if (3 == 4) then {
+    ? ::"if" (3 == 4) then {
     >     println("foo")
     > } else {
     >     println("bar")
@@ -148,12 +141,12 @@ __if relies on boolean. (the guard on the test parameter below)
     # stdout: bar
     #
 
-__while relies on __if.
+::"while" could (and used to) rely on ::"if".
 
     ? var i := 0
     # value: 0
 
-    ? __while (i < 5) do {
+    ? ::"while" (i < 5) do {
     >     println(i)
     >     i += 1
     > }
@@ -167,13 +160,13 @@ __while relies on __if.
 Of course, this doesn't capture all the power of the existing
 while-loop: it can't support break and continue.
 
-The __for loop is the first interesting experiment, because at some
+The ::"for" loop is the first interesting experiment, because at some
 point it turns control over to the collection's iterate method. What
 POLA assurances can it enforce without relying on the proper behavior
 of the collection? Can it avoid the hazards identified at
 <https://bugs.sieve.net/bugs/?func=detailbug&bug_id=125606&group_id=16380>?
 
-    ? __for ('a'..'d') each k,v {
+    ? ::"for" ('a'..'d') each k,v {
     >     println(`$k => $v`)
     > }
     # stdout: 0 => a
@@ -191,18 +184,18 @@ you can spin your own, and have the result be usable by yourself and others.
 
 Here's an implementation of David's suggested eventual-while loop, where this
 implementation uses no built-in control flow sugars. In particular, it uses
-the three argument form '__when' MarcS suggested, rather than the built-in
+the three argument form ::"when" MarcS suggested, rather than the built-in
 'when' sugar.
 
-__whenWhile relies on __when and __if.
+__whenWhile relies on ::"when" and ::"if".
 
     ? def __whenWhile(`test`,    testThunk,
     >                 `->`,      bodyThunk,
     >                 `catch`,   handlerClosure,
     >                 `finally`, finallyThunk) :void {
     >     def theLoop () :void {
-    >         __when (def t := testThunk()) -> {
-    >             __if (t) then {
+    >         ::"when" (def t := testThunk()) -> {
+    >             ::"if" (t) then {
     >                 bodyThunk()
     >                 theLoop()
     >             } else {
@@ -250,13 +243,13 @@ in this sense.
 
 Finally, here's the last example at
 <http://www.erights.org/elang/examples/when-examples.e.html> recoded
-in this new style, using just __when:
+in this new style, using just ::"when":
 
      def myCurrency := account <- getCurrency()
      def servCurrency := service <- getCurrency()
      def price := service <- getPrice()
 
-     def payment := __when(myCurrency, servCurrency]) -> {
+     def payment := ::"when" (myCurrency, servCurrency) -> {
          if (servCurrency == myCurrency) {
              account <- makeOffer(price)
          } else {
@@ -268,20 +261,3 @@ in this new style, using just __when:
          println("service failed: " + prob)
      }
      service <- perform(payment)
-
-
-Please take this syntax out for a spin and see how it flies.
-Enjoy 0.8.33g!
-
---
-Text by me above is hereby placed in the public domain
-
-     Cheers,
-     --MarkM
-
-_______________________________________________
-e-lang mailing list
-e-lang@mail.eros-os.org
-http://www.eros-os.org/mailman/listinfo/e-lang
-
-

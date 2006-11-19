@@ -6,8 +6,6 @@
 pragma.syntax("0.8")
 pragma.enable("lambda-args")
 
-def __when := <elang:control.__when>
-
 def JPanel__quasiParser := <import:org.erights.ex.swing.JPanel__quasiParser>
 
 def capEditCapletAuthor {
@@ -47,7 +45,7 @@ def capEditCapletAuthor {
             to getText() :String {""}
             match [verb, args] {}
         }
-        def fileRcvr := __when (optFileRcvr) -> {
+        def fileRcvr := ::"when" (optFileRcvr) -> {
             if (optFileRcvr != null) {optFileRcvr} else {fileDummy}
         }
 
@@ -98,7 +96,7 @@ def capEditCapletAuthor {
         def openAction() :void {
             def fileRcvrsVow := powerbox.requestFileRcvrsVow(
                 true, "Select Files To Edit", "To Edit For You", "~/Desktop", null)
-            __when (fileRcvrsVow) -> {
+            ::"when" (fileRcvrsVow) -> {
                 reactToFilesDrop(fileRcvrsVow)
             } catch prob {
                 traceline(`prob opening files: $prob`)
@@ -125,7 +123,7 @@ def capEditCapletAuthor {
         realPane.setPreferredSize(<awt:makeDimension>(300, 300))
         mainPane.add(realPane, "Center")
 
-        __when (myTextVow, canWriteVow, myFileNameVow) -> {
+        ::"when" (myTextVow, canWriteVow, myFileNameVow) -> {
             mainFrame.setTitle(myFileNameVow)
             saveButton.setEnabled(canWriteVow)
             textPane.setText(myText)

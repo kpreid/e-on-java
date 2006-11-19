@@ -8,13 +8,11 @@ pragma.enable("lambda-args")
 pragma.enable("explicit-result-guard")
 pragma.enable("one-method-object")
 
-def __if := <elang:control.__if>
-
 def __while0.do__control_1_0(compoundFn) :any {
     def doControl.run__control() :void {
         __loop(fn {
             def [[test], bodyFn] := compoundFn()
-            __if (test) then {
+            if (test) {
                 bodyFn()
                 true
             } else {

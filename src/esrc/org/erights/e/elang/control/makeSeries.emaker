@@ -8,40 +8,10 @@ pragma.enable("explicit-result-guard")
 
 def EIteratable := <type:org.erights.e.elib.tables.EIteratable>
 
-
-# rune(["~/e/src/esrc/scripts/updoc.e",
-#       "~/e/src/esrc/org/erights/e/elang/control/makeSeries.emaker"])
-
-# The standard example of list comprehensions,
-#     [[x,y] for x in (1..6) for y in (1..x) if (x+y < 10)]
-# done using series.
-
-? pragma.syntax("0.9")
-? def makeSeries := <elang:control.makeSeries>
-
-? makeSeries(1..6).splice(fn x {
->     makeSeries(1..x).filter(fn y {x+y < 10}).map(fn y {[x,y]})
-> }).asList()
-
-# value: [[1, 1], [2, 1], [2, 2], \
-#         [3, 1], [3, 2], [3, 3], [4, 1], [4, 2], [4, 3], [4, 4], \
-#         [5, 1], [5, 2], [5, 3], [5, 4], [6, 1], [6, 2], [6, 3]]
-
-? def x := makeSeries.naturalNums().map(fn x{x*x}).until(fn x {x >= 100})
-# value: <series>
-
-? x.asList()
-# value: [0, 1, 4, 9, 16, 25, 36, 49, 64, 81]
-
-? x.asMap()
-# value: [0 => 0, 1 => 1, 2 => 4, 3 => 9, 4 => 16, 5 => 25, \
-#         6 => 36, 7 => 49, 8 => 64, 9 => 81]
-
-? x.sum()
-# value: 285
-
-
 /**
+ * Inspired by <a href=
+ * "http://www.cs.cmu.edu/Groups/AI/html/cltl/clm/node347.html">Series</a>.
+ * <p>
  * An RColl is an EIteratable we rely on 1) not to retain the assocFunc
  * argument to iterate/2 once iterate/2 exits (whether normally or otherwise),
  * and 2) to ignore the value returned by the assocFunc.

@@ -10,10 +10,10 @@ pragma.enable("one-method-object")
 def makeSeries := <elang:control.makeSeries>
 
 /**
- * Just handles some simple one-level for-loop-like cases.
+ * Just handles some simple for-loop-like cases.
  * <p>
  * If you want to do something complex, use makeSeries instead, or as the
- * collection argument of a __for
+ * collection argument of a ::"for"
  */
 def __for0 {
     to each__control_1_2(compoundFn) :any {
@@ -43,6 +43,13 @@ def __for0 {
             return makeSeries(coll).map(map1Fn).asList()
         }
         return map1Control
+    }
+    to filter__control_1_1(compoundFn) :any {
+        def filter1Control.run__control() :List {
+            def [[coll], filter1Fn] := compoundFn()
+            return makeSeries(coll).filter(filter1Fn).asList()
+        }
+        return filter1Control
     }
     to fold__control_2_2(compoundFn) :any {
         def foldControl.run__control() :any {
