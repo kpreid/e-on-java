@@ -70,7 +70,7 @@ public class TermBuilder extends BaseBuilder {
      */
     public Astro term(Astro functor, AstroArg args) {
         Term func = (Term)functor;
-        T.require(func.getArgs().size() == 0,
+        T.require(0 == func.getArgs().size(),
                   "To use as a functor, a Term must not have args: ",
                   func);
         return new Term(func.getTag(),

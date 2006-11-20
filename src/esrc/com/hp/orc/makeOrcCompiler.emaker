@@ -1,0 +1,45 @@
+#!/usr/bin/env rune
+
+# Copyright 2006 Hewlett-Packard, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+pragma.syntax("0.9")
+pragma.enable("lambda-args")
+
+def orc := <import:com.hp.orc.orc>
+
+def makeOrcCompiler(orcShell) {
+    def orcCompiler {
+        to run(orcVarTerm,orcFnTerm) {
+            
+        }
+        to run(orcTerm) {
+            switch (orcTerm) {
+                match term`call(@leftT,[@argTs*])` {
+                    def left := orcCompiler(leftT)
+                    def args := ::"for" (argTs) map argT { orcCompiler(argT) }
+                    return orc.call(left,args)
+                }
+                match term`par(@leftT,@rightT)` {
+                    def left := orcCompiler(leftT)
+                    def right := orcCompiler(rightT)
+                    return orc.par(left, right)
+                }
+                match term`pipe(@leftT,@varT,@rightFnT)` {
+                    def left := orcCompiler(leftT)
+                    def rightFn := orcCompiler(varT,rightFnT)
+                    return orc.pipe(left, rightFn)
+                }
+                match term`where(@leftFnT,@varT,@rightT)` {
+                    def leftFn := orcCompiler(varT,leftFnT)
+                    def right := orcCompiler(rightT)
+                    return orc.where(leftFn,right)
+                }
+                match term`.DollarHole.(.int.@num)` {
+                    
+                }
+            }
+        }
+    }
+    return orcCompiler
+}
