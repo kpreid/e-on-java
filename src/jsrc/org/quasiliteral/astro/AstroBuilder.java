@@ -106,7 +106,7 @@ public interface AstroBuilder {
      * 'functor' must be a leaf (have no arguments).
      * <p/>
      * When parsing the term syntax, this is called if the empty args list
-     * appears explicitly, but not if it's left out. When usad as a quasi-term
+     * appears explicitly, but not if it's left out. When used as a quasi-term
      * pattern, this allows us to distinguish between a) 'term`@foo`' and b)
      * 'term`@foo()`'. #a matches any term, while #b matches only zero-arity
      * terms. Note that c) 'term`@foo(*)`' or d) 'term`@foo(@args*)`' will also
@@ -131,6 +131,11 @@ public interface AstroBuilder {
      * #term(Astro,AstroArg)}.
      */
     Astro term(Astro functor);
+
+    /**
+     * A shorthand for making the functor tag explicitly.
+     */
+    Astro namedTerm(String tagName, AstroArg args);
 
     /**
      * For supporting the square bracket shorthand for terms that represent

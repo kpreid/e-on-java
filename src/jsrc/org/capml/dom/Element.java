@@ -23,7 +23,6 @@ import org.erights.e.elib.tables.ConstList;
 import org.quasiliteral.astro.Astro;
 import org.quasiliteral.astro.AstroArg;
 import org.quasiliteral.astro.AstroBuilder;
-import org.quasiliteral.astro.AstroTag;
 
 import java.io.IOException;
 
@@ -154,15 +153,13 @@ public class Element extends Node {
      * and whose args are my converted children in order.
      */
     public Astro build(AstroBuilder builder) {
-        AstroTag tag = builder.getSchema().obtainTagForName(myTagName);
-        Astro func = builder.leafTag(tag, null);
         AstroArg args = builder.empty();
         int len = myChildren.size();
         for (int i = 0; i < len; i++) {
             Node child = (Node)myChildren.get(i);
             args = builder.seq(args, child.build(builder));
         }
-        return builder.term(func, args);
+        return builder.namedTerm(myTagName, args);
     }
 
     /**

@@ -123,21 +123,26 @@ public abstract class BaseBuilder implements AstroBuilder {
         return leafInternal(mySchema.getLiteralStringTag(), data, optSpan);
     }
 
+
     public Astro term(Astro functor) {
         return term(functor, empty());
     }
 
+    public Astro namedTerm(String tagName, AstroArg args) {
+        AstroTag tag = mySchema.obtainTagForName(tagName);
+        return term(leafTag(tag, null), args);
+    }
+
     public Astro tuple(AstroArg args) {
-        return term(leafTag(mySchema.obtainTagForName(".tuple."), null), args);
+        return namedTerm(".tuple.", args);
     }
 
     public Astro bag(AstroArg args) {
-        return term(leafTag(mySchema.obtainTagForName(".bag."), null), args);
+        return namedTerm(".bag.", args);
     }
 
     public Astro attr(Astro key, Astro value) {
-        return term(leafTag(mySchema.obtainTagForName(".attr."), null),
-                    seq(key, value));
+        return namedTerm(".attr.", seq(key, value));
     }
 
     public AstroArg seq(AstroArg first, AstroArg second, AstroArg third) {

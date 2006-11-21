@@ -25,10 +25,9 @@ import org.quasiliteral.syntax.TwineFeeder;
 import org.quasiliteral.term.QuasiBuilder;
 import org.quasiliteral.term.Term;
 import org.quasiliteral.term.QuasiBuilderAdaptor;
-import org.quasiliteral.term.TermLexer;
 
 import java.io.IOException;
-//#line 30 "OrcParser.java"
+//#line 29 "OrcParser.java"
 
 
 
@@ -161,127 +160,135 @@ int ptr;
 //#### end semantic value section ####
 public final static short EOL=257;
 public final static short EOTLU=258;
-public final static short DEF=259;
-public final static short WHERE=260;
-public final static short IN=261;
-public final static short ID=262;
-public final static short INT=263;
-public final static short STRING=264;
+public final static short LiteralInteger=259;
+public final static short LiteralString=260;
+public final static short ID=261;
+public final static short LiteralFloat64=262;
+public final static short LiteralChar=263;
+public final static short DEF=264;
+public final static short WHERE=265;
+public final static short IN=266;
 public final static short YYERRCODE=256;
 final static short yylhs[] = {                           -1,
-    0,    1,    1,    3,    3,    5,    6,    6,    6,    2,
-    7,    7,    4,    4,    9,    9,   10,    8,    8,   11,
-   11,   13,   13,   13,   13,   12,   12,   12,   12,   12,
-   12,   14,   17,   17,   18,   18,   15,   16,   16,
+    0,    1,    1,    3,    4,    4,    6,    8,    8,    8,
+    2,    9,    9,    5,    5,   11,   11,   12,   10,   10,
+   13,   13,   15,   15,   15,   15,   14,   14,   14,   14,
+   14,   14,   17,   20,   20,   21,   21,   18,    7,   16,
+   22,   19,   19,
 };
 final static short yylen[] = {                            2,
-    1,    1,    2,    1,    2,    5,    1,    2,    3,    0,
-    1,    3,    1,    3,    1,    3,    3,    1,    3,    1,
-    5,    1,    1,    1,    2,    1,    1,    1,    1,    1,
-    1,    4,    1,    1,    1,    3,    3,    4,    4,
+    1,    1,    2,    2,    1,    2,    5,    1,    2,    3,
+    0,    1,    3,    1,    3,    1,    3,    3,    1,    3,
+    1,    5,    1,    1,    1,    2,    1,    1,    1,    1,
+    1,    1,    4,    1,    1,    1,    3,    3,    1,    1,
+    1,    4,    4,
 };
-final static short yydefred[] = {                        10,
-    0,    0,    2,    0,    0,   27,   28,    0,    0,    0,
-    3,    4,    0,    0,    0,   20,   29,   30,   31,    0,
-    0,    0,    0,    0,    5,    0,    0,    0,    0,    7,
-    0,   33,   35,    0,    0,   37,    0,    0,    0,    0,
-   15,    0,   23,    0,   22,    0,   11,    8,    0,    0,
-   32,    0,   38,   39,    0,    0,   25,    0,    9,    0,
-    6,   36,    0,   16,   21,   12,
+final static short yydefred[] = {                        11,
+    0,    0,    2,    5,    3,    0,   28,   29,   41,    0,
+   11,    0,    0,    4,    6,    0,    0,   21,    0,   30,
+   31,   32,   40,    0,   39,    0,    0,    0,    0,    0,
+    0,   11,    0,    8,    0,   38,    0,    0,    0,    0,
+   16,    0,    0,   23,   24,    0,    0,   36,    0,    0,
+    9,   12,    0,   11,   42,   43,    0,    0,   26,    0,
+   33,   11,   10,    0,    7,    0,   17,   22,   37,   13,
 };
 final static short yydgoto[] = {                          1,
-    2,    3,   11,   12,   13,   31,   49,   14,   40,   41,
-   15,   16,   46,   17,   18,   19,   34,   35,
+    2,    4,    5,    6,   14,   15,   39,   35,   53,   16,
+   40,   41,   17,   18,   46,   19,   20,   21,   22,   49,
+   50,   25,
 };
 final static short yysindex[] = {                         0,
-    0,  -31,    0, -258,  -34,    0,    0,  -31, -109, -105,
-    0,    0,  -31, -121,  -43,    0,    0,    0,    0,  -19,
-  -31, -103, -240, -238,    0, -235,  -28,  -33,  -39,    0,
-  -32,    0,    0,  -13,  -14,    0,  -94,  -91, -226,  -21,
-    0,  -43,    0, -223,    0,  -22,    0,    0,  -29,  -31,
-    0,  -31,    0,    0,  -28, -235,    0,  -28,    0, -221,
-    0,    0,  -80,    0,    0,    0,
+    0,    0,    0,    0,    0,  -30,    0,    0,    0, -252,
+    0, -112, -110,    0,    0, -121,  -48,    0,  -23,    0,
+    0,    0,    0,  -22,    0, -109, -240, -239, -252,  -24,
+  -29,    0,  -39,    0,  -40,    0, -103, -102, -242,  -28,
+    0,  -48, -252,    0,    0,  -33,    0,    0,  -11,   -9,
+    0,    0,  -34,    0,    0,    0,  -24, -252,    0,  -24,
+    0,    0,    0, -252,    0,  -91,    0,    0,    0,    0,
 };
 final static short yyrindex[] = {                         0,
-    0,   46,    0,    0,    1,    0,    0,    0,    0,    0,
-    0,    0,    0,   26,    7,    0,    0,    0,    0,   -9,
-    6,    0,    0,    0,    0,    0,    0,  -12,    0,    0,
-    0,    0,    0,    0,   17,    0,    0,    0,    0,   32,
-    0,   13,    0,   -3,    0,    0,    0,    0,    0,    0,
+    0,   46,    0,    0,    0,    0,    0,    0,    0,    0,
+    0,    0,    0,    0,    0,   32,    8,    0,    1,    0,
+    0,    0,    0,  -25,    0,    0,    0,    0,    0,    0,
+  -21,    0,    0,    0,    0,    0,    0,    0,    0,   39,
+    0,   15,  -19,    0,    0,    0,  -36,    0,    0,   -3,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
-    0,    0,   20,    0,    0,    0,
+    0,    0,    0,    0,    0,   25,    0,    0,    0,    0,
 };
 final static short yygindex[] = {                         0,
-    0,  -11,    3,    0,    0,    0,    0,   14,    0,   18,
-   48,   22,    0,    0,    0,    0,    0,    0,
+    0,   26,   16,    0,    0,    0,   71,    0,    0,   -4,
+    0,    4,   24,   -5,    0,    0,    0,    0,    0,    0,
+    0,   41,
 };
-final static int YYTABLESIZE=296;
-final static short yytable[] = {                         44,
-   26,   48,   27,   20,    9,   21,   18,    9,   30,   32,
-   22,   59,   19,   23,   60,   25,   45,   24,   28,   17,
-   29,   36,   37,   33,   38,   13,   39,   51,   50,   52,
-   53,   14,   10,   54,   55,   10,   26,   56,   57,   58,
-   66,   26,   18,   27,   26,    1,   10,   18,   19,   10,
-   18,   10,   61,   19,   62,   17,   19,   34,   24,   26,
-   17,   13,   26,   17,   26,   18,   13,   14,   63,   13,
-   18,   19,   14,   64,   42,   14,   19,    0,   17,   65,
-    0,    0,    0,   17,    0,    0,    0,    0,    0,   13,
-    0,    8,    0,    0,    8,   14,    0,    0,    0,    0,
+final static int YYTABLESIZE=310;
+final static short yytable[] = {                          5,
+   27,   51,   30,   43,   34,   12,   63,   19,    9,   64,
+   27,   12,   28,   31,   20,   36,   32,   33,   37,   38,
+   54,   55,   56,   57,   18,    3,   26,    5,   60,   61,
+   58,   14,   30,   13,   62,   11,   27,   35,   15,   13,
+   11,   27,   25,   19,   27,    1,   23,   48,   19,   34,
+   20,   19,   66,   42,   68,   20,   44,   47,   20,   27,
+   18,   67,   27,    0,   27,   18,   19,   14,   18,   65,
+   23,   19,   14,   20,   15,   14,    0,   69,   20,   15,
+   24,   11,   15,   18,    0,    0,    5,    0,   18,    0,
+    0,    0,   11,    0,    0,   14,    0,   23,   11,    0,
+   23,   45,   15,   52,    0,    0,    0,    0,    0,   11,
+    0,    0,    0,   59,    0,    0,    0,    0,    0,    0,
+    0,    0,    0,   27,   27,   27,    0,    0,    0,    0,
+   19,   19,   19,    0,   70,    0,    0,   20,   20,   20,
+    0,    0,    0,   29,    0,    0,    0,   18,    0,   18,
+    0,    0,    0,    0,   14,    0,   14,    0,    0,    0,
+    0,   15,    0,   15,    0,    0,    0,    0,   11,    0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
-    0,    0,    0,   26,   26,   26,    0,    0,    0,   18,
-   18,   18,    0,    0,    0,   19,   19,   19,   26,    0,
-    0,    0,   17,    0,   17,    0,    0,    0,   13,    0,
-   13,    0,    0,    0,   14,    0,   14,    0,    0,    0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+    0,    9,    5,    5,    5,    0,    0,    5,    7,    8,
+    9,    9,    0,   10,    7,    8,    9,    0,    0,    0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
-    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
-    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
-    0,    0,   47,    0,    0,    0,    0,    4,   43,    0,
-    5,    6,    7,    5,    6,    7,    0,    0,    0,    0,
-    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
-    0,    0,    0,    0,    0,    0,    0,    0,    0,   26,
-   26,    0,   26,   26,   26,   18,   18,    0,   18,   18,
-   18,   19,   19,    0,   19,   19,   19,    0,   17,    0,
-    0,   17,   17,   17,   13,    0,    0,   13,   13,   13,
-   14,    0,    0,   14,   14,   14,
+    0,    0,    0,    0,    0,    0,    0,    0,    0,   27,
+   27,   27,    0,    0,   27,   27,   19,   19,   19,    0,
+    0,   19,   19,   20,   20,   20,    0,    0,   20,   20,
+    0,    0,    0,   18,   18,   18,    0,    0,   18,    0,
+   14,   14,   14,    0,    0,   14,    0,   15,   15,   15,
+    0,    0,   15,    0,   11,   11,   11,    0,    0,   11,
 };
-final static short yycheck[] = {                         33,
-    0,   41,  124,  262,   36,   40,    0,   36,   20,   21,
-    8,   41,    0,  123,   44,   13,   28,  123,   62,    0,
-   40,  125,  263,   21,  263,    0,  262,   41,   61,   44,
-  125,    0,   64,  125,  261,   64,   36,   59,  262,   62,
-  262,   41,   36,  124,   44,    0,   41,   41,   36,   62,
-   44,   61,   50,   41,   52,   36,   44,   41,   62,   59,
-   41,   36,   62,   44,   64,   59,   41,   36,   55,   44,
-   64,   59,   41,   56,   27,   44,   64,   -1,   59,   58,
-   -1,   -1,   -1,   64,   -1,   -1,   -1,   -1,   -1,   64,
-   -1,  123,   -1,   -1,  123,   64,   -1,   -1,   -1,   -1,
+final static short yycheck[] = {                         36,
+    0,   41,  124,   33,   41,   36,   41,    0,  261,   44,
+  123,   36,  123,   62,    0,  125,   40,   40,  259,  259,
+   61,  125,  125,  266,    0,    0,   11,   64,   62,   41,
+   59,    0,  124,   64,   44,   61,   36,   41,    0,   64,
+   62,   41,   62,   36,   44,    0,    6,   32,   41,   24,
+   36,   44,   57,   30,   60,   41,   31,   32,   44,   59,
+   36,   58,   62,   -1,   64,   41,   59,   36,   44,   54,
+   30,   64,   41,   59,   36,   44,   -1,   62,   64,   41,
+   10,   36,   44,   59,   -1,   -1,  123,   -1,   64,   -1,
+   -1,   -1,  123,   -1,   -1,   64,   -1,   57,  123,   -1,
+   60,   31,   64,   33,   -1,   -1,   -1,   -1,   -1,   64,
+   -1,   -1,   -1,   43,   -1,   -1,   -1,   -1,   -1,   -1,
+   -1,   -1,   -1,  123,  124,  125,   -1,   -1,   -1,   -1,
+  123,  124,  125,   -1,   64,   -1,   -1,  123,  124,  125,
+   -1,   -1,   -1,  265,   -1,   -1,   -1,  123,   -1,  125,
+   -1,   -1,   -1,   -1,  123,   -1,  125,   -1,   -1,   -1,
+   -1,  123,   -1,  125,   -1,   -1,   -1,   -1,  123,   -1,
    -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
    -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
-   -1,   -1,   -1,  123,  124,  125,   -1,   -1,   -1,  123,
-  124,  125,   -1,   -1,   -1,  123,  124,  125,  260,   -1,
-   -1,   -1,  123,   -1,  125,   -1,   -1,   -1,  123,   -1,
-  125,   -1,   -1,   -1,  123,   -1,  125,   -1,   -1,   -1,
    -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
    -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
    -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
-   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
-   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
-   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
-   -1,   -1,  262,   -1,   -1,   -1,   -1,  259,  262,   -1,
-  262,  263,  264,  262,  263,  264,   -1,   -1,   -1,   -1,
+   -1,  261,  259,  260,  261,   -1,   -1,  264,  259,  260,
+  261,  261,   -1,  264,  259,  260,  261,   -1,   -1,   -1,
    -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
    -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,  259,
-  260,   -1,  262,  263,  264,  259,  260,   -1,  262,  263,
-  264,  259,  260,   -1,  262,  263,  264,   -1,  259,   -1,
-   -1,  262,  263,  264,  259,   -1,   -1,  262,  263,  264,
-  259,   -1,   -1,  262,  263,  264,
+  260,  261,   -1,   -1,  264,  265,  259,  260,  261,   -1,
+   -1,  264,  265,  259,  260,  261,   -1,   -1,  264,  265,
+   -1,   -1,   -1,  259,  260,  261,   -1,   -1,  264,   -1,
+  259,  260,  261,   -1,   -1,  264,   -1,  259,  260,  261,
+   -1,   -1,  264,   -1,  259,  260,  261,   -1,   -1,  264,
 };
 final static short YYFINAL=1;
-final static short YYMAXTOKEN=264;
+final static short YYMAXTOKEN=266;
 final static String yyname[] = {
 "end-of-file",null,null,null,null,null,null,null,null,null,null,null,null,null,
 null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,
@@ -299,53 +306,57 @@ null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,
 null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,
 null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,
 null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,
-null,null,null,null,null,null,null,"EOL","EOTLU","DEF","WHERE","IN","ID","INT",
-"STRING",
+null,null,null,null,null,null,null,"EOL","EOTLU","LiteralInteger",
+"LiteralString","ID","LiteralFloat64","LiteralChar","DEF","WHERE","IN",
 };
 final static String yyrule[] = {
 "$accept : start",
 "start : exprs",
 "exprs : empty",
 "exprs : exprs expr",
-"expr : goal",
-"expr : def expr",
-"def : DEF ID optFormals '=' expr",
+"expr : defs goal",
+"defs : empty",
+"defs : defs def",
+"def : DEF varID optFormals '=' expr",
 "optFormals : empty",
 "optFormals : '(' ')'",
 "optFormals : '(' idList ')'",
 "empty :",
-"idList : ID",
-"idList : idList ',' ID",
+"idList : varID",
+"idList : idList ',' varID",
 "goal : par",
 "goal : par WHERE bindingList",
 "bindingList : binding",
 "bindingList : bindingList ';' binding",
-"binding : ID IN par",
+"binding : varID IN par",
 "par : seq",
 "par : par '|' seq",
 "seq : basic",
 "seq : seq '>' pipeVar '>' basic",
 "pipeVar : empty",
-"pipeVar : ID",
+"pipeVar : varID",
 "pipeVar : '!'",
-"pipeVar : '!' ID",
-"basic : ID",
-"basic : INT",
-"basic : STRING",
+"pipeVar : '!' varID",
+"basic : useID",
+"basic : LiteralInteger",
+"basic : LiteralString",
 "basic : call",
 "basic : block",
 "basic : hole",
-"call : ID '(' args ')'",
+"call : useID '(' args ')'",
 "args : empty",
 "args : argList",
 "argList : expr",
 "argList : argList ',' expr",
 "block : '{' expr '}'",
-"hole : '$' '{' INT '}'",
-"hole : '@' '{' INT '}'",
+"varID : id",
+"useID : id",
+"id : ID",
+"hole : '$' '{' LiteralInteger '}'",
+"hole : '@' '{' LiteralInteger '}'",
 };
 
-//#line 135 "orc.y"
+//#line 181 "orc.y"
 
 /**
  * contains all the tokens after yylval
@@ -385,11 +396,10 @@ static public Term run(Twine source) {
 static public AstroArg run(Twine source, QuasiBuilder builder) {
     try {
         LineFeeder lineFeeder = new TwineFeeder(source);
-        LexerFace lexer = new TermLexer(lineFeeder,
-                                        false,
-                                        builder.doesQuasis(),
-                                        false,
-                                        builder);
+        LexerFace lexer = new OrcLexer(lineFeeder,
+                                       false,
+                                       builder.doesQuasis(),
+                                       false);
         OrcParser parser = new OrcParser(lexer, builder);
         return parser.parse();
     } catch (IOException iox) {
@@ -474,13 +484,26 @@ static {
     TheTokens[EOL]              = "EOL";
     TheTokens[EOTLU]            = "EOTLU";
 
+    TheTokens[LiteralInteger]   = ".int.";
+    TheTokens[LiteralString]    = ".String.";
+    TheTokens[ID]               = "ID";
+
+    /* Unused by Orc */
+    TheTokens[LiteralFloat64]   = ".float64.";
+    TheTokens[LiteralChar]      = ".char.";
+
+    /* Keywords */
+    TheTokens[DEF]              = "def";
+    TheTokens[WHERE]            = "where";
+    TheTokens[IN]               = "in";
+
     /* Single-Character Tokens */
     TheTokens['(']              = "OpenParen";
     TheTokens[')']              = "CloseParen";
     TheTokens['=']              = "Equals";
     TheTokens[',']              = "Comma";
     TheTokens[';']              = "Semicolon";
-    TheTokens['>']              = "RightAngle";
+    TheTokens['>']              = "CloseAngle";
     TheTokens['!']              = "Bang";
     TheTokens['|']              = "VerticalBar";
     TheTokens['{']              = "OpenBrace";
@@ -495,7 +518,7 @@ static {
  */
 static public final AstroSchema DEFAULT_SCHEMA =
   new BaseSchema("Orc-Language", ConstList.fromArray(TheTokens));
-//#line 447 "OrcParser.java"
+//#line 470 "OrcParser.java"
 //###############################################################
 // method: yylexdebug : check lexer state
 //###############################################################
@@ -641,6 +664,125 @@ boolean doaction;
     switch(yyn)
       {
 //########## USER-SUPPLIED ACTIONS ##########
+case 1:
+//#line 42 "orc.y"
+{ myOptResult = b.namedTerm("expr",
+                                                            (AstroArg)val_peek(0)); }
+break;
+case 3:
+//#line 48 "orc.y"
+{ yyval = b.seq((AstroArg)val_peek(1), (AstroArg)val_peek(0)); }
+break;
+case 4:
+//#line 52 "orc.y"
+{ yyval = b.namedTerm("expr",
+                                                   b.seq((AstroArg)val_peek(1),
+                                                         (AstroArg)val_peek(0))); }
+break;
+case 6:
+//#line 59 "orc.y"
+{ yyval = b.seq((AstroArg)val_peek(1), (AstroArg)val_peek(0)); }
+break;
+case 7:
+//#line 64 "orc.y"
+{ AstroArg params = b.tuple((AstroArg)val_peek(2));
+                                  yyval = b.namedTerm("def",
+                                                   b.seq((AstroArg)val_peek(3),
+                                                         params,
+                                                         (AstroArg)val_peek(0))); }
+break;
+case 9:
+//#line 74 "orc.y"
+{ yyval = b.empty(); }
+break;
+case 10:
+//#line 75 "orc.y"
+{ yyval = val_peek(1); }
+break;
+case 11:
+//#line 79 "orc.y"
+{ yyval = b.empty(); }
+break;
+case 13:
+//#line 84 "orc.y"
+{ yyval = b.seq((AstroArg)val_peek(2), (AstroArg)val_peek(0)); }
+break;
+case 15:
+//#line 89 "orc.y"
+{ yyval = b.namedTerm("where",
+                                                   b.seq((AstroArg)val_peek(2), 
+                                                         (AstroArg)val_peek(0))); }
+break;
+case 17:
+//#line 96 "orc.y"
+{ yyval = b.seq((AstroArg)val_peek(2), (AstroArg)val_peek(0)); }
+break;
+case 18:
+//#line 100 "orc.y"
+{ yyval = b.namedTerm("in",
+                                                   b.seq((AstroArg)val_peek(2), 
+                                                         (AstroArg)val_peek(0))); }
+break;
+case 20:
+//#line 107 "orc.y"
+{ yyval = b.namedTerm("par",
+                                                   b.seq((AstroArg)val_peek(2), 
+                                                         (AstroArg)val_peek(0))); }
+break;
+case 22:
+//#line 114 "orc.y"
+{ yyval = b.namedTerm("pipe",
+                                                       b.seq((AstroArg)val_peek(4), 
+                                                             (AstroArg)val_peek(2),
+                                                             (AstroArg)val_peek(0))); }
+break;
+case 25:
+//#line 123 "orc.y"
+{ reserved("What does '!' mean?"); }
+break;
+case 26:
+//#line 124 "orc.y"
+{ reserved("What does '!' mean?"); }
+break;
+case 33:
+//#line 137 "orc.y"
+{ AstroArg args = b.tuple((AstroArg)val_peek(1));
+                                  yyval = b.namedTerm("call",
+                                                   b.seq((AstroArg)val_peek(3),
+                                                         args)); }
+break;
+case 37:
+//#line 150 "orc.y"
+{ yyval = b.seq((AstroArg)val_peek(2), (AstroArg)val_peek(0)); }
+break;
+case 38:
+//#line 154 "orc.y"
+{ yyval = val_peek(1); }
+break;
+case 39:
+//#line 158 "orc.y"
+{ yyval = b.namedTerm("var", (AstroArg)val_peek(0)); }
+break;
+case 40:
+//#line 162 "orc.y"
+{ yyval = b.namedTerm("use", (AstroArg)val_peek(0)); }
+break;
+case 41:
+//#line 166 "orc.y"
+{ String id = ((Astro)val_peek(0)).getOptArgString(ID);
+                                  yyval = b.leafString(id, null); }
+break;
+case 42:
+//#line 172 "orc.y"
+{ yyval = b.namedTerm(".DollarHole.",
+                                                       (Astro)val_peek(1)); }
+break;
+case 43:
+//#line 175 "orc.y"
+{ yyval = b.namedTerm(".AtHole.",
+                                                       (Astro)val_peek(1)); }
+break;
+//#line 731 "OrcParser.java"
 //########## END OF USER-SUPPLIED ACTIONS ##########
     }//switch
     //#### Now let's reduce... ####

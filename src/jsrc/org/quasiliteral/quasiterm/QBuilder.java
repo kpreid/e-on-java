@@ -192,7 +192,7 @@ public class QBuilder extends BaseBuilder
     }
 
     /**
-     * @return
+     *
      */
     public AstroArg action(AstroArg syntactic, AstroArg semantic) {
         T.fail("XXX not yet implemented");
@@ -208,7 +208,7 @@ public class QBuilder extends BaseBuilder
     }
 
     /**
-     * @return
+     *
      */
     public AstroArg anyOf(Astro litString) {
         T.fail("XXX not yet implemented");
@@ -269,8 +269,6 @@ public class QBuilder extends BaseBuilder
 
     /**
      * complains
-     *
-     * @return
      */
     public Astro schema(AstroArg productions) {
         T.fail("Implemented only by a SchemaBuilder");
@@ -279,8 +277,6 @@ public class QBuilder extends BaseBuilder
 
     /**
      * complains
-     *
-     * @return
      */
     public Astro production(Astro lhs, AstroArg rhs) {
         T.fail("Implemented only by a SchemaBuilder");

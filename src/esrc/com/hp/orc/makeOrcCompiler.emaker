@@ -6,7 +6,7 @@
 pragma.syntax("0.9")
 pragma.enable("lambda-args")
 
-def orc := <import:com.hp.orc.orc>
+
 
 def makeOrcCompiler(orcShell) {
     def orcCompiler {
@@ -15,25 +15,28 @@ def makeOrcCompiler(orcShell) {
         }
         to run(orcTerm) {
             switch (orcTerm) {
+                match term`expr(@exprTs*)` {
+                    def exprs := ::"for" (exprTs) map eT { orcCompiler(eT) }
+                    return termE`$exprs`
                 match term`call(@leftT,[@argTs*])` {
                     def left := orcCompiler(leftT)
                     def args := ::"for" (argTs) map argT { orcCompiler(argT) }
-                    return orc.call(left,args)
+                    return termE`orc.call($left, [$args])`
                 }
                 match term`par(@leftT,@rightT)` {
                     def left := orcCompiler(leftT)
                     def right := orcCompiler(rightT)
-                    return orc.par(left, right)
+                    return termE`orc.par($left, $right)`
                 }
                 match term`pipe(@leftT,@varT,@rightFnT)` {
                     def left := orcCompiler(leftT)
                     def rightFn := orcCompiler(varT,rightFnT)
-                    return orc.pipe(left, rightFn)
+                    return termE`orc.pipe($left, $rightFn)`
                 }
                 match term`where(@leftFnT,@varT,@rightT)` {
                     def leftFn := orcCompiler(varT,leftFnT)
                     def right := orcCompiler(rightT)
-                    return orc.where(leftFn,right)
+                    return term`orc.where($leftFn, $right)`
                 }
                 match term`.DollarHole.(.int.@num)` {
                     

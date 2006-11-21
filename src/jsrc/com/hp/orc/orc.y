@@ -18,7 +18,6 @@ import org.quasiliteral.syntax.TwineFeeder;
 import org.quasiliteral.term.QuasiBuilder;
 import org.quasiliteral.term.Term;
 import org.quasiliteral.term.QuasiBuilderAdaptor;
-import org.quasiliteral.term.TermLexer;
 
 import java.io.IOException;
 %}
@@ -26,89 +25,119 @@ import java.io.IOException;
 %token EOL              //eaten as whitespace at a higher level
 %token EOTLU            //See EOTLU in org/erights/e/elang/syntax/e.y
 
+%token LiteralInteger   /* precision unlimited */
+%token LiteralString    /* Double quoted */
+%token ID
+%token LiteralFloat64   /* Unused by Orc */
+%token LiteralChar      /* Unused by Orc */
+
+
 /* keywords */
 %token DEF WHERE IN
 
-/* tokens */
-%token ID INT STRING
 
 %%
 
 start:
-        exprs
+        exprs                   { myOptResult = b.namedTerm("expr",
+                                                            (AstroArg)$1); }
  ;
 
 exprs:
         empty
- |      exprs expr
+ |      exprs expr              { $$ = b.seq((AstroArg)$1, (AstroArg)$2); }
  ;
 
 expr:
-        goal
- |      def expr
+        defs goal               { $$ = b.namedTerm("expr",
+                                                   b.seq((AstroArg)$1,
+                                                         (AstroArg)$2)); }
+ ;
+
+defs:
+        empty
+ |      defs def                { $$ = b.seq((AstroArg)$1, (AstroArg)$2); }
  ;
 
 def:
-        DEF ID optFormals '=' expr
+        DEF varID optFormals '=' expr   
+                                { AstroArg params = b.tuple((AstroArg)$3);
+                                  $$ = b.namedTerm("def",
+                                                   b.seq((AstroArg)$2,
+                                                         params,
+                                                         (AstroArg)$5)); }
  ;
 
 optFormals:
         empty
- |      '(' ')'           // not allowed by official orc 0.5, but ok
- |      '(' idList ')'
+ |      '(' ')'                 // not allowed by official orc 0.5, but ok
+                                { $$ = b.empty(); }
+ |      '(' idList ')'          { $$ = $2; }
  ;
 
 empty:
-        /*empty*/
+        /*empty*/               { $$ = b.empty(); }
  ;
 
 idList:
-        ID
- |      idList ',' ID
+        varID
+ |      idList ',' varID        { $$ = b.seq((AstroArg)$1, (AstroArg)$3); }
  ;
 
 goal:
         par
- |      par WHERE bindingList
+ |      par WHERE bindingList   { $$ = b.namedTerm("where",
+                                                   b.seq((AstroArg)$1, 
+                                                         (AstroArg)$3)); }
  ;
 
 bindingList:
         binding
- |      bindingList ';' binding
+ |      bindingList ';' binding { $$ = b.seq((AstroArg)$1, (AstroArg)$3); }
  ;
 
 binding:
-        ID IN par
+        varID IN par            { $$ = b.namedTerm("in",
+                                                   b.seq((AstroArg)$1, 
+                                                         (AstroArg)$3)); }
  ;
 
 par:
         seq
- |      par '|' seq
+ |      par '|' seq             { $$ = b.namedTerm("par",
+                                                   b.seq((AstroArg)$1, 
+                                                         (AstroArg)$3)); }
  ;
 
 seq:
         basic
- |      seq '>' pipeVar '>' basic
+ |      seq '>' pipeVar '>' basic   { $$ = b.namedTerm("pipe",
+                                                       b.seq((AstroArg)$1, 
+                                                             (AstroArg)$3,
+                                                             (AstroArg)$5)); }
  ;
 
 pipeVar:
         empty
- |          ID
- |      '!'            // what does '!' mean?
- |      '!' ID         // what does '!' mean?
+ |          varID
+ |      '!'                     { reserved("What does '!' mean?"); }
+ |      '!' varID               { reserved("What does '!' mean?"); }
  ;
 
 basic:
-        ID
- |      INT
- |      STRING
+        useID
+ |      LiteralInteger
+ |      LiteralString
  |      call
  |      block
  |      hole
  ;
 
 call:
-        ID '(' args ')'
+        useID '(' args ')'      { AstroArg args = b.tuple((AstroArg)$3);
+                                  $$ = b.namedTerm("call",
+                                                   b.seq((AstroArg)$1,
+                                                         args)); }
  ;
 
 args:
@@ -118,16 +147,33 @@ args:
 
 argList:
         expr
- |      argList ',' expr
+ |      argList ',' expr        { $$ = b.seq((AstroArg)$1, (AstroArg)$3); }
  ;
 
 block:
-        '{' expr '}'
+        '{' expr '}'            { $$ = $2; }
+ ;
+
+varID:
+        id                      { $$ = b.namedTerm("var", (AstroArg)$1); }
+ ;
+
+useID:
+        id                      { $$ = b.namedTerm("use", (AstroArg)$1); }
+ ;
+
+id:
+        ID                      { String id = ((Astro)$1).getOptArgString(ID);
+                                  $$ = b.leafString(id, null); }
  ;
 
 hole:
-        '$' '{' INT '}'
- |      '@' '{' INT '}'
+        '$' '{' LiteralInteger '}'  //{ $$ = b.dollarHole((Astro)$3); }
+                                    { $$ = b.namedTerm(".DollarHole.",
+                                                       (Astro)$3); }
+ |      '@' '{' LiteralInteger '}'  //{ $$ = b.atHole(    (Astro)$3); }
+                                    { $$ = b.namedTerm(".AtHole.",
+                                                       (Astro)$3); }
  ;
 
 
@@ -171,11 +217,10 @@ static public Term run(Twine source) {
 static public AstroArg run(Twine source, QuasiBuilder builder) {
     try {
         LineFeeder lineFeeder = new TwineFeeder(source);
-        LexerFace lexer = new TermLexer(lineFeeder,
-                                        false,
-                                        builder.doesQuasis(),
-                                        false,
-                                        builder);
+        LexerFace lexer = new OrcLexer(lineFeeder,
+                                       false,
+                                       builder.doesQuasis(),
+                                       false);
         OrcParser parser = new OrcParser(lexer, builder);
         return parser.parse();
     } catch (IOException iox) {
@@ -260,13 +305,26 @@ static {
     TheTokens[EOL]              = "EOL";
     TheTokens[EOTLU]            = "EOTLU";
 
+    TheTokens[LiteralInteger]   = ".int.";
+    TheTokens[LiteralString]    = ".String.";
+    TheTokens[ID]               = "ID";
+
+    /* Unused by Orc */
+    TheTokens[LiteralFloat64]   = ".float64.";
+    TheTokens[LiteralChar]      = ".char.";
+
+    /* Keywords */
+    TheTokens[DEF]              = "def";
+    TheTokens[WHERE]            = "where";
+    TheTokens[IN]               = "in";
+
     /* Single-Character Tokens */
     TheTokens['(']              = "OpenParen";
     TheTokens[')']              = "CloseParen";
     TheTokens['=']              = "Equals";
     TheTokens[',']              = "Comma";
     TheTokens[';']              = "Semicolon";
-    TheTokens['>']              = "RightAngle";
+    TheTokens['>']              = "CloseAngle";
     TheTokens['!']              = "Bang";
     TheTokens['|']              = "VerticalBar";
     TheTokens['{']              = "OpenBrace";

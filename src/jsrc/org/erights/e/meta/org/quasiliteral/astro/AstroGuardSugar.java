@@ -5,15 +5,14 @@ package org.erights.e.meta.org.quasiliteral.astro;
 
 import org.erights.e.develop.assertion.T;
 import org.erights.e.elib.base.ClassDesc;
-import org.erights.e.elib.tables.Twine;
+import org.erights.e.elib.tables.AssocFunc;
 import org.erights.e.elib.tables.ConstList;
 import org.erights.e.elib.tables.ConstMap;
-import org.erights.e.elib.tables.AssocFunc;
+import org.erights.e.elib.tables.Twine;
 import org.erights.e.elib.util.OneArgFunc;
 import org.quasiliteral.astro.Astro;
-import org.quasiliteral.astro.AstroBuilder;
-import org.quasiliteral.astro.AstroTag;
 import org.quasiliteral.astro.AstroArg;
+import org.quasiliteral.astro.AstroBuilder;
 import org.quasiliteral.term.TermBuilder;
 
 /**
@@ -51,8 +50,7 @@ public class AstroGuardSugar extends ClassDesc {
     }
 
     private Object leafTag(String tagName) {
-        AstroTag tag = myBuilder.getSchema().obtainTagForName(tagName);
-        return myBuilder.leafTag(tag, null);
+        return myBuilder.namedTerm(tagName, myBuilder.empty());
     }
 
     /**

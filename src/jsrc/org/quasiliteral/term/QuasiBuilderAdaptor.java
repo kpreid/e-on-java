@@ -102,6 +102,10 @@ public class QuasiBuilderAdaptor implements QuasiBuilder {
         return myBuilder.term(functor);
     }
 
+    public Astro namedTerm(String tagName, AstroArg args) {
+        return myBuilder.namedTerm(tagName, args);
+    }
+
     public Astro tuple(AstroArg args) {
         return myBuilder.tuple(args);
     }

@@ -67,20 +67,10 @@ public class ELexer extends BaseLexer {
     public ELexer(LineFeeder optLineFeeder,
                   boolean partialFlag,
                   boolean noTabsFlag) throws IOException {
-        this(optLineFeeder, partialFlag, noTabsFlag, FOR_TERMS);
-    }
-
-    /**
-     *
-     */
-    public ELexer(LineFeeder optLineFeeder,
-                  boolean partialFlag,
-                  boolean noTabsFlag,
-                  AstroBuilder builder) throws IOException {
         super(optLineFeeder, EParser.EOL, EParser.EOTLU, partialFlag, false,
               //For E, the quasiFlag is handled instead by wrapping the
               //LineFeeder with a QuasiFeeder
-              noTabsFlag, builder);
+              noTabsFlag, FOR_TERMS);
     }
 
     /**
@@ -106,11 +96,7 @@ public class ELexer extends BaseLexer {
         for (int i = start, len = myLData.length; i < len; i++) {
             char ch = myLData[i];
             if (!Character.isWhitespace(ch)) {
-                if ('#' == ch) {
-                    return true;
-                } else {
-                    return false;
-                }
+                return '#' == ch;
             }
         }
         return true;
@@ -128,7 +114,7 @@ public class ELexer extends BaseLexer {
             myOptStartText = null;
         }
         int count = EParser.continueCount(result.getOptTagCode());
-        if (count >= 0 && isRestBlank(myPos)) {
+        if (0 <= count && isRestBlank(myPos)) {
             myContinueCount = count;
             skipLine();
         }
@@ -190,7 +176,7 @@ public class ELexer extends BaseLexer {
         }
         case'$': {
             nextChar();
-            if (myChar == '{') {
+            if ('{' == myChar) {
                 //A '${' opens a '}'
                 nextChar();
                 return openBracket(EParser.DollarOpen, endToken(), '}');
@@ -213,12 +199,12 @@ public class ELexer extends BaseLexer {
         }
         case'@': {
             nextChar();
-            if (myChar == '{') {
+            if ('{' == myChar) {
                 //A '@{' opens a '}'
                 nextChar();
                 return openBracket(EParser.AtOpen, endToken(), '}');
 
-            } else if (myChar == '_' && !isIdentifierPart(peekChar())) {
+            } else if ('_' == myChar && !isIdentifierPart(peekChar())) {
 
                 //A '@_' closes a '$' if there was one.
                 nextChar();
@@ -244,9 +230,9 @@ public class ELexer extends BaseLexer {
         }
         case'.': {
             nextChar();
-            if (myChar == '.') {
+            if ('.' == myChar) {
                 nextChar();
-                if (myChar == '!') {
+                if ('!' == myChar) {
                     nextChar();
                     return leafTag(EParser.OpTill, endSpan());
                 }
@@ -256,7 +242,7 @@ public class ELexer extends BaseLexer {
         }
         case'^': {
             nextChar();
-            if (myChar == '=') {
+            if ('=' == myChar) {
                 nextChar();
                 return leafTag(EParser.OpAssXor, endSpan());
             }
@@ -264,10 +250,10 @@ public class ELexer extends BaseLexer {
         }
         case'+': {
             nextChar();
-            if (myChar == '=') {
+            if ('=' == myChar) {
                 nextChar();
                 return leafTag(EParser.OpAssAdd, endSpan());
-            } else if (myChar == '+') {
+            } else if ('+' == myChar) {
                 nextChar();
                 syntaxError("token \"++\" is reserved");
                 return null; //keep compiler happy
@@ -276,13 +262,13 @@ public class ELexer extends BaseLexer {
         }
         case'-': {
             nextChar();
-            if (myChar == '=') {
+            if ('=' == myChar) {
                 nextChar();
                 return leafTag(EParser.OpAssSub, endSpan());
-            } else if (myChar == '>') {
+            } else if ('>' == myChar) {
                 nextChar();
                 return leafTag(EParser.OpWhen, endSpan());
-            } else if (myChar == '-') {
+            } else if ('-' == myChar) {
                 nextChar();
                 syntaxError("token \"--\" is reserved");
                 return null; //keep compiler happy
@@ -291,10 +277,10 @@ public class ELexer extends BaseLexer {
         }
         case':': {
             nextChar();
-            if (myChar == '=') {
+            if ('=' == myChar) {
                 nextChar();
                 return leafTag(EParser.OpAss, endSpan());
-            } else if (myChar == ':') {
+            } else if (':' == myChar) {
                 nextChar();
                 return leafTag(EParser.OpScope, endSpan());
             }
@@ -302,24 +288,24 @@ public class ELexer extends BaseLexer {
         }
         case'<': {
             nextChar();
-            if (myChar == '-') {
+            if ('-' == myChar) {
                 nextChar();
-                if (myChar == '*') {
+                if ('*' == myChar) {
                     nextChar();
                     syntaxError("token \"<-*\" is reserved");
                     return null; //keep compiler happy
                 }
                 return leafTag(EParser.Send, endSpan());
-            } else if (myChar == '=') {
+            } else if ('=' == myChar) {
                 nextChar();
-                if (myChar == '>') {
+                if ('>' == myChar) {
                     nextChar();
                     return leafTag(EParser.OpABA, endSpan());
                 }
                 return leafTag(EParser.OpLeq, endSpan());
-            } else if (myChar == '<') {
+            } else if ('<' == myChar) {
                 nextChar();
-                if (myChar == '=') {
+                if ('=' == myChar) {
                     nextChar();
                     return leafTag(EParser.OpAssAsl, endSpan());
                 }
@@ -334,12 +320,12 @@ public class ELexer extends BaseLexer {
         }
         case'>': {
             nextChar();
-            if (myChar == '=') {
+            if ('=' == myChar) {
                 nextChar();
                 return leafTag(EParser.OpGeq, endSpan());
-            } else if (myChar == '>') {
+            } else if ('>' == myChar) {
                 nextChar();
-                if (myChar == '=') {
+                if ('=' == myChar) {
                     nextChar();
                     return leafTag(EParser.OpAssAsr, endSpan());
                 }
@@ -349,22 +335,22 @@ public class ELexer extends BaseLexer {
         }
         case'*': {
             nextChar();
-            if (myChar == '*') {
+            if ('*' == myChar) {
                 nextChar();
-                if (myChar == '=') {
+                if ('=' == myChar) {
                     nextChar();
                     return leafTag(EParser.OpAssPow, endSpan());
                 }
                 return leafTag(EParser.OpPow, endSpan());
-            } else if (myChar == '=') {
+            } else if ('=' == myChar) {
                 nextChar();
                 return leafTag(EParser.OpAssMul, endSpan());
-            } else if (myChar == '-' && peekChar('>')) {
+            } else if ('-' == myChar && peekChar('>')) {
                 nextChar();
                 nextChar();
                 syntaxError("token \"*->\" is reserved");
                 return null; //keep compiler happy
-            } else if (myChar == '/') {
+            } else if ('/' == myChar) {
                 nextChar();
                 syntaxError("'/*..*/' comments are reserved. " +
                   "Use '#' on each line instead");
@@ -373,19 +359,19 @@ public class ELexer extends BaseLexer {
         }
         case'/': {
             nextChar();
-            if (myChar == '=') {
+            if ('=' == myChar) {
                 nextChar();
                 return leafTag(EParser.OpAssAprxDiv, endSpan());
-            } else if (myChar == '/') {
+            } else if ('/' == myChar) {
                 nextChar();
-                if (myChar == '=') {
+                if ('=' == myChar) {
                     nextChar();
                     return leafTag(EParser.OpAssFlrDiv, endSpan());
                 }
                 return leafTag(EParser.OpFlrDiv, endSpan());
-            } else if (myChar == '*') {
+            } else if ('*' == myChar) {
                 nextChar();
-                if (myChar == '*') {
+                if ('*' == myChar) {
                     nextChar();
                     return docComment(EParser.DocComment);
                 }
@@ -402,19 +388,19 @@ public class ELexer extends BaseLexer {
         }
         case'\\': {
             nextChar();
-            if (myChar == 'u' || myChar == 'U') {
+            if ('u' == myChar || 'U' == myChar) {
                 syntaxError("\\u... not yet implemented");
                 return null; //keep compiler happy
             }
             //an escaped newline is insensitive to trailing
             //whitespace, since that's invisible anyway.
             skipWhiteSpace();
-            if (myChar == '\n') {
+            if ('\n' == myChar) {
                 myContinueCount = 2;
                 skipLine();
                 stopToken();
                 Astro result = getNextToken();
-                if (result.getOptTagCode() == EOFTOK) {
+                if (EOFTOK == result.getOptTagCode()) {
                     needMore("continued line");
                     return null; //make compiler happy
                 } else {
@@ -426,15 +412,15 @@ public class ELexer extends BaseLexer {
         }
         case'%': {
             nextChar();
-            if (myChar == '%') {
+            if ('%' == myChar) {
                 nextChar();
-                if (myChar == '=') {
+                if ('=' == myChar) {
                     // check for "%%="
                     nextChar();
                     return leafTag(EParser.OpAssMod, endSpan());
                 }
                 return leafTag(EParser.OpMod, endSpan());
-            } else if (myChar == '=') {
+            } else if ('=' == myChar) {
                 // check for "%="
                 nextChar();
                 return leafTag(EParser.OpAssRemdr, endSpan());
@@ -443,10 +429,10 @@ public class ELexer extends BaseLexer {
         }
         case'!': {
             nextChar();
-            if (myChar == '=') {
+            if ('=' == myChar) {
                 nextChar();
                 return leafTag(EParser.OpNSame, endSpan());
-            } else if (myChar == '~') {
+            } else if ('~' == myChar) {
                 nextChar();
                 return leafTag(EParser.MisMatch, endSpan());
             }
@@ -454,13 +440,13 @@ public class ELexer extends BaseLexer {
         }
         case'=': {
             nextChar();
-            if (myChar == '=') {
+            if ('=' == myChar) {
                 nextChar();
                 return leafTag(EParser.OpSame, endSpan());
-            } else if (myChar == '>') {
+            } else if ('>' == myChar) {
                 nextChar();
                 return leafTag(EParser.MapsTo, endSpan());
-            } else if (myChar == '~') {
+            } else if ('~' == myChar) {
                 nextChar();
                 return leafTag(EParser.MatchBind, endSpan());
             }
@@ -469,13 +455,13 @@ public class ELexer extends BaseLexer {
         }
         case'&': {
             nextChar();
-            if (myChar == '&') {
+            if ('&' == myChar) {
                 nextChar();
                 return leafTag(EParser.OpLAnd, endSpan());
-            } else if (myChar == '=') {
+            } else if ('=' == myChar) {
                 nextChar();
                 return leafTag(EParser.OpAssAnd, endSpan());
-            } else if (myChar == '!') {
+            } else if ('!' == myChar) {
                 nextChar();
                 return leafTag(EParser.OpButNot, endSpan());
             }
@@ -483,10 +469,10 @@ public class ELexer extends BaseLexer {
         }
         case'|': {
             nextChar();
-            if (myChar == '|') {
+            if ('|' == myChar) {
                 nextChar();
                 return leafTag(EParser.OpLOr, endSpan());
-            } else if (myChar == '=') {
+            } else if ('=' == myChar) {
                 nextChar();
                 return leafTag(EParser.OpAssOr, endSpan());
             }
@@ -524,7 +510,7 @@ public class ELexer extends BaseLexer {
                 return identifier();
             }
             nextChar();
-            if (myChar == '/') {
+            if ('/' == myChar) {
                 syntaxError("For division,\n" +
                   "use '//' to truncate to the least integer,\n" +
                   "'truncDivide' to truncate to the int " +
@@ -555,7 +541,7 @@ public class ELexer extends BaseLexer {
         name = name.toLowerCase();
         AstroTag optTag = myBuilder.getSchema().getOptTagForName(name);
         if (null == optTag) {
-            return -1;
+            return (short)-1;
         } else {
             return optTag.getOptTagCode();
         }
@@ -564,9 +550,6 @@ public class ELexer extends BaseLexer {
     /**
      * If the verb is a {@link org.erights.e.elang.syntax.ELexer#isIdentifier
      * valid E identifier}, then print it, else print it as a quoted string.
-     *
-     * @param out
-     * @throws java.io.IOException
      */
     public static void printVerbOn(String verb, TextWriter out)
       throws IOException {
@@ -581,9 +564,6 @@ public class ELexer extends BaseLexer {
      * If the noun is a {@link org.erights.e.elang.syntax.ELexer#isIdentifier
      * valid E identifier}, then print it, else print it as "::" followed by a
      * quoted string.
-     *
-     * @param out
-     * @throws java.io.IOException
      */
     public static void printNounOn(String noun, TextWriter out)
       throws IOException {
@@ -596,7 +576,7 @@ public class ELexer extends BaseLexer {
     }
 
     /**
-     * If it {@link org.quasiliteral.syntax.BaseLexer#isIdentifierOrKeyword}
+     * If it {@link BaseLexer#isIdentifierOrKeyword}
      * and is not a {@link #optKeywordType keyword}.
      */
     static public boolean isIdentifier(String str) {
@@ -620,7 +600,7 @@ public class ELexer extends BaseLexer {
 
         if ('=' == myChar) {
             char c = peekChar();
-            if ("=>~".indexOf(c) == -1) {
+            if (-1 == "=>~".indexOf(c)) {
                 //'<ident>=' is a VerbAss, given that the '=' isn't
                 //part of a '==', '=>', or '=~'.
                 nextChar();
@@ -661,8 +641,8 @@ public class ELexer extends BaseLexer {
     private Astro quasiPart() throws IOException, SyntaxException {
         StringBuffer buf = new StringBuffer();
         while (true) {
-            while ("$@`".indexOf(myChar) == -1) {
-                if (myChar == EOFCHAR) {
+            while (-1 == "$@`".indexOf(myChar)) {
+                if (EOFCHAR == myChar) {
                     needMore("File end inside quasi-string literal");
                 }
                 buf.append(myChar);
@@ -673,7 +653,7 @@ public class ELexer extends BaseLexer {
             if (peekChar(myChar)) {
                 //A doubled $, @, or ` is uninterpreted
                 buf.append(myChar);
-                if (myChar == '$' || myChar == '@') {
+                if ('$' == myChar || '@' == myChar) {
                     //A doubled $ or @ stays double at this stage (to be
                     //turned into a single by the quasi-parser). Whereas a
                     //doubled ` becomes single immediately
@@ -682,7 +662,7 @@ public class ELexer extends BaseLexer {
                 nextChar();
                 nextChar();
 
-            } else if (myChar == '`') {
+            } else if ('`' == myChar) {
                 //terminal backquote is eaten but not added to the
                 //value of the resulting QuasiClose token.
                 nextChar();
@@ -701,13 +681,14 @@ public class ELexer extends BaseLexer {
                 buf.append(myChar);
                 nextChar();
 
-            } else if (myChar == '$' && peekChar('\\')) {
+            } else if ('$' == myChar && peekChar('\\')) {
                 //See
                 // https://bugs.sieve.net/bugs/\
                 // ?func=detailbug&bug_id=125408&group_id=16380
                 nextChar();
                 int ccode = charConstant();
                 if (-1 != ccode) {
+                    //noinspection NumericCastThatLosesPrecision
                     buf.append((char)ccode);
                 }
 
@@ -747,7 +728,7 @@ public class ELexer extends BaseLexer {
             //false alarm
             return null;
         }
-        if (myLData[pos] == '>') {
+        if ('>' == myLData[pos]) {
             myPos = pos;
             nextChar();
             Twine token = endToken();
@@ -757,7 +738,7 @@ public class ELexer extends BaseLexer {
             varName = URIKit.normalize(varName);
             return composite(EParser.ID, varName, token.getOptSpan());
         }
-        if (myLData[pos] != ':') {
+        if (':' != myLData[pos]) {
             //false alarm
             return null;
         }
@@ -776,7 +757,7 @@ public class ELexer extends BaseLexer {
         do {
             nextChar();
         } while (URIKit.isURIC(myChar));
-        if (myChar != '>') {
+        if ('>' != myChar) {
             syntaxError("Can't use \"" + myChar + "\" in a URI body");
         }
         nextChar();
@@ -793,14 +774,14 @@ public class ELexer extends BaseLexer {
     protected void skipWhiteSpace() throws IOException {
         //XXX should delegate most of the work to super.skipWhiteSpace()
         while (true) {
-            if (myChar == EOFCHAR) {
+            if (EOFCHAR == myChar) {
                 return;
             }
             if (Character.isWhitespace(myChar)) {
-                if (myChar == '\n') {
+                if ('\n' == myChar) {
                     return;
                 }
-                if (myChar == '\t') {
+                if ('\t' == myChar) {
                     if (myNoTabsFlag) {
                         syntaxError("The optional e.enable.notabs" +
                           " feature " + Rune.SYN_PROPS_EXPLAIN +
@@ -812,7 +793,7 @@ public class ELexer extends BaseLexer {
                 }
                 nextChar();
             } else {
-                if ((myChar == '?' || myChar == '>') && isWhite(0, myPos)) {
+                if (('?' == myChar || '>' == myChar) && isWhite(0, myPos)) {
                     //Is the first non-whitespace character on this line a
                     //'?' or '>'?
                     //If yes, so treat it as an updoc line
@@ -876,7 +857,7 @@ public class ELexer extends BaseLexer {
                     } catch (SyntaxException sex) {
                         stdout.println("oops: " + sex);
                     }
-                } while (t.length >= 1);
+                } while (1 <= t.length);
 
                 return;
             } catch (Throwable problem) {

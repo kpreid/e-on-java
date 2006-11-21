@@ -1,0 +1,24 @@
+# Copyright 2004 Hewlett Packard, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+# ? def makeSchema := <import:org.quasiliteral.schema.makeSchema>
+# ? def <schema> := <resource:org/quasiliteral/schema/>
+# ? makeSchema.parseSchema(<schema:orc.schema>.getTwine())
+
+# This describes the term-trees representing ASTs from parsing Orc
+
+<orc> ::= expr(<expr>*);
+<expr> ::= <orc>
+       |   def(<varID>,<varID>*,<expr>)
+       |   where(<expr>,in(<varID>,<expr>)*)
+       |   par(<expr>,<expr>)
+       |   pipe(<expr>,<varID>?,<expr>)
+       |   <useID>
+       |   .int.
+       |   .String.
+       |   call(<useID>,[<expr>*])
+       |   .DollarHole.(.int.)
+       |   .AtHole.(.int.)
+       ;
+<varID> ::= var(.String.);
+<useID> ::= use(.String.);

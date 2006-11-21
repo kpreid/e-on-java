@@ -43,6 +43,9 @@ public final class SafeJ {
       "double",
       "void",
 
+      "com.hp.orc.OrcLexer",
+      "com.hp.orc.OrcParser",
+
       "java.lang.Boolean",
       "java.lang.Byte",
       "java.lang.Character",

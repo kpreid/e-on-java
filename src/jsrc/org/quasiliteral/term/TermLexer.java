@@ -94,10 +94,8 @@ public class TermLexer extends BaseLexer {
             if (!Character.isWhitespace(ch)) {
                 if ('#' == ch) {
                     return true;
-                } else if ('/' == ch && i + 1 < len && '/' == myLData[i + 1]) {
-                    return true;
                 } else {
-                    return false;
+                    return '/' == ch && i + 1 < len && '/' == myLData[i + 1];
                 }
             }
         }
@@ -232,6 +230,7 @@ public class TermLexer extends BaseLexer {
                 //any tokens in this grammar.
                 syntaxError("Unexpected @");
             }
+            return null; // make compiler happy
         }
 
         case'[': {
@@ -266,19 +265,19 @@ public class TermLexer extends BaseLexer {
         }
         case'\\': {
             nextChar();
-            if (myChar == 'u' || myChar == 'U') {
+            if ('u' == myChar || 'U' == myChar) {
                 syntaxError("\\u... not yet implemented");
                 return null; //keep compiler happy
             }
             //an escaped newline is insensitive to trailing
             //whitespace, since that's invisible anyway.
             skipWhiteSpace();
-            if (myChar == '\n') {
+            if ('\n' == myChar) {
                 myContinueCount = 2;
                 skipLine();
                 stopToken();
                 Astro result = getNextToken();
-                if (result.getOptTagCode() == EOFTOK) {
+                if (EOFTOK == result.getOptTagCode()) {
                     needMore("continued line");
                     return null; //make compiler happy
                 } else {
@@ -332,12 +331,13 @@ public class TermLexer extends BaseLexer {
         Twine openner = (Twine)myLTwine.run(myOptStartPos, myPos);
         myIndenter.push(openner, '\'', 0);
         StringBuffer buf = new StringBuffer();
-        while (myChar != '\'') {
-            if (myChar == EOFCHAR) {
+        while ('\'' != myChar) {
+            if (EOFCHAR == myChar) {
                 needMore("File ends inside string literal");
             }
             int ccode = charConstant();
             if (-1 != ccode) {
+                //noinspection NumericCastThatLosesPrecision
                 buf.append((char)ccode);
             }
         }
@@ -357,7 +357,7 @@ public class TermLexer extends BaseLexer {
     }
 
     /**
-     * Any character that may {@link java.lang.Character#isJavaIdentifierStart(char)
+     * Any character that may {@link Character#isJavaIdentifierStart(char)
      * start} a Java identifier.
      * <p/>
      * Note that a Java identifier may start with a '_' or '$'.
@@ -374,7 +374,7 @@ public class TermLexer extends BaseLexer {
     }
 
     /**
-     * Any character that may {@link java.lang.Character#isJavaIdentifierPart(char)
+     * Any character that may {@link Character#isJavaIdentifierPart(char)
      * be a part of} a Java identifier, or a '.' or '-'.
      * <p/>
      * Note that a Java identifier may contain '_'s and '$'s.
@@ -521,14 +521,14 @@ public class TermLexer extends BaseLexer {
 
         String line = myLTwine.bare();
         int bound;
-        while ((bound = line.indexOf("*/", myPos)) == -1) {
+        while (-1 == (bound = line.indexOf("*/", myPos))) {
             skipLine();
             nextChar();
-            if (myChar == EOFCHAR) {
+            if (EOFCHAR == myChar) {
                 needMore("File ends inside block-comment");
             }
             skipWhiteSpace();
-            if (myChar == '*' && peekChar() != '/') {
+            if ('*' == myChar && '/' != peekChar()) {
                 //skip leading whitespace and initial '*'
                 nextChar();
             }
@@ -571,12 +571,12 @@ public class TermLexer extends BaseLexer {
                     t = lex.nextToken();
                     stdout.println(t);
                     short code = t.getOptTagCode();
-                    if (code == TermParser.EOL || code == TermParser.EOTLU) {
+                    if (TermParser.EOL == code || TermParser.EOTLU == code) {
                         stdout.print("stack: ",
                                      lex.myIndenter.toString(),
                                      "\n");
                     }
-                } while (t.getOptTagCode() != EOFTOK);
+                } while (EOFTOK != t.getOptTagCode());
                 return;
             } catch (SyntaxException sex) {
                 TextWriter err =
