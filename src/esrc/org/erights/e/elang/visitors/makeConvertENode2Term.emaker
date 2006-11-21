@@ -37,26 +37,31 @@ def makeConvertENode2Term() :any {
         to visitAssignExpr(optOriginal :nullOk[ENode],
                            noun :AtomicExpr,
                            rValue :EExpr) :Term {
-            return term`AssignExpr(${convert(noun)},
-                                   ${convert(rValue)})`
+            return term`assign(${convert(noun)},
+                               ${convert(rValue)})`
         }
 
         to visitCallExpr(optOriginal :nullOk[ENode],
                          recip :EExpr,
                          verb :String,
                          args :List[EExpr]) :Term {
-            return term`CallExpr(${convert(recip)},
-                                 $verb,
-                                 [${convert(args)}*])`
+            return term`call(${convert(recip)},
+                             $verb,
+                             [${convert(args)}*])`
         }
 
         to visitDefineExpr(optOriginal :nullOk[ENode],
                            patt :Pattern,
                            optEjectorExpr :nullOk[EExpr],
                            rValue :EExpr) :Term {
-            return term`DefineExpr(${convert(patt)},
-                                   ${convert(optEjectorExpr)},
-                                   ${convert(rValue)})`
+            if (null == optEjectorExpr) {
+                return term`def(${convert(patt)},
+                                ${convert(rValue)})`
+            } else {
+                return term`def(${convert(patt)},
+                                ${convert(optEjectorExpr)},
+                                ${convert(rValue)})`
+            }
         }
 
         to visitEscapeExpr(optOriginal :nullOk[ENode],
@@ -64,24 +69,29 @@ def makeConvertENode2Term() :any {
                            body :EExpr,
                            optArgPattern :nullOk[Pattern],
                            optCatcher :nullOk[EExpr]) :Term {
-            return term`EscapeExpr(${convert(hatch)},
+            if (null == optArgPattern) {
+                return term`escape(${convert(hatch)},
+                                   ${convert(body)})`
+            } else {
+                return term`escape(${convert(hatch)},
                                    ${convert(body)},
                                    ${convert(optArgPattern)},
                                    ${convert(optCatcher)})`
+            }
         }
 
         to visitHideExpr(optOriginal :nullOk[ENode],
                          body :EExpr) :Term {
-            return term`HideExpr(${convert(body)})`
+            return term`hide(${convert(body)})`
         }
 
         to visitIfExpr(optOriginal :nullOk[ENode],
                        test :EExpr,
                        then :EExpr,
                        els :EExpr) :Term {
-            return term`IfExpr(${convert(test)},
-                               ${convert(then)},
-                               ${convert(els)})`
+            return term`if(${convert(test)},
+                           ${convert(then)},
+                           ${convert(els)})`
         }
 
         to visitLiteralExpr(optOriginal :nullOk[ENode],
@@ -91,12 +101,12 @@ def makeConvertENode2Term() :any {
             } else {
                 term`$data`
             }
-            return term`LiteralExpr($litData)`
+            return term`quote($litData)`
         }
 
         to visitNounExpr(optOriginal :nullOk[ENode],
                          varName :String) :Term {
-            return term`NounExpr($varName)`
+            return term`noun($varName)`
         }
 
 
@@ -105,44 +115,44 @@ def makeConvertENode2Term() :any {
                            qualifiedName :String,
                            auditors :List[EExpr],
                            eScript :EScript) :Term {
-            return term`ObjectExpr($docComment,
-                                   $qualifiedName,
-                                   [${convert(auditors)}*],
-                                   ${convert(eScript)})`
+            return term`object($docComment,
+                               $qualifiedName,
+                               [${convert(auditors)}*],
+                               ${convert(eScript)})`
         }
 
         to visitMetaStateExpr(optOriginal :nullOk[ENode]) :Term {
-            return term`MetaStateExpr`
+            return term`metaState`
         }
 
         to visitMetaContextExpr(optOriginal :nullOk[ENode]) :Term {
-            return term`MetaContextExpr`
+            return term`metaContext`
         }
 
         to visitSeqExpr(optOriginal :nullOk[ENode],
                         subs :List[EExpr]) :Term {
-            return term`SeqExpr([${convert(subs)}*])`
+            return term`seq([${convert(subs)}*])`
         }
 
         to visitSlotExpr(optOriginal :nullOk[ENode],
                          noun :AtomicExpr) :Term {
-            return term`SlotExpr(${convert(noun)})`
+            return term`slot(${convert(noun)})`
         }
 
         to visitCatchExpr(optOriginal :nullOk[ENode],
                           attempt :EExpr,
                           patt :Pattern,
                           catcher :EExpr) :Term {
-            return term`CatchExpr(${convert(attempt)},
-                                  ${convert(patt)},
-                                  ${convert(catcher)})`
+            return term`catch(${convert(attempt)},
+                              ${convert(patt)},
+                              ${convert(catcher)})`
         }
 
         to visitFinallyExpr(optOriginal :nullOk[ENode],
                             attempt :EExpr,
                             unwinder :EExpr) :Term {
-            return term`FinallyExpr(${convert(attempt)},
-                                    ${convert(unwinder)})`
+            return term`finally(${convert(attempt)},
+                                ${convert(unwinder)})`
         }
 
 
@@ -162,39 +172,39 @@ def makeConvertENode2Term() :any {
         to visitFinalPattern(optOriginal :nullOk[ENode],
                              nounExpr :AtomicExpr,
                              optGuardExpr :nullOk[EExpr]) :Term {
-            return term`FinalPattern(${convert(nounExpr)},
-                                     ${convert(optGuardExpr)})`
+            return term`defFinal(${convert(nounExpr)},
+                                 ${convert(optGuardExpr)})`
         }
 
         to visitVarPattern(optOriginal :nullOk[ENode],
                            nounExpr :AtomicExpr,
                            optGuardExpr :nullOk[EExpr]) :Term {
-            return term`VarPattern(${convert(nounExpr)},
-                                   ${convert(optGuardExpr)})`
+            return term`defVar(${convert(nounExpr)},
+                               ${convert(optGuardExpr)})`
         }
 
         to visitSlotPattern(optOriginal :nullOk[ENode],
                             nounExpr :AtomicExpr,
                             optGuardExpr :nullOk[EExpr]) :Term {
-            return term`SlotPattern(${convert(nounExpr)},
-                                    ${convert(optGuardExpr)})`
+            return term`defSlot(${convert(nounExpr)},
+                                ${convert(optGuardExpr)})`
         }
 
         to visitIgnorePattern(optOriginal :nullOk[ENode],
                               optGuardExpr :nullOk[EExpr]) :Term {
-            return term`IgnorePattern(${convert(optGuardExpr)})`
+            return term`ignore(${convert(optGuardExpr)})`
         }
 
         to visitViaPattern(optOriginal :nullOk[ENode],
                            viaExpr :EExpr,
                            subPattern :Pattern) :Term {
-            return term`ViaPattern(${convert(viaExpr)},
-                                   ${convert(subPattern)})`
+            return term`viaPatt(${convert(viaExpr)},
+                                ${convert(subPattern)})`
         }
 
         to visitListPattern(optOriginal :nullOk[ENode],
                             subs :List[Pattern]) :Term {
-            return term`ListPattern([${convert(subs)}*])`
+            return term`listPatt([${convert(subs)}*])`
         }
 
         to visitQuasiLiteralPatt(optOriginal :nullOk[ENode],
@@ -213,13 +223,12 @@ def makeConvertENode2Term() :any {
         to visitEScript(optOriginal :nullOk[ENode],
                         optMethods :nullOk[EMethod[]],
                         matchers :List[EMatcher]) :Term {
-            def meths := if (null == optMethods) {
-                term`null`
+            if (null == optMethods) {
+                return term`script([${convert(matchers)}*])`
             } else {
-                term`[${convert(optMethods)}*]`
+                return term`script([${convert(optMethods)}*],
+                                   [${convert(matchers)}*])`
             }
-            return term`EScript($meths,
-                                [${convert(matchers)}*])`
         }
 
         to visitEMethod(optOriginal :nullOk[ENode],
@@ -228,18 +237,18 @@ def makeConvertENode2Term() :any {
                         patterns :List[Pattern],
                         optResultGuard :nullOk[EExpr],
                         body :EExpr) :Term {
-            return term`EMethod($docComment,
-                                $verb,
-                                [${convert(patterns)}*],
-                                ${convert(optResultGuard)},
-                                ${convert(body)})`
+            return term`method($docComment,
+                               $verb,
+                               [${convert(patterns)}*],
+                               ${convert(optResultGuard)},
+                               ${convert(body)})`
         }
 
         to visitEMatcher(optOriginal :nullOk[ENode],
                          pattern :Pattern,
                          body :EExpr) :Term {
-            return term`EMatcher(${convert(pattern)},
-                                 ${convert(body)})`
+            return term`matcher(${convert(pattern)},
+                                ${convert(body)})`
         }
     }
 
