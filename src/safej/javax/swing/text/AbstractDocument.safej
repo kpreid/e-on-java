@@ -33,5 +33,6 @@ class(safe,
               method("getBidiRootElement()"),
               method("getParagraphElement(int)"),
               method("dump(PrintStream)"),
+              method("replace(int, int, String, AttributeSet)")
               method(suppress, "readLock()"),
               method(suppress, "readUnlock()")))
