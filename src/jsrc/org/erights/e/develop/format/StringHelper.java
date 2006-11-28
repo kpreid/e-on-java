@@ -59,7 +59,7 @@ public final class StringHelper {
         int oldLen = oldStr.length();
         int p1 = 0;
         for (int p2 = self.indexOf(oldStr);
-             p2 != -1;
+             -1 != p2;
              p2 = self.indexOf(oldStr, p1)) {
             buf.append(self.substring(p1, p2));
             buf.append(newStr);
@@ -74,7 +74,7 @@ public final class StringHelper {
      * remaining cr is turned into an lf to deal with Mac.
      */
     static public String canonical(String self) {
-        if (self.indexOf('\r') == -1) {
+        if (-1 == self.indexOf('\r')) {
             return self;
         } else {
             return replaceAll(self, "\r\n", "\n").replace('\r', '\n');
@@ -91,53 +91,10 @@ public final class StringHelper {
         buf.append('\"');
         for (int i = 0; i < len; i++) {
             char c = self.charAt(i);
-            //XXX Mostly redundant with CharacterSugar.escaped(c).
-            switch (c) {
-            case'\b': {
-                buf.append("\\b");
-                break;
-            }
-            case'\t': {
-                buf.append("\\t");
-                break;
-            }
-            case'\n': {
-                //Output an actual newline, which is legal in a
-                //literal string in E.
-                buf.append("\n");
-                break;
-            }
-            case'\f': {
-                buf.append("\\f");
-                break;
-            }
-            case'\r': {
-                buf.append("\\r");
-                break;
-            }
-            case'\"': {
-                buf.append("\\\"");
-                break;
-            }
-//            case '\'':
-//                {
-//                    buf.append("\\\'");
-//                    break;
-//                }
-            case'\\': {
-                buf.append("\\\\");
-                break;
-            }
-            default: {
-                if (c < 32 || c > 255) {
-                    String num = "0000" + Integer.toHexString(c);
-                    int numlen = num.length();
-                    num = num.substring(numlen - 4, numlen);
-                    buf.append("\\u").append(num);
-                } else {
-                    buf.append(c);
-                }
-            }
+            if ('\n' == c) {
+                buf.append(c);
+            } else {
+                escapedInto(c, buf);
             }
         }
         buf.append('\"');
@@ -152,10 +109,73 @@ public final class StringHelper {
      */
     static public String aan(String self) {
         char c = Character.toLowerCase(self.charAt(0));
-        if (self.length() >= 1 && "aeiouh".indexOf(c) != -1) {
+        if (1 <= self.length() && -1 != "aeiouh".indexOf(c)) {
             return "an " + self;
         } else {
             return "a " + self;
+        }
+    }
+
+    /**
+     * Just the part of a character's quoted form that encodes the character.
+     * <p/>
+     * In other words, everything except the enclosing quote signs. This is
+     * used for composing a quoted {@link org.erights.e.meta.java.lang.CharacterSugar
+     * #escaped(char) character}, {@link org.erights.e.develop.format.StringHelper#quote(String)
+     * string}, or {@link org.erights.e.elib.tables.Twine#quote()} Twine.
+     * <p/>
+     * In order to be efficiently reusable, this method takes a StringBuffer
+     * argument. Since this doesn't make much sense from E, this method is
+     * tamed away.
+     *
+     * @noinspection UnnecessaryFullyQualifiedName
+     */
+    static public boolean escapedInto(char self, StringBuffer buf) {
+        switch (self) {
+        case'\b': {
+            buf.append("\\b");
+            return true;
+        }
+        case'\t': {
+            buf.append("\\t");
+            return true;
+        }
+        case'\n': {
+            buf.append("\\n");
+            return true;
+        }
+        case'\f': {
+            buf.append("\\f");
+            return true;
+        }
+        case'\r': {
+            buf.append("\\r");
+            return true;
+        }
+        case'\"': {
+            buf.append("\\\"");
+            return true;
+        }
+        case'\'': {
+            buf.append("\\\'");
+            return true;
+        }
+        case'\\': {
+            buf.append("\\\\");
+            return true;
+        }
+        default: {
+            if (32 > self || 126 < self) {
+                String num = "0000" + Integer.toHexString(self);
+                int len = num.length();
+                num = num.substring(len - 4, len);
+                buf.append("\\u").append(num);
+                return true;
+            } else {
+                buf.append(self);
+                return false;
+            }
+        }
         }
     }
 }

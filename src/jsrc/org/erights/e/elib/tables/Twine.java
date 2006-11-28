@@ -21,6 +21,7 @@ Contributor(s): ______________________________________.
 
 import org.erights.e.develop.assertion.T;
 import org.erights.e.develop.trace.Trace;
+import org.erights.e.develop.format.StringHelper;
 import org.erights.e.elib.base.SourceSpan;
 import org.erights.e.elib.prim.E;
 import org.erights.e.elib.prim.StaticMaker;
@@ -406,60 +407,16 @@ public abstract class Twine extends ConstList implements DeepPassByCopy {
     public Twine quote() {
         Twine result = fromString("\"");
         int len = size();
+        StringBuffer buf = new StringBuffer(len * 2);
         int p1 = 0;
         for (int p2 = 0; p2 < len; p2++) {
             char c = charAt(p2);
-            String newStr = null;
-            //XXX Mostly redundant with CharacterSugar.escaped(c).
-            switch (c) {
-            case'\b': {
-                newStr = "\\b";
-                break;
-            }
-            case'\t': {
-                newStr = "\\t";
-                break;
-            }
-            case'\n': {
-                //Output an actual newline, which is legal in a
-                //literal string in E.
-                newStr = "\n";
-                break;
-            }
-            case'\f': {
-                newStr = "\\f";
-                break;
-            }
-            case'\r': {
-                newStr = "\\r";
-                break;
-            }
-            case'\"': {
-                newStr = "\\\"";
-                break;
-            }
-//            case '\'':
-//                {
-//                    newStr = "\\\'";
-//                    break;
-//                }
-            case'\\': {
-                newStr = "\\\\";
-                break;
-            }
-            default: {
-                if (32 > (int)c || 255 < (int)c) {
-                    String num = "0000" + Integer.toHexString(c);
-                    int numlen = num.length();
-                    num = num.substring(numlen - 4, numlen);
-                    newStr = "\\u" + num;
-                }
-            }
-            }
-            if (null != newStr) {
+            buf.setLength(0);
+            if ('\n' != c && StringHelper.escapedInto(c, buf)) {
                 result = (Twine)result.add(run(p1, p2));
                 Twine oldStr = (Twine)run(p2, p2 + 1);
-                result = (Twine)result.add(oldStr.infect(newStr, false));
+                result =
+                  (Twine)result.add(oldStr.infect(buf.toString(), false));
                 p1 = p2 + 1;
             }
         }
@@ -467,7 +424,7 @@ public abstract class Twine extends ConstList implements DeepPassByCopy {
         return result;
     }
 
-    /******************** ConstList methods *********************/
+/******************** ConstList methods *********************/
 
     /**
      *
@@ -499,7 +456,7 @@ public abstract class Twine extends ConstList implements DeepPassByCopy {
         return Character.class;
     }
 
-    /******************** Imitation of String methods *********************/
+/******************** Imitation of String methods *********************/
 
     /**
      * From the E language, this is identical to get/1. But we provide it so

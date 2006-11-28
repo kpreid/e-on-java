@@ -615,9 +615,21 @@ public abstract class BaseLexer implements LexerFace {
             case EOFCHAR:
                 needMore("End of file in middle of literal");
                 return -1; // make compiler happy
-            case'u':
-                syntaxError("XXX escaped uchar codes not yet implemented");
-                return -1; // make compiler happy
+            case'u': {
+                // XXX We need to decide if this is the job of the lexer or,
+                // as in Java, of a decoding stage prior to lexing. Currently
+                // we handle this during lexing, and only within literal
+                // character data.
+                String hexStr = "";
+                for (int i = 0; 4 > i; i++) {
+                    nextChar();
+                    if (-1 == Character.digit(myChar, 16)) {
+                        syntaxError("\\u escape must be four hex digits");
+                    }
+                    hexStr += myChar;
+                }
+                return Integer.parseInt(hexStr, 16);
+            }
             default: {
                 if (isDigitStart(myChar, 10)) {
                     syntaxError("XXX escaped char codes not yet implemented");

@@ -20,6 +20,7 @@ Contributor(s): ______________________________________.
 */
 
 import org.erights.e.develop.assertion.T;
+import org.erights.e.develop.format.StringHelper;
 import org.erights.e.elib.oldeio.TextWriter;
 
 import java.io.IOException;
@@ -57,7 +58,7 @@ public class CharacterSugar {
     }
 
     /**
-     *
+     * @noinspection OverloadedMethodsWithSameNumberOfParameters
      */
     static public char add(char self, int delta) {
         return CharacterMakerSugar.asChar((long)self + delta);
@@ -66,20 +67,22 @@ public class CharacterSugar {
     /**
      * Kludge to force overload resolution to prevent a char from successfully
      * Java-coercing, on method.invoke(), to an int.
+     *
+     * @noinspection OverloadedMethodsWithSameNumberOfParameters
      */
     static public void add(char self, char other) {
         throw new IllegalArgumentException("Can't add characters");
     }
 
     /**
-     *
+     * @noinspection OverloadedMethodsWithSameNumberOfParameters
      */
     static public char subtract(char self, int delta) {
         return CharacterMakerSugar.asChar((long)self - delta);
     }
 
     /**
-     *
+     * @noinspection OverloadedMethodsWithSameNumberOfParameters
      */
     static public int subtract(char self, char other) {
         return self - other;
@@ -89,9 +92,10 @@ public class CharacterSugar {
      *
      */
     static public char next(char self) {
-        if (self >= Character.MAX_VALUE) {
+        if (Character.MAX_VALUE <= self) {
             return self;
         } else {
+            //noinspection NumericCastThatLosesPrecision
             return (char)(self + 1);
         }
     }
@@ -100,9 +104,10 @@ public class CharacterSugar {
      *
      */
     static public char previous(char self) {
-        if (self <= Character.MIN_VALUE) {
+        if (Character.MIN_VALUE >= self) {
             return self;
         } else {
+            //noinspection NumericCastThatLosesPrecision
             return (char)(self - 1);
         }
     }
@@ -111,6 +116,7 @@ public class CharacterSugar {
      *
      */
     static public char min(char self, char other) {
+        //noinspection NumericCastThatLosesPrecision
         return (char)StrictMath.min((int)self, (int)other);
     }
 
@@ -118,6 +124,7 @@ public class CharacterSugar {
      *
      */
     static public char max(char self, char other) {
+        //noinspection NumericCastThatLosesPrecision
         return (char)StrictMath.max((int)self, (int)other);
     }
 
@@ -148,59 +155,12 @@ public class CharacterSugar {
      * Just the part of a character's quoted form that encodes the character.
      * <p/>
      * In other words, everything except the enclosing quote signs. This is
-     * used for composing a quoted character. It is mostly redundant with
-     * {@link org.erights.e.elib.tables.Twine#quote} and {@link
-     * org.erights.e.develop.format.StringHelper#quote}, but this one outputs a
-     * backslash-en for a newline, rather than the newline itself.
+     * used for composing a quoted character.
      */
     static public String escaped(char self) {
         StringBuffer buf = new StringBuffer();
-        //XXX Mostly edundant with the inner loop of Twine.quote() and
-        //StringHelper.quote()
-        switch (self) {
-        case'\b': {
-            buf.append("\\b");
-            break;
-        }
-        case'\t': {
-            buf.append("\\t");
-            break;
-        }
-        case'\n': {
-            buf.append("\\n");
-            break;
-        }
-        case'\f': {
-            buf.append("\\f");
-            break;
-        }
-        case'\r': {
-            buf.append("\\r");
-            break;
-        }
-        case'\"': {
-            buf.append("\\\"");
-            break;
-        }
-        case'\'': {
-            buf.append("\\\'");
-            break;
-        }
-        case'\\': {
-            buf.append("\\\\");
-            break;
-        }
-        default: {
-            if (self < 32 || self > 255) {
-                String num = "0000" + Integer.toHexString(self);
-                int len = num.length();
-                num = num.substring(len - 4, len);
-                buf.append("\\u" + num);
-            } else {
-                buf.append(self);
-            }
-        }
-        }
+        StringHelper.escapedInto(self, buf);
         return buf.toString();
     }
+
 }

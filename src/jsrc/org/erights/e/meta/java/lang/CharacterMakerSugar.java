@@ -29,7 +29,7 @@ public final class CharacterMakerSugar {
       {"Zp", "PARAGRAPH_SEPARATOR"},
       {"Cc", "CONTROL"},
       {"Cf", "FORMAT"},
-      null,
+      null, // 17 reserved for proposed Ci category
       {"Co", "PRIVATE_USE"},
       {"Cs", "SURROGATE"},
       {"Pd", "DASH_PUNCTUATION"},
