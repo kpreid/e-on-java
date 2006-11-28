@@ -7,44 +7,44 @@
 
 
 <e> ::=
-     quote(.char. | .int. | .float64. | .String.)
-                                      # String | Char | Integer | Float64
-  |  assign(<noun>,<e>)               # noun := e
-  |  call(<e>,<verb>,[<e>*])          # e.verb(<e>**,)
-  |  def(<p>,<e>?,<e>)                # def p <exit e1>? := e2
-  |  escape(<p>,<e>,(<p>,<e>)?)       # escape p1 {e1} <catch p2 {e2}>?
-  |  hide(<e>)                        # {e}
-  |  seq(<e>,<e>)                     # e1; e2
-  |  noun(<noun>)                     # noun
-  |  slot(<noun>)                     # &noun
-  |  if(<e>,<e>,<e>)                  # if (e1) {e2} else {e3}
-  |  catch(<e>,<p>,<e>)               # try {e1} catch p {e2}
-  |  finally(<e>,<e>)                 # try {e1} finally {e2}
+     assign(<noun>,<e>)                      # noun := e
+  |  call(<e>,<verb>,[<e>*])                 # e.verb(<e>**,)
+  |  def(<p>,<e>?,<e>)                       # def p <exit e1>? := e2
+  |  escape(<p>,<e>,(<p>,<e>)?)              # escape p1 {e1} <catch p2 {e2}>?
+  |  hide(<e>)                               # {e}
+  |  if(<e>,<e>,<e>)                         # if (e1) {e2} else {e3}
+  |  quote(.char.|.int.|.float64.|.String.)  # String|Char|Integer|Float64
+  |  noun(<noun>)                            # noun
   |  object(<comment>,<oname>,[<e>*],<script>)
                                 # comment def oname <implements <e>++,>? script
-  |  metaContext()                    # meta.context()
-  |  metaState();                     # meta.getState()
+  |  metaState()                             # meta.getState()
+  |  metaContext()                           # meta.context()
+  |  seq(<e>,<e>+)                           # e1; e2
+  |  slot(<noun>)                            # &noun
+  |  catch(<e>,<p>,<e>)                      # try {e1} catch p {e2}
+  |  finally(<e>,<e>);                       # try {e1} finally {e2}
 
 <p> ::=
-     guardedPatt(<oname>, <e>?)       # oname <:e>?
-  |  listPatt([<p>*])                 # [<p>**,]
-  |  viaPatt(<e>,<p>);                # via (e) p
+     <oname>
+  |  guardP(<oname>, <e>)                    # oname <:e>
+  |  listP([<p>*])                           # [<p>**,]
+  |  viaP(<e>,<p>);                          # via (e) p
 <oname> ::=
-     defFinal(<noun>)                 # noun
-  |  defVar(<noun>)                   # var noun
-  |  defSlot(<noun>)                  # &noun
-  |  ignore();                        # _
+     finalP(<noun>)                          # noun
+  |  varP(<noun>)                            # var noun
+  |  slotP(<noun>)                           # &noun
+  |  ignoreP();                              # _
 
 <script> ::=
-     <matcher>                        # matcher
-  |  script(<method>*, <matcher>*);   # {<method>* <matcher>*}
-<method> ::= method(<comment>,<verb>,[<p>*],(<e>|null),<e>);
+     <matcher>                               # matcher
+  |  script([<method>*], [<matcher>*]);      # {<method>* <matcher>*}
+<matcher> ::= matcher(<p>,<e>);              # match p {e}
+<method> ::= method(<comment>,<verb>,[<p>*],<e>?,<e>);
                                       # comment method verb(<p>**,) <:e1>? {e2}
-<matcher> ::= matcher(<p>,<e>);       # match p {e}
 
-<verb> ::= .String.;                  # Ident | String
-<noun> ::= .String.;                  # Ident | ::String
-<comment> ::= .String.;               # </** ... */>?
+<verb> ::= .String.;                         # Ident | String
+<noun> ::= .String.;                         # Ident | ::String
+<comment> ::= .String.;                      # </** ... */>?
 
 
 # i + j

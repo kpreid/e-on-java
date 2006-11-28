@@ -224,6 +224,13 @@ Is it possible to write choose1 in orc itself? I'm not sure.
     # value: <makeOrcParser>
 
     ? op("def x(a,b)= x(${1},a) g")
+    # value: term`expr(expr(def(var("x"),
+    #                           [var("a"),
+    #                            var("b")],
+    #                           expr(call(use("x"),
+    #                                     [expr(.DollarHole.(1)),
+    #                                      expr(use("a"))]))),
+    #                       use("g")))`
 
     ? op("let z where z in a >> x | b >> y")
     # value: term`expr(expr(use("let")),

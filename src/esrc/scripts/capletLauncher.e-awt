@@ -67,8 +67,8 @@ traceline(`did appsManager: $installedAppsManager`)
  * runCaplet returns the powerboxController used to launch the caplet.
  * it installs a reactor that will continueAtTop when exit is requested
  * XXX someday, reconcile this runCaplet with the runCaplet in CapDesk
- * XXX probably split into composePowerboxController.emaker and separate launch line
- * XXX then requestExit handling is externalized.
+ * XXX probably split into composePowerboxController.emaker and separate launch
+ * XXX line then requestExit handling is externalized.
  */
 def runCaplet{
     to run(sourceFile, docRcvrs) :near {
@@ -146,7 +146,7 @@ if (commandArgs.size() == 0) {
     def sourceFile := <file>[commandArgs[0]]
     traceline(`sourceFile: $sourceFile`)
     var docs := []
-    for each in 1..commandArgs.size() -1 {
+    for each in 1..!commandArgs.size() {
         docs += [<file>[commandArgs[each]]]
     }
     traceline(`docs: $docs`)

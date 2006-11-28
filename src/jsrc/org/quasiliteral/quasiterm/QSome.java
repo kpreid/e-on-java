@@ -21,7 +21,7 @@ import java.io.IOException;
 /**
  * @author Mark S. Miller
  */
-public class QSome extends QAstroArg {
+public final class QSome extends QAstroArg {
 
     static private final long serialVersionUID = 3043579604546641336L;
 
@@ -63,6 +63,10 @@ public class QSome extends QAstroArg {
           CharacterMakerSugar.valueOf(myQuant),
           myOptSpan};
         return result;
+    }
+
+    public AstroArg withOptSpan(SourceSpan optSpan) {
+        return new QSome(myBuilder, myOptSubPattern, myQuant, optSpan);
     }
 
     /**

@@ -34,7 +34,7 @@ import java.io.IOException;
  *
  * @author Mark S. Miller
  */
-public class QDollarHole extends QHole {
+public final class QDollarHole extends QHole {
 
     static private final long serialVersionUID = 3563608921615703114L;
 
@@ -75,6 +75,17 @@ public class QDollarHole extends QHole {
           myIsFunctorHole ? Boolean.TRUE : Boolean.FALSE,
           myOptSpan};
         return result;
+    }
+
+    /**
+     *
+     */
+    public AstroArg withOptSpan(SourceSpan optSpan) {
+        return new QDollarHole(myBuilder,
+                               myOptTag,
+                               myHoleNum,
+                               myIsFunctorHole,
+                               optSpan);
     }
 
     /**

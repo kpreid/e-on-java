@@ -5,6 +5,7 @@ package org.quasiliteral.quasiterm;
 
 import org.erights.e.develop.assertion.T;
 import org.erights.e.develop.format.StringHelper;
+import org.erights.e.elib.base.SourceSpan;
 import org.erights.e.elib.oldeio.TextWriter;
 import org.erights.e.elib.prim.StaticMaker;
 import org.erights.e.elib.tables.ConstList;
@@ -23,7 +24,7 @@ import java.io.IOException;
  *
  * @author Mark S. Miller
  */
-public class QTerm extends QAstro {
+public final class QTerm extends QAstro {
 
     static private final long serialVersionUID = 8957426444620247360L;
 
@@ -43,18 +44,20 @@ public class QTerm extends QAstro {
     private final QAstroArg myQArgs;
 
     /**
-     * Makes a QTerm that matches or generates a Astro.
+     * Makes a QTerm that matches or generates an Astro.
      * <p/>
      * The invariants of a QTerm are not checked here, but rather are enforced
      * by the callers in this class and in QTermBuilder.
      *
      * @param builder  Used to build the results of a substitute
-     * @param qFunctor Matches of generates functor information
+     * @param qFunctor Matches or generates functor information
      * @param qArgs    This QTerm's argument list -- a QAstroArg
      */
-    QTerm(AstroBuilder builder, QAstro qFunctor, QAstroArg qArgs) {
-
-        super(builder, qFunctor.getOptSpan());
+    public QTerm(AstroBuilder builder,
+                 QAstro qFunctor,
+                 QAstroArg qArgs,
+                 SourceSpan optSpan) {
+        super(builder, optSpan);
         myQFunctor = qFunctor.asFunctor();
         myQArgs = qArgs;
     }
@@ -63,8 +66,16 @@ public class QTerm extends QAstro {
      * Uses 'QTermMaker(myBuilder, myQFunctor, myQArgs)'
      */
     public Object[] getSpreadUncall() {
-        Object[] result = {QTermMaker, "run", myBuilder, myQFunctor, myQArgs};
+        Object[] result =
+          {QTermMaker, "run", myBuilder, myQFunctor, myQArgs, myOptSpan};
         return result;
+    }
+
+    /**
+     *
+     */
+    public AstroArg withOptSpan(SourceSpan optSpan) {
+        return new QTerm(myBuilder, myQFunctor, myQArgs, optSpan);
     }
 
     /**
@@ -117,7 +128,10 @@ public class QTerm extends QAstro {
      * Unlike myQFunctor, this will only match a Term of zero-arity.
      */
     public Astro withoutArgs() {
-        return new QTerm(myBuilder, myQFunctor, new QEmptySeq(myBuilder));
+        return new QTerm(myBuilder,
+                         myQFunctor,
+                         new QEmptySeq(myBuilder, null),
+                         myOptSpan);
     }
 
 //    /**

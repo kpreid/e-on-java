@@ -33,7 +33,7 @@ import java.io.IOException;
  *
  * @author Mark S. Miller
  */
-public class QAtHole extends QHole {
+public final class QAtHole extends QHole {
 
     static private final long serialVersionUID = 6979086503562395304L;
 
@@ -52,11 +52,11 @@ public class QAtHole extends QHole {
      * For the meanings of the parameters, see the {@link QHole} constructor,
      * which has the same parameters.
      */
-    QAtHole(AstroBuilder builder,
-            AstroTag optTag,
-            int holeNum,
-            boolean isFunctorHole,
-            SourceSpan optSpan) {
+    public QAtHole(AstroBuilder builder,
+                   AstroTag optTag,
+                   int holeNum,
+                   boolean isFunctorHole,
+                   SourceSpan optSpan) {
 
         super(builder, optTag, holeNum, isFunctorHole, optSpan);
     }
@@ -74,6 +74,14 @@ public class QAtHole extends QHole {
           myIsFunctorHole ? Boolean.TRUE : Boolean.FALSE,
           myOptSpan};
         return result;
+    }
+
+    public AstroArg withOptSpan(SourceSpan optSpan) {
+        return new QAtHole(myBuilder,
+                           myOptTag,
+                           myHoleNum,
+                           myIsFunctorHole,
+                           optSpan);
     }
 
     /**

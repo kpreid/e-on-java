@@ -7,6 +7,7 @@ import org.erights.e.elib.oldeio.TextWriter;
 import org.erights.e.elib.prim.StaticMaker;
 import org.erights.e.elib.tables.ConstList;
 import org.erights.e.elib.tables.FlexList;
+import org.erights.e.elib.base.SourceSpan;
 import org.quasiliteral.astro.AstroArg;
 import org.quasiliteral.astro.AstroBuilder;
 import org.quasiliteral.term.QuasiBuilder;
@@ -17,7 +18,7 @@ import org.quasiliteral.term.QuasiBuilder;
  *
  * @author Mark S. Miller
  */
-public class QEmptySeq extends QAstroArg {
+public final class QEmptySeq extends QAstroArg {
 
     /**
      *
@@ -33,16 +34,20 @@ public class QEmptySeq extends QAstroArg {
      *
      * @param builder Used to build the results of a substitute
      */
-    public QEmptySeq(AstroBuilder builder) {
-        super(builder, null);
+    public QEmptySeq(AstroBuilder builder, SourceSpan optSpan) {
+        super(builder, optSpan);
     }
 
     /**
      * Uses 'QEmptySeqMaker(myBuilder)'
      */
     public Object[] getSpreadUncall() {
-        Object[] result = {QEmptySeqMaker, "run", myBuilder};
+        Object[] result = {QEmptySeqMaker, "run", myBuilder, myOptSpan};
         return result;
+    }
+
+    public AstroArg withOptSpan(SourceSpan optSpan) {
+        return new QEmptySeq(myBuilder, optSpan);
     }
 
     /**

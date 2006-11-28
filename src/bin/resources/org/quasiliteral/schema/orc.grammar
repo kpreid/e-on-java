@@ -1,0 +1,28 @@
+# Copyright 2006 Hewlett Packard, under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+# ? def makeSchema := <import:org.quasiliteral.schema.makeSchema>
+# ? def <schema> := <resource:org/quasiliteral/schema/>
+# ? makeSchema.parseGrammar(<schema:orc.grammar>.getTwine())
+
+# Directly based on the Orc 0.5 grammar as documented in the Orc user's manual.
+# We added hole to extend it into a quasi-grammar.
+
+orc   ::= expr=1*                                                -> orc;
+expr  ::= def=1* goal=2                                          -> expr;
+def   ::= "def" varID=1 ("(" varID=2**"," ")")? "=" expr         -> def;
+goal  ::= par=1 ("where" (varID=2 "in" par=3)++";")?             -> where;
+par   ::= seq=1**"|"                                             -> par;
+seq   ::= basic=1**(">" bang=2? varID=3? ">")                    -> pipe;
+bang  ::= "!";
+basic ::= useID=1 | .int.=1 | .String.=1 | call=1 | block=1 | hole=1;
+call  ::= useID=1 "(" expr=2**"," ")"                            -> call;
+block ::= "{" expr=1 "}";
+varID ::= <Ident>=1;
+useID ::= <Ident>=1;
+
+# The doubled dollar and at signs below actually represent a single occurrence.
+# However, in a grammar or schema definition, as with a quasi-context, they
+# must be doubled in order to be quoted.
+hole  ::= "$$" "{" .int.=1 "}"                                    -> dollarHole
+      |   "@@" "{" .int.=1 "}"                                    -> asHole;

@@ -5,24 +5,29 @@ pragma.syntax("0.8")
 # Copyright 2003 Hewlett Packard, Inc. under the terms of the MIT X license
 # found at http://www.opensource.org/licenses/mit-license.html ................
 
-def AtomicExpr    := <type:org.erights.e.elang.evm.AtomicExpr>
-def EExpr         := <type:org.erights.e.elang.evm.EExpr>
-def EMatcher      := <type:org.erights.e.elang.evm.EMatcher>
-def EMethod       := <type:org.erights.e.elang.evm.EMethod>
-def ENode         := <type:org.erights.e.elang.evm.ENode>
-def EScript       := <type:org.erights.e.elang.evm.EScript>
-def ListPattern   := <type:org.erights.e.elang.evm.ListPattern>
-def ObjectExpr    := <type:org.erights.e.elang.evm.ObjectExpr>
-def Pattern       := <type:org.erights.e.elang.evm.Pattern>
-def StaticContext := <type:org.erights.e.elang.scope.StaticContext>
-def Term          := <type:org.quasiliteral.term.Term>
+def AtomicExpr     := <type:org.erights.e.elang.evm.AtomicExpr>
+def EExpr          := <type:org.erights.e.elang.evm.EExpr>
+def EMatcher       := <type:org.erights.e.elang.evm.EMatcher>
+def EMethod        := <type:org.erights.e.elang.evm.EMethod>
+def ENode          := <type:org.erights.e.elang.evm.ENode>
+def EScript        := <type:org.erights.e.elang.evm.EScript>
+def GuardedPattern := <type:org.erights.e.elang.evm.GuardedPattern>
+def ListPattern    := <type:org.erights.e.elang.evm.ListPattern>
+def ObjectExpr     := <type:org.erights.e.elang.evm.ObjectExpr>
+def Pattern        := <type:org.erights.e.elang.evm.Pattern>
+def StaticContext  := <type:org.erights.e.elang.scope.StaticContext>
+def Term           := <type:org.quasiliteral.term.Term>
 
 /**
- * Convert from the ENode form of an E AST to the corresponding term-tree.
+ * Convert from the ENode form of a Kernel-E AST to the corresponding
+ * term-tree.
  * <p>
  * If the original AST has quasi-holes, this will convert these to hole
  * descriptions of the form expected by holePuncher. The termE__quasiParser
  * makes use of this fact.
+ * <p>
+ * The term-trees produced by this should agree with the description in
+ * kernel-e.schema, but they don't agree yet.
  *
  * @author Mark S. Miller
  * @see holePuncher
@@ -31,6 +36,25 @@ def Term          := <type:org.quasiliteral.term.Term>
 def makeConvertENode2Term() :any {
 
     def convert
+
+    def guardPatt {
+        to run(functor :Term,
+               noun :AtomicExpr,
+               optGuard :nullOk[EExpr]) :Term {
+            # XXX Deal with noun as quasi
+            def varName := noun.asNoun().getName()
+            def result := term`$functor($varName)`
+            return guardPatt(result, optGuard)
+        }
+        to run(result :Term, optGuard :nullOk[EExpr]) :Term {
+            if (null == optGuard) {
+                return result
+            } else {
+                return term`guardP($result,
+                                   ${convert(optGuard)})`
+            }
+        }
+    }
 
     def visitor {
 
@@ -96,12 +120,7 @@ def makeConvertENode2Term() :any {
 
         to visitLiteralExpr(optOriginal :nullOk[ENode],
                             data) :Term {
-            def litData := if (data =~ str :String) {
-                term`$data`
-            } else {
-                term`$data`
-            }
-            return term`quote($litData)`
+            return term`quote($data)`
         }
 
         to visitNounExpr(optOriginal :nullOk[ENode],
@@ -112,11 +131,13 @@ def makeConvertENode2Term() :any {
 
         to visitObjectExpr(optOriginal :nullOk[ENode],
                            docComment :String,
-                           qualifiedName :String,
+                           oName :GuardedPattern,
                            auditors :List[EExpr],
                            eScript :EScript) :Term {
+            require(null == oName.getOptGuardExpr(),
+                    fn{`Can't guard object definition variable: $oName`})
             return term`object($docComment,
-                               $qualifiedName,
+                               ${convert(oName)},
                                [${convert(auditors)}*],
                                ${convert(eScript)})`
         }
@@ -136,7 +157,9 @@ def makeConvertENode2Term() :any {
 
         to visitSlotExpr(optOriginal :nullOk[ENode],
                          noun :AtomicExpr) :Term {
-            return term`slot(${convert(noun)})`
+            # XXX Deal with noun as quasi
+            def varName := noun.asNoun().getName()
+            return term`slot($varName)`
         }
 
         to visitCatchExpr(optOriginal :nullOk[ENode],
@@ -172,39 +195,36 @@ def makeConvertENode2Term() :any {
         to visitFinalPattern(optOriginal :nullOk[ENode],
                              nounExpr :AtomicExpr,
                              optGuardExpr :nullOk[EExpr]) :Term {
-            return term`defFinal(${convert(nounExpr)},
-                                 ${convert(optGuardExpr)})`
+            return guardPatt(term`finalP`, nounExpr, optGuardExpr)
         }
 
         to visitVarPattern(optOriginal :nullOk[ENode],
                            nounExpr :AtomicExpr,
                            optGuardExpr :nullOk[EExpr]) :Term {
-            return term`defVar(${convert(nounExpr)},
-                               ${convert(optGuardExpr)})`
+            return guardPatt(term`varP`, nounExpr, optGuardExpr)
         }
 
         to visitSlotPattern(optOriginal :nullOk[ENode],
                             nounExpr :AtomicExpr,
                             optGuardExpr :nullOk[EExpr]) :Term {
-            return term`defSlot(${convert(nounExpr)},
-                                ${convert(optGuardExpr)})`
+            return guardPatt(term`slotP`, nounExpr, optGuardExpr)
         }
 
         to visitIgnorePattern(optOriginal :nullOk[ENode],
                               optGuardExpr :nullOk[EExpr]) :Term {
-            return term`ignore(${convert(optGuardExpr)})`
+            return guardPatt(term`ignoreP`, optGuardExpr)
         }
 
         to visitViaPattern(optOriginal :nullOk[ENode],
                            viaExpr :EExpr,
                            subPattern :Pattern) :Term {
-            return term`viaPatt(${convert(viaExpr)},
-                                ${convert(subPattern)})`
+            return term`viaP(${convert(viaExpr)},
+                             ${convert(subPattern)})`
         }
 
         to visitListPattern(optOriginal :nullOk[ENode],
                             subs :List[Pattern]) :Term {
-            return term`listPatt([${convert(subs)}*])`
+            return term`listP([${convert(subs)}*])`
         }
 
         to visitQuasiLiteralPatt(optOriginal :nullOk[ENode],
@@ -221,10 +241,13 @@ def makeConvertENode2Term() :any {
 
 
         to visitEScript(optOriginal :nullOk[ENode],
-                        optMethods :nullOk[EMethod[]],
+                        optMethods :nullOk[List[EMethod]],
                         matchers :List[EMatcher]) :Term {
             if (null == optMethods) {
-                return term`script([${convert(matchers)}*])`
+                require(1 == matchers.size(),
+                        "Plumbing must have exactly one matcher")
+                def [matcher] := matchers
+                return convert(matcher)
             } else {
                 return term`script([${convert(optMethods)}*],
                                    [${convert(matchers)}*])`
@@ -237,11 +260,18 @@ def makeConvertENode2Term() :any {
                         patterns :List[Pattern],
                         optResultGuard :nullOk[EExpr],
                         body :EExpr) :Term {
-            return term`method($docComment,
-                               $verb,
-                               [${convert(patterns)}*],
-                               ${convert(optResultGuard)},
-                               ${convert(body)})`
+            if (null == optResultGuard) {
+                return term`method($docComment,
+                                   $verb,
+                                   [${convert(patterns)}*],
+                                   ${convert(body)})`
+            } else {
+                return term`method($docComment,
+                                   $verb,
+                                   [${convert(patterns)}*],
+                                   ${convert(optResultGuard)},
+                                   ${convert(body)})`
+           }
         }
 
         to visitEMatcher(optOriginal :nullOk[ENode],
@@ -265,13 +295,12 @@ def makeConvertENode2Term() :any {
             match ==null          { return term`null` }
             match eNode :ENode    {
                 def result := eNode.welcome(visitor)
-                # XXX Should add eNode.getOptSpan() to the result
-                return result
+                return result.withOptSpan(eNode.getOptSpan())
             }
             match eNodes :List[ENode] {
                 var result := []
                 for eNode in eNodes {
-                    result with= (eNode.welcome(visitor))
+                    result with= (convert(eNode))
                 }
                 return result
             }

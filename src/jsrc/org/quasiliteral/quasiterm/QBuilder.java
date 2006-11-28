@@ -117,7 +117,10 @@ public class QBuilder extends BaseBuilder
      * functor-hole.
      */
     public Astro term(Astro functor, AstroArg args) {
-        return new QTerm(myBuilder, (QAstro)functor, (QAstroArg)args);
+        return new QTerm(myBuilder,
+                         (QAstro)functor,
+                         (QAstroArg)args,
+                         functor.getOptSpan());
     }
 
     /**
@@ -135,7 +138,7 @@ public class QBuilder extends BaseBuilder
      *
      */
     public AstroArg empty() {
-        return new QEmptySeq(myBuilder);
+        return new QEmptySeq(myBuilder, null);
     }
 
     /**

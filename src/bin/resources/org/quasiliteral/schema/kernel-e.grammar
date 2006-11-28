@@ -12,7 +12,7 @@ e ::=
   |  "def" p=1 ("exit" e=2)? ":=" e=3                           -> def
   |  "escape" p=1 "{" e=2 "}" ("catch" p=3 "{" e=4 "}")?        -> escape
   |  "{" e=1 "}"                                                -> hide
-  |  e=1 ";" e=2                                                -> seq
+  |  e=1 ";" e=2++";"                                           -> seq
   |  noun=1                                                     -> noun
   |  "&" noun=1                                                 -> slot
   |  "if" "(" e=1 ")" "{" e=2 "}" "else" "{" e=3 "}"            -> if
@@ -23,14 +23,14 @@ e ::=
   |  "meta" "." "getState" "(" ")"                              -> metaState;
 
 p ::=
-     oname=1 (":" e=2)?                                         -> guardedPatt
-  |  "[" e=1**"," "]"                                           -> listPatt
-  |  "via" "(" e=1 ")" p=2                                      -> via;
+     oname=1 (":" e=2)?                                         -> guardP
+  |  "[" e=1**"," "]"                                           -> listP
+  |  "via" "(" e=1 ")" p=2                                      -> viaP;
 oname ::=
-     noun=1                                                     -> defFinal
-  |  "var" noun=1                                               -> defVar
-  |  "&" noun=1                                                 -> defSlot
-  |  "_"                                                        -> ignore;
+     noun=1                                                     -> finalP
+  |  "var" noun=1                                               -> varP
+  |  "&" noun=1                                                 -> slotP
+  |  "_"                                                        -> ignoreP;
 
 script ::=
      matcher

@@ -30,7 +30,7 @@ import org.quasiliteral.astro.AstroTag;
  * @author Mark S. Miller
  * @author Based on Danfuzz Bornstein's TokenAST
  */
-public class AstroAST extends BaseAST implements Astro {
+public final class AstroAST extends BaseAST implements Astro {
 
     /**
      *
@@ -53,6 +53,11 @@ public class AstroAST extends BaseAST implements Astro {
      */
     public AstroAST(Token optToken) {
         initialize(optToken);
+    }
+
+    public AstroArg withOptSpan(SourceSpan optSpan) {
+        T.fail("XXX not yet implemented");
+        return null; //make compiler happy
     }
 
     /**

@@ -75,8 +75,7 @@ public class EMatchersNode implements VTableEntry, EStackItem {
     }
 
     /**
-     * @param optShortSelf
-     * @return
+     *
      */
     public boolean canHandleR(Object optShortSelf) {
         if (null == optShortSelf) {
@@ -93,8 +92,7 @@ public class EMatchersNode implements VTableEntry, EStackItem {
     }
 
     /**
-     * @param vTable
-     * @return
+     *
      */
     public VTableEntry forVTable(VTable vTable) {
         if (null == myOptScript) {
@@ -215,7 +213,7 @@ public class EMatchersNode implements VTableEntry, EStackItem {
     }
 
     /**
-     * @return
+     * 
      */
     public SourceSpan getOptSpan() {
         return myMatchers[0].getOptSpan();

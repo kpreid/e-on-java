@@ -46,34 +46,34 @@ def termE__quasiParser implements QuasiExprParser, QuasiPatternParser {
 # value: <termE__quasiParser>
 
 ? def x := termE`a + b`
-# value: term`CallExpr(NounExpr("a"),
-#                      "add",
-#                      [NounExpr("b")])`
+# value: term`call(noun("a"),
+#                  "add",
+#                  [noun("b")])`
 
 ? def y := termE`c * $x * d`
-# value: term`CallExpr(CallExpr(NounExpr("c"),
-#                               "multiply",
-#                               [CallExpr(NounExpr("a"),
-#                                         "add",
-#                                         [NounExpr("b")])]),
-#                      "multiply",
-#                      [NounExpr("d")])`
+# value: term`call(call(noun("c"),
+#                       "multiply",
+#                       [call(noun("a"),
+#                             "add",
+#                             [noun("b")])]),
+#                  "multiply",
+#                  [noun("d")])`
 
 ? def termE`@w * @z` := y
-# value: term`CallExpr(CallExpr(NounExpr("c"),
-#                               "multiply",
-#                               [CallExpr(NounExpr("a"),
-#                                         "add",
-#                                         [NounExpr("b")])]),
-#                      "multiply",
-#                      [NounExpr("d")])`
+# value: term`call(call(noun("c"),
+#                       "multiply",
+#                       [call(noun("a"),
+#                             "add",
+#                             [noun("b")])]),
+#                  "multiply",
+#                  [noun("d")])`
 
 ? w
-# value: term`CallExpr(NounExpr("c"),
-#                      "multiply",
-#                      [CallExpr(NounExpr("a"),
-#                                "add",
-#                                [NounExpr("b")])])`
+# value: term`call(noun("c"),
+#                  "multiply",
+#                  [call(noun("a"),
+#                        "add",
+#                        [noun("b")])])`
 
 ? z
-# value: term`NounExpr("d")`
+# value: term`noun("d")`

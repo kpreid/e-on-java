@@ -59,7 +59,7 @@ public class EScript extends ENode {
                    EMatcher[] matchers,
                    ScopeLayout optScopeLayout) {
         super(optSpan, optScopeLayout);
-        if (optMethods == null && matchers.length != 1) {
+        if (optMethods == null && 1 != matchers.length) {
             T.fail("The plumbingExpr must have exactly one matcher");
         }
         myOptMethods = optMethods;
@@ -139,17 +139,6 @@ public class EScript extends ENode {
                   optEjector,
                   bindings);
         matchBind(myMatchers, args, other.myMatchers, optEjector, bindings);
-    }
-
-    /**
-     * @deprecated Use {@link #getOptMethods()}
-     */
-    public ConstList optMethods() {
-        if (null == myOptMethods) {
-            return null;
-        } else {
-            return ConstList.fromArray(myOptMethods);
-        }
     }
 
     public ConstList getOptMethods() {

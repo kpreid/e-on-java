@@ -392,7 +392,7 @@ public class ObjectExpr extends EExpr {
         out.print("def ");
         myOName.subPrintOn(out, PR_ORDER);
         int numAuditors = myAuditorExprs.length;
-        if (numAuditors >= 1) {
+        if (1 <= numAuditors) {
             out.print(" implements ");
             myAuditorExprs[0].subPrintOn(out, PR_ORDER);
             for (int i = 1; i < numAuditors; i++) {
@@ -410,7 +410,7 @@ public class ObjectExpr extends EExpr {
         if (null == myOptEMTableCache) {
             EMethodTable eMTableCache = new EMethodTable(this);
             EMethod[] optMeths = myEScript.myOptMethods;
-            if (optMeths != null) {
+            if (null != optMeths) {
                 SugarMethodNode.defineMembers(eMTableCache,
                                               MirandaMethods.class);
                 for (int i = 0, max = optMeths.length; i < max; i++) {
@@ -421,7 +421,7 @@ public class ObjectExpr extends EExpr {
             }
 
             EMatcher[] matchers = myEScript.myMatchers;
-            if (matchers.length >= 1) {
+            if (1 <= matchers.length) {
                 EMatchersNode matchersNode =
                   new EMatchersNode(getFQName(), matchers);
                 eMTableCache.setOptOtherwise(matchersNode);

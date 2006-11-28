@@ -24,4 +24,10 @@ public interface AstroArg {
      * this node?
      */
     SourceSpan getOptSpan();
+
+    /**
+     * Return one just like this one, but with optSpan as the {@link
+     * #getOptSpan()}.
+     */
+    AstroArg withOptSpan(SourceSpan optSpan);
 }

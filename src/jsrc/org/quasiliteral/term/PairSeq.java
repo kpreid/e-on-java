@@ -8,6 +8,7 @@ import org.erights.e.elib.base.SourceSpan;
 import org.erights.e.elib.oldeio.TextWriter;
 import org.erights.e.elib.tables.ConstList;
 import org.erights.e.elib.tables.FlexList;
+import org.quasiliteral.astro.AstroArg;
 
 import java.io.IOException;
 
@@ -18,7 +19,7 @@ import java.io.IOException;
  *
  * @author Mark S. Miller
  */
-public class PairSeq extends Termish {
+public final class PairSeq extends Termish {
 
     private final Termish myLeft;
 
@@ -33,6 +34,11 @@ public class PairSeq extends Termish {
         myRight = right;
         T.require(!(myLeft instanceof EmptySeq), "May not be empty");
         T.require(!(myRight instanceof EmptySeq), "May not be empty");
+    }
+
+    public AstroArg withOptSpan(SourceSpan optSpan) {
+        T.fail("XXX not yet implemented");
+        return null; //make compiler happy
     }
 
     /**

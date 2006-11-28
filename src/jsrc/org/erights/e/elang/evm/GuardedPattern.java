@@ -45,7 +45,7 @@ public abstract class GuardedPattern extends Pattern {
     }
 
     /**
-     * Returns the expression to the right of the colon
+     * Returns the expression, if any, to the right of the colon
      */
     public EExpr getOptGuardExpr() {
         return myOptGuardExpr;

@@ -10,6 +10,7 @@ import org.erights.e.elib.tables.ConstList;
 import org.erights.e.elib.tables.Twine;
 import org.erights.e.meta.java.math.EInt;
 import org.quasiliteral.astro.Astro;
+import org.quasiliteral.astro.AstroArg;
 import org.quasiliteral.astro.AstroBuilder;
 import org.quasiliteral.astro.AstroSchema;
 import org.quasiliteral.astro.AstroTag;
@@ -26,7 +27,7 @@ import org.quasiliteral.astro.AstroTag;
  * @author Based on ValueExtentToken by Danfuzz Bornstein
  * @noinspection CloneableClassInSecureContext
  */
-public class AstroToken extends Token implements Astro {
+public final class AstroToken extends Token implements Astro {
 
     /**
      *
@@ -103,6 +104,10 @@ public class AstroToken extends Token implements Astro {
         myOptTag = tag;
         myOptData = optData;
         myOptSpan = optSpan;
+    }
+
+    public AstroArg withOptSpan(SourceSpan optSpan) {
+        return new AstroToken(myOptSchema, myOptTag, myOptData, optSpan);
     }
 
     /**

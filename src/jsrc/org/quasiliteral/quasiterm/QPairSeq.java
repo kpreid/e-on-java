@@ -4,6 +4,7 @@ package org.quasiliteral.quasiterm;
 // found at http://www.opensource.org/licenses/mit-license.html ...............
 
 import org.erights.e.develop.assertion.T;
+import org.erights.e.elib.base.SourceSpan;
 import org.erights.e.elib.oldeio.TextWriter;
 import org.erights.e.elib.prim.StaticMaker;
 import org.erights.e.elib.tables.ConstList;
@@ -20,7 +21,7 @@ import java.io.IOException;
  *
  * @author Mark S. Miller
  */
-public class QPairSeq extends QAstroArg {
+public final class QPairSeq extends QAstroArg {
 
     /**
      *
@@ -56,8 +57,11 @@ public class QPairSeq extends QAstroArg {
      * @param left    Do these first
      * @param right   Then do these
      */
-    private QPairSeq(AstroBuilder builder, QAstroArg left, QAstroArg right) {
-        super(builder, null);
+    private QPairSeq(AstroBuilder builder,
+                     QAstroArg left,
+                     QAstroArg right,
+                     SourceSpan optSpan) {
+        super(builder, optSpan);
         myLeft = left;
         myRight = right;
     }
@@ -73,7 +77,7 @@ public class QPairSeq extends QAstroArg {
         } else if (right instanceof QEmptySeq) {
             return left;
         } else {
-            return new QPairSeq(builder, left, right);
+            return new QPairSeq(builder, left, right, null);
         }
     }
 
@@ -81,8 +85,13 @@ public class QPairSeq extends QAstroArg {
      * Uses 'QPairSeqMaker(myBuilder, myLeft, myRight)'
      */
     public Object[] getSpreadUncall() {
-        Object[] result = {QPairSeqMaker, "run", myBuilder, myLeft, myRight};
+        Object[] result =
+          {QPairSeqMaker, "run", myBuilder, myLeft, myRight, myOptSpan};
         return result;
+    }
+
+    public AstroArg withOptSpan(SourceSpan optSpan) {
+        return new QPairSeq(myBuilder, myLeft, myRight, optSpan);
     }
 
     /**

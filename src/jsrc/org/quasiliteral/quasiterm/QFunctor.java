@@ -30,7 +30,7 @@ import java.io.IOException;
  *
  * @author Mark S. Miller
  */
-public class QFunctor extends QAstro {
+public final class QFunctor extends QAstro {
 
     static private final long serialVersionUID = -4841426503764679037L;
 
@@ -86,6 +86,10 @@ public class QFunctor extends QAstro {
         Object[] result =
           {QFunctorMaker, "run", myBuilder, myTag, myOptData, myOptSpan};
         return result;
+    }
+
+    public AstroArg withOptSpan(SourceSpan optSpan) {
+        return new QFunctor(myBuilder, myTag, myOptData, optSpan);
     }
 
     /**

@@ -7,6 +7,8 @@ import org.erights.e.elib.base.SourceSpan;
 import org.erights.e.elib.oldeio.TextWriter;
 import org.erights.e.elib.tables.ConstList;
 import org.erights.e.elib.tables.FlexList;
+import org.erights.e.develop.assertion.T;
+import org.quasiliteral.astro.AstroArg;
 
 import java.io.IOException;
 
@@ -17,7 +19,7 @@ import java.io.IOException;
  *
  * @author Mark S. Miller
  */
-public class EmptySeq extends Termish {
+public final class EmptySeq extends Termish {
 
     /**
      *
@@ -28,6 +30,11 @@ public class EmptySeq extends Termish {
      *
      */
     private EmptySeq() {
+    }
+
+    public AstroArg withOptSpan(SourceSpan optSpan) {
+        T.fail("XXX not yet implemented");
+        return THE_ONE; //make compiler happy
     }
 
     /**

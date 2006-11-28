@@ -56,14 +56,17 @@ public final class Term extends Termish
 
     /**
      * Initialized lazily to avoid a circularity.
+     * @noinspection StaticNonFinalField
      */
     static private StaticMaker OptTermMaker = null;
 
-    /** */
+    /**
+     * @noinspection StaticNonFinalField */
     static private ConstSet OptTermDataGuards = null;
 
     /**
      * Initialized lazily to avoid a circularity.
+     * @noinspection StaticNonFinalField
      */
     static private ListGuard OptListOfTermsGuard = null;
 
@@ -84,6 +87,7 @@ public final class Term extends Termish
               ClassDesc.make(Float.TYPE),
               ClassDesc.make(Double.TYPE),
               ClassDesc.make(Number.class)};
+            //noinspection NonThreadSafeLazyInitialization
             OptTermDataGuards = ConstList.fromArray(termDataGuards).asSet();
         }
         return OptTermDataGuards.contains(guard);
@@ -92,6 +96,7 @@ public final class Term extends Termish
     static private ListGuard ListOfTermsGuard() {
         if (null == OptListOfTermsGuard) {
             ClassDesc TermGuard = ClassDesc.make(Term.class);
+            //noinspection NonThreadSafeLazyInitialization
             OptListOfTermsGuard = ListGuard.THE_BASE.get(TermGuard);
         }
         return OptListOfTermsGuard;
@@ -173,11 +178,16 @@ public final class Term extends Termish
      */
     public Object[] getSpreadUncall() {
         if (null == OptTermMaker) {
+            //noinspection NonThreadSafeLazyInitialization
             OptTermMaker = StaticMaker.make(Term.class);
         }
         Object[] result =
           {OptTermMaker, "run", myTag, myOptData, myOptSpan, myArgs};
         return result;
+    }
+
+    public AstroArg withOptSpan(SourceSpan optSpan) {
+        return new Term(myTag, myOptData, optSpan, myArgs);
     }
 
     public Astro build(AstroBuilder builder) {

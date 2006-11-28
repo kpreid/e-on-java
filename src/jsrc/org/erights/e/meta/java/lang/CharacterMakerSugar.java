@@ -57,7 +57,7 @@ public final class CharacterMakerSugar {
         for (int i = 0; i < CHAR_CAT_PAIRS.length; i++) {
             Object[] pair = CHAR_CAT_PAIRS[i];
             if (null != pair) {
-                if (pair.length != 2) {
+                if (2 != pair.length) {
                     throw new IllegalArgumentException("must be a pair");
                 }
                 result.put(pair[0], pair[1], true);
