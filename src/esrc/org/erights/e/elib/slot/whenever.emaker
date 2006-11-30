@@ -36,7 +36,7 @@ def EverReactor := <type:org.erights.e.elib.slot.EverReactor>
  * <p>
  * RACE CONDITION DANGER!  Although a lamportSlot used by itself has
  * the kind of strong synchronous guarantees normally associated with
- * Slots (a getValue() gets the most recently setValue()), when they are
+ * Slots (a get/0 gets the most recently put/1 value), when they are
  * hooked together in Lamport Cells, they, and the Lamport Cell as a
  * whole, have much weaker concurrency guarantees. Multiple Lamport
  * Cells have no joint simultenaity guarantees, so a formula that
@@ -277,7 +277,7 @@ def whenever {
              * <p>
              * Only a watched Slot never spoils.
              */
-            to getValue() :any {
+            to get() :any {
                 localInterest()
                 value
             }
@@ -341,45 +341,45 @@ def whenever {
 
 ? def m := whenever.dynamic([l], fn{
 >     var out := []
->     for x in l.getValue() {
->         out with= x.getValue()
+>     for x in l.get() {
+>         out with= x.get()
 >     }
->     [out, l.getValue()]
+>     [out, l.get()]
 > })
 # value: <_>
 
-? m.getValue()
+? m.get()
 # value: [1]
 
-? a.setValue(11)
-? m.getValue()
+? a.put(11)
+? m.get()
 # value: [1]
 
-? m.getValue()
+? m.get()
 # value: [11]
 
-? l.setValue([a, b, c])
-? m.getValue()
+? l.put([a, b, c])
+? m.get()
 # value: [11, 2, 3]
 
-? b.setValue(22)
-? m.getValue()
+? b.put(22)
+? m.get()
 # value: [11, 2, 3]
 
-? m.getValue()
+? m.get()
 # value: [11, 22, 3]
 
-? a.setValue(111)
-? l.setValue([])
-? l.setValue([a, c])
-? m.getValue()
+? a.put(111)
+? l.put([])
+? l.put([a, c])
+? m.get()
 # value: []
 
-? m.getValue()
+? m.get()
 # value: [111, 3]
 
-? a.setValue(4)
-? b.setValue(5)
-? c.setValue(6)
-? m.getValue()
+? a.put(4)
+? b.put(5)
+? c.put(6)
+? m.get()
 # value: [4, 6]

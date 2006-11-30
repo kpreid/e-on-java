@@ -4,7 +4,6 @@ package org.erights.e.elib.slot;
 // found at http://www.opensource.org/licenses/mit-license.html ...............
 
 import org.erights.e.elib.oldeio.TextWriter;
-import org.erights.e.elib.prim.E;
 import org.erights.e.elib.prim.StaticMaker;
 import org.erights.e.elib.serial.PassByProxy;
 import org.erights.e.elib.util.OneArgFunc;
@@ -17,7 +16,7 @@ import java.io.IOException;
  *
  * @author Mark S. Miller
  */
-public class SettableSlot implements Slot, PassByProxy {
+public class SettableSlot extends BaseSlot implements PassByProxy {
 
     static public final StaticMaker SettableSlotMaker =
       StaticMaker.make(SettableSlot.class);
@@ -38,7 +37,7 @@ public class SettableSlot implements Slot, PassByProxy {
     /**
      * The most recently stored value.
      */
-    public Object getValue() {
+    public Object get() {
         return myValue;
     }
 
@@ -46,8 +45,8 @@ public class SettableSlot implements Slot, PassByProxy {
      * Store the coercion of the specimen. Since no ejector can be provided,
      * coercion failure is always thrown.
      */
-    public void setValue(Object specimen) {
-        myValue = myGuard.coerce(specimen, null);
+    public void put(Object newValue) {
+        myValue = myGuard.coerce(newValue, null);
     }
 
     /**
@@ -57,10 +56,6 @@ public class SettableSlot implements Slot, PassByProxy {
         return false;
     }
 
-    public Slot readOnly() {
-        return new ReadOnlySlot(this);
-    }
-
     /**
      *
      */
@@ -68,12 +63,5 @@ public class SettableSlot implements Slot, PassByProxy {
         out.print("<var ");
         out.quote(myValue);
         out.print(" :", myGuard, ">");
-    }
-
-    /**
-     *
-     */
-    public String toString() {
-        return E.toString(this);
     }
 }

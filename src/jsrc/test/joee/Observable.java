@@ -24,11 +24,11 @@ public class Observable {
         myListeners.push(listener);
     }
 
-    public Object getValue() {
+    public Object get() {
         return myValue;
     }
 
-    public void setValue(Object newValue) {
+    public void put(Object newValue) {
         for (int i = 0, len = myListeners.size(); i < len; i++) {
             Object listener = myListeners.get(i);
             E.sendOnly(listener, "valueChanged", newValue);

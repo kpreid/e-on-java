@@ -96,7 +96,7 @@ def makeMetaEval(AuditionStamp) :any {
             to visitNounExpr(_,
                              varName :String) :EvalResult {
                 def slot := getSlot(ctx, varName)
-                return [slot.getValue(), ctx]
+                return [slot.get(), ctx]
             }
 
             to visitAssignExpr(_,
@@ -104,7 +104,7 @@ def makeMetaEval(AuditionStamp) :any {
                                rValue :EExpr) :EvalResult {
                 def [v1, _] := def result := eval(rValue, ctx)
                 def slot := getSlot(ctx, noun.getName())
-                slot.setValue(v1)
+                slot.put(v1)
                 return result
             }
 

@@ -80,10 +80,10 @@ def piggyTarget := <widgets:makeLabel>(piggyShell, SWT.getSHADOW_OUT())
 piggyTarget.setImage(piggyImage)
 var piggySet := false
 def piggySlot {
-    to getValue() :any {
+    to get() :any {
         return accountMgr
     }
-    to setValue(newAcctMgr) :void {
+    to put(newAcctMgr) :void {
         if (!piggySet) {
             bind accountMgr := newAcctMgr
             piggySet := true
@@ -154,7 +154,7 @@ def offerField    := <widgets:makeText>(piggyShell, SWT.getSINGLE() | RIGHT)
 def offerCatField := <widgets:makeText>(piggyShell, SWT.getSINGLE())
 offerCatField.setText("petty cash")
 def offerSlot {
-    to getValue() :any {
+    to get() :any {
         def amount := __makeInt(offerField.getText().trim())
         def category := offerCatField.getText().trim()
         offerField.setText("")
@@ -177,7 +177,7 @@ depositLabel.setToolTipText("The amount of the last attempted deposit.")
 def depositCatField := <widgets:makeText>(piggyShell, SWT.getSINGLE())
 depositCatField.setText("petty cash")
 def depositSlot {
-    to setValue(payment) :void {
+    to put(payment) :void {
         deposited := "???"
         def category := depositCatField.getText().trim()
         when (payment) -> d1(p) :void {

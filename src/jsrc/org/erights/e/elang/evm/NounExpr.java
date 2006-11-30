@@ -101,7 +101,7 @@ public abstract class NounExpr extends AtomicExpr {
      * Default implementation of noun eval in terms of its slot.
      */
     protected Object subEval(EvalContext ctx, boolean forValue) {
-        return getSlot(ctx).getValue();
+        return getSlot(ctx).get();
     }
 
     /**
@@ -161,7 +161,7 @@ public abstract class NounExpr extends AtomicExpr {
      * raises the correct exception if the slot is a final slot.
      */
     public void assign(EvalContext ctx, Object value) {
-        getSlot(ctx).setValue(value);
+        getSlot(ctx).put(value);
     }
 
     /**

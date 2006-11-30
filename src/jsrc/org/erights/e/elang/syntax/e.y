@@ -454,7 +454,7 @@ prefix:
  |      '~' postfix             { $$ = b.call($2, $1,"complement", b.list());}
  |      '&' postfix             { $$ = b.slotExpr($1, $2); }
  |      '*' postfix             { b.pocket($1,"unary-star");
-                                  $$ = b.call($2, $1,"getValue", b.list()); }
+                                  $$ = b.call($2, $1,"get", b.list()); }
  |      '-' prim                { $$ = b.call($2, $1,"negate", b.list()); }
  ;
 

@@ -70,10 +70,10 @@ def ssTarget := <widgets:makeLabel>(shell, SWT.getSHADOW_OUT())
 ssTarget.setImage(ssImage)
 var ssSet := false
 def ssSlot {
-    to getValue() :any {
+    to get() :any {
         return sliverServer
     }
-    to setValue(newSS) :void {
+    to put(newSS) :void {
         if (!ssSet) {
             bind sliverServer := newSS
             ssSet := true
@@ -97,7 +97,7 @@ depositTarget.setToolTipText(
     "Drop or right-click-paste to deposit a payment")
 
 def depositSlot {
-    to setValue(payment) :void {
+    to put(payment) :void {
         when (payment) -> d1(p) :void {
             def sliverVow := sliverServer <- buyNewSliver(p) <- getRcvr()
             when (sliverVow) -> d2(s) :void {

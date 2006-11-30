@@ -11,7 +11,7 @@ def assaultStatusString
 if (meta.getState() =~ metaState &&
       metaState.fetch("&unsafe__uriGetter", fn{}) =~ slot :notNull) {
 
-    bind <assault> := slot.getValue()
+    bind <assault> := slot.get()
     bind assaultStatusString := "<b>Winix standard privileges acquired!</b><p><b> Preparing for full exploitation</b>"
 } else {
     bind <assault> := <import>

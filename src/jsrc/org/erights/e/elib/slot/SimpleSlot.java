@@ -20,7 +20,6 @@ Contributor(s): ______________________________________.
 */
 
 import org.erights.e.elib.oldeio.TextWriter;
-import org.erights.e.elib.prim.E;
 import org.erights.e.elib.prim.StaticMaker;
 import org.erights.e.elib.serial.PassByProxy;
 
@@ -32,7 +31,7 @@ import java.io.IOException;
  *
  * @author Mark S. Miller
  */
-public class SimpleSlot implements Slot, PassByProxy {
+public class SimpleSlot extends BaseSlot implements PassByProxy {
 
     static public final StaticMaker SimpleSlotMaker =
       StaticMaker.make(SimpleSlot.class);
@@ -49,15 +48,15 @@ public class SimpleSlot implements Slot, PassByProxy {
     /**
      * The value last set
      */
-    public Object getValue() {
+    public Object get() {
         return myValue;
     }
 
     /**
      * Sets the value to the specimen.
      */
-    public void setValue(Object specimen) {
-        myValue = specimen;
+    public void put(Object newValue) {
+        myValue = newValue;
     }
 
     /**
@@ -67,10 +66,6 @@ public class SimpleSlot implements Slot, PassByProxy {
         return false;
     }
 
-    public Slot readOnly() {
-        return new ReadOnlySlot(this);
-    }
-
     /**
      *
      */
@@ -78,12 +73,5 @@ public class SimpleSlot implements Slot, PassByProxy {
         out.print("<var ");
         out.quote(myValue);
         out.print(">");
-    }
-
-    /**
-     *
-     */
-    public String toString() {
-        return E.toString(this);
     }
 }

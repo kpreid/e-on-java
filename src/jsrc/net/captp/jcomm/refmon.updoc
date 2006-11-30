@@ -57,7 +57,7 @@
     ? def adder { to add(x,y):any { return x+y }}
     # value: <adder>
 
-    ? interp.waitAtTop(farSlot <- setValue(adder))
+    ? interp.waitAtTop(farSlot <- put(adder))
 
 ?? in vat AliceVat
 

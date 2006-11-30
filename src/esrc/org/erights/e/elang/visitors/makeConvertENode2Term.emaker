@@ -249,8 +249,8 @@ def makeConvertENode2Term() :any {
                 def [matcher] := matchers
                 return convert(matcher)
             } else {
-                return term`script([${convert(optMethods)}*],
-                                   [${convert(matchers)}*])`
+                return term`dispatch([${convert(optMethods)}*],
+                                     [${convert(matchers)}*])`
             }
         }
 

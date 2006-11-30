@@ -30,6 +30,8 @@ import org.erights.e.elib.ref.Ref;
 import org.erights.e.elib.ref.Resolver;
 import org.erights.e.elib.serial.Loader;
 import org.erights.e.elib.slot.Slot;
+import org.erights.e.elib.slot.BaseSlot;
+import org.erights.e.elib.slot.FinalSlot;
 import org.erights.e.elib.tables.Twine;
 
 import java.io.IOException;
@@ -49,7 +51,7 @@ import java.io.IOException;
  *
  * @author Mark S. Miller
  */
-public class LazyEvalSlot implements Slot {
+public class LazyEvalSlot extends BaseSlot {
 
     private final Object myLock;
 
@@ -72,9 +74,9 @@ public class LazyEvalSlot implements Slot {
      * @param scope  The scope in which to evaluate the source text. It's
      *               declared as an Object rather than Scope so that it can be
      *               a promise for a Scope. This promise must become fulfilled
-     *               before the first getValue() happens.
+     *               before the first get() happens.
      * @param source The source text to be evaluated in the promised scope at
-     *               the time of the first getValue().
+     *               the time of the first get().
      */
     LazyEvalSlot(Object scope, Twine source) {
         myLock = new Object();
@@ -91,7 +93,7 @@ public class LazyEvalSlot implements Slot {
      * DeepPassByCopy, this has security implications, so be careful how you
      * use this class!
      */
-    public Object getValue() {
+    public Object get() {
         Object optScope;
         Twine optSource;
         Object optValue;
@@ -131,13 +133,13 @@ public class LazyEvalSlot implements Slot {
     /**
      * Complains that the variable is immutable
      */
-    public void setValue(Object newValue) {
+    public void put(Object newValue) {
         T.fail("A lazy Slot may not be changed");
     }
 
     /**
      * Returns whether its already been forced, in which case it acts just like
-     * a {@link org.erights.e.elib.slot.FinalSlot FinalSlot}
+     * a {@link FinalSlot}.
      */
     public boolean isFinal() {
         return null == myOptSource;
@@ -145,8 +147,6 @@ public class LazyEvalSlot implements Slot {
 
     /**
      * A LazyEvalSlot is read-only, and so returns itself.
-     *
-     * @return
      */
     public Slot readOnly() {
         return this;
@@ -163,12 +163,5 @@ public class LazyEvalSlot implements Slot {
         } else {
             out.print("<lazy eval slot>");
         }
-    }
-
-    /**
-     * @return
-     */
-    public String toString() {
-        return E.toString(this);
     }
 }

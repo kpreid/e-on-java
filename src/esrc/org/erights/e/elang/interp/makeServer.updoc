@@ -29,7 +29,7 @@
 ? def farPrintlnSlot := env["&println"]
 # value: <Far ref>
 
-? def farPrintln := farPrintlnSlot <- getValue()
+? def farPrintln := farPrintlnSlot <- get()
 # value: <Remote Promise>
 
 ? interp.waitAtTop(farPrintln)

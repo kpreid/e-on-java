@@ -1,4 +1,11 @@
-[[[][.[]..][.[.][*.*.]][..[.][..].]][[[[]..........][...]][[[.]]][[[]...........[......].][...][[[...]][][...][.....][..][.......]][.[]......][[.....[[[]]].]][....][.....]]][[[[........]][[....]]]][[[[[............][..........][..][..........][............][.........][[..]][..][....]][[..][.][
+[[[][.[]..][.[.][*.*.]][..[.][..].]][[[[]..........][
+at <file:c:/Documents and Settings/millerm1/e/src/esrc/com/hp/orc/makeOrcCompiler.emaker#:span::1:0::1:0>
+# warning: syntax error: 
+                  match term`call(@leftT,[@argTs*])` {
+                      ^
+  @ <file:/C:/Documents%20and%20Settings/millerm1/e/src/esrc/com/hp/orc/makeOrcCompiler.emaker#:span::21:20::21:20> from: <file:c:/Documents and Settings/millerm1/e/src/esrc/com/hp/orc/makeOrcCompiler.emaker#:span::1:0::1:0>
+
+...]][[[.]]][[[]...........[......].][...][[[...]][][...][.....][..][.......]][.[]......][[.....[[[]]].]][....][.....]]][[[[........]][[....]]]][[[.]]][[[[[............][..........][..][..........][............][.........][[..]][..][....]][[..][.][
 at <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/sealing/makeDFBrand.emaker#:span::1:0::1:0>
 # warning: problem: <AuditFailedException: object expression e`def makeDFBrand implements DeepFrozen {
              
@@ -63,7 +70,7 @@ at <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/sealin
                                              require.run(__equalizer.sameEver(key, k), def _ {
                                                  
                                                  method run() {
-                                                     simple__quasiParser.valueMaker("Can't unseal - wrong key").substitute(__makeList.run())
+                                                     simple__quasiParser.valueMaker("Can\'t unseal - wrong key").substitute(__makeList.run())
                                                  }
                                              })
                                              __return.run(content)
@@ -184,13 +191,13 @@ at <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/sealin
 ..][..........][.....][.[....].]][[....]][[
 # warning: duplicate header from: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/extern/persist/initTimeMachine.emaker#:span::25:19::25:37>
 
-.....]][........][.[.][.....]][[......][.......][......][..][...][.][....][.][.......]][[...][.......]]][[...]]][[.][..][..]]][.[....]...........[[...........][..][...][...][...][...]].............................
+.....]][........][.[.][.....]][[......][.......][......][..][...][.][....][.][.......]][[...][.......]]][[...]]][[.][..][..]]][.[....]...........[[...........][..][...][...][...][...]]..............................
 # warning: duplicate header from: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/srccheck.e#:span::100:18::100:36>
 
 
 # warning: duplicate version from: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/srccheck.e#:span::45:48::45:60>
 
-...[..[....]......[.....]]..[.*
+...[..[....].......[.....]]..[.*
 at <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html#:span::1:0::1:0>
 # warning: syntax error: 
     + 3 + 4

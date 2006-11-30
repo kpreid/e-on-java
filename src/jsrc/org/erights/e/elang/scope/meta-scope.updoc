@@ -68,7 +68,7 @@
     #         "&any" => <& any>, \
     #         "&__return" => <& <__return: disabled Ejector>>]
 
-    ? scp["&println"].getValue()
+    ? scp["&println"].get()
     # value: <println>
 
     ?

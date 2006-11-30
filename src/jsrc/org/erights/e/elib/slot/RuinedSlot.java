@@ -5,17 +5,16 @@ package org.erights.e.elib.slot;
 
 import org.erights.e.develop.exception.ExceptionMgr;
 import org.erights.e.elib.oldeio.TextWriter;
-import org.erights.e.elib.prim.E;
 
 import java.io.IOException;
 
 /**
- * A ruined slot responds to both getValue() and setValue by throwing the
+ * A ruined slot responds to both get/0 and put/1 by throwing the
  * problem that explains why it's ruined.
  *
  * @author Mark S. Miller
  */
-public class RuinedSlot implements Slot {
+public class RuinedSlot extends BaseSlot {
 
     private final Throwable myProblem;
 
@@ -29,14 +28,14 @@ public class RuinedSlot implements Slot {
     /**
      *
      */
-    public Object getValue() {
+    public Object get() {
         throw ExceptionMgr.asSafe(myProblem);
     }
 
     /**
      *
      */
-    public void setValue(Object newValue) {
+    public void put(Object newValue) {
         throw ExceptionMgr.asSafe(myProblem);
     }
 
@@ -49,8 +48,6 @@ public class RuinedSlot implements Slot {
 
     /**
      * A RuinedSlot is read-only, and so returns itself.
-     *
-     * @return
      */
     public Slot readOnly() {
         return this;
@@ -62,12 +59,5 @@ public class RuinedSlot implements Slot {
     public void __printOn(TextWriter out) throws IOException {
         out.print("<& ruined by ", myProblem, ">");
 
-    }
-
-    /**
-     * @return
-     */
-    public String toString() {
-        return E.toString(this);
     }
 }

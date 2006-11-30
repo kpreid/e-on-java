@@ -56,8 +56,8 @@ import org.erights.e.elib.tables.ConstMap;
  * some special cases, the Deslotifying compilation phase transforms, for
  * example, the mutable variable "foo" into corresponding final variable
  * "foo__Slot", bound to an explicit Slot object holding the value of the "foo"
- * variable. Use of "foo" as a rValue then becomes "foo__Slot.getValue()" and
- * assignment becomes "foo__Slot.setValue(newValue)". Except for outer (ie,
+ * variable. Use of "foo" as a rValue then becomes "foo__Slot.get()" and
+ * assignment becomes "foo__Slot.put(newValue)". Except for outer (ie,
  * top-level) mutable scopes (used in the interactive read-eval-print loop,
  * "rune"), all non-final variables and assignment statements could have been
  * transformed away this way. (We chose not to in general in order to better
@@ -85,9 +85,9 @@ import org.erights.e.elib.tables.ConstMap;
  * <p/>
  *     def x__Slot := settable.makeSlot(3)
  *     def y := 7
- *     ... x__Slot ... (x__Slot.setValue(4)) ... y ...
+ *     ... x__Slot ... (x__Slot.put(4)) ... y ...
  *     def [pow, pow__Resolver] := Ref.promise()
- *     ... visualizingEvaluator.eval(e`x__Slot.getValue() ** y =~ pow`,
+ *     ... visualizingEvaluator.eval(e`x__Slot.get() ** y =~ pow`,
  *                                   ["x__Slot" => x__Slot, "y" => y],
  *                                   true,
  *                                   ["pow" => pow_Resolver]) ...

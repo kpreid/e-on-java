@@ -54,7 +54,7 @@ def makeSliverServerPairAuthor(traceRcvr,
         }
 
         def getFarPower(env, power :String) :rcvr {
-            return env <- get(`&$power`) <- getValue()
+            return env <- get(`&$power`) <- get()
         }
 
         /**

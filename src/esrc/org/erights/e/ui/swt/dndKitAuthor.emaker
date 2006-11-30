@@ -34,7 +34,7 @@ def dndKitAuthor(<dnd>,
     def dndKit {
         to makeDragSource(widget, slot) :any {
             def getURI() :String {
-                def sr := makeSturdyRef.temp(slot.getValue())
+                def sr := makeSturdyRef.temp(slot.get())
                 introducer.sturdyToURI(sr)
             }
 
@@ -89,7 +89,7 @@ def dndKitAuthor(<dnd>,
             }
             def setFromURI(uri :String) :void {
                 def sr := introducer.sturdyFromURI(uri)
-                slot.setValue(sr.getRcvr())
+                slot.put(sr.getRcvr())
             }
             def setFromFilenames(filenames :List[String]) :void {
                 var values := []
@@ -103,9 +103,9 @@ def dndKitAuthor(<dnd>,
                     values with= value
                 }
                 if (values.size() == 1) {
-                    slot.setValue(values[0])
+                    slot.put(values[0])
                 } else {
-                    slot.setValue(values)
+                    slot.put(values)
                 }
             }
             def target := <dnd:makeDropTarget>(widget, operations)

@@ -452,7 +452,7 @@ def makeIOUIssuerAuthor(timer) :any {
             to getTableTreeData() :Row {
                 def rows := [].diverge()
                 for acctMgr => [name, time] in acctMgrs {
-                    def assets := acctMgr.getAssetsReporter().getValue()
+                    def assets := acctMgr.getAssetsReporter().get()
                     rows.push([["name" => name,
                                 "assets" => formatMoney(assets),
                                 "time" => formatTime(time)],

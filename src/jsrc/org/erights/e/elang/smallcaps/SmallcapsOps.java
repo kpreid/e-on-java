@@ -226,7 +226,7 @@ public interface SmallcapsOps {
      * [],[] =&gt; (OP_NOUN+addrMode)(index) =&gt; [value],[]
      * <p/>
      * Pushes the value of the variable. The value of the variable is what
-     * would be obtained by calling getValue() on the variable's slot.
+     * would be obtained by calling get() on the variable's slot.
      */
     final int OP_NOUN = 40;
 
@@ -241,7 +241,7 @@ public interface SmallcapsOps {
      * [rValue],[] =&gt; (OP_ASSIGN+addrMode)(index) =&gt; [],[]
      * <p/>
      * Sets the value of the variable. To set the variable is to cause those
-     * effects that would be caused by calling setValue(rValue) on the
+     * effects that would be caused by calling put(rValue) on the
      * variable's slot.
      */
     final int OP_ASSIGN = 56;

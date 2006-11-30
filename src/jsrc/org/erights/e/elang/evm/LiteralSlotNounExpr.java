@@ -80,7 +80,7 @@ public class LiteralSlotNounExpr extends TopNounExpr {
      *
      */
     protected Object subEval(EvalContext ctx, boolean forValue) {
-        return mySlot.getValue();
+        return mySlot.get();
     }
 
     /**

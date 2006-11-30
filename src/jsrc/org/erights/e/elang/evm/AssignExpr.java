@@ -39,9 +39,9 @@ import java.io.IOException;
  * <p/>
  * Changes the binding for 'varName' in the current environment to be the value
  * of 'eExpr'. 'varName' must already be bound. Equivalent to
- * <pre>    (&varName).setValue(eExpr); eExpr</pre>
+ * <pre>    (&varName).put(eExpr); eExpr</pre>
  * except that eExpr is only evaluated once. Therefore, the value returned is
- * the value of eExpr, rather than the value stored in the slot (since setValue
+ * the value of eExpr, rather than the value stored in the slot (since put/1
  * may do arbitrary coercions).
  *
  * @author Mark S. Miller

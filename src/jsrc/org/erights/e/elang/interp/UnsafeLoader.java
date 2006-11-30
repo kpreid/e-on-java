@@ -129,7 +129,7 @@ class UnsafeLoader extends BaseLoader {
      * @noinspection ParameterNameDiffersFromOverriddenParameter
      */
     public Object get(String fqName) {
-        return getLocalSlot(fqName).getValue();
+        return getLocalSlot(fqName).get();
     }
 
     /**

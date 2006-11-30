@@ -40,7 +40,7 @@ def termE__quasiParser implements QuasiExprParser, QuasiPatternParser {
 }
 
 
-? pragma.syntax("0.8")
+? pragma.syntax("0.9")
 
 ? def termE__quasiParser := <elang:syntax.termE__quasiParser>
 # value: <termE__quasiParser>

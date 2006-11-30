@@ -101,7 +101,7 @@ def petnameField := <widgets:makeText>(piggyShell, SWT.getSINGLE())
 petnameField.setText("anon")
 
 def acctSlot {
-    to getValue() :any {
+    to get() :any {
         def initBalance := __makeInt(amountField.getText().trim())
         def petname := petnameField.getText().trim()
         petnameField.setText("anon")

@@ -29,7 +29,7 @@ public interface EverReactor {
      * If this Reactor is also a Reporter (with further downstream Reactors),
      * then, on receiving this report, it should in turn report to its
      * subscribers. A non-empty set of subscribers is an expression of local
-     * interest, as is a {@link EverReporter#getValue()} request.
+     * interest, as is a {@link EverReporter#get()} request.
      * <p/>
      * If this is a forever-reactor, then it will react to the report by
      * immediately re-subscribing to optNewReporter. If this is a

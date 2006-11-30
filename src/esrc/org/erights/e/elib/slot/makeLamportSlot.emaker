@@ -16,17 +16,17 @@ def EverReactor := <type:org.erights.e.elib.slot.EverReactor>
  * <p>
  * It is also based on an idea of Leslie Lamport's. An individual
  * lamportSlot by itself behaves as a normal settable Slot, in which
- * getValue() returns the argument of the most recent setValue(arg).
+ * get/0 returns the argument of the most recent put/1.
  * When hooked together as presences of a distributed Lamport Cell, the
- * vat-independent contract is looser: A getValue() must only return a
- * value that was setValue()ed (or an initial value), and the more
+ * vat-independent contract is looser: A get/0 must only return a
+ * value that was put/1 (or an initial value), and the more
  * recent the better. When things are idle, and in the absence of
- * partition, and given an expression of local interest, then getValue() must
+ * partition, and given an expression of local interest, then get/0 must
  * eventually converge on returning the
- * most recently setValue(). In the spirit of E's partial ordering
- * semantics, we further require that a sequence of setValue()s at a
+ * most recently put/1 value. In the spirit of E's partial ordering
+ * semantics, we further require that a sequence of put/1s at a
  * particular presence not be seen out of order by a sequence of
- * getValue()s at any other presence.
+ * get/0s at any other presence.
  * <p>
  * Once we support PassByConstruction from E, the lamportSlot/Lamport Cell
  * will be the primary example of presence/unum. It will pass itself by
@@ -120,7 +120,7 @@ def makeLamportSlot {
              * trigger any delayed registration with source, since
              * someone's now locally interested in the value.
              */
-            to getValue() :any {
+            to get() :any {
                 localInterest()
                 value
             }
@@ -136,7 +136,7 @@ def makeLamportSlot {
                     `lamportReporter whenUpdated($reactor, $lastGeneration)`
                 })
 
-                # Like getValue(), whenUpdated() is a demonstration of
+                # Like get(), whenUpdated() is a demonstration of
                 # local interest.
                 localInterest()
                 tracer(fn{`$lastGeneration < $myGeneration`})
@@ -205,13 +205,13 @@ def makeLamportSlot {
             }
 
             /**
-             * Synchronously sets the local value (so local getValue()s
+             * Synchronously sets the local value (so local get()s
              * are immediately accurate), and also report to all Reactors
-             * subscribed to this Slot. One should only setValue() an
+             * subscribed to this Slot. One should only put/1 at an
              * authoritative lamportSlot -- one that has no slots upstream from
              * it.
              */
-            to setValue(newValue) :void {
+            to put(newValue) :void {
                 lamportSlot.reactToUpdate(newValue, 0, null)
             }
 
@@ -278,7 +278,7 @@ def makeLamportSlot {
             to whenUpdated(reactor, lastGen) :void {
                 def absMillis := timer.now() + delayMillis
                 timer.whenPast(absMillis, reactor, "reactToUpdate", [
-                    slot.getValue(),
+                    slot.get(),
                     lastGen+1,
                     reporter
                 ])
@@ -304,14 +304,14 @@ def makeLamportSlot {
         }
         def reactor extends reporter implements EverReactor, Slot {
 
-            to setValue(newValue) :void {
-                slot.setValue(newValue)
+            to put(newValue) :void {
+                slot.put(newValue)
             }
 
             to reactToUpdate(newValue,
                              newReporterGen :int,
                              optNewSource :nullOk[EverReporter]) :void {
-                slot.setValue(newValue)
+                slot.put(newValue)
                 if (optNewSource != null) {
                     optNewSource <- whenUpdated(reactor, newReporterGen)
                 }

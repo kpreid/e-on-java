@@ -88,7 +88,6 @@ def templateTermVisitor(self) {
         to visitAll(nodes) {
             def res := [].diverge()
             for n in nodes { res.push(self.visit(n)) }
-#            return res # XXX Really?
             return res.snapshot()
         }
     }

@@ -42,12 +42,6 @@ def near0 implements Guard {
 
     ? x := p
     # problem: must be near
-    #
-    #   <statics of org.erights.e.elang.interp.Thrower>(not near)
-    #   <require0>(false, not near)
-    #   <near> coerce(<Promise>)
-    #   <& 4> setValue(<Promise>)
-    #   <interp> evalPrint(e`e`x` := p`)
 
     ? x := r
     # value: <Resolver>

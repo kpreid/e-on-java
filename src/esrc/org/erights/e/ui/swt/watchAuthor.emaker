@@ -79,7 +79,7 @@ def watchAuthor(<swt>,
 
             whenever([reporter], fn{
                 if (!label.isDisposed()) {
-                    label.setText(`${reporter.getValue()}`)
+                    label.setText(`${reporter.get()}`)
                     if (packUp(label)) {
                         packUp(shell)
                     }

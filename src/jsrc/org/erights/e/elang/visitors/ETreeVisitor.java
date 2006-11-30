@@ -44,7 +44,7 @@ public interface ETreeVisitor {
     /**
      * varName ":=" rValue. <p>
      * <p/>
-     * Does a setValue on the slot named by varName to the value of rValue
+     * Does a put/1 on the slot named by varName to the value of rValue
      *
      * @see <a href="{@docroot}/../elang/kernel/AssignExpr.html">The Kernel-E
      *      Assignment Expression</a>
@@ -132,7 +132,7 @@ public interface ETreeVisitor {
     /**
      * varName. <p>
      * <p/>
-     * The result of a getValue() on the slot named by this varName.
+     * The result of a get() on the slot named by this varName.
      *
      * @see <a href="{@docroot}/../elang/kernel/NounExpr.html">The Kernel-E
      *      Noun Expression</a>

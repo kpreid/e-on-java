@@ -3,7 +3,7 @@ updoc: started
 
 c:/Documents and Settings/millerm1/e/src/jsrc/com/zooko/tray/EPainter.updoc:.......***-----------------------***
 *** Trace data written to ***
-'C:/Documents and Settings/millerm1/.e/etrace/etrace.2006-11-19T20_30_07.341Z.txt'
+'C:/Documents and Settings/millerm1/.e/etrace/etrace.2006-11-30T09_39_45.562Z.txt'
 ***-----------------------***
 
 c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/jcomm/bad-resolve.updoc:..............................................

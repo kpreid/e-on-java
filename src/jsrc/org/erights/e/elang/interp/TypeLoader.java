@@ -100,7 +100,7 @@ class TypeLoader extends BaseLoader {
      * @param uriBody
      */
     public Object get(String uriBody) {
-        return getLocalSlot(uriBody).getValue();
+        return getLocalSlot(uriBody).get();
     }
 
     /**

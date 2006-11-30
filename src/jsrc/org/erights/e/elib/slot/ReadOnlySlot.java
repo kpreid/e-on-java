@@ -11,7 +11,7 @@ import java.io.IOException;
 /**
  * @author Mark S. Miller
  */
-public class ReadOnlySlot implements Slot {
+public class ReadOnlySlot extends BaseSlot {
 
     private final Slot mySlot;
 
@@ -22,14 +22,14 @@ public class ReadOnlySlot implements Slot {
     /**
      * Asks mySlot
      */
-    public Object getValue() {
-        return mySlot.getValue();
+    public Object get() {
+        return mySlot.get();
     }
 
     /**
      * Refuses
      */
-    public void setValue(Object specimen) {
+    public void put(Object newValue) {
         T.fail("A ReadOnlySlot may not be assigned to");
 
     }

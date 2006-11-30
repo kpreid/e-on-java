@@ -13,6 +13,9 @@ import java.util.Map;
  */
 public class MapSugar {
 
+    private MapSugar() {
+    }
+
     static public void iterate(Map self, AssocFunc func) {
         Iterator iter = self.entrySet().iterator();
         while (iter.hasNext()) {

@@ -105,7 +105,7 @@ public class Scope implements EIteratable {
                 if (k.startsWith("&")) {
                     Slot slot = (Slot)E.as(value, Slot.class);
                     if (slot.isFinal()) {
-                        mixedMap.put(k.substring(1), slot.getValue(), true);
+                        mixedMap.put(k.substring(1), slot.get(), true);
                     } else {
                         mixedMap.put(k, slot, true);
                     }
@@ -261,7 +261,7 @@ public class Scope implements EIteratable {
      * Just a convenience implemented out of getSlot/1
      */
     public Object get(String varName) {
-        return getSlot(varName).getValue();
+        return getSlot(varName).get();
     }
 
     /**
@@ -278,10 +278,10 @@ public class Scope implements EIteratable {
 
     /**
      * The default put/2 is defined in the obvious fashion in terms of
-     * getSlot(varName).setValue(newValue). <p>
+     * getSlot(varName).put(newValue). <p>
      */
     public void put(String varName, Object newValue) {
-        getSlot(varName).setValue(newValue);
+        getSlot(varName).put(newValue);
     }
 
     /**

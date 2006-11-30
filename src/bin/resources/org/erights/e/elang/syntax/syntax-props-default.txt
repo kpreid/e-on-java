@@ -74,13 +74,13 @@ e.enable.anon-lambda=true
 
 
 # Accept the 'eExpr::bar' shorthand as a representation of the . 'eExpr::bar'
-# as an expression expands to 'eExpr.__getPropertySlot("bar").getValue()'. If
+# as an expression expands to 'eExpr.__getPropertySlot("bar").get()'. If
 # the Miranda __getPropertySlot/1 is not overridden, this will be equivalent to
 # 'eExpr.getBar()'. 'eExpr1::bar := eExpr2' expands (approximately) to
-# 'eExpr.__getPropertySlot("bar").setValue(eExpr2)', which, when using the
+# 'eExpr.__getPropertySlot("bar").put(eExpr2)', which, when using the
 # Miranda behavior, will be equivalent to 'eExpr1.setBar(eExpr2)'. Finally,
 # 'eExpr::&bar' expands to 'eExpr.__getPropertySlot("bar")'. The Miranda
-# behavior of this synthesizes a Slot whose getValue/0, setValue/1 accesses
+# behavior of this synthesizes a Slot whose get/0, put/1 accesses
 # eExpr's getBar/0, setBar/1.
 #
 # We say "(approximately)" above, since the value of the assignment expression
@@ -242,11 +242,11 @@ e.enable.accumulator=allow
 # <pre>
 #     *x</pre>
 # expands to<pre>
-#     x.getValue()</pre>
+#     x.get()</pre>
 # so, by the normal assignment rules,<pre>
 #     *x := y</pre>
 # expands approximately to<pre>
-#     x.setValue(y)</pre>
+#     x.put(y)</pre>
 # except that the expansion also arranges for the value of the
 # expression to be the value of y.
 

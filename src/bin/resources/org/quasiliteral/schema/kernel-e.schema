@@ -37,7 +37,7 @@
 
 <script> ::=
      <matcher>                               # matcher
-  |  script([<method>*], [<matcher>*]);      # {<method>* <matcher>*}
+  |  dispatch([<method>*], [<matcher>*]);    # {<method>* <matcher>*}
 <matcher> ::= matcher(<p>,<e>);              # match p {e}
 <method> ::= method(<comment>,<verb>,[<p>*],<e>?,<e>);
                                       # comment method verb(<p>**,) <:e1>? {e2}

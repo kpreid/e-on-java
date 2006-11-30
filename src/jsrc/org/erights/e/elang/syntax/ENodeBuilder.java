@@ -246,7 +246,7 @@ public class ENodeBuilder extends BaseENodeBuilder implements EBuilder {
              *
              * Remember that x[y]     expands to  x.get(y)
              *               x::name  expands to  x.__getPropertySlot("name")\
-             *                                     .getValue()
+             *                                     .get()
              * and           x(y)     expands to  x.run(y)
              * so all are valid lvalues
              */
@@ -2032,7 +2032,7 @@ public class ENodeBuilder extends BaseENodeBuilder implements EBuilder {
      *
      */
     public EExpr propValue(Object recipientExpr, Object propName) {
-        return call(propSlot(recipientExpr, propName), "getValue", list());
+        return call(propSlot(recipientExpr, propName), "get", list());
     }
 
     /**
@@ -2048,7 +2048,7 @@ public class ENodeBuilder extends BaseENodeBuilder implements EBuilder {
      *
      */
     public EExpr sendPropValue(Object recipientExpr, Object propName) {
-        return send(sendPropSlot(recipientExpr, propName), "getValue", list());
+        return send(sendPropSlot(recipientExpr, propName), "get", list());
     }
 
     /**

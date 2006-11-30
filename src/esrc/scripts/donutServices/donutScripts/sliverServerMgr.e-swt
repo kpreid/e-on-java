@@ -67,10 +67,10 @@ def ssmTarget := <widgets:makeLabel>(shell, SWT.getSHADOW_OUT())
 ssmTarget.setImage(ssmImage)
 var ssmSet := false
 def ssmSlot {
-    to getValue() :any {
+    to get() :any {
         return sliverServerMgr
     }
-    to setValue(newSSM) :void {
+    to put(newSSM) :void {
         if (!ssmSet) {
             bind sliverServerMgr := newSSM
             ssmSet := true
@@ -89,7 +89,7 @@ def piggyTarget := <widgets:makeLabel>(shell, SWT.getSHADOW_OUT())
 piggyTarget.setImage(piggyImage)
 var piggySet := false
 def piggySlot {
-    to setValue(newAcctMgr) :void {
+    to put(newAcctMgr) :void {
         if (!piggySet) {
             bind accountMgr := newAcctMgr
             piggySet := true

@@ -34,7 +34,6 @@ import org.erights.e.elib.sealing.Amplifiable;
 import org.erights.e.elib.sealing.SealedBox;
 import org.erights.e.elib.slot.Conformable;
 import org.erights.e.elib.slot.Guard;
-import org.erights.e.elib.slot.ReadOnlySlot;
 import org.erights.e.elib.slot.Slot;
 import org.erights.e.elib.tables.ArrayHelper;
 import org.erights.e.elib.tables.Selfless;
@@ -262,16 +261,16 @@ public class MirandaMethods {
      * Used in the expansion of '<tt>foo::bar</tt>' so that this syntax
      * represents foo's "bar" property.
      * <p/>
-     * '<tt>foo::bar</tt>' expands to '<tt>foo.__getPropertySlot("bar").getValue()</tt>'.
+     * '<tt>foo::bar</tt>' expands to '<tt>foo.__getPropertySlot("bar").get()</tt>'.
      * When used an an lValue, '<tt>foo::bar := newValue</tt>' expands
-     * essentially to '<tt>foo.__getPropertySlot("bar").setValue(newValue)</tt>'
+     * essentially to '<tt>foo.__getPropertySlot("bar").put(newValue)</tt>'
      * except that the expansion also has the value of the assignment
      * expression be the value assigned.
      * <p/>
      * And finally '<tt>foo::&bar</tt>' expands to '<tt>foo.__getPropertySlot("bar")</tt>'
      * <p><hr> The Miranda behavior provided here synthesizes, for foo's bar
-     * property, a Slot object <ul> <li>whose '<tt>getValue()</tt>' does a
-     * '<tt>foo.getBar()</tt>' <li>whose '<tt>setValue(newValue)</tt>' does a
+     * property, a Slot object <ul> <li>whose '<tt>get()</tt>' does a
+     * '<tt>foo.getBar()</tt>' <li>whose '<tt>put(newValue)</tt>' does a
      * '<tt>foo.setBar(newValue)</tt>' <li>and whose '<tt>isFinal()</tt>'
      * returns false</tt>'. </ul>
      *
@@ -282,32 +281,10 @@ public class MirandaMethods {
      *             {@link #__getAllegedType} for the methods for its
      *             properties.
      */
-    static public Slot __getPropertySlot(final Object self,
-                                         final String propName) {
-        final String getterVerb = JavaMemberNode.asGetterVerb(propName);
-        final String setterVerb = JavaMemberNode.asSetterVerb(propName);
-        return new Slot() {
-
-            public Object getValue() {
-                return E.call(self, getterVerb);
-            }
-
-            public void setValue(Object specimen) {
-                E.call(self, setterVerb, specimen);
-            }
-
-            public boolean isFinal() {
-                return false;
-            }
-
-            public Slot readOnly() {
-                return new ReadOnlySlot(this);
-            }
-
-            public void __printOn(TextWriter out) throws IOException {
-                out.print("::&", propName);
-            }
-        };
+    static public Slot __getPropertySlot(Object self, String propName) {
+        String getterVerb = JavaMemberNode.asGetterVerb(propName);
+        String setterVerb = JavaMemberNode.asSetterVerb(propName);
+        return new PropertySlot(self, getterVerb, setterVerb, propName);
     }
 
     /**
