@@ -145,16 +145,16 @@ class ImportLoader extends BaseLoader {
     /**
      * null if not found. Thrown exception if found but unsafe.
      */
-    private StaticMaker getOptStaticMaker(String fqName) {
+    private StaticMaker getOptStaticMaker(String jfqName, String fqName) {
         Class clazz;
         try {
             //XXX should use myOptLoader, if not null
-            clazz = ClassCache.forName(fqName);
+            clazz = ClassCache.forName(jfqName);
         } catch (ClassNotFoundException cnfe) {
             return null;
         }
         if (!SafeJ.approve(clazz, true)) {
-            //if fqName is not in the approved list
+            //if jfqName is not in the approved list
             throw new SecurityException(fqName + " not approved as safe");
         }
         return StaticMaker.make(clazz);
@@ -176,7 +176,7 @@ class ImportLoader extends BaseLoader {
             return new PackageLoader(this, "import:", fqName);
         }
         //prefer a compiled one.
-        Object result = getOptStaticMaker(fqName);
+        Object result = getOptStaticMaker(fqName, fqName);
         if (null != result) {
             warnNoMake(fqName);
             isConfinedPtr[0] = true;
@@ -185,7 +185,7 @@ class ImportLoader extends BaseLoader {
 
         String optJFQName = getOptJFQName(fqName);
         if (null != optJFQName) {
-            result = getOptStaticMaker(optJFQName);
+            result = getOptStaticMaker(optJFQName, fqName);
             if (null != result) {
                 isConfinedPtr[0] = true;
 
@@ -237,7 +237,7 @@ class ImportLoader extends BaseLoader {
     }
 
     /**
-     * @param uriBody
+     * 
      */
     public Object get(String uriBody) {
         return getLocalSlot(uriBody).get();
