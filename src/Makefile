@@ -9,8 +9,8 @@ default: draft explain
 
 # Prefix tagging this release's attributes
 PREFIX=E
-DOTVER=0.8.37e
-TAGVER=0_8_37e
+DOTVER=0.8.37f
+TAGVER=0_8_37f
 RELEASE=working
 
 TOP=..
