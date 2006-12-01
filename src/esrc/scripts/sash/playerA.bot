@@ -1,0 +1,17 @@
+
+
+# Copyright 2006 Hewlett-Packard, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+pragma.syntax("0.9")
+
+def makeBotFunc (arenaMaxLoc, logFile) {
+    def botFunc(myLoc, myVel, enemyLoc, enemyVel) {
+        if (myLoc == 0) {
+            return 1
+        } else if (myLoc == arenaMaxLoc) {
+            return -1
+        } else {return 0}
+    }
+    return botFunc
+}

@@ -1,0 +1,41 @@
+#!/usr/bin/env rune
+
+# Copyright 2006 Hewlett-Packard, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+pragma.syntax("0.9")
+
+/**
+ * Given a println-function (a function which prints a string and a newline),
+ * returns a new println function which will print on the original using
+ * safe email quoting syntax.
+ * <p>
+ * For example,<pre>
+ ? def traceln := <elang:interp.makeQuoteln>(println, "Fred", 78)
+ # example value: &lt;quoteln&gt;
+ 
+ ? traceln("Hello")
+ # stdout: Fred said:
+ #         > Hello
+ #
+ * </pre>
+ *
+ * @author Mark S. Miller
+ * @author based on Marc Stiegler's userOut in his sash in Emily
+ */
+def makeQuoteln(println, attribution :String, limit :int) {
+    def quoteln(message :String) :void {
+        var output := `$attribution said:`
+        def `"@plain"` := E.toQuote(message)
+        for var line in plain.split("\n") {
+            while (line.size() > limit) {
+                def next := line(0,limit-1)
+                line := line(limit-1,line.size())
+                output += `$\n> $next\`
+            }
+            output += `$\n> $line`
+        }
+        println(output)
+    }
+    return quoteln
+}

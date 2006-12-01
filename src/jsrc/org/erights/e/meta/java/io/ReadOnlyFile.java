@@ -216,6 +216,10 @@ public class ReadOnlyFile extends BaseLoader
         return FileSugar.getTwine(myPrecious);
     }
 
+    public byte[] getBytes() throws IOException {
+        return FileSugar.getBytes(myPrecious);
+    }
+
     /**
      * If the file is a directory, enumerate filename =&gt; File associations
      * for each child of the directory.

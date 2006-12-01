@@ -1,0 +1,112 @@
+#!/usr/bin/env sash.e
+
+# Copyright 2006 Hewlett-Packard, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+# sash.e sash/crashbot.sash 5 =sash/playerA.bot +a.log \
+#                             =sash/playerB.bot +b.log
+
+pragma.syntax("0.9")
+
+def eParse := <elang:syntax.makeEParser>
+
+def makeBot(var location, nextAccelFunc) {
+    def validAccel(acc) {
+        if (acc == 0) {
+            return 0
+        } else {
+            return acc//acc.abs()
+        }
+    }
+    var velocity := 0
+    def bot {
+        to getVel() {return velocity}
+        to setVel(newVel) { velocity := newVel }
+        to getLoc() {return location}
+        to setLoc(newLoc) {location := newLoc}
+        to applyAccel(accel) {
+            velocity := velocity + accel
+            location := location + velocity
+        }
+        to requestAccel(enemyLoc, enemyVel) {
+            def request := nextAccelFunc(location,
+                                         velocity,
+                                         enemyLoc,
+                                         enemyVel)
+            return validAccel(request)
+        }
+    }
+    return bot
+}
+
+def composeMap(arenaMaxLoc, botA, botB) {
+    var displayMap := ""
+    for i in 0..arenaMaxLoc {
+        def nextChar :=
+          if (botA.getLoc() ==i && botB.getLoc() == i) {
+            "X"
+        } else if (botA.getLoc() == i) {
+            "A"
+        } else if (botB.getLoc() == i) {
+            "B"
+        } else {"-"}
+        displayMap := displayMap + nextChar
+    }
+    return displayMap
+}
+
+def createPlayerFunc(sourceCode, arenaMaxLoc, logFile) {
+    def makeBotFunc := eParse(sourceCode).eval(safeScope)
+    return makeBotFunc(arenaMaxLoc, logFile)
+}
+
+/**
+ * Crash requires the following inputs:
+ *    an integer for the size of the arena,
+ *    the read-only sourcecode file for player A's bot
+ *    the editable log file for player A's bot
+ *    the read-only sourcecode file for player B's bot
+ *    the editable log file for player B's bot
+ */
+def start(userIn, userOut, arenaStr, aCode, aLog, bCode, bLog) {
+    def indent := "     "
+    def indentOut(output) {userOut(indent + output)}
+    def arenaMaxLoc := __makeInt(arenaStr)
+    userOut("Loading Player A Bot")
+    def playerAFunc := createPlayerFunc(aCode.getTwine(),
+                                        arenaMaxLoc,
+                                        aLog)
+    userOut("Loading Player B Bot")
+    def playerBFunc := createPlayerFunc(bCode.getTwine(),
+                                        arenaMaxLoc,
+                                        bLog)
+    def hitArenaWall(loc) {return loc < 0 || loc > arenaMaxLoc}
+    def botA := makeBot(0, playerAFunc)
+    def botB := makeBot(arenaMaxLoc, playerBFunc)
+    def gameOver() {
+        return hitArenaWall(botB.getLoc()) ||
+          hitArenaWall(botA.getLoc()) ||
+          botA.getLoc() == botB.getLoc()
+    }
+    while (!gameOver()) {
+        indentOut("BotA moving...\n")
+        def accA := botA.requestAccel(botB.getLoc(), botB.getVel())
+        indentOut("BotB moving...\n")
+        def accB := botB.requestAccel(botA.getLoc(), botA.getVel())
+        botA.applyAccel(accA)
+        botB.applyAccel(accB)
+        indentOut(composeMap(arenaMaxLoc, botA, botB) +
+                    "\n" + indent + `Bot A velocity = ${botA.getVel()}` +
+                    `.     Bot B velocity = ${botB.getVel()}`)
+    }
+    if (hitArenaWall(botA.getLoc())) {indentOut ("A crashed and lost")}
+    if (hitArenaWall (botB.getLoc())) {indentOut ("B crashed and lost")}
+    if (botB.getLoc() == botA.getLoc()) {
+        if (botA.getVel().abs() > botB.getVel().abs()) {
+            indentOut ("A crushed B")
+        } else if (botA.getVel().abs() < botB.getVel().abs()) {
+            indentOut ("B crushed A")
+        } else {indentOut("A and B crushed each other")}
+    }
+}
+

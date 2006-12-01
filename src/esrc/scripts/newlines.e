@@ -67,6 +67,8 @@ def extensions := [
     "grammar" => true,
     "json" => true,
     "in" => true,
+    "sash" => true,
+    "bot" => true,
 
     "cap" => true,
     "cap-acct" => true,
