@@ -50,8 +50,8 @@ def promiseAllResolved {
      * run/1.
      */
     to orNow(refs) :any {
-        for ref in refs {
-            if (!Ref.isResolved(ref)) {
+        for r in refs {
+            if (!Ref.isResolved(r)) {
                 return promiseAllResolved(refs)
             }
         }

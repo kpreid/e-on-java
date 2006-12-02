@@ -8,13 +8,13 @@ pragma.syntax("0.8")
 def seedVatAuthor := <elang:interp.seedVatAuthor>
 
 def simpleEvalServerPoolAuthor(<unsafe>) :near {
-    
+
     def seedVat := seedVatAuthor(<unsafe>)
-    
+
     def makeVat := <unsafe:org.erights.e.elib.vat.makeVat>
-    
+
     def simpleEvalServerPool {
-        
+
         /**
          * <tt>requestEvalServerSet</tt> tries to satisfy a request for
          * access to multiple eval servers.
@@ -37,7 +37,7 @@ def simpleEvalServerPoolAuthor(<unsafe>) :near {
                     match _          { "headless" }
                 }
                 def vat := makeVat.make(runnerKind, vatName)
-                def makeEvaluator :rcvr := seedVat(vat, `
+                def makeEvaluator :ref := seedVat(vat, `
 
 def makeEvaluatorAuthor :=
   <import:org.erights.e.tools.updoc.makeEvaluatorAuthor>
@@ -54,13 +54,13 @@ makeEvaluatorAuthor(auths["systemGC"],
             }
             result
         }
-        
+
         /**
          * <tt>requestEvalServer</tt> tries to satisfy a request for
          * access to a single eval server.
          * <p>
          * It returns a vow which, if the request is successful, resolves
-         * to a single makeEvaluator function rcvr for the eval server's
+         * to a single makeEvaluator function ref for the eval server's
          * services. If a problem occurs the vow is broken with the
          * problem.
          *
@@ -69,19 +69,19 @@ makeEvaluatorAuthor(auths["systemGC"],
         to requestEvalServer(vatName :String) :vow {
             simpleEvalServerPool.requestEvalServerSet([vatName]) <- get(0)
         }
-        
+
         /**
          * <tt>releaseEvalServer</tt> releases the service provided by
-         * the makeEvaluator function rcvr.
+         * the makeEvaluator function ref.
          * <p>
          * The eval server that granted access to the service is now
          * available for requests.
          *
-         * @param makeEvaluator The makeEvaluator function rcvr returned
+         * @param makeEvaluator The makeEvaluator function ref returned
          *                      by the request for access to an eval
          *                      server.
          */
-        to releaseEvalServer(makeEvaluator :rcvr) :void {
+        to releaseEvalServer(makeEvaluator :ref) :void {
             makeEvaluator <- shutdown()
         }
     }

@@ -237,7 +237,8 @@ public final class ScopeSetup {
 
         um.comp("notNull", safeScopeVow, "<elang:interp.notNull>");
         um.comp("vow", safeScopeVow, "<elang:interp.vow>");
-        um.comp("rcvr", safeScopeVow, "<elang:interp.rcvr>");
+        um.comp("ref", safeScopeVow, "<elang:interp.ref>");
+        um.comp("rcvr", safeScopeVow, "ref"); // deprecated
         um.comp("SturdyRef", safeScopeVow, "<type:net.captp.jcomm.SturdyRef>");
 
         um.comp("simple__quasiParser", SimpleQuasiParser.THE_ONE);

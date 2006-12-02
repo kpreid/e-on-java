@@ -119,13 +119,13 @@ def controlLoopMaker() :ControlLoop {
             setAlarm()
         }
 
-        to waitAtTop(ref) :any {
+        to waitAtTop(prom) :any {
             controlLoop.blockAtTop()
             def done(_) :void {
                 controlLoop.continueAtTop()
             }
-            Ref.whenResolvedOnly(ref, done)
-            return ref
+            Ref.whenResolvedOnly(prom, done)
+            return prom
         }
 
         /**

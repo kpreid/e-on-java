@@ -6,18 +6,18 @@ pragma.syntax("0.8")
 # found at http://www.opensource.org/licenses/mit-license.html ................
 
 /**
- * Defines the builtin 'rcvr' guard and guard-template.
+ * Defines the builtin 'ref' guard and guard-template.
  * <p>
- * As a guard, 'rcvr' is formally equivalent to 'any'. However, it's
+ * As a guard, 'ref' is formally equivalent to 'any'. However, it's
  * used to indicate that one should beware that a given value's resolution
  * may be 'far'. <a href=
  * "http://www.erights.org/download/0-8-14/index.html#newguards"
  * >Advisory type checking rules</a> may very well distinguish between 'any'
- * and 'rcvr'.
+ * and 'ref'.
  *
  * @author Mark S. Miller
  */
-def rcvr0 implements Guard {
+def ref0 implements Guard {
 
     /**
      * Always succeeds, returning specimen.
@@ -27,23 +27,23 @@ def rcvr0 implements Guard {
     }
 
     /**
-     * Prints "rcvr"
+     * Prints "ref"
      */
-    to __printOn(out :TextWriter) :void { out.print("rcvr") }
+    to __printOn(out :TextWriter) :void { out.print("ref") }
 
     /**
-     * @deprecated Use rcvr[subGuard] instead
+     * @deprecated Use ref[subGuard] instead
      */
-    to run(subGuard) :near { return rcvr[subGuard] }
+    to run(subGuard) :near { return ref[subGuard] }
 
     /**
-     * Returns a mostly-advisory rcvr-guard parameterized by a Guard
+     * Returns a mostly-advisory ref-guard parameterized by a Guard
      * for indicating that a value's resolution is expected to either be
      * broken or be a reference to an object that would pass or be returned
      * by the subGuard parameter.
      * <p>
      * If 'subGuard' implies 'pbc', then you should use 'vow[subGuard]'
-     * rather than 'rcvr[subGuard]' since the former is implied and will
+     * rather than 'ref[subGuard]' since the former is implied and will
      * be more informative.
      */
     to get(subGuard :Guard) :Guard {
@@ -51,7 +51,7 @@ def rcvr0 implements Guard {
         /**
          * @author Mark S. Miller
          */
-        def rcvr1 implements Guard {
+        def ref1 implements Guard {
 
             /**
              * This operation is mostly advisory.
@@ -60,10 +60,10 @@ def rcvr0 implements Guard {
              * which is when the ref is near, in which case we return the
              * result of coercing it through our subGuard parameter.
              * <p>
-             * For example, 'rcvr[Foo]' will fail when given a Bar, but will
+             * For example, 'ref[Foo]' will fail when given a Bar, but will
              * currently succeed when given a promise that will resolve to a
              * Bar (assuming that Foo and Bar are incompatible types). A
-             * future accurately enforcing 'rcvr[Foo]' should instead coerce
+             * future accurately enforcing 'ref[Foo]' should instead coerce
              * to a promise that resolves to the same Foo iff the original
              * resolves to an Foo (or a value that coerces to a Foo). If the
              * original resolved to a value that doesn't coerce to an Foo,
@@ -78,10 +78,10 @@ def rcvr0 implements Guard {
             }
 
             /**
-             * For example, "rcvr[Foo]"
+             * For example, "ref[Foo]"
              */
             to __printOn(out :TextWriter) :void {
-                out.print("rcvr[")
+                out.print("ref[")
                 out.quote(subGuard)
                 out.print("]")
             }

@@ -1,7 +1,6 @@
 
 updoc: started
 
-c:/Documents and Settings/millerm1/e/src/esrc/caplets/darpaBrowser/renderers/evil.emaker:
 c:/Documents and Settings/millerm1/e/src/esrc/com/hp/donutLab/makeIOUIssuer.updoc:......
 at: <file:c:/Documents and Settings/millerm1/e/src/esrc/com/hp/donutLab/makeIOUIssuer.updoc#:span::24:2::24:37>
 expr: def am1 := issuer.makeAccountMgr(33)
@@ -9,14 +8,11 @@ missing new value
 original value: <manages <has (33 - 0) Sugar>>
 missing original problem
 new problem: <NoSuchMethodException: <an issuer>.makeAccountMgr/1>
-
-c:/Documents and Settings/millerm1/e/src/esrc/com/hp/donutLab/makeIOUIssuerAuthor.emaker:***-----------------------***
+***-----------------------***
 *** Trace data written to ***
-'C:/Documents and Settings/millerm1/.e/etrace/etrace.2006-11-30T09_45_59.770Z.txt'
+'C:/Documents and Settings/millerm1/.e/etrace/etrace.2006-12-02T18_25_40.707Z.txt'
 ***-----------------------***
 
-c:/Documents and Settings/millerm1/e/src/esrc/com/hp/donutLab/sliverServerPair.emaker:
-c:/Documents and Settings/millerm1/e/src/esrc/com/hp/orc/makeOrcCompiler.emaker:
 c:/Documents and Settings/millerm1/e/src/esrc/com/hp/orc/orc.updoc:.................................
 at: <file:c:/Documents and Settings/millerm1/e/src/esrc/com/hp/orc/orc.updoc#:span::223:6::223:48>
 expr: def op := <import:com.hp.orc.makeOrcParser>
@@ -53,7 +49,6 @@ bp: Ping received "I am pong"
 .........................................
 c:/Documents and Settings/millerm1/e/src/esrc/edu/jhu/cs448/contact/makeOpenQueue.emaker:........................
 c:/Documents and Settings/millerm1/e/src/esrc/edu/jhu/markm/thesis/actors.updoc:.........
-c:/Documents and Settings/millerm1/e/src/esrc/net/scoopfs/mail/makeMailBox.emaker:
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdLoopMakerAuthor.updoc:....
 at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdLoopMakerAuthor.updoc#:span::22:6::22:31>
 expr: def scope := makeScope([])
@@ -125,6 +120,7 @@ original expansion: def foo {
                     }
 ...
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/makeBootServer.updoc:.................
+c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/makeQuoteln.emaker:..
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/makeServer.updoc:......
 at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/makeServer.updoc#:span::23:2::23:11>
 expr: env.size()
@@ -136,9 +132,7 @@ new problem: Failed: not synchronously callable
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/promiseAllResolved.emaker:.............
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/require.emaker:......
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/syntax/termE__quasiParser.emaker:.......
-c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/visitors/makeConvertENode2Term.emaker:
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/visitors/makeMetaEval.emaker:........
-c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/visitors/TermVisitor.emaker:
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/extern/CommandMakerAuthor.updoc:......
 at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/extern/CommandMakerAuthor.updoc#:span::30:6::30:48>
 expr: bash("-c", "cygpath -w `type -p echo.exe`")
@@ -182,7 +176,6 @@ missing new stdout
 original stdout: 36.4
                  
 .
-c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/makeLamportSlot.emaker:
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/makeLazySlot.emaker:..
 at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/makeLazySlot.emaker#:span::54:4::54:27>
 expr: makeLazySlot :DeepFrozen
@@ -224,7 +217,6 @@ missing new A bug we're just going to live with for now
 original A bug we're just going to live with for now: 
 ...
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/tools/java/fixImports.emaker:...
-c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/ui/swt/dndKitAuthor.emaker:
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/ui/swt/watchAuthor.emaker:.........
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/ex/swing/JPanel__quasiParser.emaker:.........
 at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/ex/swing/JPanel__quasiParser.emaker#:span::132:6::132:18>
@@ -383,7 +375,6 @@ original value: [1, elib/]
 missing original problem
 new problem: Failed: Undefined variable: getLine
 
-c:/Documents and Settings/millerm1/e/src/esrc/scripts/capletLauncher.e-awt:
 c:/Documents and Settings/millerm1/e/src/esrc/scripts/counter-client.updoc:...
 at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/counter-client.updoc#:span::14:6::14:44>
 expr: def sr := introducer.sturdyFromURI(uri)
@@ -392,8 +383,6 @@ original value: <a SturdyRef>
 missing original problem
 new problem: <MalformedURLException: URI captp://213.130.163.34:4451/0Bg1bGDtCQCmpMvfBJ8wvl6dmRHH/08tjK7_p7d8G8u7OfaVHFr6quSvx does not start with "captp://*">
 
-c:/Documents and Settings/millerm1/e/src/esrc/scripts/donutServices/donutScripts/sliverServer.e-swt:
-c:/Documents and Settings/millerm1/e/src/esrc/scripts/donutServices/donutScripts/sliverServerMgr.e-swt:
 c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc:..
 at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::11:2::11:94>
 expr: def sr := <captp://192.168.0.21:1043/5UmFAqXbepvCOwuSHCEGHt5V1wC/Ray1=9hgEHkC8i_DRs5WKfsLnji>
@@ -403,9 +392,6 @@ missing original problem
 new problem: <MalformedURLException: URI //192.168.0.21:1043/5UmFAqXbepvCOwuSHCEGHt5V1wC/Ray1=9hgEHkC8i_DRs5WKfsLnji does not start with "captp://*">
 
 c:/Documents and Settings/millerm1/e/src/esrc/scripts/intro.updoc:..
-c:/Documents and Settings/millerm1/e/src/esrc/scripts/piggy.e-swt:
-c:/Documents and Settings/millerm1/e/src/esrc/scripts/piggyIssuer.e-swt:
-c:/Documents and Settings/millerm1/e/src/esrc/scripts/sash.e:
 c:/Documents and Settings/millerm1/e/src/esrc/scripts/srccheck-post.e:......
 c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/audit-test.e:....
 at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/audit-test.e#:span::122:2::122:30>
@@ -459,7 +445,6 @@ original value: [<Promise>, <Closed Resolver>, <Promise>]
 
 c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/makeScope.updoc:.......
 c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/mod.updoc:......
-c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/show-chars.e:
 c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/updoc/abc.updoc:............
 c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/updoc/FlexList.updoc:.......
 c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/updoc/propUtils.updoc:.......
@@ -470,4 +455,4 @@ missing original problem
 new problem: Failed: org.erights.e.tools.concurrency.race not found
 
 c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/updoc/shortFlexList.updoc:....
-c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html:abc.............................................................................................
+c:/Documents and Settings/millerm1/e/src/esrc/scripts/webServer/ewalnut.html:abc...............................................................................................

@@ -209,8 +209,8 @@ public final class SturdyRef
      */
     public Object getRcvr(long pollMillis, long timeout) throws IOException {
         return Ref.whenResolved(getRcvr(), new OneArgFunc() {
-            public Object run(Object rcvr) {
-                if (Ref.isBroken(rcvr)) {
+            public Object run(Object ref) {
+                if (Ref.isBroken(ref)) {
                     //XXX Bug: Note that if the proper target of the SturdyRef
                     //is a broken reference, this will mistake it for a failure
                     //to connect, and will substitute a broken ref with the
@@ -218,7 +218,7 @@ public final class SturdyRef
                     T.fail("XXX long-lived getRcvr not yet implemented");
                     return null; //make the compiler happy
                 } else {
-                    return rcvr;
+                    return ref;
                 }
             }
         });

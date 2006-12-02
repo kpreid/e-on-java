@@ -62,7 +62,7 @@ interface StatusObserver {
  *
  * @param accessor Can be an accessor, as made by
  *                 contactKitAuthor/makeAccessor, or a SturdyRef, or anything
- *                 which responds to getRcvr() with a rcvr[Deliverator].
+ *                 which responds to getRcvr() with a ref[Deliverator].
  */
 def makeAnycaster(entropy, accessor, statusObserver) :any {
     def [enq, deq] := makeOpenQueue(0)

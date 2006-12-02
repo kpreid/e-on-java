@@ -19,8 +19,8 @@ def makeWhenControl(refFn) :any {
         /** ::"when" ... resolved {resolvedExpr} ... */
         to resolved__control_0(resolvedFn) :any {
             def whenResolvedFn() :any {
-                def ref := refFn()
-                return Ref.whenResolved(ref, fn _{resolvedFn()})
+                def prom := refFn()
+                return Ref.whenResolved(prom, fn _{resolvedFn()})
             }
             return makeWhenControl(whenResolvedFn)
         }
@@ -28,10 +28,10 @@ def makeWhenControl(refFn) :any {
         /** ::"when" ... -> {fulfilledExpr} ... */
         to "->__control_0"(fulfilledFn) :any {
             def whenFulfilledFn() :any {
-                def ref := refFn()
-                return Ref.whenResolved(ref, fn _{
-                    # If ref is broken, throw the problem
-                    if (Ref.optProblem(ref) =~ problem :notNull) {
+                def prom := refFn()
+                return Ref.whenResolved(prom, fn _{
+                    # If prom is broken, throw the problem
+                    if (Ref.optProblem(prom) =~ problem :notNull) {
                         throw(problem)
                     }
                     fulfilledFn()
@@ -65,8 +65,8 @@ def makeWhenControl(refFn) :any {
          */
         to broken__control_1(handlerFn) :any {
             def whenBrokenFn() :any {
-                def ref := refFn()
-                return Ref.whenBroken(ref, fn _ {handlerFn()})
+                def prom := refFn()
+                return Ref.whenBroken(prom, fn _ {handlerFn()})
             }
             return makeWhenControl(whenBrokenFn)
         }
@@ -79,32 +79,32 @@ def __when0 {
     to resolved__control_1_0(compoundFn) :any {
         # XXX Violating our normal design rule for controls, and calling
         # the argument before run__control()
-        def [[ref], resolvedFn] := compoundFn()
-        return makeWhenControl(fn{ref}).resolved__control_0(resolvedFn)
+        def [[prom], resolvedFn] := compoundFn()
+        return makeWhenControl(fn{prom}).resolved__control_0(resolvedFn)
     }
 
     /** when (refExpr) -&gt {fulfilledExpr} ... */
     to "->__control_1_0"(compoundFn) :any {
         # XXX Violating our normal design rule for controls, and calling
         # the argument before run__control()
-        def [[ref], fulfilledFn] := compoundFn()
-        return makeWhenControl(fn{ref})."->__control_0"(fulfilledFn)
+        def [[prom], fulfilledFn] := compoundFn()
+        return makeWhenControl(fn{prom})."->__control_0"(fulfilledFn)
     }
 
     /** when (refExpr) broken problem {handlerExpr} ... */
     to "broken__control_1_1"(compoundFn) :any {
         # XXX Violating our normal design rule for controls, and calling
         # the argument before run__control()
-        def [[ref], handlerFn] := compoundFn()
-        return makeWhenControl(fn{ref}).broken__control_1(handlerFn)
+        def [[prom], handlerFn] := compoundFn()
+        return makeWhenControl(fn{prom}).broken__control_1(handlerFn)
     }
 
     match [`resolved__control_@{_}_0`, [compoundFn]] {
         # XXX Violating our normal design rule for controls, and calling
         # the argument before run__control()
         def [refs, resolvedFn] := compoundFn()
-        def ref := promiseAllResolved(refs)
-        makeWhenControl(fn{ref}).resolved__control_0(resolvedFn)
+        def prom := promiseAllResolved(refs)
+        makeWhenControl(fn{prom}).resolved__control_0(resolvedFn)
     }
     match [`__respondsTo`, [`resolved__control_@{_}_0`, ==1]] { true }
 
@@ -112,8 +112,8 @@ def __when0 {
         # XXX Violating our normal design rule for controls, and calling
         # the argument before run__control()
         def [refs, fulfilledFn] := compoundFn()
-        def ref := promiseAllFulfilled(refs)
-        makeWhenControl(fn{ref})."->__control_0"(fulfilledFn)
+        def prom := promiseAllFulfilled(refs)
+        makeWhenControl(fn{prom})."->__control_0"(fulfilledFn)
     }
     match [`__respondsTo`, [`->__control_@{_}_0`, ==1]] { true }
 }

@@ -23,7 +23,7 @@ var active := [].diverge()
 var available := [].diverge()
 
 # Lookup table for finding the eval server that provided a particular maker
-# service mapping from a maker SturdyRef to eval server rcvr
+# service mapping from a maker SturdyRef to eval server ref
 var busy := [].asMap().diverge()
 
 # Queue of functions waiting to satisfy a request for evaluation services
@@ -261,7 +261,7 @@ def clientFacet {
      * a single eval server.
      * <p>
      * It returns a vow which, if the request is successful, resolves to a
-     * single maker object rcvr for the eval server's services. If a problem
+     * single maker object ref for the eval server's services. If a problem
      * occurs the vow is broken with the problem.
      *
      * @return A vow for access to a single eval server. If the request is
@@ -275,12 +275,12 @@ def clientFacet {
 
     /**
      * <tt>releaseEvalServer</tt> releases the service provided by
-     * the maker object rcvr.
+     * the maker object ref.
      * <p>
      * The eval server that granted access to the service is now available
      * for requests.
      *
-     * @param maker The maker object rcvr returned by the
+     * @param maker The maker object ref returned by the
      *              request for access to an eval server.
      */
     to releaseEvalServer(maker :SturdyRef) :void {

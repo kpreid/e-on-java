@@ -22,9 +22,9 @@ def makeVatSwitcher(name) :near {
          *
          * @param vatMap A <tt>ConstMap</tt> mapping from vat names
          *               to <tt>evaluator</tt> objects.
-         * @return A <tt>rcvr</tt> to an <tt>evaluator</tt> object.
+         * @return A <tt>ref</tt> to an <tt>evaluator</tt> object.
          */
-        to getEvaluator(vatMap) :rcvr {
+        to getEvaluator(vatMap) :ref {
             vatMap[name]
         }
     }
@@ -61,7 +61,7 @@ def makeTestcasePlayer(testcase) :near {
          * @return A <tt>vow</tt> that becomes <tt>null</tt> on success
          *         or becomes broken with a problem.
          */
-        to replay(evaluator :rcvr) :vow {
+        to replay(evaluator :ref) :vow {
             def expr := testcase.getExpr()
             # when-catch construct returns a promise
             # for the value of the done function

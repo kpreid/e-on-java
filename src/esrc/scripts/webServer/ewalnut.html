@@ -1,10 +1,10 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
 <html><head>
   <meta http-equiv="Content-Type" content="text/html"><title>E in a Walnut</title>
-  
+
   <style>
   .warn {color:red}
-.sidebar     { float: right; width: 2in; border-style: inset; border-width: 3; 
+.sidebar     { float: right; width: 2in; border-style: inset; border-width: 3;
                background-color: #FFFF99; font-size:80% }
   .note {color:blue; }
   .stale {background-color:gray; text-decoration:line-through;
@@ -137,8 +137,8 @@ Is A Partial Rough Draft!</b></h1>
 
 <h3><a href="#TOC3" name="SEC3">Why E?</a></h3>
 
-<p>Java, Perl, Python, C++, TCL, and on and on. Don't we have enough languages 
-  already? How could we justify bringing yet another programming language into 
+<p>Java, Perl, Python, C++, TCL, and on and on. Don't we have enough languages
+  already? How could we justify bringing yet another programming language into
   the world?</p>
 
 <p>In fact, there is still a compelling reason for developing better
@@ -156,52 +156,52 @@ we introduce <span class="e"><em>E</em></span>:</p>
   <li><span class="e"><em>E</em></span> has significant advantages compared to other popular programming
   languages for distributed computing. As one quick example of its power, E's <em>promise-pipelining</em> architecture
     ensures that <em>deadlock cannot occur.</em></li><p class="sidebar">
-  <span class="e">E</span> uses a specific flavor of capability-based security 
-  known as <em>object-capabilities</em>. With object-capabilities, 
-  capability-oriented programming has the same flavor as object-oriented  
-  programming, except that capability-oriented programming takes the usual OO 
-  strictures more seriously. Often when using object-capabilities for security, 
-  one finds that a more secure program is simply a program that follows OO 
+  <span class="e">E</span> uses a specific flavor of capability-based security
+  known as <em>object-capabilities</em>. With object-capabilities,
+  capability-oriented programming has the same flavor as object-oriented
+  programming, except that capability-oriented programming takes the usual OO
+  strictures more seriously. Often when using object-capabilities for security,
+  one finds that a more secure program is simply a program that follows OO
   principals of modularization more closely. </p>
   <li><span class="e"><em>E</em></span> has dramatic advantages for <em>secure</em>
     distributed systems. All communication in <span class="e"><em>E</em></span> is strongly encrypted,
-    transparently to the programmer. Capability-based security enables the concise composition of powerful 
+    transparently to the programmer. Capability-based security enables the concise composition of powerful
     patterns of interoperation, patterns that enable extensive cooperation even in the presence of severely
-    limited trust. Excluding user interface code, a simple but effective peer-to-peer secure chat system 
+    limited trust. Excluding user interface code, a simple but effective peer-to-peer secure chat system
     has been
-    written in less than 30 lines of code; no more lines of code were required to write 
-    a basic digital-money bank server <em>despite the severe security issues involved</em>. When 
-    the time comes for a security inspection, 
+    written in less than 30 lines of code; no more lines of code were required to write
+    a basic digital-money bank server <em>despite the severe security issues involved</em>. When
+    the time comes for a security inspection,
     capability security allows simple reachability analysis to exclude huge swaths of code
     because they cannot embody a threat. As a consequence,
-    auditing a system for security becomes cost effective to an extent that is simply unimaginable 
-     with other approaches, as documented in 
-     <a href="http://www.combex.com/papers/darpa-report/index.html">the DarpaBrowser report</a>. 
-     With <span class="e"><em>E</em></span>, it is straightforward to create 
-  systems that run across the Internet that are as secure and safe as if the 
-  entire system were running on a single computer in your basement. As one of 
-  the original developers of Smalltalk observed, upon learning about the 
-  object-capability paradigm from <span class="e">E</span>,  capability security is &quot;natural 
+    auditing a system for security becomes cost effective to an extent that is simply unimaginable
+     with other approaches, as documented in
+     <a href="http://www.combex.com/papers/darpa-report/index.html">the DarpaBrowser report</a>.
+     With <span class="e"><em>E</em></span>, it is straightforward to create
+  systems that run across the Internet that are as secure and safe as if the
+  entire system were running on a single computer in your basement. As one of
+  the original developers of Smalltalk observed, upon learning about the
+  object-capability paradigm from <span class="e">E</span>,  capability security is &quot;natural
   security&quot;: if you shouldn't use it, you just can't see it.</li>
   <li><span class="e"><em>E</em></span> can even enable the fearless yet powerful use of
     multi-party limited-trust mobile code. "Mobile code" is just about
     anything executable on your computer that you get from somewhere
-    else. Every time you turn on a word processor, play a game of 
+    else. Every time you turn on a word processor, play a game of
     Solitaire, or
     double click on an email attachment, you are executing mobile code
-    written by someone you probably don't know and should not trust. Yet we give 
+    written by someone you probably don't know and should not trust. Yet we give
   Solitaire,
     Barbie Fashion Designer, and Christmas Elf Bowling the full power to read
     our most private documents, sell them on EBay to the highest bidder, and
     then delete all your files. Our grandchildren will laugh at how silly this
     was, yet today there is no choice. If Microsoft used <span class="e"><em>E</em></span> instead of
     Visual Basic for its application language, Word and Excel would not be
-    vectors for attacks like the original Love Letter virus. If all software were 
+    vectors for attacks like the original Love Letter virus. If all software were
     written in <span class="e"><em>E</em></span>, Klez and BackOrifice could never have existed: indeed, the term
     "virus", so loved by the press because it implies incurability, would
-    never have been applied to computing. 
+    never have been applied to computing.
     </li></ul>
-    <p>These qualities cannot be achieved with traditional security approaches. Do not expect the 
+    <p>These qualities cannot be achieved with traditional security approaches. Do not expect the
     next release
     of Java, Windows, or Linux to fix the problem: the flaws in these systems lie
     at the heart of their architectures, unfixable without breaking upward
@@ -212,13 +212,13 @@ we introduce <span class="e"><em>E</em></span>:</p>
     Bridge to buy it.</p>
 
 
-<p><span class="e"><em>E</em></span> wraps these strengths in a C/Java syntax to make 
+<p><span class="e"><em>E</em></span> wraps these strengths in a C/Java syntax to make
 it quickly comfortable
 for a large number of software engineers. It is built with objects at the
 core of its design, making it easy to write modular, readable, maintainable
 software using the strategies familiar from Java. It has the kind of powerful
 string handling that will be recognized and seized upon by the Perl
-programmer. For both better and for worse, <span class="e"><em>E</em></span> is a 
+programmer. For both better and for worse, <span class="e"><em>E</em></span> is a
 dynamically typed language
 like Smalltalk, not a statically typed language like Java. Users of Perl and
 Python will immediately assert this is an advantage; Java and C++ programmers
@@ -233,10 +233,10 @@ from Scheme to Smalltalk to Perl and Python have found in the past.</p>
 
 <h3><a href="#TOC4" name="SEC4">Why not E?</a></h3>
 
-<p><span class="e"><em>E</em></span> is not a panacea. The current implementation of 
+<p><span class="e"><em>E</em></span> is not a panacea. The current implementation of
 <span class="e"><em>E</em></span> runs on top of the
 java virtual machine. As such, it is not a good language for low level
-machine manipulation. So do not try to use <span class="e"><em>E</em></span> 
+machine manipulation. So do not try to use <span class="e"><em>E</em></span>
 for writing device drivers. And
 <span class="e"><em>E</em></span>'s performance is quite unfavorable compared
 to raw C, so do not write the real time kernel of a missile
@@ -249,12 +249,12 @@ excellent language for getting a system to work. Once it is working, you can
 gain the performance rewards by profiling to see which portions of the code
 actually affect performance, then rewriting those (typically small) portions
 in Java, or C, or assembler, depending on your needs. In fact, for many
-traditional compute-intensive activities, <span class="e"><em>E</em></span> 
+traditional compute-intensive activities, <span class="e"><em>E</em></span>
 is just as performance-efficient
 as anything else: when creating windows and buttons on the screen, you use
 the gui widgets from the underlying jvm. Since the jvm uses native drawing machinery,
 there is little distinction among languages when working the windows.</p><p>
- 
+
 So perhaps <span class="e"><em>E</em></span> is in fact almost a panacea. But not quite.</p>
 
 <h3><a href="#TOC5" name="SEC5">Why this Book? Why not this Book?</a></h3>
@@ -262,21 +262,21 @@ So perhaps <span class="e"><em>E</em></span> is in fact almost a panacea. But no
 <p>This book is intended as an introductory text for
 practical <span class="e"><em>E</em></span> programming. Comparisons to Java are frequent, so some
 understanding of Java is desirable. If you wish to write software with
-point-and-click user interfaces, familiarity with either the Java 
+point-and-click user interfaces, familiarity with either the Java
 Swing classes or the IBM Standard Widget Toolkit (SWT) is practically required.</p>
 
 <p>This book is not a language specification. This book is an introduction
 to get you started and productive. If you encounter some surprising behavior not
 explained here, please join the e-lang discussion group and ask there: many
-helpful people can be found. If you need a precise specification, look to the 
+helpful people can be found. If you need a precise specification, look to the
 reference materials posted by the
-language author and keeper, Mark Miller, at the <a href="http://www.erights.org/">ERights web site</a>. 
+language author and keeper, Mark Miller, at the <a href="http://www.erights.org/">ERights web site</a>.
 You can join the e-lang
 discussion group at the same site.</p>
 
 <h3><a href="#TOC6" name="SEC6">Fireworks In Part II</a></h3>
 
-<p>When a very early version of <span class="e"><em>E</em></span> and 
+<p>When a very early version of <span class="e"><em>E</em></span> and
 <span class="e"><em>E</em></span> <em>in a Walnut </em>were presented to a
 programmer chat group, this was one of the comments:</p>
 
@@ -304,23 +304,23 @@ E's power for distributed programming meets your needs.</p>
 version of <span class="e"><em>E</em></span> from www.erights.org. Follow the
 installation directions in the distribution. </p><p>
 
-You will find the rune interactive 
+You will find the rune interactive
 interpreter by going into the <span class="e"><em>E </em></span>directory
-and typing</p> 
+and typing</p>
 <blockquote><pre>java -jar e.jar --rune
 </pre></blockquote>
- 
-<p>Rune will be your friend for experimentation as you learn<span class="e"><em> 
-  E</em></span>. Indeed, you may find, as others have, that rune is useful even 
-  when developing ordinary Java: with this scratchpad you can quickly explore 
-  what the API for Java really does when you use it, quickly and easily, before 
+
+<p>Rune will be your friend for experimentation as you learn<span class="e"><em>
+  E</em></span>. Indeed, you may find, as others have, that rune is useful even
+  when developing ordinary Java: with this scratchpad you can quickly explore
+  what the API for Java really does when you use it, quickly and easily, before
   you put Java code into the middle of a program that is difficult to test.</p>
-<p class="warn"><em>Crucial note: At the time of this writing, <span class="e"><em>E</em></span> 
-  is in transition to a return-keyword based syntax for returning values from 
-  methods and functions. The following examples will only work if you put the 
-  following pragmas at the top of <span class="e"><em>E</em></span> source files: 
+<p class="warn"><em>Crucial note: At the time of this writing, <span class="e"><em>E</em></span>
+  is in transition to a return-keyword based syntax for returning values from
+  methods and functions. The following examples will only work if you put the
+  following pragmas at the top of <span class="e"><em>E</em></span> source files:
   </em></p>
-<blockquote> 
+<blockquote>
   <pre># E sample
 pragma.syntax(&quot;0.9")</pre>
 </blockquote>
@@ -350,15 +350,15 @@ the end of the discussion of <span class="e"><em>E</em></span> objects.</p>
 <p>We will present examples both as straight <span class="e"><em>E</em></span> source and as rune
 source, depending on how complex the example is. </p>
 
-<p>The Trace Log will be one of your best friends when you step outside of rune 
-  and start writing <span class="e"><em>E</em></span> programs. When you install 
-  <span class="e"><em>E</em></span>, one of the items in the "eprops.txt" file 
-  is a specification of the directory where trace information should be written 
-  when a program fails during execution. Find your etrace directory(on Windows95, 
-  c:\windows\temp\etrace), and go there when you need debugging information. This 
-  is an important resource--more than one early adopter of <span class="e"><em>E</em></span> 
-  has kicked himself for forgetting that it is there, then spending several hours 
-  trying to understand a problem that was simple and obvious if you just looked 
+<p>The Trace Log will be one of your best friends when you step outside of rune
+  and start writing <span class="e"><em>E</em></span> programs. When you install
+  <span class="e"><em>E</em></span>, one of the items in the "eprops.txt" file
+  is a specification of the directory where trace information should be written
+  when a program fails during execution. Find your etrace directory(on Windows95,
+  c:\windows\temp\etrace), and go there when you need debugging information. This
+  is an important resource--more than one early adopter of <span class="e"><em>E</em></span>
+  has kicked himself for forgetting that it is there, then spending several hours
+  trying to understand a problem that was simple and obvious if you just looked
   at the log.</p>
 
 <h2><a href="#TOC8" name="SEC8">Ordinary Programming</a></h2>
@@ -380,14 +380,14 @@ rune script. Rune first: just type</p>
 ? </pre></blockquote>
 
 <p>To run an <span class="e"><em>E</em></span> program, put "println("Hello World")" into a text file.
-Make sure the file extension is ".e" (to run Swing-based apps, use extension ".e-awt", 
+Make sure the file extension is ".e" (to run Swing-based apps, use extension ".e-awt",
 and to use SWT-based apps, use ".e-swt").
 Type</p>
 <blockquote>
   <pre>java -jar e.jar --rune textfilename.e</pre>
 </blockquote>
 
-<p>into a command shell (a DOS window under Windows, or a Cygwin or Unix shell, 
+<p>into a command shell (a DOS window under Windows, or a Cygwin or Unix shell,
   such as bash).
   The greeting will be printed to your display.</p>
 
@@ -433,13 +433,13 @@ legal in E</em>, use ":=" for assignment and "==" for testing equality. The
 function "println" prints to the console. The "if" statement looks identical
 to its Java equivalent, but<em> the braces are required</em>.</p>
 
-<p>What is the end-of-statement delineator in E? In Java, you terminate a statement 
-  with a semi-colon. In <span class="e"><em>E</em></span>, the end-of-line is 
-  also the end-of-statement <em>unless</em> there is an open operation at the 
-  end of the line. In the example, the "if" statement's first line ends with an 
-  open brace; <span class="e"><em>E</em></span> knows the next line must be a 
+<p>What is the end-of-statement delineator in E? In Java, you terminate a statement
+  with a semi-colon. In <span class="e"><em>E</em></span>, the end-of-line is
+  also the end-of-statement <em>unless</em> there is an open operation at the
+  end of the line. In the example, the "if" statement's first line ends with an
+  open brace; <span class="e"><em>E</em></span> knows the next line must be a
   continuation line. Some quick examples</p>
-<blockquote> 
+<blockquote>
   <pre>This works
 ? def a := 1 + 2 + 3 + 4
 # value: 10
@@ -451,7 +451,7 @@ And this works
 # value: 10
 
 
-But this does not work, because the first line can and does 
+But this does not work, because the first line can and does
 evaluate without a continuation, so the second line is a syntax error:
 ? def c := 1 + 2
 ?   + 3 + 4
@@ -478,10 +478,10 @@ continuation character "\" as here:</p>
 <p>The basic types in <span class="e"><em>E</em></span> are int, float, string, char, and boolean. All
 integer arithmetic is unlimited precision, as if all integers were BigIntegers.</p>
 
-<p>Floats are represented as 64-bit IEEE floating point numbers. The operators 
-  +, -, * have their traditional meanings for integers and floats. The normal 
-  division operator "/" <em>always gives you a floating point result</em>. The 
-  <em>floor divide</em> operator "//" always gives you an integer, truncated towards 
+<p>Floats are represented as 64-bit IEEE floating point numbers. The operators
+  +, -, * have their traditional meanings for integers and floats. The normal
+  division operator "/" <em>always gives you a floating point result</em>. The
+  <em>floor divide</em> operator "//" always gives you an integer, truncated towards
   negative infinity. So (-3.5 // 1) == -4.</p>
 
 <p><span class="e"><em>E</em></span> has 2 modulo operations: "%", like the Java modulo
@@ -492,8 +492,8 @@ towards negative infinity.</p>
 <p>Operator precedence is generally the same as in Java. In a few cases E
 will throw a syntax error and require the use of parentheses.</p>
 
-<p><font color="#FF0000">"+" when used with strings is a concatenation operator 
-  as in Java. It automatically coerces other types on the right-hand if the left-hand 
+<p><font color="#FF0000">"+" when used with strings is a concatenation operator
+  as in Java. It automatically coerces other types on the right-hand if the left-hand
   operand is a string:</font></p>
 <blockquote>
   <pre><font color="#FF0000"># E sample
@@ -501,8 +501,8 @@ def x := 3
 def printString := "Value of x is: " + x</font></pre>
 </blockquote>
 
-<p>You can <font color="#FF0000">also</font> use quasi-literals, which enable 
-  the easy processing of complex strings as described in detail later; here is 
+<p>You can <font color="#FF0000">also</font> use quasi-literals, which enable
+  the easy processing of complex strings as described in detail later; here is
   a very simple example:</p>
 <blockquote><pre># E sample
 def printString := `Value of x is: $x`</pre></blockquote>
@@ -517,9 +517,9 @@ a variable whose value is to be embedded in the string.</p>
 quotes, and the backslash acts as an escape character as in Java: '\n' is the
 newline character, and '\\' is the backslash character. Strings in <span class="e"><em>E</em></span> are so similar
 to strings in Java, it is easy to conclude they are identical when they are
-not. The 
+not. The
 <a href="http://www.erights.org/javadoc/org/erights/e/elib/tables/Twine.html">
-protocol for 
+protocol for
 <span class="e"><em>E</em></span> strings</a> is detailed in the <a href="http://www.erights.org/javadoc/index.html">
 <span class="e"><em>E</em></span> javadoc</a>.</p>
 
@@ -531,7 +531,7 @@ integers, the values are compared to see if the values are equal; for other
 objects the references are compared to see if both the left and right sides
 of the operator refer to the same object. Chars, booleans, integers,
 and floating point numbers are all compared by value, as in Java. In addition,
-Strings, ConstLists, and ConstMaps <span class="note">link here</span> are also 
+Strings, ConstLists, and ConstMaps <span class="note">link here</span> are also
 compared by value, which makes it
 different from, and more natural than, Java. </p>
 
@@ -552,7 +552,7 @@ structures include:</p>
   <li>try{...} catch errorVariable {...} finally{...}</li>
   <li>throw (ExceptionExpressionThatCanBeAString)</li>
   <li>break (which jumps out of a while or for loop; if the break keyword is
-        followed by an expression, that expression is returned as the value of the 
+        followed by an expression, that expression is returned as the value of the
         loop)</li>
   <li>continue (which jumps to the end of a while or for, and starts the next cycle)</li>
   <li>switch (expression) {match==v1{...} match==v2{...} ... match _{defaultAction}}</li>
@@ -612,13 +612,13 @@ testing tool, to enable execution of all the upcoming code that depends on Swing
 <blockquote>
   <pre>?? in new vat awtVat.e-awt
 ? pragma.syntax(&quot;0.9&quot;)</pre>
-</blockquote> 
+</blockquote>
 
 <h3><a href="#TOC11" name="SEC11">Objects and Functions</a></h3>
 
-<p class="warn">As noted earlier, if the file is to use the Swing gui toolkit, 
-  it must have a suffix of ".e-awt". If the file is to use the SWT gui toolkit, 
-  it must have a suffix of ".e-swt". If the file will run headless, it should 
+<p class="warn">As noted earlier, if the file is to use the Swing gui toolkit,
+  it must have a suffix of ".e-awt". If the file is to use the SWT gui toolkit,
+  it must have a suffix of ".e-swt". If the file will run headless, it should
   be placed in a file with suffix ".e". </p>
 
 
@@ -632,9 +632,9 @@ def addNumbers(a,b) {
 # Now use the function
 def answer := addNumbers(3,4)</pre></blockquote>
 
-<p>You can nest the definitions of functions and objects inside other functions 
-  and objects, giving you functionality comparable to that of inner classes in 
-  Java. Nested functions and objects play a crucial role in <span class="e"><em>E</em></span>, 
+<p>You can nest the definitions of functions and objects inside other functions
+  and objects, giving you functionality comparable to that of inner classes in
+  Java. Nested functions and objects play a crucial role in <span class="e"><em>E</em></span>,
   notably in the construction of objects as described shortly.</p>
 
 <p>A parameterless function must still have an open/close paren pair. Calls
@@ -649,20 +649,20 @@ def factorial(n) {
     } else {
         return n * factorial(n-1)
     }
-}    
+}
 </pre></blockquote>
 
 <h4><a name="Dynamic type checking1">Dynamic "type checking" and
 Guards</a></h4>
 
-<p><span class="e"><em>E</em></span> guards perform many of the functions usually 
-thought of as type checking, 
+<p><span class="e"><em>E</em></span> guards perform many of the functions usually
+thought of as type checking,
 though they are so flexible, they also work as concise assertions.
 Guards can be placed on variables, parameters, and return values.</p>
 
 <p>Guards are not checked during compilation. They are checked during
-execution, and will throw exceptions if the value cannot be coerced to 
-pass the guard. Guards play a key role in protecting the security 
+execution, and will throw exceptions if the value cannot be coerced to
+pass the guard. Guards play a key role in protecting the security
 properties when working with untrusted code, as discussed in Secure
 Distributed Computing. </p>
 
@@ -682,7 +682,7 @@ chapter.<span class="note">put in link</span>
   <li>nullOk</li>
   <li>near</li>
   <li>vow</li>
-  <li>rcvr</li>
+  <li>ref</li>
   <li>pbc</li>
   <li>Data</li>
   <li>Java classes</li>
@@ -699,14 +699,14 @@ seedvat takes 2 args: 1)vat
 2)string that is contents of a dot-e file except
 all evaluated at once. seedvat function returns a promise for
 the result of evaluating that expression. since it evaluates in foreighn vat,
-it is a far reference.typical pattern: only do importing and construction 
+it is a far reference.typical pattern: only do importing and construction
 in the expression string</pre>
 
 <p>Here are some quick examples of guards being declared:</p>
 <blockquote><pre># E sample
 # guarding a variable
 def title :String := "abc"
-# guarding a parameter, and a return value. Note the guard on the 
+# guarding a parameter, and a return value. Note the guard on the
 # return value is part of the def line for the function.
 def reciprocal(x :float64) :float64 {
     return 1 / x
@@ -752,9 +752,9 @@ separated by a dot.</p>
 
 <h5>Stateful objects and object constructors</h5>
 
-<p>The "class" concept in Java is used to achieve multiple goals. In <span class="e"><em>E</em></span>, 
-  these goals are factored out in a different way. For example, Java classes supply 
-  a place to put constructors, which have a special syntax unique to constructors. 
+<p>The "class" concept in Java is used to achieve multiple goals. In <span class="e"><em>E</em></span>,
+  these goals are factored out in a different way. For example, Java classes supply
+  a place to put constructors, which have a special syntax unique to constructors.
   In <span class="e"><em>E</em></span>, objects are constructed by ordinary functions.</p>
 <blockquote><pre># E sample
 # Point constructor
@@ -768,7 +768,7 @@ def makePoint(x,y) {
         to makeOffsetPoint(offset) {
             return makePoint(x + offset, y + offset)
         }
-    } 
+    }
     return point
 }
 # Create a point
@@ -776,7 +776,7 @@ def origin := makePoint(0,0)
 # get the y value of the origin
 def y := origin.getY()</pre></blockquote>
 
-<p>Inside the function makePoint, we define a point and return it. 
+<p>Inside the function makePoint, we define a point and return it.
 As demonstrated by the
 makeOffsetPoint method, the function (makePoint) can
 be referenced from within its own body. Also note that you can
@@ -806,7 +806,7 @@ def makeCar(var name) {
         to getY() {return y}
         to setName(newName) {name := newName}
         to getName() {return name}
-    } 
+    }
     return car
 }
 # Now use the makeCar function to make a car, which we will move and print
@@ -848,8 +848,8 @@ construction, and the car needs the radio during car construction.</p>
 def makeRadio(car) {
     # define radios
 }
-def makeCar(name) { 
-    var x := 0 
+def makeCar(name) {
+    var x := 0
     var y := 0
     # using def with no assignment
     def car
@@ -857,8 +857,8 @@ def makeCar(name) {
     bind car {
         to receiveWeatherAlert(myWeatherRadio) {
             # ....process the weather report....
-        } 
-        to getX() {return x} 
+        }
+        to getX() {return x}
         to getY() {return y}
         # ....list the rest of the car methods....
     }
@@ -868,17 +868,17 @@ def makeCar(name) {
 <p>Here, we do a "def" of the car with no assignment, then we use the car,
 then we do a  "bind" of the car which binds a value to the car. This looks
 and behaves like a "forward reference" from C. Under the covers, the
-statement "def car" creates a <em>promise</em> for the car, and the <em>bind</em> 
+statement "def car" creates a <em>promise</em> for the car, and the <em>bind</em>
 statement <em>fulfills</em> the promise.
 We discuss promises in greater depth in the Distributed Computing chapter,
 where they play a key role.</p>
 
 <h5>Secret Life of Functions, Multiple Constructors and "Static Methods"</h5>
 
-<p>Before we can talk about multiple constructors and the static-method-like behavior 
-  in <span class="e"><em>E</em></span>, it is time to reveal the truth about <span class="e"><em>E</em></span> 
-  functions. They are in fact simple objects with a single method, the "run" method, 
-  that is invoked by default if no other method is explicitly designated. For 
+<p>Before we can talk about multiple constructors and the static-method-like behavior
+  in <span class="e"><em>E</em></span>, it is time to reveal the truth about <span class="e"><em>E</em></span>
+  functions. They are in fact simple objects with a single method, the "run" method,
+  that is invoked by default if no other method is explicitly designated. For
   example, the following square function</p>
 <blockquote><pre># E sample
 def square(x) {return x*x}</pre></blockquote>
@@ -930,12 +930,12 @@ def makeCar(name) {
     return car
 }
 def makeJet(name) {
-    def jet { 
-        to moveTo(x, y) { 
-            # move the jet, very different code from the code for car 
-        } 
-        # other methods 
-   } 
+    def jet {
+        to moveTo(x, y) {
+            # move the jet, very different code from the code for car
+        }
+        # other methods
+   }
    return jet
 }
 def vehicles := [makeCar("car"), makeJet("jet")]
@@ -945,32 +945,32 @@ for each in vehicles {
 
 <h4><a name="Delegation">Extends and Delegation</a></h4>
 
-<p>An object can refer calls to itself to another object (a "super-object", built 
-  by the "super-constructor", faintly similar to the way one uses superclasses 
+<p>An object can refer calls to itself to another object (a "super-object", built
+  by the "super-constructor", faintly similar to the way one uses superclasses
   in Java) using the <em>extends</em> keyword:
   <span class="note">think of better example</span></p>
 
 <blockquote>
-  <pre>? def makePoint(x, y) { 
-&gt;     def point { 
-&gt;         to getX() {return x} 
+  <pre>? def makePoint(x, y) {
+&gt;     def point {
+&gt;         to getX() {return x}
 &gt;         to getY() {return y}
-&gt;         to getMagnitude() {return (x*x + y*y)**0.5} 
+&gt;         to getMagnitude() {return (x*x + y*y)**0.5}
 &gt;     }
 &gt;     return point
-&gt; } 
-# value: &lt;makePoint&gt;  
- 
-? def makePoint3D(x,y,z) { 
-&gt;     def point3D extends makePoint(x,y) { 
-&gt;         to getZ() {return z} 
+&gt; }
+# value: &lt;makePoint&gt;
+
+? def makePoint3D(x,y,z) {
+&gt;     def point3D extends makePoint(x,y) {
+&gt;         to getZ() {return z}
 &gt;         to getMagnitude() {
 &gt;             def xy := super.getMagnitude()
 &gt;             return (z*z + xy*xy)**0.5
-&gt;         } 
+&gt;         }
 &gt;     }
-&gt;     return point3D 
-&gt; } 
+&gt;     return point3D
+&gt; }
 # value: &lt;makePoint3D&gt;
 
 ? def place := makePoint3D(1,2,3)
@@ -1013,7 +1013,7 @@ full inheritance. In inheritance, the "self" to which a super-object refers
 is the sub-object of which it is a part, so that the super-object can use
 methods in the sub-object:</p>
 <blockquote>
-  <pre># E sample 
+  <pre># E sample
 def makeVehicle(self) {
     def vehicle {
         to milesTillEmpty() {
@@ -1061,7 +1061,7 @@ using <em>match</em>. In this example, we count the number of calls made
 to a car:</p>
 <blockquote><pre># E sample
 def makeCalledCountCar(name) {
-    def myCar := makeCar(name) 
+    def myCar := makeCar(name)
     var myCallCount := 0
     def car {
         to getCallCount() {return myCallCount}
@@ -1119,9 +1119,9 @@ front of an object method definition (a "to" statement):</p>
  * &lt;p&gt;
  * Currently works with any objects that support the "plus" method
  *
- * @param a the first number. 
+ * @param a the first number.
  * @param b the second number
- * @return  the result of adding. 
+ * @return  the result of adding.
  */
 def adder(a, b) {return a + b}</pre></blockquote>
 
@@ -1146,10 +1146,10 @@ def compute(a,b) {
     return answer
 }</pre>
 </blockquote>
-<p><font color="#FF0000">This would throw an exception because the inner definition 
+<p><font color="#FF0000">This would throw an exception because the inner definition
   of the function-like object times2 completely shadows the outer times2.</font></p>
-<p><font color="#FF0000">Not only functions, but also built-in constants like 
-  integers and floats, are objects. Operators such as "+" are really shorthands 
+<p><font color="#FF0000">Not only functions, but also built-in constants like
+  integers and floats, are objects. Operators such as "+" are really shorthands
   for message passing: 3.add(4) is identical to 3 + 4. This is why the operation</font></p>
 <blockquote>
   <pre><font color="#FF0000">"The number is " + 1</font></pre>
@@ -1158,11 +1158,11 @@ def compute(a,b) {
 <blockquote>
   <pre><font color="#FF0000">1 + " is the number" </font></pre>
 </blockquote>
-<p><font color="#FF0000">does not. A string knows how to handle a concatenate 
-  message with a number as the argument, but an integer is clueless what to do 
+<p><font color="#FF0000">does not. A string knows how to handle a concatenate
+  message with a number as the argument, but an integer is clueless what to do
   with an add of a string.</font></p>
-<p><font color="#FF0000">Since "+" is really just shorthand for "add", you can 
-  construct objects that work with the "+" operator just by implementing an "add(argument)" 
+<p><font color="#FF0000">Since "+" is really just shorthand for "add", you can
+  construct objects that work with the "+" operator just by implementing an "add(argument)"
   method in the object.</font></p>
 
 <h4><a name="Under the covers: Miranda Methods">Under the covers: Miranda
@@ -1173,8 +1173,8 @@ objects respond, known as Miranda Methods. One example of such a method is
 the printOn(textWriter) method, which defines how an object will write
 itself out as by default. Other Miranda methods will be described in other
 sections of the book. The full list of Miranda methods can be
-found in the Appendix. You can also see them in rune by typing help(def obj{}) 
-<span class="note">duplicate of next section, fix</span> 
+found in the Appendix. You can also see them in rune by typing help(def obj{})
+<span class="note">duplicate of next section, fix</span>
 </p>
 
 <p>One important note about Miranda methods: they are not forwarded by the
@@ -1184,12 +1184,12 @@ object that receives them.</p>
 
 <h4>Getting Help About an Object With Rune</h4>
 
-<p>Another often convenient way of finding the list of methods associated with 
-  an object, be it a Java object or an <span class="e"><em>E</em></span> object 
-  or an object delivered as part of the <span class="e"><em>E</em></span> runtime, 
-  is to use the help(object) function of <span class="e"><em>E</em></span>, often 
+<p>Another often convenient way of finding the list of methods associated with
+  an object, be it a Java object or an <span class="e"><em>E</em></span> object
+  or an object delivered as part of the <span class="e"><em>E</em></span> runtime,
+  is to use the help(object) function of <span class="e"><em>E</em></span>, often
   used in rune.</p>
-<blockquote> 
+<blockquote>
   <pre>? def add(a, b) {
 &gt;     return a + b
 &gt; }
@@ -1212,14 +1212,14 @@ method in the object would be listed as well.</p>
 
 <h3><a href="#TOC12" name="SEC12">I/O</a></h3>
 
-<p>E file objects are created with the &lt;file:name&gt; expression (which produces 
-  a <a href="http://www.erights.org/javadoc/java/io/File.html">"tamed" Java File 
-  Object</a>, i.e., a File object that follows capability security discipline). 
-  If you can hard-code the name, you usually do not need to use quotes (unless 
-  there is a space or another invalid url character). If the name is contained 
-  in a variable or is retrieved with a function call, you must <font color="#FF0000">XXX</font> 
-  place a space between the colon and the representation of the name. If the word 
-  "file" is replaced with a single letter like "c", the letter is assumed to be 
+<p>E file objects are created with the &lt;file:name&gt; expression (which produces
+  a <a href="http://www.erights.org/javadoc/java/io/File.html">"tamed" Java File
+  Object</a>, i.e., a File object that follows capability security discipline).
+  If you can hard-code the name, you usually do not need to use quotes (unless
+  there is a space or another invalid url character). If the name is contained
+  in a variable or is retrieved with a function call, you must <font color="#FF0000">XXX</font>
+  place a space between the colon and the representation of the name. If the word
+  "file" is replaced with a single letter like "c", the letter is assumed to be
   the drive letter on a Windows machine:</p>
 <blockquote>
   <pre># E sample
@@ -1237,7 +1237,7 @@ def file5 := &lt;c:\docs\myFile.txt&gt;</pre>
 </blockquote>
 
 <p>Note that in the file4 example, we used slashes, not backslashes, to
-separate directories on a Windows drive. <em>In <span class="e"><em>E</em></span>, 
+separate directories on a Windows drive. <em>In <span class="e"><em>E</em></span>,
 the slash always works as a
 directory separator no matter the underlying operating system. </em></p>
 
@@ -1259,7 +1259,7 @@ line-object is terminated with a newline ('\n') character. The lines in the
 loop are terminated with newline regardless of the underlying operating
 system, regardless of the operating system's end-of-line designation.</p>
 
-<p>Files respond to the following messages 
+<p>Files respond to the following messages
 <a href="http://www.erights.org/javadoc/java/io/File.html">(see the Edoc for a complete
 list)</a>. </p>
 <ul>
@@ -1296,7 +1296,7 @@ programming.</p>
 
 <h4><a name="Flex and Const, List and Map">Flex and Const, List, Map and Set</a></h4>
 
-<p>There are three built-in data structures in <span class="e"><em>E</em></span>, 
+<p>There are three built-in data structures in <span class="e"><em>E</em></span>,
 Lists, Maps, and Sets. Each of these
 structures comes in two flavors, Flex (editable) and Const (immutable). The
 ConstList is the simplest:</p>
@@ -1315,7 +1315,7 @@ def subrange := list(0,2)
 
 <p>Lists are numerically indexed starting from 0, use the "+" operator to
 create a new list which is the concatenation of lists. Lists work with the
-for loop. The "size" method returns the number of elements. The 
+for loop. The "size" method returns the number of elements. The
 <span class="e"><em>E</em></span> String
 type is a kind of ConstList in which all the elements are characters. So, for
 example, the mechanism for taking a subrange shown above gives you a
@@ -1350,7 +1350,7 @@ def table := ["a" =&gt; 1, 2 =&gt; "b"]
 # This is true: table[2] == "b"
 def emptyTable := [].asMap()
 def keyTable := ["a",1,true].asKeys()
-# This is true: keyTable[true] == null 
+# This is true: keyTable[true] == null
 # This is true: keyTable.maps("a") == true
 for key =&gt; value in table {println(`Key: $key Value: $value`)}
 for each in table {println(`Value: $each`)}
@@ -1392,13 +1392,13 @@ Java.</p>
 <p>One feature of <span class="e"><em>E</em></span> that Java/C programmers will find surprising but useful
 is the ability to define multiple variables by using a list:</p>
 <blockquote><pre># E sample
-def [a,b] := [2,3] 
+def [a,b] := [2,3]
 #a holds the value 2
 #b holds the value 3</pre></blockquote>
 
 <p>While this is an amusing way to initialize a random bunch of variables at
 once, the structure is most valuable when creating groups of variables that
-have no meaning in the absence of one another. The method Ref.promise(), 
+have no meaning in the absence of one another. The method Ref.promise(),
 described in
 Distributed Computing, is an important user of this pattern.</p>
 
@@ -1431,7 +1431,7 @@ myVector.addElement("abc")
 #create a makeVector function which can be called repeatedly to make more vectors
 def makeVector := &lt;unsafe:java.util.makeVector&gt;
 def vector2 := makeVector()
-# create a shorthand for the java.util package, that gives quick access to all the 
+# create a shorthand for the java.util package, that gives quick access to all the
 # classes in java.util
 def &lt;util&gt; := &lt;unsafe:java.util.*&gt;
 def vector3 := &lt;util:makeVector&gt;()</pre>
@@ -1440,7 +1440,7 @@ def vector3 := &lt;util:makeVector&gt;()</pre>
 <p>In the example, we showed 3 ways of getting a Java object, which are
 roughly comparable to the different styles of using "import" in Java. If you
 just want one vector, you can get it by directly calling the vector
-constructor. If you plan to make many vectors, you can import the class into a variable. 
+constructor. If you plan to make many vectors, you can import the class into a variable.
 And if you plan to use
 many classes in a particular package, you can
 create your own representative for the package that you can use instead of
@@ -1454,11 +1454,11 @@ programmer-defined util:. Four other uriGetters are also predefined, swing:
 read-only access to resource files such as images, sounds, and static texts),
 and import:, described next.</p>
 
-<p>The import: uriGetter is similar to unsafe:, except it only imports those parts 
-  of the Java API that have been audited for capability security and found to 
-  convey no authority (see the Appendix for a definition of "authority").<span class="note">put 
-  in link, think of better example. Remove vector from the book</span> Since the 
-  Vector class <font color="#FF0000">conveys no authority, you could also get 
+<p>The import: uriGetter is similar to unsafe:, except it only imports those parts
+  of the Java API that have been audited for capability security and found to
+  convey no authority (see the Appendix for a definition of "authority").<span class="note">put
+  in link, think of better example. Remove vector from the book</span> Since the
+  Vector class <font color="#FF0000">conveys no authority, you could also get
   a vector with import</font>:</p>
 <blockquote>
   <pre>def vector4 := &lt;unsafe:java.util.makeVector&gt;()</pre>
@@ -1495,7 +1495,7 @@ simply sent myVector an addElement(object) message as if it were an <span class=
 A problem arises with some Java objects if they have overloaded methods for
 which the only distinguishing mark is the static typing of the parameters in
 which one of the methods specifies a type that is a superclass of the type in
-the other method--a rare but not unheard-of situation. <span class="note">coercion 
+the other method--a rare but not unheard-of situation. <span class="note">coercion
 causes same problem</span>In that case, we need
 to revert to a more descriptive messaging convention.</p>
 
@@ -1505,7 +1505,7 @@ signature of an overloaded method with the types of the parameters. In this
 example, we see that the print function for the System.out object is
 overloaded for both String and Object, with String being a subclass of
 Object, so the full signature is required:</p>
-<blockquote> 
+<blockquote>
   <pre>? def out := &lt;unsafe:java.lang.makeSystem&gt;.getOut()
 # value: &lt;a PrintStream&gt;
 
@@ -1526,7 +1526,7 @@ signature:</p>
 
 <p>It is possible to make Java arrays of Java primitive types, as in this
 example:</p>
-<blockquote> 
+<blockquote>
   <pre># E sample
 def makeFlexList := &lt;elib:tables.makeFlexList&gt;
 def byteArray := makeFlexList.fromType(&lt;type:byte&gt;, 300)
@@ -1534,25 +1534,25 @@ byteArray.setSize(300)
 byteArray[0] := 3</pre>
 </blockquote>
 
-<p>Here we have created a 300-element editable array of bytes. The individual 
+<p>Here we have created a 300-element editable array of bytes. The individual
   elements can be accessed with square bracket notation.</p>
-<p><font color="#FF0000">XXX Now that this example has been corrected, does it 
-  still serve its purpose? Also, it's not technically correct to say this makes 
-  a Java array. It makes an E FlexList, which, on E-on-Java, currently happens 
-  to be implemented by wrapping a Java array. However, if your program depends 
+<p><font color="#FF0000">XXX Now that this example has been corrected, does it
+  still serve its purpose? Also, it's not technically correct to say this makes
+  a Java array. It makes an E FlexList, which, on E-on-Java, currently happens
+  to be implemented by wrapping a Java array. However, if your program depends
   on this fact, it is probably broken. </font></p>
 
 <h4>Java Adapters and Interfaces</h4>
 
-<p>As described earlier, you can use the match[verb,args] construct to aid in 
-  writing adapters and other objects that must meet a Java interface specification. 
-  <span class="e"><em>E</em></span> will automatically manipulate the resulting 
-  <span class="e"><em>E</em></span> objects and the java virtual machine so that 
-  Java understands that the <span class="e"><em>E</em></span> object meets the 
-  interface specification. It is not possible to make subclasses of Java classes 
-  in <span class="e"><em>E</em></span>. However, because the developers of the 
-  Java API have wisely moved aggressively to make sure that interfaces, rather 
-  than subclasses, are core to Java object interoperability, there is virtually 
+<p>As described earlier, you can use the match[verb,args] construct to aid in
+  writing adapters and other objects that must meet a Java interface specification.
+  <span class="e"><em>E</em></span> will automatically manipulate the resulting
+  <span class="e"><em>E</em></span> objects and the java virtual machine so that
+  Java understands that the <span class="e"><em>E</em></span> object meets the
+  interface specification. It is not possible to make subclasses of Java classes
+  in <span class="e"><em>E</em></span>. However, because the developers of the
+  Java API have wisely moved aggressively to make sure that interfaces, rather
+  than subclasses, are core to Java object interoperability, there is virtually
   no Java interfacing goal that cannot be achieved with this machinery.</p>
 
 <h4>The Java API versus capability security</h4>
@@ -1565,7 +1565,7 @@ accessible through the import__uriGetter; however, some parts of the Java API
 will be altered and/or suppressed even in unsafe__uriGetter to achieve a more
 secure yet easier to use computing framework. This is discussed
 further in the chapter on Mobile Code. You can see the
-list of suppressed methods and unsafe classes 
+list of suppressed methods and unsafe classes
 <a href="http://www.erights.org/javadoc/index.html">in the Javadoc</a>.</p>
 
 <h3><a href="#TOC15" name="SEC15">Quasi-Literals and Quasi-Parsers</a></h3>
@@ -1637,14 +1637,14 @@ to now be twines</span> </p>
 <h4><a name="Regular expression quasi parser">Regular expression quasi
 parser</a></h4>
 
-<p>The regular expression quasi-parser gives <span class="e"><em>E</em></span> 
-  much of the CGI scripting power that Perl and Python share. Since <span class="e"><em>E</em></span> 
-  runs on top of a jvm with all the startup time such jvms entail, using <span class="e"><em>E</em></span> 
-  for CGI scripts <em>per se</em> is not recommended. However, if one uses the 
-  distributed computing power of <span class="e"><em>E</em></span> to run CGI-like 
-  <span class="e"><em>E</em></span> programs as services for a Web server, one 
-  can achieve the same effect, and receive a number of bonuses unavailable in 
-  Perl and Python. The example Web server written in <span class="e"><em>E</em></span>, 
+<p>The regular expression quasi-parser gives <span class="e"><em>E</em></span>
+  much of the CGI scripting power that Perl and Python share. Since <span class="e"><em>E</em></span>
+  runs on top of a jvm with all the startup time such jvms entail, using <span class="e"><em>E</em></span>
+  for CGI scripts <em>per se</em> is not recommended. However, if one uses the
+  distributed computing power of <span class="e"><em>E</em></span> to run CGI-like
+  <span class="e"><em>E</em></span> programs as services for a Web server, one
+  can achieve the same effect, and receive a number of bonuses unavailable in
+  Perl and Python. The example Web server written in <span class="e"><em>E</em></span>,
   shown at the end of the book, was designed with just this thought in mind.</p>
 
 <h4><a name="JPanel">JPanel</a></h4>
@@ -1663,9 +1663,9 @@ Java IDEs, the JPanel system is able to define a broad range of
 <em>resizable</em> windows simply and intuitively.</p>
 <blockquote><pre># E syntax
 # define the panels explanation,label, field, okButton, cancelButton, logo
-# pad1, pad2, which are label fields before 
+# pad1, pad2, which are label fields before
 # this example begins
-def composedPanel := 
+def composedPanel :=
 JPanel`$explanation.Y     &gt;              &gt;
 $label                    $field         &gt;
 $okButton                 $cancelButton  $pad1.X
@@ -1902,9 +1902,9 @@ build up too much velocity, you won't be able to slow down!</p>
 Java API calls, it's all there. We will come back to this example later in
 the book, to make the track distributed and secure. Then we shall invite
 Satan for a little competition, with souls on the line.</p>
-<blockquote> 
+<blockquote>
   <pre># E sample
- 
+
 #!/usr/bin/env rune
 
 # Copyright 2002 Combex, Inc. under the terms of the MIT X license
@@ -1963,26 +1963,26 @@ def makeInstrumentPanel(car) :near {
         if (speed == 0) {answer := "0"}
         return answer
     }
-    def makeXIndicator(speed) {return makeIndicator(speed,"&gt;","&lt;")} 
-    def makeYIndicator(speed) {return makeIndicator(speed,"^\n","V\n")} 
+    def makeXIndicator(speed) {return makeIndicator(speed,"&gt;","&lt;")}
+    def makeYIndicator(speed) {return makeIndicator(speed,"^\n","V\n")}
     def frame := &lt;swing:makeJFrame&gt;(`Car ${car.getName()} Instrument Panel`)
-    def lbl(text) {return &lt;swing:makeJLabel&gt;(text)} 
-    def xLabel := lbl("Horizontal Speed:") 
-    def xIndicator := &lt;swing:makeJTextArea&gt;() 
-    xIndicator.setText("0") 
-    def yLabel := &lt;swing:makeJTextArea&gt;("V \ne\nr\nt\ni\nc\na\nl") 
-    yLabel.setBackground(&lt;awt:makeSystemColor&gt;.getControl()) 
-    def yIndicator := &lt;swing:makeJTextArea&gt;() 
-    yIndicator.setText("0") 
-    def statusPane := lbl("Running...") 
-    def instrumentPanel 
-    def btn(name,action) {return newButton(name,action,instrumentPanel)} 
-    def submitButton := btn("Submit","submit") 
-    var acceleration := makeCoord(0,0) 
+    def lbl(text) {return &lt;swing:makeJLabel&gt;(text)}
+    def xLabel := lbl("Horizontal Speed:")
+    def xIndicator := &lt;swing:makeJTextArea&gt;()
+    xIndicator.setText("0")
+    def yLabel := &lt;swing:makeJTextArea&gt;("V \ne\nr\nt\ni\nc\na\nl")
+    yLabel.setBackground(&lt;awt:makeSystemColor&gt;.getControl())
+    def yIndicator := &lt;swing:makeJTextArea&gt;()
+    yIndicator.setText("0")
+    def statusPane := lbl("Running...")
+    def instrumentPanel
+    def btn(name,action) {return newButton(name,action,instrumentPanel)}
+    def submitButton := btn("Submit","submit")
+    var acceleration := makeCoord(0,0)
     def realPane :=JPanel`
-        ${lbl("")}  $xLabel     &gt;                      &gt;                  &gt; 
-        V           $xIndicator &gt;                      &gt;                  &gt; 
-        $yLabel.Y   $yIndicator ${btn("\\","upLeft")}  ${btn("^","up")}   ${btn("/","upRight")} 
+        ${lbl("")}  $xLabel     &gt;                      &gt;                  &gt;
+        V           $xIndicator &gt;                      &gt;                  &gt;
+        $yLabel.Y   $yIndicator ${btn("\\","upLeft")}  ${btn("^","up")}   ${btn("/","upRight")}
         V           V           ${btn("&lt;","left")}     ${btn("0","zero")} ${btn("&gt;","right")}
         V           V           ${btn("/","downLeft")} ${btn("V","down")} ${btn("\\","downRight")}
         V           V           $submitButton.X        &gt;                  &gt;
@@ -2031,7 +2031,7 @@ def makeCar(name,startLocation,raceMap)  {
             -1
         } else {0}
     }
-    
+
     def accelReactors := [].asMap().diverge()
 
     /**
@@ -2164,7 +2164,7 @@ def makeRaceMap() {
                 def inBounds(xLoc) :boolean {return xLoc &gt;= 0 &amp;&amp; xLoc &lt; line.size()}
                 var result := line
                 for each in cars {
-                    if (each.getLocation().getY() == index &amp;&amp; 
+                    if (each.getLocation().getY() == index &amp;&amp;
                           inBounds(each.getLocation().getX())) {
                         def editable := result.diverge(char)
                         editable[each.getLocation().getX()] := (each.getName())[0]
@@ -2209,7 +2209,7 @@ def makeRaceMap() {
  * create the cars, place them in a flex map to be used as a set
  */
 def makeCars(raceMap) {
-    def carList := [ 
+    def carList := [
         makeCar("1",makeCoord(1,9),raceMap),
         makeCar("2",makeCoord(2,9),raceMap),
         makeCar("3",makeCoord(3,9),raceMap)]
@@ -2321,9 +2321,9 @@ spreadsheet. A sophisticated distributed computation has been completed so
 simply that no one realizes an advanced degree in computer science should
 have been required.</p>
 
-<p>In this simple example, we see why human beings never get trapped in the thread-based 
-  deadlock situations described endlessly in books on concurrent programming. 
-  People don't deadlock because they live in a concurrent world managed with a 
+<p>In this simple example, we see why human beings never get trapped in the thread-based
+  deadlock situations described endlessly in books on concurrent programming.
+  People don't deadlock because they live in a concurrent world managed with a
   promise-based architecture. And so it is with <span class="e"><em>E</em></span>.</p>
 
 <p>This chapter on distributed computing is the longest and most challenging
@@ -2406,9 +2406,9 @@ carVow &lt;- moveTo(2,3)</pre></blockquote>
 
 <p>In this example, we have sent the makeCar function the default "run" message.
 Eventually the carMaker will create the new car on the same computer where
-the carMaker resides; in the meantime, we get back a promise for the car. 
+the carMaker resides; in the meantime, we get back a promise for the car.
 </p><p> Once we've got a promise, pipelining comes into the picture: <em>We
-can immediately start making eventual sends to the promise just as if it 
+can immediately start making eventual sends to the promise just as if it
 were indeed the car</em>. Enormous queues of operations can be shipped across
 the poor-latency comm network while waiting for the car to be created, confident
 that those operations will be executed as soon as possible. </p>
@@ -2418,7 +2418,7 @@ even if the car maker (and
 therefore the car it creates) actually live on the same computer with the
 program. To make immediate calls on the promised object, you must set up an
 action to occur when the promise resolves, using a when-catch construct:</p>
-<blockquote> 
+<blockquote>
   <pre># E syntax
 def temperatureVow := carVow &lt;- getEngineTemperature()
 when (temperatureVow) -&gt; {
@@ -2463,31 +2463,31 @@ of warnings can be found in the Naming Conventions section later.</p>
 Since we cannot ascertain beforehand whether it is local or remote, we must
 treat it as a remote object, i.e., we must interact with it only using eventual
 sends. We can use either the suffix Rcvr on the variable name as a reminder,
-or we can use the rcvr guard when defining the variable as a reminder. If you
+or we can use the ref guard when defining the variable as a reminder. If you
 use Rcvr as a suffix, you will be more reliably reminded not to use immediate
 calls, but it does produce long variable names.</p>
 <blockquote><pre># E syntax
-def car :rcvr := makeCarRcvr &lt;- ("Mercedes")
+def car :ref := makeCarRcvr &lt;- ("Mercedes")
 car &lt;- moveTo(2,3)</pre></blockquote>
 In this example, makeCarRcvr is a reference to a makeCar function that we
 have reason to believe may be remote, and therefore can only be spoken to
 reliably with eventual sends. We could name the vehicle a carRcvr,
 since it's a reference to a car local to the makeCar function, which therefore is
 also probably remote to us (if makeCar is remote, so is the car). Instead,
-we have chosen to use the rcvr guard to remind us to only use eventual sends 
+we have chosen to use the ref guard to remind us to only use eventual sends
 when interacting with this car.
 
-<p><font color="#FF0000">Under the covers, the "done(value)" part of the when-catch 
-  is actually the definition of a function. You can make up your own names for 
-  "done", such as "finished". Indeed, if a single object uses more than one when-catch, 
+<p><font color="#FF0000">Under the covers, the "done(value)" part of the when-catch
+  is actually the definition of a function. You can make up your own names for
+  "done", such as "finished". Indeed, if a single object uses more than one when-catch,
   each "done" function must have a distinct name, such as done1, done2, etc.</font></p>
 
-<p><font color="#FF0000">The function nature of the "done" element of the when-catch 
+<p><font color="#FF0000">The function nature of the "done" element of the when-catch
   is useful for making when-catch create promises for you, as discussed later.</font></p>
 
 <p>When-catch, like try-catch, has an optional <em>finally</em> clause that
 always executes:</p>
-<blockquote> 
+<blockquote>
   <pre># E syntax
 when (tempVow) -&gt; {
     #...use tempVow
@@ -2503,7 +2503,7 @@ when (tempVow) -&gt; {
 <p>If you need to resolve several references before making a computation, use
 a multiway when-catch, in which you specify several arguments in the
 structure:</p>
-<blockquote> 
+<blockquote>
   <pre># E syntax
 def maxTempVow := vehicleSpecsRcvr &lt;- getMaxEngineTemperature(carType)
 def engineTempVow := carRcvr &lt;- getEngineTemperature()
@@ -2574,7 +2574,7 @@ specified sequence.</p>
 <p>On first introduction, it is hard to fully appreciate the relationship
 between partial ordering and when-catch delayed activation. Here is a more
 sophisticated example.</p>
-<blockquote> 
+<blockquote>
   <pre># E syntax
 def cars := [car1,car2,car3]
 for each in cars {
@@ -2584,7 +2584,7 @@ for each in cars {
         println(`Car $nameVow has arrived`)
     } catch e {println("A car did not make it")}
 }
-println ("Cars have been told to move, but no print of any arrivals has yet occurred")   
+println ("Cars have been told to move, but no print of any arrivals has yet occurred")
 </pre>
 </blockquote>
 
@@ -2645,7 +2645,7 @@ once you resolve the vow inside a when-catch clause.</p>
 only with eventual sends, never with immediate calls, because although it
 might sometimes be a near car, it can also be remote, and only eventual sends
 are safe. As noted earlier, another way of denoting that a car may be remote
-is to use the ":rcvr" guard.</p>
+is to use the ":ref" guard.</p>
 
 <p><b>getCar(licensePlate)</b> -- a function or a method that returns a local
 car (local to the object implementing getCar)</p>
@@ -2723,7 +2723,7 @@ promise for a far object.</p>
 </ul>
 
 <p>Here is a test for equality:</p>
-<blockquote> 
+<blockquote>
   <pre># E syntax
 def polePositionCarRcvr := raceTrack &lt;- getPolePositionCar()
 when (polePositionCarRcvr) -&gt; {
@@ -2752,7 +2752,7 @@ taken.</p>
 before returning an answer, your function should return a promise for the
 answer, and fulfill that answer later. You can create your own promises using
 Ref.promise() in <span class="e"><em>E</em></span>:</p>
-<blockquote> 
+<blockquote>
   <pre># E sample
 def calcMilesBeforeEmptyVow(carRcvr) {
     def [milesBeforeEmptyPromise, milesBeforeEmptyResolver] := Ref.promise()
@@ -2813,24 +2813,24 @@ object available.</p>
 <h3><a href="#TOC27" name="SEC27">Letting When-Catch make a Promise For
 You</a></h3>
 
-<p>As noted in chapter 1 under the Secret Lives of Flow Control Structures, control 
-  structures return values. When used as described up to this point, the return 
-  value of the when--catch expression has been ignored. In fact, the when-catch 
-  expression returns a promise for the value that the done function will return. 
-  If the done function does not return a value, then it will always resolve to 
-  null. However, if the <font color="#FF0000">done(value) function</font> of the 
-  when-catch returns a value, the when-catch returns a promise that will be fulfilled 
-  by the last value in the executed clause. Rewriting the calcMilesBeforeEmptyVow 
-  using this feature, we get: <span class="warn">not right, not right, fix</span> 
+<p>As noted in chapter 1 under the Secret Lives of Flow Control Structures, control
+  structures return values. When used as described up to this point, the return
+  value of the when--catch expression has been ignored. In fact, the when-catch
+  expression returns a promise for the value that the done function will return.
+  If the done function does not return a value, then it will always resolve to
+  null. However, if the <font color="#FF0000">done(value) function</font> of the
+  when-catch returns a value, the when-catch returns a promise that will be fulfilled
+  by the last value in the executed clause. Rewriting the calcMilesBeforeEmptyVow
+  using this feature, we get: <span class="warn">not right, not right, fix</span>
 </p>
-<blockquote> 
-  <pre># E sample 
-def calcMilesBeforeEmptyVow(carRcvr)  {  
-    def fuelRemainingVow := carRcvr &lt;- getFuelRemaining() 
-    def mpgVow := carRcvr &lt;- getEfficiency() 
-    return when (fuelRemainingVow, mpgVow) -&gt; { 
-        mpgVow * fuelRemainingVow 
-    } catch prob { 
+<blockquote>
+  <pre># E sample
+def calcMilesBeforeEmptyVow(carRcvr)  {
+    def fuelRemainingVow := carRcvr &lt;- getFuelRemaining()
+    def mpgVow := carRcvr &lt;- getEfficiency()
+    return when (fuelRemainingVow, mpgVow) -&gt; {
+        mpgVow * fuelRemainingVow
+    } catch prob {
         throw(`Car Lost: $prob`)
     }
 }</pre>
@@ -2870,7 +2870,7 @@ and it shows the two possible transitions:</p>
 <h3><a href="#TOC30" name="SEC30">Guards for distributed systems</a></h3>
 
 <p>Very early in the book, we presented a list of <span class="e"><em>E</em></span> types, including any,
-integer, float64, etc. In that list were "rcvr", "vow", "pbc" and "near".
+integer, float64, etc. In that list were "ref", "vow", "pbc" and "near".
 "pbc" means that the type of the value is required to be "pass by
 construction". Transparent immutables are generally pbc, and can be passed
 through this type declaration. Strings, integers, floats, booleans, ConstMaps
@@ -2885,10 +2885,10 @@ cannot play any tricky games in its execution.</p>
 will not pass the near guard. Anything that passes a near guard can be sent
 messages with immediate calls.</p>
 
-<p>At this time,  "rcvr" and "vow" have the same algorithmic meaning as
+<p>At this time,  "ref" and "vow" have the same algorithmic meaning as
 "any", but can be used as hints to the programmer about how to interact with
 the object (a vow should be referenced only eventually until it is resolved;
-a rcvr should always be referenced only eventually).</p>
+a ref should always be referenced only eventually).</p>
 
 <h3><a href="#TOC31" name="SEC31">Nested When-Catch constructs</a></h3>
 
@@ -2915,10 +2915,10 @@ when (def exists := fileRcvr &lt;- exists()) -&gt; {
 file exists first. So we ask the file if it exists, and only after we
 determine that it does indeed exist do we proceed to get the text.</p>
 
-<p>As noted earlier, <font color="#FF0000">the "done(variable)" clause </font>of 
-  the when-catch construct is actually the declaration of a function and a series 
-  of parameters. The reasons for this are beyond the scope of this book, but the 
-  operational consequence is that you must use different function names if you 
+<p>As noted earlier, <font color="#FF0000">the "done(variable)" clause </font>of
+  the when-catch construct is actually the declaration of a function and a series
+  of parameters. The reasons for this are beyond the scope of this book, but the
+  operational consequence is that you must use different function names if you
   have multiple when-catch clauses in the same scope.</p>
 
 <p>Nested when-catch clauses put the "done" functions into the same scope. In
@@ -2937,22 +2937,22 @@ remote carMakerRcvr for a new (remote) carRcvr, and were able to immediately
 work with the car just like any other remote object. How did we get the
 reference to the carMakerRcvr in the first place?</p>
 
-<p>In <span class="e"><em>E</em></span>, the reference to an object can be encoded 
-  as a Universal Resource Identifier string, known as a <em>uri</em> (the familiar 
-  url of the Web is a type of uri). This uri string can be passed around in many 
-  fashions; one good secure way of passing a uri is to save it as a text file, 
-  encrypt and sign it with PGP, and send it in email. If you wish to run a seriously 
-  secure distributed <span class="e"><em>E</em></span> system, encrypting the uris 
-  is crucial: indeed, the passing of the uris from machine to machine is the main 
-  security issue that <span class="e"><em>E</em></span> cannot address for you (and 
-  is a problem shared by all security systems, a problem that will diminish with 
-  time as secure systems like PGP email are deployed). Other ways uris have been 
-  passed in operational <span class="e"><em>E</em></span> systems have been to send 
-  the uri over an ssh connection, and (less securely) by reading the uri off over 
-  a telephone! If you are using <span class="e"><em>E</em></span> on a local area 
-  network and have no security concerns, but are using <span class="e"><em>E</em></span> simply 
-  because it is simpler, safer, and more maintainable for distributed computing, 
-  the uris can be stored in files on a shared file system and read directly by 
+<p>In <span class="e"><em>E</em></span>, the reference to an object can be encoded
+  as a Universal Resource Identifier string, known as a <em>uri</em> (the familiar
+  url of the Web is a type of uri). This uri string can be passed around in many
+  fashions; one good secure way of passing a uri is to save it as a text file,
+  encrypt and sign it with PGP, and send it in email. If you wish to run a seriously
+  secure distributed <span class="e"><em>E</em></span> system, encrypting the uris
+  is crucial: indeed, the passing of the uris from machine to machine is the main
+  security issue that <span class="e"><em>E</em></span> cannot address for you (and
+  is a problem shared by all security systems, a problem that will diminish with
+  time as secure systems like PGP email are deployed). Other ways uris have been
+  passed in operational <span class="e"><em>E</em></span> systems have been to send
+  the uri over an ssh connection, and (less securely) by reading the uri off over
+  a telephone! If you are using <span class="e"><em>E</em></span> on a local area
+  network and have no security concerns, but are using <span class="e"><em>E</em></span> simply
+  because it is simpler, safer, and more maintainable for distributed computing,
+  the uris can be stored in files on a shared file system and read directly by
   the programs on different computers as they start up.</p>
 
 <p>The functions makeURI(object) and objFromURI(uri) detailed in the <span class="e"><em>E</em></span> Quick
@@ -3026,7 +3026,7 @@ constructs just to get to the next step.</p>
 
 <p>The breathlessness can metastasize into a feeling of having lost control
 of the software: everything is off computing somewhere else and all you have
-is a bunch of promises. Since <span class="e"><em>E</em></span> never (really, never!) blocks, 
+is a bunch of promises. Since <span class="e"><em>E</em></span> never (really, never!) blocks,
 you can never
 tell things, "just stop for a moment while I catch my breath and gather up
 all the values" :-)</p>
@@ -3041,7 +3041,7 @@ distributed action. You really can catch your breath.</p>
 <p>And once the moment of breathlessness passes, you will feel freedom, for
 you will never have to deal with thread synchronization again; you will never
 lie awake at night wondering if an unexplored race condition will cause
-deadlock a few days after the production load level hits your system. 
+deadlock a few days after the production load level hits your system.
 <font color="#ff0000">How early can I put this paragraph easily? AHK proposes right
 after Promises.</font></p>
 
@@ -3084,14 +3084,14 @@ creating a backend vat on a jvm</font></p>
 <h3><a href="#TOC37" name="SEC37">Example: Alice, Bob, and Carol as
 Code</a></h3>
 
-<p>We started this chapter with a description of a human interaction, with Alice 
-  as the CEO of Evernet Computing in search of a new spreadsheet for her IPO preparation. 
-  What would that distributed problem look like in code? Though we present only 
-  a skeleton of this human operation here, it is perhaps nonetheless informative. 
-  It might also be informative, after one has read how to do the example in <span class="e"><em>E</em></span>, 
-  to think about how it would be done with threads, in Java or C++. That, however, 
+<p>We started this chapter with a description of a human interaction, with Alice
+  as the CEO of Evernet Computing in search of a new spreadsheet for her IPO preparation.
+  What would that distributed problem look like in code? Though we present only
+  a skeleton of this human operation here, it is perhaps nonetheless informative.
+  It might also be informative, after one has read how to do the example in <span class="e"><em>E</em></span>,
+  to think about how it would be done with threads, in Java or C++. That, however,
   is left as an exercise for the reader.</p>
-<blockquote> 
+<blockquote>
   <pre># E sample
 #---- Bob Code
 
@@ -3146,17 +3146,17 @@ aliceRcvr &lt;- prepareIPOVow()</pre>
 
 <h3><a href="#TOC38" name="SEC38">Example: minChat version 1</a></h3>
 
-<p>In order to focus on the distributed computation features of this chat tool, we 
-have gone to extreme lengths to make the user interface machinery a very short 
-piece of code. Hence, this should properly be called "minChat", because the 
-user interface is so brutally minimal. Even with such minimization, however, the 
-user interface still requires more lines of code than the actual distributed 
+<p>In order to focus on the distributed computation features of this chat tool, we
+have gone to extreme lengths to make the user interface machinery a very short
+piece of code. Hence, this should properly be called "minChat", because the
+user interface is so brutally minimal. Even with such minimization, however, the
+user interface still requires more lines of code than the actual distributed
 computation!</p> The chatController at the bottom of the example is the heart and
 soul of the computation.
 
 <blockquote><pre>#?? in new vat minChatVat.e-swt</pre></blockquote>
 
-<blockquote> 
+<blockquote>
   <pre>## E sample
 #!/usr/bin/env rune
 #eChat with minimalist user interface
@@ -3182,9 +3182,9 @@ def chatUI {
     to show() {
         def frame := &lt;widget:Shell&gt;(currentDisplay)
         frame.setText("eChat"); frame.setBounds(30, 30, 600, 300)
-        def winDisposeListener {to widgetDisposed(event) {interp.continueAtTop()}}        
+        def winDisposeListener {to widgetDisposed(event) {interp.continueAtTop()}}
         frame.addDisposeListener(winDisposeListener)
-        bind chatArea := &lt;widget:Text&gt;(frame, 
+        bind chatArea := &lt;widget:Text&gt;(frame,
             (SWT.getMULTI() | SWT.getWRAP()) | (SWT.getBORDER() | SWT.getV_SCROLL()))
         def commandLine := &lt;widget:Text&gt;(frame, SWT.getSINGLE() | SWT.getBORDER())
         def enterKeyListener {
@@ -3203,7 +3203,7 @@ def chatUI {
             }
             match [verb, args] {}
         }
-        commandLine.addKeyListener(enterKeyListener)        
+        commandLine.addKeyListener(enterKeyListener)
         def label := &lt;widget:Label&gt;(frame, SWT.getLEFT())
         label.setText("save, load, send. No quotes for path. Use Escape to start operation. ")
         swtGrid`$frame: $chatArea.X.Y
@@ -3223,7 +3223,7 @@ bind chatController {
     }
     to receive(message) {chatUI.showMessage("friend", message)}
     to receiveFriend(friendRcvr) {
-        bind friend := friendRcvr        
+        bind friend := friendRcvr
         chatUI.showMessage("system", "friend has arrived")
     }
     to save(file) {file.setText(makeURIFromObject(chatController))}
@@ -3237,21 +3237,21 @@ chatUI.show()
 # interp.blockAtTop()</pre>
 </blockquote>
 
-<p>There are only 5 methods in making chat happen: sending a message to the 
+<p>There are only 5 methods in making chat happen: sending a message to the
 friend, receiving a message from the friend, being informed that the friend has
 found you (the <em>receivedFriend </em>method), saving the URI where your
 friend can find you, and loading the URI that describes where you can find
 your friend.</p>
 
 <p>A quick run through can be done by putting the source in a file (file extension
-".e-swt", this example uses SWT for user interface) and launching the file twice to 
+".e-swt", this example uses SWT for user interface) and launching the file twice to
 get 2 chat windows. In one window, type "save ~/me.minchat" and press the Escape
 key. This creates a file (in your home directory) that contains a cap: URI describing where your chat
-session can be found (a chat session that can only be found by someone to whom this file 
-has been given--the location cannot be found or guessed by anyone else). 
+session can be found (a chat session that can only be found by someone to whom this file
+has been given--the location cannot be found or guessed by anyone else).
 In the other window,
 type "load ~/me.minchat" and press Escape. In the first window you should see
-a message pop up that the "friend has arrived". Now in either window type 
+a message pop up that the "friend has arrived". Now in either window type
 "send hi y'all", and you will see the message appear in both windows.</p>
 
 <p>In minChat , every time you start up the program, it comes to
@@ -3293,7 +3293,7 @@ broken promises.</p>
 # Given a List of promises, when all the promises have been resolved,
 # resolve the returned vow, either fulfilling it with the list of fulfillments (if
 # all the promises were fulfilled) or by smashing the returned promise
-# with one of the broken promises (if at least one promise was broken). 
+# with one of the broken promises (if at least one promise was broken).
 def resolveAllVow(promises) {
     def [resultVow, resolver] := Ref.promise()
     var count := promises.size()
@@ -3335,11 +3335,11 @@ def amountsVows := [].diverge()
 for each in contributorRcvrsList {
     amountsVows.push(each &lt;- getDonation())
 }
-when (def amounts := resolveAllVow(amountsVows)) -&gt; {    
+when (def amounts := resolveAllVow(amountsVows)) -&gt; {
     printTotalContributions(amounts)
 } catch prob {
     #due to the nature of resolveAllVows, in this catch clause
-    #we are guaranteed everything in amountsVows is resolved to 
+    #we are guaranteed everything in amountsVows is resolved to
     #either an amount or a broken reference
     printTotalContributions(amountsVows)
 }</pre>
@@ -3374,7 +3374,7 @@ general-purpose ensured sequencing of resolution, you must use recursion.</p>
 <p>Earlier, we had an example in which we told a list of cars to moveTo the
 same location. Suppose we wished to ensure that the cars arrived in the order
 in which they appear in the list:</p>
-<blockquote> 
+<blockquote>
   <pre># E sample
 def moveAllCarsInSequence(carRcvrs,toX,toY) {
     var carI := 0
@@ -3439,7 +3439,7 @@ function.</p>
 <blockquote>
   <pre>#sendValve. If you have numerous eventual sends to initiate,
 # but initiating them all at once would consume vast resources
-# and/or would actually slow down processing, queue the actions 
+# and/or would actually slow down processing, queue the actions
 # through a valve.
 #An ActionTrio is the list of [obj,"verb",[arguments]]
 # that can be used in an E send()
@@ -3463,8 +3463,8 @@ def makeSendValve (numSimultaneousAllowed) {
             resolver.resolve(completeVow)
             when (completeVow) -&gt; {
             } catch prob {
-            } finally { 
-                numRunning -= 1 
+            } finally {
+                numRunning -= 1
                 startNext()
             }
         }
@@ -3592,13 +3592,13 @@ commonly this type of solution will suffice.</p>
 
 <h3><a href="#TOC42" name="SEC42">Capabilities</a></h3>
 
-<p class="sidebar">To be more specific, <span class="e">E </span>uses 
-<em>object-capabilities</em>, a type of capability security that has strengths not found 
+<p class="sidebar">To be more specific, <span class="e">E </span>uses
+<em>object-capabilities</em>, a type of capability security that has strengths not found
 in several weaker  &quot;capability&quot; systems, as discussed in
-<a href="http://www.hpl.hp.com/techreports/2003/HPL-2003-222.html">Paradigm 
+<a href="http://www.hpl.hp.com/techreports/2003/HPL-2003-222.html">Paradigm
 Regained</a>.</p>
 
-<p><span class="e">E</span> uses <em style="font-style: normal">capability based 
+<p><span class="e">E</span> uses <em style="font-style: normal">capability based
 security</em> to supply both strong security and broad
 flexibility without incurring  performance penalties. Capabilities might
 be thought of as the programming equivalent of physical keys, as described
@@ -3661,8 +3661,8 @@ the revolutionary concept of an ordinary door key to computing.</p>
 <p>Let us look at an example in a computing context, of how keys/capabilities
 would change security.</p>
 
-<p>Consider the Melissa virus, now ancient but still remembered in the form of 
-each new generation of viruses that use the same strategy the Melissa used. 
+<p>Consider the Melissa virus, now ancient but still remembered in the form of
+each new generation of viruses that use the same strategy the Melissa used.
 Melissa comes to you as an email message attachment. When you open it, it reads your
 address book, then sends itself - using your email system, your email address,
 and your good reputation - to the people listed therein. You only had to make
@@ -3685,7 +3685,7 @@ the Internet?" At this point only the most naive user would fail to realize
 that this email message, no matter how strong the claim that it came from a
 friend, is up to no good purpose. You would say "No!"</p>
 
-<p>And that would be the end of Melissa, all the recent similar viruses, and all the 
+<p>And that would be the end of Melissa, all the recent similar viruses, and all the
 future similar
 viruses yet to come. No fuss, no muss. They would never rate a mention in the
 news. Further discussion of locally running untrusted code as in this example
@@ -3723,7 +3723,7 @@ This is occasionally convenient but shatters any security hopes you might
 have. JavaScript is a relatively safe language only because the language as a
 whole is so thoroughly crippled.<font color="#000000"> We consider JavaScript
 <em>safe</em>, but not <em>secure</em>: We consider <em>security</em> to require
-<em>not only</em> safety <em>but also</em> the power to get your work done: POLA 
+<em>not only</em> safety <em>but also</em> the power to get your work done: POLA
 means having enough authority, as well as not having too much. Using this definition of security, the Java applet sandbox is
 mostly safe, but not at all secure.</font> And a Java applet that has been
 allowed to run in a weaker security regime because the applet was "signed",
@@ -3757,10 +3757,10 @@ from which you could get a WriteStream and a whole filepath, which would give yo
 total access and control over the entire directory system.  </p>
 
 <p>To fix this
-problem for a single object in a single application, you could write your own InputStream class that doesn't leak. This strategy does not scale, however: 
-requiring the programmer to write replacements for every object in the API to 
-achieve security will result in few secure programs (just as requiring the 
-programmer to write his own bitmap handlers and gui widgets will result in few point-and-click 
+problem for a single object in a single application, you could write your own InputStream class that doesn't leak. This strategy does not scale, however:
+requiring the programmer to write replacements for every object in the API to
+achieve security will result in few secure programs (just as requiring the
+programmer to write his own bitmap handlers and gui widgets will result in few point-and-click
 programs). To really fix this security problem
 in Java, you would have to rewrite the entire java.io package,  wrecking backward compatibility as a side effect. Without
 that kind of massive, serious repair, it is always easier to create a breach
@@ -3790,39 +3790,39 @@ that identifies an<span class="e"><em> E </em></span>object to other objects out
 <h4><a name="A closer look at E capability URIs">A closer look at E
 capability URIs</a></h4>
 
-<p class="sidebar">The whole <span class="e">E</span> approach to security is 
-disorienting to anyone steeped in traditional computer security lore. On the 
-other hand, anyone with a background in object-oriented programming will find it 
-to be a natural extension of the OO discipline. Another entire book is needed on 
+<p class="sidebar">The whole <span class="e">E</span> approach to security is
+disorienting to anyone steeped in traditional computer security lore. On the
+other hand, anyone with a background in object-oriented programming will find it
+to be a natural extension of the OO discipline. Another entire book is needed on
 the philosophy of security exemplified by object capabilities and
-<span class="e">E</span>. <a href="http://minnow.cc.gatech.edu/squeak/3770">The closest thing to such a Philosophy of 
-Security known to the author is a requirements document</a> for the shared 
-virtual 3D world <a href="http://croquetproject.org/">Croquet</a>. Croquet needs to be both very user friendly and very secure, 
+<span class="e">E</span>. <a href="http://minnow.cc.gatech.edu/squeak/3770">The closest thing to such a Philosophy of
+Security known to the author is a requirements document</a> for the shared
+virtual 3D world <a href="http://croquetproject.org/">Croquet</a>. Croquet needs to be both very user friendly and very secure,
 and so requires the kind of seriousness that object-capabilities enable. <br>
 <br>
-A 
+A
 brutally abbreviated list of points from that document includes: <br>
 <br>
-<strong>No Passwords, No Certificates, No Certificate Authorities, No Firewalls,  
-No Global Namespaces.</strong> POLA, pet names, and other related techniques 
+<strong>No Passwords, No Certificates, No Certificate Authorities, No Firewalls,
+No Global Namespaces.</strong> POLA, pet names, and other related techniques
 described here supplant them all.<br>
 <br>
-<strong>Minimize Authentication. Focus on  Authorization.</strong> 
-Authentication-laden systems are as user friendly as post-9/11 airport security 
-systems. And they work about that well, too. The terrorists are far more likely 
+<strong>Minimize Authentication. Focus on  Authorization.</strong>
+Authentication-laden systems are as user friendly as post-9/11 airport security
+systems. And they work about that well, too. The terrorists are far more likely
 to have their identification in order than the rest of us. <br>
 <br>
-<strong>Do Not Prohibit What You Cannot Prevent.</strong> The main purpose of 
-this advice is to prevent you from looking like a fool after you've been 
+<strong>Do Not Prohibit What You Cannot Prevent.</strong> The main purpose of
+this advice is to prevent you from looking like a fool after you've been
 circumvented.<br>
 <br>
-<strong>Embrace Delegation.</strong> People must delegate to succeed. So they 
-will delegate despite your most ridiculous efforts. Relax, enjoy it. Help them. 
-And while relaxing, re-read the earlier, &quot;do not prohibit what you cannot 
+<strong>Embrace Delegation.</strong> People must delegate to succeed. So they
+will delegate despite your most ridiculous efforts. Relax, enjoy it. Help them.
+And while relaxing, re-read the earlier, &quot;do not prohibit what you cannot
 prevent.&quot;<br>
 <br>
-<strong>Bundle Authority with Designation.</strong> This makes security user-friendly by making 
-the security invisible. Only possible after you stop wasting your effort on 
+<strong>Bundle Authority with Designation.</strong> This makes security user-friendly by making
+the security invisible. Only possible after you stop wasting your effort on
 authentication all the time.</p>
 
 <h4><a name="Security as an inexpensive lunch">Security as an inexpensive
@@ -3832,9 +3832,9 @@ lunch</a></h4>
 possibility of lunches at bargain prices. When programming in<span class="e"><em> E</em></span>, you are
 automatically working in a capability secure environment. All references are
 secure references. All powers are accessible only through capabilities.
-Making an<span class="e"><em> E </em></span>program secure is largely a matter 
-of thinking about the architecture before you code, and doing a security audit 
-after you code. When designing and auditing you use a small number of principles 
+Making an<span class="e"><em> E </em></span>program secure is largely a matter
+of thinking about the architecture before you code, and doing a security audit
+after you code. When designing and auditing you use a small number of principles
 for scrutinizing the design:</p>
 
 <h4><a name="Principle of Least Authority">Principle of Least Authority (POLA) for
@@ -3879,7 +3879,7 @@ Their fate has already been foretold in the fate of the popular
 game Diablo I: authoritative representations of data were allowed to reside
 on user computers, assuming that the object code was too difficult to
 understand to be hacked and that the Diablo client code would always behave
-as the designers intended. They were 99% correct, which in the computer security 
+as the designers intended. They were 99% correct, which in the computer security
 field means they were 100% wrong. Today, 99% of the people who hack Diablo I
 don't understand the object code. But somewhere some single
 individual figured it out and posted the result on the Web. Now your grandmother can
@@ -3889,8 +3889,8 @@ Authoritative information is stored only on the server, giving them the
 beginnings of true security.</p>
 
 <p>Not only does hardware own the software, so too does the underlying
-operating system. As we have stated repeatedly here, <span class="e"><em>E</em></span> 
-enables the construction of extremely secure computing systems. However, 
+operating system. As we have stated repeatedly here, <span class="e"><em>E</em></span>
+enables the construction of extremely secure computing systems. However,
 <span class="e">E</span> systems
 can still be attacked from below, by viruses granted authority by the operating
 system underneath the <span class="e"><em>E</em></span> world. Such attacks can only be prevented by
@@ -3901,15 +3901,15 @@ allowed. There is one open-source capability-based OS under development, at
 
 <h4><a name="Denial Of Service Attacks">Denial Of Service Attacks</a></h4>
 
-<p>One form of attack that even <span class="e"><em>E</em></span> 
+<p>One form of attack that even <span class="e"><em>E</em></span>
 cannot defend against is denial of service (DOS).
 In a denial of service, someone simply swamps your system with requests,
 making your system unable to operate. Such attacks take many forms, but the
 key limitation in such attacks is this: such an attack can never steal your
-secret data or gain control of your sensitive operations. If DOS were the only kind of 
+secret data or gain control of your sensitive operations. If DOS were the only kind of
 attack possible, the world would be a vastly
 better place. Indeed, if only DOS attacks were possible, even most modern
-DOS attacks would fail, because the serious DOS attacks require that the attacker 
+DOS attacks would fail, because the serious DOS attacks require that the attacker
 first gain control of hundreds of computers that belong to other people, by using
 attacks far more invasive and damaging than DOS itself. </p>
 
@@ -3919,7 +3919,7 @@ attacks far more invasive and damaging than DOS itself. </p>
 system was designed with no consideration at all for security issues. This is
 literally true: minChat is derived from <em>eChat</em>, which
 was written by the author as his
-first practice exercise to learn <span class="e"><em>E</em></span>. 
+first practice exercise to learn <span class="e"><em>E</em></span>.
 However, because eChat was
 written in a capability secure environment, because the author used a fairly clean
 modular architecture, and because clean architecture in a capability-secure
@@ -3931,31 +3931,31 @@ are many interesting lessons we can learn from it.</p>
 the communication is all encrypted and the objects are all
 unfindable and unguessable. Therefore no third party can enter the conversation to either
 eavesdrop or forge messages. The only source of security breach will be the
-person at the other end of the chat system, i.e., the person with whom you planned to chat. So, right off the 
+person at the other end of the chat system, i.e., the person with whom you planned to chat. So, right off the
 bat, simply by using <span class="e"><em>E</em></span> you have eliminated <em>outsider</em> attacks.
 But insider attacks are still possible, and indeed constitute the most serious threat to
 most security systems anyway. You have to be able to achieve <em>cooperation in the presence of
 limited trust</em>. Cooperation despite limited trust is something we humans achieve every
-day, for example when paying 3 bucks for a gallon of milk at the local QwikMart. But it is 
-notoriously difficult to get these transactions working correctly on computer systems 
+day, for example when paying 3 bucks for a gallon of milk at the local QwikMart. But it is
+notoriously difficult to get these transactions working correctly on computer systems
 when using conventional languages.
 So we will examine minChat very closely to ensure that the person we want to chat
-with does not also get any inappropriate powers, like the ability to delete all 
+with does not also get any inappropriate powers, like the ability to delete all
 our files.</p>
 
 <p>Now, let us begin with a quick review of minChat's code to see what parts of the system
 we need to examine to do a security review. As you may recall from the chapter on Ordinary Computing,
 emakers come into existence with no authority whatsoever, and receive authority only via the arguments
 that are passed into their objects. In larger programs, one can often ascertain that the emaker receives
-so little authority it can be disregarded from a security perspective: if it 
+so little authority it can be disregarded from a security perspective: if it
 doesn't have enough authority, it just can't be a danger  (as documented in the <a href="http://www.combex.com/papers/darpa-report/index.html">
 DarpaBrowser Final Report and Security Review</a>). </p>
 <p>
-MinChat is just 2 pages of code. It does not use emakers, so this does not help in our current situation. 
-However, what does help is that the only object accessible to the outside world is the chatController, 
+MinChat is just 2 pages of code. It does not use emakers, so this does not help in our current situation.
+However, what does help is that the only object accessible to the outside world is the chatController,
 whose reference is sent to the friend (or, in this case, perhaps the enemy) with whom we wish to chat
 (hey, we need to talk to our enemies too, from time to time). What unpleasantness can our friend do
-on our computer through the chatController interface he receives? We will reproduce the crucial lines of code 
+on our computer through the chatController interface he receives? We will reproduce the crucial lines of code
 here for convenience:
 </p>
 
@@ -3967,7 +3967,7 @@ here for convenience:
     }
     to receive(message) {chatUI.showMessage("friend", message)}
     to receiveFriend(friendRcvr) {
-        bind friend := friendRcvr        
+        bind friend := friendRcvr
         chatUI.showMessage("system", "friend has arrived")
     }
     to save(file) {file.setText(makeURIFromObject(chatController))}
@@ -3980,77 +3980,77 @@ here for convenience:
 <p>There are only 5 messages here. Let's go through what our friend could do with each one of them in sequence.
 </p>
 <ul>
-    <li><strong>send(message):</strong> This is the method that sends a message to our friend. If our 
-    friend wants to send messages to himself, which we can ourselves read in our own chat window, this 
+    <li><strong>send(message):</strong> This is the method that sends a message to our friend. If our
+    friend wants to send messages to himself, which we can ourselves read in our own chat window, this
     is amusing, but not very exciting as an attack.
     </li>
-    <li><strong>receive(message):</strong> This is one of the 2 messages our friend is supposed to use, to 
-    send us a message. The message gets placed in the chatArea text pane. Since 
-    we are receiving data here, even a cracker of modest powers would look at 
-    this and leap quickly to the conclusion that there is an opportunity here 
-    for a buffer overflow attack--the type of attack that, at the time of this 
-    writing, gets the most news media headlines because Windows is so richly 
+    <li><strong>receive(message):</strong> This is one of the 2 messages our friend is supposed to use, to
+    send us a message. The message gets placed in the chatArea text pane. Since
+    we are receiving data here, even a cracker of modest powers would look at
+    this and leap quickly to the conclusion that there is an opportunity here
+    for a buffer overflow attack--the type of attack that, at the time of this
+    writing, gets the most news media headlines because Windows is so richly
     riddled with such exploits. <br>
     <br>
-    Memory safe languages including <span class="e">E</span> are not in general 
-    susceptible to buffer overflow attacks: if you overrun the end of a data 
-    structure of fixed size, you get an exception, not a data write into random 
-    memory. Alas, this is not the end of the story. The text areas in the widget 
-    toolkit are native widgets. Eventually, we send this text string of unbound 
-    length to native code, written in an unsafe language in an unsafe way with 
-    unsafe quantities of authority. So buffer overflow attacks, and other 
-    attacks based on the strategy of sending a stream of data that will surprise 
-    a decoding algorithm into unexpected behavior, are possible in theory. This 
-    will remain a risk until all the widgets in our toolkits are also written in 
+    Memory safe languages including <span class="e">E</span> are not in general
+    susceptible to buffer overflow attacks: if you overrun the end of a data
+    structure of fixed size, you get an exception, not a data write into random
+    memory. Alas, this is not the end of the story. The text areas in the widget
+    toolkit are native widgets. Eventually, we send this text string of unbound
+    length to native code, written in an unsafe language in an unsafe way with
+    unsafe quantities of authority. So buffer overflow attacks, and other
+    attacks based on the strategy of sending a stream of data that will surprise
+    a decoding algorithm into unexpected behavior, are possible in theory. This
+    will remain a risk until all the widgets in our toolkits are also written in
     object-capability languages.<br>
     <br>
-    The only good news here is that the text widget uses a very simple data 
-    type, and has been attacked by accident by so many millions of programmers 
-    over the years that it has had to be fixed just so the system doesn't crash 
-    if you accidentally drag/drop a DLL file onto Notepad. So even under 
-    Windows, the text widget is robust against strange data. But this is an area 
-    of risk of which we must always be aware when using components written 
-    outside the capability paradigm. Text widgets are pretty safe, gif and bmp 
-    widgets are probably safe, but by the time you encounter a widget using 
-    manically optimized C to decode mpeg-4, you're looking at a widget that is 
+    The only good news here is that the text widget uses a very simple data
+    type, and has been attacked by accident by so many millions of programmers
+    over the years that it has had to be fixed just so the system doesn't crash
+    if you accidentally drag/drop a DLL file onto Notepad. So even under
+    Windows, the text widget is robust against strange data. But this is an area
+    of risk of which we must always be aware when using components written
+    outside the capability paradigm. Text widgets are pretty safe, gif and bmp
+    widgets are probably safe, but by the time you encounter a widget using
+    manically optimized C to decode mpeg-4, you're looking at a widget that is
     complicated enough that it is probably vulnerable.</li>
     <li><strong>receiveFriend(friendRcvr):</strong> Our friend could specify someone who is not himself
     as the person we should send our messages to. Of course, our friend could write a slightly different
-    version of minChat that does the forwarding to everyone he wants to see it, 
-    automatically. Or he could simply delegate the capability reference to 
-    someone else (i.e., hand a copy of it to another party). So this not very 
+    version of minChat that does the forwarding to everyone he wants to see it,
+    automatically. Or he could simply delegate the capability reference to
+    someone else (i.e., hand a copy of it to another party). So this not very
     exciting either.</li>
-    <li><strong>save(file):</strong> Now this is a very interesting method for attack. The opportunity 
-    for the friend to save data on our computer is an interesting one, and certainly outside the domain 
+    <li><strong>save(file):</strong> Now this is a very interesting method for attack. The opportunity
+    for the friend to save data on our computer is an interesting one, and certainly outside the domain
     of what we intended for simple chatting. There's a little problem, however, from the attacker's point
-    of view. The save method is receiving, as a parameter, a capability (i.e., a reference) to a local file. 
+    of view. The save method is receiving, as a parameter, a capability (i.e., a reference) to a local file.
     This capability is not forgeable by the friend unless he has access via other means to our file system,
     in which case we already granted him such power and are assuming he won't abuse it (if he has such
-    power, he can abuse it more effectively by other means, abusing it by sending to minChat is silly). 
-    The upshot is, the worst our malicious friend can do is send us an object that is not actually a 
-    file object, which will not respond properly to messages being send under the assumption that the 
+    power, he can abuse it more effectively by other means, abusing it by sending to minChat is silly).
+    The upshot is, the worst our malicious friend can do is send us an object that is not actually a
+    file object, which will not respond properly to messages being send under the assumption that the
     receiver is a near file object, and cause a "no such method" exception which will crash our session.
     <p>So, our friend can crash minChat, but can't do any serious harm: an attack whose only result is
     to cut off the target from the attacker's attacks hardly constitutes a winning gambit.</p>
     </li>
     <li><strong>load(file):</strong> Not only is loading a file less interesting than writing, or corrupting,
-    one, but worse, this method once again expects a local file object to work with. Again, the worst case 
+    one, but worse, this method once again expects a local file object to work with. Again, the worst case
     is that the attacker can cause a session crash. An interesting variant of the attack might be to try
     to ship an object that looks and feels like a file for minChat to play with. This would fail directly
     because the load operation is filling a def'd variable that is already bound, resulting in a thrown
     exception. But let us assume for a moment that we made the variable "friend" a var, rather than
     a def that was later bound. The result in this case,
-    if successful, would simply be to redirect the minChat client to a different person for further 
+    if successful, would simply be to redirect the minChat client to a different person for further
     communication (since what is being loaded is the reference to the friend). Still no joy for the attacker.
     </li>
 </ul>
 
-<p>The upshot is, even the friend who has received the capability to talk to our chat tool doesn't get much 
+<p>The upshot is, even the friend who has received the capability to talk to our chat tool doesn't get much
 traction. He can annoy us (by crashing minChat), but that is pretty much the only interesting thing he
 can do....or so it seems on first review. </p><p>
 
 Let's see if there is anything exotic an attacker could do by combining several of these unimportant attacks.
-First let us make the problem more concrete. Suppose Bob has a crush on Alice, who is dating Ted. Bob 
+First let us make the problem more concrete. Suppose Bob has a crush on Alice, who is dating Ted. Bob
 decides to make Alice think that Ted doesn't really like her. So he gives Alice his chat reference to Ted,
 and tells her that, when using this reference, Ted will think she is really Bob, and so Alice will be
 able to get Ted to "speak candidly" (to Bob) about her. At this point, Bob uses the "send" method on Ted's
@@ -4059,19 +4059,19 @@ Bob sends cruel jokes about Alice, and Alice breaks up with Ted. </p><p>
 
 Hmmm....it looks pretty bad for Ted. Did we just find a really cool attack? </p><p>
 
-Well, sort of. First there is the risk that Ted will notice that his chat tool is, 
+Well, sort of. First there is the risk that Ted will notice that his chat tool is,
 without any help from the owner sending offensive
 messages to Bob. Ted might then wonder what is going on. But more fundamentally, Bob has a much simpler scheme
 for messing with Alice's headspace, if Alice is open to this type of attack. </p><p>
 
 Far simpler for Bob would be to create 2 brand new chat capabilities, one that is
-Bob's FakeTed, and the other is Bob's FakeBob. He has Alice start up as FakeBob, and Bob himself 
+Bob's FakeTed, and the other is Bob's FakeBob. He has Alice start up as FakeBob, and Bob himself
 starts up FakeTed. Now Ted is completely out of the loop, Bob can send any horrid thing to Alice
 he wants to send, without interference. </p><p>
 
-So is this a fundamental flaw with the entire <span class="e"><em>E</em></span> security approach? 
-Not exactly. This attack 
-can be made regardless of the technology being used -- Bob could have created 2 Yahoo Instant Messenger 
+So is this a fundamental flaw with the entire <span class="e"><em>E</em></span> security approach?
+Not exactly. This attack
+can be made regardless of the technology being used -- Bob could have created 2 Yahoo Instant Messenger
 accounts and played the same game. Indeed, variations on this attack were used repeatedly by
 William Shakespeare throughout his career to create both high tragedy and low comedy. The fundamental
 problem comes when you trust a middleman as the sole validation of the authenticity of messages coming
@@ -4080,15 +4080,15 @@ information for a person is the person him/herself; trust a third party at your 
 risk makes sense, but don't ever forget there is a risk there, whether you are using capability
 security or just a parchment and quill.  </p><p>
 
-We have come full circle to the conclusion that minChat doesn't have any serious security breaches. 
+We have come full circle to the conclusion that minChat doesn't have any serious security breaches.
 Nonetheless, there are a couple of annoying things Bob may do to Ted. These annoyances
 can be traced directly to the presence of five messages in the chatController: there are only
-two messages out of the five that the friend is "supposed" to use. Even forgetting about 
+two messages out of the five that the friend is "supposed" to use. Even forgetting about
 security reviews for a moment, it is clear that, if the friend is only supposed to have two methods,
 he should not have five methods at his disposal. This make sense from a simple modular
 design point of view, it limits the number of mistakes you can make.
 For the security reviewers, this is an enormous win, because it reduces the number
-of methods to examine by 60%. This is a substantial 
+of methods to examine by 60%. This is a substantial
 gain, given how circuitous and complicated security analysis can become. </p><p>
 
 So how do we cut the number of methods available to the friend? By using a <em>facet</em> of the chatController
@@ -4119,7 +4119,7 @@ already), and vastly easier to review. </p>
 
 <p>There are still a number of interesting
 lessons we can learn here by considering some variations on minChat. The first variation is
-based on the old adage, "You can write FORTRAN in any language." This is true in 
+based on the old adage, "You can write FORTRAN in any language." This is true in
 <span class="e"><em>E</em></span> as well, but the implications can be grievous.
 </p><p>
 
@@ -4132,7 +4132,7 @@ the uri string from chatUI: </p>
 to save(filePath :String, uri :String) { &lt;file: filePath&gt;.setText(uri)}
 </pre></blockquote>
 
-<p>This is a fairly FORTRAN-ish way of accomplishing the goal: since FORTRAN doesn't have 
+<p>This is a fairly FORTRAN-ish way of accomplishing the goal: since FORTRAN doesn't have
 objects, it may seem perfectly obvious and reasonable to just send the path to the file
 and let the chatController figure out how to write to that file on its own. </p><p>
 
@@ -4151,63 +4151,63 @@ friend &lt;- save("~/startup/sub7.exe", code)
 <p>Now we're having some fun! Every time the user logs onto his computer, the friend gets full control
 of all his resources. </p><p>
 
-What went wrong here? There are several ways of slicing the pie and pinning different pieces of 
-the code with blame. One we have already identified: we failed to follow POLA in allowing the 
-friend to call the <em>save</em> method in the first place. But another one is just as crucial: 
-we failed to 
+What went wrong here? There are several ways of slicing the pie and pinning different pieces of
+the code with blame. One we have already identified: we failed to follow POLA in allowing the
+friend to call the <em>save</em> method in the first place. But another one is just as crucial:
+we failed to
 follow POLA twice with this revised version of the <em>save</em> method that gets 2 strings. </p><p>
 
-We failed first by sending the save method an insufficient amount of authority (remember, Least 
-Authority also means Adequate Authority). We did this by sending the chatController a string 
+We failed first by sending the save method an insufficient amount of authority (remember, Least
+Authority also means Adequate Authority). We did this by sending the chatController a string
 <em>describing</em> the file's path rather than just sending him the file itself. As a consequence, the chatController had to use special powers gotten from elsewhere to translate the description
 into a file object. </p><p>
 
-Once the chatController had to do this translation, it became vulnerable to the 
+Once the chatController had to do this translation, it became vulnerable to the
 <a href="http://www.cis.upenn.edu/~KeyKOS/ConfusedDeputy.html">Confused Deputy
 Attack</a>, a classic in security literature. The Confused Deputy attack is the aikido move of
 computer security: the attacker persuades the target to use the target's own authority against
-itself. Confused Deputy attacks are very hard to pull off as long as a single reference serves as 
+itself. Confused Deputy attacks are very hard to pull off as long as a single reference serves as
 both the designation of the object and the authority to use the object (as is always the case
 with the objects in a capability-based programming language). But when the authority
-to use the object is separated from the designation, as it is when a path string is being used to 
+to use the object is separated from the designation, as it is when a path string is being used to
 describe the file, you are in deep trouble. </p><p>
 
-Simply sending the file object rather than the file description solves this problem. The friend 
+Simply sending the file object rather than the file description solves this problem. The friend
 at the far end has no way to send an object that will be interpreted by the <em>save</em> method as
 a local file, and so the friend gets no traction whatsoever as long as the <em>save</em> method is
 expecting the object not the description. This leads to the general rule: </p><p class="warn">
 
 When you must read in the descriptions of objects rather than the objects themselves,
-translate them into capability secure objects at the <em>earliest possible moment.</em> 
-When you must write out descriptions of objects rather than the objects 
+translate them into capability secure objects at the <em>earliest possible moment.</em>
+When you must write out descriptions of objects rather than the objects
 themselves, postpone the translation of the object into a description until the
 <em>last possible moment</em>. </p><p>
 
 This rule is not merely good for secure, capability-oriented programming. Rather, it is good for all
-object-oriented 
+object-oriented
 programming. Manipulating the descriptions of objects is much less reliable, and much more
-error prone, than direct manipulation of the object itself--which is both why crackers 
+error prone, than direct manipulation of the object itself--which is both why crackers
 like it, and object oriented designers avoid it. This exemplifies an interesting
 truth: capability oriented development is often just object
 oriented development taken seriously. </p><p>
 
-Working directly with the object, not a description, 
-is a rule the author learned the hard way. 
-A security review team ripped numerous holes in a single piece of the author's software, 
-simply because the 
-author foolishly worked with descriptions rather than with objects. The story is told in 
+Working directly with the object, not a description,
+is a rule the author learned the hard way.
+A security review team ripped numerous holes in a single piece of the author's software,
+simply because the
+author foolishly worked with descriptions rather than with objects. The story is told in
 excruciating detail in the <a href="http://www.combex.com/papers/darpa-review/">
 DarpaBrowser Security Review</a>. If you are one of the rare and lucky
-individuals who are able to learn from other people's mistakes, rather than having to make 
+individuals who are able to learn from other people's mistakes, rather than having to make
 the mistakes firsthand
-yourself first before you really get it, this is a magnificent lesson to learn secondhand. 
-</p> 
+yourself first before you really get it, this is a magnificent lesson to learn secondhand.
+</p>
 
 <h4>Defense In Depth versus Eggshell Security</h4>
-   
-<p>In large software systems, most objects are constructed inside emakers, rather than in the 
+
+<p>In large software systems, most objects are constructed inside emakers, rather than in the
 main <span class="e"><em>E</em></span> program body. Consequently they come to life with
-severely restricted, POLA-oriented authority(i.e., only the authority we send to them when we construct 
+severely restricted, POLA-oriented authority(i.e., only the authority we send to them when we construct
 them, which tends to be what they need but not anything else). Let us emulate this characteristic
 of large systems in our little minChat by making a paranoid version of the chatFacet:
 </p>
@@ -4225,32 +4225,32 @@ def makeFacet := e`
     }
 `.eval(universalScope)
 def chatFacet := makeFacet(chatController)
-</pre></blockquote> 
+</pre></blockquote>
 
-<p>The universalScope eval method creates the makeFacet function in strict confinement, identical to 
+<p>The universalScope eval method creates the makeFacet function in strict confinement, identical to
 the confinement imposed on emakers. Consequently, the only authority the chatFacet has
 is the authority handed in, namely, the authority to send messages to the chatController.
 </p><p>
 
 Now let's assume we are running a more complex program, with a more complex component, i.e., a
 component that is not so simple we can just look at it and see it doesn't do anything very exciting.
-Now let's further assume that by some extraordinary bit of legerdemaine 
-the attacker succeeds in completely subverting the 
+Now let's further assume that by some extraordinary bit of legerdemaine
+the attacker succeeds in completely subverting the
 component (the chatFacet in our little example). How terrible is the disaster? </p><p>
 
-As we have already shown, there is no disaster. Even if the attacker gets direct access to the 
+As we have already shown, there is no disaster. Even if the attacker gets direct access to the
 chatController, there still isn't anything interesting
-he can do. We have achieved <em>defense in depth</em>. A typical penetration of our system gives the 
-attacker only a limited access to other objects, which in turn must be individually penetrated. 
+he can do. We have achieved <em>defense in depth</em>. A typical penetration of our system gives the
+attacker only a limited access to other objects, which in turn must be individually penetrated.
 </p><p>
 
-Compare this to the situation now typical in software engineering. Even with the most 
+Compare this to the situation now typical in software engineering. Even with the most
 modern "secure" languages like Java and C#, an attack can acquire the full authority
 of the program by subverting even the most inconsequential object. With tools like access control
-lists and firewalls, we engage in "perimeter defense", which is more correctly described as 
+lists and firewalls, we engage in "perimeter defense", which is more correctly described as
 "eggshell defense". It is like an eggshell for the following reason: while an eggshell may seem
 pretty tough when you tap on it, if you can get a single pinhole anywhere in the surface, you
-can suck out the entire yoke. No wonder cybercrackers laugh at our silly efforts to defend 
+can suck out the entire yoke. No wonder cybercrackers laugh at our silly efforts to defend
 ourselves. We have thrown away most of our chances to defend ourselves before the battle even begins.
  </p>
 
@@ -4267,7 +4267,7 @@ in use in the audited version of the eChat program, where the chatFacet.
 was interposed between the chatController and the remote chat participant.
 Here is a little general-purpose facet maker:
 
-<blockquote> 
+<blockquote>
   <pre># E sample
 /**
  * &lt;param&gt; target is the underlying powerful object
@@ -4278,7 +4278,7 @@ Here is a little general-purpose facet maker:
 def makeFacet(target, allowedMethods) {
     def filteringFacet {
         match [verb, args] {
-            if (allowedMethods.maps(verb) &amp;&amp; 
+            if (allowedMethods.maps(verb) &amp;&amp;
                   allowedMethods[verb].contains(args.size())) {
                 return E.call(target, verb, args)
             }
@@ -4373,9 +4373,9 @@ def revocableCapabilityMaker(baseCapableObject)  {
     return forwarder
 }</pre></blockquote>
 
-<p>Note that, even though the forwarder is nominally delegating 
+<p>Note that, even though the forwarder is nominally delegating
 all method invocations (except revoke()) to the capableObject, we cannot use
-the <em>extends</em> keyword to capture the behavior. &quot;Extends&quot; creates an 
+the <em>extends</em> keyword to capture the behavior. &quot;Extends&quot; creates an
 immutable reference, so the fact that the capableObject is a var wouldn't
 allow you to revoke the delegating behavior. Instead we use the match[verb, args]
 pattern. </p>
@@ -4395,7 +4395,7 @@ def makeCapabilityRevokerPair(baseCapableObject) {
     return [forwarder, revoker]
 }
 def powerfulObject {
-    #...big powers 
+    #...big powers
 }
 def [power, revoker] := makeCapabilityRevokerPair(powerfulObject)</pre>
 </blockquote>
@@ -4407,9 +4407,9 @@ made revocable.</p>
 
 <h4><a name="Sealers and Unsealers">Sealers and Unsealers</a></h4>
 
-<p>A sealer/unsealer pair makes it possible to use untrusted intermediaries to 
-pass objects safely. Use the sealer to make a sealed box that can only be opened 
-by the matching unsealer. <span class="e">E</span> has built-in support for 
+<p>A sealer/unsealer pair makes it possible to use untrusted intermediaries to
+pass objects safely. Use the sealer to make a sealed box that can only be opened
+by the matching unsealer. <span class="e">E</span> has built-in support for
 sealer/unsealer pairs:</p>
 
 <blockquote><pre>? def makeBrandPair := &lt;elib:sealing.makeBrand&gt;
@@ -4425,17 +4425,17 @@ sealer/unsealer pairs:</p>
 # value: "secret data"
 </pre></blockquote>
 
-<p>If you hold the unsealer private, and give the sealer away publicly, everyone 
-can send  messages that only you can read. If you hold the sealer private, 
-but give the unsealer away publicly, then you can send messages that recipients 
-know you created, i.e., you can use it as a signature. If you are thinking that 
-this is much like a public/private key pair from public key cryptography, you 
-are correct, though in <span class="e">E</span> no actual encryption is required 
+<p>If you hold the unsealer private, and give the sealer away publicly, everyone
+can send  messages that only you can read. If you hold the sealer private,
+but give the unsealer away publicly, then you can send messages that recipients
+know you created, i.e., you can use it as a signature. If you are thinking that
+this is much like a public/private key pair from public key cryptography, you
+are correct, though in <span class="e">E</span> no actual encryption is required
 if the sender, recipient, brand maker, and sent object all reside in the same vat.</p>
 
-<p>While the Brand is built-in, it is possible to construct a sealer/unsealer 
-pair maker in E without special privileges. The &quot;shared variable&quot; technique for making the maker is 
-interesting, and because the same pattern appears in other places (such as the 
+<p>While the Brand is built-in, it is possible to construct a sealer/unsealer
+pair maker in E without special privileges. The &quot;shared variable&quot; technique for making the maker is
+interesting, and because the same pattern appears in other places (such as the
 Notary/Inspector, coming up next), we  demonstrate it here:</p>
 
 <blockquote><pre># E sample
@@ -4465,15 +4465,15 @@ def makeBrandPair(nickname) {
 }
 </pre></blockquote>
 
-<p>The variable &quot;shared&quot; normally contains the value &quot;noObject&quot;, which is 
-private to a particular sealer/unsealer pair and so could never the the actual 
-value that someone wanted to pass in a sealed box. The unsealer tells the box to 
-shareContent, which puts the content into the shared variable, from which the 
-unsealer then extracts the value for the invoker of the unseal method. In a 
-conventional language that used threads for concurrency control, this pattern 
-would be a disaster: different unseal requests could rumble through, overwriting 
-each others' shared content. But by exploiting the atomicity of operational 
-sequences enabled by promise pipelining, this peculiar pattern becomes a clean solution 
+<p>The variable &quot;shared&quot; normally contains the value &quot;noObject&quot;, which is
+private to a particular sealer/unsealer pair and so could never the the actual
+value that someone wanted to pass in a sealed box. The unsealer tells the box to
+shareContent, which puts the content into the shared variable, from which the
+unsealer then extracts the value for the invoker of the unseal method. In a
+conventional language that used threads for concurrency control, this pattern
+would be a disaster: different unseal requests could rumble through, overwriting
+each others' shared content. But by exploiting the atomicity of operational
+sequences enabled by promise pipelining, this peculiar pattern becomes a clean solution
 for this, and several other security-related operations.</p>
 
 <h4>Vouching with Notary/Inspector</h4>
@@ -4495,7 +4495,7 @@ orderForm must implement the startVouch method as shown here:</p>
   <pre># E sample
 ####### Widget Inc. software #####
 
-#vouching system 
+#vouching system
 #returns a private notary that offers a public inspector
 #throws problem if the object being vouched is not vouchable
 def makeNotary()  {
@@ -4536,7 +4536,7 @@ def makeOrderForm(salesPerson) {
     return orderForm
 }
 
-#publicly available inspector object 
+#publicly available inspector object
 #(accessible through a uri posted on Widget Inc's web site)
 def WidgetInspectionService {
     to getInspector() {return widgetNotary.getInspector()}
@@ -4556,77 +4556,77 @@ def trustedOrderForm := inspector.vouch(untrustedOrderForm)</pre>
 
 <h4><a name="proofOfPurchase" >Proof of Purchase</a></h4>
 
-<p>&quot;Proof of Purchase&quot; is the simplest of a series of capability patterns in 
-which the goal is not to transfer an authority, but rather to show someone that 
-you have the authority so that they can comfortably proceed to use the authority 
-on your behalf. In Proof of Purchase, the  requester of a 
-service is demonstrating to the server that the client already has capability 
-that the server is being asked to use. Unlike the more 
-sophisticated upcoming Claim Check patterns,&nbsp; the proof of purchase client&nbsp; is not concerned about giving the server 
+<p>&quot;Proof of Purchase&quot; is the simplest of a series of capability patterns in
+which the goal is not to transfer an authority, but rather to show someone that
+you have the authority so that they can comfortably proceed to use the authority
+on your behalf. In Proof of Purchase, the  requester of a
+service is demonstrating to the server that the client already has capability
+that the server is being asked to use. Unlike the more
+sophisticated upcoming Claim Check patterns,&nbsp; the proof of purchase client&nbsp; is not concerned about giving the server
 an excess authority.  </p>
 
 <p>An interesting example of Proof of Purchase is
 <a href="http://www.erights.org/javadoc/java/awt/Component.html">
-Component.transferFocus(fromComponentsList, toComponent)</a> found in the tamed Swing 
-package. In standard Swing, the holder of any panel reference can steal the 
-focus (with component.requestFocus()). Hence any keystrokes, including 
-passwords, can be swiped from wherever the focus happens to be by sneaking in a 
-focus change. This is a clear violation of POLA. You should  be able to transfer focus from one panel to another panel 
-<em>only if you have references to both panels</em>. If you have a reference to the panel that currently 
+Component.transferFocus(fromComponentsList, toComponent)</a> found in the tamed Swing
+package. In standard Swing, the holder of any panel reference can steal the
+focus (with component.requestFocus()). Hence any keystrokes, including
+passwords, can be swiped from wherever the focus happens to be by sneaking in a
+focus change. This is a clear violation of POLA. You should  be able to transfer focus from one panel to another panel
+<em>only if you have references to both panels</em>. If you have a reference to the panel that currently
 has the focus, then you can never steal the focus from anyone but yourself.</p>
 
-<p>A natural-seeming  replacement for component.requestFocus() would be requestFocus(currentFocusHolder). It 
-was decided during the taming of Swing, however, that this would be 
-breach-prone. If Alice transferred to Bob, not a panel itself, but rather a 
-simple transparent forwarder on that panel, Alice could collect authorities to other 
+<p>A natural-seeming  replacement for component.requestFocus() would be requestFocus(currentFocusHolder). It
+was decided during the taming of Swing, however, that this would be
+breach-prone. If Alice transferred to Bob, not a panel itself, but rather a
+simple transparent forwarder on that panel, Alice could collect authorities to other
 panels whenever Bob changed focus.  </p>
 
-<p>Since we had a 
-convenient trusted third party available that already had  authority over 
-all the panels anyway (the javax.swing.Component class object), we used the 
+<p>Since we had a
+convenient trusted third party available that already had  authority over
+all the panels anyway (the javax.swing.Component class object), we used the
 &quot;proof of purchase&quot; pattern instead. The globally available Component.transferFocus method accepts two arguments: </p>
 
 <ul>
-  <li>a list of panels that the client believes to contain, somewhere in their 
+  <li>a list of panels that the client believes to contain, somewhere in their
   subpanel hierarchies, the focus  </li>
   <li>the target panel that should receive the focus</li>
 </ul>
 
-<p>In the common case where a whole window lies inside a single trust realm, the 
-client can simply present a reference to the whole window and be confident that the 
+<p>In the common case where a whole window lies inside a single trust realm, the
+client can simply present a reference to the whole window and be confident that the
 focus will be transferred. </p>
 
-<p>The interesting thing about Component.transferFocus is that the recipient does not actually need the client's authority to reach the component that already 
-has the focus. The Component class already has that authority. The client must send 
+<p>The interesting thing about Component.transferFocus is that the recipient does not actually need the client's authority to reach the component that already
+has the focus. The Component class already has that authority. The client must send
 the authority merely to prove he has it, too.</p>
 
 <h4>Basic Claim Check</h4>
 
-<p>A common activity that brings security concerns  into sharp focus is the 
-delicate dance  we perform when we use a car valet service. In this situation, 
-we are handing the authority over our most precious and costly possession to a 
-teenager with no more sense of responsibility than a stray cat. The whole valet system 
+<p>A common activity that brings security concerns  into sharp focus is the
+delicate dance  we perform when we use a car valet service. In this situation,
+we are handing the authority over our most precious and costly possession to a
+teenager with no more sense of responsibility than a stray cat. The whole valet system
 is a toothsome exercise in POLA. </p>
 
-<p>In this example, we focus on the sequence of events and trust relationships 
-involved in <em>reclaiming</em> our car at the end of the evening. The participants 
-include the car owner, the valet service itself, and the random new attendant 
+<p>In this example, we focus on the sequence of events and trust relationships
+involved in <em>reclaiming</em> our car at the end of the evening. The participants
+include the car owner, the valet service itself, and the random new attendant
 who is now on duty.</p>
 
-<p>We have already chosen, for better or for worse, to trust the valet service 
-with a key to the car. As the random new attendant comes running up to us, we 
-are reluctant to hand over yet another key to the vehicle. After all, this new 
-attendant might actually be an imposter, eager to grab that new Ferrari and 
-cruise out over the desert. And besides, we already handed the valet service a 
+<p>We have already chosen, for better or for worse, to trust the valet service
+with a key to the car. As the random new attendant comes running up to us, we
+are reluctant to hand over yet another key to the vehicle. After all, this new
+attendant might actually be an imposter, eager to grab that new Ferrari and
+cruise out over the desert. And besides, we already handed the valet service a
 key to the car. They should be able to use the key they already have, right?</p>
 
-<p>Meanwhile, the attendant also has a trust problem. It would be a career catastrophe 
-to serve up the Ferrari from his parking lot if I  actually own the 
+<p>Meanwhile, the attendant also has a trust problem. It would be a career catastrophe
+to serve up the Ferrari from his parking lot if I  actually own the
 dented 23-year-old Chevy Nova sitting next to it. </p>
 
-<p>In the physical world, we use a <em>claim check</em> to solve the problem. We 
-present to the attendant, 
-not a second set of car keys, but rather, a proof that we have the authority that 
+<p>In the physical world, we use a <em>claim check</em> to solve the problem. We
+present to the attendant,
+not a second set of car keys, but rather, a proof that we have the authority that
 we are asking the attendant to use on our behalf. </p>
 
 <blockquote><pre># E sample
@@ -4634,7 +4634,7 @@ def claimMgr := {
     def carKeys := [].asMap().diverge()
     def claimMgr {
         to makeClaim(car) :any {
-            # the claim object has no interesting 
+            # the claim object has no interesting
             # properties except it has
             # a unique unforgeable identity
             def claim {}
@@ -4683,12 +4683,12 @@ carOwner.getCarFromAttendant()
 
 <h4>Basic Claim Check Default Behavior</h4>
 
-<p>Suppose the owner of the car loses the claim check. He can still prove he 
-owns the car by presenting another key. In software, this situation would be 
-comparable to the situation in which the owner hands the attendant a direct 
-reference rather than handing the attendant merely the claim check. The car 
-owner has violated his own security, but it is hard to visualize situations in 
-which this is not a reasonable argument to pass to express his desire. We can cover 
+<p>Suppose the owner of the car loses the claim check. He can still prove he
+owns the car by presenting another key. In software, this situation would be
+comparable to the situation in which the owner hands the attendant a direct
+reference rather than handing the attendant merely the claim check. The car
+owner has violated his own security, but it is hard to visualize situations in
+which this is not a reasonable argument to pass to express his desire. We can cover
 this case with a small modification to the claimMgr's reclaim method:</p>
 
 <blockquote><pre>        to reclaim(claim) :any {
@@ -4704,34 +4704,34 @@ this case with a small modification to the claimMgr's reclaim method:</p>
         }
 </pre></blockquote>
 
-<p>What should the claimMgr return if the carOwner hands in a car reference for 
-reclaim, if the car is not actually in the claimMgr's parking lot? The answer 
-depends on the application, but such a situation violates the expectations of 
-all the participants sufficiently that throwing an exception seems the safest 
+<p>What should the claimMgr return if the carOwner hands in a car reference for
+reclaim, if the car is not actually in the claimMgr's parking lot? The answer
+depends on the application, but such a situation violates the expectations of
+all the participants sufficiently that throwing an exception seems the safest
 choice.</p>
 <h4>NonTransferable Claim Check</h4>
 
-<p>We are far from done with claim checks. A careful car owner will not actually 
-hand his claim check to the parking lot attendant. Rather, he will merely show 
-the claim check to the attendant. After all, if you hand the claim check over to 
-an imposter, the imposter can turn around and hand the claim check to a real 
+<p>We are far from done with claim checks. A careful car owner will not actually
+hand his claim check to the parking lot attendant. Rather, he will merely show
+the claim check to the attendant. After all, if you hand the claim check over to
+an imposter, the imposter can turn around and hand the claim check to a real
 attendant, pretending that he is the owner of the car.</p>
 
-<p>The problem is somewhat different in cyberspace. The good news is, in 
-cyberspace the attendant doesn't return a reference to the car just because you 
-hand him the claim check. Instead, he merely performs the action you ask of him with the 
-car. This set of actions is limited by  the attendant's willing behavior. So the claim check is not as powerful a capability as the car itself. But 
-it can still be a powerful capability. And the bad news is, in cyberspace, you can't just 
+<p>The problem is somewhat different in cyberspace. The good news is, in
+cyberspace the attendant doesn't return a reference to the car just because you
+hand him the claim check. Instead, he merely performs the action you ask of him with the
+car. This set of actions is limited by  the attendant's willing behavior. So the claim check is not as powerful a capability as the car itself. But
+it can still be a powerful capability. And the bad news is, in cyberspace, you can't just
 &quot;show&quot; it to the attendant. You have to give it to him.</p>
 
-<p>Here we demonstrate a &quot;nontransferable&quot; claim check. This claim check can be 
-handed out at random to a thousand car thieves, and it does them no good. The trick is, before handing 
-over 
-the claim check, the owner inserts into the claim check a reference to the 
-individual he is treating as an attendant. The ClaimMgr compares the person to 
-whom the owner handed the claim, with the attendant who eventually hands the 
-claim to the claimMgr . If these two people are the same, then the owner handed the 
-claim directly to the attendant. Otherwise, there was an intermediary 
+<p>Here we demonstrate a &quot;nontransferable&quot; claim check. This claim check can be
+handed out at random to a thousand car thieves, and it does them no good. The trick is, before handing
+over
+the claim check, the owner inserts into the claim check a reference to the
+individual he is treating as an attendant. The ClaimMgr compares the person to
+whom the owner handed the claim, with the attendant who eventually hands the
+claim to the claimMgr . If these two people are the same, then the owner handed the
+claim directly to the attendant. Otherwise, there was an intermediary
 party, and the request should not be honored.</p>
 
 <blockquote><pre># E sample
@@ -4814,91 +4814,91 @@ carOwner.letValetRetrieve(carThief)
 carOwner.letValetRetrieve(legitAttendant)
 </pre></blockquote>
 
-<p>Note an important implication in this pattern: the ClaimMgr winds up in a 
-position to accumulate references to all the entities a claim check holder 
-treats as an attendant. In this example, the ClaimMgr gets a reference to the carThief as 
-a result of the carOwner's casual handing out of claim checks. It seems unlikely 
-that the ClaimMgr can harm the carOwner's interests with this reference, but in 
-other circumstances the reference may not be so harmless. To reduce our  risk exposure to the 
-alleged attendants to whom we hand the claim check, we have increased our risk 
+<p>Note an important implication in this pattern: the ClaimMgr winds up in a
+position to accumulate references to all the entities a claim check holder
+treats as an attendant. In this example, the ClaimMgr gets a reference to the carThief as
+a result of the carOwner's casual handing out of claim checks. It seems unlikely
+that the ClaimMgr can harm the carOwner's interests with this reference, but in
+other circumstances the reference may not be so harmless. To reduce our  risk exposure to the
+alleged attendants to whom we hand the claim check, we have increased our risk
 exposure to the ClaimMgr.</p>
 
-<p>Note also the limitations on the nontransferability of this pattern. The 
-carOwner can still transfer authority, either by handing someone a reference to 
-the car, or by handing out the transferableClaim from which 
-nontransferableClaims can be made. The nontransferability is voluntarily chosen 
-by the carOwner. You can't prevent people from delegating their authority, and 
+<p>Note also the limitations on the nontransferability of this pattern. The
+carOwner can still transfer authority, either by handing someone a reference to
+the car, or by handing out the transferableClaim from which
+nontransferableClaims can be made. The nontransferability is voluntarily chosen
+by the carOwner. You can't prevent people from delegating their authority, and
 even this pattern doesn't change that fact.</p>
 
 <h4>Oblivious Claim Check: Loan Officer Protocol</h4>
 
-<p class="sidebar">Voluntary Oblivious Compliance, or VOC,  was pioneered 
-by the <a href="http://www.erights.org/history/client-utility.html">Client Utility 
-System</a>. VOC is a field only 
-recently recognized by the capability-security community as an important area of 
+<p class="sidebar">Voluntary Oblivious Compliance, or VOC,  was pioneered
+by the <a href="http://www.erights.org/history/client-utility.html">Client Utility
+System</a>. VOC is a field only
+recently recognized by the capability-security community as an important area of
 exploration; the claim check patterns here are early fruit of that research.
 <br>
 <br>
-VOC is irrelevant in the classical cypherpunk view of the world, where every person is a rugged 
-individualist making all his own authority-granting decisions with little regard 
-for other people's issues. In a world filled with 
-corporations, governments, and other policy-intensive organizations, however, it 
-is an area of real value even though it is not really a security matter. Why is 
-it not security? We 
-consider it  beyond the scope of &quot;security&quot; for a simple but compelling reason: it is not 
-enforceable. Unenforceable security in cyberspace has been proven, over and over 
-again in the course of the last decade, to be a joke played on all the 
-participants. VOC states in its very name the limits of its applicability: it 
+VOC is irrelevant in the classical cypherpunk view of the world, where every person is a rugged
+individualist making all his own authority-granting decisions with little regard
+for other people's issues. In a world filled with
+corporations, governments, and other policy-intensive organizations, however, it
+is an area of real value even though it is not really a security matter. Why is
+it not security? We
+consider it  beyond the scope of &quot;security&quot; for a simple but compelling reason: it is not
+enforceable. Unenforceable security in cyberspace has been proven, over and over
+again in the course of the last decade, to be a joke played on all the
+participants. VOC states in its very name the limits of its applicability: it
 only works with volunteers. Don't be fooled into thinking this is security.</p>
 
-<p>Let us consider a somewhat different problem. Suppose that different 
-attendants are trusted to handle different cars by the valet service. One valet 
-has a motorcycle license and parks all the Harleys. Another has a multi-engine 
-pilot's license and parks all the Boeing 747s. Of course,  the 
-one with the  motorcycle license is a teenager who has always wanted to try his hand at 
-parking a 747, and knows his lack of experience is not a problem. 
-In this situation, each attendant has a different set of authorities at his 
-command; just because you hand your claim check to a legit attendant doesn't mean 
-the valet service thinks it would be a good idea to let that attendant drive 
-your vehicle. A more generalized way of stating the problem is, in this case the 
-authorities of the individual receivers of the claim checks vary, and management 
-of the individual receiver's authorities is beyond the scope of what the 
-ClaimManager should be trying to figure out. After all, the individuals know all 
-their own authorities; it would be poor design (and unmaintainable at scale) for 
+<p>Let us consider a somewhat different problem. Suppose that different
+attendants are trusted to handle different cars by the valet service. One valet
+has a motorcycle license and parks all the Harleys. Another has a multi-engine
+pilot's license and parks all the Boeing 747s. Of course,  the
+one with the  motorcycle license is a teenager who has always wanted to try his hand at
+parking a 747, and knows his lack of experience is not a problem.
+In this situation, each attendant has a different set of authorities at his
+command; just because you hand your claim check to a legit attendant doesn't mean
+the valet service thinks it would be a good idea to let that attendant drive
+your vehicle. A more generalized way of stating the problem is, in this case the
+authorities of the individual receivers of the claim checks vary, and management
+of the individual receiver's authorities is beyond the scope of what the
+ClaimManager should be trying to figure out. After all, the individuals know all
+their own authorities; it would be poor design (and unmaintainable at scale) for
 the ClaimManager to try to duplicate this information.</p>
 
-<p>This situation, while not a part of the real-world valet service problem, has 
-a significant area of application in cyberspace. This area is <em>Voluntary 
-Oblivious Compliance</em>, or VOC. Let us consider a more sensible example. Alice 
-works for HPM, and Bob works for Intil. HPM and Intil are often competitors, but 
-Alice and Bob are working on a joint project from which both companies expect to 
-profit handsomely. The Official Policy Makers of HPM have identified a number of 
-documents which can be shared with Intil, and indeed have forwarded to Intil 
-references to the allowed docs. Alice wants to refer Bob to a particular HPM 
-document, but <em>only if sharing the document is allowed</em> under the HPM 
-policy. In this case, the VOCclaimCheck that Alice sends to Bob demands that Bob 
-demonstrate to HPM's ClaimMgr that he already has authority on the document 
-before fulfilling the claim. To prove his authority, Bob sends to the ClaimMgr 
-all the HPM doc authorities he has (i.e., the list of docs HPM handed to Intil). 
-Only if both Alice and Bob already have authority 
-on the object does Bob get the document. This is sometimes called the Loan 
-Officer Protocol, in reference to the old adage that a loan officer will not 
+<p>This situation, while not a part of the real-world valet service problem, has
+a significant area of application in cyberspace. This area is <em>Voluntary
+Oblivious Compliance</em>, or VOC. Let us consider a more sensible example. Alice
+works for HPM, and Bob works for Intil. HPM and Intil are often competitors, but
+Alice and Bob are working on a joint project from which both companies expect to
+profit handsomely. The Official Policy Makers of HPM have identified a number of
+documents which can be shared with Intil, and indeed have forwarded to Intil
+references to the allowed docs. Alice wants to refer Bob to a particular HPM
+document, but <em>only if sharing the document is allowed</em> under the HPM
+policy. In this case, the VOCclaimCheck that Alice sends to Bob demands that Bob
+demonstrate to HPM's ClaimMgr that he already has authority on the document
+before fulfilling the claim. To prove his authority, Bob sends to the ClaimMgr
+all the HPM doc authorities he has (i.e., the list of docs HPM handed to Intil).
+Only if both Alice and Bob already have authority
+on the object does Bob get the document. This is sometimes called the Loan
+Officer Protocol, in reference to the old adage that a loan officer will not
 give you the loan unless you first prove that you don't need it.</p>
 
-<p>Since bob can't get the reference unless he proves he doesn't need it, we can 
-now see why this is a pattern of Voluntary Oblivious Compliance. It is 
-voluntary, because Alice could just send Bob the document and circumvent the 
-system. And it is oblivious, because Alice doesn't need to know whether a 
+<p>Since bob can't get the reference unless he proves he doesn't need it, we can
+now see why this is a pattern of Voluntary Oblivious Compliance. It is
+voluntary, because Alice could just send Bob the document and circumvent the
+system. And it is oblivious, because Alice doesn't need to know whether a
 document can be shared with Bob before sending it. </p>
 
-<p>Going back to the parking lot attendant who wants to park the 747, he has to 
-demonstrate to the ClaimManager that he has the keys to the 747 before the Claim 
+<p>Going back to the parking lot attendant who wants to park the 747, he has to
+demonstrate to the ClaimManager that he has the keys to the 747 before the Claim
 Manager will let him go for it. The owner of the 747 is much relieved. </p>
 
-<p>Humorous as the 747 example might be, we will now switch to the scenario with 
-Alice, Bob, HPM, and Intil for our sample code. The basic strategy is that the 
-ClaimMgr not only examines the claim check from Alice, it also examines the list 
-of authorities that Bob hands over to see if any of Bob's authorities match the 
+<p>Humorous as the 747 example might be, we will now switch to the scenario with
+Alice, Bob, HPM, and Intil for our sample code. The basic strategy is that the
+ClaimMgr not only examines the claim check from Alice, it also examines the list
+of authorities that Bob hands over to see if any of Bob's authorities match the
 one inside Alice's claim.</p>
 
 <blockquote><pre># E sample
@@ -4940,23 +4940,23 @@ alice.sendDoc(doc2, bob)
 alice.sendDoc(def doc4{}, bob)
 </pre></blockquote>
 
-<p>The oblivious claim check pattern can require scattering even more authority 
-to the winds than the nontransferable claim check. The recipient of the claim 
-check (bob) needs to have all the authorities that alice might give to him, 
-rather than merely the ones she actually does give to him. And the trusted third 
-party who matches the claim check against the list of possibilities (the 
-HPMDocClaimMgr) gets to accumulate authority to everything that bob thinks alice 
-might be trying to send him. In the example scenario, this is just fine. But 
+<p>The oblivious claim check pattern can require scattering even more authority
+to the winds than the nontransferable claim check. The recipient of the claim
+check (bob) needs to have all the authorities that alice might give to him,
+rather than merely the ones she actually does give to him. And the trusted third
+party who matches the claim check against the list of possibilities (the
+HPMDocClaimMgr) gets to accumulate authority to everything that bob thinks alice
+might be trying to send him. In the example scenario, this is just fine. But
 some care is required.</p>
 
 <h4>Oblivious Claim Checks as Guards</h4>
 
-<p>An elegant style of using VOC claim checks is to set up the pattern as a pair 
-of guards. Alice would use the ClaimCheck guard to send a reference to Bob, and 
-Bob would use the CheckedClaim guard, with the list of candidate references, to 
-receive the authority. We will show the implementation of the 
-<a href="#BuildGuards">ClaimCheck and 
-CheckedClaim guards</a> in Advanced Topics when we talk about writing your own 
+<p>An elegant style of using VOC claim checks is to set up the pattern as a pair
+of guards. Alice would use the ClaimCheck guard to send a reference to Bob, and
+Bob would use the CheckedClaim guard, with the list of candidate references, to
+receive the authority. We will show the implementation of the
+<a href="#BuildGuards">ClaimCheck and
+CheckedClaim guards</a> in Advanced Topics when we talk about writing your own
 guards, but their usage would appear as follows:</p>
 
 
@@ -4978,17 +4978,17 @@ def alice {
 </pre>
 </blockquote>
 
-<p>The ClaimCheck guard coerces the doc into a sealed representation of itself. 
+<p>The ClaimCheck guard coerces the doc into a sealed representation of itself.
 The CheckedClaim guard unseals the claim and matches it against the authorities
-in the intilSharedDocs list. As a guard, it is better style to return a broken 
-reference than to throw an exception if something goes wrong. In the parameter 
-guard, if an exception were thrown, the recipient would have no chance to do 
-anything with the problem, the exception would be thrown directly back to the 
+in the intilSharedDocs list. As a guard, it is better style to return a broken
+reference than to throw an exception if something goes wrong. In the parameter
+guard, if an exception were thrown, the recipient would have no chance to do
+anything with the problem, the exception would be thrown directly back to the
 sender before the recipient was even aware there was an issue.</p>
 
 <h4>Oblivious NonTransferable Claim Check</h4>
 
-<p>It is possible to make nontransferable oblivious claim checks as well. We 
+<p>It is possible to make nontransferable oblivious claim checks as well. We
 leave the code as an exercise for the reader. </p>
 
 <h4>Powerbox Capability Manager</h4>
@@ -5000,7 +5000,7 @@ powerbox's most distinctive features is that it may be used for dynamic negotiat
 for authority during operation. The less trusted subsystem may, during execution, request new
 authorities. The powerbox owner may, in response to the request,
 depending on other context that it alone may have, decide to confer that
-authority, deny the authority, or even grant the request authority after 
+authority, deny the authority, or even grant the request authority after
 revoking other authorities previously granted.</p>
 
 <p>The powerbox is particularly useful in situations where the object in the
@@ -5072,7 +5072,7 @@ alone. Finally, the operator of this powerbox may, for reasons external to
 the powerbox's knowledge, decide to grant an additional authority during
 operations, an authority whose nature is not known to the powerbox.
 </p>
-<blockquote> 
+<blockquote>
   <pre># E sample
 # The authorized url may change during operations, so it is a var
 def <b><em>makePowerboxController</em></b>(<em>optTimer</em>,
@@ -5080,12 +5080,12 @@ def <b><em>makePowerboxController</em></b>(<em>optTimer</em>,
                            var <em>optUrl</em>,
                            <em>optMakeUrl</em>,
                            <em>makeDialogVow</em>) {
-    
+
     # In the revokers map, the object being revoked is the key, the revoker
     # is the value. Note it is the actual object, not the forwarder to the
     # object, that is the key.
     var <em>revokers</em> := [].asMap()
-    
+
     # when a revokable forwarder is made, the revoker is automatically
     # placed in the map of revokers
     def <b><em>makeRevokableForwarder</em></b>(<em>object</em>) :near {
@@ -5097,11 +5097,11 @@ def <b><em>makePowerboxController</em></b>(<em>optTimer</em>,
         def <b><em>forwarder</em></b> {match [verb, args] {return E.call(innerObject, verb, args)}}
         return forwarder
     }
-    
+
     # makeFileFacet is exposed to less trusted realm; guard the path it receives
     # This simple file facet only supplies 2 methods that return immutables
     # If the file handed out mutable objects, such as streams, these would have
-    # to be wrapped with revokableForwarders as well. 
+    # to be wrapped with revokableForwarders as well.
     def <b><em>makeFileFacet</em></b>(<em>path</em> :String) :near {
         def <em>theFile</em> := optMakeFile(path)
         def <b><em>fileFacet</em></b> {
@@ -5110,7 +5110,7 @@ def <b><em>makePowerboxController</em></b>(<em>optTimer</em>,
         }
         return makeRevokableForwarder(fileFacet)
     }
-    
+
     # makeFile is actually handed to the less trusted object
     # It is either null or a revokable forwarder for makeFileFacet
     # In other words, makeFile is a revokable maker of revokable file facets
@@ -5120,9 +5120,9 @@ def <b><em>makePowerboxController</em></b>(<em>optTimer</em>,
     } else {
         bind <em>makeFile</em> := makeRevokableForwarder(makeFileFacet)
     }
-    
+
     # Like the file facet, this url facet only supports methods that return
-    # immutables. 
+    # immutables.
     def <b><em>makeRevokableUrlFacet</em></b>(<em>optUrl</em>) :near {
         if (optUrl == null) {
             return null
@@ -5133,13 +5133,13 @@ def <b><em>makePowerboxController</em></b>(<em>optTimer</em>,
             return makeRevokableForwarder(urlFacet)
         }
     }
-    
-    # Return a vow for a new url 
+
+    # Return a vow for a new url
     # Use dialog with user to determine if new url should be granted
     # Vow resolves to null if anything goes wrong
     def <em>makeRevokableUrlVow</em> := {
         def <b><em>makeUrlVow</em></b>(<em>requestedUrl</em> :String, <em>why</em> :String) :vow {
-            def <em>urlDialogVow</em> := 
+            def <em>urlDialogVow</em> :=
               makeDialogVow("Url Request",
                             `&lt;html&gt;
 Confined Object requesting url for this reason:&lt;p&gt;$why
@@ -5155,20 +5155,20 @@ Confined Object requesting url for this reason:&lt;p&gt;$why
         }
         return makeRevokableForwarder(makeUrlVow)
     }
-    
-    
+
+
     var <em>caps</em> := [].asMap()
     caps with= ("TIMER", makeRevokableForwarder(timer))
     caps with= ("FILEMAKER", makeFile)
     caps with= ("URL", makeRevokableUrlFacet(optUrl))
-    
+
     def <b><em>powerbox</em></b> {
-        
+
         # any of these capabilities may be null, i.e., all are optional
         # in a powerbox, strictly at the whim of the powerbox operator
         # who created the powerboxcontroller and the powerbox
         to <b>optCap</b>(<em>key</em> :String) :any {return caps.get(key, null)}
-        
+
         # When the less trusted object requests a new url, the
         # old url is immediately revoked, and the promise for the
         # new url is substituted
@@ -5183,7 +5183,7 @@ Confined Object requesting url for this reason:&lt;p&gt;$why
             return revokableUrlVow
         }
     }
-    
+
     def <b><em>powerboxController</em></b> {
         to <b>revokeAll</b>() {
             for <em>each</em> in revokers {each.revoke()}
@@ -5196,9 +5196,9 @@ Confined Object requesting url for this reason:&lt;p&gt;$why
         to <b>getPowerbox</b>() {return powerbox}
     }
 }
- 
+
 # now, show how to create a powerbox and hand it to an untrusted object
- 
+
 def <em><b>makeUntrustedObject</b></em>(<em>powerbox</em>) {
     def <em>timer</em> := powerbox.optCap("TIMER")
     def <em>urlVow</em> := powerbox.requestUrl("http://www.skyhunter.com")
@@ -5207,7 +5207,7 @@ def <em><b>makeUntrustedObject</b></em>(<em>powerbox</em>) {
     }
     return untrustedObject
 }
- 
+
 def <em><b>powerboxOperator</b></em>() {
     def <em><b>makeDialogVow</b></em> {#...construct dialog vow
                       }
@@ -5465,8 +5465,8 @@ yours up and take a look.</p>
 
 <h3><a href="#TOC54" name="SEC54">Build your Own uriGetter</a></h3>
 
-<p>So you think it would be cool to access your own data using the syntax of the 
-  style &lt;getter:description&gt;. No sweat: just implement an object with the 
+<p>So you think it would be cool to access your own data using the syntax of the
+  style &lt;getter:description&gt;. No sweat: just implement an object with the
   single method get(description), and assign it to a variable with the name <font color="#FF0000">xxx__uriGetter</font>:</p>
 <blockquote><pre># E sample
 def myDir := &lt;file:/home/usr/me/myDir&gt;
@@ -5482,7 +5482,7 @@ callbacks</font></p>
 
 <p><font color="#ff0000">the entropy random number generator</font></p>
 
-<p class="note">Instead of using 
+<p class="note">Instead of using
 <br>def x := blah; if (blah != null) {...}, <br>
 instead use<br>
 if (blah =~ x:notNull) {...}</p>
@@ -5514,11 +5514,11 @@ if they are collaborating, use membranes.</font></p>
 
 <h3><a name="BuildGuards">Build Your Own Guards</a></h3>
 
-<p class="note">Put in explanation of the following example. First put in a 
+<p class="note">Put in explanation of the following example. First put in a
 simple example. This is way too fancy as the basic intro to making a guard.</p>
 
 
-<p>First, here is the emaker that makes a pair of VOC claim check guards, a 
+<p>First, here is the emaker that makes a pair of VOC claim check guards, a
 proveAuth&nbsp; (i.e., a claimCheck), and a checkAuth (i.e., a checkedClaim):</p>
 
 
@@ -5638,7 +5638,7 @@ def makeVOCPair(brandName :String) :near {
     ? bar(f1)
     # stdout: c:/Documents and Settings/millerm1/.bashrc
     #
-    
+
     ? bar(f1 :ProveAuth)
     # problem: &lt;NoSuchMethodException: &lt;a sealedBox&gt;.getPath/0&gt;
 
@@ -5653,12 +5653,12 @@ def makeVOCPair(brandName :String) :near {
 
 <h3>The Meaning Of "Authority"</h3>
 
-<p>E does not attempt to control computing resources such as memory and disk space, 
-  so inside the context of <span class="e"><em>E</em></span>, it is not considered 
-  a conveying of a controlled authority if such compute resources are allocated. 
-  Objects which are transparent and transitively immutable (i.e., <em>deep frozen</em>) 
-  are considered to convey no authority. Strings, integers, ConstLists, ConstMaps, 
-  and eMakers all meet these criteria (though the elements of a ConstList, and 
+<p>E does not attempt to control computing resources such as memory and disk space,
+  so inside the context of <span class="e"><em>E</em></span>, it is not considered
+  a conveying of a controlled authority if such compute resources are allocated.
+  Objects which are transparent and transitively immutable (i.e., <em>deep frozen</em>)
+  are considered to convey no authority. Strings, integers, ConstLists, ConstMaps,
+  and eMakers all meet these criteria (though the elements of a ConstList, and
   the objects made by an eMaker, may very well convey authority).</p>
 
 <h3><a href="#TOC57" name="SEC57">Miranda Methods</a></h3>

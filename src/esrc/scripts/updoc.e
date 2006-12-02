@@ -54,12 +54,12 @@ def printBlock(keyword, str, out) :void {
  *
  * @param source The text or twine of the <tt>Updoc</tt> source file
  * @param hash The crypto hash of the <tt>Updoc</tt> source file
- * @param evalServerPool A <tt>rcvr</tt> to an <tt>evalServerPool</tt> object
+ * @param evalServerPool A <tt>ref</tt> to an <tt>evalServerPool</tt> object
  * @param out An output object for reporting results or errors
  * @return A <tt>vow</tt> that becomes <tt>null</tt> on success or
  *         becomes broken with a problem
  */
-def parseAndPlay(source :Twine, hash :int, evalServerPool :rcvr, out) :vow {
+def parseAndPlay(source :Twine, hash :int, evalServerPool :ref, out) :vow {
     try {
         def oldUpdocParser := makeOldUpdocParser(source)
         def script := oldUpdocParser.readScript()
@@ -105,7 +105,7 @@ def endsWithAny(name, suffixList) :boolean {
  *
  * @param file A <tt>file</tt> object
  * @param path The path of the file
- * @param evalServerPool A <tt>rcvr</tt> to an <tt>evalServerPool</tt> object
+ * @param evalServerPool A <tt>ref</tt> to an <tt>evalServerPool</tt> object
  * @param out An output object for reporting results or errors
  * @return A <tt>vow</tt> that becomes <tt>null</tt> on success or
  *         becomes broken with a problem
@@ -152,13 +152,13 @@ def updocOne(file, path, evalServerPool, out) :vow {
  * <tt>directory</tt>.
  *
  * @param filedir A <tt>url</tt> or <tt>file</tt> or <tt>directory</tt> object
- * @param evalServerPool A <tt>rcvr</tt> to an <tt>evalServerPool</tt> object
+ * @param evalServerPool A <tt>ref</tt> to an <tt>evalServerPool</tt> object
  * @return A <tt>vow</tt> that becomes <tt>null</tt> on success or
  *         becomes broken with a problem
  * @author Terry Stanley
  * @author Mark S. Miller
  */
-def updoc(filedir, evalServerPool :rcvr) :vow {
+def updoc(filedir, evalServerPool :ref) :vow {
     if (filedir =~ url :URL) {
         updocOne(url,
                  url.toExternalForm(),

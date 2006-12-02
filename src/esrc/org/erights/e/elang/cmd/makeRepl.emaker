@@ -82,9 +82,9 @@ interface Repl() :vow[boolean]
 /**
  * Makes a REPL -- a Read-Eval-Print loop.
  *
- * @param reader a rcvr[{@link Reader}]. We don't declare the type of the
+ * @param reader a ref[{@link Reader}]. We don't declare the type of the
  *               parameter that way because we haven't yet resolved the module
- *               vs interface scoping conflict. This parameter is a rcvr to a
+ *               vs interface scoping conflict. This parameter is a ref to a
  *               Reader (a possibly eventual reference to a Reader) to allow
  *               for a reader which blocks on its input, as with an interactive
  *               command line, and which therefore needs to be placed in a
@@ -93,7 +93,7 @@ interface Repl() :vow[boolean]
  *                    same reason.
  * @return a {@link Repl} function that, when called, sets the loop in motion.
  */
-def makeRepl(reader :rcvr, evalPrinter) :Repl {
+def makeRepl(reader :ref, evalPrinter) :Repl {
 
     def repl implements Repl {
         to run() :vow[boolean] {

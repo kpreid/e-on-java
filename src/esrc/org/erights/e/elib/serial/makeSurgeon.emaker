@@ -342,7 +342,7 @@ def makeSurgeon {
 
                     "nullOk",
                     "vow",
-                    "rcvr",
+                    "ref",
                     "SturdyRef",
                     "simple__quasiParser",
                     "rx__quasiParser",

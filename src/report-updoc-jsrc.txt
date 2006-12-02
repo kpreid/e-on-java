@@ -3,11 +3,16 @@ updoc: started
 
 c:/Documents and Settings/millerm1/e/src/jsrc/com/zooko/tray/EPainter.updoc:.......***-----------------------***
 *** Trace data written to ***
-'C:/Documents and Settings/millerm1/.e/etrace/etrace.2006-11-30T09_39_45.562Z.txt'
+'C:/Documents and Settings/millerm1/.e/etrace/etrace.2006-12-02T18_18_48.614Z.txt'
 ***-----------------------***
 
 c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/jcomm/bad-resolve.updoc:..............................................
-c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/jcomm/multi-test.updoc:.......................
+c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/jcomm/multi-test.updoc:.............
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/jcomm/multi-test.updoc#:span::74:6::74:6>
+expr: x
+missing new value
+original value: <Remote Promise>
+.........
 c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/jcomm/refmon.updoc:.....................
 c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc:.......................................
 c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/scope/meta-context.updoc:........
@@ -53,7 +58,7 @@ expr: def miniSchema := <qq:astro.makeBaseSchema>("mini", [
 missing new value
 original value: <Schema for mini>
 missing original problem
-new problem: <SecurityException: org.quasiliteral.astro.BaseSchema not approved as safe>
+new problem: <SecurityException: org.quasiliteral.astro.makeBaseSchema not approved as safe>
 
 c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/toy-grammar.updoc:...
 at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/toy-grammar.updoc#:span::25:2::25:27>

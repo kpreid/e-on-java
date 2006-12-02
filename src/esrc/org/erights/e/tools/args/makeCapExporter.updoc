@@ -29,8 +29,8 @@
     ? var bletch := null
     ?
     ? def connector {
-    >     to connect(ref :SturdyRef) :void {
-    >         bletch := ref.getRcvr()
+    >     to connect(sref :SturdyRef) :void {
+    >         bletch := sref.getRcvr()
     >         println(`got $bletch`)
     >     }
     > }
