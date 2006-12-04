@@ -21,7 +21,7 @@ rune(["~/e/src/esrc/scripts/updoc.e",
 ? swtWatch(&supply, "supply")
 # value: [Shell {watching - supply}, Label {0}]
 
-? def am1 := issuer.makeAccountMgr(33)
+? def am1 := issuer.makeAccountMgr(33, "Alice")
 # value: <manages <has (33 - 0) Sugar>>
 
 ? supply
@@ -29,7 +29,7 @@ rune(["~/e/src/esrc/scripts/updoc.e",
 
 ? swtWatch(&am1, "am1")
 
-? def am2 := issuer.makeAccountMgr(44)
+? def am2 := issuer.makeAccountMgr(44, "Bob")
 # value: [<purse <has (44 - 0) Sugar>>, <purseRevoker>]
 
 ? supply

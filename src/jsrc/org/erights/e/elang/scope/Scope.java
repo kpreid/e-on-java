@@ -183,8 +183,7 @@ public class Scope implements EIteratable {
     }
 
     /**
-     * @param scopeLayout
-     * @param evalContext
+     *
      */
     public Scope(ScopeLayout scopeLayout, EvalContext evalContext) {
         myScopeLayout = scopeLayout;
@@ -197,8 +196,6 @@ public class Scope implements EIteratable {
      * <p/>
      * XXX Security Alert: It is assumed, rather than enforced, that the new
      * ScopeLayout is an extension of the current one.
-     *
-     * @param newScopeLayout
      */
     public Scope update(ScopeLayout newScopeLayout) {
         int outerCount = newScopeLayout.getOuterCount();
@@ -296,6 +293,7 @@ public class Scope implements EIteratable {
      * <tt>slotName</tt> is <tt>"&amp;"varName</tt>
      */
     public void iterate(final AssocFunc func) {
+        //noinspection ParameterNameDiffersFromOverriddenParameter
         myScopeLayout.getVarNameSet().iterate(new AssocFunc() {
             public void run(Object i, Object name) {
                 String varName = (String)name;

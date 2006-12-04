@@ -94,6 +94,27 @@ def endsWithAny(name, suffixList) :boolean {
     false
 }
 
+
+def htmlAnyway(file, out) :boolean {
+    if (file !~ _ :URL) {
+        return false
+    }
+    def path := file.toExternalForm()
+    def parts := path.split("/")
+    def last := parts[parts.size()-1]
+    if (last =~ `@_.@_`) {
+        return false
+    }
+    if (file.getText().startsWith("<!DOCTYPE html")) {
+        if (__makeMap.testProp(interp.getProps(), "updoc.verbose")) {
+            out.lnPrint(`assuming html: $path`)
+        }
+        return true
+    } else {
+        return false
+    }
+}
+
 /**
  * <tt>updocOne</tt> runs <tt>Updoc</tt> on the source of a single
  * <tt>Updoc</tt> file or on the results of an <tt>html2updoc</tt> conversion.
@@ -103,7 +124,7 @@ def endsWithAny(name, suffixList) :boolean {
  * <tt>.emaker</tt>, <tt>.caplet</tt>, or <tt>.txt</tt>. <tt>HTML</tt> files
  * must end with <tt>.html</tt> or <tt>.htm</tt>. All other files are ignored.
  *
- * @param file A <tt>file</tt> object
+ * @param file A <tt>File</tt> or <tt>URL</tt> object
  * @param path The path of the file
  * @param evalServerPool A ref to an <tt>evalServerPool</tt> object
  * @param out An output object for reporting results or errors
@@ -128,7 +149,7 @@ def updocOne(file, path, evalServerPool, out) :vow {
         # switch from getText() to getTwine()
         def source := file.getTwine()
         parseAndPlay(source, hash, evalServerPool, out)
-    } else if (endsWithAny(path, [".html", ".htm"])) {
+    } else if (endsWithAny(path, [".html", ".htm"]) || htmlAnyway(file, out)) {
         out.lnPrint(`$path:`)
         def html := file.getTwine()
         def source := try {

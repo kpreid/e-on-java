@@ -11,10 +11,10 @@ pragma.syntax("0.8")
  *
  * @param introducer Used to convert between SturdyRefs and "captp://..."
  *                   URI strings.
- * @param file__uriGetter Used when the argument string is a filename.
- * @param uriGetters A table mapping protocol names to urlGetters.
+ * @param <file>     Used when the argument string is a filename.
+ * @param uriGetters A table mapping protocol names to uriGetters.
  *                   When the argument string is a URL
- * @param out A textual output stream to print the URI to.
+ * @param out        A textual output stream to print the URI to.
  *
  * @author Mark S. Miller
  */

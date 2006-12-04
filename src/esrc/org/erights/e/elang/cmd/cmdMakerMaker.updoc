@@ -43,10 +43,14 @@
     >                                         currentVat)
     # value: <a Scope>
 
-    ? bind cmdLoop := cmdLoopMaker(["a", "b"], props, privileged)
+    ? bind cmdLoop := cmdLoopMaker(["a", "b"], props, privileged, false)
     # value: <cmdLoop>
 
-    ? def cmdMaker := cmdMakerMaker(cmdLoop, altoutBuf, alterrBuf)
+    ? def cmdMaker := cmdMakerMaker(cmdLoop,
+    >                               altoutBuf, 
+    >                               alterrBuf, 
+    >                               stdout,
+    >                               stderr)
     # value: <cmdMaker>
 
     ?

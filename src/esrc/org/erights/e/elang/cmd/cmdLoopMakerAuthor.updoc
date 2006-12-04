@@ -19,7 +19,7 @@
     ? def makeScope := <unsafe:org.erights.e.elang.scope.makeScope>
     # value: <makeScope>
 
-    ? def scope := makeScope([])
+    ? def scope := makeScope.fromState([].asMap(), "foo.")
     # value: <makeScope>
 
     ? scope.asMap()

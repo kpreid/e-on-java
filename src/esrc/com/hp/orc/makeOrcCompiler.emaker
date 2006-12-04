@@ -18,6 +18,7 @@ def makeOrcCompiler(orcShell) {
                 match term`expr(@exprTs*)` {
                     def exprs := ::"for" (exprTs) map eT { orcCompiler(eT) }
                     return termE`$exprs`
+                }
                 match term`call(@leftT,[@argTs*])` {
                     def left := orcCompiler(leftT)
                     def args := ::"for" (argTs) map argT { orcCompiler(argT) }

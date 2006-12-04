@@ -559,8 +559,13 @@ public class Vat {
      * @return As with {@link #mergeInto}
      */
     public Ref orderlyShutdown(Throwable problem) {
-        Runnable todo = new VatRedirector(this, new DeadRunner(problem));
-        return qSendAll(todo, true, "run", E.NO_ARGS);
+        if (myRunner instanceof HeadlessRunner) {
+            Runnable todo = new VatRedirector(this, new DeadRunner(problem));
+            return qSendAll(todo, true, "run", E.NO_ARGS);
+        } else {
+            return Ref.broken(E.asRTE("Can't shutdown a " +
+              E.toString(myRunner.getClass())));
+        }
     }
 
     /**
@@ -591,6 +596,9 @@ public class Vat {
      */
     public Ref morphInto(String runnerKind, String optName) {
         Runner runner = Runner.obtainRunner(runnerKind, optName);
+        if (runner == myRunner) {
+            return Ref.toRef(null);
+        }
         Runnable todo = new VatRedirector(this, runner);
         return qSendAll(todo, true, "run", E.NO_ARGS);
     }

@@ -51,9 +51,6 @@ def makeLazySlot(maker) :Slot {
   ? def makeLazySlot := <import:org.erights.e.elib.slot.makeLazySlot>
   # value: <makeLazySlot>
 
-  ? makeLazySlot :DeepFrozen
-  # value: <makeLazySlot>
-
   ? # Normal
   > def &foo := makeLazySlot(fn{ println("foof"); "food" })
   # value: <lazySlot>

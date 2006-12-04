@@ -14,6 +14,10 @@ def htmlTokenizer(var html) :List[Twine] {
     while (html =~ first`@left[&<]@right`) {
         buf.push(left)
         switch (right) {
+            match twine`<![CDATA[@text]]>@rest` {
+                buf.push(text)
+                html := rest
+            }
             match twine`<@{var tag}>@rest` {
                 if (tag =~ `@_<@_`) {
                     throw(twine`"<$tag>" isn't really a tag`)

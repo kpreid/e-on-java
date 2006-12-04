@@ -8,17 +8,18 @@
     ? def propUtils := <import:org.erights.e.tools.collect.propUtils>
     # value: <propUtils>
 
-    ? def props := interp.getProps(); null
+    ? def props := interp.getProps().with("foo", "false"); null
+
     ? propUtils.testProp(props, "e.bogusFlag")
     # value: false
 
     ? propUtils.testProp(props, "e.version")
     # example problem: 0.8.9zb must be true or false
 
-    ? propUtils.testProp(props, "e.enable.bind")
+    ? propUtils.testProp(props, "e.enable.plumbing")
     # value: true
 
-    ? propUtils.testProp(props, "e.enable.auditors")
+    ? propUtils.testProp(props, "foo")
     # value: false
 
     ?

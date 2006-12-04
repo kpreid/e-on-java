@@ -65,7 +65,7 @@
     next
     reactToSuccess[5, false]
     reactToQueueEmpty[5]
-    ? def exitPairVow := ctrl.getExitPairVow()
+    ? def exitPairVow := ctrl.getNextExitStatus()
     # value: <Promise>
 
     ? exitPairVow
@@ -73,7 +73,7 @@
 
     ? def event2() :void {
     >     ctrl.exitAtTop()
-    >     println(`exit: ${ctrl.getExitPairVow()}`)
+    >     println(`exit: ${ctrl.getNextExitStatus()}`)
     >     ctrl.enqueue(fn{println("already dead")})
     > }
     # value: <event2>
@@ -112,7 +112,7 @@
     reactToEnqueue[2]
     reactToSuccess[1, true]
     reactToBlock[1]
-    ? def exitPairVow3 := ctrl3.getExitPairVow()
+    ? def exitPairVow3 := ctrl3.getNextExitStatus()
     # value: <Promise>
 
     ? exitPairVow3

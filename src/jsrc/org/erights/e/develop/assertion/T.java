@@ -77,7 +77,7 @@ public final class T {
      * If this method is executed, it throws a RuntimeException with the given
      * explanation, prefixed by "Failed: ".
      * <p/>
-     * Must errors thrown by the E implementation go though this point, so if
+     * Must errors thrown by the E implementation go through this point, so if
      * you're running E in a Java debugger, this is a great place to put a
      * breakpoint.
      */

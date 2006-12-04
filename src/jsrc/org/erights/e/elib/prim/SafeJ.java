@@ -219,6 +219,7 @@ public final class SafeJ {
       "org.erights.e.meta.java.math.EInt",
 
       "org.quasiliteral.astro.AstroTag",
+      "org.quasiliteral.astro.BaseSchema",
 
       "org.quasiliteral.quasiterm.QAtHole",
       "org.quasiliteral.quasiterm.QBuilder",

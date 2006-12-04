@@ -16,7 +16,7 @@
     #         "http" => <http>, \
     #         "ftp" => <ftp>]
 
-    ? def exportCap := makeCapExporter(introducer, <file>, uriGetters)
+    ? def exportCap := makeCapExporter(introducer, <file>, uriGetters, stdout)
     # value: <exportCap>
 
     ? introducer.onTheAir()

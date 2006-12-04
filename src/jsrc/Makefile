@@ -157,6 +157,15 @@ quasi_2:
 	find org/capml                  -name '*.java' > files.tmp
 	$(JCOMPILE) @files.tmp
 
+# optional: remake the orc parser from yacc, or just use the generated
+# one, which is included.
+orc_parser:
+	(cd com/hp/orc; $(MAKE) all)
+
+# orc
+orc:
+	find com/hp/orc                 -name '*.java' > files.tmp
+	$(JCOMPILE) @files.tmp
 
 
 
@@ -168,11 +177,11 @@ twixt_parsers: stl_elib quasi_1 third_party
 
 post_parsers: stl_elang _extern _vattp _captp _persist _ui _skylib
 
-_optional: _ertp quasi_2
+_optional: _ertp quasi_2 orc
 
 
 all_parse: pre_parsers term_parser twixt_parsers elang_parser \
-	post_parsers _optional
+	post_parsers orc_parser _optional
 
 all_noparse: pre_parsers twixt_parsers post_parsers _optional
 

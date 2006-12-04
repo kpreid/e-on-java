@@ -11,6 +11,7 @@ pragma.syntax("0.9")
  * safe email quoting syntax.
  * <p>
  * For example,<pre>
+ ? pragma.syntax("0.9")
  ? def traceln := <elang:interp.makeQuoteln>(println, "Fred", 78)
  # example value: &lt;quoteln&gt;
  
