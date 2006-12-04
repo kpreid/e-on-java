@@ -37,7 +37,7 @@ def simpleEvalServerPoolAuthor(<unsafe>) :near {
                     match _          { "headless" }
                 }
                 def vat := makeVat.make(runnerKind, vatName)
-                def makeEvaluator :ref := seedVat(vat, `
+                def makeEvaluator :rcvr := seedVat(vat, `
 
 def makeEvaluatorAuthor :=
   <import:org.erights.e.tools.updoc.makeEvaluatorAuthor>
@@ -81,7 +81,7 @@ makeEvaluatorAuthor(auths["systemGC"],
          *                      by the request for access to an eval
          *                      server.
          */
-        to releaseEvalServer(makeEvaluator :ref) :void {
+        to releaseEvalServer(makeEvaluator :rcvr) :void {
             makeEvaluator <- shutdown()
         }
     }

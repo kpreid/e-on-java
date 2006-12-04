@@ -237,8 +237,10 @@ public final class ScopeSetup {
 
         um.comp("notNull", safeScopeVow, "<elang:interp.notNull>");
         um.comp("vow", safeScopeVow, "<elang:interp.vow>");
-        um.comp("ref", safeScopeVow, "<elang:interp.ref>");
-        um.comp("rcvr", safeScopeVow, "ref"); // deprecated
+        um.comp("rcvr", safeScopeVow, "<elang:interp.rcvr>"); // deprecated
+        um.comp("ref", Ref.broken(E.asRTE("'ref' is currently reserved.")));
+        um.comp("nocall",
+                Ref.broken(E.asRTE("'nocall' is currently reserved.")));
         um.comp("SturdyRef", safeScopeVow, "<type:net.captp.jcomm.SturdyRef>");
 
         um.comp("simple__quasiParser", SimpleQuasiParser.THE_ONE);

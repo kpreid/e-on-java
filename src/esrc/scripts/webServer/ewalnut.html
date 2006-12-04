@@ -682,7 +682,7 @@ chapter.<span class="note">put in link</span>
   <li>nullOk</li>
   <li>near</li>
   <li>vow</li>
-  <li>ref</li>
+  <li>rcvr</li>
   <li>pbc</li>
   <li>Data</li>
   <li>Java classes</li>
@@ -1282,8 +1282,8 @@ list)</a>. </p>
 <p class="note">stdout and stderr are both TextWriters in the E
 environment.</p>
 
-<h4><a href="#TOC22" name="SEC22">Example: looping through a directory tree
-searching for a file that contains a particular line</a></h4>
+<h4>Example: looping through a directory tree
+searching for a file that contains a particular line</h4>
 <p class="note">write the example</p>
 
 <h3><a href="#TOC13" name="SEC13">Data Structures</a></h3>
@@ -2463,18 +2463,18 @@ of warnings can be found in the Naming Conventions section later.</p>
 Since we cannot ascertain beforehand whether it is local or remote, we must
 treat it as a remote object, i.e., we must interact with it only using eventual
 sends. We can use either the suffix Rcvr on the variable name as a reminder,
-or we can use the ref guard when defining the variable as a reminder. If you
+or we can use the rcvr guard when defining the variable as a reminder. If you
 use Rcvr as a suffix, you will be more reliably reminded not to use immediate
 calls, but it does produce long variable names.</p>
 <blockquote><pre># E syntax
-def car :ref := makeCarRcvr &lt;- ("Mercedes")
+def car :rcvr := makeCarRcvr &lt;- ("Mercedes")
 car &lt;- moveTo(2,3)</pre></blockquote>
 In this example, makeCarRcvr is a reference to a makeCar function that we
 have reason to believe may be remote, and therefore can only be spoken to
 reliably with eventual sends. We could name the vehicle a carRcvr,
 since it's a reference to a car local to the makeCar function, which therefore is
 also probably remote to us (if makeCar is remote, so is the car). Instead,
-we have chosen to use the ref guard to remind us to only use eventual sends
+we have chosen to use the rcvr guard to remind us to only use eventual sends
 when interacting with this car.
 
 <p><font color="#FF0000">Under the covers, the "done(value)" part of the when-catch
@@ -2645,7 +2645,7 @@ once you resolve the vow inside a when-catch clause.</p>
 only with eventual sends, never with immediate calls, because although it
 might sometimes be a near car, it can also be remote, and only eventual sends
 are safe. As noted earlier, another way of denoting that a car may be remote
-is to use the ":ref" guard.</p>
+is to use the ":rcvr" guard.</p>
 
 <p><b>getCar(licensePlate)</b> -- a function or a method that returns a local
 car (local to the object implementing getCar)</p>
@@ -2870,7 +2870,7 @@ and it shows the two possible transitions:</p>
 <h3><a href="#TOC30" name="SEC30">Guards for distributed systems</a></h3>
 
 <p>Very early in the book, we presented a list of <span class="e"><em>E</em></span> types, including any,
-integer, float64, etc. In that list were "ref", "vow", "pbc" and "near".
+integer, float64, etc. In that list were "rcvr", "vow", "pbc" and "near".
 "pbc" means that the type of the value is required to be "pass by
 construction". Transparent immutables are generally pbc, and can be passed
 through this type declaration. Strings, integers, floats, booleans, ConstMaps
@@ -2885,10 +2885,10 @@ cannot play any tricky games in its execution.</p>
 will not pass the near guard. Anything that passes a near guard can be sent
 messages with immediate calls.</p>
 
-<p>At this time,  "ref" and "vow" have the same algorithmic meaning as
+<p>At this time,  "rcvr" and "vow" have the same algorithmic meaning as
 "any", but can be used as hints to the programmer about how to interact with
 the object (a vow should be referenced only eventually until it is resolved;
-a ref should always be referenced only eventually).</p>
+a rcvr should always be referenced only eventually).</p>
 
 <h3><a href="#TOC31" name="SEC31">Nested When-Catch constructs</a></h3>
 

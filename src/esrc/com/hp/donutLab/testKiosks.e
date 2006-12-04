@@ -20,7 +20,7 @@ def <donut> := <import:com.hp.donutLab.*>
 #def makeVat := <unsafe:org.erights.e.elib.vat.Vat>
 #def mintVat := makeVat.make("headless", "mint")
 #def seedVat := <elang:interp.seedVatAuthor>(<unsafe>)
-#def mint :ref := seedVat(mintVat,
+#def mint :rcvr := seedVat(mintVat,
 #    `<import:com.hp.donutLab.makeIOUMint>("Sugar")`)
 
 #local mint
@@ -32,7 +32,7 @@ def makeServer := <elang:interp.makeServerAuthor>(<unsafe>, introducer)
 introducer.onTheAir()
 def [makeMint, mintEnv, mintVat] :=
   makeServer("<import:com.hp.donutLab.makeIOUMint>")
-def mint :ref := makeMint <- run("Sugar")
+def mint :rcvr := makeMint <- run("Sugar")
 
 println("made mint in vat")
 

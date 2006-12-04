@@ -19,7 +19,7 @@ def virtualSeedVatAuthor(makeVat, seedVat, introducer) :near {
          * Like seedVat.run/2, but returns a CapTP ref rather than a
          * boot-comm ref.
          */
-        to run(vat :Vat, privSrc :String) :ref {
+        to run(vat :Vat, privSrc :String) :rcvr {
             def starter := seedVat <- run(vat, `
                 def eParser := <elang:syntax.makeEParser>
                 introducer.onTheAir()
@@ -44,7 +44,7 @@ def virtualSeedVatAuthor(makeVat, seedVat, introducer) :near {
         /**
          * Like run/2, but makes and returns a fresh vat.
          */
-        to run(privSrc :String) :Tuple[ref, Vat] {
+        to run(privSrc :String) :Tuple[rcvr, Vat] {
             def vat := makeVat.make("headless", "newVirtualSeedVat")
             return [virtualSeedVat(vat, privSrc), vat]
         }
@@ -78,7 +78,7 @@ def seedVatAuthor(<unsafe>) :near {
          *         PassByProxy or DeepPassByCopy, or an error will result in
          *         trying to resolve the promise.
          */
-        to run(vat :Vat, privSrc :String) :ref {
+        to run(vat :Vat, privSrc :String) :rcvr {
 
             return vat.seed(fn{
                 def eParser := <elang:syntax.makeEParser>
@@ -105,7 +105,7 @@ def seedVatAuthor(<unsafe>) :near {
         /**
          * Like run/2, but makes and returns a fresh vat.
          */
-        to run(privSrc :String) :Tuple[ref, Vat] {
+        to run(privSrc :String) :Tuple[rcvr, Vat] {
             def vat := makeVat.make("headless", "newSeedVat")
             return [seedVat(vat, privSrc), vat]
         }

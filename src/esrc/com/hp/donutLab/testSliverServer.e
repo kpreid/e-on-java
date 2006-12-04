@@ -14,7 +14,7 @@ def printLater(prefix :String, info :vow) {
     } catch prob {println("failed: " + prefix + prob)}
 }
 
-def latePair(basePair :ref) :near {
+def latePair(basePair :rcvr) :near {
     return [basePair <- get(0), basePair <- get(1)]
 }
 
@@ -23,7 +23,7 @@ def <donut> := <import:com.hp.donutLab.*>
 #def makeVat := <unsafe:org.erights.e.elib.vat.Vat>
 #def mintVat := makeVat.make("headless", "mint")
 #def seedVat := <elang:interp.seedVatAuthor>(<unsafe>)
-#def mint :ref := seedVat(mintVat,
+#def mint :rcvr := seedVat(mintVat,
 #    `<import:com.hp.donutLab.makeIOUMint>("Sugar")`)
 
 println("about to make mint in vat")
@@ -32,7 +32,7 @@ def makeServer := <elang:interp.makeServerAuthor>(<unsafe>, introducer)
 introducer.onTheAir()
 def [makeMint, mintEnv, mintVat] :=
   makeServer("<import:com.hp.donutLab.makeIOUMint>")
-def mint :ref := makeMint <- run("Sugar")
+def mint :rcvr := makeMint <- run("Sugar")
 
 printLater("mint brand:" , mint <- getBrand() <- getNickName())
 def pairVow := mint <- makeDonutAccountPair(300)

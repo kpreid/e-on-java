@@ -2190,19 +2190,19 @@ public class ENodeBuilder extends BaseENodeBuilder implements EBuilder {
     /**
      *
      */
-    public Pattern callPattern(Object rcvr,
+    public Pattern callPattern(Object target,
                                Object poser,
                                String verb,
                                Object params) {
-        return callPattern(rcvr, ident(poser, verb), params);
+        return callPattern(target, ident(poser, verb), params);
     }
 
     /**
      *
      */
-    public Pattern callPattern(Object rcvr, Object verb, Object params) {
+    public Pattern callPattern(Object target, Object verb, Object params) {
         Pattern[] patts = optPatterns(params);
         String mverb = "match__" + idStr(verb) + "_" + patts.length;
-        return via(callFacet(rcvr, ident(verb, mverb)), listPattern(patts));
+        return via(callFacet(target, ident(verb, mverb)), listPattern(patts));
     }
 }
