@@ -1,13 +1,14 @@
 
 updoc: started
 
-c:/Documents and Settings/millerm1/e/src/jsrc/com/zooko/tray/EPainter.updoc:.......***-----------------------***
-*** Trace data written to ***
-'C:/Documents and Settings/millerm1/.e/etrace/etrace.2006-12-04T01_26_59.883Z.txt'
-***-----------------------***
-
+c:/Documents and Settings/millerm1/e/src/jsrc/com/zooko/tray/EPainter.updoc:.......
 c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/jcomm/bad-resolve.updoc:..............................................
-c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/jcomm/multi-test.updoc:.......................
+c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/jcomm/multi-test.updoc:.............
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/jcomm/multi-test.updoc#:span::74:6::74:6>
+expr: x
+missing new value
+original value: <Remote Promise>
+.........
 c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/jcomm/refmon.updoc:.....................
 c:/Documents and Settings/millerm1/e/src/jsrc/net/captp/tables/AnswersTable.updoc:.......................................
 c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elang/scope/meta-context.updoc:........
@@ -42,18 +43,18 @@ new problem: <NoSuchMethodException: <a TraversalKey__Maker>.run/0>
 c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/cycleBreaker2.updoc:.....................
 c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/FlexList.updoc:.......
 c:/Documents and Settings/millerm1/e/src/jsrc/org/erights/e/elib/tables/trijection.updoc:............
-c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc:....................
-at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::77:6::77:58>
-expr: def miniSchema := <qq:astro.makeBaseSchema>("mini", [
-          "tag",
-          ".char.",
-          ".int.",
-          ".float64.",
-          ".String."])
+c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc:***-----------------------***
+*** Trace data written to ***
+'C:/Documents and Settings/millerm1/.e/etrace/etrace.2006-12-04T10_12_19.643Z.txt'
+***-----------------------***
+.........................
+at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/Term.updoc#:span::116:6::116:23>
+expr: def testSmlFile :=
+        c__uriGetter["/Documents and Settings/Administrator/Desktop/marcs/safej/tamings/java.awt.AWTPermission.txt"]
 missing new value
-original value: <Schema for mini>
+original value: <file:c:/Documents and Settings/Administrator/Desktop/marcs/safej/tamings/java.awt.AWTPermission.txt>
 missing original problem
-new problem: <SecurityException: org.quasiliteral.astro.makeBaseSchema not approved as safe>
+new problem: Failed: Undefined variable: c__uriGetter
 
 c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/toy-grammar.updoc:...
 at: <file:c:/Documents and Settings/millerm1/e/src/jsrc/org/quasiliteral/term/toy-grammar.updoc#:span::25:2::25:27>

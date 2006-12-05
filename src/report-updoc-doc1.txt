@@ -3,60 +3,10 @@ updoc: started
 
 c:/Documents and Settings/millerm1/e/doc/data/common-syntax/baking-chars.html:...
 c:/Documents and Settings/millerm1/e/doc/data/irrelevance.html:...
-c:/Documents and Settings/millerm1/e/doc/data/serial/jhu-paper/data-e-manual.html:........
-at: <file:c:/Documents and Settings/millerm1/e/doc/data/serial/jhu-paper/data-e-manual.html#:span::456:30::456:83>
-expr: deSubgraphKit.recognize(cycle, deSrcKit.makeBuilder())
-original and new value differ
-original value: "def t__0 := [def t__2 := 'a', t__0, t__2, def t__4 := -3]"
-     new value: "def t__0 := [def t__2 := \'a\', t__0, t__2, def t__4 := -3]"
-..
-at: <file:c:/Documents and Settings/millerm1/e/doc/data/serial/jhu-paper/data-e-manual.html#:span::484:43::484:89>
-expr: deASTKit.recognize(ast, deSrcKit.makeBuilder())
-original and new value differ
-original value: "def t__0 := [def t__2 := 'a', t__0, t__2, -3]"
-     new value: "def t__0 := [def t__2 := \'a\', t__0, t__2, -3]"
-
-at: <file:c:/Documents and Settings/millerm1/e/doc/data/serial/jhu-paper/data-e-manual.html#:span::493:43::493:72>
-expr: deSubgraphKit.recognize(cycle,
-                              deASTKit.wrap(deSrcKit.makeBuilder()))
-original and new value differ
-original value: "def t__0 := [def t__2 := 'a', t__0, t__2, -3]"
-     new value: "def t__0 := [def t__2 := \'a\', t__0, t__2, -3]"
-...
-at: <file:c:/Documents and Settings/millerm1/e/doc/data/serial/jhu-paper/data-e-manual.html#:span::513:9::513:66>
-expr: deBytecodeKit.recognize(code, deAssemblyKit.makeBuilder())
-original and new value differ
-original value: "OP_PROMISE # [t__0, t__1]
-                OP_IMPORT(\"__makeList\")
-                OP_LIT_CHAR('a')
-                OP_DEFINE # t__2
-                OP_IBID(0)
-                OP_IBID(2)
-                OP_LIT_NEGINT(3)
-                OP_CALL(\"run\", 4)
-                OP_DEFREC(1)
-                OP_ROOT
-                "
-     new value: "OP_PROMISE # [t__0, t__1]
-                OP_IMPORT(\"__makeList\")
-                OP_LIT_CHAR(\'a\')
-                OP_DEFINE # t__2
-                OP_IBID(0)
-                OP_IBID(2)
-                OP_LIT_NEGINT(3)
-                OP_CALL(\"run\", 4)
-                OP_DEFREC(1)
-                OP_ROOT
-                "
-
-at: <file:c:/Documents and Settings/millerm1/e/doc/data/serial/jhu-paper/data-e-manual.html#:span::571:43::571:95>
-expr: deBytecodeKit.recognize(code, deSrcKit.makeBuilder())
-original and new value differ
-original value: "def t__0 := [def t__2 := 'a', t__0, t__2, -3]"
-     new value: "def t__0 := [def t__2 := \'a\', t__0, t__2, -3]"
-.
+c:/Documents and Settings/millerm1/e/doc/data/serial/jhu-paper/data-e-manual.html:...................
 c:/Documents and Settings/millerm1/e/doc/data/serial/jhu-paper/deconstructing.html:............................................
 c:/Documents and Settings/millerm1/e/doc/data/serial/jhu-paper/exit-security.html:................................................
+c:/Documents and Settings/millerm1/e/doc/data/serial/jhu-paper/index.html:
 c:/Documents and Settings/millerm1/e/doc/data/serial/jhu-paper/recog-n-build.html:.......
 c:/Documents and Settings/millerm1/e/doc/data/serial/jhu-paper/related.html:.....
 c:/Documents and Settings/millerm1/e/doc/data/serial/jhu-paper/subgraph-security.html:......................

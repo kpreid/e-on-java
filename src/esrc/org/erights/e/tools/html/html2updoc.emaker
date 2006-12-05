@@ -26,7 +26,8 @@ def html2updoc(var html) :Twine {
         if (open >= 0 && close > open) {
             def section := tokens(open +1, close)
             var text := html2txt.fromTokens(section)
-            if (text =~ twine`# E sample$\n@rest`) {
+            if (text =~ twine`@white1# E sample@white2$\n@rest` &&
+                  `$white1$white2`.trim().size() == 0) {
                 text := "? " + rest.replaceAll("\n", "\n> ")
             }
             result += text + "\n\n"
@@ -37,7 +38,7 @@ def html2updoc(var html) :Twine {
     }
 }
 
-    ? pragma.syntax("0.8")
+    ? pragma.syntax("0.9")
 
     ? def html2updoc := <import:org.erights.e.tools.html.html2updoc>
     # value: <html2updoc>
@@ -50,7 +51,8 @@ def html2updoc(var html) :Twine {
     ? html2updoc("foo<b>bar")
     # value: ""
 
-    ? html2updoc("foo<pre># E sample
+    ? html2updoc("foo<pre>
+    >   # E sample
     > bar\nxx</pre>baz")
     # value: "? bar
     #        > xx

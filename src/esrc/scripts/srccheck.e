@@ -10,6 +10,8 @@ def makeELexer := <elang:syntax.makeELexer>
 def makeEParser := <elang:syntax.makeEParser>
 def Term := <type:org.quasiliteral.term.Term>
 def <tools> := <import:org.erights.e.tools.*>
+def argParser := <import:org.erights.e.tools.args.argParser>
+
 
 def optCacheFile :=
   if (interp.getProps().fetch("e.home", fn{}) =~ eHomeName :notNull) {
@@ -150,7 +152,7 @@ def checkESrc(src) :void {
 }
 
 
-def STDEXTS := ["e", "e-awt", "e-swt"].asSet()
+def STDEXTS := [".e", ".e-awt", ".e-swt"].asSet()
 
 /**
  * @param filedir A File that represents either a file to be
@@ -165,6 +167,7 @@ def srcCheckRecurse(filedir,
                     relpath :String,
                     optImportRoot :nullOk[String]) :boolean {
     def fullpath := filedir.getPath()
+    def ext := argParser.getExtension(relpath)
     def good() :boolean {
         stderr.print(".")
         return true
@@ -185,7 +188,7 @@ def srcCheckRecurse(filedir,
         makeUpdocParser.checkpoint()
         stderr.print("]")
         return result
-    } else if (relpath =~ `./@_.emaker`) {
+    } else if (ext == ".emaker") {
         def src := filedir.getTwine()
         try {
             if (null != optImportRoot &&
@@ -200,7 +203,7 @@ def srcCheckRecurse(filedir,
         } catch problem {
             return bad(problem, src(0,1))
         }
-    } else if (relpath =~ `./@_.caplet`) {
+    } else if (ext == ".caplet") {
         def src := filedir.getTwine()
         try {
             e__quasiParser(src)
@@ -210,7 +213,7 @@ def srcCheckRecurse(filedir,
         } catch problem {
             return bad(problem, src(0,1))
         }
-    } else if (relpath =~ `./@_.@ext` && STDEXTS.contains(ext)) {
+    } else if (STDEXTS.contains(ext)) {
         def src := filedir.getTwine()
         if (! (src.startsWith(STDHEADER + "\n"))) {
             stderr.println(fullpath)
@@ -225,7 +228,7 @@ def srcCheckRecurse(filedir,
                 return bad(problem, src(0,1))
             }
         }
-    } else if (relpath =~ `./@_.java` && relpath !~ `@_/antlr/@_`) {
+    } else if (ext == ".java" && relpath !~ `@_/antlr/@_`) {
         def src := filedir.getTwine()
         try {
             checkUpdoc(makeUpdocParser.parsePlain(src))
@@ -234,7 +237,7 @@ def srcCheckRecurse(filedir,
         } catch problem {
             return bad(problem, src(0,1))
         }
-    } else if (relpath =~ `./@_.updoc`) {
+    } else if (ext == ".updoc") {
         def src := filedir.getTwine()
         try {
             checkHeader(src)
@@ -244,7 +247,7 @@ def srcCheckRecurse(filedir,
         } catch problem {
             return bad(problem, src(0,1))
         }
-    } else if (relpath =~ `./@_.txt`) {
+    } else if (ext == ".txt") {
         def src := filedir.getTwine()
         try {
             checkUpdoc(makeUpdocParser.parsePlain(src))
@@ -253,7 +256,7 @@ def srcCheckRecurse(filedir,
         } catch problem {
             return bad(problem, src(0,1))
         }
-    } else if (relpath =~ `./@_.@ext` && ["html", "htm"].contains(ext)) {
+    } else if ([".html", ".htm"].contains(ext)) {
         def src := filedir.getTwine()
         try {
             stderr.print("*")
