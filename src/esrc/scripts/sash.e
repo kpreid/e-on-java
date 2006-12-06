@@ -10,14 +10,17 @@
 pragma.syntax("0.9")
 
 def eParse := <elang:syntax.makeEParser>
+def isIdentifier := <elang:syntax.makeELexer>.isIdentifier
 def makeQuoteln := <elang:interp.makeQuoteln>
 
 def asAuth(arg) {
     switch (arg) {
-        match `=@fname` { return <file>[fname].deepReadOnly() }
-        match `+@fname` { return <file>[fname] }
-        match `^@expr`  { return eParse(expr).eval(privilegedScope) }
-        match _         { return arg }
+        match `ro:@fname` { return <file>[fname].deepReadOnly() }
+        match `rw:@fname` { return <file>[fname] }
+        match `e:@expr`   { return eParse(expr).eval(privilegedScope) }
+        match `q:@str`    { return str }
+        match `@id:@_` ? isIdentifier(id) { throw (`reserved "$id"`) }
+        match _           { return arg }
     }
 }
 
@@ -26,10 +29,12 @@ usage: sash.e <pluginFname> <arg>...
 where
     <pluginFname> is the file path name of a sash plugin (a *.sash file).
     <arg> is one of
-        =<fname>  Gives read-only access to the files at <fname>,
-        +<fname>  Gives read-write access to the files at <fname>.
-        ^<expr>   The result of evaling <expr> in the privileged scope.
-        <string>  Anything else is provided as a literal string.
+        ro:<fname>  Gives read-only access to the files at <fname>,
+        rw:<fname>  Gives read-write access to the files at <fname>.
+        e:<expr>    The result of evaling <expr> in the privileged scope.
+        q:<string>  <string> is provided as a literal string
+        <ident>:*   All other prefixes are reserved
+        <string>    Anything else is provided as a literal string.
 The plugin is called with (stdin, userOut, auth,...).
 "
 
