@@ -23,7 +23,6 @@ import net.captp.tables.SwissTable;
 import net.captp.tables.Vine;
 import net.vattp.data.NetConfig;
 import org.erights.e.elib.util.OneArgFunc;
-import org.erights.e.extern.persist.SturdyRefMaker;
 import org.erights.e.extern.timer.Timeout;
 import org.erights.e.extern.timer.Timer;
 
@@ -34,12 +33,12 @@ import java.net.MalformedURLException;
  * An instance of the object is accessible in the privileged scope under the
  * name "identityMgr".
  * <p/>
- * It represents both more and less authority than the {@link SturdyRefMaker
- * makeSturdyRef} function. It has more authority in that it allows a form of
- * conversion between capabilities and bits -- specifically SwissBases -- and
- * can therefore not be given to objects you wish to confine in a <a
- * href="http://www.erights.org/elib/capability/dist-confine.html" >distributed
- * confinement box</a>.
+ * It represents both more and less authority than the {@link
+ * org.erights.e.extern.persist.SturdyRefMaker makeSturdyRef} function. It has
+ * more authority in that it allows a form of conversion between capabilities
+ * and bits -- specifically SwissBases -- and can therefore not be given to
+ * objects you wish to confine in a <a href="http://www.erights.org/elib/capability/dist-confine.html"
+ * >distributed confinement box</a>.
  * <p/>
  * It allows less authority, in that by itself it cannot cause an object to
  * survive a checkpoint/revive cycle. However, by making the SwissBases
@@ -51,6 +50,7 @@ import java.net.MalformedURLException;
  * appropriate substitute IdentityMgr.
  *
  * @author Mark S. Miller
+ * @noinspection UnnecessaryFullyQualifiedName
  */
 public class IdentityMgr {
 
@@ -96,7 +96,7 @@ public class IdentityMgr {
      * revive or reconstruct the object itself, and then to call {@link
      * #makeKnownAs} to re-establish the association between the object and its
      * swissNumber. The CapTP package does not provide such functionality
-     * itself. But {@link SturdyRefMaker} builds this functionality on top of
+     * itself. But {@link org.erights.e.extern.persist.SturdyRefMaker} builds this functionality on top of
      * the API listed here.
      *
      * @param obj               The object for which a SturdyRef is desired
