@@ -350,16 +350,14 @@ public final class ScopeSetup {
 
 
     /**
-     * Returns a fresh instantiation of the privileged scope.
-     * <p/>
-     * This scope contains the root magic powers, so should only be given to
-     * fully trusted entities.
+     * @deprecated Use privileged/5
      */
     static public Scope privileged(String fqnPrefix,
                                    TextWriter altout,
                                    TextWriter alterr,
                                    CmdLoop interp) {
         return privileged(fqnPrefix,
+                          Ref.broken(E.asRTE("XXX No stdin 5")),
                           altout,
                           alterr,
                           interp.getProps(),
@@ -368,12 +366,50 @@ public final class ScopeSetup {
     }
 
     /**
+     * Returns a fresh instantiation of the privileged scope.
+     * <p/>
+     * This scope contains the root magic powers, so should only be given to
+     * fully trusted entities.
+     */
+    static public Scope privileged(String fqnPrefix,
+                                   Ref altin,
+                                   TextWriter altout,
+                                   TextWriter alterr,
+                                   CmdLoop interp) {
+        return privileged(fqnPrefix,
+                          altin,
+                          altout,
+                          alterr,
+                          interp.getProps(),
+                          interp,
+                          null);
+    }
+
+    /**
+     * @deprecated Use privileged/7
+     */
+    static public Scope privileged(String fqnPrefix,
+                                   TextWriter altout,
+                                   TextWriter alterr,
+                                   ConstMap props,
+                                   Object interpVow,
+                                   Vat optVat) {
+        return privileged(fqnPrefix,
+                          Ref.broken(E.asRTE("XXX No stdin 6")),
+                          altout,
+                          alterr,
+                          props,
+                          interpVow,
+                          optVat);
+    }
+    /**
      * If the interp isn't resolved yet, the props and vat must be provided
      * explicitly.
      *
      * @param optVat If null, uses the current vat.
      */
     static public Scope privileged(String fqnPrefix,
+                                   Ref altin,
                                    TextWriter altout,
                                    TextWriter alterr,
                                    ConstMap props,
@@ -430,7 +466,7 @@ public final class ScopeSetup {
 
         pm.init("stdout", altout);
         pm.init("stderr", alterr);
-        pm.init("stdin", Ref.broken(E.asRTE("XXX stdin not yet implemented")));
+        pm.init("stdin", altin);
         pm.init("print",
                 privScopeVow,
                 "{def print {\n" + "    match [`run`, args] {\n" +

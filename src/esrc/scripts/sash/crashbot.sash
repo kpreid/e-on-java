@@ -68,15 +68,15 @@ def createPlayerFunc(sourceCode, arenaMaxLoc, logFile) {
  *    the read-only sourcecode file for player B's bot
  *    the editable log file for player B's bot
  */
-def start(userIn, userOut, arenaStr, aCode, aLog, bCode, bLog) {
+def start(powerbox, arenaStr, aCode, aLog, bCode, bLog) {
     def indent := "     "
-    def indentOut(output) {userOut(indent + output)}
+    def indentOut(output) {powerbox.println(indent + output)}
     def arenaMaxLoc := __makeInt(arenaStr)
-    userOut("Loading Player A Bot")
+    powerbox.println("Loading Player A Bot")
     def playerAFunc := createPlayerFunc(aCode.getTwine(),
                                         arenaMaxLoc,
                                         aLog)
-    userOut("Loading Player B Bot")
+    powerbox.println("Loading Player B Bot")
     def playerBFunc := createPlayerFunc(bCode.getTwine(),
                                         arenaMaxLoc,
                                         bLog)

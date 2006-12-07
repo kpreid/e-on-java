@@ -326,6 +326,8 @@ public class Rune {
 
             Vat startVat = Vat.make("headless", "start");
             final Scope priv = ScopeSetup.privileged("__main$",
+                                                     Ref.broken(E.asRTE(
+                                                       "XXX No stdin 4")),
                                                      outs,
                                                      errs,
                                                      props,

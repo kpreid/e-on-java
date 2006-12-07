@@ -92,6 +92,7 @@ def seedVatAuthor(<unsafe>) :near {
                     }
                 }
                 def privScope := makeScopeSetup.privileged("__main$",
+                                                           auths["metain"],
                                                            auths["metaout"],
                                                            auths["metaerr"],
                                                            props,

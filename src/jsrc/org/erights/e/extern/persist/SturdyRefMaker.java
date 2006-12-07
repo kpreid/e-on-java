@@ -60,9 +60,7 @@ public class SturdyRefMaker {
     private Object myOptTimeMachine = null;
 
     /**
-     * @param introducer
-     * @param timer
-     * @param identityMgr
+     *
      */
     public SturdyRefMaker(Introducer introducer,
                           Timer timer,
@@ -97,8 +95,6 @@ public class SturdyRefMaker {
      * but not persistent, use {@link IdentityMgr} or {@link #temp} instead.
      * This requires the Introducer to be identified, but is independent of the
      * state of the TimeMachine.
-     *
-     * @return
      */
     public FlexMap tearOffRoots(FlexMap optOldRoots, Object optTimeMachine) {
         T.require(null == myOptSwissRetainers, "Already torn off");
@@ -187,8 +183,6 @@ public class SturdyRefMaker {
 
     /**
      * optExpirationDate defaults to forever.
-     *
-     * @return
      */
     public Object[] make(Object obj) throws MalformedURLException {
         return make(obj, Long.MAX_VALUE);
@@ -274,8 +268,6 @@ public class SturdyRefMaker {
      * Once this notification is no longer needed on further revivals, the
      * notification action should use the returned persistent Runnable to
      * cancel them.
-     *
-     * @return
      */
     public Runnable onRevival(Object reactor, String verb, Object[] args)
       throws MalformedURLException {

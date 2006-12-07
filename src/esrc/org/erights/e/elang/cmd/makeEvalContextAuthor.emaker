@@ -17,13 +17,14 @@ def makeEvalContextAuthor(auths,
                           isConfined :boolean,
                           isExplicit :boolean) :near {
 
-    def makeScope(altout, alterr, props, cmdLoop) :near {
+    def makeScope(altin, altout, alterr, props, cmdLoop) :near {
         def fqnPrefix := options.fetch("--fqnPrefix", fn{"__main$"})
         def makeScopeSetup := auths["makeScopeSetup"]
         if (isConfined) {
             makeScopeSetup.safeScope(fqnPrefix)
         } else {
             makeScopeSetup.privileged(fqnPrefix,
+                                      altin,
                                       altout,
                                       alterr,
                                       props,
@@ -33,7 +34,8 @@ def makeEvalContextAuthor(auths,
     }
 
     def makeImplicitEvalContext(props, cmdLoop) :near {
-        def topScope := makeScope(auths["metaout"],
+        def topScope := makeScope(auths["metain"],
+                                  auths["metaout"],
                                   auths["metaerr"],
                                   props,
                                   cmdLoop)
@@ -53,7 +55,8 @@ def makeEvalContextAuthor(auths,
     def makeExplicitEvalContext(props, cmdLoop) :near {
         def [altout, altoutBuf] := makeTextWriter.makeBufferingPair()
         def [alterr, alterrBuf] := makeTextWriter.makeBufferingPair()
-        def topScope := makeScope(altout,
+        def topScope := makeScope(Ref.broken("XXX No stdin 3"),
+                                  altout,
                                   alterr,
                                   props,
                                   cmdLoop)

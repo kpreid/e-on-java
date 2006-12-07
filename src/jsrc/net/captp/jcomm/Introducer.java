@@ -133,7 +133,7 @@ public class Introducer extends BaseLoader implements PassByProxy {
     }
 
     /**
-     * @param refmon
+     *
      */
     public void setReferenceMonitor(ReferenceMonitor refmon) {
         if (isOnTheAir()) {
@@ -230,6 +230,7 @@ public class Introducer extends BaseLoader implements PassByProxy {
      * but not reveal it through any public protocol. Therefore, applications
      * that wish to do their own identity-persistence must first call either
      * newVatIdentity() or setVatIdentity(..).
+     * @noinspection DuplicateThrows
      */
     public ConstList onTheAir() throws UnknownHostException, IOException {
         if (isOnTheAir()) {
@@ -252,7 +253,7 @@ public class Introducer extends BaseLoader implements PassByProxy {
     }
 
     /**
-     * @return
+     *
      */
     CapTPMgr getCapTPMgr() {
         if (!isOnTheAir()) {
@@ -304,8 +305,6 @@ public class Introducer extends BaseLoader implements PassByProxy {
     /**
      * Same as sturdyFromURI, but named get/1 so the introducer can be used as
      * a URIGetter.
-     *
-     * @param uriBody
      */
     public Object get(String uriBody) {
         try {
@@ -316,7 +315,7 @@ public class Introducer extends BaseLoader implements PassByProxy {
     }
 
     /**
-     * @return
+     *
      */
     public Object[] optUncall(Object obj) {
         if (!(obj instanceof SturdyRef)) {

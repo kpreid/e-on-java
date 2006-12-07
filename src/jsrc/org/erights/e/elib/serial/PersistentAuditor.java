@@ -52,8 +52,7 @@ public class PersistentAuditor extends BaseAuditor {
     }
 
     /**
-     * @param out
-     * @throws java.io.IOException
+     *
      */
     public void __printOn(TextWriter out) throws IOException {
         out.print("Persistent");

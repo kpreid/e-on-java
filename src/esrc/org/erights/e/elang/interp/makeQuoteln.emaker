@@ -14,7 +14,7 @@ pragma.syntax("0.9")
  ? pragma.syntax("0.9")
  ? def traceln := <elang:interp.makeQuoteln>(println, "Fred", 78)
  # example value: &lt;quoteln&gt;
- 
+
  ? traceln("Hello")
  # stdout: Fred said:
  #         > Hello
@@ -24,9 +24,9 @@ pragma.syntax("0.9")
  * @author Mark S. Miller
  * @author based on Marc Stiegler's userOut in his sash in Emily
  */
-def makeQuoteln(println, attribution :String, limit :int) {
+def makeQuoteln(println, header :String, limit :int) {
     def quoteln(message :String) :void {
-        var output := `$attribution said:`
+        var output := header
         def `"@plain"` := E.toQuote(message)
         for var line in plain.split("\n") {
             while (line.size() > limit) {

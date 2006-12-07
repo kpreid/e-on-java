@@ -4,7 +4,7 @@
 # found at http://www.opensource.org/licenses/mit-license.html ................
 
 # By Mark S. Miller
-# based on Marc Stiegler's sash in Emily 
+# based on Marc Stiegler's sash in Emily
 # and on Matej Kosik's host.e in his "Powerbox Rants"
 
 pragma.syntax("0.9")
@@ -19,7 +19,7 @@ def asAuth(arg) {
         match `rw:@fname` { return <file>[fname] }
         match `e:@expr`   { return eParse(expr).eval(privilegedScope) }
         match `q:@str`    { return str }
-        match `@id:@_` ? isIdentifier(id) { throw (`reserved "$id"`) }
+        match `@id:@_` ? (isIdentifier(id)) { throw (`reserved "$id"`) }
         match _           { return arg }
     }
 }
@@ -35,25 +35,36 @@ where
         q:<string>  <string> is provided as a literal string
         <ident>:*   All other prefixes are reserved
         <string>    Anything else is provided as a literal string.
-The plugin is called with (stdin, userOut, auth,...).
+The plugin is called with (powerbox, auth,...).
 "
 
 if (interp.getArgs() =~ [pluginFname] + args) {
     def pluginExpr := <file>[pluginFname].getTwine()
     def plugin := eParse(pluginExpr).eval(safeScope)
-    
-    def userOut := makeQuoteln(println, `Command $pluginFname`, 78)
-    def auths := [stdin, userOut].diverge()
+
+    def userOut := makeQuoteln(println, `Command "$pluginFname" said:`, 78)
+    def requestOut := makeQuoteln(println, `Command "$pluginFname" asks:`, 78)
+    def powerbox {
+        to readLine() { return stdin <- readLine() }
+        to println(str) { userOut(str) }
+        to requestAuth(why :String) {
+            requestOut(why)
+            print("? ")
+            def line := stdin <- readLine()
+            return when (line) -> { eParse(line).eval(privilegedScope) }
+        }
+    }
+    def auths := [powerbox].diverge()
     for arg in args {
         auths.push(asAuth(arg))
     }
     try {
-        E.call(plugin, "run", auths.snapshot())
+        interp.waitAtTop(E.call(plugin, "run", auths.snapshot()))
     } catch ex {
         println(help(plugin))
         throw(ex)
     }
-    
+
 } else {
     println(USAGE)
 }

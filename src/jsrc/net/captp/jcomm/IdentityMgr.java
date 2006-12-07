@@ -23,6 +23,7 @@ import net.captp.tables.SwissTable;
 import net.captp.tables.Vine;
 import net.vattp.data.NetConfig;
 import org.erights.e.elib.util.OneArgFunc;
+import org.erights.e.extern.persist.SturdyRefMaker;
 import org.erights.e.extern.timer.Timeout;
 import org.erights.e.extern.timer.Timer;
 
@@ -33,12 +34,12 @@ import java.net.MalformedURLException;
  * An instance of the object is accessible in the privileged scope under the
  * name "identityMgr".
  * <p/>
- * It represents both more and less authority than the {@link
- * org.erights.e.extern.persist.SturdyRefMaker makeSturdyRef} function. It has
- * more authority in that it allows a form of conversion between capabilities
- * and bits -- specifically SwissBases -- and can therefore not be given to
- * objects you wish to confine in a <a href="http://www.erights.org/elib/capability/dist-confine.html"
- * >distributed confinement box</a>.
+ * It represents both more and less authority than the {@link SturdyRefMaker
+ * makeSturdyRef} function. It has more authority in that it allows a form of
+ * conversion between capabilities and bits -- specifically SwissBases -- and
+ * can therefore not be given to objects you wish to confine in a <a
+ * href="http://www.erights.org/elib/capability/dist-confine.html" >distributed
+ * confinement box</a>.
  * <p/>
  * It allows less authority, in that by itself it cannot cause an object to
  * survive a checkpoint/revive cycle. However, by making the SwissBases
@@ -58,8 +59,7 @@ public class IdentityMgr {
     private final Timer myTimer;
 
     /**
-     * @param introducer
-     * @param timer
+     *
      */
     IdentityMgr(Introducer introducer, Timer timer) {
         myIntroducer = introducer;
@@ -68,8 +68,6 @@ public class IdentityMgr {
 
     /**
      * Returns an unguessable random number suitable for use as a swissBase.
-     *
-     * @return
      */
     public BigInteger nextSwiss() {
         return myIntroducer.getSwissTable().nextSwiss();
@@ -77,8 +75,6 @@ public class IdentityMgr {
 
     /**
      * Just delegates to {@link SwissTable#registerNewSwiss}
-     *
-     * @return
      */
     public BigInteger registerNewSwiss(Object obj, BigInteger swissBase) {
         SwissTable swissTable = myIntroducer.getSwissTable();
@@ -100,8 +96,8 @@ public class IdentityMgr {
      * revive or reconstruct the object itself, and then to call {@link
      * #makeKnownAs} to re-establish the association between the object and its
      * swissNumber. The CapTP package does not provide such functionality
-     * itself. But {@link org.erights.e.extern.persist.SturdyRefMaker} builds
-     * this functionality on top of the API listed here.
+     * itself. But {@link SturdyRefMaker} builds this functionality on top of
+     * the API listed here.
      *
      * @param obj               The object for which a SturdyRef is desired
      * @param swissBase         The hash of which will be the swissNum
@@ -157,10 +153,10 @@ public class IdentityMgr {
      *                          longer be guaranteed to be valid. If
      *                          Long.MAX_VALUE, then it's always valid.
      * @return A triple of <ul> <li>A new SturdyRef for 'obj', <li>A {@link
-     *         org.erights.e.extern.timer.Timeout} for cancelling this
-     *         sturdiness of the object. Though, once a SturdyRef has been
-     *         given out promising a given expirationDate, it's considered rude
-     *         to cancel it without coordinating with those other parties.
+     *         Timeout} for cancelling this sturdiness of the object. Though,
+     *         once a SturdyRef has been given out promising a given
+     *         expirationDate, it's considered rude to cancel it without
+     *         coordinating with those other parties.
      *         <p/>
      *         <i>Note that if an object is sturdified multiple times,
      *         cancelling a registration only cancels that one registration,

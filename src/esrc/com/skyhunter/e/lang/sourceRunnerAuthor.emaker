@@ -19,6 +19,7 @@ def sourceRunnerAuthor(<unsafe>, interp, traceline, stdout, stderr) :near {
                 }
             }
             def scope := makeScopeSetup.privileged("__main$",
+                                                   Ref.broken("XXX No stdin 1"),
                                                    stdout,
                                                    stderr,
                                                    subInterp)

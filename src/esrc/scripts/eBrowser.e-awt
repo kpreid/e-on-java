@@ -334,6 +334,7 @@ def programRunner(sourceTwine, textPane, textModel, resultPane, statusPane) :voi
         def makeScopeSetup := <unsafe:org.erights.e.elang.interp.ScopeSetup>
         traceline("made scoper")
         def scope := makeScopeSetup.privileged("__main$",
+                                               Ref.broken("XXX No stdin 7"),
                                                stdout,
                                                stderr,
                                                subInterp)

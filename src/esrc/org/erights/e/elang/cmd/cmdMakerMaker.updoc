@@ -22,7 +22,7 @@
     ? def cmdLoopMaker := <elang:cmd.cmdLoopMakerAuthor>(SystemGC)
     # value: <cmdLoopMaker>
 
-    ? def ScopeSetup := <unsafe:org.erights.e.elang.interp.makeScopeSetup>
+    ? def makeScopeSetup := <unsafe:org.erights.e.elang.interp.makeScopeSetup>
     # value: <makeScopeSetup>
 
     ? def [altout, altoutBuf] := makeTextWriter.makeBufferingPair()
@@ -35,20 +35,21 @@
     # value: <Resolver>
 
     ? def props := interp.getProps(); null
-    ? def privileged := ScopeSetup.privileged("__main$",
-    >                                         altout,
-    >                                         alterr,
-    >                                         props,
-    >                                         cmdLoop,
-    >                                         currentVat)
+    ? def privileged := makeScopeSetup.privileged("__main$",
+    >                                             Ref.broken("XXX No stdin 2"),
+    >                                             altout,
+    >                                             alterr,
+    >                                             props,
+    >                                             cmdLoop,
+    >                                             currentVat)
     # value: <a Scope>
 
     ? bind cmdLoop := cmdLoopMaker(["a", "b"], props, privileged, false)
     # value: <cmdLoop>
 
     ? def cmdMaker := cmdMakerMaker(cmdLoop,
-    >                               altoutBuf, 
-    >                               alterrBuf, 
+    >                               altoutBuf,
+    >                               alterrBuf,
     >                               stdout,
     >                               stderr)
     # value: <cmdMaker>

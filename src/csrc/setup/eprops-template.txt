@@ -250,7 +250,7 @@ e.onOkGuiExit=ignore
 #
 # When set to "platform" (or when the property is absent), the look
 # and feel is set to the default for the platform according to
-# "UIManager getSystemLookAndFeelClassName()". <p>
+# "UIManager.getSystemLookAndFeelClassName()". <p>
 #
 # When set to "none", this advises code that there may not be an
 # available graphical display device, and that they should try, if

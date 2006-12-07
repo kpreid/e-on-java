@@ -5,7 +5,10 @@
 
 pragma.syntax("0.9")
 
-def sashCP(stdin, userOut, inFile, outFile) {
+# $ cd ~/e/src/esrc/scripts
+# $ sash.e sash/cp.sash ro:~/Desktop/foo.bib rw:~/Desktop/bar.bib
+
+def sashCP(powerbox, inFile, outFile) {
     outFile.setBytes(inFile.getBytes())
-    userOut("done")
+    powerbox.println("done")
 }
