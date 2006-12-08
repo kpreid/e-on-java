@@ -46,6 +46,17 @@ public class ListGuard implements Guard {
     }
 
     /**
+     * Matches a List[x] guard made by this.
+     */
+    public Object match__get_1(Object specimen, OneArgFunc optEjector) {
+        T.require(null == myOptElemGuard, "Already parameterized: ", this);
+        ClassDesc kind = ClassDesc.make(ListGuard.class);
+        ListGuard ofKind = (ListGuard)kind.coerce(specimen, optEjector);
+        Object[] result = {ofKind.getElemGuard()};
+        return ConstList.fromArray(result);
+    }
+
+    /**
      *
      */
     public Object coerce(Object specimen, OneArgFunc optEjector) {

@@ -47,6 +47,19 @@ public class MapGuard implements Guard {
     }
 
     /**
+     * Matches a Map[k, v] guard made by this.
+     */
+    public Object match__get_2(Object specimen, OneArgFunc optEjector) {
+        T.require(null == myOptKeyColumnGuard && null == myOptValColumnGuard,
+                  "Already parameterized: ",
+                  this);
+        ClassDesc kind = ClassDesc.make(MapGuard.class);
+        MapGuard ofKind = (MapGuard)kind.coerce(specimen, optEjector);
+        Object[] result = {ofKind.getKeyGuard(), ofKind.getValGuard()};
+        return ConstList.fromArray(result);
+    }
+
+    /**
      *
      */
     public Object coerce(Object specimen, OneArgFunc optEjector) {

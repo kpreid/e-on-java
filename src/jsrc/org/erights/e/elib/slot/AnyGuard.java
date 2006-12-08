@@ -19,6 +19,7 @@ Copyright (C) 1998 Electric Communities. All Rights Reserved.
 Contributor(s): ______________________________________.
 */
 
+import org.erights.e.elib.base.ClassDesc;
 import org.erights.e.elib.oldeio.TextWriter;
 import org.erights.e.elib.prim.E;
 import org.erights.e.elib.prim.JMatcher;
@@ -71,6 +72,23 @@ public final class AnyGuard implements Guard, JMatcher {
             return E.call(null, "__getAllegedType");
         }
         throw new NoSuchMethodException(verb + "/" + args.size());
+    }
+
+    /**
+     * Exists for consistency with match__of_1.
+     */
+    public UnionGuard of(ConstList guards) {
+        return new UnionGuard(guards);
+    }
+    
+    /**
+     * Matches a union (any[x, y, ...]) guard.
+     */
+    public Object match__of_1(Object specimen, OneArgFunc optEjector) {
+        ClassDesc kind = ClassDesc.make(UnionGuard.class);
+        UnionGuard ofKind = (UnionGuard)kind.coerce(specimen, optEjector);
+        Object[] result = {ConstList.fromArray(ofKind.getChoices())};
+        return ConstList.fromArray(result);
     }
 
     /**

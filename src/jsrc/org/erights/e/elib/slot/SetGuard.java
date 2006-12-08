@@ -46,6 +46,17 @@ public class SetGuard implements Guard {
     }
 
     /**
+     * Matches a Set[x] guard made by this.
+     */
+    public Object match__get_1(Object specimen, OneArgFunc optEjector) {
+        T.require(null == myOptElemGuard, "Already parameterized: ", this);
+        ClassDesc kind = ClassDesc.make(SetGuard.class);
+        SetGuard ofKind = (SetGuard)kind.coerce(specimen, optEjector);
+        Object[] result = {ofKind.getElemGuard()};
+        return ConstList.fromArray(result);
+    }
+
+    /**
      *
      */
     public Object coerce(Object specimen, final OneArgFunc optEjector) {

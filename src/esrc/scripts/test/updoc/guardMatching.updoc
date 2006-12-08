@@ -1,0 +1,81 @@
+    ? pragma.syntax("0.9")
+    ? pragma.enable("call-pattern")
+
+NOTE: these tests do not distinguish between pattern failures and throws.
+
+List guard
+
+    ? def in List[a] := List[int]; a
+    # value: int
+
+    ? def in List[a] := 1
+    # problem: <ClassCastException: Integer doesn't coerce to a ListGuard>
+
+    ? def in List[a] := List; a
+    # value: any
+
+Map guard
+
+    ? def in Map[a, b] := Map[near, any]; [a, b]
+    # value: [near, any]
+
+    ? def in Map[a, b] := 1
+    # problem: <ClassCastException: Integer doesn't coerce to a MapGuard>
+    
+    ? def in Map[a, b] := Map; [a, b]
+    # value: [any, any]
+
+nullOk guard
+
+    ? def in nullOk[a] := nullOk[int]; a
+    # value: int
+
+    ? def in nullOk[a] := nullOk; a
+    # problem: Not a parameterized nullOk
+    XXX this could be defined to return the 'none' guard, which doesn't exist yet
+
+Set guard
+
+    ? def in Set[a] := Set[int]; a
+    # value: int
+
+    ? def in Set[a] := 1
+    # problem: <ClassCastException: Integer doesn't coerce to a SetGuard>
+
+    ? def in Set[a] := Set; a
+    # value: any
+
+Tuple guard
+
+    ? def t := Tuple.of([any, int])
+    # value: Tuple[any, int]
+
+    ? def in Tuple.of([a, b]) := t; [a, b]
+    # value: [any, int]
+
+    ? def in Tuple.of([a]) := t
+    # problem: a 2 size list doesn't match a 1 size list pattern
+
+    ? def in Tuple.of([a]) := 1
+    # problem: <ClassCastException: Integer doesn't coerce to a TupleGuard>
+
+    ? def in Tuple.of([a]) := Tuple
+    # problem: <ClassCastException: StaticMaker doesn't coerce to a TupleGuard>
+
+Union guard
+
+    ? def t := any.of([nullOk, int])
+    # value: any[nullOk, int]
+
+    ? def in any.of([a, b]) := t; [a, b]
+    # value: [nullOk, int]
+
+    ? def in any.of([a]) := t
+    # problem: a 2 size list doesn't match a 1 size list pattern
+
+    ? def in any.of([a]) := 1
+    # problem: <ClassCastException: Integer doesn't coerce to an UnionGuard>
+    
+    ? def in any.of([a]) := any
+    # problem: <ClassCastException: AnyGuard doesn't coerce to an UnionGuard>
+

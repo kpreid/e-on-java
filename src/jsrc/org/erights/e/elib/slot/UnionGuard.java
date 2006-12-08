@@ -75,6 +75,13 @@ public class UnionGuard implements Guard {
     }
 
     /**
+     *
+     */
+    public Guard[] getChoices() {
+        return mySubGuards;
+    }
+
+    /**
      * Prints "any[<i>leftGuard</i>, <i>rightGuard</i>]".
      */
     public void __printOn(TextWriter out) throws IOException {

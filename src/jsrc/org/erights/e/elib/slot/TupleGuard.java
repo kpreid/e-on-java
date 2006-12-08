@@ -56,6 +56,24 @@ public class TupleGuard implements Guard {
     private TupleGuard(Guard[] elemGuards) {
         myElemGuards = elemGuards;
     }
+    
+    /**
+     * Exists for consistency with match__of_1.
+     */
+    public static TupleGuard of(Guard[] elemGuards) {
+        return new TupleGuard(elemGuards);
+    }
+    
+
+    /**
+     * Matches a Tuple[x] guard made by this.
+     */
+    public static Object match__of_1(Object specimen, OneArgFunc optEjector) {
+        ClassDesc kind = ClassDesc.make(TupleGuard.class);
+        TupleGuard ofKind = (TupleGuard)kind.coerce(specimen, optEjector);
+        Object[] result = {ConstList.fromArray(ofKind.myElemGuards)};
+        return ConstList.fromArray(result);
+    }
 
     /**
      *
@@ -76,7 +94,7 @@ public class TupleGuard implements Guard {
         }
         return ConstList.fromArray(result);
     }
-
+    
     /**
      * Prints "Tuple[<i>elem-guard</i>,...]"
      */

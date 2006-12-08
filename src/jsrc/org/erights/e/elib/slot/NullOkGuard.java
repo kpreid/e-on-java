@@ -20,9 +20,11 @@ Contributor(s): ______________________________________.
 */
 
 import org.erights.e.develop.assertion.T;
+import org.erights.e.elib.base.ClassDesc;
 import org.erights.e.elib.oldeio.TextWriter;
 import org.erights.e.elib.prim.Thrower;
 import org.erights.e.elib.ref.Ref;
+import org.erights.e.elib.tables.ConstList;
 import org.erights.e.elib.util.OneArgFunc;
 
 import java.io.IOException;
@@ -79,6 +81,20 @@ public class NullOkGuard implements Guard {
         T.require(null == myOptSubGuard, "can only combine with one Guard");
         T.notNull(subGuard, "Missing sub-guard parameter");
         return new NullOkGuard(subGuard);
+    }
+
+    /**
+     * Matches a nullOk[x] guard made by this.
+     */
+    public Object match__get_1(Object specimen, OneArgFunc optEjector) {
+        T.require(null == myOptSubGuard, "Already parameterized: ", this);
+        ClassDesc kind = ClassDesc.make(NullOkGuard.class);
+        NullOkGuard ofKind = (NullOkGuard)kind.coerce(specimen, optEjector);
+        if (ofKind.myOptSubGuard == null) {
+            throw Thrower.toEject(optEjector, "Not a parameterized nullOk");
+        }
+        Object[] result = {ofKind.myOptSubGuard};
+        return ConstList.fromArray(result);
     }
 
     /**
