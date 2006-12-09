@@ -68,6 +68,7 @@ public class MapGuard implements Guard {
         if (null == myOptKeyColumnGuard && null == myOptValColumnGuard) {
             return map;
         }
+        //noinspection ConstantConditions
         ConstList keys =
           (ConstList)myOptKeyColumnGuard.coerce(map.getKeys(), optEjector);
         ConstList vals =

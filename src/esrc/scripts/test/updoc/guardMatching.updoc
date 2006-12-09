@@ -1,7 +1,7 @@
     ? pragma.syntax("0.9")
     ? pragma.enable("call-pattern")
 
-NOTE: these tests do not distinguish between pattern failures and throws.
+NOTE: these tests do not distinguish between match-failures and throws.
 
 List guard
 
@@ -21,7 +21,7 @@ Map guard
 
     ? def in Map[a, b] := 1
     # problem: <ClassCastException: Integer doesn't coerce to a MapGuard>
-    
+
     ? def in Map[a, b] := Map; [a, b]
     # value: [any, any]
 
@@ -32,7 +32,7 @@ nullOk guard
 
     ? def in nullOk[a] := nullOk; a
     # problem: Not a parameterized nullOk
-    XXX this could be defined to return the 'none' guard, which doesn't exist yet
+XXX this could be defined to return the 'none' guard, which doesn't exist yet
 
 Set guard
 
@@ -75,7 +75,7 @@ Union guard
 
     ? def in any.of([a]) := 1
     # problem: <ClassCastException: Integer doesn't coerce to an UnionGuard>
-    
+
     ? def in any.of([a]) := any
     # problem: <ClassCastException: AnyGuard doesn't coerce to an UnionGuard>
 

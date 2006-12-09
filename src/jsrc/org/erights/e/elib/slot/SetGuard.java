@@ -37,7 +37,7 @@ public class SetGuard implements Guard {
     }
 
     /**
-     * @return
+     *
      */
     public SetGuard get(Guard elemGuard) {
         T.require(null == myOptElemGuard, "Already parameterized: ", this);
@@ -73,14 +73,13 @@ public class SetGuard implements Guard {
         set.iterate(new AssocFunc() {
             public void run(Object key, Object value) {
                 result[i[0]++] = myOptElemGuard.coerce(value, optEjector);
-                ;
             }
         });
         return ConstList.fromArray(result).asSet();
     }
 
     /**
-     * @return
+     *
      */
     public Guard getElemGuard() {
         if (null == myOptElemGuard) {

@@ -8,6 +8,7 @@ import org.erights.e.elib.oldeio.TextWriter;
 import org.erights.e.elib.prim.E;
 import org.erights.e.elib.prim.StaticMaker;
 import org.erights.e.elib.prim.Thrower;
+import org.erights.e.elib.prim.JMatcher;
 import org.erights.e.elib.tables.ConstList;
 import org.erights.e.elib.util.OneArgFunc;
 
@@ -29,9 +30,8 @@ public class TupleGuard implements Guard {
      * returning a TupleGuard on those element guard arguments.
      * <p/>
      * If this were a method of an instance, we'd declare the instance to
-     * implement {@link org.erights.e.elib.prim.JMatcher}.
+     * implement {@link JMatcher}.
      *
-     * @return
      * @throws NoSuchMethodException if the verb isn't "get"
      */
     static public Object match(String verb, ConstList args)
@@ -39,11 +39,11 @@ public class TupleGuard implements Guard {
         if ("get".equals(verb)) {
             return new TupleGuard((Guard[])E.as(args, Guard[].class));
         }
-        if ("__respondsTo".equals(verb) && args.size() == 2) {
+        if ("__respondsTo".equals(verb) && 2 == args.size()) {
             //XXX should say yes if args[0] =~ `get`
             return Boolean.FALSE;
         }
-        if ("__getAllegedType".equals(verb) && args.size() == 0) {
+        if ("__getAllegedType".equals(verb) && 0 == args.size()) {
             //XXX kludge
             return E.call(null, "__getAllegedType");
         }
@@ -56,17 +56,19 @@ public class TupleGuard implements Guard {
     private TupleGuard(Guard[] elemGuards) {
         myElemGuards = elemGuards;
     }
-    
+
     /**
      * Exists for consistency with match__of_1.
      */
     public static TupleGuard of(Guard[] elemGuards) {
         return new TupleGuard(elemGuards);
     }
-    
+
 
     /**
-     * Matches a Tuple[x] guard made by this.
+     * Matches a Tuple[x, y, ...] guard.
+     * <p>
+     * Must use a call-pattern of the form Tuple.of([x, y, ...])
      */
     public static Object match__of_1(Object specimen, OneArgFunc optEjector) {
         ClassDesc kind = ClassDesc.make(TupleGuard.class);
@@ -94,7 +96,7 @@ public class TupleGuard implements Guard {
         }
         return ConstList.fromArray(result);
     }
-    
+
     /**
      * Prints "Tuple[<i>elem-guard</i>,...]"
      */

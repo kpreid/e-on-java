@@ -54,7 +54,6 @@ public final class AnyGuard implements Guard, JMatcher {
     }
 
     /**
-     * @return
      * @throws NoSuchMethodException if the verb isn't "get"
      */
     public Object match(String verb, ConstList args)
@@ -63,11 +62,11 @@ public final class AnyGuard implements Guard, JMatcher {
         if ("get".equals(verb)) {
             return new UnionGuard(args);
         }
-        if ("__respondsTo".equals(verb) && args.size() == 2) {
+        if ("__respondsTo".equals(verb) && 2 == args.size()) {
             //XXX should say yes if args[0] =~ `get`
             return Boolean.FALSE;
         }
-        if ("__getAllegedType".equals(verb) && args.size() == 0) {
+        if ("__getAllegedType".equals(verb) && 0 == args.size()) {
             //XXX kludge
             return E.call(null, "__getAllegedType");
         }
@@ -80,9 +79,11 @@ public final class AnyGuard implements Guard, JMatcher {
     public UnionGuard of(ConstList guards) {
         return new UnionGuard(guards);
     }
-    
+
     /**
      * Matches a union (any[x, y, ...]) guard.
+     * <p/>
+     * The call-pattern must use the form any.of([x, y, ...]).
      */
     public Object match__of_1(Object specimen, OneArgFunc optEjector) {
         ClassDesc kind = ClassDesc.make(UnionGuard.class);
