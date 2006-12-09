@@ -1,3 +1,12 @@
+#!/usr/bin/env rune
+
+Submitted by Kevin Reid
+XXX Need copyright
+
+# pragma.syntax("0.9")
+# def updoc(args) { return rune(["~/e/src/esrc/scripts/updoc.e"] + args) }
+# updoc(["~/e/src/esrc/scripts/test/updoc/guardMatching.updoc"])
+
     ? pragma.syntax("0.9")
     ? pragma.enable("call-pattern")
 

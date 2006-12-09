@@ -1,0 +1,42 @@
+#!/usr/bin/env rune
+
+Posted to e-lang at
+http://www.eros-os.org/pipermail/e-lang/2006-December/011677.html
+XXX Need copyright.
+
+Entered as bug
+https://sourceforge.net/tracker/index.php?func=detail&aid=1612335&group_id=75274&atid=551529
+
+# pragma.syntax("0.9")
+# def updoc(args) { return rune(["~/e/src/esrc/scripts/updoc.e"] + args) }
+# updoc(["~/e/src/esrc/scripts/test/updoc/no-newline-bug.updoc"])
+
+    ? pragma.syntax("0.9")
+    ? def eParser := <elang:syntax.makeEParser>
+    # value: <makeEParser>
+
+    ? eParser("?foo")
+    # value: e`o`
+
+    ? eParser(">foo")
+    # value: e`o`
+
+    ? eParser("?foo1")
+    # value: e`1`
+
+    ? eParser("foo +")
+    # problem: <NullPointerException>
+
+    ? eParser("\"")
+    # problem: <NullPointerException>
+
+    ? eParser("def x :=")
+    # problem: <NullPointerException>
+
+    ? eParser("x =~ \n?foo_")
+    # value: e`escape ej__1 {
+    # def _ exit ej__1 := x
+    # true
+    # } catch _ {
+    # false
+    # }`
