@@ -81,16 +81,18 @@ public class OrcLexer extends BaseLexer {
     }
 
     /**
-     * Consider '#' comments to be blank as well.
+     * Consider '#' comments to be blank as well as '//' comments.
      */
     protected boolean isRestBlank(int start) {
-        for (int i = start, len = myLData.length; i < len; i++) {
-            char ch = myLData[i];
+        if (isEndOfFile()) { return true; }
+        for (int i = start, len = myOptLData.length; i < len; i++) {
+            char ch = myOptLData[i];
             if (!Character.isWhitespace(ch)) {
                 if ('#' == ch) {
                     return true;
                 } else {
-                    return '/' == ch && i + 1 < len && '/' == myLData[i + 1];
+                    return '/' == ch && i + 1 < len &&
+                      '/' == myOptLData[i + 1];
                 }
             }
         }

@@ -62,7 +62,7 @@ public class TwineFeeder implements LineFeeder {
         }
         int i = mySource.indexOf("\n", myPos);
         if (-1 == i) {
-            Twine result = (Twine)mySource.run(myPos, len);
+            Twine result = (Twine)mySource.run(myPos, len).add("\n");
             myPos = len;
             return result;
         }

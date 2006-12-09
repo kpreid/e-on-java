@@ -88,13 +88,9 @@ public class FileFeeder implements LineFeeder {
         if (null == optResultStr) {
             myOptReader.close();
             myOptReader = null;
-
-        } else {
-            optResultStr += "\n";
-        }
-        if (null == optResultStr) {
             return null;
         }
+        optResultStr += "\n";
         SourceSpan span = new SourceSpan(myUrl,
                                          true,
                                          myLineNum,

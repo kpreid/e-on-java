@@ -33,12 +33,14 @@ public abstract class BaseLexer implements LexerFace {
     /**
      * the current line, or null at end-of-file
      */
-    public Twine myLTwine = null;
+    protected Twine myOptLTwine = null;
 
     /**
-     * the string part, but as an array for speed
+     * the string part, but as an array for speed.
+     * <p/>
+     * Also null at end-of-file.
      */
-    public char[] myLData = null;
+    protected char[] myOptLData = null;
 
     /**
      * position in current line of candidate character
@@ -196,18 +198,23 @@ public abstract class BaseLexer implements LexerFace {
         myEotluTok = eotluTok;
         myPartialFlag = partialFlag;
         //XXX postpone first line-read till first token-read.
-        myLTwine = myInput.optNextLine(true, false, 0, 'x', 0);
-        if (null == myLTwine) {
-            myLData = null;
-        } else {
-            myLData = myLTwine.bare().toCharArray();
-        }
+        setLine(myInput.optNextLine(true, false, 0, 'x', 0));
         nextChar();
         myQuasiFlag = quasiFlag;
         myNoTabsFlag = noTabsFlag;
         myIndenter = new Indenter();
         myContinueCount = -1;
         myBuilder = builder;
+    }
+
+    private void setLine(Twine optLine) {
+        if (null == optLine) {
+            myOptLTwine = null;
+            myOptLData = null;
+        } else {
+            myOptLTwine = optLine;
+            myOptLData = optLine.bare().toCharArray();
+        }
     }
 
     /**
@@ -226,12 +233,7 @@ public abstract class BaseLexer implements LexerFace {
         myInput = feeder;
         myPos = -1;
         // myPartialFlag = ??;
-        myLTwine = feeder.optNextLine(true, false, 0, 'x', 0);
-        if (null == myLTwine) {
-            myLData = null;
-        } else {
-            myLData = myLTwine.bare().toCharArray();
-        }
+        setLine(feeder.optNextLine(true, false, 0, 'x', 0));
         myOptStartPos = -1;
         myOptStartText = null;
         myDelayedNextChar = true; //rather than doing nextChar() ourselves
@@ -243,8 +245,8 @@ public abstract class BaseLexer implements LexerFace {
      *
      */
     public void reset() {
-        if (null != myLTwine) {
-            myPos = myLData.length;
+        if (!isEndOfFile()) {
+            myPos = myOptLData.length;
         }
         myOptStartPos = -1;
         myOptStartText = null;
@@ -257,7 +259,7 @@ public abstract class BaseLexer implements LexerFace {
      *
      */
     private void nextLine() throws IOException {
-        if (null == myLTwine) {
+        if (isEndOfFile()) {
             myChar = EOFCHAR;
             return;
         }
@@ -266,12 +268,13 @@ public abstract class BaseLexer implements LexerFace {
                 //no current token, do nothing
             } else {
                 //current token already started
-                myOptStartText = (Twine)myOptStartText.add(myLTwine);
+                myOptStartText = (Twine)myOptStartText.add(myOptLTwine);
             }
         } else {
             //current token started on this line at myOptStartPos
-            myOptStartText =
-              (Twine)myLTwine.run(myOptStartPos, myLTwine.size());
+            myOptStartText = getSpan(myOptStartPos,
+                                     myOptLTwine.size(),
+                                     "Internal: unexpected end-of-file");
             myOptStartPos = -1;
         }
         myPos = -1;
@@ -289,15 +292,15 @@ public abstract class BaseLexer implements LexerFace {
         }
         boolean quoted = ('"' == closer || '`' == closer);
         boolean atTop = !quoted && 0 == indent && -1 == myContinueCount;
-        myLTwine =
-          myInput.optNextLine(atTop, quoted, indent, closer, closeIndent);
-
-        if (null == myLTwine) {
+        setLine(myInput.optNextLine(atTop,
+                                    quoted,
+                                    indent,
+                                    closer,
+                                    closeIndent));
+        if (isEndOfFile()) {
             //don't clear myContinueCount on end-of-file
             //XXX why not? (I don't remember why I wrote this.)
-            myLData = null;
         } else {
-            myLData = myLTwine.bare().toCharArray();
             if (0 <= myContinueCount) {
                 if (isRestBlank(0)) {
                     //If we're after a continuation operator, then keep
@@ -321,14 +324,14 @@ public abstract class BaseLexer implements LexerFace {
      */
     protected final void nextChar() throws IOException {
         while (true) {
-            if (null == myLTwine) {
+            if (isEndOfFile()) {
                 myChar = EOFCHAR;
                 return;
             }
             myPos++;
-            int len = myLData.length;
+            int len = myOptLData.length;
             if (myPos < len) {
-                myChar = myLData[myPos];
+                myChar = myOptLData[myPos];
                 return;
             } else {
                 nextLine();
@@ -374,7 +377,7 @@ public abstract class BaseLexer implements LexerFace {
         start = StrictMath.max(StrictMath.min(start, myPos - 1), 0);
         int bound = StrictMath.max(myPos, start + 1);
         SyntaxException sex =
-          new SyntaxException(msg, null, myLTwine, start, bound);
+          new SyntaxException(msg, null, myOptLTwine, start, bound);
         reset();
         throw sex;
     }
@@ -467,7 +470,7 @@ public abstract class BaseLexer implements LexerFace {
      */
     protected void skipWhiteSpace() throws IOException {
         while (true) {
-            if (EOFCHAR == myChar) {
+            if (isEndOfFile()) {
                 return;
             }
             if (Character.isWhitespace(myChar)) {
@@ -497,7 +500,7 @@ public abstract class BaseLexer implements LexerFace {
      */
     protected boolean isWhite(int start, int bound) {
         for (int i = start; i < bound; i++) {
-            if (!Character.isWhitespace(myLData[i])) {
+            if (!Character.isWhitespace(myOptLData[i])) {
                 return false;
             }
         }
@@ -507,13 +510,16 @@ public abstract class BaseLexer implements LexerFace {
     /**
      * Starting at <tt>start</tt>, is the rest of the current line "blank"?
      * <p/>
-     * This just defaults to <tt>isWhite(start,myLData.length)</tt>, but should
-     * be overridden by subclasses to also consider the remainder of a line
-     * blank if the only thing it contains is a rest-of-line comment (such as a
-     * "#" comment in E or a "//" comment in Java).
+     * This just defaults to <tt>isWhite(start,myOptLData.length)</tt>, but
+     * should be overridden by subclasses to also consider the remainder of a
+     * line blank if the only thing it contains is a rest-of-line comment (such
+     * as a "#" comment in E or a "//" comment in Java).
      */
     protected boolean isRestBlank(int start) {
-        return isWhite(start, myLData.length);
+        if (isEndOfFile()) {
+            return true;
+        }
+        return isWhite(start, myOptLData.length);
     }
 
     /**
@@ -638,7 +644,7 @@ public abstract class BaseLexer implements LexerFace {
                 }
             }
             }
-        } else if (EOFCHAR == myChar) {
+        } else if (isEndOfFile()) {
             needMore("End of file in middle of literal");
         } else if (myQuasiFlag && ('$' == myChar || '@' == myChar)) {
             char c = myChar;
@@ -703,11 +709,12 @@ public abstract class BaseLexer implements LexerFace {
      */
     protected Astro stringLiteral() throws IOException, SyntaxException {
         nextChar();
-        Twine openner = (Twine)myLTwine.run(myOptStartPos, myPos);
+        Twine openner =
+          getSpan(myOptStartPos, myPos, "File ends inside string literal");
         myIndenter.push(openner, '"', 0);
         StringBuffer buf = new StringBuffer();
         while ('"' != myChar) {
-            if (EOFCHAR == myChar) {
+            if (isEndOfFile()) {
                 needMore("File ends inside string literal");
             }
             int ccode = charConstant();
@@ -722,6 +729,14 @@ public abstract class BaseLexer implements LexerFace {
         return myBuilder.leafString(buf.toString(), closer.getOptSpan());
     }
 
+    protected Twine getSpan(int start, int bound, String complaint) {
+        if (isEndOfFile()) {
+            needMore(complaint);
+        }
+        Twine openner = (Twine)myOptLTwine.run(start, bound);
+        return openner;
+    }
+
     /**
      * Assumes the initial '/**' has already been eaten.
      * <p/>
@@ -732,18 +747,19 @@ public abstract class BaseLexer implements LexerFace {
       throws IOException, SyntaxException {
 
         //The openner is the initial '/**'
-        Twine openner = (Twine)myLTwine.run(myOptStartPos, myPos);
+        Twine openner =
+          getSpan(myOptStartPos, myPos, "File ends inside doc-comment");
         // line it up with the first '*' of '/**'
         myIndenter.push(openner, '*', myPos - 2);
         StringBuffer buf = new StringBuffer();
 
-        String line = myLTwine.bare();
+        String line = myOptLTwine.bare();
         int bound;
         while (-1 == (bound = line.indexOf("*/", myPos))) {
             buf.append(line.substring(myPos));
             skipLine();
             nextChar();
-            if (EOFCHAR == myChar) {
+            if (isEndOfFile()) {
                 needMore("File ends inside doc-comment");
             }
             skipWhiteSpace();
@@ -751,7 +767,7 @@ public abstract class BaseLexer implements LexerFace {
                 //skip leading whitespace and initial '*'
                 nextChar();
             }
-            line = myLTwine.bare();
+            line = myOptLTwine.bare();
         }
         buf.append(line.substring(myPos, bound));
         //skip the closing '*/'
@@ -848,16 +864,16 @@ public abstract class BaseLexer implements LexerFace {
      * XXX Get rid of peekChar/0 or make it work
      */
     protected char peekChar() {
-        if (EOFCHAR == myChar) {
+        if (isEndOfFile()) {
             needMore("internal: can't peek here");
         }
         if ('\n' == myChar) {
             T.fail("internal: can't peek here");
         }
-        int last = myLData.length - 1;
+        int last = myOptLData.length - 1;
 
         if (myPos < last) {
-            return myLData[myPos + 1];
+            return myOptLData[myPos + 1];
         } else {
             return EOFCHAR;
         }
@@ -867,24 +883,27 @@ public abstract class BaseLexer implements LexerFace {
      * Is the next character c?
      */
     protected boolean peekChar(char c) {
-        if (EOFCHAR == myChar) {
+        if (isEndOfFile()) {
             needMore("internal: can't peek here");
         }
         if ('\n' == myChar) {
             T.fail("internal: can't peek here");
         }
-        int last = myLData.length - 1;
+        int last = myOptLData.length - 1;
 
-        return myPos < last && c == myLData[myPos + 1];
+        return myPos < last && c == myOptLData[myPos + 1];
     }
 
     /**
      * Skip the rest of this line.
      */
     protected void skipLine() {
-        if (null != myLTwine) {
-            myPos = myLData.length - 1;
-            myChar = myLData[myPos];
+        if (!isEndOfFile()) {
+            myPos = myOptLData.length - 1;
+            myChar = myOptLData[myPos];
+            T.require('\n' == myChar,
+                      "Internal: missing terminal newline: ",
+                      myOptLTwine);
         }
         myDelayedNextChar = true;
     }
@@ -922,13 +941,14 @@ public abstract class BaseLexer implements LexerFace {
             } else {
                 //started on previous line
                 result = myOptStartText;
-                if (null != myLTwine) {
-                    result = (Twine)result.add(myLTwine.run(0, pos));
+                if (!isEndOfFile()) {
+                    result = (Twine)result.add(myOptLTwine.run(0, pos));
                 }
             }
         } else {
             //starts on this line
-            result = (Twine)myLTwine.run(myOptStartPos, pos);
+            result =
+              getSpan(myOptStartPos, pos, "Internal: unexpected end-of-file");
         }
         stopToken();
         return result;
@@ -944,7 +964,7 @@ public abstract class BaseLexer implements LexerFace {
     /**
      *
      */
-    public boolean isEndOfFile() {
-        return null == myLTwine;
+    public final boolean isEndOfFile() {
+        return null == myOptLTwine;
     }
 }

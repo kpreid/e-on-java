@@ -93,8 +93,11 @@ public class ELexer extends BaseLexer {
      * Consider '#' comments to be blank as well.
      */
     protected boolean isRestBlank(int start) {
-        for (int i = start, len = myLData.length; i < len; i++) {
-            char ch = myLData[i];
+        if (isEndOfFile()) {
+            return true;
+        }
+        for (int i = start, len = myOptLData.length; i < len; i++) {
+            char ch = myOptLData[i];
             if (!Character.isWhitespace(ch)) {
                 return '#' == ch;
             }
@@ -489,7 +492,8 @@ public class ELexer extends BaseLexer {
             //be called when we're continuing after a hole, in which
             //case there is no leading backquote.
             nextChar();
-            Twine openner = (Twine)myLTwine.run(myOptStartPos, myPos);
+            Twine openner =
+              getSpan(myOptStartPos, myPos, "File ends inside quasiliteral");
             myIndenter.push(openner, '`', 0);
             return quasiPart();
         }
@@ -576,8 +580,8 @@ public class ELexer extends BaseLexer {
     }
 
     /**
-     * If it {@link BaseLexer#isIdentifierOrKeyword}
-     * and is not a {@link #optKeywordType keyword}.
+     * If it {@link BaseLexer#isIdentifierOrKeyword} and is not a {@link
+     * #optKeywordType keyword}.
      */
     static public boolean isIdentifier(String str) {
         if (!isIdentifierOrKeyword(str)) {
@@ -642,7 +646,7 @@ public class ELexer extends BaseLexer {
         StringBuffer buf = new StringBuffer();
         while (true) {
             while (-1 == "$@`".indexOf(myChar)) {
-                if (EOFCHAR == myChar) {
+                if (isEndOfFile()) {
                     needMore("File end inside quasi-string literal");
                 }
                 buf.append(myChar);
@@ -719,16 +723,16 @@ public class ELexer extends BaseLexer {
      * </pre>
      */
     private Astro optUri() throws IOException, SyntaxException {
-        int len = myLData.length;
+        int len = myOptLData.length;
         int pos = myPos + 1;
-        while (pos < len && isIdentifierPart(myLData[pos])) {
+        while (pos < len && isIdentifierPart(myOptLData[pos])) {
             pos++;
         }
         if (pos >= len) {
             //false alarm
             return null;
         }
-        if ('>' == myLData[pos]) {
+        if ('>' == myOptLData[pos]) {
             myPos = pos;
             nextChar();
             Twine token = endToken();
@@ -738,7 +742,7 @@ public class ELexer extends BaseLexer {
             varName = URIKit.normalize(varName);
             return composite(EParser.ID, varName, token.getOptSpan());
         }
-        if (':' != myLData[pos]) {
+        if (':' != myOptLData[pos]) {
             //false alarm
             return null;
         }
@@ -774,7 +778,7 @@ public class ELexer extends BaseLexer {
     protected void skipWhiteSpace() throws IOException {
         //XXX should delegate most of the work to super.skipWhiteSpace()
         while (true) {
-            if (EOFCHAR == myChar) {
+            if (isEndOfFile()) {
                 return;
             }
             if (Character.isWhitespace(myChar)) {

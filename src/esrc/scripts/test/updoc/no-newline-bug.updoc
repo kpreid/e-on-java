@@ -16,27 +16,28 @@ https://sourceforge.net/tracker/index.php?func=detail&aid=1612335&group_id=75274
     # value: <makeEParser>
 
     ? eParser("?foo")
-    # value: e`o`
+    # value: e`null`
 
     ? eParser(">foo")
-    # value: e`o`
+    # value: e`null`
 
     ? eParser("?foo1")
-    # value: e`1`
+    # value: e`null`
 
     ? eParser("foo +")
-    # problem: <NullPointerException>
+    # syntax error: Unexpected EOF
 
     ? eParser("\"")
-    # problem: <NullPointerException>
+    # syntax error: File ends inside string literal, \
+    #               unmatched openning bracket:
+    #
+    #   "
+    #   ^
 
     ? eParser("def x :=")
-    # problem: <NullPointerException>
+    # syntax error: Unexpected EOF
 
     ? eParser("x =~ \n?foo_")
-    # value: e`escape ej__1 {
-    # def _ exit ej__1 := x
-    # true
-    # } catch _ {
-    # false
-    # }`
+    # syntax error:
+    #   ?foo_
+    #       ^

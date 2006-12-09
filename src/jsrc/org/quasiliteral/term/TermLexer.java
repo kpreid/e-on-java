@@ -89,13 +89,17 @@ public class TermLexer extends BaseLexer {
      * Consider '#' comments to be blank as well.
      */
     protected boolean isRestBlank(int start) {
-        for (int i = start, len = myLData.length; i < len; i++) {
-            char ch = myLData[i];
+        if (isEndOfFile()) {
+            return true;
+        }
+        for (int i = start, len = myOptLData.length; i < len; i++) {
+            char ch = myOptLData[i];
             if (!Character.isWhitespace(ch)) {
                 if ('#' == ch) {
                     return true;
                 } else {
-                    return '/' == ch && i + 1 < len && '/' == myLData[i + 1];
+                    return '/' == ch && i + 1 < len &&
+                      '/' == myOptLData[i + 1];
                 }
             }
         }
@@ -328,11 +332,12 @@ public class TermLexer extends BaseLexer {
      */
     protected Astro charsLiteral() throws IOException, SyntaxException {
         nextChar();
-        Twine openner = (Twine)myLTwine.run(myOptStartPos, myPos);
+        Twine openner =
+          getSpan(myOptStartPos, myPos, "File ends inside character literal");
         myIndenter.push(openner, '\'', 0);
         StringBuffer buf = new StringBuffer();
         while ('\'' != myChar) {
-            if (EOFCHAR == myChar) {
+            if (isEndOfFile()) {
                 needMore("File ends inside string literal");
             }
             int ccode = charConstant();
@@ -374,8 +379,8 @@ public class TermLexer extends BaseLexer {
     }
 
     /**
-     * Any character that may {@link Character#isJavaIdentifierPart(char)
-     * be a part of} a Java identifier, or a '.' or '-'.
+     * Any character that may {@link Character#isJavaIdentifierPart(char) be a
+     * part of} a Java identifier, or a '.' or '-'.
      * <p/>
      * Note that a Java identifier may contain '_'s and '$'s.
      * <p/>
@@ -444,7 +449,7 @@ public class TermLexer extends BaseLexer {
                         //included in the tag.
                         nextChar();
                     }
-                    if (EOFCHAR == myChar) {
+                    if (isEndOfFile()) {
                         needMore("end of input in middle of tag");
                     }
                 } while (URIKit.isURIC(myChar));
@@ -515,16 +520,17 @@ public class TermLexer extends BaseLexer {
     private void skipBlockComment() throws IOException, SyntaxException {
 
         //The openner is the initial '/*'
-        Twine openner = (Twine)myLTwine.run(myOptStartPos, myPos);
+        Twine openner =
+          getSpan(myOptStartPos, myPos, "File ends inside block comment");
         // line it up with the first '*' of '/*'
         myIndenter.push(openner, '*', myPos - 2);
 
-        String line = myLTwine.bare();
+        String line = myOptLTwine.bare();
         int bound;
         while (-1 == (bound = line.indexOf("*/", myPos))) {
             skipLine();
             nextChar();
-            if (EOFCHAR == myChar) {
+            if (isEndOfFile()) {
                 needMore("File ends inside block-comment");
             }
             skipWhiteSpace();
@@ -532,7 +538,7 @@ public class TermLexer extends BaseLexer {
                 //skip leading whitespace and initial '*'
                 nextChar();
             }
-            line = myLTwine.bare();
+            line = myOptLTwine.bare();
         }
         //skip the closing '*/'
         myPos = bound;
