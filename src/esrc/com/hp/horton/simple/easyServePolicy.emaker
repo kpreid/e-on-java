@@ -1,0 +1,43 @@
+#!/usr/bin/env rune
+
+# Copyright 2006 Hewlett Packard, under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+pragma.syntax("0.9")
+
+/**
+ * The most trivial server policy doesn't actually hold anyone
+ * responsible for anything, doesn't log anything, doesn't further wrap
+ * args or results in further Deliverators (i.e., acts as a one-level
+ * caretaker rather than a membrane), and never denies or revokes any
+ * access.
+ */
+def easyServPolicy {
+
+    to call(responsible :dist[Who],
+            target :any,
+            verb :String,
+            args :List) :any {
+
+        # Could refuse by throwing an exception.
+        # Could log access by responsible in audit trail.
+        # Perhaps could transform args, though this may be wrong
+        return E.call(target, verb, args)
+        # Could return result wrapped in another Deliverator
+    }
+
+    to intro(introducer :dist[Who],
+             why :String,
+             other :dist[Who],
+             shared :any) :void {
+
+        # introducer is telling me why it wants me to provide
+        # other with access to shared.
+        # As an easy policy, I don't care.
+        # If I did care, then I should probably consider other
+        # to be a part of the introducer (e.g., a figment of
+        # the introducer's imagination) until I am independently
+        # introduced to other again (according to EQ) by an
+        # I assume is independent of this introducer.
+    }
+}

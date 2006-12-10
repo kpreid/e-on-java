@@ -1,0 +1,27 @@
+#!/usr/bin/env rune
+
+# Copyright 2006 Hewlett Packard, under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+pragma.syntax("0.9")
+
+def Opaque := any # assumed to be a Box.
+
+/**
+ * With apologies to Neal Stephenson, the Opaques returned by a Who are
+ * provided to a Deliverator. A Deliverator is much like a caretaker for
+ * an object managed by a Who (ref Redell). However, an invoker
+ * potentially obtains a Deliverator and a Who through two different
+ * pathways. The invoker cannot trust that the Deliverator actually
+ * represents the Who she intends. Therefore, the invoker always first
+ * seals whatever is intended with the Who and passes only the resulting
+ * Opaque to the Deliverator. A malicious Deliverator poses the same
+ * threat that malicious routers can pose to traffic that's encrypted
+ * end-to-end: It can drop packets, reorder them, deliver them multiple
+ * times, and gather statistics for purposes of traffik analysis. For the
+ * moment, let's assume the protocol presented does not provide
+ * protection from these threats.
+ */
+interface Deliverator {
+    to deliver(box :Opaque) :void
+}
