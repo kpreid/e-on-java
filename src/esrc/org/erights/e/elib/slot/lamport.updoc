@@ -1,57 +1,90 @@
 #!/usr/bin/env rune
 
-? pragma.syntax("0.8")
+Copyright 2002 Combex, Inc. under the terms of the MIT X license
+found at http://www.opensource.org/licenses/mit-license.html ..................
 
-# Copyright 2002 Combex, Inc. under the terms of the MIT X license
-# found at http://www.opensource.org/licenses/mit-license.html ................
+# pragma.syntax("0.9")
+# def updoc(args) { return rune(["~/e/src/esrc/scripts/updoc.e"] + args) }
+# updoc(["~/e/src/esrc/org/erights/e/elib/slot/lamport.updoc"])
 
-? def makeLamportSlot := <elib:slot.makeLamportSlot>
-# value: <makeLamportSlot>
+    ? pragma.syntax("0.8")
 
-? def whenever := <elib:slot.whenever>
-# value: <whenever>
+    ? def makeLamportSlot := <elib:slot.makeLamportSlot>
+    # value: <makeLamportSlot>
 
-? def &x := makeLamportSlot(3)
-# value: <lamport 3 as of 0>
+    ? def whenever := <elib:slot.whenever>
+    # value: <whenever>
 
-? def &y := makeLamportSlot(5)
-# value: <lamport 5 as of 0>
+    ? def &x := makeLamportSlot(2)
+    # value: <lamport 2 as of 0>
 
-? def &z := whenever([&x,&y], 
->                    fn{x+y})
-# value: <_>
+    ? x
+    # value: 2
 
-? whenever([&z],
->          fn{println(z)},
->          fn{true})
-# stdout: 8
-#
+    ? (&x).get()
+    # value: 2
 
-? x := "foo"
-# value: "foo"
+Note that getValue/setValue are now deprecated, but was removed as of 0.8.37e.
+This tests that it's back, though still deprecated.
 
-# stdout: foo5
-#
+    ? (&x).getValue()
+    # value: 2
 
-? y := "bar"
-# value: "bar"
+    ? (&x).getCurrent()
+    # value: [2, 0]
 
-# stdout: foobar
-#
+    ? x := 3
+    # value: 3
 
-? x := 33
-# value: 33
+    ? (&x).getCurrent()
+    # value: [3, 1]
 
-# stderr: <ref broken by problem: <ClassCastException: String doesn't coerce to an int>>
 
-? z
-# value: <ref broken by problem: <ClassCastException: \
-#        String doesn't coerce to an int>>
+    ? def &y := makeLamportSlot(5)
+    # value: <lamport 5 as of 0>
 
-? y := 3.4
-# value: 3.4
+    ? def &z := whenever([&x,&y],
+    >                    fn{x+y})
+    # value: <_>
 
-# stdout: 36.4
-#
+    ? whenever([&z],
+    >          fn{println(z)},
+    >          fn{true})
+    ?
+    # stdout: 8
+    #
 
-?
+    ? x := "foo"
+    # value: "foo"
+
+    ?
+    # stdout: foo5
+    #
+
+    ? y := "bar"
+    # value: "bar"
+
+    ?
+    # stdout: foobar
+    #
+
+    ? x := 33
+    # value: 33
+
+    ?
+    # stdout: <ref broken by problem: \
+    #                  <ClassCastException: String doesn't coerce to a Number>>
+    #
+
+    ? z
+    # value: <ref broken by problem: \
+    #                  <ClassCastException: String doesn't coerce to a Number>>
+
+    ? y := 3.4
+    # value: 3.4
+
+    ?
+    # stdout: 36.4
+    #
+
+    ?

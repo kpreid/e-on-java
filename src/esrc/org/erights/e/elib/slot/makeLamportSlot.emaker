@@ -126,6 +126,18 @@ def makeLamportSlot {
             }
 
             /**
+             * @deprecated Use #get/1
+             */
+            to getValue() :any { return lamportReporter.get() }
+
+            /**
+             * For initializing generation-cognizant reactors.
+             */
+            to getCurrent() :Tuple[any, int] {
+                return [lamportReporter.get(), myGeneration]
+            }
+
+            /**
              * This is how a downstream Reactor subscribes to this Slot
              * as an upstream Reporter. This Slot is being told "'reactor'
              * has a value that's current as of 'lastGeneration'. When
@@ -214,6 +226,11 @@ def makeLamportSlot {
             to put(newValue) :void {
                 lamportSlot.reactToUpdate(newValue, 0, null)
             }
+
+            /**
+             * @deprecated Use #put/1
+             */
+            to setValue(newValue) :void { lamportSlot.put(newValue) }
 
             /**
              * Receive a report from an EverReporter that's presumably upstream

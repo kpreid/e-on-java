@@ -1,6 +1,7 @@
 package org.erights.e.elib.slot;
 
 import org.erights.e.elib.prim.E;
+import org.erights.e.elib.tables.ConstList;
 import org.erights.e.meta.java.math.EInt;
 
 // Copyright 2002 Combex, Inc. under the terms of the MIT X license
@@ -142,6 +143,16 @@ public interface EverReporter extends Slot {
      * be less stale.
      */
     Object get();
+
+    /**
+     * Returns a pair of the current value (as with {@link #get()} and the
+     * current generation number.
+     * <p>
+     * If one then registers using {@link #whenUpdated(EverReactor, Number)}
+     * with this generation number, then one will only be informed once
+     * things are more up recent than when getCurrent() was called.
+     */
+    ConstList getCurrent();
 
     /**
      * A typical EverReporter will normally double as a read-only Slot, in

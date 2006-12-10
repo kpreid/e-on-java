@@ -93,7 +93,11 @@ def whenever {
                 formula :near,
                 interest :near) :Tuple[EverReporter, EverReactor] {
         whenever.makePairDynamic(inputReporters,
-                                 fn{[formula(), []]},
+                                 fn{[try {
+                                         formula()
+                                     } catch ex {
+                                         Ref.broken(ex)
+                                     }, []]},
                                  interest)
     }
 
