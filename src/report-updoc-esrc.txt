@@ -12,7 +12,6 @@ c:/Documents and Settings/millerm1/e/src/esrc/com/hp/orc/orc.updoc:.............
 c:/Documents and Settings/millerm1/e/src/esrc/com/opencola/drm/example/MintMaker.updoc:....
 c:/Documents and Settings/millerm1/e/src/esrc/com/skyhunter/convertForEDoc/bounds.updoc:......
 c:/Documents and Settings/millerm1/e/src/esrc/com/skyhunter/convertForEDoc/edoc.updoc:......
-c:/Documents and Settings/millerm1/e/src/esrc/com/skyhunter/e/lang/sourceRunnerAuthor.emaker:
 c:/Documents and Settings/millerm1/e/src/esrc/edu/jhu/cs448/contact/contactKit.updoc:bp: Pong received "I am Ping"
 bp: Ping received "I am pong"
 bp: Pong received "I am ping"
@@ -35,7 +34,11 @@ bp: Pong received "I am ping"
 bp: Ping received "I am pong"
 bp: Pong received "I am ping"
 bp: Ping received "I am pong"
-.........................................
+.........................................***-----------------------***
+*** Trace data written to ***
+'C:/Documents and Settings/millerm1/.e/etrace/etrace.2006-12-10T01_42_18.125Z.txt'
+***-----------------------***
+
 c:/Documents and Settings/millerm1/e/src/esrc/edu/jhu/cs448/contact/makeOpenQueue.emaker:........................
 c:/Documents and Settings/millerm1/e/src/esrc/edu/jhu/markm/thesis/actors.updoc:.........
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/cmdLoopMakerAuthor.updoc:....
@@ -78,7 +81,6 @@ original and new value differ
 original value: [0, null]
      new value: true
 .
-c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/cmd/makeEvalContextAuthor.emaker:
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/control/lambdaArg.updoc:.......
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/control/makeSeries.emaker:.....
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/control/makeSeries.updoc:..........
@@ -150,14 +152,9 @@ missing new value
 original value: 105
 missing original problem
 new problem: Failed: not synchronously callable
-***-----------------------***
-*** Trace data written to ***
-'C:/Documents and Settings/millerm1/.e/etrace/etrace.2006-12-07T07_01_50.433Z.txt'
-***-----------------------***
 
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/promiseAllResolved.emaker:.............
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/require.emaker:......
-c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/interp/seedVatAuthor.emaker:
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/syntax/termE__quasiParser.emaker:.......
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elang/visitors/makeMetaEval.emaker:........
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/extern/CommandMakerAuthor.updoc:......
@@ -169,40 +166,8 @@ original problem: c:/cygwin/bin/bash.exe failed with(127,,/usr/bin/bash: cygpath
 .
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/ref/makeLazyPromiseAuthor.emaker:.........
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/sealing/makeVOCPair.emaker:.............
-c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/lamport.updoc:.......
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/lamport.updoc#:span::30:2::30:11>
-expr: x := "foo"
-original and new stdout differ
-original stdout: foo5
-                 
-     new stdout: 8
-                 
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/lamport.updoc#:span::36:2::36:11>
-expr: y := "bar"
-original and new stdout differ
-original stdout: foobar
-                 
-     new stdout: foo5
-                 
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/lamport.updoc#:span::42:2::42:8>
-expr: x := 33
-missing new stderr
-original stderr: <ref broken by problem: <ClassCastException: String doesn't coerce to an int>>
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/lamport.updoc#:span::47:2::47:2>
-expr: z
-original and new value differ
-original value: <ref broken by problem: <ClassCastException: String doesn't coerce to an int>>
-     new value: "foobar"
-
-at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/lamport.updoc#:span::51:2::51:9>
-expr: y := 3.4
-missing new stdout
-original stdout: 36.4
-                 
-.
+c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/lamport.updoc:........................
+c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/makeLamportSlot.emaker:
 c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/makeLazySlot.emaker:...
 at: <file:c:/Documents and Settings/millerm1/e/src/esrc/org/erights/e/elib/slot/makeLazySlot.emaker#:span::58:4::58:16>
 expr: foo.isFinal()
@@ -399,8 +364,6 @@ original value: <a SturdyRef>
 missing original problem
 new problem: <MalformedURLException: URI captp://213.130.163.34:4451/0Bg1bGDtCQCmpMvfBJ8wvl6dmRHH/08tjK7_p7d8G8u7OfaVHFr6quSvx does not start with "captp://*">
 
-c:/Documents and Settings/millerm1/e/src/esrc/scripts/eBrowser.e-awt:
-c:/Documents and Settings/millerm1/e/src/esrc/scripts/eBrowser.e-swt:
 c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc:..
 at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/evalServer.updoc#:span::11:2::11:94>
 expr: def sr := <captp://192.168.0.21:1043/5UmFAqXbepvCOwuSHCEGHt5V1wC/Ray1=9hgEHkC8i_DRs5WKfsLnji>
@@ -410,7 +373,6 @@ missing original problem
 new problem: <MalformedURLException: URI //192.168.0.21:1043/5UmFAqXbepvCOwuSHCEGHt5V1wC/Ray1=9hgEHkC8i_DRs5WKfsLnji does not start with "captp://*">
 
 c:/Documents and Settings/millerm1/e/src/esrc/scripts/intro.updoc:..
-c:/Documents and Settings/millerm1/e/src/esrc/scripts/sash.e:
 c:/Documents and Settings/millerm1/e/src/esrc/scripts/srccheck-post.e:......
 c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/audit-test.e:....
 at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/audit-test.e#:span::122:2::122:30>
@@ -466,6 +428,8 @@ c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/makeScope.updoc:.....
 c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/mod.updoc:......
 c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/updoc/abc.updoc:............
 c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/updoc/FlexList.updoc:.......
+c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/updoc/guardMatching.updoc:.......................
+c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/updoc/no-newline-bug.updoc:.........
 c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/updoc/propUtils.updoc:.......
 c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/updoc/race.updoc:.
 at: <file:c:/Documents and Settings/millerm1/e/src/esrc/scripts/test/updoc/race.updoc#:span::8:2::8:58>
