@@ -9,7 +9,13 @@ original value: [<purse <has (44 - 0) Sugar>>, <purseRevoker>]
      new value: <manages <has (44 - 0) Sugar>>
 .......
 c:/Documents and Settings/millerm1/e/src/esrc/com/hp/orc/orc.updoc:....................................
-c:/Documents and Settings/millerm1/e/src/esrc/com/opencola/drm/example/MintMaker.updoc:....
+c:/Documents and Settings/millerm1/e/src/esrc/com/opencola/drm/example/MintMaker.updoc:..
+at: <file:c:/Documents and Settings/millerm1/e/src/esrc/com/opencola/drm/example/MintMaker.updoc#:span::10:2::10:31>
+expr: interp.getProps()["e.version"]
+original and new value differ
+original value: "0.8.??"
+     new value: "0.9.??"
+.
 c:/Documents and Settings/millerm1/e/src/esrc/com/skyhunter/convertForEDoc/bounds.updoc:......
 c:/Documents and Settings/millerm1/e/src/esrc/com/skyhunter/convertForEDoc/edoc.updoc:......
 c:/Documents and Settings/millerm1/e/src/esrc/edu/jhu/cs448/contact/contactKit.updoc:bp: Pong received "I am Ping"
@@ -36,7 +42,7 @@ bp: Pong received "I am ping"
 bp: Ping received "I am pong"
 .........................................***-----------------------***
 *** Trace data written to ***
-'C:/Documents and Settings/millerm1/.e/etrace/etrace.2006-12-10T01_42_18.125Z.txt'
+'C:/Documents and Settings/millerm1/.e/etrace/etrace.2006-12-10T02_36_44.382Z.txt'
 ***-----------------------***
 
 c:/Documents and Settings/millerm1/e/src/esrc/edu/jhu/cs448/contact/makeOpenQueue.emaker:........................

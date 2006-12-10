@@ -40,7 +40,7 @@ public class Rune {
     static public final String SYN_PROPS_PATH_PREFIX =
       "org/erights/e/elang/syntax/syntax-props-";
 
-    static public final String MAJOR_VERSION = "0.8";
+    static public final String MAJOR_VERSION = "0.9";
 
     static public final String SYN_PROPS_PATH =
       SYN_PROPS_PATH_PREFIX + MAJOR_VERSION + ".txt";
