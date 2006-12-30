@@ -1,0 +1,24 @@
+#!/usr/bin/env rune
+
+Copyright 2006 Hewlett Packard, under the terms of the MIT X license
+found at http://www.opensource.org/licenses/mit-license.html ..................
+
+# ? def updoc(args) { return rune(["~/e/src/esrc/scripts/updoc.e"] + args) }
+# ? updoc(["~/e/src/esrc/org/erights/e/elang/scope/test/import-cycle.updoc"])
+
+    ? pragma.syntax("0.9")
+
+    ? def a := <elang:scope.test.A>
+    # value: [1, [2, <***CYCLE***>, 4], 3]
+
+    ? def b := <elang:scope.test.B>
+    # value: [2, [1, <***CYCLE***>, 3], 4]
+
+    ? a == b
+    # value: false
+
+    ? a == b[1]
+    # value: true
+
+    ? a[1] == b
+    # value: true

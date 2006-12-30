@@ -23,7 +23,7 @@
 #     EDEV="c:/e/"
 #
 # All these variables except EDEV come from eprops.txt. See that
-# file for more complete documentation.
+# file (or eprops-template.txt) for more complete documentation.
 #
 # @author Mark S. Miller
 # @author Tyler Close
@@ -51,7 +51,7 @@ JCMD="${{e.javacmd}}"
 # this platform.
 #
 # If OSDIR ends in "-motif", then the generic motif swt.jar is added
-# to the classpath as well. 
+# to the classpath as well.
 #
 # For example, "win32"
 

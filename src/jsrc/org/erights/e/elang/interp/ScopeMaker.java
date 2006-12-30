@@ -18,7 +18,7 @@ import org.erights.e.elib.tables.FlexMap;
 import org.erights.e.elib.tables.Twine;
 
 /**
- * Used to make {@link org.erights.e.elang.scope.Scope Scope}s.
+ * Used to make {@link Scope Scope}s.
  * <p/>
  * Note that you can use a ScopeMaker to make scopes containing unshadowable
  * names. This is how the safeScope itself is built.
@@ -48,13 +48,12 @@ class ScopeMaker {
     /**
      *
      */
-    public ScopeMaker() {
+    ScopeMaker() {
         this(FlexList.fromType(Slot.class, DEFAULT_SIZE),
              FlexMap.fromTypes(String.class, NounPattern.class, DEFAULT_SIZE));
     }
 
     /**
-     * @param outers
      * @param synEnv Must be a map in which each association is
      *               <pre>    varName =&gt; {@link NounPattern}</pre>
      */

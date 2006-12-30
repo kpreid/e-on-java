@@ -21,6 +21,7 @@ Contributor(s): ______________________________________.
 
 import org.erights.e.develop.assertion.T;
 import org.erights.e.develop.exception.ExceptionMgr;
+import org.erights.e.develop.format.StringHelper;
 import org.erights.e.elib.oldeio.TextWriter;
 import org.erights.e.elib.prim.E;
 import org.erights.e.elib.prim.Thrower;
@@ -58,11 +59,6 @@ import java.security.NoSuchAlgorithmException;
  * @author Mark S. Miller
  */
 public class FileSugar {
-
-    /**
-     * platform newlines
-     */
-    static private final String NEWLINE = System.getProperty("line.separator");
 
     /**
      * prevent instantiation
@@ -333,7 +329,7 @@ public class FileSugar {
     static public TextWriter textWriter(File self, boolean append)
       throws IOException {
         return new TextWriter(new FileWriter(self.getPath(), append),
-                              NEWLINE,
+                              StringHelper.TheLineSeparator,
                               false,
                               true,
                               null);

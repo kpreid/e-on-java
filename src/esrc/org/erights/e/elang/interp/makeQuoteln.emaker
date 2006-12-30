@@ -12,10 +12,10 @@ pragma.syntax("0.9")
  * <p>
  * For example,<pre>
  ? pragma.syntax("0.9")
- ? def traceln := <elang:interp.makeQuoteln>(println, "Fred", 78)
+ ? def traceline := <elang:interp.makeQuoteln>(println, "Fred", 78)
  # example value: &lt;quoteln&gt;
 
- ? traceln("Hello")
+ ? traceline("Hello")
  # stdout: Fred said:
  #         > Hello
  #

@@ -23,8 +23,8 @@ import org.erights.e.develop.assertion.T;
 import org.erights.e.develop.exception.NestedException;
 import org.erights.e.develop.trace.Trace;
 import org.erights.e.elang.evm.EExpr;
-import org.erights.e.elang.scope.Scope;
 import org.erights.e.elang.syntax.EParser;
+import org.erights.e.elang.scope.Scope;
 import org.erights.e.elib.base.ClassDesc;
 import org.erights.e.elib.base.ValueThunk;
 import org.erights.e.elib.prim.SafeJ;
@@ -54,13 +54,6 @@ import java.net.URL;
 class ImportLoader extends BaseLoader {
 
     /**
-     * The only thing we do with this is diverge from it, so diverge must be
-     * thread-safe, and it must be thread-safe to mutate each diverged scope in
-     * a separate thread.
-     */
-    private final Scope mySafeScope;
-
-    /**
      * We assume that ClassLoaders are thread-safe
      */
     private final ClassLoader myOptLoader;
@@ -77,8 +70,7 @@ class ImportLoader extends BaseLoader {
     /**
      *
      */
-    private ImportLoader(Scope safeScope, ClassLoader optLoader) {
-        mySafeScope = safeScope;
+    private ImportLoader(ClassLoader optLoader) {
         myOptLoader = optLoader;
         myAlreadyImported = FlexMap.fromTypes(String.class, FinalSlot.class);
     }
@@ -86,8 +78,8 @@ class ImportLoader extends BaseLoader {
     /**
      * optLoader defaults to null.
      */
-    ImportLoader(Scope safeScope) {
-        this(safeScope, null);
+    ImportLoader() {
+        this(null);
     }
 
     /**
@@ -207,7 +199,8 @@ class ImportLoader extends BaseLoader {
             EExpr eExpr = (EExpr)EParser.run(eSource);
             //The fqnPrefix for the loaded defs has this fqName as its outer
             //"class".
-            result = eExpr.eval(mySafeScope.withPrefix(fqName + "$"));
+            Object[] safePair = ScopeSetup.safeScopePair(fqName + "$", this);
+            result = eExpr.eval((Scope)safePair[1]);
 
             // Will be a step towards a better module system
 //            isConfinedPtr[0] = Ref.isDeepFrozen(result);
@@ -237,7 +230,7 @@ class ImportLoader extends BaseLoader {
     }
 
     /**
-     * 
+     *
      */
     public Object get(String uriBody) {
         return getLocalSlot(uriBody).get();

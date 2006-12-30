@@ -375,4 +375,14 @@ public class Scope implements EIteratable {
             }
         });
     }
+
+    public Scope with(String varName, Object value) {
+        return withSlot("&" + varName, new FinalSlot(value));
+    }
+
+    public Scope withSlot(String slotName, Slot slot) {
+        // XXX Horribly inefficient for now
+        ConstMap state = getState();
+        return fromState(state.with(slotName, slot), getFQNPrefix());
+    }
 }

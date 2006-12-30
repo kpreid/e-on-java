@@ -24,6 +24,7 @@ Contributor(s): ______________________________________.
  */
 
 import org.erights.e.develop.exception.ExceptionMgr;
+import org.erights.e.develop.format.StringHelper;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -50,9 +51,6 @@ class TraceMessageStringifier {
     private boolean myShowSubsystem = true;
 
     private boolean myShowLevel = true;
-
-    private final String myLineSeparator =
-      System.getProperty("line.separator");
 
     // A minor concession to efficiency, as this is critical path.
     // Used in toString.
@@ -132,7 +130,7 @@ class TraceMessageStringifier {
 
         // Experimenting with multi-line output.
         if (myShowDate || myShowTime || myShowLocation) {
-            myBuffer.append(myLineSeparator);
+            myBuffer.append(StringHelper.TheLineSeparator);
         }
 
         // note: subsystem must be delimited because it might
@@ -154,7 +152,7 @@ class TraceMessageStringifier {
                     ExceptionMgr.printStackTrace((Throwable)message.object,
                                                  stream);
                     String stack = sw.getBuffer().toString();
-                    myBuffer.append(myLineSeparator);
+                    myBuffer.append(StringHelper.TheLineSeparator);
                     myBuffer.append(stack);
                 } else {
                     myBuffer.append(" : ");

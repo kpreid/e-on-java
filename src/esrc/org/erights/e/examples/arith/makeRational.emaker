@@ -1,0 +1,106 @@
+#!/usr/bin/env rune
+
+# Copyright 2006 Hewlett Packard, under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+# Based on Chris Ratham's makeRational2 at
+# http://www.codepoetics.com/wiki/index.php?title=Topics:SICP_in_other_languages:E:Chapter_2
+# which reduces "to lowest terms in constructor"
+
+pragma.syntax("0.9")
+
+def gcd(a, b) {
+    if (b == 0) {
+        return a
+    } else {
+        return gcd(b, a %% b)
+    }
+}
+
+# internal-only literal guard and stamp
+interface Rat guards RatStamp {}
+
+# forward reference
+def makeRational
+
+# Exported guard, which knows how to coerce some other things to Rational.
+# XXX Rational's FQN is confused, as Kevin Reid explains at
+# http://www.eros-os.org/pipermail/e-lang/2006-December/011723.html
+def Rational {
+    to coerce(specimen, optEjector) {
+        if (specimen =~ rat :Rat) { return rat }
+        if (specimen =~ i :int)   { return makeRational(i,1) }
+        # todo: covert a float64 to an exact rational
+        throw.eject(optEjector,
+                    `don't know how to convert $specimen to rational`)
+    }
+}
+
+bind makeRational {
+    # exported guard representing the kind of things this maker makes
+    to asType() { return Rational }
+
+    to run(n :int, d :int) {
+        def g := gcd(n, d)
+        def nn := n // g
+        def dd := d // g
+
+        def rational implements RatStamp {
+            to numer() { return nn }
+            to denom() { return dd }
+
+            /** Implements expansion of "+" */
+            to add(other :Rational) {
+                return makeRational(nn*other.denom() + other.numer()*dd,
+                                    dd*other.denom())
+            }
+
+            /** Implements expansion of "-" */
+            to subtract(other :Rational) {
+                return makeRational(nn*other.denom() - other.numer()*dd,
+                                    dd*other.denom())
+            }
+
+            /** Implements expansion of "*" */
+            to multiply(other :Rational) {
+                return makeRational(nn*other.numer(),
+                                    dd*other.denom())
+            }
+
+            /** Exact divide, which isn't "/" or "//" */
+            to divide(other :Rational) {
+                return makeRational(nn*other.denom(),
+                                    dd*other.numer())
+            }
+
+            /** Implements expansion of "//" */
+            to floorDivide(other :Rational) {
+                return nn*other.denom() // dd*other.numer()
+            }
+
+            /** Implements expansion of "/" */
+            to approxDivide(other :Rational) {
+                return nn*other.denom() / dd*other.numer()
+            }
+
+            /** Implements expansions of &lt;, &lt;=, &lt;=&gt;, &gt;=, &gt; */
+            to op__cmp(other :Rational) {
+                return (nn*other.denom()).op__cmp(other.numer()*dd)
+            }
+            to __printOn(tw :TextWriter) {
+                tw.print(`$nn/$dd`)
+            }
+
+            /**
+             * Enables rationals to coerce to float-accepting and
+             * int-accepting numeric types.
+             */
+            to __conformTo(guard) {
+                if (dd == 1 && nn =~ i :guard) { return i }
+                if (nn/dd =~ f :guard)         { return f }
+                return rational
+            }
+        }
+        return rational
+    }
+}

@@ -1911,7 +1911,7 @@ Satan for a little competition, with souls on the line.</p>
 # found at http://www.opensource.org/licenses/mit-license.html
 pragma.syntax(&quot;0.9")
 
-def traceln(text) { stderr.println(text) }
+def traceline(text) { stderr.println(text) }
 
 def attachAction(component,target,verb) {
     def listener {
@@ -2074,27 +2074,27 @@ def makeCar(name,startLocation,raceMap)  {
     }
     def car {
         to accelerate(accel) {
-            traceln(`accelerating car $name`)
+            traceline(`accelerating car $name`)
             acceleration := accel
             for each in accelReactors {
                 each.reactToAccel(car)
             }
         }
         to move(){
-            traceln("into move")
+            traceline("into move")
             velocity += acceleration
             def newLocation := location + velocity
-            traceln("got newlocation")
+            traceline("got newlocation")
             def path := computeIntermediateLocations(location,newLocation)
             location := newLocation
-            traceln("assigned  location")
+            traceline("assigned  location")
             hasCrashed := hasCrashed || raceMap.causesCrash(path)
             hasFinished := hasFinished || raceMap.causesFinish(path)
-            traceln("got crash finish")
+            traceline("got crash finish")
             if (hasCrashed) {
                 instrumentPanel.setStatus("Crashed")
             } else if (hasFinished) {instrumentPanel.setStatus("Finished")}
-            traceln("out of move")
+            traceline("out of move")
         }
         to getLocation() {return location}
         to getVelocity() {return velocity}
@@ -2228,7 +2228,7 @@ def makeRaceTrack() {
     def mapViewer := makeTrackViewer(raceMap.getAsTextWithCars(cars))
     def raceTrack {
         to reactToAccel(car) {
-            traceln("racetrack reacting to accel")
+            traceline("racetrack reacting to accel")
             carsReadyToMove[car] := car
             if (carsReadyToMove.size() &gt;= cars.size()) {
                 raceTrack.completeNextTurn()
@@ -2254,7 +2254,7 @@ def makeRaceTrack() {
             } else {raceTrack.prepareForNextTurn()}
         }
         to prepareForNextTurn() {
-            traceln("into prepare for next turn")
+            traceline("into prepare for next turn")
             carsReadyToMove := [].asMap().diverge()
             for each in cars {
                 each.prepareForNextTurn()

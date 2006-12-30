@@ -66,7 +66,7 @@ public final class StackContext implements EPrintable {
             // XXX when should we show the stack tracebacks?
         }
         if (null != myOptSendingEStack) {
-            for (int i = myOptSendingEStack.size() - 1; i >= 0; i--) {
+            for (int i = myOptSendingEStack.size() - 1; 0 <= i; i--) {
                 EStackItem item = (EStackItem)myOptSendingEStack.get(i);
                 out.lnPrint(" @ ");
                 item.traceOn(out);

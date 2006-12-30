@@ -8,7 +8,7 @@ pragma.syntax("0.9")
 # $ cd ~/e/src/esrc/scripts
 # $ sash.e sash/cp.sash ro:~/Desktop/foo.bib rw:~/Desktop/bar.bib
 
-def sashCP(powerbox, inFile, outFile) {
+def sashCP(endowment, inFile, outFile) {
     outFile.setBytes(inFile.getBytes())
-    powerbox.println("done")
+    endowment.println("done")
 }

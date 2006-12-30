@@ -29,6 +29,10 @@ Contributor(s): ______________________________________.
  */
 public final class StringHelper {
 
+    public static final String TheLineSeparator =
+//      System.getProperty("line.separator");
+        "\n";
+
     /**
      * prevent instantiation
      */

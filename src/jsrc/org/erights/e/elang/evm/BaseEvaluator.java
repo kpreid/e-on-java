@@ -11,7 +11,7 @@ import org.erights.e.elib.tables.ConstMap;
  */
 public class BaseEvaluator implements Evaluator {
 
-    static public Evaluator THE_ONE = new BaseEvaluator();
+    static public final Evaluator THE_ONE = new BaseEvaluator();
 
     /**
      *

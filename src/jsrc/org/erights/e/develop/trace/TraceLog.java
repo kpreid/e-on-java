@@ -25,6 +25,7 @@ Contributor(s): ______________________________________.
 
 import org.erights.e.develop.assertion.T;
 import org.erights.e.develop.exception.PrintStreamWriter;
+import org.erights.e.develop.format.StringHelper;
 
 import java.util.Enumeration;
 import java.util.Vector;
@@ -102,8 +103,8 @@ class TraceLog implements TraceMessageAcceptor, TraceConstants {
      * I don't try to catch a SecurityException if one occurs. We'll have
      * other, bigger, problems if that happens.
      */
-    static private final int OurLineSeparatorLength =
-      System.getProperty("line.separator").length();
+    static private final int TheLineSeparatorLength =
+      StringHelper.TheLineSeparator.length();
 
 // QUEUE MANAGEMENT
 
@@ -166,7 +167,7 @@ class TraceLog implements TraceMessageAcceptor, TraceConstants {
             myStderrNotified = true;
         }
 
-        myCurrentSize += output.length() + OurLineSeparatorLength;
+        myCurrentSize += output.length() + TheLineSeparatorLength;
         if (myCurrentSize > myMaxSize) {
             handleFullLog();
         }

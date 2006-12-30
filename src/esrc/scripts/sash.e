@@ -44,7 +44,7 @@ if (interp.getArgs() =~ [pluginFname] + args) {
 
     def userOut := makeQuoteln(println, `Command "$pluginFname" said:`, 78)
     def requestOut := makeQuoteln(println, `Command "$pluginFname" asks:`, 78)
-    def powerbox {
+    def endowment {
         to readLine() { return stdin <- readLine() }
         to println(str) { userOut(str) }
         to requestAuth(why :String) {
@@ -54,7 +54,7 @@ if (interp.getArgs() =~ [pluginFname] + args) {
             return when (line) -> { eParse(line).eval(privilegedScope) }
         }
     }
-    def auths := [powerbox].diverge()
+    def auths := [endowment].diverge()
     for arg in args {
         auths.push(asAuth(arg))
     }
