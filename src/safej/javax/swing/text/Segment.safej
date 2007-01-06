@@ -4,7 +4,7 @@
 class(safe,
       "javax.swing.text.Segment",
       statics(method("run()"),
-              method("run(char[], int, int)")),
+              method(suppress, "run(char[], int, int)", comment("Passing a Segment to Document#getText/3 modifies this array. XXX TODO: Add a safe sugar constructor which makes a fresh array, and a safe accessor which copies the array."))),
       methods(method("setPartialReturn(boolean)"),
               method("isPartialReturn()"),
               method("first()"),
