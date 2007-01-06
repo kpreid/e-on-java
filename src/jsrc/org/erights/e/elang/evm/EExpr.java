@@ -48,6 +48,8 @@ import java.io.IOException;
  */
 public abstract class EExpr extends ENode {
 
+    private static final long serialVersionUID = -7918236472800706525L;
+
     static private class Transformer implements OneArgFunc, DeepPassByCopy {
 
         Transformer() {
@@ -195,8 +197,6 @@ public abstract class EExpr extends ENode {
     /**
      * Append the sequence of operations representated by this node to the
      * argument.
-     *
-     * @param accum
      */
     void appendTo(FlexList accum) {
         accum.push(this);

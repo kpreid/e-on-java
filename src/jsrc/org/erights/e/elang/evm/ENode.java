@@ -17,6 +17,8 @@ import org.erights.e.elib.tables.ConstMap;
  */
 public abstract class ENode extends ParseNode {
 
+    private static final long serialVersionUID = -7476986257531757419L;
+
     private transient StaticScope myOptStaticScope = null;
 
     private final ScopeLayout myOptScopeLayout;
@@ -24,7 +26,6 @@ public abstract class ENode extends ParseNode {
     private transient ConstMap myOptSynEnv = null;
 
     /**
-     * @param optSpan
      * @param optScopeLayout By convention, this parameter should remain last
      *                       in all subclass constructors, to make it
      *                       convenient for visitors to evaluate the
@@ -70,7 +71,7 @@ public abstract class ENode extends ParseNode {
      */
     public final ScopeLayout getScopeLayout() {
         if (null == myOptScopeLayout) {
-            if (staticScope().namesUsed().size() == 0) {
+            if (0 == staticScope().namesUsed().size()) {
                 return ScopeLayout.EMPTY;
             } else {
                 T.notNull(myOptScopeLayout,
@@ -82,7 +83,7 @@ public abstract class ENode extends ParseNode {
     }
 
     /**
-     * @return
+     *
      */
     public final ScopeLayout getOptScopeLayout() {
         return myOptScopeLayout;

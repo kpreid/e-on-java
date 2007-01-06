@@ -93,8 +93,7 @@ public class RemoteCall extends StemCell {
     }
 
     /**
-     * @param out
-     * @throws IOException
+     * 
      */
     public void __printOn(TextWriter out) throws IOException {
         if (isResolved()) {

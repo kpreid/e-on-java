@@ -205,7 +205,7 @@ public class E {
         }
         buf.append('(');
 
-        if (args.length >= 1) {
+        if (1 <= args.length) {
             for (int i = 0; i < args.length - 1; i++) {
                 abbrev(buf, toQuote(args[i]).bare() + ", ", budget);
             }

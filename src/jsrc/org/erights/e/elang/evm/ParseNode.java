@@ -47,6 +47,8 @@ import java.io.IOException;
 public abstract class ParseNode extends SamenessHashCacher
   implements MatchMaker, EPrintable, DeepPassByCopy {
 
+    private static final long serialVersionUID = -6942996288431352411L;    
+
     /**
      * lowest priority
      */
@@ -119,11 +121,6 @@ public abstract class ParseNode extends SamenessHashCacher
 
     /**
      * For when optSpecimen may be null.
-     *
-     * @param args
-     * @param optSpecimen
-     * @param optEjector
-     * @param bindings
      */
     public void matchBind(ConstList args,
                           Object optSpecimen,
@@ -219,7 +216,7 @@ public abstract class ParseNode extends SamenessHashCacher
                                    TextWriter out,
                                    int priority) throws IOException {
         out.print(left);
-        if (nodes.length >= 1) {
+        if (1 <= nodes.length) {
             int last = nodes.length - 1;
             for (int i = 0; i < last; i++) {
                 nodes[i].subPrintOn(out, priority);

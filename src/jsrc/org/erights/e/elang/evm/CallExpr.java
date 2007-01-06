@@ -49,6 +49,8 @@ import java.io.IOException;
  */
 public class CallExpr extends EExpr implements EStackItem {
 
+    private static final long serialVersionUID = 756352279313115342L;
+
     /**
      *
      */
@@ -216,14 +218,14 @@ public class CallExpr extends EExpr implements EStackItem {
      *
      */
     public void subPrintOn(TextWriter out, int priority) throws IOException {
-        if (priority > PR_CALL) {
+        if (PR_CALL < priority) {
             out.print("(");
         }
         myRecipient.subPrintOn(out, PR_CALL);
         out.print(".");
         ELexer.printVerbOn(myVerb, out);
         printListOn("(", myArgs, ", ", ")", out, PR_EEXPR);
-        if (priority > PR_CALL) {
+        if (PR_CALL < priority) {
             out.print(")");
         }
     }
