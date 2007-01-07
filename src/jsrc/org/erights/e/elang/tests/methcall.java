@@ -1,47 +1,16 @@
+// Copyright 2006 Hewlett Packard, under the terms of the MIT X license
+// found at http://www.opensource.org/licenses/mit-license.html ...............
+
+package org.erights.e.elang.tests;
+
 import java.io.IOException;
-
-class Toggle {
-
-    boolean state = true;
-
-    public Toggle(boolean start_state) {
-        this.state = start_state;
-    }
-
-    public boolean value() {
-        return (this.state);
-    }
-
-    public Toggle activate() {
-        this.state = !this.state;
-        return (this);
-    }
-}
-
-class NthToggle extends Toggle {
-
-    int count_max = 0;
-    int counter = 0;
-
-    public NthToggle(boolean start_state, int max_counter) {
-        super(start_state);
-        this.count_max = max_counter;
-        this.counter = 0;
-    }
-
-    public Toggle activate() {
-        this.counter += 1;
-        if (this.counter >= this.count_max) {
-            this.state = !this.state;
-            this.counter = 0;
-        }
-        return (this);
-    }
-}
 
 public class methcall {
 
-    public static void main(String args[]) throws IOException {
+    private methcall() {
+    }
+
+    public static void main(String[] args) throws IOException {
         int n = Integer.parseInt(args[0]);
 
         boolean val = true;
@@ -49,6 +18,7 @@ public class methcall {
         for (int i = 0; i < n; i++) {
             val = toggle.activate().value();
         }
+        //noinspection UseOfSystemOutOrSystemErr
         System.out.println((val) ? "true" : "false");
 
         val = true;
@@ -56,6 +26,7 @@ public class methcall {
         for (int i = 0; i < n; i++) {
             val = ntoggle.activate().value();
         }
+        //noinspection UseOfSystemOutOrSystemErr
         System.out.println((val) ? "true" : "false");
     }
 }
