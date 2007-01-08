@@ -3,8 +3,9 @@
 # Copyright 2006 Hewlett-Packard, Inc. under the terms of the MIT X license
 # found at http://www.opensource.org/licenses/mit-license.html ................
 
-# sash.e sash/crashbot.sash 5 ro:sash/playerA.bot rw:a.log \
-#                             ro:sash/playerB.bot rw:b.log
+# $ cd ~/e/src/esrc/scripts
+# $ sash.e sash/crashbot.sash 5 ro:sash/playerA.bot rw:a.log \
+#                               ro:sash/playerB.bot rw:b.log
 
 pragma.syntax("0.9")
 

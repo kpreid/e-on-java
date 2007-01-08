@@ -1,0 +1,23 @@
+#!/usr/bin/env rune
+
+# Copyright 2007 Hewlett Packard, under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+pragma.syntax("0.9")
+
+# $ cd ~/e/src/esrc/scripts
+# $ sash.e sash/safe-eval.sash e:introducer e:makeSturdyRef
+# ? rune(["sash.e", "sash/safe-eval.sash", "e:introducer", "e:makeSturdyRef"])
+
+def safeEval(expr) { return expr.eval(safeScope) }
+
+def start(endowment, introducer, makeSturdyRef) {
+
+    introducer.onTheAir()
+    def sr := makeSturdyRef.temp(safeEval)
+    var uri := introducer.sturdyToURI(sr)
+    while (uri =~ `@left@@192.168.@_:@_,@right`) {
+        uri := `$left@@$right`
+    }
+    endowment.println(uri)
+}

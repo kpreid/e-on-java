@@ -42,8 +42,8 @@ if (interp.getArgs() =~ [pluginFname] + args) {
     def pluginExpr := <file>[pluginFname].getTwine()
     def plugin := eParse(pluginExpr).eval(safeScope)
 
-    def userOut := makeQuoteln(println, `Command "$pluginFname" said:`, 78)
-    def requestOut := makeQuoteln(println, `Command "$pluginFname" asks:`, 78)
+    def userOut := makeQuoteln(println, `Plugin "$pluginFname" said:`, 77)
+    def requestOut := makeQuoteln(println, `Plugin "$pluginFname" asks:`, 77)
     def endowment {
         to readLine() { return stdin <- readLine() }
         to println(str) { userOut(str) }
