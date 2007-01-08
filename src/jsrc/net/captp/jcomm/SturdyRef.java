@@ -230,7 +230,9 @@ public final class SturdyRef
      */
     public void __printOn(TextWriter out) throws IOException {
         Introducer introducer = myLocatorUnum.myIntroducer;
-        if (myHostID.equals(introducer.getVatID())) {
+        if (introducer.hasIdentity() &&
+          myHostID.equals(introducer.getVatID())) {
+            
             Object referent =
               introducer.getSwissTable().lookupSwiss(mySwissNum);
             if (Ref.isNear(referent)) {
