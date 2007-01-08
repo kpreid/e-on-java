@@ -184,24 +184,24 @@ endif
 
 reports: srccheck updoc_reports
 visit_reports:
-	$(TOP)/src/esrc/scripts/emacsify.e *report*.txt
+	$(TOP)/src/esrc/scripts/maint/emacsify.e *report*.txt
 
 srccheck: srccheck-esrc srccheck-jsrc srccheck-doc
 
 srccheck-esrc:
-	($(STLEBIGT) $(TOP)/src/esrc/scripts/srccheck.e \
+	($(STLEBIGT) $(TOP)/src/esrc/scripts/maint/srccheck.e \
 		$(TOP)/src/esrc  $(TOP)/src/esrc 2>&1 | tee report-esrc.txt)
 
 srccheck-jsrc:
-	($(STLEBIGT) $(TOP)/src/esrc/scripts/srccheck.e \
+	($(STLEBIGT) $(TOP)/src/esrc/scripts/maint/srccheck.e \
 		$(TOP)/src/jsrc  $(TOP)/src/esrc 2>&1 | tee report-jsrc.txt)
 
 srccheck-doc:
-	($(STLEBIGT) $(TOP)/src/esrc/scripts/srccheck.e \
+	($(STLEBIGT) $(TOP)/src/esrc/scripts/maint/srccheck.e \
 		$(TOP)/doc/data  $(TOP)/src/esrc 2>&1 | tee report-doc1.txt)
-	($(STLEBIGT) $(TOP)/src/esrc/scripts/srccheck.e \
+	($(STLEBIGT) $(TOP)/src/esrc/scripts/maint/srccheck.e \
 		$(TOP)/doc/elib  $(TOP)/src/esrc 2>&1 | tee report-doc2.txt)
-	($(STLEBIGT) $(TOP)/src/esrc/scripts/srccheck.e \
+	($(STLEBIGT) $(TOP)/src/esrc/scripts/maint/srccheck.e \
 		$(TOP)/doc/elang $(TOP)/src/esrc 2>&1 | tee report-doc3.txt)
 
 updoc_reports: updoc_e_reports updoc_doc_reports
