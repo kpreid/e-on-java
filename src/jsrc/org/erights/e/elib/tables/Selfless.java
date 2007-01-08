@@ -84,7 +84,7 @@ public interface Selfless extends Marker {
      * obviously want people to be able to use them as if we had.
      */
     String[] HONORED_NAMES = {
-      //also Transparent & PassByConstruction, and so PassByCopy
+      //also Transparent & JOSSPassByConstruction, and so PassByCopy
       "java.lang.Boolean",
       "java.lang.Character",
       "java.lang.String",
@@ -94,11 +94,11 @@ public interface Selfless extends Marker {
       "java.security.KeyPair",
       "COM.rsa.jsafe.SunJSSE_l",
 
-      //also Transparent & PassByConstruction, and so PassByCopy
+      //also Transparent & JOSSPassByConstruction, and so PassByCopy
       //made HONORARY for speed, and so it can be used as a FarRef identity.
       "net.captp.jcomm.ObjectID",
 
-      //also PassByConstruction, but not Transparent or PassByCopy
+      //also JOSSPassByConstruction, but not Transparent or PassByCopy
       "net.captp.jcomm.SturdyRef",
 
       //Not really Selfless, but does its own sameness comparison.
@@ -108,7 +108,7 @@ public interface Selfless extends Marker {
 
       //Not Near, and therefore not actually Selfless, but does its own
       //sameness comparison.
-      //also PassByConstruction, but not Transparent or PassByCopy
+      //also JOSSPassByConstruction, but not Transparent or PassByCopy
       "org.erights.e.elib.ref.DisconnectedRef",
 
       //Not Near, and therefore not actually Selfless, but does its own

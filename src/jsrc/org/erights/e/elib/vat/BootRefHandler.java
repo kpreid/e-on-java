@@ -14,7 +14,7 @@ import org.erights.e.elib.sealing.SealedBox;
 import org.erights.e.elib.sealing.Sealer;
 import org.erights.e.elib.sealing.Unsealer;
 import org.erights.e.elib.serial.DeepPassByCopy;
-import org.erights.e.elib.serial.PassByConstruction;
+import org.erights.e.elib.serial.JOSSPassByConstruction;
 import org.erights.e.elib.serial.PassByProxy;
 import org.erights.e.elib.tables.ConstList;
 import org.erights.e.elib.tables.ConstMap;
@@ -29,8 +29,8 @@ import org.erights.e.elib.util.ArityMismatchException;
  * in the following ways: <ul> <li>The boot-comm-system can only be used to
  * communicate with vats within the same jvm (or host OS address space).
  * <li>Communications happen by pointer manipulation, not serialization, so the
- * only {@link PassByConstruction PassByConstruction} arguments that may be
- * passed or returned as results are those that are {@link DeepPassByCopy
+ * only {@link JOSSPassByConstruction JOSSPassByConstruction} arguments that may
+ * be passed or returned as results are those that are {@link DeepPassByCopy
  * DeepPassByCopy}. </ul> When PassByProxy objects are passed between vats by
  * the boot-comm-system, this is done by wrapping or unwrapping them in a
  * BootRefHandler.
@@ -172,7 +172,7 @@ class BootRefHandler implements EProxyHandler {
         if (Ref.BROKEN == state) {
             return arg;
         } else if (Ref.NEAR == state) {
-            if (Ref.isDeepPassByCopy(arg)) {
+            if (Ref.isDeepPassByCopy(arg) /* implicit "and is thread-safe" */) {
                 return arg;
             }
             if (Ref.isPassByProxy(arg)) {

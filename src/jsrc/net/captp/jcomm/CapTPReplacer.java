@@ -4,9 +4,16 @@ package net.captp.jcomm;
 // found at http://www.opensource.org/licenses/mit-license.html ...............
 
 import org.erights.e.develop.assertion.T;
+import org.erights.e.elib.base.ClassDesc;
+import org.erights.e.elib.prim.E;
+import org.erights.e.elib.prim.StaticMaker;
 import org.erights.e.elib.ref.Ref;
-import org.erights.e.elib.serial.PassByConstruction;
+import org.erights.e.elib.serial.JOSSPassByConstruction;
+import org.erights.e.elib.serial.PassByConstructionAuditor;
 import org.erights.e.elib.serial.Replacer;
+import org.erights.e.elib.serial.RemoteCall;
+import org.erights.e.elib.slot.AuditChecker;
+import org.erights.e.elib.tables.ConstList;
 
 /**
  * Used to specialize the SerializationStream for encoding a reference over a
@@ -24,7 +31,10 @@ class CapTPReplacer extends Replacer {
      * The connection over which we are communicating
      */
     private final CapTPConnection myConn;
-
+    
+    static private final StaticMaker RemoteCallMaker = StaticMaker.make(RemoteCall.class);
+    static private final ClassDesc ConstListGuard = ClassDesc.make(ConstList.class);
+    
     /**
      *
      */
@@ -41,30 +51,20 @@ class CapTPReplacer extends Replacer {
     public Object substitute(Object ref) {
         ref = Ref.resolution(ref);
 
-        //the following sequence of tests are cribbed from Ref.isPBC, except
-        //that we don't guard it with an isNear test, so as to include broken
-        //references.
-        if (null == ref) {
-            //null is trivially PassByCopy
-            return null;
-        }
-        Class clazz = ref.getClass();
-        if (PassByConstruction.class.isAssignableFrom(clazz)) {
+        if (Ref.isJOSSPBCRef(ref)) {
             return ref;
         }
-        if (clazz.isArray()) {
-            //Because we try to pretend that arrays are PassByCopy lists,
-            //we just pass arrays by copy. This is XXX a potential security
-            //bug or at least a possible semantic confusion, since arrays are
-            //not actually immutable. After passing, the original and passed
-            //copy may diverge, whereas in an eventual send within a vat,
-            //they wouldn't diverge.
-            return ref;
+        if (AuditChecker.THE_ONE.run(PassByConstructionAuditor.THE_ONE, ref)) {
+            // XXX failures in the __optUncall, or a bogus uncall, should 
+            // result in sending a broken reference
+            ConstList uncall = (ConstList)ConstListGuard.coerce(
+                                   E.call(ref, "__optUncall"),
+                                   null);
+            T.require(uncall.size() == 3, 
+                "PassByConstruction object returned uncall not of length 3");
+            return E.callAll(RemoteCallMaker, "run", (Object[])uncall.getArray());
         }
-        if (PassByConstruction.HONORARY.has(clazz)) {
-            return ref;
-        }
-        //end PCB testing
+        //end PBC testing
 
         if (Ref.isEventual(ref)) {
             return myConn.makeEventualDesc(Ref.toRef(ref));
@@ -73,7 +73,7 @@ class CapTPReplacer extends Replacer {
             if (Ref.isPassByProxy(ref)) {
                 return myConn.makeImportingDesc(ref);
             }
-            T.fail("the " + clazz +
+            T.fail("the " + ref.getClass() +
               " is neither PassByConstruction nor PassByProxy");
         }
         T.fail("bad state " + ref);

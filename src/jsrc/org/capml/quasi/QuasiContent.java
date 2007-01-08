@@ -6,7 +6,7 @@ package org.capml.quasi;
 import org.capml.dom.Node;
 import org.capml.dom.Text;
 import org.erights.e.elib.oldeio.TextWriter;
-import org.erights.e.elib.serial.PassByConstruction;
+import org.erights.e.elib.serial.JOSSPassByConstruction;
 import org.erights.e.elib.serial.Persistent;
 import org.erights.e.elib.tables.ConstList;
 import org.erights.e.elib.tables.FlexList;
@@ -30,7 +30,7 @@ import java.io.IOException;
  * @deprecated Use Term trees instead.
  */
 public abstract class QuasiContent
-  implements Persistent, Selfless, PassByConstruction, MatchMaker {
+  implements Persistent, Selfless, JOSSPassByConstruction, MatchMaker {
 
     static private final long serialVersionUID = 1194569409508874930L;
 

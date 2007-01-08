@@ -7,7 +7,7 @@ import org.erights.e.develop.assertion.T;
 import org.erights.e.elib.oldeio.TextWriter;
 import org.erights.e.elib.prim.MirandaMethods;
 import org.erights.e.elib.sealing.SealedBox;
-import org.erights.e.elib.serial.PassByConstruction;
+import org.erights.e.elib.serial.JOSSPassByConstruction;
 import org.erights.e.elib.serial.Persistent;
 import org.erights.e.elib.slot.Guard;
 
@@ -49,7 +49,7 @@ import java.io.ObjectInputValidation;
  * @author Mark S. Miller
  */
 public /*abstract*/ class StemCell extends Ref
-  implements PassByConstruction, Persistent, ObjectInputValidation {
+  implements JOSSPassByConstruction, Persistent, ObjectInputValidation {
 
     static private final long serialVersionUID = 3574625250011981396L;
 

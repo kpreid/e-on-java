@@ -30,7 +30,7 @@ import org.erights.e.elib.base.ValueThunk;
 import org.erights.e.elib.oldeio.TextWriter;
 import org.erights.e.elib.ref.Ref;
 import org.erights.e.elib.sealing.SealedBox;
-import org.erights.e.elib.serial.PassByConstruction;
+import org.erights.e.elib.serial.JOSSPassByConstruction;
 import org.erights.e.elib.serial.Persistent;
 import org.erights.e.elib.slot.Guard;
 import org.erights.e.elib.tables.ConstList;
@@ -51,7 +51,7 @@ import java.lang.reflect.Modifier;
  *
  * @author Mark S. Miller
  */
-public class StaticMaker implements Callable, Persistent, PassByConstruction {
+public class StaticMaker implements Callable, Persistent, JOSSPassByConstruction {
 
     static private final long serialVersionUID = -9145754747555989915L;
 

@@ -48,7 +48,7 @@ public final class Serializer extends Replacer {
     public Object substitute(Object ref) {
         ref = myReplaceFunc.run(ref);
         ref = Ref.resolution(ref);
-        if (Ref.isSelfless(ref) && Ref.isPBC(ref)) {
+        if (Ref.isSelfless(ref) && Ref.isJOSSPBC(ref)) {
             return ref;
         }
         if (Ref.isBroken(ref)) {

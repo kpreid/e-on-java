@@ -1,0 +1,66 @@
+    ? def vsv := <elang:interp.seedVatAuthor>(<unsafe>).virtualize(
+    >              (introducer.onTheAir(); introducer))
+    # value: <virtualSeedVat>
+
+    ? def [other, vat] := vsv("fn x { x }")
+    # value: [<Promise>, <Vat newVirtualSeedVat in <runs in newVirtualSeedVat>>]
+
+    ? def obj implements pbc { to __optUncall() :any { 
+    >   return [<elib:tables.makeFlexList>, "make", []] 
+    > }}
+    # value: <obj>
+
+    ? Ref.isPBC(obj)
+    # value: true
+
+    ? Ref.isPassByCopy(obj)
+    # value: false
+
+    ? obj :pbc
+    # value: <obj>
+
+    ? def r := interp.waitAtTop(other <- (obj))
+    # value: <Remote Promise>
+    
+    ? r
+    # value: <Far ref>
+
+    ? r <- push(1)
+    # value: <Remote Promise>
+
+    ? r <- push(2)
+    # value: <Remote Promise>
+
+    ? def s := interp.waitAtTop(r <- snapshot())
+    # value: <Remote Promise>
+
+    ? s
+    # value: [1, 2]
+
+Auditing details
+
+    ? Ref.isPBC(def notHonestlyPBC implements pbc {})
+    # value: true
+
+Miscellaneous
+
+    ? def pbcs := [
+    >     0, 
+    >     ' ',
+    >     false,
+    >     "" :<type:java.lang.Throwable>,
+    >     makeSturdyRef.temp(1),
+    >     term__quasiParser.valueMaker("1"),
+    >     def _ {} :<type:java.lang.Runnable>,
+    >     <import:java.lang.makeInteger>,
+    >     <elib:base.makeValueThunk>(null),
+    >     [].asMap(),
+    >     [].asSet(),
+    >     [],
+    > ]
+    > for thing in pbcs {
+    >   if (!Ref.isPBC(thing)) {
+    >     println("should be PBC: ", thing, " ", thing.__getAllegedType().getFQName())
+    >   }
+    > }
+    > print("of ", pbcs.size())

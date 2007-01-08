@@ -24,7 +24,7 @@ import org.erights.e.develop.assertion.T;
 import org.erights.e.elib.oldeio.EPrintable;
 import org.erights.e.elib.oldeio.TextWriter;
 import org.erights.e.elib.ref.Ref;
-import org.erights.e.elib.serial.PassByConstruction;
+import org.erights.e.elib.serial.JOSSPassByConstruction;
 import org.erights.e.elib.serial.Persistent;
 import org.erights.e.elib.tables.ConstList;
 import org.erights.e.elib.util.OneArgFunc;
@@ -38,7 +38,7 @@ import java.net.MalformedURLException;
  * can survive network partitions.
  */
 public final class SturdyRef
-  implements Persistent, PassByConstruction, EPrintable {
+  implements Persistent, JOSSPassByConstruction, EPrintable {
 
     static private final long serialVersionUID = 1034104891471210303L;
 

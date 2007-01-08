@@ -5,7 +5,7 @@ package net.captp.jcomm;
 
 import org.erights.e.develop.trace.Trace;
 import org.erights.e.elib.prim.E;
-import org.erights.e.elib.serial.PassByConstruction;
+import org.erights.e.elib.serial.JOSSPassByConstruction;
 import org.erights.e.elib.tables.ConstList;
 
 import java.io.IOException;
@@ -41,7 +41,7 @@ import java.math.BigInteger;
  *
  * @author Mark S. Miller
  */
-public class LocatorUnum implements PassByConstruction {
+public class LocatorUnum implements JOSSPassByConstruction {
 
     static private final long serialVersionUID = 6565076271340985687L;
 

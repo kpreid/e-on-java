@@ -4,7 +4,7 @@
 class(safe,
       "java.lang.Throwable",
       sugaredBy("org.erights.e.develop.exception.ThrowableSugar"),
-      honorary("org.erights.e.elib.serial.PassByConstruction",
+      honorary("org.erights.e.elib.serial.JOSSPassByConstruction",
                "org.erights.e.elib.serial.Persistent"),
       statics(method("run()"),
               method("run(String)")),

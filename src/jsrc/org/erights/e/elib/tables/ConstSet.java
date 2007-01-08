@@ -4,14 +4,14 @@ package org.erights.e.elib.tables;
 // found at http://www.opensource.org/licenses/mit-license.html ...............
 
 import org.erights.e.elib.oldeio.TextWriter;
-import org.erights.e.elib.serial.PassByConstruction;
+import org.erights.e.elib.serial.JOSSPassByConstruction;
 
 import java.io.IOException;
 
 /**
  * @author Mark S. Miller
  */
-public class ConstSet extends ESet implements PassByConstruction, Selfless {
+public class ConstSet extends ESet implements JOSSPassByConstruction, Selfless {
 
     static private final long serialVersionUID = 139247792984994555L;
 

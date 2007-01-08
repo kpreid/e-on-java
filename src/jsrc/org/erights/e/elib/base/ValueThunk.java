@@ -4,7 +4,7 @@
 package org.erights.e.elib.base;
 
 import org.erights.e.elib.prim.StaticMaker;
-import org.erights.e.elib.serial.PassByConstruction;
+import org.erights.e.elib.serial.JOSSPassByConstruction;
 import org.erights.e.elib.tables.Selfless;
 
 /**
@@ -12,7 +12,7 @@ import org.erights.e.elib.tables.Selfless;
  *
  * @author Mark S. Miller
  */
-public class ValueThunk implements Thunk, Selfless, PassByConstruction {
+public class ValueThunk implements Thunk, Selfless, JOSSPassByConstruction {
 
     static private final long serialVersionUID = -7305418990437314179L;
 

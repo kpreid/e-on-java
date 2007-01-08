@@ -5,7 +5,7 @@ import org.erights.e.elib.base.ClassDesc;
 import org.erights.e.elib.base.SourceSpan;
 import org.erights.e.elib.oldeio.EPrintable;
 import org.erights.e.elib.oldeio.TextWriter;
-import org.erights.e.elib.serial.PassByConstruction;
+import org.erights.e.elib.serial.JOSSPassByConstruction;
 import org.erights.e.elib.serial.Persistent;
 import org.erights.e.elib.slot.Guard;
 import org.erights.e.elib.tables.ConstList;
@@ -26,7 +26,7 @@ import java.io.StringWriter;
  * @author Mark S. Miller
  */
 public abstract class QAstroArg
-  implements Selfless, PassByConstruction, Persistent, AstroArg, EPrintable {
+  implements Selfless, JOSSPassByConstruction, Persistent, AstroArg, EPrintable {
 
     static private final long serialVersionUID = -677636576833337794L;
 

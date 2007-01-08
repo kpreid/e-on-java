@@ -5,6 +5,7 @@ package org.erights.e.elib.serial;
 
 import org.erights.e.elib.oldeio.TextWriter;
 import org.erights.e.elib.ref.Ref;
+import org.erights.e.elib.slot.Audition;
 import org.erights.e.elib.slot.BaseAuditor;
 import org.erights.e.elib.tables.ConstList;
 import org.erights.e.elib.util.OneArgFunc;
@@ -28,13 +29,24 @@ public class PassByConstructionAuditor extends BaseAuditor {
     }
 
     /**
+     * Any object can ask to be treated as PassByConstruction.
+     */
+    public boolean audit(Audition audition) {
+        return true;
+    }
+
+    /**
      * Coerces shortSpecimen to be pass-by-construction, which includes types
      * that are not Java-subtypes of PassByConstruction.
      * <p/>
      * If the shortSpecimen can't be coerced, exit according to optEjector.
      */
     protected Object tryCoerceR(Object shortSpecimen, OneArgFunc optEjector) {
-        if (Ref.isPBC(shortSpecimen)) {
+        if (Ref.isJOSSPBC(shortSpecimen)) {
+            // XXX Now that this guard can return things other than
+            // JOSSPassByConstruction, should this not be taken away, since the
+            // property it provides (coercion results are of Java type
+            // JOSSPassByConstruction) is no longer possible?
             if (shortSpecimen != null && shortSpecimen.getClass().isArray()) {
                 //Because we try to pretend that arrays are PassByCopy lists,
                 //we coerce it to a ConstList.

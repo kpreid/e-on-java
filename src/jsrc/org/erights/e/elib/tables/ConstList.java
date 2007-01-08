@@ -23,7 +23,7 @@ import org.erights.e.elib.oldeio.TextWriter;
 import org.erights.e.elib.prim.E;
 import org.erights.e.elib.prim.MirandaMethods;
 import org.erights.e.elib.prim.StaticMaker;
-import org.erights.e.elib.serial.PassByConstruction;
+import org.erights.e.elib.serial.JOSSPassByConstruction;
 
 import java.io.IOException;
 import java.lang.reflect.Array;
@@ -41,7 +41,7 @@ import java.lang.reflect.Array;
  * @author Mark S. Miller
  */
 public abstract class ConstList extends EList
-  implements PassByConstruction, Selfless {
+  implements JOSSPassByConstruction, Selfless {
 
     static private final long serialVersionUID = -4704670888158933364L;
 

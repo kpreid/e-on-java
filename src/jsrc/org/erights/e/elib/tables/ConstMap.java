@@ -22,7 +22,7 @@ Contributor(s): ______________________________________.
 import org.erights.e.elib.base.ValueThunk;
 import org.erights.e.elib.oldeio.TextWriter;
 import org.erights.e.elib.prim.StaticMaker;
-import org.erights.e.elib.serial.PassByConstruction;
+import org.erights.e.elib.serial.JOSSPassByConstruction;
 import org.erights.e.elib.util.ArityMismatchException;
 
 import java.io.ByteArrayInputStream;
@@ -44,7 +44,7 @@ import java.util.Properties;
  * @author Mark S. Miller
  */
 public abstract class ConstMap extends EMap
-  implements PassByConstruction, Selfless {
+  implements JOSSPassByConstruction, Selfless {
 
     static private final long serialVersionUID = -6424210992869387563L;
 

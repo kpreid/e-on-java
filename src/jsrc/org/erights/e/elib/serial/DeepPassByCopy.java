@@ -9,7 +9,7 @@ import org.erights.e.elib.tables.Selfless;
 /**
  * Marker interface that declares objects to be transitively PassByCopy, ie, to
  * be transitively {@link Selfless}, Transparent, and {@link
- * PassByConstruction}.
+ * JOSSPassByConstruction}.
  * <p/>
  * The {@link org.erights.e.elib.vat.BootRefHandler boot-comm-system} will only
  * pass PassByConstruction objects that are DeepPassByCopy. It does so by
@@ -19,7 +19,7 @@ import org.erights.e.elib.tables.Selfless;
  *
  * @author Mark S. Miller
  */
-public interface DeepPassByCopy extends PassByConstruction, Selfless {
+public interface DeepPassByCopy extends JOSSPassByConstruction, Selfless {
 
     long serialVersionUID = 6883670304147415885L;
 

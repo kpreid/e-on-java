@@ -25,7 +25,7 @@ import org.erights.e.elib.oldeio.TextWriter;
 import org.erights.e.elib.prim.E;
 import org.erights.e.elib.prim.MirandaMethods;
 import org.erights.e.elib.sealing.SealedBox;
-import org.erights.e.elib.serial.PassByConstruction;
+import org.erights.e.elib.serial.JOSSPassByConstruction;
 import org.erights.e.elib.serial.Persistent;
 import org.erights.e.elib.slot.Guard;
 
@@ -41,12 +41,12 @@ import java.io.IOException;
  * <p/>
  * A DisconnectedRef's contents must be transitively transparently Selfless and
  * passable by construction. DisconnectedRef is listed as implementing
- * PassByConstruction for implementation reasons only. Not being NEAR, by
+ * JOSSPassByConstruction for implementation reasons only. Not being NEAR, by
  * definition it is not a PassByContruction object.
  *
  * @author Mark S. Miller
  */
-class DisconnectedRef extends Ref implements Persistent, PassByConstruction {
+class DisconnectedRef extends Ref implements Persistent, JOSSPassByConstruction {
 
     static private final long serialVersionUID = 1307531130876647340L;
 

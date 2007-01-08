@@ -10,7 +10,7 @@ import org.erights.e.elib.base.Ejection;
 import org.erights.e.elib.prim.E;
 import org.erights.e.elib.prim.StaticMaker;
 import org.erights.e.elib.ref.Ref;
-import org.erights.e.elib.serial.PassByConstruction;
+import org.erights.e.elib.serial.JOSSPassByConstruction;
 import org.erights.e.elib.serial.Persistent;
 import org.erights.e.elib.tables.FlexList;
 import org.erights.e.elib.tables.Selfless;
@@ -31,11 +31,11 @@ import java.lang.reflect.Proxy;
  * <p/>
  * The deflection is actually a dynamically generated subclass of Proxy which
  * implements both the interface being deflected to as well as Callable.
- * Deflector itself implements PassByConstruction, Selfless, and Persistent
+ * Deflector itself implements JOSSPassByConstruction, Selfless, and Persistent
  * just in case the deflected object does. The Deflection of the object
  * implements whichever of these the deflected object does. We say the
  * interface being deflected to is the J-Interface, and we say that Callable,
- * and whatever subset of PassByConstruction, Selfless, and Persistent the
+ * and whatever subset of JOSSPassByConstruction, Selfless, and Persistent the
  * deflection implements are the E-Interfaces.
  * <p/>
  * If the J-Interface has any message definitions in common with the
@@ -61,7 +61,7 @@ import java.lang.reflect.Proxy;
  * @author Mark S. Miller
  */
 public class Deflector
-  implements InvocationHandler, PassByConstruction, Selfless, Persistent {
+  implements InvocationHandler, JOSSPassByConstruction, Selfless, Persistent {
 
     static private final long serialVersionUID = 8164442851196730818L;
 
@@ -75,7 +75,7 @@ public class Deflector
      * See the class comment about E-Interfaces
      */
     static private final Class[] EInterfaces = {Callable.class,
-      PassByConstruction.class,
+      JOSSPassByConstruction.class,
       Selfless.class,
       Persistent.class};
 

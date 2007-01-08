@@ -4,7 +4,7 @@
 class(safe,
       "java.lang.Boolean",
       sugaredBy("org.erights.e.meta.java.lang.BooleanSugar"),
-      honorary("org.erights.e.elib.serial.PassByConstruction",
+      honorary("org.erights.e.elib.serial.JOSSPassByConstruction",
                "org.erights.e.elib.serial.Persistent",
                "org.erights.e.elib.tables.Selfless"),
       statics(method("run(boolean)"),

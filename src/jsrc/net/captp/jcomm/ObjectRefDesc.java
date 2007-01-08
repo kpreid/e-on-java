@@ -19,7 +19,7 @@ Copyright (C) 1998 Electric Communities. All Rights Reserved.
 Contributor(s): ______________________________________.
 */
 
-import org.erights.e.elib.serial.PassByConstruction;
+import org.erights.e.elib.serial.JOSSPassByConstruction;
 
 /**
  * How non-PassByConstruction objects are passed, ie, how references to them
@@ -36,7 +36,7 @@ import org.erights.e.elib.serial.PassByConstruction;
  * @author Chip Morningstar
  * @author Mark S. Miller
  */
-interface ObjectRefDesc extends PassByConstruction {
+interface ObjectRefDesc extends JOSSPassByConstruction {
 
     long serialVersionUID = -1216565871698747757L;
 

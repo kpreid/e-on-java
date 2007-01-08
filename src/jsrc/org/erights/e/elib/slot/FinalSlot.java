@@ -5,7 +5,7 @@ package org.erights.e.elib.slot;
 
 import org.erights.e.develop.assertion.T;
 import org.erights.e.elib.prim.StaticMaker;
-import org.erights.e.elib.serial.PassByConstruction;
+import org.erights.e.elib.serial.JOSSPassByConstruction;
 import org.erights.e.elib.tables.Selfless;
 
 /**
@@ -14,7 +14,7 @@ import org.erights.e.elib.tables.Selfless;
  * @author Mark S. Miller
  */
 public final class FinalSlot extends BaseSlot
-  implements PassByConstruction, Selfless {
+  implements JOSSPassByConstruction, Selfless {
 
     static private final long serialVersionUID = -4027755486525460847L;
 

@@ -29,15 +29,15 @@ import java.io.Serializable;
  * @author Mark S. Miller
  * @author Terry Stanley
  */
-public interface PassByConstruction extends Serializable, Marker {
+public interface JOSSPassByConstruction extends Serializable, Marker {
 
     long serialVersionUID = -1917353432884312686L;
 
     /**
-     * List of Java library classes that can be passed by contruction.
+     * List of Java library classes that can be passed by JOSS construction.
      * <p/>
      * This is because, since they are JavaSoft's, we obviously can't go back
-     * and modify them to implement the PassByConstruction interface, but we
+     * and modify them to implement the JOSSPassByConstruction interface, but we
      * equally obviously want people to be able to use them as if we had.
      */
     String[] HONORED_NAMES = {
@@ -67,4 +67,5 @@ public interface PassByConstruction extends Serializable, Marker {
      * and all their subclasses.
      */
     ConstSubclassSet HONORARY = ConstSubclassSet.make(HONORED_NAMES);
+    
 }

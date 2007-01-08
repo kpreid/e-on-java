@@ -22,6 +22,7 @@ Contributor(s): ______________________________________.
 import org.erights.e.develop.assertion.T;
 import org.erights.e.develop.exception.ExceptionMgr;
 import org.erights.e.elib.base.Callable;
+import org.erights.e.elib.base.Ejector;
 import org.erights.e.elib.base.Script;
 import org.erights.e.elib.base.TypeDesc;
 import org.erights.e.elib.deflect.Deflector;
@@ -32,7 +33,8 @@ import org.erights.e.elib.prim.StaticMaker;
 import org.erights.e.elib.sealing.Amplifiable;
 import org.erights.e.elib.sealing.SealedBox;
 import org.erights.e.elib.serial.DeepPassByCopy;
-import org.erights.e.elib.serial.PassByConstruction;
+import org.erights.e.elib.serial.JOSSPassByConstruction;
+import org.erights.e.elib.serial.PassByConstructionAuditor;
 import org.erights.e.elib.serial.PassByProxy;
 import org.erights.e.elib.serial.Persistent;
 import org.erights.e.elib.slot.Conformable;
@@ -570,24 +572,47 @@ public abstract class Ref implements Callable {
      * are listed as PassByConstruction.
      */
     static public boolean isPBC(Object ref) {
-        ref = resolution(ref);
-        if (!isNear(ref)) {
+        // XXX consider extracting this procedure for guard testing
+        Ejector ej = new Ejector("isPBC failure");
+        try {
+            Object coerced = PassByConstructionAuditor.THE_ONE.coerce(ref, ej);
+            return Equalizer.isSameYet(ref, coerced);
+        } catch (Throwable t) {
+            ej.result(t);
             return false;
+        } finally {
+            ej.disable();
         }
-        if (null == ref) {
-            //null is trivially PassByCopy
-            return true;
-        }
-        Class clazz = ref.getClass();
-        if (PassByConstruction.class.isAssignableFrom(clazz)) {
-            return true;
-        }
-        if (clazz.isArray()) {
-            //Because we try to pretend that arrays are PassByCopy lists,
-            //we coerce it to a ConstList.
-            return true;
-        }
-        return PassByConstruction.HONORARY.has(clazz);
+        
+    }
+    
+    /** Returns whether the reference is near and suitable for 
+      * pass-by-construction using Java serialization. */
+    public static boolean isJOSSPBC(Object ref) {
+        ref = resolution(ref);
+         if (!isNear(ref)) {
+             return false;
+         }
+         return isJOSSPBCRef(ref);
+     }
+     
+     /**
+      * allows non-near, for use by CapTPReplacer
+      */
+     public static boolean isJOSSPBCRef(Object ref) {
+         if (null == ref) {
+             //null is trivially PassByCopy
+             return true;
+         }
+         Class clazz = ref.getClass();
+         if (JOSSPassByConstruction.class.isAssignableFrom(clazz)) {
+             return true;
+         }
+         if (clazz.isArray()) {
+             //Pretend that arrays are ConstLists.
+             return true;
+         }
+         return JOSSPassByConstruction.HONORARY.has(clazz);
     }
 
     /**
@@ -710,7 +735,7 @@ public abstract class Ref implements Callable {
                 optSofar.removeKey(ref, true);
             }
         }
-        if (ref instanceof Selfless && ref instanceof PassByConstruction) {
+        if (ref instanceof Selfless && ref instanceof JOSSPassByConstruction) {
             //It's PassByCopy and transparent. Since it's transparent, we can
             //just look at the state to see if they're all DeepPassByCopy.
             if (ref instanceof ConstList &&

@@ -3,7 +3,7 @@
 
 class(safe,
       "java.lang.Number",
-      honorary("org.erights.e.elib.serial.PassByConstruction",
+      honorary("org.erights.e.elib.serial.JOSSPassByConstruction",
                "org.erights.e.elib.serial.Persistent",
                "org.erights.e.elib.tables.Selfless"),
       statics(method("run()")),
