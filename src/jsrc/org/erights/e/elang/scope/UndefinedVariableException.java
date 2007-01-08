@@ -26,6 +26,8 @@ Contributor(s): ______________________________________.
  */
 public class UndefinedVariableException extends IndexOutOfBoundsException {
 
+    static private final long serialVersionUID = -4533596997413343784L;
+
     public UndefinedVariableException() {
         super();
     }

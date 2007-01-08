@@ -15,6 +15,8 @@ import org.erights.e.elib.util.OneArgFunc;
  */
 public class StringGuardSugar extends ClassDesc {
 
+    static private final long serialVersionUID = -3749679738593168608L;
+
     /**
      * @param clazz must be String.class
      */

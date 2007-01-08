@@ -44,6 +44,8 @@ import java.io.IOException;
  */
 public final class SlotPattern extends NounPattern {
 
+    static private final long serialVersionUID = -1945315190159077332L;
+
     /**
      * If 'varName' would shadow a non-shadowable, throw a (XXX to be defined)
      * exception instead.

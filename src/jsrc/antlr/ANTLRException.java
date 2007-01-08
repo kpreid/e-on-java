@@ -9,6 +9,8 @@ package antlr;
 
 public class ANTLRException extends Exception {
 
+    static private final long serialVersionUID = -2083333511122997562L;
+
     public ANTLRException() {
         super();
     }

@@ -55,6 +55,8 @@ import org.erights.e.elib.base.SourceSpan;
  */
 public abstract class NounPattern extends GuardedPattern {
 
+    static private final long serialVersionUID = -4240696966775660261L;
+
     final AtomicExpr myNoun;
 
     /**

@@ -52,6 +52,8 @@ import java.io.IOException;
  */
 public class EMethod extends ENode {
 
+    static private final long serialVersionUID = 889691926171743904L;
+
     private final String myDocComment;
 
     private final String myVerb;

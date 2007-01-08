@@ -29,6 +29,8 @@ import java.security.interfaces.RSAPublicKey;
 public final class Keyspace
   implements org.waterken.url.tls.Keyspace, java.io.Serializable {
 
+    static private final long serialVersionUID = -782210701246932394L;
+
     /**
      * A prototype self-signed certificate.
      */

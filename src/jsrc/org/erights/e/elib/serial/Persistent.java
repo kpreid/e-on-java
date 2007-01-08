@@ -35,7 +35,7 @@ import java.io.Serializable;
  */
 public interface Persistent extends Serializable, Marker {
 
-    long serialVersionUID = -1917353432884312686L;
+    long serialVersionUID = -3157936287235114615L;
 
     /**
      * List of Java library classes to be considered persistent.

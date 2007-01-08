@@ -9,6 +9,8 @@ package antlr;
 
 public class RecognitionException extends ANTLRException {
 
+    static private final long serialVersionUID = 5226339087475726306L;
+
     public String fileName;                // not used by treeparsers
     public int line;
     public int column;

@@ -42,6 +42,8 @@ import java.lang.reflect.Field;
  */
 public class EAction extends AbstractAction implements EPrintable {
 
+    static private final long serialVersionUID = 6706789130208616428L;
+
     /**
      *
      */

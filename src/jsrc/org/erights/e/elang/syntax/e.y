@@ -93,7 +93,7 @@ import java.io.ObjectInputStream;
 /* Keywords */
 %token BIND BREAK CATCH CONTINUE DEF
 %token ELSE ESCAPE EXIT EXTENDS
-%token FINALLY FN FOR GUARDS 
+%token FINALLY FN FOR GUARDS
 %token IF IMPLEMENTS IN INTERFACE
 %token MATCH META METHOD PRAGMA RETURN SWITCH
 %token TO TRY VAR VIA WHEN WHILE _
@@ -1555,6 +1555,8 @@ static private final IdentityCacheTable OurCache =
   new IdentityCacheTable(ENode.class, 100);
 
 static private final class ParseFunc implements OneArgFunc, DeepPassByCopy {
+
+    static private final long serialVersionUID = 8761482410783169702L;
 
     ParseFunc() {}
 

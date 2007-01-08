@@ -12,6 +12,8 @@ import org.erights.e.elib.prim.E;
  */
 public class AuditFailedException extends RuntimeException {
 
+    static private final long serialVersionUID = 1243089046670143953L;
+
     /**
      *
      */

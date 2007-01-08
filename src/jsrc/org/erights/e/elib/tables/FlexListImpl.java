@@ -30,6 +30,8 @@ import java.lang.reflect.Array;
 
 class FlexListImpl extends FlexList implements ArrayedList {
 
+    static private final long serialVersionUID = 7190494957357634970L;
+
     /**
      * myVals is an array
      */

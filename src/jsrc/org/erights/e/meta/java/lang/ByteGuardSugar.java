@@ -16,6 +16,8 @@ import java.io.IOException;
  */
 public class ByteGuardSugar extends BaseEIntGuardSugar {
 
+    static private final long serialVersionUID = -4426160072469864202L;
+
     /**
      * @param clazz must be Byte.class
      */

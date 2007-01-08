@@ -11,6 +11,8 @@ import org.erights.e.elib.base.SourceSpan;
  */
 abstract class NestNounExpr extends NounExpr {
 
+    static private final long serialVersionUID = -1171232261369929404L;
+
     NestNounExpr(SourceSpan optSpan, String name, ScopeLayout optScopeLayout) {
         super(optSpan, name, optScopeLayout);
     }

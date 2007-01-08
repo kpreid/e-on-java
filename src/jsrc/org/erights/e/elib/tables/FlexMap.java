@@ -35,6 +35,8 @@ import java.lang.reflect.Array;
  */
 public abstract class FlexMap extends EMap implements PassByProxy {
 
+    static private final long serialVersionUID = -1291723173416949415L;
+
     /**
      * Only subclasses within the package
      */

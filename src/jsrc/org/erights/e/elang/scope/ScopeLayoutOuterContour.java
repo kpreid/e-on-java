@@ -16,6 +16,8 @@ import org.erights.e.develop.assertion.T;
  */
 class ScopeLayoutOuterContour extends ScopeLayoutContour {
 
+    static private final long serialVersionUID = -6111948124166616083L;
+
     /**
      *
      */

@@ -15,6 +15,8 @@ import org.erights.e.elib.prim.E;
  */
 class ScopeLayoutPrefixContour extends ScopeLayoutContour {
 
+    static private final long serialVersionUID = -2985693259492561830L;
+
     private final String myFQNPrefix;
 
     /**

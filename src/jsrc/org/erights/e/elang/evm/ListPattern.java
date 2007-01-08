@@ -45,6 +45,8 @@ import java.io.IOException;
  */
 public class ListPattern extends Pattern {
 
+    static private final long serialVersionUID = -9104255919634895535L;
+
     /**
      *
      */

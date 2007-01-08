@@ -24,6 +24,8 @@ import java.net.MalformedURLException;
  */
 public class SwissRetainer extends Retainer implements Amplifiable {
 
+    static private final long serialVersionUID = -108327787937241378L;
+
     static private final StaticMaker SwissRetainerMaker =
       StaticMaker.make(SwissRetainer.class);
 

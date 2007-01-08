@@ -36,6 +36,8 @@ import java.lang.reflect.InvocationTargetException;
  */
 public class ClassDesc extends TypeDesc {
 
+    static private final long serialVersionUID = 2679630399176981668L;
+
     /**
      * Maps from the fully qualified class name of a non-primitive to the
      * fqname of the GuardSugar class providing its coerce method.

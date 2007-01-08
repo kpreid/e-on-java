@@ -3,13 +3,13 @@
 
 class("java.awt.event.WindowAdapter",
       statics(method(suppress, "run()")),
-      methods(method(suppress, "windowOpened(WindowEvent)"),
-              method(suppress, "windowClosing(WindowEvent)"),
-              method(suppress, "windowClosed(WindowEvent)"),
-              method(suppress, "windowIconified(WindowEvent)"),
-              method(suppress, "windowDeiconified(WindowEvent)"),
-              method(suppress, "windowActivated(WindowEvent)"),
-              method(suppress, "windowDeactivated(WindowEvent)"),
-              method(suppress, "windowStateChanged(WindowEvent)"),
-              method(suppress, "windowGainedFocus(WindowEvent)"),
-              method(suppress, "windowLostFocus(WindowEvent)")))
+      methods(method(reject, "windowOpened(WindowEvent)"),
+              method(reject, "windowClosing(WindowEvent)"),
+              method(reject, "windowClosed(WindowEvent)"),
+              method(reject, "windowIconified(WindowEvent)"),
+              method(reject, "windowDeiconified(WindowEvent)"),
+              method(reject, "windowActivated(WindowEvent)"),
+              method(reject, "windowDeactivated(WindowEvent)"),
+              method(reject, "windowStateChanged(WindowEvent)"),
+              method(reject, "windowGainedFocus(WindowEvent)"),
+              method(reject, "windowLostFocus(WindowEvent)")))

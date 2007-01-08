@@ -16,6 +16,8 @@ import java.io.IOException;
  */
 public class LongGuardSugar extends BaseEIntGuardSugar {
 
+    static private final long serialVersionUID = 2698685927138135249L;
+
     /**
      * @param clazz must be Long.class
      */

@@ -18,6 +18,8 @@ import org.erights.e.elib.tables.FlexMap;
  */
 public class Retainer implements Persistent, Runnable {
 
+    static private final long serialVersionUID = 3551533801924013350L;
+
     private transient FlexMap myOptRetainers;
 
     protected Timer myOptTimer;

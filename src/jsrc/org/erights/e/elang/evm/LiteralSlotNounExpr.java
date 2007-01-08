@@ -36,6 +36,8 @@ import org.erights.e.elib.util.AlreadyDefinedException;
  */
 public class LiteralSlotNounExpr extends TopNounExpr {
 
+    static private final long serialVersionUID = 6594288415405512655L;
+
     /**
      *
      */

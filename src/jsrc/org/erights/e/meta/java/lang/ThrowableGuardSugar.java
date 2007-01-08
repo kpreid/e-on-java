@@ -38,6 +38,8 @@ import org.erights.e.elib.util.TwineException;
  */
 public class ThrowableGuardSugar extends ClassDesc {
 
+    static private final long serialVersionUID = 6717054284440653769L;
+
     /**
      * @param clazz must be a type of Throwable
      */

@@ -12,6 +12,8 @@ package org.quasiliteral.base;
  */
 public class IncompleteQuasiException extends RuntimeException {
 
+    static private final long serialVersionUID = -6442348769453186704L;
+
     public IncompleteQuasiException() {
     }
 

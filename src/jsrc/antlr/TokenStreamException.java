@@ -12,6 +12,8 @@ package antlr;
  */
 public class TokenStreamException extends ANTLRException {
 
+    static private final long serialVersionUID = 3848512683925000149L;
+
     public TokenStreamException() {
     }
 

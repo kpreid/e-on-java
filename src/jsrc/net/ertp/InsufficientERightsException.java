@@ -14,6 +14,8 @@ package net.ertp;
  */
 public class InsufficientERightsException extends Exception {
 
+    static private final long serialVersionUID = 5892908146432674920L;
+
     public InsufficientERightsException() {
     }
 

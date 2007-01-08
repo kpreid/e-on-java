@@ -17,6 +17,8 @@ import java.io.IOException;
  */
 public class ParamDesc implements Persistent, EPrintable {
 
+    static private final long serialVersionUID = -2778036173910639865L;
+
     static private StaticMaker OptParamDescMaker = null;
 
     static public StaticMaker GetParamDescMaker() {

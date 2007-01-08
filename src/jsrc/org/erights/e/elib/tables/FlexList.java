@@ -32,6 +32,8 @@ import java.io.IOException;
  */
 public abstract class FlexList extends EList implements PassByProxy {
 
+    static private final long serialVersionUID = 3092632111579141040L;
+
     /**
      * Only subclasses within the package
      */

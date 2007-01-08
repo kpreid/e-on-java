@@ -27,6 +27,8 @@ import java.awt.Graphics;
  */
 public class EPainter extends JPanel {
 
+    static private final long serialVersionUID = 6580304757913416555L;
+
     /**
      * The type of a sub-object that can override an EPainter's
      * paintComponent/1 method

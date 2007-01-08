@@ -9,6 +9,8 @@ import antlr.collections.AST;
 
 public abstract class ParseTree extends BaseAST {
 
+    static private final long serialVersionUID = -1102363769366137731L;
+
     /**
      * Walk parse tree and return requested number of derivation steps. If
      * steps <= 0, return node text.  If steps == 1, return derivation string

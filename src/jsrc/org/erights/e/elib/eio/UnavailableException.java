@@ -11,6 +11,8 @@ import java.io.IOException;
  */
 public class UnavailableException extends IOException {
 
+    static private final long serialVersionUID = -5424351887747876354L;
+
     public UnavailableException() {
     }
 

@@ -16,6 +16,8 @@ import org.erights.e.elib.tables.Selfless;
 public final class FinalSlot extends BaseSlot
   implements PassByConstruction, Selfless {
 
+    static private final long serialVersionUID = -4027755486525460847L;
+
     static public final StaticMaker FinalSlotMaker =
       StaticMaker.make(FinalSlot.class);
 

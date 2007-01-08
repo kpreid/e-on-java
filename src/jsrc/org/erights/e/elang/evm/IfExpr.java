@@ -45,6 +45,8 @@ import java.io.IOException;
  */
 public class IfExpr extends EExpr {
 
+    static private final long serialVersionUID = -6351631208557413950L;
+
     private final EExpr myTest;
 
     private final EExpr myThen;

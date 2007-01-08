@@ -18,6 +18,8 @@ import org.erights.e.meta.java.math.EInt;
  */
 class ScopeLayoutBase extends ScopeLayout {
 
+    static private final long serialVersionUID = 2445286638564963104L;
+
     /**
      *
      */

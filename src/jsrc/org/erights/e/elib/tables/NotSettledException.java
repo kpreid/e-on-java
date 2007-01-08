@@ -16,6 +16,8 @@ package org.erights.e.elib.tables;
  */
 public class NotSettledException extends Exception {
 
+    static private final long serialVersionUID = 3290302434625354647L;
+
     public NotSettledException() {
         super();
     }

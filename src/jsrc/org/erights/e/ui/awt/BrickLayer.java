@@ -32,6 +32,8 @@ import java.awt.GridBagLayout;
  */
 public class BrickLayer extends GridBagLayout {
 
+    static private final long serialVersionUID = -3223890374111328141L;
+
     /**
      *
      */

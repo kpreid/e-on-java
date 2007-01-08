@@ -48,6 +48,8 @@ import java.io.IOException;
  */
 public class AssignExpr extends EExpr {
 
+    static private final long serialVersionUID = -3329301239758013581L;
+
     static private final StaticMaker AssignExprMaker =
       StaticMaker.make(AssignExpr.class);
 

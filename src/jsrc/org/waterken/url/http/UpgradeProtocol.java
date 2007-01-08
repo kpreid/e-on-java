@@ -12,6 +12,8 @@ import java.net.Socket;
  */
 public class UpgradeProtocol extends IOException {
 
+    static private final long serialVersionUID = 1990042487768469690L;
+
     /**
      * The connection socket.
      */

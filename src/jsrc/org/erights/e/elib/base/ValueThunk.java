@@ -14,6 +14,8 @@ import org.erights.e.elib.tables.Selfless;
  */
 public class ValueThunk implements Thunk, Selfless, PassByConstruction {
 
+    static private final long serialVersionUID = -7305418990437314179L;
+
     static public final Thunk NULL_THUNK = new ValueThunk(null);
 
     private final Object myValue;

@@ -37,6 +37,8 @@ import java.io.IOException;
  */
 class ROList extends EList implements Amplifiable, PassByProxy {
 
+    static private final long serialVersionUID = -4176032163767504933L;
+
     /**
      * the list we're protecting
      */

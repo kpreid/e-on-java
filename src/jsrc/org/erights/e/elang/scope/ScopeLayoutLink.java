@@ -18,6 +18,8 @@ import org.erights.e.elib.tables.FlexSet;
  */
 class ScopeLayoutLink extends ScopeLayout {
 
+    static private final long serialVersionUID = 3033474290217097973L;
+
     private final ScopeLayout myNext;
 
     private final String myVarName;

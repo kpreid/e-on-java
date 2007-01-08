@@ -19,6 +19,8 @@ import org.erights.e.elib.serial.Persistent;
  */
 public class Once implements OneArgFunc, PassByProxy, Persistent {
 
+    static private final long serialVersionUID = -2577631688094868919L;
+
     private OneArgFunc myOptWrapped;
 
     /**

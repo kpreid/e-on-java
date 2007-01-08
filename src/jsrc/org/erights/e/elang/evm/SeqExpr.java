@@ -42,6 +42,8 @@ import java.io.IOException;
  */
 public class SeqExpr extends EExpr {
 
+    static private final long serialVersionUID = -5378743934608065396L;
+
     private final EExpr[] mySubs;
 
     /**

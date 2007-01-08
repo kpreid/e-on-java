@@ -29,6 +29,8 @@ import org.erights.e.elib.serial.Persistent;
  */
 public final class Brand implements PassByProxy, Persistent {
 
+    static private final long serialVersionUID = 1726181171709071724L;
+
     /**
      * @serial The name is only for debugging purposes, but must be stable over
      * the life of the Brand. Only the Brand's unique object identity is

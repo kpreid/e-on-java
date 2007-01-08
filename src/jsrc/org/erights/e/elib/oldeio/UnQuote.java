@@ -15,6 +15,8 @@ import org.erights.e.elib.serial.DeepPassByCopy;
  */
 public class UnQuote implements DeepPassByCopy {
 
+    static private final long serialVersionUID = -494178202048285051L;
+
     static public final StaticMaker UnQuoteMaker =
       StaticMaker.make(UnQuote.class);
 

@@ -52,6 +52,8 @@ public abstract class EExpr extends ENode {
 
     static private class Transformer implements OneArgFunc, DeepPassByCopy {
 
+        static private final long serialVersionUID = 5695854634368095134L;
+
         Transformer() {
         }
 

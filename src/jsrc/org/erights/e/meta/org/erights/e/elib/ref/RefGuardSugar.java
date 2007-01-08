@@ -21,6 +21,8 @@ import org.erights.e.elib.util.OneArgFunc;
  */
 public class RefGuardSugar extends ClassDesc {
 
+    static private final long serialVersionUID = -1427818468274062749L;
+
     /**
      * @param clazz must be Ref or a subtype
      */

@@ -2,6 +2,8 @@ package antlr.debug;
 
 public class ParserTokenEvent extends Event {
 
+    static private final long serialVersionUID = 7597161360957105062L;
+
     private int value;
     private int amount;
     public static int LA = 0;

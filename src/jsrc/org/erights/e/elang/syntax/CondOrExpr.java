@@ -25,6 +25,8 @@ import java.io.IOException;
  */
 class CondOrExpr extends DelayedExpr {
 
+    static private final long serialVersionUID = -7749096430999835652L;
+
     private final EExpr myLeft;
     private final EExpr myRight;
 

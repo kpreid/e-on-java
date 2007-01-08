@@ -28,6 +28,8 @@ import java.io.IOException;
  */
 class ConnectionAttemptFailed extends IOException {
 
+    static private final long serialVersionUID = -5979783374709473140L;
+
 
     ConnectionAttemptFailed(String s) {
         super(s);

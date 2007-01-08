@@ -30,6 +30,8 @@ Contributor(s): ______________________________________.
  */
 public class Ejection extends RuntimeException {
 
+    static private final long serialVersionUID = -1852407709780438363L;
+
     /**
      * Returns problem as a RuntimeException annotated by optMsg.
      * <p/>

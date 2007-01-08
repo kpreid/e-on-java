@@ -2,6 +2,8 @@ package antlr.debug;
 
 public class InputBufferEvent extends Event {
 
+    static private final long serialVersionUID = 5937953044148720411L;
+
     char c;
     int lookaheadAmount; // amount of lookahead
     public static final int CONSUME = 0;

@@ -43,6 +43,8 @@ import java.io.IOException;
  */
 public class HideExpr extends EExpr {
 
+    static private final long serialVersionUID = 357777086533976574L;
+
     private final EExpr myBlock;
 
     /**

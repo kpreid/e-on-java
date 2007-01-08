@@ -13,6 +13,8 @@ import java.io.IOException;
  */
 class ROSet extends ESet implements PassByProxy {
 
+    static private final long serialVersionUID = 7670561978532433369L;
+
     /**
      *
      */

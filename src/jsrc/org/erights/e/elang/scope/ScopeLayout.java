@@ -62,6 +62,8 @@ import org.erights.e.elib.tables.SamenessHashCacher;
 public abstract class ScopeLayout extends SamenessHashCacher
   implements EIteratable, DeepPassByCopy {
 
+    static private final long serialVersionUID = 418195544301121170L;
+
     static public final StaticMaker ScopeLayoutMaker =
       StaticMaker.make(ScopeLayout.class);
 

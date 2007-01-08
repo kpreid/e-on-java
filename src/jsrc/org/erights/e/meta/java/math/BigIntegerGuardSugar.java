@@ -31,6 +31,8 @@ import java.math.BigInteger;
  */
 public class BigIntegerGuardSugar extends BaseEIntGuardSugar {
 
+    static private final long serialVersionUID = -5642858278070063444L;
+
     /**
      * @param clazz must be BigInteger.class
      */

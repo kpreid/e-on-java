@@ -2,6 +2,8 @@ package antlr.debug;
 
 public class NewLineEvent extends Event {
 
+    static private final long serialVersionUID = -4246604805405325727L;
+
     private int line;
 
 

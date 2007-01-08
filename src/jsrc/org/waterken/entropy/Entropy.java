@@ -17,6 +17,8 @@ import java.security.SecureRandom;
  */
 public final class Entropy extends SecureRandom {
 
+    static private final long serialVersionUID = 919938173770371790L;
+
     /**
      * The random number stream.
      */

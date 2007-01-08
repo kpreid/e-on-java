@@ -30,6 +30,8 @@ import org.erights.e.elib.serial.Persistent;
  */
 public class SealedBox implements PassByProxy, Persistent {
 
+    static private final long serialVersionUID = 6068151750277696015L;
+
     /**
      * @serial The capability I encapsulate.
      */

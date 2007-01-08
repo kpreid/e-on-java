@@ -44,6 +44,8 @@ import java.io.IOException;
  */
 public class SlotExpr extends EExpr {
 
+    static private final long serialVersionUID = -1822302027328393752L;
+
     private final AtomicExpr myNoun;
 
     /**

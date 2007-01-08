@@ -12,6 +12,8 @@ package antlr;
  */
 public class CharStreamException extends ANTLRException {
 
+    static private final long serialVersionUID = -3447485037521955852L;
+
     /**
      * CharStreamException constructor comment.
      *

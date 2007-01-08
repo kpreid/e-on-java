@@ -10,6 +10,8 @@ import org.erights.e.elib.base.ClassDesc;
  */
 public abstract class BaseEIntGuardSugar extends ClassDesc {
 
+    static private final long serialVersionUID = 6819308668134891297L;
+
     /**
      * @param clazz must be BigInteger.class
      */

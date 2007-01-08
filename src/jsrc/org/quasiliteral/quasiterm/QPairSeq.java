@@ -23,6 +23,8 @@ import java.io.IOException;
  */
 public final class QPairSeq extends QAstroArg {
 
+    static private final long serialVersionUID = 1333026251208303110L;
+
     /**
      *
      */

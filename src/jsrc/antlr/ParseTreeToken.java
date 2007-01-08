@@ -8,6 +8,8 @@ package antlr;
 
 public class ParseTreeToken extends ParseTree {
 
+    static private final long serialVersionUID = 3789722857618177030L;
+
     protected Token token;
 
     public ParseTreeToken(Token token) {

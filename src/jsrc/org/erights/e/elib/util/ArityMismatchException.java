@@ -26,6 +26,8 @@ Contributor(s): ______________________________________.
  */
 public class ArityMismatchException extends Exception {
 
+    static private final long serialVersionUID = -7701833193116583821L;
+
     public ArityMismatchException() {
     }
 

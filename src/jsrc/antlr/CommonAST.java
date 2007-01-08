@@ -14,6 +14,8 @@ import antlr.collections.AST;
  */
 public class CommonAST extends BaseAST {
 
+    static private final long serialVersionUID = 980551600356578930L;
+
     int ttype = Token.INVALID_TYPE;
     String text;
 

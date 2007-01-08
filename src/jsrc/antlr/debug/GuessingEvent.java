@@ -2,6 +2,8 @@ package antlr.debug;
 
 public abstract class GuessingEvent extends Event {
 
+    static private final long serialVersionUID = 6370875679067715149L;
+
     private int guessing;
 
 

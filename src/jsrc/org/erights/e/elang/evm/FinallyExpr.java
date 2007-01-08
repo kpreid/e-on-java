@@ -52,6 +52,8 @@ import java.io.IOException;
  */
 public class FinallyExpr extends EExpr {
 
+    static private final long serialVersionUID = 3848079257716668626L;
+
     private final EExpr myAttempt;
 
     private final EExpr myUnwinder;

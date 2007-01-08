@@ -14,6 +14,8 @@ import java.awt.Component;
  */
 class SacrificialComponent extends Component {
 
+    static private final long serialVersionUID = 3823041179631544340L;
+
     /**
      *
      */

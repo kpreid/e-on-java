@@ -56,6 +56,8 @@ import java.io.IOException;
  */
 public class ObjectExpr extends EExpr {
 
+    static private final long serialVersionUID = -3370301248359515776L;
+
     /**
      *
      */

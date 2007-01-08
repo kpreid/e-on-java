@@ -16,6 +16,8 @@ import org.erights.e.elib.tables.FlexSet;
  */
 abstract class ScopeLayoutContour extends ScopeLayout {
 
+    static private final long serialVersionUID = -3093679446691868757L;
+
     final ScopeLayout myNext;
 
     ScopeLayoutContour(int outerCount, ScopeLayout next) {

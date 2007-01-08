@@ -24,6 +24,8 @@ import org.erights.e.elib.util.OneArgFunc;
  */
 public class InterfaceGuardSugar extends ClassDesc {
 
+    static private final long serialVersionUID = -4090579027555076905L;
+
     private final boolean myIsMarker;
 
     /**

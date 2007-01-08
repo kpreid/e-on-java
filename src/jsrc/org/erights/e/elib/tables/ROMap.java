@@ -37,6 +37,8 @@ import java.io.IOException;
  */
 class ROMap extends EMap implements Amplifiable, PassByProxy {
 
+    static private final long serialVersionUID = 303215409687796945L;
+
     private final FlexMap myPrecious;
 
     /**

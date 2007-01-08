@@ -14,6 +14,8 @@ import java.io.IOException;
  */
 public class TokenStreamIOException extends TokenStreamException {
 
+    static private final long serialVersionUID = -3477288930238400010L;
+
     public IOException io;
 
     /**

@@ -78,6 +78,8 @@ import java.io.Serializable;
  */
 public final class Perl5Pattern implements Pattern, Serializable, Cloneable {
 
+    static private final long serialVersionUID = 875066735617700791L;
+
     static final int _OPT_ANCH = 1, _OPT_SKIP = 2, _OPT_IMPLICIT = 4;
 
     String _expression;

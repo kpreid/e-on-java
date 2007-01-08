@@ -39,6 +39,8 @@ import java.io.IOException;
  */
 public abstract class Pattern extends ENode {
 
+    static private final long serialVersionUID = -9183584908545256752L;
+
     /**
      *
      */

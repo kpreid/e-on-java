@@ -29,6 +29,8 @@ import org.erights.e.elib.serial.Persistent;
  */
 public final class Sealer implements PassByProxy, Persistent {
 
+    static private final long serialVersionUID = 2350655422781495708L;
+
     /**
      * @serial The Brand of this Sealer/Unsealer pair.
      */

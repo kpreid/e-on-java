@@ -18,6 +18,8 @@ import org.erights.e.elib.util.OneArgFunc;
  */
 public class EListGuardSugar extends ClassDesc {
 
+    static private final long serialVersionUID = 110221162661724963L;
+
     /**
      * @param clazz must be EList or a subtype
      */

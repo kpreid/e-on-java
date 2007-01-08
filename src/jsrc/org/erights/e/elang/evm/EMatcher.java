@@ -47,6 +47,8 @@ import java.io.IOException;
  */
 public class EMatcher extends ENode {
 
+    static private final long serialVersionUID = -5850612086101187616L;
+
     private final Pattern myPattern;
 
     private final EExpr myBody;

@@ -35,6 +35,8 @@ import java.util.Random;
  */
 public abstract class EInt extends Number {
 
+    static private final long serialVersionUID = 1263208324852908793L;
+
     static private final BigInteger MIN_INTEGER =
       BigInteger.valueOf(Integer.MIN_VALUE);
 

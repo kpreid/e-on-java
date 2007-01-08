@@ -36,6 +36,8 @@ import java.io.IOException;
  */
 public class FrameSlotNounExpr extends NestNounExpr {
 
+    static private final long serialVersionUID = 8644300561155201101L;
+
     private final int myIndex;
 
     FrameSlotNounExpr(SourceSpan optSpan,

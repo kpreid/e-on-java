@@ -30,6 +30,8 @@ import java.io.IOException;
  */
 public final class VarPattern extends NounPattern {
 
+    static private final long serialVersionUID = -3802397578249536810L;
+
     /**
      * If 'varName' would shadow a non-shadowable, throw a (XXX to be defined)
      * exception instead.

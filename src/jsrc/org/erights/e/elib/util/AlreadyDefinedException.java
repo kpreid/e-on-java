@@ -26,6 +26,8 @@ Contributor(s): ______________________________________.
  */
 public class AlreadyDefinedException extends RuntimeException {
 
+    static private final long serialVersionUID = 9107077929142059193L;
+
     public AlreadyDefinedException(String desc) {
         super(desc);
     }

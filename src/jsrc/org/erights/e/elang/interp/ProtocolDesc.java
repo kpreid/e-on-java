@@ -21,6 +21,8 @@ import org.erights.e.elib.tables.ConstList;
  */
 public class ProtocolDesc extends TypeDesc {
 
+    static private final long serialVersionUID = 5762704790533915516L;
+
     static public final StaticMaker ProtocolDescMaker =
       StaticMaker.make(ProtocolDesc.class);
 

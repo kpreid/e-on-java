@@ -13,6 +13,8 @@ import org.erights.e.elib.util.OneArgFunc;
  */
 public class TypeDescGuardSugar extends ClassDesc {
 
+    static private final long serialVersionUID = -5961168926243693673L;
+
     /**
      * @param clazz must be TypeDesc or a subtype
      */

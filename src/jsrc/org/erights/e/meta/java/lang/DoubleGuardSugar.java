@@ -15,6 +15,8 @@ import java.io.IOException;
  */
 public class DoubleGuardSugar extends ClassDesc {
 
+    static private final long serialVersionUID = -2243134674496394900L;
+
     /**
      * @param clazz must be Double.class
      */

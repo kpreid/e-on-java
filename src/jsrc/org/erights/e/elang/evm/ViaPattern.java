@@ -25,6 +25,8 @@ import java.io.IOException;
  */
 public final class ViaPattern extends Pattern {
 
+    static private final long serialVersionUID = -8608934397143748809L;
+
     final EExpr myViaExpr;
     final Pattern mySubPattern;
 

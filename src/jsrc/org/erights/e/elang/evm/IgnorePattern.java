@@ -42,6 +42,8 @@ import java.io.IOException;
  */
 public class IgnorePattern extends GuardedPattern {
 
+    static private final long serialVersionUID = -3148981358531519913L;
+
     /**
      *
      */

@@ -11,6 +11,8 @@ import antlr.collections.AST;
 
 public class NoViableAltException extends RecognitionException {
 
+    static private final long serialVersionUID = 8980547557178225301L;
+
     public Token token;
     public AST node;        // handles parsing and treeparsing
 

@@ -19,6 +19,8 @@ import org.erights.e.elib.base.SourceSpan;
  */
 abstract class TopNounExpr extends NounExpr {
 
+    static private final long serialVersionUID = -900987138689954401L;
+
     /**
      *
      */

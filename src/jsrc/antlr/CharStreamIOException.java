@@ -14,6 +14,8 @@ import java.io.IOException;
  */
 public class CharStreamIOException extends CharStreamException {
 
+    static private final long serialVersionUID = -5700611266924430798L;
+
     public IOException io;
 
     public CharStreamIOException(IOException io) {

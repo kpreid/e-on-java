@@ -27,6 +27,8 @@ Contributor(s): ______________________________________.
  */
 public class IntTable extends FlexMapImpl {
 
+    static private final long serialVersionUID = -7999483480918011366L;
+
     /**
      * Reasonable defaults
      */

@@ -46,6 +46,8 @@ import java.io.IOException;
  */
 public abstract class NounExpr extends AtomicExpr {
 
+    static private final long serialVersionUID = -1609623169964149266L;
+
     /**
      *
      */

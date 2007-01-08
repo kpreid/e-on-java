@@ -2,6 +2,8 @@ package antlr.debug;
 
 public class SemanticPredicateEvent extends GuessingEvent {
 
+    static private final long serialVersionUID = 2217615653099296060L;
+
     public static final int VALIDATING = 0;
     public static final int PREDICTING = 1;
     private int condition;

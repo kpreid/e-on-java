@@ -27,6 +27,8 @@ Contributor(s): ______________________________________.
  */
 public class NeedMoreException extends RuntimeException {
 
+    static private final long serialVersionUID = -6855983252008062059L;
+
     private final boolean myQuoted;
 
     private final int myIndent;

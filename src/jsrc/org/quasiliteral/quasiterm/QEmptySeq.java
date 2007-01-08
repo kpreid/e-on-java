@@ -20,6 +20,8 @@ import org.quasiliteral.term.QuasiBuilder;
  */
 public final class QEmptySeq extends QAstroArg {
 
+    static private final long serialVersionUID = 5776461753172189641L;
+
     /**
      *
      */

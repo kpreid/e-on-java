@@ -28,6 +28,8 @@ import java.io.IOException;
  */
 public class ConnectionShutDownException extends IOException {
 
+    static private final long serialVersionUID = 2384488079248649781L;
+
     public ConnectionShutDownException(String msg) {
         super(msg);
     }

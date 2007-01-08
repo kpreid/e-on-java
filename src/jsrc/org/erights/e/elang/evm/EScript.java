@@ -47,6 +47,8 @@ import java.io.IOException;
  */
 public class EScript extends ENode {
 
+    static private final long serialVersionUID = 5253320942306051912L;
+
     final EMethod[] myOptMethods;
 
     final EMatcher[] myMatchers;

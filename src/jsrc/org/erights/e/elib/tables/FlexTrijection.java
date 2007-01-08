@@ -63,6 +63,8 @@ import org.erights.e.elib.util.AlreadyDefinedException;
  */
 public class FlexTrijection extends FlexMap {
 
+    static private final long serialVersionUID = 5440589674036899878L;
+
     private final Guard myDomainGuard;
     private final Guard myRangeGuard;
     private final FlexMap myForwardMap;

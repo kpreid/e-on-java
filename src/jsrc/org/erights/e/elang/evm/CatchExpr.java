@@ -52,6 +52,8 @@ import java.io.IOException;
  */
 public class CatchExpr extends EExpr {
 
+    static private final long serialVersionUID = 8732212161713710373L;
+
     private final EExpr myAttempt;
 
     private final Pattern myPattern;

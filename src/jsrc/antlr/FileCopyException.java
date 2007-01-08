@@ -9,6 +9,8 @@ package antlr;
 
 class FileCopyException extends java.io.IOException {
 
+    static private final long serialVersionUID = 788665810935547975L;
+
     public FileCopyException(String msg) {
         super(msg);
     }

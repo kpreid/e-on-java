@@ -8,7 +8,8 @@
 
 
 
-//#line 5 "orc.y"
+//#line 4 "orc.y"
+
 package com.hp.orc;
 
 import org.erights.e.develop.exception.NestedException;
@@ -27,7 +28,7 @@ import org.quasiliteral.term.Term;
 import org.quasiliteral.term.QuasiBuilderAdaptor;
 
 import java.io.IOException;
-//#line 29 "OrcParser.java"
+//#line 30 "OrcParser.java"
 
 
 
@@ -356,7 +357,8 @@ final static String yyrule[] = {
 "hole : '@' '{' LiteralInteger '}'",
 };
 
-//#line 181 "orc.y"
+//#line 180 "orc.y"
+
 
 /**
  * contains all the tokens after yylval
@@ -518,7 +520,7 @@ static {
  */
 static public final AstroSchema DEFAULT_SCHEMA =
   new BaseSchema("Orc-Language", ConstList.fromArray(TheTokens));
-//#line 470 "OrcParser.java"
+//#line 472 "OrcParser.java"
 //###############################################################
 // method: yylexdebug : check lexer state
 //###############################################################
@@ -554,7 +556,7 @@ boolean doaction;
   while (true) //until parsing is done, either correctly, or w/error
     {
     doaction=true;
-    if (yydebug) debug("loop"); 
+    if (yydebug) debug("loop");
     //#### NEXT ACTION (from reduction table)
     for (yyn=yydefred[yystate];yyn==0;yyn=yydefred[yystate])
       {
@@ -710,7 +712,7 @@ break;
 case 15:
 //#line 89 "orc.y"
 { yyval = b.namedTerm("where",
-                                                   b.seq((AstroArg)val_peek(2), 
+                                                   b.seq((AstroArg)val_peek(2),
                                                          (AstroArg)val_peek(0))); }
 break;
 case 17:
@@ -720,19 +722,19 @@ break;
 case 18:
 //#line 100 "orc.y"
 { yyval = b.namedTerm("in",
-                                                   b.seq((AstroArg)val_peek(2), 
+                                                   b.seq((AstroArg)val_peek(2),
                                                          (AstroArg)val_peek(0))); }
 break;
 case 20:
 //#line 107 "orc.y"
 { yyval = b.namedTerm("par",
-                                                   b.seq((AstroArg)val_peek(2), 
+                                                   b.seq((AstroArg)val_peek(2),
                                                          (AstroArg)val_peek(0))); }
 break;
 case 22:
 //#line 114 "orc.y"
 { yyval = b.namedTerm("pipe",
-                                                       b.seq((AstroArg)val_peek(4), 
+                                                       b.seq((AstroArg)val_peek(4),
                                                              (AstroArg)val_peek(2),
                                                              (AstroArg)val_peek(0))); }
 break;
@@ -782,7 +784,7 @@ case 43:
 { yyval = b.namedTerm(".AtHole.",
                                                        (Astro)val_peek(1)); }
 break;
-//#line 731 "OrcParser.java"
+//#line 733 "OrcParser.java"
 //########## END OF USER-SUPPLIED ACTIONS ##########
     }//switch
     //#### Now let's reduce... ####

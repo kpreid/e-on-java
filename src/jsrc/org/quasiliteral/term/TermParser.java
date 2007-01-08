@@ -8,7 +8,8 @@
 
 
 
-//#line 9 "term.y"
+//#line 8 "term.y"
+
 package org.quasiliteral.term;
 
 import org.erights.e.develop.exception.NestedException;
@@ -26,7 +27,7 @@ import org.quasiliteral.syntax.TwineFeeder;
 import org.quasiliteral.syntax.LexerFace;
 
 import java.io.IOException;
-//#line 28 "TermParser.java"
+//#line 29 "TermParser.java"
 
 
 
@@ -429,7 +430,8 @@ final static String yyrule[] = {
 "functorHole : '=' id",
 };
 
-//#line 233 "term.y"
+//#line 232 "term.y"
+
 
 /**
  * contains all the tokens after yylval
@@ -628,7 +630,7 @@ static {
  */
 static public final AstroSchema DEFAULT_SCHEMA =
   new BaseSchema("Term-Tree-Language", ConstList.fromArray(TheTokens));
-//#line 580 "TermParser.java"
+//#line 582 "TermParser.java"
 //###############################################################
 // method: yylexdebug : check lexer state
 //###############################################################
@@ -664,7 +666,7 @@ boolean doaction;
   while (true) //until parsing is done, either correctly, or w/error
     {
     doaction=true;
-    if (yydebug) debug("loop"); 
+    if (yydebug) debug("loop");
     //#### NEXT ACTION (from reduction table)
     for (yyn=yydefred[yystate];yyn==0;yyn=yydefred[yystate])
       {
@@ -955,7 +957,7 @@ case 62:
 //#line 228 "term.y"
 { yyval = b.atHole(    (Astro)val_peek(0)); }
 break;
-//#line 904 "TermParser.java"
+//#line 906 "TermParser.java"
 //########## END OF USER-SUPPLIED ACTIONS ##########
     }//switch
     //#### Now let's reduce... ####

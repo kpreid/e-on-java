@@ -2,6 +2,8 @@ package antlr.debug;
 
 public class ParserMatchEvent extends GuessingEvent {
 
+    static private final long serialVersionUID = 7519477767690508137L;
+
     // NOTE: for a mismatch on type STRING, the "text" is used as the lookahead
     //       value.  Normally "value" is this
     public static int TOKEN = 0;

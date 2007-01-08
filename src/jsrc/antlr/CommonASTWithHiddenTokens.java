@@ -15,6 +15,8 @@ import antlr.collections.AST;
  */
 public class CommonASTWithHiddenTokens extends CommonAST {
 
+    static private final long serialVersionUID = -1207047903226807066L;
+
     protected CommonHiddenStreamToken hiddenBefore, hiddenAfter; // references to hidden tokens
 
     public CommonASTWithHiddenTokens() {

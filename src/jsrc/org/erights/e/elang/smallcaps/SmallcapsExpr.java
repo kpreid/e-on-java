@@ -21,6 +21,8 @@ import java.io.IOException;
  */
 public class SmallcapsExpr extends EExpr {
 
+    static private final long serialVersionUID = -7704495896992728488L;
+
     /**
      * A Bound-E AST
      */

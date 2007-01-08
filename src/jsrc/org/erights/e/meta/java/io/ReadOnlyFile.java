@@ -27,6 +27,8 @@ import java.io.IOException;
 public class ReadOnlyFile extends BaseLoader
   implements PassByProxy, Persistent, EIteratable, EPrintable {
 
+    static private final long serialVersionUID = 7927004638816860460L;
+
     private final File myPrecious;
 
     private final boolean myIsTransitive;

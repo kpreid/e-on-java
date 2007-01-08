@@ -32,6 +32,8 @@ import java.io.IOException;
  */
 public class WeakValueMap extends FlexMap {
 
+    static private final long serialVersionUID = 4585871049912710239L;
+
     private final Class myValueType;
 
     private final FlexMap myStuff;

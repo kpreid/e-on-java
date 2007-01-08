@@ -22,6 +22,8 @@ import java.awt.event.PaintEvent;
  */
 class AWTRunnerEvent extends AWTEvent implements ActiveEvent {
 
+    static private final long serialVersionUID = 581154776616809035L;
+
     /**
      *
      */

@@ -32,6 +32,8 @@ import org.quasiliteral.astro.AstroTag;
  */
 public final class AstroAST extends BaseAST implements Astro {
 
+    static private final long serialVersionUID = 8464289079668407960L;
+
     /**
      *
      */

@@ -60,6 +60,8 @@ import java.io.IOException;
  */
 public class EscapeExpr extends EExpr {
 
+    static private final long serialVersionUID = 2132596738828586688L;
+
     private final Pattern myExitPatt;
 
     private final EExpr myRValue;

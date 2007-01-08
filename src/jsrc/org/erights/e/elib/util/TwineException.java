@@ -36,6 +36,8 @@ import java.io.IOException;
  */
 public class TwineException extends RuntimeException implements EPrintable {
 
+    static private final long serialVersionUID = 7987249635503164532L;
+
     private final Twine myTwineMsg;
 
     /**

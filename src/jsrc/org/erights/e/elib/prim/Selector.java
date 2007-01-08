@@ -21,6 +21,8 @@ import org.erights.e.meta.java.math.EInt;
  */
 public class Selector implements DeepPassByCopy {
 
+    static private final long serialVersionUID = -3577341233339877296L;
+
     static private final StaticMaker SelectorMaker =
       StaticMaker.make(Selector.class);
 

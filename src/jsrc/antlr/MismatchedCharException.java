@@ -11,6 +11,8 @@ import antlr.collections.impl.BitSet;
 
 public class MismatchedCharException extends RecognitionException {
 
+    static private final long serialVersionUID = 2302090128897631403L;
+
     // Types of chars
     public static final int CHAR = 1;
     public static final int NOT_CHAR = 2;

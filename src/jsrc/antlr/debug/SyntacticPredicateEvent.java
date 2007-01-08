@@ -2,6 +2,8 @@ package antlr.debug;
 
 public class SyntacticPredicateEvent extends GuessingEvent {
 
+    static private final long serialVersionUID = -7875442876979766267L;
+
 
     public SyntacticPredicateEvent(Object source) {
         super(source);

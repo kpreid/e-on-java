@@ -43,6 +43,8 @@ import java.io.IOException;
  */
 public final class FinalPattern extends NounPattern {
 
+    static private final long serialVersionUID = 8745302010297664500L;
+
     /**
      *
      */

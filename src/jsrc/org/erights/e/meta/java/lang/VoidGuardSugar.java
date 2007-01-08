@@ -15,6 +15,8 @@ import java.io.IOException;
  */
 public class VoidGuardSugar extends ClassDesc {
 
+    static private final long serialVersionUID = 2256971417036275830L;
+
     /**
      * @param clazz must be Void.class
      */

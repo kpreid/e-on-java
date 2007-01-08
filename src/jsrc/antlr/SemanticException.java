@@ -9,6 +9,8 @@ package antlr;
 
 public class SemanticException extends RecognitionException {
 
+    static private final long serialVersionUID = -5795236298214066300L;
+
     public SemanticException(String s) {
         super(s);
     }

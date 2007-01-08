@@ -35,6 +35,8 @@ import java.io.IOException;
  */
 public class SyntaxException extends RuntimeException implements EPrintable {
 
+    static private final long serialVersionUID = -1915268229312821277L;
+
     private final Twine myOptOpenner;
 
     private final Twine myOptLine;

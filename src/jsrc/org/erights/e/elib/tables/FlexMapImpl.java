@@ -30,6 +30,8 @@ Contributor(s): ______________________________________.
  */
 class FlexMapImpl extends FlexMap {
 
+    static private final long serialVersionUID = -4689682749412985954L;
+
     /**
      * This default load factor is calculated to preserve the same marginal
      * space cost per hash map entry as java.util.Hashtable, given its default

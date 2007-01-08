@@ -33,9 +33,11 @@ import java.text.DecimalFormat;
  */
 class Native {
 
+    /** @noinspection StaticNonFinalField*/
     static private boolean isLinked = false;
 
     static {
+        //noinspection ErrorNotRethrown
         try {
             System.loadLibrary("ecutil");
             isLinked = true;
@@ -43,6 +45,7 @@ class Native {
             PrintStreamWriter.stderr()
               .println("ecutil linkage error: " + e.getMessage());
         }
+        //noinspection NonFinalStaticVariableUsedInClassInitialization
         if (isLinked) {
             initializeTimer();
         }
@@ -53,6 +56,9 @@ class Native {
 
     static private final DecimalFormat myDecimalFormat =
       new DecimalFormat("0000000000000000");
+
+    private Native() {
+    }
 
     static public long deltaTimerMSec(long start) {
         return (queryTimer() - start) / 1000;

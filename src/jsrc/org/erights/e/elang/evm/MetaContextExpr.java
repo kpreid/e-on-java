@@ -46,6 +46,8 @@ import java.io.IOException;
  */
 public class MetaContextExpr extends EExpr {
 
+    static private final long serialVersionUID = 3829677580318352826L;
+
     private final StaticContext myOptContext;
 
     /**

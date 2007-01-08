@@ -26,6 +26,8 @@ import java.io.IOException;
  */
 public class DefineExpr extends EExpr {
 
+    static private final long serialVersionUID = -3374866107051458250L;
+
     private final Pattern myPattern;
 
     private final EExpr myOptEjectorExpr;

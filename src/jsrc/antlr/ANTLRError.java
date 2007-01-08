@@ -9,6 +9,8 @@ package antlr;
 
 public class ANTLRError extends Error {
 
+    static private final long serialVersionUID = 2672040095572945217L;
+
     /**
      * ANTLRError constructor comment.
      */

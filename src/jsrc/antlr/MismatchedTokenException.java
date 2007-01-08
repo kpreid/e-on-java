@@ -12,6 +12,8 @@ import antlr.collections.impl.BitSet;
 
 public class MismatchedTokenException extends RecognitionException {
 
+    static private final long serialVersionUID = 7271528090242018786L;
+
     // Token names array for formatting
     String[] tokenNames;
     // The token that was encountered

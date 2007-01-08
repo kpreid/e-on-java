@@ -11,6 +11,8 @@ import org.erights.e.elib.base.SourceSpan;
  */
 public abstract class AtomicExpr extends EExpr {
 
+    static private final long serialVersionUID = -8698791542070289629L;
+
     /**
      *
      */

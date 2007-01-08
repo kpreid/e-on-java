@@ -11,6 +11,8 @@ import java.io.IOException;
  */
 public class CrossedConnection extends IOException {
 
+    static private final long serialVersionUID = -7235768127586093517L;
+
     /**
      * Constructs a <code>CrossedConnection</code>.
      */

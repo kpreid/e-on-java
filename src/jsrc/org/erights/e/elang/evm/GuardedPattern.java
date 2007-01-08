@@ -15,6 +15,8 @@ import org.erights.e.elib.util.OneArgFunc;
  */
 public abstract class GuardedPattern extends Pattern {
 
+    static private final long serialVersionUID = 2257800915740966908L;
+
     final EExpr myOptGuardExpr;
 
     /**

@@ -29,6 +29,8 @@ import java.io.StringWriter;
  */
 public class TypeDesc extends BaseAuditor implements Persistent {
 
+    static private final long serialVersionUID = -1639427641483015869L;
+
     private final String myDocComment;
 
     private final String myFQName;

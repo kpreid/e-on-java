@@ -74,6 +74,8 @@ package org.apache.oro.text.regex;
  */
 public class MalformedPatternException extends Exception {
 
+    static private final long serialVersionUID = 2961058351405493946L;
+
     /**
      * Simply calls the corresponding constructor of its superclass.
      */

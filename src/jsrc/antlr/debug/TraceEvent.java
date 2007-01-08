@@ -2,6 +2,8 @@ package antlr.debug;
 
 public class TraceEvent extends GuessingEvent {
 
+    static private final long serialVersionUID = -5817741163794365757L;
+
     private int ruleNum;
     private int data;
     public static int ENTER = 0;

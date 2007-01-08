@@ -36,6 +36,8 @@ import java.io.IOException;
  */
 public class LocalFinalNounExpr extends NestNounExpr {
 
+    static private final long serialVersionUID = -1005596580250034473L;
+
     private final int myIndex;
 
     public LocalFinalNounExpr(SourceSpan optSpan,

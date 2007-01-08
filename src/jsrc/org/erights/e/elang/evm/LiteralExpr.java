@@ -87,6 +87,8 @@ import java.io.IOException;
  */
 public class LiteralExpr extends EExpr {
 
+    static private final long serialVersionUID = 1971170941046568560L;
+
     private final Object myValue;
 
     /**

@@ -44,6 +44,8 @@ import java.io.IOException;
  */
 public class QuasiLiteralPatt extends Pattern {
 
+    static private final long serialVersionUID = -7074099176120117926L;
+
     private final int myIndex;
 
     /**

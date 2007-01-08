@@ -31,6 +31,8 @@ import org.erights.e.elib.serial.Persistent;
  */
 public final class Unsealer implements PassByProxy, Persistent {
 
+    static private final long serialVersionUID = 6758602806320803641L;
+
     /**
      * @serial The Brand of this Sealer/Unsealer pair
      */

@@ -52,6 +52,8 @@ import java.security.SecureRandom;
  */
 public class ESecureRandom extends SecureRandom {
 
+    static private final long serialVersionUID = -950065053792620147L;
+
     //Constants
 
     static private final int SWISSDATA_SIZE = 20;

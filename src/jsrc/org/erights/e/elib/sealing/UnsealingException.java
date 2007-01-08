@@ -26,6 +26,8 @@ Contributor(s): ______________________________________.
  */
 public class UnsealingException extends Exception {
 
+    static private final long serialVersionUID = -7262618449751712145L;
+
     public UnsealingException() {
     }
 

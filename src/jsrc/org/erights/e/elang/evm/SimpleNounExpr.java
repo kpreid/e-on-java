@@ -15,6 +15,8 @@ import org.erights.e.elib.slot.Slot;
  */
 public class SimpleNounExpr extends NounExpr {
 
+    static private final long serialVersionUID = 1549990173404520564L;
+
     /**
      *
      */

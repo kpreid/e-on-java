@@ -13,6 +13,8 @@ import java.io.IOException;
  */
 public class FlexSet extends ESet implements PassByProxy {
 
+    static private final long serialVersionUID = -3212198606865527309L;
+
     /**
      *
      */

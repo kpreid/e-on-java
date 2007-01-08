@@ -25,6 +25,8 @@ Contributor(s): ______________________________________.
  */
 public class ViciousCycleException extends RuntimeException {
 
+    static private final long serialVersionUID = 8015752761835845184L;
+
     /**
      * The ViciousCycleException.
      * <p/>

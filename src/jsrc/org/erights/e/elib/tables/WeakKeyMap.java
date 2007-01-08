@@ -27,6 +27,8 @@ import java.io.IOException;
  */
 public class WeakKeyMap extends FlexMap {
 
+    static private final long serialVersionUID = 924930505390086023L;
+
     private final Class myKeyType;
 
     private final FlexMap myStuff;

@@ -44,6 +44,8 @@ import java.io.IOException;
  */
 public class MetaStateExpr extends EExpr {
 
+    static private final long serialVersionUID = 3482629771935305668L;
+
     /**
      *
      */

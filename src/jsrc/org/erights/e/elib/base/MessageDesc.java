@@ -19,6 +19,8 @@ import java.io.IOException;
  */
 public class MessageDesc implements Persistent, EPrintable {
 
+    static private final long serialVersionUID = 8209649419888605755L;
+
     /**
      * @noinspection StaticNonFinalField
      */

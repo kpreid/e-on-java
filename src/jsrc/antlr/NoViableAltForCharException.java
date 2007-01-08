@@ -9,6 +9,8 @@ package antlr;
 
 public class NoViableAltForCharException extends RecognitionException {
 
+    static private final long serialVersionUID = -6834806017774121310L;
+
     public char foundChar;
 
     public NoViableAltForCharException(char c, CharScanner scanner) {

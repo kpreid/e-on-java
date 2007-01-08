@@ -16,6 +16,8 @@ import java.awt.BorderLayout;
 
 public class JTreeASTPanel extends JPanel {
 
+    static private final long serialVersionUID = -5547522249774037598L;
+
     JTree tree;
 
     public JTreeASTPanel(TreeModel tm, TreeSelectionListener listener) {

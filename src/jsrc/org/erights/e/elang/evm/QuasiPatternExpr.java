@@ -45,6 +45,8 @@ import java.io.IOException;
  */
 public class QuasiPatternExpr extends AtomicExpr {
 
+    static private final long serialVersionUID = 494802712851025090L;
+
     private final int myIndex;
 
     /**

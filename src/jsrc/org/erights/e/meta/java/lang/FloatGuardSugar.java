@@ -15,6 +15,8 @@ import java.io.IOException;
  */
 public class FloatGuardSugar extends ClassDesc {
 
+    static private final long serialVersionUID = 8495850632691001411L;
+
     /**
      * @param clazz must be Float.class
      */

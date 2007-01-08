@@ -14,6 +14,8 @@ import org.erights.e.elib.tables.ConstMap;
  */
 public class StaticContext implements DeepPassByCopy {
 
+    static private final long serialVersionUID = -5271154429160167987L;
+
     static public final StaticMaker StaticContextMaker =
       StaticMaker.make(StaticContext.class);
 

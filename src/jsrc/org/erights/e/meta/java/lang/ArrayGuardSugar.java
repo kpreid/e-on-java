@@ -20,6 +20,8 @@ import java.lang.reflect.Array;
  */
 public class ArrayGuardSugar extends ClassDesc {
 
+    static private final long serialVersionUID = 278964491113218650L;
+
     /**
      * @param clazz Must be an array class
      */

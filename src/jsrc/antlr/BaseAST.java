@@ -40,6 +40,8 @@ import java.io.Writer;
  */
 public abstract class BaseAST implements AST, Serializable {
 
+    static private final long serialVersionUID = -545550534992456308L;
+
     protected BaseAST down;
     protected BaseAST right;
 

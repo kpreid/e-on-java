@@ -24,6 +24,8 @@ import java.io.IOException;
  */
 class MatchBindExpr extends DelayedExpr {
 
+    static private final long serialVersionUID = -4808538736464418350L;
+
     private final EExpr mySpecimen;
     private final Pattern myPattern;
 

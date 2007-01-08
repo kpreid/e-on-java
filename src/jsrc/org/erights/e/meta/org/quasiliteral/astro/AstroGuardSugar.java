@@ -23,6 +23,8 @@ import org.quasiliteral.term.TermBuilder;
  */
 public class AstroGuardSugar extends ClassDesc {
 
+    static private final long serialVersionUID = -9057701628280810835L;
+
     private final AstroBuilder myBuilder;
 
     /**

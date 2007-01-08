@@ -23,6 +23,8 @@ import java.awt.event.WindowEvent;
 
 public class ASTFrame extends JFrame {
 
+    static private final long serialVersionUID = -6243875447567221341L;
+
     // The initial width and height of the frame
     static final int WIDTH = 200;
     static final int HEIGHT = 300;

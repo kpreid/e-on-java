@@ -25,6 +25,8 @@ Contributor(s): ______________________________________.
 public class NestedException extends RuntimeException
   implements NestedThrowable {
 
+    static private final long serialVersionUID = 2241355872285197147L;
+
     private final Throwable myContainedThrowable;
 
     /**

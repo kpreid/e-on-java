@@ -32,6 +32,8 @@ import org.quasiliteral.astro.Astro;
  */
 abstract class DelayedExpr extends EExpr {
 
+    static private final long serialVersionUID = 1798663867526490638L;
+
     DelayedExpr(SourceSpan optSpan, ScopeLayout optScopeLayout) {
         super(optSpan, optScopeLayout);
     }
