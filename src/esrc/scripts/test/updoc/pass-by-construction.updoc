@@ -1,9 +1,13 @@
+    ? pragma.syntax("0.9")
+    
     ? def vsv := <elang:interp.seedVatAuthor>(<unsafe>).virtualize(
     >              (introducer.onTheAir(); introducer))
     # value: <virtualSeedVat>
 
-    ? def [other, vat] := vsv("fn x { x }")
+    ? def [otherEval, vat] := vsv("fn src { e__quasiParser(src).eval(safeScope) }")
     # value: [<Promise>, <Vat newVirtualSeedVat in <runs in newVirtualSeedVat>>]
+    
+    ? def other := otherEval <- ("fn x { x }")
 
     ? def obj implements pbc { to __optUncall() :any { 
     >   return [<elib:tables.makeFlexList>, "make", []] 
@@ -37,6 +41,28 @@
     ? s
     # value: [1, 2]
 
+Odd case: maker is near only on receipt
+
+    ? def otherMaker := otherEval <- ("fn { def oddFar {} }")
+    # value: <Remote Promise>
+    
+    ? def otherCall := otherEval <- ("fn r,v,a { E.call(r,v,a) }")
+    # value: <Remote Promise>
+
+    ? def r := interp.waitAtTop(
+    >   other <- (
+    >     def oddNear implements pbc { 
+    >       to __optUncall() { 
+    >         return [otherMaker, "run", []] } }))
+    # value: <Remote Promise>
+    
+    ? r
+    # value: <Far ref>
+    
+    ? def t := interp.waitAtTop(otherCall <- (E, "toString", [r])); null
+    ? t
+    # value: "<oddFar>"
+
 Auditing details
 
     ? Ref.isPBC(def notHonestlyPBC implements pbc {})
@@ -51,8 +77,8 @@ Miscellaneous
     >     "" :<type:java.lang.Throwable>,
     >     makeSturdyRef.temp(1),
     >     term__quasiParser.valueMaker("1"),
-    >     def _ {} :<type:java.lang.Runnable>,
     >     <import:java.lang.makeInteger>,
+    >     <import:java.lang.makeInteger> :<type:java.lang.Runnable>,
     >     <elib:base.makeValueThunk>(null),
     >     [].asMap(),
     >     [].asSet(),
@@ -64,3 +90,17 @@ Miscellaneous
     >   }
     > }
     > print("of ", pbcs.size())
+    # stdout: of 12
+    
+    ? def notpbcs := [
+    >     def _ {},
+    >     def _ {} :<type:java.lang.Runnable>,
+    > ]
+    > for thing in notpbcs {
+    >   if (Ref.isPBC(thing)) {
+    >     println("shouldn't be PBC: ", thing, " ", thing.__getAllegedType().getFQName())
+    >   }
+    > }
+    > print("of ", notpbcs.size())
+    # stdout: of 2
+    
