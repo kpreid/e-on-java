@@ -556,7 +556,7 @@ boolean doaction;
   while (true) //until parsing is done, either correctly, or w/error
     {
     doaction=true;
-    if (yydebug) debug("loop");
+    if (yydebug) debug("loop"); 
     //#### NEXT ACTION (from reduction table)
     for (yyn=yydefred[yystate];yyn==0;yyn=yydefred[yystate])
       {
@@ -712,7 +712,7 @@ break;
 case 15:
 //#line 89 "orc.y"
 { yyval = b.namedTerm("where",
-                                                   b.seq((AstroArg)val_peek(2),
+                                                   b.seq((AstroArg)val_peek(2), 
                                                          (AstroArg)val_peek(0))); }
 break;
 case 17:
@@ -722,19 +722,19 @@ break;
 case 18:
 //#line 100 "orc.y"
 { yyval = b.namedTerm("in",
-                                                   b.seq((AstroArg)val_peek(2),
+                                                   b.seq((AstroArg)val_peek(2), 
                                                          (AstroArg)val_peek(0))); }
 break;
 case 20:
 //#line 107 "orc.y"
 { yyval = b.namedTerm("par",
-                                                   b.seq((AstroArg)val_peek(2),
+                                                   b.seq((AstroArg)val_peek(2), 
                                                          (AstroArg)val_peek(0))); }
 break;
 case 22:
 //#line 114 "orc.y"
 { yyval = b.namedTerm("pipe",
-                                                       b.seq((AstroArg)val_peek(4),
+                                                       b.seq((AstroArg)val_peek(4), 
                                                              (AstroArg)val_peek(2),
                                                              (AstroArg)val_peek(0))); }
 break;

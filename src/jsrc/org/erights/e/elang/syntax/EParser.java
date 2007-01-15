@@ -13,27 +13,28 @@
 
 package org.erights.e.elang.syntax;
 
-import org.erights.e.develop.assertion.T;
 import org.erights.e.develop.exception.NestedException;
 import org.erights.e.develop.exception.PrintStreamWriter;
+import org.erights.e.develop.assertion.T;
 import org.erights.e.elang.evm.ENode;
 import org.erights.e.elang.evm.NounExpr;
 import org.erights.e.elang.evm.Pattern;
+import org.erights.e.elang.evm.EExpr;
 import org.erights.e.elib.base.ValueThunk;
-import org.erights.e.elib.oldeio.TextWriter;
 import org.erights.e.elib.prim.StaticMaker;
-import org.erights.e.elib.serial.DeepPassByCopy;
 import org.erights.e.elib.tables.ConstList;
 import org.erights.e.elib.tables.ConstMap;
 import org.erights.e.elib.tables.IdentityCacheTable;
 import org.erights.e.elib.tables.Memoizer;
 import org.erights.e.elib.tables.Twine;
+import org.erights.e.elib.oldeio.TextWriter;
 import org.erights.e.elib.util.OneArgFunc;
+import org.erights.e.elib.serial.DeepPassByCopy;
 import org.quasiliteral.astro.Astro;
 import org.quasiliteral.astro.AstroSchema;
 import org.quasiliteral.astro.BaseSchema;
-import org.quasiliteral.syntax.LexerFace;
 import org.quasiliteral.syntax.SyntaxException;
+import org.quasiliteral.syntax.LexerFace;
 import org.quasiliteral.text.EYaccFixer;
 
 import java.io.IOException;
@@ -782,7 +783,7 @@ static private void initTables() {
     }
     try {
         String rName = "org/erights/e/elang/syntax/ParserTables.data";
-        InputStream inp =
+        InputStream inp = 
           ClassLoader.getSystemResourceAsStream(rName);
         if (null == inp) {
             T.fail(rName + " not found");
@@ -1363,7 +1364,7 @@ static private final IdentityCacheTable OurCache =
 
 static private final class ParseFunc implements OneArgFunc, DeepPassByCopy {
 
-    static private final long serialVersionUID = -5005156834522795053L;
+    static private final long serialVersionUID = 8761482410783169702L;
 
     ParseFunc() {}
 
@@ -2053,7 +2054,7 @@ static private final ObjDecl ODECL = ObjDecl.EMPTY;
  * from which source position info can be derived).
  */
 static private final Object NO_POSER = BaseEBuilder.NO_POSER;
-//#line 5506 "EParser.java"
+//#line 5508 "EParser.java"
 //###############################################################
 // method: yylexdebug : check lexer state
 //###############################################################
@@ -2073,7 +2074,7 @@ String s=null;
 //###############################################################
 // method: yyparse : parse input and execute indicated items
 //###############################################################
-int yyparse()
+int yyparse() 
 {
 int yyn;       //next next thing to do
 int yym;       //
@@ -2089,7 +2090,7 @@ boolean doaction;
   while (true) //until parsing is done, either correctly, or w/error
     {
     doaction=true;
-    if (yydebug) debug("loop");
+    if (yydebug) debug("loop"); 
     //#### NEXT ACTION (from reduction table)
     for (yyn=yydefred[yystate];yyn==0;yyn=yydefred[yystate])
       {
@@ -3566,7 +3567,7 @@ case 408:
 //#line 1513 "e.y"
 { yyval = "->"; }
 break;
-//#line 7016 "EParser.java"
+//#line 7018 "EParser.java"
 //########## END OF USER-SUPPLIED ACTIONS ##########
     }//switch
     //#### Now let's reduce... ####

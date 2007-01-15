@@ -378,7 +378,7 @@ public abstract class Runner {
      * Remember the deadManSwitch, so that if I'm shut down, I can notify him.
      * <p/>
      * The deadManSwitch is only notified if it's be a boot-ref (a Ref handled
-     * by a {@link BootRefHandler} whose target's vat is a vat handled by a
+     * by a {@link BootRefHandler}) whose target's vat is a vat handled by a
      * different Runner. Otherwise, the notification would need to occur in
      * this Runner, which is presumably already shut down.
      */

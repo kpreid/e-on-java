@@ -8,10 +8,9 @@ import org.erights.e.elib.base.ClassDesc;
 import org.erights.e.elib.prim.E;
 import org.erights.e.elib.prim.StaticMaker;
 import org.erights.e.elib.ref.Ref;
-import org.erights.e.elib.serial.JOSSPassByConstruction;
 import org.erights.e.elib.serial.PassByConstructionAuditor;
-import org.erights.e.elib.serial.Replacer;
 import org.erights.e.elib.serial.RemoteCall;
+import org.erights.e.elib.serial.Replacer;
 import org.erights.e.elib.slot.AuditChecker;
 import org.erights.e.elib.tables.ConstList;
 
@@ -31,10 +30,12 @@ class CapTPReplacer extends Replacer {
      * The connection over which we are communicating
      */
     private final CapTPConnection myConn;
-    
-    static private final StaticMaker RemoteCallMaker = StaticMaker.make(RemoteCall.class);
-    static private final ClassDesc ConstListGuard = ClassDesc.make(ConstList.class);
-    
+
+    static private final StaticMaker RemoteCallMaker =
+      StaticMaker.make(RemoteCall.class);
+    static private final ClassDesc ConstListGuard =
+      ClassDesc.make(ConstList.class);
+
     /**
      *
      */
@@ -55,14 +56,17 @@ class CapTPReplacer extends Replacer {
             return ref;
         }
         if (AuditChecker.THE_ONE.run(PassByConstructionAuditor.THE_ONE, ref)) {
-            // XXX failures in the __optUncall, or a bogus uncall, should 
+            // XXX failures in the __optUncall, or a bogus uncall, should
             // result in sending a broken reference
-            ConstList uncall = (ConstList)ConstListGuard.coerce(
-                                   E.call(ref, "__optUncall"),
-                                   null);
-            T.require(uncall.size() == 3, 
-                "PassByConstruction object returned uncall not of length 3");
-            return E.callAll(RemoteCallMaker, "run", (Object[])uncall.getArray());
+            ConstList uncall = (ConstList)ConstListGuard.coerce(E.call(ref,
+                                                                       "__optUncall"),
+                                                                null);
+            T.require(3 == uncall.size(),
+                      "PassByConstruction object returned uncall not " +
+                        "of length 3");
+            return E.callAll(RemoteCallMaker,
+                             "run",
+                             (Object[])uncall.getArray());
         }
         //end PBC testing
 

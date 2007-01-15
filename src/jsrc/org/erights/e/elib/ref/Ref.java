@@ -47,6 +47,7 @@ import org.erights.e.elib.tables.IdentityMap;
 import org.erights.e.elib.tables.NotSettledException;
 import org.erights.e.elib.tables.Selfless;
 import org.erights.e.elib.util.OneArgFunc;
+import org.erights.e.elib.vat.SendingContext;
 import org.erights.e.meta.java.math.EInt;
 
 import java.io.IOException;
@@ -75,11 +76,14 @@ public abstract class Ref implements Callable {
 
     /**
      * Initialized lazily to avoid a circular initialization problem
+     *
+     * @noinspection StaticNonFinalField
      */
     static private StaticMaker OptRefMaker = null;
 
     static public StaticMaker GetRefMaker() {
         if (null == OptRefMaker) {
+            //noinspection NonThreadSafeLazyInitialization
             OptRefMaker = StaticMaker.make(Ref.class);
         }
         return OptRefMaker;
@@ -125,6 +129,7 @@ public abstract class Ref implements Callable {
      */
     static public Object[] makeSwitchablePromise(Object target) {
         SwitchableRef sRef = new SwitchableRef(toRef(target));
+        //noinspection deprecation
         Switcher switcher = new Switcher(sRef);
         Object[] result = {sRef, switcher};
         return result;
@@ -167,7 +172,7 @@ public abstract class Ref implements Callable {
         if (null == optProblem) {
             return null;
         } else {
-            return Ref.broken(optProblem);
+            return broken(optProblem);
         }
     }
 
@@ -205,7 +210,7 @@ public abstract class Ref implements Callable {
      */
     static public boolean isNear(Object ref) {
         if (ref instanceof Ref) {
-            return ((Ref)ref).state() == Ref.NEAR;
+            return NEAR == ((Ref)ref).state();
         } else {
             return true;
         }
@@ -218,7 +223,7 @@ public abstract class Ref implements Callable {
      */
     static public boolean isEventual(Object ref) {
         if (ref instanceof Ref) {
-            return ((Ref)ref).state() == Ref.EVENTUAL;
+            return EVENTUAL == ((Ref)ref).state();
         } else {
             return false;
         }
@@ -237,7 +242,7 @@ public abstract class Ref implements Callable {
      */
     static public boolean isBroken(Object ref) {
         if (ref instanceof Ref) {
-            return ((Ref)ref).state() == Ref.BROKEN;
+            return BROKEN == ((Ref)ref).state();
         } else {
             return false;
         }
@@ -289,7 +294,7 @@ public abstract class Ref implements Callable {
         if (ref instanceof Ref) {
             return ((Ref)ref).state();
         } else {
-            return Ref.NEAR;
+            return NEAR;
         }
     }
 
@@ -343,8 +348,6 @@ public abstract class Ref implements Callable {
      * complaint to that effect.
      * <p/>
      * XXX To be used in a more compact expansion of when-catch.
-     *
-     * @return
      */
     static public Object fulfillment(Object ref) {
         ref = resolution(ref);
@@ -465,7 +468,7 @@ public abstract class Ref implements Callable {
      * FarRef, and DisconnectedRef, as they are listed (for implementation
      * reasons) as Selfless objects (either actual or HONORARY).
      *
-     * @see org.erights.e.elib.tables.Selfless
+     * @see Selfless
      */
     static public boolean isSelfless(Object ref) {
         ref = resolution(ref);
@@ -583,43 +586,42 @@ public abstract class Ref implements Callable {
         } finally {
             ej.disable();
         }
-        
+
     }
-    
-    /** Returns whether the reference is near and suitable for 
-      * pass-by-construction using Java serialization. */
+
+    /**
+     * Returns whether the reference is near and suitable for
+     * pass-by-construction using Java serialization.
+     */
     public static boolean isJOSSPBC(Object ref) {
         ref = resolution(ref);
-         if (!isNear(ref)) {
-             return false;
-         }
-         return isJOSSPBCRef(ref);
-     }
-     
-     /**
-      * allows non-near, for use by CapTPReplacer
-      */
-     public static boolean isJOSSPBCRef(Object ref) {
-         if (null == ref) {
-             //null is trivially PassByCopy
-             return true;
-         }
-         Class clazz = ref.getClass();
-         if (JOSSPassByConstruction.class.isAssignableFrom(clazz)) {
-             return true;
-         }
-         if (clazz.isArray()) {
-             //Pretend that arrays are ConstLists.
-             return true;
-         }
-         return JOSSPassByConstruction.HONORARY.has(clazz);
+        if (!isNear(ref)) {
+            return false;
+        }
+        return isJOSSPBCRef(ref);
+    }
+
+    /**
+     * allows non-near, for use by CapTPReplacer
+     */
+    public static boolean isJOSSPBCRef(Object ref) {
+        if (null == ref) {
+            //null is trivially PassByCopy
+            return true;
+        }
+        Class clazz = ref.getClass();
+        if (JOSSPassByConstruction.class.isAssignableFrom(clazz)) {
+            return true;
+        }
+        if (clazz.isArray()) {
+            //Pretend that arrays are ConstLists.
+            return true;
+        }
+        return JOSSPassByConstruction.HONORARY.has(clazz);
     }
 
     /**
      * If it's both PBC and Selfless
-     *
-     * @param ref
-     * @return
      */
     static public boolean isPassByCopy(Object ref) {
         return isPBC(ref) && isSelfless(ref);
@@ -679,10 +681,7 @@ public abstract class Ref implements Callable {
         if (DeepPassByCopy.class.isAssignableFrom(clazz)) {
             return true;
         }
-        if (DeepPassByCopy.HONORARY.has(clazz)) {
-            return true;
-        }
-        return false;
+        return DeepPassByCopy.HONORARY.has(clazz);
     }
 
     /**
@@ -759,7 +758,7 @@ public abstract class Ref implements Callable {
             try {
                 Object[] elements = ((Selfless)ref).getSpreadUncall();
                 int len = elements.length;
-                if (len >= 1) {
+                if (1 <= len) {
                     //We count on the standard convention to only put a maker
                     //in position 0 when it represents the object's behavior,
                     //not its state.
@@ -788,10 +787,9 @@ public abstract class Ref implements Callable {
      * persistence.
      * <p/>
      * The cases are <ul> <li>Broken references are persistent.
-     * <li><tt>null</tt> is persistent. <li>Instances of {@link
-     * org.erights.e.elib.serial.Persistent} (including {@link StemCell}s) are
-     * persistent. <li>Arrays are persistent. <li>Instances of any {@link
-     * org.erights.e.elib.serial.Persistent#HONORARY} classes are persistent.
+     * <li><tt>null</tt> is persistent. <li>Instances of {@link Persistent}
+     * (including {@link StemCell}s) are persistent. <li>Arrays are persistent.
+     * <li>Instances of any {@link Persistent#HONORARY} classes are persistent.
      * <li>A Far reference (a Resolved Eventual reference) is not persistent,
      * but is saved as a DisconnectedRef (a kind of BrokenRef) that maintains
      * the far reference's sameness identity. <li>All other non-persistent
@@ -876,13 +874,13 @@ public abstract class Ref implements Callable {
         if (null == optProblem) {
             return pair[0];
         } else {
-            return Ref.broken(optProblem);
+            return broken(optProblem);
         }
     }
 
     /**
-     * Like {@link #whenResolved(Object,OneArgFunc)} but without a
-     * conventional return result.
+     * Like {@link #whenResolved(Object,OneArgFunc)} but without a conventional
+     * return result.
      *
      * @return Why wasn't the __whenMoreResolved/1 queued?  It isn't queued if
      *         this vat or comm connection is shut down, in which case the
@@ -920,7 +918,7 @@ public abstract class Ref implements Callable {
         if (null == optProblem) {
             return pair[0];
         } else {
-            return Ref.broken(optProblem);
+            return broken(optProblem);
         }
     }
 
@@ -1031,9 +1029,8 @@ public abstract class Ref implements Callable {
      * To the client, this has the same semantics as {@link #sendAll} or {@link
      * #sendAllOnly}, and the default implementation here in Ref just delegates
      * to these. However, those subclasses that can reuse the Message should do
-     * so as a nice optimization, and to preserve the {@link
-     * org.erights.e.elib.vat.SendingContext SendingContext} info captured in
-     * <tt>msg</tt> for causality tracing and debugging.
+     * so as a nice optimization, and to preserve the {@link SendingContext}
+     * info captured in <tt>msg</tt> for causality tracing and debugging.
      * <p/>
      * XXX SECURITY ALERT, No longer true:<br> This is package scope, since
      * only trusted code is assumed to not resuse a Resolver so as to break
@@ -1091,8 +1088,7 @@ public abstract class Ref implements Callable {
      *
      */
     public TypeDesc getAllegedType() {
-        Object[] args = {};
-        return (TypeDesc)callAll("__getAllegedType", args);
+        return (TypeDesc)callAll("__getAllegedType", E.NO_ARGS);
     }
 
     /**
@@ -1144,10 +1140,10 @@ public abstract class Ref implements Callable {
     }
 
     /**
-     * @return
+     *
      */
     static public Object conformTo(Object ref, Guard guard) {
-        ref = Ref.resolution(ref);
+        ref = resolution(ref);
         if (null != ref && ref instanceof Conformable) {
             return ((Conformable)ref).__conformTo(guard);
         } else {
@@ -1164,8 +1160,7 @@ public abstract class Ref implements Callable {
     }
 
     /**
-     * @param out
-     * @throws IOException
+     *
      */
     public void mirandaPrintOn(TextWriter out) throws IOException {
         // This should never get called

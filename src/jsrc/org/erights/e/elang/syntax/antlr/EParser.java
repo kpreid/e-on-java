@@ -2,19 +2,24 @@
 
 package org.erights.e.elang.syntax.antlr;
 
+import antlr.TokenBuffer;
+import antlr.TokenStreamException;
+import antlr.TokenStreamIOException;
+import antlr.ANTLRException;
+import antlr.LLkParser;
+import antlr.Token;
+import antlr.TokenStream;
+import antlr.RecognitionException;
+import antlr.NoViableAltException;
+import antlr.MismatchedTokenException;
+import antlr.SemanticException;
+import antlr.ParserSharedInputState;
+import antlr.collections.impl.BitSet;
+import antlr.collections.AST;
+import java.util.Hashtable;
 import antlr.ASTFactory;
 import antlr.ASTPair;
-import antlr.NoViableAltException;
-import antlr.ParserSharedInputState;
-import antlr.RecognitionException;
-import antlr.SemanticException;
-import antlr.Token;
-import antlr.TokenBuffer;
-import antlr.TokenStream;
-import antlr.TokenStreamException;
-import antlr.collections.AST;
 import antlr.collections.impl.ASTArray;
-import antlr.collections.impl.BitSet;
 
 public class EParser extends antlr.LLkParser       implements ETokenTypes
  {
@@ -72,11 +77,11 @@ public EParser(ParserSharedInputState state) {
 }
 
 	public final void start() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST start_AST = null;
-
+		
 		try {      // for error handling
 			{
 			_loop4:
@@ -192,13 +197,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = start_AST;
 	}
-
+	
 	public final void pragma() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST pragma_AST = null;
-
+		
 		try {      // for error handling
 			AST tmp4_AST = null;
 			tmp4_AST = astFactory.create(LT(1));
@@ -222,13 +227,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = pragma_AST;
 	}
-
+	
 	public final void seq() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST seq_AST = null;
-
+		
 		try {      // for error handling
 			eExpr();
 			astFactory.addASTChild(currentAST, returnAST);
@@ -330,7 +335,7 @@ public EParser(ParserSharedInputState state) {
 					else {
 						if ( _cnt16>=1 ) { break _loop16; } else {throw new NoViableAltException(LT(1), getFilename());}
 					}
-
+					
 					_cnt16++;
 				} while (true);
 				}
@@ -368,13 +373,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = seq_AST;
 	}
-
+	
 	public final void message() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST message_AST = null;
-
+		
 		try {      // for error handling
 			verb();
 			astFactory.addASTChild(currentAST, returnAST);
@@ -408,7 +413,7 @@ public EParser(ParserSharedInputState state) {
 			else {
 				throw new NoViableAltException(LT(1), getFilename());
 			}
-
+			
 			}
 			message_AST = (AST)currentAST.root;
 		}
@@ -422,13 +427,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = message_AST;
 	}
-
+	
 	public final void metaExpr() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST metaExpr_AST = null;
-
+		
 		try {      // for error handling
 			AST tmp8_AST = null;
 			tmp8_AST = astFactory.create(LT(1));
@@ -452,13 +457,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = metaExpr_AST;
 	}
-
+	
 	public final void br() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST br_AST = null;
-
+		
 		try {      // for error handling
 			{
 			_loop10:
@@ -469,7 +474,7 @@ public EParser(ParserSharedInputState state) {
 				else {
 					break _loop10;
 				}
-
+				
 			} while (true);
 			}
 			br_AST = (AST)currentAST.root;
@@ -484,13 +489,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = br_AST;
 	}
-
+	
 	public final void eExpr() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST eExpr_AST = null;
-
+		
 		try {      // for error handling
 			switch ( LA(1)) {
 			case QUASIOPEN:
@@ -566,13 +571,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = eExpr_AST;
 	}
-
+	
 	public final void assign() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST assign_AST = null;
-
+		
 		try {      // for error handling
 			switch ( LA(1)) {
 			case QUASIOPEN:
@@ -690,7 +695,7 @@ public EParser(ParserSharedInputState state) {
 					else {
 						throw new NoViableAltException(LT(1), getFilename());
 					}
-
+					
 					}
 					if ( inputState.guessing==0 ) {
 						assign_AST = (AST)currentAST.root;
@@ -752,13 +757,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = assign_AST;
 	}
-
+	
 	public final void ejector() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST ejector_AST = null;
-
+		
 		try {      // for error handling
 			switch ( LA(1)) {
 			case LITERAL_break:
@@ -846,7 +851,7 @@ public EParser(ParserSharedInputState state) {
 				else {
 					throw new NoViableAltException(LT(1), getFilename());
 				}
-
+				
 				}
 				ejector_AST = (AST)currentAST.root;
 				break;
@@ -882,13 +887,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = ejector_AST;
 	}
-
+	
 	public final void basic() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST basic_AST = null;
-
+		
 		try {      // for error handling
 			switch ( LA(1)) {
 			case LITERAL_if:
@@ -970,13 +975,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = basic_AST;
 	}
-
+	
 	public final void ifExpr() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST ifExpr_AST = null;
-
+		
 		try {      // for error handling
 			AST tmp19_AST = null;
 			tmp19_AST = astFactory.create(LT(1));
@@ -1103,13 +1108,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = ifExpr_AST;
 	}
-
+	
 	public final void forExpr() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST forExpr_AST = null;
-
+		
 		try {      // for error handling
 			AST tmp21_AST = null;
 			tmp21_AST = astFactory.create(LT(1));
@@ -1222,13 +1227,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = forExpr_AST;
 	}
-
+	
 	public final void whileExpr() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST whileExpr_AST = null;
-
+		
 		try {      // for error handling
 			AST tmp23_AST = null;
 			tmp23_AST = astFactory.create(LT(1));
@@ -1336,13 +1341,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = whileExpr_AST;
 	}
-
+	
 	public final void switchExpr() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST switchExpr_AST = null;
-
+		
 		try {      // for error handling
 			AST tmp24_AST = null;
 			tmp24_AST = astFactory.create(LT(1));
@@ -1363,7 +1368,7 @@ public EParser(ParserSharedInputState state) {
 				else {
 					break _loop45;
 				}
-
+				
 			} while (true);
 			}
 			match(RCURLY);
@@ -1383,13 +1388,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = switchExpr_AST;
 	}
-
+	
 	public final void tryExpr() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST tryExpr_AST = null;
-
+		
 		try {      // for error handling
 			AST tmp27_AST = null;
 			tmp27_AST = astFactory.create(LT(1));
@@ -1407,7 +1412,7 @@ public EParser(ParserSharedInputState state) {
 				else {
 					break _loop48;
 				}
-
+				
 			} while (true);
 			}
 			{
@@ -1509,13 +1514,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = tryExpr_AST;
 	}
-
+	
 	public final void escapeExpr() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST escapeExpr_AST = null;
-
+		
 		try {      // for error handling
 			AST tmp29_AST = null;
 			tmp29_AST = astFactory.create(LT(1));
@@ -1623,13 +1628,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = escapeExpr_AST;
 	}
-
+	
 	public final void whenExpr() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST whenExpr_AST = null;
-
+		
 		try {      // for error handling
 			AST tmp30_AST = null;
 			tmp30_AST = astFactory.create(LT(1));
@@ -1650,7 +1655,7 @@ public EParser(ParserSharedInputState state) {
 				else {
 					break _loop34;
 				}
-
+				
 			} while (true);
 			}
 			{
@@ -1755,13 +1760,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = whenExpr_AST;
 	}
-
+	
 	public final void accumExpr() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST accumExpr_AST = null;
-
+		
 		try {      // for error handling
 			AST tmp33_AST = null;
 			tmp33_AST = astFactory.create(LT(1));
@@ -1783,13 +1788,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = accumExpr_AST;
 	}
-
+	
 	public final void parenExpr() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST parenExpr_AST = null;
-
+		
 		try {      // for error handling
 			match(116);
 			seq();
@@ -1807,13 +1812,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = parenExpr_AST;
 	}
-
+	
 	public final void body() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST body_AST = null;
-
+		
 		try {      // for error handling
 			match(97);
 			{
@@ -1891,13 +1896,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = body_AST;
 	}
-
+	
 	public final void forPatt() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST forPatt_AST = null;
-
+		
 		try {      // for error handling
 			pattern();
 			astFactory.addASTChild(currentAST, returnAST);
@@ -1948,13 +1953,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = forPatt_AST;
 	}
-
+	
 	public final void catcher() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST catcher_AST = null;
-
+		
 		try {      // for error handling
 			AST tmp39_AST = null;
 			tmp39_AST = astFactory.create(LT(1));
@@ -1976,13 +1981,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = catcher_AST;
 	}
-
+	
 	public final void pattern() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST pattern_AST = null;
-
+		
 		try {      // for error handling
 			subPattern();
 			astFactory.addASTChild(currentAST, returnAST);
@@ -2054,16 +2059,16 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = pattern_AST;
 	}
-
+	
 	public final void call() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST call_AST = null;
 		AST p_AST = null;
 		AST a_AST = null;
 		AST l_AST = null;
-
+		
 		try {      // for error handling
 			prim();
 			p_AST = (AST)returnAST;
@@ -2233,13 +2238,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = call_AST;
 	}
-
+	
 	public final void accumulator() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST accumulator_AST = null;
-
+		
 		try {      // for error handling
 			switch ( LA(1)) {
 			case LITERAL_for:
@@ -2300,13 +2305,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = accumulator_AST;
 	}
-
+	
 	public final void logical() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST logical_AST = null;
-
+		
 		try {      // for error handling
 			order();
 			astFactory.addASTChild(currentAST, returnAST);
@@ -2411,7 +2416,7 @@ public EParser(ParserSharedInputState state) {
 					else {
 						if ( _cnt152>=1 ) { break _loop152; } else {throw new NoViableAltException(LT(1), getFilename());}
 					}
-
+					
 					_cnt152++;
 				} while (true);
 				}
@@ -2442,7 +2447,7 @@ public EParser(ParserSharedInputState state) {
 					else {
 						if ( _cnt154>=1 ) { break _loop154; } else {throw new NoViableAltException(LT(1), getFilename());}
 					}
-
+					
 					_cnt154++;
 				} while (true);
 				}
@@ -2473,7 +2478,7 @@ public EParser(ParserSharedInputState state) {
 					else {
 						if ( _cnt156>=1 ) { break _loop156; } else {throw new NoViableAltException(LT(1), getFilename());}
 					}
-
+					
 					_cnt156++;
 				} while (true);
 				}
@@ -2527,13 +2532,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = logical_AST;
 	}
-
+	
 	public final void accumBody() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST accumBody_AST = null;
-
+		
 		try {      // for error handling
 			match(97);
 			{
@@ -2644,13 +2649,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = accumBody_AST;
 	}
-
+	
 	public final void verb() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST verb_AST = null;
-
+		
 		try {      // for error handling
 			switch ( LA(1)) {
 			case IDENT:
@@ -2687,13 +2692,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = verb_AST;
 	}
-
+	
 	public final void parenArgs() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST parenArgs_AST = null;
-
+		
 		try {      // for error handling
 			match(116);
 			argList();
@@ -2711,13 +2716,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = parenArgs_AST;
 	}
-
+	
 	public final void whenFn() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST whenFn_AST = null;
-
+		
 		try {      // for error handling
 			objName();
 			astFactory.addASTChild(currentAST, returnAST);
@@ -2764,13 +2769,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = whenFn_AST;
 	}
-
+	
 	public final void objName() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST objName_AST = null;
-
+		
 		try {      // for error handling
 			switch ( LA(1)) {
 			case URIGetter:
@@ -2886,13 +2891,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = objName_AST;
 	}
-
+	
 	public final void params() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST params_AST = null;
-
+		
 		try {      // for error handling
 			match(116);
 			paramList();
@@ -2920,13 +2925,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = params_AST;
 	}
-
+	
 	public final void guard() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST guard_AST = null;
-
+		
 		try {      // for error handling
 			{
 			switch ( LA(1)) {
@@ -2978,7 +2983,7 @@ public EParser(ParserSharedInputState state) {
 				else {
 					break _loop223;
 				}
-
+				
 			} while (true);
 			}
 			guard_AST = (AST)currentAST.root;
@@ -2993,13 +2998,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = guard_AST;
 	}
-
+	
 	public final void lambdaExpr() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST lambdaExpr_AST = null;
-
+		
 		try {      // for error handling
 			switch ( LA(1)) {
 			case LITERAL_thunk:
@@ -3050,13 +3055,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = lambdaExpr_AST;
 	}
-
+	
 	public final void paramList() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST paramList_AST = null;
-
+		
 		try {      // for error handling
 			boolean synPredMatched94 = false;
 			if (((_tokenSet_23.member(LA(1))) && (_tokenSet_24.member(LA(2))))) {
@@ -3173,7 +3178,7 @@ public EParser(ParserSharedInputState state) {
 			else {
 				throw new NoViableAltException(LT(1), getFilename());
 			}
-
+			
 		}
 		catch (RecognitionException ex) {
 			if (inputState.guessing==0) {
@@ -3185,13 +3190,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = paramList_AST;
 	}
-
+	
 	public final void matcher() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST matcher_AST = null;
-
+		
 		try {      // for error handling
 			AST tmp87_AST = null;
 			tmp87_AST = astFactory.create(LT(1));
@@ -3217,13 +3222,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = matcher_AST;
 	}
-
+	
 	public final void bindNamer() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST bindNamer_AST = null;
-
+		
 		try {      // for error handling
 			AST tmp88_AST = null;
 			tmp88_AST = astFactory.create(LT(1));
@@ -3296,13 +3301,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = bindNamer_AST;
 	}
-
+	
 	public final void noun() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST noun_AST = null;
-
+		
 		try {      // for error handling
 			switch ( LA(1)) {
 			case IDENT:
@@ -3382,13 +3387,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = noun_AST;
 	}
-
+	
 	public final void varNamer() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST varNamer_AST = null;
-
+		
 		try {      // for error handling
 			AST tmp95_AST = null;
 			tmp95_AST = astFactory.create(LT(1));
@@ -3461,13 +3466,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = varNamer_AST;
 	}
-
+	
 	public final void nounExpr() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST nounExpr_AST = null;
-
+		
 		try {      // for error handling
 			switch ( LA(1)) {
 			case URIGetter:
@@ -3520,13 +3525,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = nounExpr_AST;
 	}
-
+	
 	public final void slotNamer() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST slotNamer_AST = null;
-
+		
 		try {      // for error handling
 			AST tmp97_AST = null;
 			tmp97_AST = astFactory.create(LT(1));
@@ -3599,13 +3604,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = slotNamer_AST;
 	}
-
+	
 	public final void docoDef() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST docoDef_AST = null;
-
+		
 		try {      // for error handling
 			doco();
 			astFactory.addASTChild(currentAST, returnAST);
@@ -3650,13 +3655,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = docoDef_AST;
 	}
-
+	
 	public final void doco() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST doco_AST = null;
-
+		
 		try {      // for error handling
 			switch ( LA(1)) {
 			case DOC_COMMENT:
@@ -3705,13 +3710,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = doco_AST;
 	}
-
+	
 	public final void defExpr() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST defExpr_AST = null;
-
+		
 		try {      // for error handling
 			switch ( LA(1)) {
 			case LITERAL_def:
@@ -3824,13 +3829,13 @@ public EParser(ParserSharedInputState state) {
 			}
 			returnAST = defExpr_AST;
 		}
-
+		
 	public final void interfaceExpr() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST interfaceExpr_AST = null;
-
+		
 		try {      // for error handling
 			AST tmp104_AST = null;
 			tmp104_AST = astFactory.create(LT(1));
@@ -3897,7 +3902,7 @@ public EParser(ParserSharedInputState state) {
 						else {
 							break _loop111;
 						}
-
+						
 					} while (true);
 					}
 					break;
@@ -3939,7 +3944,7 @@ public EParser(ParserSharedInputState state) {
 						else {
 							break _loop114;
 						}
-
+						
 					} while (true);
 					}
 					break;
@@ -3970,7 +3975,7 @@ public EParser(ParserSharedInputState state) {
 					else {
 						break _loop116;
 					}
-
+					
 				} while (true);
 				}
 				match(RCURLY);
@@ -4031,13 +4036,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = interfaceExpr_AST;
 	}
-
+	
 	public final void objectPredict() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST objectPredict_AST = null;
-
+		
 		try {      // for error handling
 			objName();
 			astFactory.addASTChild(currentAST, returnAST);
@@ -4093,13 +4098,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = objectPredict_AST;
 	}
-
+	
 	public final void objectExpr() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST objectExpr_AST = null;
-
+		
 		try {      // for error handling
 			{
 			switch ( LA(1)) {
@@ -4158,7 +4163,7 @@ public EParser(ParserSharedInputState state) {
 						else {
 							break _loop76;
 						}
-
+						
 					} while (true);
 					}
 					break;
@@ -4205,13 +4210,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = objectExpr_AST;
 	}
-
+	
 	public final void rValue() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST rValue_AST = null;
-
+		
 		try {      // for error handling
 			boolean synPredMatched66 = false;
 			if (((LA(1)==116) && (_tokenSet_39.member(LA(2))))) {
@@ -4263,7 +4268,7 @@ public EParser(ParserSharedInputState state) {
 			else {
 				throw new NoViableAltException(LT(1), getFilename());
 			}
-
+			
 		}
 		catch (RecognitionException ex) {
 			if (inputState.guessing==0) {
@@ -4275,13 +4280,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = rValue_AST;
 	}
-
+	
 	public final void bindName() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST bindName_AST = null;
-
+		
 		try {      // for error handling
 			{
 			switch ( LA(1)) {
@@ -4385,13 +4390,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = bindName_AST;
 	}
-
+	
 	public final void bindExpr() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST bindExpr_AST = null;
-
+		
 		try {      // for error handling
 			bindName();
 			astFactory.addASTChild(currentAST, returnAST);
@@ -4439,13 +4444,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = bindExpr_AST;
 	}
-
+	
 	public final void order() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST order_AST = null;
-
+		
 		try {      // for error handling
 			interval();
 			astFactory.addASTChild(currentAST, returnAST);
@@ -4542,13 +4547,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = order_AST;
 	}
-
+	
 	public final void script() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST script_AST = null;
-
+		
 		try {      // for error handling
 			AST tmp128_AST = null;
 			tmp128_AST = astFactory.create(LT(1));
@@ -4566,7 +4571,7 @@ public EParser(ParserSharedInputState state) {
 				else {
 					break _loop83;
 				}
-
+				
 			} while (true);
 			}
 			{
@@ -4581,7 +4586,7 @@ public EParser(ParserSharedInputState state) {
 				else {
 					break _loop85;
 				}
-
+				
 			} while (true);
 			}
 			match(RCURLY);
@@ -4601,13 +4606,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = script_AST;
 	}
-
+	
 	public final void resultGuard() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST resultGuard_AST = null;
-
+		
 		try {      // for error handling
 			{
 			switch ( LA(1)) {
@@ -4675,13 +4680,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = resultGuard_AST;
 	}
-
+	
 	public final void method() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST method_AST = null;
-
+		
 		try {      // for error handling
 			doco();
 			astFactory.addASTChild(currentAST, returnAST);
@@ -4745,13 +4750,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = method_AST;
 	}
-
+	
 	public final void methHead() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST methHead_AST = null;
-
+		
 		try {      // for error handling
 			switch ( LA(1)) {
 			case 116:
@@ -4791,13 +4796,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = methHead_AST;
 	}
-
+	
 	public final void key() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST key_AST = null;
-
+		
 		try {      // for error handling
 			switch ( LA(1)) {
 			case 116:
@@ -4835,13 +4840,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = key_AST;
 	}
-
+	
 	public final void mapPattList() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST mapPattList_AST = null;
-
+		
 		try {      // for error handling
 			{
 			switch ( LA(1)) {
@@ -4905,13 +4910,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = mapPattList_AST;
 	}
-
+	
 	public final void patternList() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST patternList_AST = null;
-
+		
 		try {      // for error handling
 			{
 			switch ( LA(1)) {
@@ -4985,13 +4990,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = patternList_AST;
 	}
-
+	
 	public final void guardList() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST guardList_AST = null;
-
+		
 		try {      // for error handling
 			guard();
 			astFactory.addASTChild(currentAST, returnAST);
@@ -5006,7 +5011,7 @@ public EParser(ParserSharedInputState state) {
 				else {
 					break _loop105;
 				}
-
+				
 			} while (true);
 			}
 			guardList_AST = (AST)currentAST.root;
@@ -5021,13 +5026,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = guardList_AST;
 	}
-
+	
 	public final void imethod() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST imethod_AST = null;
-
+		
 		try {      // for error handling
 			doco();
 			astFactory.addASTChild(currentAST, returnAST);
@@ -5085,13 +5090,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = imethod_AST;
 	}
-
+	
 	public final void mtypes() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST mtypes_AST = null;
-
+		
 		try {      // for error handling
 			match(116);
 			typeList();
@@ -5119,13 +5124,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = mtypes_AST;
 	}
-
+	
 	public final void imethHead() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST imethHead_AST = null;
-
+		
 		try {      // for error handling
 			switch ( LA(1)) {
 			case 116:
@@ -5165,13 +5170,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = imethHead_AST;
 	}
-
+	
 	public final void ptype() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST ptype_AST = null;
-
+		
 		try {      // for error handling
 			switch ( LA(1)) {
 			case URIGetter:
@@ -5267,13 +5272,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = ptype_AST;
 	}
-
+	
 	public final void typeList() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST typeList_AST = null;
-
+		
 		try {      // for error handling
 			{
 			switch ( LA(1)) {
@@ -5334,13 +5339,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = typeList_AST;
 	}
-
+	
 	public final void cond() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST cond_AST = null;
-
+		
 		try {      // for error handling
 			condAnd();
 			astFactory.addASTChild(currentAST, returnAST);
@@ -5362,7 +5367,7 @@ public EParser(ParserSharedInputState state) {
 				else {
 					break _loop144;
 				}
-
+				
 			} while (true);
 			}
 			cond_AST = (AST)currentAST.root;
@@ -5377,13 +5382,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = cond_AST;
 	}
-
+	
 	public final void assignOp() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST assignOp_AST = null;
-
+		
 		try {      // for error handling
 			switch ( LA(1)) {
 			case 129:
@@ -5519,13 +5524,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = assignOp_AST;
 	}
-
+	
 	public final void condAnd() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST condAnd_AST = null;
-
+		
 		try {      // for error handling
 			logical();
 			astFactory.addASTChild(currentAST, returnAST);
@@ -5547,7 +5552,7 @@ public EParser(ParserSharedInputState state) {
 				else {
 					break _loop147;
 				}
-
+				
 			} while (true);
 			}
 			condAnd_AST = (AST)currentAST.root;
@@ -5562,13 +5567,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = condAnd_AST;
 	}
-
+	
 	public final void interval() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST interval_AST = null;
-
+		
 		try {      // for error handling
 			shift();
 			astFactory.addASTChild(currentAST, returnAST);
@@ -5676,13 +5681,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = interval_AST;
 	}
-
+	
 	public final void compareOp() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST compareOp_AST = null;
-
+		
 		try {      // for error handling
 			switch ( LA(1)) {
 			case 153:
@@ -5748,13 +5753,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = compareOp_AST;
 	}
-
+	
 	public final void shift() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST shift_AST = null;
-
+		
 		try {      // for error handling
 			add();
 			astFactory.addASTChild(currentAST, returnAST);
@@ -5800,7 +5805,7 @@ public EParser(ParserSharedInputState state) {
 				else {
 					break _loop166;
 				}
-
+				
 			} while (true);
 			}
 			shift_AST = (AST)currentAST.root;
@@ -5815,13 +5820,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = shift_AST;
 	}
-
+	
 	public final void add() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST add_AST = null;
-
+		
 		try {      // for error handling
 			mult();
 			astFactory.addASTChild(currentAST, returnAST);
@@ -5867,7 +5872,7 @@ public EParser(ParserSharedInputState state) {
 				else {
 					break _loop170;
 				}
-
+				
 			} while (true);
 			}
 			add_AST = (AST)currentAST.root;
@@ -5882,13 +5887,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = add_AST;
 	}
-
+	
 	public final void mult() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST mult_AST = null;
-
+		
 		try {      // for error handling
 			pow();
 			astFactory.addASTChild(currentAST, returnAST);
@@ -5958,7 +5963,7 @@ public EParser(ParserSharedInputState state) {
 				else {
 					break _loop174;
 				}
-
+				
 			} while (true);
 			}
 			mult_AST = (AST)currentAST.root;
@@ -5973,13 +5978,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = mult_AST;
 	}
-
+	
 	public final void pow() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST pow_AST = null;
-
+		
 		try {      // for error handling
 			prefix();
 			astFactory.addASTChild(currentAST, returnAST);
@@ -6077,9 +6082,9 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = pow_AST;
 	}
-
+	
 	public final void prefix() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST prefix_AST = null;
@@ -6088,7 +6093,7 @@ public EParser(ParserSharedInputState state) {
 		Token  neg = null;
 		AST neg_AST = null;
 		AST b_AST = null;
-
+		
 		try {      // for error handling
 			switch ( LA(1)) {
 			case QUASIOPEN:
@@ -6178,13 +6183,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = prefix_AST;
 	}
-
+	
 	public final void postfix() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST postfix_AST = null;
-
+		
 		try {      // for error handling
 			call();
 			astFactory.addASTChild(currentAST, returnAST);
@@ -6200,13 +6205,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = postfix_AST;
 	}
-
+	
 	public final void prefixOp() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST prefixOp_AST = null;
-
+		
 		try {      // for error handling
 			{
 			switch ( LA(1)) {
@@ -6268,13 +6273,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = prefixOp_AST;
 	}
-
+	
 	public final void prim() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST prim_AST = null;
-
+		
 		try {      // for error handling
 			switch ( LA(1)) {
 			case HEX:
@@ -6641,7 +6646,7 @@ public EParser(ParserSharedInputState state) {
 				else {
 					throw new NoViableAltException(LT(1), getFilename());
 				}
-
+				
 				}
 				match(171);
 				prim_AST = (AST)currentAST.root;
@@ -6678,13 +6683,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = prim_AST;
 	}
-
+	
 	public final void argList() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST argList_AST = null;
-
+		
 		try {      // for error handling
 			boolean synPredMatched200 = false;
 			if (((_tokenSet_66.member(LA(1))) && (_tokenSet_67.member(LA(2))))) {
@@ -6862,7 +6867,7 @@ public EParser(ParserSharedInputState state) {
 			else {
 				throw new NoViableAltException(LT(1), getFilename());
 			}
-
+			
 		}
 		catch (RecognitionException ex) {
 			if (inputState.guessing==0) {
@@ -6874,13 +6879,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = argList_AST;
 	}
-
+	
 	public final void prop() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST prop_AST = null;
-
+		
 		try {      // for error handling
 			switch ( LA(1)) {
 			case IDENT:
@@ -6917,13 +6922,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = prop_AST;
 	}
-
+	
 	public final void lambdaArgs() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST lambdaArgs_AST = null;
-
+		
 		try {      // for error handling
 			match(116);
 			argList();
@@ -7054,13 +7059,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = lambdaArgs_AST;
 	}
-
+	
 	public final void sepword() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST sepword_AST = null;
-
+		
 		try {      // for error handling
 			switch ( LA(1)) {
 			case LITERAL_catch:
@@ -7260,13 +7265,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = sepword_AST;
 	}
-
+	
 	public final void exprList() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST exprList_AST = null;
-
+		
 		try {      // for error handling
 			{
 			switch ( LA(1)) {
@@ -7363,13 +7368,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = exprList_AST;
 	}
-
+	
 	public final void mapList() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST mapList_AST = null;
-
+		
 		try {      // for error handling
 			{
 			switch ( LA(1)) {
@@ -7469,13 +7474,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = mapList_AST;
 	}
-
+	
 	public final void literal() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST literal_AST = null;
-
+		
 		try {      // for error handling
 			switch ( LA(1)) {
 			case STRING:
@@ -7548,13 +7553,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = literal_AST;
 	}
-
+	
 	public final void quasiString() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST quasiString_AST = null;
-
+		
 		try {      // for error handling
 			match(QUASIOPEN);
 			{
@@ -7625,13 +7630,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = quasiString_AST;
 	}
-
+	
 	public final void map() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST map_AST = null;
-
+		
 		try {      // for error handling
 			switch ( LA(1)) {
 			case QUASIOPEN:
@@ -7757,13 +7762,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = map_AST;
 	}
-
+	
 	public final void subPattern() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST subPattern_AST = null;
-
+		
 		try {      // for error handling
 			switch ( LA(1)) {
 			case URIGetter:
@@ -8293,13 +8298,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = subPattern_AST;
 	}
-
+	
 	public final void namePatt() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST namePatt_AST = null;
-
+		
 		try {      // for error handling
 			switch ( LA(1)) {
 			case URIGetter:
@@ -8385,13 +8390,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = namePatt_AST;
 	}
-
+	
 	public final void dollarHole() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST dollarHole_AST = null;
-
+		
 		try {      // for error handling
 			switch ( LA(1)) {
 			case 176:
@@ -8449,13 +8454,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = dollarHole_AST;
 	}
-
+	
 	public final void atHole() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST atHole_AST = null;
-
+		
 		try {      // for error handling
 			switch ( LA(1)) {
 			case 179:
@@ -8501,13 +8506,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = atHole_AST;
 	}
-
+	
 	public final void mapPattern() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST mapPattern_AST = null;
-
+		
 		try {      // for error handling
 			switch ( LA(1)) {
 			case HEX:
@@ -8608,13 +8613,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = mapPattern_AST;
 	}
-
+	
 	public final void exprHole() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST exprHole_AST = null;
-
+		
 		try {      // for error handling
 			AST tmp248_AST = null;
 			tmp248_AST = astFactory.create(LT(1));
@@ -8643,13 +8648,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = exprHole_AST;
 	}
-
+	
 	public final void pattHole() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST pattHole_AST = null;
-
+		
 		try {      // for error handling
 			match(ATCURLY);
 			br();
@@ -8675,13 +8680,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = pattHole_AST;
 	}
-
+	
 	public final void reserved() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST reserved_AST = null;
-
+		
 		try {      // for error handling
 			switch ( LA(1)) {
 			case 97:
@@ -9461,8 +9466,8 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = reserved_AST;
 	}
-
-
+	
+	
 	public static final String[] _tokenNames = {
 		"<0>",
 		"EOF",
@@ -9730,11 +9735,11 @@ public EParser(ParserSharedInputState state) {
 		"\"volatile\"",
 		"\"wstring\""
 	};
-
+	
 	protected void buildTokenTypeASTClassMap() {
 		tokenTypeToASTClassMap=null;
 	};
-
+	
 	private static final long[] mk_tokenSet_0() {
 		long[] data = { 2L, 0L, 0L, 0L, 0L};
 		return data;
@@ -10134,5 +10139,5 @@ public EParser(ParserSharedInputState state) {
 		return data;
 	}
 	public static final BitSet _tokenSet_77 = new BitSet(mk_tokenSet_77());
-
+	
 	}
