@@ -9,8 +9,7 @@
 
 
 
-//#line 29 "e.y"
-
+//#line 30 "e.y"
 package org.erights.e.elang.syntax;
 
 import org.erights.e.develop.exception.NestedException;
@@ -41,7 +40,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInput;
 import java.io.ObjectInputStream;
-//#line 42 "EParser.java"
+//#line 41 "EParser.java"
 
 
 
@@ -1346,8 +1345,7 @@ final static String yyrule[] = {
 "reserved : WSTRING",
 };
 
-//#line 1542 "e.y"
-
+//#line 1543 "e.y"
 
 
 /**
@@ -2054,7 +2052,7 @@ static private final ObjDecl ODECL = ObjDecl.EMPTY;
  * from which source position info can be derived).
  */
 static private final Object NO_POSER = BaseEBuilder.NO_POSER;
-//#line 5508 "EParser.java"
+//#line 5506 "EParser.java"
 //###############################################################
 // method: yylexdebug : check lexer state
 //###############################################################
@@ -3567,7 +3565,7 @@ case 408:
 //#line 1513 "e.y"
 { yyval = "->"; }
 break;
-//#line 7018 "EParser.java"
+//#line 7016 "EParser.java"
 //########## END OF USER-SUPPLIED ACTIONS ##########
     }//switch
     //#### Now let's reduce... ####

@@ -8,8 +8,7 @@
 
 
 
-//#line 4 "orc.y"
-
+//#line 5 "orc.y"
 package com.hp.orc;
 
 import org.erights.e.develop.exception.NestedException;
@@ -28,7 +27,7 @@ import org.quasiliteral.term.Term;
 import org.quasiliteral.term.QuasiBuilderAdaptor;
 
 import java.io.IOException;
-//#line 30 "OrcParser.java"
+//#line 29 "OrcParser.java"
 
 
 
@@ -357,8 +356,7 @@ final static String yyrule[] = {
 "hole : '@' '{' LiteralInteger '}'",
 };
 
-//#line 180 "orc.y"
-
+//#line 181 "orc.y"
 
 /**
  * contains all the tokens after yylval
@@ -520,7 +518,7 @@ static {
  */
 static public final AstroSchema DEFAULT_SCHEMA =
   new BaseSchema("Orc-Language", ConstList.fromArray(TheTokens));
-//#line 472 "OrcParser.java"
+//#line 470 "OrcParser.java"
 //###############################################################
 // method: yylexdebug : check lexer state
 //###############################################################
@@ -784,7 +782,7 @@ case 43:
 { yyval = b.namedTerm(".AtHole.",
                                                        (Astro)val_peek(1)); }
 break;
-//#line 733 "OrcParser.java"
+//#line 731 "OrcParser.java"
 //########## END OF USER-SUPPLIED ACTIONS ##########
     }//switch
     //#### Now let's reduce... ####
