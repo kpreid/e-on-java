@@ -1,0 +1,108 @@
+#!/usr/bin/env rune
+
+From
+http://www.eros-os.org/pipermail/cap-talk/2007-January/007146.html
+Placed in the public domain by Toby Murray
+
+Nonce implementation from Dean Tribble -- an object that implements
+its own EQ-like operation
+
+    ? pragma.syntax("0.9")
+
+    ? var nonceCount := 0
+    ? var privateCell := 0
+    ? def makeNonce() :any {
+    >     nonceCount := nonceCount + 1
+    >     def myID := nonceCount
+    >     def nonce {
+    >         to isSame(other) :boolean {
+    >             privateCell := 0
+    >             # we don't care whether it fails
+    >             try { other.assertID() } catch ex {}
+    >             return privateCell == myID  # the one integer compare
+    >         }
+    >         to assertID() {
+    >             privateCell := myID
+    >         }
+    >     }
+    >     return nonce
+    > }
+    # value: <makeNonce>
+
+A coercable/proxy that can distinguish when to forward coercion
+messages to the target and when to respond directly itself. It does so
+by recognising when the original coercion message has come from its
+maker/coercer. If the coercion message has come from its maker, the
+privateCell between it and its maker will contain the nonce passed in
+the divulge message. In this case, the proxy should respond to the
+coercion message itself. Otherwise, it forwards the coercion message
+to its target.
+
+    ? def makeCoercableProxyMakerIC() :any {
+    >     var privateCell := null
+    >     def coercableProxyMaker {
+    >         to asOneOfYours(obj) :any {
+    >             def nonce := makeNonce()
+    >             privateCell := nonce
+    >             try { obj.divulge(nonce) } catch prob {}
+    >             def content := privateCell
+    >             privateCell := null
+    >             if (nonce.isSame(content)) {
+    >                 throw("couldn't coerce obj")
+    >             } else {
+    >                 return content
+    >             }
+    >         }
+    >         to run(target) :any {
+    >             def coercableProxy {
+    >                 to divulge(nonce) {
+    >                     println("divulge called")
+    >                     try {
+    >                         if (privateCell.isSame(nonce)) {
+    >                             privateCell := coercableProxy
+    >                         } else {
+    >                             target.divulge(nonce)
+    >                         }
+    >                     } catch ex { target.divulge(nonce) }
+    >                 }
+    >                 match [verb, args] { E.call(target,verb,args) }
+    >             }
+    >             return coercableProxy
+    >         }
+    >     }
+    >     return coercableProxyMaker
+    > }
+    # value: <makeCoercableProxyMakerIC>
+
+    ? def coercableProxyMakerIC1 := makeCoercableProxyMakerIC()
+    # value: <coercableProxyMaker>
+
+    ? def coercableProxyMakerIC2 := makeCoercableProxyMakerIC()
+    # value: <coercableProxyMaker>
+
+    ? def target { }
+    # value: <target>
+
+    ? def coercableProxy1 := coercableProxyMakerIC1(target)
+    # value: <coercableProxy>
+
+    ? def coercableProxy2 := coercableProxyMakerIC2(coercableProxy1)
+    # value: <coercableProxy>
+
+    ? var safeCP1 := coercableProxyMakerIC1.asOneOfYours(coercableProxy1)
+    # value: <coercableProxy>
+    ? safeCP1 == coercableProxy1
+    # value: true
+
+    ? var safeCP2 := coercableProxyMakerIC2.asOneOfYours(coercableProxy2)
+    # value: <coercableProxy>
+    ? safeCP2 == coercableProxy2
+    # value: true
+
+    ? safeCP1 := coercableProxyMakerIC1.asOneOfYours(coercableProxy2)
+    # value: <coercableProxy>
+    ? safeCP1 == coercableProxy1
+    # value: true
+
+coercableProxy2 can be coerced to both a reference to coercableProxy2
+and coercableProxy1 depending on which coercer is used.
