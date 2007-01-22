@@ -1,0 +1,123 @@
+#!/usr/bin/env rune
+
+# ? rune(["~/e/src/esrc/scripts/test/updoc/facet-problem.updoc"])
+
+Based on http://www.eros-os.org/pipermail/e-lang/2007-January/011794.html
+by Martin Scheffler
+XXX Need open source copyright notice, or public domain declaration
+
+Martin writes:
+
+Hi, I have a problem with using facets:
+I have a class node. It lets me add and remove child-nodes.
+Now in another part of my system I only have access to facets of these nodes.
+I want to be able to remove child-nodes by providing the facet of the
+child node to the parent node - parentFacet.removeChild(childFacet).
+How can the parent node figure out if the facet points to one of its
+children?
+
+This code should clarify my problem:
+
+(Some cosmetic mods to the following code by MarkM)
+
+    ? pragma.syntax("0.9")
+
+    ? def makeNode(name) :any {
+    >     def children := [].diverge()
+    >     def node {
+    >         to addChild(c) { children.push(c) }
+    >         to dangerous() { println("DANGEROUS STUFF") }
+    >
+    >         to removeChild(c) {
+    >             def pos := children.indexOf1(c)
+    >             if (pos == -1) {
+    >                 throw(`Could not find child`)
+    >             }
+    >             children.removeRun(pos,pos+1)
+    >         }
+    >         to __printOn(out :TextWriter) {
+    >             out.print(`Node $name [`)
+    >             for i => child in children {
+    >                 if (1 <= i) { out.print(", ") }
+    >                 out.print(child)
+    >             }
+    >             out.print(`]`)
+    >         }
+    >     }
+    >     return node
+    > }
+    # value: <makeNode>
+
+    ? def makeNodeFacet(node) :any {
+    >     def nodeFacet {
+    >         to addChild(c)                { node.addChild(c) }
+    >         to removeChild(c)             { node.removeChild(c) }
+    >         to __printOn(out :TextWriter) { node.__printOn(out) }
+    >     }
+    >     return nodeFacet
+    > }
+    # value: <makeNodeFacet>
+
+    ? def n1 := makeNode("parent")
+    ? def n2 := makeNode("child1")
+    ? n1.addChild(n2)
+
+in another part of the system:
+
+    ? def n1facet := makeNodeFacet(n1)
+    ? def n2facet := makeNodeFacet(n2)
+    ? n1facet
+    # value: Node parent [Node child1 []]
+
+    ? n1facet.removeChild(n2facet)
+    # problem: Could not find child
+
+
+This is a good motivating problem for rights amplification. We can make
+nodeFacet smarter, so that its instances recognizes arguments which are
+also instances of this same nodeFacet definition, in which case they can use
+their shared access to sealer/unsealer pair so that one facet can reveal its
+encapsulated node to the other. The __optSealedDispatch Miranda method is a
+http://erights.org/javadoc/org/erights/e/elib/prim/MirandaMethods.html#__optSealedDispatch(java.lang.Object,org.erights.e.elib.sealing.Brand)
+nice convenience for the rights amplification pattern needed here.
+
+    ? def makeBrand := <elib:sealing.makeBrand>
+    ? def [sealer,unsealer] := makeBrand("Smart Facet")
+    # value: [<Smart Facet sealer>, <Smart Facet unsealer>]
+
+    ? def getNode(c) {
+    >     if (c.__optSealedDispatch(sealer.getBrand()) =~ box :notNull) {
+    >         return unsealer.unseal(box)
+    >     } else {
+    >         return c
+    >     }
+    > }
+    # value: <getNode>
+
+    ? def makeSmartFacet(node) :any {
+    >     def smartFacet {
+    >         to addChild(c)                { node.addChild(getNode(c)) }
+    >         to removeChild(c)             { node.removeChild(getNode(c)) }
+    >         to __printOn(out :TextWriter) { node.__printOn(out) }
+    >         to __optSealedDispatch(brand) {
+    >             if (brand == sealer.getBrand()) {
+    >                 return sealer.seal(node)
+    >             } else {
+    >                 return null
+    >             }
+    >         }
+    >     }
+    >     return smartFacet
+    > }
+    # value: <makeSmartFacet>
+
+in yet another part of the system:
+
+    ? def s1facet := makeSmartFacet(n1)
+    ? def s2facet := makeSmartFacet(n2)
+    ? s1facet
+    # value: Node parent [Node child1 []]
+
+    ? s1facet.removeChild(s2facet)
+    ? s1facet
+    # value: Node parent []
