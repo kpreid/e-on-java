@@ -51,7 +51,8 @@ import java.lang.reflect.Modifier;
  *
  * @author Mark S. Miller
  */
-public class StaticMaker implements Callable, Persistent, JOSSPassByConstruction {
+public class StaticMaker
+  implements Callable, Persistent, JOSSPassByConstruction {
 
     static private final long serialVersionUID = -9145754747555989915L;
 

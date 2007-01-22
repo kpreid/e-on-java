@@ -314,7 +314,7 @@ public class MirandaMethods {
      * reveals its internals only to someone having the corresponding
      * Unsealer.
      * <p/>
-     * If you know self to be a {@link Amplifiable}, you can invoke this more
+     * If you know self to be {@link Amplifiable}, you can invoke this more
      * efficiently from Java by
      * <pre>    self.__optSealedDispatch(brand);</pre> Else by
      * <pre>    Ref.optSealedDispatch(self, brand);</pre>
