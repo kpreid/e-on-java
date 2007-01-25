@@ -1,0 +1,37 @@
+#!/usr/bin/env rune
+
+Based on http://www.eros-os.org/pipermail/e-lang/2007-January/011807.html
+by Martin Scheffler.
+XXX Need copyright notice.
+
+# ? rune(["~/e/src/esrc/org/erights/e/facet/makeGrantMgrAuthor.updoc"])
+
+
+    ? pragma.syntax("0.9")
+
+    ? def makeWeakPtr        := <unsafe:org.erights.e.elib.vat.makeWeakPtr>
+    ? def makeGrantMgrAuthor := <import:org.erights.e.facet.makeGrantMgrAuthor>
+    ? def makeGrantMgr       := makeGrantMgrAuthor(makeWeakPtr)
+    ? def grantMgr           := makeGrantMgr()
+
+    ? def object {
+    >     to __reactToLostClient(ex) { println("Lost a client!") }
+    > }
+
+create a capability
+
+    ? def forwarder := grantMgr.makeForwarder("object",object)
+
+the powerbox function revokeAll revokes this forwarder
+
+    ? grantMgr.revoke("This forwarder was revoked!", "object")
+    # stdout: Lost a client!
+    #
+
+client closes connection, reactToLostClient gets called
+
+    ? null == forwarder.__reactToLostClient(null)
+    # value: true
+
+As of 0.9.1a, when Martin reported this as a bug, this last case gave
+a "# problem: This forwarder was revoked!".

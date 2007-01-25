@@ -50,7 +50,9 @@ def makeCaretaker(var underlying) :Tuple[near, near] {
          * @see __printOn/1
          */
         to __reactToLostClient(problem) :void {
-            underlying.__reactToLostClient(problem)
+            if (!Ref.isBroken(underlying)) {
+                underlying.__reactToLostClient(problem)
+            }
         }
 
         # Forwards all non-Miranda methods to the underlying.
