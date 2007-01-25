@@ -4,6 +4,8 @@ From
 http://www.eros-os.org/pipermail/cap-talk/2007-January/007146.html
 Placed in the public domain by Toby Murray
 
+# ? rune(["~/e/src/esrc/scripts/test/updoc/coercion.updoc"])
+
 Nonce implementation from Dean Tribble -- an object that implements
 its own EQ-like operation
 
