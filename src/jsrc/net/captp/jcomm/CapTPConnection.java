@@ -1206,16 +1206,9 @@ class CapTPConnection implements MsgHandler {
      */
     private void killConnection(Throwable problem, boolean deliberate) {
         T.notNull(problem, "dying with a null problem");
-        if (deliberate) {
-            if (Trace.captp.debug && Trace.ON) {
-                Trace.captp.debugm("shutdown " + this, problem);
-            }
-        } else {
-            //at warning level because lost connections should be traced by
-            //default.
-            if (Trace.captp.warning && Trace.ON) {
-                Trace.captp.warningm("lost " + this, problem);
-            }
+        String prefix = deliberate ? "shutdown " : "lost ";
+        if (Trace.captp.debug && Trace.ON) {
+            Trace.captp.debugm(prefix + this, problem);
         }
         if (null == myOptProblem) { // If this is the first time we've died...
             myOptProblem = problem;
