@@ -53,7 +53,7 @@ class CondOrExpr extends DelayedExpr {
      * <pre>
      *    forControl(left || right,ej)</pre>
      * expands to<pre>
-     *    escape ej1 {
+     *    def [&outNames...] := escape ej1 {
      *        forControl(left,ej1)
      *        def br2 := Ref.broken("right side skipped")
      *        [&leftNames..., &rightOnlyNames/br2...]
@@ -61,7 +61,7 @@ class CondOrExpr extends DelayedExpr {
      *        forControl(right,ej)
      *        def br4 := Ref.broken(ex3)
      *        [&rightNames..., &leftOnlyNames/br4...]
-     *    } into [&outNames...]</pre>
+     *    }</pre>
      * or, if no exports<pre>
      *    escape ej1 {
      *        forControl(left,ej1)
@@ -72,7 +72,7 @@ class CondOrExpr extends DelayedExpr {
     EExpr forControl(ENodeBuilder b, Astro ej, StaticScope optUsed) {
         Astro ej1 = b.newTemp("ej");
         String[] exports = getExports(optUsed);
-        if (exports.length >= 1) {
+        if (1 <= exports.length) {
             Astro br2 = b.newTemp("br");
             Astro ex3 = b.newTemp("ex");
             Astro br4 = b.newTemp("br");
@@ -129,13 +129,13 @@ class CondOrExpr extends DelayedExpr {
     }
 
     public void subPrintOn(TextWriter out, int priority) throws IOException {
-        if (priority > PR_COMP) {
+        if (PR_COMP < priority) {
             out.print("(");
         }
         myLeft.subPrintOn(out, PR_ORDER);
         out.print(" || ");
         myRight.subPrintOn(out, PR_ORDER);
-        if (priority > PR_COMP) {
+        if (PR_COMP < priority) {
             out.print(")");
         }
     }

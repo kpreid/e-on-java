@@ -2133,16 +2133,6 @@ public class ENodeBuilder extends BaseENodeBuilder implements EBuilder {
                                  null);
     }
 
-    /**
-     * If condExpr is a DelayedExpr, then override the default to expand
-     * to<pre>
-     *     escape ej1 {
-     *         forControl(condExpr,ej)
-     *         thenExpr
-     *     } catch _ {
-     *         elseExpr
-     *     }</pre>
-     */
     public EExpr ifx(Object condExpr, Object thenExpr, Object elseExpr) {
         if (condExpr instanceof DelayedExpr) {
             DelayedExpr de = (DelayedExpr)condExpr;
@@ -2173,12 +2163,6 @@ public class ENodeBuilder extends BaseENodeBuilder implements EBuilder {
         }
     }
 
-    /**
-     * When expr is a {@link DelayedExpr}, then ask it. Otherwise, expand<pre>
-     *    forControl(expr,ej)</pre>
-     * to<pre>
-     *    expr into ^(ej) _ :__Test</pre>
-     */
     public EExpr forControl(Object expr, Astro optEj, StaticScope optUsed) {
         if (expr instanceof DelayedExpr) {
             return ((DelayedExpr)expr).forControl(this, optEj, optUsed);

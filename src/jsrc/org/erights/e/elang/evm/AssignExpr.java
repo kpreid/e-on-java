@@ -162,13 +162,13 @@ public class AssignExpr extends EExpr {
      *
      */
     public void subPrintOn(TextWriter out, int priority) throws IOException {
-        if (priority > PR_ASSIGN) {
+        if (PR_ASSIGN < priority) {
             out.print("(");
         }
         myNoun.subPrintOn(out, PR_PRIM);
         out.print(" := ");
         myRValue.subPrintOn(out, PR_ASSIGN);
-        if (priority > PR_ASSIGN) {
+        if (PR_ASSIGN < priority) {
             out.print(")");
         }
     }

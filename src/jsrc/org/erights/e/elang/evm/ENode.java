@@ -105,4 +105,12 @@ public abstract class ENode extends ParseNode {
         }
         return myOptSynEnv;
     }
+
+    public String[] getExports(StaticScope optUsed) {
+        ConstMap outs = staticScope().outNames();
+        if (null != optUsed && !optUsed.hasMetaStateExpr()) {
+            outs = outs.and(optUsed.namesUsed());
+        }
+        return (String[])outs.getKeys(String.class);
+    }
 }

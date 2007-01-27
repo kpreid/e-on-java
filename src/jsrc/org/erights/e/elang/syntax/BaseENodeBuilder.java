@@ -431,7 +431,14 @@ public abstract class BaseENodeBuilder implements BaseEBuilder {
     }
 
     /**
-     *
+     * If condExpr is a DelayedExpr, then override the default to expand
+     * to<pre>
+     *     escape ej1 {
+     *         forControl(condExpr,ej)
+     *         thenExpr
+     *     } catch _ {
+     *         elseExpr
+     *     }</pre>
      */
     public EExpr ifx(Object condExpr, Object thenExpr, Object elseExpr) {
         return new IfExpr(null,

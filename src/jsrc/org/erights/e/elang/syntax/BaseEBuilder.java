@@ -248,7 +248,10 @@ public interface BaseEBuilder {
     EExpr forFxOnly(Object expr, StaticScope optUsed);
 
     /**
-     *
+     * When expr is a {@link DelayedExpr}, then ask it. Otherwise, expand<pre>
+     *    forControl(expr,ej)</pre>
+     * to<pre>
+     *    def _ :__Test exit ej := expr</pre>
      */
     EExpr forControl(Object expr, Astro optEj, StaticScope optUsed);
 

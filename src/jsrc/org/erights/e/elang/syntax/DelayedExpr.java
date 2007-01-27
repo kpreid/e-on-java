@@ -38,14 +38,6 @@ abstract class DelayedExpr extends EExpr {
         super(optSpan, optScopeLayout);
     }
 
-    String[] getExports(StaticScope optUsed) {
-        ConstMap outs = staticScope().outNames();
-        if (null != optUsed && !optUsed.hasMetaStateExpr()) {
-            outs = outs.and(optUsed.namesUsed());
-        }
-        return (String[])outs.getKeys(String.class);
-    }
-
     EExpr broke(ENodeBuilder b, Astro br, EExpr problem) {
         return b.kdef(b.finalPattern(br),
                       b.call(ENodeBuilder.REF,
@@ -114,13 +106,13 @@ abstract class DelayedExpr extends EExpr {
      * Expand to an expression whose value is correct.
      * <p/>
      * The default implementation here expands to<pre>
-     *     escape ej1 {
+     *     def [rs4, &exports...] := escape ej1 {
      *         forControl(expr,ej1)
      *         [true, &exports...]
      *     } catch ex2 {
      *         def br3 := Ref.broken(ex2)
      *         [false, br3...]
-     *     } into [rs4, &exports...]
+     *     }
      *     rs4</pre>
      * or, if no exports<pre>
      *     escape ej1 {
@@ -133,7 +125,7 @@ abstract class DelayedExpr extends EExpr {
     EExpr forValue(ENodeBuilder b, StaticScope optUsed) {
         Astro ej1 = b.newTemp("ej");
         String[] exports = getExports(optUsed);
-        if (exports.length >= 1) {
+        if (1 <= exports.length) {
             Astro ex2 = b.newTemp("ex");
             Astro br3 = b.newTemp("br");
             Astro rs4 = b.newTemp("rs");
@@ -169,13 +161,13 @@ abstract class DelayedExpr extends EExpr {
      * need not be the same as the original expression.
      * <p/>
      * The default implementation here expands to<pre>
-     *     escape ej1 {
+     *     def [&exports...] := escape ej1 {
      *         forControl(expr,ej1)
      *         [&exports...]
      *     } catch ex2 {
      *         def br3 := Ref.broken(ex2)
      *         [br3...]
-     *     } into [&exports...]</pre>
+     *     }</pre>
      * or, if no exports<pre>
      *     escape ej1 {
      *         forControl(expr,ej1)
@@ -184,7 +176,7 @@ abstract class DelayedExpr extends EExpr {
     EExpr forFxOnly(ENodeBuilder b, StaticScope optUsed) {
         Astro ej1 = b.newTemp("ej");
         String[] exports = getExports(optUsed);
-        if (exports.length >= 1) {
+        if (1 <= exports.length) {
             Astro ex2 = b.newTemp("ex");
             Astro br3 = b.newTemp("br");
             return b.kdef(slotsPattern(b, null, exports),

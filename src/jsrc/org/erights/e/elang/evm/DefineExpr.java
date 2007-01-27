@@ -50,7 +50,7 @@ public class DefineExpr extends EExpr {
     }
 
     private void ensureEmpty(ConstMap conflicts, String msg) {
-        if (conflicts.size() >= 1) {
+        if (1 <= conflicts.size()) {
             ENode node = ((ENode[])conflicts.getValues(ENode.class))[0];
             fail(msg + ": " + E.toString(conflicts.getKeys()), node);
         }
@@ -148,7 +148,7 @@ public class DefineExpr extends EExpr {
      *
      */
     public void subPrintOn(TextWriter out, int priority) throws IOException {
-        if (priority > PR_ASSIGN) {
+        if (PR_ASSIGN < priority) {
             out.print("(");
         }
         out.print("def ");
@@ -159,7 +159,7 @@ public class DefineExpr extends EExpr {
         }
         out.print(" := ");
         myRValue.subPrintOn(out, PR_ASSIGN);
-        if (priority > PR_ASSIGN) {
+        if (PR_ASSIGN < priority) {
             out.print(")");
         }
     }

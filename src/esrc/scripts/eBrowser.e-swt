@@ -626,7 +626,7 @@ def eBrowserMaker(textModel) :any {
             }
             match [verb, args] {}
         }
-        def button := <widget:makeToolItem> (toolbar, SWT.getPUSH())
+        def button := <widget:makeToolItem>(toolbar, SWT.getPUSH())
         def image := disposablesKit.makeImage(uri.openStream())
         button.setImage(image)
         button.setHotImage(image)

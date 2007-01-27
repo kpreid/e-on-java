@@ -86,13 +86,13 @@ class CondAndExpr extends DelayedExpr {
     }
 
     public void subPrintOn(TextWriter out, int priority) throws IOException {
-        if (priority > PR_COMP) {
+        if (PR_COMP < priority) {
             out.print("(");
         }
         myLeft.subPrintOn(out, PR_ORDER);
         out.print(" && ");
         myRight.subPrintOn(out, PR_ORDER);
-        if (priority > PR_COMP) {
+        if (PR_COMP < priority) {
             out.print(")");
         }
     }

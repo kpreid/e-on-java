@@ -148,7 +148,7 @@ public class SeqExpr extends EExpr {
      *
      */
     public void subPrintOn(TextWriter out, int priority) throws IOException {
-        if (priority > PR_EEXPR) {
+        if (PR_EEXPR < priority) {
             out.print("(");
         }
         boolean first = true;
@@ -159,7 +159,7 @@ public class SeqExpr extends EExpr {
             first = false;
             mySubs[i].subPrintOn(out, PR_EEXPR);
         }
-        if (priority > PR_EEXPR) {
+        if (PR_EEXPR < priority) {
             out.print(")");
         }
     }

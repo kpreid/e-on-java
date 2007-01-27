@@ -39,10 +39,52 @@ class MatchBindExpr extends DelayedExpr {
     }
 
     /**
+     * If specimen exports, then<pre>
+     *     def sp1 := specimen
+     *     super.forValue(sp1 =~ pattern)</pre>
+     * else<pre>
+     *     super.forValue(specimen =~ pattern)</pre>
+     */
+    EExpr forValue(ENodeBuilder b, StaticScope optUsed) {
+        String[] exports = mySpecimen.getExports(optUsed);
+        if (1 <= exports.length) {
+            Astro sp1 = b.newTemp("sp");
+            MatchBindExpr mbe =
+              new MatchBindExpr(getOptSpan(), noun(sp1), myPattern, null);
+            return b.sequence(b.define(b.finalPattern(sp1), mySpecimen),
+                              mbe.forValue(b, optUsed));
+        } else {
+            // base case
+            return super.forValue(b, optUsed);
+        }
+    }
+
+    /**
+     * If specimen exports, then<pre>
+     *     def sp1 := specimen
+     *     super.forFxOnly(sp1 =~ pattern)</pre>
+     * else<pre>
+     *     super.forFxOnly(specimen =~ pattern)</pre>
+     */
+    EExpr forFxOnly(ENodeBuilder b, StaticScope optUsed) {
+        String[] exports = mySpecimen.getExports(optUsed);
+        if (1 <= exports.length) {
+            Astro sp1 = b.newTemp("sp");
+            MatchBindExpr mbe =
+              new MatchBindExpr(getOptSpan(), noun(sp1), myPattern, null);
+            return b.sequence(b.define(b.finalPattern(sp1), mySpecimen),
+                              mbe.forFxOnly(b, optUsed));
+        } else {
+            // base case
+            return super.forFxOnly(b, optUsed);
+        }
+    }
+
+    /**
      * <pre>
      *   forControl(expr =~ patt,ej)</pre>
      * expands to<pre>
-     *   expr into ^(ej) patt</pre>
+     *   def patt exit ej := expr</pre>
      */
     EExpr forControl(ENodeBuilder b, Astro ej, StaticScope optUsed) {
         return b.kerneldef(myPattern, noun(ej), mySpecimen);
@@ -99,13 +141,13 @@ class MatchBindExpr extends DelayedExpr {
      *
      */
     public void subPrintOn(TextWriter out, int priority) throws IOException {
-        if (priority > PR_COMP) {
+        if (PR_COMP < priority) {
             out.print("(");
         }
         mySpecimen.subPrintOn(out, PR_ORDER);
         out.print(" =~ ");
         myPattern.subPrintOn(out, PR_PATTERN);
-        if (priority > PR_COMP) {
+        if (PR_COMP < priority) {
             out.print(")");
         }
     }

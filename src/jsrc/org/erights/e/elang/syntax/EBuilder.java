@@ -14,6 +14,7 @@ import org.erights.e.elang.evm.QuasiLiteralExpr;
 import org.erights.e.elang.evm.QuasiLiteralPatt;
 import org.erights.e.elang.evm.QuasiPatternExpr;
 import org.erights.e.elang.evm.QuasiPatternPatt;
+import org.erights.e.elang.evm.StaticScope;
 import org.erights.e.elang.scope.ScopeLayout;
 import org.quasiliteral.astro.Astro;
 
@@ -748,17 +749,17 @@ public interface EBuilder extends BaseEBuilder {
     EExpr cast(Object expr, Object poser, Object guardExpr);
 
     /**
-     * @see DelayedExpr#forControl(ENodeBuilder,org.quasiliteral.astro.Astro,org.erights.e.elang.evm.StaticScope)
+     * @see DelayedExpr#forControl(ENodeBuilder,Astro,StaticScope)
      */
     EExpr condAnd(Object left, Object poser, Object right);
 
     /**
-     * @see DelayedExpr#forControl(ENodeBuilder,org.quasiliteral.astro.Astro,org.erights.e.elang.evm.StaticScope)
+     * @see DelayedExpr#forControl(ENodeBuilder,Astro,StaticScope)
      */
     EExpr condOr(Object left, Object poser, Object right);
 
     /**
-     * @see DelayedExpr#forControl(ENodeBuilder,org.quasiliteral.astro.Astro,org.erights.e.elang.evm.StaticScope)
+     * @see DelayedExpr#forControl(ENodeBuilder,Astro,StaticScope)
      */
     EExpr matchBind(Object specimen, Object poser, Object pattern);
 
