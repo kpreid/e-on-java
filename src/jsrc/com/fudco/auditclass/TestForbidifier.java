@@ -14,7 +14,7 @@ class TestForbidifier implements Forbidifier {
     private boolean goofyTest(String victim) {
         for (int i = 0; i < victim.length(); ++i) {
             char c = victim.charAt(i);
-            if (c == 'e' || c == 'E') {
+            if ('e' == c || 'E' == c) {
                 return true;
             }
         }

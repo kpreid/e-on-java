@@ -116,7 +116,7 @@ public class MakeGrammar extends DefineGrammarSymbols {
     }
 
     public BlockContext context() {
-        if (blocks.height() == 0) {
+        if (0 == blocks.height()) {
             return null;
         } else {
             return (BlockContext)blocks.top();
@@ -150,14 +150,14 @@ public class MakeGrammar extends DefineGrammarSymbols {
                   .error(
                     "Lexer rule " + r.id.substring(1) + " is not defined");
             } else {
-                if (r.access.equals("public")) {
+                if ("public".equals(r.access)) {
                     Alternative alt =
                       new Alternative(); // create alt we'll add to ref rule
                     RuleBlock targetRuleBlock = r.getBlock();
                     Vector targetRuleAlts = targetRuleBlock.getAlternatives();
                     // collect a sem pred if only one alt and it's at the start;
                     // simple, but faster to implement until real hoisting
-                    if (targetRuleAlts != null && targetRuleAlts.size() == 1) {
+                    if (targetRuleAlts != null && 1 == targetRuleAlts.size()) {
                         Alternative onlyAlt =
                           (Alternative)targetRuleAlts.elementAt(0);
                         if (onlyAlt.semPred != null) {
@@ -244,7 +244,7 @@ public class MakeGrammar extends DefineGrammarSymbols {
                                boolean ruleAutoGen,
                                String docComment) throws SemanticException {
         //		if ( Character.isUpperCase(r.getText().charAt(0)) ) {
-        if (r.type == ANTLRTokenTypes.TOKEN_REF) {
+        if (ANTLRTokenTypes.TOKEN_REF == r.type) {
             if (!(grammar instanceof LexerGrammar)) {
                 tool.error(
                   "Lexical rule " + r.getText() + " defined outside of lexer",
@@ -267,7 +267,7 @@ public class MakeGrammar extends DefineGrammarSymbols {
         super.defineRuleName(r, access, ruleAutoGen, docComment);
         String id = r.getText();
         //		if ( Character.isUpperCase(id.charAt(0)) ) { // lexer rule?
-        if (r.type == ANTLRTokenTypes.TOKEN_REF) { // lexer rule?
+        if (ANTLRTokenTypes.TOKEN_REF == r.type) { // lexer rule?
             id = CodeGenerator.encodeLexerRuleName(id);
         }
         RuleSymbol rs = (RuleSymbol)grammar.getSymbol(id);
@@ -288,7 +288,7 @@ public class MakeGrammar extends DefineGrammarSymbols {
 
     public void endAlt() {
         super.endAlt();
-        if (nested == 0) {        // all rule-level alts link to ruleEnd node
+        if (0 == nested) {        // all rule-level alts link to ruleEnd node
             addElementToCurrentAlt(ruleEnd);
         } else {
             addElementToCurrentAlt(context().blockEnd);
@@ -501,7 +501,7 @@ public class MakeGrammar extends DefineGrammarSymbols {
                                                        autoGenType);
 
         // Generate a warning for non-lowercase ASCII when case-insensitive
-        if (!((LexerGrammar)grammar).caseSensitive && cl.getType() < 128 &&
+        if (!((LexerGrammar)grammar).caseSensitive && 128 > cl.getType() &&
           Character.toLowerCase((char)cl.getType()) != (char)cl.getType()) {
             tool.warning(
               "Character literal must be lowercase when caseSensitive=false",
@@ -544,7 +544,7 @@ public class MakeGrammar extends DefineGrammarSymbols {
 
         // Generate a warning for non-lowercase ASCII when case-insensitive
         if (!((LexerGrammar)grammar).caseSensitive) {
-            if (rangeMin < 128 &&
+            if (128 > rangeMin &&
               Character.toLowerCase((char)rangeMin) != (char)rangeMin) {
                 tool.warning(
                   "Character literal must be lowercase when caseSensitive=false",
@@ -552,7 +552,7 @@ public class MakeGrammar extends DefineGrammarSymbols {
                   t1.getLine(),
                   t1.getColumn());
             }
-            if (rangeMax < 128 &&
+            if (128 > rangeMax &&
               Character.toLowerCase((char)rangeMax) != (char)rangeMax) {
                 tool.warning(
                   "Character literal must be lowercase when caseSensitive=false",
@@ -587,7 +587,7 @@ public class MakeGrammar extends DefineGrammarSymbols {
         if (ts == null) {
             tool.panic("cannot find " + tok.getText() + "in tokens {...}");
         }
-        if (option.getText().equals("AST")) {
+        if ("AST".equals(option.getText())) {
             ts.setASTNodeType(value.getText());
         } else {
             grammar.antlrTool
@@ -647,7 +647,7 @@ public class MakeGrammar extends DefineGrammarSymbols {
             String name =
               CodeGenerator.encodeLexerRuleName(((RuleBlock)context().block).getRuleName());
             RuleSymbol rs = (RuleSymbol)grammar.getSymbol(name);
-            if (rs.access.equals("public")) {
+            if ("public".equals(rs.access)) {
                 tool.warning("public Lexical rules cannot specify return type",
                              grammar.getFilename(),
                              returnAction.getLine(),
@@ -666,12 +666,12 @@ public class MakeGrammar extends DefineGrammarSymbols {
         // Disallow parser rule references in the lexer
         if (grammar instanceof LexerGrammar) {
             //			if (!Character.isUpperCase(r.getText().charAt(0))) {
-            if (r.type != ANTLRTokenTypes.TOKEN_REF) {
+            if (ANTLRTokenTypes.TOKEN_REF != r.type) {
                 tool.error(
                   "Parser rule " + r.getText() + " referenced in lexer");
                 return;
             }
-            if (autoGenType == GrammarElement.AUTO_GEN_CARET) {
+            if (GrammarElement.AUTO_GEN_CARET == autoGenType) {
                 tool.error("AST specification ^ not allowed in lexer",
                            grammar.getFilename(),
                            r.getLine(),
@@ -691,7 +691,7 @@ public class MakeGrammar extends DefineGrammarSymbols {
 
         String id = r.getText();
         //		if ( Character.isUpperCase(id.charAt(0)) ) { // lexer rule?
-        if (r.type == ANTLRTokenTypes.TOKEN_REF) { // lexer rule?
+        if (ANTLRTokenTypes.TOKEN_REF == r.type) { // lexer rule?
             id = CodeGenerator.encodeLexerRuleName(id);
         }
         // update symbol table so it knows what nodes reference the rule.
@@ -720,7 +720,7 @@ public class MakeGrammar extends DefineGrammarSymbols {
                                  boolean lastInRule) {
         super.refStringLiteral(lit, label, autoGenType, lastInRule);
         if (grammar instanceof TreeWalkerGrammar &&
-          autoGenType == GrammarElement.AUTO_GEN_CARET) {
+          GrammarElement.AUTO_GEN_CARET == autoGenType) {
             tool.error("^ not allowed in here for tree-walker",
                        grammar.getFilename(),
                        lit.getLine(),
@@ -734,7 +734,7 @@ public class MakeGrammar extends DefineGrammarSymbols {
           !((LexerGrammar)grammar).caseSensitive) {
             for (int i = 1; i < lit.getText().length() - 1; i++) {
                 char c = lit.getText().charAt(i);
-                if (c < 128 && Character.toLowerCase(c) != c) {
+                if (128 > c && Character.toLowerCase(c) != c) {
                     tool.warning(
                       "Characters of string literal must be lowercase when caseSensitive=false",
                       grammar.getFilename(),
@@ -764,7 +764,7 @@ public class MakeGrammar extends DefineGrammarSymbols {
                          boolean lastInRule) {
         if (grammar instanceof LexerGrammar) {
             // In lexer, token references are really rule references
-            if (autoGenType == GrammarElement.AUTO_GEN_CARET) {
+            if (GrammarElement.AUTO_GEN_CARET == autoGenType) {
                 tool.error("AST specification ^ not allowed in lexer",
                            grammar.getFilename(),
                            t.getLine(),

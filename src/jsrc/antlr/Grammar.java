@@ -116,7 +116,7 @@ public abstract class Grammar {
      */
     public int getIntegerOption(String key) throws NumberFormatException {
         Token t = (Token)options.get(key);
-        if (t == null || t.getType() != ANTLRTokenTypes.INT) {
+        if (t == null || ANTLRTokenTypes.INT != t.getType()) {
             throw new NumberFormatException();
         } else {
             return Integer.parseInt(t.getText());
@@ -195,10 +195,10 @@ public abstract class Grammar {
         options.put(key, value);
         String s = value.getText();
         int i;
-        if (key.equals("k")) {
+        if ("k".equals(key)) {
             try {
                 maxk = getIntegerOption("k");
-                if (maxk <= 0) {
+                if (0 >= maxk) {
                     antlrTool.error("option 'k' must be greater than 0 (was " +
                       value.getText() + ")",
                                     getFilename(),
@@ -215,7 +215,7 @@ public abstract class Grammar {
             }
             return true;
         }
-        if (key.equals("codeGenMakeSwitchThreshold")) {
+        if ("codeGenMakeSwitchThreshold".equals(key)) {
             try {
                 i = getIntegerOption("codeGenMakeSwitchThreshold");
             } catch (NumberFormatException e) {
@@ -227,7 +227,7 @@ public abstract class Grammar {
             }
             return true;
         }
-        if (key.equals("codeGenBitsetTestThreshold")) {
+        if ("codeGenBitsetTestThreshold".equals(key)) {
             try {
                 i = getIntegerOption("codeGenBitsetTestThreshold");
             } catch (NumberFormatException e) {
@@ -239,10 +239,10 @@ public abstract class Grammar {
             }
             return true;
         }
-        if (key.equals("defaultErrorHandler")) {
-            if (s.equals("true")) {
+        if ("defaultErrorHandler".equals(key)) {
+            if ("true".equals(s)) {
                 defaultErrorHandler = true;
-            } else if (s.equals("false")) {
+            } else if ("false".equals(s)) {
                 defaultErrorHandler = false;
             } else {
                 antlrTool.error(
@@ -253,10 +253,10 @@ public abstract class Grammar {
             }
             return true;
         }
-        if (key.equals("analyzerDebug")) {
-            if (s.equals("true")) {
+        if ("analyzerDebug".equals(key)) {
+            if ("true".equals(s)) {
                 analyzerDebug = true;
-            } else if (s.equals("false")) {
+            } else if ("false".equals(s)) {
                 analyzerDebug = false;
             } else {
                 antlrTool.error("option 'analyzerDebug' must be true or false",
@@ -266,10 +266,10 @@ public abstract class Grammar {
             }
             return true;
         }
-        if (key.equals("codeGenDebug")) {
-            if (s.equals("true")) {
+        if ("codeGenDebug".equals(key)) {
+            if ("true".equals(s)) {
                 analyzerDebug = true;
-            } else if (s.equals("false")) {
+            } else if ("false".equals(s)) {
                 analyzerDebug = false;
             } else {
                 antlrTool.error("option 'codeGenDebug' must be true or false",
@@ -279,22 +279,22 @@ public abstract class Grammar {
             }
             return true;
         }
-        if (key.equals("classHeaderSuffix")) {
+        if ("classHeaderSuffix".equals(key)) {
             return true;
         }
-        if (key.equals("classHeaderPrefix")) {
+        if ("classHeaderPrefix".equals(key)) {
             return true;
         }
-        if (key.equals("namespaceAntlr")) {
+        if ("namespaceAntlr".equals(key)) {
             return true;
         }
-        if (key.equals("namespaceStd")) {
+        if ("namespaceStd".equals(key)) {
             return true;
         }
-        if (key.equals("genHashLines")) {
+        if ("genHashLines".equals(key)) {
             return true;
         }
-        if (key.equals("noConstructors")) {
+        if ("noConstructors".equals(key)) {
             return true;
         }
         return false;
@@ -312,7 +312,7 @@ public abstract class Grammar {
         Enumeration ids = rules.elements();
         while (ids.hasMoreElements()) {
             RuleSymbol rs = (RuleSymbol)ids.nextElement();
-            if (!rs.id.equals("mnextToken")) {
+            if (!"mnextToken".equals(rs.id)) {
                 buf.append(rs.getBlock().toString());
                 buf.append("\n\n");
             }

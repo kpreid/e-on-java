@@ -50,7 +50,7 @@ public class MessageDesc implements Persistent, EPrintable {
     static public void synopsize(TextWriter out, String docComment)
       throws IOException {
         int len = docComment.length();
-        if (len >= 1) {
+        if (1 <= len) {
             boolean endsWithNL = docComment.endsWith("\n");
             if (endsWithNL) {
                 docComment = docComment.substring(0, len - 1);
@@ -163,7 +163,7 @@ public class MessageDesc implements Persistent, EPrintable {
         printVerbOn(myVerb, out);
         out.print("(");
         int len = myParams.size();
-        if (len >= 1) {
+        if (1 <= len) {
             out.print(myParams.get(0));
             for (int i = 1; i < len; i++) {
                 out.print(", ", myParams.get(i));

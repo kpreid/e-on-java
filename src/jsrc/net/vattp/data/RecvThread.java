@@ -132,7 +132,7 @@ class RecvThread extends Thread {
      *                     this length is allocated for each read, so it
      *                     shouldn't be too big.
      */
-    public RecvThread(InputStream inputStream,
+    RecvThread(InputStream inputStream,
                       DataPath connection,
                       String remoteAddr,
                       Vat vat) {
@@ -228,7 +228,7 @@ class RecvThread extends Thread {
         myIsCompressingMsgLengths = myIsAggragating;
 
         int len = theHeaderLengths[headerLengthIndex];
-        T.require(len >= 0, "Invalid header length code");
+        T.require(0 <= len, "Invalid header length code");
         myHeader = new byte[len];
     }
 
@@ -277,9 +277,9 @@ class RecvThread extends Thread {
         int offset = off;
         while (offset < off + len) {
             int thisLen = off + len - offset;
-            thisLen = (thisLen > NOTIFY_EVERY) ? NOTIFY_EVERY : thisLen;
+            thisLen = (NOTIFY_EVERY < thisLen) ? NOTIFY_EVERY : thisLen;
             int l = myInputStream.read(b, offset, thisLen);
-            if (l < 0) {
+            if (0 > l) {
                 throw new EOFException();
             }
             offset += l;
@@ -299,7 +299,7 @@ class RecvThread extends Thread {
     }
 
     private void increment(byte[] value) {
-        for (int i = value.length - 1; i >= 0; i--) {
+        for (int i = value.length - 1; 0 <= i; i--) {
             byte v = (value[i] += 1);
             if (0 != v) {
                 break;
@@ -447,7 +447,7 @@ class RecvThread extends Thread {
         if (Trace.comm.verbose && Trace.ON) {
             Trace.comm.verbosem("incoming packet len = " + length);
         }
-        if (length > Msg.MAX_INBOUND_MSG_LENGTH || length < 0) {
+        if (Msg.MAX_INBOUND_MSG_LENGTH < length || 0 > length) {
             throw new IOException("Packet too large: " + length + " > " + Msg
               .MAX_INBOUND_MSG_LENGTH);
         }
@@ -544,7 +544,7 @@ class RecvThread extends Thread {
             while (true) {
                 length = 0;
                 int input = bais.read();
-                if (input <= 0) {
+                if (0 >= input) {
                     break;  // -1 for eof on bais, 0 if only msg shorter than 3
                 }
                 int count;
@@ -578,7 +578,7 @@ class RecvThread extends Thread {
                     input = bais.read();
                     length |= input & 0xff;
                 }
-                if (length > Msg.MAX_INBOUND_MSG_LENGTH || length < 0) {
+                if (Msg.MAX_INBOUND_MSG_LENGTH < length || 0 > length) {
                     throw new IOException("Message too large: " + length +
                       " > " + Msg.MAX_INBOUND_MSG_LENGTH);
                 }
@@ -613,7 +613,7 @@ class RecvThread extends Thread {
             if (Trace.comm.timing && Trace.ON) {
                 startTime = MicroTime.queryTimer();
             }
-            byte digest[] = computeMAC(myMessagesToPass);
+            byte[] digest = computeMAC(myMessagesToPass);
             if (!MessageDigest.isEqual(digest, myMAC)) {
                 if (Trace.comm.error) {
                     traceErrorMsg(myMAC,
@@ -680,7 +680,7 @@ class RecvThread extends Thread {
             myChangeProtocolIsOk = true;
 
             //XXX should make embargo work again
-            if (msg[0] == Msg.E_MSG) {
+            if (Msg.E_MSG == msg[0]) {
                 myDataPath.getEmbargoLock().waitTillOff();
             }
 
@@ -795,12 +795,12 @@ class RecvThread extends Thread {
         myTerminateFlag = true;
     }
 
-    private void traceDebugMsg(byte msg[], int off, int len, String note) {
+    private void traceDebugMsg(byte[] msg, int off, int len, String note) {
         String msgString = HexStringUtils.bytesToReadableHexStr(msg, off, len);
         Trace.comm.debugm(note + " (length " + len + ") " + msgString);
     }
 
-    private void traceErrorMsg(byte msg[], int off, int len, String note) {
+    private void traceErrorMsg(byte[] msg, int off, int len, String note) {
         String msgString = HexStringUtils.bytesToReadableHexStr(msg, off, len);
         Trace.comm.errorm(note + " (length " + len + ") " + msgString);
     }

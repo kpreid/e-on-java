@@ -38,10 +38,10 @@ class Alternative {
     private boolean doAutoGen;
 
 
-    public Alternative() {
+    Alternative() {
     }
 
-    public Alternative(AlternativeElement firstElement) {
+    Alternative(AlternativeElement firstElement) {
         addElement(firstElement);
     }
 

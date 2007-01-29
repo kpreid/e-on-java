@@ -156,7 +156,7 @@ public class Perl5Substitution extends StringSubstitution {
             if (saveDigits && Character.isDigit(str[current])) {
                 numBuffer.append(str[current]);
 
-                if (strBuffer.length() > 0) {
+                if (0 < strBuffer.length()) {
                     subs.addElement(strBuffer.toString());
                     strBuffer.setLength(0);
                 }
@@ -173,8 +173,8 @@ public class Perl5Substitution extends StringSubstitution {
                     saveDigits = false;
                 }
 
-                if (str[current] == '$' && current + 1 < str.length &&
-                  str[current + 1] != '0' &&
+                if ('$' == str[current] && current + 1 < str.length &&
+                  '0' != str[current + 1] &&
                   Character.isDigit(str[current + 1])) {
                     saveDigits = true;
                 } else {
@@ -193,7 +193,7 @@ public class Perl5Substitution extends StringSubstitution {
             } catch (NumberFormatException e) {
                 subs.addElement(numBuffer.toString());
             }
-        } else if (strBuffer.length() > 0) {
+        } else if (0 < strBuffer.length()) {
             subs.addElement(strBuffer.toString());
         }
 
@@ -224,7 +224,7 @@ public class Perl5Substitution extends StringSubstitution {
                 integer = (Integer)obj;
                 value = integer.intValue();
 
-                if (value > 0 && value < result.groups()) {
+                if (0 < value && value < result.groups()) {
                     group = result.group(value);
 
                     if (group != null) {
@@ -327,8 +327,8 @@ public class Perl5Substitution extends StringSubstitution {
         super.setSubstitution(substitution);
         _numInterpolations = numInterpolations;
 
-        if (numInterpolations != INTERPOLATE_NONE &&
-          substitution.indexOf('$') != -1) {
+        if (INTERPOLATE_NONE != numInterpolations &&
+          -1 != substitution.indexOf('$')) {
             _substitutions = _parseSubs(substitution);
         } else {
             _substitutions = null;
@@ -373,7 +373,7 @@ public class Perl5Substitution extends StringSubstitution {
             return;
         }
 
-        if (_numInterpolations < 1 || substitutionCount < _numInterpolations) {
+        if (1 > _numInterpolations || substitutionCount < _numInterpolations) {
             _calcSub(appendBuffer, match);
         } else {
             if (substitutionCount == _numInterpolations) {

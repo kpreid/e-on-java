@@ -3,7 +3,7 @@ package antlr.debug;
 public interface ParserController extends ParserListener {
 
 
-    public void checkBreak();
+    void checkBreak();
 
-    public void setParserEventSupport(ParserEventSupport p);
+    void setParserEventSupport(ParserEventSupport p);
 }

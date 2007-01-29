@@ -40,13 +40,13 @@ public interface PassByProxy extends Marker {
      * modify them to implement the PassByProxy interface, but we equally
      * obviously want people to be able to use them as if we had. <p>
      */
-    static final String[] HONORED_NAMES =
+    String[] HONORED_NAMES =
       {"java.io.File", "java.net.URL", "java.rmi.Remote",};
 
     /**
      * HONORARY (effectively) contains all the classes named in HONORED_NAMES
      * and all their subclasses.
      */
-    static public final ConstSubclassSet HONORARY =
+    ConstSubclassSet HONORARY =
       ConstSubclassSet.make(HONORED_NAMES);
 }

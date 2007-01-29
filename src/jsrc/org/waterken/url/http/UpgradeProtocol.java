@@ -10,19 +10,19 @@ import java.net.Socket;
  *
  * @author Tyler
  */
-public class UpgradeProtocol extends IOException {
+public final class UpgradeProtocol extends IOException {
 
     static private final long serialVersionUID = 1990042487768469690L;
 
     /**
      * The connection socket.
      */
-    private Socket socket;
+    private final Socket socket;
 
     /**
      * The upgrade protocol identifiers.
      */
-    private String[] protocol;
+    private final String[] protocol;
 
     /**
      * Constructs an <code>UpgradeProtocol</code>.

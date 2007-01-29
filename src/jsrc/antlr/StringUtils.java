@@ -2,6 +2,9 @@ package antlr;
 
 public class StringUtils {
 
+    private StringUtils() {
+    }
+
     /**
      * General-purpose utility function for removing characters from back of
      * string
@@ -11,7 +14,7 @@ public class StringUtils {
      * @return The resulting string
      */
     static public String stripBack(String s, char c) {
-        while (s.length() > 0 && s.charAt(s.length() - 1) == c) {
+        while (0 < s.length() && s.charAt(s.length() - 1) == c) {
             s = s.substring(0, s.length() - 1);
         }
         return s;
@@ -31,7 +34,7 @@ public class StringUtils {
             changed = false;
             for (int i = 0; i < remove.length(); i++) {
                 char c = remove.charAt(i);
-                while (s.length() > 0 && s.charAt(s.length() - 1) == c) {
+                while (0 < s.length() && s.charAt(s.length() - 1) == c) {
                     changed = true;
                     s = s.substring(0, s.length() - 1);
                 }
@@ -49,7 +52,7 @@ public class StringUtils {
      * @return The resulting string
      */
     static public String stripFront(String s, char c) {
-        while (s.length() > 0 && s.charAt(0) == c) {
+        while (0 < s.length() && s.charAt(0) == c) {
             s = s.substring(1);
         }
         return s;
@@ -69,7 +72,7 @@ public class StringUtils {
             changed = false;
             for (int i = 0; i < remove.length(); i++) {
                 char c = remove.charAt(i);
-                while (s.length() > 0 && s.charAt(0) == c) {
+                while (0 < s.length() && s.charAt(0) == c) {
                     changed = true;
                     s = s.substring(1);
                 }
@@ -90,7 +93,7 @@ public class StringUtils {
     public static String stripFrontBack(String src, String head, String tail) {
         int h = src.indexOf(head);
         int t = src.lastIndexOf(tail);
-        if (h == -1 || t == -1) {
+        if (-1 == h || -1 == t) {
             return src;
         }
         return src.substring(h + 1, t);

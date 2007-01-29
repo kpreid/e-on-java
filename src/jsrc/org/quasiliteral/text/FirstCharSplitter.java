@@ -44,7 +44,7 @@ public class FirstCharSplitter {
         StringBuffer restChars = new StringBuffer();
         for (int i = 0; i < specials.length(); i++) {
             char c = specials.charAt(i);
-            if (c < 128) {
+            if (128 > c) {
                 mySpecialFlags[c] = true;
             } else {
                 restChars.append(c);
@@ -61,11 +61,11 @@ public class FirstCharSplitter {
         int len = str.length();
         for (int i = 0; i < len; i++) {
             char c = str.charAt(i);
-            if (c < 128) {
+            if (128 > c) {
                 if (mySpecialFlags[c]) {
                     return i;
                 }
-            } else if (myRestChars.indexOf(c) != -1) {
+            } else if (-1 != myRestChars.indexOf(c)) {
                 return i;
             }
         }

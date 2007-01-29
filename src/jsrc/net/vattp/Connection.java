@@ -90,7 +90,7 @@ public final class Connection {
                         // Read in the record length.
                         int len = 0;
                         int b = _read(in);
-                        while ((b & 0x0080) != 0) {
+                        while (0 != (b & 0x0080)) {
                             len <<= 7;
                             len |= b & 0x7F;
                             b = _read(in);

@@ -137,7 +137,7 @@ public class ESecureRandom extends SecureRandom {
      * @throws IllegalArgumentException entropy estimate is greater than 8 bits
      *                                  for every byte of the seed.
      */
-    private ESecureRandom(byte seed[], int entropy) {
+    private ESecureRandom(byte[] seed, int entropy) {
         //The super(seed) call here calls our super class constructor and
         //avoids
         //its no parameter constructor's slow self-seeding algorithm. Note
@@ -179,7 +179,7 @@ public class ESecureRandom extends SecureRandom {
      * @param innerRandom nullOK an EntropyHolder to keep entropy in the vat.
      */
     static public ESecureRandom getESecureRandom() {
-        return ESecureRandom.getESecureRandom(null, 0);
+        return getESecureRandom(null, 0);
     }
 
     /**
@@ -206,7 +206,7 @@ public class ESecureRandom extends SecureRandom {
      */
     private byte[] long2bytes(long number) {
         byte[] ans = new byte[8];
-        for (int i = 7; i >= 0; i--) {
+        for (int i = 7; 0 <= i; i--) {
             ans[i] = (byte)number;
             number >>= 8;
         }
@@ -219,17 +219,17 @@ public class ESecureRandom extends SecureRandom {
      * @param bytes the byte array which will receive the secure random
      *              output.
      */
-    public void nextBytes(byte bytes[]) {
+    public void nextBytes(byte[] bytes) {
         if (Trace.entropy.debug && Trace.ON) {
             Trace.entropy.$("SecureRandomCrew: nextBytes " + bytes.length);
         }
         int cursor = 0;
 
-        if (myAvailableEntropy < MIN_ENTROPY) { // Need to gather entropy
+        if (MIN_ENTROPY > myAvailableEntropy) { // Need to gather entropy
             long genSeedTime = 0;
             long waitSeedTime = 0;
             int seedLength = 0;
-            while (myAvailableEntropy < MIN_ENTROPY) { // Wait for seeding
+            while (MIN_ENTROPY > myAvailableEntropy) { // Wait for seeding
                 long startTime =
                   Trace.entropy.event ? System.currentTimeMillis() : 0;
                 TimerJitterEntropy tje = theTimeJitterEntropy;
@@ -266,12 +266,12 @@ public class ESecureRandom extends SecureRandom {
                     genSeedTime += (System.currentTimeMillis() - startTime);
                 }
             }
-            if (Trace.entropy.event && waitSeedTime > 450) {
+            if (Trace.entropy.event && 450 < waitSeedTime) {
                 Trace.entropy
                   .eventm("TimerJitterEntropy Seeding delay " +
                     (waitSeedTime) + " milliseconds");
             }
-            if (Trace.entropy.event && genSeedTime > 0) {
+            if (Trace.entropy.event && 0 < genSeedTime) {
                 Trace.entropy
                   .eventm("SecureRandomCrewSeedIt getSeed(" + seedLength +
                     "), time " + genSeedTime + " milliseconds");
@@ -303,7 +303,7 @@ public class ESecureRandom extends SecureRandom {
      * @throws IllegalArgumentException entropy estimate is greater than 8 bits
      *                                  for every byte of the seed.
      */
-    static public void provideEntropy(byte entropy[], int bitEstimate) {
+    static public void provideEntropy(byte[] entropy, int bitEstimate) {
         if (theESecureRandom == null) {
             theESecureRandom = new ESecureRandom(entropy, bitEstimate);
         } else {
@@ -398,7 +398,7 @@ public class ESecureRandom extends SecureRandom {
      *
      * @param seed the seed.
      */
-    public void setSeed(byte seed[]) {
+    public void setSeed(byte[] seed) {
         synchronized (this) {
             setSeed(seed, seed.length);     //Assume 1 bit of entropy/byte
         }
@@ -416,7 +416,7 @@ public class ESecureRandom extends SecureRandom {
      * @throws IllegalArgumentException entropy estimate is greater than 8 bits
      *                                  for every byte of the seed.
      */
-    public void setSeed(byte seed[], int entropy) {
+    public void setSeed(byte[] seed, int entropy) {
 
         synchronized (this) {
             //Super. stinks. Since the superclass constructor calls setSeed,
@@ -430,7 +430,7 @@ public class ESecureRandom extends SecureRandom {
             if (null == myMD) {
                 return;
             }
-            if (entropy < 0) {
+            if (0 > entropy) {
                 throw new IllegalArgumentException(
                   "Less than zero bits of entropy");
             }
@@ -451,7 +451,7 @@ public class ESecureRandom extends SecureRandom {
                                  HASH_SIZE); //current pool block
                 myMD.update(hashBlock);
                 myEntropyBuffer = myMD.digest(seed);
-                if (myBufferedEntropy < 80) {
+                if (80 > myBufferedEntropy) {
                     break;
                 }
 

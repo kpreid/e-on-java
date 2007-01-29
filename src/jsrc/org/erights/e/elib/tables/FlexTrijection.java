@@ -72,11 +72,7 @@ public class FlexTrijection extends FlexMap {
     private final FlexTrijection myInverse;
 
     /**
-     * @param domainGuard
-     * @param rangeGuard
-     * @param forwardMap
-     * @param backMap
-     * @param inverse
+     *
      */
     private FlexTrijection(Guard domainGuard,
                            Guard rangeGuard,
@@ -164,14 +160,14 @@ public class FlexTrijection extends FlexMap {
     }
 
     /**
-     * @return
+     *
      */
     public int size() {
         return myForwardMap.size();
     }
 
     /**
-     * @return
+     *
      */
     public Object fetch(Object key, Thunk insteadThunk) {
         key = myDomainGuard.coerce(key, null);
@@ -179,14 +175,14 @@ public class FlexTrijection extends FlexMap {
     }
 
     /**
-     * @return
+     *
      */
     public Object getKeys(Class type) {
         return myForwardMap.getKeys(type);
     }
 
     /**
-     * @return
+     *
      */
     public Object getValues(Class type) {
         return myForwardMap.getValues(type);
@@ -221,7 +217,7 @@ public class FlexTrijection extends FlexMap {
     }
 
     /**
-     * @return
+     *
      */
     public FlexTrijection getInverse() {
         return myInverse;

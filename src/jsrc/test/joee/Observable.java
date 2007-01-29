@@ -13,7 +13,7 @@ import org.erights.e.elib.util.OneArgFunc;
 public class Observable {
 
     private Object myValue;
-    private FlexList myListeners;
+    private final FlexList myListeners;
 
     public Observable(Object value) {
         myValue = value;

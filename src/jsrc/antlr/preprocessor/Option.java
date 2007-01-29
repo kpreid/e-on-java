@@ -14,7 +14,7 @@ class Option {
     protected String rhs;
     protected Grammar enclosingGrammar;
 
-    public Option(String n, String rhs, Grammar gr) {
+    Option(String n, String rhs, Grammar gr) {
         name = n;
         this.rhs = rhs;
         setEnclosingGrammar(gr);

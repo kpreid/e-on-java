@@ -269,7 +269,7 @@ public class ParserEventSupport {
         traceEvent.setValues(TraceEvent.EXIT, ruleNum, guessing, data);
         fireEvents(EXIT_RULE, traceListeners);
         ruleDepth--;
-        if (ruleDepth == 0) {
+        if (0 == ruleDepth) {
             fireDoneParsing();
         }
     }
@@ -530,7 +530,7 @@ public class ParserEventSupport {
             val = i.intValue() - 1;
         }
 
-        if (val == 0) {
+        if (0 == val) {
             doneListeners.remove(l);
         } else {
             doneListeners.put(l, new Integer(val));

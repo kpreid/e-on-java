@@ -171,12 +171,12 @@ public abstract class Node
      */
     public Node minimize() {
         Node[] result = minimize(null);
-        if (result.length == 0) {
+        if (0 == result.length) {
             //This can only happen if the original was an empty Text,
             //so return an empty Text, since we gotta return something
             return new Text("");
         } else {
-            T.require(result.length == 1,
+            T.require(1 == result.length,
                       "Internal: minimization shouldn't expand: ",
                       this);
             return result[0];

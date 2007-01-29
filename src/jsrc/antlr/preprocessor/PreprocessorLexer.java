@@ -23,7 +23,7 @@ import java.io.Reader;
 import java.util.Hashtable;
 
 public class PreprocessorLexer extends antlr.CharScanner
-  implements PreprocessorTokenTypes, TokenStream {
+  implements PreprocessorTokenTypes {
 
     public PreprocessorLexer(InputStream in) {
         this(new ByteBuffer(in));
@@ -190,14 +190,14 @@ public class PreprocessorLexer extends antlr.CharScanner
                         break;
                     }
                     default:
-                        if ((LA(1) == '(') && (_tokenSet_0.member(LA(2)))) {
+                        if (('(' == LA(1)) && (_tokenSet_0.member(LA(2)))) {
                             mSUBRULE_BLOCK(true);
                             theRetToken = _returnToken;
-                        } else if ((LA(1) == '(') && (true)) {
+                        } else if (('(' == LA(1)) && (true)) {
                             mLPAREN(true);
                             theRetToken = _returnToken;
                         } else {
-                            if (LA(1) == EOF_CHAR) {
+                            if (EOF_CHAR == LA(1)) {
                                 uponEOF();
                                 _returnToken = makeToken(Token.EOF_TYPE);
                             } else {
@@ -276,7 +276,7 @@ public class PreprocessorLexer extends antlr.CharScanner
         {
             _loop306:
             do {
-                if ((LA(1) == '|')) {
+                if (('|' == LA(1))) {
                     match('|');
                     {
                         if ((_tokenSet_1.member(LA(1))) &&
@@ -324,7 +324,7 @@ public class PreprocessorLexer extends antlr.CharScanner
             } while (true);
         }
         match(';');
-        if (_createToken && _token == null && _ttype != Token.SKIP) {
+        if (_createToken && _token == null && Token.SKIP != _ttype) {
             _token = makeToken(_ttype);
             _token.setText(new String(text.getBuffer(),
                                       _begin,
@@ -345,14 +345,14 @@ public class PreprocessorLexer extends antlr.CharScanner
             int _cnt348 = 0;
             _loop348:
             do {
-                if ((LA(1) == ' ') && (true)) {
+                if ((' ' == LA(1)) && (true)) {
                     match(' ');
-                } else if ((LA(1) == '\t') && (true)) {
+                } else if (('\t' == LA(1)) && (true)) {
                     match('\t');
-                } else if ((LA(1) == '\n' || LA(1) == '\r') && (true)) {
+                } else if (('\n' == LA(1) || '\r' == LA(1)) && (true)) {
                     mNEWLINE(false);
                 } else {
-                    if (_cnt348 >= 1) {
+                    if (1 <= _cnt348) {
                         break _loop348;
                     } else {
                         throw new NoViableAltForCharException((char)LA(1),
@@ -366,7 +366,7 @@ public class PreprocessorLexer extends antlr.CharScanner
             } while (true);
         }
         _ttype = Token.SKIP;
-        if (_createToken && _token == null && _ttype != Token.SKIP) {
+        if (_createToken && _token == null && Token.SKIP != _ttype) {
             _token = makeToken(_ttype);
             _token.setText(new String(text.getBuffer(),
                                       _begin,
@@ -387,7 +387,7 @@ public class PreprocessorLexer extends antlr.CharScanner
             _loop317:
             do {
                 if ((_tokenSet_3.member(LA(1))) &&
-                  ((LA(2) >= '\u0003' && LA(2) <= '\u00ff'))) {
+                  (('\u0003' <= LA(2) && '\u00ff' >= LA(2)))) {
                     mELEMENT(false);
                 } else {
                     break _loop317;
@@ -395,7 +395,7 @@ public class PreprocessorLexer extends antlr.CharScanner
 
             } while (true);
         }
-        if (_createToken && _token == null && _ttype != Token.SKIP) {
+        if (_createToken && _token == null && Token.SKIP != _ttype) {
             _token = makeToken(_ttype);
             _token.setText(new String(text.getBuffer(),
                                       _begin,
@@ -494,19 +494,19 @@ public class PreprocessorLexer extends antlr.CharScanner
         }
         match(')');
         {
-            if ((LA(1) == '=') && (LA(2) == '>')) {
+            if (('=' == LA(1)) && ('>' == LA(2))) {
                 match("=>");
-            } else if ((LA(1) == '*') && (true)) {
+            } else if (('*' == LA(1)) && (true)) {
                 match('*');
-            } else if ((LA(1) == '+') && (true)) {
+            } else if (('+' == LA(1)) && (true)) {
                 match('+');
-            } else if ((LA(1) == '?') && (true)) {
+            } else if (('?' == LA(1)) && (true)) {
                 match('?');
             } else {
             }
 
         }
-        if (_createToken && _token == null && _ttype != Token.SKIP) {
+        if (_createToken && _token == null && Token.SKIP != _ttype) {
             _token = makeToken(_ttype);
             _token.setText(new String(text.getBuffer(),
                                       _begin,
@@ -561,7 +561,7 @@ public class PreprocessorLexer extends antlr.CharScanner
                                                       getColumn());
             }
         }
-        if (_createToken && _token == null && _ttype != Token.SKIP) {
+        if (_createToken && _token == null && Token.SKIP != _ttype) {
             _token = makeToken(_ttype);
             _token.setText(new String(text.getBuffer(),
                                       _begin,
@@ -579,9 +579,9 @@ public class PreprocessorLexer extends antlr.CharScanner
         int _saveIndex;
 
         {
-            if ((LA(1) == '/') && (LA(2) == '/')) {
+            if (('/' == LA(1)) && ('/' == LA(2))) {
                 mSL_COMMENT(false);
-            } else if ((LA(1) == '/') && (LA(2) == '*')) {
+            } else if (('/' == LA(1)) && ('*' == LA(2))) {
                 mML_COMMENT(false);
             } else {
                 throw new NoViableAltForCharException((char)LA(1),
@@ -592,7 +592,7 @@ public class PreprocessorLexer extends antlr.CharScanner
 
         }
         _ttype = Token.SKIP;
-        if (_createToken && _token == null && _ttype != Token.SKIP) {
+        if (_createToken && _token == null && Token.SKIP != _ttype) {
             _token = makeToken(_ttype);
             _token.setText(new String(text.getBuffer(),
                                       _begin,
@@ -614,24 +614,24 @@ public class PreprocessorLexer extends antlr.CharScanner
             _loop378:
             do {
                 // nongreedy exit test
-                if ((LA(1) == '}') && (true)) {
+                if (('}' == LA(1)) && (true)) {
                     break _loop378;
                 }
-                if ((LA(1) == '\n' || LA(1) == '\r') &&
-                  ((LA(2) >= '\u0003' && LA(2) <= '\u00ff'))) {
+                if (('\n' == LA(1) || '\r' == LA(1)) &&
+                  (('\u0003' <= LA(2) && '\u00ff' >= LA(2)))) {
                     mNEWLINE(false);
-                } else if ((LA(1) == '{') &&
-                  ((LA(2) >= '\u0003' && LA(2) <= '\u00ff'))) {
+                } else if (('{' == LA(1)) &&
+                  (('\u0003' <= LA(2) && '\u00ff' >= LA(2)))) {
                     mACTION(false);
-                } else if ((LA(1) == '\'') && (_tokenSet_6.member(LA(2)))) {
+                } else if (('\'' == LA(1)) && (_tokenSet_6.member(LA(2)))) {
                     mCHAR_LITERAL(false);
-                } else if ((LA(1) == '/') && (LA(2) == '*' || LA(2) == '/')) {
+                } else if (('/' == LA(1)) && ('*' == LA(2) || '/' == LA(2))) {
                     mCOMMENT(false);
-                } else if ((LA(1) == '"') &&
-                  ((LA(2) >= '\u0003' && LA(2) <= '\u00ff'))) {
+                } else if (('"' == LA(1)) &&
+                  (('\u0003' <= LA(2) && '\u00ff' >= LA(2)))) {
                     mSTRING_LITERAL(false);
-                } else if (((LA(1) >= '\u0003' && LA(1) <= '\u00ff')) &&
-                  ((LA(2) >= '\u0003' && LA(2) <= '\u00ff'))) {
+                } else if ((('\u0003' <= LA(1) && '\u00ff' >= LA(1))) &&
+                  (('\u0003' <= LA(2) && '\u00ff' >= LA(2)))) {
                     matchNot(EOF_CHAR);
                 } else {
                     break _loop378;
@@ -640,7 +640,7 @@ public class PreprocessorLexer extends antlr.CharScanner
             } while (true);
         }
         match('}');
-        if (_createToken && _token == null && _ttype != Token.SKIP) {
+        if (_createToken && _token == null && Token.SKIP != _ttype) {
             _token = makeToken(_ttype);
             _token.setText(new String(text.getBuffer(),
                                       _begin,
@@ -661,7 +661,7 @@ public class PreprocessorLexer extends antlr.CharScanner
         {
             _loop363:
             do {
-                if ((LA(1) == '\\')) {
+                if (('\\' == LA(1))) {
                     mESC(false);
                 } else if ((_tokenSet_7.member(LA(1)))) {
                     matchNot('"');
@@ -672,7 +672,7 @@ public class PreprocessorLexer extends antlr.CharScanner
             } while (true);
         }
         match('"');
-        if (_createToken && _token == null && _ttype != Token.SKIP) {
+        if (_createToken && _token == null && Token.SKIP != _ttype) {
             _token = makeToken(_ttype);
             _token.setText(new String(text.getBuffer(),
                                       _begin,
@@ -691,7 +691,7 @@ public class PreprocessorLexer extends antlr.CharScanner
 
         match('\'');
         {
-            if ((LA(1) == '\\')) {
+            if (('\\' == LA(1))) {
                 mESC(false);
             } else if ((_tokenSet_8.member(LA(1)))) {
                 matchNot('\'');
@@ -704,7 +704,7 @@ public class PreprocessorLexer extends antlr.CharScanner
 
         }
         match('\'');
-        if (_createToken && _token == null && _ttype != Token.SKIP) {
+        if (_createToken && _token == null && Token.SKIP != _ttype) {
             _token = makeToken(_ttype);
             _token.setText(new String(text.getBuffer(),
                                       _begin,
@@ -722,14 +722,14 @@ public class PreprocessorLexer extends antlr.CharScanner
         int _saveIndex;
 
         {
-            if ((LA(1) == '\r') && (LA(2) == '\n')) {
+            if (('\r' == LA(1)) && ('\n' == LA(2))) {
                 match('\r');
                 match('\n');
                 newline();
-            } else if ((LA(1) == '\r') && (true)) {
+            } else if (('\r' == LA(1)) && (true)) {
                 match('\r');
                 newline();
-            } else if ((LA(1) == '\n')) {
+            } else if (('\n' == LA(1))) {
                 match('\n');
                 newline();
             } else {
@@ -740,7 +740,7 @@ public class PreprocessorLexer extends antlr.CharScanner
             }
 
         }
-        if (_createToken && _token == null && _ttype != Token.SKIP) {
+        if (_createToken && _token == null && Token.SKIP != _ttype) {
             _token = makeToken(_ttype);
             _token.setText(new String(text.getBuffer(),
                                       _begin,
@@ -758,7 +758,7 @@ public class PreprocessorLexer extends antlr.CharScanner
         int _saveIndex;
 
         match('!');
-        if (_createToken && _token == null && _ttype != Token.SKIP) {
+        if (_createToken && _token == null && Token.SKIP != _ttype) {
             _token = makeToken(_ttype);
             _token.setText(new String(text.getBuffer(),
                                       _begin,
@@ -776,7 +776,7 @@ public class PreprocessorLexer extends antlr.CharScanner
         int _saveIndex;
 
         match(';');
-        if (_createToken && _token == null && _ttype != Token.SKIP) {
+        if (_createToken && _token == null && Token.SKIP != _ttype) {
             _token = makeToken(_ttype);
             _token.setText(new String(text.getBuffer(),
                                       _begin,
@@ -794,7 +794,7 @@ public class PreprocessorLexer extends antlr.CharScanner
         int _saveIndex;
 
         match(',');
-        if (_createToken && _token == null && _ttype != Token.SKIP) {
+        if (_createToken && _token == null && Token.SKIP != _ttype) {
             _token = makeToken(_ttype);
             _token.setText(new String(text.getBuffer(),
                                       _begin,
@@ -812,7 +812,7 @@ public class PreprocessorLexer extends antlr.CharScanner
         int _saveIndex;
 
         match('}');
-        if (_createToken && _token == null && _ttype != Token.SKIP) {
+        if (_createToken && _token == null && Token.SKIP != _ttype) {
             _token = makeToken(_ttype);
             _token.setText(new String(text.getBuffer(),
                                       _begin,
@@ -830,7 +830,7 @@ public class PreprocessorLexer extends antlr.CharScanner
         int _saveIndex;
 
         match('(');
-        if (_createToken && _token == null && _ttype != Token.SKIP) {
+        if (_createToken && _token == null && Token.SKIP != _ttype) {
             _token = makeToken(_ttype);
             _token.setText(new String(text.getBuffer(),
                                       _begin,
@@ -848,7 +848,7 @@ public class PreprocessorLexer extends antlr.CharScanner
         int _saveIndex;
 
         match(')');
-        if (_createToken && _token == null && _ttype != Token.SKIP) {
+        if (_createToken && _token == null && Token.SKIP != _ttype) {
             _token = makeToken(_ttype);
             _token.setText(new String(text.getBuffer(),
                                       _begin,
@@ -878,14 +878,14 @@ public class PreprocessorLexer extends antlr.CharScanner
         _ttype = id.getType();
         {
             if (((_tokenSet_9.member(LA(1))) &&
-              ((LA(2) >= '\u0003' && LA(2) <= '\u00ff'))) &&
-              (id.getText().equals("header"))) {
+              (('\u0003' <= LA(2) && '\u00ff' >= LA(2)))) &&
+              ("header".equals(id.getText()))) {
                 {
                     if ((_tokenSet_1.member(LA(1))) &&
                       (_tokenSet_9.member(LA(2)))) {
                         mWS(false);
                     } else if ((_tokenSet_9.member(LA(1))) &&
-                      ((LA(2) >= '\u0003' && LA(2) <= '\u00ff'))) {
+                      (('\u0003' <= LA(2) && '\u00ff' >= LA(2)))) {
                     } else {
                         throw new NoViableAltForCharException((char)LA(1),
                                                               getFilename(),
@@ -940,8 +940,8 @@ public class PreprocessorLexer extends antlr.CharScanner
                 mACTION(false);
                 _ttype = HEADER_ACTION;
             } else if (((_tokenSet_10.member(LA(1))) &&
-              ((LA(2) >= '\u0003' && LA(2) <= '\u00ff'))) &&
-              (id.getText().equals("tokens"))) {
+              (('\u0003' <= LA(2) && '\u00ff' >= LA(2)))) &&
+              ("tokens".equals(id.getText()))) {
                 {
                     _loop333:
                     do {
@@ -966,7 +966,7 @@ public class PreprocessorLexer extends antlr.CharScanner
                 mCURLY_BLOCK_SCARF(false);
                 _ttype = TOKENS_SPEC;
             } else if (((_tokenSet_10.member(LA(1))) && (true)) &&
-              (id.getText().equals("options"))) {
+              ("options".equals(id.getText()))) {
                 {
                     _loop335:
                     do {
@@ -994,7 +994,7 @@ public class PreprocessorLexer extends antlr.CharScanner
             }
 
         }
-        if (_createToken && _token == null && _ttype != Token.SKIP) {
+        if (_createToken && _token == null && Token.SKIP != _ttype) {
             _token = makeToken(_ttype);
             _token.setText(new String(text.getBuffer(),
                                       _begin,
@@ -1171,7 +1171,7 @@ public class PreprocessorLexer extends antlr.CharScanner
         _ttype = testLiteralsTable(new String(text.getBuffer(),
                                               _begin,
                                               text.length() - _begin), _ttype);
-        if (_createToken && _token == null && _ttype != Token.SKIP) {
+        if (_createToken && _token == null && Token.SKIP != _ttype) {
             _token = makeToken(_ttype);
             _token.setText(new String(text.getBuffer(),
                                       _begin,
@@ -1193,21 +1193,21 @@ public class PreprocessorLexer extends antlr.CharScanner
             _loop338:
             do {
                 // nongreedy exit test
-                if ((LA(1) == '}') && (true)) {
+                if (('}' == LA(1)) && (true)) {
                     break _loop338;
                 }
-                if ((LA(1) == '\n' || LA(1) == '\r') &&
-                  ((LA(2) >= '\u0003' && LA(2) <= '\u00ff'))) {
+                if (('\n' == LA(1) || '\r' == LA(1)) &&
+                  (('\u0003' <= LA(2) && '\u00ff' >= LA(2)))) {
                     mNEWLINE(false);
-                } else if ((LA(1) == '"') &&
-                  ((LA(2) >= '\u0003' && LA(2) <= '\u00ff'))) {
+                } else if (('"' == LA(1)) &&
+                  (('\u0003' <= LA(2) && '\u00ff' >= LA(2)))) {
                     mSTRING_LITERAL(false);
-                } else if ((LA(1) == '\'') && (_tokenSet_6.member(LA(2)))) {
+                } else if (('\'' == LA(1)) && (_tokenSet_6.member(LA(2)))) {
                     mCHAR_LITERAL(false);
-                } else if ((LA(1) == '/') && (LA(2) == '*' || LA(2) == '/')) {
+                } else if (('/' == LA(1)) && ('*' == LA(2) || '/' == LA(2))) {
                     mCOMMENT(false);
-                } else if (((LA(1) >= '\u0003' && LA(1) <= '\u00ff')) &&
-                  ((LA(2) >= '\u0003' && LA(2) <= '\u00ff'))) {
+                } else if ((('\u0003' <= LA(1) && '\u00ff' >= LA(1))) &&
+                  (('\u0003' <= LA(2) && '\u00ff' >= LA(2)))) {
                     matchNot(EOF_CHAR);
                 } else {
                     break _loop338;
@@ -1216,7 +1216,7 @@ public class PreprocessorLexer extends antlr.CharScanner
             } while (true);
         }
         match('}');
-        if (_createToken && _token == null && _ttype != Token.SKIP) {
+        if (_createToken && _token == null && Token.SKIP != _ttype) {
             _token = makeToken(_ttype);
             _token.setText(new String(text.getBuffer(),
                                       _begin,
@@ -1240,19 +1240,19 @@ public class PreprocessorLexer extends antlr.CharScanner
             _loop345:
             do {
                 // nongreedy exit test
-                if ((LA(1) == ';') && (true)) {
+                if ((';' == LA(1)) && (true)) {
                     break _loop345;
                 }
-                if ((LA(1) == '"') &&
-                  ((LA(2) >= '\u0003' && LA(2) <= '\u00ff'))) {
+                if (('"' == LA(1)) &&
+                  (('\u0003' <= LA(2) && '\u00ff' >= LA(2)))) {
                     mSTRING_LITERAL(false);
-                } else if ((LA(1) == '\'') && (_tokenSet_6.member(LA(2)))) {
+                } else if (('\'' == LA(1)) && (_tokenSet_6.member(LA(2)))) {
                     mCHAR_LITERAL(false);
-                } else if ((LA(1) == '\n' || LA(1) == '\r') &&
-                  ((LA(2) >= '\u0003' && LA(2) <= '\u00ff'))) {
+                } else if (('\n' == LA(1) || '\r' == LA(1)) &&
+                  (('\u0003' <= LA(2) && '\u00ff' >= LA(2)))) {
                     mNEWLINE(false);
-                } else if (((LA(1) >= '\u0003' && LA(1) <= '\u00ff')) &&
-                  ((LA(2) >= '\u0003' && LA(2) <= '\u00ff'))) {
+                } else if ((('\u0003' <= LA(1) && '\u00ff' >= LA(1))) &&
+                  (('\u0003' <= LA(2) && '\u00ff' >= LA(2)))) {
                     matchNot(EOF_CHAR);
                 } else {
                     break _loop345;
@@ -1261,7 +1261,7 @@ public class PreprocessorLexer extends antlr.CharScanner
             } while (true);
         }
         match(';');
-        if (_createToken && _token == null && _ttype != Token.SKIP) {
+        if (_createToken && _token == null && Token.SKIP != _ttype) {
             _token = makeToken(_ttype);
             _token.setText(new String(text.getBuffer(),
                                       _begin,
@@ -1283,11 +1283,11 @@ public class PreprocessorLexer extends antlr.CharScanner
             _loop355:
             do {
                 // nongreedy exit test
-                if ((LA(1) == '\n' || LA(1) == '\r') && (true)) {
+                if (('\n' == LA(1) || '\r' == LA(1)) && (true)) {
                     break _loop355;
                 }
-                if (((LA(1) >= '\u0003' && LA(1) <= '\u00ff')) &&
-                  ((LA(2) >= '\u0003' && LA(2) <= '\u00ff'))) {
+                if ((('\u0003' <= LA(1) && '\u00ff' >= LA(1))) &&
+                  (('\u0003' <= LA(2) && '\u00ff' >= LA(2)))) {
                     matchNot(EOF_CHAR);
                 } else {
                     break _loop355;
@@ -1296,7 +1296,7 @@ public class PreprocessorLexer extends antlr.CharScanner
             } while (true);
         }
         mNEWLINE(false);
-        if (_createToken && _token == null && _ttype != Token.SKIP) {
+        if (_createToken && _token == null && Token.SKIP != _ttype) {
             _token = makeToken(_ttype);
             _token.setText(new String(text.getBuffer(),
                                       _begin,
@@ -1318,14 +1318,14 @@ public class PreprocessorLexer extends antlr.CharScanner
             _loop358:
             do {
                 // nongreedy exit test
-                if ((LA(1) == '*') && (LA(2) == '/')) {
+                if (('*' == LA(1)) && ('/' == LA(2))) {
                     break _loop358;
                 }
-                if ((LA(1) == '\n' || LA(1) == '\r') &&
-                  ((LA(2) >= '\u0003' && LA(2) <= '\u00ff'))) {
+                if (('\n' == LA(1) || '\r' == LA(1)) &&
+                  (('\u0003' <= LA(2) && '\u00ff' >= LA(2)))) {
                     mNEWLINE(false);
-                } else if (((LA(1) >= '\u0003' && LA(1) <= '\u00ff')) &&
-                  ((LA(2) >= '\u0003' && LA(2) <= '\u00ff'))) {
+                } else if ((('\u0003' <= LA(1) && '\u00ff' >= LA(1))) &&
+                  (('\u0003' <= LA(2) && '\u00ff' >= LA(2)))) {
                     matchNot(EOF_CHAR);
                 } else {
                     break _loop358;
@@ -1334,7 +1334,7 @@ public class PreprocessorLexer extends antlr.CharScanner
             } while (true);
         }
         match("*/");
-        if (_createToken && _token == null && _ttype != Token.SKIP) {
+        if (_createToken && _token == null && Token.SKIP != _ttype) {
             _token = makeToken(_ttype);
             _token.setText(new String(text.getBuffer(),
                                       _begin,
@@ -1402,15 +1402,15 @@ public class PreprocessorLexer extends antlr.CharScanner
                     matchRange('0', '3');
                 }
                 {
-                    if (((LA(1) >= '0' && LA(1) <= '9')) &&
-                      ((LA(2) >= '\u0003' && LA(2) <= '\u00ff'))) {
+                    if ((('0' <= LA(1) && '9' >= LA(1))) &&
+                      (('\u0003' <= LA(2) && '\u00ff' >= LA(2)))) {
                         mDIGIT(false);
                         {
-                            if (((LA(1) >= '0' && LA(1) <= '9')) &&
-                              ((LA(2) >= '\u0003' && LA(2) <= '\u00ff'))) {
+                            if ((('0' <= LA(1) && '9' >= LA(1))) &&
+                              (('\u0003' <= LA(2) && '\u00ff' >= LA(2)))) {
                                 mDIGIT(false);
                             } else if (
-                              ((LA(1) >= '\u0003' && LA(1) <= '\u00ff')) &&
+                              (('\u0003' <= LA(1) && '\u00ff' >= LA(1))) &&
                                 (true)) {
                             } else {
                                 throw new NoViableAltForCharException((char)LA(
@@ -1419,7 +1419,7 @@ public class PreprocessorLexer extends antlr.CharScanner
 
                         }
                     } else
-                    if (((LA(1) >= '\u0003' && LA(1) <= '\u00ff')) && (true)) {
+                    if ((('\u0003' <= LA(1) && '\u00ff' >= LA(1))) && (true)) {
                     } else {
                         throw new NoViableAltForCharException((char)LA(1),
                                                               getFilename(),
@@ -1438,11 +1438,11 @@ public class PreprocessorLexer extends antlr.CharScanner
                     matchRange('4', '7');
                 }
                 {
-                    if (((LA(1) >= '0' && LA(1) <= '9')) &&
-                      ((LA(2) >= '\u0003' && LA(2) <= '\u00ff'))) {
+                    if ((('0' <= LA(1) && '9' >= LA(1))) &&
+                      (('\u0003' <= LA(2) && '\u00ff' >= LA(2)))) {
                         mDIGIT(false);
                     } else
-                    if (((LA(1) >= '\u0003' && LA(1) <= '\u00ff')) && (true)) {
+                    if ((('\u0003' <= LA(1) && '\u00ff' >= LA(1))) && (true)) {
                     } else {
                         throw new NoViableAltForCharException((char)LA(1),
                                                               getFilename(),
@@ -1469,7 +1469,7 @@ public class PreprocessorLexer extends antlr.CharScanner
             }
             }
         }
-        if (_createToken && _token == null && _ttype != Token.SKIP) {
+        if (_createToken && _token == null && Token.SKIP != _ttype) {
             _token = makeToken(_ttype);
             _token.setText(new String(text.getBuffer(),
                                       _begin,
@@ -1487,7 +1487,7 @@ public class PreprocessorLexer extends antlr.CharScanner
         int _saveIndex;
 
         matchRange('0', '9');
-        if (_createToken && _token == null && _ttype != Token.SKIP) {
+        if (_createToken && _token == null && Token.SKIP != _ttype) {
             _token = makeToken(_ttype);
             _token.setText(new String(text.getBuffer(),
                                       _begin,
@@ -1543,7 +1543,7 @@ public class PreprocessorLexer extends antlr.CharScanner
                                                   getColumn());
         }
         }
-        if (_createToken && _token == null && _ttype != Token.SKIP) {
+        if (_createToken && _token == null && Token.SKIP != _ttype) {
             _token = makeToken(_ttype);
             _token.setText(new String(text.getBuffer(),
                                       _begin,
@@ -1565,22 +1565,22 @@ public class PreprocessorLexer extends antlr.CharScanner
             _loop375:
             do {
                 // nongreedy exit test
-                if ((LA(1) == ']') && (true)) {
+                if ((']' == LA(1)) && (true)) {
                     break _loop375;
                 }
-                if ((LA(1) == '[') &&
-                  ((LA(2) >= '\u0003' && LA(2) <= '\u00ff'))) {
+                if (('[' == LA(1)) &&
+                  (('\u0003' <= LA(2) && '\u00ff' >= LA(2)))) {
                     mARG_ACTION(false);
-                } else if ((LA(1) == '\n' || LA(1) == '\r') &&
-                  ((LA(2) >= '\u0003' && LA(2) <= '\u00ff'))) {
+                } else if (('\n' == LA(1) || '\r' == LA(1)) &&
+                  (('\u0003' <= LA(2) && '\u00ff' >= LA(2)))) {
                     mNEWLINE(false);
-                } else if ((LA(1) == '\'') && (_tokenSet_6.member(LA(2)))) {
+                } else if (('\'' == LA(1)) && (_tokenSet_6.member(LA(2)))) {
                     mCHAR_LITERAL(false);
-                } else if ((LA(1) == '"') &&
-                  ((LA(2) >= '\u0003' && LA(2) <= '\u00ff'))) {
+                } else if (('"' == LA(1)) &&
+                  (('\u0003' <= LA(2) && '\u00ff' >= LA(2)))) {
                     mSTRING_LITERAL(false);
-                } else if (((LA(1) >= '\u0003' && LA(1) <= '\u00ff')) &&
-                  ((LA(2) >= '\u0003' && LA(2) <= '\u00ff'))) {
+                } else if ((('\u0003' <= LA(1) && '\u00ff' >= LA(1))) &&
+                  (('\u0003' <= LA(2) && '\u00ff' >= LA(2)))) {
                     matchNot(EOF_CHAR);
                 } else {
                     break _loop375;
@@ -1589,7 +1589,7 @@ public class PreprocessorLexer extends antlr.CharScanner
             } while (true);
         }
         match(']');
-        if (_createToken && _token == null && _ttype != Token.SKIP) {
+        if (_createToken && _token == null && Token.SKIP != _ttype) {
             _token = makeToken(_ttype);
             _token.setText(new String(text.getBuffer(),
                                       _begin,
@@ -1599,10 +1599,10 @@ public class PreprocessorLexer extends antlr.CharScanner
     }
 
 
-    private static final long[] mk_tokenSet_0() {
+    private static long[] mk_tokenSet_0() {
         long[] data = new long[8];
         data[0] = -576460752303423496L;
-        for (int i = 1; i <= 3; i++) {
+        for (int i = 1; 3 >= i; i++) {
             data[i] = -1L;
         }
         return data;
@@ -1610,17 +1610,17 @@ public class PreprocessorLexer extends antlr.CharScanner
 
     public static final BitSet _tokenSet_0 = new BitSet(mk_tokenSet_0());
 
-    private static final long[] mk_tokenSet_1() {
+    private static long[] mk_tokenSet_1() {
         long[] data = {4294977024L, 0L, 0L, 0L, 0L};
         return data;
     }
 
     public static final BitSet _tokenSet_1 = new BitSet(mk_tokenSet_1());
 
-    private static final long[] mk_tokenSet_2() {
+    private static long[] mk_tokenSet_2() {
         long[] data = new long[8];
         data[0] = -2199023255560L;
-        for (int i = 1; i <= 3; i++) {
+        for (int i = 1; 3 >= i; i++) {
             data[i] = -1L;
         }
         return data;
@@ -1628,10 +1628,10 @@ public class PreprocessorLexer extends antlr.CharScanner
 
     public static final BitSet _tokenSet_2 = new BitSet(mk_tokenSet_2());
 
-    private static final long[] mk_tokenSet_3() {
+    private static long[] mk_tokenSet_3() {
         long[] data = new long[8];
         data[0] = -576462951326679048L;
-        for (int i = 1; i <= 3; i++) {
+        for (int i = 1; 3 >= i; i++) {
             data[i] = -1L;
         }
         return data;
@@ -1639,18 +1639,18 @@ public class PreprocessorLexer extends antlr.CharScanner
 
     public static final BitSet _tokenSet_3 = new BitSet(mk_tokenSet_3());
 
-    private static final long[] mk_tokenSet_4() {
+    private static long[] mk_tokenSet_4() {
         long[] data = {4294977024L, 1152921504606846976L, 0L, 0L, 0L};
         return data;
     }
 
     public static final BitSet _tokenSet_4 = new BitSet(mk_tokenSet_4());
 
-    private static final long[] mk_tokenSet_5() {
+    private static long[] mk_tokenSet_5() {
         long[] data = new long[8];
         data[0] = -576605355262354440L;
         data[1] = -576460752303423489L;
-        for (int i = 2; i <= 3; i++) {
+        for (int i = 2; 3 >= i; i++) {
             data[i] = -1L;
         }
         return data;
@@ -1658,10 +1658,10 @@ public class PreprocessorLexer extends antlr.CharScanner
 
     public static final BitSet _tokenSet_5 = new BitSet(mk_tokenSet_5());
 
-    private static final long[] mk_tokenSet_6() {
+    private static long[] mk_tokenSet_6() {
         long[] data = new long[8];
         data[0] = -549755813896L;
-        for (int i = 1; i <= 3; i++) {
+        for (int i = 1; 3 >= i; i++) {
             data[i] = -1L;
         }
         return data;
@@ -1669,11 +1669,11 @@ public class PreprocessorLexer extends antlr.CharScanner
 
     public static final BitSet _tokenSet_6 = new BitSet(mk_tokenSet_6());
 
-    private static final long[] mk_tokenSet_7() {
+    private static long[] mk_tokenSet_7() {
         long[] data = new long[8];
         data[0] = -17179869192L;
         data[1] = -268435457L;
-        for (int i = 2; i <= 3; i++) {
+        for (int i = 2; 3 >= i; i++) {
             data[i] = -1L;
         }
         return data;
@@ -1681,11 +1681,11 @@ public class PreprocessorLexer extends antlr.CharScanner
 
     public static final BitSet _tokenSet_7 = new BitSet(mk_tokenSet_7());
 
-    private static final long[] mk_tokenSet_8() {
+    private static long[] mk_tokenSet_8() {
         long[] data = new long[8];
         data[0] = -549755813896L;
         data[1] = -268435457L;
-        for (int i = 2; i <= 3; i++) {
+        for (int i = 2; 3 >= i; i++) {
             data[i] = -1L;
         }
         return data;
@@ -1693,14 +1693,14 @@ public class PreprocessorLexer extends antlr.CharScanner
 
     public static final BitSet _tokenSet_8 = new BitSet(mk_tokenSet_8());
 
-    private static final long[] mk_tokenSet_9() {
+    private static long[] mk_tokenSet_9() {
         long[] data = {140758963201536L, 576460752303423488L, 0L, 0L, 0L};
         return data;
     }
 
     public static final BitSet _tokenSet_9 = new BitSet(mk_tokenSet_9());
 
-    private static final long[] mk_tokenSet_10() {
+    private static long[] mk_tokenSet_10() {
         long[] data = {140741783332352L, 576460752303423488L, 0L, 0L, 0L};
         return data;
     }

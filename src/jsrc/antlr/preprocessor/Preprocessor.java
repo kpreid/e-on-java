@@ -125,7 +125,7 @@ public class Preprocessor extends antlr.LLkParser
             {
                 _loop265:
                 do {
-                    if ((LA(1) == HEADER_ACTION)) {
+                    if ((HEADER_ACTION == LA(1))) {
                         hdr = LT(1);
                         match(HEADER_ACTION);
                         hier.getFile(file).addHeaderAction(hdr.getText());
@@ -154,7 +154,7 @@ public class Preprocessor extends antlr.LLkParser
             {
                 _loop268:
                 do {
-                    if ((LA(1) == ACTION || LA(1) == LITERAL_class)) {
+                    if ((ACTION == LA(1) || LITERAL_class == LA(1))) {
                         gr = class_def(file, hier);
 
                         if (gr != null && opt != null) {
@@ -194,7 +194,7 @@ public class Preprocessor extends antlr.LLkParser
             {
                 _loop280:
                 do {
-                    if ((LA(1) == ID)) {
+                    if ((ID == LA(1))) {
                         op = LT(1);
                         match(ID);
                         rhs = LT(1);
@@ -203,11 +203,11 @@ public class Preprocessor extends antlr.LLkParser
                         Option newOp =
                           new Option(op.getText(), rhs.getText(), gr);
                         options.appendElement(newOp.getName(), newOp);
-                        if (gr != null && op.getText().equals("importVocab")) {
+                        if (gr != null && "importVocab".equals(op.getText())) {
                             gr.specifiedVocabulary = true;
                             gr.importVocab = rhs.getText();
                         } else
-                        if (gr != null && op.getText().equals("exportVocab")) {
+                        if (gr != null && "exportVocab".equals(op.getText())) {
                             // don't want ';' included in outputVocab.
                             // This is heinously inconsistent!  Ugh.
                             gr.exportVocab = rhs.getText()
@@ -374,7 +374,7 @@ public class Preprocessor extends antlr.LLkParser
                     if ((_tokenSet_2.member(LA(1)))) {
                         rule(gr);
                     } else {
-                        if (_cnt277 >= 1) {
+                        if (1 <= _cnt277) {
                             break _loop277;
                         } else {
                             throw new NoViableAltException(LT(1),
@@ -603,7 +603,7 @@ public class Preprocessor extends antlr.LLkParser
             {
                 _loop291:
                 do {
-                    if ((LA(1) == COMMA)) {
+                    if ((COMMA == LA(1))) {
                         match(COMMA);
                         b = LT(1);
                         match(ID);
@@ -633,7 +633,7 @@ public class Preprocessor extends antlr.LLkParser
             {
                 _loop294:
                 do {
-                    if ((LA(1) == LITERAL_exception)) {
+                    if ((LITERAL_exception == LA(1))) {
                         e = exceptionSpec();
                         g += e;
                     } else {
@@ -688,7 +688,7 @@ public class Preprocessor extends antlr.LLkParser
             {
                 _loop298:
                 do {
-                    if ((LA(1) == LITERAL_catch)) {
+                    if ((LITERAL_catch == LA(1))) {
                         h = exceptionHandler();
                         es += h;
                     } else {
@@ -774,63 +774,63 @@ public class Preprocessor extends antlr.LLkParser
       "DIGIT",
       "XDIGIT"};
 
-    private static final long[] mk_tokenSet_0() {
+    private static long[] mk_tokenSet_0() {
         long[] data = {2L, 0L};
         return data;
     }
 
     public static final BitSet _tokenSet_0 = new BitSet(mk_tokenSet_0());
 
-    private static final long[] mk_tokenSet_1() {
+    private static long[] mk_tokenSet_1() {
         long[] data = {4658050L, 0L};
         return data;
     }
 
     public static final BitSet _tokenSet_1 = new BitSet(mk_tokenSet_1());
 
-    private static final long[] mk_tokenSet_2() {
+    private static long[] mk_tokenSet_2() {
         long[] data = {459264L, 0L};
         return data;
     }
 
     public static final BitSet _tokenSet_2 = new BitSet(mk_tokenSet_2());
 
-    private static final long[] mk_tokenSet_3() {
+    private static long[] mk_tokenSet_3() {
         long[] data = {386L, 0L};
         return data;
     }
 
     public static final BitSet _tokenSet_3 = new BitSet(mk_tokenSet_3());
 
-    private static final long[] mk_tokenSet_4() {
+    private static long[] mk_tokenSet_4() {
         long[] data = {2048L, 0L};
         return data;
     }
 
     public static final BitSet _tokenSet_4 = new BitSet(mk_tokenSet_4());
 
-    private static final long[] mk_tokenSet_5() {
+    private static long[] mk_tokenSet_5() {
         long[] data = {459650L, 0L};
         return data;
     }
 
     public static final BitSet _tokenSet_5 = new BitSet(mk_tokenSet_5());
 
-    private static final long[] mk_tokenSet_6() {
+    private static long[] mk_tokenSet_6() {
         long[] data = {4202624L, 0L};
         return data;
     }
 
     public static final BitSet _tokenSet_6 = new BitSet(mk_tokenSet_6());
 
-    private static final long[] mk_tokenSet_7() {
+    private static long[] mk_tokenSet_7() {
         long[] data = {34014082L, 0L};
         return data;
     }
 
     public static final BitSet _tokenSet_7 = new BitSet(mk_tokenSet_7());
 
-    private static final long[] mk_tokenSet_8() {
+    private static long[] mk_tokenSet_8() {
         long[] data = {101122946L, 0L};
         return data;
     }

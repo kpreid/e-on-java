@@ -24,7 +24,7 @@ class Rule {
     protected Grammar enclosingGrammar;
     protected boolean bang = false;
 
-    public Rule(String n, String b, IndexedVector options, Grammar gr) {
+    Rule(String n, String b, IndexedVector options, Grammar gr) {
         name = n;
         block = b;
         this.options = options;
@@ -57,17 +57,17 @@ class Rule {
      * narrow the vis. of a rule.
      */
     public boolean narrowerVisibility(Rule rule) {
-        if (visibility.equals("public")) {
-            if (!rule.equals("public")) {
+        if ("public".equals(visibility)) {
+            if (!"public".equals(rule)) {
                 return true;        // everything narrower than public
             }
             return false;
-        } else if (visibility.equals("protected")) {
-            if (rule.equals("private")) {
+        } else if ("protected".equals(visibility)) {
+            if ("private".equals(rule)) {
                 return true;        // private narrower than protected
             }
             return false;
-        } else if (visibility.equals("private")) {
+        } else if ("private".equals(visibility)) {
             return false;        // nothing is narrower than private
         }
         return false;

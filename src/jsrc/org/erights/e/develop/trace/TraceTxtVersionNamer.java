@@ -30,8 +30,7 @@ import java.io.File;
  * files that end in ".txt".
  */
 
-class TraceTxtVersionNamer extends TraceVersionNamer
-  implements TraceConstants {
+class TraceTxtVersionNamer extends TraceVersionNamer {
 
     /**
      * The length of the ".txt" extension, for convenience.

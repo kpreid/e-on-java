@@ -111,13 +111,13 @@ class Decrypt3DES extends MsgTransformer {
     }
 
     private void xor8(byte[] inOut, int off, byte[] in) {
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; 8 > i; i++) {
             inOut[off + i] ^= in[i];
         }
     }
 
     private void increment(byte[] value) {
-        for (int i = value.length - 1; i >= 0; i--) {
+        for (int i = value.length - 1; 0 <= i; i--) {
             byte v = (value[i] += 1);
             if (0 != v) {
                 break;

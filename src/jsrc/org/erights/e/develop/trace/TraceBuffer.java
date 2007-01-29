@@ -126,7 +126,7 @@ class TraceBuffer implements TraceMessageAcceptor, TraceConstants {
                 }
             }
 
-            if (newSize < 1) {
+            if (1 > newSize) {
                 Trace.trace
                   .errorm(value +
                     " is too small a threshold size for the log. " +
@@ -163,7 +163,7 @@ class TraceBuffer implements TraceMessageAcceptor, TraceConstants {
             // "-" is created. Hopefully, she will not be terribly surprised
             // by our use of stderr rather than stdout.
             String outputDestination = destination;
-            if (destination.equals("-")) {
+            if ("-".equals(destination)) {
                 stream = PrintStreamWriter.stderr();
                 outputDestination = "standard error";
             } else {

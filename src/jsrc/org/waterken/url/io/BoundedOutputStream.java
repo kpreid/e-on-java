@@ -34,7 +34,7 @@ public final class BoundedOutputStream extends OutputStream {
     // java.io.OutputStream interface.
 
     public void write(final int b) throws IOException {
-        if (remaining < 1) {
+        if (1 > remaining) {
             throw new IOException("Invalid Content-Length request header!");
         }
         out.write(b);
@@ -56,7 +56,7 @@ public final class BoundedOutputStream extends OutputStream {
 
     public void close() throws IOException {
         if (null != out) {
-            if (remaining != 0) {
+            if (0 != remaining) {
                 throw new IOException("Invalid Content-Length request header!");
             }
             out.close();

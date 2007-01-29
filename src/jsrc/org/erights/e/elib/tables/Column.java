@@ -44,6 +44,7 @@ abstract class Column implements Cloneable {
 
     /**
      * Argument defaults to memberType()
+     * @noinspection CloneDoesntCallSuperClone
      */
     protected Object clone() {
         return diverge(memberType());
@@ -103,7 +104,7 @@ abstract class Column implements Cloneable {
 
         memberType = ArrayHelper.typeForArray(memberType);
 
-        if (memberType == Void.class) {
+        if (Void.class == memberType) {
             return new VoidColumn(capacity);
 
         } else if (memberType == Integer.TYPE) {

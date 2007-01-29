@@ -88,7 +88,7 @@ public abstract class InputBuffer {
     }
 
     public boolean isMarked() {
-        return (nMarkers != 0);
+        return (0 != nMarkers);
     }
 
     /**
@@ -134,8 +134,8 @@ public abstract class InputBuffer {
      * Sync up deferred consumption
      */
     protected void syncConsume() {
-        while (numToConsume > 0) {
-            if (nMarkers > 0) {
+        while (0 < numToConsume) {
+            if (0 < nMarkers) {
                 // guess mode -- leave leading characters and bump offset.
                 markerOffset++;
             } else {

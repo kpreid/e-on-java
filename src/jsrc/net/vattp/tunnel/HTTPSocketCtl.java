@@ -104,7 +104,7 @@ public class HTTPSocketCtl extends Thread {
             }
             try {
                 int lim = myInputStream.available();
-                if (lim == 0) {
+                if (0 == lim) {
                     return null;
                 }
                 if (lim > myMySendLimit) {
@@ -112,7 +112,7 @@ public class HTTPSocketCtl extends Thread {
                 }
                 byte[] data = new byte[lim];
                 int read = 0;
-                while (lim - read > 0) {
+                while (0 < lim - read) {
                     read = myInputStream.read(data, read, lim - read);
                     if (-1 == read) {
                         throw new IOException("Unexpected EOF");

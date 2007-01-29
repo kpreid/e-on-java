@@ -12,7 +12,7 @@ import java.io.InputStream;
  */
 public final class ErrorInputStream extends InputStream {
 
-    private IOException error;      // The error.
+    private final IOException error;      // The error.
 
     private ErrorInputStream(final IOException error) {
         this.error = error;

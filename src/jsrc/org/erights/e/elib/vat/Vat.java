@@ -140,14 +140,14 @@ public class Vat {
     static public Throwable sendAllOnly(Object rec,
                                         String verb,
                                         Object[] args) {
-        return Vat.getCurrentVat().qSendAllOnly(rec, true, verb, args);
+        return getCurrentVat().qSendAllOnly(rec, true, verb, args);
     }
 
     /**
      * Queue the sendAll in the current vat.
      */
     static public Ref sendAll(Object rec, String verb, Object[] args) {
-        return Vat.getCurrentVat().qSendAll(rec, true, verb, args);
+        return getCurrentVat().qSendAll(rec, true, verb, args);
     }
 
     /**
@@ -613,7 +613,7 @@ public class Vat {
          *
          */
         private final Runner myNewRunner;
-        private Vat myVat;
+        private final Vat myVat;
 
         /**
          *

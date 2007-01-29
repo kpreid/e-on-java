@@ -263,7 +263,7 @@ public class SmallcapsActivation implements SmallcapsOps {
      */
     private double readFloat64() {
         long bits = 0;
-        for (int i = 0; i < 8; ++i) {
+        for (int i = 0; 8 > i; ++i) {
             bits = (bits << 8) | (0xFF & myCode[myPC + i]);
         }
         myPC += 8;

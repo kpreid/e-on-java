@@ -201,7 +201,7 @@ public class Tool {
             buffer = new char[1024];
             while (true) {
                 bytes_read = source.read(buffer, 0, 1024);
-                if (bytes_read == -1) {
+                if (-1 == bytes_read) {
                     break;
                 }
                 destination.write(buffer, 0, bytes_read);
@@ -364,7 +364,7 @@ public class Tool {
     public String fileMinusPath(String f) {
         String separator = System.getProperty("file.separator");
         int endOfPath = f.lastIndexOf(separator);
-        if (endOfPath == -1) {
+        if (-1 == endOfPath) {
             return f;   // no path found
         }
         return f.substring(endOfPath + 1);
@@ -431,13 +431,13 @@ public class Tool {
         version = Version.project_version;
 
         try {
-            if (args.length == 0) {
+            if (0 == args.length) {
                 help();
                 System.exit(1);
             }
             for (int i = 0; i < args.length; ++i) {
-                if (args[i].equals("-h") || args[i].equals("-help") ||
-                  args[i].equals("--help")) {
+                if ("-h".equals(args[i]) || "-help".equals(args[i]) ||
+                  "--help".equals(args[i])) {
                     help();
                     System.exit(1);
                 }
@@ -466,7 +466,7 @@ public class Tool {
      * If the outputDir set by -o is not present it will be created here.
      */
     public PrintWriter openOutputFile(String f) throws IOException {
-        if (outputDir != ".") {
+        if ("." != outputDir) {
             File out_dir = new File(outputDir);
             if (!out_dir.exists()) {
                 out_dir.mkdirs();
@@ -575,7 +575,7 @@ public class Tool {
         while (st.hasMoreTokens()) {
             v.appendElement(st.nextToken());
         }
-        if (v.size() == 0) {
+        if (0 == v.size()) {
             return null;
         }
         return v;
@@ -588,7 +588,7 @@ public class Tool {
     public String pathToFile(String f) {
         String separator = System.getProperty("file.separator");
         int endOfPath = f.lastIndexOf(separator);
-        if (endOfPath == -1) {
+        if (-1 == endOfPath) {
             // no path, use current directory
             return "." + System.getProperty("file.separator");
         }
@@ -603,11 +603,11 @@ public class Tool {
      */
     protected void processArguments(String[] args) {
         for (int i = 0; i < args.length; i++) {
-            if (args[i].equals("-diagnostic")) {
+            if ("-diagnostic".equals(args[i])) {
                 genDiagnostics = true;
                 genHTML = false;
                 setArgOK(i);
-            } else if (args[i].equals("-o")) {
+            } else if ("-o".equals(args[i])) {
                 setArgOK(i);
                 if (i + 1 >= args.length) {
                     error("missing output directory with -o option; ignoring");
@@ -616,16 +616,16 @@ public class Tool {
                     setOutputDirectory(args[i]);
                     setArgOK(i);
                 }
-            } else if (args[i].equals("-html")) {
+            } else if ("-html".equals(args[i])) {
                 genHTML = true;
                 genDiagnostics = false;
                 setArgOK(i);
-            } else if (args[i].equals("-docbook")) {
+            } else if ("-docbook".equals(args[i])) {
                 genDocBook = true;
                 genDiagnostics = false;
                 setArgOK(i);
             } else {
-                if (args[i].charAt(0) != '-') {
+                if ('-' != args[i].charAt(0)) {
                     // Must be the grammar file
                     grammarFile = args[i];
                     setArgOK(i);
@@ -684,7 +684,7 @@ public class Tool {
      * @param line The grammar file line number on which the warning occured
      */
     public void warning(String[] s, String file, int line, int column) {
-        if (s == null || s.length == 0) {
+        if (s == null || 0 == s.length) {
             panic("bad multi-line message to Tool.warning");
         }
         System.err

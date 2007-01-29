@@ -19,7 +19,7 @@ class RuleEndElement extends BlockEndElement {
     protected boolean noFOLLOW;
 
 
-    public RuleEndElement(Grammar g) {
+    RuleEndElement(Grammar g) {
         super(g);
         cache = new Lookahead[g.maxk + 1];
     }

@@ -16,7 +16,7 @@ import java.io.Reader;
 /**
  * Static implementation of the TokenManager, used for importVocab option
  */
-class ImportVocabTokenManager extends SimpleTokenManager implements Cloneable {
+class ImportVocabTokenManager extends SimpleTokenManager {
 
     private String filename;
     protected Grammar grammar;
@@ -31,7 +31,7 @@ class ImportVocabTokenManager extends SimpleTokenManager implements Cloneable {
         super(name_, tool_);
 
         this.grammar = grammar;
-        this.filename = filename_;
+        filename = filename_;
 
         // Figure out exactly where the file lives.  Check $PWD first,
         // and then search in -o <output_dir>.
@@ -72,8 +72,8 @@ class ImportVocabTokenManager extends SimpleTokenManager implements Cloneable {
     public Object clone() {
         ImportVocabTokenManager tm;
         tm = (ImportVocabTokenManager)super.clone();
-        tm.filename = this.filename;
-        tm.grammar = this.grammar;
+        tm.filename = filename;
+        tm.grammar = grammar;
         return tm;
     }
 

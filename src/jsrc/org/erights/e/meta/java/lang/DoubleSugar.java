@@ -41,14 +41,14 @@ public class DoubleSugar {
      * Used in the expansion of E's ">" operator. NaN says false
      */
     static public boolean aboveZero(double self) {
-        return self > 0.0;
+        return 0.0 < self;
     }
 
     /**
      *
      */
     static public double abs(double num) {
-        if (num >= 0.0) {
+        if (0.0 <= num) {
             return num;
         } else {
             return -num;
@@ -102,21 +102,21 @@ public class DoubleSugar {
      * Used in the expansion of E's ">=" operator. NaN says false
      */
     static public boolean atLeastZero(double self) {
-        return self >= 0.0;
+        return 0.0 <= self;
     }
 
     /**
      * Used in the expansion of E's "<=" operator. NaN says false
      */
     static public boolean atMostZero(double self) {
-        return self <= 0.0;
+        return 0.0 >= self;
     }
 
     /**
      * Used in the expansion of E's "<" operator. NaN says false
      */
     static public boolean belowZero(double self) {
-        return self < 0.0;
+        return 0.0 > self;
     }
 
     /**
@@ -142,6 +142,7 @@ public class DoubleSugar {
             return 0.0;
         } else {
             //NaN indicates incomparable
+            //noinspection divzero
             return 0.0 / 0.0;
         }
     }
@@ -181,7 +182,7 @@ public class DoubleSugar {
      * Used for arithmetic equality. NaN says false
      */
     static public boolean isZero(double self) {
-        return self == 0.0;
+        return 0.0 == self;
     }
 
     /**
@@ -221,7 +222,7 @@ public class DoubleSugar {
      */
     static public double mod(double self, double arg) {
         double result = self % arg;
-        if (((arg < 0.0) != (result < 0.0)) && result != 0.0) {
+        if (((0.0 > arg) != (0.0 > result)) && 0.0 != result) {
             return result + arg;
         } else {
             return result;
@@ -337,7 +338,7 @@ public class DoubleSugar {
     /**
      *
      */
-    static private final boolean NegRepBug = AfterMinus3 < -3.0;
+    static private final boolean NegRepBug = -3.0 > AfterMinus3;
 
     /**
      * Infinity.next() == Infinity <p> NaN.next() == NaN <p>
@@ -346,7 +347,7 @@ public class DoubleSugar {
      * representable number*
      */
     static public double next(double self) {
-        if (NegRepBug && self < 0.0) {
+        if (NegRepBug && 0.0 > self) {
             T.fail("jvm internal bug: not IEEE representation");
         }
         if (Double.isNaN(self) || Double.POSITIVE_INFINITY == self) {
@@ -373,7 +374,7 @@ public class DoubleSugar {
      * representable number*
      */
     static public double previous(double self) {
-        if (NegRepBug && self <= 0.0) {
+        if (NegRepBug && 0.0 >= self) {
             T.fail("jvm internal bug: not IEEE representation");
         }
         if (Double.isNaN(self) || Double.NEGATIVE_INFINITY == self) {

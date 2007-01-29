@@ -57,19 +57,19 @@ void debug(String msg)
 
 //########## STATE STACK ##########
 final static int YYSTACKSIZE = 500;  //maximum stack size
-int statestk[],stateptr;             //state stack
+int[] statestk;int stateptr;             //state stack
 //###############################################################
 // methods: state stack push,pop,drop,peek
 //###############################################################
 void state_push(int state)
 {
-  if (stateptr>=YYSTACKSIZE)         //overflowed?
+  if (YYSTACKSIZE <= stateptr)         //overflowed?
     return;
   statestk[++stateptr]=state;
 }
 int state_pop()
 {
-  if (stateptr<0)                    //underflowed?
+  if (0 > stateptr)                    //underflowed?
     return -1;
   return statestk[stateptr--];
 }
@@ -77,7 +77,7 @@ void state_drop(int cnt)
 {
 int ptr;
   ptr=stateptr-cnt;
-  if (ptr<0)
+  if (0 > ptr)
     return;
   stateptr = ptr;
 }
@@ -85,7 +85,7 @@ int state_peek(int relative)
 {
 int ptr;
   ptr=stateptr-relative;
-  if (ptr<0)
+  if (0 > ptr)
     return -1;
   return statestk[ptr];
 }
@@ -117,7 +117,7 @@ int i;
 String   yytext;//user variable to return contextual strings
 Object yyval; //used to return semantic vals from action routines
 Object yylval;//the 'lval' (result) I got from yylex()
-Object valstk[];
+Object[] valstk;
 int valptr;
 //###############################################################
 // methods: value stack push,pop,drop,peek.
@@ -131,13 +131,13 @@ void val_init()
 }
 void val_push(Object val)
 {
-  if (valptr>=YYSTACKSIZE)
+  if (YYSTACKSIZE <= valptr)
     return;
   valstk[++valptr]=val;
 }
 Object val_pop()
 {
-  if (valptr<0)
+  if (0 > valptr)
     return null;
   return valstk[valptr--];
 }
@@ -145,7 +145,7 @@ void val_drop(int cnt)
 {
 int ptr;
   ptr=valptr-cnt;
-  if (ptr<0)
+  if (0 > ptr)
     return;
   valptr = ptr;
 }
@@ -153,7 +153,7 @@ Object val_peek(int relative)
 {
 int ptr;
   ptr=valptr-relative;
-  if (ptr<0)
+  if (0 > ptr)
     return null;
   return valstk[ptr];
 }
@@ -169,21 +169,21 @@ public final static short DEF=264;
 public final static short WHERE=265;
 public final static short IN=266;
 public final static short YYERRCODE=256;
-final static short yylhs[] = {                           -1,
+final static short[] yylhs = {                           -1,
     0,    1,    1,    3,    4,    4,    6,    8,    8,    8,
     2,    9,    9,    5,    5,   11,   11,   12,   10,   10,
    13,   13,   15,   15,   15,   15,   14,   14,   14,   14,
    14,   14,   17,   20,   20,   21,   21,   18,    7,   16,
    22,   19,   19,
 };
-final static short yylen[] = {                            2,
+final static short[] yylen = {                            2,
     1,    1,    2,    2,    1,    2,    5,    1,    2,    3,
     0,    1,    3,    1,    3,    1,    3,    3,    1,    3,
     1,    5,    1,    1,    1,    2,    1,    1,    1,    1,
     1,    1,    4,    1,    1,    1,    3,    3,    1,    1,
     1,    4,    4,
 };
-final static short yydefred[] = {                        11,
+final static short[] yydefred = {                        11,
     0,    0,    2,    5,    3,    0,   28,   29,   41,    0,
    11,    0,    0,    4,    6,    0,    0,   21,    0,   30,
    31,   32,   40,    0,   39,    0,    0,    0,    0,    0,
@@ -192,12 +192,12 @@ final static short yydefred[] = {                        11,
     9,   12,    0,   11,   42,   43,    0,    0,   26,    0,
    33,   11,   10,    0,    7,    0,   17,   22,   37,   13,
 };
-final static short yydgoto[] = {                          1,
+final static short[] yydgoto = {                          1,
     2,    4,    5,    6,   14,   15,   39,   35,   53,   16,
    40,   41,   17,   18,   46,   19,   20,   21,   22,   49,
    50,   25,
 };
-final static short yysindex[] = {                         0,
+final static short[] yysindex = {                         0,
     0,    0,    0,    0,    0,  -30,    0,    0,    0, -252,
     0, -112, -110,    0,    0, -121,  -48,    0,  -23,    0,
     0,    0,    0,  -22,    0, -109, -240, -239, -252,  -24,
@@ -206,7 +206,7 @@ final static short yysindex[] = {                         0,
     0,    0,  -34,    0,    0,    0,  -24, -252,    0,  -24,
     0,    0,    0, -252,    0,  -91,    0,    0,    0,    0,
 };
-final static short yyrindex[] = {                         0,
+final static short[] yyrindex = {                         0,
     0,   46,    0,    0,    0,    0,    0,    0,    0,    0,
     0,    0,    0,    0,    0,   32,    8,    0,    1,    0,
     0,    0,    0,  -25,    0,    0,    0,    0,    0,    0,
@@ -215,13 +215,13 @@ final static short yyrindex[] = {                         0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
     0,    0,    0,    0,    0,   25,    0,    0,    0,    0,
 };
-final static short yygindex[] = {                         0,
+final static short[] yygindex = {                         0,
     0,   26,   16,    0,    0,    0,   71,    0,    0,   -4,
     0,    4,   24,   -5,    0,    0,    0,    0,    0,    0,
     0,   41,
 };
 final static int YYTABLESIZE=310;
-final static short yytable[] = {                          5,
+final static short[] yytable = {                          5,
    27,   51,   30,   43,   34,   12,   63,   19,    9,   64,
    27,   12,   28,   31,   20,   36,   32,   33,   37,   38,
    54,   55,   56,   57,   18,    3,   26,    5,   60,   61,
@@ -254,7 +254,7 @@ final static short yytable[] = {                          5,
    14,   14,   14,    0,    0,   14,    0,   15,   15,   15,
     0,    0,   15,    0,   11,   11,   11,    0,    0,   11,
 };
-final static short yycheck[] = {                         36,
+final static short[] yycheck = {                         36,
     0,   41,  124,   33,   41,   36,   41,    0,  261,   44,
   123,   36,  123,   62,    0,  125,   40,   40,  259,  259,
    61,  125,  125,  266,    0,    0,   11,   64,   62,   41,
@@ -289,7 +289,7 @@ final static short yycheck[] = {                         36,
 };
 final static short YYFINAL=1;
 final static short YYMAXTOKEN=266;
-final static String yyname[] = {
+final static String[] yyname = {
 "end-of-file",null,null,null,null,null,null,null,null,null,null,null,null,null,
 null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,
 null,null,null,"'!'",null,null,"'$'",null,null,null,"'('","')'",null,null,"','",
@@ -309,7 +309,7 @@ null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,
 null,null,null,null,null,null,null,"EOL","EOTLU","LiteralInteger",
 "LiteralString","ID","LiteralFloat64","LiteralChar","DEF","WHERE","IN",
 };
-final static String yyrule[] = {
+final static String[] yyrule = {
 "$accept : start",
 "start : exprs",
 "exprs : empty",
@@ -411,7 +411,7 @@ static public AstroArg run(Twine source, QuasiBuilder builder) {
  *
  */
 public AstroArg parse() {
-    if (yyparse() != 0) {
+    if (0 != yyparse()) {
         yyerror("couldn't parse term");
     }
     return myOptResult;
@@ -525,8 +525,8 @@ static public final AstroSchema DEFAULT_SCHEMA =
 void yylexdebug(int state,int ch)
 {
 String s=null;
-  if (ch < 0) ch=0;
-  if (ch <= YYMAXTOKEN) //check index bounds
+  if (0 > ch) ch=0;
+  if (YYMAXTOKEN >= ch) //check index bounds
      s = yyname[ch];    //now get it
   if (s==null)
     s = "illegal-symbol";
@@ -554,16 +554,16 @@ boolean doaction;
   while (true) //until parsing is done, either correctly, or w/error
     {
     doaction=true;
-    if (yydebug) debug("loop"); 
+    if (yydebug) debug("loop");
     //#### NEXT ACTION (from reduction table)
-    for (yyn=yydefred[yystate];yyn==0;yyn=yydefred[yystate])
+    for (yyn=yydefred[yystate]; 0 == yyn;yyn=yydefred[yystate])
       {
       if (yydebug) debug("yyn:"+yyn+"  state:"+yystate+"  char:"+yychar);
-      if (yychar < 0)      //we want a char?
+      if (0 > yychar)      //we want a char?
         {
         yychar = yylex();  //get next token
         //#### ERROR CHECK ####
-        if (yychar < 0)    //it it didn't work/error
+        if (0 > yychar)    //it it didn't work/error
           {
           yychar = 0;      //change it to default string (no -1!)
           if (yydebug)
@@ -571,8 +571,7 @@ boolean doaction;
           }
         }//yychar<0
       yyn = yysindex[yystate];  //get amount to shift by (shift index)
-      if ((yyn != 0) && (yyn += yychar) >= 0 &&
-          yyn <= YYTABLESIZE && yycheck[yyn] == yychar)
+      if ((0 != yyn) && 0 <= (yyn += yychar) && YYTABLESIZE >= yyn && yycheck[yyn] == yychar)
         {
         if (yydebug)
           debug("state "+yystate+", shifting to state "+yytable[yyn]+"");
@@ -581,15 +580,14 @@ boolean doaction;
         state_push(yystate);   //save it
         val_push(yylval);      //push our lval as the input for next rule
         yychar = -1;           //since we have 'eaten' a token, say we need another
-        if (yyerrflag > 0)     //have we recovered an error?
+        if (0 < yyerrflag)     //have we recovered an error?
            --yyerrflag;        //give ourselves credit
         doaction=false;        //but don't process yet
         break;   //quit the yyn=0 loop
         }
 
     yyn = yyrindex[yystate];  //reduce
-    if ((yyn !=0 ) && (yyn += yychar) >= 0 &&
-            yyn <= YYTABLESIZE && yycheck[yyn] == yychar)
+    if ((0 != yyn) && 0 <= (yyn += yychar) && YYTABLESIZE >= yyn && yycheck[yyn] == yychar)
       {   //we reduced!
       if (yydebug) debug("reduce");
       yyn = yytable[yyn];
@@ -598,24 +596,24 @@ boolean doaction;
       }
     else //ERROR RECOVERY
       {
-      if (yyerrflag==0)
+      if (0 == yyerrflag)
         {
         yyerror("syntax error");
         yynerrs++;
         }
-      if (yyerrflag < 3) //low error count?
+      if (3 > yyerrflag) //low error count?
         {
         yyerrflag = 3;
         while (true)   //do until break
           {
-          if (stateptr<0)   //check for under & overflow here
+          if (0 > stateptr)   //check for under & overflow here
             {
             yyerror("stack underflow. aborting...");  //note lower case 's'
             return 1;
             }
           yyn = yysindex[state_peek(0)];
-          if ((yyn != 0) && (yyn += YYERRCODE) >= 0 &&
-                    yyn <= YYTABLESIZE && yycheck[yyn] == YYERRCODE)
+          if ((0 != yyn) && 0 <= (yyn += YYERRCODE) && YYTABLESIZE >= yyn &&
+            YYERRCODE == yycheck[yyn])
             {
             if (yydebug)
               debug("state "+state_peek(0)+", error recovery shifting to state "+yytable[yyn]+" ");
@@ -629,7 +627,7 @@ boolean doaction;
             {
             if (yydebug)
               debug("error recovery discarding state "+state_peek(0)+" ");
-            if (stateptr<0)   //check for under & overflow here
+            if (0 > stateptr)   //check for under & overflow here
               {
               yyerror("Stack underflow. aborting...");  //capital 'S'
               return 1;
@@ -641,12 +639,12 @@ boolean doaction;
         }
       else            //discard this token
         {
-        if (yychar == 0)
+        if (0 == yychar)
           return 1; //yyabort
         if (yydebug)
           {
           yys = null;
-          if (yychar <= YYMAXTOKEN) yys = yyname[yychar];
+          if (YYMAXTOKEN >= yychar) yys = yyname[yychar];
           if (yys == null) yys = "illegal-symbol";
           debug("state "+yystate+", error recovery discards token "+yychar+" ("+yys+")");
           }
@@ -659,7 +657,7 @@ boolean doaction;
     yym = yylen[yyn];          //get count of terminals on rhs
     if (yydebug)
       debug("state "+yystate+", reducing "+yym+" by rule "+yyn+" ("+yyrule[yyn]+")");
-    if (yym>0)                 //if count of rhs not 'nil'
+    if (0 < yym)                 //if count of rhs not 'nil'
       yyval = val_peek(yym-1); //get current semantic value
     switch(yyn)
       {
@@ -710,7 +708,7 @@ break;
 case 15:
 //#line 89 "orc.y"
 { yyval = b.namedTerm("where",
-                                                   b.seq((AstroArg)val_peek(2), 
+                                                   b.seq((AstroArg)val_peek(2),
                                                          (AstroArg)val_peek(0))); }
 break;
 case 17:
@@ -720,19 +718,19 @@ break;
 case 18:
 //#line 100 "orc.y"
 { yyval = b.namedTerm("in",
-                                                   b.seq((AstroArg)val_peek(2), 
+                                                   b.seq((AstroArg)val_peek(2),
                                                          (AstroArg)val_peek(0))); }
 break;
 case 20:
 //#line 107 "orc.y"
 { yyval = b.namedTerm("par",
-                                                   b.seq((AstroArg)val_peek(2), 
+                                                   b.seq((AstroArg)val_peek(2),
                                                          (AstroArg)val_peek(0))); }
 break;
 case 22:
 //#line 114 "orc.y"
 { yyval = b.namedTerm("pipe",
-                                                       b.seq((AstroArg)val_peek(4), 
+                                                       b.seq((AstroArg)val_peek(4),
                                                              (AstroArg)val_peek(2),
                                                              (AstroArg)val_peek(0))); }
 break;
@@ -791,27 +789,26 @@ break;
     yystate = state_peek(0);     //get new state
     val_drop(yym);               //corresponding value drop
     yym = yylhs[yyn];            //select next TERMINAL(on lhs)
-    if (yystate == 0 && yym == 0)//done? 'rest' state and at first TERMINAL
+    if (0 == yystate && 0 == yym)//done? 'rest' state and at first TERMINAL
       {
       debug("After reduction, shifting from state 0 to state "+YYFINAL+"");
       yystate = YYFINAL;         //explicitly say we're done
       state_push(YYFINAL);       //and save it
       val_push(yyval);           //also save the semantic value of parsing
-      if (yychar < 0)            //we want another character?
+      if (0 > yychar)            //we want another character?
         {
         yychar = yylex();        //get next character
-        if (yychar<0) yychar=0;  //clean, if necessary
+        if (0 > yychar) yychar=0;  //clean, if necessary
         if (yydebug)
           yylexdebug(yystate,yychar);
         }
-      if (yychar == 0)          //Good exit (if lex returns 0 ;-)
+      if (0 == yychar)          //Good exit (if lex returns 0 ;-)
          break;                 //quit the loop--all DONE
       }//if yystate
     else                        //else not done yet
       {                         //get next state and push, for next yydefred[]
       yyn = yygindex[yym];      //find out where to go
-      if ((yyn != 0) && (yyn += yystate) >= 0 &&
-            yyn <= YYTABLESIZE && yycheck[yyn] == yystate)
+      if ((0 != yyn) && 0 <= (yyn += yystate) && YYTABLESIZE >= yyn && yycheck[yyn] == yystate)
         yystate = yytable[yyn]; //get new state
       else
         yystate = yydgoto[yym]; //else go to new defred

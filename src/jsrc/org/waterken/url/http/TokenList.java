@@ -21,7 +21,7 @@ public final class TokenList {
     public static String encode(final String[] token) {
         final StringBuffer buffer = new StringBuffer();
         for (int i = 0; i != token.length; ++i) {
-            if (i != 0) {
+            if (0 != i) {
                 buffer.append(", ");
             }
             buffer.append(token[i]);
@@ -42,7 +42,7 @@ public final class TokenList {
         final int len = list.length();
         for (int i = 0; true; ++i) {
             // Eat whitespace.
-            while (i != len && " \t\r\n".indexOf(list.charAt(i)) != -1) {
+            while (i != len && -1 != " \t\r\n".indexOf(list.charAt(i))) {
                 ++i;
             }
 
@@ -58,7 +58,7 @@ public final class TokenList {
 
             // Parse the token.
             int start_token = i;
-            while (i != len && " ,;\t\r\n".indexOf(list.charAt(i)) == -1) {
+            while (i != len && -1 == " ,;\t\r\n".indexOf(list.charAt(i))) {
                 ++i;
             }
             final String token = list.substring(start_token, i);
@@ -66,7 +66,7 @@ public final class TokenList {
             // Drop the parameters.
             while (true) {
                 // Eat whitespace.
-                while (i != len && " \t\r\n".indexOf(list.charAt(i)) != -1) {
+                while (i != len && -1 != " \t\r\n".indexOf(list.charAt(i))) {
                     ++i;
                 }
 
@@ -82,13 +82,13 @@ public final class TokenList {
                 ++i;
 
                 // Eat whitespace.
-                while (" \t\r\n".indexOf(list.charAt(i)) != -1) {
+                while (-1 != " \t\r\n".indexOf(list.charAt(i))) {
                     ++i;
                 }
 
                 // Parse the name.
                 final int start_name = i;
-                while ("= \t\r\n".indexOf(list.charAt(i)) == -1) {
+                while (-1 == "= \t\r\n".indexOf(list.charAt(i))) {
                     ++i;
                 }
                 final String name = list.substring(start_name, i);
@@ -121,8 +121,7 @@ public final class TokenList {
                 } else {
                     // token.
                     final int start_value = i;
-                    while (i != len &&
-                      " ,\t\r\n".indexOf(list.charAt(i)) == -1) {
+                    while (i != len && -1 == " ,\t\r\n".indexOf(list.charAt(i))) {
                         ++i;
                     }
                     value = list.substring(start_value, i);

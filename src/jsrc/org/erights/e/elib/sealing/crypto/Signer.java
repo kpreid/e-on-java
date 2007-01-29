@@ -27,8 +27,6 @@ public class Signer {
     /**
      * algorithm defaults to SHA1withRSA, which only works if this is an RSA
      * key.
-     *
-     * @param privateKey
      */
     public Signer(PrivateKey privateKey) {
         this(privateKey, "SHA1withRSA");
@@ -39,9 +37,6 @@ public class Signer {
      * <p/>
      * For example, if the key's algorithm is RSA, the signing algorithm may be
      * SHA1withRSA.
-     *
-     * @param privateKey
-     * @param algorithm
      */
     public Signer(PrivateKey privateKey, String algorithm) {
         try {
@@ -58,10 +53,6 @@ public class Signer {
 
     /**
      * Equivalent to makeSigner(privateKey).sign(plainText)
-     *
-     * @param privateKey
-     * @param plainText
-     * @return
      */
     static public BigInteger sign(PrivateKey privateKey, String plainText) {
         return new Signer(privateKey).sign(plainText);
@@ -69,9 +60,6 @@ public class Signer {
 
     /**
      * Returns the result of signing the plainText's UTF-8 encoding
-     *
-     * @param plainText
-     * @return
      */
     public BigInteger sign(String plainText) {
         byte[] bytes = new byte[0];
@@ -93,7 +81,7 @@ public class Signer {
     }
 
     /**
-     * @return
+     *
      */
     public String getAlgorithm() {
         return mySig.getAlgorithm();

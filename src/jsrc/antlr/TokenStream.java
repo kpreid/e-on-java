@@ -9,5 +9,5 @@ package antlr;
 
 public interface TokenStream {
 
-    public Token nextToken() throws TokenStreamException;
+    Token nextToken() throws TokenStreamException;
 }

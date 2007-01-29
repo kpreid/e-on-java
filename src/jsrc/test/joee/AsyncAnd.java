@@ -12,6 +12,9 @@ import org.erights.e.elib.util.OneArgFunc;
  */
 public class AsyncAnd {
 
+    private AsyncAnd() {
+    }
+
     static Ref run(Ref[] boolVows) {
         Object[] pair = Ref.promise();
         final Resolver resolver = (Resolver)pair[1];
@@ -23,7 +26,7 @@ public class AsyncAnd {
                     try {
                         bool = Ref.fulfillment(bool);
                         if (((Boolean)bool).booleanValue()) {
-                            if (--countDownCell[0] <= 0) {
+                            if (0 >= --countDownCell[0]) {
                                 resolver.resolve(Boolean.TRUE);
                             } else {
                                 resolver.gettingCloser();

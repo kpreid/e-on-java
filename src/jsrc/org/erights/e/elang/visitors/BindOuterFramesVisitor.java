@@ -54,7 +54,7 @@ class BindOuterFramesVisitor extends BindFramesVisitor {
      */
     NounExpr newVar(SourceSpan optSpan, String varName) {
         int outerCount = myLayout.getOuterCount();
-        T.require(outerCount >= 0, "internal: scope confusion: ", varName);
+        T.require(0 <= outerCount, "internal: scope confusion: ", varName);
         return new OuterNounExpr(optSpan,
                                  varName,
                                  outerCount,

@@ -134,7 +134,7 @@ public class URLSugar {
     static public String getBody(URL self) {
         String str = self.toExternalForm();
         int colon = str.indexOf(':');
-        T.require(colon >= 0, "':' not found: ", str);
+        T.require(0 <= colon, "':' not found: ", str);
         return str.substring(colon + 1);
     }
 
@@ -181,7 +181,7 @@ public class URLSugar {
     static public void __printOn(URL self, TextWriter out) throws IOException {
         String ef = self.toExternalForm();
         int colon = ef.indexOf(':');
-        if (colon >= 0) {
+        if (0 <= colon) {
             String prot = ef.substring(0, colon);
             String rest = ef.substring(colon);
             if ("file".equals(prot)) {

@@ -113,7 +113,7 @@ public class MetaRune {
 
             ConstList argList = Rune.doProps(ConstList.fromArray(argArray));
 
-            if (argList.size() == 0) {
+            if (0 == argList.size()) {
                 String[] args = {installerPath()};
                 Rune.main(args);
                 return;

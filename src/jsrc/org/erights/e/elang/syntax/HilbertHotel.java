@@ -65,7 +65,7 @@ public class HilbertHotel {
      */
     static private int tempSep(String name) {
         int lastSEP = name.lastIndexOf(SEP);
-        if (lastSEP == -1) {
+        if (-1 == lastSEP) {
             return -1;
         }
         int len = name.length();
@@ -88,7 +88,7 @@ public class HilbertHotel {
      */
     static public String baseName(String name) {
         int i = tempSep(name);
-        if (i == -1) {
+        if (-1 == i) {
             return name;
         } else {
             return name.substring(0, i);
@@ -108,7 +108,7 @@ public class HilbertHotel {
      */
     static public String rename(String name) {
         int i = tempSep(name);
-        if (i == -1) {
+        if (-1 == i) {
             return name;
         }
         String base = name.substring(0, i);

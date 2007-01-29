@@ -6,7 +6,7 @@ package antlr.debug;
 public interface DebuggingParser {
 
 
-    public String getRuleName(int n);
+    String getRuleName(int n);
 
-    public String getSemPredName(int n);
+    String getSemPredName(int n);
 }

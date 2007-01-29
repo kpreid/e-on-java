@@ -5,7 +5,7 @@ import java.util.EventListener;
 public interface ListenerBase extends EventListener {
 
 
-    public void doneParsing(TraceEvent e);
+    void doneParsing(TraceEvent e);
 
-    public void refresh();
+    void refresh();
 }

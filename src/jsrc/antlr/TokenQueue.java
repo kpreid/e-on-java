@@ -29,15 +29,15 @@ class TokenQueue {
      */
     protected int nbrEntries;
 
-    public TokenQueue(int minSize) {
+    TokenQueue(int minSize) {
         // Find first power of 2 >= to requested size
         int size;
-        if (minSize < 0) {
+        if (0 > minSize) {
             init(16); // pick some value for them
             return;
         }
         // check for overflow
-        if (minSize >= (Integer.MAX_VALUE / 2)) {
+        if ((Integer.MAX_VALUE / 2) <= minSize) {
             init(Integer.MAX_VALUE); // wow that's big.
             return;
         }
@@ -73,7 +73,7 @@ class TokenQueue {
     /**
      * Expand the token buffer by doubling its capacity
      */
-    private final void expand() {
+    private void expand() {
         Token[] newBuffer = new Token[buffer.length * 2];
         // Copy the contents to the new buffer
         // Note that this will store the first logical item in the
@@ -92,7 +92,7 @@ class TokenQueue {
      *
      * @param size The initial size of the queue
      */
-    private final void init(int size) {
+    private void init(int size) {
         // Allocate buffer
         buffer = new Token[size];
         // Other initialization

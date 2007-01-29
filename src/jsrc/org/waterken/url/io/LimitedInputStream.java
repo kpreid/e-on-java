@@ -15,7 +15,7 @@ import java.io.InputStream;
  */
 public final class LimitedInputStream extends InputStream {
 
-    private InputStream in; // The underlying stream.
+    private final InputStream in; // The underlying stream.
     private long limit;     // The maximum number of bytes that can be read.
     private long marked;    // The marked position.
 
@@ -41,7 +41,7 @@ public final class LimitedInputStream extends InputStream {
             throw new TooMuchData();
         }
         final int r = in.read();
-        if (r != -1) {
+        if (-1 != r) {
             --limit;
         }
         return r;
@@ -53,7 +53,7 @@ public final class LimitedInputStream extends InputStream {
         }
         final int n =
           limit < b.length ? in.read(b, 0, (int)limit) : in.read(b);
-        if (n != -1) {
+        if (-1 != n) {
             limit -= n;
         }
         return n;
@@ -65,7 +65,7 @@ public final class LimitedInputStream extends InputStream {
             throw new TooMuchData();
         }
         final int n = in.read(b, off, (int)Math.min(limit, len));
-        if (n != -1) {
+        if (-1 != n) {
             limit -= n;
         }
         return n;
@@ -76,7 +76,7 @@ public final class LimitedInputStream extends InputStream {
             n = 0;
         } else {
             n = in.skip(Math.min(limit, n));
-            if (n > 0) {
+            if (0 < n) {
                 limit -= n;
             }
         }

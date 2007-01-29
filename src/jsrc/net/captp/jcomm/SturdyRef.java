@@ -90,7 +90,7 @@ public final class SturdyRef
         myHostID = hostID;
         mySwissNum = swissNum;
         myExpiration = expiration;
-        if (searchPath.size() == 0) {
+        if (0 == searchPath.size()) {
             throw new MalformedURLException("Search path must not be empty");
         }
     }
@@ -136,7 +136,7 @@ public final class SturdyRef
         }
         SturdyRef other = (SturdyRef)obj;
         return (myLocatorUnum == other.myLocatorUnum &&
-          mySearchPath.op__cmp(other.mySearchPath) == 0.0 &&
+          0.0 == mySearchPath.op__cmp(other.mySearchPath) &&
           myHostID.equals(other.myHostID) &&
           mySwissNum.equals(other.mySwissNum) &&
           myExpiration == other.myExpiration);
@@ -225,14 +225,13 @@ public final class SturdyRef
     }
 
     /**
-     * @param out
-     * @throws IOException
+     *
      */
     public void __printOn(TextWriter out) throws IOException {
         Introducer introducer = myLocatorUnum.myIntroducer;
         if (introducer.hasIdentity() &&
           myHostID.equals(introducer.getVatID())) {
-            
+
             Object referent =
               introducer.getSwissTable().lookupSwiss(mySwissNum);
             if (Ref.isNear(referent)) {

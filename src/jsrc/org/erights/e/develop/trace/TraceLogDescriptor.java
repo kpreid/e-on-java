@@ -107,9 +107,9 @@ class TraceLogDescriptor implements Cloneable, TraceConstants {
     private File backupFile(File file, int clashAction) {
         T.test(!myUseStderr);
 
-        if (clashAction == ADD) {
+        if (ADD == clashAction) {
             return TraceVersionNamer.factory(file).nextAvailableVersion();
-        } else if (clashAction == OVERWRITE) {
+        } else if (OVERWRITE == clashAction) {
             return TraceVersionNamer.factory(file).firstVersion();
         } else {
             T.fail("Bad clashAction " + clashAction);
@@ -245,10 +245,10 @@ class TraceLogDescriptor implements Cloneable, TraceConstants {
      * @return true if the rename was successful.
      */
     private boolean renameToBackup(File file, int clashAction) {
-        T.test(clashAction == ADD || clashAction == OVERWRITE);
+        T.test(ADD == clashAction || OVERWRITE == clashAction);
 
         File backupFile = backupFile(file, clashAction);
-        if (clashAction == ADD) {
+        if (ADD == clashAction) {
             // backupFile must return a fresh name if the clashAction
             // is ADD. It *may* return a fresh name if the
             // clashAction is OVERWRITE.
@@ -304,7 +304,7 @@ class TraceLogDescriptor implements Cloneable, TraceConstants {
      */
     void setDir(String value) {
         T.test(value != null);
-        if (value.equals("-")) {
+        if ("-".equals(value)) {
             myUseStderr = true;
             Trace.trace.eventm("Log destination is set to standard error.");
         } else {
@@ -330,7 +330,7 @@ class TraceLogDescriptor implements Cloneable, TraceConstants {
      */
     void setName(String value) {
         T.test(value != null);
-        if (value.equals("-")) {
+        if ("-".equals(value)) {
             myUseStderr = true;
             myUsePersonalFormat = false;
             Trace.trace.eventm("Log destination set to standard error.");
@@ -379,7 +379,7 @@ class TraceLogDescriptor implements Cloneable, TraceConstants {
             return;
         }
 
-        T.test(clashAction == ADD || clashAction == OVERWRITE);
+        T.test(ADD == clashAction || OVERWRITE == clashAction);
 
         File nextFile = desiredLogFile();
         Trace.trace.eventm("Logging has been directed to '" + nextFile + "'.");

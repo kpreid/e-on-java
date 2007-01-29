@@ -78,7 +78,7 @@ public class QuasiElement extends QuasiContent {
             tagName = (String)myTagName;
         } else {
             int index = ((Integer)myTagName).intValue();
-            if (index >= 0) {
+            if (0 <= index) {
                 tagName = (String)args[index];
             } else {
                 throw new IncompleteQuasiException(
@@ -113,7 +113,7 @@ public class QuasiElement extends QuasiContent {
             }
         } else {
             int index = ((Integer)myTagName).intValue();
-            if (index >= 0) {
+            if (0 <= index) {
                 String tagName = (String)args.get(index);
                 if (!tagName.equals(otherTagName)) {
                     throw Thrower.toEject(optEjector,
@@ -142,7 +142,7 @@ public class QuasiElement extends QuasiContent {
             endTag = startTag;
         } else {
             int index = ((Integer)myTagName).intValue();
-            if (index >= 0) {
+            if (0 <= index) {
                 startTag = "${" + index + "}";
             } else {
                 index = ~index;

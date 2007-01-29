@@ -76,7 +76,7 @@ class PendingDelivery extends PendingEvent {
      * @param vat The Vat onto which this PendingEvent will be queued. Note
      *            that this may be different than {@link Vat#getCurrentVat()}.
      */
-    public PendingDelivery(Vat vat, Object rec, boolean nowFlag, Message msg) {
+    PendingDelivery(Vat vat, Object rec, boolean nowFlag, Message msg) {
         super("SCresolve", vat, msg.getSendingContext());
         myReceiver = rec;
         myOptResolver = msg.getOptResolver();

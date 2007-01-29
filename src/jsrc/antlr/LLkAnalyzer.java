@@ -75,7 +75,7 @@ public class LLkAnalyzer implements LLkGrammarAnalyzer {
         currentBlock = blk;
 
         /* don't allow nongreedy (...) blocks */
-        if (blk.greedy == false && !(blk instanceof OneOrMoreBlock) &&
+        if (false == blk.greedy && !(blk instanceof OneOrMoreBlock) &&
           !(blk instanceof ZeroOrMoreBlock)) {
             tool.warning(
               "Being nongreedy only makes sense for (...)+ and (...)*",
@@ -87,7 +87,7 @@ public class LLkAnalyzer implements LLkGrammarAnalyzer {
         // SPECIAL CASE: only one alternative.  We don't need to check the
         // determinism, but other code expects the lookahead cache to be
         // set for the single alt.
-        if (nalts == 1) {
+        if (1 == nalts) {
             AlternativeElement e = blk.getAlternativeAt(0).head;
             currentBlock.alti = 0;
             blk.getAlternativeAt(0).cache[1] = e.look(1);
@@ -392,7 +392,7 @@ public class LLkAnalyzer implements LLkGrammarAnalyzer {
                 }
 
                 /* If greedy=true and alt not empty, shut off warning */
-                else if (blk.greedy == true && blk.greedySet &&
+                else if (true == blk.greedy && blk.greedySet &&
                   !(ambigAlt.head instanceof BlockEndElement)) {
                     if (DEBUG_ANALYZER) {
                         System.out.println("greedy loop");
@@ -403,7 +403,7 @@ public class LLkAnalyzer implements LLkGrammarAnalyzer {
                  * to add "if FOLLOW break"
                  * block during code gen to compensate for removal of warning.
                  */
-                else if (blk.greedy == false &&
+                else if (false == blk.greedy &&
                   !(ambigAlt.head instanceof BlockEndElement)) {
                     if (DEBUG_ANALYZER) {
                         System.out.println("nongreedy loop");
@@ -650,7 +650,7 @@ public class LLkAnalyzer implements LLkGrammarAnalyzer {
             Lookahead q = elem.look(k);
             p.combineWith(q);
         }
-        if (k == 1 && blk.not && subruleCanBeInverted(blk, lexicalAnalysis)) {
+        if (1 == k && blk.not && subruleCanBeInverted(blk, lexicalAnalysis)) {
             // Invert the lookahead set
             if (lexicalAnalysis) {
                 BitSet b =
@@ -757,7 +757,7 @@ public class LLkAnalyzer implements LLkGrammarAnalyzer {
             System.out.println("lookCharLiteral(" + k + "," + atom + ")");
         }
         // Skip until analysis hits k==1
-        if (k > 1) {
+        if (1 < k) {
             return atom.next.look(k - 1);
         }
         if (lexicalAnalysis) {
@@ -794,7 +794,7 @@ public class LLkAnalyzer implements LLkGrammarAnalyzer {
             System.out.println("lookCharRange(" + k + "," + r + ")");
         }
         // Skip until analysis hits k==1
-        if (k > 1) {
+        if (1 < k) {
             return r.next.look(k - 1);
         }
         BitSet p = BitSet.of(r.begin);
@@ -815,7 +815,7 @@ public class LLkAnalyzer implements LLkGrammarAnalyzer {
             tool.panic("token reference found in lexer");
         }
         // Skip until analysis hits k==1
-        if (k > 1) {
+        if (1 < k) {
             return atom.next.look(k - 1);
         }
         Lookahead l = Lookahead.of(atom.getType());
@@ -985,7 +985,7 @@ public class LLkAnalyzer implements LLkGrammarAnalyzer {
             }
         } else {
             // Skip until analysis hits k==1
-            if (k > 1) {
+            if (1 < k) {
                 return atom.next.look(k - 1);
             }
             Lookahead l = Lookahead.of(atom.getType());
@@ -1016,7 +1016,7 @@ public class LLkAnalyzer implements LLkGrammarAnalyzer {
             System.out.println("lookTokenRange(" + k + "," + r + ")");
         }
         // Skip until analysis hits k==1
-        if (k > 1) {
+        if (1 < k) {
             return r.next.look(k - 1);
         }
         BitSet p = BitSet.of(r.begin);
@@ -1032,7 +1032,7 @@ public class LLkAnalyzer implements LLkGrammarAnalyzer {
               .println(
                 "look(" + k + "," + t.root + "[" + t.root.getType() + "])");
         }
-        if (k > 1) {
+        if (1 < k) {
             return t.next.look(k - 1);
         }
         Lookahead l = null;
@@ -1055,7 +1055,7 @@ public class LLkAnalyzer implements LLkGrammarAnalyzer {
         }
 
         // Skip until analysis hits k==1
-        if (k > 1) {
+        if (1 < k) {
             return wc.next.look(k - 1);
         }
 
@@ -1153,7 +1153,7 @@ public class LLkAnalyzer implements LLkGrammarAnalyzer {
         // first k-1 sets degree 1?
         for (int i = 1; i <= k - 1; i++) {
             BitSet look = bset[i].fset;
-            if (look.degree() > 1) {
+            if (1 < look.degree()) {
                 return false;
             }
         }
@@ -1240,7 +1240,7 @@ public class LLkAnalyzer implements LLkGrammarAnalyzer {
             return false;
         }
         // Cannot invert an empty subrule
-        if (blk.alternatives.size() == 0) {
+        if (0 == blk.alternatives.size()) {
             return false;
         }
         // The block must only contain alternatives with a single element,
@@ -1260,7 +1260,7 @@ public class LLkAnalyzer implements LLkGrammarAnalyzer {
               elt instanceof TokenRangeElement ||
               (elt instanceof StringLiteralElement && !forLexer)) ||
               !(elt.next instanceof BlockEndElement) ||
-              elt.getAutoGenType() != GrammarElement.AUTO_GEN_NONE) {
+              GrammarElement.AUTO_GEN_NONE != elt.getAutoGenType()) {
                 return false;
             }
         }

@@ -131,10 +131,10 @@ class TraceVersionNamer implements TraceConstants {
     static public void main(String[] args) {
         TraceController.setProperty("TraceLog_trace", "debug");
         TraceVersionNamer v;
-        if (args.length > 1) {
-            v = TraceVersionNamer.factory(new File(args[0], args[1]));
+        if (1 < args.length) {
+            v = factory(new File(args[0], args[1]));
         } else {
-            v = TraceVersionNamer.factory(new File(args[0]));
+            v = factory(new File(args[0]));
         }
         PrintWriter err = PrintStreamWriter.stderr();
         err.println("myFile " + v.myFile);
@@ -179,7 +179,7 @@ class TraceVersionNamer implements TraceConstants {
         for (int i = 0; i < files.length; i++) {
             if (mightHaveSeq(files[i])) {
                 int possibleSeq = getSeq(files[i]);
-                if (possibleSeq < 0) {
+                if (0 > possibleSeq) {
                     Trace.trace
                       .verbosem(files[i] + " has no sequence number.");
                 } else if (possibleSeq <= highestSeq) {

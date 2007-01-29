@@ -36,7 +36,7 @@ public class ParseTreeRule extends ParseTree {
      */
     protected int getLeftmostDerivation(StringBuffer buf, int step) {
         int numReplacements = 0;
-        if (step <= 0) {
+        if (0 >= step) {
             buf.append(' ');
             buf.append(toString());
             return numReplacements;
@@ -61,7 +61,7 @@ public class ParseTreeRule extends ParseTree {
     }
 
     public String toString() {
-        if (altNumber == INVALID_ALT) {
+        if (INVALID_ALT == altNumber) {
             return '<' + ruleName + '>';
         } else {
             return '<' + ruleName + "[" + altNumber + "]>";

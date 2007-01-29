@@ -40,7 +40,7 @@ public class BitSet implements Cloneable {
     /**
      * The actual data bits
      */
-    protected long bits[];
+    protected long[] bits;
 
     /**
      * Construct a bitset of size one word (64 bits)
@@ -80,14 +80,14 @@ public class BitSet implements Cloneable {
     }
 
     public BitSet and(BitSet a) {
-        BitSet s = (BitSet)this.clone();
+        BitSet s = (BitSet)clone();
         s.andInPlace(a);
         return s;
     }
 
     public void andInPlace(BitSet a) {
         int min = Math.min(bits.length, a.bits.length);
-        for (int i = min - 1; i >= 0; i--) {
+        for (int i = min - 1; 0 <= i; i--) {
             bits[i] &= a.bits[i];
         }
         // clear all bits in this not present in a (if this bigger than a).
@@ -96,13 +96,13 @@ public class BitSet implements Cloneable {
         }
     }
 
-    private final static long bitMask(int bitNumber) {
+    private static long bitMask(int bitNumber) {
         int bitPosition = bitNumber & MOD_MASK; // bitNumber mod BITS
         return 1L << bitPosition;
     }
 
     public void clear() {
-        for (int i = bits.length - 1; i >= 0; i--) {
+        for (int i = bits.length - 1; 0 <= i; i--) {
             bits[i] = 0;
         }
     }
@@ -129,11 +129,11 @@ public class BitSet implements Cloneable {
 
     public int degree() {
         int deg = 0;
-        for (int i = bits.length - 1; i >= 0; i--) {
+        for (int i = bits.length - 1; 0 <= i; i--) {
             long word = bits[i];
-            if (word != 0L) {
-                for (int bit = BITS - 1; bit >= 0; bit--) {
-                    if ((word & (1L << bit)) != 0) {
+            if (0L != word) {
+                for (int bit = BITS - 1; 0 <= bit; bit--) {
+                    if (0 != (word & (1L << bit))) {
                         deg++;
                     }
                 }
@@ -150,20 +150,20 @@ public class BitSet implements Cloneable {
             BitSet set = (BitSet)obj;
 
             int n = Math.min(bits.length, set.bits.length);
-            for (int i = n; i-- > 0;) {
+            for (int i = n; 0 < i--;) {
                 if (bits[i] != set.bits[i]) {
                     return false;
                 }
             }
             if (bits.length > n) {
                 for (int i = bits.length; i-- > n;) {
-                    if (bits[i] != 0) {
+                    if (0 != bits[i]) {
                         return false;
                     }
                 }
             } else if (set.bits.length > n) {
                 for (int i = set.bits.length; i-- > n;) {
-                    if (set.bits[i] != 0) {
+                    if (0 != set.bits[i]) {
                         return false;
                     }
                 }
@@ -180,12 +180,12 @@ public class BitSet implements Cloneable {
      * @return Vector of ranges.
      */
     public static Vector getRanges(int[] elems) {
-        if (elems.length == 0) {
+        if (0 == elems.length) {
             return null;
         }
         int begin = elems[0];
         int end = elems[elems.length - 1];
-        if (elems.length <= 2) {
+        if (2 >= elems.length) {
             // Not enough elements for a range expression
             return null;
         }
@@ -202,7 +202,7 @@ public class BitSet implements Cloneable {
                 }
             }
             // found a range
-            if (lastInRange - i > 2) {
+            if (2 < lastInRange - i) {
                 ranges.appendElement(new IntRange(elems[i],
                                                   elems[lastInRange]));
             }
@@ -217,7 +217,7 @@ public class BitSet implements Cloneable {
      */
     public void growToInclude(int bit) {
         int newSize = Math.max(bits.length << 1, numWordsToHold(bit));
-        long newbits[] = new long[newSize];
+        long[] newbits = new long[newSize];
         System.arraycopy(bits, 0, newbits, 0, bits.length);
         bits = newbits;
     }
@@ -227,12 +227,12 @@ public class BitSet implements Cloneable {
         if (n >= bits.length) {
             return false;
         }
-        return (bits[n] & bitMask(el)) != 0;
+        return 0 != (bits[n] & bitMask(el));
     }
 
     public boolean nil() {
-        for (int i = bits.length - 1; i >= 0; i--) {
-            if (bits[i] != 0) {
+        for (int i = bits.length - 1; 0 <= i; i--) {
+            if (0 != bits[i]) {
                 return false;
             }
         }
@@ -240,13 +240,13 @@ public class BitSet implements Cloneable {
     }
 
     public BitSet not() {
-        BitSet s = (BitSet)this.clone();
+        BitSet s = (BitSet)clone();
         s.notInPlace();
         return s;
     }
 
     public void notInPlace() {
-        for (int i = bits.length - 1; i >= 0; i--) {
+        for (int i = bits.length - 1; 0 <= i; i--) {
             bits[i] = ~bits[i];
         }
     }
@@ -270,7 +270,7 @@ public class BitSet implements Cloneable {
         }
     }
 
-    private final int numWordsToHold(int el) {
+    private int numWordsToHold(int el) {
         return (el >> LOG_BITS) + 1;
     }
 
@@ -284,7 +284,7 @@ public class BitSet implements Cloneable {
      * return this | a in a new set
      */
     public BitSet or(BitSet a) {
-        BitSet s = (BitSet)this.clone();
+        BitSet s = (BitSet)clone();
         s.orInPlace(a);
         return s;
     }
@@ -295,7 +295,7 @@ public class BitSet implements Cloneable {
             setSize(a.bits.length);
         }
         int min = Math.min(bits.length, a.bits.length);
-        for (int i = min - 1; i >= 0; i--) {
+        for (int i = min - 1; 0 <= i; i--) {
             bits[i] |= a.bits[i];
         }
     }
@@ -315,7 +315,7 @@ public class BitSet implements Cloneable {
      * @param nwords how many words the new set should be
      */
     private void setSize(int nwords) {
-        long newbits[] = new long[nwords];
+        long[] newbits = new long[nwords];
         int n = Math.min(nwords, bits.length);
         System.arraycopy(bits, 0, newbits, 0, n);
         bits = newbits;
@@ -340,7 +340,7 @@ public class BitSet implements Cloneable {
         if (a == null || !(a instanceof BitSet)) {
             return false;
         }
-        return this.and(a).equals(this);
+        return and(a).equals(this);
     }
 
     /**
@@ -387,7 +387,7 @@ public class BitSet implements Cloneable {
         String str = "";
         for (int i = 0; i < (bits.length << LOG_BITS); i++) {
             if (member(i)) {
-                if (str.length() > 0) {
+                if (0 < str.length()) {
                     str += separator;
                 }
                 str = str + i;
@@ -408,7 +408,7 @@ public class BitSet implements Cloneable {
 
         for (int i = 0; i < (bits.length << LOG_BITS); i++) {
             if (member(i)) {
-                if (str.length() > 0) {
+                if (0 < str.length()) {
                     str += separator;
                 }
                 str = str + formatter.literalChar(i);
@@ -432,7 +432,7 @@ public class BitSet implements Cloneable {
         String str = "";
         for (int i = 0; i < (bits.length << LOG_BITS); i++) {
             if (member(i)) {
-                if (str.length() > 0) {
+                if (0 < str.length()) {
                     str += separator;
                 }
                 if (i >= vocabulary.size()) {
@@ -455,7 +455,7 @@ public class BitSet implements Cloneable {
     public String toStringOfHalfWords() {
         String s = new String();
         for (int i = 0; i < bits.length; i++) {
-            if (i != 0) {
+            if (0 != i) {
                 s += ", ";
             }
             long tmp = bits[i];
@@ -476,7 +476,7 @@ public class BitSet implements Cloneable {
     public String toStringOfWords() {
         String s = new String();
         for (int i = 0; i < bits.length; i++) {
-            if (i != 0) {
+            if (0 != i) {
                 s += ", ";
             }
             s += (bits[i] + "L");
@@ -490,8 +490,8 @@ public class BitSet implements Cloneable {
     public String toStringWithRanges(String separator,
                                      CharFormatter formatter) {
         String str = "";
-        int[] elems = this.toArray();
-        if (elems.length == 0) {
+        int[] elems = toArray();
+        if (0 == elems.length) {
             return "";
         }
         // look for ranges
@@ -506,10 +506,10 @@ public class BitSet implements Cloneable {
                 lastInRange = j;
             }
             // found a range
-            if (str.length() > 0) {
+            if (0 < str.length()) {
                 str += separator;
             }
-            if (lastInRange - i >= 2) {
+            if (2 <= lastInRange - i) {
                 str += formatter.literalChar(elems[i]);
                 str += "..";
                 str += formatter.literalChar(elems[lastInRange]);
@@ -523,7 +523,7 @@ public class BitSet implements Cloneable {
         return str;
     }
 
-    private final static int wordNumber(int bit) {
+    private static int wordNumber(int bit) {
         return bit >> LOG_BITS; // bit / BITS
     }
 }

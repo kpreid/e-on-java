@@ -40,7 +40,7 @@ public class GrammarFile {
         if (!expanded) {
             return;        // don't generate if nothing got expanded
         }
-        String expandedFileName = nameForExpandedGrammarFile(this.getName());
+        String expandedFileName = nameForExpandedGrammarFile(getName());
 
         // create the new grammar file with expanded grammars
         PrintWriter expF = tool.openOutputFile(expandedFileName);

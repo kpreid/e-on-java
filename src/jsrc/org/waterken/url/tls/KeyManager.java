@@ -23,7 +23,7 @@ public final class KeyManager
     /**
      * The certificate chain.
      */
-    private X509Certificate[] certificate;
+    private final X509Certificate[] certificate;
 
     private KeyManager() {
         certificate = new X509Certificate[]{};
@@ -57,7 +57,7 @@ public final class KeyManager
                                     final Principal[] issuers,
                                     final Socket socket) {
         int i = keyType.length;
-        while (i-- != 0 && !keyType[i].equals(key.getAlgorithm())) {
+        while (0 != i-- && !keyType[i].equals(key.getAlgorithm())) {
         }
         return -1 != i ? PUMPKIN : null;
     }

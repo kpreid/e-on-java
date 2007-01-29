@@ -186,7 +186,7 @@ class TimerThread extends Thread {
         }
         synchronized (myLock) {
             try {
-                if (time >= 0) {
+                if (0 <= time) {
                     myLock.wait(time);
                 }
             } catch (Exception e) {

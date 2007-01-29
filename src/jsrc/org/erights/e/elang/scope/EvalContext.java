@@ -43,10 +43,7 @@ public class EvalContext {
     private final Slot[] myOuters;
 
     /**
-     * @param localCount
-     * @param fields
-     * @param outers
-     * @return
+     *
      */
     static public EvalContext make(int localCount,
                                    Object[] fields,
@@ -55,18 +52,14 @@ public class EvalContext {
     }
 
     /**
-     * @param localCount
-     * @param outers
-     * @return
+     *
      */
     static public EvalContext make(int localCount, Slot[] outers) {
         return new EvalContext(new Object[localCount], NO_FIELDS, outers);
     }
 
     /**
-     * @param locals
-     * @param fields
-     * @param outers
+     *
      */
     private EvalContext(Object[] locals, Object[] fields, Slot[] outers) {
         myLocals = locals;

@@ -324,7 +324,7 @@ public class ASTFactory {
      * yields tree (a b c).  build(null,a,b) yields tree (nil a b).
      */
     public AST make(AST[] nodes) {
-        if (nodes == null || nodes.length == 0) {
+        if (nodes == null || 0 == nodes.length) {
             return null;
         }
         AST root = nodes[0];
@@ -411,7 +411,7 @@ public class ASTFactory {
     }
 
     public void setTokenTypeToASTClassMap(Hashtable tokenTypeToClassMap) {
-        this.tokenTypeToASTClassMap = tokenTypeToClassMap;
+        tokenTypeToASTClassMap = tokenTypeToClassMap;
     }
 
     /**

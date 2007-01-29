@@ -38,15 +38,15 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
     }
 
     private boolean lastInRule() throws TokenStreamException {
-        if (blockNesting == 0 &&
-          (LA(1) == SEMI || LA(1) == LITERAL_exception || LA(1) == OR)) {
+        if (0 == blockNesting &&
+          (SEMI == LA(1) || LITERAL_exception == LA(1) || OR == LA(1))) {
             return true;
         }
         return false;
     }
 
     private void checkForMissingEndRule(Token label) {
-        if (label.getColumn() == 1) {
+        if (1 == label.getColumn()) {
             antlrTool.warning("did you forget to terminate previous rule?",
                               getFilename(),
                               label.getLine(),
@@ -87,8 +87,8 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
             {
                 _loop4:
                 do {
-                    if ((LA(1) == LITERAL_header)) {
-                        if (inputState.guessing == 0) {
+                    if ((LITERAL_header == LA(1))) {
+                        if (0 == inputState.guessing) {
 
                             n =
                               null;        // RK: prevent certain orders of header actions
@@ -114,7 +114,7 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
                         }
                         h = LT(1);
                         match(ACTION);
-                        if (inputState.guessing == 0) {
+                        if (0 == inputState.guessing) {
 
                             // store the header action
                             // FIXME: 'n' should be checked for validity
@@ -148,7 +148,7 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
             {
                 _loop7:
                 do {
-                    if (((LA(1) >= ACTION && LA(1) <= LITERAL_class))) {
+                    if (((ACTION <= LA(1) && LITERAL_class >= LA(1)))) {
                         classDef();
                     } else {
                         break _loop7;
@@ -158,7 +158,7 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
             }
             match(Token.EOF_TYPE);
         } catch (RecognitionException ex) {
-            if (inputState.guessing == 0) {
+            if (0 == inputState.guessing) {
 
                 reportError(ex, "rule grammar trapped:\n" + ex.toString());
                 consumeUntil(EOF);
@@ -179,11 +179,11 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
         {
             _loop18:
             do {
-                if ((LA(1) == TOKEN_REF || LA(1) == RULE_REF)) {
+                if ((TOKEN_REF == LA(1) || RULE_REF == LA(1))) {
                     idTok = id();
                     match(ASSIGN);
                     value = optionValue();
-                    if (inputState.guessing == 0) {
+                    if (0 == inputState.guessing) {
                         behavior.setFileOption(idTok,
                                                value,
                                                getInputState().filename);
@@ -211,7 +211,7 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
                 case ACTION: {
                     a = LT(1);
                     match(ACTION);
-                    if (inputState.guessing == 0) {
+                    if (0 == inputState.guessing) {
                         behavior.refPreambleAction(a);
                     }
                     break;
@@ -231,7 +231,7 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
                 case DOC_COMMENT: {
                     d = LT(1);
                     match(DOC_COMMENT);
-                    if (inputState.guessing == 0) {
+                    if (0 == inputState.guessing) {
                         doc = d.getText();
                     }
                     break;
@@ -247,8 +247,8 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
             }
             {
                 boolean synPredMatched13 = false;
-                if (((LA(1) == LITERAL_lexclass || LA(1) == LITERAL_class) &&
-                  (LA(2) == TOKEN_REF || LA(2) == RULE_REF))) {
+                if (((LITERAL_lexclass == LA(1) || LITERAL_class == LA(1)) &&
+                  (TOKEN_REF == LA(2) || RULE_REF == LA(2)))) {
                     int _m13 = mark();
                     synPredMatched13 = true;
                     inputState.guessing++;
@@ -282,8 +282,8 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
                     lexerSpec(doc);
                 } else {
                     boolean synPredMatched15 = false;
-                    if (((LA(1) == LITERAL_class) &&
-                      (LA(2) == TOKEN_REF || LA(2) == RULE_REF))) {
+                    if (((LITERAL_class == LA(1)) &&
+                      (TOKEN_REF == LA(2) || RULE_REF == LA(2)))) {
                         int _m15 = mark();
                         synPredMatched15 = true;
                         inputState.guessing++;
@@ -302,8 +302,8 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
                     }
                     if (synPredMatched15) {
                         treeParserSpec(doc);
-                    } else if ((LA(1) == LITERAL_class) &&
-                      (LA(2) == TOKEN_REF || LA(2) == RULE_REF)) {
+                    } else if ((LITERAL_class == LA(1)) &&
+                      (TOKEN_REF == LA(2) || RULE_REF == LA(2))) {
                         parserSpec(doc);
                     } else {
                         throw new NoViableAltException(LT(1), getFilename());
@@ -311,17 +311,17 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
                 }
             }
             rules();
-            if (inputState.guessing == 0) {
+            if (0 == inputState.guessing) {
                 behavior.endGrammar();
             }
         } catch (RecognitionException ex) {
-            if (inputState.guessing == 0) {
+            if (0 == inputState.guessing) {
 
                 if (ex instanceof NoViableAltException) {
                     NoViableAltException e = (NoViableAltException)ex;
                     // RK: These probably generate inconsequent error messages...
                     // have to see how this comes out..
-                    if (e.token.getType() == DOC_COMMENT) {
+                    if (DOC_COMMENT == e.token.getType()) {
                         reportError(ex,
                                     "JAVADOC comments may only prefix rules and grammars");
                     } else {
@@ -364,7 +364,7 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
         case TOKEN_REF: {
             a = LT(1);
             match(TOKEN_REF);
-            if (inputState.guessing == 0) {
+            if (0 == inputState.guessing) {
                 idTok = a;
             }
             break;
@@ -372,7 +372,7 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
         case RULE_REF: {
             b = LT(1);
             match(RULE_REF);
-            if (inputState.guessing == 0) {
+            if (0 == inputState.guessing) {
                 idTok = b;
             }
             break;
@@ -400,7 +400,7 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
                 lc = LT(1);
                 match(LITERAL_lexclass);
                 idTok = id();
-                if (inputState.guessing == 0) {
+                if (0 == inputState.guessing) {
 
                     antlrTool.warning(
                       "lexclass' is deprecated; use 'class X extends Lexer'",
@@ -438,7 +438,7 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
             }
             }
         }
-        if (inputState.guessing == 0) {
+        if (0 == inputState.guessing) {
             behavior.startLexer(getFilename(), idTok, sup, doc);
         }
         match(SEMI);
@@ -463,7 +463,7 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
             }
             }
         }
-        if (inputState.guessing == 0) {
+        if (0 == inputState.guessing) {
             behavior.endOptions();
         }
         {
@@ -491,7 +491,7 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
             case ACTION: {
                 a = LT(1);
                 match(ACTION);
-                if (inputState.guessing == 0) {
+                if (0 == inputState.guessing) {
                     behavior.refMemberAction(a);
                 }
                 break;
@@ -538,7 +538,7 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
             }
             }
         }
-        if (inputState.guessing == 0) {
+        if (0 == inputState.guessing) {
             behavior.startTreeWalker(getFilename(), idTok, sup, doc);
         }
         match(SEMI);
@@ -563,7 +563,7 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
             }
             }
         }
-        if (inputState.guessing == 0) {
+        if (0 == inputState.guessing) {
             behavior.endOptions();
         }
         {
@@ -591,7 +591,7 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
             case ACTION: {
                 a = LT(1);
                 match(ACTION);
-                if (inputState.guessing == 0) {
+                if (0 == inputState.guessing) {
                     behavior.refMemberAction(a);
                 }
                 break;
@@ -644,7 +644,7 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
                 break;
             }
             case SEMI: {
-                if (inputState.guessing == 0) {
+                if (0 == inputState.guessing) {
 
                     antlrTool.warning("use 'class X extends Parser'",
                                       getFilename(),
@@ -661,7 +661,7 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
             }
             }
         }
-        if (inputState.guessing == 0) {
+        if (0 == inputState.guessing) {
             behavior.startParser(getFilename(), idTok, sup, doc);
         }
         match(SEMI);
@@ -686,7 +686,7 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
             }
             }
         }
-        if (inputState.guessing == 0) {
+        if (0 == inputState.guessing) {
             behavior.endOptions();
         }
         {
@@ -714,7 +714,7 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
             case ACTION: {
                 a = LT(1);
                 match(ACTION);
-                if (inputState.guessing == 0) {
+                if (0 == inputState.guessing) {
                     behavior.refMemberAction(a);
                 }
                 break;
@@ -746,7 +746,7 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
                   (_tokenSet_1.member(LA(2)))) {
                     rule();
                 } else {
-                    if (_cnt68 >= 1) {
+                    if (1 <= _cnt68) {
                         break _loop68;
                     } else {
                         throw new NoViableAltException(LT(1), getFilename());
@@ -776,7 +776,7 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
         case STRING_LITERAL: {
             sl = LT(1);
             match(STRING_LITERAL);
-            if (inputState.guessing == 0) {
+            if (0 == inputState.guessing) {
                 retval = sl;
             }
             break;
@@ -784,7 +784,7 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
         case CHAR_LITERAL: {
             cl = LT(1);
             match(CHAR_LITERAL);
-            if (inputState.guessing == 0) {
+            if (0 == inputState.guessing) {
                 retval = cl;
             }
             break;
@@ -792,7 +792,7 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
         case INT: {
             il = LT(1);
             match(INT);
-            if (inputState.guessing == 0) {
+            if (0 == inputState.guessing) {
                 retval = il;
             }
             break;
@@ -814,11 +814,11 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
         {
             _loop21:
             do {
-                if ((LA(1) == TOKEN_REF || LA(1) == RULE_REF)) {
+                if ((TOKEN_REF == LA(1) || RULE_REF == LA(1))) {
                     idTok = id();
                     match(ASSIGN);
                     value = optionValue();
-                    if (inputState.guessing == 0) {
+                    if (0 == inputState.guessing) {
                         behavior.setGrammarOption(idTok, value);
                     }
                     match(SEMI);
@@ -841,11 +841,11 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
         {
             _loop24:
             do {
-                if ((LA(1) == TOKEN_REF || LA(1) == RULE_REF)) {
+                if ((TOKEN_REF == LA(1) || RULE_REF == LA(1))) {
                     idTok = id();
                     match(ASSIGN);
                     value = optionValue();
-                    if (inputState.guessing == 0) {
+                    if (0 == inputState.guessing) {
                         behavior.setGrammarOption(idTok, value);
                     }
                     match(SEMI);
@@ -875,7 +875,7 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
                     match(ASSIGN);
                     b = charSet();
                     match(SEMI);
-                    if (inputState.guessing == 0) {
+                    if (0 == inputState.guessing) {
                         behavior.setCharVocabulary(b);
                     }
                     break;
@@ -885,7 +885,7 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
                     idTok = id();
                     match(ASSIGN);
                     value = optionValue();
-                    if (inputState.guessing == 0) {
+                    if (0 == inputState.guessing) {
                         behavior.setGrammarOption(idTok, value);
                     }
                     match(SEMI);
@@ -913,10 +913,10 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
         {
             _loop34:
             do {
-                if ((LA(1) == OR)) {
+                if ((OR == LA(1))) {
                     match(OR);
                     tmpSet = setBlockElement();
-                    if (inputState.guessing == 0) {
+                    if (0 == inputState.guessing) {
                         b.orInPlace(tmpSet);
                     }
                 } else {
@@ -938,11 +938,11 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
         {
             _loop30:
             do {
-                if ((LA(1) == TOKEN_REF || LA(1) == RULE_REF)) {
+                if ((TOKEN_REF == LA(1) || RULE_REF == LA(1))) {
                     idTok = id();
                     match(ASSIGN);
                     value = optionValue();
-                    if (inputState.guessing == 0) {
+                    if (0 == inputState.guessing) {
                         behavior.setSubruleOption(idTok, value);
                     }
                     match(SEMI);
@@ -969,16 +969,16 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
 
 
         a = id();
-        if (inputState.guessing == 0) {
+        if (0 == inputState.guessing) {
             buf.append(a.getText());
         }
         {
             _loop144:
             do {
-                if ((LA(1) == WILDCARD)) {
+                if ((WILDCARD == LA(1))) {
                     match(WILDCARD);
                     a = id();
-                    if (inputState.guessing == 0) {
+                    if (0 == inputState.guessing) {
                         buf.append('.');
                         buf.append(a.getText());
                     }
@@ -988,7 +988,7 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
 
             } while (true);
         }
-        if (inputState.guessing == 0) {
+        if (0 == inputState.guessing) {
 
             // can use either TOKEN_REF or RULE_REF; should
             // really create a QID or something instead.
@@ -1012,7 +1012,7 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
 
         c1 = LT(1);
         match(CHAR_LITERAL);
-        if (inputState.guessing == 0) {
+        if (0 == inputState.guessing) {
 
             rangeMin = ANTLRLexer.tokenTypeForCharLiteral(c1.getText());
             b = BitSet.of(rangeMin);
@@ -1024,7 +1024,7 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
                 match(RANGE);
                 c2 = LT(1);
                 match(CHAR_LITERAL);
-                if (inputState.guessing == 0) {
+                if (0 == inputState.guessing) {
 
                     int rangeMax =
                       ANTLRLexer.tokenTypeForCharLiteral(c2.getText());
@@ -1065,11 +1065,11 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
             int _cnt43 = 0;
             _loop43:
             do {
-                if ((LA(1) == STRING_LITERAL || LA(1) == TOKEN_REF)) {
+                if ((STRING_LITERAL == LA(1) || TOKEN_REF == LA(1))) {
                     {
                         switch (LA(1)) {
                         case TOKEN_REF: {
-                            if (inputState.guessing == 0) {
+                            if (0 == inputState.guessing) {
                                 s1 = null;
                             }
                             t1 = LT(1);
@@ -1092,7 +1092,7 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
                                 }
                                 }
                             }
-                            if (inputState.guessing == 0) {
+                            if (0 == inputState.guessing) {
                                 behavior.defineToken(t1, s1);
                             }
                             {
@@ -1115,7 +1115,7 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
                         case STRING_LITERAL: {
                             s3 = LT(1);
                             match(STRING_LITERAL);
-                            if (inputState.guessing == 0) {
+                            if (0 == inputState.guessing) {
                                 behavior.defineToken(null, s3);
                             }
                             {
@@ -1143,7 +1143,7 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
                     }
                     match(SEMI);
                 } else {
-                    if (_cnt43 >= 1) {
+                    if (1 <= _cnt43) {
                         break _loop43;
                     } else {
                         throw new NoViableAltException(LT(1), getFilename());
@@ -1167,18 +1167,18 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
         o = id();
         match(ASSIGN);
         v = optionValue();
-        if (inputState.guessing == 0) {
+        if (0 == inputState.guessing) {
             behavior.refTokensSpecElementOption(t, o, v);
         }
         {
             _loop46:
             do {
-                if ((LA(1) == SEMI)) {
+                if ((SEMI == LA(1))) {
                     match(SEMI);
                     o = id();
                     match(ASSIGN);
                     v = optionValue();
-                    if (inputState.guessing == 0) {
+                    if (0 == inputState.guessing) {
                         behavior.refTokensSpecElementOption(t, o, v);
                     }
                 } else {
@@ -1197,7 +1197,7 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
         sup = null;
 
         match(LPAREN);
-        if (inputState.guessing == 0) {
+        if (0 == inputState.guessing) {
 
             sup = LT(1).getText();
             sup = StringUtils.stripFrontBack(sup, "\"", "\"");
@@ -1234,7 +1234,7 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
             case DOC_COMMENT: {
                 d = LT(1);
                 match(DOC_COMMENT);
-                if (inputState.guessing == 0) {
+                if (0 == inputState.guessing) {
                     doc = d.getText();
                 }
                 break;
@@ -1256,7 +1256,7 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
             case LITERAL_protected: {
                 p1 = LT(1);
                 match(LITERAL_protected);
-                if (inputState.guessing == 0) {
+                if (0 == inputState.guessing) {
                     access = p1.getText();
                 }
                 break;
@@ -1264,7 +1264,7 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
             case LITERAL_public: {
                 p2 = LT(1);
                 match(LITERAL_public);
-                if (inputState.guessing == 0) {
+                if (0 == inputState.guessing) {
                     access = p2.getText();
                 }
                 break;
@@ -1272,7 +1272,7 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
             case LITERAL_private: {
                 p3 = LT(1);
                 match(LITERAL_private);
-                if (inputState.guessing == 0) {
+                if (0 == inputState.guessing) {
                     access = p3.getText();
                 }
                 break;
@@ -1291,7 +1291,7 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
             switch (LA(1)) {
             case BANG: {
                 match(BANG);
-                if (inputState.guessing == 0) {
+                if (0 == inputState.guessing) {
                     ruleAutoGen = false;
                 }
                 break;
@@ -1309,7 +1309,7 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
             }
             }
         }
-        if (inputState.guessing == 0) {
+        if (0 == inputState.guessing) {
 
             behavior.defineRuleName(idTok, access, ruleAutoGen, doc);
 
@@ -1319,7 +1319,7 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
             case ARG_ACTION: {
                 aa = LT(1);
                 match(ARG_ACTION);
-                if (inputState.guessing == 0) {
+                if (0 == inputState.guessing) {
                     behavior.refArgAction(aa);
                 }
                 break;
@@ -1342,7 +1342,7 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
                 match(LITERAL_returns);
                 rt = LT(1);
                 match(ARG_ACTION);
-                if (inputState.guessing == 0) {
+                if (0 == inputState.guessing) {
                     behavior.refReturnAction(rt);
                 }
                 break;
@@ -1394,7 +1394,7 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
             case ACTION: {
                 a = LT(1);
                 match(ACTION);
-                if (inputState.guessing == 0) {
+                if (0 == inputState.guessing) {
                     behavior.refInitAction(a);
                 }
                 break;
@@ -1433,7 +1433,7 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
             }
             }
         }
-        if (inputState.guessing == 0) {
+        if (0 == inputState.guessing) {
             behavior.endRule(idTok.getText());
         }
     }
@@ -1448,16 +1448,16 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
 
         match(LITERAL_throws);
         a = id();
-        if (inputState.guessing == 0) {
+        if (0 == inputState.guessing) {
             t = a.getText();
         }
         {
             _loop84:
             do {
-                if ((LA(1) == COMMA)) {
+                if ((COMMA == LA(1))) {
                     match(COMMA);
                     b = id();
-                    if (inputState.guessing == 0) {
+                    if (0 == inputState.guessing) {
                         t += "," + b.getText();
                     }
                 } else {
@@ -1466,7 +1466,7 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
 
             } while (true);
         }
-        if (inputState.guessing == 0) {
+        if (0 == inputState.guessing) {
             behavior.setUserExceptions(t);
         }
     }
@@ -1481,11 +1481,11 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
         {
             _loop81:
             do {
-                if ((LA(1) == TOKEN_REF || LA(1) == RULE_REF)) {
+                if ((TOKEN_REF == LA(1) || RULE_REF == LA(1))) {
                     idTok = id();
                     match(ASSIGN);
                     value = optionValue();
-                    if (inputState.guessing == 0) {
+                    if (0 == inputState.guessing) {
                         behavior.setRuleOption(idTok, value);
                     }
                     match(SEMI);
@@ -1502,14 +1502,14 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
       throws RecognitionException, TokenStreamException {
 
 
-        if (inputState.guessing == 0) {
+        if (0 == inputState.guessing) {
             blockNesting++;
         }
         alternative();
         {
             _loop87:
             do {
-                if ((LA(1) == OR)) {
+                if ((OR == LA(1))) {
                     match(OR);
                     alternative();
                 } else {
@@ -1518,7 +1518,7 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
 
             } while (true);
         }
-        if (inputState.guessing == 0) {
+        if (0 == inputState.guessing) {
             blockNesting--;
         }
     }
@@ -1527,17 +1527,17 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
       throws RecognitionException, TokenStreamException {
 
 
-        if (inputState.guessing == 0) {
+        if (0 == inputState.guessing) {
             behavior.beginExceptionGroup();
         }
         {
             int _cnt95 = 0;
             _loop95:
             do {
-                if ((LA(1) == LITERAL_exception)) {
+                if ((LITERAL_exception == LA(1))) {
                     exceptionSpec();
                 } else {
-                    if (_cnt95 >= 1) {
+                    if (1 <= _cnt95) {
                         break _loop95;
                     } else {
                         throw new NoViableAltException(LT(1), getFilename());
@@ -1547,7 +1547,7 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
                 _cnt95++;
             } while (true);
         }
-        if (inputState.guessing == 0) {
+        if (0 == inputState.guessing) {
             behavior.endExceptionGroup();
         }
     }
@@ -1561,7 +1561,7 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
             switch (LA(1)) {
             case BANG: {
                 match(BANG);
-                if (inputState.guessing == 0) {
+                if (0 == inputState.guessing) {
                     altAutoGen = false;
                 }
                 break;
@@ -1587,7 +1587,7 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
             }
             }
         }
-        if (inputState.guessing == 0) {
+        if (0 == inputState.guessing) {
             behavior.beginAlt(altAutoGen);
         }
         {
@@ -1617,7 +1617,7 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
             }
             }
         }
-        if (inputState.guessing == 0) {
+        if (0 == inputState.guessing) {
             behavior.endAlt();
         }
     }
@@ -1661,13 +1661,13 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
 
 
         match(LITERAL_exception);
-        if (inputState.guessing == 0) {
+        if (0 == inputState.guessing) {
             behavior.beginExceptionSpec(null);
         }
         {
             _loop102:
             do {
-                if ((LA(1) == LITERAL_catch)) {
+                if ((LITERAL_catch == LA(1))) {
                     exceptionHandler();
                 } else {
                     break _loop102;
@@ -1675,7 +1675,7 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
 
             } while (true);
         }
-        if (inputState.guessing == 0) {
+        if (0 == inputState.guessing) {
             behavior.endExceptionSpec();
         }
     }
@@ -1692,7 +1692,7 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
             case ARG_ACTION: {
                 aa = LT(1);
                 match(ARG_ACTION);
-                if (inputState.guessing == 0) {
+                if (0 == inputState.guessing) {
                     labelAction = aa;
                 }
                 break;
@@ -1716,13 +1716,13 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
             }
             }
         }
-        if (inputState.guessing == 0) {
+        if (0 == inputState.guessing) {
             behavior.beginExceptionSpec(labelAction);
         }
         {
             _loop99:
             do {
-                if ((LA(1) == LITERAL_catch)) {
+                if ((LITERAL_catch == LA(1))) {
                     exceptionHandler();
                 } else {
                     break _loop99;
@@ -1730,7 +1730,7 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
 
             } while (true);
         }
-        if (inputState.guessing == 0) {
+        if (0 == inputState.guessing) {
             behavior.endExceptionSpec();
         }
     }
@@ -1748,7 +1748,7 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
         match(ARG_ACTION);
         a2 = LT(1);
         match(ACTION);
-        if (inputState.guessing == 0) {
+        if (0 == inputState.guessing) {
             behavior.refExceptionHandler(a1, a2);
         }
     }
@@ -1775,7 +1775,7 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
         case ACTION: {
             a = LT(1);
             match(ACTION);
-            if (inputState.guessing == 0) {
+            if (0 == inputState.guessing) {
                 behavior.refAction(a);
             }
             break;
@@ -1783,7 +1783,7 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
         case SEMPRED: {
             p = LT(1);
             match(SEMPRED);
-            if (inputState.guessing == 0) {
+            if (0 == inputState.guessing) {
                 behavior.refSemPred(p);
             }
             break;
@@ -1793,19 +1793,19 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
             break;
         }
         default:
-            if ((LA(1) == TOKEN_REF || LA(1) == RULE_REF) &&
-              (LA(2) == ASSIGN)) {
+            if ((TOKEN_REF == LA(1) || RULE_REF == LA(1)) &&
+              (ASSIGN == LA(2))) {
                 assignId = id();
                 match(ASSIGN);
                 {
-                    if ((LA(1) == TOKEN_REF || LA(1) == RULE_REF) &&
-                      (LA(2) == COLON)) {
+                    if ((TOKEN_REF == LA(1) || RULE_REF == LA(1)) &&
+                      (COLON == LA(2))) {
                         label = id();
                         match(COLON);
-                        if (inputState.guessing == 0) {
+                        if (0 == inputState.guessing) {
                             checkForMissingEndRule(label);
                         }
-                    } else if ((LA(1) == TOKEN_REF || LA(1) == RULE_REF) &&
+                    } else if ((TOKEN_REF == LA(1) || RULE_REF == LA(1)) &&
                       (_tokenSet_3.member(LA(2)))) {
                     } else {
                         throw new NoViableAltException(LT(1), getFilename());
@@ -1822,7 +1822,7 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
                             case ARG_ACTION: {
                                 aa = LT(1);
                                 match(ARG_ACTION);
-                                if (inputState.guessing == 0) {
+                                if (0 == inputState.guessing) {
                                     args = aa;
                                 }
                                 break;
@@ -1855,7 +1855,7 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
                             switch (LA(1)) {
                             case BANG: {
                                 match(BANG);
-                                if (inputState.guessing == 0) {
+                                if (0 == inputState.guessing) {
                                     autoGen = GrammarElement.AUTO_GEN_BANG;
                                 }
                                 break;
@@ -1883,7 +1883,7 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
                             }
                             }
                         }
-                        if (inputState.guessing == 0) {
+                        if (0 == inputState.guessing) {
                             behavior.refRule(assignId,
                                              rr,
                                              label,
@@ -1900,7 +1900,7 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
                             case ARG_ACTION: {
                                 aa2 = LT(1);
                                 match(ARG_ACTION);
-                                if (inputState.guessing == 0) {
+                                if (0 == inputState.guessing) {
                                     args = aa2;
                                 }
                                 break;
@@ -1928,7 +1928,7 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
                             }
                             }
                         }
-                        if (inputState.guessing == 0) {
+                        if (0 == inputState.guessing) {
                             behavior.refToken(assignId,
                                               tr,
                                               label,
@@ -1947,11 +1947,11 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
             } else
             if ((_tokenSet_4.member(LA(1))) && (_tokenSet_5.member(LA(2)))) {
                 {
-                    if ((LA(1) == TOKEN_REF || LA(1) == RULE_REF) &&
-                      (LA(2) == COLON)) {
+                    if ((TOKEN_REF == LA(1) || RULE_REF == LA(1)) &&
+                      (COLON == LA(2))) {
                         label = id();
                         match(COLON);
-                        if (inputState.guessing == 0) {
+                        if (0 == inputState.guessing) {
                             checkForMissingEndRule(label);
                         }
                     } else if ((_tokenSet_4.member(LA(1))) &&
@@ -1971,7 +1971,7 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
                             case ARG_ACTION: {
                                 aa3 = LT(1);
                                 match(ARG_ACTION);
-                                if (inputState.guessing == 0) {
+                                if (0 == inputState.guessing) {
                                     args = aa3;
                                 }
                                 break;
@@ -2004,7 +2004,7 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
                             switch (LA(1)) {
                             case BANG: {
                                 match(BANG);
-                                if (inputState.guessing == 0) {
+                                if (0 == inputState.guessing) {
                                     autoGen = GrammarElement.AUTO_GEN_BANG;
                                 }
                                 break;
@@ -2032,7 +2032,7 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
                             }
                             }
                         }
-                        if (inputState.guessing == 0) {
+                        if (0 == inputState.guessing) {
                             behavior.refRule(assignId,
                                              r2,
                                              label,
@@ -2067,9 +2067,9 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
                         break;
                     }
                     default:
-                        if ((LA(1) == STRING_LITERAL ||
-                          LA(1) == CHAR_LITERAL || LA(1) == TOKEN_REF) &&
-                          (LA(2) == RANGE)) {
+                        if ((STRING_LITERAL == LA(1) ||
+                          CHAR_LITERAL == LA(1) || TOKEN_REF == LA(1)) &&
+                          (RANGE == LA(2))) {
                             range(label);
                         } else if ((_tokenSet_7.member(LA(1))) &&
                           (_tokenSet_8.member(LA(2)))) {
@@ -2097,18 +2097,18 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
         o = id();
         match(ASSIGN);
         v = optionValue();
-        if (inputState.guessing == 0) {
+        if (0 == inputState.guessing) {
             behavior.refElementOption(o, v);
         }
         {
             _loop108:
             do {
-                if ((LA(1) == SEMI)) {
+                if ((SEMI == LA(1))) {
                     match(SEMI);
                     o = id();
                     match(ASSIGN);
                     v = optionValue();
-                    if (inputState.guessing == 0) {
+                    if (0 == inputState.guessing) {
                         behavior.refElementOption(o, v);
                     }
                 } else {
@@ -2146,7 +2146,7 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
                 switch (LA(1)) {
                 case BANG: {
                     match(BANG);
-                    if (inputState.guessing == 0) {
+                    if (0 == inputState.guessing) {
                         autoGen = GrammarElement.AUTO_GEN_BANG;
                     }
                     break;
@@ -2173,7 +2173,7 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
                 }
                 }
             }
-            if (inputState.guessing == 0) {
+            if (0 == inputState.guessing) {
                 behavior.refCharRange(crLeft,
                                       crRight,
                                       label,
@@ -2189,7 +2189,7 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
                 case TOKEN_REF: {
                     t = LT(1);
                     match(TOKEN_REF);
-                    if (inputState.guessing == 0) {
+                    if (0 == inputState.guessing) {
                         trLeft = t;
                     }
                     break;
@@ -2197,7 +2197,7 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
                 case STRING_LITERAL: {
                     u = LT(1);
                     match(STRING_LITERAL);
-                    if (inputState.guessing == 0) {
+                    if (0 == inputState.guessing) {
                         trLeft = u;
                     }
                     break;
@@ -2213,7 +2213,7 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
                 case TOKEN_REF: {
                     v = LT(1);
                     match(TOKEN_REF);
-                    if (inputState.guessing == 0) {
+                    if (0 == inputState.guessing) {
                         trRight = v;
                     }
                     break;
@@ -2221,7 +2221,7 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
                 case STRING_LITERAL: {
                     w = LT(1);
                     match(STRING_LITERAL);
-                    if (inputState.guessing == 0) {
+                    if (0 == inputState.guessing) {
                         trRight = w;
                     }
                     break;
@@ -2232,7 +2232,7 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
                 }
             }
             autoGen = ast_type_spec();
-            if (inputState.guessing == 0) {
+            if (0 == inputState.guessing) {
                 behavior.refTokenRange(trLeft,
                                        trRight,
                                        label,
@@ -2268,7 +2268,7 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
                 switch (LA(1)) {
                 case BANG: {
                     match(BANG);
-                    if (inputState.guessing == 0) {
+                    if (0 == inputState.guessing) {
                         autoGen = GrammarElement.AUTO_GEN_BANG;
                     }
                     break;
@@ -2295,7 +2295,7 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
                 }
                 }
             }
-            if (inputState.guessing == 0) {
+            if (0 == inputState.guessing) {
                 behavior.refCharLiteral(cl,
                                         label,
                                         false,
@@ -2313,7 +2313,7 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
                 case ARG_ACTION: {
                     aa = LT(1);
                     match(ARG_ACTION);
-                    if (inputState.guessing == 0) {
+                    if (0 == inputState.guessing) {
                         args = aa;
                     }
                     break;
@@ -2340,7 +2340,7 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
                 }
                 }
             }
-            if (inputState.guessing == 0) {
+            if (0 == inputState.guessing) {
                 behavior.refToken(null,
                                   tr,
                                   label,
@@ -2355,7 +2355,7 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
             sl = LT(1);
             match(STRING_LITERAL);
             autoGen = ast_type_spec();
-            if (inputState.guessing == 0) {
+            if (0 == inputState.guessing) {
                 behavior.refStringLiteral(sl, label, autoGen, lastInRule());
             }
             break;
@@ -2364,7 +2364,7 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
             wi = LT(1);
             match(WILDCARD);
             autoGen = ast_type_spec();
-            if (inputState.guessing == 0) {
+            if (0 == inputState.guessing) {
                 behavior.refWildcard(wi, label, autoGen);
             }
             break;
@@ -2390,7 +2390,7 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
                 switch (LA(1)) {
                 case BANG: {
                     match(BANG);
-                    if (inputState.guessing == 0) {
+                    if (0 == inputState.guessing) {
                         autoGen = GrammarElement.AUTO_GEN_BANG;
                     }
                     break;
@@ -2417,7 +2417,7 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
                 }
                 }
             }
-            if (inputState.guessing == 0) {
+            if (0 == inputState.guessing) {
                 behavior.refCharLiteral(cl,
                                         label,
                                         true,
@@ -2430,7 +2430,7 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
             tr = LT(1);
             match(TOKEN_REF);
             autoGen = ast_type_spec();
-            if (inputState.guessing == 0) {
+            if (0 == inputState.guessing) {
                 behavior.refToken(null,
                                   tr,
                                   label,
@@ -2456,18 +2456,18 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
 
         lp = LT(1);
         match(LPAREN);
-        if (inputState.guessing == 0) {
+        if (0 == inputState.guessing) {
             behavior.beginSubRule(label, lp, not);
         }
         {
-            if ((LA(1) == OPTIONS)) {
+            if ((OPTIONS == LA(1))) {
                 subruleOptionsSpec();
                 {
                     switch (LA(1)) {
                     case ACTION: {
                         aa = LT(1);
                         match(ACTION);
-                        if (inputState.guessing == 0) {
+                        if (0 == inputState.guessing) {
                             behavior.refInitAction(aa);
                         }
                         break;
@@ -2481,10 +2481,10 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
                     }
                 }
                 match(COLON);
-            } else if ((LA(1) == ACTION) && (LA(2) == COLON)) {
+            } else if ((ACTION == LA(1)) && (COLON == LA(2))) {
                 ab = LT(1);
                 match(ACTION);
-                if (inputState.guessing == 0) {
+                if (0 == inputState.guessing) {
                     behavior.refInitAction(ab);
                 }
                 match(COLON);
@@ -2522,21 +2522,21 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
                     switch (LA(1)) {
                     case QUESTION: {
                         match(QUESTION);
-                        if (inputState.guessing == 0) {
+                        if (0 == inputState.guessing) {
                             behavior.optionalSubRule();
                         }
                         break;
                     }
                     case STAR: {
                         match(STAR);
-                        if (inputState.guessing == 0) {
+                        if (0 == inputState.guessing) {
                             behavior.zeroOrMoreSubRule();
                         }
                         break;
                     }
                     case PLUS: {
                         match(PLUS);
-                        if (inputState.guessing == 0) {
+                        if (0 == inputState.guessing) {
                             behavior.oneOrMoreSubRule();
                         }
                         break;
@@ -2568,7 +2568,7 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
                     switch (LA(1)) {
                     case BANG: {
                         match(BANG);
-                        if (inputState.guessing == 0) {
+                        if (0 == inputState.guessing) {
                             behavior.noASTSubRule();
                         }
                         break;
@@ -2599,7 +2599,7 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
             }
             case IMPLIES: {
                 match(IMPLIES);
-                if (inputState.guessing == 0) {
+                if (0 == inputState.guessing) {
                     behavior.synPred();
                 }
                 break;
@@ -2609,7 +2609,7 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
             }
             }
         }
-        if (inputState.guessing == 0) {
+        if (0 == inputState.guessing) {
             behavior.endSubRule();
         }
     }
@@ -2621,11 +2621,11 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
 
         lp = LT(1);
         match(TREE_BEGIN);
-        if (inputState.guessing == 0) {
+        if (0 == inputState.guessing) {
             behavior.beginTree(lp);
         }
         rootNode();
-        if (inputState.guessing == 0) {
+        if (0 == inputState.guessing) {
             behavior.beginChildList();
         }
         {
@@ -2635,7 +2635,7 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
                 if ((_tokenSet_2.member(LA(1)))) {
                     element();
                 } else {
-                    if (_cnt122 >= 1) {
+                    if (1 <= _cnt122) {
                         break _loop122;
                     } else {
                         throw new NoViableAltException(LT(1), getFilename());
@@ -2645,11 +2645,11 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
                 _cnt122++;
             } while (true);
         }
-        if (inputState.guessing == 0) {
+        if (0 == inputState.guessing) {
             behavior.endChildList();
         }
         match(RPAREN);
-        if (inputState.guessing == 0) {
+        if (0 == inputState.guessing) {
             behavior.endTree();
         }
     }
@@ -2660,11 +2660,11 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
         Token label = null;
 
         {
-            if ((LA(1) == TOKEN_REF || LA(1) == RULE_REF) &&
-              (LA(2) == COLON)) {
+            if ((TOKEN_REF == LA(1) || RULE_REF == LA(1)) &&
+              (COLON == LA(2))) {
                 label = id();
                 match(COLON);
-                if (inputState.guessing == 0) {
+                if (0 == inputState.guessing) {
                     checkForMissingEndRule(label);
                 }
             } else
@@ -2687,14 +2687,14 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
             switch (LA(1)) {
             case CARET: {
                 match(CARET);
-                if (inputState.guessing == 0) {
+                if (0 == inputState.guessing) {
                     autoGen = GrammarElement.AUTO_GEN_CARET;
                 }
                 break;
             }
             case BANG: {
                 match(BANG);
-                if (inputState.guessing == 0) {
+                if (0 == inputState.guessing) {
                     autoGen = GrammarElement.AUTO_GEN_BANG;
                 }
                 break;
@@ -2791,84 +2791,84 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
       "INTERNAL_RULE_REF",
       "WS_OPT"};
 
-    private static final long[] mk_tokenSet_0() {
+    private static long[] mk_tokenSet_0() {
         long[] data = {2206556225792L, 0L};
         return data;
     }
 
     public static final BitSet _tokenSet_0 = new BitSet(mk_tokenSet_0());
 
-    private static final long[] mk_tokenSet_1() {
+    private static long[] mk_tokenSet_1() {
         long[] data = {2472844214400L, 0L};
         return data;
     }
 
     public static final BitSet _tokenSet_1 = new BitSet(mk_tokenSet_1());
 
-    private static final long[] mk_tokenSet_2() {
+    private static long[] mk_tokenSet_2() {
         long[] data = {1158885407195328L, 0L};
         return data;
     }
 
     public static final BitSet _tokenSet_2 = new BitSet(mk_tokenSet_2());
 
-    private static final long[] mk_tokenSet_3() {
+    private static long[] mk_tokenSet_3() {
         long[] data = {1159461236965568L, 0L};
         return data;
     }
 
     public static final BitSet _tokenSet_3 = new BitSet(mk_tokenSet_3());
 
-    private static final long[] mk_tokenSet_4() {
+    private static long[] mk_tokenSet_4() {
         long[] data = {1132497128128576L, 0L};
         return data;
     }
 
     public static final BitSet _tokenSet_4 = new BitSet(mk_tokenSet_4());
 
-    private static final long[] mk_tokenSet_5() {
+    private static long[] mk_tokenSet_5() {
         long[] data = {1722479914074304L, 0L};
         return data;
     }
 
     public static final BitSet _tokenSet_5 = new BitSet(mk_tokenSet_5());
 
-    private static final long[] mk_tokenSet_6() {
+    private static long[] mk_tokenSet_6() {
         long[] data = {1722411194597568L, 0L};
         return data;
     }
 
     public static final BitSet _tokenSet_6 = new BitSet(mk_tokenSet_6());
 
-    private static final long[] mk_tokenSet_7() {
+    private static long[] mk_tokenSet_7() {
         long[] data = {1125899924144192L, 0L};
         return data;
     }
 
     public static final BitSet _tokenSet_7 = new BitSet(mk_tokenSet_7());
 
-    private static final long[] mk_tokenSet_8() {
+    private static long[] mk_tokenSet_8() {
         long[] data = {1722411190386880L, 0L};
         return data;
     }
 
     public static final BitSet _tokenSet_8 = new BitSet(mk_tokenSet_8());
 
-    private static final long[] mk_tokenSet_9() {
+    private static long[] mk_tokenSet_9() {
         long[] data = {1159444023476416L, 0L};
         return data;
     }
 
     public static final BitSet _tokenSet_9 = new BitSet(mk_tokenSet_9());
 
-    private static final long[] mk_tokenSet_10() {
+    private static long[] mk_tokenSet_10() {
         long[] data = {2251345007067328L, 0L};
         return data;
     }
 
     public static final BitSet _tokenSet_10 = new BitSet(mk_tokenSet_10());
 
-    private static final long[] mk_tokenSet_11() {
+    private static long[] mk_tokenSet_11() {
         long[] data = {1721861130420416L, 0L};
         return data;
     }

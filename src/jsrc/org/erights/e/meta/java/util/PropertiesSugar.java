@@ -15,6 +15,9 @@ import java.util.Properties;
  */
 public class PropertiesSugar {
 
+    private PropertiesSugar() {
+    }
+
     /**
      * Adds properties read from propsFile to self
      */

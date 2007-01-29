@@ -41,7 +41,7 @@ class MsgPatt {
 
     private final EExpr myOptResultGuard;
 
-    public MsgPatt(SourceSpan optSpan,
+    MsgPatt(SourceSpan optSpan,
                    String verb,
                    Pattern[] patterns,
                    EExpr optResultGuard) {

@@ -32,7 +32,7 @@ class Assoc {
 
     private final Object myValue;
 
-    public Assoc(Object key, Object value) {
+    Assoc(Object key, Object value) {
         myKey = key;
         myValue = value;
     }

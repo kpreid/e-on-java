@@ -76,7 +76,9 @@ public final class Perl5Matcher implements PatternMatcher {
 
     private boolean __multiline = false, __lastSuccess = false;
 
-    private char __previousChar, __input[], __originalInput[];
+    private char __previousChar;
+    private char[] __input;
+    private char[] __originalInput;
 
     private Perl5Repetition __currentRep;
 
@@ -122,7 +124,7 @@ public final class Perl5Matcher implements PatternMatcher {
         char ch;
 
 
-        if (input.length == 0) {
+        if (0 == input.length) {
             return endOffset;
         }
 
@@ -159,7 +161,7 @@ public final class Perl5Matcher implements PatternMatcher {
         int stateEntries, paren;
 
         stateEntries = 3 * (__expSize - parenFloor);
-        if (stateEntries <= 0) {
+        if (0 >= stateEntries) {
             state = new int[3];
         } else {
             state = new int[stateEntries + 3];
@@ -223,11 +225,11 @@ public final class Perl5Matcher implements PatternMatcher {
         __program = expression._program;
         __stack.setSize(0);
 
-        if (beginOffset == 0) {
+        if (0 == beginOffset) {
             __previousChar = '\n';
         } else {
             __previousChar = input[beginOffset - 1];
-            if (!__multiline && __previousChar == '\n') {
+            if (!__multiline && '\n' == __previousChar) {
                 __previousChar = '\0';
             }
         }
@@ -242,7 +244,7 @@ public final class Perl5Matcher implements PatternMatcher {
         endOffset = __numParentheses + 1;
         if (__beginMatchOffsets == null ||
           endOffset > __beginMatchOffsets.length) {
-            if (endOffset < __INITIAL_NUM_OFFSETS) {
+            if (__INITIAL_NUM_OFFSETS > endOffset) {
                 endOffset = __INITIAL_NUM_OFFSETS;
             }
             __beginMatchOffsets = new int[endOffset];
@@ -271,10 +273,10 @@ public final class Perl5Matcher implements PatternMatcher {
 
         __lastMatchResult._matchBeginOffset = __beginMatchOffsets[0];
 
-        while (__numParentheses >= 0) {
+        while (0 <= __numParentheses) {
             offs = __beginMatchOffsets[__numParentheses];
 
-            if (offs >= 0) {
+            if (0 <= offs) {
                 __lastMatchResult._beginGroupOffset[__numParentheses] =
                   offs - __lastMatchResult._matchBeginOffset;
             } else {
@@ -284,7 +286,7 @@ public final class Perl5Matcher implements PatternMatcher {
 
             offs = __endMatchOffsets[__numParentheses];
 
-            if (offs >= 0) {
+            if (0 <= offs) {
                 __lastMatchResult._endGroupOffset[__numParentheses] =
                   offs - __lastMatchResult._matchBeginOffset;
             } else {
@@ -310,7 +312,8 @@ public final class Perl5Matcher implements PatternMatcher {
                                 int endOffset) {
         boolean success;
         int minLength = 0, dontTry = 0, offset;
-        char ch, mustString[];
+        char ch;
+        char[] mustString;
 
         __initInterpreterGlobals(expression, input, beginOffset, endOffset);
 
@@ -321,28 +324,28 @@ public final class Perl5Matcher implements PatternMatcher {
         while (true) {
 
             if (mustString != null && (
-              (expression._anchor & Perl5Pattern._OPT_ANCH) == 0 ||
-                (__multiline && expression._back >= 0))) {
+              0 == (expression._anchor & Perl5Pattern._OPT_ANCH) ||
+                (__multiline && 0 <= expression._back))) {
 
                 __currentOffset =
                   __findFirst(__input, __currentOffset, endOffset, mustString);
 
                 if (__currentOffset >= endOffset) {
-                    if ((expression._options & Perl5Compiler.READ_ONLY_MASK) ==
-                      0) {
+                    if (0 ==
+                      (expression._options & Perl5Compiler.READ_ONLY_MASK)) {
                         expression._mustUtility++;
                     }
                     success = false;
                     break _mainLoop;
-                } else if (expression._back >= 0) {
+                } else if (0 <= expression._back) {
                     __currentOffset -= expression._back;
                     if (__currentOffset < beginOffset) {
                         __currentOffset = beginOffset;
                     }
                     minLength = expression._back + mustString.length;
                 } else if (!expression._isExpensive &&
-                  (expression._options & Perl5Compiler.READ_ONLY_MASK) == 0 &&
-                  (--expression._mustUtility < 0)) {
+                  0 == (expression._options & Perl5Compiler.READ_ONLY_MASK) &&
+                  (0 > --expression._mustUtility)) {
                     // Be careful!  The preceding logical expression is constructed
                     // so that mustUtility is only decremented if the expression is
                     // compiled without READ_ONLY_MASK.
@@ -354,14 +357,14 @@ public final class Perl5Matcher implements PatternMatcher {
                 }
             }
 
-            if ((expression._anchor & Perl5Pattern._OPT_ANCH) != 0) {
+            if (0 != (expression._anchor & Perl5Pattern._OPT_ANCH)) {
                 if (__tryExpression(expression, beginOffset)) {
                     success = true;
                     break _mainLoop;
                 } else if (__multiline ||
-                  (expression._anchor & Perl5Pattern._OPT_IMPLICIT) != 0) {
+                  0 != (expression._anchor & Perl5Pattern._OPT_IMPLICIT)) {
 
-                    if (minLength > 0) {
+                    if (0 < minLength) {
                         dontTry = minLength - 1;
                     }
                     endOffset -= dontTry;
@@ -371,7 +374,7 @@ public final class Perl5Matcher implements PatternMatcher {
                     }
 
                     while (__currentOffset < endOffset) {
-                        if (__input[__currentOffset++] == '\n') {
+                        if ('\n' == __input[__currentOffset++]) {
                             if (__currentOffset < endOffset &&
                               __tryExpression(expression, __currentOffset)) {
                                 success = true;
@@ -387,7 +390,7 @@ public final class Perl5Matcher implements PatternMatcher {
 
             if (expression._startString != null) {
                 mustString = expression._startString;
-                if ((expression._anchor & Perl5Pattern._OPT_SKIP) != 0) {
+                if (0 != (expression._anchor & Perl5Pattern._OPT_SKIP)) {
                     ch = mustString[0];
 
                     while (__currentOffset < endOffset) {
@@ -422,13 +425,13 @@ public final class Perl5Matcher implements PatternMatcher {
                 break _mainLoop;
             }
 
-            if ((offset = expression._startClassOffset) != OpCode
-              ._NULL_OFFSET) {
+            if (OpCode
+              ._NULL_OFFSET != (offset = expression._startClassOffset)) {
                 boolean doEvery, tmp;
 
-                doEvery = ((expression._anchor & Perl5Pattern._OPT_SKIP) == 0);
+                doEvery = (0 == (expression._anchor & Perl5Pattern._OPT_SKIP));
 
-                if (minLength > 0) {
+                if (0 < minLength) {
                     dontTry = minLength - 1;
                 }
                 endOffset -= dontTry;
@@ -440,8 +443,8 @@ public final class Perl5Matcher implements PatternMatcher {
                     while (__currentOffset < endOffset) {
                         ch = __input[__currentOffset];
 
-                        if (ch < 256 && (__program[offset + (ch >> 4)] &
-                          (1 << (ch & 0xf))) == 0) {
+                        if (256 > ch && 0 ==
+                          (__program[offset + (ch >> 4)] & (1 << (ch & 0xf)))) {
                             if (tmp &&
                               __tryExpression(expression, __currentOffset)) {
                                 success = true;
@@ -458,7 +461,7 @@ public final class Perl5Matcher implements PatternMatcher {
                     break;
 
                 case OpCode._BOUND:
-                    if (minLength > 0) {
+                    if (0 < minLength) {
                         ++dontTry;
                         --endOffset;
                     }
@@ -482,7 +485,7 @@ public final class Perl5Matcher implements PatternMatcher {
                         ++__currentOffset;
                     }
 
-                    if ((minLength > 0 || tmp) &&
+                    if ((0 < minLength || tmp) &&
                       __tryExpression(expression, __currentOffset)) {
                         success = true;
                         break _mainLoop;
@@ -490,7 +493,7 @@ public final class Perl5Matcher implements PatternMatcher {
                     break;
 
                 case OpCode._NBOUND:
-                    if (minLength > 0) {
+                    if (0 < minLength) {
                         ++dontTry;
                         --endOffset;
                     }
@@ -515,7 +518,7 @@ public final class Perl5Matcher implements PatternMatcher {
                         ++__currentOffset;
                     }
 
-                    if ((minLength > 0 || !tmp) &&
+                    if ((0 < minLength || !tmp) &&
                       __tryExpression(expression, __currentOffset)) {
                         success = true;
                         break _mainLoop;
@@ -629,7 +632,7 @@ public final class Perl5Matcher implements PatternMatcher {
                 } // end switch
 
             } else {
-                if (minLength > 0) {
+                if (0 < minLength) {
                     dontTry = minLength - 1;
                 }
                 endOffset -= dontTry;
@@ -661,7 +664,7 @@ public final class Perl5Matcher implements PatternMatcher {
         __lastParen = 0;
         __expSize = 0;
 
-        if (__numParentheses > 0) {
+        if (0 < __numParentheses) {
             for (count = 0; count <= __numParentheses; count++) {
                 __beginMatchOffsets[count] = OpCode._NULL_OFFSET;
                 __endMatchOffsets[count] = OpCode._NULL_OFFSET;
@@ -685,7 +688,7 @@ public final class Perl5Matcher implements PatternMatcher {
         scan = __inputOffset;
         eol = __eol;
 
-        if (max != Character.MAX_VALUE && max < eol - scan) {
+        if (Character.MAX_VALUE != max && max < eol - scan) {
             eol = scan + max;
         }
 
@@ -694,7 +697,7 @@ public final class Perl5Matcher implements PatternMatcher {
         switch (__program[offset]) {
 
         case OpCode._ANY:
-            while (scan < eol && __input[scan] != '\n') {
+            while (scan < eol && '\n' != __input[scan]) {
                 ++scan;
             }
             break;
@@ -711,9 +714,9 @@ public final class Perl5Matcher implements PatternMatcher {
             break;
 
         case OpCode._ANYOF:
-            if (scan < eol && (ch = __input[scan]) < 256) {
-                while ((__program[operand + (ch >> 4)] & (1 << (ch & 0xf))) ==
-                  0) {
+            if (scan < eol && 256 > (ch = __input[scan])) {
+                while (0 ==
+                  (__program[operand + (ch >> 4)] & (1 << (ch & 0xf)))) {
                     if (++scan < eol) {
                         ch = __input[scan];
                     } else {
@@ -791,25 +794,23 @@ public final class Perl5Matcher implements PatternMatcher {
             switch (op = __program[scan]) {
 
             case OpCode._BOL:
-                if (input == __bol ?
-                  __previousChar == '\n' :
+                if (input == __bol ? '\n' == __previousChar :
                   (__multiline && (inputRemains || input < __eol) &&
-                    __input[input - 1] == '\n')) {
+                    '\n' == __input[input - 1])) {
                     break;
                 }
                 return false;
 
             case OpCode._MBOL:
-                if (input == __bol ?
-                  __previousChar == '\n' :
+                if (input == __bol ? '\n' == __previousChar :
                   ((inputRemains || input < __eol) &&
-                    __input[input - 1] == '\n')) {
+                    '\n' == __input[input - 1])) {
                     break;
                 }
                 return false;
 
             case OpCode._SBOL:
-                if (input == __bol && __previousChar == '\n') {
+                if (input == __bol && '\n' == __previousChar) {
                     break;
                 }
                 return false;
@@ -821,25 +822,25 @@ public final class Perl5Matcher implements PatternMatcher {
                 return true;
 
             case OpCode._EOL:
-                if ((inputRemains || input < __eol) && nextChar != '\n') {
+                if ((inputRemains || input < __eol) && '\n' != nextChar) {
                     return false;
                 }
-                if (!__multiline && __eol - input > 1) {
+                if (!__multiline && 1 < __eol - input) {
                     return false;
                 }
                 break;
 
             case OpCode._MEOL:
-                if ((inputRemains || input < __eol) && nextChar != '\n') {
+                if ((inputRemains || input < __eol) && '\n' != nextChar) {
                     return false;
                 }
                 break;
 
             case OpCode._SEOL:
-                if ((inputRemains || input < __eol) && nextChar != '\n') {
+                if ((inputRemains || input < __eol) && '\n' != nextChar) {
                     return false;
                 }
-                if (__eol - input > 1) {
+                if (1 < __eol - input) {
                     return false;
                 }
                 break;
@@ -853,7 +854,7 @@ public final class Perl5Matcher implements PatternMatcher {
                 break;
 
             case OpCode._ANY:
-                if ((!inputRemains && input >= __eol) || nextChar == '\n') {
+                if ((!inputRemains && input >= __eol) || '\n' == nextChar) {
                     return false;
                 }
                 inputRemains = (++input < __endOffset);
@@ -871,7 +872,7 @@ public final class Perl5Matcher implements PatternMatcher {
                     return false;
                 }
 
-                if (line > 1 &&
+                if (1 < line &&
                   !__compare(__program, current, __input, input, line)) {
                     return false;
                 }
@@ -884,12 +885,13 @@ public final class Perl5Matcher implements PatternMatcher {
             case OpCode._ANYOF:
                 current = OpCode._getOperand(scan);
 
-                if (nextChar == __EOS && inputRemains) {
+                if (__EOS == nextChar && inputRemains) {
                     nextChar = __input[input];
                 }
 
-                if (nextChar >= 256 || (__program[current + (nextChar >> 4)] &
-                  (1 << (nextChar & 0xf))) != 0) {
+                if (256 <= nextChar || 0 != (
+                  __program[current + (nextChar >> 4)] &
+                    (1 << (nextChar & 0xf)))) {
                     return false;
                 }
 
@@ -936,7 +938,7 @@ public final class Perl5Matcher implements PatternMatcher {
 
                 b = OpCode._isWordCharacter(nextChar);
 
-                if ((a == b) == (__program[scan] == OpCode._BOUND)) {
+                if ((a == b) == (OpCode._BOUND == __program[scan])) {
                     return false;
                 }
                 break;
@@ -987,11 +989,11 @@ public final class Perl5Matcher implements PatternMatcher {
                 arg = OpCode._getArg1(__program, scan);
                 current = __beginMatchOffsets[arg];
 
-                if (current == OpCode._NULL_OFFSET) {
+                if (OpCode._NULL_OFFSET == current) {
                     return false;
                 }
 
-                if (__endMatchOffsets[arg] == OpCode._NULL_OFFSET) {
+                if (OpCode._NULL_OFFSET == __endMatchOffsets[arg]) {
                     return false;
                 }
 
@@ -1009,7 +1011,7 @@ public final class Perl5Matcher implements PatternMatcher {
                     return false;
                 }
 
-                if (line > 1 &&
+                if (1 < line &&
                   !__compare(__input, current, __input, input, line)) {
                     return false;
                 }
@@ -1143,7 +1145,7 @@ public final class Perl5Matcher implements PatternMatcher {
                 return false;
 
             case OpCode._BRANCH:
-                if (__program[next] != OpCode._BRANCH) {
+                if (OpCode._BRANCH != __program[next]) {
                     next = OpCode._getNextOperator(scan);
                 } else {
                     int lastParen;
@@ -1166,8 +1168,8 @@ public final class Perl5Matcher implements PatternMatcher {
                         __lastParen = arg;
 
                         scan = OpCode._getNext(__program, scan);
-                    } while (scan != OpCode._NULL_OFFSET &&
-                      __program[scan] == OpCode._BRANCH);
+                    } while (OpCode._NULL_OFFSET != scan &&
+                      OpCode._BRANCH == __program[scan]);
                     return false;
                 }
 
@@ -1181,11 +1183,11 @@ public final class Perl5Matcher implements PatternMatcher {
             case OpCode._CURLY:
             case OpCode._STAR:
             case OpCode._PLUS:
-                if (op == OpCode._CURLY) {
+                if (OpCode._CURLY == op) {
                     line = OpCode._getArg1(__program, scan);
                     arg = OpCode._getArg2(__program, scan);
                     scan = OpCode._getNextOperator(scan) + 2;
-                } else if (op == OpCode._STAR) {
+                } else if (OpCode._STAR == op) {
                     line = 0;
                     arg = Character.MAX_VALUE;
                     scan = OpCode._getNextOperator(scan);
@@ -1195,7 +1197,7 @@ public final class Perl5Matcher implements PatternMatcher {
                     scan = OpCode._getNextOperator(scan);
                 }
 
-                if (__program[next] == OpCode._EXACTLY) {
+                if (OpCode._EXACTLY == __program[next]) {
                     nextChar = __program[OpCode._getOperand(next) + 1];
                     current = 0;
                 } else {
@@ -1207,18 +1209,18 @@ public final class Perl5Matcher implements PatternMatcher {
                 if (minMod) {
                     minMod = false;
 
-                    if (line > 0 && __repeat(scan, line) < line) {
+                    if (0 < line && __repeat(scan, line) < line) {
                         return false;
                     }
 
 
                     while (arg >= line ||
-                      (arg == Character.MAX_VALUE && line > 0)) {
+                      (Character.MAX_VALUE == arg && 0 < line)) {
                         // there may be a bug here with respect to
                         // __inputOffset >= __input.length, but it seems to be right for
                         // now. the issue is with __inputOffset being reset later.
                         // is this test really supposed to happen here?
-                        if (current == -1000 || __inputOffset >= __endOffset ||
+                        if (-1000 == current || __inputOffset >= __endOffset ||
                           __input[__inputOffset] == nextChar) {
                             if (__match(next)) {
                                 return true;
@@ -1227,7 +1229,7 @@ public final class Perl5Matcher implements PatternMatcher {
 
                         __inputOffset = input + line;
 
-                        if (__repeat(scan, 1) != 0) {
+                        if (0 != __repeat(scan, 1)) {
                             ++line;
                             __inputOffset = input + line;
                         } else {
@@ -1239,8 +1241,8 @@ public final class Perl5Matcher implements PatternMatcher {
                     arg = __repeat(scan, arg);
 
                     if (line < arg &&
-                      OpCode._opType[__program[next]] == OpCode._EOL &&
-                      (!__multiline || __program[next] == OpCode._SEOL)) {
+                      OpCode._EOL == OpCode._opType[__program[next]] &&
+                      (!__multiline || OpCode._SEOL == __program[next])) {
                         line = arg;
                     }
 
@@ -1249,7 +1251,7 @@ public final class Perl5Matcher implements PatternMatcher {
                         // __inputOffset >= __input.length, but it seems to be right for
                         // now. the issue is with __inputOffset being reset later.
                         // is this test really supposed to happen here?
-                        if (current == -1000 || __inputOffset >= __endOffset ||
+                        if (-1000 == current || __inputOffset >= __endOffset ||
                           __input[__inputOffset] == nextChar) {
                             if (__match(next)) {
                                 return true;
@@ -1656,7 +1658,7 @@ public final class Perl5Matcher implements PatternMatcher {
 
         if (__tryExpression(expression, input._beginOffset)) {
             if (__endMatchOffsets[0] == input._endOffset ||
-              input.length() == 0 || input._beginOffset == input._endOffset) {
+              0 == input.length() || input._beginOffset == input._endOffset) {
                 __lastSuccess = true;
                 return true;
             }

@@ -175,7 +175,7 @@ final class HeadlessRunner extends Runner implements Runnable {
                     //Note that a shutdown event will both empty the q
                     //(escaping from the inner do-while) and set myOptQ to
                     //null (escaping from the outer while).
-                    if (i <= 0) {
+                    if (0 >= i) {
                         break;
                     }
                     i--;

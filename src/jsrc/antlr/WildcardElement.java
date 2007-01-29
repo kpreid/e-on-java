@@ -11,7 +11,7 @@ class WildcardElement extends GrammarAtom {
 
     protected String label;
 
-    public WildcardElement(Grammar g, Token t, int autoGenType) {
+    WildcardElement(Grammar g, Token t, int autoGenType) {
         super(g, t, autoGenType);
         line = t.getLine();
     }

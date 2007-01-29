@@ -17,11 +17,11 @@ import java.util.NoSuchElementException;
  */
 public interface Stack {
 
-    public int height();
+    int height();
 
-    public Object pop() throws NoSuchElementException;
+    Object pop() throws NoSuchElementException;
 
-    public void push(Object o);
+    void push(Object o);
 
-    public Object top() throws NoSuchElementException;
+    Object top() throws NoSuchElementException;
 }

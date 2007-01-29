@@ -27,5 +27,5 @@ public interface CompFunc {
     /**
      *
      */
-    public double run(Object a, Object b);
+    double run(Object a, Object b);
 }

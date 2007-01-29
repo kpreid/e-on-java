@@ -157,7 +157,7 @@ public interface MatchResult {
      *
      * @return The length of the match.
      */
-    public int length();
+    int length();
 
 
     /**
@@ -165,7 +165,7 @@ public interface MatchResult {
      *         includes the 0th group. In other words, the result refers to the
      *         number of parenthesized subgroups plus the entire match itself.
      */
-    public int groups();
+    int groups();
 
     /**
      * Returns the contents of the parenthesized subgroups of a match, counting
@@ -185,7 +185,7 @@ public interface MatchResult {
      *         matching the null string, which will return a String of length
      *         0.
      */
-    public String group(int group);
+    String group(int group);
 
 
     /**
@@ -197,7 +197,7 @@ public interface MatchResult {
      *         length of the string, so you shouldn't blindly use the offset to
      *         index an array or String.
      */
-    public int begin(int group);
+    int begin(int group);
 
 
     /**
@@ -207,7 +207,7 @@ public interface MatchResult {
      *         does not exist, returns -1. A group matching the null string
      *         will return its start offset.
      */
-    public int end(int group);
+    int end(int group);
 
 
     /**
@@ -219,7 +219,7 @@ public interface MatchResult {
      * @return The offset of the first token in the indicated pattern subgroup.
      *         If a group was never matched or does not exist, returns -1.
      */
-    public int beginOffset(int group);
+    int beginOffset(int group);
 
 
     /**
@@ -233,7 +233,7 @@ public interface MatchResult {
      *         exist, returns -1. A group matching the null string will return
      *         its start offset.
      */
-    public int endOffset(int group);
+    int endOffset(int group);
 
 
     /**
@@ -241,6 +241,6 @@ public interface MatchResult {
      *
      * @return A string containing the entire match.
      */
-    public String toString();
+    String toString();
 }
 

@@ -32,7 +32,7 @@ public final class PipelineInputStream extends InputStream {
 
     public synchronized int read() throws IOException {
         final int r = in.read();
-        if (r != -1 && marked) {
+        if (-1 != r && marked) {
             ++marked_offset;
         }
         return r;
@@ -41,7 +41,7 @@ public final class PipelineInputStream extends InputStream {
     public synchronized int read(final byte[] b, final int off, final int len)
       throws IOException {
         final int r = in.read(b, off, len);
-        if (r != -1 && marked) {
+        if (-1 != r && marked) {
             marked_offset += r;
         }
         return r;
@@ -112,7 +112,7 @@ public final class PipelineInputStream extends InputStream {
                 byte[] buffer = new byte[1024];
                 int n = 0;
                 int i = in.read(buffer);
-                while (i != -1) {
+                while (-1 != i) {
                     n += i;
                     if (n == buffer.length) {
                         System.arraycopy(buffer,

@@ -138,7 +138,7 @@ public class ThrowableSugar {
                 return result;
             }
             String msg = self.getMessage();
-            if (msg != null && msg.length() >= 1) {
+            if (msg != null && 1 <= msg.length()) {
                 result = "\n" + msg + result;
             }
             self = sub;

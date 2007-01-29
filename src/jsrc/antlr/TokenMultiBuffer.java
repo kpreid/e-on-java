@@ -85,7 +85,7 @@ public class TokenMultiBuffer extends TokenBuffer {
      */
     public void exitBrace() {
         trace("exit");
-        if (myEnterCount <= 0) {
+        if (0 >= myEnterCount) {
             pop();
             myEnterCount = 0;
         } else {

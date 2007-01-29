@@ -116,7 +116,7 @@ public class TextReader extends Reader {
         synchronized (lock) {
             ensureOpen();
             int result = myOptBuf.length() - myNext;
-            if (result >= 1) {
+            if (1 <= result) {
                 return result;
             }
             if (null == myOptFiller) {
@@ -157,7 +157,7 @@ public class TextReader extends Reader {
      */
     public boolean ready() throws IOException {
         synchronized (lock) {
-            return available() >= 1 || null == myOptFiller;
+            return 1 <= available() || null == myOptFiller;
         }
     }
 
@@ -166,7 +166,7 @@ public class TextReader extends Reader {
      */
     public boolean isDone() throws IOException {
         synchronized (lock) {
-            return available() == 0 && null == myOptFiller;
+            return 0 == available() && null == myOptFiller;
         }
     }
 
@@ -206,7 +206,7 @@ public class TextReader extends Reader {
             while (true) {
                 int avail = available();
                 if (0 == avail) {
-                    if (result >= 1) {
+                    if (1 <= result) {
                         return result;
                     } else if (null == myOptFiller) {
                         return -1;
@@ -258,7 +258,7 @@ public class TextReader extends Reader {
      */
     public Character readChar() throws IOException {
         int result = read();
-        if (result == -1) {
+        if (-1 == result) {
             return null;
         } else {
             return CharacterMakerSugar.valueOf((char)result);
@@ -272,7 +272,7 @@ public class TextReader extends Reader {
     public String readString(int size) throws IOException {
         char[] cbuf = new char[size];
         int numRead = read(cbuf);
-        if (numRead == -1) {
+        if (-1 == numRead) {
             //end of file
             return null;
         }

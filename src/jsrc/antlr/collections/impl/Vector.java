@@ -57,7 +57,7 @@ public class Vector implements Cloneable {
         if (i >= data.length) {
             throw new ArrayIndexOutOfBoundsException(i + " >= " + data.length);
         }
-        if (i < 0) {
+        if (0 > i) {
             throw new ArrayIndexOutOfBoundsException(i + " < 0 ");
         }
         return data[i];
@@ -69,7 +69,7 @@ public class Vector implements Cloneable {
 
     public synchronized void ensureCapacity(int minIndex) {
         if (minIndex + 1 > data.length) {
-            Object oldData[] = data;
+            Object[] oldData = data;
             int n = data.length * 2;
             if (minIndex + 1 > n) {
                 n = minIndex + 1;
@@ -88,7 +88,7 @@ public class Vector implements Cloneable {
         if (i <= lastElement) { // if found it
             data[i] = null;                // kill ref for GC
             int above = lastElement - i;
-            if (above > 0) {
+            if (0 < above) {
                 System.arraycopy(data, i + 1, data, i, above);
             }
             lastElement--;

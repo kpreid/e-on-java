@@ -111,7 +111,7 @@ final class OpCode {
       _WHILEM = 34;  // no       Do curly processing and see if rest matches.
 
     // Lengths of the various operands.
-    static final int _operandLength[] = {0,
+    static final int[] _operandLength = {0,
       0,
       0,
       0,
@@ -147,7 +147,7 @@ final class OpCode {
       0,
       0};
 
-    static final char _opType[] = {_END,
+    static final char[] _opType = {_END,
       _BOL,
       _BOL,
       _BOL,
@@ -183,33 +183,33 @@ final class OpCode {
       _END,
       _WHILEM};
 
-    static final char _opLengthVaries[] =
+    static final char[] _opLengthVaries =
       {_BRANCH, _BACK, _STAR, _PLUS, _CURLY, _CURLYX, _REF, _WHILEM};
 
-    static final char _opLengthOne[] =
+    static final char[] _opLengthOne =
       {_ANY, _SANY, _ANYOF, _ALNUM, _NALNUM, _SPACE, _NSPACE, _DIGIT, _NDIGIT};
 
     static final int _NULL_OFFSET = -1;
 
     static final char _NULL_POINTER = 0;
 
-    static private final int _getNextOffset(char[] program, int offset) {
+    static private int _getNextOffset(char[] program, int offset) {
         return ((int)program[offset + 1]);
     }
 
-    static final char _getArg1(char[] program, int offset) {
+    static char _getArg1(char[] program, int offset) {
         return program[offset + 2];
     }
 
-    static final char _getArg2(char[] program, int offset) {
+    static char _getArg2(char[] program, int offset) {
         return program[offset + 3];
     }
 
-    static final int _getOperand(int offset) {
+    static int _getOperand(int offset) {
         return (offset + 2);
     }
 
-    static final boolean _isInArray(char ch, char[] array, int start) {
+    static boolean _isInArray(char ch, char[] array, int start) {
         while (start < array.length) {
             if (ch == array[start++]) {
                 return true;
@@ -218,15 +218,15 @@ final class OpCode {
         return false;
     }
 
-    static final int _getNextOperator(int offset) {
+    static int _getNextOperator(int offset) {
         return (offset + 2);
     }
 
-    static final int _getPrevOperator(int offset) {
+    static int _getPrevOperator(int offset) {
         return (offset - 2);
     }
 
-    static final int _getNext(char[] program, int offset) {
+    static int _getNext(char[] program, int offset) {
         int offs;
 
         if (program == null) {
@@ -235,11 +235,11 @@ final class OpCode {
 
 
         offs = _getNextOffset(program, offset);
-        if (offs == _NULL_POINTER) {
+        if (_NULL_POINTER == offs) {
             return _NULL_OFFSET;
         }
 
-        if (program[offset] == OpCode._BACK) {
+        if (_BACK == program[offset]) {
             return (offset - offs);
         }
 
@@ -248,10 +248,10 @@ final class OpCode {
 
     // doesn't really belong in this class, but we want Perl5Matcher not to
     // depend on Perl5Compiler
-    static final boolean _isWordCharacter(char token) {
-        return ((token >= 'a' && token <= 'z') ||
-          (token >= 'A' && token <= 'Z') || (token >= '0' && token <= '9') ||
-          (token == '_'));
+    static boolean _isWordCharacter(char token) {
+        return (('a' <= token && 'z' >= token) ||
+          ('A' <= token && 'Z' >= token) || ('0' <= token && '9' >= token) ||
+          ('_' == token));
     }
 }
 

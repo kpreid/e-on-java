@@ -17,8 +17,7 @@ import antlr.collections.impl.BitSet;
  * Any of the channels can be filtered off as "hidden" channels whose tokens
  * can be accessed from the parser.
  */
-public class TokenStreamHiddenTokenFilter extends TokenStreamBasicFilter
-  implements TokenStream {
+public class TokenStreamHiddenTokenFilter extends TokenStreamBasicFilter {
 
     // protected BitSet discardMask;
     protected BitSet hideMask;

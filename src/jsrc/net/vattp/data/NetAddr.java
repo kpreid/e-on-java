@@ -65,17 +65,17 @@ public class NetAddr {
             optAddr = "";
         }
         int colon = optAddr.indexOf(':');
-        if (colon < 0) {
+        if (0 > colon) {
             myPortNumber = 0;
         } else {
             myPortNumber = Integer.parseInt(optAddr.substring(colon + 1));
             optAddr = optAddr.substring(0, colon);
         }
         int slash = optAddr.indexOf('/');
-        if (slash >= 0) {
+        if (0 <= slash) {
             optAddr = optAddr.substring(slash + 1);
         }
-        if (optAddr.length() >= 1) {
+        if (1 <= optAddr.length()) {
             myOptIP = InetAddress.getByName(optAddr);
         } else {
             myOptIP = null;

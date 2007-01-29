@@ -12,9 +12,9 @@ import java.io.OutputStream;
  */
 public final class ChunkedOutputStream extends OutputStream {
 
-    private OutputStream out;   // The underlying stream.
-    private byte[] buffer;      // The output buffer.
-    private int i;              // The end of the buffered data.
+    private OutputStream out;    // The underlying stream.
+    private final byte[] buffer; // The output buffer.
+    private int i;               // The end of the buffered data.
 
     private ChunkedOutputStream(final int chunk_size, final OutputStream out) {
         this.out = out;
@@ -42,7 +42,7 @@ public final class ChunkedOutputStream extends OutputStream {
     }
 
     public void write(final byte[] b, int off, int len) throws IOException {
-        while (len != 0) {
+        while (0 != len) {
             if (i == buffer.length) {
                 flush();
             }

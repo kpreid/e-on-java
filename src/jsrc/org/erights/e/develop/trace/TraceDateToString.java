@@ -49,11 +49,14 @@ import java.util.Date;
  */
 class TraceDateToString {
 
+    private TraceDateToString() {
+    }
+
     /**
      * XXX should fix the tracing package to use 'long absMillis' instead of
      * 'Date date'
      */
-    final static String dateTimeString(Date date) {
+    static String dateTimeString(Date date) {
         return ETimeFormat.formatTime(date.getTime());
     }
 
@@ -61,7 +64,7 @@ class TraceDateToString {
      * This must return one that can be used within a filename, so convert ":"s
      * to "_"s.
      */
-    final static String terseCompleteDateString(Date date) {
+    static String terseCompleteDateString(Date date) {
         return ETimeFormat.formatTime(date.getTime()).replace(':', '_');
     }
 }

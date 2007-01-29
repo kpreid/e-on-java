@@ -12,7 +12,7 @@ class StringLiteralSymbol extends TokenSymbol {
     protected String label;        // was this string literal labeled?
 
 
-    public StringLiteralSymbol(String r) {
+    StringLiteralSymbol(String r) {
         super(r);
     }
 

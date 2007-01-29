@@ -34,7 +34,7 @@ public class ASTFrame extends JFrame {
         public void valueChanged(TreeSelectionEvent event) {
             TreePath path = event.getPath();
             System.out.println("Selected: " + path.getLastPathComponent());
-            Object elements[] = path.getPath();
+            Object[] elements = path.getPath();
             for (int i = 0; i < elements.length; i++) {
                 System.out.print("->" + elements[i]);
             }
@@ -61,7 +61,7 @@ public class ASTFrame extends JFrame {
         setSize(WIDTH, HEIGHT);
     }
 
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         // Create the tree nodes
         ASTFactory factory = new ASTFactory();
         CommonAST r = (CommonAST)factory.create(0, "ROOT");

@@ -15,7 +15,7 @@ class ExceptionHandler {
     protected Token action;
 
 
-    public ExceptionHandler(Token exceptionTypeAndName_, Token action_) {
+    ExceptionHandler(Token exceptionTypeAndName_, Token action_) {
         exceptionTypeAndName = exceptionTypeAndName_;
         action = action_;
     }

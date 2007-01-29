@@ -108,11 +108,11 @@ public abstract class ConstList extends EList
         if ("run".equals(verb)) {
             return args;
         }
-        if ("__respondsTo".equals(verb) && args.size() == 2) {
+        if ("__respondsTo".equals(verb) && 2 == args.size()) {
             //XXX should say yes if args[0] =~ `run`
             return Boolean.FALSE;
         }
-        if ("__getAllegedType".equals(verb) && args.size() == 0) {
+        if ("__getAllegedType".equals(verb) && 0 == args.size()) {
             //XXX kludge
             return E.call(null, "__getAllegedType");
         }

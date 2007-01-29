@@ -15,7 +15,7 @@ class TokenRangeElement extends AlternativeElement {
     protected String beginText;
     protected String endText;
 
-    public TokenRangeElement(Grammar g, Token t1, Token t2, int autoGenType) {
+    TokenRangeElement(Grammar g, Token t1, Token t2, int autoGenType) {
         super(g, t1, autoGenType);
         begin =
           grammar.tokenManager.getTokenSymbol(t1.getText()).getTokenType();

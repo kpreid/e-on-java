@@ -82,7 +82,7 @@ public final class PrintStreamWriter extends Writer {
     static public PrintWriter stdout() {
         if (System.out != lastOutStream) {
             lastOutStream = System.out;
-            lastOutWriter = PrintStreamWriter.make(lastOutStream);
+            lastOutWriter = make(lastOutStream);
         }
         return lastOutWriter;
     }
@@ -94,7 +94,7 @@ public final class PrintStreamWriter extends Writer {
     static public PrintWriter stderr() {
         if (System.err != lastErrStream) {
             lastErrStream = System.err;
-            lastErrWriter = PrintStreamWriter.make(lastErrStream);
+            lastErrWriter = make(lastErrStream);
         }
         return lastErrWriter;
     }

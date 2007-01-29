@@ -46,12 +46,12 @@ public class DataOutputSugar {
                                      int highbit) throws IOException {
 
         int signum = wholeNum.signum();
-        T.require(signum >= 0, "Non-negative integer expected: ", wholeNum);
+        T.require(0 <= signum, "Non-negative integer expected: ", wholeNum);
 
         int result = 1;
         int lowByte = (wholeNum.intValue() & 0x7F) | highbit;
         BigInteger highRest = wholeNum.shiftRight(7);
-        if (highRest.signum() >= 1) {
+        if (1 <= highRest.signum()) {
             result += writeWholeNum(self, highRest, 0x80);
         }
         self.writeByte(lowByte);

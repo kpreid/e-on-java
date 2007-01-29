@@ -30,7 +30,7 @@ public class UnionGuard implements Guard {
      * @param subGuards
      */
     UnionGuard(ConstList subGuards) {
-        T.require(subGuards.size() >= 2,
+        T.require(2 <= subGuards.size(),
                   "UnionGuard unneeded any[",
                   subGuards,
                   "]");

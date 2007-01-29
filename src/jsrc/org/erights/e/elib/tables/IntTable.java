@@ -83,6 +83,7 @@ public class IntTable extends FlexMapImpl {
 
     /**
      *
+     * @noinspection CloneDoesntCallSuperClone
      */
     public Object clone() {
         /* JAY -- put in explicit casts to work around foo2j bug. */
@@ -100,7 +101,7 @@ public class IntTable extends FlexMapImpl {
      */
     public int getInt(Object key) throws IndexOutOfBoundsException {
         int pos = myKeys.findPosOf(key);
-        if (pos == -1) {
+        if (-1 == pos) {
             throw new IndexOutOfBoundsException("key not found");
         }
         return ((IntColumn)myValues).getInt(pos);
@@ -113,7 +114,7 @@ public class IntTable extends FlexMapImpl {
      */
     public int getInt(Object key, int instead) {
         int pos = myKeys.findPosOf(key);
-        if (pos == -1) {
+        if (-1 == pos) {
             return instead;
         }
         return ((IntColumn)myValues).getInt(pos);
@@ -147,7 +148,7 @@ public class IntTable extends FlexMapImpl {
         }
         while (true) {
             int pos = myKeys.store(key);
-            if (pos != -1) {
+            if (-1 != pos) {
                 ((IntColumn)myValues).putInt(pos, value);
                 return;
             }

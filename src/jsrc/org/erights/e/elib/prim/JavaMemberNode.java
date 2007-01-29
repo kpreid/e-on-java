@@ -95,7 +95,7 @@ public abstract class JavaMemberNode extends MethodNode implements EStackItem {
         result.append(getVerb()).append('(');
         Class[] types = parameterTypes();
         for (int i = 0; i < types.length; i++) {
-            if (i >= 1) {
+            if (1 <= i) {
                 result.append(", ");
             }
             result.append(ClassDesc.flatSig(types[i]));

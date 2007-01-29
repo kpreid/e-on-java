@@ -181,7 +181,7 @@ class SendThread extends Thread {
         myVat = vat;
         myAddressesTried = addressesTried;
         T.notNull(myVat, "Bad Vat");
-        this.start();
+        start();
     }
 
     /**
@@ -202,7 +202,7 @@ class SendThread extends Thread {
         myReader = reader;
         myVat = vat;
         T.notNull(myVat, "Bad Vat");
-        this.start();
+        start();
     }
 
     /**
@@ -432,7 +432,7 @@ class SendThread extends Thread {
     }
 
     private void increment(byte[] value) {
-        for (int i = value.length - 1; i >= 0; i--) {
+        for (int i = value.length - 1; 0 <= i; i--) {
             byte v = (value[i] += 1);
             if (0 != v) {
                 break;
@@ -503,12 +503,12 @@ class SendThread extends Thread {
     static int msgLength(int len, byte[] buf, int off, boolean compressed)
       throws IOException {
         if (compressed) {
-            if (len < 128) {
+            if (128 > len) {
                 buf[off++] = (byte)(len & 0x7f);
-            } else if (len < 16384) {
+            } else if (16384 > len) {
                 buf[off++] = (byte)(((len >> 8) & 0x3f) | 0x80);
                 buf[off++] = (byte)(len & 0xff);
-            } else if (len < 2097152) {
+            } else if (2097152 > len) {
                 buf[off++] = (byte)(((len >> 16) & 0x1f) | 0xc0);
                 buf[off++] = (byte)((len >> 8) & 0xff);
                 buf[off++] = (byte)(len & 0xff);
@@ -747,11 +747,11 @@ class SendThread extends Thread {
         int commLength = baos.size() - 24 - mySequence.length;
 
         int offset = -1;
-        if (commLength < 128) {
+        if (128 > commLength) {
             offset = 3;
-        } else if (commLength < 16384) {
+        } else if (16384 > commLength) {
             offset = 2;
-        } else if (commLength < 2097152) {
+        } else if (2097152 > commLength) {
             offset = 1;
         } else {
             throw new IOException(
@@ -892,7 +892,7 @@ class SendThread extends Thread {
       throws IOException {
         int offset = off;
         while (0 != len) {
-            int thisLen = (len > NOTIFY_EVERY) ? NOTIFY_EVERY : len;
+            int thisLen = (NOTIFY_EVERY < len) ? NOTIFY_EVERY : len;
             len -= thisLen;
             myOutputStream.write(b, offset, thisLen);
             offset += thisLen;

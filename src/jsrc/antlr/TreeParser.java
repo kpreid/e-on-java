@@ -178,14 +178,14 @@ public class TreeParser {
         traceIndent();
         System.out
           .println("> " + rname + "(" + (t != null ? t.toString() : "null") +
-            ")" + ((inputState.guessing > 0) ? " [guessing]" : ""));
+            ")" + ((0 < inputState.guessing) ? " [guessing]" : ""));
     }
 
     public void traceOut(String rname, AST t) {
         traceIndent();
         System.out
           .println("< " + rname + "(" + (t != null ? t.toString() : "null") +
-            ")" + ((inputState.guessing > 0) ? " [guessing]" : ""));
+            ")" + ((0 < inputState.guessing) ? " [guessing]" : ""));
         traceDepth--;
     }
 }

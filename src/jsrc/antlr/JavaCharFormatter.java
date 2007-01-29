@@ -37,12 +37,12 @@ class JavaCharFormatter implements CharFormatter {
         case'"':
             return forCharLiteral ? "\"" : "\\\"";
         default:
-            if (c < ' ' || c > 126) {
-                if ((0x0000 <= c) && (c <= 0x000F)) {
+            if (' ' > c || 126 < c) {
+                if ((0x0000 <= c) && (0x000F >= c)) {
                     return "\\u000" + Integer.toString(c, 16);
-                } else if ((0x0010 <= c) && (c <= 0x00FF)) {
+                } else if ((0x0010 <= c) && (0x00FF >= c)) {
                     return "\\u00" + Integer.toString(c, 16);
-                } else if ((0x0100 <= c) && (c <= 0x0FFF)) {
+                } else if ((0x0100 <= c) && (0x0FFF >= c)) {
                     return "\\u0" + Integer.toString(c, 16);
                 } else {
                     return "\\u" + Integer.toString(c, 16);

@@ -9,11 +9,11 @@ package antlr;
 
 class SynPredBlock extends AlternativeBlock {
 
-    public SynPredBlock(Grammar g) {
+    SynPredBlock(Grammar g) {
         super(g);
     }
 
-    public SynPredBlock(Grammar g, Token start) {
+    SynPredBlock(Grammar g, Token start) {
         super(g, start, false);
     }
 

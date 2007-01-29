@@ -82,7 +82,7 @@ public abstract class CharScanner implements TokenStream {
     }
 
     public void consume() throws CharStreamException {
-        if (inputState.guessing == 0) {
+        if (0 == inputState.guessing) {
             char c = LA(1);
             if (caseSensitive) {
                 append(c);
@@ -91,7 +91,7 @@ public abstract class CharScanner implements TokenStream {
                 // CharScanner.LA() would toLower it.
                 append(inputState.input.LA(1));
             }
-            if (c == '\t') {
+            if ('\t' == c) {
                 tab();
             } else {
                 inputState.column++;
@@ -104,7 +104,7 @@ public abstract class CharScanner implements TokenStream {
      * Consume chars until one matches the given char
      */
     public void consumeUntil(int c) throws CharStreamException {
-        while (LA(1) != EOF_CHAR && LA(1) != c) {
+        while (EOF_CHAR != LA(1) && LA(1) != c) {
             consume();
         }
     }
@@ -113,7 +113,7 @@ public abstract class CharScanner implements TokenStream {
      * Consume chars until one matches the given set
      */
     public void consumeUntil(BitSet set) throws CharStreamException {
-        while (LA(1) != EOF_CHAR && !set.member(LA(1))) {
+        while (EOF_CHAR != LA(1) && !set.member(LA(1))) {
             consume();
         }
     }

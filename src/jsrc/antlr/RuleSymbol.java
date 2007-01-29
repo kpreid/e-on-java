@@ -19,7 +19,7 @@ class RuleSymbol extends GrammarSymbol {
     String access;        // access specifier for this rule
     String comment;        // A javadoc comment if any.
 
-    public RuleSymbol(String r) {
+    RuleSymbol(String r) {
         super(r);
         references = new Vector();
     }

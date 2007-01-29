@@ -137,7 +137,7 @@ public class DefineGrammarSymbols implements ANTLRGrammarParseBehavior {
         String id = r.getText();
 
         //		if ( Character.isUpperCase(id.charAt(0)) ) {
-        if (r.type == ANTLRTokenTypes.TOKEN_REF) {
+        if (ANTLRTokenTypes.TOKEN_REF == r.type) {
             // lexer rule
             id = CodeGenerator.encodeLexerRuleName(id);
             // make sure we define it as token identifier also
@@ -510,7 +510,7 @@ public class DefineGrammarSymbols implements ANTLRGrammarParseBehavior {
         // FIXME: depending on the mode the inserted header actions should
         // be checked for sanity.
         if (headerActions.containsKey(key)) {
-            if (key.equals("")) {
+            if ("".equals(key)) {
                 tool.error(act.getLine() + ": header action already defined");
             } else {
                 tool.error(act.getLine() + ": header action '" + key +
@@ -548,7 +548,7 @@ public class DefineGrammarSymbols implements ANTLRGrammarParseBehavior {
                         int autoGenType) {
         String id = r.getText();
         //		if ( Character.isUpperCase(id.charAt(0)) ) { // lexer rule?
-        if (r.type == ANTLRTokenTypes.TOKEN_REF) {
+        if (ANTLRTokenTypes.TOKEN_REF == r.type) {
             // lexer rule?
             id = CodeGenerator.encodeLexerRuleName(id);
         }
@@ -587,7 +587,7 @@ public class DefineGrammarSymbols implements ANTLRGrammarParseBehavior {
                               boolean lastInRule) {
         // ensure that the DefineGrammarSymbols methods are called; otherwise a range addes more
         // token refs to the alternative by calling MakeGrammar.refToken etc...
-        if (t1.getText().charAt(0) == '"') {
+        if ('"' == t1.getText().charAt(0)) {
             refStringLiteral(t1,
                              null,
                              GrammarElement.AUTO_GEN_NONE,
@@ -601,7 +601,7 @@ public class DefineGrammarSymbols implements ANTLRGrammarParseBehavior {
                       GrammarElement.AUTO_GEN_NONE,
                       lastInRule);
         }
-        if (t2.getText().charAt(0) == '"') {
+        if ('"' == t2.getText().charAt(0)) {
             _refStringLiteral(t2,
                               null,
                               GrammarElement.AUTO_GEN_NONE,
@@ -649,13 +649,13 @@ public class DefineGrammarSymbols implements ANTLRGrammarParseBehavior {
      * @param value The token containing the option value.
      */
     public void setFileOption(Token key, Token value, String filename) {
-        if (key.getText().equals("language")) {
-            if (value.getType() == ANTLRParser.STRING_LITERAL) {
+        if ("language".equals(key.getText())) {
+            if (ANTLRParser.STRING_LITERAL == value.getType()) {
                 language =
                   StringUtils.stripBack(StringUtils.stripFront(value.getText(),
                                                                '"'), '"');
-            } else if (value.getType() == ANTLRParser.TOKEN_REF ||
-              value.getType() == ANTLRParser.RULE_REF) {
+            } else if (ANTLRParser.TOKEN_REF == value.getType() ||
+              ANTLRParser.RULE_REF == value.getType()) {
                 language = value.getText();
             } else {
                 tool.error("language option must be string or identifier",
@@ -663,8 +663,8 @@ public class DefineGrammarSymbols implements ANTLRGrammarParseBehavior {
                            value.getLine(),
                            value.getColumn());
             }
-        } else if (key.getText().equals("mangleLiteralPrefix")) {
-            if (value.getType() == ANTLRParser.STRING_LITERAL) {
+        } else if ("mangleLiteralPrefix".equals(key.getText())) {
+            if (ANTLRParser.STRING_LITERAL == value.getType()) {
                 tool.literalsPrefix =
                   StringUtils.stripFrontBack(value.getText(), "\"", "\"");
             } else {
@@ -673,10 +673,10 @@ public class DefineGrammarSymbols implements ANTLRGrammarParseBehavior {
                            value.getLine(),
                            value.getColumn());
             }
-        } else if (key.getText().equals("upperCaseMangledLiterals")) {
-            if (value.getText().equals("true")) {
+        } else if ("upperCaseMangledLiterals".equals(key.getText())) {
+            if ("true".equals(value.getText())) {
                 tool.upperCaseMangledLiterals = true;
-            } else if (value.getText().equals("false")) {
+            } else if ("false".equals(value.getText())) {
                 tool.upperCaseMangledLiterals = false;
             } else {
                 grammar.antlrTool
@@ -686,64 +686,64 @@ public class DefineGrammarSymbols implements ANTLRGrammarParseBehavior {
                     key.getLine(),
                     key.getColumn());
             }
-        } else if (key.getText().equals("namespaceStd") ||
-          key.getText().equals("namespaceAntlr") ||
-          key.getText().equals("genHashLines")) {
-            if (!language.equals("Cpp")) {
+        } else if ("namespaceStd".equals(key.getText()) ||
+          "namespaceAntlr".equals(key.getText()) ||
+          "genHashLines".equals(key.getText())) {
+            if (!"Cpp".equals(language)) {
                 tool.error(key.getText() + " option only valid for C++",
                            filename,
                            key.getLine(),
                            key.getColumn());
             } else {
-                if (key.getText().equals("noConstructors")) {
-                    if (!(value.getText().equals("true") ||
-                      value.getText().equals("false"))) {
+                if ("noConstructors".equals(key.getText())) {
+                    if (!("true".equals(value.getText()) ||
+                      "false".equals(value.getText()))) {
                         tool.error(
                           "noConstructors option must be true or false",
                           filename,
                           value.getLine(),
                           value.getColumn());
                     }
-                    tool.noConstructors = value.getText().equals("true");
-                } else if (key.getText().equals("genHashLines")) {
-                    if (!(value.getText().equals("true") ||
-                      value.getText().equals("false"))) {
+                    tool.noConstructors = "true".equals(value.getText());
+                } else if ("genHashLines".equals(key.getText())) {
+                    if (!("true".equals(value.getText()) ||
+                      "false".equals(value.getText()))) {
                         tool.error("genHashLines option must be true or false",
                                    filename,
                                    value.getLine(),
                                    value.getColumn());
                     }
-                    tool.genHashLines = value.getText().equals("true");
+                    tool.genHashLines = "true".equals(value.getText());
                 } else {
-                    if (value.getType() != ANTLRParser.STRING_LITERAL) {
+                    if (ANTLRParser.STRING_LITERAL != value.getType()) {
                         tool.error(key.getText() + " option must be a string",
                                    filename,
                                    value.getLine(),
                                    value.getColumn());
                     } else {
-                        if (key.getText().equals("namespaceStd")) {
+                        if ("namespaceStd".equals(key.getText())) {
                             tool.namespaceStd = value.getText();
-                        } else if (key.getText().equals("namespaceAntlr")) {
+                        } else if ("namespaceAntlr".equals(key.getText())) {
                             tool.namespaceAntlr = value.getText();
                         }
                     }
                 }
             }
-        } else if (key.getText().equals("namespace")) {
-            if (!language.equals("Cpp") && !language.equals("CSharp")) {
+        } else if ("namespace".equals(key.getText())) {
+            if (!"Cpp".equals(language) && !"CSharp".equals(language)) {
                 tool.error(key.getText() +
                   " option only valid for C++ and C# (a.k.a CSharp)",
                            filename,
                            key.getLine(),
                            key.getColumn());
             } else {
-                if (value.getType() != ANTLRParser.STRING_LITERAL) {
+                if (ANTLRParser.STRING_LITERAL != value.getType()) {
                     tool.error(key.getText() + " option must be a string",
                                filename,
                                value.getLine(),
                                value.getColumn());
                 } else {
-                    if (key.getText().equals("namespace")) {
+                    if ("namespace".equals(key.getText())) {
                         tool.setNameSpace(value.getText());
                     }
                 }
@@ -764,8 +764,8 @@ public class DefineGrammarSymbols implements ANTLRGrammarParseBehavior {
      * @param value The token containing the option value.
      */
     public void setGrammarOption(Token key, Token value) {
-        if (key.getText().equals("tokdef") ||
-          key.getText().equals("tokenVocabulary")) {
+        if ("tokdef".equals(key.getText()) ||
+          "tokenVocabulary".equals(key.getText())) {
             tool.error(
               "tokdef/tokenVocabulary options are invalid >= ANTLR 2.6.0.\n" +
                 "  Use importVocab/exportVocab instead.  Please see the documentation.\n" +
@@ -775,17 +775,17 @@ public class DefineGrammarSymbols implements ANTLRGrammarParseBehavior {
               grammar.getFilename(),
               value.getLine(),
               value.getColumn());
-        } else if (key.getText().equals("literal") &&
+        } else if ("literal".equals(key.getText()) &&
           grammar instanceof LexerGrammar) {
             tool.error("the literal option is invalid >= ANTLR 2.6.0.\n" +
               "  Use the \"tokens {...}\" mechanism instead.",
                        grammar.getFilename(),
                        value.getLine(),
                        value.getColumn());
-        } else if (key.getText().equals("exportVocab")) {
+        } else if ("exportVocab".equals(key.getText())) {
             // Set the token manager associated with the parser
-            if (value.getType() == ANTLRParser.RULE_REF ||
-              value.getType() == ANTLRParser.TOKEN_REF) {
+            if (ANTLRParser.RULE_REF == value.getType() ||
+              ANTLRParser.TOKEN_REF == value.getType()) {
                 grammar.exportVocab = value.getText();
             } else {
                 tool.error("exportVocab must be an identifier",
@@ -793,9 +793,9 @@ public class DefineGrammarSymbols implements ANTLRGrammarParseBehavior {
                            value.getLine(),
                            value.getColumn());
             }
-        } else if (key.getText().equals("importVocab")) {
-            if (value.getType() == ANTLRParser.RULE_REF ||
-              value.getType() == ANTLRParser.TOKEN_REF) {
+        } else if ("importVocab".equals(key.getText())) {
+            if (ANTLRParser.RULE_REF == value.getType() ||
+              ANTLRParser.TOKEN_REF == value.getType()) {
                 grammar.importVocab = value.getText();
             } else {
                 tool.error("importVocab must be an identifier",
@@ -822,7 +822,7 @@ public class DefineGrammarSymbols implements ANTLRGrammarParseBehavior {
                            Token name,
                            String superClass,
                            String doc) {
-        if (numLexers > 0) {
+        if (0 < numLexers) {
             tool.panic("You may only have one lexer per grammar file: class " +
               name.getText());
         }
@@ -862,7 +862,7 @@ public class DefineGrammarSymbols implements ANTLRGrammarParseBehavior {
                             Token name,
                             String superClass,
                             String doc) {
-        if (numParsers > 0) {
+        if (0 < numParsers) {
             tool.panic(
               "You may only have one parser per grammar file: class " +
                 name.getText());
@@ -900,7 +900,7 @@ public class DefineGrammarSymbols implements ANTLRGrammarParseBehavior {
                                 Token name,
                                 String superClass,
                                 String doc) {
-        if (numTreeParsers > 0) {
+        if (0 < numTreeParsers) {
             tool.panic(
               "You may only have one tree parser per grammar file: class " +
                 name.getText());

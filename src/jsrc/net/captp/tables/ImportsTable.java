@@ -19,8 +19,7 @@ public class ImportsTable extends CommTable {
     }
 
     /**
-     * @param index
-     * @param value
+     *
      */
     public void store(int index, EProxyResolver value) {
         if (!isFree(index)) {

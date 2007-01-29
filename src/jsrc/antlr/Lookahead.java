@@ -148,7 +148,7 @@ public class Lookahead implements Cloneable {
      */
     public Lookahead intersection(Lookahead q) {
         Lookahead p = new Lookahead(fset.and(q.fset));
-        if (this.hasEpsilon && q.hasEpsilon) {
+        if (hasEpsilon && q.hasEpsilon) {
             p.setEpsilon();
         }
         return p;

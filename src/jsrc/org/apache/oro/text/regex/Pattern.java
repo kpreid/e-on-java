@@ -88,7 +88,7 @@ public interface Pattern {
      * @return The original string representation of the regular expression
      *         pattern.
      */
-    public String getPattern();
+    String getPattern();
 
 
     /**
@@ -98,6 +98,6 @@ public interface Pattern {
      *
      * @return The compilation options used to compile the pattern.
      */
-    public int getOptions();
+    int getOptions();
 }
 

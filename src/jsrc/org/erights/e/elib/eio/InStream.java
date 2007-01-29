@@ -29,7 +29,7 @@ public interface InStream extends Stream {
      * side-effects should have happened. If another IOException is thrown,
      * then any number up to atMost may have been consumed.
      */
-    static public final String NOW = "NOW";
+    String NOW = "NOW";
 
     /**
      * <b>sched</b> value: <b><i><font color="#ff0000">Warning: may block the
@@ -46,7 +46,7 @@ public interface InStream extends Stream {
      * with a one-top-level-expr-at-a-time parser parsing an InStream of
      * characters. </ul>
      */
-    static public final String WAIT = "WAIT";
+    String WAIT = "WAIT";
 
     /**
      * <b>sched</b> value: Registers a claim for the next
@@ -55,30 +55,30 @@ public interface InStream extends Stream {
      * When these characters become ready, the claim will be satisfied and the
      * promise will be resolved.
      */
-    static public final String LATER = "LATER";
+    String LATER = "LATER";
 
     /**
      * <b>proceed</b> value: Advances the stream past the obtained data.
      */
-    static public final String ADVANCE = "ADVANCE";
+    String ADVANCE = "ADVANCE";
 
     /**
      * <b>proceed</b> value: Does not advance the stream.
      * <p/>
      * A QUERY operation should ideally be side-effect free.
      */
-    static public final String QUERY = "QUERY";
+    String QUERY = "QUERY";
 
     /**
      * <b>report</b> value: Return the obtained data.
      */
-    static public final String ELEMENTS = "ELEMENTS";
+    String ELEMENTS = "ELEMENTS";
 
     /**
      * <b>report</b> value: Ignore the obtained data and return termination
      * status.
      */
-    static public final String STATUS = "STATUS";
+    String STATUS = "STATUS";
 
 
     /**

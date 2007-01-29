@@ -165,10 +165,10 @@ class FlexListImpl extends FlexList implements ArrayedList {
         while (nextBelow <= nextAbove) {
             Object specimen = a[nextBelow];
             double comp = func.run(specimen, pivot);
-            if (comp <= 0.0) {
+            if (0.0 >= comp) {
                 //don't need to swap, since it'll already be below
                 nextBelow++;
-            } else if (comp > 0.0) {
+            } else if (0.0 < comp) {
                 a[nextBelow] = a[nextAbove];
                 a[nextAbove] = specimen;
                 nextAbove--;

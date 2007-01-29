@@ -19,7 +19,7 @@ class ExceptionSpec {
     protected Vector handlers;
 
 
-    public ExceptionSpec(Token label_) {
+    ExceptionSpec(Token label_) {
         label = label_;
         handlers = new Vector();
     }

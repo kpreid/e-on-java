@@ -16,7 +16,7 @@ public final class HTTPException extends IOException {
     /**
      * The HTTP status code.
      */
-    private int status;
+    private final int status;
 
     /**
      * Constructs an <code>HTTPException</code>.

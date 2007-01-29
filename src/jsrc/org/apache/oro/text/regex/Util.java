@@ -158,7 +158,7 @@ public final class Util {
         pinput = new PatternMatcherInput(input);
         beginOffset = 0;
 
-        while (--limit != 0 && matcher.contains(pinput, pattern)) {
+        while (0 != --limit && matcher.contains(pinput, pattern)) {
             currentResult = matcher.getMatch();
             results.addElement(input.substring(beginOffset,
                                                currentResult.beginOffset(0)));
@@ -245,7 +245,7 @@ public final class Util {
 
         // Must be != 0 because SUBSTITUTE_ALL is represented by -1.
         // Do NOT change to numSubs > 0.
-        while (numSubs != 0 && matcher.contains(pinput, pattern)) {
+        while (0 != numSubs && matcher.contains(pinput, pattern)) {
             --numSubs;
             ++subCount;
             currentResult = matcher.getMatch();
@@ -262,7 +262,7 @@ public final class Util {
 
         // No substitutions performed. There's no point in duplicating
         // the string as would happen if this check were omitted.
-        if (subCount == 0) {
+        if (0 == subCount) {
             return input;
         }
 

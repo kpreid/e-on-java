@@ -39,7 +39,7 @@ class CallThunk implements Thunk, EPrintable {
 
     private final Object[] myArgs;
 
-    public CallThunk(Object receiver, String verb, Object[] args) {
+    CallThunk(Object receiver, String verb, Object[] args) {
         myReceiver = receiver;
         myVerb = verb;
         myArgs = args;

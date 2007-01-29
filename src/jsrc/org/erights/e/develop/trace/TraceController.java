@@ -417,11 +417,11 @@ public class TraceController implements TraceConstants {
                     changeOneDefault(TRACE, TraceLevelTranslator.toInt(value));
                 } else if (timingProperty(afterUnderbar)) {
                     setTiming(TRACE, afterUnderbar, value);
-                } else if (afterUnderbar.equalsIgnoreCase("size")) {
+                } else if ("size".equalsIgnoreCase(afterUnderbar)) {
                     OurBuffer.changeSize(value);
-                } else if (afterUnderbar.equalsIgnoreCase("display")) {
-                    changeDisplay(value.equalsIgnoreCase("true"));
-                } else if (afterUnderbar.equalsIgnoreCase("dump")) {
+                } else if ("display".equalsIgnoreCase(afterUnderbar)) {
+                    changeDisplay("true".equalsIgnoreCase(value));
+                } else if ("dump".equalsIgnoreCase(afterUnderbar)) {
                     OurBuffer.dump(value);
                 } else {
                     changeOneSubsystem(TRACE, afterUnderbar, value);
@@ -431,19 +431,19 @@ public class TraceController implements TraceConstants {
                     changeOneDefault(LOG, TraceLevelTranslator.toInt(value));
                 } else if (timingProperty(afterUnderbar)) {
                     setTiming(LOG, afterUnderbar, value);
-                } else if (afterUnderbar.equalsIgnoreCase("write")) {
+                } else if ("write".equalsIgnoreCase(afterUnderbar)) {
                     OurLog.changeWrite(value);
-                } else if (afterUnderbar.equalsIgnoreCase("dir")) {
+                } else if ("dir".equalsIgnoreCase(afterUnderbar)) {
                     OurLog.changeDir(value);
-                } else if (afterUnderbar.equalsIgnoreCase("tag")) {
+                } else if ("tag".equalsIgnoreCase(afterUnderbar)) {
                     OurLog.changeTag(value);
-                } else if (afterUnderbar.equalsIgnoreCase("name")) {
+                } else if ("name".equalsIgnoreCase(afterUnderbar)) {
                     OurLog.changeName(value);
-                } else if (afterUnderbar.equalsIgnoreCase("size")) {
+                } else if ("size".equalsIgnoreCase(afterUnderbar)) {
                     OurLog.changeSize(value);
-                } else if (afterUnderbar.equalsIgnoreCase("backups")) {
+                } else if ("backups".equalsIgnoreCase(afterUnderbar)) {
                     OurLog.changeBackupFileHandling(value);
-                } else if (afterUnderbar.equalsIgnoreCase("reopen")) {
+                } else if ("reopen".equalsIgnoreCase(afterUnderbar)) {
                     OurLog.reopen(value);
                 } else {
                     changeOneSubsystem(LOG, afterUnderbar, value);
@@ -470,12 +470,12 @@ public class TraceController implements TraceConstants {
                                   String afterFirstUnderbar,
                                   String value) {
         int underbar = afterFirstUnderbar.lastIndexOf('_');
-        T.test(underbar != -1);
+        T.test(-1 != underbar);
         String subsystem = afterFirstUnderbar.substring(0, underbar);
-        if (value.equalsIgnoreCase("on") || value.equalsIgnoreCase("true")) {
+        if ("on".equalsIgnoreCase(value) || "true".equalsIgnoreCase(value)) {
             findOrCreateMediator(subsystem).setTiming(acceptorIndex, true);
         } else
-        if (value.equalsIgnoreCase("off") || value.equalsIgnoreCase("false")) {
+        if ("off".equalsIgnoreCase(value) || "false".equalsIgnoreCase(value)) {
             findOrCreateMediator(subsystem).setTiming(acceptorIndex, false);
         } else {
             Trace.trace.warningm("Unknown timing value given: " + value);
@@ -542,10 +542,10 @@ public class TraceController implements TraceConstants {
      */
     static private boolean timingProperty(String afterFirstUnderbar) {
         int underbar = afterFirstUnderbar.lastIndexOf('_');
-        if (underbar == -1) {
+        if (-1 == underbar) {
             return false;
         }
         String tail = afterFirstUnderbar.substring(underbar + 1);
-        return tail.equalsIgnoreCase("timing");
+        return "timing".equalsIgnoreCase(tail);
     }
 }

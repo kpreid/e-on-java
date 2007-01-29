@@ -42,17 +42,17 @@ public final class ChunkedInputStream extends InputStream {
         int c;
         if (started) {
             c = in.read();
-            if (c == -1) {
+            if (-1 == c) {
                 throw new EOFException();
             }
-            if (c != '\r') {
+            if ('\r' != c) {
                 throw new IOException("Expected CR");
             }
             c = in.read();
-            if (c == -1) {
+            if (-1 == c) {
                 throw new EOFException();
             }
-            if (c != '\n') {
+            if ('\n' != c) {
                 throw new IOException("Expected LF");
             }
         }
@@ -61,41 +61,41 @@ public final class ChunkedInputStream extends InputStream {
         // Read in the chunk-size.
         while (true) {
             c = in.read();
-            if (c == -1) {
+            if (-1 == c) {
                 throw new EOFException();
             }
-            if (c >= '0' && c <= '9') {
+            if ('0' <= c && '9' >= c) {
                 chunk_size = chunk_size * 16 + (c - '0');
-            } else if (c >= 'a' && c <= 'f') {
+            } else if ('a' <= c && 'f' >= c) {
                 chunk_size = chunk_size * 16 + 10 + (c - 'a');
-            } else if (c >= 'A' && c <= 'F') {
+            } else if ('A' <= c && 'F' >= c) {
                 chunk_size = chunk_size * 16 + 10 + (c - 'A');
             } else {
                 break;
             }
         }
-        if (chunk_size == 0) {
+        if (0 == chunk_size) {
             done = true;
         }
 
         // Skip over the chunk-extension.
         int preceding = '0';
         boolean open_quote = false;
-        while (!(c == '\r' && preceding != '\\' && !open_quote)) {
+        while (!('\r' == c && '\\' != preceding && !open_quote)) {
             preceding = c;
             c = in.read();
-            if (c == -1) {
+            if (-1 == c) {
                 throw new EOFException();
             }
-            if (c == '\"' && preceding != '\\') {
+            if ('\"' == c && '\\' != preceding) {
                 open_quote = !open_quote;
             }
         }
         c = in.read();
-        if (c == -1) {
+        if (-1 == c) {
             throw new EOFException();
         }
-        if (c != '\n') {
+        if ('\n' != c) {
             throw new IOException("Expected LF");
         }
     }
@@ -112,7 +112,7 @@ public final class ChunkedInputStream extends InputStream {
                 r = read();
             } else {
                 r = in.read();
-                if (r == -1) {
+                if (-1 == r) {
                     throw new EOFException();
                 }
                 --chunk_size;
@@ -127,7 +127,7 @@ public final class ChunkedInputStream extends InputStream {
             n = -1;
         } else {
             n = 0;
-            while (len > 0) {
+            while (0 < len) {
                 if (0 == chunk_size) {
                     _next();
                     if (done) {
@@ -135,7 +135,7 @@ public final class ChunkedInputStream extends InputStream {
                     }
                 }
                 final int d = in.read(b, off, (int)Math.min(len, chunk_size));
-                if (d == -1) {
+                if (-1 == d) {
                     throw new EOFException();
                 }
                 chunk_size -= d;
@@ -150,7 +150,7 @@ public final class ChunkedInputStream extends InputStream {
     public long skip(long n) throws IOException {
         long k = 0;
         if (!done) {
-            while (n > 0) {
+            while (0 < n) {
                 if (0 == chunk_size) {
                     _next();
                     if (done) {

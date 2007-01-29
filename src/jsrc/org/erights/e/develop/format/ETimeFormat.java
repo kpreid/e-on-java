@@ -41,6 +41,9 @@ public class ETimeFormat {
     static private final DateFormat SortableFormat =
       new SimpleDateFormat("yyyy-MM-dd!HH:mm:ss.SSS%");
 
+    private ETimeFormat() {
+    }
+
     static {
         TimeZone utc = TimeZone.getTimeZone("UTC");
         SortableFormat.setTimeZone(utc);

@@ -355,7 +355,7 @@ public final class TextWriter extends FilterWriter {
      *
      */
     public void write(int c) throws IOException {
-        if (c == '\n') {
+        if ('\n' == c) {
             println();
         } else {
             out.write(c);
@@ -369,7 +369,7 @@ public final class TextWriter extends FilterWriter {
         int bound = off + len;
         while (off < bound) {
             int nl = str.indexOf('\n', off);
-            if (nl == -1 || nl > bound) {
+            if (-1 == nl || nl > bound) {
                 nl = bound;
             }
             //would be more efficient, but hits a bug in java.io.Writer

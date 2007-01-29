@@ -23,7 +23,7 @@ interface ToolErrorHandler {
      * @param altIdx2         The zero-based index of the second ambiguous
      *                        alternative
      */
-    public void warnAltAmbiguity(Grammar grammar,
+    void warnAltAmbiguity(Grammar grammar,
                                  AlternativeBlock blk,
                                  boolean lexicalAnalysis,
                                  int depth,
@@ -41,7 +41,7 @@ interface ToolErrorHandler {
      * @param altIdx          The zero-based index of the ambiguous
      *                        alternative
      */
-    public void warnAltExitAmbiguity(Grammar grammar,
+    void warnAltExitAmbiguity(Grammar grammar,
                                      BlockWithImpliedExitPath blk,
                                      boolean lexicalAnalysis,
                                      int depth,

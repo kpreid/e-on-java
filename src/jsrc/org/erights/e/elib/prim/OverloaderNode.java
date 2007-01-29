@@ -30,9 +30,9 @@ public class OverloaderNode extends MethodNode {
      *
      */
     static public MethodNode make(JavaMemberNode[] nodes) {
-        if (nodes.length >= 2) {
+        if (2 <= nodes.length) {
             return new OverloaderNode(nodes);
-        } else if (nodes.length == 1) {
+        } else if (1 == nodes.length) {
             return nodes[0];
         } else {
             T.fail("internal: must be at least one node");

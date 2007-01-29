@@ -69,7 +69,7 @@ public abstract class QuasiContent
             return new Text((String)content);
         } else {
             ConstList list = (ConstList)content;
-            if (list.size() == 1) {
+            if (1 == list.size()) {
                 return (Node)list.get(0);
             } else {
                 return null;

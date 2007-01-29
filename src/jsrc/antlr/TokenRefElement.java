@@ -9,7 +9,7 @@ package antlr;
 
 class TokenRefElement extends GrammarAtom {
 
-    public TokenRefElement(Grammar g,
+    TokenRefElement(Grammar g,
                            Token t,
                            boolean inverted,
                            int autoGenType) {

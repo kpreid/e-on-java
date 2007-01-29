@@ -23,7 +23,7 @@ abstract class GrammarAtom extends AlternativeElement {
      */
     protected String ASTNodeType = null;
 
-    public GrammarAtom(Grammar g, Token t, int autoGenType) {
+    GrammarAtom(Grammar g, Token t, int autoGenType) {
         super(g, t, autoGenType);
         atomText = t.getText();
     }
@@ -53,7 +53,7 @@ abstract class GrammarAtom extends AlternativeElement {
     }
 
     public void setOption(Token option, Token value) {
-        if (option.getText().equals("AST")) {
+        if ("AST".equals(option.getText())) {
             setASTNodeType(value.getText());
         } else {
             grammar.antlrTool

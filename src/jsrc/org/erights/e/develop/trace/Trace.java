@@ -165,6 +165,7 @@ final public class Trace implements TraceConstants {
 
 // DEPRECATED FUNCTIONS
 
+    /** @noinspection DollarSignInName*/
     public void $(String message) {
         recordTraceMessageXyzzY(message, DEBUG, null, false);
     }

@@ -29,14 +29,14 @@ public class Mint {
 
             public void decr(BigInteger amount) {
                 T.require(
-                  amount.signum() >= 0 && amount.compareTo(myBalance) <= 0,
+                  0 <= amount.signum() && 0 >= amount.compareTo(myBalance),
                   "oops");
                 myBalance = myBalance.subtract(amount);
             }
         }
 
         Purse(BigInteger balance) {
-            T.require(balance.signum() >= 0, "oops");
+            T.require(0 <= balance.signum(), "oops");
             myBalance = balance;
             myDecr = new Decr();
         }

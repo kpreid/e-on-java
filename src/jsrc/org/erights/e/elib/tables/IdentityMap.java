@@ -110,7 +110,7 @@ public class IdentityMap implements EIteratable {
         myKeys = keys;
         myValues = values;
 
-        if (loadFactor <= 0.0 || 1.0 < loadFactor) {
+        if (0.0 >= loadFactor || 1.0 < loadFactor) {
             throw new IllegalArgumentException(
               "Bad value for loadFactor" + loadFactor);
         }
@@ -141,11 +141,11 @@ public class IdentityMap implements EIteratable {
                        int initCapacity,
                        float loadFactor) {
 
-        if (initCapacity <= 0) {
+        if (0 >= initCapacity) {
             throw new IllegalArgumentException(
               "bad initialCapacity " + initCapacity);
         }
-        if (loadFactor <= 0.0 || 1.0 < loadFactor) {
+        if (0.0 >= loadFactor || 1.0 < loadFactor) {
             throw new IllegalArgumentException(
               "Bad value for loadFactor" + loadFactor);
         }
@@ -169,7 +169,7 @@ public class IdentityMap implements EIteratable {
      */
     public Object get(Object key) throws IndexOutOfBoundsException {
         int pos = myKeys.findPosOf(key);
-        if (pos == -1) {
+        if (-1 == pos) {
             throw new IndexOutOfBoundsException("not found: " + key);
         }
         return myValues.get(pos);
@@ -181,7 +181,7 @@ public class IdentityMap implements EIteratable {
      */
     public Object fetch(Object key, Thunk insteadThunk) {
         int pos = myKeys.findPosOf(key);
-        if (pos == -1) {
+        if (-1 == pos) {
             return insteadThunk.run();
         }
         return myValues.get(pos);
@@ -228,7 +228,7 @@ public class IdentityMap implements EIteratable {
      * @return true if the key is in the collection
      */
     public boolean maps(Object key) {
-        return myKeys.findPosOf(key) != -1;
+        return -1 != myKeys.findPosOf(key);
     }
 
     /**
@@ -285,7 +285,7 @@ public class IdentityMap implements EIteratable {
         }
         while (true) {
             int pos = myKeys.store(key);
-            if (pos != -1) {
+            if (-1 != pos) {
                 myValues.put(pos, value);
                 return;
             }
@@ -330,7 +330,7 @@ public class IdentityMap implements EIteratable {
      */
     public void removeKey(Object key, boolean strict) {
         int pos = myKeys.findPosOf(key);
-        if (pos != -1) {
+        if (-1 != pos) {
             writeFault();
             myKeys.vacate(pos);
             myValues.vacate(pos);

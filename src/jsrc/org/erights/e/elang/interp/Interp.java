@@ -10,6 +10,9 @@ package org.erights.e.elang.interp;
  */
 public class Interp {
 
+    private Interp() {
+    }
+
     /**
      * @deprecated Use {@link Rune#main(String[])}
      */

@@ -14,11 +14,11 @@ package antlr;
 public interface CharFormatter {
 
 
-    public String escapeChar(int c, boolean forCharLiteral);
+    String escapeChar(int c, boolean forCharLiteral);
 
-    public String escapeString(String s);
+    String escapeString(String s);
 
-    public String literalChar(int c);
+    String literalChar(int c);
 
-    public String literalString(String s);
+    String literalString(String s);
 }

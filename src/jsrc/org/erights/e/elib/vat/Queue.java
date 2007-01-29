@@ -102,7 +102,7 @@ public class Queue implements Enumeration {
             // note: careful code to avoid inadvertantly
             // reordrering messages
             System.arraycopy(myStuff, myOut, stuff, 0, myMaxSize - myOut);
-            if (myOut != 0) {
+            if (0 != myOut) {
                 System.arraycopy(myStuff, 0, stuff, myMaxSize - myOut, myOut);
             }
             myOut = 0;
@@ -133,7 +133,7 @@ public class Queue implements Enumeration {
      * @return is false if the queue is empty, otherwise true
      */
     public boolean hasMoreElements() {
-        return myCurSize != 0;
+        return 0 != myCurSize;
     }
 
     /**
@@ -156,7 +156,7 @@ public class Queue implements Enumeration {
     public Object optDequeue() {
         //NOTE: This depends on the java & jvm guarantee that int read
         //and write is atomic.
-        if (myCurSize == 0) {
+        if (0 == myCurSize) {
             return null;
         }
 

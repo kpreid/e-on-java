@@ -28,7 +28,7 @@ public class NestedIOException extends IOException implements NestedThrowable {
 
     static private final long serialVersionUID = 7178739108699472895L;
 
-    private Throwable myContainedThrowable;
+    private final Throwable myContainedThrowable;
 
     /**
      *

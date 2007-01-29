@@ -90,7 +90,7 @@ class FlexMapImpl extends FlexMap {
     /**
      * Reasonable defaults
      */
-    public FlexMapImpl() {
+    FlexMapImpl() {
         this(Object.class,
              Object.class,
              DEFAULT_INIT_CAPACITY,
@@ -100,21 +100,21 @@ class FlexMapImpl extends FlexMap {
     /**
      * Reasonable defaults
      */
-    public FlexMapImpl(int initialCapacity) {
+    FlexMapImpl(int initialCapacity) {
         this(Object.class, Object.class, initialCapacity, DEFAULT_LOAD_FACTOR);
     }
 
     /**
      * Reasonable defaults
      */
-    public FlexMapImpl(int initialCapacity, float loadFactor) {
+    FlexMapImpl(int initialCapacity, float loadFactor) {
         this(Object.class, Object.class, initialCapacity, loadFactor);
     }
 
     /**
      * Reasonable defaults
      */
-    public FlexMapImpl(Class keyType, Class valueType) {
+    FlexMapImpl(Class keyType, Class valueType) {
         this(keyType, valueType, DEFAULT_INIT_CAPACITY, DEFAULT_LOAD_FACTOR);
     }
 
@@ -145,7 +145,7 @@ class FlexMapImpl extends FlexMap {
         myKeys = keys;
         myValues = values;
 
-        if (loadFactor <= 0.0 || 1.0 < loadFactor) {
+        if (0.0 >= loadFactor || 1.0 < loadFactor) {
             throw new IllegalArgumentException(
               "Bad value for loadFactor" + loadFactor);
         }
@@ -161,19 +161,19 @@ class FlexMapImpl extends FlexMap {
     /**
      *
      */
-    public FlexMapImpl(Class keyType, Class valueType, int initCapacity) {
+    FlexMapImpl(Class keyType, Class valueType, int initCapacity) {
         this(keyType, valueType, initCapacity, DEFAULT_LOAD_FACTOR);
     }
 
     /**
      *
      */
-    public FlexMapImpl(Class keyType,
+    FlexMapImpl(Class keyType,
                        Class valueType,
                        int initCapacity,
                        float loadFactor) {
-        if (initCapacity <= 0) {
-            if (initCapacity < 0) {
+        if (0 >= initCapacity) {
+            if (0 > initCapacity) {
                 throw new IllegalArgumentException(
                   "bad initialCapacity " + initCapacity);
             } else {
@@ -182,7 +182,7 @@ class FlexMapImpl extends FlexMap {
                 initCapacity = 1;
             }
         }
-        if (loadFactor <= 0.0 || 1.0 < loadFactor) {
+        if (0.0 >= loadFactor || 1.0 < loadFactor) {
             throw new IllegalArgumentException(
               "Bad value for loadFactor" + loadFactor);
         }
@@ -206,7 +206,7 @@ class FlexMapImpl extends FlexMap {
      */
     public Object get(Object key) throws IndexOutOfBoundsException {
         int pos = myKeys.findPosOf(key);
-        if (pos == -1) {
+        if (-1 == pos) {
             throw new IndexOutOfBoundsException("not found: " + key);
         }
         return myValues.get(pos);
@@ -218,7 +218,7 @@ class FlexMapImpl extends FlexMap {
      */
     public Object fetch(Object key, Thunk insteadThunk) {
         int pos = myKeys.findPosOf(key);
-        if (pos == -1) {
+        if (-1 == pos) {
             return insteadThunk.run();
         }
         return myValues.get(pos);
@@ -260,7 +260,7 @@ class FlexMapImpl extends FlexMap {
      * @return true if the key is in the collection
      */
     public boolean maps(Object key) {
-        return myKeys.findPosOf(key) != -1;
+        return -1 != myKeys.findPosOf(key);
     }
 
     /**
@@ -310,7 +310,7 @@ class FlexMapImpl extends FlexMap {
         }
         while (true) {
             int pos = myKeys.store(key);
-            if (pos != -1) {
+            if (-1 != pos) {
                 myValues.put(pos, value);
                 return;
             }
@@ -348,7 +348,7 @@ class FlexMapImpl extends FlexMap {
      */
     public void removeKey(Object key, boolean strict) {
         int pos = myKeys.findPosOf(key);
-        if (pos != -1) {
+        if (-1 != pos) {
             writeFault();
             myKeys.vacate(pos);
             myValues.vacate(pos);

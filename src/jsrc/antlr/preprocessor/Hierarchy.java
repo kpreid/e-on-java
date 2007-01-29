@@ -28,7 +28,7 @@ public class Hierarchy {
     protected antlr.Tool antlrTool;
 
     public Hierarchy(antlr.Tool tool) {
-        this.antlrTool = tool;
+        antlrTool = tool;
         LexerRoot = new Grammar(tool, "Lexer", null, null);
         ParserRoot = new Grammar(tool, "Parser", null, null);
         TreeParserRoot = new Grammar(tool, "TreeParser", null, null);

@@ -31,9 +31,9 @@ public final class Handler extends org.waterken.url.http.Handler {
             // Parse the authority.
             final int start_authority = start + "//".length();
             start = spec.indexOf('/', start_authority);
-            if (start < 0 || start > limit) {
+            if (0 > start || start > limit) {
                 start = spec.indexOf('?', start_authority);
-                if (start < 0 || start > limit) {
+                if (0 > start || start > limit) {
                     start = limit;
                 }
             }
@@ -41,7 +41,7 @@ public final class Handler extends org.waterken.url.http.Handler {
 
             // Parse the userinfo.
             final int end_userinfo = authority.indexOf('@');
-            final String userinfo = end_userinfo < 0 ?
+            final String userinfo = 0 > end_userinfo ?
               authority :
               authority.substring(0, end_userinfo);
 

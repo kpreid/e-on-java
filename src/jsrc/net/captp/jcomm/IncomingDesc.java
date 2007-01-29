@@ -42,7 +42,7 @@ class IncomingDesc implements ObjectRefDesc {
      *
      */
     private void validate() {
-        T.requireSI(myIncomingPos != 0,
+        T.requireSI(0 != myIncomingPos,
                     "can't directly reify nonce locator: ",
                     myIncomingPos);
     }

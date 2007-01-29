@@ -92,7 +92,7 @@ public class PreservingFileWriter extends FileWriter {
                         equal = false;
                         break;
                     }
-                    if (cnt1 == -1)                // EOF
+                    if (-1 == cnt1)                // EOF
                     {
                         break;
                     }
@@ -119,7 +119,7 @@ public class PreservingFileWriter extends FileWriter {
 
             while (true) {
                 cnt = source.read(buffer, 0, 1024);
-                if (cnt == -1) {
+                if (-1 == cnt) {
                     break;
                 }
                 target.write(buffer, 0, cnt);

@@ -18,17 +18,20 @@ public class ArithTimer {
     static final int LOOP_COUNT = 1000000;
     static final int PASSES = 3;
 
+    private ArithTimer() {
+    }
+
     public static void main(String[] argv) {
 
         int repeat;
-        for (repeat = 0; repeat < PASSES; repeat++) {
+        for (repeat = 0; PASSES > repeat; repeat++) {
             int a;
             int b = 5;
             int c = 7;
             System.out.println("Start int test");
             long startTime = System.currentTimeMillis();
             int i;
-            for (i = 0; i < LOOP_COUNT; i++) {
+            for (i = 0; LOOP_COUNT > i; i++) {
                 a = b + c;
             }
             System.out
@@ -37,7 +40,7 @@ public class ArithTimer {
 
             System.out.println("Start int subroutine test");
             startTime = System.currentTimeMillis();
-            for (i = 0; i < LOOP_COUNT; i++) {
+            for (i = 0; LOOP_COUNT > i; i++) {
                 a = intAdd(b, c);
             }
             System.out
@@ -49,7 +52,7 @@ public class ArithTimer {
             Integer ic = new Integer(7);
             System.out.println("Start Integer test");
             startTime = System.currentTimeMillis();
-            for (i = 0; i < LOOP_COUNT; i++) {
+            for (i = 0; LOOP_COUNT > i; i++) {
                 ia = new Integer(ib.intValue() + ic.intValue());
             }
             System.out
@@ -58,7 +61,7 @@ public class ArithTimer {
 
             System.out.println("Start Integer Subroutine test");
             startTime = System.currentTimeMillis();
-            for (i = 0; i < LOOP_COUNT; i++) {
+            for (i = 0; LOOP_COUNT > i; i++) {
                 ia = integerAdd(ib, ic);
             }
             System.out
@@ -67,9 +70,9 @@ public class ArithTimer {
 
             System.out.println("Start Integer CRAPI test");
             startTime = System.currentTimeMillis();
-            for (i = 0; i < LOOP_COUNT; i++) {
+            for (i = 0; LOOP_COUNT > i; i++) {
                 try {
-                    Class ca[] = {Integer.class, Integer.class};
+                    Class[] ca = {Integer.class, Integer.class};
                     Method meth = ArithTimer.class.getMethod("integerAdd", ca);
                     Object[] parms = {ib, ic};
                     ia = (Integer)meth.invoke(null, parms);
@@ -85,7 +88,7 @@ public class ArithTimer {
             System.out.print("Start Integer cached CRAPI test");
             Method integerAddMeth = null;
             try {
-                Class ca[] = {Integer.class, Integer.class};
+                Class[] ca = {Integer.class, Integer.class};
                 integerAddMeth = ArithTimer.class.getMethod("integerAdd", ca);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -94,7 +97,7 @@ public class ArithTimer {
             Object[] integerParms = {ib, ic};
             System.out.println(".");
             startTime = System.currentTimeMillis();
-            for (i = 0; i < LOOP_COUNT; i++) {
+            for (i = 0; LOOP_COUNT > i; i++) {
                 try {
                     ia = (Integer)integerAddMeth.invoke(null, integerParms);
                 } catch (Exception e) {
@@ -109,7 +112,7 @@ public class ArithTimer {
             System.out.print("Start int cached CRAPI test");
             Method intAddMeth = null;
             try {
-                Class ca[] = {Integer.TYPE, Integer.TYPE};
+                Class[] ca = {Integer.TYPE, Integer.TYPE};
                 intAddMeth = ArithTimer.class.getMethod("intAdd", ca);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -117,7 +120,7 @@ public class ArithTimer {
             }
             System.out.println(".");
             startTime = System.currentTimeMillis();
-            for (i = 0; i < LOOP_COUNT; i++) {
+            for (i = 0; LOOP_COUNT > i; i++) {
                 try {
                     ia = (Integer)intAddMeth.invoke(null, integerParms);
                 } catch (Exception e) {
@@ -133,7 +136,7 @@ public class ArithTimer {
             StaticMaker sm = StaticMaker.make(ArithTimer.class);
             System.out.println(".");
             startTime = System.currentTimeMillis();
-            for (i = 0; i < LOOP_COUNT; i++) {
+            for (i = 0; LOOP_COUNT > i; i++) {
                 try {
                     E.call(sm, "intAdd", ib, ic);
                 } catch (Exception e) {
@@ -149,7 +152,7 @@ public class ArithTimer {
             MethodNode mn = sm.getVTable().optMethod("intAdd", 2);
             System.out.println(".");
             startTime = System.currentTimeMillis();
-            for (i = 0; i < LOOP_COUNT; i++) {
+            for (i = 0; LOOP_COUNT > i; i++) {
                 try {
                     mn.execute(sm, "intAdd", integerParms);
                 } catch (Exception e) {
@@ -166,7 +169,7 @@ public class ArithTimer {
             BigInteger bic = BigInteger.valueOf(c);
             System.out.println(".");
             startTime = System.currentTimeMillis();
-            for (i = 0; i < LOOP_COUNT; i++) {
+            for (i = 0; LOOP_COUNT > i; i++) {
                 try {
                     E.call(sm, "intAdd", bib, bic);
                 } catch (Exception e) {

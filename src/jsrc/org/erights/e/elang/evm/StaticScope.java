@@ -135,7 +135,7 @@ public class StaticScope {
           right.namesRead().butNot(myDefNames).butNot(myVarNames);
         ConstMap rightNamesSet = right.namesSet().butNot(myVarNames);
         ConstMap badAssigns = rightNamesSet.and(myDefNames);
-        if (badAssigns.size() >= 1) {
+        if (1 <= badAssigns.size()) {
             // XXX We could report a bad assignment here if we could figure out
             // how to report it. As it is, these are reliably reported during
             // transformation anyway.

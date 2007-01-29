@@ -20,24 +20,24 @@ public interface SmallcapsOps {
     /**
      * [x],[] =&gt; OP_DUP =&gt; [x, x],[]
      */
-    final int OP_DUP = 1;
+    int OP_DUP = 1;
     /**
      * [x],[] =&gt; OP_POP =&gt; [],[]
      */
-    final int OP_POP = 2;
+    int OP_POP = 2;
     /**
      * [x, y],[] =&gt; OP_SWAP =&gt; [y, x],[]
      */
-    final int OP_SWAP = 3;
+    int OP_SWAP = 3;
     /**
      * [x, y, z],[] =&gt; OP_ROT =&gt; [y, z, x],[]
      */
-    final int OP_ROT = 4;
+    int OP_ROT = 4;
 
     /**
      * [x],[] =&gt; OP_RETURN
      */
-    final int OP_RETURN = 5;
+    int OP_RETURN = 5;
 
     /**
      * [],[] =&gt; OP_JUMP(label) =&gt; [],[]
@@ -47,7 +47,7 @@ public interface SmallcapsOps {
      * A label is represented by an integer offset from the position after this
      * instruction to the position of the target instruction.
      */
-    final int OP_JUMP = 8;
+    int OP_JUMP = 8;
 
     /**
      * [optEjector, flag],[] =&gt; OP_BRANCH =&gt; [],[]
@@ -57,16 +57,16 @@ public interface SmallcapsOps {
      * exit abruptly according to optEjector. <li>otherwise, the top handler on
      * the stack is invoked to deal with the coercion failure. </ul>
      */
-    final int OP_BRANCH = 9;
+    int OP_BRANCH = 9;
 
     /**
      * [recip, args...],[] =&gt; OP_CALL_ONLY(verb, arity) =&gt; [],[]
      */
-    final int OP_CALL_ONLY = 10;
+    int OP_CALL_ONLY = 10;
     /**
      * [recip, args...],[] =&gt; OP_CALL(verb, arity) =&gt; [result],[]
      */
-    final int OP_CALL = 11;
+    int OP_CALL = 11;
 
     /**
      * [],[] =&gt; OP_EJECTOR_ONLY(label) =&gt; [ejector],[handler]<br>
@@ -85,7 +85,7 @@ public interface SmallcapsOps {
      * and with the created/pushed handler at the top of the handler stack. The
      * label must be to code outside the handled region.
      */
-    final int OP_EJECTOR_ONLY = 14;
+    int OP_EJECTOR_ONLY = 14;
 
     /**
      * [],[] =&gt; OP_EJECTOR(label) =&gt; [ejector],[handler]<br> [...],[...]
@@ -101,7 +101,7 @@ public interface SmallcapsOps {
      * <p/>
      * As with {@link #OP_EJECTOR_ONLY}, this is a handler-introducing op.
      */
-    final int OP_EJECTOR = 15;
+    int OP_EJECTOR = 15;
 
     /**
      * [],[] =&gt; OP_TRY(label) =&gt; [],[handler]<br> [...],[...] =&gt;
@@ -118,7 +118,7 @@ public interface SmallcapsOps {
      * <p/>
      * As with {@link #OP_EJECTOR_ONLY}, this is a handler-introducing op.
      */
-    final int OP_TRY = 16;
+    int OP_TRY = 16;
 
     /**
      * [],[] =&gt; OP_UNWIND(label) =&gt; [],[handler]<br> [...],[...] =&gt;
@@ -142,7 +142,7 @@ public interface SmallcapsOps {
      * <p/>
      * As with {@link #OP_EJECTOR_ONLY}, this is a handler-introducing op.
      */
-    final int OP_UNWIND = 17;
+    int OP_UNWIND = 17;
 
     /**
      * [],[handler] =&gt; OP_END_HANDLER =&gt; [],[]
@@ -151,50 +151,50 @@ public interface SmallcapsOps {
      * that balances an openning {@link #OP_EJECTOR_ONLY handler-introducing
      * op}.
      */
-    final int OP_END_HANDLER = 18;
+    int OP_END_HANDLER = 18;
 
     /**
      * [],[] =&gt; OP_WHOLE_NUM(wholeNum) =&gt; [wholeNum],[]
      */
-    final int OP_WHOLE_NUM = 22;
+    int OP_WHOLE_NUM = 22;
     /**
      * [],[] =&gt; OP_NEG_INT(wholeNum) =&gt; [-wholeNum],[]
      */
-    final int OP_NEG_INT = 23;
+    int OP_NEG_INT = 23;
     /**
      * [],[] =&gt; OP_FLOAT64(float64) =&gt; [float64],[]
      */
-    final int OP_FLOAT64 = 24;
+    int OP_FLOAT64 = 24;
     /**
      * [],[] =&gt; OP_CHAR(chr) =&gt; [chr],[]
      */
-    final int OP_CHAR = 25;
+    int OP_CHAR = 25;
     /**
      * [],[] =&gt; OP_STRING(str) =&gt; [str],[]
      */
-    final int OP_STRING = 26;
+    int OP_STRING = 26;
     /**
      * [],[] =&gt; OP_TWINE(twine) =&gt; [twine],[]
      */
-    final int OP_TWINE = 27; //XXX reserved
+    int OP_TWINE = 27; //XXX reserved
 
     /**
      * [],[] =&gt; OP_TRUE =&gt; [true],[]
      */
-    final int OP_TRUE = 28;
+    int OP_TRUE = 28;
     /**
      * [],[] =&gt; OP_FALSE =&gt; [false],[]
      */
-    final int OP_FALSE = 29;
+    int OP_FALSE = 29;
     /**
      * [],[] =&gt; OP_NULL =&gt; [null],[]
      */
-    final int OP_NULL = 30;
+    int OP_NULL = 30;
 
     /**
      * [],[] =&gt; OP_SCOPE =&gt; [scope],[]
      */
-    final int OP_SCOPE = 31;
+    int OP_SCOPE = 31;
 
     /**
      * [ivars..., auditors...],[] =&gt; OP_OBJECT(<i>seeBelow</i>) =&gt;
@@ -202,14 +202,14 @@ public interface SmallcapsOps {
      * <p/>
      * XXX to be written
      */
-    final int OP_OBJECT = 32;
+    int OP_OBJECT = 32;
 
     /**
      * <pre>
      * [optEjector, specimen],[] =&gt; OP_LIST(n)
      * =&gt; [optEjector, specimen[n-1], ... optEjector, specimen[0]],[]</pre>
      */
-    final int OP_LIST_PATT = 33;
+    int OP_LIST_PATT = 33;
 
     /**
      * <pre>
@@ -217,7 +217,7 @@ public interface SmallcapsOps {
      * =&gt; [optEjector, specimen(n,specimen.size()),
      *     optEjector, specimen[n-1], ... optEjector, specimen[0]],[]</pre>
      */
-    final int OP_CDR_PATT = 34;
+    int OP_CDR_PATT = 34;
 
     ////////////////////// Opcodes with addressing modes /////////////////
 
@@ -228,14 +228,14 @@ public interface SmallcapsOps {
      * Pushes the value of the variable. The value of the variable is what
      * would be obtained by calling get() on the variable's slot.
      */
-    final int OP_NOUN = 40;
+    int OP_NOUN = 40;
 
     /**
      * [],[] =&gt; (OP_SLOT+addrMode)(index) =&gt; [slot],[]
      * <p/>
      * Pushes the slot holding the value of the variable.
      */
-    final int OP_SLOT = 48;
+    int OP_SLOT = 48;
 
     /**
      * [rValue],[] =&gt; (OP_ASSIGN+addrMode)(index) =&gt; [],[]
@@ -244,7 +244,7 @@ public interface SmallcapsOps {
      * effects that would be caused by calling put(rValue) on the
      * variable's slot.
      */
-    final int OP_ASSIGN = 56;
+    int OP_ASSIGN = 56;
 
     /**
      * [rValue],[] =&gt; (OP_BIND+addrMode)(index) =&gt; [],[]
@@ -252,7 +252,7 @@ public interface SmallcapsOps {
      * Define the variable as a final variable whose permanent value is rValue.
      * Equivalently, bind the variable to a FinalSlot holding rValue.
      */
-    final int OP_BIND = 64;
+    int OP_BIND = 64;
 
     /**
      * [rValue],[] =&gt; (OP_BIND_SLOT+addrMode)(index) =&gt; [],[]
@@ -260,32 +260,32 @@ public interface SmallcapsOps {
      * Define the variable as a non-final variable (a "<tt>var</tt>" variable)
      * whose slot is rValue.
      */
-    final int OP_BIND_SLOT = 72;
+    int OP_BIND_SLOT = 72;
 
     ///////////////////// Addressing modes ////////////////////////////
 
     /**
      * Accesses the index'th instance variable.
      */
-    final int ADDR_FRAME = 0;
+    int ADDR_FRAME = 0;
     /**
      * Accesses the value of the slot at the index'th instance variable.
      */
-    final int ADDR_FRAME_SLOT = 1;
+    int ADDR_FRAME_SLOT = 1;
     /**
      * Accesses the index'th local variable.
      */
-    final int ADDR_LOCAL = 2;
+    int ADDR_LOCAL = 2;
     /**
      * Accesses the value of the slot at the index'th local variable.
      */
-    final int ADDR_LOCAL_SLOT = 3;
+    int ADDR_LOCAL_SLOT = 3;
     /**
      * Accesses the index'th literal.
      */
-    final int ADDR_LITERAL = 4;
+    int ADDR_LITERAL = 4;
     /**
      * Accesses the value of the slot at the index'th outer variable.
      */
-    final int ADDR_OUTER_SLOT = 5;
+    int ADDR_OUTER_SLOT = 5;
 }

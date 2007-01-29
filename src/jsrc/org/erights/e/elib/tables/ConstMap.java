@@ -155,6 +155,7 @@ public abstract class ConstMap extends EMap
             if (unionSz <= sz || isectSz >= otherSz) {
                 throw new Error("internal: domain size confusion");
             }
+            //noinspection divzero
             return 0.0 / 0.0;
         }
     }
@@ -163,7 +164,7 @@ public abstract class ConstMap extends EMap
      * Prints using E language notation
      */
     public void __printOn(TextWriter out) throws IOException {
-        if (size() == 0) {
+        if (0 == size()) {
             out.print("[].asMap()");
         } else {
             printOn("[", " => ", ", ", "]", out);

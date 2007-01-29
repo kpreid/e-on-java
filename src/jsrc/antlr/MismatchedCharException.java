@@ -114,7 +114,7 @@ public class MismatchedCharException extends RecognitionException {
         case RANGE:
         case NOT_RANGE:
             sb.append("expecting token ");
-            if (mismatchType == NOT_RANGE) {
+            if (NOT_RANGE == mismatchType) {
                 sb.append("NOT ");
             }
             sb.append("in range: ");
@@ -126,7 +126,7 @@ public class MismatchedCharException extends RecognitionException {
             break;
         case SET:
         case NOT_SET:
-            sb.append("expecting " + (mismatchType == NOT_SET ? "NOT " : "") +
+            sb.append("expecting " + (NOT_SET == mismatchType ? "NOT " : "") +
               "one of (");
             int[] elems = set.toArray();
             for (int i = 0; i < elems.length; i++) {

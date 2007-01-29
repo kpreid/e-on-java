@@ -10,6 +10,9 @@ import org.eclipse.swt.dnd.DragSourceEvent;
  */
 public class DragSourceEventSugar {
 
+    private DragSourceEventSugar() {
+    }
+
     /**
      * Works around the fact that we've suppressed 'data' in DragSourceEvent's
      * superclass, TypedEvent

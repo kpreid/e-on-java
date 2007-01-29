@@ -24,14 +24,14 @@ public class ClassFile {
     private int myMagic;
     private int myMinor_version;
     private int myMajor_version;
-    private CF_cp_info myConstant_pool[];
+    private CF_cp_info[] myConstant_pool;
     private int myAccess_flags;
     private int myThis_class;
     private int mySuper_class;
-    private int myInterfaces[];
-    private CF_field_info myFields[];
-    private CF_method_info myMethods[];
-    private CF_attribute_info myAttributes[];
+    private int[] myInterfaces;
+    private CF_field_info[] myFields;
+    private CF_method_info[] myMethods;
+    private CF_attribute_info[] myAttributes;
 
     /**
      * Constructor.
@@ -63,14 +63,14 @@ public class ClassFile {
     ClassFile(int magic,
               int minor_version,
               int major_version,
-              CF_cp_info constant_pool[],
+              CF_cp_info[] constant_pool,
               int access_flags,
               int this_class,
               int super_class,
-              int interfaces[],
-              CF_field_info fields[],
-              CF_method_info methods[],
-              CF_attribute_info attributes[]) {
+              int[] interfaces,
+              CF_field_info[] fields,
+              CF_method_info[] methods,
+              CF_attribute_info[] attributes) {
         myMagic = magic;
         myMinor_version = minor_version;
         myMajor_version = major_version;

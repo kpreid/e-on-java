@@ -21,13 +21,13 @@ class JavaBlockFinishingInfo {
     boolean needAnErrorClause;
 
 
-    public JavaBlockFinishingInfo() {
+    JavaBlockFinishingInfo() {
         postscript = null;
         generatedSwitch = generatedSwitch = false;
         needAnErrorClause = true;
     }
 
-    public JavaBlockFinishingInfo(String ps,
+    JavaBlockFinishingInfo(String ps,
                                   boolean genS,
                                   boolean generatedAnIf,
                                   boolean n) {

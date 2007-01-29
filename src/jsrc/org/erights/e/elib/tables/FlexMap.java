@@ -172,6 +172,7 @@ public abstract class FlexMap extends EMap implements PassByProxy {
 
     /**
      * Arguments defaults to keyType() and valueType().
+     * @noinspection CloneDoesntCallSuperClone
      */
     public Object clone() {
         return diverge(keyType(), valueType());
@@ -191,7 +192,7 @@ public abstract class FlexMap extends EMap implements PassByProxy {
      * Prints using E language notation
      */
     public void __printOn(TextWriter out) throws IOException {
-        if (size() == 0) {
+        if (0 == size()) {
             out.print("[].asMap().diverge()");
         } else {
             printOn("[", " => ", ", ", "].diverge()", out);
@@ -278,10 +279,10 @@ public abstract class FlexMap extends EMap implements PassByProxy {
      * pairs. Each key-element pair is put into the map in order.
      */
     static public FlexMap fromPairs(Object[][] pairs, boolean strict) {
-        FlexMap result = FlexMap.make(pairs.length);
+        FlexMap result = make(pairs.length);
         for (int i = 0; i < pairs.length; i++) {
             Object[] pair = pairs[i];
-            if (pair.length != 2) {
+            if (2 != pair.length) {
                 throw new IllegalArgumentException("must be a pair");
             }
             result.put(pair[0], pair[1], strict);

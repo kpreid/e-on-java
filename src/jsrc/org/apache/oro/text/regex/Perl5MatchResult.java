@@ -150,7 +150,7 @@ final class Perl5MatchResult implements MatchResult {
             end = _endGroupOffset[group];
             length = _match.length();
 
-            if (begin >= 0 && end >= 0) {
+            if (0 <= begin && 0 <= end) {
                 if (begin < length && end <= length && end > begin) {
                     return _match.substring(begin, end);
                 } else if (begin <= end) {
@@ -174,7 +174,7 @@ final class Perl5MatchResult implements MatchResult {
             begin = _beginGroupOffset[group];
             end = _endGroupOffset[group];
             //length = _match.length();
-            if (begin >= 0 && end >= 0)// && begin < length && end <= length)
+            if (0 <= begin && 0 <= end)// && begin < length && end <= length)
             //return _beginGroupOffset[group];
             {
                 return begin;
@@ -197,7 +197,7 @@ final class Perl5MatchResult implements MatchResult {
             begin = _beginGroupOffset[group];
             end = _endGroupOffset[group];
             //length = _match.length();
-            if (begin >= 0 && end >= 0)// && begin < length && end <= length)
+            if (0 <= begin && 0 <= end)// && begin < length && end <= length)
             //return _endGroupOffset[group];
             {
                 return end;
@@ -221,7 +221,7 @@ final class Perl5MatchResult implements MatchResult {
             begin = _beginGroupOffset[group];
             end = _endGroupOffset[group];
             //length = _match.length();
-            if (begin >= 0 && end >= 0)// && begin < length && end <= length)
+            if (0 <= begin && 0 <= end)// && begin < length && end <= length)
             //return _matchBeginOffset + _beginGroupOffset[group];
             {
                 return _matchBeginOffset + begin;
@@ -247,7 +247,7 @@ final class Perl5MatchResult implements MatchResult {
             begin = _beginGroupOffset[group];
             end = _endGroupOffset[group];
             //length = _match.length();
-            if (begin >= 0 && end >= 0)// && begin < length && end <= length)
+            if (0 <= begin && 0 <= end)// && begin < length && end <= length)
             //return _matchBeginOffset + _endGroupOffset[group];
             {
                 return _matchBeginOffset + end;

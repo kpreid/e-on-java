@@ -48,11 +48,11 @@ class NewRemotePromiseDesc implements ObjectRefDesc {
      *
      */
     private void validate() {
-        T.requireSI(myImportPos >= 1,
+        T.requireSI(1 <= myImportPos,
                     "importPos must be positive: ",
                     myImportPos);
-        T.requireSI(myRdrPos <= -1, "rdrPos must be negative: ", myRdrPos);
-        T.require(null != myRdrBase && myRdrBase.signum() >= 1,
+        T.requireSI(-1 >= myRdrPos, "rdrPos must be negative: ", myRdrPos);
+        T.require(null != myRdrBase && 1 <= myRdrBase.signum(),
                   "rdrBase must be positive: ",
                   myRdrBase);
     }

@@ -20,22 +20,22 @@ public class Handler extends URLStreamHandler {
     /**
      * The site locator.
      */
-    protected org.waterken.url.Locator locator;
+    protected final org.waterken.url.Locator locator;
 
     /**
      * The assumed server HTTP version.
      */
-    protected String assumed_http_version;
+    protected final String assumed_http_version;
 
     /**
      * The active sessions: [ peer identifier =&gt; soft session ]
      */
-    protected Map sessions = new java.util.HashMap();
+    protected final Map sessions = new java.util.HashMap();
 
     /**
      * The garbage collected sessions.
      */
-    protected ReferenceQueue gced = new ReferenceQueue();
+    protected final ReferenceQueue gced = new ReferenceQueue();
 
     protected Handler(final org.waterken.url.Locator locator,
                       final String assumed_http_version) {
@@ -90,7 +90,7 @@ public class Handler extends URLStreamHandler {
      */
     protected String home(final URL url) throws IOException {
         int port = url.getPort();
-        if (port == -1) {
+        if (-1 == port) {
             port = getDefaultPort();
         }
         return url.getHost().toLowerCase() + ":" + port;

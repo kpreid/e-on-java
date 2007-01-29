@@ -9,7 +9,7 @@ package antlr.collections;
 
 public interface ASTEnumeration {
 
-    public boolean hasMoreNodes();
+    boolean hasMoreNodes();
 
-    public AST nextNode();
+    AST nextNode();
 }

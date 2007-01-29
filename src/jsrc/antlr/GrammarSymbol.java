@@ -15,10 +15,10 @@ abstract class GrammarSymbol {
 
     protected String id;
 
-    public GrammarSymbol() {
+    GrammarSymbol() {
     }
 
-    public GrammarSymbol(String s) {
+    GrammarSymbol(String s) {
         id = s;
     }
 

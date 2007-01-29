@@ -34,5 +34,5 @@ public interface VatLocationLookup {
      *
      * @return is the locations the requestor should try next
      */
-    public String[] getLocations(String vatID);
+    String[] getLocations(String vatID);
 }

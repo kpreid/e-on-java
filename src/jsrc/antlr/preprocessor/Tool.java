@@ -105,36 +105,36 @@ public class Tool {
      * modified and, hence, is not added yet to args list.
      */
     private void processArguments(String[] incomingArgs) {
-        this.nargs = 0;
-        this.args = new String[incomingArgs.length];
+        nargs = 0;
+        args = new String[incomingArgs.length];
         for (int i = 0; i < incomingArgs.length; i++) {
-            if (incomingArgs[i].length() == 0) {
+            if (0 == incomingArgs[i].length()) {
                 antlrTool.warning("Zero length argument ignoring...");
                 continue;
             }
-            if (incomingArgs[i].equals("-glib")) {
+            if ("-glib".equals(incomingArgs[i])) {
                 // if on a pc and they use a '/', warn them
-                if (File.separator.equals("\\") &&
-                  incomingArgs[i].indexOf('/') != -1) {
+                if ("\\".equals(File.separator) &&
+                  -1 != incomingArgs[i].indexOf('/')) {
                     antlrTool.warning(
                       "-glib cannot deal with '/' on a PC: use '\\'; ignoring...");
                 } else {
                     grammars =
-                      antlrTool.parseSeparatedList(incomingArgs[i + 1], ';');
+                      antlr.Tool.parseSeparatedList(incomingArgs[i + 1], ';');
                     i++;
                 }
-            } else if (incomingArgs[i].equals("-o")) {
-                args[this.nargs++] = incomingArgs[i];
+            } else if ("-o".equals(incomingArgs[i])) {
+                args[nargs++] = incomingArgs[i];
                 if (i + 1 >= incomingArgs.length) {
                     antlrTool.error(
                       "missing output directory with -o option; ignoring");
                 } else {
                     i++;
-                    args[this.nargs++] = incomingArgs[i];
+                    args[nargs++] = incomingArgs[i];
                     antlrTool.setOutputDirectory(incomingArgs[i]);
                 }
-            } else if (incomingArgs[i].charAt(0) == '-') {
-                args[this.nargs++] = incomingArgs[i];
+            } else if ('-' == incomingArgs[i].charAt(0)) {
+                args[nargs++] = incomingArgs[i];
             } else {
                 // Must be the grammar file
                 grammarFileName = incomingArgs[i];

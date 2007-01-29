@@ -20,7 +20,7 @@ class TokenSymbol extends GrammarSymbol {
      */
     protected String ASTNodeType;
 
-    public TokenSymbol(String r) {
+    TokenSymbol(String r) {
         super(r);
         ttype = Token.INVALID_TYPE;
     }

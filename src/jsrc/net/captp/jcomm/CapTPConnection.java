@@ -257,8 +257,7 @@ class CapTPConnection implements MsgHandler {
     }
 
     /**
-     * @param pos
-     * @return
+     *
      */
     boolean debug(int pos) {
         if (Trace.captp.debug && Trace.ON) {
@@ -333,7 +332,7 @@ class CapTPConnection implements MsgHandler {
     }
 
     /**
-     * @return
+     *
      */
     public String toString() {
         return "Conn(" + localVatID() + " <-> " + remoteVatID() + ")";
@@ -423,7 +422,7 @@ class CapTPConnection implements MsgHandler {
     }
 
     /**
-     * @return
+     *
      */
     public ReferenceMonitor getReferenceMonitor() {
         return myCapTPMgr.getReferenceMonitor();
@@ -607,9 +606,9 @@ class CapTPConnection implements MsgHandler {
      * @return Whatever object was in the appropriate table at incomingPos.
      */
     Object getIncoming(int incomingPos) {
-        if (incomingPos > 0) {
+        if (0 < incomingPos) {
             return myExports.get(incomingPos);
-        } else if (incomingPos < 0) {
+        } else if (0 > incomingPos) {
             return myAnswers.get(-incomingPos);
         } else {
             return myLocalNonceLocator;
@@ -708,7 +707,7 @@ class CapTPConnection implements MsgHandler {
             ByteArrayInputStream bis = new ByteArrayInputStream(message);
 
             /* The message type (the first byte) should *always* be E_MSG */
-            if ((byte)bis.read() != Msg.E_MSG) {
+            if (Msg.E_MSG != (byte)bis.read()) {
                 T.fail("CapTPConnection was handed a non-E_MSG message");
             }
 
@@ -791,8 +790,8 @@ class CapTPConnection implements MsgHandler {
     /**
      * Pretty print the args of a message send, for debugging purposes.
      */
-    static private String argsString(Object args[]) {
-        if (args.length == 0) {
+    static private String argsString(Object[] args) {
+        if (0 == args.length) {
             return "[]";
         }
         String result = "[\n   " + args[0];
@@ -1172,7 +1171,7 @@ class CapTPConnection implements MsgHandler {
      */
     private void decrementUseCount() {
         --myUseCount;
-        if (myUseCount <= 0) {
+        if (0 >= myUseCount) {
             myShuttingDownFlag = true;
             sendShutdownOp(myReceiveCount);
         }

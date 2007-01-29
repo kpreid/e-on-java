@@ -246,7 +246,7 @@ public abstract class VTable implements Script {
      */
     public MethodNode optMethod(String mverb) {
         int slash = mverb.lastIndexOf('/');
-        if (slash == -1) {
+        if (-1 == slash) {
             T.fail("missing slash");
         }
         String verb = mverb.substring(0, slash);

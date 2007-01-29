@@ -189,7 +189,7 @@ public class MismatchedTokenException extends RecognitionException {
             break;
         case SET:
         case NOT_SET:
-            sb.append("expecting " + (mismatchType == NOT_SET ? "NOT " : "") +
+            sb.append("expecting " + (NOT_SET == mismatchType ? "NOT " : "") +
               "one of (");
             int[] elems = set.toArray();
             for (int i = 0; i < elems.length; i++) {
@@ -207,9 +207,9 @@ public class MismatchedTokenException extends RecognitionException {
     }
 
     private String tokenName(int tokenType) {
-        if (tokenType == Token.INVALID_TYPE) {
+        if (Token.INVALID_TYPE == tokenType) {
             return "<Set of tokens>";
-        } else if (tokenType < 0 || tokenType >= tokenNames.length) {
+        } else if (0 > tokenType || tokenType >= tokenNames.length) {
             return "<" + String.valueOf(tokenType) + ">";
         } else {
             return tokenNames[tokenType];

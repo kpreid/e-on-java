@@ -8,6 +8,7 @@ import org.erights.e.elib.oldeio.EPrintable;
 import org.erights.e.elib.oldeio.TextWriter;
 import org.erights.e.elib.prim.E;
 import org.erights.e.elib.vat.SendingContext;
+import org.erights.e.elib.vat.PendingEvent;
 
 import java.io.IOException;
 
@@ -15,7 +16,7 @@ import java.io.IOException;
  * Represents an event caused on one side of a {@link CapTPConnection}, to
  * happen on the other side of that connection.
  * <p/>
- * Modeled on {@link org.erights.e.elib.vat.PendingEvent}.
+ * Modeled on {@link PendingEvent}.
  *
  * @author Mark S. Miller
  */
@@ -55,7 +56,7 @@ public final class CommEvent implements EPrintable {
     /**
      * This should always be called once construction is complete.
      */
-    protected void trace() {
+    void trace() {
         if (Trace.causality.debug && Trace.ON) {
             Trace.causality.debugm("", this);
         }
@@ -75,8 +76,7 @@ public final class CommEvent implements EPrintable {
     }
 
     /**
-     * @param out
-     * @throws java.io.IOException
+     *
      */
     public void __printOn(TextWriter out) throws IOException {
         out.println();
@@ -85,7 +85,7 @@ public final class CommEvent implements EPrintable {
     }
 
     /**
-     * @return
+     *
      */
     public String toString() {
         return E.toString(this);

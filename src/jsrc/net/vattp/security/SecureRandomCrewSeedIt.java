@@ -1,5 +1,7 @@
 package net.vattp.security;
 
+import java.security.SecureRandom;
+
 /*
 The contents of this file are subject to the Electric Communities E Open
 Source Code License Version 1.0 (the "License"); you may not use this file
@@ -32,7 +34,7 @@ class SecureRandomCrewSeedIt extends Thread {
     /**
      *
      */
-    public SecureRandomCrewSeedIt(ESecureRandom sr) {
+    SecureRandomCrewSeedIt(ESecureRandom sr) {
         super("SecureRandomCrewSeedIt");
         mySecureRandom = sr;
     }
@@ -41,6 +43,6 @@ class SecureRandomCrewSeedIt extends Thread {
      *
      */
     public final void run() {
-        mySecureRandom.setSeed(mySecureRandom.getSeed(1), 8);
+        mySecureRandom.setSeed(SecureRandom.getSeed(1), 8);
     }
 }

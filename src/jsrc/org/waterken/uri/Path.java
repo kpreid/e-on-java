@@ -24,9 +24,9 @@ public final class Path {
     public static String vouch(String path) throws InvalidPath {
 
         // Check for disallowed characters.
-        for (int i = path.length(); i-- != 0;) {
+        for (int i = path.length(); 0 != i--;) {
             final char c = path.charAt(i);
-            if (c <= 0x20 || c >= 0x7F || "\"#<>?[\\]^`{|}".indexOf(c) != -1) {
+            if (0x20 >= c || 0x7F <= c || -1 != "\"#<>?[\\]^`{|}".indexOf(c)) {
                 throw InvalidPath.make();
             }
         }
@@ -37,7 +37,7 @@ public final class Path {
         }
         while (true) {
             final int start_rel = path.indexOf("/./");
-            if (start_rel == -1) {
+            if (-1 == start_rel) {
                 break;
             }
             path = path.substring(0, start_rel) +
@@ -45,17 +45,17 @@ public final class Path {
         }
         if (path.endsWith("/.")) {
             path = path.substring(0, path.length() - ".".length());
-        } else if (path.equals(".")) {
+        } else if (".".equals(path)) {
             path = "";
         }
 
         // Unwind any ".." segments.
         while (true) {
-            if (path.equals("..") || path.startsWith("../")) {
+            if ("..".equals(path) || path.startsWith("../")) {
                 throw InvalidPath.make();
             }
             final int start_rel = path.indexOf("/../");
-            if (start_rel == -1) {
+            if (-1 == start_rel) {
                 break;
             }
             path = path.substring(0,

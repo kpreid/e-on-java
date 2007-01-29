@@ -20,7 +20,7 @@ class LLCell {
     LLCell next;
 
 
-    public LLCell(Object o) {
+    LLCell(Object o) {
         data = o;
     }
 }

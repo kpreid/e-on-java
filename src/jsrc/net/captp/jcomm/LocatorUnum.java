@@ -48,7 +48,7 @@ public class LocatorUnum implements JOSSPassByConstruction {
     final Introducer myIntroducer;
 
     /**
-     * @param introducer
+     *
      */
     public LocatorUnum(Introducer introducer) {
         myIntroducer = introducer;

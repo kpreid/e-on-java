@@ -15,15 +15,15 @@ import java.util.NoSuchElementException;
  */
 public interface List {
 
-    public void add(Object o); // can insert at head or append.
+    void add(Object o); // can insert at head or append.
 
-    public void append(Object o);
+    void append(Object o);
 
-    public Object elementAt(int index) throws NoSuchElementException;
+    Object elementAt(int index) throws NoSuchElementException;
 
-    public Enumeration elements();
+    Enumeration elements();
 
-    public boolean includes(Object o);
+    boolean includes(Object o);
 
-    public int length();
+    int length();
 }

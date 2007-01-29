@@ -37,7 +37,7 @@ public class NonBlockingInputStream extends FilterInputStream {
      * Overridden to throw an IOException if no data is available()
      */
     public int read() throws IOException {
-        if (available() >= 1) {
+        if (1 <= available()) {
             return super.read();
         } else {
             throw new IOException("not available");
@@ -50,7 +50,7 @@ public class NonBlockingInputStream extends FilterInputStream {
      * read(byte[]) isn't explicitly overridden since FilterInputStream defines
      * it in terms of read(byte[], int, int).
      */
-    public int read(byte b[], int off, int len) throws IOException {
+    public int read(byte[] b, int off, int len) throws IOException {
         return super.read(b, off, StrictMath.min(available(), len));
     }
 

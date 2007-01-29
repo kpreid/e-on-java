@@ -78,19 +78,19 @@ class TraceLevelTranslator implements TraceConstants {
      * @throws IllegalArgumentException if the string is not recognized.
      */
     static int toInt(String level) throws IllegalArgumentException {
-        if (level.equalsIgnoreCase("error")) {
+        if ("error".equalsIgnoreCase(level)) {
             return ERROR;
-        } else if (level.equalsIgnoreCase("warning")) {
+        } else if ("warning".equalsIgnoreCase(level)) {
             return WARNING;
-        } else if (level.equalsIgnoreCase("world")) {
+        } else if ("world".equalsIgnoreCase(level)) {
             return WORLD;
-        } else if (level.equalsIgnoreCase("usage")) {
+        } else if ("usage".equalsIgnoreCase(level)) {
             return USAGE;
-        } else if (level.equalsIgnoreCase("event")) {
+        } else if ("event".equalsIgnoreCase(level)) {
             return EVENT;
-        } else if (level.equalsIgnoreCase("debug")) {
+        } else if ("debug".equalsIgnoreCase(level)) {
             return DEBUG;
-        } else if (level.equalsIgnoreCase("verbose")) {
+        } else if ("verbose".equalsIgnoreCase(level)) {
             return VERBOSE;
         } else {
             String problem = "Incorrect tracing level '" + level + "'";

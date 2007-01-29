@@ -24,7 +24,7 @@ import java.io.StringReader;
 import java.util.Hashtable;
 
 public class CodeLexer extends antlr.CharScanner
-  implements CodeLexerTokenTypes, TokenStream {
+  implements CodeLexerTokenTypes {
 
     protected int lineOffset = 0;
     private Tool antlrTool;        // The ANTLR tool
@@ -33,7 +33,7 @@ public class CodeLexer extends antlr.CharScanner
         this(new StringReader(s));
         setLine(line);
         setFilename(fname);
-        this.antlrTool = tool;
+        antlrTool = tool;
     }
 
     public void setLineOffset(int lineOffset) {
@@ -122,7 +122,7 @@ public class CodeLexer extends antlr.CharScanner
         {
             _loop3:
             do {
-                if (((LA(1) >= '\u0003' && LA(1) <= '\u00ff'))) {
+                if ((('\u0003' <= LA(1) && '\u00ff' >= LA(1)))) {
                     mSTUFF(false);
                 } else {
                     break _loop3;
@@ -130,7 +130,7 @@ public class CodeLexer extends antlr.CharScanner
 
             } while (true);
         }
-        if (_createToken && _token == null && _ttype != Token.SKIP) {
+        if (_createToken && _token == null && Token.SKIP != _ttype) {
             _token = makeToken(_ttype);
             _token.setText(new String(text.getBuffer(),
                                       _begin,
@@ -147,20 +147,20 @@ public class CodeLexer extends antlr.CharScanner
         _ttype = STUFF;
         int _saveIndex;
 
-        if ((LA(1) == '/') && (LA(2) == '*' || LA(2) == '/')) {
+        if (('/' == LA(1)) && ('*' == LA(2) || '/' == LA(2))) {
             mCOMMENT(false);
-        } else if ((LA(1) == '\r') && (LA(2) == '\n')) {
+        } else if (('\r' == LA(1)) && ('\n' == LA(2))) {
             match("\r\n");
             newline();
-        } else if ((LA(1) == '/') && (_tokenSet_0.member(LA(2)))) {
+        } else if (('/' == LA(1)) && (_tokenSet_0.member(LA(2)))) {
             match('/');
             {
                 match(_tokenSet_0);
             }
-        } else if ((LA(1) == '\r') && (true)) {
+        } else if (('\r' == LA(1)) && (true)) {
             match('\r');
             newline();
-        } else if ((LA(1) == '\n')) {
+        } else if (('\n' == LA(1))) {
             match('\n');
             newline();
         } else if ((_tokenSet_1.member(LA(1)))) {
@@ -174,7 +174,7 @@ public class CodeLexer extends antlr.CharScanner
                                                   getColumn());
         }
 
-        if (_createToken && _token == null && _ttype != Token.SKIP) {
+        if (_createToken && _token == null && Token.SKIP != _ttype) {
             _token = makeToken(_ttype);
             _token.setText(new String(text.getBuffer(),
                                       _begin,
@@ -191,9 +191,9 @@ public class CodeLexer extends antlr.CharScanner
         _ttype = COMMENT;
         int _saveIndex;
 
-        if ((LA(1) == '/') && (LA(2) == '/')) {
+        if (('/' == LA(1)) && ('/' == LA(2))) {
             mSL_COMMENT(false);
-        } else if ((LA(1) == '/') && (LA(2) == '*')) {
+        } else if (('/' == LA(1)) && ('*' == LA(2))) {
             mML_COMMENT(false);
         } else {
             throw new NoViableAltForCharException((char)LA(1),
@@ -202,7 +202,7 @@ public class CodeLexer extends antlr.CharScanner
                                                   getColumn());
         }
 
-        if (_createToken && _token == null && _ttype != Token.SKIP) {
+        if (_createToken && _token == null && Token.SKIP != _ttype) {
             _token = makeToken(_ttype);
             _token.setText(new String(text.getBuffer(),
                                       _begin,
@@ -230,11 +230,11 @@ public class CodeLexer extends antlr.CharScanner
             _loop10:
             do {
                 // nongreedy exit test
-                if ((LA(1) == '\n' || LA(1) == '\r') && (true)) {
+                if (('\n' == LA(1) || '\r' == LA(1)) && (true)) {
                     break _loop10;
                 }
-                if (((LA(1) >= '\u0003' && LA(1) <= '\u00ff')) &&
-                  ((LA(2) >= '\u0003' && LA(2) <= '\u00ff'))) {
+                if ((('\u0003' <= LA(1) && '\u00ff' >= LA(1))) &&
+                  (('\u0003' <= LA(2) && '\u00ff' >= LA(2)))) {
                     matchNot(EOF_CHAR);
                 } else {
                     break _loop10;
@@ -243,11 +243,11 @@ public class CodeLexer extends antlr.CharScanner
             } while (true);
         }
         {
-            if ((LA(1) == '\r') && (LA(2) == '\n')) {
+            if (('\r' == LA(1)) && ('\n' == LA(2))) {
                 match("\r\n");
-            } else if ((LA(1) == '\n')) {
+            } else if (('\n' == LA(1))) {
                 match('\n');
-            } else if ((LA(1) == '\r') && (true)) {
+            } else if (('\r' == LA(1)) && (true)) {
                 match('\r');
             } else {
                 throw new NoViableAltForCharException((char)LA(1),
@@ -260,7 +260,7 @@ public class CodeLexer extends antlr.CharScanner
 
         newline();
 
-        if (_createToken && _token == null && _ttype != Token.SKIP) {
+        if (_createToken && _token == null && Token.SKIP != _ttype) {
             _token = makeToken(_ttype);
             _token.setText(new String(text.getBuffer(),
                                       _begin,
@@ -291,10 +291,10 @@ public class CodeLexer extends antlr.CharScanner
             _loop17:
             do {
                 // nongreedy exit test
-                if ((LA(1) == '*') && (LA(2) == '/')) {
+                if (('*' == LA(1)) && ('/' == LA(2))) {
                     break _loop17;
                 }
-                if ((LA(1) == '\r') && (LA(2) == '\n')) {
+                if (('\r' == LA(1)) && ('\n' == LA(2))) {
                     match('\r');
                     match('\n');
                     _saveIndex = text.length();
@@ -304,8 +304,8 @@ public class CodeLexer extends antlr.CharScanner
                     newline();
                     text.append("# ");
 
-                } else if ((LA(1) == '\r') &&
-                  ((LA(2) >= '\u0003' && LA(2) <= '\u00ff'))) {
+                } else if (('\r' == LA(1)) &&
+                  (('\u0003' <= LA(2) && '\u00ff' >= LA(2)))) {
                     match('\r');
                     _saveIndex = text.length();
                     mIGNWS(false);
@@ -314,8 +314,8 @@ public class CodeLexer extends antlr.CharScanner
                     newline();
                     text.append("# ");
 
-                } else if ((LA(1) == '\n') &&
-                  ((LA(2) >= '\u0003' && LA(2) <= '\u00ff'))) {
+                } else if (('\n' == LA(1)) &&
+                  (('\u0003' <= LA(2) && '\u00ff' >= LA(2)))) {
                     match('\n');
                     _saveIndex = text.length();
                     mIGNWS(false);
@@ -324,8 +324,8 @@ public class CodeLexer extends antlr.CharScanner
                     newline();
                     text.append("# ");
 
-                } else if (((LA(1) >= '\u0003' && LA(1) <= '\u00ff')) &&
-                  ((LA(2) >= '\u0003' && LA(2) <= '\u00ff'))) {
+                } else if ((('\u0003' <= LA(1) && '\u00ff' >= LA(1))) &&
+                  (('\u0003' <= LA(2) && '\u00ff' >= LA(2)))) {
                     matchNot(EOF_CHAR);
                 } else {
                     break _loop17;
@@ -340,7 +340,7 @@ public class CodeLexer extends antlr.CharScanner
         _saveIndex = text.length();
         match("*/");
         text.setLength(_saveIndex);
-        if (_createToken && _token == null && _ttype != Token.SKIP) {
+        if (_createToken && _token == null && Token.SKIP != _ttype) {
             _token = makeToken(_ttype);
             _token.setText(new String(text.getBuffer(),
                                       _begin,
@@ -360,11 +360,11 @@ public class CodeLexer extends antlr.CharScanner
         {
             _loop14:
             do {
-                if ((LA(1) == ' ') &&
-                  ((LA(2) >= '\u0003' && LA(2) <= '\u00ff'))) {
+                if ((' ' == LA(1)) &&
+                  (('\u0003' <= LA(2) && '\u00ff' >= LA(2)))) {
                     match(' ');
-                } else if ((LA(1) == '\t') &&
-                  ((LA(2) >= '\u0003' && LA(2) <= '\u00ff'))) {
+                } else if (('\t' == LA(1)) &&
+                  (('\u0003' <= LA(2) && '\u00ff' >= LA(2)))) {
                     match('\t');
                 } else {
                     break _loop14;
@@ -372,7 +372,7 @@ public class CodeLexer extends antlr.CharScanner
 
             } while (true);
         }
-        if (_createToken && _token == null && _ttype != Token.SKIP) {
+        if (_createToken && _token == null && Token.SKIP != _ttype) {
             _token = makeToken(_ttype);
             _token.setText(new String(text.getBuffer(),
                                       _begin,
@@ -382,10 +382,10 @@ public class CodeLexer extends antlr.CharScanner
     }
 
 
-    private static final long[] mk_tokenSet_0() {
+    private static long[] mk_tokenSet_0() {
         long[] data = new long[8];
         data[0] = -145135534866440L;
-        for (int i = 1; i <= 3; i++) {
+        for (int i = 1; 3 >= i; i++) {
             data[i] = -1L;
         }
         return data;
@@ -393,10 +393,10 @@ public class CodeLexer extends antlr.CharScanner
 
     public static final BitSet _tokenSet_0 = new BitSet(mk_tokenSet_0());
 
-    private static final long[] mk_tokenSet_1() {
+    private static long[] mk_tokenSet_1() {
         long[] data = new long[8];
         data[0] = -140737488364552L;
-        for (int i = 1; i <= 3; i++) {
+        for (int i = 1; 3 >= i; i++) {
             data[i] = -1L;
         }
         return data;

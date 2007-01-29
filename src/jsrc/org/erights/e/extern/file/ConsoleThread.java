@@ -36,7 +36,7 @@ import java.io.PrintWriter;
  * of file is signalled to the input handler by sending it a null. If a problem
  * is thrown while reading, the handler is asked to handle it as well.
  */
-public class ConsoleThread implements Runnable {
+public final class ConsoleThread implements Runnable {
 
     /**
      *
@@ -45,11 +45,11 @@ public class ConsoleThread implements Runnable {
 
     private final ConsoleInputHandler myHandler;
 
-    private BufferedReader myIn;
+    private final BufferedReader myIn;
 
-    private PrintWriter myOptOut;
+    private final PrintWriter myOptOut;
 
-    private boolean nowait;
+    private final boolean nowait;
 
     /**
      * Constructs a new console object given a handler and the console input
@@ -69,7 +69,7 @@ public class ConsoleThread implements Runnable {
         /* On Solaris, need to check available() before reading or
             else the whole process will block! */
         String osname = System.getProperty("os.name");
-        if (osname.equals("Solaris")) {
+        if ("Solaris".equals(osname)) {
             nowait = false;
         } else {
             nowait = true;

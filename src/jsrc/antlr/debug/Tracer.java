@@ -1,12 +1,12 @@
 package antlr.debug;
 
-public class Tracer extends TraceAdapter implements TraceListener {
+public class Tracer extends TraceAdapter {
 
     String indent = ""; // TBD: should be StringBuffer
 
 
     protected void dedent() {
-        if (indent.length() < 2) {
+        if (2 > indent.length()) {
             indent = "";
         } else {
             indent = indent.substring(2);

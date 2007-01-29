@@ -445,7 +445,7 @@ public final class SafeJ {
                         Term methArg1 = (Term)meth.getArgs().get(1);
                         optSig = methArg1.getOptString();
                     }
-                    T.require(optSig.indexOf('(') >= 1,
+                    T.require(1 <= optSig.indexOf('('),
                               "Must be a method signature: ",
                               optSig);
                     safeJMap.put(optSig, arg0tag, true);

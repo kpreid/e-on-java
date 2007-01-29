@@ -13,7 +13,7 @@ class ActionElement extends AlternativeElement {
     protected boolean isSemPred = false;
 
 
-    public ActionElement(Grammar g, Token t) {
+    ActionElement(Grammar g, Token t) {
         super(g);
         actionText = t.getText();
         line = t.getLine();

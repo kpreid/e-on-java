@@ -14,7 +14,7 @@ class TreeElement extends AlternativeBlock {
 
     GrammarAtom root;
 
-    public TreeElement(Grammar g, Token start) {
+    TreeElement(Grammar g, Token start) {
         super(g, start, false);
     }
 

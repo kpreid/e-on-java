@@ -25,13 +25,13 @@ class CSharpBlockFinishingInfo {
     boolean needAnErrorClause;
 
 
-    public CSharpBlockFinishingInfo() {
+    CSharpBlockFinishingInfo() {
         postscript = null;
         generatedSwitch = generatedSwitch = false;
         needAnErrorClause = true;
     }
 
-    public CSharpBlockFinishingInfo(String ps,
+    CSharpBlockFinishingInfo(String ps,
                                     boolean genS,
                                     boolean generatedAnIf,
                                     boolean n) {

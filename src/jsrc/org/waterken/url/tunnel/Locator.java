@@ -85,25 +85,25 @@ public final class Locator
         // Parse the Status-Line.
         final int begin_http_version = 0;
         int end_http_version = "HTTP/1.".length();
-        while (" \t".indexOf(line.charAt(end_http_version)) == -1) {
+        while (-1 == " \t".indexOf(line.charAt(end_http_version))) {
             ++end_http_version;
         }
         final String http_version =
           line.substring(begin_http_version, end_http_version);
         int begin_status_code = end_http_version + 1;
-        while (" \t".indexOf(line.charAt(begin_status_code)) != -1) {
+        while (-1 != " \t".indexOf(line.charAt(begin_status_code))) {
             ++begin_status_code;
         }
         int end_status_code = begin_status_code + 1;
         while (end_status_code != line.length() &&
-          " \t".indexOf(line.charAt(end_status_code)) == -1) {
+          -1 == " \t".indexOf(line.charAt(end_status_code))) {
             ++end_status_code;
         }
         final int status_code =
           Integer.parseInt(line.substring(begin_status_code, end_status_code));
 
         // Any 2xx response indicates a successful tunnel.
-        if (status_code < 200 || status_code >= 300) {
+        if (200 > status_code || 300 <= status_code) {
             throw new NoRouteToHostException();
         }
 

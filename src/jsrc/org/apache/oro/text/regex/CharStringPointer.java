@@ -87,7 +87,7 @@ final class CharStringPointer {
     }
 
     char _getValue(int offset) {
-        if (offset < _array.length && offset >= 0) {
+        if (offset < _array.length && 0 <= offset) {
             return _array[offset];
         }
         return _END_OF_STRING;
@@ -129,7 +129,7 @@ final class CharStringPointer {
 
     char _decrement(int inc) {
         _offset -= inc;
-        if (_offset < 0) {
+        if (0 > _offset) {
             _offset = 0;
         }
 

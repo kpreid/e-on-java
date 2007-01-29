@@ -17,7 +17,7 @@ class BlockEndElement extends AlternativeElement {
     protected AlternativeBlock block;// ending blocks know what block they terminate
 
 
-    public BlockEndElement(Grammar g) {
+    BlockEndElement(Grammar g) {
         super(g);
         lock = new boolean[g.maxk + 1];
     }

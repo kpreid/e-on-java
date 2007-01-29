@@ -19,7 +19,7 @@ public class TokenStreamRecognitionException extends TokenStreamException {
 
     public TokenStreamRecognitionException(RecognitionException re) {
         super(re.getMessage());
-        this.recog = re;
+        recog = re;
     }
 
     public String toString() {

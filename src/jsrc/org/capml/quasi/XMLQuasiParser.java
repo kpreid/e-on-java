@@ -103,7 +103,7 @@ public final class XMLQuasiParser {
      * qcList, and reset textBuf.
      */
     static private void gatherText(FlexList qcList, StringBuffer textBuf) {
-        if (textBuf.length() >= 1) {
+        if (1 <= textBuf.length()) {
             qcList.push(new QuasiText(textBuf.toString()));
             textBuf.setLength(0);
         }
@@ -115,7 +115,7 @@ public final class XMLQuasiParser {
     static private QuasiContent gatherContent(FlexList qcList,
                                               StringBuffer textBuf) {
         gatherText(qcList, textBuf);
-        if (qcList.size() == 1) {
+        if (1 == qcList.size()) {
             return (QuasiContent)qcList.get(0);
         } else {
             return new QuasiContentList(qcList.snapshot());
@@ -192,7 +192,7 @@ public final class XMLQuasiParser {
         }
         if (myPos < mySource.length) {
             char c1 = mySource[myPos];
-            if ("<&>".indexOf(c1) != -1) {
+            if (-1 != "<&>".indexOf(c1)) {
                 syntaxError("bare '" + c1 + "'");
             }
             //Note: a terminal bare $ or @ is a normal character
@@ -209,7 +209,7 @@ public final class XMLQuasiParser {
         int result = 0;
         for (; myPos < mySource.length; myPos++) {
             char c1 = mySource[myPos];
-            if ('0' <= c1 && c1 <= '9') {
+            if ('0' <= c1 && '9' >= c1) {
                 result = result * 10 + (c1 - '0');
             } else if (terminator == c1) {
                 if (start == myPos) {
@@ -297,8 +297,8 @@ public final class XMLQuasiParser {
         StringBuffer result = new StringBuffer();
         while (myPos < mySource.length) {
             char c1 = mySource[myPos];
-            if (Character.isWhitespace(c1) || "<>&/$@".indexOf(c1) != -1) {
-                if (result.length() == 0) {
+            if (Character.isWhitespace(c1) || -1 != "<>&/$@".indexOf(c1)) {
+                if (0 == result.length()) {
                     syntaxError("identifier expected");
                 } else {
                     return result.toString();

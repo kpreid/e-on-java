@@ -44,7 +44,7 @@ class DefaultToolErrorHandler implements ToolErrorHandler {
                   sets[i].fset.toStringWithRanges(",", javaCharFormatter);
                 if (sets[i].containsEpsilon()) {
                     line.append("<end-of-token>");
-                    if (bits.length() > 0) {
+                    if (0 < bits.length()) {
                         line.append(',');
                     }
                 }

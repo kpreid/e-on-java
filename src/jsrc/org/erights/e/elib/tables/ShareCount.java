@@ -30,7 +30,7 @@ class ShareCount {
 
     private int myCount;
 
-    public ShareCount() {
+    ShareCount() {
         myCount = 1;
     }
 
@@ -40,11 +40,11 @@ class ShareCount {
     }
 
     public boolean isExclusive() {
-        return myCount <= 1;
+        return 1 >= myCount;
     }
 
     public ShareCount release() {
-        if (myCount <= 0) {
+        if (0 >= myCount) {
             T.fail("excess releases");
         }
         myCount--;

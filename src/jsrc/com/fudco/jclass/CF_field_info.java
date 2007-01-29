@@ -14,7 +14,7 @@ public class CF_field_info {
     private int myAccess_flags;
     private int myName_index;
     private int myDescriptor_index;
-    private CF_attribute_info myAttributes[];
+    private CF_attribute_info[] myAttributes;
 
     /**
      * Constructor.
@@ -35,7 +35,7 @@ public class CF_field_info {
     CF_field_info(int access_flags,
                   int name_index,
                   int descriptor_index,
-                  CF_attribute_info attributes[]) {
+                  CF_attribute_info[] attributes) {
         myAccess_flags = access_flags;
         myName_index = name_index;
         myDescriptor_index = descriptor_index;
@@ -103,7 +103,7 @@ public class CF_field_info {
         int name_index = in.readUnsignedShort();
         int descriptor_index = in.readUnsignedShort();
         int attributes_count = in.readUnsignedShort();
-        CF_attribute_info attributes[] =
+        CF_attribute_info[] attributes =
           new CF_attribute_info[attributes_count];
         for (int i = 0; i < attributes_count; ++i) {
             attributes[i] = CF_attribute_info.read(in);

@@ -21,6 +21,9 @@ Contributor(s): ______________________________________.
 
 public class HexStringUtils {
 
+    private HexStringUtils() {
+    }
+
     //static private final String hexChars = "0123456789ABCDEF";
 
     /**
@@ -79,7 +82,7 @@ public class HexStringUtils {
      *
      * @param msg The hex string.
      */
-    static public String bytesToReadableHexStr(byte msg[]) {
+    static public String bytesToReadableHexStr(byte[] msg) {
         return bytesToReadableHexStr(msg, 0, msg.length);
     }
 
@@ -96,7 +99,7 @@ public class HexStringUtils {
      *            in the output will start with 0000 regardless of the value of
      *            off. &param len the number of bytes to convert.
      */
-    static public String bytesToReadableHexStr(byte msg[], int off, int len) {
+    static public String bytesToReadableHexStr(byte[] msg, int off, int len) {
         StringBuffer msgString = new StringBuffer(len * 59 + 2);
         msgString.append("\n");
 
@@ -108,7 +111,7 @@ public class HexStringUtils {
             msgString.append(Character.forDigit(line & 15, 16));
             msgString.append(" ");
             // First put out the Hex
-            for (int i = 0; i < 16; i++) {
+            for (int i = 0; 16 > i; i++) {
                 if (0 == (i & 3)) {
                     // Space off each group of 4 bytes
                     msgString.append(" ");
@@ -124,10 +127,10 @@ public class HexStringUtils {
             msgString.append(" ");
 
             // Now put out the character form
-            for (int i = 0; i < 16; i++) {
+            for (int i = 0; 16 > i; i++) {
                 if (line + i < len) {
                     byte b = msg[line + i + off];
-                    msgString.append((b < ' ' || b >= 0x7f) ? '.' : (char)b);
+                    msgString.append((' ' > b || 0x7f <= b) ? '.' : (char)b);
                 }
             }
             msgString.append("\n"); // End of line of up to 16 bytes
@@ -143,7 +146,7 @@ public class HexStringUtils {
         if (s.startsWith("0x") || (s.startsWith("0X"))) {
             s = s.substring(2);
         }
-        if (s.length() % 2 != 0) {
+        if (0 != s.length() % 2) {
             s = "0" + s;
         }
 

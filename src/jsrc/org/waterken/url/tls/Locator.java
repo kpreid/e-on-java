@@ -93,7 +93,7 @@ public final class Locator
         }
 
         // Use the hints to locate the server.
-        for (int i = hint.length; i-- != 0;) {
+        for (int i = hint.length; 0 != i--;) {
             race.start("http://" + hint[i] + "/id/" + key_id, 1);
         }
 
@@ -110,12 +110,12 @@ public final class Locator
         /**
          * The key identifier.
          */
-        private String key_id;
+        private final String key_id;
 
         /**
          * The URL strings that have already been tried.
          */
-        private Set tried = Collections.synchronizedSet(new HashSet());
+        private final Set tried = Collections.synchronizedSet(new HashSet());
 
         /**
          * The number of remaining candidates.
@@ -172,7 +172,7 @@ public final class Locator
             }
 
             // Check redirect depth.
-            if (depth < 0) {
+            if (0 > depth) {
                 throw new IOException("Too many redirects");
             }
 
@@ -234,7 +234,7 @@ public final class Locator
                             redirect[redirect_size++] =
                               connection.getHeaderField("Location");
                         }
-                    } else if (status_code > 300 && status_code < 400) {
+                    } else if (300 < status_code && 400 > status_code) {
                         // Redirect to Location.
                         redirect[redirect_size++] =
                           connection.getHeaderField("Location");
@@ -300,17 +300,17 @@ public final class Locator
                           "Unknown message digest algorithm.");
                     }
                     int i = chain.length;
-                    while (i-- != 0 &&
+                    while (0 != i-- &&
                       !key_id.equals(Base32.encode(hash.digest(chain[i].getPublicKey().getEncoded())))) {
                     }
-                    if (i < 0) {
+                    if (0 > i) {
                         throw new SSLPeerUnverifiedException(
                           "Wrong peer certificate.");
                     }
 
                     // If remaining in the HTTP protocol, suck out the response.
                     final String[] protocol = e.getProtocol();
-                    for (int j = protocol.length; j-- != 0;) {
+                    for (int j = protocol.length; 0 != j--;) {
                         if (protocol[j].startsWith("HTTP/")) {
                             connection.resume(ssl);
                             InputStream in = connection.getErrorStream();

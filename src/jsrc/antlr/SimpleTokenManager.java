@@ -48,11 +48,11 @@ class SimpleTokenManager implements TokenManager, Cloneable {
         SimpleTokenManager tm;
         try {
             tm = (SimpleTokenManager)super.clone();
-            tm.vocabulary = (Vector)this.vocabulary.clone();
-            tm.table = (Hashtable)this.table.clone();
-            tm.maxToken = this.maxToken;
-            tm.antlrTool = this.antlrTool;
-            tm.name = this.name;
+            tm.vocabulary = (Vector)vocabulary.clone();
+            tm.table = (Hashtable)table.clone();
+            tm.maxToken = maxToken;
+            tm.antlrTool = antlrTool;
+            tm.name = name;
         } catch (CloneNotSupportedException e) {
             antlrTool.panic("cannot clone token manager");
             return null;

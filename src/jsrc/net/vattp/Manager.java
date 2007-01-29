@@ -135,7 +135,7 @@ public final class Manager {
             if (terminate) {
                 throw new EOFException();
             }
-            if (me.getFingerprint().compareTo(peer) < 0) {
+            if (0 > me.getFingerprint().compareTo(peer)) {
                 // I'm the master.
                 r = _open(peer, null).connect(socket, true);
             } else {

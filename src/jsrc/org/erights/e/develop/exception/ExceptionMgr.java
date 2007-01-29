@@ -31,6 +31,9 @@ public class ExceptionMgr {
      */
     static private ExceptionNoticer OurNoticer = null;
 
+    private ExceptionMgr() {
+    }
+
     /**
      * Returns 'th' as a RuntimeException.
      * <p/>

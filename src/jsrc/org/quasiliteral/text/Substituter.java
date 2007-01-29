@@ -64,7 +64,7 @@ public class Substituter implements ValueMaker, MatchMaker {
         myMatchSize = 0;
         for (int i = 0; i < len; i++) {
             char c1 = template.charAt(i);
-            if (c1 != '$' && c1 != '@') {
+            if ('$' != c1 && '@' != c1) {
                 //not a marker
                 buffer.append(c1);
             } else if (i >= len - 1) {
@@ -76,13 +76,13 @@ public class Substituter implements ValueMaker, MatchMaker {
                 if (c1 == c2) {
                     //doubled marker character, drop one
                     buffer.append(c2);
-                } else if (c2 != '{') {
+                } else if ('{' != c2) {
                     //not special, so back up and act normal
                     i--;
                     buffer.append(c1);
                 } else {
                     //Got one!
-                    if (buffer.length() >= 1) {
+                    if (1 <= buffer.length()) {
                         //end of literal segment
                         t.push(Twine.fromString(buffer.toString()));
                         buffer.setLength(0);
@@ -90,7 +90,7 @@ public class Substituter implements ValueMaker, MatchMaker {
                     int index = 0;
                     for (i++; i < len; i++) {
                         c2 = template.charAt(i);
-                        if (c2 == '}') {
+                        if ('}' == c2) {
                             break;
                         } else if (isDigit(c2)) {
                             index = index * 10 + (c2 - '0');
@@ -98,7 +98,7 @@ public class Substituter implements ValueMaker, MatchMaker {
                             throw new Error("missing '}': " + template);
                         }
                     }
-                    if (c1 == '@') {
+                    if ('@' == c1) {
                         myMatchSize = StrictMath.max(myMatchSize, index + 1);
                         index = ~index;
                     }
@@ -106,7 +106,7 @@ public class Substituter implements ValueMaker, MatchMaker {
                 }
             }
         }
-        if (buffer.length() >= 1) {
+        if (1 <= buffer.length()) {
             //end of literal segment
             t.push(Twine.fromString(buffer.toString()));
         }
@@ -117,7 +117,7 @@ public class Substituter implements ValueMaker, MatchMaker {
      *
      */
     static private boolean isDigit(char c) {
-        return '0' <= c && c <= '9';
+        return '0' <= c && '9' >= c;
     }
 
     /**
@@ -159,7 +159,7 @@ public class Substituter implements ValueMaker, MatchMaker {
                     Twine next = optSegments(iPtr, args);
                     if (next != null) {
                         int s2 = specstr.indexOf(next.bare(), s);
-                        if (s2 == -1) {
+                        if (-1 == s2) {
                             //next segments won't match, may as well
                             //fail now
                             throw Thrower.toEject(optEjector,
@@ -209,7 +209,7 @@ public class Substituter implements ValueMaker, MatchMaker {
                 flex.push(seg);
             } else {
                 int index = ((Integer)seg).intValue();
-                if (index >= 0) {
+                if (0 <= index) {
                     flex.push(args.get(index));
                 } else {
                     break;
@@ -282,7 +282,7 @@ public class Substituter implements ValueMaker, MatchMaker {
         int result = 0;
         for (int i = 0; i < myTemplate.length; i++) {
             if (myTemplate[i] instanceof Integer &&
-              ((Integer)myTemplate[i]).intValue() >= 0) {
+              0 <= ((Integer)myTemplate[i]).intValue()) {
 
                 result++;
             }
@@ -297,7 +297,7 @@ public class Substituter implements ValueMaker, MatchMaker {
         int result = 0;
         for (int i = 0; i < myTemplate.length; i++) {
             if (myTemplate[i] instanceof Integer &&
-              ((Integer)myTemplate[i]).intValue() < 0) {
+              0 > ((Integer)myTemplate[i]).intValue()) {
 
                 result++;
             }
@@ -317,7 +317,7 @@ public class Substituter implements ValueMaker, MatchMaker {
                 result.append(myTemplate[i]);
             } else {
                 int index = ((Integer)myTemplate[i]).intValue();
-                if (index >= 0) {
+                if (0 <= index) {
                     result.append("${" + index + "}");
                 } else {
                     result.append("@{" + ~index + "}");

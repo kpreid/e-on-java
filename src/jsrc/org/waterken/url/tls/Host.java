@@ -54,7 +54,7 @@ public final class Host implements java.io.Serializable {
     /**
      * The client authentication key manager.
      */
-    private KeyManager[] key_manager;
+    private final KeyManager[] key_manager;
 
     private Host() {
         key_manager = new KeyManager[]{};
@@ -100,7 +100,7 @@ public final class Host implements java.io.Serializable {
         int end_method = start_method;
         final int end_request_line = request_line.length();
         while (end_method != end_request_line &&
-          " \t".indexOf(request_line.charAt(end_method)) == -1) {
+          -1 == " \t".indexOf(request_line.charAt(end_method))) {
             ++end_method;
         }
         final String method = request_line.substring(start_method, end_method);
@@ -108,14 +108,14 @@ public final class Host implements java.io.Serializable {
         // Skip SP.
         int start_request_uri = end_method;
         while (start_request_uri != end_request_line &&
-          " \t".indexOf(request_line.charAt(start_request_uri)) != -1) {
+          -1 != " \t".indexOf(request_line.charAt(start_request_uri))) {
             ++start_request_uri;
         }
 
         // Parse the Request-URI.
         int end_request_uri = start_request_uri;
         while (end_request_uri != end_request_line &&
-          " \t".indexOf(request_line.charAt(end_request_uri)) == -1) {
+          -1 == " \t".indexOf(request_line.charAt(end_request_uri))) {
             ++end_request_uri;
         }
         final String request_uri =
@@ -124,7 +124,7 @@ public final class Host implements java.io.Serializable {
         // Skip SP.
         int start_http_version = end_request_uri;
         while (start_http_version != end_request_line &&
-          " \t".indexOf(request_line.charAt(start_http_version)) != -1) {
+          -1 != " \t".indexOf(request_line.charAt(start_http_version))) {
             ++start_http_version;
         }
 
@@ -163,7 +163,7 @@ public final class Host implements java.io.Serializable {
               new String[]{} :
               TokenList.decode(header.substring("Upgrade:".length()));
             int i = protocol.length;
-            while (i-- != 0 && !"TLS/1.0".equals(protocol[i])) {
+            while (0 != i-- && !"TLS/1.0".equals(protocol[i])) {
             }
             if (-1 == i) {
                 // Notify the client that something is here.

@@ -47,10 +47,10 @@ class NewFarDesc implements ObjectRefDesc {
      *
      */
     private void validate() {
-        T.requireSI(myImportPos >= 1,
+        T.requireSI(1 <= myImportPos,
                     "importPos must be positive: ",
                     myImportPos);
-        T.require(null != mySwissHash && mySwissHash.signum() >= 1,
+        T.require(null != mySwissHash && 1 <= mySwissHash.signum(),
                   "swissHash must be positive: ",
                   mySwissHash);
     }

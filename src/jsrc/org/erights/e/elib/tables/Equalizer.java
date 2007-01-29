@@ -277,7 +277,7 @@ public final class Equalizer {
                                     IdentityMap optFringe)
       throws NotSettledException {
 
-        if (hashDepth <= 0) {
+        if (0 >= hashDepth) {
             if (samenessFringe(obj, optFringe)) {
                 // obj is settled
                 return -1;
@@ -391,7 +391,7 @@ public final class Equalizer {
         }
         if (original instanceof SamenessHashCacher) {
             SamenessHashCacher cacher = (SamenessHashCacher)original;
-            if (cacher.mySamenessHashCache != -1) {
+            if (-1 != cacher.mySamenessHashCache) {
                 return true;
             }
         }

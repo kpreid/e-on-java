@@ -15,11 +15,11 @@ abstract class BlockWithImpliedExitPath extends AlternativeBlock {
      */
     protected Lookahead[] exitCache = new Lookahead[grammar.maxk + 1];
 
-    public BlockWithImpliedExitPath(Grammar g) {
+    BlockWithImpliedExitPath(Grammar g) {
         super(g);
     }
 
-    public BlockWithImpliedExitPath(Grammar g, Token start) {
+    BlockWithImpliedExitPath(Grammar g, Token start) {
         super(g, start, false);
     }
 }

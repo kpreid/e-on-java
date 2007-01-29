@@ -43,13 +43,13 @@ class ParserGrammar extends Grammar {
      */
     public void processArguments(String[] args) {
         for (int i = 0; i < args.length; i++) {
-            if (args[i].equals("-trace")) {
+            if ("-trace".equals(args[i])) {
                 traceRules = true;
                 antlrTool.setArgOK(i);
-            } else if (args[i].equals("-traceParser")) {
+            } else if ("-traceParser".equals(args[i])) {
                 traceRules = true;
                 antlrTool.setArgOK(i);
-            } else if (args[i].equals("-debug")) {
+            } else if ("-debug".equals(args[i])) {
                 debuggingOutput = true;
                 antlrTool.setArgOK(i);
             }
@@ -61,10 +61,10 @@ class ParserGrammar extends Grammar {
      */
     public boolean setOption(String key, Token value) {
         String s = value.getText();
-        if (key.equals("buildAST")) {
-            if (s.equals("true")) {
+        if ("buildAST".equals(key)) {
+            if ("true".equals(s)) {
                 buildAST = true;
-            } else if (s.equals("false")) {
+            } else if ("false".equals(s)) {
                 buildAST = false;
             } else {
                 antlrTool.error("buildAST option must be true or false",
@@ -74,10 +74,10 @@ class ParserGrammar extends Grammar {
             }
             return true;
         }
-        if (key.equals("interactive")) {
-            if (s.equals("true")) {
+        if ("interactive".equals(key)) {
+            if ("true".equals(s)) {
                 interactive = true;
-            } else if (s.equals("false")) {
+            } else if ("false".equals(s)) {
                 interactive = false;
             } else {
                 antlrTool.error("interactive option must be true or false",
@@ -87,11 +87,11 @@ class ParserGrammar extends Grammar {
             }
             return true;
         }
-        if (key.equals("ASTLabelType")) {
+        if ("ASTLabelType".equals(key)) {
             super.setOption(key, value);
             return true;
         }
-        if (key.equals("className")) {
+        if ("className".equals(key)) {
             super.setOption(key, value);
             return true;
         }

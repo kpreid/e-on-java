@@ -154,7 +154,7 @@ public class StringSubstitution implements Substitution {
                                    String originalInput,
                                    PatternMatcher matcher,
                                    Pattern pattern) {
-        if (_subLength == 0) {
+        if (0 == _subLength) {
             return;
         }
         appendBuffer.append(_substitution);

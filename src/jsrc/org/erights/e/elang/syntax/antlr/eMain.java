@@ -13,6 +13,9 @@ import java.io.IOException;
 
 class eMain {
 
+    private eMain() {
+    }
+
     public static void main(String[] args) throws Exception {
         BaseAST.setVerboseStringConversion(true, EParser._tokenNames);
         File f = new File(args[0]);

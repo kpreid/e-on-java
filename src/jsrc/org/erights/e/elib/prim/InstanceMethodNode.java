@@ -39,7 +39,7 @@ class InstanceMethodNode extends JavaMemberNode {
     /**
      *
      */
-    public InstanceMethodNode(Method method) {
+    InstanceMethodNode(Method method) {
         super(method);
         if (Modifier.isStatic(method.getModifiers())) {
             throw new Error("internal: not an instance method");

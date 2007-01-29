@@ -43,7 +43,7 @@ class VarGetterNode extends JavaMemberNode {
     /**
      *
      */
-    public VarGetterNode(Field field, boolean propFlag) {
+    VarGetterNode(Field field, boolean propFlag) {
         super(field);
         String propName = super.getVerb();
         if (propFlag) {

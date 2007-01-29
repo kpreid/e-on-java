@@ -42,10 +42,10 @@ class TreeWalkerGrammar extends Grammar {
      */
     public void processArguments(String[] args) {
         for (int i = 0; i < args.length; i++) {
-            if (args[i].equals("-trace")) {
+            if ("-trace".equals(args[i])) {
                 traceRules = true;
                 antlrTool.setArgOK(i);
-            } else if (args[i].equals("-traceTreeParser")) {
+            } else if ("-traceTreeParser".equals(args[i])) {
                 traceRules = true;
                 antlrTool.setArgOK(i);
             }
@@ -61,10 +61,10 @@ class TreeWalkerGrammar extends Grammar {
      * Set tree parser options
      */
     public boolean setOption(String key, Token value) {
-        if (key.equals("buildAST")) {
-            if (value.getText().equals("true")) {
+        if ("buildAST".equals(key)) {
+            if ("true".equals(value.getText())) {
                 buildAST = true;
-            } else if (value.getText().equals("false")) {
+            } else if ("false".equals(value.getText())) {
                 buildAST = false;
             } else {
                 antlrTool.error("buildAST option must be true or false",
@@ -74,11 +74,11 @@ class TreeWalkerGrammar extends Grammar {
             }
             return true;
         }
-        if (key.equals("ASTLabelType")) {
+        if ("ASTLabelType".equals(key)) {
             super.setOption(key, value);
             return true;
         }
-        if (key.equals("className")) {
+        if ("className".equals(key)) {
             super.setOption(key, value);
             return true;
         }

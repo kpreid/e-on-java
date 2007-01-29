@@ -183,7 +183,7 @@ public class VatTPMgr {
         myVat = vat;
 
         ConstList listenPath = netConfig.getListenAddrPath();
-        if (listenPath.size() == 0) {
+        if (0 == listenPath.size()) {
             listenPath = listenPath.with(null);
         }
         int len = listenPath.size();
@@ -859,7 +859,7 @@ public class VatTPMgr {
         }
         buf.append(super.toString()).append("\nlistening at ");
         for (int i = 0, len = myListenThreads.length; i < len; i++) {
-            if (i >= 1) {
+            if (1 <= i) {
                 buf.append(";");
             }
             buf.append(myListenThreads[i].listenAddress().toString());

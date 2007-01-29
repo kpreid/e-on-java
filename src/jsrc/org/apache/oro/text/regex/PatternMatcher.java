@@ -97,7 +97,7 @@ public interface PatternMatcher {
      * @param offset  The offset at which to start searching for the prefix.
      * @return True if input matches pattern, false otherwise.
      */
-    public boolean matchesPrefix(char[] input, Pattern pattern, int offset);
+    boolean matchesPrefix(char[] input, Pattern pattern, int offset);
 
     /**
      * Determines if a prefix of a string matches a given pattern. If a prefix
@@ -112,7 +112,7 @@ public interface PatternMatcher {
      * @param pattern The Pattern to be matched.
      * @return True if input matches pattern, false otherwise.
      */
-    public boolean matchesPrefix(String input, Pattern pattern);
+    boolean matchesPrefix(String input, Pattern pattern);
 
     /**
      * Determines if a prefix of a string (represented as a char[]) matches a
@@ -128,7 +128,7 @@ public interface PatternMatcher {
      * @param pattern The Pattern to be matched.
      * @return True if input matches pattern, false otherwise.
      */
-    public boolean matchesPrefix(char[] input, Pattern pattern);
+    boolean matchesPrefix(char[] input, Pattern pattern);
 
     /**
      * Determines if a prefix of a PatternMatcherInput instance matches a given
@@ -147,7 +147,7 @@ public interface PatternMatcher {
      * @param pattern The Pattern to be matched.
      * @return True if input matches pattern, false otherwise.
      */
-    public boolean matchesPrefix(PatternMatcherInput input, Pattern pattern);
+    boolean matchesPrefix(PatternMatcherInput input, Pattern pattern);
 
     /**
      * Determines if a string exactly matches a given pattern. If there is an
@@ -159,7 +159,7 @@ public interface PatternMatcher {
      * @param pattern The Pattern to be matched.
      * @return True if input matches pattern, false otherwise.
      */
-    public boolean matches(String input, Pattern pattern);
+    boolean matches(String input, Pattern pattern);
 
     /**
      * Determines if a string (represented as a char[]) exactly matches a given
@@ -171,7 +171,7 @@ public interface PatternMatcher {
      * @param pattern The Pattern to be matched.
      * @return True if input matches pattern, false otherwise.
      */
-    public boolean matches(char[] input, Pattern pattern);
+    boolean matches(char[] input, Pattern pattern);
 
     /**
      * Determines if the contents of a PatternMatcherInput instance exactly
@@ -187,7 +187,7 @@ public interface PatternMatcher {
      * @param pattern The Pattern to be matched.
      * @return True if input matches pattern, false otherwise.
      */
-    public boolean matches(PatternMatcherInput input, Pattern pattern);
+    boolean matches(PatternMatcherInput input, Pattern pattern);
 
     /**
      * Determines if a string contains a pattern. If the pattern is matched by
@@ -205,7 +205,7 @@ public interface PatternMatcher {
      * @param pattern The Pattern to be matched.
      * @return True if the input contains a pattern match, false otherwise.
      */
-    public boolean contains(String input, Pattern pattern);
+    boolean contains(String input, Pattern pattern);
 
     /**
      * Determines if a string (represented as a char[]) contains a pattern. If
@@ -223,7 +223,7 @@ public interface PatternMatcher {
      * @param pattern The Pattern to be matched.
      * @return True if the input contains a pattern match, false otherwise.
      */
-    public boolean contains(char[] input, Pattern pattern);
+    boolean contains(char[] input, Pattern pattern);
 
     /**
      * Determines if the contents of a PatternMatcherInput, starting from the
@@ -274,7 +274,7 @@ public interface PatternMatcher {
      * @param pattern The Pattern to be matched.
      * @return True if the input contains a pattern match, false otherwise.
      */
-    public boolean contains(PatternMatcherInput input, Pattern pattern);
+    boolean contains(PatternMatcherInput input, Pattern pattern);
 
     /**
      * Fetches the last match found by a call to a matches() or contains()
@@ -285,5 +285,5 @@ public interface PatternMatcher {
      *         last call to any one of the matches() or contains() methods. If
      *         no match was found by the last call, returns null.
      */
-    public MatchResult getMatch();
+    MatchResult getMatch();
 }

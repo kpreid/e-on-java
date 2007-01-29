@@ -18,8 +18,8 @@ public class LLkDebuggingParser extends LLkParser implements DebuggingParser {
       new ParserEventSupport(this);
 
     private boolean _notDebugMode = false;
-    protected String ruleNames[];
-    protected String semPredNames[];
+    protected String[] ruleNames;
+    protected String[] semPredNames;
 
 
     public LLkDebuggingParser(int k_) {
@@ -139,7 +139,7 @@ public class LLkDebuggingParser extends LLkParser implements DebuggingParser {
     }
 
     public boolean isGuessing() {
-        return inputState.guessing > 0;
+        return 0 < inputState.guessing;
     }
 
     /**
@@ -166,7 +166,7 @@ public class LLkDebuggingParser extends LLkParser implements DebuggingParser {
             super.match(t);
             parserEventSupport.fireMatch(t, text, inputState.guessing);
         } catch (MismatchedTokenException e) {
-            if (inputState.guessing == 0) {
+            if (0 == inputState.guessing) {
                 parserEventSupport.fireMismatch(la_1,
                                                 t,
                                                 text,
@@ -189,7 +189,7 @@ public class LLkDebuggingParser extends LLkParser implements DebuggingParser {
             super.match(b);
             parserEventSupport.fireMatch(la_1, b, text, inputState.guessing);
         } catch (MismatchedTokenException e) {
-            if (inputState.guessing == 0) {
+            if (0 == inputState.guessing) {
                 parserEventSupport.fireMismatch(la_1,
                                                 b,
                                                 text,
@@ -210,7 +210,7 @@ public class LLkDebuggingParser extends LLkParser implements DebuggingParser {
                                             text,
                                             inputState.guessing);
         } catch (MismatchedTokenException e) {
-            if (inputState.guessing == 0) {
+            if (0 == inputState.guessing) {
                 parserEventSupport.fireMismatchNot(la_1,
                                                    t,
                                                    text,

@@ -14,15 +14,15 @@ abstract class AlternativeElement extends GrammarElement {
 
     protected String enclosingRuleName;
 
-    public AlternativeElement(Grammar g) {
+    AlternativeElement(Grammar g) {
         super(g);
     }
 
-    public AlternativeElement(Grammar g, Token start) {
+    AlternativeElement(Grammar g, Token start) {
         super(g, start);
     }
 
-    public AlternativeElement(Grammar g, Token start, int autoGenType_) {
+    AlternativeElement(Grammar g, Token start, int autoGenType_) {
         super(g, start);
         autoGenType = autoGenType_;
     }

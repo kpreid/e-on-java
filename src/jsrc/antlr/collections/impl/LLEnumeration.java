@@ -24,7 +24,7 @@ final class LLEnumeration implements Enumeration {
     /**
      * Create an enumeration attached to a LList
      */
-    public LLEnumeration(LList l) {
+    LLEnumeration(LList l) {
         list = l;
         cursor = list.head;
     }

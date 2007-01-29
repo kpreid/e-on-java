@@ -11,14 +11,14 @@ import java.io.IOException;
  */
 public class CF_CONSTANT_Utf8_info extends CF_cp_info {
 
-    private byte myBytes[];
+    private byte[] myBytes;
 
     /**
      * Constructor.
      *
      * @param bytes The sequence of bytes encoding the UTF-8 string.
      */
-    CF_CONSTANT_Utf8_info(byte bytes[]) {
+    CF_CONSTANT_Utf8_info(byte[] bytes) {
         myBytes = bytes;
     }
 
@@ -48,7 +48,7 @@ public class CF_CONSTANT_Utf8_info extends CF_cp_info {
      * @return a copy of the array of bytes this constant contains.
      */
     public byte[] bytes() {
-        byte result[] = new byte[myBytes.length];
+        byte[] result = new byte[myBytes.length];
         System.arraycopy(myBytes, 0, result, 0, myBytes.length);
         return result;
     }
@@ -63,7 +63,7 @@ public class CF_CONSTANT_Utf8_info extends CF_cp_info {
      *         constant contains.
      */
     public byte[] bytes(int offset, int length) {
-        byte result[] = new byte[myBytes.length - offset];
+        byte[] result = new byte[myBytes.length - offset];
         System.arraycopy(myBytes, offset, result, 0, length);
         return result;
     }
@@ -88,7 +88,7 @@ public class CF_CONSTANT_Utf8_info extends CF_cp_info {
      */
     static CF_CONSTANT_Utf8_info read(DataInputStream in) throws IOException {
         int length = in.readUnsignedShort();
-        byte bytes[] = new byte[length];
+        byte[] bytes = new byte[length];
         in.readFully(bytes);
         return new CF_CONSTANT_Utf8_info(bytes);
     }

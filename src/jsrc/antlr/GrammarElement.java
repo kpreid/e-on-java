@@ -31,13 +31,13 @@ abstract class GrammarElement {
     protected int line;
     protected int column;
 
-    public GrammarElement(Grammar g) {
+    GrammarElement(Grammar g) {
         grammar = g;
         line = -1;
         column = -1;
     }
 
-    public GrammarElement(Grammar g, Token start) {
+    GrammarElement(Grammar g, Token start) {
         grammar = g;
         line = start.getLine();
         column = start.getColumn();

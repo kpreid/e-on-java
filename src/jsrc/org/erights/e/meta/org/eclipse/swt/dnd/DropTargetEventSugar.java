@@ -10,6 +10,9 @@ import org.eclipse.swt.dnd.DropTargetEvent;
  */
 public class DropTargetEventSugar {
 
+    private DropTargetEventSugar() {
+    }
+
     /**
      * Works around the fact that we've suppressed 'data' in DropTargetEvent's
      * superclass, TypedEvent.

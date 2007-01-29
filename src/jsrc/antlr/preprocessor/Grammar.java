@@ -40,14 +40,14 @@ class Grammar {
     protected String exportVocab = null;
     protected antlr.Tool antlrTool;
 
-    public Grammar(antlr.Tool tool,
+    Grammar(antlr.Tool tool,
                    String name,
                    String superGrammar,
                    IndexedVector rules) {
         this.name = name;
         this.superGrammar = superGrammar;
         this.rules = rules;
-        this.antlrTool = tool;
+        antlrTool = tool;
     }
 
     public void addOption(Option o) {
@@ -178,8 +178,8 @@ class Grammar {
 
     public void inherit(Option o, Grammar superG) {
         // do NOT inherit importVocab/exportVocab options under any circumstances
-        if (o.getName().equals("importVocab") ||
-          o.getName().equals("exportVocab")) {
+        if ("importVocab".equals(o.getName()) ||
+          "exportVocab".equals(o.getName())) {
             return;
         }
 

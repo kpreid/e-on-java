@@ -132,7 +132,7 @@ public class Indenter {
      *                   erronous closing text occurs.
      */
     public void pop(char closerChar, Twine closer) {
-        if (myTOS <= 0) {
+        if (0 >= myTOS) {
             throw new SyntaxException(
               "unmatched closing bracket: " + closerChar,
               null,
@@ -160,7 +160,7 @@ public class Indenter {
      *
      */
     public void requireEmpty(String msg) {
-        if (myTOS <= 0) {
+        if (0 >= myTOS) {
             //all's fine
             return;
         }
@@ -179,7 +179,7 @@ public class Indenter {
      *                   bracket.
      */
     public void popIf(char closerChar) {
-        if (myTOS <= 0) {
+        if (0 >= myTOS) {
             //no stack, do nothing
             return;
         }

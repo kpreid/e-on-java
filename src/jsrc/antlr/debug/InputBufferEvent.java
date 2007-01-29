@@ -47,7 +47,7 @@ public class InputBufferEvent extends Event {
     }
 
     void setLookaheadAmount(int la) {
-        this.lookaheadAmount = la;
+        lookaheadAmount = la;
     }
 
     /**
@@ -61,7 +61,7 @@ public class InputBufferEvent extends Event {
 
     public String toString() {
         return "CharBufferEvent [" +
-          (getType() == CONSUME ? "CONSUME, " : "LA, ") + getChar() + "," +
+          (CONSUME == getType() ? "CONSUME, " : "LA, ") + getChar() + "," +
           getLookaheadAmount() + "]";
     }
 }

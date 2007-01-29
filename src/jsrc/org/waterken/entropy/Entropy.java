@@ -22,7 +22,7 @@ public final class Entropy extends SecureRandom {
     /**
      * The random number stream.
      */
-    private InputStream in;
+    private final InputStream in;
 
     private Entropy(final InputStream in) {
         this.in = in;
@@ -53,7 +53,7 @@ public final class Entropy extends SecureRandom {
         try {
             for (int i = 0; i != bytes.length;) {
                 final int n = in.read(bytes, i, bytes.length - i);
-                if (n == -1) {
+                if (-1 == n) {
                     throw new EOFException("Not enough entropy!");
                 }
                 i += n;

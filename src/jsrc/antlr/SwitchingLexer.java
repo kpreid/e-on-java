@@ -24,6 +24,6 @@ abstract public class SwitchingLexer extends CharScanner {
     }
 
     public boolean atLineStart() {
-        return inputState.tokenStartColumn <= 1;
+        return 1 >= inputState.tokenStartColumn;
     }
 }

@@ -75,11 +75,11 @@ public final class QSome extends QAstroArg {
     static private boolean inBounds(int num, char quant) {
         switch (quant) {
         case'?':
-            return num == 0 || num == 1;
+            return 0 == num || 1 == num;
         case'+':
-            return num >= 1;
+            return 1 <= num;
         case'*':
-            return num >= 0;
+            return 0 <= num;
         default:
             T.fail("Must be '?', '+', or '*': " + quant);
             return false; //make compiler happy
@@ -94,7 +94,7 @@ public final class QSome extends QAstroArg {
                   "A ValueMaker must have a sub-pattern: ",
                   this);
         int shape = myOptSubPattern.startShape(args, null, index, -1);
-        T.require(shape >= 0, "Indeterminate repetition: ", this);
+        T.require(0 <= shape, "Indeterminate repetition: ", this);
         FlexList result = FlexList.fromType(Astro.class, shape);
         int lastDim = index.length;
         int[] subIndex = (int[])ArrayHelper.resize(index, lastDim + 1);
@@ -123,7 +123,7 @@ public final class QSome extends QAstroArg {
             case'?':
                 return StrictMath.min(result, 1);
             case'+':
-                return result <= 0 ? -1 : result;
+                return 0 >= result ? -1 : result;
             case'*':
                 return result;
             default:
@@ -136,11 +136,11 @@ public final class QSome extends QAstroArg {
         int lastDim = index.length;
         int[] subIndex = (int[])ArrayHelper.resize(index, lastDim + 1);
         int shapeSoFar = 0;
-        for (; maxShape == -1 || shapeSoFar < maxShape; shapeSoFar++) {
-            if (specimenList.size() == 0) {
+        for (; -1 == maxShape || shapeSoFar < maxShape; shapeSoFar++) {
+            if (0 == specimenList.size()) {
                 break;
             }
-            if (myQuant == '?' && result >= 1) {
+            if ('?' == myQuant && 1 <= result) {
                 break;
             }
             subIndex[lastDim] = shapeSoFar;
@@ -151,7 +151,7 @@ public final class QSome extends QAstroArg {
             if (-1 == more) {
                 break;
             }
-            T.require(more >= 1 || maxShape != -1,
+            T.require(1 <= more || -1 != maxShape,
                       "Patterns of indeterminate rank must make progress: ",
                       this,
                       " vs ",

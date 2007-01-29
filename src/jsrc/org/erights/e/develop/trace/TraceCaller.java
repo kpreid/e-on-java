@@ -162,7 +162,7 @@ public class TraceCaller {
 
     private Line findTargetLineBounds(String stackDump) throws Exception {
         int middle = stackDump.indexOf(targetMethod);
-        quitIf(middle == -1);
+        quitIf(-1 == middle);
 
         Line line = lineFromPoint(stackDump, middle);
 
@@ -175,9 +175,9 @@ public class TraceCaller {
 
         int possibleDuplicate =
           stackDump.indexOf("TraceMessage.<init>", middle);
-        if (possibleDuplicate != -1) {
+        if (-1 != possibleDuplicate) {
             middle = stackDump.indexOf(targetMethod, possibleDuplicate);
-            quitIf(middle == -1);
+            quitIf(-1 == middle);
             line = lineFromPoint(stackDump, middle);
         }
 
@@ -186,7 +186,7 @@ public class TraceCaller {
         // constructor is mislabelled as another instance of the
         // targetMethod.
         possibleDuplicate = stackDump.indexOf(targetMethod, line.pastEnd + 1);
-        if (possibleDuplicate != -1 &&
+        if (-1 != possibleDuplicate &&
           stackDump.lastIndexOf('\n', possibleDuplicate) == line.pastEnd) {
             line = lineFromPoint(stackDump, possibleDuplicate);
         }
@@ -205,11 +205,11 @@ public class TraceCaller {
         Line retval = new Line();
 
         retval.start = stackDump.lastIndexOf('\n', middle);
-        quitIf(retval.start == -1);
+        quitIf(-1 == retval.start);
         retval.start++;
 
         retval.pastEnd = stackDump.indexOf('\n', middle);
-        quitIf(retval.pastEnd == -1);
+        quitIf(-1 == retval.pastEnd);
 
         return retval;
     }
@@ -224,7 +224,7 @@ public class TraceCaller {
         line.pastEnd = stackDump.indexOf('\n', line.pastEnd + 1);
         // It's OK for the very last frame in the stack not to have a
         // newline terminator.
-        if (line.pastEnd == -1) {
+        if (-1 == line.pastEnd) {
             line.pastEnd = stackDump.length();
         }
     }
@@ -251,31 +251,31 @@ public class TraceCaller {
 
         int openParen = stackDump.indexOf('(', start);
         // XXX Hack for Metrowerks and Microsoft VM -bs
-        if (openParen == -1 || openParen >= line.pastEnd) {
+        if (-1 == openParen || openParen >= line.pastEnd) {
             openParen = stackDump.indexOf('<', start);
         }
-        if (openParen == -1 || openParen >= line.pastEnd) {
+        if (-1 == openParen || openParen >= line.pastEnd) {
             openParen = stackDump.indexOf('\t', start);
         }
-        quitIf(openParen == -1 || openParen >= line.pastEnd);
+        quitIf(-1 == openParen || openParen >= line.pastEnd);
 
         int colon = stackDump.indexOf(':', openParen);
-        if (colon == -1 || colon >= line.pastEnd) {
+        if (-1 == colon || colon >= line.pastEnd) {
             colon = stackDump.indexOf(',', openParen);
         }
-        quitIf(colon == -1 || colon >= line.pastEnd);
+        quitIf(-1 == colon || colon >= line.pastEnd);
 
         int closeParen = stackDump.indexOf(')', colon);
         // XXX Hack for Metrowerks and Microsoft VM -bs
-        if (closeParen == -1 || closeParen >= line.pastEnd) {
+        if (-1 == closeParen || closeParen >= line.pastEnd) {
             closeParen = stackDump.indexOf('>', colon);
         }
-        if (closeParen == -1 || closeParen >= line.pastEnd) {
+        if (-1 == closeParen || closeParen >= line.pastEnd) {
             closeParen = stackDump.indexOf('\t', colon);
         }
         // If we have an open delimiter but no close one, it's
         // probably friendliest just to suck up the rest of the line.
-        if (closeParen == -1 || closeParen >= line.pastEnd) {
+        if (-1 == closeParen || closeParen >= line.pastEnd) {
             closeParen = line.pastEnd;
         }
 
@@ -300,15 +300,15 @@ public class TraceCaller {
         int classDot = methodName.lastIndexOf(".", classMethodDot - 1);
         methodName = methodName.substring(classDot + 1);
 
-        if (colon > 0) {
+        if (0 < colon) {
             // normal bytecodes.
             fileName = stackDump.substring(openParen + 1, colon);
 
             // A jit might leave the linenumber as "Compiled Code".
             String maybeLineNumber =
               stackDump.substring(colon + 1, closeParen);
-            if (maybeLineNumber.charAt(0) > '0' &&
-              maybeLineNumber.charAt(0) <= '9') {
+            if ('0' < maybeLineNumber.charAt(0) &&
+              '9' >= maybeLineNumber.charAt(0)) {
                 lineNumber = maybeLineNumber;
             }
         }

@@ -143,14 +143,14 @@ public class TypeDesc extends BaseAuditor implements Persistent {
         MessageDesc.synopsize(out, myDocComment);
         out.print("interface ", E.toQuote(myFQName));
         int numSupers = mySupers.size();
-        if (numSupers >= 1) {
+        if (1 <= numSupers) {
             out.print(" extends ", mySupers.get(0));
             for (int i = 1; i < numSupers; i++) {
                 out.print(", ", mySupers.get(i));
             }
         }
         int numAuditors = myAuditors.size();
-        if (numAuditors >= 1) {
+        if (1 <= numAuditors) {
             out.print(" implements ", myAuditors.get(0));
             for (int i = 1; i < numAuditors; i++) {
                 out.print(", ", myAuditors.get(i));

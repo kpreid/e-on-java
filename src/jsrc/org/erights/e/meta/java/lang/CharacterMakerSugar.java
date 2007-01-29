@@ -69,7 +69,7 @@ public final class CharacterMakerSugar {
     static private final Character[] LATIN1 = new Character[256];
 
     static {
-        for (char c = 0; c < 256; c++) {
+        for (char c = 0; 256 > c; c++) {
             LATIN1[c] = new Character(c);
         }
     }
@@ -84,7 +84,7 @@ public final class CharacterMakerSugar {
      * @return
      */
     static public Character valueOf(char c) {
-        if (c < 256) {
+        if (256 > c) {
             return LATIN1[c];
         } else {
             return new Character(c);
@@ -95,11 +95,11 @@ public final class CharacterMakerSugar {
      * Returns the Unicode character with this character code.
      */
     static public char asChar(long code) {
-        if (code < 0) {
+        if (0 > code) {
             T.fail("Code points must be positive: " + code);
         }
-        if (code > 0xFFFF) {
-            if (code > 0x10FFFF) {
+        if (0xFFFF < code) {
+            if (0x10FFFF < code) {
                 T.fail("Code point too large: " + code);
             }
             T.fail("Supplementary code points not yet supported: " + code);

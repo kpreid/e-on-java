@@ -17,7 +17,7 @@ public abstract class ParseTree extends BaseAST {
      * at step.
      */
     public String getLeftmostDerivationStep(int step) {
-        if (step <= 0) {
+        if (0 >= step) {
             return toString();
         }
         StringBuffer buf = new StringBuffer(2000);
@@ -27,7 +27,7 @@ public abstract class ParseTree extends BaseAST {
 
     public String getLeftmostDerivation(int maxSteps) {
         StringBuffer buf = new StringBuffer(2000);
-        buf.append("    " + this.toString());
+        buf.append("    " + toString());
         buf.append("\n");
         for (int d = 1; d < maxSteps; d++) {
             buf.append(" =>");

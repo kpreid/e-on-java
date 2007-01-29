@@ -51,7 +51,7 @@ public abstract class BaseLoader implements Loader {
             return null;
         }
         Object[] fullArgs = (Object[])optFullDesc[2];
-        if (fullArgs.length != 1) {
+        if (1 != fullArgs.length) {
             return null;
         }
         String fullName = (String)fullArgs[0];

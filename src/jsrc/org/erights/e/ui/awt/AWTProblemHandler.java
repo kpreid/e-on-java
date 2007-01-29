@@ -15,7 +15,7 @@ class AWTProblemHandler {
     /**
      * As mandated by JDK1.3's {@link java.awt.EventDispatchThread#handleException(Throwable)}
      */
-    public AWTProblemHandler() {
+    AWTProblemHandler() {
     }
 
     /**

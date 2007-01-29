@@ -81,7 +81,7 @@ public class ReaderSugar {
      */
     static public Character readChar(Reader self) throws IOException {
         int result = self.read();
-        if (result == -1) {
+        if (-1 == result) {
             return null;
         } else {
             return CharacterMakerSugar.valueOf((char)result);
@@ -95,7 +95,7 @@ public class ReaderSugar {
     static public String readString(Reader self, int size) throws IOException {
         char[] cbuf = new char[size];
         int numRead = self.read(cbuf);
-        if (numRead == -1) {
+        if (-1 == numRead) {
             //end of file
             return null;
         }

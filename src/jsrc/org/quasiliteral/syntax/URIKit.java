@@ -39,19 +39,22 @@ public class URIKit {
 
     static private final boolean[] URICs = new boolean[128];
 
+    private URIKit() {
+    }
+
     static {
-        for (int i = 0; i < 128; i++) {
+        for (int i = 0; 128 > i; i++) {
             //XXX this intitialization may be unnecessary, as the
             //language probably guarantees initialization to false.
             URICs[i] = false;
         }
-        for (char c = 'a'; c <= 'z'; c++) {
+        for (char c = 'a'; 'z' >= c; c++) {
             URICs[c] = true;
         }
-        for (char c = 'A'; c <= 'Z'; c++) {
+        for (char c = 'A'; 'Z' >= c; c++) {
             URICs[c] = true;
         }
-        for (char c = '0'; c <= '9'; c++) {
+        for (char c = '0'; '9' >= c; c++) {
             URICs[c] = true;
         }
         String allowed = ";/?:@&=+$,-_.!~*'()%\\|#";
@@ -82,7 +85,7 @@ public class URIKit {
      */
     static public Twine getProtcol(Twine uriText) {
         int colon = uriText.indexOf(":");
-        T.require(colon >= 0, "':' not found: ", uriText);
+        T.require(0 <= colon, "':' not found: ", uriText);
         return (Twine)uriText.run(0, colon);
     }
 
@@ -91,7 +94,7 @@ public class URIKit {
      */
     static public Twine getBody(Twine uriText) {
         int colon = uriText.indexOf(":");
-        T.require(colon >= 0, "':' not found: ", uriText);
+        T.require(0 <= colon, "':' not found: ", uriText);
         return (Twine)uriText.run(colon + 1, uriText.size());
     }
 
@@ -108,7 +111,7 @@ public class URIKit {
      * normalizations dynamically.
      */
     static public boolean isURIC(char c) {
-        return c < 128 && URICs[c];
+        return 128 > c && URICs[c];
     }
 
     /**

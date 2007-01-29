@@ -56,15 +56,15 @@ public class DocBookCodeGenerator extends CodeGenerator {
 
         for (int i = 0, len = s.length(); i < len; i++) {
             char c = s.charAt(i);
-            if (c == '&') {
+            if ('&' == c) {
                 buf.append("&amp;");
-            } else if (c == '\"') {
+            } else if ('\"' == c) {
                 buf.append("&quot;");
-            } else if (c == '\'') {
+            } else if ('\'' == c) {
                 buf.append("&#039;");
-            } else if (c == '<') {
+            } else if ('<' == c) {
                 buf.append("&lt;");
-            } else if (c == '>') {
+            } else if ('>' == c) {
                 buf.append("&gt;");
             } else {
                 buf.append(c);
@@ -84,7 +84,7 @@ public class DocBookCodeGenerator extends CodeGenerator {
 
         for (int i = 0, len = s.length(); i < len; i++) {
             char c = s.charAt(i);
-            if (c == '_') {
+            if ('_' == c) {
                 buf.append(".");
             } else {
                 buf.append(c);
@@ -241,7 +241,7 @@ public class DocBookCodeGenerator extends CodeGenerator {
         Enumeration ids = grammar.rules.elements();
         while (ids.hasMoreElements()) {
             RuleSymbol rs = (RuleSymbol)ids.nextElement();
-            if (!rs.id.equals("mnextToken")) {
+            if (!"mnextToken".equals(rs.id)) {
                 genRule(rs);
             }
         }
@@ -495,19 +495,19 @@ public class DocBookCodeGenerator extends CodeGenerator {
      * generated.
      */
     public void genCommonBlock(AlternativeBlock blk) {
-        if (blk.alternatives.size() > 1) {
+        if (1 < blk.alternatives.size()) {
             println("<itemizedlist mark=\"none\">");
         }
         for (int i = 0; i < blk.alternatives.size(); i++) {
             Alternative alt = blk.getAlternativeAt(i);
             AlternativeElement elem = alt.head;
 
-            if (blk.alternatives.size() > 1) {
+            if (1 < blk.alternatives.size()) {
                 print("<listitem><para>");
             }
 
             // dump alt operator |
-            if (i > 0 && blk.alternatives.size() > 1) {
+            if (0 < i && 1 < blk.alternatives.size()) {
                 _print("| ");
             }
 
@@ -520,11 +520,11 @@ public class DocBookCodeGenerator extends CodeGenerator {
             genAlt(alt);
             tabs--;
             firstElementInAlt = save;
-            if (blk.alternatives.size() > 1) {
+            if (1 < blk.alternatives.size()) {
                 _println("</para></listitem>");
             }
         }
-        if (blk.alternatives.size() > 1) {
+        if (1 < blk.alternatives.size()) {
             println("</itemizedlist>");
         }
     }
@@ -540,7 +540,7 @@ public class DocBookCodeGenerator extends CodeGenerator {
     }
 
     protected void genGenericBlock(AlternativeBlock blk, String blkOp) {
-        if (blk.alternatives.size() > 1) {
+        if (1 < blk.alternatives.size()) {
             // make sure we start on a new line
             _println("");
             if (!firstElementInAlt) {
@@ -566,7 +566,7 @@ public class DocBookCodeGenerator extends CodeGenerator {
         // RK: don't dump init actions
         //	genBlockPreamble(blk);
         genCommonBlock(blk);
-        if (blk.alternatives.size() > 1) {
+        if (1 < blk.alternatives.size()) {
             _println("");
             print(")" + blkOp + " ");
             // if not last element of alt, need newline & to indent
@@ -625,7 +625,7 @@ public class DocBookCodeGenerator extends CodeGenerator {
             return;
         }
         int depth = alt.lookaheadDepth;
-        if (depth == GrammarAnalyzer.NONDETERMINISTIC) {
+        if (GrammarAnalyzer.NONDETERMINISTIC == depth) {
             // if the decision is nondeterministic, do the best we can: LL(k)
             // any predicates that are around will be generated later.
             depth = grammar.maxk;
@@ -646,7 +646,7 @@ public class DocBookCodeGenerator extends CodeGenerator {
         int depth = 0;
         for (int i = 0; i < blk.alternatives.size(); i++) {
             Alternative alt = blk.getAlternativeAt(i);
-            if (alt.lookaheadDepth == GrammarAnalyzer.NONDETERMINISTIC) {
+            if (GrammarAnalyzer.NONDETERMINISTIC == alt.lookaheadDepth) {
                 depth = grammar.maxk;
                 break;
             } else if (depth < alt.lookaheadDepth) {
@@ -711,8 +711,8 @@ public class DocBookCodeGenerator extends CodeGenerator {
         }
         println("");
 
-        if (s.access.length() != 0) {
-            if (!s.access.equals("public")) {
+        if (0 != s.access.length()) {
+            if (!"public".equals(s.access)) {
                 _print("<para>" + s.access + " </para>");
             }
         }
@@ -865,7 +865,7 @@ public class DocBookCodeGenerator extends CodeGenerator {
 
         int[] elems = lookahead.fset.toArray();
 
-        if (depth != 1) {
+        if (1 != depth) {
             print("k==" + k + ": {");
         } else {
             print("{ ");

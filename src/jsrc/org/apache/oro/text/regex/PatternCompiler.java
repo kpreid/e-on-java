@@ -120,7 +120,7 @@ public interface PatternCompiler {
      *                                   error in the expression is
      *                                   encountered.
      */
-    public Pattern compile(String pattern) throws MalformedPatternException;
+    Pattern compile(String pattern) throws MalformedPatternException;
 
 
     /**
@@ -143,7 +143,7 @@ public interface PatternCompiler {
      *                                   error in the expression is
      *                                   encountered.
      */
-    public Pattern compile(String pattern, int options)
+    Pattern compile(String pattern, int options)
       throws MalformedPatternException;
 
 
@@ -161,7 +161,7 @@ public interface PatternCompiler {
      *                                   error in the expression is
      *                                   encountered.
      */
-    public Pattern compile(char[] pattern) throws MalformedPatternException;
+    Pattern compile(char[] pattern) throws MalformedPatternException;
 
 
     /**
@@ -184,7 +184,7 @@ public interface PatternCompiler {
      *                                   error in the expression is
      *                                   encountered.
      */
-    public Pattern compile(char[] pattern, int options)
+    Pattern compile(char[] pattern, int options)
       throws MalformedPatternException;
 
 }

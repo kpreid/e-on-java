@@ -44,7 +44,7 @@ class SamenessKeyColumn extends KeyColumn {
     /**
      * Reasonable defaults
      */
-    public SamenessKeyColumn() {
+    SamenessKeyColumn() {
         this(Object.class, FlexMapImpl.DEFAULT_INIT_CAPACITY);
     }
 
@@ -63,14 +63,14 @@ class SamenessKeyColumn extends KeyColumn {
     /**
      * Reasonable defaults
      */
-    public SamenessKeyColumn(int capacity) {
+    SamenessKeyColumn(int capacity) {
         this(Object.class, capacity);
     }
 
     /**
      * Reasonable defaults
      */
-    public SamenessKeyColumn(Class memberType) {
+    SamenessKeyColumn(Class memberType) {
         this(memberType, FlexMapImpl.DEFAULT_INIT_CAPACITY);
     }
 
@@ -78,7 +78,7 @@ class SamenessKeyColumn extends KeyColumn {
      * @param memberType
      * @param capacity
      */
-    public SamenessKeyColumn(Class memberType, int capacity) {
+    SamenessKeyColumn(Class memberType, int capacity) {
         super(memberType, capacity);
         myMaxProbes = 0;
         myHashes = new int[myKeys.length];
@@ -122,12 +122,12 @@ class SamenessKeyColumn extends KeyColumn {
         // search the array for the key (or equivalent)
         for (; ;) {
             int status = myPos2Rank[curPos];
-            if (status == KEY_UNUSED) {
+            if (KEY_UNUSED == status) {
                 // not in map
                 return -1;
             }
             Object curKey = myKeys[curPos];
-            if (status >= 0 && hash == myHashes[curPos] &&
+            if (0 <= status && hash == myHashes[curPos] &&
               Ref.isSameEver(curKey, key)) {
                 // we found it.
                 return curPos;
@@ -158,15 +158,15 @@ class SamenessKeyColumn extends KeyColumn {
         for (; ;) {
             Object curKey = myKeys[curPos];
             int status = myPos2Rank[curPos];
-            if (status == KEY_UNUSED) {
-                if (firstVacant != -1) {
+            if (KEY_UNUSED == status) {
+                if (-1 != firstVacant) {
                     return occupy(firstVacant, key, hash);
                 } else {
                     return occupy(curPos, key, hash);
                 }
-            } else if (status == KEY_DELETED) {
+            } else if (KEY_DELETED == status) {
                 //the pos is vacant
-                if (firstVacant == -1) {
+                if (-1 == firstVacant) {
                     // we found the first vacant pos of the search
                     // path. It'll be used if the element isn't
                     // eventually found
@@ -184,7 +184,7 @@ class SamenessKeyColumn extends KeyColumn {
             if (curPos == initialProbe) {
                 // we wrapped. Either we passed a deleted pos or
                 // there's no room in the map
-                if (firstVacant != -1) {
+                if (-1 != firstVacant) {
                     return occupy(firstVacant, key, hash);
                 } else {
                     return -1;

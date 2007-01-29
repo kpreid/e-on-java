@@ -18,7 +18,7 @@ public class DefaultFileLineFormatter extends FileLineFormatter {
             buf.append(":");
         }
 
-        if (line != -1) {
+        if (-1 != line) {
             if (fileName == null) {
                 buf.append("line ");
             }
@@ -26,7 +26,7 @@ public class DefaultFileLineFormatter extends FileLineFormatter {
         }
         buf.append(")");
 
-        if (column != -1) {
+        if (-1 != column) {
             buf.append("@" + column);
         }
         buf.append(":");

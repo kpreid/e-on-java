@@ -40,7 +40,7 @@ public final class BoundedInputStream extends InputStream {
             r = -1;
         } else {
             r = in.read();
-            if (r == -1) {
+            if (-1 == r) {
                 throw new EOFException();
             }
             --remaining;
@@ -55,7 +55,7 @@ public final class BoundedInputStream extends InputStream {
             r = -1;
         } else {
             r = in.read(b, off, Math.min(len, remaining));
-            if (r == -1) {
+            if (-1 == r) {
                 throw new EOFException();
             }
             remaining -= r;

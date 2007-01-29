@@ -21,10 +21,9 @@ public final class PathSegment {
     public static String vouch(final String candidate) throws InvalidPath {
 
         // Check for disallowed characters.
-        for (int i = candidate.length(); i-- != 0;) {
+        for (int i = candidate.length(); 0 != i--;) {
             final char c = candidate.charAt(i);
-            if (c <= 0x20 || c >= 0x7F ||
-              "\"#/<>?[\\]^`{|}".indexOf(c) != -1) {
+            if (0x20 >= c || 0x7F <= c || -1 != "\"#/<>?[\\]^`{|}".indexOf(c)) {
                 throw InvalidPath.make();
             }
         }

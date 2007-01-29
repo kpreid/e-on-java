@@ -39,7 +39,7 @@ final class SimpleTwine extends AtomicTwine {
      */
     SimpleTwine(String str) {
         super(str);
-        T.require(str.length() >= 1,
+        T.require(1 <= str.length(),
                   "internal: SimpleTwine must be non-empty");
     }
 

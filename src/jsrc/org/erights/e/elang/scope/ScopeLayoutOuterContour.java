@@ -23,7 +23,7 @@ class ScopeLayoutOuterContour extends ScopeLayoutContour {
      */
     ScopeLayoutOuterContour(ScopeLayout next) {
         super(next.getOuterCount(), next);
-        T.require(myOuterCount >= 0, "Scope confusion");
+        T.require(0 <= myOuterCount, "Scope confusion");
     }
 
     /**

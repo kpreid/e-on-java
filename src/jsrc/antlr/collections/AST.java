@@ -17,86 +17,86 @@ public interface AST {
     /**
      * Add a (rightmost) child to this node
      */
-    public void addChild(AST c);
+    void addChild(AST c);
 
-    public boolean equals(AST t);
+    boolean equals(AST t);
 
-    public boolean equalsList(AST t);
+    boolean equalsList(AST t);
 
-    public boolean equalsListPartial(AST t);
+    boolean equalsListPartial(AST t);
 
-    public boolean equalsTree(AST t);
+    boolean equalsTree(AST t);
 
-    public boolean equalsTreePartial(AST t);
+    boolean equalsTreePartial(AST t);
 
-    public ASTEnumeration findAll(AST tree);
+    ASTEnumeration findAll(AST tree);
 
-    public ASTEnumeration findAllPartial(AST subtree);
+    ASTEnumeration findAllPartial(AST subtree);
 
     /**
      * Get the first child of this node; null if no children
      */
-    public AST getFirstChild();
+    AST getFirstChild();
 
     /**
      * Get	the next sibling in line after this one
      */
-    public AST getNextSibling();
+    AST getNextSibling();
 
     /**
      * Get the token text for this node
      */
-    public String getText();
+    String getText();
 
     /**
      * Get the token type for this node
      */
-    public int getType();
+    int getType();
 
     /**
      * @since 2.7.3 Need for error handling
      */
-    public int getLine();
+    int getLine();
 
     /**
      * @since 2.7.3 Need for error handling
      */
-    public int getColumn();
+    int getColumn();
 
     /**
      * Get number of children of this node; if leaf, returns 0
      */
-    public int getNumberOfChildren();
+    int getNumberOfChildren();
 
-    public void initialize(int t, String txt);
+    void initialize(int t, String txt);
 
-    public void initialize(AST t);
+    void initialize(AST t);
 
-    public void initialize(Token t);
+    void initialize(Token t);
 
     /**
      * Set the first child of a node.
      */
-    public void setFirstChild(AST c);
+    void setFirstChild(AST c);
 
     /**
      * Set the next sibling after this one.
      */
-    public void setNextSibling(AST n);
+    void setNextSibling(AST n);
 
     /**
      * Set the token text for this node
      */
-    public void setText(String text);
+    void setText(String text);
 
     /**
      * Set the token type for this node
      */
-    public void setType(int ttype);
+    void setType(int ttype);
 
-    public String toString();
+    String toString();
 
-    public String toStringList();
+    String toStringList();
 
-    public String toStringTree();
+    String toStringTree();
 }

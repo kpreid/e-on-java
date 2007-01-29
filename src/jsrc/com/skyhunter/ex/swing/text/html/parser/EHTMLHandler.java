@@ -7,19 +7,19 @@ import javax.swing.text.html.parser.TagElement;
 
 public interface EHTMLHandler {
 
-    public void handleStartTag(TagElement elem);
+    void handleStartTag(TagElement elem);
 
-    public void handleEndTag(TagElement elem);
+    void handleEndTag(TagElement elem);
 
-    public void handleComment(String text);
+    void handleComment(String text);
 
-    public void handleEmptyTag(TagElement tag);
+    void handleEmptyTag(TagElement tag);
 
-    public void handleEOFInComment();
+    void handleEOFInComment();
 
-    public void handleError(int ln, String msg);
+    void handleError(int ln, String msg);
 
-    public void handleText(String text);
+    void handleText(String text);
 
-    public void handleTitle(String text);
+    void handleTitle(String text);
 }

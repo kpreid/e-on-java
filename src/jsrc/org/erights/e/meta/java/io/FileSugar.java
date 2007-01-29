@@ -363,7 +363,7 @@ public class FileSugar {
         name = name.replace(File.separatorChar, '/');
         name = name.replace('\\', '/');
 
-        if (("/" + name + "/").indexOf("/../") != -1) {
+        if (-1 != ("/" + name + "/").indexOf("/../")) {
             throw new SecurityException("\"..\" not allowed: " + name);
         }
 

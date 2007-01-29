@@ -71,7 +71,7 @@ final class CompositeTwine extends Twine {
       throws IndexOutOfBoundsException {
 
         int len = size();
-        if (start < 0 || bound > len || start > bound) {
+        if (0 > start || bound > len || start > bound) {
             throw new IndexOutOfBoundsException("twine run");
         }
         if (start == bound) {
@@ -153,7 +153,7 @@ final class CompositeTwine extends Twine {
      *
      */
     public SourceSpan getOptSpan() {
-        if (myParts.length == 0) {
+        if (0 == myParts.length) {
             return null;
         }
         SourceSpan optResult = myParts[0].getOptSpan();

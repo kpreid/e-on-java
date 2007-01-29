@@ -45,7 +45,7 @@ interface TraceConstants {
      */
     int NUM_ACCEPTORS = 2;
 
-    String acceptorNames[] = {"log", "trace"};
+    String[] acceptorNames = {"log", "trace"};
 
     /**
      * The different trace thresholds. See the Trace class for documentation.
@@ -89,7 +89,7 @@ interface TraceConstants {
 
     int FOR_SUBSYSTEM = 1;
 
-    String reasonNames[] = {"default", "subsystem"};
+    String[] reasonNames = {"default", "subsystem"};
 
     /* Trace buffer defaults */ int STARTING_TRACE_BUFFER_SIZE = 500;
 

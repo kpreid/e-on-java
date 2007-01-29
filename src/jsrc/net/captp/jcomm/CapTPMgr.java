@@ -269,7 +269,7 @@ public class CapTPMgr implements NewConnectionReactor {
     }
 
     /**
-     * @return
+     *
      */
     public ReferenceMonitor getReferenceMonitor() {
         return myRefmon;

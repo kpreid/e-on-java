@@ -157,11 +157,11 @@ public class StartUpProtocol implements MsgHandler {
         int count;
         int start;
         int end;
-        String result[];
+        String[] result;
 
         count = 1;
         start = -1;
-        while ((start = TheAuthProtocols.indexOf(',', start + 1)) >= 0) {
+        while (0 <= (start = TheAuthProtocols.indexOf(',', start + 1))) {
             count++;
         }
         result = new String[count];
@@ -420,7 +420,7 @@ public class StartUpProtocol implements MsgHandler {
                 for (int i = 0; i < size - 1; i++) {
                     err += (versions.elementAt(i) + ", ");
                 }
-                if (size > 0) {
+                if (0 < size) {
                     err += versions.lastElement();
                 }
                 Trace.comm.debugm(err + " picked " + protocol);
@@ -432,7 +432,7 @@ public class StartUpProtocol implements MsgHandler {
                 for (int i = 0; i < size - 1; i++) {
                     err += (versions.elementAt(i) + ", ");
                 }
-                if (size > 0) {
+                if (0 < size) {
                     err += versions.lastElement();
                 }
                 err += " are not supported, use versions ";
@@ -499,7 +499,7 @@ public class StartUpProtocol implements MsgHandler {
             ret = "0x" + Integer.toHexString(msgType) + " ";
             int token = packetIn.readByte();
             ret += tokName(token) + " ";
-            if (token <= 0 || TOK_BYE == token || TOK_DUP == token ||
+            if (0 >= token || TOK_BYE == token || TOK_DUP == token ||
               TOK_NOT_ME == token || TOK_IAM == token) {
                 ret += packetIn.readUTF();
             }
@@ -547,7 +547,7 @@ public class StartUpProtocol implements MsgHandler {
         if (myStop) {
             startupError(TOK_DUP, "Stopped connection");
             return;
-        } else if (token == TOK_GIVEINFO) {
+        } else if (TOK_GIVEINFO == token) {
             myRemoteVatID = packetIn.readUTF();
             String remoteSearchPath = packetIn.readUTF();
             byte[] hisKey = new byte[packetIn.readUnsignedShort()];
@@ -581,11 +581,11 @@ public class StartUpProtocol implements MsgHandler {
                 break;
             }
             }
-        } else if (token == TOK_DUP) {
+        } else if (TOK_DUP == token) {
             myDataPath.duplicatePath(
               "Incoming crossed connections" + formatStartupPacket(packet),
               false);
-        } else if (token == TOK_NOT_ME) {
+        } else if (TOK_NOT_ME == token) {
             startupLocalError("Other end tried to connect to self");
         } else {
             startupError(TOK_ERR_PROTOCOL,
@@ -614,7 +614,7 @@ public class StartUpProtocol implements MsgHandler {
                                              DataInputStream packetIn,
                                              byte[] packet)
       throws IOException {
-        if (token == TOK_GO) {
+        if (TOK_GO == token) {
             String protocol = packetIn.readUTF();
             if (myDataPath.resumeConnection(null)) {
                 if (null != matchProtocols(protocol)) {
@@ -648,7 +648,7 @@ public class StartUpProtocol implements MsgHandler {
                 // connection and retry it. -emm
                 startupError(TOK_BYE, "discarded resumable connection");
             }
-        } else if (token == TOK_RESUME) {
+        } else if (TOK_RESUME == token) {
             byte[] incomingSuspendID = new byte[packetIn.readUnsignedShort()];
             packetIn.readFully(incomingSuspendID);
             if (myDataPath.resumeConnection(incomingSuspendID)) {
@@ -657,7 +657,7 @@ public class StartUpProtocol implements MsgHandler {
             } else {
                 startupError(TOK_BYE, "wrong suspend id");
             }
-        } else if (token == TOK_DUP) {
+        } else if (TOK_DUP == token) {
             myDataPath.duplicatePath(
               "Incoming crossed connections " + formatStartupPacket(packet),
               true);
@@ -688,7 +688,7 @@ public class StartUpProtocol implements MsgHandler {
             startupError(TOK_DUP, "Stopped connection");
             return;
         }
-        if (token != TOK_IWANT) {
+        if (TOK_IWANT != token) {
             /* IWANT <id> */
             startupError(TOK_ERR_PROTOCOL,
                          "Expected " + tokName(TOK_IWANT) + " got " +
@@ -704,7 +704,7 @@ public class StartUpProtocol implements MsgHandler {
         }
         if (myVLS != null) {
             String[] locations = myVLS.getLocations(wantedVatID);
-            if (locations.length >= 1) {
+            if (1 <= locations.length) {
                 //XXX future bug: only uses the first one
                 sendTry(locations[0]);
                 myDataPath.tryNext("VLS lookup completed");
@@ -743,7 +743,7 @@ public class StartUpProtocol implements MsgHandler {
                                                 DataInputStream packetIn,
                                                 byte[] packet)
       throws IOException {
-        if (token == TOK_GOTOO) {
+        if (TOK_GOTOO == token) {
             if (null != myOutgoingSuspendID) {
                 myProtocolSuite = null;
             } else {
@@ -762,7 +762,7 @@ public class StartUpProtocol implements MsgHandler {
                 }
             }
             startupSuccessful();
-        } else if (token == TOK_BYE) {
+        } else if (TOK_BYE == token) {
             myDataPath.cantResume(formatStartupPacket(packet));
         } else {
             startupError(TOK_ERR_PROTOCOL,
@@ -795,7 +795,7 @@ public class StartUpProtocol implements MsgHandler {
         if (myStop) {
             startupError(TOK_DUP, "Stopped connection");
             return;
-        } else if (token == TOK_IAM) {
+        } else if (TOK_IAM == token) {
             String remoteVatID = packetIn.readUTF();
             String remoteFlattenedSearchPath = packetIn.readUTF();
             if (remoteVatID.equals(myLocalVatID)) {
@@ -834,15 +834,15 @@ public class StartUpProtocol implements MsgHandler {
             } else {
                 startupError(TOK_ERR_WRONG_ID, "You're not who I asked for");
             }
-        } else if (token == TOK_TRY) {
+        } else if (TOK_TRY == token) {
             ConstList tryPath = EARL.parseSearchPath(packetIn.readUTF());
             myDataPath.extendSearchPath(tryPath);
             myState = ST_TRY_NEXT;
             startupLocalError("got " + formatStartupPacket(packet));
-        } else if (token == TOK_NOT_ME) {
+        } else if (TOK_NOT_ME == token) {
             myState = ST_TRY_NEXT;
             startupLocalError("got " + formatStartupPacket(packet));
-        } else if (token == TOK_DUP) {
+        } else if (TOK_DUP == token) {
             myDataPath.duplicatePath(
               "outgoing crossed connections" + formatStartupPacket(packet),
               true);
@@ -877,7 +877,7 @@ public class StartUpProtocol implements MsgHandler {
         if (myStop) {
             startupError(TOK_DUP, "Stopped connection");
             return;
-        } else if (token == TOK_REPLYINFO || token == TOK_YOUCHOSE) {
+        } else if (TOK_REPLYINFO == token || TOK_YOUCHOSE == token) {
             //String remoteSearchPath = packetIn.readUTF();
             String protocols = packetIn.readUTF();
             if (TOK_YOUCHOSE == token && myDataPath.isChoiceIncoming()) {
@@ -895,14 +895,14 @@ public class StartUpProtocol implements MsgHandler {
             for (; ;) {
                 int i = protocols.indexOf(',');
                 String protocol;
-                if (i < 0) {
+                if (0 > i) {
                     protocol = protocols;
                     protocols = "";
                 } else {
                     protocol = protocols.substring(0, i);
                     protocols = protocols.substring(i + 1);
                 }
-                if (protocol.equals("")) {
+                if ("".equals(protocol)) {
                     //No agreement
                     startupError(TOK_ERR_PROTOCOL,
                                  "Can't agree on an authorization protocol");
@@ -921,7 +921,7 @@ public class StartUpProtocol implements MsgHandler {
                     return;
                 }
             }
-        } else if (token == TOK_DUP) {
+        } else if (TOK_DUP == token) {
             myDataPath.duplicatePath(
               "Outgoing crossed connections " + formatStartupPacket(packet),
               true);
@@ -1131,7 +1131,7 @@ public class StartUpProtocol implements MsgHandler {
      *
      * @param packetArray The startup protocol message to process.
      */
-    public void processMessage(byte packetArray[],
+    public void processMessage(byte[] packetArray,
                                VatTPConnection /*nullOK*/willBeNull) {
         ByteArrayInputStream byteArrayIn =
           new ByteArrayInputStream(packetArray);
@@ -1161,7 +1161,7 @@ public class StartUpProtocol implements MsgHandler {
                             formatStartupPacket(packetArray));
                     }
 
-                    if (token < 0) {
+                    if (0 > token) {
                         startupLocalError("Error " + tokName(token) +
                           " from other side: " + packetIn.readUTF());
                         return;
@@ -1513,7 +1513,7 @@ public class StartUpProtocol implements MsgHandler {
             while (true) {
                 BigInteger rn =
                   new BigInteger(160, ESecureRandom.getESecureRandom(null, 0));
-                if ((rn.signum() > 0) && (rn.compareTo(q) < 0)) {
+                if ((0 < rn.signum()) && (0 > rn.compareTo(q))) {
                     mySignature.setParameter("KSEED", rn.toByteArray());
                     break;
                 }
@@ -1651,14 +1651,14 @@ public class StartUpProtocol implements MsgHandler {
      *         or TOK_??? if tok is positive.
      */
     static private String tokName(int tok) {
-        if (tok < 0) {
+        if (0 > tok) {
             tok = -tok;
             if (tok > errTokNames.length) {
                 return "TOK_ERR_???[-" + tok + "]";
             }
             return errTokNames[tok - 1] + "[-" + tok + "]";
         }
-        if (tok == 0) {
+        if (0 == tok) {
             return "TOK_???[0]";
         }
         if (tok > tokNames.length) {

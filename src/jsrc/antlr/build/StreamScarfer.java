@@ -26,7 +26,7 @@ class StreamScarfer extends Thread {
             BufferedReader br = new BufferedReader(isr);
             String line = null;
             while ((line = br.readLine()) != null) {
-                if (type == null || type.equals("stdout")) {
+                if (type == null || "stdout".equals(type)) {
                     tool.stdout(line);
                 } else {
                     tool.stderr(line);

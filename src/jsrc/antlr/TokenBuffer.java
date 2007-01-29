@@ -41,7 +41,7 @@ public abstract class TokenBuffer {
     /**
      * Ensure that the token buffer is sufficiently full
      */
-    private final void fill(int amount) throws TokenStreamException {
+    private void fill(int amount) throws TokenStreamException {
         syncConsume();
         // Fill the buffer sufficiently to hold needed tokens
         while (queue.nbrEntries < amount + markerOffset) {
@@ -92,9 +92,9 @@ public abstract class TokenBuffer {
     /**
      * Sync up deferred consumption
      */
-    private final void syncConsume() {
-        while (numToConsume > 0) {
-            if (nMarkers > 0) {
+    private void syncConsume() {
+        while (0 < numToConsume) {
+            if (0 < nMarkers) {
                 // guess mode -- leave leading tokens and bump offset.
                 markerOffset++;
             } else {

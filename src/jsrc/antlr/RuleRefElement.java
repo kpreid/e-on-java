@@ -17,11 +17,11 @@ class RuleRefElement extends AlternativeElement {
     protected String label;
 
 
-    public RuleRefElement(Grammar g, Token t, int autoGenType_) {
+    RuleRefElement(Grammar g, Token t, int autoGenType_) {
         super(g, t, autoGenType_);
         targetRule = t.getText();
         //		if ( Character.isUpperCase(targetRule.charAt(0)) ) { // lexer rule?
-        if (t.type == ANTLRTokenTypes.TOKEN_REF) { // lexer rule?
+        if (ANTLRTokenTypes.TOKEN_REF == t.type) { // lexer rule?
             targetRule = CodeGenerator.encodeLexerRuleName(targetRule);
         }
     }

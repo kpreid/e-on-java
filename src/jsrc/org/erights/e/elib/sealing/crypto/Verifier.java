@@ -28,8 +28,6 @@ public class Verifier {
     /**
      * algorithm defaults to SHA1withRSA, which only works if this is an RSA
      * key.
-     *
-     * @param publicKey
      */
     public Verifier(PublicKey publicKey) {
         this(publicKey, "SHA1withRSA");
@@ -42,9 +40,6 @@ public class Verifier {
      * <p/>
      * For example, if the key's algorithm is RSA, the signing algorithm may be
      * SHA1withRSA.
-     *
-     * @param publicKey
-     * @param algorithm
      */
     public Verifier(PublicKey publicKey, String algorithm) {
         try {
@@ -61,11 +56,6 @@ public class Verifier {
 
     /**
      * Equivalent to makeVerifier(publicKey).verify(plainText, signature)
-     *
-     * @param publicKey
-     * @param plainText
-     * @param signature
-     * @return
      */
     static public boolean verify(PublicKey publicKey,
                                  String plainText,
@@ -75,9 +65,6 @@ public class Verifier {
 
     /**
      * Is this a valid signature of the plainText's UTF-8 encoding?
-     *
-     * @param plainText
-     * @return
      */
     public boolean verify(String plainText, BigInteger signature) {
         byte[] bytes;
@@ -99,7 +86,7 @@ public class Verifier {
     }
 
     /**
-     * @return
+     *
      */
     public String getAlgorithm() {
         return mySig.getAlgorithm();

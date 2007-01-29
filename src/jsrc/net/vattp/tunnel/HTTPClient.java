@@ -74,7 +74,7 @@ public class HTTPClient {
 
         ctl.close();
 
-        if (connectionID > 0) {
+        if (0 < connectionID) {
             myOutTCP.setElementAt(null, connectionID);
         } else {
             myInTCP.setElementAt(null, -connectionID);
@@ -120,7 +120,7 @@ public class HTTPClient {
     }
 
     private /*nullOK*/ HTTPSocketCtl getSocketCtl(byte connectionID) {
-        if (connectionID > 0) {
+        if (0 < connectionID) {
             return (HTTPSocketCtl)myOutTCP.elementAt(connectionID);
         } else {
             return (HTTPSocketCtl)myInTCP.elementAt(-connectionID);

@@ -42,10 +42,10 @@ public final class LineInput extends FilterInputStream {
         int len = 0;
         while (true) {
             final int c = read();
-            if (c == -1) {
+            if (-1 == c) {
                 throw new EOFException();
             }
-            if (c == '\n') {
+            if ('\n' == c) {
                 break;
             }
             if (len == buffer.length) {
@@ -60,7 +60,7 @@ public final class LineInput extends FilterInputStream {
         }
 
         // Strip off any leading CR.
-        while (len != 0 && buffer[len - 1] == '\r') {
+        while (0 != len && '\r' == buffer[len - 1]) {
             --len;
         }
 

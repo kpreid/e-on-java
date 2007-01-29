@@ -39,11 +39,11 @@ class CppCharFormatter implements CharFormatter {
         case'"':
             return "\\\"";
         default:
-            if (c < ' ' || c > 126) {
-                if (c > 255) {
+            if (' ' > c || 126 < c) {
+                if (255 < c) {
                     String s = Integer.toString(c, 16);
                     // put leading zeroes in front of the thing..
-                    while (s.length() < 4) {
+                    while (4 > s.length()) {
                         s = '0' + s;
                     }
                     return "\\u" + s;
@@ -82,7 +82,7 @@ class CppCharFormatter implements CharFormatter {
      */
     public String literalChar(int c) {
         String ret = "0x" + Integer.toString(c, 16);
-        if (c >= 0 && c <= 126) {
+        if (0 <= c && 126 >= c) {
             ret += " /* '" + escapeChar(c, true) + "' */ ";
         }
         return ret;

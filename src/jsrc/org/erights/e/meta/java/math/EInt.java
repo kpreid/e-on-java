@@ -46,7 +46,7 @@ public abstract class EInt extends Number {
     static private final Integer[] BYTES = new Integer[256];
 
     static {
-        for (int i = 0; i < 256; i++) {
+        for (int i = 0; 256 > i; i++) {
             BYTES[i] = new Integer(Byte.MIN_VALUE + i);
         }
     }
@@ -75,7 +75,7 @@ public abstract class EInt extends Number {
     static public Number fromString64(String s) throws NumberFormatException {
 
         s = s.trim();
-        if (s.length() >= 1 && s.charAt(0) == '-') {
+        if (1 <= s.length() && '-' == s.charAt(0)) {
             Number result = fromString64(s.substring(1));
             return normal(big(result).negate());
         }
@@ -85,7 +85,7 @@ public abstract class EInt extends Number {
         char[] in = s.toCharArray();
         for (int i = 0; ;) {
             int val1 = BASE64.indexOf(in[i]);
-            if (val1 < 0) {
+            if (0 > val1) {
                 throw new NumberFormatException("Invalid character '" + in[i] +
                   "' in 6-bits-per-char string");
             }
@@ -94,7 +94,7 @@ public abstract class EInt extends Number {
             }
 
             int val2 = BASE64.indexOf(in[i]);
-            if (val2 < 0) {
+            if (0 > val2) {
                 throw new NumberFormatException("Invalid character '" + in[i] +
                   "' in 6-bits-per-char string");
             }
@@ -106,7 +106,7 @@ public abstract class EInt extends Number {
             }
 
             int val3 = BASE64.indexOf(in[i]);
-            if (val3 < 0) {
+            if (0 > val3) {
                 throw new NumberFormatException("Invalid character '" + in[i] +
                   "' in 6-bits-per-char string");
             }
@@ -118,7 +118,7 @@ public abstract class EInt extends Number {
             }
 
             int val4 = BASE64.indexOf(in[i]);
-            if (val4 < 0) {
+            if (0 > val4) {
                 throw new NumberFormatException("Invalid character ' '" +
                   in[i] + "'' in 6-bits-per-char string");
             }
@@ -129,7 +129,7 @@ public abstract class EInt extends Number {
                 break;
             }
         }
-        return EInt.run(1, b);
+        return run(1, b);
     }
 
     /**
@@ -145,7 +145,7 @@ public abstract class EInt extends Number {
 
         s = s.trim();
         int numChars = s.length();
-        if (numChars >= 1 && s.charAt(0) == '-') {
+        if (1 <= numChars && '-' == s.charAt(0)) {
             Number result = fromYURL32(s.substring(1));
             return normal(big(result).negate());
         }
@@ -155,9 +155,9 @@ public abstract class EInt extends Number {
         for (int chari = 0; chari < numChars; chari++) {
             char c = Character.toLowerCase(s.charAt(chari));
             int val;
-            if (c >= 'a' && c <= 'z') {
+            if ('a' <= c && 'z' >= c) {
                 val = c - 'a';
-            } else if (c >= '2' && c <= '7') {
+            } else if ('2' <= c && '7' >= c) {
                 val = 26 + c - '2';
             } else {
                 throw new NumberFormatException(
@@ -169,7 +169,7 @@ public abstract class EInt extends Number {
             val <<= offset;
             b[highBytei] |= (val >>> 8);
             int lowByte = val & 0xFF;
-            if (lowByte != 0) {
+            if (0 != lowByte) {
                 int lowBytei = highBytei + 1;
                 if (lowBytei < numBytes) {
                     b[lowBytei] |= lowByte;
@@ -179,7 +179,7 @@ public abstract class EInt extends Number {
                 }
             }
         }
-        return EInt.run(1, b);
+        return run(1, b);
     }
 
     /**
@@ -188,10 +188,10 @@ public abstract class EInt extends Number {
      * @return
      */
     static public Number valueOf(long val) {
-        if (val >= Byte.MIN_VALUE && val <= Byte.MAX_VALUE) {
+        if (Byte.MIN_VALUE <= val && Byte.MAX_VALUE >= val) {
             return BYTES[(int)val - Byte.MIN_VALUE];
         }
-        if (val >= Integer.MIN_VALUE && val <= Integer.MAX_VALUE) {
+        if (Integer.MIN_VALUE <= val && Integer.MAX_VALUE >= val) {
             return new Integer((int)val);
         }
         return BigInteger.valueOf(val);
@@ -221,8 +221,8 @@ public abstract class EInt extends Number {
             return eInt;
         } else if (BigInteger.class == clazz) {
             BigInteger bigInt = (BigInteger)eInt;
-            if (bigInt.compareTo(MIN_INTEGER) >= 0 &&
-              bigInt.compareTo(MAX_INTEGER) <= 0) {
+            if (0 <= bigInt.compareTo(MIN_INTEGER) &&
+              0 >= bigInt.compareTo(MAX_INTEGER)) {
 
                 return valueOf(bigInt.intValue());
             } else {
@@ -234,7 +234,7 @@ public abstract class EInt extends Number {
             return valueOf(eInt.longValue());
         } else if (Short.class == clazz) {
             int val = eInt.shortValue();
-            if (val >= Byte.MIN_VALUE && val <= Byte.MAX_VALUE) {
+            if (Byte.MIN_VALUE <= val && Byte.MAX_VALUE >= val) {
                 return BYTES[val - Byte.MIN_VALUE];
             } else {
                 return new Integer(val);
@@ -367,8 +367,8 @@ public abstract class EInt extends Number {
         Class clazz = eInt.getClass();
         if (BigInteger.class == clazz) {
             BigInteger bigInt = (BigInteger)eInt;
-            return bigInt.compareTo(BigInteger.valueOf(minValue)) >= 0 &&
-              bigInt.compareTo(BigInteger.valueOf(maxValue)) <= 0;
+            return 0 <= bigInt.compareTo(BigInteger.valueOf(minValue)) &&
+              0 >= bigInt.compareTo(BigInteger.valueOf(maxValue));
 
         } else if (Integer.class == clazz || Byte.class == clazz ||
           Long.class == clazz || Short.class == clazz) {
@@ -397,12 +397,12 @@ public abstract class EInt extends Number {
         } else if (BigInteger.class == clazz) {
             BigInteger bigInt = (BigInteger)num;
 
-            return bigInt.compareTo(MIN_INTEGER) >= 0 &&
-              bigInt.compareTo(MAX_INTEGER) <= 0;
+            return 0 <= bigInt.compareTo(MIN_INTEGER) &&
+              0 >= bigInt.compareTo(MAX_INTEGER);
 
         } else if (Long.class == clazz) {
             long val = num.longValue();
-            return val >= Integer.MIN_VALUE && val <= Integer.MAX_VALUE;
+            return Integer.MIN_VALUE <= val && Integer.MAX_VALUE >= val;
         } else {
             return false;
         }
@@ -427,12 +427,12 @@ public abstract class EInt extends Number {
         } else if (BigInteger.class == clazz) {
             BigInteger bigInt = (BigInteger)eInt;
 
-            return bigInt.compareTo(MIN_INTEGER) >= 0 &&
-              bigInt.compareTo(MAX_INTEGER) <= 0;
+            return 0 <= bigInt.compareTo(MIN_INTEGER) &&
+              0 >= bigInt.compareTo(MAX_INTEGER);
 
         } else if (Long.class == clazz) {
             long val = eInt.longValue();
-            return val >= Integer.MIN_VALUE && val <= Integer.MAX_VALUE;
+            return Integer.MIN_VALUE <= val && Integer.MAX_VALUE >= val;
 
         } else {
             ClassCastException prob = new ClassCastException(

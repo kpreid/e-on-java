@@ -220,9 +220,9 @@ public abstract class EMap implements EPrintable, Persistent, EIteratable {
      * the receiver's remaining keys in their original order.
      */
     public ConstMap or(EMap behind, boolean strict) {
-        if (size() == 0) {
+        if (0 == size()) {
             return behind.snapshot();
-        } else if (behind.size() == 0) {
+        } else if (0 == behind.size()) {
             return snapshot();
         }
         FlexMap flex = behind.diverge();
@@ -277,9 +277,9 @@ public abstract class EMap implements EPrintable, Persistent, EIteratable {
      * keys in mask in mask's order.
      */
     public ConstMap butNot(EMap mask) {
-        if (size() == 0) {
+        if (0 == size()) {
             return ConstMap.EmptyMap;
-        } else if (mask.size() == 0) {
+        } else if (0 == mask.size()) {
             return snapshot();
         }
         FlexMap flex = diverge();

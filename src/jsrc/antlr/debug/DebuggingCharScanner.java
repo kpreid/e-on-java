@@ -14,8 +14,8 @@ public abstract class DebuggingCharScanner extends CharScanner
     private ParserEventSupport parserEventSupport =
       new ParserEventSupport(this);
     private boolean _notDebugMode = false;
-    protected String ruleNames[];
-    protected String semPredNames[];
+    protected String[] ruleNames;
+    protected String[] semPredNames;
 
 
     public DebuggingCharScanner(InputBuffer cb) {
@@ -161,7 +161,7 @@ public abstract class DebuggingCharScanner extends CharScanner
             super.match(c);
             parserEventSupport.fireMatch(c, inputState.guessing);
         } catch (MismatchedCharException e) {
-            if (inputState.guessing == 0) {
+            if (0 == inputState.guessing) {
                 parserEventSupport.fireMismatch(la_1, c, inputState.guessing);
             }
             throw e;
@@ -176,7 +176,7 @@ public abstract class DebuggingCharScanner extends CharScanner
             super.match(b);
             parserEventSupport.fireMatch(la_1, b, text, inputState.guessing);
         } catch (MismatchedCharException e) {
-            if (inputState.guessing == 0) {
+            if (0 == inputState.guessing) {
                 parserEventSupport.fireMismatch(la_1,
                                                 b,
                                                 text,
@@ -202,7 +202,7 @@ public abstract class DebuggingCharScanner extends CharScanner
             super.match(s);
             parserEventSupport.fireMatch(s, inputState.guessing);
         } catch (MismatchedCharException e) {
-            if (inputState.guessing == 0) {
+            if (0 == inputState.guessing) {
                 parserEventSupport.fireMismatch(la_s.toString(),
                                                 s,
                                                 inputState.guessing);
@@ -219,7 +219,7 @@ public abstract class DebuggingCharScanner extends CharScanner
             super.matchNot(c);
             parserEventSupport.fireMatchNot(la_1, c, inputState.guessing);
         } catch (MismatchedCharException e) {
-            if (inputState.guessing == 0) {
+            if (0 == inputState.guessing) {
                 parserEventSupport.fireMismatchNot(la_1,
                                                    c,
                                                    inputState.guessing);
@@ -238,7 +238,7 @@ public abstract class DebuggingCharScanner extends CharScanner
                                          "" + c1 + c2,
                                          inputState.guessing);
         } catch (MismatchedCharException e) {
-            if (inputState.guessing == 0) {
+            if (0 == inputState.guessing) {
                 parserEventSupport.fireMismatch(la_1,
                                                 "" + c1 + c2,
                                                 inputState.guessing);

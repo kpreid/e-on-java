@@ -69,16 +69,16 @@ public class Identifiers implements EIteratable {
             int ch = myReader.read();
             StringBuffer delim = new StringBuffer();
             StringBuffer ident = new StringBuffer();
-            while (ch != -1) {
+            while (-1 != ch) {
                 delim.setLength(0);
                 ident.setLength(0);
-                while (ch != -1 &&
+                while (-1 != ch &&
                   !Character.isJavaIdentifierStart((char)ch)) {
 
                     delim.append((char)ch);
                     ch = myReader.read();
                 }
-                while (ch != -1 && Character.isJavaIdentifierPart((char)ch)) {
+                while (-1 != ch && Character.isJavaIdentifierPart((char)ch)) {
 
                     ident.append((char)ch);
                     ch = myReader.read();

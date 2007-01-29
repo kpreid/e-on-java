@@ -90,7 +90,7 @@ public final class T {
      * "Failed: Assertion failed."
      */
     static public void test(boolean mustBeTrue) {
-        if (mustBeTrue == false) {
+        if (false == mustBeTrue) {
             fail("Assertion failed.");
         }
     }
@@ -100,7 +100,7 @@ public final class T {
      * explanation, prefixed by "Failed: ".
      */
     static public void test(boolean mustBeTrue, String explanation) {
-        if (mustBeTrue == false) {
+        if (false == mustBeTrue) {
             fail(explanation);
         }
     }
@@ -117,7 +117,7 @@ public final class T {
     static public void testSI(boolean mustBeTrue,
                               Object explanation0,
                               int explanation1) {
-        if (mustBeTrue == false) {
+        if (false == mustBeTrue) {
             fail("" + explanation0 + explanation1);
         }
     }
@@ -134,7 +134,7 @@ public final class T {
     static public void test(boolean mustBeTrue,
                             Object explanation0,
                             Object explanation1) {
-        if (mustBeTrue == false) {
+        if (false == mustBeTrue) {
             fail("" + explanation0 + explanation1);
         }
     }
@@ -150,7 +150,7 @@ public final class T {
                             Object explanation0,
                             Object explanation1,
                             Object explanation2) {
-        if (mustBeTrue == false) {
+        if (false == mustBeTrue) {
             fail("" + explanation0 + explanation1 + explanation2);
         }
     }
@@ -167,7 +167,7 @@ public final class T {
                             Object explanation1,
                             Object explanation2,
                             Object explanation3) {
-        if (mustBeTrue == false) {
+        if (false == mustBeTrue) {
             fail(
               "" + explanation0 + explanation1 + explanation2 + explanation3);
         }
@@ -186,7 +186,7 @@ public final class T {
                             Object explanation2,
                             Object explanation3,
                             Object explanation4) {
-        if (mustBeTrue == false) {
+        if (false == mustBeTrue) {
             fail("" + explanation0 + explanation1 + explanation2 +
               explanation3 + explanation4);
         }
@@ -206,7 +206,7 @@ public final class T {
                             Object explanation3,
                             Object explanation4,
                             Object explanation5) {
-        if (mustBeTrue == false) {
+        if (false == mustBeTrue) {
             fail("" + explanation0 + explanation1 + explanation2 +
               explanation3 + explanation4 + explanation5);
         }
@@ -227,7 +227,7 @@ public final class T {
                             Object explanation4,
                             Object explanation5,
                             Object explanation6) {
-        if (mustBeTrue == false) {
+        if (false == mustBeTrue) {
             fail("" + explanation0 + explanation1 + explanation2 +
               explanation3 + explanation4 + explanation5 + explanation6);
         }
@@ -249,7 +249,7 @@ public final class T {
                             Object explanation5,
                             Object explanation6,
                             Object explanation7) {
-        if (mustBeTrue == false) {
+        if (false == mustBeTrue) {
             fail("" + explanation0 + explanation1 + explanation2 +
               explanation3 + explanation4 + explanation5 + explanation6 +
               explanation7);
@@ -261,7 +261,7 @@ public final class T {
      * explanation, prefixed by "Failed: ".
      */
     static public void require(boolean mustBeTrue, String explanation) {
-        if (mustBeTrue == false) {
+        if (false == mustBeTrue) {
             fail(explanation);
         }
     }
@@ -278,7 +278,7 @@ public final class T {
     static public void requireSI(boolean mustBeTrue,
                                  Object explanation0,
                                  int explanation1) {
-        if (mustBeTrue == false) {
+        if (false == mustBeTrue) {
             fail("" + explanation0 + explanation1);
         }
     }
@@ -295,7 +295,7 @@ public final class T {
     static public void require(boolean mustBeTrue,
                                Object explanation0,
                                Object explanation1) {
-        if (mustBeTrue == false) {
+        if (false == mustBeTrue) {
             fail("" + explanation0 + explanation1);
         }
     }
@@ -311,7 +311,7 @@ public final class T {
                                Object explanation0,
                                Object explanation1,
                                Object explanation2) {
-        if (mustBeTrue == false) {
+        if (false == mustBeTrue) {
             fail("" + explanation0 + explanation1 + explanation2);
         }
     }
@@ -328,7 +328,7 @@ public final class T {
                                Object explanation1,
                                Object explanation2,
                                Object explanation3) {
-        if (mustBeTrue == false) {
+        if (false == mustBeTrue) {
             fail(
               "" + explanation0 + explanation1 + explanation2 + explanation3);
         }
@@ -347,7 +347,7 @@ public final class T {
                                Object explanation2,
                                Object explanation3,
                                Object explanation4) {
-        if (mustBeTrue == false) {
+        if (false == mustBeTrue) {
             fail("" + explanation0 + explanation1 + explanation2 +
               explanation3 + explanation4);
         }
@@ -367,7 +367,7 @@ public final class T {
                                Object explanation3,
                                Object explanation4,
                                Object explanation5) {
-        if (mustBeTrue == false) {
+        if (false == mustBeTrue) {
             fail("" + explanation0 + explanation1 + explanation2 +
               explanation3 + explanation4 + explanation5);
         }
@@ -388,7 +388,7 @@ public final class T {
                                Object explanation4,
                                Object explanation5,
                                Object explanation6) {
-        if (mustBeTrue == false) {
+        if (false == mustBeTrue) {
             fail("" + explanation0 + explanation1 + explanation2 +
               explanation3 + explanation4 + explanation5 + explanation6);
         }
@@ -410,7 +410,7 @@ public final class T {
                                Object explanation5,
                                Object explanation6,
                                Object explanation7) {
-        if (mustBeTrue == false) {
+        if (false == mustBeTrue) {
             fail("" + explanation0 + explanation1 + explanation2 +
               explanation3 + explanation4 + explanation5 + explanation6 +
               explanation7);
@@ -418,8 +418,7 @@ public final class T {
     }
 
     /**
-     * @param specimen
-     * @param explanation
+     *
      */
     static public void notNull(Object specimen, String explanation) {
         if (null == specimen) {
@@ -428,9 +427,7 @@ public final class T {
     }
 
     /**
-     * @param specimen
-     * @param explanation0
-     * @param explanation1
+     * 
      */
     static public void notNull(Object specimen,
                                Object explanation0,

@@ -25,11 +25,11 @@ import java.util.zip.InflaterInputStream;
  */
 public final class Session {
 
-    private org.waterken.url.Locator locator;   // The site locator.
+    private final org.waterken.url.Locator locator;   // The site locator.
     private String http_version;                // The server HTTP version.
     private boolean do_not_pipeline;            // Never pipeline requests?
 
-    private Semaphore writing;          // The lock for writing a request.
+    private final Semaphore writing;          // The lock for writing a request.
     private Connection most_recent;     // The most recent connection.
 
     /**
@@ -95,7 +95,7 @@ public final class Session {
             // Set the default Host header.
             request_header_key[0] = "host";
             request_header_value[0] = url.getHost();
-            if (url.getPort() != -1) {
+            if (-1 != url.getPort()) {
                 request_header_value[0] += ":" + url.getPort();
             }
             ++request_headers;
@@ -118,10 +118,10 @@ public final class Session {
             }
 
             int i = response_headers;
-            while (i-- != 0 &&
+            while (0 != i-- &&
               !name.equalsIgnoreCase(response_header_key[i])) {
             }
-            return i < 0 ? null : response_header_value[i];
+            return 0 > i ? null : response_header_value[i];
         }
 
         public String getHeaderFieldKey(final int n) {
@@ -268,7 +268,7 @@ public final class Session {
                 throw new IllegalStateException("Already connected");
             }
 
-            this.doOutput = do_output;
+            doOutput = do_output;
             method = "POST";
         }
 
@@ -306,19 +306,18 @@ public final class Session {
                     // Parse the Status-Line.
                     final int begin_http_version = 0;
                     int end_http_version = "HTTP/1.".length();
-                    while (" \t".indexOf(line.charAt(end_http_version)) ==
-                      -1) {
+                    while (-1 == " \t".indexOf(line.charAt(end_http_version))) {
                         ++end_http_version;
                     }
                     http_version =
                       line.substring(begin_http_version, end_http_version);
                     int begin_status = end_http_version + 1;
-                    while (" \t".indexOf(line.charAt(begin_status)) != -1) {
+                    while (-1 != " \t".indexOf(line.charAt(begin_status))) {
                         ++begin_status;
                     }
                     int end_status = begin_status + 1;
                     while (end_status != line.length() &&
-                      " \t".indexOf(line.charAt(end_status)) == -1) {
+                      -1 == " \t".indexOf(line.charAt(end_status))) {
                         ++end_status;
                     }
                     responseCode =
@@ -329,13 +328,13 @@ public final class Session {
                     response_headers = 1;
 
                     // Initialize the connection management.
-                    boolean close = http_version.equals("HTTP/1.0");
+                    boolean close = "HTTP/1.0".equals(http_version);
 
                     // Parse the response headers.
                     _readHeaders(response);
 
                     // Check for informational response.
-                    if (responseCode >= 100 && responseCode < 200) {
+                    if (100 <= responseCode && 200 > responseCode) {
                         switch (responseCode) {
                         case 101: {
                             // Switching protocols.
@@ -358,7 +357,7 @@ public final class Session {
                         }
 
                         // Wipe the response.
-                        while (response_headers != 0) {
+                        while (0 != response_headers) {
                             --response_headers;
                             response_header_key[response_headers] = null;
                             response_header_value[response_headers] = null;
@@ -370,7 +369,7 @@ public final class Session {
                         connect();
                     } else {
                         // Filter out the Connection headers.
-                        for (int i = response_headers; i-- != 0;) {
+                        for (int i = response_headers; 0 != i--;) {
                             if ("Connection".equalsIgnoreCase(
                               response_header_key[i])) {
                                 final String[] token =
@@ -390,7 +389,7 @@ public final class Session {
                                 --response_headers;
 
                                 // Remove the identified headers.
-                                for (int j = token.length; j-- != 0;) {
+                                for (int j = token.length; 0 != j--;) {
                                     if ("close".equalsIgnoreCase(token[j])) {
                                         close = true;
                                     } else
@@ -399,7 +398,7 @@ public final class Session {
                                     }
 
                                     // Remove the corresponding header.
-                                    for (int k = response_headers; k-- != 0;) {
+                                    for (int k = response_headers; 0 != k--;) {
                                         if (token[j].equalsIgnoreCase(
                                           response_header_key[k])) {
                                             System.arraycopy(
@@ -451,12 +450,12 @@ public final class Session {
                         }
 
                         // Reverse the transfer encodings.
-                        for (int i = response_headers; i-- != 0;) {
+                        for (int i = response_headers; 0 != i--;) {
                             if ("Transfer-Encoding".equalsIgnoreCase(
                               response_header_key[i])) {
                                 final String[] token =
                                   TokenList.decode(response_header_value[i]);
-                                for (int j = token.length; j-- != 0;) {
+                                for (int j = token.length; 0 != j--;) {
                                     if ("chunked".equalsIgnoreCase(token[j])) {
                                         if (!(message instanceof Closer)) {
                                             throw new IOException(
@@ -516,7 +515,7 @@ public final class Session {
                                 message = BoundedInputStream.make(message, 0);
                             } else {
                                 final int content_length = getContentLength();
-                                if (content_length != -1) {
+                                if (-1 != content_length) {
                                     message = BoundedInputStream.make(message,
                                                                       content_length);
                                 } else {
@@ -541,7 +540,7 @@ public final class Session {
                         socket.close();
 
                         // Wipe the response.
-                        while (response_headers != 0) {
+                        while (0 != response_headers) {
                             --response_headers;
                             response_header_key[response_headers] = null;
                             response_header_value[response_headers] = null;
@@ -584,7 +583,7 @@ public final class Session {
                 final String name = line.substring(0, i);
 
                 // Skip whitespace.
-                while (++i != len && " \t".indexOf(line.charAt(i)) != -1) {
+                while (++i != len && -1 != " \t".indexOf(line.charAt(i))) {
                 }
 
                 // Get the header value.
@@ -633,7 +632,7 @@ public final class Session {
             return response_message;
         }
 
-        public OutputStream getOutputStream() throws IOException {
+        public final OutputStream getOutputStream() throws IOException {
             if (!connected) {
                 // Acquire write-access to the shared socket.
                 final Runnable done_write = writing.acquire();
@@ -664,7 +663,7 @@ public final class Session {
                             try {
                                 // Search for EOF.
                                 socket.setSoTimeout(30);
-                                while (socket.getInputStream().read() != -1) {
+                                while (-1 != socket.getInputStream().read()) {
                                 }
 
                                 // EOF found, open a new socket.
@@ -697,7 +696,7 @@ public final class Session {
                     out.write(" ".getBytes("US-ASCII"));
 
                     if (locator instanceof org.waterken.url.proxy.Locator ||
-                      http_version.compareTo("HTTP/1.1") >= 0) {
+                      0 <= http_version.compareTo("HTTP/1.1")) {
                         String request = url.toExternalForm();
                         int end_request = request.indexOf('#');
                         if (-1 != end_request) {
@@ -740,11 +739,11 @@ public final class Session {
                             out.write(b);
                         }
 
-                        public void write(final byte b[]) throws IOException {
+                        public void write(final byte[] b) throws IOException {
                             out.write(b);
                         }
 
-                        public void write(final byte b[],
+                        public void write(final byte[] b,
                                           final int off,
                                           final int len) throws IOException {
                             out.write(b, off, len);
@@ -770,7 +769,7 @@ public final class Session {
                               request_message,
                               Integer.parseInt(content_length));
                         } else {
-                            if (http_version.compareTo("HTTP/1.0") <= 0 ||
+                            if (0 >= http_version.compareTo("HTTP/1.0") ||
                               "application/x-www-form-urlencoded".equalsIgnoreCase(
                                 getRequestProperty("Content-Type"))) {
                                 // Server might not support chunked encoding,
@@ -815,7 +814,7 @@ public final class Session {
                         out.flush();
 
                         request_message = new OutputStream() {
-                            private OutputStream base = request_message;
+                            private final OutputStream base = request_message;
 
                             public void write(final int b) throws IOException {
                                 throw new IOException(
@@ -880,7 +879,7 @@ public final class Session {
             socket = upgraded;
 
             // Wipe the 100 response.
-            while (response_headers != 0) {
+            while (0 != response_headers) {
                 --response_headers;
                 response_header_key[response_headers] = null;
                 response_header_value[response_headers] = null;

@@ -151,11 +151,11 @@ public class EAction extends AbstractAction implements EPrintable {
      */
     static public int descToMnemonic(String desc) {
         int i = desc.indexOf('&');
-        if (i == -1 || i == desc.length() - 1) {
+        if (-1 == i || i == desc.length() - 1) {
             return -1;
         }
         char c = Character.toUpperCase(desc.charAt(i + 1));
-        if ('A' <= c && c <= 'Z') {
+        if ('A' <= c && 'Z' >= c) {
             return c;
         } else {
             return -1;
@@ -234,11 +234,11 @@ public class EAction extends AbstractAction implements EPrintable {
         String accel = acceleration.toUpperCase();
         int mask = 0;
         int i;
-        while ((i = accel.indexOf('+')) != -1) {
+        while (-1 != (i = accel.indexOf('+'))) {
             String prefix = accel.substring(0, i);
             accel = accel.substring(i + 1);
             int maskBit = ModNames.getInt(prefix, -1);
-            if (maskBit == -1) {
+            if (-1 == maskBit) {
                 //XXX trace a diagnostic about prefix not understood
                 return;
             }

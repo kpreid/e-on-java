@@ -174,14 +174,14 @@ public class Element extends Node {
         int lastGood = -1;
         while (firstBad < badChildren.length) {
             Node optLastGoodChild = null;
-            if (lastGood >= 0) {
+            if (0 <= lastGood) {
                 //pop good
                 optLastGoodChild = goodChildren[lastGood--];
             }
             //pop bad
             Node firstBadChild = badChildren[firstBad++];
             Node[] mins = firstBadChild.minimize(optLastGoodChild);
-            if (null != optLastGoodChild && mins.length == 1) {
+            if (null != optLastGoodChild && 1 == mins.length) {
                 //A special case: reexamine with newly exposed left
                 //push bad
                 badChildren[--firstBad] = mins[0];
@@ -206,7 +206,7 @@ public class Element extends Node {
         } else {
             //Only non-whitespace is significant to the left of an Element
             String data = ((Text)optLeft).getData().trim();
-            if (data.length() == 0) {
+            if (0 == data.length()) {
                 Node[] result = {minSelf};
                 return result;
             } else {

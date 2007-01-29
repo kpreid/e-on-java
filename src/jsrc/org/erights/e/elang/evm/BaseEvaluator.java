@@ -20,12 +20,7 @@ public class BaseEvaluator implements Evaluator {
     }
 
     /**
-     * @param eExpr
-     * @param bindingsIn
-     * @param forValue
-     * @param bindingsOut
-     * @return
-     * @throws Throwable
+     *
      */
     public Object eval(EExpr eExpr,
                        ConstMap bindingsIn,
@@ -36,12 +31,7 @@ public class BaseEvaluator implements Evaluator {
     }
 
     /**
-     * @param eExpr
-     * @param bindingsIn
-     * @param forValue
-     * @param bindingsOut
-     * @return
-     * @throws Throwable
+     *
      */
     public Object[] evalToSingleton(EExpr eExpr,
                                     ConstMap bindingsIn,
@@ -52,13 +42,7 @@ public class BaseEvaluator implements Evaluator {
     }
 
     /**
-     * @param pattern
-     * @param bindingsIn
-     * @param forTest
-     * @param bindingsOut
-     * @param specimen
-     * @return
-     * @throws Throwable
+     *
      */
     public boolean matchBind(Pattern pattern,
                              ConstMap bindingsIn,

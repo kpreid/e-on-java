@@ -21,13 +21,13 @@ class PythonBlockFinishingInfo {
     boolean needAnErrorClause;
 
 
-    public PythonBlockFinishingInfo() {
+    PythonBlockFinishingInfo() {
         postscript = null;
         generatedSwitch = generatedSwitch = false;
         needAnErrorClause = true;
     }
 
-    public PythonBlockFinishingInfo(String ps,
+    PythonBlockFinishingInfo(String ps,
                                     boolean genS,
                                     boolean generatedAnIf,
                                     boolean n) {

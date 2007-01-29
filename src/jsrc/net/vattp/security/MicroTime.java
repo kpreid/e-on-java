@@ -35,7 +35,11 @@ public class MicroTime {
 
     static private Object nativeStatics = null;
 
+    private MicroTime() {
+    }
+
     static {
+        //noinspection ErrorNotRethrown
         try {
             System.loadLibrary("ecutil");
             nativeStatics =

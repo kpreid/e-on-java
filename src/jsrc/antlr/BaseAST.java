@@ -55,14 +55,14 @@ public abstract class BaseAST implements AST, Serializable {
         if (node == null) {
             return;
         }
-        BaseAST t = this.down;
+        BaseAST t = down;
         if (t != null) {
             while (t.right != null) {
                 t = t.right;
             }
             t.right = (BaseAST)node;
         } else {
-            this.down = (BaseAST)node;
+            down = (BaseAST)node;
         }
     }
 
@@ -70,7 +70,7 @@ public abstract class BaseAST implements AST, Serializable {
      * How many children does this node have?
      */
     public int getNumberOfChildren() {
-        BaseAST t = this.down;
+        BaseAST t = down;
         int n = 0;
         if (t != null) {
             n = 1;
@@ -111,15 +111,14 @@ public abstract class BaseAST implements AST, Serializable {
         if (t == null) {
             return false;
         }
-        if ((this.getText() == null && t.getText() != null) ||
-          (this.getText() != null && t.getText() == null)) {
+        if ((getText() == null && t.getText() != null) ||
+          (getText() != null && t.getText() == null)) {
             return false;
         }
-        if (this.getText() == null && t.getText() == null) {
-            return this.getType() == t.getType();
+        if (getText() == null && t.getText() == null) {
+            return getType() == t.getType();
         }
-        return this.getText().equals(t.getText()) &&
-          this.getType() == t.getType();
+        return getText().equals(t.getText()) && getType() == t.getType();
     }
 
     /**
@@ -202,12 +201,12 @@ public abstract class BaseAST implements AST, Serializable {
      */
     public boolean equalsTree(AST t) {
         // check roots first.
-        if (!this.equals(t)) {
+        if (!equals(t)) {
             return false;
         }
         // if roots match, do full list match test on children.
-        if (this.getFirstChild() != null) {
-            if (!this.getFirstChild().equalsList(t.getFirstChild())) {
+        if (getFirstChild() != null) {
+            if (!getFirstChild().equalsList(t.getFirstChild())) {
                 return false;
             }
         }
@@ -229,12 +228,12 @@ public abstract class BaseAST implements AST, Serializable {
         }
 
         // check roots first.
-        if (!this.equals(sub)) {
+        if (!equals(sub)) {
             return false;
         }
         // if roots match, do full list partial match test on children.
-        if (this.getFirstChild() != null) {
-            if (!this.getFirstChild().equalsListPartial(sub.getFirstChild())) {
+        if (getFirstChild() != null) {
+            if (!getFirstChild().equalsListPartial(sub.getFirstChild())) {
                 return false;
             }
         }
@@ -390,7 +389,7 @@ public abstract class BaseAST implements AST, Serializable {
         if (t.getFirstChild() != null) {
             ts += " (";
         }
-        ts += " " + this.toString();
+        ts += " " + toString();
         if (t.getFirstChild() != null) {
             ts += ((BaseAST)t.getFirstChild()).toStringList();
         }
@@ -409,7 +408,7 @@ public abstract class BaseAST implements AST, Serializable {
         if (t.getFirstChild() != null) {
             ts += " (";
         }
-        ts += " " + this.toString();
+        ts += " " + toString();
         if (t.getFirstChild() != null) {
             ts += ((BaseAST)t.getFirstChild()).toStringList();
         }
@@ -424,28 +423,28 @@ public abstract class BaseAST implements AST, Serializable {
         StringBuffer n = new StringBuffer();
         for (int i = 0; i < text.length(); i++) {
             c = text.charAt(i);
-            if (c == '&') {
+            if ('&' == c) {
                 c1 = text.charAt(i + 1);
                 c2 = text.charAt(i + 2);
                 c3 = text.charAt(i + 3);
                 c4 = text.charAt(i + 4);
                 c5 = text.charAt(i + 5);
 
-                if (c1 == 'a' && c2 == 'm' && c3 == 'p' && c4 == ';') {
+                if ('a' == c1 && 'm' == c2 && 'p' == c3 && ';' == c4) {
                     n.append("&");
                     i += 5;
-                } else if (c1 == 'l' && c2 == 't' && c3 == ';') {
+                } else if ('l' == c1 && 't' == c2 && ';' == c3) {
                     n.append("<");
                     i += 4;
-                } else if (c1 == 'g' && c2 == 't' && c3 == ';') {
+                } else if ('g' == c1 && 't' == c2 && ';' == c3) {
                     n.append(">");
                     i += 4;
-                } else if (c1 == 'q' && c2 == 'u' && c3 == 'o' && c4 == 't' &&
-                  c5 == ';') {
+                } else if ('q' == c1 && 'u' == c2 && 'o' == c3 && 't' == c4 &&
+                  ';' == c5) {
                     n.append("\"");
                     i += 6;
-                } else if (c1 == 'a' && c2 == 'p' && c3 == 'o' && c4 == 's' &&
-                  c5 == ';') {
+                } else if ('a' == c1 && 'p' == c2 && 'o' == c3 && 's' == c4 &&
+                  ';' == c5) {
                     n.append("'");
                     i += 6;
                 } else {

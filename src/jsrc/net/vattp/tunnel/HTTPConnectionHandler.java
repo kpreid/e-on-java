@@ -161,7 +161,7 @@ public class HTTPConnectionHandler extends Thread {
             switch (subType) {
             case HTTPMsgID.HTTP_NewConnection: {
                 byte connectionID = in.readByte();
-                if (connectionID <= 0) {
+                if (0 >= connectionID) {
                     byte[] msg = {HTTPMsgID.HTTP_InvalidID, connectionID};
                     client.close(connectionID);
                     client.queueMsg(msg);
@@ -250,7 +250,7 @@ public class HTTPConnectionHandler extends Thread {
             int contentLength = -1;
 
             for (String header = in.readLine();
-                 !header.equals("");
+                 !"".equals(header);
                  header = in.readLine()) {
                 if (header.toLowerCase().startsWith(lenHead)) {
                     try {
@@ -260,13 +260,13 @@ public class HTTPConnectionHandler extends Thread {
                         clientError("Bad Content-length: " + e);
                         return;
                     }
-                    if (contentLength < 0) {
+                    if (0 > contentLength) {
                         clientError("Bad Content-length: < 0");
                         return;
                     }
                 }
             }
-            if (contentLength < 0) {
+            if (0 > contentLength) {
                 clientError("No Content-length: header");
                 return;
             }

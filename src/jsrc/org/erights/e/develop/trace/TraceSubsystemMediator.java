@@ -64,7 +64,7 @@ class TraceSubsystemMediator implements TraceConstants {
      * that, the elements may change independently, including going back to
      * tracking the default.
      */
-    private int myThresholds[];
+    private int[] myThresholds;
 
 
     /**
@@ -107,7 +107,7 @@ class TraceSubsystemMediator implements TraceConstants {
         }
 
         myTimingBooleans = new boolean[NUM_ACCEPTORS];
-        for (int i = 0; i < NUM_ACCEPTORS; i++) {
+        for (int i = 0; NUM_ACCEPTORS > i; i++) {
             myTimingBooleans[i] = false;
         }
 
@@ -141,7 +141,7 @@ class TraceSubsystemMediator implements TraceConstants {
              acceptorIndex++) {
 
             if (myThresholds[acceptorIndex] <= message.level ||
-              (message.level == TIMING && myTimingBooleans[acceptorIndex])) {
+              (TIMING == message.level && myTimingBooleans[acceptorIndex])) {
                 for (int variant = 0;
                      variant < myAcceptors[acceptorIndex].length;
                      variant++) {
@@ -213,7 +213,7 @@ class TraceSubsystemMediator implements TraceConstants {
             acceptorNames[acceptorIndex] + " threshold is being set to " +
             TraceLevelTranslator.terse(newValue) + " because of " +
             reasonNames[reason] + " change.");
-        myDeferToDefaultThreshold[acceptorIndex] = (reason == FROM_DEFAULT);
+        myDeferToDefaultThreshold[acceptorIndex] = (FROM_DEFAULT == reason);
 
         // We don't need to go through the following rigamarole
         // (save for setting the new threshold) if there are no Trace

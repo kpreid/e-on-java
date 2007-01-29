@@ -172,7 +172,7 @@ public class Text extends Node {
      */
     Node[] minimize(Node optLeft) {
         if (null == optLeft) {
-            if (myData.length() == 0) {
+            if (0 == myData.length()) {
                 return NO_NODES;
             } else {
                 // A single non-empty text node with no siblings is already
@@ -183,7 +183,7 @@ public class Text extends Node {
         } else if (optLeft instanceof Element) {
             //Whitespace is not significant after an Element
             String data = myData.trim();
-            if (data.length() == 0) {
+            if (0 == data.length()) {
                 Node[] result = {optLeft};
                 return result;
             } else {

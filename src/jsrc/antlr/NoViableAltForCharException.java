@@ -49,7 +49,7 @@ public class NoViableAltForCharException extends RecognitionException {
         // output stuff like most terms.. Basically one would want to
         // be able to tweak the generation of this message.
 
-        if ((foundChar >= ' ') && (foundChar <= '~')) {
+        if ((' ' <= foundChar) && ('~' >= foundChar)) {
             mesg += '\'';
             mesg += foundChar;
             mesg += '\'';

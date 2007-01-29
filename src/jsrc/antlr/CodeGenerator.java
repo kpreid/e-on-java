@@ -176,7 +176,7 @@ public abstract class CodeGenerator {
                 newline = true;
                 break;
             case'\r':
-                if (i <= end && s.charAt(i) == '\n') {
+                if (i <= end && '\n' == s.charAt(i)) {
                     i++;
                 }
                 newline = true;
@@ -218,12 +218,12 @@ public abstract class CodeGenerator {
      * @return true if the elements are a contiguous range (with two or more).
      */
     public static boolean elementsAreRange(int[] elems) {
-        if (elems.length == 0) {
+        if (0 == elems.length) {
             return false;
         }
         int begin = elems[0];
         int end = elems[elems.length - 1];
-        if (elems.length <= 2) {
+        if (2 >= elems.length) {
             // Not enough elements for a range expression
             return false;
         }
@@ -269,10 +269,9 @@ public abstract class CodeGenerator {
         s = removeAssignmentFromDeclaration(s);
         // Search back from the end for a non alphanumeric.  That marks the
         // beginning of the identifier
-        for (int i = s.length() - 2; i >= 0; i--) {
+        for (int i = s.length() - 2; 0 <= i; i--) {
             // TODO: make this work for language-independent identifiers?
-            if (!Character.isLetterOrDigit(s.charAt(i)) &&
-              s.charAt(i) != '_') {
+            if (!Character.isLetterOrDigit(s.charAt(i)) && '_' != s.charAt(i)) {
                 // Found end of type part
                 return s.substring(i + 1);
             }
@@ -312,10 +311,9 @@ public abstract class CodeGenerator {
         s = removeAssignmentFromDeclaration(s);
         // Search back from the end for a non alphanumeric.  That marks the
         // beginning of the identifier
-        for (int i = s.length() - 2; i >= 0; i--) {
+        for (int i = s.length() - 2; 0 <= i; i--) {
             // TODO: make this work for language-independent identifiers?
-            if (!Character.isLetterOrDigit(s.charAt(i)) &&
-              s.charAt(i) != '_') {
+            if (!Character.isLetterOrDigit(s.charAt(i)) && '_' != s.charAt(i)) {
                 // Found end of type part
                 return s.substring(0, i + 1);
             }
@@ -675,7 +673,7 @@ public abstract class CodeGenerator {
     protected String removeAssignmentFromDeclaration(String d) {
         // If d contains an equal sign, then it's a declaration
         // with an initialization.  Strip off the initialization part.
-        if (d.indexOf('=') >= 0) {
+        if (0 <= d.indexOf('=')) {
             d = d.substring(0, d.indexOf('=')).trim();
         }
         return d;
@@ -748,10 +746,10 @@ public abstract class CodeGenerator {
         // Lookup debug code-gen in the grammar generic options
         if (grammar.hasOption("codeGenDebug")) {
             Token t = grammar.getOption("codeGenDebug");
-            if (t.getText().equals("true")) {
+            if ("true".equals(t.getText())) {
                 //System.out.println("setting code-generation debug ON");
                 DEBUG_CODE_GENERATOR = true;
-            } else if (t.getText().equals("false")) {
+            } else if ("false".equals(t.getText())) {
                 //System.out.println("setting code-generation debug OFF");
                 DEBUG_CODE_GENERATOR = false;
             } else {

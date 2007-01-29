@@ -49,7 +49,7 @@ public interface MsgHandler {
      * @param reason     is a Throwable which describes why the connection
      *                   died.
      */
-    public void connectionDead(VatTPConnection connection, Throwable reason);
+    void connectionDead(VatTPConnection connection, Throwable reason);
 
     /**
      * Process an incoming message from the VatTPConnection.
@@ -64,5 +64,5 @@ public interface MsgHandler {
      * @see Msg
      * @see VatTPConnection
      */
-    public void processMessage(byte[] message, VatTPConnection connection);
+    void processMessage(byte[] message, VatTPConnection connection);
 }

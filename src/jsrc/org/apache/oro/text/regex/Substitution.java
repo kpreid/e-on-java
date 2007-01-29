@@ -116,7 +116,7 @@ public interface Substitution {
      *                          match.
      * @param pattern           The Pattern used to find the current match.
      */
-    public void appendSubstitution(StringBuffer appendBuffer,
+    void appendSubstitution(StringBuffer appendBuffer,
                                    MatchResult match,
                                    int substitutionCount,
                                    String originalInput,

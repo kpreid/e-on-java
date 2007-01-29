@@ -50,7 +50,7 @@ class Bufferer implements Runnable {
         try {
             try {
                 int c;
-                while ((c = reader.read()) != -1) {
+                while (-1 != (c = reader.read())) {
                     synchronized (myBuf) {
                         myBuf.append((char)c);
                     }

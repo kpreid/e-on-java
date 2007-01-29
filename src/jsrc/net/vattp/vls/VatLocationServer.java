@@ -71,7 +71,7 @@ class VatLocationServer implements VatLocationLookup {
      * Since, in this version, we are only starting from scratch, it makes a
      * new empty registration collection.
      */
-    public VatLocationServer(Timer timer) {
+    VatLocationServer(Timer timer) {
         myRegistrations = FlexMap.fromTypes(String.class, String.class);
         myTimer = timer;
     }

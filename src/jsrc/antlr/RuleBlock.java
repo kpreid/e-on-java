@@ -32,7 +32,7 @@ public class RuleBlock extends AlternativeBlock {
 
     protected boolean[] lock;        // for analysis; used to avoid infinite loops
     // 1..k
-    protected Lookahead cache[];// Each rule can cache it's lookahead computation.
+    protected Lookahead[] cache;// Each rule can cache it's lookahead computation.
 
     // This cache contains an epsilon
     // imaginary token if the FOLLOW is required.  No
@@ -119,7 +119,7 @@ public class RuleBlock extends AlternativeBlock {
     }
 
     public boolean isLexerAutoGenRule() {
-        return ruleName.equals("nextToken");
+        return "nextToken".equals(ruleName);
     }
 
     public Lookahead look(int k) {
@@ -141,10 +141,10 @@ public class RuleBlock extends AlternativeBlock {
     }
 
     public void setOption(Token key, Token value) {
-        if (key.getText().equals("defaultErrorHandler")) {
-            if (value.getText().equals("true")) {
+        if ("defaultErrorHandler".equals(key.getText())) {
+            if ("true".equals(value.getText())) {
                 defaultErrorHandler = true;
-            } else if (value.getText().equals("false")) {
+            } else if ("false".equals(value.getText())) {
                 defaultErrorHandler = false;
             } else {
                 grammar.antlrTool
@@ -153,7 +153,7 @@ public class RuleBlock extends AlternativeBlock {
                          key.getLine(),
                          key.getColumn());
             }
-        } else if (key.getText().equals("testLiterals")) {
+        } else if ("testLiterals".equals(key.getText())) {
             if (!(grammar instanceof LexerGrammar)) {
                 grammar.antlrTool
                   .error("testLiterals option only valid for lexer rules",
@@ -161,9 +161,9 @@ public class RuleBlock extends AlternativeBlock {
                          key.getLine(),
                          key.getColumn());
             } else {
-                if (value.getText().equals("true")) {
+                if ("true".equals(value.getText())) {
                     testLiterals = true;
-                } else if (value.getText().equals("false")) {
+                } else if ("false".equals(value.getText())) {
                     testLiterals = false;
                 } else {
                     grammar.antlrTool
@@ -173,7 +173,7 @@ public class RuleBlock extends AlternativeBlock {
                              key.getColumn());
                 }
             }
-        } else if (key.getText().equals("ignore")) {
+        } else if ("ignore".equals(key.getText())) {
             if (!(grammar instanceof LexerGrammar)) {
                 grammar.antlrTool
                   .error("ignore option only valid for lexer rules",
@@ -183,7 +183,7 @@ public class RuleBlock extends AlternativeBlock {
             } else {
                 ignoreRule = value.getText();
             }
-        } else if (key.getText().equals("paraphrase")) {
+        } else if ("paraphrase".equals(key.getText())) {
             if (!(grammar instanceof LexerGrammar)) {
                 grammar.antlrTool
                   .error("paraphrase option only valid for lexer rules",
@@ -200,10 +200,10 @@ public class RuleBlock extends AlternativeBlock {
                 }
                 ts.setParaphrase(value.getText());
             }
-        } else if (key.getText().equals("generateAmbigWarnings")) {
-            if (value.getText().equals("true")) {
+        } else if ("generateAmbigWarnings".equals(key.getText())) {
+            if ("true".equals(value.getText())) {
                 generateAmbigWarnings = true;
-            } else if (value.getText().equals("false")) {
+            } else if ("false".equals(value.getText())) {
                 generateAmbigWarnings = false;
             } else {
                 grammar.antlrTool
@@ -224,7 +224,7 @@ public class RuleBlock extends AlternativeBlock {
 
     public String toString() {
         String s = " FOLLOW={";
-        Lookahead cache[] = endNode.cache;
+        Lookahead[] cache = endNode.cache;
         int k = grammar.maxk;
         boolean allNull = true;
         for (int j = 1; j <= k; j++) {

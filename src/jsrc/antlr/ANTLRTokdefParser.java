@@ -117,7 +117,7 @@ public class ANTLRTokdefParser extends antlr.LLkParser
             {
                 _loop225:
                 do {
-                    if ((LA(1) == ID || LA(1) == STRING)) {
+                    if ((ID == LA(1) || STRING == LA(1))) {
                         line(tm);
                     } else {
                         break _loop225;
@@ -147,12 +147,12 @@ public class ANTLRTokdefParser extends antlr.LLkParser
 
         try {      // for error handling
             {
-                if ((LA(1) == STRING)) {
+                if ((STRING == LA(1))) {
                     s1 = LT(1);
                     match(STRING);
                     s = s1;
                 } else
-                if ((LA(1) == ID) && (LA(2) == ASSIGN) && (LA(3) == STRING)) {
+                if ((ID == LA(1)) && (ASSIGN == LA(2)) && (STRING == LA(3))) {
                     lab = LT(1);
                     match(ID);
                     t = lab;
@@ -160,7 +160,7 @@ public class ANTLRTokdefParser extends antlr.LLkParser
                     s2 = LT(1);
                     match(STRING);
                     s = s2;
-                } else if ((LA(1) == ID) && (LA(2) == LPAREN)) {
+                } else if ((ID == LA(1)) && (LPAREN == LA(2))) {
                     id = LT(1);
                     match(ID);
                     t = id;
@@ -169,7 +169,7 @@ public class ANTLRTokdefParser extends antlr.LLkParser
                     match(STRING);
                     match(RPAREN);
                 } else
-                if ((LA(1) == ID) && (LA(2) == ASSIGN) && (LA(3) == INT)) {
+                if ((ID == LA(1)) && (ASSIGN == LA(2)) && (INT == LA(3))) {
                     id2 = LT(1);
                     match(ID);
                     t = id2;
@@ -228,14 +228,14 @@ public class ANTLRTokdefParser extends antlr.LLkParser
       "DIGIT",
       "XDIGIT"};
 
-    private static final long[] mk_tokenSet_0() {
+    private static long[] mk_tokenSet_0() {
         long[] data = {2L, 0L};
         return data;
     }
 
     public static final BitSet _tokenSet_0 = new BitSet(mk_tokenSet_0());
 
-    private static final long[] mk_tokenSet_1() {
+    private static long[] mk_tokenSet_1() {
         long[] data = {50L, 0L};
         return data;
     }

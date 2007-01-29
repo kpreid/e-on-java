@@ -49,7 +49,7 @@ public class CharPipeAdapter implements Thunk {
         try {
             try {
                 int c;
-                while ((c = myReader.read()) != -1) {
+                while (-1 != (c = myReader.read())) {
                     myWriter.write((char)c);
                 }
                 return Boolean.TRUE;

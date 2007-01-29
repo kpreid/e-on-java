@@ -74,7 +74,7 @@ public class SwissTable {
      */
     public Object lookupSwiss(BigInteger swissNum)
       throws IndexOutOfBoundsException {
-        if (swissNum.signum() == 0) {
+        if (0 == swissNum.signum()) {
             //Since Weak*Maps can't handle nulls, we handle it ourselves.
             return null;
         }

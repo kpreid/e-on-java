@@ -83,9 +83,9 @@ public class FileGetter extends BaseLoader {
         path = slash(new File(path).getAbsolutePath());
 
         if ((//it may be a windows 3.1 short filename.
-          File.separatorChar == '\\' && path.indexOf('~') != -1) ||
+          '\\' == File.separatorChar && -1 != path.indexOf('~')) ||
           (//parent pointers are evil
-            path.indexOf("/../") != -1)) {
+            -1 != path.indexOf("/../"))) {
             try {
                 path = slash(new File(path).getCanonicalPath());
             } catch (IOException ioe) {
@@ -94,7 +94,7 @@ public class FileGetter extends BaseLoader {
         }
         int len = path.length();
 
-        if (!new File(path).isDirectory() && path.charAt(len - 1) == '/' &&
+        if (!new File(path).isDirectory() && '/' == path.charAt(len - 1) &&
           path.indexOf('/') < len - 1) {
             //if it's not a directory, but the path ends in the separator,
             //and that separator isn't the first separator, then remove that
@@ -102,9 +102,9 @@ public class FileGetter extends BaseLoader {
 
             path = path.substring(0, len - 1);
         }
-        if (path.length() >= 2 && path.charAt(1) == ':') {
+        if (2 <= path.length() && ':' == path.charAt(1)) {
             char driveLetter = path.charAt(0);
-            if (System.getProperty("e.osdir", "?").equals("win32") ||
+            if ("win32".equals(System.getProperty("e.osdir", "?")) ||
               System.getProperty("os.name", "?").startsWith("Windows")) {
 
                 // On MSWindows, canonicalize the case of the drive letter,

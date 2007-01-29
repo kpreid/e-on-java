@@ -96,12 +96,12 @@ public class ParseTreeDebugParser extends LLkParser {
      * (the lookahead failed to predict an alternative).
      */
     protected void addCurrentTokenToParseTree() throws TokenStreamException {
-        if (inputState.guessing > 0) {
+        if (0 < inputState.guessing) {
             return;
         }
         ParseTreeRule root = (ParseTreeRule)currentParseTreeRoot.peek();
         ParseTreeToken tokenNode = null;
-        if (LA(1) == Token.EOF_TYPE) {
+        if (Token.EOF_TYPE == LA(1)) {
             tokenNode = new ParseTreeToken(new antlr.CommonToken("EOF"));
         } else {
             tokenNode = new ParseTreeToken(LT(1));
@@ -113,11 +113,11 @@ public class ParseTreeDebugParser extends LLkParser {
      * Create a rule node, add to current tree, and make it current root
      */
     public void traceIn(String s) throws TokenStreamException {
-        if (inputState.guessing > 0) {
+        if (0 < inputState.guessing) {
             return;
         }
         ParseTreeRule subRoot = new ParseTreeRule(s);
-        if (currentParseTreeRoot.size() > 0) {
+        if (0 < currentParseTreeRoot.size()) {
             ParseTreeRule oldRoot = (ParseTreeRule)currentParseTreeRoot.peek();
             oldRoot.addChild(subRoot);
         }
@@ -129,7 +129,7 @@ public class ParseTreeDebugParser extends LLkParser {
      * Pop current root; back to adding to old root
      */
     public void traceOut(String s) throws TokenStreamException {
-        if (inputState.guessing > 0) {
+        if (0 < inputState.guessing) {
             return;
         }
         mostRecentParseTreeRoot = (ParseTreeRule)currentParseTreeRoot.pop();

@@ -96,7 +96,7 @@ public final class PairSeq extends Termish {
         ConstList terms = getTerms();
         //print each child lined up.
         out.print("(");
-        if (terms.size() >= 1) {
+        if (1 <= terms.size()) {
             TextWriter sub = out.indent(" ");
 
             ((Term)terms.get(0)).prettyPrintOn(sub, quasiFlag);

@@ -65,35 +65,35 @@ public class IntegerSugar {
      * Used in the expansion of E's ">" operator
      */
     static public boolean aboveZero(int self) {
-        return self > 0;
+        return 0 < self;
     }
 
     /**
      * Used in the expansion of E's ">=" operator
      */
     static public boolean atLeastZero(int self) {
-        return self >= 0;
+        return 0 <= self;
     }
 
     /**
      * Used in the expansion of E's "<=" operator
      */
     static public boolean atMostZero(int self) {
-        return self <= 0;
+        return 0 >= self;
     }
 
     /**
      * Used in the expansion of E's "<" operator
      */
     static public boolean belowZero(int self) {
-        return self < 0;
+        return 0 > self;
     }
 
     /**
      * Used for arithmetic equality
      */
     static public boolean isZero(int self) {
-        return self == 0;
+        return 0 == self;
     }
 
     /**
@@ -144,15 +144,15 @@ public class IntegerSugar {
         if (EInt.intValueOk(o)) {
             int other = o.intValue();
             long numerator = self;
-            if (other < 0) {
-                if (numerator >= 0) {
+            if (0 > other) {
+                if (0 <= numerator) {
                     // 5 // -3 == -2
                     // (5 - 1 - -3).truncDivide(3) == -2
                     numerator = numerator - 1 - other;
                 }
                 // else -5 // -3 == (-5).truncDivide(-3) == 1
             } else {
-                if (numerator < 0) {
+                if (0 > numerator) {
                     // -5 // 3 == -2
                     // (-5 + 1 - 3).truncDivide(3) == -2
                     numerator = numerator + 1 - other;
@@ -166,7 +166,7 @@ public class IntegerSugar {
     }
 
     /**
-     * In E, {@link java.math.BigInteger#andNot andNot} is called butNot()
+     * In E, {@link BigInteger#andNot andNot} is called butNot()
      */
     static public Number butNot(int self, Number o) {
         if (EInt.isInInt32(o, null)) {
@@ -196,7 +196,7 @@ public class IntegerSugar {
         if (EInt.intValueOk(o)) {
             long other = o.intValue();
             long result = self % other;
-            if (((other < 0) != (result < 0)) && result != 0) {
+            if (((0 > other) != (0 > result)) && 0 != result) {
                 result += other;
             }
             return EInt.valueOf(result);
@@ -270,15 +270,14 @@ public class IntegerSugar {
     }
 
     /**
-     * @return
+     *
      */
     static public String toString64(BigInteger self) {
         return BigIntegerSugar.toString64(self);
     }
 
     /**
-     * @param self
-     * @return
+     *
      */
     static public String toYURL32(BigInteger self) {
         return BigIntegerSugar.toYURL32(self);
@@ -287,8 +286,7 @@ public class IntegerSugar {
     ////////////////////////// Methods from BigInteger ////////////////////
 
     /**
-     * @param self
-     * @return
+     *
      */
     static public byte[] toBase2ByteArray(BigInteger self) {
         return BigIntegerSugar.toBase2ByteArray(self);
@@ -296,9 +294,6 @@ public class IntegerSugar {
 
     /**
      * Actually, a SHA hash
-     *
-     * @param self
-     * @return
      */
     static public BigInteger cryptoHash(BigInteger self) {
         return BigIntegerSugar.cryptoHash(self);
@@ -308,7 +303,7 @@ public class IntegerSugar {
      *
      */
     static public Number abs(int self) {
-        if (self < 0) {
+        if (0 > self) {
             return EInt.valueOf(-(long)self);
         } else {
             return EInt.valueOf(self);
@@ -328,14 +323,14 @@ public class IntegerSugar {
     }
 
     /**
-     * @return
+     *
      */
     static public int bitCount(BigInteger self) {
         return self.bitCount();
     }
 
     /**
-     * @return
+     *
      */
     static public int bitLength(BigInteger self) {
         return self.bitLength();
@@ -360,14 +355,14 @@ public class IntegerSugar {
     }
 
     /**
-     * @return
+     *
      */
     static public BigInteger gcd(BigInteger self, BigInteger other) {
         return self.gcd(other);
     }
 
     /**
-     * @return
+     *
      */
     static public int getLowestSetBit(BigInteger self) {
         return self.getLowestSetBit();
@@ -406,14 +401,14 @@ public class IntegerSugar {
     }
 
     /**
-     * @return
+     *
      */
     static public BigInteger modInverse(BigInteger self, BigInteger m) {
         return self.modInverse(m);
     }
 
     /**
-     * @return
+     *
      */
     static public Number modPow(BigInteger self, Number exponent, Number m) {
         return BigIntegerSugar.modPow(self, exponent, m);
@@ -470,7 +465,7 @@ public class IntegerSugar {
     }
 
     /**
-     * @return
+     *
      */
     static public Number pow(BigInteger self, Number exponent) {
         return BigIntegerSugar.pow(self, exponent);
@@ -489,14 +484,14 @@ public class IntegerSugar {
     }
 
     /**
-     * @return
+     *
      */
     static public Number shiftLeft(BigInteger self, int n) {
         return EInt.normal(self.shiftLeft(n));
     }
 
     /**
-     * @return
+     *
      */
     static public Number shiftRight(BigInteger self, int n) {
         return EInt.normal(self.shiftRight(n));
@@ -506,9 +501,9 @@ public class IntegerSugar {
      *
      */
     static public int signum(int self) {
-        if (self < 0) {
+        if (0 > self) {
             return -1;
-        } else if (self == 0) {
+        } else if (0 == self) {
             return 0;
         } else {
             return 1;
@@ -528,14 +523,14 @@ public class IntegerSugar {
     }
 
     /**
-     * @return
+     *
      */
     static public byte[] toByteArray(BigInteger self) {
         return self.toByteArray();
     }
 
     /**
-     * @return
+     *
      */
     static public String toString(BigInteger self, int radix) {
         return self.toString(radix);

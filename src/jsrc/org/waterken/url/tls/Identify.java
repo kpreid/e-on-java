@@ -26,9 +26,9 @@ public final class Identify {
     public static void main(final String[] args) throws Exception {
 
         // Get the arguments.
-        final File key_file = new File(args.length < 1 ? "keys.jks" : args[0]);
-        final String passphrase = args.length < 2 ? "nopass" : args[1];
-        final String alias = args.length < 3 ? "mykey" : args[2];
+        final File key_file = new File(1 > args.length ? "keys.jks" : args[0]);
+        final String passphrase = 2 > args.length ? "nopass" : args[1];
+        final String alias = 3 > args.length ? "mykey" : args[2];
 
         // Load the key store.
         final KeyStore keys = KeyStore.getInstance(KeyStore.getDefaultType());

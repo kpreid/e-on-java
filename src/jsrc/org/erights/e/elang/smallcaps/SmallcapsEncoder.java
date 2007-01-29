@@ -131,7 +131,7 @@ public class SmallcapsEncoder implements SmallcapsOps, SmallcapsEmitter {
     }
 
     public void emitInteger(BigInteger num) {
-        if (num.signum() >= 0) {
+        if (0 <= num.signum()) {
             writeWholeNum(num);
             writeOpcode(OP_WHOLE_NUM, 1, 0);
         } else {
@@ -273,8 +273,8 @@ public class SmallcapsEncoder implements SmallcapsOps, SmallcapsEmitter {
      */
     static int numDocBytes(BigInteger wholeNum) {
         int signum = wholeNum.signum();
-        T.require(signum >= 0, "Non-negative integer expected: ", wholeNum);
-        if (signum == 0) {
+        T.require(0 <= signum, "Non-negative integer expected: ", wholeNum);
+        if (0 == signum) {
             return 1;
         }
         int numBits = wholeNum.bitLength();
@@ -302,7 +302,7 @@ public class SmallcapsEncoder implements SmallcapsOps, SmallcapsEmitter {
      */
     void writeWholeNum(BigInteger wholeNum, int numBytes) {
         int signum = wholeNum.signum();
-        T.require(signum >= 0, "Non-negative integer expected: ", wholeNum);
+        T.require(0 <= signum, "Non-negative integer expected: ", wholeNum);
         T.require(numBytes >= numDocBytes(wholeNum),
                   "Can't fit ",
                   wholeNum,
@@ -366,7 +366,7 @@ public class SmallcapsEncoder implements SmallcapsOps, SmallcapsEmitter {
      */
     void writeFloat64(double float64) {
         long bits = Double.doubleToLongBits(float64);
-        for (int i = 0; i < 8; ++i) {
+        for (int i = 0; 8 > i; ++i) {
             writeByte((int)(bits >> (i * 8)) & 0xFF);
         }
     }

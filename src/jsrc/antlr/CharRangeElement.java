@@ -16,7 +16,7 @@ class CharRangeElement extends AlternativeElement {
     protected String endText;
 
 
-    public CharRangeElement(LexerGrammar g,
+    CharRangeElement(LexerGrammar g,
                             Token t1,
                             Token t2,
                             int autoGenType) {

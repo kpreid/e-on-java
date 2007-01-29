@@ -54,6 +54,9 @@ import java.util.Properties;
  */
 public class ERunDemo {
 
+    private ERunDemo() {
+    }
+
     static public void main(String[] args) throws IOException {
 
         TraceController.start(new Properties(System.getProperties()));

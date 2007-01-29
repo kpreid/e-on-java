@@ -102,7 +102,7 @@ public class ProcessSugar {
         new Thread(errBufferer, "stderr").start();
 
         int exitCode = self.waitFor();
-        if (exitCode == 0) {
+        if (0 == exitCode) {
             outBufferer.waitFor();
             errBufferer.waitFor();
         }

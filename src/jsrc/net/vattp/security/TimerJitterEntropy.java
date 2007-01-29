@@ -43,7 +43,7 @@ class TimerJitterEntropy extends Thread {
 
     private boolean theIsStarted = false;
 
-    public TimerJitterEntropy(String name) {
+    TimerJitterEntropy(String name) {
         super(name);
         if ("x86".equals(System.getProperty("os.arch")) &&
           MicroTime.isHiRes()) {
@@ -95,7 +95,7 @@ class TimerJitterEntropy extends Thread {
                 // Assume 1/2 bit entropy/sample
                 ESecureRandom.provideEntropy(ran, 4);
                 entropy += 4;       // Incr entropy gotten
-                if (entropy == 160) { // Slow down after 160 bits
+                if (160 == entropy) { // Slow down after 160 bits
                     Trace.entropy.eventm("Slow down point reached");
                     Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
                     delay = 500;

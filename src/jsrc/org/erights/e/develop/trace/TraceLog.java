@@ -216,12 +216,11 @@ class TraceLog implements TraceMessageAcceptor, TraceConstants {
     void changeBackupFileHandling(String newBehavior) {
         synchronized (myLock) {
             T.test(newBehavior != null);
-            if (newBehavior.equalsIgnoreCase("one") ||
-              newBehavior.equals("1")) {
+            if ("one".equalsIgnoreCase(newBehavior) || "1".equals(newBehavior)) {
 
                 Trace.trace.eventm("Backup files will be overwritten.");
                 myBackupAction = OVERWRITE;
-            } else if (newBehavior.equalsIgnoreCase("many")) {
+            } else if ("many".equalsIgnoreCase(newBehavior)) {
                 Trace.trace.eventm("New backup files will always be created.");
                 myBackupAction = ADD;
             } else {
@@ -280,7 +279,7 @@ class TraceLog implements TraceMessageAcceptor, TraceConstants {
                 }
             }
 
-            if (newSize < SMALLEST_LOG_SIZE_THRESHOLD) {
+            if (SMALLEST_LOG_SIZE_THRESHOLD > newSize) {
                 Trace.trace
                   .errorm(value +
                     " is too small a threshold size for the log. " + "Try " +
@@ -329,7 +328,7 @@ class TraceLog implements TraceMessageAcceptor, TraceConstants {
     void changeWrite(String value) {
         synchronized (myLock) {
             T.test(value != null);
-            if (value.equalsIgnoreCase("true")) {
+            if ("true".equalsIgnoreCase(value)) {
                 if (myWrite) {
                     Trace.trace
                       .warningm("Log writing enabled twice in a row.");
@@ -344,7 +343,7 @@ class TraceLog implements TraceMessageAcceptor, TraceConstants {
                     // else
                     // do nothing - setupIsComplete() will handle this case.
                 }
-            } else if (value.equalsIgnoreCase("false")) {
+            } else if ("false".equalsIgnoreCase(value)) {
                 if (!myWrite) {
                     Trace.trace
                       .warningm("Log writing disabled, " +
@@ -373,7 +372,7 @@ class TraceLog implements TraceMessageAcceptor, TraceConstants {
      * true), they are written. Otherwise, they are discarded. It is safe to
      * call this routine without knowing whether queuing is in progress.
      */
-    private final void drainQueue() {
+    private void drainQueue() {
         if (Trace.trace != null) {
             Trace.trace
               .debugm("Draining queue; write = " + myWrite + ", isQueuing = " +
@@ -476,11 +475,11 @@ class TraceLog implements TraceMessageAcceptor, TraceConstants {
      * <p/>
      * Queuing also happens transitorily while logs are being switched.
      */
-    private final boolean isAcceptingMessages() {
+    private boolean isAcceptingMessages() {
         return myWrite || isQueuing();
     }
 
-    private final boolean isQueuing() {
+    private boolean isQueuing() {
         return queuedMessages != null;
     }
 
@@ -597,7 +596,7 @@ class TraceLog implements TraceMessageAcceptor, TraceConstants {
      * <p/>
      * It is harmless to call this routine twice.
      */
-    private final void startQueuing() {
+    private void startQueuing() {
         // Note:  there can be no trace messages in this routine,
         // because it's called from the constructor.
         if (!isQueuing()) {

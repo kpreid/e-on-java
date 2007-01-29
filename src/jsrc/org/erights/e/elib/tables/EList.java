@@ -152,7 +152,7 @@ public abstract class EList implements EPrintable, Persistent, EIteratable {
      * @return
      */
     public Object fetch(int index, Thunk insteadThunk) {
-        if (index >= 0 && index < size()) {
+        if (0 <= index && index < size()) {
             return get(index);
         } else {
             return insteadThunk.run();
@@ -172,7 +172,7 @@ public abstract class EList implements EPrintable, Persistent, EIteratable {
      * Does the candidate appear as a value in this list?
      */
     public boolean contains(Object candidate) {
-        return indexOf1(candidate, 0) != -1;
+        return -1 != indexOf1(candidate, 0);
     }
 
     /**
@@ -262,7 +262,7 @@ public abstract class EList implements EPrintable, Persistent, EIteratable {
             return ConstListImpl.EmptyList;
         } else if (1 == n) {
             return snapshot();
-        } else if (n < 0) {
+        } else if (0 > n) {
             throw new IllegalArgumentException(n + " musn't be negative");
         }
         int len = size();
@@ -308,7 +308,7 @@ public abstract class EList implements EPrintable, Persistent, EIteratable {
      * Does this list include candidate as a sub-list?
      */
     public boolean includes(EList candidate) {
-        return startOf(candidate, 0) != -1;
+        return -1 != startOf(candidate, 0);
     }
 
     /**
@@ -377,7 +377,7 @@ public abstract class EList implements EPrintable, Persistent, EIteratable {
      * -1 if none.
      */
     public int lastIndexOf1(Object candidate, int start) {
-        for (int i = start; i >= 0; i--) {
+        for (int i = start; 0 <= i; i--) {
             if (Ref.isSameEver(get(i), candidate)) {
                 return i;
             }
@@ -452,7 +452,7 @@ public abstract class EList implements EPrintable, Persistent, EIteratable {
         }
         start = StrictMath.min(start, len1 - len2);
         Object elem = candidate.get(0);
-        for (int i = start; i >= 0; i--) {
+        for (int i = start; 0 <= i; i--) {
             if (Ref.isSameEver(get(i), elem)) {
                 match:
                 {
@@ -480,7 +480,7 @@ public abstract class EList implements EPrintable, Persistent, EIteratable {
       throws IOException {
         out.print(left);
         int len = size();
-        if (len >= 1) {
+        if (1 <= len) {
             out.quote(get(0));
             for (int i = 1; i < len; i++) {
                 out.print(sep);

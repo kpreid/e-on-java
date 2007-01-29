@@ -49,7 +49,7 @@ public class Tool {
     }
 
     public static void main(String[] args) {
-        if (args.length != 1) {
+        if (1 != args.length) {
             System.err.println("usage: java antlr.build.Tool action");
             return;
         }

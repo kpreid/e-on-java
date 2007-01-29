@@ -88,18 +88,17 @@ public class ANTLR {
         }
         String[] antlrDir = antlrRootDir.list(new FilenameFilter() {
             public boolean accept(File dir, String name) {
-                return dir.isDirectory() && name.equals("antlr");
+                return dir.isDirectory() && "antlr".equals(name);
             }
         });
-        if (antlrDir == null || antlrDir.length == 0) {
+        if (antlrDir == null || 0 == antlrDir.length) {
             tool.error("Property antlr.build.root==" + root +
               " does not appear to be a valid ANTLR project root (no antlr subdir)");
             return false;
         }
         File antlrPackageDir = new File(root + "/antlr");
         String[] antlrPackageJavaFiles = antlrPackageDir.list();
-        if (antlrPackageJavaFiles == null ||
-          antlrPackageJavaFiles.length == 0) {
+        if (antlrPackageJavaFiles == null || 0 == antlrPackageJavaFiles.length) {
             tool.error("Property antlr.build.root==" + root +
               " does not appear to be a valid ANTLR project root (no .java files in antlr subdir");
             return false;

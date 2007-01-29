@@ -102,7 +102,7 @@ public class EARL {
         }
         //XXX should reproduce here all the validity checks we test when
         //parsing.
-        if (flattenedSearchPath.length() == 0) {
+        if (0 == flattenedSearchPath.length()) {
             throw new MalformedURLException("Search path must not be empty");
         }
     }
@@ -134,7 +134,7 @@ public class EARL {
      */
     static public String flattenSearchPath(ConstList path) {
         String ret = "";
-        if (path == null || path.size() == 0) {
+        if (path == null || 0 == path.size()) {
             return ret; // could be reasonable to throw an exception here...
         }
 
@@ -185,7 +185,7 @@ public class EARL {
         }
         rest = rest.substring("//*".length());
         int i = rest.indexOf('@');
-        if (i < 1) {
+        if (1 > i) {
             throw new MalformedURLException(
               "URI " + uri + " does not have a vatID");
         }
@@ -193,7 +193,7 @@ public class EARL {
         rest = rest.substring(i + 1);
 
         i = rest.indexOf('/');
-        if (i < 1) {
+        if (1 > i) {
             throw new MalformedURLException(
               "URI " + uri + " does not have a search path");
         }
@@ -203,10 +203,10 @@ public class EARL {
 
 
         i = rest.indexOf('#');
-        if (i < 0) {
+        if (0 > i) {
             i = rest.length();
         }
-        if (i < 1) {
+        if (1 > i) {
             throw new MalformedURLException(
               "URI " + uri + " does not have an swissStr");
         }
@@ -243,17 +243,17 @@ public class EARL {
         int count;
         int start;
         int end;
-        String parts[];
+        String[] parts;
 
         if (Trace.comm.debug && Trace.ON) {
             Trace.comm.debugm("parsing " + path);
         }
-        if (path == null || path.length() == 0) {
+        if (path == null || 0 == path.length()) {
             return ConstList.EmptyList;
         }
         count = 1;
         start = -1;
-        while ((start = path.indexOf(',', start + 1)) >= 0) {
+        while (0 <= (start = path.indexOf(',', start + 1))) {
             count++;
         }
         parts = new String[count];

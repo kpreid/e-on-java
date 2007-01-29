@@ -40,6 +40,9 @@ final class TripleDESKeyConstructor {
 
     static private final int KEY_PAD_LENGTH = 16;
 
+    private TripleDESKeyConstructor() {
+    }
+
     /**
      * Constructs a 3DES key from a Diffie-Hellman secret.
      * <p/>
@@ -83,7 +86,7 @@ final class TripleDESKeyConstructor {
     }
 
     static private void fill(final byte[] buffer, final byte value) {
-        for (int i = buffer.length; i-- != 0;) {
+        for (int i = buffer.length; 0 != i--;) {
             buffer[i] = value;
         }
     }

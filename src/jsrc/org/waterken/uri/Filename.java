@@ -23,14 +23,14 @@ public final class Filename {
     public static String vouch(final String name) throws InvalidFilename {
 
         // Check for disallowed characters.
-        for (int i = name.length(); i-- != 0;) {
-            if ("\\/:*?<>|\"".indexOf(name.charAt(i)) != -1) {
+        for (int i = name.length(); 0 != i--;) {
+            if (-1 != "\\/:*?<>|\"".indexOf(name.charAt(i))) {
                 throw new InvalidFilename();
             }
         }
 
         // Check for path separator char.
-        if (name.indexOf(File.separatorChar) != -1) {
+        if (-1 != name.indexOf(File.separatorChar)) {
             throw new InvalidFilename();
         }
 

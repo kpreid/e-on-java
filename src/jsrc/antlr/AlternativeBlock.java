@@ -51,15 +51,15 @@ class AlternativeBlock extends AlternativeElement {
     // Turning this off will suppress stuff
     // like the if-then-else ambig.
 
-    public AlternativeBlock(Grammar g) {
+    AlternativeBlock(Grammar g) {
         super(g);
         alternatives = new Vector(5);
-        this.not = false;
+        not = false;
         nblks++;
         ID = nblks;
     }
 
-    public AlternativeBlock(Grammar g, Token start, boolean not) {
+    AlternativeBlock(Grammar g, Token start, boolean not) {
         super(g, start);
         alternatives = new Vector(5);
 //		this.line = start.getLine();
@@ -155,10 +155,10 @@ class AlternativeBlock extends AlternativeElement {
     }
 
     public void setOption(Token key, Token value) {
-        if (key.getText().equals("warnWhenFollowAmbig")) {
-            if (value.getText().equals("true")) {
+        if ("warnWhenFollowAmbig".equals(key.getText())) {
+            if ("true".equals(value.getText())) {
                 warnWhenFollowAmbig = true;
-            } else if (value.getText().equals("false")) {
+            } else if ("false".equals(value.getText())) {
                 warnWhenFollowAmbig = false;
             } else {
                 grammar.antlrTool
@@ -167,10 +167,10 @@ class AlternativeBlock extends AlternativeElement {
                          key.getLine(),
                          key.getColumn());
             }
-        } else if (key.getText().equals("generateAmbigWarnings")) {
-            if (value.getText().equals("true")) {
+        } else if ("generateAmbigWarnings".equals(key.getText())) {
+            if ("true".equals(value.getText())) {
                 generateAmbigWarnings = true;
-            } else if (value.getText().equals("false")) {
+            } else if ("false".equals(value.getText())) {
                 generateAmbigWarnings = false;
             } else {
                 grammar.antlrTool
@@ -180,11 +180,11 @@ class AlternativeBlock extends AlternativeElement {
                     key.getLine(),
                     key.getColumn());
             }
-        } else if (key.getText().equals("greedy")) {
-            if (value.getText().equals("true")) {
+        } else if ("greedy".equals(key.getText())) {
+            if ("true".equals(value.getText())) {
                 greedy = true;
                 greedySet = true;
-            } else if (value.getText().equals("false")) {
+            } else if ("false".equals(value.getText())) {
                 greedy = false;
                 greedySet = true;
             } else {
@@ -210,11 +210,11 @@ class AlternativeBlock extends AlternativeElement {
         }
         for (int i = 0; i < alternatives.size(); i++) {
             Alternative alt = getAlternativeAt(i);
-            Lookahead cache[] = alt.cache;
+            Lookahead[] cache = alt.cache;
             int k = alt.lookaheadDepth;
             // dump lookahead set
-            if (k == GrammarAnalyzer.LOOKAHEAD_DEPTH_INIT) {
-            } else if (k == GrammarAnalyzer.NONDETERMINISTIC) {
+            if (GrammarAnalyzer.LOOKAHEAD_DEPTH_INIT == k) {
+            } else if (GrammarAnalyzer.NONDETERMINISTIC == k) {
                 s += "{?}:";
             } else {
                 s += " {";

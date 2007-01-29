@@ -83,7 +83,7 @@ public class HTTPInputStream extends InputStream {
      * @since JDK1.0
      */
     public int read() throws IOException {
-        if (myLengthLimit <= 0) {
+        if (0 >= myLengthLimit) {
             return -1;
         }
         int ret = myStream.read();
@@ -108,11 +108,11 @@ public class HTTPInputStream extends InputStream {
      *         reached.
      * @throws IOException if an I/O error occurs.
      */
-    public int read(byte b[], int off, int len) throws IOException {
+    public int read(byte[] b, int off, int len) throws IOException {
         if (len > myLengthLimit) {
             len = (int)myLengthLimit;
         }
-        if (myLengthLimit <= 0) {
+        if (0 >= myLengthLimit) {
             return -1;
         }
         int read = myStream.read(b, off, len);

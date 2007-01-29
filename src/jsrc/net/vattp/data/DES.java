@@ -189,7 +189,7 @@ public final class DES // must be final for security reasons
     /**
      * Table for S-boxes and permutations, used in encrypt_base.
      */
-    static private final int SP_TRANS[] = new int[8 * 64];  // blank final
+    static private final int[] SP_TRANS = new int[8 * 64];  // blank final
 
 // Static code
 //...........................................................................
@@ -208,14 +208,14 @@ public final class DES // must be final for security reasons
         int offset = 0;
         for (int i = 0; i < cd.length(); i++) {
             s = cd.charAt(i) - '@';
-            if (s != 32) {
+            if (32 != s) {
                 bit = 1 << count++;
-                for (j = 0; j < 64; j++) {
-                    if ((bit & j) != 0) {
+                for (j = 0; 64 > j; j++) {
+                    if (0 != (bit & j)) {
                         SKB[offset + j] |= 1 << s;
                     }
                 }
-                if (count == 6) {
+                if (6 == count) {
                     offset += 64;
                     count = 0;
                 }
@@ -244,16 +244,16 @@ public final class DES // must be final for security reasons
         // set in exactly 32 entries. We keep track of set bits.
         offset = 0;
         int k, c, param;
-        for (int i = 0; i < 32; i++) {
+        for (int i = 0; 32 > i; i++) {
             // each bit position
             k = -1; // pretend the -1th bit was set
             bit = 1 << i;
-            for (j = 0; j < 32; j++) {
+            for (j = 0; 32 > j; j++) {
                 // each set bit
                 // Each character consists of two three-bit values:
                 c = spt.charAt(offset >> 1) - '0' >> (offset & 1) * 3 & 7;
                 offset++;
-                if (c < 5) {
+                if (5 > c) {
                     // values 0...4 indicate a set bit 1...5 positions
                     // from the previous set bit
                     k += c + 1;
@@ -264,12 +264,12 @@ public final class DES // must be final for security reasons
                 // the next value in the sequence.
                 param = spt.charAt(offset >> 1) - '0' >> (offset & 1) * 3 & 7;
                 offset++;
-                if (c == 5) {
+                if (5 == c) {
                     // indicates a bit set param+6 positions from
                     // the previous set bit
                     k += param + 6;
                     SP_TRANS[k] |= bit;
-                } else if (c == 6) {
+                } else if (6 == c) {
                     // indicates a bit set (param * 64) + 1 positions
                     // from the previous set bit
                     k += (param << 6) + 1;
@@ -343,7 +343,7 @@ public final class DES // must be final for security reasons
     }
 
     public byte[] crypt(byte[] data) {
-        if (data.length != BLOCK_SIZE) {
+        if (BLOCK_SIZE != data.length) {
             throw new IllegalArgumentException("data.length != BLOCK_SIZE");
         }
         byte[] ans = new byte[BLOCK_SIZE];
@@ -370,13 +370,13 @@ public final class DES // must be final for security reasons
                       int inLen,
                       byte[] out,
                       int outOffset) {
-        if (inLen < 0) {
+        if (0 > inLen) {
             throw new IllegalArgumentException("inLen < 0");
         }
         int blockCount = inLen / BLOCK_SIZE;
         inLen = blockCount * BLOCK_SIZE;
 
-        boolean doEncrypt = (encryptDecryptState == ENCRYPT);
+        boolean doEncrypt = (ENCRYPT == encryptDecryptState);
 
         // Avoid overlapping input and output regions.
         if (in == out && (
@@ -414,7 +414,7 @@ public final class DES // must be final for security reasons
             throw new InvalidKeyException(getAlgorithm() + ": Null user key");
         }
 
-        if (userkey.length != KEY_LENGTH) {
+        if (KEY_LENGTH != userkey.length) {
             throw new InvalidKeyException(
               getAlgorithm() + ": Invalid user key length");
         }
@@ -449,8 +449,8 @@ public final class DES // must be final for security reasons
         int s;
         int j = 0;
 
-        for (i = 0; i < ROUNDS; i++) {
-            if ((0x7EFC >> i & 1) == 1) {
+        for (i = 0; ROUNDS > i; i++) {
+            if (1 == (0x7EFC >> i & 1)) {
                 c = (c >>> 2 | c << 26) & 0x0FFFFFFF;
                 d = (d >>> 2 | d << 26) & 0x0FFFFFFF;
             } else {
@@ -530,7 +530,7 @@ public final class DES // must be final for security reasons
         L = u;
         int t;
 
-        for (int i = 0; i < INTERNAL_KEY_LENGTH;) {
+        for (int i = 0; INTERNAL_KEY_LENGTH > i;) {
             u = R ^ sKey[i++];
             t = R ^ sKey[i++];
             t = t >>> 4 | t << 28;
@@ -571,7 +571,7 @@ public final class DES // must be final for security reasons
         L = u;
         int t;
 
-        for (int i = INTERNAL_KEY_LENGTH - 1; i > 0;) {
+        for (int i = INTERNAL_KEY_LENGTH - 1; 0 < i;) {
             t = R ^ sKey[i--];
             u = R ^ sKey[i--];
             t = t >>> 4 | t << 28;

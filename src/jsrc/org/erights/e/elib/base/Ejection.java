@@ -51,7 +51,7 @@ public class Ejection extends RuntimeException {
         if (null == optMsg) {
             optMsg = "";
         }
-        if (problem instanceof RuntimeException && optMsg.length() == 0) {
+        if (problem instanceof RuntimeException && 0 == optMsg.length()) {
             return (RuntimeException)problem;
         }
         return new NestedException(problem, optMsg);

@@ -42,7 +42,7 @@ class LexerGrammar extends Grammar {
         super(className_, tool_, superClass);
         // by default, use 0..127 for ASCII char vocabulary
         BitSet cv = new BitSet();
-        for (int i = 0; i <= 127; i++) {
+        for (int i = 0; 127 >= i; i++) {
             cv.add(i);
         }
         setCharVocabulary(cv);
@@ -78,13 +78,13 @@ class LexerGrammar extends Grammar {
      */
     public void processArguments(String[] args) {
         for (int i = 0; i < args.length; i++) {
-            if (args[i].equals("-trace")) {
+            if ("-trace".equals(args[i])) {
                 traceRules = true;
                 antlrTool.setArgOK(i);
-            } else if (args[i].equals("-traceLexer")) {
+            } else if ("-traceLexer".equals(args[i])) {
                 traceRules = true;
                 antlrTool.setArgOK(i);
-            } else if (args[i].equals("-debug")) {
+            } else if ("-debug".equals(args[i])) {
                 debuggingOutput = true;
                 antlrTool.setArgOK(i);
             }
@@ -103,17 +103,17 @@ class LexerGrammar extends Grammar {
      */
     public boolean setOption(String key, Token value) {
         String s = value.getText();
-        if (key.equals("buildAST")) {
+        if ("buildAST".equals(key)) {
             antlrTool.warning("buildAST option is not valid for lexer",
                               getFilename(),
                               value.getLine(),
                               value.getColumn());
             return true;
         }
-        if (key.equals("testLiterals")) {
-            if (s.equals("true")) {
+        if ("testLiterals".equals(key)) {
+            if ("true".equals(s)) {
                 testLiterals = true;
-            } else if (s.equals("false")) {
+            } else if ("false".equals(s)) {
                 testLiterals = false;
             } else {
                 antlrTool.warning("testLiterals option must be true or false",
@@ -123,10 +123,10 @@ class LexerGrammar extends Grammar {
             }
             return true;
         }
-        if (key.equals("interactive")) {
-            if (s.equals("true")) {
+        if ("interactive".equals(key)) {
+            if ("true".equals(s)) {
                 interactive = true;
-            } else if (s.equals("false")) {
+            } else if ("false".equals(s)) {
                 interactive = false;
             } else {
                 antlrTool.error("interactive option must be true or false",
@@ -136,10 +136,10 @@ class LexerGrammar extends Grammar {
             }
             return true;
         }
-        if (key.equals("caseSensitive")) {
-            if (s.equals("true")) {
+        if ("caseSensitive".equals(key)) {
+            if ("true".equals(s)) {
                 caseSensitive = true;
-            } else if (s.equals("false")) {
+            } else if ("false".equals(s)) {
                 caseSensitive = false;
             } else {
                 antlrTool.warning("caseSensitive option must be true or false",
@@ -149,10 +149,10 @@ class LexerGrammar extends Grammar {
             }
             return true;
         }
-        if (key.equals("caseSensitiveLiterals")) {
-            if (s.equals("true")) {
+        if ("caseSensitiveLiterals".equals(key)) {
+            if ("true".equals(s)) {
                 caseSensitiveLiterals = true;
-            } else if (s.equals("false")) {
+            } else if ("false".equals(s)) {
                 caseSensitiveLiterals = false;
             } else {
                 antlrTool.warning(
@@ -163,12 +163,12 @@ class LexerGrammar extends Grammar {
             }
             return true;
         }
-        if (key.equals("filter")) {
-            if (s.equals("true")) {
+        if ("filter".equals(key)) {
+            if ("true".equals(s)) {
                 filterMode = true;
-            } else if (s.equals("false")) {
+            } else if ("false".equals(s)) {
                 filterMode = false;
-            } else if (value.getType() == ANTLRTokenTypes.TOKEN_REF) {
+            } else if (ANTLRTokenTypes.TOKEN_REF == value.getType()) {
                 filterMode = true;
                 filterRule = s;
             } else {
@@ -180,7 +180,7 @@ class LexerGrammar extends Grammar {
             }
             return true;
         }
-        if (key.equals("longestPossible")) {
+        if ("longestPossible".equals(key)) {
             antlrTool.warning(
               "longestPossible option has been deprecated; ignoring it...",
               getFilename(),
@@ -188,7 +188,7 @@ class LexerGrammar extends Grammar {
               value.getColumn());
             return true;
         }
-        if (key.equals("className")) {
+        if ("className".equals(key)) {
             super.setOption(key, value);
             return true;
         }

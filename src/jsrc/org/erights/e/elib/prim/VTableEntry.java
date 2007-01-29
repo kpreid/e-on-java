@@ -21,5 +21,5 @@ public interface VTableEntry extends Script {
      *
      * @return
      */
-    public abstract VTableEntry forVTable(VTable vTable);
+    VTableEntry forVTable(VTable vTable);
 }

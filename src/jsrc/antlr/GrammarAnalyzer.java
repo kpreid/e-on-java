@@ -31,7 +31,7 @@ public interface GrammarAnalyzer {
      * Token constants to be between MIN_USER_TYPE and INVALID_TYPE.
      */
     // public static final int EPSILON_TYPE = 2;
-    public static final int NONDETERMINISTIC =
+    int NONDETERMINISTIC =
       Integer.MAX_VALUE; // lookahead depth
-    public static final int LOOKAHEAD_DEPTH_INIT = -1;
+    int LOOKAHEAD_DEPTH_INIT = -1;
 }

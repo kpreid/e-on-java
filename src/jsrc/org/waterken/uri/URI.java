@@ -252,7 +252,7 @@ public final class URI {
                 if (0 == j) {
                     j = path.indexOf('/', 1);
                 }
-                while (j != -1) {
+                while (-1 != j) {
                     buffer.append("../");
                     j = path.indexOf('/', j + 1);
                 }

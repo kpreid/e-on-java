@@ -232,7 +232,7 @@ public abstract class BindFramesVisitor extends BaseBindVisitor {
         } else if (body instanceof SeqExpr) {
             EExpr[] subs = ((SeqExpr)body).getSubs();
             int last = subs.length - 1;
-            if (last >= 0) {
+            if (0 <= last) {
                 // XXX Doesn't yet pick up the pattern which will become
                 // common: { ...; return ...; null }
                 EExpr[] newSubs = new EExpr[subs.length];

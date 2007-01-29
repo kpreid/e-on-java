@@ -14,7 +14,10 @@ import java.io.IOException;
  */
 public class TestClassFileAuditor {
 
-    static public void main(String args[]) {
+    private TestClassFileAuditor() {
+    }
+
+    static public void main(String[] args) {
         Forbidifier forbidifier = new TestForbidifier();
         for (int i = 0; i < args.length; ++i) {
             try {

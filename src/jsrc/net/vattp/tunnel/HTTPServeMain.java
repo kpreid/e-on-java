@@ -35,6 +35,9 @@ import java.util.Hashtable;
 
 public class HTTPServeMain {
 
+    private HTTPServeMain() {
+    }
+
     static public void main(String[] args) {
         int httpPort;
         int listenPort;
@@ -49,17 +52,17 @@ public class HTTPServeMain {
          *  an entry in the vats map and vicea versa. */
         Hashtable sessions = new Hashtable(1);
 
-        if (args.length < 2) {
+        if (2 > args.length) {
             System.err.println("Requires httpPort listenPort");
             System.exit(1);
         }
         try {
             httpPort = Integer.parseInt(args[0]);
             listenPort = Integer.parseInt(args[1]);
-            if (httpPort <= 0 || httpPort > 0xffff) {
+            if (0 >= httpPort || 0xffff < httpPort) {
                 T.fail("httpPort must be between 1 and 2**16-1");
             }
-            if (listenPort <= 0 || listenPort > 0xffff) {
+            if (0 >= listenPort || 0xffff < listenPort) {
                 T.fail("listenPort must be between 1 and 2**16-1");
             }
         } catch (Exception e) {

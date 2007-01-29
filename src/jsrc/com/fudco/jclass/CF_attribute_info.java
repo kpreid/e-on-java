@@ -12,7 +12,7 @@ import java.io.IOException;
 public class CF_attribute_info {
 
     private int myAttribute_name_index;
-    private byte myInfo[];
+    private byte[] myInfo;
 
     /**
      * Constructor.
@@ -22,7 +22,7 @@ public class CF_attribute_info {
      *                             attribute name.
      * @param info                 The bytes of the attribute info themselves.
      */
-    CF_attribute_info(int attribute_name_index, byte info[]) {
+    CF_attribute_info(int attribute_name_index, byte[] info) {
         myAttribute_name_index = attribute_name_index;
         myInfo = info;
     }
@@ -53,7 +53,7 @@ public class CF_attribute_info {
      * @return a copy of the array of data bytes for this attribute.
      */
     public byte[] info() {
-        byte result[] = new byte[myInfo.length];
+        byte[] result = new byte[myInfo.length];
         System.arraycopy(myInfo, 0, result, 0, myInfo.length);
         return result;
     }
@@ -68,7 +68,7 @@ public class CF_attribute_info {
      *         for this attribute.
      */
     public byte[] info(int offset, int length) {
-        byte result[] = new byte[myInfo.length - offset];
+        byte[] result = new byte[myInfo.length - offset];
         System.arraycopy(myInfo, offset, result, 0, length);
         return result;
     }
@@ -94,7 +94,7 @@ public class CF_attribute_info {
       throws IOException {
         int attribute_name_index = in.readUnsignedShort();
         int attribute_length = in.readInt();
-        byte info[] = new byte[attribute_length];
+        byte[] info = new byte[attribute_length];
         in.readFully(info);
         return new CF_attribute_info(attribute_name_index, info);
     }

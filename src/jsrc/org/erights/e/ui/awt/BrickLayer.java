@@ -70,13 +70,13 @@ public class BrickLayer extends GridBagLayout {
     public void addLayoutComponent(String name, Component comp) {
         GridBagConstraints gbc =
           (GridBagConstraints)defaultConstraints.clone();
-        if (name.indexOf('x') != -1) {
+        if (-1 != name.indexOf('x')) {
             gbc.weightx = 1.0;
         }
-        if (name.indexOf('y') != -1) {
+        if (-1 != name.indexOf('y')) {
             gbc.weighty = 1.0;
         }
-        if (name.indexOf('\n') != -1) {
+        if (-1 != name.indexOf('\n')) {
             gbc.gridwidth = GridBagConstraints.REMAINDER;
         }
         setConstraints(comp, gbc);

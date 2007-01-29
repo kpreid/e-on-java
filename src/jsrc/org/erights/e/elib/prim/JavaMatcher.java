@@ -53,13 +53,13 @@ public abstract class JavaMatcher implements VTableEntry, EStackItem {
      *         have the types String and ConstList.
      */
     static boolean isMatcher(Method method, int offset) {
-        if (!method.getName().equals("match")) {
+        if (!"match".equals(method.getName())) {
             return false;
         }
         Class[] paramTypes = method.getParameterTypes();
         return paramTypes.length == offset + 2 &&
-          paramTypes[offset] == String.class &&
-          paramTypes[offset + 1] == ConstList.class;
+          String.class == paramTypes[offset] &&
+          ConstList.class == paramTypes[offset + 1];
     }
 
     /**

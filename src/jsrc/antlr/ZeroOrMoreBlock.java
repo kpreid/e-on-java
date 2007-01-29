@@ -9,11 +9,11 @@ package antlr;
 
 class ZeroOrMoreBlock extends BlockWithImpliedExitPath {
 
-    public ZeroOrMoreBlock(Grammar g) {
+    ZeroOrMoreBlock(Grammar g) {
         super(g);
     }
 
-    public ZeroOrMoreBlock(Grammar g, Token start) {
+    ZeroOrMoreBlock(Grammar g, Token start) {
         super(g, start);
     }
 

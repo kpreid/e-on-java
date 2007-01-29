@@ -13,7 +13,7 @@ class StringLiteralElement extends GrammarAtom {
     protected String processedAtomText;
 
 
-    public StringLiteralElement(Grammar g, Token t, int autoGenType) {
+    StringLiteralElement(Grammar g, Token t, int autoGenType) {
         super(g, t, autoGenType);
         if (!(g instanceof LexerGrammar)) {
             // lexer does not have token types for string literals
@@ -35,7 +35,7 @@ class StringLiteralElement extends GrammarAtom {
         processedAtomText = new String();
         for (int i = 1; i < atomText.length() - 1; i++) {
             char c = atomText.charAt(i);
-            if (c == '\\') {
+            if ('\\' == c) {
                 if (i + 1 < atomText.length() - 1) {
                     i++;
                     c = atomText.charAt(i);

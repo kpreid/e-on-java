@@ -11,5 +11,5 @@ import antlr.collections.AST;
 
 public interface ASTVisitor {
 
-    public void visit(AST node);
+    void visit(AST node);
 }

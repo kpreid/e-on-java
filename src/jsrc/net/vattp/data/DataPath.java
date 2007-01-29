@@ -311,9 +311,6 @@ class DataPath implements MsgHandler, TickReactor {
      * @param outgoingSuspendID        Is the Suspend ID we are to send to the
      *                                 remote vat for resuming a connection, or
      *                                 null for a new connection.
-     * @param macKey                   is the key used for message
-     *                                 authentication for resume, or null for a
-     *                                 new connection.
      * @param protocolParms            is the AuthSecrets object which has the
      *                                 resume state for protocol versions an
      *                                 protocol parameters for resuming a
@@ -354,7 +351,7 @@ class DataPath implements MsgHandler, TickReactor {
         myRemoteAddr = remoteAddr;
         // Get the port number from the address
         int colon = remoteAddr.indexOf(':');
-        if (colon >= 0) {
+        if (0 <= colon) {
             myRemotePortNumber =
               Integer.parseInt(remoteAddr.substring(colon + 1));
         }
@@ -694,7 +691,7 @@ class DataPath implements MsgHandler, TickReactor {
             return;
         }
         int msgType = message[0] & 0xff;
-        if (msgType <= Msg.HIGH_MSG_TYPE) {
+        if (Msg.HIGH_MSG_TYPE >= msgType) {
             MsgHandler handler = myMsgHandlers[msgType];
             if (null != handler) {
                 if (Trace.comm.debug && Trace.ON) {
@@ -733,7 +730,7 @@ class DataPath implements MsgHandler, TickReactor {
      */
     public void run(long tick) {
         long now = System.currentTimeMillis();
-        if ((now - lastNetActivity) > Msg.PING_SENDTIME) {
+        if (Msg.PING_SENDTIME < (now - lastNetActivity)) {
             if (0 == timePingSent && null != myWriter) {
                 enqueue(thePingMsg);    //Send a ping
                 if (Trace.comm.event && Trace.ON) {
@@ -741,13 +738,13 @@ class DataPath implements MsgHandler, TickReactor {
                 }
                 timePingSent = System.currentTimeMillis();
             } else {
-                if ((now - timePingSent) > Msg.PING_TIMEOUT) {
+                if (Msg.PING_TIMEOUT < (now - timePingSent)) {
                     if (null != myWriter) {
                         shutDownPath();
                         if (Trace.comm.usage && Trace.ON) {
                             Trace.comm.usagem("Connection timeout " + this);
                         }
-                    } else if ((now - timePingSent) > (2 * Msg.PING_TIMEOUT)) {
+                    } else if ((2 * Msg.PING_TIMEOUT) < (now - timePingSent)) {
                         if (null != myClock) {
                             Trace.comm.errorm("Shutdown timeout " + this);
                             Exception reason =
@@ -825,7 +822,7 @@ class DataPath implements MsgHandler, TickReactor {
               .debugm("registerMsgHandler=" + msgType + "(" + handler +
                 ") on " + this);
         }
-        T.require(msgType > 0 || msgType <= Msg.HIGH_MSG_TYPE,
+        T.require(0 < msgType || Msg.HIGH_MSG_TYPE >= msgType,
                   "msgType=" + msgType,
                   " out of range (1 .. " + Msg.HIGH_MSG_TYPE,
                   ")");
@@ -1055,7 +1052,7 @@ class DataPath implements MsgHandler, TickReactor {
               .debugm("unRegisterMsgHandler=" + msgType + "(" + handler +
                 ") on " + this);
         }
-        if (msgType <= 0 || msgType > Msg.HIGH_MSG_TYPE) {
+        if (0 >= msgType || Msg.HIGH_MSG_TYPE < msgType) {
             Trace.comm
               .errorm("msgType=" + msgType + " out of range (1 .. " + Msg
                 .HIGH_MSG_TYPE);

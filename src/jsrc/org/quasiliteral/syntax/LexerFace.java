@@ -18,12 +18,12 @@ public interface LexerFace extends PassByProxy {
     /**
      *
      */
-    static public final char EOFCHAR = '\0';
+    char EOFCHAR = '\0';
 
     /**
      * Not provided for us by byaccj
      */
-    static public final short EOFTOK = 0;
+    short EOFTOK = 0;
 
     /**
      * Does not affect the partial flag

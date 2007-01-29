@@ -37,5 +37,5 @@ public interface NewConnectionReactor {
      *
      * @param connection is the new VatTPConnection object.
      */
-    public void reactToNewConnection(VatTPConnection connection);
+    void reactToNewConnection(VatTPConnection connection);
 }

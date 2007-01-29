@@ -3,7 +3,7 @@ package antlr.debug;
 public interface MessageListener extends ListenerBase {
 
 
-    public void reportError(MessageEvent e);
+    void reportError(MessageEvent e);
 
-    public void reportWarning(MessageEvent e);
+    void reportWarning(MessageEvent e);
 }

@@ -35,7 +35,7 @@ public class EPainter extends JPanel {
      */
     static public interface IPaint {
 
-        public void paintComponent(Graphics g);
+        void paintComponent(Graphics g);
     }
 
     private final IPaint mySelf;

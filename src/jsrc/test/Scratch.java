@@ -8,6 +8,9 @@ package test;
  */
 public class Scratch {
 
+    private Scratch() {
+    }
+
     static public void main(String[] args) {
 
         double d;

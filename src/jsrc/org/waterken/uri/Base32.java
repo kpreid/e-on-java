@@ -26,7 +26,7 @@ public final class Base32 {
         for (int i = 0; i != b.length;) {
             buffer <<= 8;
             buffer |= b[i] & 0x000000FF;
-            if (++i % 5 == 0) {
+            if (0 == ++i % 5) {
                 r.append(_encode(((int)(buffer >>> 35)) & 0x1F));
                 r.append(_encode(((int)(buffer >>> 30)) & 0x1F));
                 r.append(_encode(((int)(buffer >>> 25)) & 0x1F));
@@ -76,6 +76,6 @@ public final class Base32 {
     }
 
     private static char _encode(final int v) {
-        return (char)(v < 26 ? v + 'a' : v - 26 + '2');
+        return (char)(26 > v ? v + 'a' : v - 26 + '2');
     }
 }

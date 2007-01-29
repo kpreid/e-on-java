@@ -23,13 +23,13 @@ class CppBlockFinishingInfo {
     boolean needAnErrorClause;
 
 
-    public CppBlockFinishingInfo() {
+    CppBlockFinishingInfo() {
         postscript = null;
         generatedSwitch = false;
         needAnErrorClause = true;
     }
 
-    public CppBlockFinishingInfo(String ps,
+    CppBlockFinishingInfo(String ps,
                                  boolean genS,
                                  boolean generatedAnIf,
                                  boolean n) {

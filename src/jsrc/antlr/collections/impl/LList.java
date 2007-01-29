@@ -39,7 +39,7 @@ public class LList implements List, Stack {
      */
     public void append(Object o) {
         LLCell n = new LLCell(o);
-        if (length == 0) {
+        if (0 == length) {
             head = tail = n;
             length = 1;
         } else {

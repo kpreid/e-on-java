@@ -86,35 +86,35 @@ public class BigIntegerSugar {
      * Used in the expansion of E's ">" operator
      */
     static public boolean aboveZero(BigInteger self) {
-        return self.signum() > 0;
+        return 0 < self.signum();
     }
 
     /**
      * Used in the expansion of E's ">=" operator
      */
     static public boolean atLeastZero(BigInteger self) {
-        return self.signum() >= 0;
+        return 0 <= self.signum();
     }
 
     /**
      * Used in the expansion of E's "<=" operator
      */
     static public boolean atMostZero(BigInteger self) {
-        return self.signum() <= 0;
+        return 0 >= self.signum();
     }
 
     /**
      * Used in the expansion of E's "<" operator
      */
     static public boolean belowZero(BigInteger self) {
-        return self.signum() < 0;
+        return 0 > self.signum();
     }
 
     /**
      * Used for arithmetic equality
      */
     static public boolean isZero(BigInteger self) {
-        return self.signum() == 0;
+        return 0 == self.signum();
     }
 
     /**
@@ -184,7 +184,7 @@ public class BigIntegerSugar {
                                            o.doubleValue());
         } else {
             BigInteger numerator = self;
-            if ((numerator.signum() < 0) != (optOther.signum() < 0)) {
+            if ((0 > numerator.signum()) != (0 > optOther.signum())) {
                 /*
                 * Then the mathematical result is negative, and the two
                 * have opposite signs. Since we don't care when arg is
@@ -285,7 +285,7 @@ public class BigIntegerSugar {
      *         encoding.
      */
     static public String toString64(BigInteger self) {
-        if (self.signum() < 0) {
+        if (0 > self.signum()) {
             return "-" + toString64(self.negate());
         }
         //the base case is non-negative
@@ -332,7 +332,7 @@ public class BigIntegerSugar {
      *      size="-1"><sup>TM</sup></font> Enc base32 Encoding</a>
      */
     static public String toYURL32(BigInteger self) {
-        if (self.signum() < 0) {
+        if (0 > self.signum()) {
             return "-" + toYURL32(self.negate());
         }
         //the base case is non-negative
@@ -366,10 +366,10 @@ public class BigIntegerSugar {
      * @return
      */
     static public byte[] toBase2ByteArray(BigInteger self) {
-        T.require(self.signum() >= 0, "Must be non-negative: ", self);
+        T.require(0 <= self.signum(), "Must be non-negative: ", self);
         byte[] result = self.toByteArray();
         int numBytes = result.length;
-        if (numBytes >= 2 && 0 == result[0]) {
+        if (2 <= numBytes && 0 == result[0]) {
             //In this case, the first byte is an artifact of toByteArray()
             // returning two's complement rather than magnitude, so we remove
             // it.
@@ -531,7 +531,7 @@ public class BigIntegerSugar {
             BigInteger result = self.remainder(optOther);
             int otherSig = optOther.signum();
             int resultSig = result.signum();
-            if (((otherSig < 0) != (resultSig < 0)) && resultSig != 0) {
+            if (((0 > otherSig) != (0 > resultSig)) && 0 != resultSig) {
                 return result.add(optOther);
             }
             return result;

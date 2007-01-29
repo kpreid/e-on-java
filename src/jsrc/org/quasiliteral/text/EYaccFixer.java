@@ -44,6 +44,9 @@ public class EYaccFixer {
         "final static short yytable[] = {@{1}};\n" +
         "final static short yycheck[] = {@{2}};\n" + "@{3}int yyparse()@{4}"));
 
+    private EYaccFixer() {
+    }
+
     static private ValueMaker getParseQExpr(String rPath) {
         return QParser.valueMaker(Twine.fromString(
           "// Fixed by EYaccFixer to meet jvm size limits\n" + "${0}\n\n" +
@@ -102,7 +105,7 @@ public class EYaccFixer {
                 num = num * 10 + Character.digit(numbers.charAt(i), 10);
                 i++;
             }
-            if (num > Short.MAX_VALUE || num < 0) {
+            if (Short.MAX_VALUE < num || 0 > num) {
                 throw new ArithmeticException("Must be a positive short");
             }
             result.push(new Short((short)num));
@@ -117,7 +120,7 @@ public class EYaccFixer {
      *
      */
     static public void main(String[] args) throws IOException {
-        if (args.length != 3) {
+        if (3 != args.length) {
             System.err.println("usage: EYaccFixer src rRootDir rPath");
             System.exit(-1);
         }

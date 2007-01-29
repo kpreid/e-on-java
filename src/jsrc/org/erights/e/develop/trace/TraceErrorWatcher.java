@@ -40,10 +40,10 @@ public interface TraceErrorWatcher {
      * Notify a user that a fatal error has happened. Tell her how to report
      * the bug. Does not return.
      */
-    public void notifyFatal();
+    void notifyFatal();
 
     /**
      * If the user wants to hear about nonfatal bugs, notify her. Does return.
      */
-    public void notifyOptional();
+    void notifyOptional();
 }

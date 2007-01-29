@@ -12,6 +12,9 @@ import java.util.Collection;
  */
 public class CollectionSugar {
 
+    private CollectionSugar() {
+    }
+
     static public void iterate(Collection self, AssocFunc func) {
         IteratorSugar.iterate(self.iterator(), func);
     }

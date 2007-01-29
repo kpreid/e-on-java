@@ -83,7 +83,7 @@ public class CapSlang2JVisitor implements ETreeVisitor {
 
     private void runAll(ENode[] eNodes, String sep) {
         int len = eNodes.length;
-        if (len >= 1) {
+        if (1 <= len) {
             run(eNodes[0]);
             for (int i = 1; i < len; i++) {
                 run(sep, eNodes[i]);
@@ -264,7 +264,7 @@ public class CapSlang2JVisitor implements ETreeVisitor {
         run("\npublic class ");
         //XXX last part of qualifiedName
         int numAuditors = auditors.length;
-        if (numAuditors >= 1) {
+        if (1 <= numAuditors) {
             run(" implements ");
             typeExpr(auditors[0]);
             for (int i = 1; i < numAuditors; i++) {

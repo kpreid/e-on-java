@@ -33,7 +33,7 @@ public interface ExceptionNoticer {
      * @param msg The message that accompanied the exception report
      * @param t   The actual exception itself.
      */
-    public void noticeReportedException(String msg, Throwable t);
+    void noticeReportedException(String msg, Throwable t);
 
     /**
      * Notification of an uncaught exception.
@@ -41,5 +41,5 @@ public interface ExceptionNoticer {
      * @param msg Message describing the circumstances
      * @param t   The actual exception itself.
      */
-    public void noticeUncaughtException(String msg, Throwable t);
+    void noticeUncaughtException(String msg, Throwable t);
 }

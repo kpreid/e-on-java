@@ -26,7 +26,7 @@ public class NestedError extends Error implements NestedThrowable {
 
     static private final long serialVersionUID = -8224390403639236240L;
 
-    private Throwable myContainedThrowable;
+    private final Throwable myContainedThrowable;
 
     /**
      *

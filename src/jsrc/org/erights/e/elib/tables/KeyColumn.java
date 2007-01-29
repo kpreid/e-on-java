@@ -87,7 +87,7 @@ abstract class KeyColumn extends Column {
      * Little sorted array of primes for use to size key columns. The elements
      * grow exponentially at somewhat less than 2x.
      */
-    static private final int possibleSizes[] = {17,
+    static private final int[] possibleSizes = {17,
       23,
       37,
       53,
@@ -184,15 +184,15 @@ abstract class KeyColumn extends Column {
      */
     static KeyColumn make(Class memberType, int capacity) {
 
-        if (memberType == String.class) {
+        if (String.class == memberType) {
             //broken out bootstrap case
             return new EqualityKeyColumn(memberType, capacity);
 
-        } else if (memberType == Class.class) {
+        } else if (Class.class == memberType) {
             //broken out bootstrap case
             return new IdentityKeyColumn(memberType, capacity);
 
-        } else if (memberType == Object.class) {
+        } else if (Object.class == memberType) {
             //broken out bootstrap case
             return new SamenessKeyColumn(memberType, capacity);
 
@@ -253,7 +253,7 @@ abstract class KeyColumn extends Column {
      */
     boolean isPosTaken(int pos) {
         //XXX is the >=0 test necessary?
-        return (pos >= 0 && myPos2Rank[pos] >= 0);
+        return (0 <= pos && 0 <= myPos2Rank[pos]);
     }
 
     /**
@@ -319,7 +319,7 @@ abstract class KeyColumn extends Column {
      */
     int occupy(int pos, Object key) {
         myKeys[pos] = key;
-        if (myPos2Rank[pos] == KEY_DELETED) {
+        if (KEY_DELETED == myPos2Rank[pos]) {
             myNumDeleted--;
         }
         myPos2Rank[pos] = myNumTaken;
@@ -332,12 +332,12 @@ abstract class KeyColumn extends Column {
      * cause pos not to contain a valid key
      */
     void vacate(int pos) {
-        if (pos < 0) {
+        if (0 > pos) {
             //XXX is this test necessary?
             return;
         }
         int rank = myPos2Rank[pos];
-        if (rank < 0) {
+        if (0 > rank) {
             return;
         }
         myKeys[pos] = null;

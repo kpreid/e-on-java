@@ -130,7 +130,7 @@ public abstract class Parser {
      * Consume tokens until one matches the given token
      */
     public void consumeUntil(int tokenType) throws TokenStreamException {
-        while (LA(1) != Token.EOF_TYPE && LA(1) != tokenType) {
+        while (Token.EOF_TYPE != LA(1) && LA(1) != tokenType) {
             consume();
         }
     }
@@ -139,7 +139,7 @@ public abstract class Parser {
      * Consume tokens until one matches the given token set
      */
     public void consumeUntil(BitSet set) throws TokenStreamException {
-        while (LA(1) != Token.EOF_TYPE && !set.member(LA(1))) {
+        while (Token.EOF_TYPE != LA(1) && !set.member(LA(1))) {
             consume();
         }
     }
@@ -415,14 +415,14 @@ public abstract class Parser {
         traceIndent();
         System.out
           .println("> " + rname + "; LA(1)==" + LT(1).getText() +
-            ((inputState.guessing > 0) ? " [guessing]" : ""));
+            ((0 < inputState.guessing) ? " [guessing]" : ""));
     }
 
     public void traceOut(String rname) throws TokenStreamException {
         traceIndent();
         System.out
           .println("< " + rname + "; LA(1)==" + LT(1).getText() +
-            ((inputState.guessing > 0) ? " [guessing]" : ""));
+            ((0 < inputState.guessing) ? " [guessing]" : ""));
         traceDepth -= 1;
     }
 }

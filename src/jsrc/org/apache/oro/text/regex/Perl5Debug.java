@@ -99,14 +99,15 @@ public final class Perl5Debug {
 
     static public String printProgram(Perl5Pattern regexp) {
         StringBuffer buffer;
-        char operator = OpCode._OPEN, prog[];
+        char operator = OpCode._OPEN;
+        char[] prog;
         int offset, next;
 
         prog = regexp._program;
         offset = 1;
         buffer = new StringBuffer();
 
-        while (operator != OpCode._END) {
+        while (OpCode._END != operator) {
             operator = prog[offset];
             buffer.append(offset);
             _printOperator(prog, offset, buffer);
@@ -118,14 +119,14 @@ public final class Perl5Debug {
 
             offset += 2;
 
-            if (operator == OpCode._ANYOF) {
+            if (OpCode._ANYOF == operator) {
                 offset += 16;
-            } else if (operator == OpCode._EXACTLY) {
+            } else if (OpCode._EXACTLY == operator) {
                 ++offset;
                 buffer.append(" <");
 
                 //while(prog[offset] != '0')
-                while (prog[offset] != CharStringPointer._END_OF_STRING) {
+                while (CharStringPointer._END_OF_STRING != prog[offset]) {
                     //while(prog[offset] != 0 &&
                     //  prog[offset] != CharStringPointer._END_OF_STRING) {
                     buffer.append(prog[offset]);
@@ -142,18 +143,18 @@ public final class Perl5Debug {
         if (regexp._startString != null) {
             buffer.append("start `" + new String(regexp._startString) + "' ");
         }
-        if (regexp._startClassOffset != OpCode._NULL_OFFSET) {
+        if (OpCode._NULL_OFFSET != regexp._startClassOffset) {
             buffer.append("stclass `");
             _printOperator(prog, regexp._startClassOffset, buffer);
             buffer.append("' ");
         }
-        if ((regexp._anchor & Perl5Pattern._OPT_ANCH) != 0) {
+        if (0 != (regexp._anchor & Perl5Pattern._OPT_ANCH)) {
             buffer.append("anchored ");
         }
-        if ((regexp._anchor & Perl5Pattern._OPT_SKIP) != 0) {
+        if (0 != (regexp._anchor & Perl5Pattern._OPT_SKIP)) {
             buffer.append("plus ");
         }
-        if ((regexp._anchor & Perl5Pattern._OPT_IMPLICIT) != 0) {
+        if (0 != (regexp._anchor & Perl5Pattern._OPT_IMPLICIT)) {
             buffer.append("implicit ");
         }
         if (regexp._mustString != null) {

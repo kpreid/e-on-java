@@ -230,7 +230,7 @@ public class DiagnosticCodeGenerator extends CodeGenerator {
         ids = grammar.rules.elements();
         while (ids.hasMoreElements()) {
             RuleSymbol rs = (RuleSymbol)ids.nextElement();
-            if (!rs.id.equals("mnextToken")) {
+            if (!"mnextToken".equals(rs.id)) {
                 genRule(rs);
             }
         }
@@ -374,7 +374,7 @@ public class DiagnosticCodeGenerator extends CodeGenerator {
         } else {
             // Warn about return value if any, but not inside syntactic predicate
             if (!(grammar instanceof LexerGrammar) &&
-              syntacticPredLevel == 0 && rs.block.returnAction != null) {
+              0 == syntacticPredLevel && rs.block.returnAction != null) {
                 println(
                   "Warning: Rule '" + rr.targetRule + "' returns a value");
             }
@@ -566,7 +566,7 @@ public class DiagnosticCodeGenerator extends CodeGenerator {
      * generated.
      */
     public void genCommonBlock(AlternativeBlock blk) {
-        boolean singleAlt = (blk.alternatives.size() == 1);
+        boolean singleAlt = (1 == blk.alternatives.size());
 
         println("Start of an alternative block.");
         tabs++;
@@ -595,7 +595,7 @@ public class DiagnosticCodeGenerator extends CodeGenerator {
 
             // Print lookahead set for alternate
             println("");
-            if (i != 0) {
+            if (0 != i) {
                 print("Otherwise, ");
             } else {
                 print("");
@@ -687,7 +687,7 @@ public class DiagnosticCodeGenerator extends CodeGenerator {
             return;
         }
         int depth = alt.lookaheadDepth;
-        if (depth == GrammarAnalyzer.NONDETERMINISTIC) {
+        if (GrammarAnalyzer.NONDETERMINISTIC == depth) {
             // if the decision is nondeterministic, do the best we can: LL(k)
             // any predicates that are around will be generated later.
             depth = grammar.maxk;
@@ -708,7 +708,7 @@ public class DiagnosticCodeGenerator extends CodeGenerator {
         int depth = 0;
         for (int i = 0; i < blk.alternatives.size(); i++) {
             Alternative alt = blk.getAlternativeAt(i);
-            if (alt.lookaheadDepth == GrammarAnalyzer.NONDETERMINISTIC) {
+            if (GrammarAnalyzer.NONDETERMINISTIC == alt.lookaheadDepth) {
                 depth = grammar.maxk;
                 break;
             } else if (depth < alt.lookaheadDepth) {
@@ -785,7 +785,7 @@ public class DiagnosticCodeGenerator extends CodeGenerator {
         }
         tabs++;
 
-        if (s.access.length() != 0) {
+        if (0 != s.access.length()) {
             println("Access: " + s.access);
         }
 
@@ -835,7 +835,7 @@ public class DiagnosticCodeGenerator extends CodeGenerator {
             println("You specified error-handler(s) for this rule:");
             tabs++;
             for (int i = 0; i < unlabeledUserSpec.handlers.size(); i++) {
-                if (i != 0) {
+                if (0 != i) {
                     println("");
                 }
 
@@ -976,7 +976,7 @@ public class DiagnosticCodeGenerator extends CodeGenerator {
 
         int[] elems = lookahead.fset.toArray();
 
-        if (depth != 1) {
+        if (1 != depth) {
             print("k==" + k + ": {");
         } else {
             print("{ ");

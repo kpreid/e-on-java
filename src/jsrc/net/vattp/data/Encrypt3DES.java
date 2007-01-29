@@ -75,7 +75,7 @@ class Encrypt3DES extends MsgTransformer {
 
 
     byte[] getSuspendInfo() {
-        if (Trace.comm.debug & Trace.ON) {
+        if (Trace.comm.debug && Trace.ON) {
             Trace.comm.debugm("Returning IV=" + eightToHex(myIV, 0));
         }
         if (myIsStandardCBC) {
@@ -114,13 +114,13 @@ class Encrypt3DES extends MsgTransformer {
 
 
     private void xor(byte[] inOut, int offset, byte[] in) {
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; 8 > i; i++) {
             inOut[offset + i] ^= in[i];
         }
     }
 
     private void increment(byte[] value) {
-        for (int i = value.length - 1; i >= 0; i--) {
+        for (int i = value.length - 1; 0 <= i; i--) {
             byte v = (value[i] += 1);
             if (0 != v) {
                 break;

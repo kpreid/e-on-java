@@ -19,4 +19,7 @@ public class PersistentKeyHolder {
     static public final Unsealer THE_UNSEALER = (Unsealer)THE_PAIR[1];
 
     static public final Brand THE_BRAND = THE_SEALER.getBrand();
+
+    private PersistentKeyHolder() {
+    }
 }

@@ -40,7 +40,7 @@ class VarSetterNode extends JavaMemberNode {
     /**
      *
      */
-    public VarSetterNode(Field field, boolean propFlag) {
+    VarSetterNode(Field field, boolean propFlag) {
         super(field);
         if (Modifier.isFinal(field.getModifiers())) {
             throw new Error("internal: not a settable instance variable");

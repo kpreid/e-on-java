@@ -81,13 +81,13 @@ public class TokenStreamRewriteEngine implements TokenStream {
 
     static class InsertBeforeOp extends RewriteOperation {
 
-        public InsertBeforeOp(int index, String text) {
+        InsertBeforeOp(int index, String text) {
             super(index, text);
         }
 
         public int execute(StringBuffer buf) {
             buf.append(text);
-            return this.index;
+            return index;
         }
     }
 
@@ -95,7 +95,7 @@ public class TokenStreamRewriteEngine implements TokenStream {
 
         protected int lastIndex;
 
-        public ReplaceOp(int from, int to, String text) {
+        ReplaceOp(int from, int to, String text) {
             super(from, text);
             lastIndex = to;
         }
@@ -110,7 +110,7 @@ public class TokenStreamRewriteEngine implements TokenStream {
 
     static class DeleteOp extends ReplaceOp {
 
-        public DeleteOp(int from, int to) {
+        DeleteOp(int from, int to) {
             super(from, to, null);
         }
     }
@@ -168,7 +168,7 @@ public class TokenStreamRewriteEngine implements TokenStream {
             t = (TokenWithIndex)stream.nextToken();
             if (t != null) {
                 t.setIndex(index);  // what is t's index in list?
-                if (t.getType() != Token.EOF_TYPE) {
+                if (Token.EOF_TYPE != t.getType()) {
                     tokens.add(t);  // track all tokens except EOF
                 }
                 index++;                        // move to next position
@@ -238,7 +238,7 @@ public class TokenStreamRewriteEngine implements TokenStream {
             }
         };
         int pos = Collections.binarySearch(rewrites, op, comparator);
-        if (pos < 0) {
+        if (0 > pos) {
             rewrites.add(-pos - 1, op);
         }
     }
@@ -349,7 +349,7 @@ public class TokenStreamRewriteEngine implements TokenStream {
     public String toOriginalString(int start, int end) {
         StringBuffer buf = new StringBuffer();
         for (int i = start;
-             i >= MIN_TOKEN_INDEX && i <= end && i < tokens.size();
+             MIN_TOKEN_INDEX <= i && i <= end && i < tokens.size();
              i++) {
             buf.append(getToken(i).getText());
         }
@@ -379,7 +379,7 @@ public class TokenStreamRewriteEngine implements TokenStream {
         int rewriteOpIndex = 0;
 
         int tokenCursor = start;
-        while (tokenCursor >= MIN_TOKEN_INDEX && tokenCursor <= end &&
+        while (MIN_TOKEN_INDEX <= tokenCursor && tokenCursor <= end &&
           tokenCursor < tokens.size()) {
             if (rewriteOpIndex < rewrites.size()) {
                 RewriteOperation op =
@@ -419,7 +419,7 @@ public class TokenStreamRewriteEngine implements TokenStream {
     public String toDebugString(int start, int end) {
         StringBuffer buf = new StringBuffer();
         for (int i = start;
-             i >= MIN_TOKEN_INDEX && i <= end && i < tokens.size();
+             MIN_TOKEN_INDEX <= i && i <= end && i < tokens.size();
              i++) {
             buf.append(getToken(i));
         }

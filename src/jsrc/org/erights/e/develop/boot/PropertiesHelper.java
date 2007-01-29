@@ -19,6 +19,9 @@ public class PropertiesHelper {
         "Given a propertyName, its value is printed out literally.\n" +
         "If absent, all key-value pairs are printed out escaped.";
 
+    private PropertiesHelper() {
+    }
+
     /**
      * Flattens 'self' into a single Properties containing all the associations
      * in 'self'
@@ -39,7 +42,7 @@ public class PropertiesHelper {
      */
     static public void main(String[] args) throws IOException {
         Properties sysProps = System.getProperties();
-        if (args.length == 0) {
+        if (0 == args.length) {
             Properties flatSys = flatten(sysProps);
             flatSys.store(System.out, null);
             return;

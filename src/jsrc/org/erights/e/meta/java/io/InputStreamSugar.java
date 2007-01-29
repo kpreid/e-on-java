@@ -52,7 +52,7 @@ public class InputStreamSugar {
         byte[] buf = new byte[BUF_SIZE];
         try {
             int len;
-            while ((len = self.read(buf)) >= 0) {
+            while (0 <= (len = self.read(buf))) {
                 sha.update(buf, 0, len);
             }
         } finally {

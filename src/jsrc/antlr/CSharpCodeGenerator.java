@@ -315,7 +315,7 @@ public class CSharpCodeGenerator extends CodeGenerator {
 
         boolean oldsaveText = saveText;
         saveText =
-          saveText && atom.getAutoGenType() == GrammarElement.AUTO_GEN_NONE;
+          saveText && GrammarElement.AUTO_GEN_NONE == atom.getAutoGenType();
         genMatch(atom);
         saveText = oldsaveText;
     }
@@ -326,11 +326,11 @@ public class CSharpCodeGenerator extends CodeGenerator {
      * @param blk The character-range reference to generate
      */
     public void gen(CharRangeElement r) {
-        if (r.getLabel() != null && syntacticPredLevel == 0) {
+        if (r.getLabel() != null && 0 == syntacticPredLevel) {
             println(r.getLabel() + " = " + lt1Value + ";");
         }
         boolean flag = (grammar instanceof LexerGrammar &&
-          (!saveText || (r.getAutoGenType() == GrammarElement.AUTO_GEN_BANG)));
+          (!saveText || (GrammarElement.AUTO_GEN_BANG == r.getAutoGenType())));
         if (flag) {
             println("_saveIndex = text.Length;");
         }
@@ -420,7 +420,7 @@ public class CSharpCodeGenerator extends CodeGenerator {
             generateNonGreedyExitPath = true;
             nonGreedyExitDepth = blk.exitLookaheadDepth;
         } else if (!blk.greedy &&
-          blk.exitLookaheadDepth == LLkGrammarAnalyzer.NONDETERMINISTIC) {
+          LLkGrammarAnalyzer.NONDETERMINISTIC == blk.exitLookaheadDepth) {
             generateNonGreedyExitPath = true;
         }
 
@@ -513,14 +513,14 @@ public class CSharpCodeGenerator extends CodeGenerator {
         // AST value for labeled rule refs in tree walker.
         // This is not AST construction;  it is just the input tree node value.
         if (grammar instanceof TreeWalkerGrammar && rr.getLabel() != null &&
-          syntacticPredLevel == 0) {
+          0 == syntacticPredLevel) {
             println(
               rr.getLabel() + " = _t==ASTNULL ? null : " + lt1Value + ";");
         }
 
         // if in lexer and ! on rule ref or alt or rule, save buffer index to kill later
         if (grammar instanceof LexerGrammar &&
-          (!saveText || rr.getAutoGenType() == GrammarElement.AUTO_GEN_BANG)) {
+          (!saveText || GrammarElement.AUTO_GEN_BANG == rr.getAutoGenType())) {
             declareSaveIndexVariableIfNeeded();
             println("_saveIndex = text.Length;");
         }
@@ -540,7 +540,7 @@ public class CSharpCodeGenerator extends CodeGenerator {
         } else {
             // Warn about return value if any, but not inside syntactic predicate
             if (!(grammar instanceof LexerGrammar) &&
-              syntacticPredLevel == 0 && rs.block.returnAction != null) {
+              0 == syntacticPredLevel && rs.block.returnAction != null) {
                 antlrTool.warning(
                   "Rule '" + rr.targetRule + "' returns a value",
                   grammar.getFilename(),
@@ -554,16 +554,16 @@ public class CSharpCodeGenerator extends CodeGenerator {
 
         // if in lexer and ! on element or alt or rule, save buffer index to kill later
         if (grammar instanceof LexerGrammar &&
-          (!saveText || rr.getAutoGenType() == GrammarElement.AUTO_GEN_BANG)) {
+          (!saveText || GrammarElement.AUTO_GEN_BANG == rr.getAutoGenType())) {
             declareSaveIndexVariableIfNeeded();
             println("text.Length = _saveIndex;");
         }
 
         // if not in a syntactic predicate
-        if (syntacticPredLevel == 0) {
+        if (0 == syntacticPredLevel) {
             boolean doNoGuessTest = (grammar.hasSyntacticPredicate && (
               grammar.buildAST && rr.getLabel() != null || (genAST &&
-                rr.getAutoGenType() == GrammarElement.AUTO_GEN_NONE)));
+                GrammarElement.AUTO_GEN_NONE == rr.getAutoGenType())));
             if (doNoGuessTest) {
                 println("if (0 == inputState.guessing)");
                 println("{");
@@ -619,7 +619,7 @@ public class CSharpCodeGenerator extends CodeGenerator {
         }
 
         // Variable declarations for labeled elements
-        if (atom.getLabel() != null && syntacticPredLevel == 0) {
+        if (atom.getLabel() != null && 0 == syntacticPredLevel) {
             println(atom.getLabel() + " = " + lt1Value + ";");
         }
 
@@ -629,7 +629,7 @@ public class CSharpCodeGenerator extends CodeGenerator {
         // is there a bang on the literal?
         boolean oldsaveText = saveText;
         saveText =
-          saveText && atom.getAutoGenType() == GrammarElement.AUTO_GEN_NONE;
+          saveText && GrammarElement.AUTO_GEN_NONE == atom.getAutoGenType();
 
         // matching
         genMatch(atom);
@@ -649,7 +649,7 @@ public class CSharpCodeGenerator extends CodeGenerator {
      */
     public void gen(TokenRangeElement r) {
         genErrorTryForElement(r);
-        if (r.getLabel() != null && syntacticPredLevel == 0) {
+        if (r.getLabel() != null && 0 == syntacticPredLevel) {
             println(r.getLabel() + " = " + lt1Value + ";");
         }
 
@@ -676,7 +676,7 @@ public class CSharpCodeGenerator extends CodeGenerator {
         }
         genErrorTryForElement(atom);
         // Assign Token value to token label variable
-        if (atom.getLabel() != null && syntacticPredLevel == 0) {
+        if (atom.getLabel() != null && 0 == syntacticPredLevel) {
             println(atom.getLabel() + " = " + lt1Value + ";");
         }
 
@@ -703,14 +703,14 @@ public class CSharpCodeGenerator extends CodeGenerator {
         }
 
 // check for invalid modifiers ! and ^ on tree element roots
-        if (t.root.getAutoGenType() == GrammarElement.AUTO_GEN_BANG) {
+        if (GrammarElement.AUTO_GEN_BANG == t.root.getAutoGenType()) {
             antlrTool.error("Suffixing a root node with '!' is not implemented",
                             grammar.getFilename(),
                             t.getLine(),
                             t.getColumn());
             t.root.setAutoGenType(GrammarElement.AUTO_GEN_NONE);
         }
-        if (t.root.getAutoGenType() == GrammarElement.AUTO_GEN_CARET) {
+        if (GrammarElement.AUTO_GEN_CARET == t.root.getAutoGenType()) {
             antlrTool.warning(
               "Suffixing a root node with '^' is redundant; already a root",
               grammar.getFilename(),
@@ -779,7 +779,7 @@ public class CSharpCodeGenerator extends CodeGenerator {
      */
     public void gen(WildcardElement wc) {
         // Variable assignment for labeled elements
-        if (wc.getLabel() != null && syntacticPredLevel == 0) {
+        if (wc.getLabel() != null && 0 == syntacticPredLevel) {
             println(wc.getLabel() + " = " + lt1Value + ";");
         }
 
@@ -790,13 +790,13 @@ public class CSharpCodeGenerator extends CodeGenerator {
             println("if (null == _t) throw new MismatchedTokenException();");
         } else if (grammar instanceof LexerGrammar) {
             if (grammar instanceof LexerGrammar && (!saveText ||
-              wc.getAutoGenType() == GrammarElement.AUTO_GEN_BANG)) {
+              GrammarElement.AUTO_GEN_BANG == wc.getAutoGenType())) {
                 declareSaveIndexVariableIfNeeded();
                 println("_saveIndex = text.Length;");
             }
             println("matchNot(EOF/*_CHAR*/);");
             if (grammar instanceof LexerGrammar && (!saveText ||
-              wc.getAutoGenType() == GrammarElement.AUTO_GEN_BANG)) {
+              GrammarElement.AUTO_GEN_BANG == wc.getAutoGenType())) {
                 declareSaveIndexVariableIfNeeded();
                 println("text.Length = _saveIndex;"); // kill text atom put in buffer
             }
@@ -863,7 +863,7 @@ public class CSharpCodeGenerator extends CodeGenerator {
             generateNonGreedyExitPath = true;
             nonGreedyExitDepth = blk.exitLookaheadDepth;
         } else if (!blk.greedy &&
-          blk.exitLookaheadDepth == LLkGrammarAnalyzer.NONDETERMINISTIC) {
+          LLkGrammarAnalyzer.NONDETERMINISTIC == blk.exitLookaheadDepth) {
             generateNonGreedyExitPath = true;
         }
         if (generateNonGreedyExitPath) {
@@ -1000,7 +1000,7 @@ public class CSharpCodeGenerator extends CodeGenerator {
         println("{");
         tabs++;
         int n = p.lengthInLongWords();
-        if (n < BITSET_OPTIMIZE_INIT_THRESHOLD) {
+        if (BITSET_OPTIMIZE_INIT_THRESHOLD > n) {
             println("long[] data = { " + p.toStringOfWords() + "};");
         } else {
             // will init manually, allocate space then set values
@@ -1074,8 +1074,8 @@ public class CSharpCodeGenerator extends CodeGenerator {
             if (howToFinish.needAnErrorClause && howToFinish.generatedSwitch &&
               !howToFinish.generatedAnIf && noViableAction != null) {
                 // Check to make sure that noViableAction is only a throw statement
-                if (noViableAction.indexOf("throw") == 0 ||
-                  noViableAction.indexOf("goto") == 0) {
+                if (0 == noViableAction.indexOf("throw") ||
+                  0 == noViableAction.indexOf("goto")) {
                     // Remove the break statement since it isn't reachable with a throw exception
                     int endOfBreak =
                       howToFinish.postscript.indexOf("break;") + 6;
@@ -1382,7 +1382,7 @@ public class CSharpCodeGenerator extends CodeGenerator {
         Enumeration keys = grammar.tokenManager.getTokenSymbolKeys();
         while (keys.hasMoreElements()) {
             String key = (String)keys.nextElement();
-            if (key.charAt(0) != '"') {
+            if ('"' != key.charAt(0)) {
                 continue;
             }
             TokenSymbol sym = grammar.tokenManager.getTokenSymbol(key);
@@ -1424,7 +1424,7 @@ public class CSharpCodeGenerator extends CodeGenerator {
         while (ids.hasMoreElements()) {
             RuleSymbol sym = (RuleSymbol)ids.nextElement();
             // Don't generate the synthetic rules
-            if (!sym.getId().equals("mnextToken")) {
+            if (!"mnextToken".equals(sym.getId())) {
                 genRule(sym, false, ruleNum++, grammar.tokenManager);
             }
             exitIfError();
@@ -1683,8 +1683,7 @@ public class CSharpCodeGenerator extends CodeGenerator {
             GrammarSymbol sym = (GrammarSymbol)ids.nextElement();
             if (sym instanceof RuleSymbol) {
                 RuleSymbol rs = (RuleSymbol)sym;
-                genRule(rs,
-                        rs.references.size() == 0,
+                genRule(rs, 0 == rs.references.size(),
                         ruleNum++,
                         grammar.tokenManager);
             }
@@ -1864,8 +1863,7 @@ public class CSharpCodeGenerator extends CodeGenerator {
             GrammarSymbol sym = (GrammarSymbol)ids.nextElement();
             if (sym instanceof RuleSymbol) {
                 RuleSymbol rs = (RuleSymbol)sym;
-                genRule(rs,
-                        rs.references.size() == 0,
+                genRule(rs, 0 == rs.references.size(),
                         ruleNum++,
                         grammar.tokenManager);
             }
@@ -1926,7 +1924,7 @@ public class CSharpCodeGenerator extends CodeGenerator {
         int j = 1;
         boolean startOfLine = true;
         for (int i = 0; i < elems.length; i++) {
-            if (j == 1) {
+            if (1 == j) {
                 print("");
             } else {
                 _print("  ");
@@ -1982,7 +1980,7 @@ public class CSharpCodeGenerator extends CodeGenerator {
             }
             Lookahead p = analyzer.look(1, blk);
             // Variable assignment for labeled elements
-            if (blk.getLabel() != null && syntacticPredLevel == 0) {
+            if (blk.getLabel() != null && 0 == syntacticPredLevel) {
                 println(blk.getLabel() + " = " + lt1Value + ";");
             }
 
@@ -2010,7 +2008,7 @@ public class CSharpCodeGenerator extends CodeGenerator {
         }
 
         // Special handling for single alt
-        if (blk.getAlternatives().size() == 1) {
+        if (1 == blk.getAlternatives().size()) {
             Alternative alt = blk.getAlternativeAt(0);
             // Generate a warning if there is a synPred for single alt.
             if (alt.synPred != null) {
@@ -2073,7 +2071,7 @@ public class CSharpCodeGenerator extends CodeGenerator {
                     continue;
                 }
                 Lookahead p = alt.cache[1];
-                if (p.fset.degree() == 0 && !p.containsEpsilon()) {
+                if (0 == p.fset.degree() && !p.containsEpsilon()) {
                     antlrTool.warning(
                       "Alternate omitted due to empty prediction set",
                       grammar.getFilename(),
@@ -2111,7 +2109,7 @@ public class CSharpCodeGenerator extends CodeGenerator {
         // by depth Note that alts whose lookahead is purely
         // end-of-token at k=1 end up as default or else clauses.
         int startDepth = (grammar instanceof LexerGrammar) ? grammar.maxk : 0;
-        for (int altDepth = startDepth; altDepth >= 0; altDepth--) {
+        for (int altDepth = startDepth; 0 <= altDepth; altDepth--) {
             if (DEBUG_CODE_GENERATOR) {
                 System.out.println("checking depth " + altDepth);
             }
@@ -2140,11 +2138,11 @@ public class CSharpCodeGenerator extends CodeGenerator {
                     // which is the max depth at which
                     // cache[depth]!=end-of-token
                     int effectiveDepth = alt.lookaheadDepth;
-                    if (effectiveDepth == GrammarAnalyzer.NONDETERMINISTIC) {
+                    if (GrammarAnalyzer.NONDETERMINISTIC == effectiveDepth) {
                         // use maximum lookahead
                         effectiveDepth = grammar.maxk;
                     }
-                    while (effectiveDepth >= 1 &&
+                    while (1 <= effectiveDepth &&
                       alt.cache[effectiveDepth].containsEpsilon()) {
                         effectiveDepth--;
                     }
@@ -2168,9 +2166,9 @@ public class CSharpCodeGenerator extends CodeGenerator {
 
                 // Was it a big unicode range that forced unsuitability
                 // for a case expression?
-                if (alt.cache[1].fset.degree() > caseSizeThreshold &&
+                if (caseSizeThreshold < alt.cache[1].fset.degree() &&
                   suitableForCaseExpression(alt)) {
-                    if (nIF == 0) {
+                    if (0 == nIF) {
                         println("if " + e);
                         println("{");
                     } else {
@@ -2183,7 +2181,7 @@ public class CSharpCodeGenerator extends CodeGenerator {
                     // predicate to help out.  if we have not
                     // generated a previous if, just put {...} around
                     // the end-of-token clause
-                    if (nIF == 0) {
+                    if (0 == nIF) {
                         println("{");
                     } else {
                         println("else {");
@@ -2219,7 +2217,7 @@ public class CSharpCodeGenerator extends CodeGenerator {
                     }
 
                     // Generate any syntactic predicates
-                    if (nIF > 0) {
+                    if (0 < nIF) {
                         if (alt.synPred != null) {
                             println("else {");
                             tabs++;
@@ -2283,22 +2281,22 @@ public class CSharpCodeGenerator extends CodeGenerator {
                 saveIndexCreateLevel = 0;
             }
             finishingInfo.generatedSwitch = true;
-            finishingInfo.generatedAnIf = nIF > 0;
+            finishingInfo.generatedAnIf = 0 < nIF;
             //return new CSharpBlockFinishingInfo(ps+"}",true,nIF>0); // close up switch statement
 
         } else {
             finishingInfo.postscript = ps;
             finishingInfo.generatedSwitch = false;
-            finishingInfo.generatedAnIf = nIF > 0;
+            finishingInfo.generatedAnIf = 0 < nIF;
             // return new CSharpBlockFinishingInfo(ps, false,nIF>0);
         }
         return finishingInfo;
     }
 
     private static boolean suitableForCaseExpression(Alternative a) {
-        return a.lookaheadDepth == 1 && a.semPred == null &&
+        return 1 == a.lookaheadDepth && a.semPred == null &&
           !a.cache[1].containsEpsilon() &&
-          a.cache[1].fset.degree() <= caseSizeThreshold;
+          caseSizeThreshold >= a.cache[1].fset.degree();
     }
 
     /**
@@ -2326,15 +2324,15 @@ public class CSharpCodeGenerator extends CodeGenerator {
             return;
         }
 
-        if (grammar.buildAST && syntacticPredLevel == 0) {
+        if (grammar.buildAST && 0 == syntacticPredLevel) {
             boolean needASTDecl = (genAST && (el.getLabel() != null ||
-              (el.getAutoGenType() != GrammarElement.AUTO_GEN_BANG)));
+              (GrammarElement.AUTO_GEN_BANG != el.getAutoGenType())));
 
             // RK: if we have a grammar element always generate the decl
             // since some guy can access it from an action and we can't
             // peek ahead (well not without making a mess).
             // I'd prefer taking this out.
-            if (el.getAutoGenType() != GrammarElement.AUTO_GEN_BANG &&
+            if (GrammarElement.AUTO_GEN_BANG != el.getAutoGenType() &&
               (el instanceof TokenRefElement)) {
                 needASTDecl = true;
             }
@@ -2631,7 +2629,7 @@ public class CSharpCodeGenerator extends CodeGenerator {
 
         // if in lexer and ! on element, save buffer index to kill later
         if (grammar instanceof LexerGrammar && (!saveText ||
-          atom.getAutoGenType() == GrammarElement.AUTO_GEN_BANG)) {
+          GrammarElement.AUTO_GEN_BANG == atom.getAutoGenType())) {
             declareSaveIndexVariableIfNeeded();
             println("_saveIndex = text.Length;");
         }
@@ -2640,7 +2638,7 @@ public class CSharpCodeGenerator extends CodeGenerator {
         _print(astArgs);
 
         // print out what to match
-        if (atom.atomText.equals("EOF")) {
+        if ("EOF".equals(atom.atomText)) {
             // horrible hack to handle EOF case
             _print("Token.EOF_TYPE");
         } else {
@@ -2649,7 +2647,7 @@ public class CSharpCodeGenerator extends CodeGenerator {
         _println(");");
 
         if (grammar instanceof LexerGrammar && (!saveText ||
-          atom.getAutoGenType() == GrammarElement.AUTO_GEN_BANG)) {
+          GrammarElement.AUTO_GEN_BANG == atom.getAutoGenType())) {
             declareSaveIndexVariableIfNeeded();
             println("text.Length = _saveIndex;");                // kill text atom put in buffer
         }
@@ -2684,7 +2682,7 @@ public class CSharpCodeGenerator extends CodeGenerator {
         boolean hasPublicRules = false;
         for (int i = 0; i < grammar.rules.size(); i++) {
             RuleSymbol rs = (RuleSymbol)grammar.rules.elementAt(i);
-            if (rs.isDefined() && rs.access.equals("public")) {
+            if (rs.isDefined() && "public".equals(rs.access)) {
                 hasPublicRules = true;
                 break;
             }
@@ -2770,7 +2768,7 @@ public class CSharpCodeGenerator extends CodeGenerator {
                         grammar.antlrTool
                           .error("Filter rule " + filterRule +
                             " does not exist in this lexer");
-                    } else if (rs.access.equals("public")) {
+                    } else if ("public".equals(rs.access)) {
                         grammar.antlrTool
                           .error("Filter rule " + filterRule +
                             " must be protected");
@@ -2993,7 +2991,7 @@ public class CSharpCodeGenerator extends CodeGenerator {
 
         // Additional rule parameters common to all rules for this grammar
         _print(commonExtraParams);
-        if (commonExtraParams.length() != 0 && rblk.argAction != null) {
+        if (0 != commonExtraParams.length() && rblk.argAction != null) {
             _print(",");
         }
 
@@ -3055,7 +3053,7 @@ public class CSharpCodeGenerator extends CodeGenerator {
         if (grammar instanceof LexerGrammar) {
             // lexer rule default return value is the rule's token name
             // This is a horrible hack to support the built-in EOF lexer rule.
-            if (s.getId().equals("mEOF")) {
+            if ("mEOF".equals(s.getId())) {
                 println("_ttype = Token.EOF_TYPE;");
             } else {
                 println("_ttype = " + s.getId().substring(1) + ";");
@@ -3118,7 +3116,7 @@ public class CSharpCodeGenerator extends CodeGenerator {
         }
 
         // Generate the alternatives
-        if (rblk.alternatives.size() == 1) {
+        if (1 == rblk.alternatives.size()) {
             // One alternative -- use simple form
             Alternative alt = rblk.getAlternativeAt(0);
             String pred = alt.semPred;
@@ -3207,7 +3205,7 @@ public class CSharpCodeGenerator extends CodeGenerator {
 
         // Generate literals test for lexer rules so marked
         if (rblk.getTestLiterals()) {
-            if (s.access.equals("protected")) {
+            if ("protected".equals(s.access)) {
                 genLiteralsTestForPartialToken();
             } else {
                 genLiteralsTest();
@@ -3293,14 +3291,14 @@ public class CSharpCodeGenerator extends CodeGenerator {
             } else {
                 _print("false");
             }
-            if (commonExtraArgs.length() != 0 || rr.args != null) {
+            if (0 != commonExtraArgs.length() || rr.args != null) {
                 _print(",");
             }
         }
 
         // Extra arguments common to all rules for this grammar
         _print(commonExtraArgs);
-        if (commonExtraArgs.length() != 0 && rr.args != null) {
+        if (0 != commonExtraArgs.length() && rr.args != null) {
             _print(",");
         }
 
@@ -3627,7 +3625,7 @@ public class CSharpCodeGenerator extends CodeGenerator {
      *          target language yielding an AST node.
      */
     public String getASTCreateString(Vector v) {
-        if (v.size() == 0) {
+        if (0 == v.size()) {
             return "";
         }
         StringBuffer buf = new StringBuffer();
@@ -3719,13 +3717,13 @@ public class CSharpCodeGenerator extends CodeGenerator {
           false;                // Is this a #[ID, "t", "ASTType"] constructor?
 
         commaIndex = astCtorArgs.indexOf(',');
-        if (commaIndex != -1) {
+        if (-1 != commaIndex) {
             ctorID = astCtorArgs.substring(0,
                                            commaIndex);                                        // the 'ID'   portion of #[ID, "Text"]
             ctorText = astCtorArgs.substring(commaIndex + 1,
                                              astCtorArgs.length());        // the 'Text' portion of #[ID, "Text"]
             commaIndex = ctorText.indexOf(',');
-            if (commaIndex != -1) {
+            if (-1 != commaIndex) {
                 // This is an AST creation of the form: #[ID, "Text", "ASTTypename"]
                 // Support for this was introduced with 2.7.2a6
                 // create default type or (since 2.7.2) 3rd arg is classname
@@ -3778,13 +3776,13 @@ public class CSharpCodeGenerator extends CodeGenerator {
     protected String getLookaheadTestExpression(Alternative alt,
                                                 int maxDepth) {
         int depth = alt.lookaheadDepth;
-        if (depth == GrammarAnalyzer.NONDETERMINISTIC) {
+        if (GrammarAnalyzer.NONDETERMINISTIC == depth) {
             // if the decision is nondeterministic, do the best we can: LL(k)
             // any predicates that are around will be generated later.
             depth = grammar.maxk;
         }
 
-        if (maxDepth == 0) {
+        if (0 == maxDepth) {
             // empty lookahead can result from alt with sem pred
             // that can see end of token.  E.g., A : {pred}? ('a')? ;
             return "( true )";
@@ -3813,7 +3811,7 @@ public class CSharpCodeGenerator extends CodeGenerator {
         // Generate a bitset membership test if possible
         StringBuffer e;
         int degree = p.degree();
-        if (degree == 0) {
+        if (0 == degree) {
             return "true";
         }
 
@@ -3829,7 +3827,7 @@ public class CSharpCodeGenerator extends CodeGenerator {
             String cs = getValueString(elems[i]);
 
             // Generate the element comparison
-            if (i > 0) {
+            if (0 < i) {
                 e.append("||");
             }
             e.append(ts);
@@ -3900,12 +3898,12 @@ public class CSharpCodeGenerator extends CodeGenerator {
      */
     protected boolean lookaheadIsEmpty(Alternative alt, int maxDepth) {
         int depth = alt.lookaheadDepth;
-        if (depth == GrammarAnalyzer.NONDETERMINISTIC) {
+        if (GrammarAnalyzer.NONDETERMINISTIC == depth) {
             depth = grammar.maxk;
         }
         for (int i = 1; i <= depth && i <= maxDepth; i++) {
             BitSet p = alt.cache[i].fset;
-            if (p.degree() != 0) {
+            if (0 != p.degree()) {
                 return false;
             }
         }
@@ -3917,10 +3915,10 @@ public class CSharpCodeGenerator extends CodeGenerator {
             return "_t.Type";
         }
         if (grammar instanceof LexerGrammar) {
-            if (k == 1) {
+            if (1 == k) {
                 return "cached_LA1";
             }
-            if (k == 2) {
+            if (2 == k) {
                 return "cached_LA2";
             }
         }
@@ -3938,7 +3936,7 @@ public class CSharpCodeGenerator extends CodeGenerator {
     private String mangleLiteral(String s) {
         String mangled = antlrTool.literalsPrefix;
         for (int i = 1; i < s.length() - 1; i++) {
-            if (!Character.isLetter(s.charAt(i)) && s.charAt(i) != '_') {
+            if (!Character.isLetter(s.charAt(i)) && '_' != s.charAt(i)) {
                 return null;
             }
             mangled += s.charAt(i);
@@ -3972,7 +3970,7 @@ public class CSharpCodeGenerator extends CodeGenerator {
             }
             // If the id ends with "_in", then map it to the input variable
             else
-            if (id.length() > 3 && id.lastIndexOf("_in") == id.length() - 3) {
+            if (3 < id.length() && id.lastIndexOf("_in") == id.length() - 3) {
                 // Strip off the "_in"
                 id = id.substring(0, id.length() - 3);
                 in_var = true;
@@ -4072,7 +4070,7 @@ public class CSharpCodeGenerator extends CodeGenerator {
                                                     int line,
                                                     RuleBlock currentRule,
                                                     ActionTransInfo tInfo) {
-        if (actionStr == null || actionStr.length() == 0) {
+        if (actionStr == null || 0 == actionStr.length()) {
             return null;
         }
 
@@ -4083,11 +4081,10 @@ public class CSharpCodeGenerator extends CodeGenerator {
         }
 
         // see if we have anything to do...
-        if ((grammar.buildAST && actionStr.indexOf('#') != -1) ||
+        if ((grammar.buildAST && -1 != actionStr.indexOf('#')) ||
           grammar instanceof TreeWalkerGrammar || ((
           grammar instanceof LexerGrammar ||
-            grammar instanceof ParserGrammar) &&
-          actionStr.indexOf('$') != -1)) {
+            grammar instanceof ParserGrammar) && -1 != actionStr.indexOf('$'))) {
             // Create a lexer to read an action and return the translated version
             antlr.actions.csharp.ActionLexer lexer =
               new antlr.actions.csharp.ActionLexer(actionStr,
@@ -4259,7 +4256,7 @@ public class CSharpCodeGenerator extends CodeGenerator {
     }
 
     private void declareSaveIndexVariableIfNeeded() {
-        if (saveIndexCreateLevel == 0) {
+        if (0 == saveIndexCreateLevel) {
             println("int _saveIndex = 0;");
             saveIndexCreateLevel = blockNestingLevel;
         }

@@ -17,7 +17,7 @@ public class ANTLRHashString {
     private String s;
     private char[] buf;
     private int len;
-    private CharScanner lexer;
+    private final CharScanner lexer;
     private static final int prime = 151;
 
 
@@ -36,7 +36,7 @@ public class ANTLRHashString {
         setString(s);
     }
 
-    private final char charAt(int index) {
+    private char charAt(int index) {
         return (s != null) ? s.charAt(index) : buf[index];
     }
 
@@ -88,13 +88,13 @@ public class ANTLRHashString {
         return hashval;
     }
 
-    private final int length() {
+    private int length() {
         return (s != null) ? s.length() : len;
     }
 
     public void setBuffer(char[] buf, int length) {
         this.buf = buf;
-        this.len = length;
+        len = length;
         s = null;
     }
 

@@ -145,7 +145,7 @@ class DataCommThunk implements Runnable {
      * Construct a DataCommThunk to call sendFinished() in a DataPath object.
      *
      * @param conn         the DataPath object to invoke.
-     * @param written      the number of bytes actually sent to TCP.
+     * @param length       the number of bytes actually sent to TCP.
      * @param continuation is the streaming continuation or null.
      */
     DataCommThunk(DataPath conn, int count, int length,
@@ -174,7 +174,6 @@ class DataCommThunk implements Runnable {
      * object.
      *
      * @param conn the DataPath object to invoke.
-     * @param The  byte array which is the message.
      */
     DataCommThunk(DataPath conn,
                   RecvThread recv,

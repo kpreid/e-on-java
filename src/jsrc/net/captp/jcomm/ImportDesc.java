@@ -40,7 +40,7 @@ class ImportDesc implements ObjectRefDesc {
      *
      */
     private void validate() {
-        T.requireSI(myImportPos >= 1, "must be positive: ", myImportPos);
+        T.requireSI(1 <= myImportPos, "must be positive: ", myImportPos);
     }
 
     /**

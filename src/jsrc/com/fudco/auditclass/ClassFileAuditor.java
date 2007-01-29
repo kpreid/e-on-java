@@ -75,7 +75,7 @@ public class ClassFileAuditor implements ClassFileConstants {
      */
     private boolean auditField(CF_field_info field) {
         int flags = field.access_flags();
-        if ((flags & ACC_STATIC) != 0 && (flags & ACC_FINAL) == 0) {
+        if (0 != (flags & ACC_STATIC) && 0 == (flags & ACC_FINAL)) {
             System.err
               .println("non-final static field: " + AuditUtils.pSig(u.pString(
                 field.descriptor_index()),
@@ -136,7 +136,7 @@ public class ClassFileAuditor implements ClassFileConstants {
      */
     private boolean auditMethod(CF_method_info method) {
         int flags = method.access_flags();
-        if ((flags & ACC_STATIC) != 0 && (flags & ACC_NATIVE) != 0) {
+        if (0 != (flags & ACC_STATIC) && 0 != (flags & ACC_NATIVE)) {
             System.err
               .println("static native method: " + AuditUtils.pSig(u.pString(
                 method.descriptor_index()),

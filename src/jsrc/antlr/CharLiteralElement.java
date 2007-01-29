@@ -10,7 +10,7 @@ package antlr;
 class CharLiteralElement extends GrammarAtom {
 
 
-    public CharLiteralElement(LexerGrammar g,
+    CharLiteralElement(LexerGrammar g,
                               Token t,
                               boolean inverted,
                               int autoGenType) {

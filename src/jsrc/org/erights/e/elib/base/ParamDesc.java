@@ -67,7 +67,7 @@ public class ParamDesc implements Persistent, EPrintable {
      *
      */
     public Guard getOptGuard() {
-        if (myOptGuard == null || myOptGuard == Object.class) {
+        if (myOptGuard == null || Object.class == myOptGuard) {
             return null;
         } else if (myOptGuard instanceof Guard) {
             return (Guard)myOptGuard;

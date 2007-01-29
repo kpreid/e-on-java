@@ -122,7 +122,7 @@ public class CppCodeGenerator extends CodeGenerator {
     protected int countLines(String s) {
         int lines = 0;
         for (int i = 0; i < s.length(); i++) {
-            if (s.charAt(i) == '\n') {
+            if ('\n' == s.charAt(i)) {
                 lines++;
             }
         }
@@ -217,7 +217,7 @@ public class CppCodeGenerator extends CodeGenerator {
      * Generate a #line or // line depending on options
      */
     public void genLineNo(int line) {
-        if (line == 0) {
+        if (0 == line) {
             line++;
         }
         if (genHashLines) {
@@ -297,7 +297,7 @@ public class CppCodeGenerator extends CodeGenerator {
         if (grammar instanceof LexerGrammar) {
             // vocab size seems to be 1 bigger than it actually is
             maxsize = ((LexerGrammar)grammar).charVocabulary.size() - 1;
-            if (maxsize > 255) {
+            if (255 < maxsize) {
                 prefix = "L";
             }
         }
@@ -305,7 +305,7 @@ public class CppCodeGenerator extends CodeGenerator {
         // System.out.println("maxsize "+maxsize+" prefix "+prefix);
 
         while (i < s.length()) {
-            if (s.charAt(i) == '\\') {
+            if ('\\' == s.charAt(i)) {
                 if (s.length() == i + 1) {
                     antlrTool.error("Invalid escape in char literal: '" + lit +
                       "' looking at '" + s.substring(i) + "'");
@@ -404,7 +404,7 @@ public class CppCodeGenerator extends CodeGenerator {
                 if (val > maxsize)                        // abort if too big
                 {
                     String offender;
-                    if ((0x20 <= val) && (val < 0x7F)) {
+                    if ((0x20 <= val) && (0x7F > val)) {
                         offender = charFormatter.escapeChar(val, true);
                     } else {
                         offender = "0x" + Integer.toString(val, 16);
@@ -424,8 +424,8 @@ public class CppCodeGenerator extends CodeGenerator {
                     antlrTool.error("Invalid char literal: '" + lit + "'");
                 }
 
-                if (maxsize <= 255) {
-                    if ((val <= 255) && (val & 0x80) != 0)
+                if (255 >= maxsize) {
+                    if ((255 >= val) && 0 != (val & 0x80))
                     // the joys of sign extension in the support lib *cough*
                     // actually the support lib needs to be fixed but that's a bit
                     // hairy too.
@@ -624,11 +624,10 @@ public class CppCodeGenerator extends CodeGenerator {
 
         boolean oldsaveText = saveText;
         saveText =
-          saveText && atom.getAutoGenType() == GrammarElement.AUTO_GEN_NONE;
+          saveText && GrammarElement.AUTO_GEN_NONE == atom.getAutoGenType();
 
         // if in lexer and ! on element, save buffer index to kill later
-        if (!saveText ||
-          atom.getAutoGenType() == GrammarElement.AUTO_GEN_BANG) {
+        if (!saveText || GrammarElement.AUTO_GEN_BANG == atom.getAutoGenType()) {
             println("_saveIndex = text.length();");
         }
 
@@ -636,8 +635,7 @@ public class CppCodeGenerator extends CodeGenerator {
         _print(convertJavaToCppString(atom.atomText, true));
         _println(" /* charlit */ );");
 
-        if (!saveText ||
-          atom.getAutoGenType() == GrammarElement.AUTO_GEN_BANG) {
+        if (!saveText || GrammarElement.AUTO_GEN_BANG == atom.getAutoGenType()) {
             println("text.erase(_saveIndex);");      // kill text atom put in buffer
         }
 
@@ -661,12 +659,12 @@ public class CppCodeGenerator extends CodeGenerator {
             antlrTool.error("cannot ref character range in grammar: " + r);
         }
 
-        if (r.getLabel() != null && syntacticPredLevel == 0) {
+        if (r.getLabel() != null && 0 == syntacticPredLevel) {
             println(r.getLabel() + " = " + lt1Value + ";");
         }
         // Correctly take care of saveIndex stuff...
         boolean save = (grammar instanceof LexerGrammar &&
-          (!saveText || r.getAutoGenType() == GrammarElement.AUTO_GEN_BANG));
+          (!saveText || GrammarElement.AUTO_GEN_BANG == r.getAutoGenType()));
         if (save) {
             println("_saveIndex=text.length();");
         }
@@ -688,7 +686,7 @@ public class CppCodeGenerator extends CodeGenerator {
             semPreds = new Vector();
         }
 
-        if (g.charVocabulary.size() > 256) {
+        if (256 < g.charVocabulary.size()) {
             antlrTool.warning(g.getFilename() +
               ": Vocabularies of this size still experimental in C++ mode (vocabulary size now: " +
               g.charVocabulary.size() + ")");
@@ -760,7 +758,7 @@ public class CppCodeGenerator extends CodeGenerator {
             generateNonGreedyExitPath = true;
             nonGreedyExitDepth = blk.exitLookaheadDepth;
         } else if (!blk.greedy &&
-          blk.exitLookaheadDepth == LLkGrammarAnalyzer.NONDETERMINISTIC) {
+          LLkGrammarAnalyzer.NONDETERMINISTIC == blk.exitLookaheadDepth) {
             generateNonGreedyExitPath = true;
         }
 
@@ -847,7 +845,7 @@ public class CppCodeGenerator extends CodeGenerator {
         // AST value for labeled rule refs in tree walker.
         // This is not AST construction;  it is just the input tree node value.
         if (grammar instanceof TreeWalkerGrammar && rr.getLabel() != null &&
-          syntacticPredLevel == 0) {
+          0 == syntacticPredLevel) {
             println(rr.getLabel() + " = (_t == ASTNULL) ? " +
               labeledElementASTInit + " : " + lt1Value + ";");
         }
@@ -855,7 +853,7 @@ public class CppCodeGenerator extends CodeGenerator {
         // if in lexer and ! on rule ref or alt or rule, save buffer index to
         // kill later
         if (grammar instanceof LexerGrammar &&
-          (!saveText || rr.getAutoGenType() == GrammarElement.AUTO_GEN_BANG)) {
+          (!saveText || GrammarElement.AUTO_GEN_BANG == rr.getAutoGenType())) {
             println("_saveIndex = text.length();");
         }
 
@@ -874,7 +872,7 @@ public class CppCodeGenerator extends CodeGenerator {
         } else {
             // Warn about return value if any, but not inside syntactic predicate
             if (!(grammar instanceof LexerGrammar) &&
-              syntacticPredLevel == 0 && rs.block.returnAction != null) {
+              0 == syntacticPredLevel && rs.block.returnAction != null) {
                 antlrTool.warning(
                   "Rule '" + rr.targetRule + "' returns a value",
                   grammar.getFilename(),
@@ -888,15 +886,15 @@ public class CppCodeGenerator extends CodeGenerator {
 
         // if in lexer and ! on element or alt or rule, save buffer index to kill later
         if (grammar instanceof LexerGrammar &&
-          (!saveText || rr.getAutoGenType() == GrammarElement.AUTO_GEN_BANG)) {
+          (!saveText || GrammarElement.AUTO_GEN_BANG == rr.getAutoGenType())) {
             println("text.erase(_saveIndex);");
         }
 
         // if not in a syntactic predicate
-        if (syntacticPredLevel == 0) {
+        if (0 == syntacticPredLevel) {
             boolean doNoGuessTest = (grammar.hasSyntacticPredicate && (
               grammar.buildAST && rr.getLabel() != null || (genAST &&
-                rr.getAutoGenType() == GrammarElement.AUTO_GEN_NONE)));
+                GrammarElement.AUTO_GEN_NONE == rr.getAutoGenType())));
 
             if (doNoGuessTest) {
                 println("if (inputState->guessing==0) {");
@@ -955,7 +953,7 @@ public class CppCodeGenerator extends CodeGenerator {
         }
 
         // Variable declarations for labeled elements
-        if (atom.getLabel() != null && syntacticPredLevel == 0) {
+        if (atom.getLabel() != null && 0 == syntacticPredLevel) {
             println(atom.getLabel() + " = " + lt1Value + ";");
         }
 
@@ -965,7 +963,7 @@ public class CppCodeGenerator extends CodeGenerator {
         // is there a bang on the literal?
         boolean oldsaveText = saveText;
         saveText =
-          saveText && atom.getAutoGenType() == GrammarElement.AUTO_GEN_NONE;
+          saveText && GrammarElement.AUTO_GEN_NONE == atom.getAutoGenType();
 
         // matching
         genMatch(atom);
@@ -985,7 +983,7 @@ public class CppCodeGenerator extends CodeGenerator {
      */
     public void gen(TokenRangeElement r) {
         genErrorTryForElement(r);
-        if (r.getLabel() != null && syntacticPredLevel == 0) {
+        if (r.getLabel() != null && 0 == syntacticPredLevel) {
             println(r.getLabel() + " = " + lt1Value + ";");
         }
 
@@ -1011,7 +1009,7 @@ public class CppCodeGenerator extends CodeGenerator {
         }
         genErrorTryForElement(atom);
         // Assign Token value to token label variable
-        if (atom.getLabel() != null && syntacticPredLevel == 0) {
+        if (atom.getLabel() != null && 0 == syntacticPredLevel) {
             println(atom.getLabel() + " = " + lt1Value + ";");
         }
 
@@ -1038,14 +1036,14 @@ public class CppCodeGenerator extends CodeGenerator {
         }
 
         // check for invalid modifiers ! and ^ on tree element roots
-        if (t.root.getAutoGenType() == GrammarElement.AUTO_GEN_BANG) {
+        if (GrammarElement.AUTO_GEN_BANG == t.root.getAutoGenType()) {
             antlrTool.error("Suffixing a root node with '!' is not implemented",
                             grammar.getFilename(),
                             t.getLine(),
                             t.getColumn());
             t.root.setAutoGenType(GrammarElement.AUTO_GEN_NONE);
         }
-        if (t.root.getAutoGenType() == GrammarElement.AUTO_GEN_CARET) {
+        if (GrammarElement.AUTO_GEN_CARET == t.root.getAutoGenType()) {
             antlrTool.warning(
               "Suffixing a root node with '^' is redundant; already a root",
               grammar.getFilename(),
@@ -1116,7 +1114,7 @@ public class CppCodeGenerator extends CodeGenerator {
      */
     public void gen(WildcardElement wc) {
         // Variable assignment for labeled elements
-        if (wc.getLabel() != null && syntacticPredLevel == 0) {
+        if (wc.getLabel() != null && 0 == syntacticPredLevel) {
             println(wc.getLabel() + " = " + lt1Value + ";");
         }
 
@@ -1128,12 +1126,12 @@ public class CppCodeGenerator extends CodeGenerator {
               namespaceAntlr + "MismatchedTokenException();");
         } else if (grammar instanceof LexerGrammar) {
             if (grammar instanceof LexerGrammar && (!saveText ||
-              wc.getAutoGenType() == GrammarElement.AUTO_GEN_BANG)) {
+              GrammarElement.AUTO_GEN_BANG == wc.getAutoGenType())) {
                 println("_saveIndex = text.length();");
             }
             println("matchNot(EOF/*_CHAR*/);");
             if (grammar instanceof LexerGrammar && (!saveText ||
-              wc.getAutoGenType() == GrammarElement.AUTO_GEN_BANG)) {
+              GrammarElement.AUTO_GEN_BANG == wc.getAutoGenType())) {
                 println("text.erase(_saveIndex);");      // kill text atom put in buffer
             }
         } else {
@@ -1195,7 +1193,7 @@ public class CppCodeGenerator extends CodeGenerator {
             generateNonGreedyExitPath = true;
             nonGreedyExitDepth = blk.exitLookaheadDepth;
         } else if (!blk.greedy &&
-          blk.exitLookaheadDepth == LLkGrammarAnalyzer.NONDETERMINISTIC) {
+          LLkGrammarAnalyzer.NONDETERMINISTIC == blk.exitLookaheadDepth) {
             generateNonGreedyExitPath = true;
         }
         if (generateNonGreedyExitPath) {
@@ -1323,7 +1321,7 @@ public class CppCodeGenerator extends CodeGenerator {
                 if (p.member(j)) {
                     if ((grammar instanceof LexerGrammar)) {
                         // only dump out for pure printable ascii.
-                        if ((0x20 <= j) && (j < 0x7F)) {
+                        if ((0x20 <= j) && (0x7F > j)) {
                             t += charFormatter.escapeChar(j, true) + " ";
                         } else {
                             t += "0x" + Integer.toString(j, 16) + " ";
@@ -1332,13 +1330,13 @@ public class CppCodeGenerator extends CodeGenerator {
                         t += tm.getTokenStringAt(j) + " ";
                     }
 
-                    if (t.length() > 70) {
+                    if (70 < t.length()) {
                         println(t);
                         t = "// ";
                     }
                 }
             }
-            if (t != "// ") {
+            if ("// " != t) {
                 println(t);
             }
 
@@ -1529,7 +1527,7 @@ public class CppCodeGenerator extends CodeGenerator {
             sup = grammar.superClass;
         } else {
             sup = grammar.getSuperClass();
-            if (sup.lastIndexOf('.') != -1) {
+            if (-1 != sup.lastIndexOf('.')) {
                 sup = sup.substring(sup.lastIndexOf('.') + 1);
             }
             sup = namespaceAntlr + sup;
@@ -1640,7 +1638,7 @@ public class CppCodeGenerator extends CodeGenerator {
         Enumeration keys = grammar.tokenManager.getTokenSymbolKeys();
         while (keys.hasMoreElements()) {
             String key = (String)keys.nextElement();
-            if (key.charAt(0) != '"') {
+            if ('"' != key.charAt(0)) {
                 continue;
             }
             TokenSymbol sym = grammar.tokenManager.getTokenSymbol(key);
@@ -1686,7 +1684,7 @@ public class CppCodeGenerator extends CodeGenerator {
         while (ids.hasMoreElements()) {
             RuleSymbol sym = (RuleSymbol)ids.nextElement();
             // Don't generate the synthetic rules
-            if (!sym.getId().equals("mnextToken")) {
+            if (!"mnextToken".equals(sym.getId())) {
                 genRule(sym, false, ruleNum++, grammar.getClassName() + "::");
             }
             exitIfError();
@@ -1814,7 +1812,7 @@ public class CppCodeGenerator extends CodeGenerator {
             sup = grammar.superClass;
         } else {
             sup = grammar.getSuperClass();
-            if (sup.lastIndexOf('.') != -1) {
+            if (-1 != sup.lastIndexOf('.')) {
                 sup = sup.substring(sup.lastIndexOf('.') + 1);
             }
             sup = namespaceAntlr + sup;
@@ -1929,8 +1927,7 @@ public class CppCodeGenerator extends CodeGenerator {
             GrammarSymbol sym = (GrammarSymbol)ids.nextElement();
             if (sym instanceof RuleSymbol) {
                 RuleSymbol rs = (RuleSymbol)sym;
-                genRule(rs,
-                        rs.references.size() == 0,
+                genRule(rs, 0 == rs.references.size(),
                         ruleNum++,
                         grammar.getClassName() + "::");
             }
@@ -2003,7 +2000,7 @@ public class CppCodeGenerator extends CodeGenerator {
             sup = grammar.superClass;
         } else {
             sup = grammar.getSuperClass();
-            if (sup.lastIndexOf('.') != -1) {
+            if (-1 != sup.lastIndexOf('.')) {
                 sup = sup.substring(sup.lastIndexOf('.') + 1);
             }
             sup = namespaceAntlr + sup;
@@ -2039,8 +2036,7 @@ public class CppCodeGenerator extends CodeGenerator {
             GrammarSymbol sym = (GrammarSymbol)ids.nextElement();
             if (sym instanceof RuleSymbol) {
                 RuleSymbol rs = (RuleSymbol)sym;
-                genRule(rs,
-                        rs.references.size() == 0,
+                genRule(rs, 0 == rs.references.size(),
                         ruleNum++,
                         grammar.getClassName() + "::");
             }
@@ -2087,7 +2083,7 @@ public class CppCodeGenerator extends CodeGenerator {
         int j = 1;
         boolean startOfLine = true;
         for (int i = 0; i < elems.length; i++) {
-            if (j == 1) {
+            if (1 == j) {
                 print("");
             } else {
                 _print("  ");
@@ -2142,7 +2138,7 @@ public class CppCodeGenerator extends CodeGenerator {
                                                      grammar instanceof LexerGrammar)) {
             Lookahead p = analyzer.look(1, blk);
             // Variable assignment for labeled elements
-            if (blk.getLabel() != null && syntacticPredLevel == 0) {
+            if (blk.getLabel() != null && 0 == syntacticPredLevel) {
                 println(blk.getLabel() + " = " + lt1Value + ";");
             }
 
@@ -2170,7 +2166,7 @@ public class CppCodeGenerator extends CodeGenerator {
         }
 
         // Special handling for single alt
-        if (blk.getAlternatives().size() == 1) {
+        if (1 == blk.getAlternatives().size()) {
             Alternative alt = blk.getAlternativeAt(0);
             // Generate a warning if there is a synPred for single alt.
             if (alt.synPred != null) {
@@ -2229,7 +2225,7 @@ public class CppCodeGenerator extends CodeGenerator {
                     continue;
                 }
                 Lookahead p = alt.cache[1];
-                if (p.fset.degree() == 0 && !p.containsEpsilon()) {
+                if (0 == p.fset.degree() && !p.containsEpsilon()) {
                     antlrTool.warning(
                       "Alternate omitted due to empty prediction set",
                       grammar.getFilename(),
@@ -2264,7 +2260,7 @@ public class CppCodeGenerator extends CodeGenerator {
         // Note that alts whose lookahead is purely end-of-token at k=1 end up
         // as default or else clauses.
         int startDepth = (grammar instanceof LexerGrammar) ? grammar.maxk : 0;
-        for (int altDepth = startDepth; altDepth >= 0; altDepth--) {
+        for (int altDepth = startDepth; 0 <= altDepth; altDepth--) {
             if (DEBUG_CODE_GENERATOR || DEBUG_CPP_CODE_GENERATOR) {
                 System.out.println("checking depth " + altDepth);
             }
@@ -2291,11 +2287,11 @@ public class CppCodeGenerator extends CodeGenerator {
                     // Calculate the "effective depth" of the alt, which is the max
                     // depth at which cache[depth]!=end-of-token
                     int effectiveDepth = alt.lookaheadDepth;
-                    if (effectiveDepth == GrammarAnalyzer.NONDETERMINISTIC) {
+                    if (GrammarAnalyzer.NONDETERMINISTIC == effectiveDepth) {
                         // use maximum lookahead
                         effectiveDepth = grammar.maxk;
                     }
-                    while (effectiveDepth >= 1 &&
+                    while (1 <= effectiveDepth &&
                       alt.cache[effectiveDepth].containsEpsilon()) {
                         effectiveDepth--;
                     }
@@ -2319,9 +2315,9 @@ public class CppCodeGenerator extends CodeGenerator {
 
                 // Was it a big unicode range that forced unsuitability
                 // for a case expression?
-                if (alt.cache[1].fset.degree() > caseSizeThreshold &&
+                if (caseSizeThreshold < alt.cache[1].fset.degree() &&
                   suitableForCaseExpression(alt)) {
-                    if (nIF == 0) {
+                    if (0 == nIF) {
                         // generate this only for the first if the elseif's
                         // are covered by this one
                         if (grammar instanceof TreeWalkerGrammar) {
@@ -2341,7 +2337,7 @@ public class CppCodeGenerator extends CodeGenerator {
                     // predicate to help out.  if we have not
                     // generated a previous if, just put {...} around
                     // the end-of-token clause
-                    if (nIF == 0) {
+                    if (0 == nIF) {
                         println("{");
                     } else {
                         println("else {");
@@ -2378,7 +2374,7 @@ public class CppCodeGenerator extends CodeGenerator {
                     }
 
                     // Generate any syntactic predicates
-                    if (nIF > 0) {
+                    if (0 < nIF) {
                         if (alt.synPred != null) {
                             println("else {");
                             tabs++;
@@ -2430,22 +2426,22 @@ public class CppCodeGenerator extends CodeGenerator {
             tabs--;
             finishingInfo.postscript = ps + "}";
             finishingInfo.generatedSwitch = true;
-            finishingInfo.generatedAnIf = nIF > 0;
+            finishingInfo.generatedAnIf = 0 < nIF;
             //return new CppBlockFinishingInfo(ps+"}",true,nIF>0); // close up switch statement
 
         } else {
             finishingInfo.postscript = ps;
             finishingInfo.generatedSwitch = false;
-            finishingInfo.generatedAnIf = nIF > 0;
+            finishingInfo.generatedAnIf = 0 < nIF;
             //return new CppBlockFinishingInfo(ps, false,nIF>0);
         }
         return finishingInfo;
     }
 
     private static boolean suitableForCaseExpression(Alternative a) {
-        return a.lookaheadDepth == 1 && a.semPred == null &&
+        return 1 == a.lookaheadDepth && a.semPred == null &&
           !a.cache[1].containsEpsilon() &&
-          a.cache[1].fset.degree() <= caseSizeThreshold;
+          caseSizeThreshold >= a.cache[1].fset.degree();
     }
 
     /**
@@ -2474,15 +2470,15 @@ public class CppCodeGenerator extends CodeGenerator {
             return;
         }
 
-        if (grammar.buildAST && syntacticPredLevel == 0) {
+        if (grammar.buildAST && 0 == syntacticPredLevel) {
             boolean needASTDecl = (genAST && (el.getLabel() != null ||
-              el.getAutoGenType() != GrammarElement.AUTO_GEN_BANG));
+              GrammarElement.AUTO_GEN_BANG != el.getAutoGenType()));
 
             // RK: if we have a grammar element always generate the decl
             // since some guy can access it from an action and we can't
             // peek ahead (well not without making a mess).
             // I'd prefer taking this out.
-            if (el.getAutoGenType() != GrammarElement.AUTO_GEN_BANG &&
+            if (GrammarElement.AUTO_GEN_BANG != el.getAutoGenType() &&
               (el instanceof TokenRefElement)) {
                 needASTDecl = true;
             }
@@ -2751,7 +2747,7 @@ public class CppCodeGenerator extends CodeGenerator {
             println("// }\n");
         } else {
             sup = grammar.getSuperClass();
-            if (sup.lastIndexOf('.') != -1) {
+            if (-1 != sup.lastIndexOf('.')) {
                 sup = sup.substring(sup.lastIndexOf('.') + 1);
             }
             println("#include <antlr/" + sup + ".hpp>");
@@ -2855,7 +2851,7 @@ public class CppCodeGenerator extends CodeGenerator {
         while (ids.hasMoreElements()) {
             RuleSymbol sym = (RuleSymbol)ids.nextElement();
             // Don't generate the synthetic rules
-            if (!sym.getId().equals("mnextToken")) {
+            if (!"mnextToken".equals(sym.getId())) {
                 genRuleHeader(sym, false);
             }
             exitIfError();
@@ -2937,7 +2933,7 @@ public class CppCodeGenerator extends CodeGenerator {
             println("// }\n");
         } else {
             sup = grammar.getSuperClass();
-            if (sup.lastIndexOf('.') != -1) {
+            if (-1 != sup.lastIndexOf('.')) {
                 sup = sup.substring(sup.lastIndexOf('.') + 1);
             }
             println("#include <antlr/" + sup + ".hpp>");
@@ -3061,7 +3057,7 @@ public class CppCodeGenerator extends CodeGenerator {
             GrammarSymbol sym = (GrammarSymbol)ids.nextElement();
             if (sym instanceof RuleSymbol) {
                 RuleSymbol rs = (RuleSymbol)sym;
-                genRuleHeader(rs, rs.references.size() == 0);
+                genRuleHeader(rs, 0 == rs.references.size());
             }
             exitIfError();
         }
@@ -3172,7 +3168,7 @@ public class CppCodeGenerator extends CodeGenerator {
             println("// }\n");
         } else {
             sup = grammar.getSuperClass();
-            if (sup.lastIndexOf('.') != -1) {
+            if (-1 != sup.lastIndexOf('.')) {
                 sup = sup.substring(sup.lastIndexOf('.') + 1);
             }
             println("#include <antlr/" + sup + ".hpp>");
@@ -3270,7 +3266,7 @@ public class CppCodeGenerator extends CodeGenerator {
             GrammarSymbol sym = (GrammarSymbol)ids.nextElement();
             if (sym instanceof RuleSymbol) {
                 RuleSymbol rs = (RuleSymbol)sym;
-                genRuleHeader(rs, rs.references.size() == 0);
+                genRuleHeader(rs, 0 == rs.references.size());
             }
             exitIfError();
         }
@@ -3411,7 +3407,7 @@ public class CppCodeGenerator extends CodeGenerator {
 
         // if in lexer and ! on element, save buffer index to kill later
         if (grammar instanceof LexerGrammar && (!saveText ||
-          atom.getAutoGenType() == GrammarElement.AUTO_GEN_BANG)) {
+          GrammarElement.AUTO_GEN_BANG == atom.getAutoGenType())) {
             println("_saveIndex = text.length();");
         }
 
@@ -3419,7 +3415,7 @@ public class CppCodeGenerator extends CodeGenerator {
         _print(astArgs);
 
         // print out what to match
-        if (atom.atomText.equals("EOF")) {
+        if ("EOF".equals(atom.atomText)) {
             // horrible hack to handle EOF case
             _print(namespaceAntlr + "Token::EOF_TYPE");
         } else {
@@ -3436,7 +3432,7 @@ public class CppCodeGenerator extends CodeGenerator {
         _println(");");
 
         if (grammar instanceof LexerGrammar && (!saveText ||
-          atom.getAutoGenType() == GrammarElement.AUTO_GEN_BANG)) {
+          GrammarElement.AUTO_GEN_BANG == atom.getAutoGenType())) {
             println("text.erase(_saveIndex);");      // kill text atom put in buffer
         }
     }
@@ -3471,7 +3467,7 @@ public class CppCodeGenerator extends CodeGenerator {
         boolean hasPublicRules = false;
         for (int i = 0; i < grammar.rules.size(); i++) {
             RuleSymbol rs = (RuleSymbol)grammar.rules.elementAt(i);
-            if (rs.isDefined() && rs.access.equals("public")) {
+            if (rs.isDefined() && "public".equals(rs.access)) {
                 hasPublicRules = true;
                 break;
             }
@@ -3531,7 +3527,7 @@ public class CppCodeGenerator extends CodeGenerator {
                         grammar.antlrTool
                           .error("Filter rule " + filterRule +
                             " does not exist in this lexer");
-                    } else if (rs.access.equals("public")) {
+                    } else if ("public".equals(rs.access)) {
                         grammar.antlrTool
                           .error("Filter rule " + filterRule +
                             " must be protected");
@@ -3736,7 +3732,7 @@ public class CppCodeGenerator extends CodeGenerator {
 
         // Additional rule parameters common to all rules for this grammar
         _print(commonExtraParams);
-        if (commonExtraParams.length() != 0 && rblk.argAction != null) {
+        if (0 != commonExtraParams.length() && rblk.argAction != null) {
             _print(",");
         }
 
@@ -3761,18 +3757,18 @@ public class CppCodeGenerator extends CodeGenerator {
 
             String comma = "";
             int eqpos = oldarg.indexOf('=');
-            if (eqpos != -1) {
+            if (-1 != eqpos) {
                 int cmpos = 0;
-                while (cmpos != -1 && eqpos != -1) {
+                while (-1 != cmpos && -1 != eqpos) {
                     newarg =
                       newarg + comma + oldarg.substring(0, eqpos).trim();
                     comma = ", ";
                     cmpos = oldarg.indexOf(',', eqpos);
-                    if (cmpos != -1) {
+                    if (-1 != cmpos) {
                         // cut off part we just handled
                         oldarg = oldarg.substring(cmpos + 1).trim();
                         eqpos = oldarg.indexOf('=');
-                        if (eqpos == -1) {
+                        if (-1 == eqpos) {
                             newarg = newarg + comma + oldarg;
                         }
                     }
@@ -3816,7 +3812,7 @@ public class CppCodeGenerator extends CodeGenerator {
         }
 
         // print out definitions needed by rules for various grammar types
-        if (!commonLocalVars.equals("")) {
+        if (!"".equals(commonLocalVars)) {
             println(commonLocalVars);
         }
 
@@ -3825,7 +3821,7 @@ public class CppCodeGenerator extends CodeGenerator {
             // tool.
             // lexer rule default return value is the rule's token name
             // This is a horrible hack to support the built-in EOF lexer rule.
-            if (s.getId().equals("mEOF")) {
+            if ("mEOF".equals(s.getId())) {
                 println("_ttype = " + namespaceAntlr + "Token::EOF_TYPE;");
             } else {
                 println("_ttype = " + s.getId().substring(1) + ";");
@@ -3888,7 +3884,7 @@ public class CppCodeGenerator extends CodeGenerator {
         }
 
         // Generate the alternatives
-        if (rblk.alternatives.size() == 1) {
+        if (1 == rblk.alternatives.size()) {
             // One alternative -- use simple form
             Alternative alt = rblk.getAlternativeAt(0);
             String pred = alt.semPred;
@@ -3971,7 +3967,7 @@ public class CppCodeGenerator extends CodeGenerator {
 
         // Generate literals test for lexer rules so marked
         if (rblk.getTestLiterals()) {
-            if (s.access.equals("protected")) {
+            if ("protected".equals(s.access)) {
                 genLiteralsTestForPartialToken();
             } else {
                 genLiteralsTest();
@@ -4076,7 +4072,7 @@ public class CppCodeGenerator extends CodeGenerator {
 
         // Additional rule parameters common to all rules for this grammar
         _print(commonExtraParams);
-        if (commonExtraParams.length() != 0 && rblk.argAction != null) {
+        if (0 != commonExtraParams.length() && rblk.argAction != null) {
             _print(",");
         }
 
@@ -4115,14 +4111,14 @@ public class CppCodeGenerator extends CodeGenerator {
             } else {
                 _print("false");
             }
-            if (commonExtraArgs.length() != 0 || rr.args != null) {
+            if (0 != commonExtraArgs.length() || rr.args != null) {
                 _print(",");
             }
         }
 
         // Extra arguments common to all rules for this grammar
         _print(commonExtraArgs);
-        if (commonExtraArgs.length() != 0 && rr.args != null) {
+        if (0 != commonExtraArgs.length() && rr.args != null) {
             _print(",");
         }
 
@@ -4453,7 +4449,7 @@ public class CppCodeGenerator extends CodeGenerator {
      *          target language yielding an AST node.
      */
     public String getASTCreateString(Vector v) {
-        if (v.size() == 0) {
+        if (0 == v.size()) {
             return "";
         }
         StringBuffer buf = new StringBuffer();
@@ -4511,7 +4507,7 @@ public class CppCodeGenerator extends CodeGenerator {
             // this is due to the usage of getASTCreateString from inside
             // actions/cpp/action.g
             boolean is_constructor = false;
-            if (str.indexOf(',') != -1) {
+            if (-1 != str.indexOf(',')) {
                 is_constructor = grammar.tokenManager
                   .tokenDefined(str.substring(0, str.indexOf(',')));
             }
@@ -4576,13 +4572,13 @@ public class CppCodeGenerator extends CodeGenerator {
     protected String getLookaheadTestExpression(Alternative alt,
                                                 int maxDepth) {
         int depth = alt.lookaheadDepth;
-        if (depth == GrammarAnalyzer.NONDETERMINISTIC) {
+        if (GrammarAnalyzer.NONDETERMINISTIC == depth) {
             // if the decision is nondeterministic, do the best we can: LL(k)
             // any predicates that are around will be generated later.
             depth = grammar.maxk;
         }
 
-        if (maxDepth == 0) {
+        if (0 == maxDepth) {
             // empty lookahead can result from alt with sem pred
             // that can see end of token.  E.g., A : {pred}? ('a')? ;
             return "true";
@@ -4635,7 +4631,7 @@ boolean first = true;
         // Generate a bitset membership test if possible
         StringBuffer e;
         int degree = p.degree();
-        if (degree == 0) {
+        if (0 == degree) {
             return "true";
         }
 
@@ -4651,7 +4647,7 @@ boolean first = true;
             String cs = getValueString(elems[i]);
 
             // Generate the element comparison
-            if (i > 0) {
+            if (0 < i) {
                 e.append(" || ");
             }
             e.append(ts);
@@ -4710,7 +4706,7 @@ boolean first = true;
                     }
                 }
             } else {
-                if (tId.equals("EOF")) {
+                if ("EOF".equals(tId)) {
                     cs = namespaceAntlr + "Token::EOF_TYPE";
                 } else {
                     cs = tId;
@@ -4725,12 +4721,12 @@ boolean first = true;
      */
     protected boolean lookaheadIsEmpty(Alternative alt, int maxDepth) {
         int depth = alt.lookaheadDepth;
-        if (depth == GrammarAnalyzer.NONDETERMINISTIC) {
+        if (GrammarAnalyzer.NONDETERMINISTIC == depth) {
             depth = grammar.maxk;
         }
         for (int i = 1; i <= depth && i <= maxDepth; i++) {
             BitSet p = alt.cache[i].fset;
-            if (p.degree() != 0) {
+            if (0 != p.degree()) {
                 return false;
             }
         }
@@ -4755,7 +4751,7 @@ boolean first = true;
     private String mangleLiteral(String s) {
         String mangled = antlrTool.literalsPrefix;
         for (int i = 1; i < s.length() - 1; i++) {
-            if (!Character.isLetter(s.charAt(i)) && s.charAt(i) != '_') {
+            if (!Character.isLetter(s.charAt(i)) && '_' != s.charAt(i)) {
                 return null;
             }
             mangled += s.charAt(i);
@@ -4794,7 +4790,7 @@ boolean first = true;
             }
             // If the id ends with "_in", then map it to the input variable
 //			else
-            if (id.length() > 3 && id.lastIndexOf("_in") == id.length() - 3) {
+            if (3 < id.length() && id.lastIndexOf("_in") == id.length() - 3) {
                 // Strip off the "_in"
                 id = id.substring(0, id.length() - 3);
                 in_var = true;
@@ -4907,7 +4903,7 @@ boolean first = true;
                                                     int line,
                                                     RuleBlock currentRule,
                                                     ActionTransInfo tInfo) {
-        if (actionStr == null || actionStr.length() == 0) {
+        if (actionStr == null || 0 == actionStr.length()) {
             return null;
         }
 
@@ -4917,11 +4913,10 @@ boolean first = true;
             return actionStr;
         }
 
-        if ((grammar.buildAST && actionStr.indexOf('#') != -1) ||
+        if ((grammar.buildAST && -1 != actionStr.indexOf('#')) ||
           grammar instanceof TreeWalkerGrammar || ((
           grammar instanceof LexerGrammar ||
-            grammar instanceof ParserGrammar) &&
-          actionStr.indexOf('$') != -1)) {
+            grammar instanceof ParserGrammar) && -1 != actionStr.indexOf('$'))) {
             // Create a lexer to read an action and return the translated version
             antlr.actions.cpp.ActionLexer lexer =
               new antlr.actions.cpp.ActionLexer(actionStr,
@@ -4953,8 +4948,8 @@ boolean first = true;
 
     private String fixNameSpaceOption(String ns) {
         ns = StringUtils.stripFrontBack(ns, "\"", "\"");
-        if (ns.length() > 2 &&
-          !ns.substring(ns.length() - 2, ns.length()).equals("::")) {
+        if (2 < ns.length() &&
+          !"::".equals(ns.substring(ns.length() - 2, ns.length()))) {
             ns += "::";
         }
         return ns;
@@ -4996,9 +4991,9 @@ boolean first = true;
                     String ns =
                       StringUtils.stripFrontBack(t.getText(), "\"", "\"");
                     if (ns != null) {
-                        if (ns.length() > 2 &&
-                          !ns.substring(ns.length() - 2, ns.length())
-                            .equals("::")) {
+                        if (2 < ns.length() &&
+                          !"::".equals(ns.substring(ns.length() - 2,
+                                                    ns.length()))) {
                             ns += "::";
                         }
                         namespaceAntlr = ns;
@@ -5011,9 +5006,9 @@ boolean first = true;
                     String ns =
                       StringUtils.stripFrontBack(t.getText(), "\"", "\"");
                     if (ns != null) {
-                        if (ns.length() > 2 &&
-                          !ns.substring(ns.length() - 2, ns.length())
-                            .equals("::")) {
+                        if (2 < ns.length() &&
+                          !"::".equals(ns.substring(ns.length() - 2,
+                                                    ns.length()))) {
                             ns += "::";
                         }
                         namespaceStd = ns;
@@ -5025,22 +5020,22 @@ boolean first = true;
                 if (t != null) {
                     String val =
                       StringUtils.stripFrontBack(t.getText(), "\"", "\"");
-                    genHashLines = val.equals("true");
+                    genHashLines = "true".equals(val);
                 }
             }
             noConstructors =
               antlrTool.noConstructors;        // get the default
             if (g.hasOption("noConstructors")) {
                 Token t = g.getOption("noConstructors");
-                if ((t != null) && !(t.getText().equals("true") ||
-                  t.getText().equals("false"))) {
+                if ((t != null) && !("true".equals(t.getText()) ||
+                  "false".equals(t.getText()))) {
                     antlrTool.error(
                       "noConstructors option must be true or false",
                       antlrTool.getGrammarFile(),
                       t.getLine(),
                       t.getColumn());
                 }
-                noConstructors = t.getText().equals("true");
+                noConstructors = "true".equals(t.getText());
             }
         }
         if (g instanceof ParserGrammar) {

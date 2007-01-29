@@ -46,7 +46,7 @@ public class TestELib {
         public Number addOne(Integer val) throws Exception {
             PrintStreamWriter.stdout()
               .println("addOne, val is " + val.intValue() + "... ");
-            if (val.intValue() == 5) {
+            if (5 == val.intValue()) {
                 PrintStreamWriter.stdout()
                   .println("addOne... throwing exception");
                 throw new Exception("foo");

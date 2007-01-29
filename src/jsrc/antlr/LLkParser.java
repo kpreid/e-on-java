@@ -60,9 +60,9 @@ public class LLkParser extends Parser {
         traceIndent();
         System.out
           .print(
-            ee + rname + ((inputState.guessing > 0) ? "; [guessing]" : "; "));
+            ee + rname + ((0 < inputState.guessing) ? "; [guessing]" : "; "));
         for (int i = 1; i <= k; i++) {
-            if (i != 1) {
+            if (1 != i) {
                 System.out.print(", ");
             }
             if (LT(i) != null) {

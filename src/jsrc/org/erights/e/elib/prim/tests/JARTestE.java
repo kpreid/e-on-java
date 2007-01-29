@@ -16,6 +16,9 @@ class JARTestE {
 
     static String callStatus = "didn't do the send";
 
+    private JARTestE() {
+    }
+
     static public void main(String[] args) {
         Vat vat = Vat.make("headless", "test E");
         vat.enqueue(new calltest());

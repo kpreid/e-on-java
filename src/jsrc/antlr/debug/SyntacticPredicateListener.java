@@ -3,9 +3,9 @@ package antlr.debug;
 public interface SyntacticPredicateListener extends ListenerBase {
 
 
-    public void syntacticPredicateFailed(SyntacticPredicateEvent e);
+    void syntacticPredicateFailed(SyntacticPredicateEvent e);
 
-    public void syntacticPredicateStarted(SyntacticPredicateEvent e);
+    void syntacticPredicateStarted(SyntacticPredicateEvent e);
 
-    public void syntacticPredicateSucceeded(SyntacticPredicateEvent e);
+    void syntacticPredicateSucceeded(SyntacticPredicateEvent e);
 }

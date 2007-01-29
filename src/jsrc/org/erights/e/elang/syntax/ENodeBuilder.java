@@ -1575,7 +1575,7 @@ public class ENodeBuilder extends BaseENodeBuilder implements EBuilder {
         String body = URIKit.getBody(uriText).bare();
         if (1 == protocol.length()) {
             char c = Character.toLowerCase(protocol.charAt(0));
-            if ('a' <= c && c <= 'z') {
+            if ('a' <= c && 'z' >= c) {
                 protocol = "file";
                 body = c + ":" + body;
             }

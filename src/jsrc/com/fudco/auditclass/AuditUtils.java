@@ -33,7 +33,7 @@ class AuditUtils implements ClassFileConstants {
         String result = "";
         for (int i = 0; i < in.length(); ++i) {
             char c = in.charAt(i);
-            if (c == '/') {
+            if ('/' == c) {
                 result += '.';
             } else {
                 result += c;
@@ -57,7 +57,7 @@ class AuditUtils implements ClassFileConstants {
      *         Wingo.lmf(int)"
      */
     static String pSig(String in, String baseClass, String name) {
-        int inptr[] = {0};
+        int[] inptr = {0};
         return pSigScan(in, inptr, baseClass, name);
     }
 
@@ -65,7 +65,7 @@ class AuditUtils implements ClassFileConstants {
      * Internal worker routine in support of pSig()
      */
     static String pSigScan(String in,
-                           int inptr[],
+                           int[] inptr,
                            String baseClass,
                            String name) {
         String pre;
@@ -105,8 +105,8 @@ class AuditUtils implements ClassFileConstants {
         case'L': {
             char c = in.charAt(inptr[0]++);
             pre = "";
-            while (c != ';') {
-                if (c == '/') {
+            while (';' != c) {
+                if ('/' == c) {
                     pre += '.';
                 } else {
                     pre += c;
@@ -117,8 +117,8 @@ class AuditUtils implements ClassFileConstants {
         }
         case'(':
             post = "(";
-            while (in.charAt(inptr[0]) != ')') {
-                if (post.length() > 1) {
+            while (')' != in.charAt(inptr[0])) {
+                if (1 < post.length()) {
                     post += ", ";
                 }
                 post += pSigScan(in, inptr, null, null);
@@ -155,9 +155,9 @@ class AuditUtils implements ClassFileConstants {
         String result = "";
 
         for (int i = 0; i < raw.length(); ++i) {
-            if (raw.charAt(i) == '\n') {
+            if ('\n' == raw.charAt(i)) {
                 result += "\\n";
-            } else if (raw.charAt(i) == '"') {
+            } else if ('"' == raw.charAt(i)) {
                 result += "\\\"";
             } else {
                 result += raw.charAt(i);

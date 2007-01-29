@@ -715,7 +715,7 @@ public final class VatTPConnection {
         }
 
         int msgType = message[0] & 0xff;
-        if (msgType <= Msg.HIGH_MSG_TYPE) {
+        if (Msg.HIGH_MSG_TYPE >= msgType) {
             MsgHandler handler = myMsgHandlers[msgType];
             if (null != handler) {
                 if (Trace.comm.event && Trace.ON) {
@@ -842,7 +842,7 @@ public final class VatTPConnection {
               .eventm("registerMsgHandler=" + msgType + "(" + handler +
                 ") on " + this);
         }
-        T.require(msgType > 0 || msgType <= Msg.HIGH_MSG_TYPE,
+        T.require(0 < msgType || Msg.HIGH_MSG_TYPE >= msgType,
                   "msgType=" + msgType,
                   " out of range (1 .. " + Msg.HIGH_MSG_TYPE,
                   ")");
@@ -898,7 +898,7 @@ public final class VatTPConnection {
               .eventm("sendMsg on " + this + "\n" +
                 HexStringUtils.bytesToReadableHexStr(message));
         }
-        if (message.length > Msg.MAX_OUTBOUND_MSG_LENGTH) {
+        if (Msg.MAX_OUTBOUND_MSG_LENGTH < message.length) {
             throw new IOException("Outbound message length=" + message.length +
               " greater than limit=" + Msg.MAX_OUTBOUND_MSG_LENGTH);
         }
@@ -908,7 +908,7 @@ public final class VatTPConnection {
                 HexStringUtils.bytesToReadableHexStr(message));
         }
         int msgType = message[0] & 0xff;
-        if (msgType > Msg.HIGH_MSG_TYPE || null == myMsgHandlers[msgType]) {
+        if (Msg.HIGH_MSG_TYPE < msgType || null == myMsgHandlers[msgType]) {
             throw new IOException(
               "No MsgHandler registered for message type=" + msgType);
         }
@@ -950,7 +950,7 @@ public final class VatTPConnection {
                 placeToRun + " on " + this + "\n" +
                 HexStringUtils.bytesToReadableHexStr(message));
         }
-        if (message.length > Msg.MAX_OUTBOUND_MSG_LENGTH) {
+        if (Msg.MAX_OUTBOUND_MSG_LENGTH < message.length) {
             throw new IOException("Outbound message length=" + message.length +
               " greater than limit=" + Msg.MAX_OUTBOUND_MSG_LENGTH);
         }
@@ -960,7 +960,7 @@ public final class VatTPConnection {
                 HexStringUtils.bytesToReadableHexStr(message));
         }
         int msgType = message[0] & 0xff;
-        if (msgType > Msg.HIGH_MSG_TYPE || null == myMsgHandlers[msgType]) {
+        if (Msg.HIGH_MSG_TYPE < msgType || null == myMsgHandlers[msgType]) {
             throw new IOException(
               "No MsgHandler registered for message type=" + msgType);
         }
@@ -1055,7 +1055,7 @@ public final class VatTPConnection {
         myIsIncoming = false;
         myState = RESUMING;
         //Make a list of locations to try for the new connection
-        String path = (myFirstAddressToTry.equals("") ?
+        String path = ("".equals(myFirstAddressToTry) ?
           myFlattenedRemoteSearchPath :
           myFirstAddressToTry + ";" + myFlattenedRemoteSearchPath);
         DynamicMap searchCollection =
@@ -1116,7 +1116,7 @@ public final class VatTPConnection {
             }
             myIncomingDataPath = null;
         }
-        if (remotePort > 0) {
+        if (0 < remotePort) {
             // We know where to retry to resume later
             //it's safe to not check optInetAddress() for null, since
             //remoteNetAddr must explicitly have one
@@ -1252,7 +1252,7 @@ public final class VatTPConnection {
               .eventm("unRegisterMsgHandler=" + msgType + "(" + handler +
                 ") on " + this);
         }
-        if (msgType <= 0 || msgType > Msg.HIGH_MSG_TYPE) {
+        if (0 >= msgType || Msg.HIGH_MSG_TYPE < msgType) {
             Trace.comm
               .errorm("msgType=" + msgType + " out of range (1 .. " + Msg
                 .HIGH_MSG_TYPE);

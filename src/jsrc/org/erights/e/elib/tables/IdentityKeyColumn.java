@@ -35,7 +35,7 @@ class IdentityKeyColumn extends KeyColumn {
     /**
      * Reasonable defaults
      */
-    public IdentityKeyColumn() {
+    IdentityKeyColumn() {
         this(Object.class, FlexMapImpl.DEFAULT_INIT_CAPACITY);
     }
 
@@ -55,21 +55,21 @@ class IdentityKeyColumn extends KeyColumn {
     /**
      * Reasonable defaults
      */
-    public IdentityKeyColumn(int capacity) {
+    IdentityKeyColumn(int capacity) {
         this(Object.class, capacity);
     }
 
     /**
      * Reasonable defaults
      */
-    public IdentityKeyColumn(Class memberType) {
+    IdentityKeyColumn(Class memberType) {
         this(memberType, FlexMapImpl.DEFAULT_INIT_CAPACITY);
     }
 
     /**
      *
      */
-    public IdentityKeyColumn(Class memberType, int capacity) {
+    IdentityKeyColumn(Class memberType, int capacity) {
         super(memberType, capacity);
         myMaxProbes = 0;
     }
@@ -110,11 +110,11 @@ class IdentityKeyColumn extends KeyColumn {
         //probeSkip if the first one misses
         Object curKey;
         int status = myPos2Rank[curPos];
-        if (status == KEY_UNUSED) {
+        if (KEY_UNUSED == status) {
             return -1;
         }
         curKey = myKeys[curPos];
-        if (curKey == key && status >= 0) {
+        if (curKey == key && 0 <= status) {
             //we found it
             return curPos;
         }
@@ -130,12 +130,12 @@ class IdentityKeyColumn extends KeyColumn {
                 return -1;
             }
             status = myPos2Rank[curPos];
-            if (status == KEY_UNUSED) {
+            if (KEY_UNUSED == status) {
                 // not in map
                 return -1;
             }
             curKey = myKeys[curPos];
-            if (curKey == key && status >= 0) {
+            if (curKey == key && 0 <= status) {
                 //we found it
                 return curPos;
             }
@@ -157,15 +157,15 @@ class IdentityKeyColumn extends KeyColumn {
         for (; ;) {
             Object curKey = myKeys[curPos];
             int status = myPos2Rank[curPos];
-            if (status == KEY_UNUSED) {
-                if (firstVacant != -1) {
+            if (KEY_UNUSED == status) {
+                if (-1 != firstVacant) {
                     return occupy(firstVacant, key);
                 } else {
                     return occupy(curPos, key);
                 }
-            } else if (status == KEY_DELETED) {
+            } else if (KEY_DELETED == status) {
                 //the pos is vacant
-                if (firstVacant == -1) {
+                if (-1 == firstVacant) {
                     // we found the first vacant pos of the search
                     // path. It'll be used if the element isn't
                     // eventually found
@@ -182,7 +182,7 @@ class IdentityKeyColumn extends KeyColumn {
             if (curPos == initialProbe) {
                 // we wrapped. Either we passed a deleted pos or
                 // there's no room in the map
-                if (firstVacant != -1) {
+                if (-1 != firstVacant) {
                     return occupy(firstVacant, key);
                 } else {
                     return -1;

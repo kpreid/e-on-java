@@ -121,13 +121,13 @@ public final class QPairSeq extends QAstroArg {
                               int[] index) {
         int leftNum =
           myLeft.matchBindSlice(args, specimenList, bindings, index);
-        if (leftNum <= -1) {
+        if (-1 >= leftNum) {
             return -1;
         }
         specimenList = specimenList.run(leftNum, specimenList.size());
         int rightNum =
           myRight.matchBindSlice(args, specimenList, bindings, index);
-        if (rightNum <= -1) {
+        if (-1 >= rightNum) {
             return -1;
         }
         return leftNum + rightNum;
@@ -138,7 +138,7 @@ public final class QPairSeq extends QAstroArg {
      * my two parts.
      */
     public int getHeight() {
-        if (myHeight <= 0) {
+        if (0 >= myHeight) {
             myHeight = StrictMath.max(myLeft.getHeight(), myRight.getHeight());
         }
         return myHeight;
@@ -149,7 +149,7 @@ public final class QPairSeq extends QAstroArg {
      */
     public void prettyPrintOn(TextWriter out) throws IOException {
         int h = getHeight();
-        if (h <= 0) {
+        if (0 >= h) {
             T.fail("internal: bad height " + h);
         }
         myLeft.prettyPrintOn(out);
