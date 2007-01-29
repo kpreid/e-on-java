@@ -24,7 +24,7 @@ class ObjDecl {
 
     private final String myDocComment;
 
-    private final Pattern myOptOName;
+    private final Pattern[] myOptOName;
 
     private final EExpr[] mySupers;
 
@@ -37,7 +37,7 @@ class ObjDecl {
      */
     private ObjDecl(SourceSpan optSpan,
                     String docComment,
-                    Pattern optOName,
+                    Pattern[] optOName,
                     EExpr[] supers,
                     EExpr[] auditors,
                     EScriptDecl optScript) {
@@ -66,18 +66,18 @@ class ObjDecl {
     /**
      *
      */
-    Pattern getOptOName() {
+    Pattern[] getOptOName() {
         return myOptOName;
     }
 
     /**
      *
      */
-    Pattern getOName() {
+    Pattern[] getOName() {
 //        T.notNull(myOptOName,
 //                  "Internal: Missing qualified name");
         if (null == myOptOName) {
-            return new IgnorePattern(null, null, null);
+            return new Pattern[]{new IgnorePattern(null, null, null)};
         } else {
             return myOptOName;
         }
@@ -92,7 +92,7 @@ class ObjDecl {
         } else if (1 == mySupers.length) {
             return mySupers[0];
         } else {
-            T.fail("Only single inheritance allowed: " + this);
+            T.fail("Only single inheritance allowed: " + mySupers[1]);
             return null; // make compiler happy
         }
     }
@@ -148,7 +148,7 @@ class ObjDecl {
     ObjDecl withOName(Object oName) {
         return new ObjDecl(myOptSpan,
                            myDocComment,
-                           (Pattern)oName,
+                           (Pattern[])oName,
                            mySupers,
                            myAuditors,
                            myOptScript);

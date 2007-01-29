@@ -262,10 +262,16 @@ public interface EBuilder extends BaseEBuilder {
      * @param mBody      The body of the for-loop.
      * @param optCatcher The optional
      *                   <pre>    &quot;catch&quot; <i>pattern</i
+     *                   <p/>
+     *                   <p/>
+     *                                       >
+     *                   <p/>
+     *                                                       &quot;{&quot;
      *
-     *                      >
-     *                                     &quot;{&quot; <i>eExpr</i>
-     *                                                       &quot;}&quot;</pre>
+     *                   <i>eExpr</i>
+     *                   <p/>
+     *
+     *                   &quot;}&quot;</pre>
      *                   following the for loop for receiving the break
      *                   argument.
      * @return The expression for computing the for-loop.
@@ -610,13 +616,16 @@ public interface EBuilder extends BaseEBuilder {
     /**
      *
      */
-    EExpr oType(Object doco, Object oName, Object typeParams, Object mTypes);
+    EExpr oType(Object doco,
+                Object optOName,
+                Object typeParams,
+                Object mTypes);
 
     /**
      *
      */
     EExpr oType(Object doco,
-                Object oName,
+                Object optOName,
                 Object typeParams,
                 Object optAudit,
                 Object decl,
@@ -723,10 +732,30 @@ public interface EBuilder extends BaseEBuilder {
     Pattern suchThat(Object pattern, Object condExpr);
 
     /**
-     * Binds (resolves) a forward declaration. <p>
+     *
+     */
+    Pattern finalPattern(Object atom);
+
+    /**
+     *
+     */
+    Pattern varPattern(Object atom);
+
+    /**
+     *
+     */
+    Pattern slotPattern(Object atom);
+
+    /**
+     *
+     */
+    Pattern ignore();
+
+    /**
+     * Binds (resolves) a forward declaration.
      * <p/>
-     * "bind name" expands to <pre>
-     *     via (__bind(name__Resolver)) _
+     * "bind foo" expands to <pre>
+     *     via (__bind(foo__Resolver)) _
      * </pre>
      */
     Pattern bindDefiner(Object identOrStr);
@@ -739,6 +768,32 @@ public interface EBuilder extends BaseEBuilder {
      * </pre>
      */
     Pattern bindDefiner(Object identOrStr, Object optGuardExpr);
+
+    /**
+     *
+     */
+    Pattern[] finalOName(Object atom);
+
+    /**
+     *
+     */
+    Pattern[] varOName(Object atom);
+
+    /**
+     *
+     */
+    Pattern[] ignoreOName();
+
+    /**
+     * Like {@link #bindDefiner(Object)}, but when used as the oName of an
+     * object definition expression, causes
+     * <pre>    bind foo {}</pre>
+     * to expand to
+     * <pre>    def via (__bind(foo__Resolver)) _ := {def foo {}}</pre>
+     * rather than
+     * <pre>    def via (__bind(foo__Resolver)) _ := def _ {}</pre>
+     */
+    Pattern[] bindOName(Object identOrStr);
 
     /**
      * Expands to
@@ -766,7 +821,10 @@ public interface EBuilder extends BaseEBuilder {
     /**
      *
      */
-    Pattern callPattern(Object target, Object poser, String verb, Object params);
+    Pattern callPattern(Object target,
+                        Object poser,
+                        String verb,
+                        Object params);
 
     /**
      *

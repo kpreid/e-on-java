@@ -2932,19 +2932,19 @@ case 218:
 break;
 case 219:
 //#line 854 "e.y"
-{ yyval = b.finalPattern(val_peek(0)); }
+{ yyval = b.finalOName(val_peek(0)); }
 break;
 case 220:
 //#line 855 "e.y"
-{ yyval = b.ignore(); }
+{ yyval = b.ignoreOName(); }
 break;
 case 221:
 //#line 856 "e.y"
-{ yyval = b.bindDefiner(val_peek(0)); }
+{ yyval = b.bindOName(val_peek(0)); }
 break;
 case 222:
 //#line 857 "e.y"
-{ yyval = b.varPattern(val_peek(0)); }
+{ yyval = b.varOName(val_peek(0)); }
 break;
 case 223:
 //#line 858 "e.y"
@@ -3020,11 +3020,11 @@ case 244:
 break;
 case 245:
 //#line 955 "e.y"
-{ yyval = b.bindDefiner(val_peek(0)); }
+{ yyval = b.bindOName(val_peek(0)); }
 break;
 case 246:
 //#line 956 "e.y"
-{ yyval = b.varPattern(val_peek(0)); }
+{ yyval = b.varOName(val_peek(0)); }
 break;
 case 247:
 //#line 963 "e.y"
@@ -3199,7 +3199,7 @@ case 295:
 //#line 1150 "e.y"
 { /* Binds bind __return ?? */
                                   b.pocket(val_peek(0),"easy-when");
-                                  yyval = b.list(ODECL.withOName(b.ignore()),
+                                  yyval = b.list(ODECL.withOName(b.ignoreOName()),
                                               null, null, val_peek(0),
                                               Boolean.FALSE); }
 break;

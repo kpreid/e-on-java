@@ -1,0 +1,122 @@
+#!/usr/bin/env rune
+
+Copyright 2007 Hewlett Packard, under the terms of the MIT X license
+found at http://www.opensource.org/licenses/mit-license.html ..................
+
+Fixes
+https://sourceforge.net/tracker/index.php?func=detail&aid=1605800&group_id=75274&atid=551529
+
+# ? rune(["~/e/src/esrc/scripts/test/updoc/bind-expansion.updoc"])
+
+    ? pragma.syntax("0.9")
+
+    ? interp.setExpand(true)
+    ? def foo
+    # expansion: def [foo, foo__Resolver] := Ref.promise()
+    #            foo__Resolver
+
+    # value: <Resolver>
+
+    ? bind foo {}
+    # expansion: def via (__bind.run(foo__Resolver)) _ := {
+    #                def foo {
+    #                }
+    #            }
+
+    # value: <foo>
+
+    ? def foo
+    # expansion: def [foo, foo__Resolver] := Ref.promise()
+    #            foo__Resolver
+
+    # value: <Resolver>
+
+    ? bind foo extends 3 {}
+    # expansion: def via (__bind.run(foo__Resolver)) _ := {
+    #                def foo := {
+    #                    def super := 3
+    #                    def foo {
+    #                        match pair__1 {
+    #                            E.callWithPair(super, pair__1)
+    #                        }
+    #                    }
+    #                }
+    #            }
+
+    # value: <foo>
+
+    ? var foo() { return foo }
+    # expansion: def var foo {
+    #
+    #                method run() {
+    #                    escape __return {
+    #                        __return.run(foo)
+    #                        null
+    #                    }
+    #                }
+    #            }
+
+    # value: <foo>
+
+    ? def bar := foo
+    # expansion: def bar := foo
+
+    # value: <foo>
+
+    ? bar()
+    # expansion: bar.run()
+
+    # value: <foo>
+
+    ? foo := "x"
+    # expansion: foo := "x"
+
+    # value: "x"
+
+    ? bar()
+    # expansion: bar.run()
+
+    # value: "x"
+
+    ? def foo
+    # expansion: def [foo, foo__Resolver] := Ref.promise()
+    #            foo__Resolver
+
+    # value: <Resolver>
+
+    ? interface bind foo {}
+    # expansion: def via (__bind.run(foo__Resolver)) _ := {
+    #                __makeProtocolDesc.run(\
+    #                    "", \
+    #                    meta.context().getFQNPrefix().add("foo__T"), \
+    #                    __makeList.run(), \
+    #                    __makeList.run(), \
+    #                    __makeList.run())
+    #            }
+
+    # value: foo
+
+    ? def foo
+    # expansion: def [foo, foo__Resolver] := Ref.promise()
+    #            foo__Resolver
+
+    # value: <Resolver>
+
+    ? def bar
+    # expansion: def [bar, bar__Resolver] := Ref.promise()
+    #            bar__Resolver
+
+    # value: <Resolver>
+
+    ? interface bind foo guards bind bar {}
+    # expansion: (def [via (__bind.run(foo__Resolver)) _, \
+    #                  via (__bind.run(bar__Resolver)) _] := {
+    #                __makeProtocolDesc.makePair(\
+    #                    "", \
+    #                    meta.context().getFQNPrefix().add("foo__T"), \
+    #                    __makeList.run(), \
+    #                    __makeList.run(), \
+    #                    __makeList.run())
+    #            }).get(0)
+
+    # value: foo

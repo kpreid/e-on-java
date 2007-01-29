@@ -516,8 +516,8 @@ public class ENodeBuilder extends BaseENodeBuilder implements EBuilder {
                         return NULL;
                     } else if ("false" == propVal) {
                         syntaxError(verb,
-                                    "The optional " + propName +
-                                      " feature " + Rune.SYN_PROPS_EXPLAIN +
+                                    "The optional " + propName + " feature " +
+                                      Rune.SYN_PROPS_EXPLAIN +
                                       " is currently not 'allow'ed.");
                     }
                 } else if ("warn" == verbStr) {
@@ -538,8 +538,8 @@ public class ENodeBuilder extends BaseENodeBuilder implements EBuilder {
                         return NULL;
                     } else if ("false" == propVal) {
                         syntaxError(verb,
-                                    "The optional " + propName +
-                                      " feature " + Rune.SYN_PROPS_EXPLAIN +
+                                    "The optional " + propName + " feature " +
+                                      Rune.SYN_PROPS_EXPLAIN +
                                       " is currently not 'allow'ed.");
                     }
                 } else if ("disable" == verbStr) {
@@ -754,24 +754,6 @@ public class ENodeBuilder extends BaseENodeBuilder implements EBuilder {
     }
 
     /**
-     *
-     */
-    public Pattern finalPattern(Object atom) {
-
-        if (atom instanceof QuasiLiteralExpr) {
-            QuasiLiteralExpr qle = (QuasiLiteralExpr)atom;
-            return new QuasiLiteralPatt(qle.getOptSpan(), qle.index(), null);
-
-        } else if (atom instanceof QuasiPatternExpr) {
-            QuasiPatternExpr qpe = (QuasiPatternExpr)atom;
-            return new QuasiPatternPatt(qpe.getOptSpan(), qpe.index(), null);
-
-        } else {
-            return super.finalPattern(atom);
-        }
-    }
-
-    /**
      * When a dollar-hole is '$<ident>'
      */
     public EExpr dollarNoun(Object token) {
@@ -940,7 +922,7 @@ public class ENodeBuilder extends BaseENodeBuilder implements EBuilder {
                                          null)));
 
         EExpr closure = object(" For-loop body ",
-                               ignore(),
+                               ignoreOName(),
                                null,
                                NO_EEXPRS,
                                methScriptDecl(mpatt, body, false));
@@ -1236,7 +1218,7 @@ public class ENodeBuilder extends BaseENodeBuilder implements EBuilder {
     public ObjDecl fnDecl(Object poser, Object params, Object bodyExpr) {
         return methDecl(methHead(poser, "run", params, null),
                         bodyExpr,
-                        false).withOName(ignore());
+                        false).withOName(ignoreOName());
     }
 
     /**
@@ -1294,18 +1276,14 @@ public class ENodeBuilder extends BaseENodeBuilder implements EBuilder {
                       decl.getOptScript());
     }
 
-    /**
-     *
-     */
     private EExpr object(String docComment,
-                         Pattern oName,
+                         Pattern[] oName,
                          EExpr optSuperExpr,
                          EExpr[] impls,
                          EScriptDecl script) {
         T.notNull(oName, "Internal: missing qualified name");
-        String optName = oName.getOptName();
-        if (oName instanceof GuardedPattern) {
-            GuardedPattern guarded = (GuardedPattern)oName;
+        if (1 == oName.length) {
+            GuardedPattern guarded = (GuardedPattern)oName[0];
             if (null != guarded.getOptGuardExpr()) {
                 syntaxError(guarded, "self-variable may not be guarded");
             }
@@ -1320,11 +1298,13 @@ public class ENodeBuilder extends BaseENodeBuilder implements EBuilder {
             script = script.withMatcher(delegatex(noun("super")));
             EExpr defobj = sequence(kdef(finalPattern("super"), optSuperExpr),
                                     object(docComment,
-                                           guarded,
+                                           oName,
                                            null,
                                            impls,
                                            script));
             if (guarded instanceof VarPattern) {
+                String optName = guarded.getOptName();
+                T.notNull(optName, "internal");
                 NounExpr self = noun(optName);
                 return sequence(define(slotPattern(optName),
                                        hide(sequence(defobj,
@@ -1332,16 +1312,17 @@ public class ENodeBuilder extends BaseENodeBuilder implements EBuilder {
                                                               self)))), self);
             }
             return define(guarded, hide(defobj));
+        } else if (2 == oName.length) {
+            return define(oName[0],
+                          hide(object(docComment,
+                                      new Pattern[]{oName[1]},
+                                      optSuperExpr,
+                                      impls,
+                                      script)));
+        } else {
+            T.fail("internal: Unexpected oName: " + E.toString(oName));
+            return null; // make the compiler happy
         }
-        // XXX This expands "bind oname {" to "bind oname := def _ {"
-        // XXX rather than "bind oname := def oname {". However, the latter
-        // XXX would require recovering the oname from a bind pattern.
-        return define(oName,
-                      object(docComment,
-                             ignore(),
-                             optSuperExpr,
-                             impls,
-                             script));
     }
 
     /**
@@ -1622,7 +1603,7 @@ public class ENodeBuilder extends BaseENodeBuilder implements EBuilder {
         EExpr meth = doco(" While loop body ",
                           methDecl(methHead(NO_POSER, "run", list(), BOOLEAN),
                                    methBody,
-                                   false).withOName(ignore()));
+                                   false).withOName(ignoreOName()));
 
         return escape(finalPattern("__break"),
                       call(LOOP, NO_POSER, "run", list(meth)),
@@ -1814,7 +1795,7 @@ public class ENodeBuilder extends BaseENodeBuilder implements EBuilder {
      */
     public EExpr whenSeq(Object exprs, Object poser, Object whenRest) {
         return whenList(optExprs(exprs),
-                        ObjDecl.EMPTY.withOName(ignore()),
+                        ObjDecl.EMPTY.withOName(ignoreOName()),
                         poser,
                         null,
                         null,
@@ -1828,24 +1809,24 @@ public class ENodeBuilder extends BaseENodeBuilder implements EBuilder {
      *
      */
     public EExpr oType(Object doco,
-                       Object oName,
+                       Object optOName,
                        Object typeParams,
                        Object mTypes) {
-        return oType(doco, oName, typeParams, null, ObjDecl.EMPTY, mTypes);
+        return oType(doco, optOName, typeParams, null, ObjDecl.EMPTY, mTypes);
     }
 
     /**
      *
      */
     public EExpr oType(Object doco,
-                       Object oName,
+                       Object optOName,
                        Object typeParams,
                        Object optAudit,
                        Object decl,
                        Object mTypes) {
         ObjDecl objDecl = (ObjDecl)decl;
         return oType(literal(docComment(doco)),
-                     oName,
+                     optOName,
                      optPatterns(typeParams),
                      (Pattern)optAudit,
                      tuple(objDecl.getSupers()),
@@ -1857,37 +1838,36 @@ public class ENodeBuilder extends BaseENodeBuilder implements EBuilder {
      *
      */
     private EExpr oType(LiteralExpr docComment,
-                        Object oName,
+                        Object optOName,
                         Pattern[] typeParams,
                         Pattern optAuditorPatt,
                         EExpr superTuple,
                         EExpr auditorTuple,
                         EExpr msgTuple) {
-        if (oName instanceof EExpr) {
+        if (optOName instanceof EExpr) {
             //base case 1
             return oTypeBase(docComment,
                              null,
                              typeParams,
                              optAuditorPatt,
-                             forValue(oName, null),
+                             forValue(optOName, null),
                              superTuple,
                              auditorTuple,
                              msgTuple);
 
-        } else if (oName instanceof String) {
+        } else if (optOName instanceof String) {
             return oType(docComment,
-                         literal(oName),
+                         literal(optOName),
                          typeParams,
                          optAuditorPatt,
                          superTuple,
                          auditorTuple,
                          msgTuple);
 
-        } else if (EParser.isLiteralToken(oName)) {
-            Object qualifiedName = ((Astro)oName).getOptString();
+        } else if (EParser.isLiteralToken(optOName)) {
+            String qualifiedName = ((Astro)optOName).getOptString();
             T.notNull(qualifiedName,
-                      "Internal: Missing qualified name: ",
-                      oName);
+                      "Internal: Missing qualified name: ", optOName);
             return oType(docComment,
                          literal(qualifiedName),
                          typeParams,
@@ -1898,8 +1878,9 @@ public class ENodeBuilder extends BaseENodeBuilder implements EBuilder {
 
         } else {
             //base case 2
-            Pattern guardPatt = (Pattern)oName;
-            String optName = guardPatt.getOptName();
+            Pattern[] oName = (Pattern[])optOName;
+            // The name is derived from the last oName
+            String optName = oName[oName.length-1].getOptName();
             EExpr qualName;
             if (null == optName) {
                 qualName = literal("_");
@@ -1909,8 +1890,11 @@ public class ENodeBuilder extends BaseENodeBuilder implements EBuilder {
             qualName = call(call(doMeta("meta", "context", list()),
                                  "getFQNPrefix",
                                  list()), "add", list(qualName));
+            // XXX Should we also have some meta way of declaring that this
+            // qualName (with a "$") is the new fqnPrefix within the interface
+            // expression?
             return oTypeBase(docComment,
-                             guardPatt,
+                             oName[0], // Match only the first oName pattern
                              typeParams,
                              optAuditorPatt,
                              qualName,
@@ -1924,7 +1908,7 @@ public class ENodeBuilder extends BaseENodeBuilder implements EBuilder {
      *
      */
     private EExpr oTypeBase(LiteralExpr docComment,
-                            Pattern optGuardPatt,
+                            Pattern optOPatt,
                             Pattern[] typeParams,
                             Pattern optAuditorPatt,
                             EExpr qualName,
@@ -1935,19 +1919,19 @@ public class ENodeBuilder extends BaseENodeBuilder implements EBuilder {
         EList args =
           list(docComment, qualName, superTuple, auditorTuple, msgTuple);
         if (null == optAuditorPatt) {
-            if (null == optGuardPatt) {
+            if (null == optOPatt) {
                 return hide(typeParams,
                             call(MAKE_PROT, NO_POSER, "run", args));
             } else {
-                return define(optGuardPatt,
+                return define(optOPatt,
                               hide(typeParams,
                                    call(MAKE_PROT, NO_POSER, "run", args)));
             }
         } else {
-            if (null == optGuardPatt) {
-                optGuardPatt = ignore();
+            if (null == optOPatt) {
+                optOPatt = ignore();
             }
-            return call(define(listPattern(list(optGuardPatt, optAuditorPatt)),
+            return call(define(listPattern(list(optOPatt, optAuditorPatt)),
                                hide(typeParams,
                                     call(MAKE_PROT,
                                          NO_POSER,
@@ -2080,13 +2064,37 @@ public class ENodeBuilder extends BaseENodeBuilder implements EBuilder {
     /**
      *
      */
+    public Pattern finalPattern(Object atom) {
+
+        if (atom instanceof QuasiLiteralExpr) {
+            QuasiLiteralExpr qle = (QuasiLiteralExpr)atom;
+            return new QuasiLiteralPatt(qle.getOptSpan(), qle.index(), null);
+
+        } else if (atom instanceof QuasiPatternExpr) {
+            QuasiPatternExpr qpe = (QuasiPatternExpr)atom;
+            return new QuasiPatternPatt(qpe.getOptSpan(), qpe.index(), null);
+
+        } else {
+            return finalPattern(atom, null);
+        }
+    }
+
+    public Pattern varPattern(Object atom) {
+        return varPattern(atom, null);
+    }
+
+    public Pattern slotPattern(Object atom) {
+        return slotPattern(atom, null);
+    }
+
+    public Pattern ignore() {
+        return ignore(null);
+    }
+
     public Pattern bindDefiner(Object identOrStr) {
         return bindDefiner(identOrStr, null);
     }
 
-    /**
-     *
-     */
     public Pattern bindDefiner(Object identOrStr, Object optGuardExpr) {
         Astro name = ident(identOrStr);
         Astro nameR = mangle(name, "__Resolver");
@@ -2097,6 +2105,24 @@ public class ENodeBuilder extends BaseENodeBuilder implements EBuilder {
             args = list(noun(nameR), optGuardExpr);
         }
         return via(call(__BIND, identOrStr, "run", args), ignore());
+    }
+
+    public Pattern[] finalOName(Object atom) {
+        return new Pattern[]{finalPattern(atom)};
+    }
+
+    public Pattern[] varOName(Object atom) {
+        return new Pattern[]{varPattern(atom)};
+    }
+
+    public Pattern[] ignoreOName() {
+        return new Pattern[]{ignore()};
+    }
+
+    public Pattern[] bindOName(Object identOrStr) {
+        // XXX BUG: Need to expand to something else
+        return new Pattern[]{bindDefiner(identOrStr),
+          finalPattern(identOrStr)};
     }
 
     /**
@@ -2147,27 +2173,33 @@ public class ENodeBuilder extends BaseENodeBuilder implements EBuilder {
         return super.ifx(condExpr, thenExpr, elseExpr);
     }
 
-    public EExpr forValue(Object expr, StaticScope optUsed) {
-        if (expr instanceof DelayedExpr) {
-            return ((DelayedExpr)expr).forValue(this, optUsed);
+    public EExpr forValue(Object optExpr, StaticScope optUsed) {
+        if (null == optExpr) {
+            return null;
+        } else if (optExpr instanceof DelayedExpr) {
+            return ((DelayedExpr)optExpr).forValue(this, optUsed);
         } else {
-            return (EExpr)expr;
+            return (EExpr)optExpr;
         }
     }
 
-    public EExpr forFxOnly(Object expr, StaticScope optUsed) {
-        if (expr instanceof DelayedExpr) {
-            return ((DelayedExpr)expr).forFxOnly(this, optUsed);
+    public EExpr forFxOnly(Object optExpr, StaticScope optUsed) {
+        if (null == optExpr) {
+            return null;
+        } else if (optExpr instanceof DelayedExpr) {
+            return ((DelayedExpr)optExpr).forFxOnly(this, optUsed);
         } else {
-            return (EExpr)expr;
+            return (EExpr)optExpr;
         }
     }
 
-    public EExpr forControl(Object expr, Astro optEj, StaticScope optUsed) {
-        if (expr instanceof DelayedExpr) {
-            return ((DelayedExpr)expr).forControl(this, optEj, optUsed);
+    public EExpr forControl(Object optExpr, Astro optEj, StaticScope optUsed) {
+        if (null == optExpr) {
+            return null;
+        } else if (optExpr instanceof DelayedExpr) {
+            return ((DelayedExpr)optExpr).forControl(this, optEj, optUsed);
         } else {
-            return kerneldef(ignore(__TEST), noun(optEj), expr);
+            return kerneldef(ignore(__TEST), noun(optEj), optExpr);
         }
     }
 

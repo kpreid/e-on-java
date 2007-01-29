@@ -559,25 +559,11 @@ public abstract class BaseENodeBuilder implements BaseEBuilder {
     /**
      *
      */
-    public Pattern finalPattern(Object atom) {
-        return finalPattern(atom, null);
-    }
-
-    /**
-     *
-     */
     public Pattern finalPattern(Object atom, Object optGuardExpr) {
         return new FinalPattern(null,
                                 atomic(atom),
                                 forValue(optGuardExpr, null),
                                 null);
-    }
-
-    /**
-     *
-     */
-    public Pattern varPattern(Object atom) {
-        return varPattern(atom, null);
     }
 
     /**
@@ -593,25 +579,11 @@ public abstract class BaseENodeBuilder implements BaseEBuilder {
     /**
      *
      */
-    public Pattern slotPattern(Object atom) {
-        return slotPattern(atom, null);
-    }
-
-    /**
-     *
-     */
     public Pattern slotPattern(Object atom, Object optGuardExpr) {
         return new SlotPattern(null,
                                atomic(atom),
                                forValue(optGuardExpr, null),
                                null);
-    }
-
-    /**
-     *
-     */
-    public Pattern ignore() {
-        return ignore(null);
     }
 
     public Pattern ignore(Object optGuardExpr) {

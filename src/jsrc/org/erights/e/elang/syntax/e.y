@@ -851,10 +851,10 @@ slotNamer:
  * expression
  */
 oName:
-        nounExpr                        { $$ = b.finalPattern($1); }
- |      _                               { $$ = b.ignore(); }
- |      BIND noun                       { $$ = b.bindDefiner($2); }
- |      VAR nounExpr                    { $$ = b.varPattern($2); }
+        nounExpr                        { $$ = b.finalOName($1); }
+ |      _                               { $$ = b.ignoreOName(); }
+ |      BIND noun                       { $$ = b.bindOName($2); }
+ |      VAR nounExpr                    { $$ = b.varOName($2); }
  |      litString                       { b.reserved($1,
                                 "literal qualified name no longer accepted"); }
  ;
@@ -952,8 +952,8 @@ doco:
  */
 defName:
         DEF oName                       { $$ = $2; }
- |      BIND noun                       { $$ = b.bindDefiner($2); }
- |      VAR nounExpr                    { $$ = b.varPattern($2); }
+ |      BIND noun                       { $$ = b.bindOName($2); }
+ |      VAR nounExpr                    { $$ = b.varOName($2); }
  ;
 
 /**
@@ -1149,7 +1149,7 @@ whenTail:
  |                                whenBody
                                 { /* Binds bind __return ?? */
                                   b.pocket($1,"easy-when");
-                                  $$ = b.list(ODECL.withOName(b.ignore()),
+                                  $$ = b.list(ODECL.withOName(b.ignoreOName()),
                                               null, null, $1,
                                               Boolean.FALSE); }
  ;

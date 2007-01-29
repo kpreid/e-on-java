@@ -190,17 +190,7 @@ public interface BaseEBuilder {
     /**
      *
      */
-    Pattern finalPattern(Object atom);
-
-    /**
-     *
-     */
     Pattern finalPattern(Object atom, Object optGuardExpr);
-
-    /**
-     *
-     */
-    Pattern varPattern(Object atom);
 
     /**
      *
@@ -210,17 +200,7 @@ public interface BaseEBuilder {
     /**
      *
      */
-    Pattern slotPattern(Object atom);
-
-    /**
-     *
-     */
     Pattern slotPattern(Object atom, Object optGuardExpr);
-
-    /**
-     *
-     */
-    Pattern ignore();
 
     /**
      *
@@ -240,12 +220,12 @@ public interface BaseEBuilder {
     /**
      *
      */
-    EExpr forValue(Object expr, StaticScope optUsed);
+    EExpr forValue(Object optExpr, StaticScope optUsed);
 
     /**
      *
      */
-    EExpr forFxOnly(Object expr, StaticScope optUsed);
+    EExpr forFxOnly(Object optExpr, StaticScope optUsed);
 
     /**
      * When expr is a {@link DelayedExpr}, then ask it. Otherwise, expand<pre>
@@ -253,7 +233,7 @@ public interface BaseEBuilder {
      * to<pre>
      *    def _ :__Test exit ej := expr</pre>
      */
-    EExpr forControl(Object expr, Astro optEj, StaticScope optUsed);
+    EExpr forControl(Object optExpr, Astro optEj, StaticScope optUsed);
 
     /**
      *
