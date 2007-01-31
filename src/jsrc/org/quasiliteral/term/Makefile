@@ -26,7 +26,12 @@ all:
 	$(BYACCJ) -jv -f TermParser -s Object term.y
 	$(BYACCJ) -jv -f GrammarParser -s Object grammar.y
 
+
 # For interactive grammar development and testing. Not for batch remaking.
 _compile: all
 	$(JCOMPILE) TermParser.java
 	$(JCOMPILE) GrammarParser.java
+
+fix:
+	$(STLE) $(TOP)/src/esrc/scripts/newlines.e TermParser.java
+	$(STLE) $(TOP)/src/esrc/scripts/newlines.e GrammarParser.java

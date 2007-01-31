@@ -60,3 +60,6 @@ all: e.y _parse
 # For interactive grammar development and testing. Not for batch remaking.
 _compile: all
 	$(JCOMPILE) EParser.java
+
+fix:
+	$(STLE) $(TOP)/src/esrc/scripts/newlines.e EParser.java

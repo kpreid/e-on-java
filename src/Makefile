@@ -238,7 +238,7 @@ __interact:
 #
 # All of publish except tarballing and tagging/releasing 
 #
-draft: announce clobber setup all install export
+draft: announce clobber setup all fix install export
 
 #
 # Run after "draft" if the user uses the default target
@@ -265,3 +265,8 @@ _setup:
 #
 publish: ckversion draft tarballs release
 
+fix:
+	(cd jsrc/com/hp/orc; make fix)
+	(cd jsrc/org/erights/e/elang/syntax; make fix)
+	(cd jsrc/org/erights/e/elang/syntax/antlr; make fix)
+	(cd jsrc/org/quasiliteral/term; make fix)

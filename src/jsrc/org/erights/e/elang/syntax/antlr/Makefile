@@ -26,3 +26,6 @@ report: _parse
 	$(STLJ) org.erights.e.elang.syntax.antlr.eMain $(TOP)/../CL-E
 
 all: _parse
+
+fix:
+	$(STLE) $(TOP)/src/esrc/scripts/newlines.e $(CLEANLIST)

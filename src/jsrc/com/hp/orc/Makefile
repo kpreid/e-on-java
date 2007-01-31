@@ -28,3 +28,6 @@ all:
 # For interactive grammar development and testing. Not for batch remaking.
 _compile: all
 	$(JCOMPILE) OrcParser.java
+
+fix:
+	$(STLE) $(TOP)/src/esrc/scripts/newlines.e OrcParser.java
