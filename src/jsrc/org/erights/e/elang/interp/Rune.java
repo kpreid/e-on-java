@@ -46,7 +46,7 @@ public class Rune {
       SYN_PROPS_PATH_PREFIX + MAJOR_VERSION + ".txt";
 
     static public final String SYN_PROPS_EXPLAIN =
-      "(see" + SYN_PROPS_PATH_PREFIX + "default.txt)";
+      "(see " + SYN_PROPS_PATH_PREFIX + "default.txt)";
 
     /**
      * prevent instantiation

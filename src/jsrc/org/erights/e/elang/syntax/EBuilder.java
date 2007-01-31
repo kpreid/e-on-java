@@ -469,26 +469,26 @@ public interface EBuilder extends BaseEBuilder {
     ObjDecl methDecl(Object msgPatt, Object bodyExpr, boolean bindReturn);
 
     /**
-     * Expands to
-     * <pre>
-     *     def _(params,...) :any { bodyExpr }
-     * </pre>
+     * Expands<pre>
+     *     fn params { bodyExpr }</pre>
+     * to<pre>
+     *     def _ { method run(params) { bodyExpr }}</pre>
      */
     ObjDecl fnDecl(Object poser, Object params, Object bodyExpr);
 
     /**
-     * Expands to
-     * <pre>
-     *     recip.sep__control_n(fn params { body })
-     * </pre>
+     * Expands<pre>
+     *     recip sep params { body }</pre>
+     * to<pre>
+     *     recip.sep__control_n[ej](fn params,ej {body})</pre>
      */
     EExpr control(Object recip, Object sep, Object params, Object body);
 
     /**
-     * Expands to
-     * <pre>
-     *     recip.sep__control_n_m(fn {[[args], fn params {body}]})
-     * </pre>
+     * Expands<pre>
+     *     recip (args) sep params { body }</pre>
+     * to<pre>
+     *     recip.sep__control_n_m[ej](fn {[[args], fn params,ej {body}]})</pre>
      */
     EExpr control(Object recip,
                   Object sep,

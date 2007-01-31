@@ -5,17 +5,30 @@
 
 rune(["~/e/src/esrc/org/erights/e/elang/control/makeSeries.updoc"])
 
-The standard example of list comprehensions,
-    [[x,y] for x in (1..6) for y in (1..x) if (x+y < 10)]
-done using series.
-
     ? pragma.syntax("0.9")
     ? pragma.enable("lambda-args")
 
     ? def makeSeries := <elang:control.makeSeries>
 
-    ? makeSeries(1..6).splice(fn x {
-    >     makeSeries(1..x).filter(fn y {x+y < 10}).map(fn y {[x,y]})
+
+The standard example of list comprehensions,
+  [[x,y] for x in (1..6) for y in (1..x) if (x+y < 10)]
+done using series.
+
+    ? makeSeries(1..6).splice(fn x,_ {
+    >     makeSeries(1..x).filter(fn y,_ {x+y < 10}).map(fn y,_ {[x,y]})
+    > }).asList()
+    # value: [[1, 1], [2, 1], [2, 2], \
+    #         [3, 1], [3, 2], [3, 3], [4, 1], [4, 2], [4, 3], [4, 4], \
+    #         [5, 1], [5, 2], [5, 3], [5, 4], [6, 1], [6, 2], [6, 3]]
+
+Again, using __continue explicitly
+
+    ? makeSeries(1..6).splice(fn x,_ {
+    >     makeSeries(1..x).map(fn y,__continue {
+    >         if (!(x+y < 10)) { __continue() }
+    >         [x,y]
+    >     })
     > }).asList()
     # value: [[1, 1], [2, 1], [2, 2], \
     #         [3, 1], [3, 2], [3, 3], [4, 1], [4, 2], [4, 3], [4, 4], \
@@ -23,17 +36,16 @@ done using series.
 
 using ::"for", which uses series:
 
-XXX Doesn't yet work
-#    ? ::"for" (1..6) splice x {
-#    >     ::"for" (1..x) filter y {x+y < 10} map y {[x,y]}
-#    > }
-#    # value: [[1, 1], [2, 1], [2, 2], \
-#    #         [3, 1], [3, 2], [3, 3], [4, 1], [4, 2], [4, 3], [4, 4], \
-#    #         [5, 1], [5, 2], [5, 3], [5, 4], [6, 1], [6, 2], [6, 3]]
+    ? ::"for" (1..6) splice x {
+    >     ::"for" (1..x) map y ? (x + y < 10) {[x,y]}
+    > }
+    # value: [[1, 1], [2, 1], [2, 2], \
+    #         [3, 1], [3, 2], [3, 3], [4, 1], [4, 2], [4, 3], [4, 4], \
+    #         [5, 1], [5, 2], [5, 3], [5, 4], [6, 1], [6, 2], [6, 3]]
 
 The squares below 100.
 
-    ? def x := makeSeries.naturalNums().map(fn x{x*x}).until(fn x {x >= 100})
+    ? def x := makeSeries.naturalNums().map(fn x,_{x*x}).until(fn x,_{x>=100})
     # value: <series>
 
     ? x.asList()
@@ -51,8 +63,8 @@ XXX Doesn't yet work
 #    # value: [0, 1, 4, 9, 16, 25, 36, 49, 64, 81]
 
 Haskell-style quicksort,
-    qsort []     = []
-    qsort (x:xs) = qsort (filter (< x) xs) ++ [x] ++ qsort (filter (>= x) xs)
+  qsort []     = []
+  qsort (x:xs) = qsort (filter (< x) xs) ++ [x] ++ qsort (filter (>= x) xs)
 
     ? def qsort(list) {
     >     return if (list =~ [head] + tail) {
@@ -65,3 +77,11 @@ Haskell-style quicksort,
 
     ? qsort([34, 29, 44, 100, 5])
     # value: [5, 29, 34, 44, 100]
+
+Some folds
+
+    ? makeSeries(2..4).fold(0, fn x,y,_ {x+y})
+    # value: 9
+
+    ? makeSeries(2..4).fold("x", fn x,y,_ {`$x$y`})
+    # value: "x234"

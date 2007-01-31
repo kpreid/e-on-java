@@ -13,13 +13,19 @@ pragma.enable("explicit-result-guard")
 def __try0 {
     to fn__control_0(tryFn) :any {
         def tryControl {
-            to catch__control_1(handlerFn) :any {
+            to catch__control_1ej(handler1Block) :any {
                 def tryCatchControl {
                     to run__control() :any {
                         return try {
                             tryFn()
                         } catch problem {
-                            handlerFn(problem)
+                            escape ej {
+                                handler1Block(problem, ej)
+                            } catch _ {
+                                # We don't care why handler1Block doesn't
+                                # accept problem
+                                throw(problem)
+                            }
                         }
                     }
                     to finally__control_0(finallyFn) :any {

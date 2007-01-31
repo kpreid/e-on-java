@@ -18,11 +18,11 @@ def makeAct() :any {
         to sendOnly(receiver, verb, args) :void {
             E.sendOnly(receiver, verb, args)
         }
-        to callCC__control_0_1(pairThunk) :any {
-            def [_,oneArgFunc] := pairThunk()
+        to callCC__control_0_1ej(compoundFn) :any {
+            def [_, cont1Block] := compoundFn()
             def control {
                 to run__control() {
-                    oneArgFunc(def result)
+                    cont1Block(def result, null)
                     return result
                 }
             }

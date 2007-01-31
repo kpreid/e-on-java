@@ -77,11 +77,11 @@ public EParser(ParserSharedInputState state) {
 }
 
 	public final void start() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST start_AST = null;
-
+		
 		try {      // for error handling
 			{
 			_loop4:
@@ -188,7 +188,7 @@ public EParser(ParserSharedInputState state) {
 			start_AST = (AST)currentAST.root;
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_0);
 			} else {
@@ -197,13 +197,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = start_AST;
 	}
-
+	
 	public final void pragma() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST pragma_AST = null;
-
+		
 		try {      // for error handling
 			AST tmp4_AST = null;
 			tmp4_AST = astFactory.create(LT(1));
@@ -218,7 +218,7 @@ public EParser(ParserSharedInputState state) {
 			pragma_AST = (AST)currentAST.root;
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_1);
 			} else {
@@ -227,13 +227,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = pragma_AST;
 	}
-
+	
 	public final void seq() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST seq_AST = null;
-
+		
 		try {      // for error handling
 			eExpr();
 			astFactory.addASTChild(currentAST, returnAST);
@@ -246,7 +246,7 @@ public EParser(ParserSharedInputState state) {
 				int _cnt16=0;
 				_loop16:
 				do {
-					if ((LINESEP == LA(1) || 86 == LA(1))) {
+					if ((LA(1)==LINESEP||LA(1)==86)) {
 						{
 						switch ( LA(1)) {
 						case 86:
@@ -333,13 +333,13 @@ public EParser(ParserSharedInputState state) {
 						}
 					}
 					else {
-						if (1 <= _cnt16) { break _loop16; } else {throw new NoViableAltException(LT(1), getFilename());}
+						if ( _cnt16>=1 ) { break _loop16; } else {throw new NoViableAltException(LT(1), getFilename());}
 					}
-
+					
 					_cnt16++;
 				} while (true);
 				}
-				if (0 == inputState.guessing) {
+				if ( inputState.guessing==0 ) {
 					seq_AST = (AST)currentAST.root;
 					seq_AST=(AST)astFactory.make( (new ASTArray(2)).add(astFactory.create(SeqExpr)).add(seq_AST));
 					currentAST.root = seq_AST;
@@ -364,7 +364,7 @@ public EParser(ParserSharedInputState state) {
 			seq_AST = (AST)currentAST.root;
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_2);
 			} else {
@@ -373,19 +373,19 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = seq_AST;
 	}
-
+	
 	public final void message() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST message_AST = null;
-
+		
 		try {      // for error handling
 			verb();
 			astFactory.addASTChild(currentAST, returnAST);
 			{
 			boolean synPredMatched190 = false;
-			if (((116 == LA(1)) && (_tokenSet_3.member(LA(2))))) {
+			if (((LA(1)==116) && (_tokenSet_3.member(LA(2))))) {
 				int _m190 = mark();
 				synPredMatched190 = true;
 				inputState.guessing++;
@@ -405,7 +405,7 @@ public EParser(ParserSharedInputState state) {
 				astFactory.addASTChild(currentAST, returnAST);
 			}
 			else if ((_tokenSet_4.member(LA(1))) && (_tokenSet_5.member(LA(2)))) {
-				if (0 == inputState.guessing) {
+				if ( inputState.guessing==0 ) {
 					message_AST = (AST)currentAST.root;
 					message_AST.setType(CurryExpr);
 				}
@@ -413,12 +413,12 @@ public EParser(ParserSharedInputState state) {
 			else {
 				throw new NoViableAltException(LT(1), getFilename());
 			}
-
+			
 			}
 			message_AST = (AST)currentAST.root;
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_4);
 			} else {
@@ -427,13 +427,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = message_AST;
 	}
-
+	
 	public final void metaExpr() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST metaExpr_AST = null;
-
+		
 		try {      // for error handling
 			AST tmp8_AST = null;
 			tmp8_AST = astFactory.create(LT(1));
@@ -448,7 +448,7 @@ public EParser(ParserSharedInputState state) {
 			metaExpr_AST = (AST)currentAST.root;
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_4);
 			} else {
@@ -457,30 +457,30 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = metaExpr_AST;
 	}
-
+	
 	public final void br() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST br_AST = null;
-
+		
 		try {      // for error handling
 			{
 			_loop10:
 			do {
-				if ((LINESEP == LA(1))) {
+				if ((LA(1)==LINESEP)) {
 					match(LINESEP);
 				}
 				else {
 					break _loop10;
 				}
-
+				
 			} while (true);
 			}
 			br_AST = (AST)currentAST.root;
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_6);
 			} else {
@@ -489,13 +489,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = br_AST;
 	}
-
+	
 	public final void eExpr() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST eExpr_AST = null;
-
+		
 		try {      // for error handling
 			switch ( LA(1)) {
 			case QUASIOPEN:
@@ -562,7 +562,7 @@ public EParser(ParserSharedInputState state) {
 			}
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_7);
 			} else {
@@ -571,13 +571,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = eExpr_AST;
 	}
-
+	
 	public final void assign() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST assign_AST = null;
-
+		
 		try {      // for error handling
 			switch ( LA(1)) {
 			case QUASIOPEN:
@@ -627,7 +627,7 @@ public EParser(ParserSharedInputState state) {
 					match(115);
 					assign();
 					astFactory.addASTChild(currentAST, returnAST);
-					if (0 == inputState.guessing) {
+					if ( inputState.guessing==0 ) {
 						assign_AST = (AST)currentAST.root;
 						assign_AST.setType(AssignExpr);
 					}
@@ -651,7 +651,7 @@ public EParser(ParserSharedInputState state) {
 					astFactory.addASTChild(currentAST, returnAST);
 					assign();
 					astFactory.addASTChild(currentAST, returnAST);
-					if (0 == inputState.guessing) {
+					if ( inputState.guessing==0 ) {
 						assign_AST = (AST)currentAST.root;
 						assign_AST=(AST)astFactory.make( (new ASTArray(2)).add(astFactory.create(AssignExpr)).add(assign_AST));
 						currentAST.root = assign_AST;
@@ -669,7 +669,7 @@ public EParser(ParserSharedInputState state) {
 					match(128);
 					{
 					boolean synPredMatched135 = false;
-					if (((116 == LA(1)) && (_tokenSet_3.member(LA(2))))) {
+					if (((LA(1)==116) && (_tokenSet_3.member(LA(2))))) {
 						int _m135 = mark();
 						synPredMatched135 = true;
 						inputState.guessing++;
@@ -695,9 +695,9 @@ public EParser(ParserSharedInputState state) {
 					else {
 						throw new NoViableAltException(LT(1), getFilename());
 					}
-
+					
 					}
-					if (0 == inputState.guessing) {
+					if ( inputState.guessing==0 ) {
 						assign_AST = (AST)currentAST.root;
 						assign_AST=(AST)astFactory.make( (new ASTArray(2)).add(astFactory.create(AssignExpr)).add(assign_AST));
 						currentAST.root = assign_AST;
@@ -748,7 +748,7 @@ public EParser(ParserSharedInputState state) {
 			}
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_10);
 			} else {
@@ -757,13 +757,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = assign_AST;
 	}
-
+	
 	public final void ejector() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST ejector_AST = null;
-
+		
 		try {      // for error handling
 			switch ( LA(1)) {
 			case LITERAL_break:
@@ -778,7 +778,7 @@ public EParser(ParserSharedInputState state) {
 					tmp13_AST = astFactory.create(LT(1));
 					astFactory.makeASTRoot(currentAST, tmp13_AST);
 					match(LITERAL_break);
-					if (0 == inputState.guessing) {
+					if ( inputState.guessing==0 ) {
 						ejector_AST = (AST)currentAST.root;
 						ejector_AST.setType(BreakExpr);
 					}
@@ -790,7 +790,7 @@ public EParser(ParserSharedInputState state) {
 					tmp14_AST = astFactory.create(LT(1));
 					astFactory.makeASTRoot(currentAST, tmp14_AST);
 					match(LITERAL_continue);
-					if (0 == inputState.guessing) {
+					if ( inputState.guessing==0 ) {
 						ejector_AST = (AST)currentAST.root;
 						ejector_AST.setType(ContinueExpr);
 					}
@@ -802,7 +802,7 @@ public EParser(ParserSharedInputState state) {
 					tmp15_AST = astFactory.create(LT(1));
 					astFactory.makeASTRoot(currentAST, tmp15_AST);
 					match(LITERAL_return);
-					if (0 == inputState.guessing) {
+					if ( inputState.guessing==0 ) {
 						ejector_AST = (AST)currentAST.root;
 						ejector_AST.setType(ReturnExpr);
 					}
@@ -816,7 +816,7 @@ public EParser(ParserSharedInputState state) {
 				}
 				{
 				boolean synPredMatched141 = false;
-				if (((116 == LA(1)) && (118 == LA(2)))) {
+				if (((LA(1)==116) && (LA(2)==118))) {
 					int _m141 = mark();
 					synPredMatched141 = true;
 					inputState.guessing++;
@@ -851,7 +851,7 @@ public EParser(ParserSharedInputState state) {
 				else {
 					throw new NoViableAltException(LT(1), getFilename());
 				}
-
+				
 				}
 				ejector_AST = (AST)currentAST.root;
 				break;
@@ -864,7 +864,7 @@ public EParser(ParserSharedInputState state) {
 				match(145);
 				assign();
 				astFactory.addASTChild(currentAST, returnAST);
-				if (0 == inputState.guessing) {
+				if ( inputState.guessing==0 ) {
 					ejector_AST = (AST)currentAST.root;
 					ejector_AST.setType(ReturnExpr);
 				}
@@ -878,7 +878,7 @@ public EParser(ParserSharedInputState state) {
 			}
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_7);
 			} else {
@@ -887,13 +887,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = ejector_AST;
 	}
-
+	
 	public final void basic() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST basic_AST = null;
-
+		
 		try {      // for error handling
 			switch ( LA(1)) {
 			case LITERAL_if:
@@ -966,7 +966,7 @@ public EParser(ParserSharedInputState state) {
 			}
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_4);
 			} else {
@@ -975,13 +975,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = basic_AST;
 	}
-
+	
 	public final void ifExpr() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST ifExpr_AST = null;
-
+		
 		try {      // for error handling
 			AST tmp19_AST = null;
 			tmp19_AST = astFactory.create(LT(1));
@@ -1092,14 +1092,14 @@ public EParser(ParserSharedInputState state) {
 			}
 			}
 			}
-			if (0 == inputState.guessing) {
+			if ( inputState.guessing==0 ) {
 				ifExpr_AST = (AST)currentAST.root;
 				ifExpr_AST.setType(IfExpr);
 			}
 			ifExpr_AST = (AST)currentAST.root;
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_4);
 			} else {
@@ -1108,13 +1108,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = ifExpr_AST;
 	}
-
+	
 	public final void forExpr() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST forExpr_AST = null;
-
+		
 		try {      // for error handling
 			AST tmp21_AST = null;
 			tmp21_AST = astFactory.create(LT(1));
@@ -1211,14 +1211,14 @@ public EParser(ParserSharedInputState state) {
 			}
 			}
 			}
-			if (0 == inputState.guessing) {
+			if ( inputState.guessing==0 ) {
 				forExpr_AST = (AST)currentAST.root;
 				forExpr_AST.setType(ForExpr);
 			}
 			forExpr_AST = (AST)currentAST.root;
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_4);
 			} else {
@@ -1227,13 +1227,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = forExpr_AST;
 	}
-
+	
 	public final void whileExpr() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST whileExpr_AST = null;
-
+		
 		try {      // for error handling
 			AST tmp23_AST = null;
 			tmp23_AST = astFactory.create(LT(1));
@@ -1325,14 +1325,14 @@ public EParser(ParserSharedInputState state) {
 			}
 			}
 			}
-			if (0 == inputState.guessing) {
+			if ( inputState.guessing==0 ) {
 				whileExpr_AST = (AST)currentAST.root;
 				whileExpr_AST.setType(WhileExpr);
 			}
 			whileExpr_AST = (AST)currentAST.root;
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_4);
 			} else {
@@ -1341,13 +1341,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = whileExpr_AST;
 	}
-
+	
 	public final void switchExpr() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST switchExpr_AST = null;
-
+		
 		try {      // for error handling
 			AST tmp24_AST = null;
 			tmp24_AST = astFactory.create(LT(1));
@@ -1359,7 +1359,7 @@ public EParser(ParserSharedInputState state) {
 			{
 			_loop45:
 			do {
-				if ((LITERAL_match == LA(1))) {
+				if ((LA(1)==LITERAL_match)) {
 					matcher();
 					astFactory.addASTChild(currentAST, returnAST);
 					br();
@@ -1368,18 +1368,18 @@ public EParser(ParserSharedInputState state) {
 				else {
 					break _loop45;
 				}
-
+				
 			} while (true);
 			}
 			match(RCURLY);
-			if (0 == inputState.guessing) {
+			if ( inputState.guessing==0 ) {
 				switchExpr_AST = (AST)currentAST.root;
 				switchExpr_AST.setType(SwitchExpr);
 			}
 			switchExpr_AST = (AST)currentAST.root;
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_4);
 			} else {
@@ -1388,13 +1388,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = switchExpr_AST;
 	}
-
+	
 	public final void tryExpr() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST tryExpr_AST = null;
-
+		
 		try {      // for error handling
 			AST tmp27_AST = null;
 			tmp27_AST = astFactory.create(LT(1));
@@ -1405,14 +1405,14 @@ public EParser(ParserSharedInputState state) {
 			{
 			_loop48:
 			do {
-				if ((LITERAL_catch == LA(1))) {
+				if ((LA(1)==LITERAL_catch)) {
 					catcher();
 					astFactory.addASTChild(currentAST, returnAST);
 				}
 				else {
 					break _loop48;
 				}
-
+				
 			} while (true);
 			}
 			{
@@ -1498,14 +1498,14 @@ public EParser(ParserSharedInputState state) {
 			}
 			}
 			}
-			if (0 == inputState.guessing) {
+			if ( inputState.guessing==0 ) {
 				tryExpr_AST = (AST)currentAST.root;
 				tryExpr_AST.setType(TryExpr);
 			}
 			tryExpr_AST = (AST)currentAST.root;
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_4);
 			} else {
@@ -1514,13 +1514,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = tryExpr_AST;
 	}
-
+	
 	public final void escapeExpr() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST escapeExpr_AST = null;
-
+		
 		try {      // for error handling
 			AST tmp29_AST = null;
 			tmp29_AST = astFactory.create(LT(1));
@@ -1612,14 +1612,14 @@ public EParser(ParserSharedInputState state) {
 			}
 			}
 			}
-			if (0 == inputState.guessing) {
+			if ( inputState.guessing==0 ) {
 				escapeExpr_AST = (AST)currentAST.root;
 				escapeExpr_AST.setType(EscapeExpr);
 			}
 			escapeExpr_AST = (AST)currentAST.root;
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_4);
 			} else {
@@ -1628,13 +1628,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = escapeExpr_AST;
 	}
-
+	
 	public final void whenExpr() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST whenExpr_AST = null;
-
+		
 		try {      // for error handling
 			AST tmp30_AST = null;
 			tmp30_AST = astFactory.create(LT(1));
@@ -1648,14 +1648,14 @@ public EParser(ParserSharedInputState state) {
 			{
 			_loop34:
 			do {
-				if ((LITERAL_catch == LA(1))) {
+				if ((LA(1)==LITERAL_catch)) {
 					catcher();
 					astFactory.addASTChild(currentAST, returnAST);
 				}
 				else {
 					break _loop34;
 				}
-
+				
 			} while (true);
 			}
 			{
@@ -1744,14 +1744,14 @@ public EParser(ParserSharedInputState state) {
 			}
 			}
 			}
-			if (0 == inputState.guessing) {
+			if ( inputState.guessing==0 ) {
 				whenExpr_AST = (AST)currentAST.root;
 				whenExpr_AST.setType(WhenExpr);
 			}
 			whenExpr_AST = (AST)currentAST.root;
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_4);
 			} else {
@@ -1760,13 +1760,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = whenExpr_AST;
 	}
-
+	
 	public final void accumExpr() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST accumExpr_AST = null;
-
+		
 		try {      // for error handling
 			AST tmp33_AST = null;
 			tmp33_AST = astFactory.create(LT(1));
@@ -1779,7 +1779,7 @@ public EParser(ParserSharedInputState state) {
 			accumExpr_AST = (AST)currentAST.root;
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_4);
 			} else {
@@ -1788,13 +1788,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = accumExpr_AST;
 	}
-
+	
 	public final void parenExpr() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST parenExpr_AST = null;
-
+		
 		try {      // for error handling
 			match(116);
 			seq();
@@ -1803,7 +1803,7 @@ public EParser(ParserSharedInputState state) {
 			parenExpr_AST = (AST)currentAST.root;
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_11);
 			} else {
@@ -1812,13 +1812,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = parenExpr_AST;
 	}
-
+	
 	public final void body() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST body_AST = null;
-
+		
 		try {      // for error handling
 			match(97);
 			{
@@ -1887,7 +1887,7 @@ public EParser(ParserSharedInputState state) {
 			body_AST = (AST)currentAST.root;
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_12);
 			} else {
@@ -1896,13 +1896,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = body_AST;
 	}
-
+	
 	public final void forPatt() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST forPatt_AST = null;
-
+		
 		try {      // for error handling
 			pattern();
 			astFactory.addASTChild(currentAST, returnAST);
@@ -1913,7 +1913,7 @@ public EParser(ParserSharedInputState state) {
 				match(94);
 				pattern();
 				astFactory.addASTChild(currentAST, returnAST);
-				if (0 == inputState.guessing) {
+				if ( inputState.guessing==0 ) {
 					forPatt_AST = (AST)currentAST.root;
 					forPatt_AST=(AST)astFactory.make( (new ASTArray(2)).add(astFactory.create(ListPattern,"=>")).add(forPatt_AST));
 					currentAST.root = forPatt_AST;
@@ -1925,7 +1925,7 @@ public EParser(ParserSharedInputState state) {
 			}
 			case LITERAL_in:
 			{
-				if (0 == inputState.guessing) {
+				if ( inputState.guessing==0 ) {
 					forPatt_AST = (AST)currentAST.root;
 					forPatt_AST=(AST)astFactory.make( (new ASTArray(3)).add(astFactory.create(ListPattern,"=>")).add(astFactory.create(IgnorePattern,"")).add(forPatt_AST));
 					currentAST.root = forPatt_AST;
@@ -1944,7 +1944,7 @@ public EParser(ParserSharedInputState state) {
 			forPatt_AST = (AST)currentAST.root;
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_13);
 			} else {
@@ -1953,13 +1953,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = forPatt_AST;
 	}
-
+	
 	public final void catcher() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST catcher_AST = null;
-
+		
 		try {      // for error handling
 			AST tmp39_AST = null;
 			tmp39_AST = astFactory.create(LT(1));
@@ -1972,7 +1972,7 @@ public EParser(ParserSharedInputState state) {
 			catcher_AST = (AST)currentAST.root;
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_14);
 			} else {
@@ -1981,13 +1981,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = catcher_AST;
 	}
-
+	
 	public final void pattern() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST pattern_AST = null;
-
+		
 		try {      // for error handling
 			subPattern();
 			astFactory.addASTChild(currentAST, returnAST);
@@ -2001,7 +2001,7 @@ public EParser(ParserSharedInputState state) {
 				match(175);
 				parenExpr();
 				astFactory.addASTChild(currentAST, returnAST);
-				if (0 == inputState.guessing) {
+				if ( inputState.guessing==0 ) {
 					pattern_AST = (AST)currentAST.root;
 					pattern_AST.setType(SuchThatPattern);
 					warn("such-that deprecated");
@@ -2050,7 +2050,7 @@ public EParser(ParserSharedInputState state) {
 			pattern_AST = (AST)currentAST.root;
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_15);
 			} else {
@@ -2059,16 +2059,16 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = pattern_AST;
 	}
-
+	
 	public final void call() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST call_AST = null;
 		AST p_AST = null;
 		AST a_AST = null;
 		AST l_AST = null;
-
+		
 		try {      // for error handling
 			prim();
 			p_AST = (AST)returnAST;
@@ -2081,7 +2081,7 @@ public EParser(ParserSharedInputState state) {
 				{
 					parenArgs();
 					a_AST = (AST)returnAST;
-					if (0 == inputState.guessing) {
+					if ( inputState.guessing==0 ) {
 						call_AST = (AST)currentAST.root;
 						call_AST=(AST)astFactory.make( (new ASTArray(4)).add(astFactory.create(CallExpr,"run")).add(p_AST).add(astFactory.create(STRING,"run")).add(a_AST));
 						currentAST.root = call_AST;
@@ -2099,7 +2099,7 @@ public EParser(ParserSharedInputState state) {
 					match(88);
 					message();
 					astFactory.addASTChild(currentAST, returnAST);
-					if (0 == inputState.guessing) {
+					if ( inputState.guessing==0 ) {
 						call_AST = (AST)currentAST.root;
 						call_AST.setType(CallExpr);
 					}
@@ -2111,7 +2111,7 @@ public EParser(ParserSharedInputState state) {
 					argList();
 					l_AST = (AST)returnAST;
 					match(171);
-					if (0 == inputState.guessing) {
+					if ( inputState.guessing==0 ) {
 						call_AST = (AST)currentAST.root;
 						call_AST=(AST)astFactory.make( (new ASTArray(4)).add(astFactory.create(CallExpr,"get")).add(p_AST).add(astFactory.create(STRING,"get")).add(l_AST));
 						currentAST.root = call_AST;
@@ -2133,7 +2133,7 @@ public EParser(ParserSharedInputState state) {
 					{
 						parenArgs();
 						astFactory.addASTChild(currentAST, returnAST);
-						if (0 == inputState.guessing) {
+						if ( inputState.guessing==0 ) {
 							warn("use '<- run(...')");
 						}
 						break;
@@ -2182,7 +2182,7 @@ public EParser(ParserSharedInputState state) {
 					}
 					}
 					}
-					if (0 == inputState.guessing) {
+					if ( inputState.guessing==0 ) {
 						call_AST = (AST)currentAST.root;
 						call_AST.setType(SendExpr);
 					}
@@ -2229,7 +2229,7 @@ public EParser(ParserSharedInputState state) {
 			call_AST = (AST)currentAST.root;
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_16);
 			} else {
@@ -2238,13 +2238,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = call_AST;
 	}
-
+	
 	public final void accumulator() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST accumulator_AST = null;
-
+		
 		try {      // for error handling
 			switch ( LA(1)) {
 			case LITERAL_for:
@@ -2296,7 +2296,7 @@ public EParser(ParserSharedInputState state) {
 			}
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_4);
 			} else {
@@ -2305,13 +2305,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = accumulator_AST;
 	}
-
+	
 	public final void logical() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST logical_AST = null;
-
+		
 		try {      // for error handling
 			order();
 			astFactory.addASTChild(currentAST, returnAST);
@@ -2381,7 +2381,7 @@ public EParser(ParserSharedInputState state) {
 				}
 				}
 				}
-				if (0 == inputState.guessing) {
+				if ( inputState.guessing==0 ) {
 					logical_AST = (AST)currentAST.root;
 					logical_AST=(AST)astFactory.make( (new ASTArray(2)).add(astFactory.create(CallExpr)).add(logical_AST));
 					currentAST.root = logical_AST;
@@ -2397,8 +2397,8 @@ public EParser(ParserSharedInputState state) {
 				int _cnt152=0;
 				_loop152:
 				do {
-					if ((145 == LA(1))) {
-						if (0 == inputState.guessing) {
+					if ((LA(1)==145)) {
+						if ( inputState.guessing==0 ) {
 							logical_AST = (AST)currentAST.root;
 							logical_AST=(AST)astFactory.make( (new ASTArray(2)).add(astFactory.create(CallExpr)).add(logical_AST));
 							currentAST.root = logical_AST;
@@ -2414,9 +2414,9 @@ public EParser(ParserSharedInputState state) {
 						astFactory.addASTChild(currentAST, returnAST);
 					}
 					else {
-						if (1 <= _cnt152) { break _loop152; } else {throw new NoViableAltException(LT(1), getFilename());}
+						if ( _cnt152>=1 ) { break _loop152; } else {throw new NoViableAltException(LT(1), getFilename());}
 					}
-
+					
 					_cnt152++;
 				} while (true);
 				}
@@ -2428,8 +2428,8 @@ public EParser(ParserSharedInputState state) {
 				int _cnt154=0;
 				_loop154:
 				do {
-					if ((101 == LA(1))) {
-						if (0 == inputState.guessing) {
+					if ((LA(1)==101)) {
+						if ( inputState.guessing==0 ) {
 							logical_AST = (AST)currentAST.root;
 							logical_AST=(AST)astFactory.make( (new ASTArray(2)).add(astFactory.create(CallExpr)).add(logical_AST));
 							currentAST.root = logical_AST;
@@ -2445,9 +2445,9 @@ public EParser(ParserSharedInputState state) {
 						astFactory.addASTChild(currentAST, returnAST);
 					}
 					else {
-						if (1 <= _cnt154) { break _loop154; } else {throw new NoViableAltException(LT(1), getFilename());}
+						if ( _cnt154>=1 ) { break _loop154; } else {throw new NoViableAltException(LT(1), getFilename());}
 					}
-
+					
 					_cnt154++;
 				} while (true);
 				}
@@ -2459,8 +2459,8 @@ public EParser(ParserSharedInputState state) {
 				int _cnt156=0;
 				_loop156:
 				do {
-					if ((102 == LA(1))) {
-						if (0 == inputState.guessing) {
+					if ((LA(1)==102)) {
+						if ( inputState.guessing==0 ) {
 							logical_AST = (AST)currentAST.root;
 							logical_AST=(AST)astFactory.make( (new ASTArray(2)).add(astFactory.create(CallExpr)).add(logical_AST));
 							currentAST.root = logical_AST;
@@ -2476,9 +2476,9 @@ public EParser(ParserSharedInputState state) {
 						astFactory.addASTChild(currentAST, returnAST);
 					}
 					else {
-						if (1 <= _cnt156) { break _loop156; } else {throw new NoViableAltException(LT(1), getFilename());}
+						if ( _cnt156>=1 ) { break _loop156; } else {throw new NoViableAltException(LT(1), getFilename());}
 					}
-
+					
 					_cnt156++;
 				} while (true);
 				}
@@ -2523,7 +2523,7 @@ public EParser(ParserSharedInputState state) {
 			logical_AST = (AST)currentAST.root;
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_17);
 			} else {
@@ -2532,13 +2532,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = logical_AST;
 	}
-
+	
 	public final void accumBody() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST accumBody_AST = null;
-
+		
 		try {      // for error handling
 			match(97);
 			{
@@ -2640,7 +2640,7 @@ public EParser(ParserSharedInputState state) {
 			accumBody_AST = (AST)currentAST.root;
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_4);
 			} else {
@@ -2649,13 +2649,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = accumBody_AST;
 	}
-
+	
 	public final void verb() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST verb_AST = null;
-
+		
 		try {      // for error handling
 			switch ( LA(1)) {
 			case IDENT:
@@ -2683,7 +2683,7 @@ public EParser(ParserSharedInputState state) {
 			}
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_18);
 			} else {
@@ -2692,13 +2692,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = verb_AST;
 	}
-
+	
 	public final void parenArgs() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST parenArgs_AST = null;
-
+		
 		try {      // for error handling
 			match(116);
 			argList();
@@ -2707,7 +2707,7 @@ public EParser(ParserSharedInputState state) {
 			parenArgs_AST = (AST)currentAST.root;
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_19);
 			} else {
@@ -2716,13 +2716,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = parenArgs_AST;
 	}
-
+	
 	public final void whenFn() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST whenFn_AST = null;
-
+		
 		try {      // for error handling
 			objName();
 			astFactory.addASTChild(currentAST, returnAST);
@@ -2749,7 +2749,7 @@ public EParser(ParserSharedInputState state) {
 			}
 			body();
 			astFactory.addASTChild(currentAST, returnAST);
-			if (0 == inputState.guessing) {
+			if ( inputState.guessing==0 ) {
 				whenFn_AST = (AST)currentAST.root;
 				whenFn_AST=(AST)astFactory.make( (new ASTArray(2)).add(astFactory.create(WhenFn)).add(whenFn_AST));
 				currentAST.root = whenFn_AST;
@@ -2760,7 +2760,7 @@ public EParser(ParserSharedInputState state) {
 			whenFn_AST = (AST)currentAST.root;
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_14);
 			} else {
@@ -2769,13 +2769,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = whenFn_AST;
 	}
-
+	
 	public final void objName() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST objName_AST = null;
-
+		
 		try {      // for error handling
 			switch ( LA(1)) {
 			case URIGetter:
@@ -2789,7 +2789,7 @@ public EParser(ParserSharedInputState state) {
 			{
 				nounExpr();
 				astFactory.addASTChild(currentAST, returnAST);
-				if (0 == inputState.guessing) {
+				if ( inputState.guessing==0 ) {
 					objName_AST = (AST)currentAST.root;
 					objName_AST=(AST)astFactory.make( (new ASTArray(2)).add(astFactory.create(FinalPattern)).add(objName_AST));
 					currentAST.root = objName_AST;
@@ -2806,7 +2806,7 @@ public EParser(ParserSharedInputState state) {
 				tmp74_AST = astFactory.create(LT(1));
 				astFactory.makeASTRoot(currentAST, tmp74_AST);
 				match(LITERAL__);
-				if (0 == inputState.guessing) {
+				if ( inputState.guessing==0 ) {
 					objName_AST = (AST)currentAST.root;
 					objName_AST.setType(IgnorePattern);
 				}
@@ -2821,7 +2821,7 @@ public EParser(ParserSharedInputState state) {
 				match(LITERAL_bind);
 				noun();
 				astFactory.addASTChild(currentAST, returnAST);
-				if (0 == inputState.guessing) {
+				if ( inputState.guessing==0 ) {
 					objName_AST = (AST)currentAST.root;
 					objName_AST.setType(BindPattern);
 				}
@@ -2836,7 +2836,7 @@ public EParser(ParserSharedInputState state) {
 				match(LITERAL_var);
 				nounExpr();
 				astFactory.addASTChild(currentAST, returnAST);
-				if (0 == inputState.guessing) {
+				if ( inputState.guessing==0 ) {
 					objName_AST = (AST)currentAST.root;
 					objName_AST.setType(VarPattern);
 				}
@@ -2851,7 +2851,7 @@ public EParser(ParserSharedInputState state) {
 				match(101);
 				nounExpr();
 				astFactory.addASTChild(currentAST, returnAST);
-				if (0 == inputState.guessing) {
+				if ( inputState.guessing==0 ) {
 					objName_AST = (AST)currentAST.root;
 					objName_AST.setType(SlotPattern);
 				}
@@ -2864,7 +2864,7 @@ public EParser(ParserSharedInputState state) {
 				tmp78_AST = astFactory.create(LT(1));
 				astFactory.addASTChild(currentAST, tmp78_AST);
 				match(STRING);
-				if (0 == inputState.guessing) {
+				if ( inputState.guessing==0 ) {
 					objName_AST = (AST)currentAST.root;
 					objName_AST=(AST)astFactory.make( (new ASTArray(2)).add(astFactory.create(LiteralPattern)).add(objName_AST));
 					currentAST.root = objName_AST;
@@ -2882,7 +2882,7 @@ public EParser(ParserSharedInputState state) {
 			}
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_20);
 			} else {
@@ -2891,13 +2891,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = objName_AST;
 	}
-
+	
 	public final void params() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST params_AST = null;
-
+		
 		try {      // for error handling
 			match(116);
 			paramList();
@@ -2905,7 +2905,7 @@ public EParser(ParserSharedInputState state) {
 			br();
 			astFactory.addASTChild(currentAST, returnAST);
 			match(118);
-			if (0 == inputState.guessing) {
+			if ( inputState.guessing==0 ) {
 				params_AST = (AST)currentAST.root;
 				params_AST=(AST)astFactory.make( (new ASTArray(2)).add(astFactory.create(List)).add(params_AST));
 				currentAST.root = params_AST;
@@ -2916,7 +2916,7 @@ public EParser(ParserSharedInputState state) {
 			params_AST = (AST)currentAST.root;
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_21);
 			} else {
@@ -2925,13 +2925,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = params_AST;
 	}
-
+	
 	public final void guard() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST guard_AST = null;
-
+		
 		try {      // for error handling
 			{
 			switch ( LA(1)) {
@@ -2971,7 +2971,7 @@ public EParser(ParserSharedInputState state) {
 			{
 			_loop223:
 			do {
-				if ((170 == LA(1))) {
+				if ((LA(1)==170)) {
 					AST tmp82_AST = null;
 					tmp82_AST = astFactory.create(LT(1));
 					astFactory.addASTChild(currentAST, tmp82_AST);
@@ -2983,13 +2983,13 @@ public EParser(ParserSharedInputState state) {
 				else {
 					break _loop223;
 				}
-
+				
 			} while (true);
 			}
 			guard_AST = (AST)currentAST.root;
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_22);
 			} else {
@@ -2998,13 +2998,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = guard_AST;
 	}
-
+	
 	public final void lambdaExpr() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST lambdaExpr_AST = null;
-
+		
 		try {      // for error handling
 			switch ( LA(1)) {
 			case LITERAL_thunk:
@@ -3015,7 +3015,7 @@ public EParser(ParserSharedInputState state) {
 				match(LITERAL_thunk);
 				body();
 				astFactory.addASTChild(currentAST, returnAST);
-				if (0 == inputState.guessing) {
+				if ( inputState.guessing==0 ) {
 					lambdaExpr_AST = (AST)currentAST.root;
 					lambdaExpr_AST.setType(LambdaExpr);
 				}
@@ -3032,7 +3032,7 @@ public EParser(ParserSharedInputState state) {
 				astFactory.addASTChild(currentAST, returnAST);
 				body();
 				astFactory.addASTChild(currentAST, returnAST);
-				if (0 == inputState.guessing) {
+				if ( inputState.guessing==0 ) {
 					lambdaExpr_AST = (AST)currentAST.root;
 					lambdaExpr_AST.setType(LambdaExpr);
 				}
@@ -3046,7 +3046,7 @@ public EParser(ParserSharedInputState state) {
 			}
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_10);
 			} else {
@@ -3055,13 +3055,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = lambdaExpr_AST;
 	}
-
+	
 	public final void paramList() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST paramList_AST = null;
-
+		
 		try {      // for error handling
 			boolean synPredMatched94 = false;
 			if (((_tokenSet_23.member(LA(1))) && (_tokenSet_24.member(LA(2))))) {
@@ -3105,7 +3105,7 @@ public EParser(ParserSharedInputState state) {
 			if ( synPredMatched94 ) {
 				mapPattList();
 				astFactory.addASTChild(currentAST, returnAST);
-				if (0 == inputState.guessing) {
+				if ( inputState.guessing==0 ) {
 					warn("map-tail");
 				}
 				paramList_AST = (AST)currentAST.root;
@@ -3178,10 +3178,10 @@ public EParser(ParserSharedInputState state) {
 			else {
 				throw new NoViableAltException(LT(1), getFilename());
 			}
-
+			
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_27);
 			} else {
@@ -3190,13 +3190,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = paramList_AST;
 	}
-
+	
 	public final void matcher() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST matcher_AST = null;
-
+		
 		try {      // for error handling
 			AST tmp87_AST = null;
 			tmp87_AST = astFactory.create(LT(1));
@@ -3206,14 +3206,14 @@ public EParser(ParserSharedInputState state) {
 			astFactory.addASTChild(currentAST, returnAST);
 			body();
 			astFactory.addASTChild(currentAST, returnAST);
-			if (0 == inputState.guessing) {
+			if ( inputState.guessing==0 ) {
 				matcher_AST = (AST)currentAST.root;
 				matcher_AST.setType(EMatcher);
 			}
 			matcher_AST = (AST)currentAST.root;
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_28);
 			} else {
@@ -3222,13 +3222,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = matcher_AST;
 	}
-
+	
 	public final void bindNamer() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST bindNamer_AST = null;
-
+		
 		try {      // for error handling
 			AST tmp88_AST = null;
 			tmp88_AST = astFactory.create(LT(1));
@@ -3285,14 +3285,14 @@ public EParser(ParserSharedInputState state) {
 			}
 			}
 			}
-			if (0 == inputState.guessing) {
+			if ( inputState.guessing==0 ) {
 				bindNamer_AST = (AST)currentAST.root;
 				bindNamer_AST.setType(BindPattern);
 			}
 			bindNamer_AST = (AST)currentAST.root;
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_29);
 			} else {
@@ -3301,13 +3301,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = bindNamer_AST;
 	}
-
+	
 	public final void noun() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST noun_AST = null;
-
+		
 		try {      // for error handling
 			switch ( LA(1)) {
 			case IDENT:
@@ -3325,7 +3325,7 @@ public EParser(ParserSharedInputState state) {
 				tmp91_AST = astFactory.create(LT(1));
 				astFactory.addASTChild(currentAST, tmp91_AST);
 				match(URIGetter);
-				if (0 == inputState.guessing) {
+				if ( inputState.guessing==0 ) {
 					noun_AST = (AST)currentAST.root;
 					noun_AST=(AST)astFactory.make( (new ASTArray(2)).add(astFactory.create(URIExpr)).add(noun_AST));
 					currentAST.root = noun_AST;
@@ -3378,7 +3378,7 @@ public EParser(ParserSharedInputState state) {
 			}
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_30);
 			} else {
@@ -3387,13 +3387,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = noun_AST;
 	}
-
+	
 	public final void varNamer() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST varNamer_AST = null;
-
+		
 		try {      // for error handling
 			AST tmp95_AST = null;
 			tmp95_AST = astFactory.create(LT(1));
@@ -3450,14 +3450,14 @@ public EParser(ParserSharedInputState state) {
 			}
 			}
 			}
-			if (0 == inputState.guessing) {
+			if ( inputState.guessing==0 ) {
 				varNamer_AST = (AST)currentAST.root;
 				varNamer_AST.setType(VarPattern);
 			}
 			varNamer_AST = (AST)currentAST.root;
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_29);
 			} else {
@@ -3466,13 +3466,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = varNamer_AST;
 	}
-
+	
 	public final void nounExpr() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST nounExpr_AST = null;
-
+		
 		try {      // for error handling
 			switch ( LA(1)) {
 			case URIGetter:
@@ -3490,7 +3490,7 @@ public EParser(ParserSharedInputState state) {
 			{
 				dollarHole();
 				astFactory.addASTChild(currentAST, returnAST);
-				if (0 == inputState.guessing) {
+				if ( inputState.guessing==0 ) {
 					nounExpr_AST = (AST)currentAST.root;
 					nounExpr_AST.setType(QuasiLiteralPattern);
 				}
@@ -3502,7 +3502,7 @@ public EParser(ParserSharedInputState state) {
 			{
 				atHole();
 				astFactory.addASTChild(currentAST, returnAST);
-				if (0 == inputState.guessing) {
+				if ( inputState.guessing==0 ) {
 					nounExpr_AST = (AST)currentAST.root;
 					nounExpr_AST.setType(QuasiPatternPattern);
 				}
@@ -3516,7 +3516,7 @@ public EParser(ParserSharedInputState state) {
 			}
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_30);
 			} else {
@@ -3525,13 +3525,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = nounExpr_AST;
 	}
-
+	
 	public final void slotNamer() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST slotNamer_AST = null;
-
+		
 		try {      // for error handling
 			AST tmp97_AST = null;
 			tmp97_AST = astFactory.create(LT(1));
@@ -3588,14 +3588,14 @@ public EParser(ParserSharedInputState state) {
 			}
 			}
 			}
-			if (0 == inputState.guessing) {
+			if ( inputState.guessing==0 ) {
 				slotNamer_AST = (AST)currentAST.root;
 				slotNamer_AST.setType(SlotPattern);
 			}
 			slotNamer_AST = (AST)currentAST.root;
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_29);
 			} else {
@@ -3604,13 +3604,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = slotNamer_AST;
 	}
-
+	
 	public final void docoDef() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST docoDef_AST = null;
-
+		
 		try {      // for error handling
 			doco();
 			astFactory.addASTChild(currentAST, returnAST);
@@ -3646,7 +3646,7 @@ public EParser(ParserSharedInputState state) {
 			docoDef_AST = (AST)currentAST.root;
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_10);
 			} else {
@@ -3655,13 +3655,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = docoDef_AST;
 	}
-
+	
 	public final void doco() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST doco_AST = null;
-
+		
 		try {      // for error handling
 			switch ( LA(1)) {
 			case DOC_COMMENT:
@@ -3683,7 +3683,7 @@ public EParser(ParserSharedInputState state) {
 			case LITERAL_on:
 			case LITERAL_interface:
 			{
-				if (0 == inputState.guessing) {
+				if ( inputState.guessing==0 ) {
 					doco_AST = (AST)currentAST.root;
 					doco_AST=(AST)astFactory.make( (new ASTArray(1)).add(astFactory.create(DOC_COMMENT)));
 					currentAST.root = doco_AST;
@@ -3701,7 +3701,7 @@ public EParser(ParserSharedInputState state) {
 			}
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_31);
 			} else {
@@ -3710,13 +3710,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = doco_AST;
 	}
-
+	
 	public final void defExpr() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST defExpr_AST = null;
-
+		
 		try {      // for error handling
 			switch ( LA(1)) {
 			case LITERAL_def:
@@ -3747,7 +3747,7 @@ public EParser(ParserSharedInputState state) {
 					astFactory.addASTChild(currentAST, returnAST);
 					objectExpr();
 					astFactory.addASTChild(currentAST, returnAST);
-					if (0 == inputState.guessing) {
+					if ( inputState.guessing==0 ) {
 						defExpr_AST = (AST)currentAST.root;
 						defExpr_AST.setType(ObjectExpr);
 					}
@@ -3776,7 +3776,7 @@ public EParser(ParserSharedInputState state) {
 						match(115);
 						rValue();
 						astFactory.addASTChild(currentAST, returnAST);
-						if (0 == inputState.guessing) {
+						if ( inputState.guessing==0 ) {
 							defExpr_AST = (AST)currentAST.root;
 							defExpr_AST.setType(IntoExpr);
 						}
@@ -3784,7 +3784,7 @@ public EParser(ParserSharedInputState state) {
 					else if ((_tokenSet_36.member(LA(1))) && (_tokenSet_37.member(LA(2)))) {
 						bindName();
 						astFactory.addASTChild(currentAST, returnAST);
-						if (0 == inputState.guessing) {
+						if ( inputState.guessing==0 ) {
 							defExpr_AST = (AST)currentAST.root;
 							defExpr_AST.setType(IntoExpr);
 						}
@@ -3820,7 +3820,7 @@ public EParser(ParserSharedInputState state) {
 				}
 			}
 			catch (RecognitionException ex) {
-				if (0 == inputState.guessing) {
+				if (inputState.guessing==0) {
 					reportError(ex);
 					recover(ex,_tokenSet_10);
 				} else {
@@ -3829,13 +3829,13 @@ public EParser(ParserSharedInputState state) {
 			}
 			returnAST = defExpr_AST;
 		}
-
+		
 	public final void interfaceExpr() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST interfaceExpr_AST = null;
-
+		
 		try {      // for error handling
 			AST tmp104_AST = null;
 			tmp104_AST = astFactory.create(LT(1));
@@ -3891,7 +3891,7 @@ public EParser(ParserSharedInputState state) {
 					{
 					_loop111:
 					do {
-						if ((117 == LA(1))) {
+						if ((LA(1)==117)) {
 							AST tmp107_AST = null;
 							tmp107_AST = astFactory.create(LT(1));
 							astFactory.addASTChild(currentAST, tmp107_AST);
@@ -3902,7 +3902,7 @@ public EParser(ParserSharedInputState state) {
 						else {
 							break _loop111;
 						}
-
+						
 					} while (true);
 					}
 					break;
@@ -3933,7 +3933,7 @@ public EParser(ParserSharedInputState state) {
 					{
 					_loop114:
 					do {
-						if ((117 == LA(1))) {
+						if ((LA(1)==117)) {
 							AST tmp109_AST = null;
 							tmp109_AST = astFactory.create(LT(1));
 							astFactory.addASTChild(currentAST, tmp109_AST);
@@ -3944,7 +3944,7 @@ public EParser(ParserSharedInputState state) {
 						else {
 							break _loop114;
 						}
-
+						
 					} while (true);
 					}
 					break;
@@ -3975,7 +3975,7 @@ public EParser(ParserSharedInputState state) {
 					else {
 						break _loop116;
 					}
-
+					
 				} while (true);
 				}
 				match(RCURLY);
@@ -4020,14 +4020,14 @@ public EParser(ParserSharedInputState state) {
 			}
 			}
 			}
-			if (0 == inputState.guessing) {
+			if ( inputState.guessing==0 ) {
 				interfaceExpr_AST = (AST)currentAST.root;
 				interfaceExpr_AST.setType(InterfaceExpr);
 			}
 			interfaceExpr_AST = (AST)currentAST.root;
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_10);
 			} else {
@@ -4036,13 +4036,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = interfaceExpr_AST;
 	}
-
+	
 	public final void objectPredict() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST objectPredict_AST = null;
-
+		
 		try {      // for error handling
 			objName();
 			astFactory.addASTChild(currentAST, returnAST);
@@ -4089,7 +4089,7 @@ public EParser(ParserSharedInputState state) {
 			objectPredict_AST = (AST)currentAST.root;
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_0);
 			} else {
@@ -4098,13 +4098,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = objectPredict_AST;
 	}
-
+	
 	public final void objectExpr() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST objectExpr_AST = null;
-
+		
 		try {      // for error handling
 			{
 			switch ( LA(1)) {
@@ -4152,7 +4152,7 @@ public EParser(ParserSharedInputState state) {
 					{
 					_loop76:
 					do {
-						if ((117 == LA(1))) {
+						if ((LA(1)==117)) {
 							AST tmp119_AST = null;
 							tmp119_AST = astFactory.create(LT(1));
 							astFactory.addASTChild(currentAST, tmp119_AST);
@@ -4163,7 +4163,7 @@ public EParser(ParserSharedInputState state) {
 						else {
 							break _loop76;
 						}
-
+						
 					} while (true);
 					}
 					break;
@@ -4201,7 +4201,7 @@ public EParser(ParserSharedInputState state) {
 			objectExpr_AST = (AST)currentAST.root;
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_10);
 			} else {
@@ -4210,16 +4210,16 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = objectExpr_AST;
 	}
-
+	
 	public final void rValue() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST rValue_AST = null;
-
+		
 		try {      // for error handling
 			boolean synPredMatched66 = false;
-			if (((116 == LA(1)) && (_tokenSet_39.member(LA(2))))) {
+			if (((LA(1)==116) && (_tokenSet_39.member(LA(2))))) {
 				int _m66 = mark();
 				synPredMatched66 = true;
 				inputState.guessing++;
@@ -4268,10 +4268,10 @@ public EParser(ParserSharedInputState state) {
 			else {
 				throw new NoViableAltException(LT(1), getFilename());
 			}
-
+			
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_10);
 			} else {
@@ -4280,13 +4280,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = rValue_AST;
 	}
-
+	
 	public final void bindName() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST bindName_AST = null;
-
+		
 		try {      // for error handling
 			{
 			switch ( LA(1)) {
@@ -4301,7 +4301,7 @@ public EParser(ParserSharedInputState state) {
 			{
 				nounExpr();
 				astFactory.addASTChild(currentAST, returnAST);
-				if (0 == inputState.guessing) {
+				if ( inputState.guessing==0 ) {
 					bindName_AST = (AST)currentAST.root;
 					bindName_AST=(AST)astFactory.make( (new ASTArray(2)).add(astFactory.create(FinalPattern)).add(bindName_AST));
 					currentAST.root = bindName_AST;
@@ -4319,7 +4319,7 @@ public EParser(ParserSharedInputState state) {
 				match(101);
 				nounExpr();
 				astFactory.addASTChild(currentAST, returnAST);
-				if (0 == inputState.guessing) {
+				if ( inputState.guessing==0 ) {
 					bindName_AST = (AST)currentAST.root;
 					bindName_AST.setType(SlotPattern);
 				}
@@ -4331,7 +4331,7 @@ public EParser(ParserSharedInputState state) {
 				tmp124_AST = astFactory.create(LT(1));
 				astFactory.addASTChild(currentAST, tmp124_AST);
 				match(STRING);
-				if (0 == inputState.guessing) {
+				if ( inputState.guessing==0 ) {
 					bindName_AST = (AST)currentAST.root;
 					bindName_AST=(AST)astFactory.make( (new ASTArray(2)).add(astFactory.create(LiteralPattern)).add(bindName_AST));
 					currentAST.root = bindName_AST;
@@ -4381,7 +4381,7 @@ public EParser(ParserSharedInputState state) {
 			bindName_AST = (AST)currentAST.root;
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_40);
 			} else {
@@ -4390,13 +4390,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = bindName_AST;
 	}
-
+	
 	public final void bindExpr() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST bindExpr_AST = null;
-
+		
 		try {      // for error handling
 			bindName();
 			astFactory.addASTChild(currentAST, returnAST);
@@ -4407,7 +4407,7 @@ public EParser(ParserSharedInputState state) {
 				match(115);
 				assign();
 				astFactory.addASTChild(currentAST, returnAST);
-				if (0 == inputState.guessing) {
+				if ( inputState.guessing==0 ) {
 					bindExpr_AST = (AST)currentAST.root;
 					bindExpr_AST.setType(IntoExpr);
 				}
@@ -4420,7 +4420,7 @@ public EParser(ParserSharedInputState state) {
 			{
 				objectExpr();
 				astFactory.addASTChild(currentAST, returnAST);
-				if (0 == inputState.guessing) {
+				if ( inputState.guessing==0 ) {
 					bindExpr_AST = (AST)currentAST.root;
 					bindExpr_AST.setType(ObjectExpr);
 				}
@@ -4435,7 +4435,7 @@ public EParser(ParserSharedInputState state) {
 			bindExpr_AST = (AST)currentAST.root;
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_10);
 			} else {
@@ -4444,13 +4444,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = bindExpr_AST;
 	}
-
+	
 	public final void order() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST order_AST = null;
-
+		
 		try {      // for error handling
 			interval();
 			astFactory.addASTChild(currentAST, returnAST);
@@ -4466,7 +4466,7 @@ public EParser(ParserSharedInputState state) {
 				astFactory.addASTChild(currentAST, returnAST);
 				interval();
 				astFactory.addASTChild(currentAST, returnAST);
-				if (0 == inputState.guessing) {
+				if ( inputState.guessing==0 ) {
 					order_AST = (AST)currentAST.root;
 					order_AST=(AST)astFactory.make( (new ASTArray(2)).add(astFactory.create(CallExpr)).add(order_AST));
 					currentAST.root = order_AST;
@@ -4484,7 +4484,7 @@ public EParser(ParserSharedInputState state) {
 				match(106);
 				guard();
 				astFactory.addASTChild(currentAST, returnAST);
-				if (0 == inputState.guessing) {
+				if ( inputState.guessing==0 ) {
 					order_AST = (AST)currentAST.root;
 					order_AST.setType(CoerceExpr);
 				}
@@ -4538,7 +4538,7 @@ public EParser(ParserSharedInputState state) {
 			order_AST = (AST)currentAST.root;
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_41);
 			} else {
@@ -4547,13 +4547,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = order_AST;
 	}
-
+	
 	public final void script() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST script_AST = null;
-
+		
 		try {      // for error handling
 			AST tmp128_AST = null;
 			tmp128_AST = astFactory.create(LT(1));
@@ -4571,13 +4571,13 @@ public EParser(ParserSharedInputState state) {
 				else {
 					break _loop83;
 				}
-
+				
 			} while (true);
 			}
 			{
 			_loop85:
 			do {
-				if ((LITERAL_match == LA(1))) {
+				if ((LA(1)==LITERAL_match)) {
 					matcher();
 					astFactory.addASTChild(currentAST, returnAST);
 					br();
@@ -4586,18 +4586,18 @@ public EParser(ParserSharedInputState state) {
 				else {
 					break _loop85;
 				}
-
+				
 			} while (true);
 			}
 			match(RCURLY);
-			if (0 == inputState.guessing) {
+			if ( inputState.guessing==0 ) {
 				script_AST = (AST)currentAST.root;
 				script_AST.setType(EScript);
 			}
 			script_AST = (AST)currentAST.root;
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_10);
 			} else {
@@ -4606,13 +4606,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = script_AST;
 	}
-
+	
 	public final void resultGuard() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST resultGuard_AST = null;
-
+		
 		try {      // for error handling
 			{
 			switch ( LA(1)) {
@@ -4671,7 +4671,7 @@ public EParser(ParserSharedInputState state) {
 			resultGuard_AST = (AST)currentAST.root;
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_42);
 			} else {
@@ -4680,13 +4680,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = resultGuard_AST;
 	}
-
+	
 	public final void method() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST method_AST = null;
-
+		
 		try {      // for error handling
 			doco();
 			astFactory.addASTChild(currentAST, returnAST);
@@ -4734,14 +4734,14 @@ public EParser(ParserSharedInputState state) {
 			}
 			}
 			}
-			if (0 == inputState.guessing) {
+			if ( inputState.guessing==0 ) {
 				method_AST = (AST)currentAST.root;
 				method_AST.setType(EMethod);
 			}
 			method_AST = (AST)currentAST.root;
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_43);
 			} else {
@@ -4750,13 +4750,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = method_AST;
 	}
-
+	
 	public final void methHead() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST methHead_AST = null;
-
+		
 		try {      // for error handling
 			switch ( LA(1)) {
 			case 116:
@@ -4787,7 +4787,7 @@ public EParser(ParserSharedInputState state) {
 			}
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_44);
 			} else {
@@ -4796,13 +4796,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = methHead_AST;
 	}
-
+	
 	public final void key() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST key_AST = null;
-
+		
 		try {      // for error handling
 			switch ( LA(1)) {
 			case 116:
@@ -4831,7 +4831,7 @@ public EParser(ParserSharedInputState state) {
 			}
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_45);
 			} else {
@@ -4840,13 +4840,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = key_AST;
 	}
-
+	
 	public final void mapPattList() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST mapPattList_AST = null;
-
+		
 		try {      // for error handling
 			{
 			switch ( LA(1)) {
@@ -4901,7 +4901,7 @@ public EParser(ParserSharedInputState state) {
 			mapPattList_AST = (AST)currentAST.root;
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_46);
 			} else {
@@ -4910,13 +4910,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = mapPattList_AST;
 	}
-
+	
 	public final void patternList() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST patternList_AST = null;
-
+		
 		try {      // for error handling
 			{
 			switch ( LA(1)) {
@@ -4981,7 +4981,7 @@ public EParser(ParserSharedInputState state) {
 			patternList_AST = (AST)currentAST.root;
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_47);
 			} else {
@@ -4990,20 +4990,20 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = patternList_AST;
 	}
-
+	
 	public final void guardList() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST guardList_AST = null;
-
+		
 		try {      // for error handling
 			guard();
 			astFactory.addASTChild(currentAST, returnAST);
 			{
 			_loop105:
 			do {
-				if ((117 == LA(1))) {
+				if ((LA(1)==117)) {
 					match(117);
 					guard();
 					astFactory.addASTChild(currentAST, returnAST);
@@ -5011,13 +5011,13 @@ public EParser(ParserSharedInputState state) {
 				else {
 					break _loop105;
 				}
-
+				
 			} while (true);
 			}
 			guardList_AST = (AST)currentAST.root;
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_42);
 			} else {
@@ -5026,13 +5026,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = guardList_AST;
 	}
-
+	
 	public final void imethod() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST imethod_AST = null;
-
+		
 		try {      // for error handling
 			doco();
 			astFactory.addASTChild(currentAST, returnAST);
@@ -5074,14 +5074,14 @@ public EParser(ParserSharedInputState state) {
 			}
 			}
 			}
-			if (0 == inputState.guessing) {
+			if ( inputState.guessing==0 ) {
 				imethod_AST = (AST)currentAST.root;
 				imethod_AST.setType(EMethod);
 			}
 			imethod_AST = (AST)currentAST.root;
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_48);
 			} else {
@@ -5090,13 +5090,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = imethod_AST;
 	}
-
+	
 	public final void mtypes() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST mtypes_AST = null;
-
+		
 		try {      // for error handling
 			match(116);
 			typeList();
@@ -5104,7 +5104,7 @@ public EParser(ParserSharedInputState state) {
 			br();
 			astFactory.addASTChild(currentAST, returnAST);
 			match(118);
-			if (0 == inputState.guessing) {
+			if ( inputState.guessing==0 ) {
 				mtypes_AST = (AST)currentAST.root;
 				mtypes_AST=(AST)astFactory.make( (new ASTArray(2)).add(astFactory.create(List)).add(mtypes_AST));
 				currentAST.root = mtypes_AST;
@@ -5115,7 +5115,7 @@ public EParser(ParserSharedInputState state) {
 			mtypes_AST = (AST)currentAST.root;
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_49);
 			} else {
@@ -5124,13 +5124,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = mtypes_AST;
 	}
-
+	
 	public final void imethHead() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST imethHead_AST = null;
-
+		
 		try {      // for error handling
 			switch ( LA(1)) {
 			case 116:
@@ -5161,7 +5161,7 @@ public EParser(ParserSharedInputState state) {
 			}
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_48);
 			} else {
@@ -5170,13 +5170,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = imethHead_AST;
 	}
-
+	
 	public final void ptype() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST ptype_AST = null;
-
+		
 		try {      // for error handling
 			switch ( LA(1)) {
 			case URIGetter:
@@ -5211,7 +5211,7 @@ public EParser(ParserSharedInputState state) {
 				}
 				}
 				}
-				if (0 == inputState.guessing) {
+				if ( inputState.guessing==0 ) {
 					ptype_AST = (AST)currentAST.root;
 					ptype_AST=(AST)astFactory.make( (new ASTArray(2)).add(astFactory.create(FinalPattern)).add(ptype_AST));
 					currentAST.root = ptype_AST;
@@ -5249,7 +5249,7 @@ public EParser(ParserSharedInputState state) {
 				}
 				}
 				}
-				if (0 == inputState.guessing) {
+				if ( inputState.guessing==0 ) {
 					ptype_AST = (AST)currentAST.root;
 					ptype_AST.setType(IgnorePattern);
 				}
@@ -5263,7 +5263,7 @@ public EParser(ParserSharedInputState state) {
 			}
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_50);
 			} else {
@@ -5272,13 +5272,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = ptype_AST;
 	}
-
+	
 	public final void typeList() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST typeList_AST = null;
-
+		
 		try {      // for error handling
 			{
 			switch ( LA(1)) {
@@ -5330,7 +5330,7 @@ public EParser(ParserSharedInputState state) {
 			typeList_AST = (AST)currentAST.root;
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_51);
 			} else {
@@ -5339,27 +5339,27 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = typeList_AST;
 	}
-
+	
 	public final void cond() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST cond_AST = null;
-
+		
 		try {      // for error handling
 			condAnd();
 			astFactory.addASTChild(currentAST, returnAST);
 			{
 			_loop144:
 			do {
-				if ((146 == LA(1))) {
+				if ((LA(1)==146)) {
 					AST tmp147_AST = null;
 					tmp147_AST = astFactory.create(LT(1));
 					astFactory.makeASTRoot(currentAST, tmp147_AST);
 					match(146);
 					condAnd();
 					astFactory.addASTChild(currentAST, returnAST);
-					if (0 == inputState.guessing) {
+					if ( inputState.guessing==0 ) {
 						cond_AST = (AST)currentAST.root;
 						cond_AST.setType(OrExpr);
 					}
@@ -5367,13 +5367,13 @@ public EParser(ParserSharedInputState state) {
 				else {
 					break _loop144;
 				}
-
+				
 			} while (true);
 			}
 			cond_AST = (AST)currentAST.root;
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_52);
 			} else {
@@ -5382,13 +5382,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = cond_AST;
 	}
-
+	
 	public final void assignOp() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST assignOp_AST = null;
-
+		
 		try {      // for error handling
 			switch ( LA(1)) {
 			case 129:
@@ -5515,7 +5515,7 @@ public EParser(ParserSharedInputState state) {
 			}
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_8);
 			} else {
@@ -5524,27 +5524,27 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = assignOp_AST;
 	}
-
+	
 	public final void condAnd() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST condAnd_AST = null;
-
+		
 		try {      // for error handling
 			logical();
 			astFactory.addASTChild(currentAST, returnAST);
 			{
 			_loop147:
 			do {
-				if ((147 == LA(1))) {
+				if ((LA(1)==147)) {
 					AST tmp161_AST = null;
 					tmp161_AST = astFactory.create(LT(1));
 					astFactory.makeASTRoot(currentAST, tmp161_AST);
 					match(147);
 					logical();
 					astFactory.addASTChild(currentAST, returnAST);
-					if (0 == inputState.guessing) {
+					if ( inputState.guessing==0 ) {
 						condAnd_AST = (AST)currentAST.root;
 						condAnd_AST.setType(AndExpr);
 					}
@@ -5552,13 +5552,13 @@ public EParser(ParserSharedInputState state) {
 				else {
 					break _loop147;
 				}
-
+				
 			} while (true);
 			}
 			condAnd_AST = (AST)currentAST.root;
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_53);
 			} else {
@@ -5567,13 +5567,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = condAnd_AST;
 	}
-
+	
 	public final void interval() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST interval_AST = null;
-
+		
 		try {      // for error handling
 			shift();
 			astFactory.addASTChild(currentAST, returnAST);
@@ -5582,7 +5582,7 @@ public EParser(ParserSharedInputState state) {
 			case 158:
 			case 159:
 			{
-				if (0 == inputState.guessing) {
+				if ( inputState.guessing==0 ) {
 					interval_AST = (AST)currentAST.root;
 					interval_AST=(AST)astFactory.make( (new ASTArray(2)).add(astFactory.create(CallExpr)).add(interval_AST));
 					currentAST.root = interval_AST;
@@ -5672,7 +5672,7 @@ public EParser(ParserSharedInputState state) {
 			interval_AST = (AST)currentAST.root;
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_54);
 			} else {
@@ -5681,13 +5681,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = interval_AST;
 	}
-
+	
 	public final void compareOp() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST compareOp_AST = null;
-
+		
 		try {      // for error handling
 			switch ( LA(1)) {
 			case 153:
@@ -5744,7 +5744,7 @@ public EParser(ParserSharedInputState state) {
 			}
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_55);
 			} else {
@@ -5753,21 +5753,21 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = compareOp_AST;
 	}
-
+	
 	public final void shift() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST shift_AST = null;
-
+		
 		try {      // for error handling
 			add();
 			astFactory.addASTChild(currentAST, returnAST);
 			{
 			_loop166:
 			do {
-				if ((160 == LA(1) || 161 == LA(1))) {
-					if (0 == inputState.guessing) {
+				if ((LA(1)==160||LA(1)==161)) {
+					if ( inputState.guessing==0 ) {
 						shift_AST = (AST)currentAST.root;
 						shift_AST=(AST)astFactory.make( (new ASTArray(2)).add(astFactory.create(CallExpr)).add(shift_AST));
 						currentAST.root = shift_AST;
@@ -5805,13 +5805,13 @@ public EParser(ParserSharedInputState state) {
 				else {
 					break _loop166;
 				}
-
+				
 			} while (true);
 			}
 			shift_AST = (AST)currentAST.root;
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_56);
 			} else {
@@ -5820,21 +5820,21 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = shift_AST;
 	}
-
+	
 	public final void add() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST add_AST = null;
-
+		
 		try {      // for error handling
 			mult();
 			astFactory.addASTChild(currentAST, returnAST);
 			{
 			_loop170:
 			do {
-				if ((99 == LA(1) || 162 == LA(1))) {
-					if (0 == inputState.guessing) {
+				if ((LA(1)==99||LA(1)==162)) {
+					if ( inputState.guessing==0 ) {
 						add_AST = (AST)currentAST.root;
 						add_AST=(AST)astFactory.make( (new ASTArray(2)).add(astFactory.create(CallExpr)).add(add_AST));
 						currentAST.root = add_AST;
@@ -5872,13 +5872,13 @@ public EParser(ParserSharedInputState state) {
 				else {
 					break _loop170;
 				}
-
+				
 			} while (true);
 			}
 			add_AST = (AST)currentAST.root;
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_57);
 			} else {
@@ -5887,13 +5887,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = add_AST;
 	}
-
+	
 	public final void mult() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST mult_AST = null;
-
+		
 		try {      // for error handling
 			pow();
 			astFactory.addASTChild(currentAST, returnAST);
@@ -5901,7 +5901,7 @@ public EParser(ParserSharedInputState state) {
 			_loop174:
 			do {
 				if ((_tokenSet_58.member(LA(1)))) {
-					if (0 == inputState.guessing) {
+					if ( inputState.guessing==0 ) {
 						mult_AST = (AST)currentAST.root;
 						mult_AST=(AST)astFactory.make( (new ASTArray(2)).add(astFactory.create(CallExpr)).add(mult_AST));
 						currentAST.root = mult_AST;
@@ -5963,13 +5963,13 @@ public EParser(ParserSharedInputState state) {
 				else {
 					break _loop174;
 				}
-
+				
 			} while (true);
 			}
 			mult_AST = (AST)currentAST.root;
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_59);
 			} else {
@@ -5978,13 +5978,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = mult_AST;
 	}
-
+	
 	public final void pow() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST pow_AST = null;
-
+		
 		try {      // for error handling
 			prefix();
 			astFactory.addASTChild(currentAST, returnAST);
@@ -5998,7 +5998,7 @@ public EParser(ParserSharedInputState state) {
 				match(167);
 				prefix();
 				astFactory.addASTChild(currentAST, returnAST);
-				if (0 == inputState.guessing) {
+				if ( inputState.guessing==0 ) {
 					pow_AST = (AST)currentAST.root;
 					pow_AST=(AST)astFactory.make( (new ASTArray(2)).add(astFactory.create(CallExpr)).add(pow_AST));
 					currentAST.root = pow_AST;
@@ -6073,7 +6073,7 @@ public EParser(ParserSharedInputState state) {
 			pow_AST = (AST)currentAST.root;
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_60);
 			} else {
@@ -6082,9 +6082,9 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = pow_AST;
 	}
-
+	
 	public final void prefix() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST prefix_AST = null;
@@ -6093,7 +6093,7 @@ public EParser(ParserSharedInputState state) {
 		Token  neg = null;
 		AST neg_AST = null;
 		AST b_AST = null;
-
+		
 		try {      // for error handling
 			switch ( LA(1)) {
 			case QUASIOPEN:
@@ -6140,7 +6140,7 @@ public EParser(ParserSharedInputState state) {
 				op_AST = (AST)returnAST;
 				postfix();
 				a_AST = (AST)returnAST;
-				if (0 == inputState.guessing) {
+				if ( inputState.guessing==0 ) {
 					prefix_AST = (AST)currentAST.root;
 					prefix_AST=(AST)astFactory.make( (new ASTArray(3)).add(astFactory.create(CallExpr)).add(a_AST).add(op_AST));
 					currentAST.root = prefix_AST;
@@ -6157,7 +6157,7 @@ public EParser(ParserSharedInputState state) {
 				match(162);
 				prim();
 				b_AST = (AST)returnAST;
-				if (0 == inputState.guessing) {
+				if ( inputState.guessing==0 ) {
 					prefix_AST = (AST)currentAST.root;
 					prefix_AST=(AST)astFactory.make( (new ASTArray(3)).add(astFactory.create(CallExpr)).add(b_AST).add(neg_AST));
 					currentAST.root = prefix_AST;
@@ -6174,7 +6174,7 @@ public EParser(ParserSharedInputState state) {
 			}
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_61);
 			} else {
@@ -6183,20 +6183,20 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = prefix_AST;
 	}
-
+	
 	public final void postfix() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST postfix_AST = null;
-
+		
 		try {      // for error handling
 			call();
 			astFactory.addASTChild(currentAST, returnAST);
 			postfix_AST = (AST)currentAST.root;
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_61);
 			} else {
@@ -6205,13 +6205,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = postfix_AST;
 	}
-
+	
 	public final void prefixOp() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST prefixOp_AST = null;
-
+		
 		try {      // for error handling
 			{
 			switch ( LA(1)) {
@@ -6264,7 +6264,7 @@ public EParser(ParserSharedInputState state) {
 			prefixOp_AST = (AST)currentAST.root;
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_62);
 			} else {
@@ -6273,13 +6273,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = prefixOp_AST;
 	}
-
+	
 	public final void prim() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST prim_AST = null;
-
+		
 		try {      // for error handling
 			switch ( LA(1)) {
 			case HEX:
@@ -6326,7 +6326,7 @@ public EParser(ParserSharedInputState state) {
 				{
 					quasiString();
 					astFactory.addASTChild(currentAST, returnAST);
-					if (0 == inputState.guessing) {
+					if ( inputState.guessing==0 ) {
 						prim_AST = (AST)currentAST.root;
 						prim_AST=(AST)astFactory.make( (new ASTArray(2)).add(astFactory.create(QuasiLiteralExpr)).add(prim_AST));
 						currentAST.root = prim_AST;
@@ -6423,7 +6423,7 @@ public EParser(ParserSharedInputState state) {
 				{
 					quasiString();
 					astFactory.addASTChild(currentAST, returnAST);
-					if (0 == inputState.guessing) {
+					if ( inputState.guessing==0 ) {
 						prim_AST = (AST)currentAST.root;
 						prim_AST=(AST)astFactory.make( (new ASTArray(2)).add(astFactory.create(QuasiLiteralExpr)).add(prim_AST));
 						warn("***We may deprecate this***");
@@ -6515,7 +6515,7 @@ public EParser(ParserSharedInputState state) {
 			{
 				quasiString();
 				astFactory.addASTChild(currentAST, returnAST);
-				if (0 == inputState.guessing) {
+				if ( inputState.guessing==0 ) {
 					prim_AST = (AST)currentAST.root;
 					prim_AST=(AST)astFactory.make( (new ASTArray(3)).add(astFactory.create(QuasiLiteralExpr,"simple")).add(astFactory.create(STRING,"simple")).add(prim_AST));
 					currentAST.root = prim_AST;
@@ -6532,7 +6532,7 @@ public EParser(ParserSharedInputState state) {
 				tmp184_AST = astFactory.create(LT(1));
 				astFactory.addASTChild(currentAST, tmp184_AST);
 				match(URI);
-				if (0 == inputState.guessing) {
+				if ( inputState.guessing==0 ) {
 					prim_AST = (AST)currentAST.root;
 					prim_AST=(AST)astFactory.make( (new ASTArray(2)).add(astFactory.create(URIExpr)).add(prim_AST));
 					currentAST.root = prim_AST;
@@ -6630,7 +6630,7 @@ public EParser(ParserSharedInputState state) {
 				if ( synPredMatched209 ) {
 					mapList();
 					astFactory.addASTChild(currentAST, returnAST);
-					if (0 == inputState.guessing) {
+					if ( inputState.guessing==0 ) {
 						prim_AST = (AST)currentAST.root;
 						prim_AST.setType(MapExpr);
 					}
@@ -6638,7 +6638,7 @@ public EParser(ParserSharedInputState state) {
 				else if ((_tokenSet_65.member(LA(1))) && (_tokenSet_64.member(LA(2)))) {
 					exprList();
 					astFactory.addASTChild(currentAST, returnAST);
-					if (0 == inputState.guessing) {
+					if ( inputState.guessing==0 ) {
 						prim_AST = (AST)currentAST.root;
 						prim_AST.setType(TupleExpr);
 					}
@@ -6646,7 +6646,7 @@ public EParser(ParserSharedInputState state) {
 				else {
 					throw new NoViableAltException(LT(1), getFilename());
 				}
-
+				
 				}
 				match(171);
 				prim_AST = (AST)currentAST.root;
@@ -6656,7 +6656,7 @@ public EParser(ParserSharedInputState state) {
 			{
 				body();
 				astFactory.addASTChild(currentAST, returnAST);
-				if (0 == inputState.guessing) {
+				if ( inputState.guessing==0 ) {
 					prim_AST = (AST)currentAST.root;
 					prim_AST=(AST)astFactory.make( (new ASTArray(2)).add(astFactory.create(HideExpr)).add(prim_AST));
 					currentAST.root = prim_AST;
@@ -6674,7 +6674,7 @@ public EParser(ParserSharedInputState state) {
 			}
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_4);
 			} else {
@@ -6683,13 +6683,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = prim_AST;
 	}
-
+	
 	public final void argList() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST argList_AST = null;
-
+		
 		try {      // for error handling
 			boolean synPredMatched200 = false;
 			if (((_tokenSet_66.member(LA(1))) && (_tokenSet_67.member(LA(2))))) {
@@ -6771,7 +6771,7 @@ public EParser(ParserSharedInputState state) {
 			if ( synPredMatched200 ) {
 				mapList();
 				astFactory.addASTChild(currentAST, returnAST);
-				if (0 == inputState.guessing) {
+				if ( inputState.guessing==0 ) {
 					warn("map-tail");
 				}
 				argList_AST = (AST)currentAST.root;
@@ -6867,10 +6867,10 @@ public EParser(ParserSharedInputState state) {
 			else {
 				throw new NoViableAltException(LT(1), getFilename());
 			}
-
+			
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_69);
 			} else {
@@ -6879,13 +6879,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = argList_AST;
 	}
-
+	
 	public final void prop() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST prop_AST = null;
-
+		
 		try {      // for error handling
 			switch ( LA(1)) {
 			case IDENT:
@@ -6913,7 +6913,7 @@ public EParser(ParserSharedInputState state) {
 			}
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_70);
 			} else {
@@ -6922,13 +6922,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = prop_AST;
 	}
-
+	
 	public final void lambdaArgs() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST lambdaArgs_AST = null;
-
+		
 		try {      // for error handling
 			match(116);
 			argList();
@@ -7050,7 +7050,7 @@ public EParser(ParserSharedInputState state) {
 			lambdaArgs_AST = (AST)currentAST.root;
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_0);
 			} else {
@@ -7059,13 +7059,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = lambdaArgs_AST;
 	}
-
+	
 	public final void sepword() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST sepword_AST = null;
-
+		
 		try {      // for error handling
 			switch ( LA(1)) {
 			case LITERAL_catch:
@@ -7256,7 +7256,7 @@ public EParser(ParserSharedInputState state) {
 			}
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_44);
 			} else {
@@ -7265,13 +7265,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = sepword_AST;
 	}
-
+	
 	public final void exprList() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST exprList_AST = null;
-
+		
 		try {      // for error handling
 			{
 			switch ( LA(1)) {
@@ -7359,7 +7359,7 @@ public EParser(ParserSharedInputState state) {
 			exprList_AST = (AST)currentAST.root;
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_71);
 			} else {
@@ -7368,13 +7368,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = exprList_AST;
 	}
-
+	
 	public final void mapList() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST mapList_AST = null;
-
+		
 		try {      // for error handling
 			{
 			switch ( LA(1)) {
@@ -7465,7 +7465,7 @@ public EParser(ParserSharedInputState state) {
 			mapList_AST = (AST)currentAST.root;
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_69);
 			} else {
@@ -7474,13 +7474,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = mapList_AST;
 	}
-
+	
 	public final void literal() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST literal_AST = null;
-
+		
 		try {      // for error handling
 			switch ( LA(1)) {
 			case STRING:
@@ -7544,7 +7544,7 @@ public EParser(ParserSharedInputState state) {
 			}
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_4);
 			} else {
@@ -7553,13 +7553,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = literal_AST;
 	}
-
+	
 	public final void quasiString() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST quasiString_AST = null;
-
+		
 		try {      // for error handling
 			match(QUASIOPEN);
 			{
@@ -7609,7 +7609,7 @@ public EParser(ParserSharedInputState state) {
 				}
 			} while (true);
 			}
-			if (0 == inputState.guessing) {
+			if ( inputState.guessing==0 ) {
 				quasiString_AST = (AST)currentAST.root;
 				quasiString_AST=(AST)astFactory.make( (new ASTArray(2)).add(astFactory.create(QuasiContent)).add(quasiString_AST));
 				currentAST.root = quasiString_AST;
@@ -7621,7 +7621,7 @@ public EParser(ParserSharedInputState state) {
 			quasiString_AST = (AST)currentAST.root;
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_4);
 			} else {
@@ -7630,13 +7630,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = quasiString_AST;
 	}
-
+	
 	public final void map() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST map_AST = null;
-
+		
 		try {      // for error handling
 			switch ( LA(1)) {
 			case QUASIOPEN:
@@ -7753,7 +7753,7 @@ public EParser(ParserSharedInputState state) {
 			}
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_72);
 			} else {
@@ -7762,13 +7762,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = map_AST;
 	}
-
+	
 	public final void subPattern() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST subPattern_AST = null;
-
+		
 		try {      // for error handling
 			switch ( LA(1)) {
 			case URIGetter:
@@ -7866,7 +7866,7 @@ public EParser(ParserSharedInputState state) {
 					}
 					}
 					}
-					if (0 == inputState.guessing) {
+					if ( inputState.guessing==0 ) {
 						subPattern_AST = (AST)currentAST.root;
 						subPattern_AST=(AST)astFactory.make( (new ASTArray(2)).add(astFactory.create(FinalPattern)).add(subPattern_AST));
 						currentAST.root = subPattern_AST;
@@ -7880,7 +7880,7 @@ public EParser(ParserSharedInputState state) {
 				{
 					quasiString();
 					astFactory.addASTChild(currentAST, returnAST);
-					if (0 == inputState.guessing) {
+					if ( inputState.guessing==0 ) {
 						subPattern_AST = (AST)currentAST.root;
 						subPattern_AST=(AST)astFactory.make( (new ASTArray(2)).add(astFactory.create(QuasiLiteralPattern)).add(subPattern_AST));
 						currentAST.root = subPattern_AST;
@@ -7954,7 +7954,7 @@ public EParser(ParserSharedInputState state) {
 				}
 				}
 				}
-				if (0 == inputState.guessing) {
+				if ( inputState.guessing==0 ) {
 					subPattern_AST = (AST)currentAST.root;
 					subPattern_AST=(AST)astFactory.make( (new ASTArray(2)).add(astFactory.create(IgnorePattern)).add(subPattern_AST));
 					currentAST.root = subPattern_AST;
@@ -8001,7 +8001,7 @@ public EParser(ParserSharedInputState state) {
 			{
 				quasiString();
 				astFactory.addASTChild(currentAST, returnAST);
-				if (0 == inputState.guessing) {
+				if ( inputState.guessing==0 ) {
 					subPattern_AST = (AST)currentAST.root;
 					subPattern_AST=(AST)astFactory.make( (new ASTArray(3)).add(astFactory.create(QuasiLiteralPattern,"simple")).add(astFactory.create(STRING,"simple")).add(subPattern_AST));
 					currentAST.root = subPattern_AST;
@@ -8031,7 +8031,7 @@ public EParser(ParserSharedInputState state) {
 				match(149);
 				prim();
 				astFactory.addASTChild(currentAST, returnAST);
-				if (0 == inputState.guessing) {
+				if ( inputState.guessing==0 ) {
 					warn("reserved: != pattern");
 				}
 				subPattern_AST = (AST)currentAST.root;
@@ -8047,7 +8047,7 @@ public EParser(ParserSharedInputState state) {
 				astFactory.addASTChild(currentAST, returnAST);
 				prim();
 				astFactory.addASTChild(currentAST, returnAST);
-				if (0 == inputState.guessing) {
+				if ( inputState.guessing==0 ) {
 					warn("reserved: compareOp pattern");
 				}
 				subPattern_AST = (AST)currentAST.root;
@@ -8055,7 +8055,7 @@ public EParser(ParserSharedInputState state) {
 			}
 			default:
 				boolean synPredMatched233 = false;
-				if (((170 == LA(1)) && (_tokenSet_73.member(LA(2))))) {
+				if (((LA(1)==170) && (_tokenSet_73.member(LA(2))))) {
 					int _m233 = mark();
 					synPredMatched233 = true;
 					inputState.guessing++;
@@ -8156,13 +8156,13 @@ public EParser(ParserSharedInputState state) {
 					}
 					}
 					}
-					if (0 == inputState.guessing) {
+					if ( inputState.guessing==0 ) {
 						subPattern_AST = (AST)currentAST.root;
 						subPattern_AST.setType(MapPattern);
 					}
 					subPattern_AST = (AST)currentAST.root;
 				}
-				else if ((170 == LA(1)) && (_tokenSet_74.member(LA(2)))) {
+				else if ((LA(1)==170) && (_tokenSet_74.member(LA(2)))) {
 					AST tmp228_AST = null;
 					tmp228_AST = astFactory.create(LT(1));
 					astFactory.makeASTRoot(currentAST, tmp228_AST);
@@ -8256,7 +8256,7 @@ public EParser(ParserSharedInputState state) {
 						}
 						}
 						}
-						if (0 == inputState.guessing) {
+						if ( inputState.guessing==0 ) {
 							subPattern_AST = (AST)currentAST.root;
 							subPattern_AST.setType(ListPattern);
 						}
@@ -8269,7 +8269,7 @@ public EParser(ParserSharedInputState state) {
 						subPattern();
 						astFactory.addASTChild(currentAST, returnAST);
 						}
-						if (0 == inputState.guessing) {
+						if ( inputState.guessing==0 ) {
 							subPattern_AST = (AST)currentAST.root;
 							subPattern_AST.setType(CdrPattern);
 						}
@@ -8289,7 +8289,7 @@ public EParser(ParserSharedInputState state) {
 			}
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_29);
 			} else {
@@ -8298,13 +8298,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = subPattern_AST;
 	}
-
+	
 	public final void namePatt() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST namePatt_AST = null;
-
+		
 		try {      // for error handling
 			switch ( LA(1)) {
 			case URIGetter:
@@ -8342,7 +8342,7 @@ public EParser(ParserSharedInputState state) {
 				}
 				}
 				}
-				if (0 == inputState.guessing) {
+				if ( inputState.guessing==0 ) {
 					namePatt_AST = (AST)currentAST.root;
 					namePatt_AST=(AST)astFactory.make( (new ASTArray(2)).add(astFactory.create(FinalPattern)).add(namePatt_AST));
 					currentAST.root = namePatt_AST;
@@ -8381,7 +8381,7 @@ public EParser(ParserSharedInputState state) {
 			}
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_75);
 			} else {
@@ -8390,13 +8390,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = namePatt_AST;
 	}
-
+	
 	public final void dollarHole() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST dollarHole_AST = null;
-
+		
 		try {      // for error handling
 			switch ( LA(1)) {
 			case 176:
@@ -8445,7 +8445,7 @@ public EParser(ParserSharedInputState state) {
 			}
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_30);
 			} else {
@@ -8454,13 +8454,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = dollarHole_AST;
 	}
-
+	
 	public final void atHole() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST atHole_AST = null;
-
+		
 		try {      // for error handling
 			switch ( LA(1)) {
 			case 179:
@@ -8497,7 +8497,7 @@ public EParser(ParserSharedInputState state) {
 			}
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_30);
 			} else {
@@ -8506,13 +8506,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = atHole_AST;
 	}
-
+	
 	public final void mapPattern() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST mapPattern_AST = null;
-
+		
 		try {      // for error handling
 			switch ( LA(1)) {
 			case HEX:
@@ -8604,7 +8604,7 @@ public EParser(ParserSharedInputState state) {
 			}
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_76);
 			} else {
@@ -8613,13 +8613,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = mapPattern_AST;
 	}
-
+	
 	public final void exprHole() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST exprHole_AST = null;
-
+		
 		try {      // for error handling
 			AST tmp248_AST = null;
 			tmp248_AST = astFactory.create(LT(1));
@@ -8631,7 +8631,7 @@ public EParser(ParserSharedInputState state) {
 			astFactory.addASTChild(currentAST, returnAST);
 			br();
 			astFactory.addASTChild(currentAST, returnAST);
-			if (0 == inputState.guessing) {
+			if ( inputState.guessing==0 ) {
 				exprHole_AST = (AST)currentAST.root;
 				exprHole_AST.setType(DOLLARHOLE);
 			}
@@ -8639,7 +8639,7 @@ public EParser(ParserSharedInputState state) {
 			exprHole_AST = (AST)currentAST.root;
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_77);
 			} else {
@@ -8648,13 +8648,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = exprHole_AST;
 	}
-
+	
 	public final void pattHole() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST pattHole_AST = null;
-
+		
 		try {      // for error handling
 			match(ATCURLY);
 			br();
@@ -8663,7 +8663,7 @@ public EParser(ParserSharedInputState state) {
 			astFactory.addASTChild(currentAST, returnAST);
 			br();
 			astFactory.addASTChild(currentAST, returnAST);
-			if (0 == inputState.guessing) {
+			if ( inputState.guessing==0 ) {
 				pattHole_AST = (AST)currentAST.root;
 				pattHole_AST.setType(ATHOLE);
 			}
@@ -8671,7 +8671,7 @@ public EParser(ParserSharedInputState state) {
 			pattHole_AST = (AST)currentAST.root;
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_77);
 			} else {
@@ -8680,13 +8680,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = pattHole_AST;
 	}
-
+	
 	public final void reserved() throws RecognitionException, TokenStreamException {
-
+		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST reserved_AST = null;
-
+		
 		try {      // for error handling
 			switch ( LA(1)) {
 			case 97:
@@ -9457,7 +9457,7 @@ public EParser(ParserSharedInputState state) {
 			}
 		}
 		catch (RecognitionException ex) {
-			if (0 == inputState.guessing) {
+			if (inputState.guessing==0) {
 				reportError(ex);
 				recover(ex,_tokenSet_44);
 			} else {
@@ -9466,8 +9466,8 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = reserved_AST;
 	}
-
-
+	
+	
 	public static final String[] _tokenNames = {
 		"<0>",
 		"EOF",
@@ -9735,351 +9735,351 @@ public EParser(ParserSharedInputState state) {
 		"\"volatile\"",
 		"\"wstring\""
 	};
-
+	
 	protected void buildTokenTypeASTClassMap() {
 		tokenTypeToASTClassMap=null;
 	};
-
-	private static long[] mk_tokenSet_0() {
+	
+	private static final long[] mk_tokenSet_0() {
 		long[] data = { 2L, 0L, 0L, 0L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_0 = new BitSet(mk_tokenSet_0());
-	private static long[] mk_tokenSet_1() {
+	private static final long[] mk_tokenSet_1() {
 		long[] data = { 0L, 4195328L, 0L, 0L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_1 = new BitSet(mk_tokenSet_1());
-	private static long[] mk_tokenSet_2() {
+	private static final long[] mk_tokenSet_2() {
 		long[] data = { 258L, 18014398509481984L, 0L, 0L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_2 = new BitSet(mk_tokenSet_2());
-	private static long[] mk_tokenSet_3() {
+	private static final long[] mk_tokenSet_3() {
 		long[] data = { -6917529027641081840L, 4636447827035582848L, 8768622411628544L, 0L, 0L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_3 = new BitSet(mk_tokenSet_3());
-	private static long[] mk_tokenSet_4() {
+	private static final long[] mk_tokenSet_4() {
 		long[] data = { 258L, 141868316556936192L, 207807697534974L, 0L, 0L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_4 = new BitSet(mk_tokenSet_4());
-	private static long[] mk_tokenSet_5() {
+	private static final long[] mk_tokenSet_5() {
 		long[] data = new long[10];
 		data[0]=-6917529027641073806L;
 		data[1]=-2722432L;
-		for (int i = 2; 3 >= i; i++) { data[i]=-1L; }
+		for (int i = 2; i<=3; i++) { data[i]=-1L; }
 		data[4]=511L;
 		return data;
 	}
 	public static final BitSet _tokenSet_5 = new BitSet(mk_tokenSet_5());
-	private static long[] mk_tokenSet_6() {
+	private static final long[] mk_tokenSet_6() {
 		long[] data = { -6917529027641081584L, 6807187261580800384L, 8777419547983872L, 0L, 0L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_6 = new BitSet(mk_tokenSet_6());
-	private static long[] mk_tokenSet_7() {
+	private static final long[] mk_tokenSet_7() {
 		long[] data = { 258L, 27021598842160128L, 8796093022208L, 0L, 0L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_7 = new BitSet(mk_tokenSet_7());
-	private static long[] mk_tokenSet_8() {
+	private static final long[] mk_tokenSet_8() {
 		long[] data = { -6917529027641081840L, 4618433427452359040L, 8768622411382784L, 0L, 0L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_8 = new BitSet(mk_tokenSet_8());
-	private static long[] mk_tokenSet_9() {
+	private static final long[] mk_tokenSet_9() {
 		long[] data = { -6917529027641073806L, 4647711516229793152L, 8796093022207998L, 0L, 0L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_9 = new BitSet(mk_tokenSet_9());
-	private static long[] mk_tokenSet_10() {
+	private static final long[] mk_tokenSet_10() {
 		long[] data = { 258L, 27021607432094720L, 8796093022208L, 0L, 0L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_10 = new BitSet(mk_tokenSet_10());
-	private static long[] mk_tokenSet_11() {
+	private static final long[] mk_tokenSet_11() {
 		long[] data = { 274L, 3456517642301625344L, 207807697534974L, 0L, 0L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_11 = new BitSet(mk_tokenSet_11());
-	private static long[] mk_tokenSet_12() {
+	private static final long[] mk_tokenSet_12() {
 		long[] data = { 258L, 2303598336852251648L, 278176441712638L, 0L, 0L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_12 = new BitSet(mk_tokenSet_12());
-	private static long[] mk_tokenSet_13() {
+	private static final long[] mk_tokenSet_13() {
 		long[] data = { 0L, 536870912L, 0L, 0L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_13 = new BitSet(mk_tokenSet_13());
-	private static long[] mk_tokenSet_14() {
+	private static final long[] mk_tokenSet_14() {
 		long[] data = { 258L, 141870515580191744L, 278176441712638L, 0L, 0L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_14 = new BitSet(mk_tokenSet_14());
-	private static long[] mk_tokenSet_15() {
+	private static final long[] mk_tokenSet_15() {
 		long[] data = { 258L, 137359798839690240L, 8796093825022L, 0L, 0L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_15 = new BitSet(mk_tokenSet_15());
-	private static long[] mk_tokenSet_16() {
+	private static final long[] mk_tokenSet_16() {
 		long[] data = { 258L, 101335919356953600L, 9895604535294L, 0L, 0L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_16 = new BitSet(mk_tokenSet_16());
-	private static long[] mk_tokenSet_17() {
+	private static final long[] mk_tokenSet_17() {
 		long[] data = { 258L, 29273407245927424L, 8796093825022L, 0L, 0L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_17 = new BitSet(mk_tokenSet_17());
-	private static long[] mk_tokenSet_18() {
+	private static final long[] mk_tokenSet_18() {
 		long[] data = { 258L, 141868316556936192L, 207807697534975L, 0L, 0L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_18 = new BitSet(mk_tokenSet_18());
-	private static long[] mk_tokenSet_19() {
+	private static final long[] mk_tokenSet_19() {
 		long[] data = { 258L, 141869416068563968L, 207807697534974L, 0L, 0L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_19 = new BitSet(mk_tokenSet_19());
-	private static long[] mk_tokenSet_20() {
+	private static final long[] mk_tokenSet_20() {
 		long[] data = { 0L, -9110782037580578816L, 0L, 0L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_20 = new BitSet(mk_tokenSet_20());
-	private static long[] mk_tokenSet_21() {
+	private static final long[] mk_tokenSet_21() {
 		long[] data = { 0L, 2305847415850139648L, 0L, 0L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_21 = new BitSet(mk_tokenSet_21());
-	private static long[] mk_tokenSet_22() {
+	private static final long[] mk_tokenSet_22() {
 		long[] data = { 258L, 3456513136528610304L, 149533614817278L, 0L, 0L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_22 = new BitSet(mk_tokenSet_22());
-	private static long[] mk_tokenSet_23() {
+	private static final long[] mk_tokenSet_23() {
 		long[] data = { 0L, 22518007801865600L, 0L, 0L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_23 = new BitSet(mk_tokenSet_23());
-	private static long[] mk_tokenSet_24() {
+	private static final long[] mk_tokenSet_24() {
 		long[] data = { -6917529027641081584L, 6942295234295788928L, 8768622411628544L, 0L, 0L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_24 = new BitSet(mk_tokenSet_24());
-	private static long[] mk_tokenSet_25() {
+	private static final long[] mk_tokenSet_25() {
 		long[] data = { -9223372036854775792L, 18863384695014400L, 8765307739963392L, 0L, 0L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_25 = new BitSet(mk_tokenSet_25());
-	private static long[] mk_tokenSet_26() {
+	private static final long[] mk_tokenSet_26() {
 		long[] data = { -6917529027641073808L, 6951302450730923392L, 8918157036339200L, 0L, 0L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_26 = new BitSet(mk_tokenSet_26());
-	private static long[] mk_tokenSet_27() {
+	private static final long[] mk_tokenSet_27() {
 		long[] data = { 0L, 18014407099417600L, 0L, 0L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_27 = new BitSet(mk_tokenSet_27());
-	private static long[] mk_tokenSet_28() {
+	private static final long[] mk_tokenSet_28() {
 		long[] data = { 256L, 1152921504606848000L, 0L, 0L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_28 = new BitSet(mk_tokenSet_28());
-	private static long[] mk_tokenSet_29() {
+	private static final long[] mk_tokenSet_29() {
 		long[] data = { 258L, 137359798839690240L, 149533582180350L, 0L, 0L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_29 = new BitSet(mk_tokenSet_29());
-	private static long[] mk_tokenSet_30() {
+	private static final long[] mk_tokenSet_30() {
 		long[] data = { 274L, -5766854394553150464L, 207807697534974L, 0L, 0L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_30 = new BitSet(mk_tokenSet_30());
-	private static long[] mk_tokenSet_31() {
+	private static final long[] mk_tokenSet_31() {
 		long[] data = { 0L, 5622515436353486848L, 0L, 0L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_31 = new BitSet(mk_tokenSet_31());
-	private static long[] mk_tokenSet_32() {
+	private static final long[] mk_tokenSet_32() {
 		long[] data = { -9223372036854775808L, 844579549102080L, 8760908650119168L, 0L, 0L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_32 = new BitSet(mk_tokenSet_32());
-	private static long[] mk_tokenSet_33() {
+	private static final long[] mk_tokenSet_33() {
 		long[] data = { -9223372036854775808L, 112589999274868736L, 8760908650119168L, 0L, 0L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_33 = new BitSet(mk_tokenSet_33());
-	private static long[] mk_tokenSet_34() {
+	private static final long[] mk_tokenSet_34() {
 		long[] data = { -9223372036854775792L, 848977595596800L, 8765307739963392L, 0L, 0L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_34 = new BitSet(mk_tokenSet_34());
-	private static long[] mk_tokenSet_35() {
+	private static final long[] mk_tokenSet_35() {
 		long[] data = { -6917529027641074064L, 7824845595108736L, 8914841321340928L, 0L, 0L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_35 = new BitSet(mk_tokenSet_35());
-	private static long[] mk_tokenSet_36() {
+	private static final long[] mk_tokenSet_36() {
 		long[] data = { -9223372036854775808L, 137439100928L, 8760908650119168L, 0L, 0L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_36 = new BitSet(mk_tokenSet_36());
-	private static long[] mk_tokenSet_37() {
+	private static final long[] mk_tokenSet_37() {
 		long[] data = { -9223372036854775550L, 27026005479277568L, 8769704743141376L, 0L, 0L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_37 = new BitSet(mk_tokenSet_37());
-	private static long[] mk_tokenSet_38() {
+	private static final long[] mk_tokenSet_38() {
 		long[] data = { 0L, 1008806316530995200L, 0L, 0L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_38 = new BitSet(mk_tokenSet_38());
-	private static long[] mk_tokenSet_39() {
+	private static final long[] mk_tokenSet_39() {
 		long[] data = { -6917529027641081840L, 4618433427452359040L, 8768622411628544L, 0L, 0L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_39 = new BitSet(mk_tokenSet_39());
-	private static long[] mk_tokenSet_40() {
+	private static final long[] mk_tokenSet_40() {
 		long[] data = { 258L, 141863397930042368L, 8796093022208L, 0L, 0L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_40 = new BitSet(mk_tokenSet_40());
-	private static long[] mk_tokenSet_41() {
+	private static final long[] mk_tokenSet_41() {
 		long[] data = { 258L, 101331413600715776L, 8796126461950L, 0L, 0L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_41 = new BitSet(mk_tokenSet_41());
-	private static long[] mk_tokenSet_42() {
+	private static final long[] mk_tokenSet_42() {
 		long[] data = { 256L, 1008806325120930816L, 0L, 0L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_42 = new BitSet(mk_tokenSet_42());
-	private static long[] mk_tokenSet_43() {
+	private static final long[] mk_tokenSet_43() {
 		long[] data = { 256L, 2161727821137843200L, 0L, 0L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_43 = new BitSet(mk_tokenSet_43());
-	private static long[] mk_tokenSet_44() {
+	private static final long[] mk_tokenSet_44() {
 		long[] data = { 0L, 8589934592L, 0L, 0L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_44 = new BitSet(mk_tokenSet_44());
-	private static long[] mk_tokenSet_45() {
+	private static final long[] mk_tokenSet_45() {
 		long[] data = { 0L, 1073741824L, 0L, 0L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_45 = new BitSet(mk_tokenSet_45());
-	private static long[] mk_tokenSet_46() {
+	private static final long[] mk_tokenSet_46() {
 		long[] data = { 0L, 18014407099417600L, 8796093022208L, 0L, 0L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_46 = new BitSet(mk_tokenSet_46());
-	private static long[] mk_tokenSet_47() {
+	private static final long[] mk_tokenSet_47() {
 		long[] data = { 0L, 1024L, 8796093022208L, 0L, 0L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_47 = new BitSet(mk_tokenSet_47());
-	private static long[] mk_tokenSet_48() {
+	private static final long[] mk_tokenSet_48() {
 		long[] data = { 256L, 1008806316530996224L, 0L, 0L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_48 = new BitSet(mk_tokenSet_48());
-	private static long[] mk_tokenSet_49() {
+	private static final long[] mk_tokenSet_49() {
 		long[] data = { 258L, 3341675331223294976L, 8796093022208L, 0L, 0L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_49 = new BitSet(mk_tokenSet_49());
-	private static long[] mk_tokenSet_50() {
+	private static final long[] mk_tokenSet_50() {
 		long[] data = { 0L, 27021597764224000L, 0L, 0L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_50 = new BitSet(mk_tokenSet_50());
-	private static long[] mk_tokenSet_51() {
+	private static final long[] mk_tokenSet_51() {
 		long[] data = { 0L, 18014398509483008L, 0L, 0L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_51 = new BitSet(mk_tokenSet_51());
-	private static long[] mk_tokenSet_52() {
+	private static final long[] mk_tokenSet_52() {
 		long[] data = { 258L, 29273407245927424L, 8796093038590L, 0L, 0L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_52 = new BitSet(mk_tokenSet_52());
-	private static long[] mk_tokenSet_53() {
+	private static final long[] mk_tokenSet_53() {
 		long[] data = { 258L, 29273407245927424L, 8796093300734L, 0L, 0L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_53 = new BitSet(mk_tokenSet_53());
-	private static long[] mk_tokenSet_54() {
+	private static final long[] mk_tokenSet_54() {
 		long[] data = { 258L, 101335811647226880L, 8797166649342L, 0L, 0L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_54 = new BitSet(mk_tokenSet_54());
-	private static long[] mk_tokenSet_55() {
+	private static final long[] mk_tokenSet_55() {
 		long[] data = { -6917529027641081840L, 4724307629859200L, 8768622411382784L, 0L, 0L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_55 = new BitSet(mk_tokenSet_55());
-	private static long[] mk_tokenSet_56() {
+	private static final long[] mk_tokenSet_56() {
 		long[] data = { 258L, 101335811647226880L, 8800387874814L, 0L, 0L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_56 = new BitSet(mk_tokenSet_56());
-	private static long[] mk_tokenSet_57() {
+	private static final long[] mk_tokenSet_57() {
 		long[] data = { 258L, 101335811647226880L, 8813272776702L, 0L, 0L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_57 = new BitSet(mk_tokenSet_57());
-	private static long[] mk_tokenSet_58() {
+	private static final long[] mk_tokenSet_58() {
 		long[] data = { 0L, 68719476736L, 515396075520L, 0L, 0L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_58 = new BitSet(mk_tokenSet_58());
-	private static long[] mk_tokenSet_59() {
+	private static final long[] mk_tokenSet_59() {
 		long[] data = { 258L, 101335846006965248L, 8830452645886L, 0L, 0L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_59 = new BitSet(mk_tokenSet_59());
-	private static long[] mk_tokenSet_60() {
+	private static final long[] mk_tokenSet_60() {
 		long[] data = { 258L, 101335914726441984L, 9345848721406L, 0L, 0L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_60 = new BitSet(mk_tokenSet_60());
-	private static long[] mk_tokenSet_61() {
+	private static final long[] mk_tokenSet_61() {
 		long[] data = { 258L, 101335914726441984L, 9895604535294L, 0L, 0L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_61 = new BitSet(mk_tokenSet_61());
-	private static long[] mk_tokenSet_62() {
+	private static final long[] mk_tokenSet_62() {
 		long[] data = { -6917529027641081840L, 4724067111690624L, 8765306696630272L, 0L, 0L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_62 = new BitSet(mk_tokenSet_62());
-	private static long[] mk_tokenSet_63() {
+	private static final long[] mk_tokenSet_63() {
 		long[] data = { -6917529027641081840L, 4618433428526100864L, 8777418504650752L, 0L, 0L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_63 = new BitSet(mk_tokenSet_63());
-	private static long[] mk_tokenSet_64() {
+	private static final long[] mk_tokenSet_64() {
 		long[] data = { -6917529027641073806L, 4755797907823555968L, 8936830510563326L, 0L, 0L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_64 = new BitSet(mk_tokenSet_64());
-	private static long[] mk_tokenSet_65() {
+	private static final long[] mk_tokenSet_65() {
 		long[] data = { -6917529027641081840L, 4618433427452359040L, 8777418504650752L, 0L, 0L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_65 = new BitSet(mk_tokenSet_65());
-	private static long[] mk_tokenSet_66() {
+	private static final long[] mk_tokenSet_66() {
 		long[] data = { -6917529027641081840L, 4636447827035582848L, 8777418504650752L, 0L, 0L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_66 = new BitSet(mk_tokenSet_66());
-	private static long[] mk_tokenSet_67() {
+	private static final long[] mk_tokenSet_67() {
 		long[] data = new long[10];
 		data[0]=-6917529027641073806L;
 		data[1]=-1152921504617433728L;
@@ -10089,55 +10089,55 @@ public EParser(ParserSharedInputState state) {
 		return data;
 	}
 	public static final BitSet _tokenSet_67 = new BitSet(mk_tokenSet_67());
-	private static long[] mk_tokenSet_68() {
+	private static final long[] mk_tokenSet_68() {
 		long[] data = { -6917529027641081840L, 4636447825961841024L, 8777418504650752L, 0L, 0L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_68 = new BitSet(mk_tokenSet_68());
-	private static long[] mk_tokenSet_69() {
+	private static final long[] mk_tokenSet_69() {
 		long[] data = { 0L, 18014398509481984L, 8796093022208L, 0L, 0L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_69 = new BitSet(mk_tokenSet_69());
-	private static long[] mk_tokenSet_70() {
+	private static final long[] mk_tokenSet_70() {
 		long[] data = { 258L, 105839519001101312L, 67070209179646L, 0L, 0L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_70 = new BitSet(mk_tokenSet_70());
-	private static long[] mk_tokenSet_71() {
+	private static final long[] mk_tokenSet_71() {
 		long[] data = { 0L, 0L, 8796093022208L, 0L, 0L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_71 = new BitSet(mk_tokenSet_71());
-	private static long[] mk_tokenSet_72() {
+	private static final long[] mk_tokenSet_72() {
 		long[] data = { 0L, 27021597764224000L, 8796093022208L, 0L, 0L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_72 = new BitSet(mk_tokenSet_72());
-	private static long[] mk_tokenSet_73() {
+	private static final long[] mk_tokenSet_73() {
 		long[] data = { 0L, 4503600702449024L, 8796093022208L, 0L, 0L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_73 = new BitSet(mk_tokenSet_73());
-	private static long[] mk_tokenSet_74() {
+	private static final long[] mk_tokenSet_74() {
 		long[] data = { -9223372036854775792L, 848977595597824L, 8774103832985600L, 0L, 0L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_74 = new BitSet(mk_tokenSet_74());
-	private static long[] mk_tokenSet_75() {
+	private static final long[] mk_tokenSet_75() {
 		long[] data = { 0L, 29273406167843840L, 8796093022208L, 0L, 0L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_75 = new BitSet(mk_tokenSet_75());
-	private static long[] mk_tokenSet_76() {
+	private static final long[] mk_tokenSet_76() {
 		long[] data = { 0L, 27021606354158592L, 8796093022208L, 0L, 0L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_76 = new BitSet(mk_tokenSet_76());
-	private static long[] mk_tokenSet_77() {
+	private static final long[] mk_tokenSet_77() {
 		long[] data = { 7776L, 0L, 0L, 0L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_77 = new BitSet(mk_tokenSet_77());
-
+	
 	}

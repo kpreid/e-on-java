@@ -1209,16 +1209,35 @@ public class ENodeBuilder extends BaseENodeBuilder implements EBuilder {
         return ObjDecl.EMPTY.withScript(script);
     }
 
-    /**
-     * Expands to
-     * <pre>
-     *     def _() :any { bodyExpr }
-     * </pre>
-     */
     public ObjDecl fnDecl(Object poser, Object params, Object bodyExpr) {
         return methDecl(methHead(poser, "run", params, null),
                         bodyExpr,
                         false).withOName(ignoreOName());
+    }
+
+    /**
+     * Add extra ejector parameter and move param patterns, in order to address
+     * bug <a href= "https://sourceforge.net/tracker/index.php?func=detail&aid=1593160&group_id=75274&atid=551529"
+     * >Change lambda-args expansion</a>
+     */
+    private ObjDecl blockDecl(Object poser,
+                              EList patternList,
+                              Object bodyExpr) {
+        int nPatterns = patternList.size();
+        EList params = list();
+        EList args = list();
+        for (int i = 0; i < nPatterns; i++) {
+            Astro p1 = newTemp("p");
+            params = with(params, finalPattern(p1));
+            args = with(args, noun(p1));
+        }
+        Astro ej2 = newTemp("ej");
+        params = with(params, finalPattern(ej2));
+        EExpr body = sequence(define(listPattern(patternList),
+                                     noun(ej2),
+                                     tuple(args)),
+                              bodyExpr);
+        return fnDecl(poser, params, body);
     }
 
     /**
@@ -1228,12 +1247,22 @@ public class ENodeBuilder extends BaseENodeBuilder implements EBuilder {
                          Object sep,
                          Object params,
                          Object body) {
-        EExpr lam = doco("", fnDecl(sep, params, body));
-        int nParams = ((EList)params).size();
-        return call(recip,
-                    sep,
-                    idStr(sep) + "__control_" + nParams,
-                    list(lam));
+        EList paramList = (EList)params;
+        int nParams = paramList.size();
+        ObjDecl blockFunc;
+        String suffix;
+        if (0 == nParams) {
+            blockFunc = fnDecl(sep, paramList, body);
+            suffix = "";
+        } else {
+            blockFunc = blockDecl(sep, paramList, body);
+            suffix = "ej";
+        }
+        // XXX refactor: above block is identical to that in control/5
+
+        EExpr lam = doco("", blockFunc);
+        String verb = idStr(sep) + "__control_" + nParams + suffix;
+        return call(recip, sep, verb, list(lam));
     }
 
     /**
@@ -1244,18 +1273,28 @@ public class ENodeBuilder extends BaseENodeBuilder implements EBuilder {
                          Object args,
                          Object params,
                          Object body) {
+        EList paramList = (EList)params;
+        int nParams = paramList.size();
+        ObjDecl blockFunc;
+        String suffix;
+        if (0 == nParams) {
+            blockFunc = fnDecl(sep, paramList, body);
+            suffix = "";
+        } else {
+            blockFunc = blockDecl(sep, paramList, body);
+            suffix = "ej";
+        }
+        // XXX refactor: above block is identical to that in control/4
+
         EExpr lam = doco("",
                          fnDecl(sep,
                                 list(),
                                 tuple(list(tuple(args),
-                                           doco("",
-                                                fnDecl(sep, params, body))))));
+                                           doco("", blockFunc)))));
         int nArgs = ((EList)args).size();
-        int nParams = ((EList)params).size();
-        return call(recip,
-                    sep,
-                    idStr(sep) + "__control_" + nArgs + "_" + nParams,
-                    list(lam));
+        String verb =
+          idStr(sep) + "__control_" + nArgs + "_" + nParams + suffix;
+        return call(recip, sep, verb, list(lam));
     }
 
     /**
@@ -1867,7 +1906,8 @@ public class ENodeBuilder extends BaseENodeBuilder implements EBuilder {
         } else if (EParser.isLiteralToken(optOName)) {
             String qualifiedName = ((Astro)optOName).getOptString();
             T.notNull(qualifiedName,
-                      "Internal: Missing qualified name: ", optOName);
+                      "Internal: Missing qualified name: ",
+                      optOName);
             return oType(docComment,
                          literal(qualifiedName),
                          typeParams,
@@ -1880,7 +1920,7 @@ public class ENodeBuilder extends BaseENodeBuilder implements EBuilder {
             //base case 2
             Pattern[] oName = (Pattern[])optOName;
             // The name is derived from the last oName
-            String optName = oName[oName.length-1].getOptName();
+            String optName = oName[oName.length - 1].getOptName();
             EExpr qualName;
             if (null == optName) {
                 qualName = literal("_");
@@ -1894,7 +1934,8 @@ public class ENodeBuilder extends BaseENodeBuilder implements EBuilder {
             // qualName (with a "$") is the new fqnPrefix within the interface
             // expression?
             return oTypeBase(docComment,
-                             oName[0], // Match only the first oName pattern
+                             oName[0],
+                             // Match only the first oName pattern
                              typeParams,
                              optAuditorPatt,
                              qualName,

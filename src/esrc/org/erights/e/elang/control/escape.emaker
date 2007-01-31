@@ -11,20 +11,20 @@ pragma.enable("explicit-result-guard")
  * of its corresponding special form.
  */
 def __escape0 {
-    to fn__control_1(tryFn) :any {
+    to fn__control_1ej(try1Block) :any {
         def escapeControl {
             to run__control() :any {
                 return escape ejector {
-                    tryFn(ejector)
+                    try1Block(ejector, null)
                 }
             }
-            to catch__control_1(handlerFn) :any {
+            to catch__control_1ej(handler1Block) :any {
                 def escapeCatchControl {
                     to run__control() :any {
                         return escape ejector {
-                            tryFn(ejector)
+                            try1Block(ejector, null)
                         } catch problem {
-                            handlerFn(problem)
+                            handler1Block(problem, null)
                         }
                     }
                 }

@@ -16,46 +16,53 @@ def makeSeries := <elang:control.makeSeries>
  * collection argument of a ::"for"
  */
 def __for0 {
-    to each__control_1_2(compoundFn) :any {
+    to each__control_1_2ej(compoundFn) :any {
         def each2Control.run__control() :void {
-            def [[coll], assocFn] := compoundFn()
-            makeSeries(coll).each2(assocFn)
+            def [[coll], each2Block] := compoundFn()
+            makeSeries(coll).each2(each2Block)
         }
         return each2Control
     }
-    to each__control_1_1(compoundFn) :any {
+    to each__control_1_1ej(compoundFn) :any {
         def each1Control.run__control() :void {
-            def [[coll], each1Fn] := compoundFn()
-            makeSeries(coll).each(each1Fn)
+            def [[coll], each1Block] := compoundFn()
+            makeSeries(coll).each(each1Block)
         }
         return each1Control
     }
-    to map__control_1_2(compoundFn) :any {
+    to map__control_1_2ej(compoundFn) :any {
         def map2Control.run__control() :List {
-            def [[coll], map2Fn] := compoundFn()
-            return makeSeries(coll).map2(map2Fn).asList()
+            def [[coll], map2Block] := compoundFn()
+            return makeSeries(coll).map2(map2Block).asList()
         }
         return map2Control
     }
-    to map__control_1_1(compoundFn) :any {
+    to map__control_1_1ej(compoundFn) :any {
         def map1Control.run__control() :List {
-            def [[coll], map1Fn] := compoundFn()
-            return makeSeries(coll).map(map1Fn).asList()
+            def [[coll], map1Block] := compoundFn()
+            return makeSeries(coll).map(map1Block).asList()
         }
         return map1Control
     }
-    to filter__control_1_1(compoundFn) :any {
+    to filter__control_1_1ej(compoundFn) :any {
         def filter1Control.run__control() :List {
-            def [[coll], filter1Fn] := compoundFn()
-            return makeSeries(coll).filter(filter1Fn).asList()
+            def [[coll], filter1Block] := compoundFn()
+            return makeSeries(coll).filter(filter1Block).asList()
         }
         return filter1Control
     }
-    to fold__control_2_2(compoundFn) :any {
+    to fold__control_2_2ej(compoundFn) :any {
         def foldControl.run__control() :any {
-            def [[seed,coll], fold2Fn] := compoundFn()
-            return makeSeries(coll).fold(seed, fold2Fn)
+            def [[seed,coll], fold2Block] := compoundFn()
+            return makeSeries(coll).fold(seed, fold2Block)
         }
         return foldControl
+    }
+    to splice__control_1_1ej(compoundFn) :any {
+        def spliceControl.run__control() :any {
+            def [[coll], iter1Block] := compoundFn()
+            return makeSeries(coll).splice(iter1Block).asList()
+        }
+        return spliceControl
     }
 }

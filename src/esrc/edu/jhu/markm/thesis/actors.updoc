@@ -3,8 +3,7 @@
 # Copyright 2005 Mark S. Miller, under the terms of the MIT X license
 # found at http://www.opensource.org/licenses/mit-license.html ................
 
-def x := rune(["~/e/src/esrc/scripts/updoc.e",
-               "~/e/src/esrc/edu/jhu/markm/thesis/actors.updoc"])
+def x := rune(["~/e/src/esrc/edu/jhu/markm/thesis/actors.updoc"])
 
     ? pragma.syntax("0.9")
     ? def <thesis> := <import:edu.jhu.markm.thesis.*>

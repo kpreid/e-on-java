@@ -43,7 +43,7 @@ def makeWhenControl(refFn) :any {
         /**
          * ::"when" ... catch problem {handlerExpr} ...
          */
-        to catch__control_1(handlerFn) :any {
+        to catch__control_1ej(handler1Block) :any {
             throw(`XXX '::"when" .. catch ...' not yet implemented`)
         }
 
@@ -63,10 +63,10 @@ def makeWhenControl(refFn) :any {
          *
          * @see Ref#whenBroken/2
          */
-        to broken__control_1(handlerFn) :any {
+        to broken__control_1(handler1Block) :any {
             def whenBrokenFn() :any {
                 def prom := refFn()
-                return Ref.whenBroken(prom, fn _ {handlerFn()})
+                return Ref.whenBroken(prom, fn _ {handler1Block(ex,XXX)})
             }
             return makeWhenControl(whenBrokenFn)
         }
@@ -92,11 +92,11 @@ def __when0 {
     }
 
     /** when (refExpr) broken problem {handlerExpr} ... */
-    to "broken__control_1_1"(compoundFn) :any {
+    to "broken__control_1_1ej"(compoundFn) :any {
         # XXX Violating our normal design rule for controls, and calling
         # the argument before run__control()
-        def [[prom], handlerFn] := compoundFn()
-        return makeWhenControl(fn{prom}).broken__control_1(handlerFn)
+        def [[prom], handler1Block] := compoundFn()
+        return makeWhenControl(fn{prom}).broken__control_1ej(handler1Block)
     }
 
     match [`resolved__control_@{_}_0`, [compoundFn]] {
