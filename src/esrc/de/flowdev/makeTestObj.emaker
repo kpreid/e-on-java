@@ -6,14 +6,14 @@ pragma.syntax("0.9")
 # by Martin Scheffler
 # XXX Need copyright notice
 
-def makeTestObj implements pbc{
-    
+def makeTestObj implements pbc {
+
     to __optUncall() :any {
         return [<import>, "get", ["de.flowdev.makeTestObj"]]
     }
-    
+
     to run() :any {
-        
+
         def testObj implements pbc {
             to __optUncall() :any {
                 return [makeTestObj, "run", []]

@@ -46,7 +46,8 @@ import java.io.IOException;
  *
  * @author Mark S. Miller
  */
-class DisconnectedRef extends Ref implements Persistent, JOSSPassByConstruction {
+class DisconnectedRef extends Ref
+  implements Persistent, JOSSPassByConstruction {
 
     static private final long serialVersionUID = 1307531130876647340L;
 

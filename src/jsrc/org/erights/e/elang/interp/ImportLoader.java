@@ -23,8 +23,8 @@ import org.erights.e.develop.assertion.T;
 import org.erights.e.develop.exception.NestedException;
 import org.erights.e.develop.trace.Trace;
 import org.erights.e.elang.evm.EExpr;
-import org.erights.e.elang.syntax.EParser;
 import org.erights.e.elang.scope.Scope;
+import org.erights.e.elang.syntax.EParser;
 import org.erights.e.elib.base.ClassDesc;
 import org.erights.e.elib.base.ValueThunk;
 import org.erights.e.elib.prim.SafeJ;
@@ -32,6 +32,7 @@ import org.erights.e.elib.prim.StaticMaker;
 import org.erights.e.elib.ref.Ref;
 import org.erights.e.elib.ref.Resolver;
 import org.erights.e.elib.serial.BaseLoader;
+import org.erights.e.elib.serial.JOSSPassByConstruction;
 import org.erights.e.elib.slot.FinalSlot;
 import org.erights.e.elib.slot.Slot;
 import org.erights.e.elib.tables.FlexMap;
@@ -41,6 +42,7 @@ import org.erights.e.elib.vat.StackContext;
 import org.erights.e.meta.java.net.URLSugar;
 
 import java.io.IOException;
+import java.io.ObjectStreamException;
 import java.net.URL;
 
 /**
@@ -51,12 +53,7 @@ import java.net.URL;
  * @author Mark S. Miller
  * @author E. Dean Tribble
  */
-class ImportLoader extends BaseLoader {
-
-    /**
-     * We assume that ClassLoaders are thread-safe
-     */
-    private final ClassLoader myOptLoader;
+class ImportLoader extends BaseLoader implements JOSSPassByConstruction {
 
     /**
      * The values in the slots are either EStaticWrappers on Class objects (for
@@ -65,21 +62,14 @@ class ImportLoader extends BaseLoader {
      * <p/>
      * Must synchronize access to this
      */
-    private final FlexMap myAlreadyImported;
+    private final transient FlexMap myAlreadyImported;
 
     /**
      *
      */
-    private ImportLoader(ClassLoader optLoader) {
-        myOptLoader = optLoader;
-        myAlreadyImported = FlexMap.fromTypes(String.class, FinalSlot.class);
-    }
-
-    /**
-     * optLoader defaults to null.
-     */
     ImportLoader() {
-        this(null);
+        myAlreadyImported =
+          FlexMap.fromTypes(String.class, FinalSlot.class);
     }
 
     /**
@@ -105,16 +95,18 @@ class ImportLoader extends BaseLoader {
         return jfqName.substring(0, jfqLen - jflatLen) + "make" + jflatName;
     }
 
+    /**
+     *
+     */
+    private Object readResolve() throws ObjectStreamException {
+        return new ImportLoader();
+    }
 
     /**
      * returns null if not found
      */
     private URL optResource(String rName) {
-        if (myOptLoader == null) {
-            return ClassLoader.getSystemResource(rName);
-        } else {
-            return myOptLoader.getResource(rName);
-        }
+        return ClassLoader.getSystemResource(rName);
     }
 
     /**
