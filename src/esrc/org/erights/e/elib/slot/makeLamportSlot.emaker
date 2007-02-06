@@ -40,7 +40,7 @@ def EverReactor := <type:org.erights.e.elib.slot.EverReactor>
  *         Jenson)
  */
 def makeLamportSlot {
-
+    
     /**
      * <tt>makeLamportSlot(initValue)</tt> is equivalent to
      * <tt>makeLamportSlot(any, initValue)</tt>
@@ -48,7 +48,7 @@ def makeLamportSlot {
     to run(initValue) :Slot {
         return makeLamportSlot(any, initValue)
     }
-
+    
     /**
      * Makes a new lamportSlot.
      *
@@ -58,33 +58,33 @@ def makeLamportSlot {
      *              be coerced.
      */
     to run(subGuard :Guard, var value) :Slot {
-
+        
         # This says how current 'value' is, for coordinating with my
         # reactors.
         var myGeneration :int := 0
-
+        
         # Those downstream and subscribed to me.
         var optReactors := null
-
+        
         # The EverReporter upstream from this one, ie, the one from
         # which the most recent report was received. null if no one
         # is upstream, or if we've already sent in our subscription request.
         var optSource := null
-
+        
         # Says how recent value is by my source's generation
         # numbering. Only meaningful when optSource != null
         var srcGen :int := 0
-
+        
         # For debugging purposes
         var debugName :String := "lamport"
-
+        
         # For debugging purposes
         var tracer := def defaultTracer(thnk) :void {
             # ignored by default
         }
-
+        
         def lamportSlot
-
+        
         /**
          * Trigger any delayed reregistration with my source
          */
@@ -97,7 +97,7 @@ def makeLamportSlot {
                 optSource := null
             }
         }
-
+        
         /**
          * A semantically read-only facet of the lamportSlot, which
          * just contains the semantically read-only subset of the
@@ -107,14 +107,14 @@ def makeLamportSlot {
          * so cause data structure changes and network activity.
          */
         def lamportReporter implements EverReporter {
-
+            
             /**
              * For debugging purposes
              */
             to __printOn(out :TextWriter) :void {
                 out.print(`<ro-$debugName $value as of $myGeneration>`)
             }
-
+            
             /**
              * Synchronously return the locally stored value, but also
              * trigger any delayed registration with source, since
@@ -124,19 +124,19 @@ def makeLamportSlot {
                 localInterest()
                 value
             }
-
+            
             /**
              * @deprecated Use #get/1
              */
             to getValue() :any { return lamportReporter.get() }
-
+            
             /**
              * For initializing generation-cognizant reactors.
              */
             to getCurrent() :Tuple[any, int] {
                 return [lamportReporter.get(), myGeneration]
             }
-
+            
             /**
              * This is how a downstream Reactor subscribes to this Slot
              * as an upstream Reporter. This Slot is being told "'reactor'
@@ -145,9 +145,9 @@ def makeLamportSlot {
              */
             to whenUpdated(reactor :EverReactor, lastGeneration :int) :void {
                 tracer(fn{
-                    `lamportReporter whenUpdated($reactor, $lastGeneration)`
+                    `lamportReporter.whenUpdated($reactor, $lastGeneration)`
                 })
-
+                
                 # Like get(), whenUpdated() is a demonstration of
                 # local interest.
                 localInterest()
@@ -171,51 +171,51 @@ def makeLamportSlot {
                     optReactors.push(reactor)
                 }
             }
-
+            
             /**
              * Use for initial connectivity
              */
             to whenUpdated(reactor :EverReactor) :void {
                 lamportReporter.whenUpdated(reactor, -1)
             }
-
+            
             /**
              * Returns a read-only facet of the Slot
              */
             to readOnly() :Slot {
                 lamportReporter
             }
-
+            
             /** Returns false, since read-only does not imply final. */
             to isFinal() :boolean { return false }
         }
-
+        
         /**
          * The read-write facet of the lamportSlot.
          */
         bind lamportSlot extends lamportReporter implements EverReactor, Slot {
-
+            
             /**
              * For debugging purposes
              */
             to __printOn(out :TextWriter) :void {
                 out.print(`<$debugName $value as of $myGeneration>`)
             }
-
+            
             /**
              *
              */
             to setDebugName(newDebugName :String) :void {
                 debugName := newDebugName
             }
-
+            
             /**
              *
              */
             to setTracer(newTracer) :void {
                 tracer := newTracer
             }
-
+            
             /**
              * Synchronously sets the local value (so local get()s
              * are immediately accurate), and also report to all Reactors
@@ -226,12 +226,12 @@ def makeLamportSlot {
             to put(newValue) :void {
                 lamportSlot.reactToUpdate(newValue, 0, null)
             }
-
+            
             /**
              * @deprecated Use #put/1
              */
             to setValue(newValue) :void { lamportSlot.put(newValue) }
-
+            
             /**
              * Receive a report from an EverReporter that's presumably upstream
              * of this one (ie, that we've subscribed to).
@@ -275,7 +275,7 @@ def makeLamportSlot {
         }
         return lamportSlot
     }
-
+    
     /**
      *
      */
@@ -284,7 +284,7 @@ def makeLamportSlot {
         farReporter <- whenUpdated(&x)
         return (&x).readOnly()
     }
-
+    
     /**
      * While being watched, report a change every delayMillis, whether or not
      * the slot itself is ever assigned to.
@@ -300,14 +300,14 @@ def makeLamportSlot {
                     reporter
                 ])
             }
-
+            
             /**
              * Returns a read-only facet of the Slot
              */
             to readOnly() :Slot {
                 reporter
             }
-
+            
             /**
              * Even if the original slot is final, this returns false, since
              * the reporter has a behavior distinct from a FinalSlot on its
@@ -320,11 +320,11 @@ def makeLamportSlot {
             return reporter
         }
         def reactor extends reporter implements EverReactor, Slot {
-
+            
             to put(newValue) :void {
                 slot.put(newValue)
             }
-
+            
             to reactToUpdate(newValue,
                              newReporterGen :int,
                              optNewSource :nullOk[EverReporter]) :void {
