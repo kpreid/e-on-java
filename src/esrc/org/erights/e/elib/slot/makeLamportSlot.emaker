@@ -180,10 +180,20 @@ def makeLamportSlot {
             }
             
             /**
-             * Returns a read-only facet of the Slot
+             * Returns a read-only pbc/Unum facet of the Slot.
+             * 
+             * @see 
+             *    http://eros-os.org/pipermail/e-lang/2007-February/011870.html
              */
             to readOnly() :Slot {
-                lamportReporter
+                def lamportReporterPBC extends lamportReporter implements pbc {
+                    to __optUncall() :any {
+                        return [makeLamportSlot,
+                                "localShadow",
+                                [lamportReporter.get(), lamportReporter]]
+                    }
+                }
+                lamportReporterPBC
             }
             
             /** Returns false, since read-only does not imply final. */
