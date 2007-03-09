@@ -1,0 +1,41 @@
+#!/usr/bin/env rune
+
+# Copyright 2006 Hewlett Packard, under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+pragma.syntax("0.9")
+
+def Opaque   := any  # assumed to be some else's Box.
+def dist     := rcvr # A possibly-remote reference.
+def Resolver := <type:org.erights.e.elib.ref.Resolver>
+
+def makeWho(sealer) {
+    # def who implements Who {
+    def who {
+        to getLabel() :String { return sealer.getBrand().getNickName() }
+        
+        to sealMessage(verb      :String,
+                       argDescs  :List[ArgDesc],
+                       answerRes :dist[Resolver]) :Opaque {
+            return sealer.seal(["message",
+                                argDescs,
+                                answerRes])
+        }
+        
+        to sealIntro(why                       :IntroLetter,
+                     recipientWho              :dist[Who],
+                     sealedDeliveratorResolver :dist[Resolver]) :Opaque {
+            return sealer.seal(["intro",
+                                why,
+                                recipientWho,
+                                sealedDeliveratorResolver])
+        }
+        
+        to sealDeliverator(deliverator :dist[Deliverator]) :Opaque {
+            return sealer.seal(["deliverator",
+                                deliverator])
+        }
+        
+    }
+    return who
+}

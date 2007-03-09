@@ -1,0 +1,42 @@
+#!/usr/bin/env rune
+
+# Copyright 2006 Hewlett Packard, under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+pragma.syntax("0.9")
+
+def easyClientPolicy {
+    
+    /**
+     * Reuse an old proxy by passing it to the ejector.
+     * <p>
+     * Note that we must check that both targetDeliverator and targetWho
+     * are the same in order to reuse, in order to protect ourselves against
+     * either a malicious or accidental inconsistency between the two.
+     */
+    to getOldProxy(targetDeliverator,
+                   targetWho,
+                   ejector) {
+        # do nothing
+    }
+    
+    to getWhy() :IntroLetter {
+        return ["introLetter",
+                true, # yes, blame me
+                "why not?"]
+    }
+    
+    to substitute(arg) { return arg }
+    
+    to send(acceptorDeliverator :dist[Deliverator],
+            recipientWho        :dist[Who],
+            verb                :String,
+            argDescs            :List[ArgDesc]) {
+        
+        def msgBox := recipientWho <- sealMessage(verb,
+                                                  argDescs,
+                                                  def answer)
+        acceptorDeliverator <- deliver(msgBox)
+        return answer
+    }
+}

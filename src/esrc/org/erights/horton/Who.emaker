@@ -1,0 +1,152 @@
+#!/usr/bin/env rune
+
+# Copyright 2006 Hewlett Packard, under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+pragma.syntax("0.9")
+
+def Opaque   := any  # assumed to be some else's Box.
+def dist     := rcvr # A possibly-remote reference.
+def Resolver := <type:org.erights.e.elib.ref.Resolver>
+
+/**
+ * A Who is a responsible identity, typically wrapping a sealer or public key.
+ * <p>
+ * Just as a public key designates the party that can wield the corresponding
+ * private key, a Who designates a responsible party.
+ * <p>
+ * Definition of roles:<ul>
+ * <li>Delegator - Responsible party (identified by the DelegatorWho), whose 
+ *     Introducer is sending the message intending to give the Recipient's
+ *     Acceptor access to the Issuer's Power. The Delegator is assumed to
+ *     desire that the Issuer hold the Recipient responsible for the use it
+ *     makes of this Power.
+ * <li>Introducer - The object acting on behalf of the Delegator to delegate
+ *     access to the Power to the Acceptor.
+ * <li>Recipient - The responsible party whose Acceptor will receive the 
+ *     message conveying responsibility-tracked authority to use the Power. 
+ *     For any use made of this authority, the Issuer will hold the 
+ *     Recipient responsible.
+ * <li>Acceptor (with apologies to Dean) - The object acting on behalf of the
+ *     Recipient as the receiver of the message with the responsibility-tracked
+ *     arguments.
+ * <li>Issuer - The responsible party holding the Power -- the authority
+ *     bearing object previously issued to the Delegator, which the 
+ *     Delegator's Introducer delegates to the Recipient's Acceptor.
+ * <li>Power - The authority bearing object managed by the Issuer.
+ * </ul>
+ * Between the responsible parties (Delegator, Recipient, Issuer) all 
+ * interaction is by eventual sends, for two reasons. First, because these
+ * should be assumed mutually suspicious, so each should use eventual sends
+ * to protect itself from plan interference by the others. Second, to enable
+ * each of these parties to be in separate vats.
+ * <p>
+ * Definition of types:<ul>
+ * <li>Who -
+ * <li>Deliverator -
+ * <li>Proxy -
+ * <li>ArgDesc - either ["sealedArg", 
+ *                       sealed deliverator of Issuer's Power for Recipient,
+ *                       IssuerWho]
+ *               or ["normalArg", arg]
+ * <li>IntroLetter - ["introLetter",
+ *                    blameMe :boolean,
+ *                    stuff :Data]
+ *     The letter of introduction records how the delegator 
+ *     recommends the issuer regard the recipient. May well include a suggested
+ *     name in the stuff. For example, if the Issuer's petname for the 
+ *     Delegator is "Alice" and the Delegator suggests that the Issuer regard 
+ *     the Recipient as "Bob", the Issuer may assign the petname "Alice's Bob"
+ *     to BobWho.
+ *     The blameMe flag says whether the Delegator volunteers to
+ *     assume responsibility for enabling the Recipient's Acceptor to exercise
+ *     the Issuer's Power. For example, if false, the Issuer may decide
+ *     to provide the Recipient the Power only if (and only as long as) the
+ *     Recipient has the Power for some other reason. This supports Voluntary
+ *     Oblivious Compliance (VOC).
+ * <li>ServerPolicy - consulted by the default Deliverator implementation
+ *     to provide policy regarding logging, revocation, and namespace
+ *     management. It also constructs derived <tt>ServerPolicy</tt>s to
+ *     advise new derived Deliverators, and constructs derived 
+ *     <tt>ClientPolicy</tt>s to advise new derived <tt>Proxy</tt>s.
+ * <li>ClientPolicy - consulted by the default Proxy implementation to
+ *     provide policy regarding which Proxy arguments should be introduced by
+ *     proxying vs by shortening, and consulted to determine how to pass 
+ *     non-Proxy arguments.
+ * <li>Opaque - assumed to be a sealed box resulting for calling a Who. 
+ * </ul>
+ * Tagged payloads of Opaques (Sealed Boxes):<ul>
+ * <li>sealed message - ["message", 
+ *                       verb :String, 
+ *                       args :List[ArgDesc], 
+ *                       answer :dist[Resolver]]
+ * <li>sealed intro - ["intro",
+ *                     why :IntroLetter,
+ *                     RecipientWho,
+ *                     Resolver for sealed deliverator
+ * <li>sealed deliverator - ["deliverator",
+ *                           Deliverator of Issuer's Power for Recipient]
+ * </ul>
+ * All the methods returning an Opaque should actually return an
+ * object this responsible party can unlock to obtain the
+ * original arguments. However, none of these messages by themselves require 
+ * the responsible party to react.
+ * <p>
+ * Between processes or machines speaking to each other using a
+ * cryptographic capability protocol, a Who could be implemented as
+ * a pass-by-copy object carrying a label and a public encryption
+ * key. All the methods returning Opaque would just serialize its
+ * arguments and encrypt the results. The Opaque object returned would
+ * just hold this cyphertext.
+ * <p>
+ * Alternatively, simple/makeWho.emaker shows how it can be implemented
+ * trivially using sealer/unsealer pairs.
+ */
+interface Who {
+
+    /**
+     * The "nickname" from Zooko's triangle, i.e., a name
+     * which the responsible party suggests it be called, with
+     * no claim or expectation of uniqueness or stability. Only
+     * useful when some of the participants in this protocol are
+     * humans or their agents.
+     */
+    to getLabel() :String
+
+    /**
+     * When the Delegator call the RecipientWho's sealMessage, it returns an
+     * Opaque that can be delivered to the Recipient's Acceptor's Deliverator
+     * for the Delegator.
+     * <p>
+     * Presumably, the verb and the described args are intended to be 
+     * delivered to some Acceptor object managed by this Who, at which time the
+     * resolver will be resolved to the outcome.
+     */
+    to sealMessage(verb      :String,
+                   argDescs  :List[ArgDesc],
+                   answerRes :dist[Resolver]) :Opaque
+
+    /**
+     * When the Delegator calls the IssuerWho's sealIntro, it returns an Opaque
+     * which can be delivered to that Issuer's Power's Deliverator for the
+     * Delegator.
+     * <p>
+     * Requests the Power's Deliverator to resolve the resolver to an Opaque
+     * sealed by RecipientWho, which the Recipient's Acceptor's Deliverator 
+     * for the Delegator can unseal to obtain the Issuer's Power's new
+     * Delegator for the Recipient.
+     */
+    to sealIntro(why                       :IntroLetter,
+                 recipientWho              :dist[Who],
+                 sealedDeliveratorResolver :dist[Resolver]) :Opaque
+
+    /**
+     * When the Issuer calls the RecipientWho's sealDeliverator, it returns an
+     * Opaque which the Delegator can deliver to the Recipient's Acceptor's
+     * Deliverator for the Delegator.
+     * <p>
+     * Used for each Power whose Deliverator will be included in a
+     * request argument.
+     */
+    to sealDeliverator(deliverator :dist[Deliverator]) :Opaque
+}

@@ -1,0 +1,99 @@
+#!/usr/bin/env rune
+
+# Copyright 2006 Hewlett Packard, under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+pragma.syntax("0.9")
+
+def Opaque   := any  # assumed to be some else's Box.
+def dist     := rcvr # A possibly-remote reference.
+def Resolver := <type:org.erights.e.elib.ref.Resolver>
+
+def makeDeliverator(myServPolicy,
+                    myWhoUnsealer :Unsealer,
+                    myTarget,
+                    myMakeProxy,
+                    responsibleWho :dist[Who]) {
+    myServPolicy.getOldDeliverator(myTarget,
+                                   responsibleWho,
+                                   __return)
+    def deliverator {
+        to deliver(box :dist[Opaque]) {
+            when (box) -> {
+                switch (myWhoUnsealer.unseal(box)) {
+                    # In the "message" case, myTarget is an Acceptor and
+                    # myWhoUnsealer is the Recipient's unsealer.
+                    match [`message`,
+                           verb      :String,
+                           argDescs  :List[ArgDesc],
+                           answerRes :dist[Resolver]] {
+                        var args := []
+                        var proxyVows := []
+                        for argDesc in argDescs {
+                            switch (argDesc) {
+                                match [`normalArg`, arg] {
+                                    args with= arg
+                                }
+                                # If the "sealedArg" case, the sealedPowerD
+                                # is a sealed box, sealed by the Issuer
+                                # using myWho (the Recipient's Who), so that
+                                # I can unseal it and obtain the deliverator
+                                # for using the Power in ways I (the
+                                # Recipient) will be held responsible for.
+                                match [`sealedArg`,
+                                       sealedPowerD :dist[Opaque[Deliverator]],
+                                       issuerWho :dist[Who]] {
+                                    def proxy := when (sealedPowerD) -> {
+                                        def powerD :=
+                                          myWhoUnsealer.unseal(sealedPowerD)
+                                        myMakeProxy(
+                                            myServPolicy.getClientPolicy(),
+                                            powerD,
+                                            issuerWho)
+                                    }
+                                    args with= proxy
+                                    proxyVows with= proxy
+                                }
+                            }
+                        }
+                        def answer :=
+                          when (promiseAllFulfilled(proxyVows)) -> {
+                            myServPolicy.send(responsibleWho,
+                                              myTarget, # the acceptor
+                                              verb,
+                                              args)
+                        }
+                        answerRes <- resolve(answer)
+                    }
+                    # In the "intro" case, myTarget is the Power and my
+                    # who is the Issuer. Resolving the resolver makes the
+                    # sealed deliveratorBox available to the Delegator, so
+                    # that it can send it in an ArgDesc as part of a message
+                    # towards the Recipient's Acceptor. Only the Recipient
+                    # can unseal that box and obtain the new Deliverator.
+                    match [`intro`,
+                           why                       :IntroLetter,
+                           recipientWho              :dist[Who],
+                           sealedDeliveratorResolver :dist[Resolver]] {
+                        
+                        def newServPolicy :=
+                          myServPolicy.makeServPolicy(responsibleWho,
+                                                      why,
+                                                      recipientWho,
+                                                      myTarget)
+                        def deliverator4Recipient :=
+                          makeDeliverator(newServPolicy,
+                                          myWhoUnsealer,
+                                          myTarget,
+                                          myMakeProxy,
+                                          recipientWho)
+                        def deliveratorBox := recipientWho <-
+                          sealDeliverator(deliverator4Recipient)
+                        sealedDeliveratorResolver <- resolve(deliveratorBox)
+                    }
+                }
+            }
+        }
+    }
+    return deliverator
+}

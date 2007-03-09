@@ -1,0 +1,82 @@
+#!/usr/bin/env rune
+
+# Copyright 2006 Hewlett Packard, under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+pragma.syntax("0.9")
+
+def Opaque   := any  # assumed to be some else's Box.
+def dist     := rcvr # A possibly-remote reference.
+def Resolver := <type:org.erights.e.elib.ref.Resolver>
+
+/**
+ * Make one makeProxy function per responsible party.
+ * <p>
+ * Each responsible party should make one makeProxy function, which it should
+ * use to make all its <tt>Proxy</tt>s.
+ * <p>
+ * XXX This is not the way we should do this in E. To be a proper Horton
+ * design for E, a Horton proxy should be a kind of EProxy, i.e., a handled
+ * remote reference. Currently, Kevin Reid is reforming this subsystem in
+ * E-on-CL to get rid of the EProxyResolver. Once this design settles down and
+ * is adopted into E-on-Java, then we should fix this to use it. Until then,
+ * Horton proxies accept immediate calls, even though these always cause
+ * eventual sends and always return promises.
+ */
+def makeProxyAuthor(label :String) {
+    /** Enables proxys made by the same makeProxy function to recognize each
+     *  other. */
+    interface Proxy {}
+    def [mySealer, myUnsealer] := makeBrand(`proxy $label`)
+    
+    def makeProxy(myClientPolicy,
+                  targetDeliverator :dist[Deliverator],
+                  targetWho :dist[Who]) {
+        myClientPolicy.getOldProxy(targetDeliverator,
+                                   targetWho,
+                                   __return)
+        def proxy implements Proxy {
+            /**
+             * In this case, the targetDeliverator and targetWho are the
+             * powerDeliverator and the issuerWho.
+             */
+            to __optSealedDispatch(brand) {
+                if (brand == mySealer.getBrand()) {
+                    return mySealer.seal(["proxy",
+                                          targetDeliverator,
+                                          targetWho])
+                } else {
+                    return null
+                }
+            }
+            match [verb, args] {
+                # In this case, the targetDeliverator and targetWho are the
+                # acceptorDeliverator and the recipientWho.
+                var argDescs := []
+                for originalArg in args {
+                    def arg := myClientPolicy.substitute(originalArg)
+                    if (arg =~ p :Proxy) {
+                        def sibBox :=
+                          p.__optSealedDispatch(mySealer.getBrand())
+                        def [`proxy`, powerDeliverator, issuerWho] :=
+                          myUnsealer.unseal(sibBox)
+                        def introBox :=
+                          issuerWho <- sealIntro(myClientPolicy.getWhy(),
+                                                 targetWho,
+                                                 def sealedArg)
+                        targetDeliverator <- deliver(introBox)
+                        argDescs with= ["sealedArg", sealedArg, issuerWho]
+                    } else {
+                        argDescs with= ["normalArg", arg]
+                    }
+                }
+                return myClientPolicy.send(targetDeliverator,
+                                           targetWho,
+                                           verb,
+                                           argDescs)
+            }
+        }
+        return proxy
+    }
+    return makeProxy
+}
