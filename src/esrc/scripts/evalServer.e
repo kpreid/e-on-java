@@ -10,7 +10,7 @@ def traceline(str) :void { stderr.println(`$\nevalServer $str`) }
 traceline("started")
 
 def makeScopeSetup := <unsafe:org.erights.e.elang.interp.ScopeSetup>
-def makeVat := <unsafe:org.erights.e.elib.vat.Vat>
+def makeVat := <unsafe:org.erights.e.elib.vat.makeVat>
 def runeAuthor := <elang:cmd.runeAuthor>
 
 def makeIntroducer := <unsafe:net.captp.jcomm.Introducer>

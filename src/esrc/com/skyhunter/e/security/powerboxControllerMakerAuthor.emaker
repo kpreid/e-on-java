@@ -482,7 +482,7 @@ def powerboxControllerMakerAuthor {
                                          sourcePath] + docNames
                             traceline("made args: " + args)
 
-                            def makeVat := <unsafe:org.erights.e.elib.vat.Vat>
+                            def makeVat := <unsafe:org.erights.e.elib.vat.makeVat>
                             def runtime :=
                               <unsafe:java.lang.makeRuntime>.getRuntime()
                             def cwdDir := <file>[ehome]

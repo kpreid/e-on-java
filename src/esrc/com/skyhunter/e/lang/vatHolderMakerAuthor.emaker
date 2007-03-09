@@ -38,7 +38,7 @@ def vatHolderMakerAuthor(<unsafe>, introducer, traceline) :near {
      */
     def makeVatHolder(sourceCode, args, props, vatName) :near {
         def <io> := <unsafe:java.io.*>
-        def vatMaker := <unsafe:org.erights.e.elib.vat.Vat>
+        def vatMaker := <unsafe:org.erights.e.elib.vat.makeVat>
         def InterpMaker := <unsafe:org.erights.e.elang.interp.Interp>
         def StringWriterMaker := <io:StringWriter>
         def TextWriterMaker := <unsafe:org.erights.e.elib.oldeio.TextWriter>

@@ -17,7 +17,7 @@ def printLater(prefix :String, info :vow) {
 def <donut> := <import:com.hp.donutLab.*>
 
 # boot comm vat mint
-#def makeVat := <unsafe:org.erights.e.elib.vat.Vat>
+#def makeVat := <unsafe:org.erights.e.elib.vat.makeVat>
 #def mintVat := makeVat.make("headless", "mint")
 #def seedVat := <elang:interp.seedVatAuthor>(<unsafe>)
 #def mint :rcvr := seedVat(mintVat,
