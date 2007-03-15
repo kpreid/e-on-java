@@ -70,6 +70,11 @@ def cmdMakerMaker(cmdLoop,
     def outAnswerer := makeAnswerer(metaout)
     def errAnswerer := makeAnswerer(metaerr)
 
+    def takeStreamAnswers() {
+        outAnswerer.takeBuf("stdout", optAltoutBuf)
+        errAnswerer.takeBuf("stderr", optAlterrBuf)
+    }
+
     def cmdMaker {
 
         /**
@@ -174,8 +179,7 @@ def cmdMakerMaker(cmdLoop,
                 # Should refactor, and make the common logic into an
                 # internal function.
                 cmdValuer()
-                outAnswerer.takeBuf("stdout", optAltoutBuf)
-                errAnswerer.takeBuf("stderr", optAlterrBuf)
+                takeStreamAnswers()
                 def interactive :boolean := cmdLoop.getInteractive()
                 switch (outcomeVow) {
                     match [result, successFlag :boolean] {
@@ -215,7 +219,10 @@ def cmdMakerMaker(cmdLoop,
                     # failure is always noisy
                     cmdMaker.reportProblem(optProblem)
                 }
-                exitStatusRes.resolve(exitStatus)
+                cmdLoop.enqueue(fn {
+                    takeStreamAnswers()
+                    exitStatusRes.resolve(exitStatus)
+                })
             }
             return [exitStatusVow, cmdAnswerer]
         }
