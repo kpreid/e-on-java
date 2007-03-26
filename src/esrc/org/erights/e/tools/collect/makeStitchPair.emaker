@@ -1,0 +1,88 @@
+#!/usr/bin/env rune
+
+pragma.syntax("0.9")
+
+# Copyright 2007 Hewlett Packard, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def pumpkin {}
+
+interface Stitch guards StitchStamp {}
+
+def makeStitch(var next :vow[Stitch]) :Stitch {
+    var head := pumpkin
+    def stitch implements StitchStamp {
+
+        /**
+         * Func is a one-arg function whose result is ignored
+         */
+        to apply(func, item) {
+            if (pumpkin == head) {
+                def oldNext := next
+                next := makeStitch(stitch)
+                oldNext.store(item, next)
+            } else {
+                func <- (head)
+                next.apply(func, item)
+            }
+        }
+
+        to store(newHead, newNext :Stitch) {
+            require(pumpkin == head)
+            head := newHead
+            next := newNext
+        }
+    }
+    return stitch
+}
+
+def makeStitchPair() :Tuple[Stitch, Stitch] {
+    def [left, right] := [makeStitch(right), makeStitch(left)]
+    return [left, right]
+}
+
+# rune(["~/e/src/esrc/scripts/updoc.e",
+#       "~/e/src/esrc/org/erights/e/tools/collect/makeStitchPair.emaker"])
+
+    ? def makeStitchPair := <import:org.erights.e.tools.collect.makeStitchPair>
+    # value: <makeStitchPair>
+
+    ? def [left,right] := makeStitchPair()
+    # value: [<stitch>, <stitch>]
+
+    ? def p1(item) { println(`1: $item`) }
+    # value: <p1>
+
+    ? def p2(item) { println(`2: $item`) }
+    # value: <p2>
+
+    ? def p3(item) { println(`3: $item`) }
+    # value: <p3>
+
+    ? left.apply(p1,p1)
+    ? left.apply(p2,p2)
+    ? def flip(item) {
+    >     def flipped(func) {
+    >         func(item)
+    >     }
+    >     return flipped
+    > }
+    # value: <flip>
+
+    ? right.apply(flip("a"), "a")
+    # stdout: 1: a
+    #         2: a
+    #
+    ? right.apply(flip("b"), "b")
+    # stdout: 1: b
+    #         2: b
+    #
+    ? left.apply(p3,p3)
+    # stdout: 3: a
+    #         3: b
+    #
+    ? right.apply(flip("c"), "c")
+    # stdout: 1: c
+    #         2: c
+    #         3: c
+    #

@@ -51,6 +51,7 @@ import org.quasiliteral.syntax.LexerFace;
 import org.quasiliteral.syntax.SyntaxException;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 
 /**
  * @author Mark S. Miller
@@ -145,6 +146,8 @@ public abstract class BaseENodeBuilder implements BaseEBuilder {
             } else {
                 return optSpan.notOneToOne();
             }
+        } else if (poser.getClass().isArray() && 1 <= Array.getLength(poser)) {
+            return optSpan(Array.get(poser, 0));
         } else {
             T.fail("Internal: not a poser: " + E.toQuote(poser));
             return null; // make compiler happy
@@ -251,14 +254,12 @@ public abstract class BaseENodeBuilder implements BaseEBuilder {
         String propValue =
           ((String)myProps.fetch(propName, new ValueThunk("false"))).intern();
         if ("true" == propValue) {
-            syntaxError(poser,
-                        "The optional " + propName + " feature " + Rune
-                          .SYN_PROPS_EXPLAIN + " is currently on" +
-                          " disallowing this construct.");
+            syntaxError(poser, "The optional " + propName + " feature " + Rune
+              .SYN_PROPS_EXPLAIN + " is currently on" +
+              " disallowing this construct.");
         } else if ("warn" == propValue) {
-            warning(poser,
-                    "The optional " + propName + " feature " + Rune
-                      .SYN_PROPS_EXPLAIN + " is set to \"warn\".");
+            warning(poser, "The optional " + propName + " feature " + Rune
+              .SYN_PROPS_EXPLAIN + " is set to \"warn\".");
         } else if ("false" == propValue || "allow" == propValue) {
             // succeed silently
         } else {

@@ -1,0 +1,48 @@
+#!/usr/bin/env rune
+
+# Copyright 2007 Hewlett Packard, under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+pragma.syntax("0.9")
+
+# NEVER is a promise that never resolves.
+def [NEVER,_] := Ref.promise()
+
+def makeStitchPair := <import:org.erights.e.tools.collect.makeStitchPair>
+
+def flip(item) :any {
+    def flipped(func) :void {
+        func(item)
+    }
+    return flipped
+}
+
+
+def makeMultiChannel() {
+    def [left,right] := makeStitchPair()
+    def acceptorHandler {
+        to handleSendOnly(verb :String, args :List) :void {
+            def func(item) :void {
+                E.sendOnly(item, verb, args)
+            }
+            left.apply(func, func)
+        }
+        to handleSend(verb :String, args :List) :any {
+            def [result, resultD] := makeMultiChannel()
+            def func(item) :void {
+                resultD.forward(E.send(item, verb, args))
+            }
+            left.apply(func, func)
+            return result
+        }
+    }
+    # To E, an acceptor is a kind of Remote Promise that delivers messages
+    # but never resolves.
+    def acceptor := makeProxy(acceptorHandler,NEVER,false)
+    def distributor {
+        to forward(item) {
+            right.apply(flip(item), item)
+        }
+    }
+    return [acceptor, distributor]
+}

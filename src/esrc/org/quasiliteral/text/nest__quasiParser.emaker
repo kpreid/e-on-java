@@ -1,0 +1,75 @@
+#!/usr/bin/env rune
+
+# Copyright 2007 Hewlett Packard, under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def QuasiExprParser := <type:org.quasiliteral.base.QuasiExprParser>
+def ValueMaker := <type:org.quasiliteral.base.ValueMaker>
+def convertHoles := <import:org.quasiliteral.text.convertHoles>
+
+/**
+ * Produces an object which, when printed, asks all its pieces to print.
+ * <p>
+ * Acts, in effect, much like the simple__quasiParser, in that the result
+ * prints as the concatenation of the literal strings and the printed
+ * forms of all the args (the values of the expressions in the dollar-holes).
+ * The differences are:<ul>
+ * <li>The printing of the args only happens when the returned object is
+ *     printed.
+ * <li>Each arg is asked to print onto a stream that's indented from the
+ *     original stream by the left of the last line of the last literal
+ *     string to the left of that arg.
+ * </ul>
+ */
+def nest__quasiParser implements QuasiExprParser {
+    to valueMaker(template :Twine, dlrHoles :List[int]) :ValueMaker {
+        var pieces := []
+        var start := 0
+        for pos in dlrHoles {
+            pieces with= template(start,pos)
+            start := pos+1
+        }
+        pieces with= template(start, template.size())
+
+        def makeNestor implements ValueMaker {
+            to substitute(args :List) {
+                require(args.size() == pieces.size()-1)
+                def nestor {
+                    to __printOn(out :TextWriter) {
+                        for i => arg in args {
+                            def p := pieces[i]
+                            out.print(p)
+                            def col := p.split("\n").last().size()
+                            def nest := out.indent(" "*col)
+                            nest.print(arg)
+                        }
+                        out.print(pieces.last())
+                    }
+                }
+                return nestor
+            }
+        }
+        return makeNestor
+    }
+    to valueMaker(template :Twine) :ValueMaker {
+        def [newTemplate, dlrHoles, atHoles] := convertHoles(template)
+        if (atHoles !~ []) {
+            throw("No at-holes allowed in expr context: " + template)
+        }
+        return nest__quasiParser.valueMaker(newTemplate, dlrHoles)
+    }
+}
+
+# rune(["~/e/src/esrc/scripts/updoc.e",
+#       "~/e/src/esrc/org/quasiliteral/text/nest__quasiParser.emaker"])
+
+    ? def nest__quasiParser := <import:org.quasiliteral.text.nest__quasiParser>
+    ? def x := "a\nb"
+    ? def n := nest`foo
+    >   ${x}bar
+    > baz`
+    ? `$n`.replaceAll("\n","\n|")
+    # value: "foo
+    #        |  a
+    #        |  bbar
+    #        |baz"
