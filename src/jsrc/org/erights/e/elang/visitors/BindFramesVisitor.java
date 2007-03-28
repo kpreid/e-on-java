@@ -260,7 +260,9 @@ public abstract class BindFramesVisitor extends BaseBindVisitor {
             // TODO this should just match against a quasipattern
             FinalPattern pat = (FinalPattern)hatch;
             if (null == pat.getOptGuardExpr()) {
-                body = killSillyReturn(pat, body);
+                if (null == optArgPattern) {
+                    body = killSillyReturn(pat, body);
+                }
                 StaticScope scope = body.staticScope();
                 if (!scope.namesUsed().maps(pat.getNoun().getName())) {
                     if (!scope.hasMetaStateExpr()) {
