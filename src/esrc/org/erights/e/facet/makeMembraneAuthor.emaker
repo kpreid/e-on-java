@@ -5,6 +5,14 @@
 
 pragma.syntax("0.9")
 
+def map(func, list) {
+    def result := [].diverge()
+    for item in list {
+        result.push(func(item))
+    }
+    return result.snapshot()
+}
+
 /**
  * The makeWeakKeyMap expected is the one from
  * &lt;unsafe:org.erights.e.elib.tables.makeWeakKeyMap&gt;
@@ -27,7 +35,7 @@ def makeMembraneAuthor(makeWeakKeyMap) {
                 return wrapper
             }
             def caretaker implements MyExemptStamp {
-                match [verb , args ] {
+                match [verb , args] {
                     if (enabled) {
                         def wrappedArgs := map(wrap, args)
                         wrap(E.call(wrapped, verb, wrappedArgs))
