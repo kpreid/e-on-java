@@ -1,0 +1,20 @@
+#!/usr/bin/env rune
+
+pragma.syntax("0.9")
+
+def makeTestEPBC implements pbc {
+    to run() :any {
+        traceln.full("Constructing TestPBC")
+        def testEPBC implements pbc {
+            to __optUncall() :any {
+                traceln.full("__optUncall testEPBC")
+                return [makeTestEPBC, "run", []]
+            }
+        }
+        return testEPBC
+    }
+    to __optUncall() :any {
+        traceln.full("__optUncall makeTestEPBC")
+        return [<import>, "get", ["de.flowdev.emonkey.makeTestEPBC"]]
+    }
+}
