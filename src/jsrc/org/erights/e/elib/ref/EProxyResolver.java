@@ -51,7 +51,7 @@ public class EProxyResolver implements Resolver, EPrintable {
     private EProxyHandler myOptHandler;
 
     /**
-     * The basis for the settled identity of the FarRef I make, or null if I
+     * The basis for the settled identity of the OldFarRef I make, or null if I
      * make a RemotePromise.
      */
     private final Object myOptIdentity;
@@ -70,7 +70,7 @@ public class EProxyResolver implements Resolver, EPrintable {
      *                    {@link java.math.BigInteger} and {@link
      *                    net.captp.jcomm.ObjectID}. The identity object serves
      *                    as the basis for the sameness identity of the
-     *                    resulting handled resolved reference (FarRef).
+     *                    resulting handled resolved reference (OldFarRef).
      */
     public EProxyResolver(EProxyHandler handler, Object optIdentity) {
         optIdentity = Ref.resolution(optIdentity);
@@ -130,7 +130,7 @@ public class EProxyResolver implements Resolver, EPrintable {
         if (null == myOptIdentity) {
             result = new RemotePromise(myOptHandler);
         } else {
-            result = new FarRef(myOptIdentity, myOptHandler);
+            result = new OldFarRef(myOptIdentity, myOptHandler);
         }
         myOptRefPtr = new WeakPtr(result, this, "reactToGC", E.NO_ARGS);
         return result;

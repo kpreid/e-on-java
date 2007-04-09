@@ -1,0 +1,4 @@
+class(safe,
+      "org.erights.e.elib.ref.Proxy",
+      statics(method("run(Object, Object, boolean)")),
+      methods())

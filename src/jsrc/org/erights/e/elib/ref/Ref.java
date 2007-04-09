@@ -188,8 +188,8 @@ public abstract class Ref implements Callable {
     static public Ref disconnected(Throwable problem, Object prevRef) {
         prevRef = resolution(prevRef);
         Object id;
-        if (prevRef instanceof FarRef) {
-            id = ((FarRef)prevRef).myIdentity;
+        if (prevRef instanceof OldFarRef) {
+            id = ((OldFarRef)prevRef).myIdentity;
         } else if (prevRef instanceof DisconnectedRef) {
             id = ((DisconnectedRef)prevRef).myIdentity;
         } else {
@@ -465,7 +465,7 @@ public abstract class Ref implements Callable {
      * from the E language. (XXX talk about rational tree comparison.)
      * <p/>
      * isSelfless of a non-NEAR reference is false. This is a bit weird for
-     * FarRef, and DisconnectedRef, as they are listed (for implementation
+     * OldFarRef, and DisconnectedRef, as they are listed (for implementation
      * reasons) as Selfless objects (either actual or HONORARY).
      *
      * @see Selfless
@@ -501,10 +501,9 @@ public abstract class Ref implements Callable {
      * Selfish objects have creation-identity, ie, normal EQness. For Selfish
      * objects, Java's "x==y" and E's "x==y" (ie, ELib's "E.same(x,y)") agree.
      * <p/>
-     * <p/>
      * isSelfish of a non-NEAR reference is false. This is a bit wierd for
-     * FarRef and DisconnectedRef, as they both have the creation identity of
-     * the object they (originally) designate(d). However, for these, E's
+     * OldFarRef and DisconnectedRef, as they both have the creation identity
+     * of the object they (originally) designate(d). However, for these, E's
      * "x==y" does not agree with Java's "x==y".
      */
     static public boolean isSelfish(Object ref) {

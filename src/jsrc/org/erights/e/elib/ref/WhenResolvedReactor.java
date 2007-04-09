@@ -10,8 +10,8 @@ import org.erights.e.elib.util.DeadManSwitch;
 import org.erights.e.elib.util.OneArgFunc;
 
 /**
- * Used to implement {@link Ref#whenResolved(Object,OneArgFunc)}, which is
- * used to implement the <a href="http://www.skyhunter.com/marcs/ewalnut.html#SEC20">when-catch</a>
+ * Used to implement {@link Ref#whenResolved(Object,OneArgFunc)}, which is used
+ * to implement the <a href="http://www.skyhunter.com/marcs/ewalnut.html#SEC20">when-catch</a>
  * construct.
  * <p/>
  * Wraps a 'done' function (the second argument of whenResolved, which is the

@@ -40,9 +40,7 @@ class WhenBrokenReactor implements DeadManSwitch, OneArgFunc, PassByProxy {
      * Assumes a first __whenBroken will be sent with this WhenBrokenReactor as
      * argument.
      */
-    WhenBrokenReactor(OneArgFunc wrapped,
-                             Object ref,
-                             Resolver optResolver) {
+    WhenBrokenReactor(OneArgFunc wrapped, Object ref, Resolver optResolver) {
         myIsDone = false;
         myOptWrapped = wrapped;
         myRef = ref;

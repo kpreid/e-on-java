@@ -26,18 +26,18 @@ Contributor(s): ______________________________________.
 
 
 /**
- * A FarRef is a EProxy intended to be a Resolved Ref to a particular
+ * A OldFarRef is a EProxy intended to be a Resolved Ref to a particular
  * PassByProxy object in a remote Vat. <p>
  * <p/>
- * A FarRef starts out EVENTUAL but may become BROKEN. However, it continues to
- * have whatever settled identity it was born with, and so may be used as a key
- * in EMaps (hashtables). Once a FarRef becomes BROKEN, it severs its
- * connection with its handler. A FarRef is an HONORARY Selfless object (since
- * it's not transparent -- it encapsulates its myIdentity).
+ * A OldFarRef starts out EVENTUAL but may become BROKEN. However, it continues
+ * to have whatever settled identity it was born with, and so may be used as a
+ * key in EMaps (hashtables). Once a OldFarRef becomes BROKEN, it severs its
+ * connection with its handler. A OldFarRef is an HONORARY Selfless object
+ * (since it's not transparent -- it encapsulates its myIdentity).
  *
  * @author Mark S. Miller
  */
-class FarRef extends EProxy {
+class OldFarRef extends EProxy {
 
     /**
      * My settled identity is according to .equals() on this settled object.
@@ -47,7 +47,7 @@ class FarRef extends EProxy {
     /**
      *
      */
-    FarRef(Object identity, EProxyHandler handler) {
+    OldFarRef(Object identity, EProxyHandler handler) {
         super(handler);
         myIdentity = identity;
     }
@@ -61,8 +61,8 @@ class FarRef extends EProxy {
      */
     public boolean equals(Object other) {
         other = Ref.resolution(other);
-        if (other instanceof FarRef) {
-            return myIdentity.equals(((FarRef)other).myIdentity);
+        if (other instanceof OldFarRef) {
+            return myIdentity.equals(((OldFarRef)other).myIdentity);
         } else if (other instanceof DisconnectedRef) {
             return myIdentity.equals(((DisconnectedRef)other).myIdentity);
         } else {
@@ -98,11 +98,11 @@ class FarRef extends EProxy {
         Throwable optProblem = Ref.optProblem(newTarget);
         if (null == optProblem) {
             if (equals(newTarget)) {
-                //XXX we may need to allow resolution to another FarRef
+                //XXX we may need to allow resolution to another OldFarRef
                 //with the same identity.
-                T.fail("Redundant FarRef identity not allowed.");
+                T.fail("Redundant OldFarRef identity not allowed.");
             }
-            T.fail("FarRef may only be smashed: " + newTarget);
+            T.fail("OldFarRef may only be smashed: " + newTarget);
         }
         EProxyHandler handler = myOptHandler;
 

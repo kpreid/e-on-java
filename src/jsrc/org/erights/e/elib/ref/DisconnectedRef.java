@@ -32,9 +32,9 @@ import org.erights.e.elib.slot.Guard;
 import java.io.IOException;
 
 /**
- * What a FarRef becomes when it breaks -- a BROKEN Ref with identity.
+ * What a OldFarRef becomes when it breaks -- a BROKEN Ref with identity.
  * <p/>
- * Maintains the same()ness identity and sameness hash of the FarRef. A
+ * Maintains the same()ness identity and sameness hash of the OldFarRef. A
  * DisconnectedRef is listed as an HONORARY Selfless object for implementation
  * reasons only: (HONORARY because it encapsulates its identity, so it isn't
  * transparent).
@@ -84,8 +84,8 @@ class DisconnectedRef extends Ref
      * an honorary Selfless object.
      */
     public boolean equals(Object other) {
-        if (other instanceof FarRef) {
-            return myIdentity.equals(((FarRef)other).myIdentity);
+        if (other instanceof OldFarRef) {
+            return myIdentity.equals(((OldFarRef)other).myIdentity);
         } else if (other instanceof DisconnectedRef) {
             return myIdentity.equals(((DisconnectedRef)other).myIdentity);
         } else {

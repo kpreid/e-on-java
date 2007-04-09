@@ -48,7 +48,8 @@ import java.io.IOException;
  *
  * @author Mark S. Miller
  */
-class UnconnectedRef extends Ref implements Persistent, JOSSPassByConstruction {
+class UnconnectedRef extends Ref
+  implements Persistent, JOSSPassByConstruction {
 
     static private final long serialVersionUID = -2749826475753817626L;
 
