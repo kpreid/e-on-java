@@ -52,7 +52,7 @@ public class EProxyResolver implements Resolver, EPrintable {
 
     /**
      * The basis for the settled identity of the OldFarRef I make, or null if I
-     * make a RemotePromise.
+     * make a OldRemotePromise.
      */
     private final Object myOptIdentity;
 
@@ -65,7 +65,7 @@ public class EProxyResolver implements Resolver, EPrintable {
      * @param handler     Delegates delegatable eventual-ref behavior to the
      *                    handler.
      * @param optIdentity If null, the handled reference will be unresolved (a
-     *                    RemotePromise). If non-null, the optIdentity must be
+     *                    OldRemotePromise). If non-null, the optIdentity must be
      *                    an honorary {@link Selfless} object. This includes
      *                    {@link java.math.BigInteger} and {@link
      *                    net.captp.jcomm.ObjectID}. The identity object serves
@@ -128,7 +128,7 @@ public class EProxyResolver implements Resolver, EPrintable {
             return result;
         }
         if (null == myOptIdentity) {
-            result = new RemotePromise(myOptHandler);
+            result = new OldRemotePromise(myOptHandler);
         } else {
             result = new OldFarRef(myOptIdentity, myOptHandler);
         }

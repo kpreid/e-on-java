@@ -15,9 +15,9 @@ import java.io.IOException;
  *
  * @author Kevin Reid
  */
-public final class RemotePromise2 extends Proxy {
+public final class RemotePromise extends Proxy {
 
-    RemotePromise2(Object handler, Object resolutionBox)
+    RemotePromise(Object handler, Object resolutionBox)
       throws NotSettledException {
         super(handler, resolutionBox);
     }
@@ -25,7 +25,7 @@ public final class RemotePromise2 extends Proxy {
     public boolean equals(Object other) {
         // super will check that we can't have jettisoned yet
         return super.equals(other) && Equalizer.make()
-          .isSameYet(myResolutionBox, ((RemotePromise2)other).myResolutionBox);
+          .isSameYet(myResolutionBox, ((RemotePromise)other).myResolutionBox);
     }
 
     protected boolean isResolvedIfNotForwarding() {

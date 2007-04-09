@@ -9,7 +9,7 @@ import org.erights.e.elib.util.DeadManSwitch;
 import org.erights.e.elib.util.OneArgFunc;
 
 /**
- * Wraps a EProxyResolver for a RemotePromise in a way suitable for inclusion
+ * Wraps a EProxyResolver for a OldRemotePromise in a way suitable for inclusion
  * as an argument in the first __whenMoreResolved message, in order to preserve
  * reference-full-order.
  *

@@ -41,7 +41,7 @@ import org.erights.e.elib.slot.Guard;
  * <p/>
  * A Settled EProxy (one with sameness identity) is represented by the subclass
  * OldFarRef. An Unsettled EProxy (one without such identity, and therefore a
- * Promise) is represented by the subclass RemotePromise.
+ * Promise) is represented by the subclass OldRemotePromise.
  *
  * @author Mark S. Miller
  */

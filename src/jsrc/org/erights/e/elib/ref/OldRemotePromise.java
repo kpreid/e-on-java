@@ -26,21 +26,21 @@ Contributor(s): ______________________________________.
 
 
 /**
- * A RemotePromise is a EProxy intended to represent a promise that will be
+ * A OldRemotePromise is a EProxy intended to represent a promise that will be
  * resolved remotely (in another vat).
  * <p/>
- * A RemotePromise is born handled (delegating to its EProxyHandler). While it
+ * A OldRemotePromise is born handled (delegating to its EProxyHandler). While it
  * is handled, it is EVENTUAL and has no identity. It is therefore also
  * unsettled.
  *
  * @author Mark S. Miller
  */
-class RemotePromise extends EProxy {
+class OldRemotePromise extends EProxy {
 
     /**
      *
      */
-    RemotePromise(EProxyHandler handler) {
+    OldRemotePromise(EProxyHandler handler) {
         super(handler);
     }
 

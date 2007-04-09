@@ -41,9 +41,9 @@ public abstract class Proxy extends Ref {
                             Object resolutionBox,
                             boolean isFar) throws NotSettledException {
         if (isFar) {
-            return new FarRef2(handler, resolutionBox);
+            return new FarRef(handler, resolutionBox);
         } else {
-            return new RemotePromise2(handler, resolutionBox);
+            return new RemotePromise(handler, resolutionBox);
         }
     }
 

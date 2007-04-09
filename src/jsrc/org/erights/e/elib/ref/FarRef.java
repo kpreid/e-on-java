@@ -22,11 +22,11 @@ import java.io.IOException;
  *
  * @author Kevin Reid
  */
-public final class FarRef2 extends Proxy {
+public final class FarRef extends Proxy {
 
     private TraversalKey myResolutionIdentity;
 
-    FarRef2(Object handler, Object resolutionBox) throws NotSettledException {
+    FarRef(Object handler, Object resolutionBox) throws NotSettledException {
         super(handler, resolutionBox);
         myResolutionIdentity = new TraversalKey(resolutionBox);
     }
@@ -61,7 +61,7 @@ public final class FarRef2 extends Proxy {
         // super will check that we can't have jettisoned yet
         return super.equals(other) && Equalizer.make()
           .isSameYet(myResolutionIdentity,
-                     ((FarRef2)other).myResolutionIdentity);
+                     ((FarRef)other).myResolutionIdentity);
     }
 
     protected boolean isResolvedIfNotForwarding() {
