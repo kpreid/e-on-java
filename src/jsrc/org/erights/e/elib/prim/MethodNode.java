@@ -66,9 +66,19 @@ public abstract class MethodNode implements VTableEntry {
     public abstract int getArity();
 
     /**
-     * If this MethodNode is or consists of JavaMemberNodes, add these
-     * JavaMemberNodes to map indexed by their optTypedVerb (their flat
-     * signature).
+     * Returns whether this node can be part of an OverloaderNode; if so it
+     * must return non-null for getOptTypedVerb and provide nodes for
+     * addJavaMemberNodesToMap.
+     * (XXX we have three distinct methods involved in this system - can we
+     * simplify? This one used to be an instanceof check.)
+     */
+    public abstract boolean isJavaTypedParameterNode();
+
+    /**
+     * If this MethodNode can be part of an OverloaderNode, add its set of
+     * JavaMemberNodes (itself, or its components if it is an OverloaderNode)
+     * to map indexed by their optTypedVerb (their flat signature); otherwise
+     * does nothing.
      */
     public abstract void addJavaMemberNodesToMap(FlexMap map);
 

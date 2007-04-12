@@ -178,6 +178,13 @@ public class EMethodNode extends MethodNode implements EStackItem {
     }
 
     /**
+     *
+     */
+    public boolean isJavaTypedParameterNode() {
+        return false;
+    }
+
+    /**
      * Do nothing
      */
     public void addJavaMemberNodesToMap(FlexMap map) {

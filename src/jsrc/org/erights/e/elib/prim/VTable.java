@@ -324,7 +324,7 @@ public abstract class VTable implements Script {
      * overload
      */
     private MethodNode resolveConflict(MethodNode a, MethodNode b) {
-        if (b instanceof JavaMemberNode || b instanceof OverloaderNode) {
+        if (b.isJavaTypedParameterNode()) {
             FlexMap map = FlexMap.interning(JavaMemberNode.class);
             a.addJavaMemberNodesToMap(map);
             b.addJavaMemberNodesToMap(map);

@@ -19,6 +19,7 @@ Copyright (C) 1998 Electric Communities. All Rights Reserved.
 Contributor(s): ______________________________________.
 */
 
+import org.erights.e.elib.tables.FlexMap;
 import org.erights.e.elib.util.AlreadyDefinedException;
 
 import java.lang.reflect.InvocationTargetException;
@@ -125,6 +126,29 @@ public class SugarMethodNode extends JavaMemberNode {
      */
     public String getDocComment() {
         return " Sugar method";
+    }
+
+    /**
+     * Always returns null, because sugar methods are designed for E and
+     * so will not have overloading conflicts; furthermore, allowing them
+     * would cause Miranda methods to be visible with typed forms, which
+     * interferes with an object attempting to hide its Miranda behavior.
+     */
+    public String getOptTypedVerb() {
+        return null;
+    }
+
+    /**
+     *
+     */
+    public boolean isJavaTypedParameterNode() {
+        return false;
+    }
+
+    /**
+     * 
+     */
+    public void addJavaMemberNodesToMap(FlexMap map) {
     }
 
     /**

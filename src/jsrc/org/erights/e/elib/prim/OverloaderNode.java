@@ -78,6 +78,13 @@ public class OverloaderNode extends MethodNode {
     }
 
     /**
+     *
+     */
+    public boolean isJavaTypedParameterNode() {
+        return true;
+    }
+
+    /**
      * Add all my nodes to the map
      */
     public void addJavaMemberNodesToMap(FlexMap map) {

@@ -112,6 +112,13 @@ public abstract class JavaMemberNode extends MethodNode implements EStackItem {
     }
 
     /**
+     *
+     */
+    public boolean isJavaTypedParameterNode() {
+        return true;
+    }
+
+    /**
      * Add this JavaMemberNode to the map
      */
     public void addJavaMemberNodesToMap(FlexMap map) {
