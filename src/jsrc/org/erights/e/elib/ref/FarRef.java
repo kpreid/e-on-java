@@ -41,8 +41,9 @@ public final class FarRef extends Proxy {
 
             if (!(Ref.isBroken(resolution))) {
                 resolution = Ref.broken(E.asRTE(
-                  "Attempt to resolve this Far ref handled by ~A to " +
-                    "another identity (~A)."));
+                  "Attempt to resolve a Far ref handled by " +
+                    E.toQuote(handler) + " to another identity (" + 
+                    E.toQuote(resolution) + ")."));
             }
 
             // A FarRef can only resolve to a DisconnectedRef to preserve its
@@ -73,6 +74,8 @@ public final class FarRef extends Proxy {
         out.write("<Far ref>");
     }
 
+    // XXX shouldn't this be renamed DisconnectedRef and the original 
+    // Disconnected ref be OldDisconnectedRef?
     private final class DisconnectedRef2 extends Ref {
 
         protected Object myHandler;

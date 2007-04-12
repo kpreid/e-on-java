@@ -66,7 +66,10 @@ public abstract class Proxy extends Ref {
 
         if (!(myResolutionBox instanceof FinalSlot)) {
             myResolutionBox = new FinalSlot(Ref.broken(E.asRTE(
-              "Resolution promise of a Far ref handled by ~A didn't resolve to a simple slot, but ~A.")));
+              "Resolution promise of a proxy handled by " +
+                E.toQuote(myHandler) + 
+                " didn't resolve to a simple slot, but " +
+                E.toQuote(myResolutionBox) + ".")));
         }
 
         myHandler = null;
