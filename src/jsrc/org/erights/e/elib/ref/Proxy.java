@@ -18,6 +18,21 @@ import java.io.IOException;
 /**
  * A Ref whose behavior and resolution are provided by other objects (handler
  * and resolution box).
+ * <p>
+ * This class along with {@link FarRef}, {@link DisconnectedRef}, and {@link
+ * RemotePromise} represent a proposed replacement for {@link EProxy},
+ * {@link OldFarRef}, {@link OldDisconnectedRef}, and {@link
+ * OldRemotePromise}. These latter, along with their support classes
+ * {@link EProxyResolver} and {@link EProxyHandler} would then be deprecated,
+ * though we may introduce a corresponding ProxyHandler to describe the
+ * replacement handling protocol.
+ * <p>
+ * XXX BUG: This switch waits until we resolve some outstanding bugs in
+ * the new code. As of svn revision 347 (immediately preceding this comment)
+ * proxy.updoc used to fail in two places. Mysteriously, as of this checkin,
+ * it only fails in one. The failure that disappeared, "p1 == p2", is the
+ * mysterious one. Even though it is now behaving as it should, we need to
+ * understand why it didn't and why it changed. 
  *
  * @author Kevin Reid
  */
@@ -67,7 +82,7 @@ public abstract class Proxy extends Ref {
         if (!(myResolutionBox instanceof FinalSlot)) {
             myResolutionBox = new FinalSlot(Ref.broken(E.asRTE(
               "Resolution promise of a proxy handled by " +
-                E.toQuote(myHandler) + 
+                E.toQuote(myHandler) +
                 " didn't resolve to a simple slot, but " +
                 E.toQuote(myResolutionBox) + ".")));
         }

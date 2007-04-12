@@ -19,13 +19,13 @@ import java.io.IOException;
  * @author Mark S. Miller
 */ // XXX shouldn't this be renamed DisconnectedRef and the original
 // Disconnected ref be OldDisconnectedRef?
-final class DisconnectedRef2 extends Ref {
+final class DisconnectedRef extends Ref {
 
     protected Object myHandler;
     protected Object myResolutionIdentity;
     protected Throwable myProblem;
 
-    DisconnectedRef2(Object handler,
+    DisconnectedRef(Object handler,
                      Object resolutionIdentity,
                      Throwable problem) {
         myHandler = handler;
@@ -37,7 +37,7 @@ final class DisconnectedRef2 extends Ref {
         if (obj.getClass() != getClass()) {
             return false;
         }
-        DisconnectedRef2 that = (DisconnectedRef2)obj;
+        DisconnectedRef that = (DisconnectedRef)obj;
         Equalizer e = Equalizer.make();
         try {
             boolean result = Equalizer.isSameEver(myHandler,
@@ -110,10 +110,10 @@ final class DisconnectedRef2 extends Ref {
     }
 
     void setTarget(Ref newTarget) {
-        T.fail("setTarget doesn't apply to DisconnectedRef2");
+        T.fail("setTarget doesn't apply to DisconnectedRef");
     }
 
     void commit() {
-        T.fail("commit doesn't apply to DisconnectedRef2");
+        T.fail("commit doesn't apply to DisconnectedRef");
     }
 }

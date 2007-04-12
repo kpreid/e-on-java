@@ -17,7 +17,7 @@ import java.io.IOException;
  *
  * @author Kevin Reid
  */
-public final class FarRef extends Proxy {
+final class FarRef extends Proxy {
 
     private TraversalKey myResolutionIdentity;
 
@@ -43,7 +43,7 @@ public final class FarRef extends Proxy {
 
             // A FarRef can only resolve to a DisconnectedRef to preserve its
             // identity
-            resolution = new DisconnectedRef2(handler,
+            resolution = new DisconnectedRef(handler,
                                               myResolutionIdentity,
                                               Ref.optProblem(resolution));
 
@@ -67,5 +67,4 @@ public final class FarRef extends Proxy {
       throws IOException {
         out.write("<Far ref>");
     }
-
 }

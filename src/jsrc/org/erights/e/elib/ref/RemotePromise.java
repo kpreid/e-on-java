@@ -15,7 +15,7 @@ import java.io.IOException;
  *
  * @author Kevin Reid
  */
-public final class RemotePromise extends Proxy {
+final class RemotePromise extends Proxy {
 
     RemotePromise(Object handler, Object resolutionBox)
       throws NotSettledException {
