@@ -1,5 +1,9 @@
+#!/usr/bin/env rune
+
 # Copyright 2005-2007 Kevin Reid, under the terms of the MIT X license
 # found at http://www.opensource.org/licenses/mit-license.html ................
+
+# rune(["~/e/src/esrc/scripts/test/updoc/proxy.updoc"])
 
 User-defined Far refs and remote promises.
 
@@ -9,9 +13,9 @@ This test script was originally written for E-on-CL.
 
   ? def makeProxy := <elib:ref.makeProxy>
   # value: <makeProxy>
-  
+
   ? def makeTraversalKey := <elib:tables.makeTraversalKey>
- 
+
 --- Far Ref
 
   ? var i := 0
@@ -29,16 +33,21 @@ This test script was originally written for E-on-CL.
   > }
   # value: <farHandler>
 
-The second argument to makeProxy is the resolution of a remote promise, or the failure of a Far reference; the third is whether the proxy is resolved. These components together completely define the identity of a proxy.
+The second argument to makeProxy is the resolution of a remote promise, or the
+failure of a Far reference; the third is whether the proxy is resolved. These
+components together completely define the identity of a proxy.
 
   ? def remote := makeProxy(farHandler, (def resolution; resolution), true)
   # value: <Far ref>
-  
+
   ? remote.hi()
   # problem: Failed: not synchronously callable
-  
+
   ? pragma.enable("accumulator")
-  > accum [] for verb in ["isBroken", "isNear", "isEventual", "isFar", "isSettled", "isResolved", "optProblem"] { _.with(E.call(Ref, verb, [remote])) }
+  > accum [] for verb in ["isBroken", "isNear", "isEventual", "isFar",
+  >                       "isSettled", "isResolved", "optProblem"] {
+  >     _.with(E.call(Ref, verb, [remote]))
+  > }
   # value: [false, false, true, true, true, true, null]
 
   ? def remoteKey := makeTraversalKey(remote)
@@ -48,14 +57,16 @@ The second argument to makeProxy is the resolution of a remote promise, or the f
 
   ? def firstResponse := remote <- first()
   # value: <Promise>
-  
+
   # stdout: handleSend first []
-  #         
-  
-Notice that even though the handler is written to resolve it immediately, the response remains a promise during the first turn. This is done deliberately so that E-implemented proxies cannot have synchronous effects during an E.send.
+  #
+
+Notice that even though the handler is written to resolve it immediately, the
+response remains a promise during the first turn. This is done deliberately so
+that E-implemented proxies cannot have synchronous effects during an E.send.
 
   ? interp.waitAtTop(firstResponse)
-  
+
   ? Ref.fulfillment(firstResponse)
   # value: [1, "first", []]
 
@@ -63,15 +74,15 @@ Notice that even though the handler is written to resolve it immediately, the re
 
   ? E.sendOnly(remote, "only", [])
   # stdout: handleSendOnly only []
-  #         
+  #
 
 -- Breaking Far ref
 
-  ? [Ref.optProblem(remote), 
+  ? [Ref.optProblem(remote),
   >  resolution__Resolver.resolve(def x := Ref.broken("gone away"); &x),
   >  Ref.optProblem(remote)]
   # value: [null, null, problem: gone away]
-  
+
   ? remote <- msg()
   # value: <ref broken by problem: gone away>
 
@@ -79,61 +90,77 @@ Notice that even though the handler is written to resolve it immediately, the re
   ? makeTraversalKey(remote) == remoteKey
   # value: true
 
-(The synchronous visibility of <- on a broken reference is a separate issue, and works the same way for Ref.broken/1)
+(The synchronous visibility of <- on a broken reference is a separate issue,
+and works the same way for Ref.broken/1)
 
 --- Remote Promise
-  
+
   ? def promiseHandler {}
   # value: <promiseHandler>
-  
-  ? def remotePromise := makeProxy(promiseHandler, (def resolution; resolution), false)
+
+  ? def remotePromise := makeProxy(promiseHandler,
+  >                                (def resolution; resolution),
+  >                                false)
   # value: <Remote Promise>
-  
+
   ? remotePromise.hi()
   # problem: Failed: not synchronously callable
-  
+
   ? pragma.enable("accumulator")
-  > accum [] for verb in ["isBroken", "isNear", "isEventual", "isFar", "isSettled", "isResolved", "optProblem"] { _.with(E.call(Ref, verb, [remotePromise])) }
+  > accum [] for verb in ["isBroken", "isNear", "isEventual", "isFar",
+  >                       "isSettled", "isResolved", "optProblem"] {
+  >     _.with(E.call(Ref, verb, [remotePromise]))
+  > }
   # value: [false, false, true, false, false, false, null]
-  
+
   ? resolution__Resolver.resolve(def promiseResolution {}; &promiseResolution)
-  
+
   ? remotePromise
   # value: <promiseResolution>
-  
+
   ? remotePromise == promiseResolution
   # value: true
-  
-  ? accum [] for verb in ["isBroken", "isNear", "isEventual", "isFar", "isSettled", "isResolved", "optProblem"] { _.with(E.call(Ref, verb, [remotePromise])) }
+
+  ? accum [] for verb in ["isBroken", "isNear", "isEventual", "isFar",
+  >                       "isSettled", "isResolved", "optProblem"] {
+  >     _.with(E.call(Ref, verb, [remotePromise]))
+  > }
   # value: [false, true, false, false, true, true, null]
 
 --- Sameness of Far refs
 
   ? def stubHandler {}
   # value: <stubHandler>
-  
+
   ? def stubResolution := Ref.promise()[0]
   # value: <Promise>
 
   different proxies, same identity
-  ? makeProxy(def fi1 {}, stubResolution, true) == makeProxy(fi1, stubResolution, true)
+  ? makeProxy(def fi1 {}, stubResolution, true) ==
+  >   makeProxy(fi1, stubResolution, true)
   # value: true
 
   different proxies, different identity
-  ? makeProxy(fi1, stubResolution, true) == makeProxy(def fi2 {}, stubResolution, true)
+  ? makeProxy(fi1, stubResolution, true) ==
+  >   makeProxy(def fi2 {}, stubResolution, true)
   # value: false
 
   different proxies, different instantiation of same Selfless identity
-  ? makeProxy([fi1], stubResolution, true) == makeProxy([fi1], stubResolution, true)
+  ? makeProxy([fi1], stubResolution, true) ==
+  >   makeProxy([fi1], stubResolution, true)
   # value: true
-  
+
   unresolved one
-  ? makeProxy(stubHandler, stubResolution, false) == makeProxy(stubHandler, stubResolution, true)
-  # problem: <NotSettledException: Not sufficiently settled: <Remote Promise> == <Far ref>>
+  ? makeProxy(stubHandler, stubResolution, false) ==
+  >   makeProxy(stubHandler, stubResolution, true)
+  # problem: <NotSettledException: \
+  #           Not sufficiently settled: <Remote Promise> == <Far ref>>
 
   unresolved both
-  ? makeProxy(stubHandler, stubResolution, false) == makeProxy(stubHandler, stubResolution, false)
-  # problem: <NotSettledException: Not sufficiently settled: <Remote Promise> == <Remote Promise>>
+  ? makeProxy(stubHandler, stubResolution, false) ==
+  >   makeProxy(stubHandler, stubResolution, false)
+  # problem: <NotSettledException: \
+  #           Not sufficiently settled: <Remote Promise> == <Remote Promise>>
 
   unresolved-but-same
   ? (def pr := makeProxy(stubHandler, stubResolution, false)) == pr
@@ -149,10 +176,10 @@ Notice that even though the handler is written to resolve it immediately, the re
 
   ? def pO := makeProxy(def sbfh2 {}, (def sbfr2;sbfr2), true)
   # value: <Far ref>
-  
+
   ? p1 == p2
   # value: true
-  
+
   ? p1 == pO
   # value: false
 
@@ -161,7 +188,7 @@ Notice that even though the handler is written to resolve it immediately, the re
 
   ? p1
   # value: <ref broken by problem: yellow>
-  
+
   ? p1 == p2
   # value: true
 

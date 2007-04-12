@@ -190,13 +190,13 @@ public abstract class Ref implements Callable {
         Object id;
         if (prevRef instanceof OldFarRef) {
             id = ((OldFarRef)prevRef).myIdentity;
-        } else if (prevRef instanceof DisconnectedRef) {
-            id = ((DisconnectedRef)prevRef).myIdentity;
+        } else if (prevRef instanceof OldDisconnectedRef) {
+            id = ((OldDisconnectedRef)prevRef).myIdentity;
         } else {
             T.fail("must be far or disconnected " + prevRef);
             return null; //make compiler happy
         }
-        return new DisconnectedRef(problem, id);
+        return new OldDisconnectedRef(problem, id);
     }
 
     /**

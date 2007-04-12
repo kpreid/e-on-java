@@ -22,10 +22,10 @@ public final class RemotePromise extends Proxy {
         super(handler, resolutionBox);
     }
 
-    public boolean equals(Object other) {
+    public boolean equals(Object obj) {
         // super will check that we can't have jettisoned yet
-        return super.equals(other) && Equalizer.make()
-          .isSameYet(myResolutionBox, ((RemotePromise)other).myResolutionBox);
+        return super.equals(obj) && Equalizer.
+          isSameYet(myResolutionBox, ((RemotePromise)obj).myResolutionBox);
     }
 
     protected boolean isResolvedIfNotForwarding() {

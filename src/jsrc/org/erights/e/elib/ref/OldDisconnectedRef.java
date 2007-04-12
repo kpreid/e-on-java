@@ -35,18 +35,18 @@ import java.io.IOException;
  * What a OldFarRef becomes when it breaks -- a BROKEN Ref with identity.
  * <p/>
  * Maintains the same()ness identity and sameness hash of the OldFarRef. A
- * DisconnectedRef is listed as an HONORARY Selfless object for implementation
+ * OldDisconnectedRef is listed as an HONORARY Selfless object for implementation
  * reasons only: (HONORARY because it encapsulates its identity, so it isn't
  * transparent).
  * <p/>
- * A DisconnectedRef's contents must be transitively transparently Selfless and
- * passable by construction. DisconnectedRef is listed as implementing
+ * A OldDisconnectedRef's contents must be transitively transparently Selfless and
+ * passable by construction. OldDisconnectedRef is listed as implementing
  * JOSSPassByConstruction for implementation reasons only. Not being NEAR, by
  * definition it is not a PassByContruction object.
  *
  * @author Mark S. Miller
  */
-class DisconnectedRef extends Ref
+class OldDisconnectedRef extends Ref
   implements Persistent, JOSSPassByConstruction {
 
     static private final long serialVersionUID = 1307531130876647340L;
@@ -70,7 +70,7 @@ class DisconnectedRef extends Ref
      * <p/>
      * identity must itself be an honorary Selfless object.
      */
-    DisconnectedRef(Throwable problem, Object identity) {
+    OldDisconnectedRef(Throwable problem, Object identity) {
         myProblem = problem;
         myIdentity = identity;
         T.notNull(myProblem, "Missing problem");
@@ -86,8 +86,8 @@ class DisconnectedRef extends Ref
     public boolean equals(Object other) {
         if (other instanceof OldFarRef) {
             return myIdentity.equals(((OldFarRef)other).myIdentity);
-        } else if (other instanceof DisconnectedRef) {
-            return myIdentity.equals(((DisconnectedRef)other).myIdentity);
+        } else if (other instanceof OldDisconnectedRef) {
+            return myIdentity.equals(((OldDisconnectedRef)other).myIdentity);
         } else {
             return false;
         }

@@ -63,8 +63,8 @@ class OldFarRef extends EProxy {
         other = Ref.resolution(other);
         if (other instanceof OldFarRef) {
             return myIdentity.equals(((OldFarRef)other).myIdentity);
-        } else if (other instanceof DisconnectedRef) {
-            return myIdentity.equals(((DisconnectedRef)other).myIdentity);
+        } else if (other instanceof OldDisconnectedRef) {
+            return myIdentity.equals(((OldDisconnectedRef)other).myIdentity);
         } else {
             return false;
         }
@@ -107,7 +107,7 @@ class OldFarRef extends EProxy {
         EProxyHandler handler = myOptHandler;
 
         myOptHandler = null;
-        myOptTarget = new DisconnectedRef(optProblem, myIdentity);
+        myOptTarget = new OldDisconnectedRef(optProblem, myIdentity);
 
         //XXX should we allow throws to propogate?
         handler.handleResolution(this);

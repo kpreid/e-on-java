@@ -47,15 +47,15 @@ public abstract class Proxy extends Ref {
         }
     }
 
-    public boolean equals(Object other) {
-        if (other.getClass() != this.getClass()) {
+    public boolean equals(Object obj) {
+        if (obj.getClass() != getClass()) {
             return false;
         }
-        Proxy that = (Proxy)other;
+        Proxy that = (Proxy)obj;
         if (checkBox() || that.checkBox()) {
             T.fail("equals comparison of resolved proxy is impossible");
         }
-        return Equalizer.make().isSameYet(myHandler, that.myHandler);
+        return Equalizer.isSameYet(myHandler, that.myHandler);
     }
 
     void commit() {
@@ -106,7 +106,7 @@ public abstract class Proxy extends Ref {
         if (checkBox()) {
             return Ref.isResolved(((FinalSlot)myResolutionBox).get());
         } else {
-            return this.isResolvedIfNotForwarding();
+            return isResolvedIfNotForwarding();
         }
     }
 
@@ -176,7 +176,7 @@ public abstract class Proxy extends Ref {
         if (checkBox()) {
             Ref.toRef(((FinalSlot)myResolutionBox).get()).__printOn(out);
         } else {
-            this.__printOnIfNotForwarding(out);
+            __printOnIfNotForwarding(out);
         }
     }
 

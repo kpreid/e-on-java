@@ -113,8 +113,8 @@ public interface Selfless extends Marker {
 
       //Not Near, and therefore not actually Selfless, but does its own
       //sameness comparison.
-      "org.erights.e.elib.ref.FarRef",
-      "org.erights.e.elib.ref.FarRef2",};
+      "org.erights.e.elib.ref.OldFarRef",
+      "org.erights.e.elib.ref.FarRef",};
 
     /**
      * HONORARY (effectively) contains all the classes named in HONORED_NAMES
