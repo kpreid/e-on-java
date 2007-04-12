@@ -20,6 +20,11 @@ import java.io.IOException;
  * In the E language, <tt>Set[eelemGuard]</tt> evaluates to a SetGuard wrapping
  * elemGuard. Read as a type declaration, it means "a ConstSet of elements
  * satisfying elemGuard".
+ * <p>
+ * XXX TODO NON-UPWARDS-COMPATIBLE-CHANGE: The Set guard will mean, coerce
+ * to a ConstSet (of elements...) such that two such ConstSets of the
+ * same elements in the same order are the same.
+
  *
  * @author Mark S. Miller
  */

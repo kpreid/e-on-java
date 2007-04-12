@@ -466,14 +466,18 @@ public abstract class EMap implements EPrintable, Persistent, EIteratable {
     /**
      * All keys in this map must be of this type.
      * <p/>
-     * XXX Should this return a Guard rather than a Class?
+     * XXX TODO NON-UPWARDS-COMPATIBLE-CHANGE: EMap and ConstMap should no
+     * longer have a keyType() method. The remaining method on FlexMap
+     * (and possibly ROMap?) should return a guard rather than a class.
      */
     public abstract Class keyType();
 
     /**
      * All values in this map must be of this type
      * <p/>
-     * XXX Should this return a Guard rather than a Class?
+     * XXX TODO NON-UPWARDS-COMPATIBLE-CHANGE: EMap and ConstMap should no
+     * longer have a valueType() method. The remaining method on FlexMap
+     * (and possibly ROMap?) should return a guard rather than a class.
      */
     public abstract Class valueType();
 

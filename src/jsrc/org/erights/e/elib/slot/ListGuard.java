@@ -15,9 +15,13 @@ import java.io.IOException;
  * Wraps an element guard, in order to coerce a list into a list in which each
  * element has been coerced by the element guard.
  * <p/>
- * In the E language, <tt>elemGuard[]</tt> or <tt>List[eelemGuard]</tt>
- * evaluates to a ListGuard wrapping elemGuard. Read as a type declaration, it
- * means "a ConstList of elements satisfying elemGuard".
+ * In the E language, <tt>List[eelemGuard]</tt> evaluates to a ListGuard
+ * wrapping elemGuard. Read as a type declaration, it means "a ConstList of
+ * elements satisfying elemGuard".
+ * <p>
+ * XXX TODO NON-UPWARDS-COMPATIBLE-CHANGE: The List guard will mean, coerce
+ * to a ConstList (of elements...) such that two such ConstLists of the same
+ * elements in the same order are the same.
  *
  * @author Mark S. Miller
  */

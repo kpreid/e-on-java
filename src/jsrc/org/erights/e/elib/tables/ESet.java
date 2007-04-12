@@ -217,7 +217,9 @@ public abstract class ESet implements EPrintable, Persistent, EIteratable {
     /**
      * All elements of this set must be of this type.
      * <p/>
-     * XXX This should return a Guard rather than a Class
+     * XXX TODO NON-UPWARDS-COMPATIBLE-CHANGE: ESet and ConstSet should no
+     * longer have a elementType() method. The remaining method on FlexSet
+     * (and possibly ROSet?) should return a guard rather than a class.
      */
     public Class elementType() {
         return myMap.keyType();

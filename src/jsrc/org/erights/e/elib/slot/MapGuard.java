@@ -15,6 +15,13 @@ import org.erights.e.elib.util.OneArgFunc;
 import java.io.IOException;
 
 /**
+ * In E, "Map[K,V]" evaluates to a guard which means, coerce to a ConstMap
+ * in which the keys have been coerced by K and the values by V.
+ * <p>
+ * XXX TODO NON-UPWARDS-COMPATIBLE-CHANGE: The Map guard will mean, coerce
+ * to a ConstMap (of keys and values...) such that two such ConstMaps of the
+ * same keys and values in the same order are the same.
+
  * @author Mark S. Miller
  */
 public class MapGuard implements Guard {

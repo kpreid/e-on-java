@@ -193,7 +193,13 @@ public abstract class EList implements EPrintable, Persistent, EIteratable {
     /**
      * All values in this table must be of this type
      * <p/>
-     * XXX Should this return a Guard rather than a Class?
+     * XXX TODO NON-UPWARDS-COMPATIBLE-CHANGE: EList and ConstList should no
+     * longer have a valueType() method. The remaining method on FlexList (and
+     * possibly ROList?) should return a guard rather than a class. Making up
+     * for this lack and more, ConstLists should support a run extraction
+     * operation that takes a guard and returns a pair of two ConstLists: the
+     * list of initial elements as successfully coerced by that guard, and the
+     * list of everything else.
      */
     public abstract Class valueType();
 
@@ -411,7 +417,7 @@ public abstract class EList implements EPrintable, Persistent, EIteratable {
         Object elem = candidate.get(0);
         for (int i = start; i < bound; i++) {
             if (Ref.isSameEver(get(i), elem)) {
-                match:
+match:
                 {
                     for (int j = 1; j < len2; j++) {
                         if (!Ref.isSameEver(get(i + j), candidate.get(j))) {
@@ -454,7 +460,7 @@ public abstract class EList implements EPrintable, Persistent, EIteratable {
         Object elem = candidate.get(0);
         for (int i = start; 0 <= i; i--) {
             if (Ref.isSameEver(get(i), elem)) {
-                match:
+match:
                 {
                     for (int j = 1; j < len2; j++) {
                         if (!Ref.isSameEver(get(i + j), candidate.get(j))) {
