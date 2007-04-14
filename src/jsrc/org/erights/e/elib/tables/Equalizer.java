@@ -7,6 +7,7 @@ import org.erights.e.develop.exception.ExceptionMgr;
 import org.erights.e.develop.exception.NestedException;
 import org.erights.e.elib.base.ClassDesc;
 import org.erights.e.elib.prim.E;
+import org.erights.e.elib.prim.ScriptMaker;
 import org.erights.e.elib.ref.Ref;
 import org.erights.e.elib.util.ClassCache;
 import org.erights.e.elib.vat.SynchQueue;
@@ -16,7 +17,7 @@ import java.util.Hashtable;
 
 /**
  * Implements E's sameness semantics, which should be used only through the Ref
- * class. <p>
+ * class.
  * <p/>
  * The static methods are the recursive cycle-breaking sameness algorithm. An
  * Equalizer instance is a  hypothetical comparison pair as used by the
@@ -24,7 +25,7 @@ import java.util.Hashtable;
  * .equals() and .hashCode() will be used to compare them.
  *
  * @author Mark S. Miller
- * @see org.erights.e.elib.ref.Ref
+ * @see Ref
  */
 public final class Equalizer {
 
@@ -37,8 +38,8 @@ public final class Equalizer {
      * All instances of the left hand (key) types simplify (for purposes of
      * sameness comparison) to instances of the right hand (value) types.
      * <p/>
-     * This is much like {@link org.erights.e.elib.prim.ScriptMaker#Promotions
-     * ScriptMaker.Promotions}, but with some differences.
+     * This is much like {@link ScriptMaker#Promotions ScriptMaker.Promotions},
+     * but with some differences.
      * <p/>
      * XXX Should ConstLists simplify into arrays, rather than just describing
      * themselves (using {@link ConstList#getSpreadUncall}) using arrays? The
@@ -74,6 +75,8 @@ public final class Equalizer {
      * circular static initialization dependencies. Uses legacy Hashtable
      * rather than EMap in order to avoid a circular dependency, and to get
      * thread safety for mutable static cache state.
+     *
+     * @noinspection StaticNonFinalField
      */
     static private Hashtable TheSimplifications = null;
 
@@ -82,6 +85,7 @@ public final class Equalizer {
      */
     static public Class OptSimplification(Class clazz) {
         if (null == TheSimplifications) {
+            //noinspection NonThreadSafeLazyInitialization
             TheSimplifications = new Hashtable();
             for (int i = 0; i < Simplifications.length; i++) {
                 TheSimplifications.put(Simplifications[i][0],
@@ -132,6 +136,7 @@ public final class Equalizer {
     private Equalizer() {
         myLefts = new Object[INITIAL_SIZE];
         myRights = new Object[INITIAL_SIZE];
+        myMaxSofar = 0;
     }
 
     /**
@@ -153,7 +158,7 @@ public final class Equalizer {
     /**
      * The implementation of Ref.isSameEver(left, right)
      *
-     * @see org.erights.e.elib.ref.Ref#isSameEver
+     * @see Ref#isSameEver
      */
     static public boolean isSameEver(Object left, Object right)
       throws NotSettledException {
@@ -188,7 +193,7 @@ public final class Equalizer {
     /**
      * The implementation of 'Ref isSettled(ref)'
      *
-     * @see org.erights.e.elib.ref.Ref#isSettled(Object)
+     * @see Ref#isSettled(Object)
      */
     static public boolean isSettled(Object obj) {
         try {
@@ -240,8 +245,7 @@ public final class Equalizer {
         } catch (NotSettledException e) {
             throw ExceptionMgr.asSafe(e);
         }
-        FringeNode[] fringeA = 
-          (FringeNode[])fringe.getArray(FringeNode.class);
+        FringeNode[] fringeA = (FringeNode[])fringe.getArray(FringeNode.class);
         for (int i = 0, len = fringeA.length; i < len; i++) {
             result ^= fringeA[i].hashCode();
         }
@@ -303,13 +307,12 @@ public final class Equalizer {
             int len = Array.getLength(obj);
             int result = len;
             for (int i = 0; i < len; i++) {
-                result ^= i ^
-                  samenessHash(Array.get(obj, i),
-                               hashDepth - 1, 
-                               optFringe == null
-                                 ? null
-                                 : new FringePath(i, path),
-                               optFringe);
+                result ^= i ^ samenessHash(Array.get(obj, i),
+                                           hashDepth - 1,
+                                           optFringe == null ?
+                                             null :
+                                             new FringePath(i, path),
+                                           optFringe);
             }
             return result;
         }
@@ -317,7 +320,10 @@ public final class Equalizer {
         // sameness is recursive thru transparent Selfless objects
         if (obj instanceof Selfless) {
             Selfless a = (Selfless)obj;
-            return samenessHash(a.getSpreadUncall(), hashDepth, path, optFringe);
+            return samenessHash(a.getSpreadUncall(),
+                                hashDepth,
+                                path,
+                                optFringe);
         }
 
         // sameness defaults to .equals() for honorary Selfless objects
@@ -359,8 +365,6 @@ public final class Equalizer {
      * samenessFringe of <tt>original</tt> afterwards <i>must</i> accumulate a
      * different fringe. Otherwise, TraversalKey cannot satisfy the contract
      * for stable settled sameness.
-     *
-     * @return
      */
     static private boolean samenessFringe(Object original,
                                           FringePath path,
@@ -370,9 +374,6 @@ public final class Equalizer {
         return samenessFringe(original, sofar, path, optFringe);
     }
 
-    /**
-     * @return
-     */
     static private boolean samenessFringe(Object original,
                                           IdentityMap sofar,
                                           FringePath path,
@@ -413,9 +414,9 @@ public final class Equalizer {
             for (int i = 0; i < len; i++) {
                 result &= samenessFringe(Array.get(obj, i),
                                          sofar,
-                                         optFringe == null
-                                           ? null
-                                           : new FringePath(i, path),
+                                         optFringe == null ?
+                                           null :
+                                           new FringePath(i, path),
                                          optFringe);
                 if (!result && null == optFringe) {
                     // Report an unresolved promise early
@@ -459,9 +460,6 @@ public final class Equalizer {
         myMaxSofar = 0;
     }
 
-    /**
-     * @return
-     */
     private boolean findSofar(Object left, Object right, int sofar) {
         int lhash = System.identityHashCode(left);
         int rhash = System.identityHashCode(right);
@@ -478,9 +476,6 @@ public final class Equalizer {
         return false;
     }
 
-    /**
-     * @return
-     */
     private int pushSofar(Object left, Object right, int sofar) {
         if (sofar >= myMaxSofar) {
             myMaxSofar = sofar + 1;
@@ -524,9 +519,6 @@ public final class Equalizer {
         }
     }
 
-    /**
-     * @return
-     */
     public boolean sameYet(Object left, Object right) {
         Boolean optResult = optSame(left, right);
         if (null == optResult) {
@@ -539,7 +531,7 @@ public final class Equalizer {
     /**
      * The implementation of Ref.same(left, right)
      *
-     * @see org.erights.e.elib.ref.Ref#isSameEver
+     * @see Ref#isSameEver
      */
     public Boolean optSame(Object left, Object right) {
         try {

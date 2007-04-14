@@ -159,9 +159,6 @@ public abstract class JavaMemberNode extends MethodNode implements EStackItem {
         return this;
     }
 
-    /**
-     * @return
-     */
     public boolean canHandleR(Object optShortSelf) {
         return false; // XXX for now
     }
@@ -250,26 +247,15 @@ public abstract class JavaMemberNode extends MethodNode implements EStackItem {
         out.print(toString());
     }
 
-    /**
-     * @return
-     */
     public SourceSpan getOptSpan() {
         return null;
     }
 
-    /**
-     * @param propName
-     * @return
-     */
     public static String asGetterVerb(String propName) {
         return "get" + Character.toUpperCase(propName.charAt(0)) +
           propName.substring(1);
     }
 
-    /**
-     * @param propName
-     * @return
-     */
     public static String asSetterVerb(String propName) {
         return "set" + Character.toUpperCase(propName.charAt(0)) +
           propName.substring(1);

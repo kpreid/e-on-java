@@ -42,7 +42,7 @@ import java.io.IOException;
  *
  * @author Mark S. Miller
  * @author E. Dean Tribble
- * @see org.erights.e.elib.prim.VTable
+ * @see VTable
  */
 public class EMethodNode extends MethodNode implements EStackItem {
 
@@ -87,10 +87,6 @@ public class EMethodNode extends MethodNode implements EStackItem {
         return this;
     }
 
-    /**
-     * @param optShortSelf
-     * @return
-     */
     public boolean canHandleR(Object optShortSelf) {
         if (null == optShortSelf) {
             return false;
@@ -217,9 +213,6 @@ public class EMethodNode extends MethodNode implements EStackItem {
         out.print(toString());
     }
 
-    /**
-     * @return
-     */
     public SourceSpan getOptSpan() {
         return myMethod.getOptSpan();
     }

@@ -127,16 +127,10 @@ public class OverloaderNode extends MethodNode {
 //        return myNodes[index];
     }
 
-    /**
-     * @return
-     */
     public boolean canHandleR(Object optShortSelf) {
         return false; // XXX for now
     }
 
-    /**
-     * @return
-     */
     public VTableEntry forVTable(VTable vTable) {
         return this; // XXX for now
     }

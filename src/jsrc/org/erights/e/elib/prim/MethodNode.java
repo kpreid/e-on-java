@@ -31,7 +31,7 @@ import org.erights.e.elib.tables.FlexMap;
  * An element of a VTable
  *
  * @author Mark S. Miller
- * @see org.erights.e.elib.prim.VTable
+ * @see VTable
  */
 public abstract class MethodNode implements VTableEntry {
 
@@ -103,13 +103,13 @@ public abstract class MethodNode implements VTableEntry {
     /**
      *
      */
-    public boolean respondsTo(Object optSelf, String aVerb, int anArity) {
-        if (anArity == getArity()) {
-            if (aVerb.equals(getVerb())) {
+    public boolean respondsTo(Object optSelf, String verb, int arity) {
+        if (arity == getArity()) {
+            if (verb.equals(getVerb())) {
                 return true;
             }
             String otv = getOptTypedVerb();
-            return otv != null && aVerb.equals(otv);
+            return otv != null && verb.equals(otv);
         }
         return false;
     }

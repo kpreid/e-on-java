@@ -40,8 +40,6 @@ public class SugarMethodNode extends JavaMemberNode {
      */
     private transient Class myOptDirectClass = null;
 
-    private final boolean printOkFlag = false;
-
     /**
      *
      */
@@ -72,9 +70,6 @@ public class SugarMethodNode extends JavaMemberNode {
         }
     }
 
-    /**
-     * @return
-     */
     public boolean canHandleR(Object optShortSelf) {
         if (null == optShortSelf) {
             return Object.class == myOptDirectClass;
@@ -83,9 +78,6 @@ public class SugarMethodNode extends JavaMemberNode {
         }
     }
 
-    /**
-     * @return
-     */
     public VTableEntry forVTable(VTable vTable) {
         if (vTable instanceof InstanceTable) {
             if (null == myOptDirectClass) {
@@ -146,7 +138,7 @@ public class SugarMethodNode extends JavaMemberNode {
     }
 
     /**
-     * 
+     *
      */
     public void addJavaMemberNodesToMap(FlexMap map) {
     }

@@ -203,26 +203,29 @@ Unsettled handler
   # problem: <NotSettledException: proxy handler: [<Promise>, <Resolver>]>
 
 Bad resolution box
-  
+
   ? { def remote := makeProxy(stubHandler, (def resolution; resolution), false)
   >   bind resolution := false
   >   remote }
-  # value: <ref broken by problem: Resolution promise of a proxy handled by <stubHandler> didn't resolve to a simple slot, but false.>
+  # value: <ref broken by problem: Resolution promise of a proxy handled by \
+  #            <stubHandler> didn't resolve to a simple slot, but false.>
 
   ? { def remote := makeProxy(stubHandler, (def resolution; resolution), true)
   >   bind resolution := false
   >   remote }
-  # value: <ref broken by problem: Resolution promise of a proxy handled by <stubHandler> didn't resolve to a simple slot, but false.>
+  # value: <ref broken by problem: Resolution promise of a proxy handled by \
+  #            <stubHandler> didn't resolve to a simple slot, but false.>
 
 Resolution identity conflict
 
   ? { def remote := makeProxy(stubHandler, (def resolution; resolution), true)
   >   bind resolution := &false
   >   remote }
-  # value: <ref broken by problem: Attempt to resolve a Far ref handled by <stubHandler> to another identity (false).>
+  # value: <ref broken by problem: Attempt to resolve a Far ref handled by \
+  #            <stubHandler> to another identity (false).>
 
   ? remote
-  
+
 
 XXX optSealedDispatch/conformTo
 XXX resolution to near/other-promise targets

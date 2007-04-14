@@ -5,28 +5,31 @@ package org.erights.e.elib.tables;
 
 /**
  * The location of a promise in a TraversalKey's fringe, expressed as a series
- * of integers. See {@link Equalizer} for the meaning of the integers (which 
- * should not be depended upon).
- * 
+ * of integers.
+ * <p/>
+ * See {@link Equalizer} for the meaning of the integers (which should not be
+ * depended upon).
+ *
  * @author Kevin Reid
  */
 class FringePath {
+
     private int myPosition;
     private FringePath myNext;
-    
+
     FringePath(int position, FringePath next) {
         myPosition = position;
         myNext = next;
     }
-    
+
     public boolean equals(Object obj) {
         return obj instanceof FringePath && equals(this, (FringePath)obj);
     }
-    
+
     public int hashCode() {
         return hashCode(this);
     }
-    
+
     /**
      * Non-recursive comparison of two possibly-null FringePaths.
      */
@@ -38,13 +41,9 @@ class FringePath {
             a = a.myNext;
             b = b.myNext;
         }
-        if (b != null) {
-            // b is longer than a
-            return false;
-        }
-        return true;
+        return b == null; // b is not longer than a
     }
-    
+
     /**
      * Non-recursive hashing of a possibly-null FringePath.
      */

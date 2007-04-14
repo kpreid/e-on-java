@@ -12,7 +12,8 @@ import org.erights.e.elib.ref.Ref;
  * <p/>
  * XXX This class should probably be extended to allow the traversal needed by
  * serialization, but without revealing any encapsulated authority, as
- * explained in the Future Work section of <a href= "http://www.erights.org/data/serial/jhu-paper/index.html"
+ * explained in the Future Work section of
+ * <a href= "http://www.erights.org/data/serial/jhu-paper/index.html"
  * >Safe Serialization Under Mutual Suspicion</a>.
  *
  * @author Mark S. Miller
@@ -37,9 +38,6 @@ public class TraversalKey {
      */
     private final FringeNode[] myFringe;
 
-    /**
-     * @param wrapped
-     */
     public TraversalKey(Object wrapped) {
         myWrapped = Ref.resolution(wrapped);
         FlexList fringeBuild = FlexList.fromType(FringeNode.class);
@@ -47,20 +45,17 @@ public class TraversalKey {
         myFringe = (FringeNode[])fringeBuild.getArray();
     }
 
-    /**
-     * @return
-     */
     public boolean equals(Object obj) {
         if (!(obj instanceof TraversalKey)) {
             return false;
         }
         TraversalKey other = (TraversalKey)obj;
-        
+
         // Quick exit case.
         if (mySnapHash != other.mySnapHash) {
             return false;
         }
-        
+
         // In order for two TraversalKeys to be the same, their values must be
         // the same now...
         if (!Equalizer.isSameYet(myWrapped, other.myWrapped)) {
@@ -83,16 +78,10 @@ public class TraversalKey {
         return true;
     }
 
-    /**
-     * @return
-     */
     public int hashCode() {
         return mySnapHash;
     }
 
-    /**
-     * @return
-     */
     public String toString() {
         return "<key:" + E.toString(myWrapped) + ">";
     }
