@@ -192,7 +192,7 @@ public final class Equalizer {
      */
     static public boolean isSettled(Object obj) {
         try {
-            return samenessFringe(obj, null);
+            return samenessFringe(obj, null, null);
         } catch (NotSettledException nse) {
             throw ExceptionMgr.asSafe(nse);
         }
@@ -215,7 +215,7 @@ public final class Equalizer {
             }
         }
         try {
-            result = samenessHash(obj, HASH_DEPTH, null);
+            result = samenessHash(obj, HASH_DEPTH, null, null);
         } catch (NotSettledException e) {
             throw ExceptionMgr.asSafe(e);
         }
@@ -233,19 +233,17 @@ public final class Equalizer {
      * TraversalKey} wrapper, which can be used as a key in tables in order to
      * finitely walk cyclic unsettled structures without a linear search.
      */
-    static int sameYetHash(Object obj, IdentityMap fringe) {
+    static int sameYetHash(Object obj, FlexList fringe) {
         int result;
         try {
-            result = samenessHash(obj, HASH_DEPTH, fringe);
+            result = samenessHash(obj, HASH_DEPTH, null, fringe);
         } catch (NotSettledException e) {
             throw ExceptionMgr.asSafe(e);
         }
-        Object[] proms = (Object[])fringe.getKeys(Object.class);
-        for (int i = 0, len = proms.length; i < len; i++) {
-            // The order in which these are enumerated should be assumed
-            // random, so we must combine these with an associative and
-            // commutative function, like xor.
-            result ^= System.identityHashCode(proms[i]);
+        FringeNode[] fringeA = 
+          (FringeNode[])fringe.getArray(FringeNode.class);
+        for (int i = 0, len = fringeA.length; i < len; i++) {
+            result ^= fringeA[i].hashCode();
         }
         return result;
     }
@@ -274,11 +272,12 @@ public final class Equalizer {
      */
     static private int samenessHash(Object obj,
                                     int hashDepth,
-                                    IdentityMap optFringe)
+                                    FringePath path,
+                                    FlexList optFringe)
       throws NotSettledException {
 
         if (0 >= hashDepth) {
-            if (samenessFringe(obj, optFringe)) {
+            if (samenessFringe(obj, path, optFringe)) {
                 // obj is settled
                 return -1;
             } else if (null == optFringe) {
@@ -305,7 +304,12 @@ public final class Equalizer {
             int result = len;
             for (int i = 0; i < len; i++) {
                 result ^= i ^
-                  samenessHash(Array.get(obj, i), hashDepth - 1, optFringe);
+                  samenessHash(Array.get(obj, i),
+                               hashDepth - 1, 
+                               optFringe == null
+                                 ? null
+                                 : new FringePath(i, path),
+                               optFringe);
             }
             return result;
         }
@@ -313,7 +317,7 @@ public final class Equalizer {
         // sameness is recursive thru transparent Selfless objects
         if (obj instanceof Selfless) {
             Selfless a = (Selfless)obj;
-            return samenessHash(a.getSpreadUncall(), hashDepth, optFringe);
+            return samenessHash(a.getSpreadUncall(), hashDepth, path, optFringe);
         }
 
         // sameness defaults to .equals() for honorary Selfless objects
@@ -327,7 +331,7 @@ public final class Equalizer {
         } else if (null == optFringe) {
             throw new NotSettledException("must be settled");
         } else {
-            optFringe.put(obj, null);
+            optFringe.push(new FringeNode(obj, path));
             // obj is an unresolved promise. Our caller will take its
             // hash into account.
             return -1;
@@ -359,10 +363,11 @@ public final class Equalizer {
      * @return
      */
     static private boolean samenessFringe(Object original,
-                                          IdentityMap optFringe)
+                                          FringePath path,
+                                          FlexList optFringe)
       throws NotSettledException {
         IdentityMap sofar = new IdentityMap(Object.class, Void.class);
-        return samenessFringe(original, sofar, optFringe);
+        return samenessFringe(original, sofar, path, optFringe);
     }
 
     /**
@@ -370,7 +375,8 @@ public final class Equalizer {
      */
     static private boolean samenessFringe(Object original,
                                           IdentityMap sofar,
-                                          IdentityMap optFringe)
+                                          FringePath path,
+                                          FlexList optFringe)
       throws NotSettledException {
 
         // It's the hypothesis we're already investigating.
@@ -405,7 +411,12 @@ public final class Equalizer {
             int len = Array.getLength(obj);
             boolean result = true;
             for (int i = 0; i < len; i++) {
-                result &= samenessFringe(Array.get(obj, i), sofar, optFringe);
+                result &= samenessFringe(Array.get(obj, i),
+                                         sofar,
+                                         optFringe == null
+                                           ? null
+                                           : new FringePath(i, path),
+                                         optFringe);
                 if (!result && null == optFringe) {
                     // Report an unresolved promise early
                     return false;
@@ -418,7 +429,7 @@ public final class Equalizer {
         if (obj instanceof Selfless) {
             sofar.put(original, null);
             Selfless a = (Selfless)obj;
-            return samenessFringe(a.getSpreadUncall(), sofar, optFringe);
+            return samenessFringe(a.getSpreadUncall(), sofar, path, optFringe);
         }
 
         // Honorary Selfless objects are settled
@@ -431,7 +442,7 @@ public final class Equalizer {
             return true;
         } else {
             if (null != optFringe) {
-                optFringe.put(obj, null);
+                optFringe.push(new FringeNode(obj, path));
             }
             return false;
         }

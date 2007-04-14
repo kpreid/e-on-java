@@ -35,15 +35,16 @@ public class TraversalKey {
      * forwarding is handled automatically, TraversalKey may need a completely
      * different implementation in order to have the same E-level semantics.
      */
-    private final IdentityMap myFringe;
+    private final FringeNode[] myFringe;
 
     /**
      * @param wrapped
      */
     public TraversalKey(Object wrapped) {
         myWrapped = Ref.resolution(wrapped);
-        myFringe = new IdentityMap(Object.class, Void.class);
-        mySnapHash = Equalizer.sameYetHash(myWrapped, myFringe);
+        FlexList fringeBuild = FlexList.fromType(FringeNode.class);
+        mySnapHash = Equalizer.sameYetHash(myWrapped, fringeBuild);
+        myFringe = (FringeNode[])fringeBuild.getArray();
     }
 
     /**
@@ -54,20 +55,28 @@ public class TraversalKey {
             return false;
         }
         TraversalKey other = (TraversalKey)obj;
+        
+        // Quick exit case.
         if (mySnapHash != other.mySnapHash) {
             return false;
         }
+        
+        // In order for two TraversalKeys to be the same, their values must be
+        // the same now...
         if (!Equalizer.isSameYet(myWrapped, other.myWrapped)) {
             return false;
         }
 
-        int len = myFringe.size();
-        if (other.myFringe.size() != len) {
+        // ..and have been the same then, which is determined by checking
+        // whether they had the same promises in their structure in the same
+        // places.
+        FringeNode[] otherFringe = other.myFringe;
+        int len = myFringe.length;
+        if (otherFringe.length != len) {
             return false;
         }
-        Object[] fringe = (Object[])myFringe.getKeys(Object.class);
         for (int i = 0; i < len; i++) {
-            if (!other.myFringe.maps(fringe[i])) {
+            if (!myFringe[i].equals(otherFringe[i])) {
                 return false;
             }
         }
