@@ -21,7 +21,10 @@ Contributor(s): ______________________________________.
 
 import org.erights.e.develop.assertion.T;
 import org.erights.e.develop.format.StringHelper;
+import org.erights.e.elib.base.Ejector;
 import org.erights.e.elib.oldeio.TextWriter;
+import org.erights.e.elib.prim.E;
+import org.erights.e.meta.java.math.EInt;
 
 import java.io.IOException;
 
@@ -57,35 +60,25 @@ public class CharacterSugar {
         return optResult;
     }
 
-    /**
-     * @noinspection OverloadedMethodsWithSameNumberOfParameters
-     */
-    static public char add(char self, int delta) {
+    static public char add(char self, Object other) {
+        int delta = ((Integer)E.as(other, Integer.TYPE)).intValue();
         return CharacterMakerSugar.asChar((long)self + delta);
     }
 
-    /**
-     * Kludge to force overload resolution to prevent a char from successfully
-     * Java-coercing, on method.invoke(), to an int.
-     *
-     * @noinspection OverloadedMethodsWithSameNumberOfParameters
-     */
-    static public void add(char self, char other) {
-        throw new IllegalArgumentException("Can't add characters");
-    }
-
-    /**
-     * @noinspection OverloadedMethodsWithSameNumberOfParameters
-     */
-    static public char subtract(char self, int delta) {
-        return CharacterMakerSugar.asChar((long)self - delta);
-    }
-
-    /**
-     * @noinspection OverloadedMethodsWithSameNumberOfParameters
-     */
-    static public int subtract(char self, char other) {
-        return self - other;
+    static public Object subtract(char self, Object other) {
+        Ejector ej = new Ejector("cej");
+        Character ch;
+        try {
+            ch = (Character)E.as(other, Character.TYPE, ej);
+        } catch (Throwable th) {
+            ej.result(th);
+            int delta = ((Integer)E.as(other, Integer.TYPE)).intValue();
+            return CharacterMakerSugar.valueOf(
+              CharacterMakerSugar.asChar((long)self - delta));
+        } finally {
+            ej.disable();
+        }
+        return EInt.valueOf(self - ch.charValue());
     }
 
     /**
