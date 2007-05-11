@@ -26,13 +26,12 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 
 /**
- * Made usable from E by parameterization rather than subclassing.
- * <p/>
- * This stream should be used at least for persistence and CapTP. It is
+ * <p>Made usable from E by parameterization rather than subclassing.</p>
+ * <p>This stream should be used at least for persistence and CapTP. It is
  * specialized by composition rather than subclassing -- by providing a {@link
  * Reviver} rather than overriding the .resolveObject(..) method, as a step
  * towards enabling E programs (which can't subclass Java classes) to
- * specialize serialization behavior.
+ * specialize serialization behavior.</p>
  *
  * @author Mark S. Miller
  */

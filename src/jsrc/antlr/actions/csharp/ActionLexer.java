@@ -14,7 +14,6 @@ import antlr.NoViableAltForCharException;
 import antlr.RecognitionException;
 import antlr.RuleBlock;
 import antlr.Token;
-import antlr.TokenStream;
 import antlr.TokenStreamException;
 import antlr.TokenStreamIOException;
 import antlr.TokenStreamRecognitionException;
