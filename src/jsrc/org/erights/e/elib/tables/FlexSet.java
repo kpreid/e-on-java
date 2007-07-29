@@ -51,20 +51,6 @@ public class FlexSet extends ESet implements PassByProxy {
     }
 
     /**
-     * Note: A snapshot of a WeakSet makes no sense.
-     */
-    static public FlexSet makeWeak() {
-        return new FlexSet(new WeakKeyMap());
-    }
-
-    /**
-     * Note: A snapshot of a WeakSet makes no sense.
-     */
-    static public FlexSet weakFromType(Class type) {
-        return new FlexSet(new WeakKeyMap(type, Void.class));
-    }
-
-    /**
      *
      */
     private FlexMap getMap() {
