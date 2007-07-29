@@ -32,7 +32,7 @@ public interface Guard extends EPrintable /*, Marker */ {
      * <p/>
      * A note to Java implementors of this method: You almost certainly want to
      * start your method with
-     * <pre>    specimen = Ref.resultion(specimen);</pre>
+     * <pre>    specimen = Ref.resolution(specimen);</pre>
      */
     Object coerce(Object specimen, OneArgFunc optEjector);
 }
