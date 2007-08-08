@@ -73,9 +73,10 @@ public abstract class BaseLoader implements Loader {
     public String optUnget(Object child) {
         Object[] optPortrayal = optUncall(child);
         if (null != optPortrayal && this == optPortrayal[0] &&
-          "get".equals(optPortrayal[1])) {
+          "get".equals(optPortrayal[1]) && 
+          ((Object[])optPortrayal[2]).length == 1) {
 
-            return (String)optPortrayal[2];
+            return (String)((Object[])optPortrayal[2])[0];
         } else {
             return null;
         }
