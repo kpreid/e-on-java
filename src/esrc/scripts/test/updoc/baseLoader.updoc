@@ -1,0 +1,15 @@
+# Copyright 2007 Kevin Reid, under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+Bug: optUnget would throw if the underlying optUncall returned a portrayal, because it was misparsing the uncall as a spread uncall.
+
+(BaseLoader is an abstract class; using ImportLoader as an example BaseLoader.)
+
+  ? def makeConstList := <import:org.erights.e.elib.tables.makeConstList>
+  # value: <makeConstList>
+  
+  ? <import>.optUncall(makeConstList)
+  # value: [<import>, "get", ["org.erights.e.elib.tables.makeConstList"]]
+
+  ? <import>.optUnget(makeConstList)
+  # value: "org.erights.e.elib.tables.makeConstList"
