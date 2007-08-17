@@ -25,6 +25,7 @@ import org.erights.e.elib.base.TypeDesc;
 import org.erights.e.elib.oldeio.EPrintable;
 import org.erights.e.elib.oldeio.TextWriter;
 import org.erights.e.elib.oldeio.UnQuote;
+import org.erights.e.elib.tables.Equalizer;
 import org.erights.e.elib.prim.E;
 import org.erights.e.elib.ref.Ref;
 
@@ -82,7 +83,8 @@ public class Help implements EPrintable {
         if (null == subject) {
             out.println("a null");
         } else {
-            out.println(StringHelper.aan(ClassDesc.sig(subject.getClass())));
+            out.println(StringHelper.aan(ClassDesc.sig(
+              Equalizer.Simplification(subject.getClass()))));
         }
         if (Ref.isNear(subject)) {
             TypeDesc type = (TypeDesc)E.call(subject, "__getAllegedType");
