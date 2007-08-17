@@ -46,9 +46,10 @@ public final class Equalizer {
      * corrent code probably doesn't judge an array and a corresponding
      * ConstList as the same. They probably should be judged to be the same.
      */
-    static private final String[][] Simplifications = {{"java.lang.Byte",
-      "java.lang.Integer"},
-      {"java.lang.Short", "java.lang.Integer"},
+    static private final String[][] Simplifications = {
+      {"java.lang.Byte", "org.erights.e.meta.java.math.EInt"},
+      {"java.lang.Short", "org.erights.e.meta.java.math.EInt"},
+      {"java.lang.Integer", "org.erights.e.meta.java.math.EInt"},
       {"java.lang.Long", "org.erights.e.meta.java.math.EInt"},
       {"java.math.BigInteger", "org.erights.e.meta.java.math.EInt"},
 
@@ -108,6 +109,21 @@ public final class Equalizer {
             throw new NestedException(ex,
                                       "# simplification not found: " +
                                         simpName);
+        }
+    }
+
+    /** 
+     * Map a class to the class it simplifies to, or itself. Added for use by
+     * MirandaMethods#__getAllegedType.
+     * 
+     * @author Kevin Reid
+     */
+    static public Class Simplification(Class clazz) {
+        Class simplification = OptSimplification(clazz);
+        if (null == simplification) {
+            return clazz;
+        } else {
+            return simplification;
         }
     }
 

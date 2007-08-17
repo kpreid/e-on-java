@@ -36,6 +36,7 @@ import org.erights.e.elib.slot.Conformable;
 import org.erights.e.elib.slot.Guard;
 import org.erights.e.elib.slot.Slot;
 import org.erights.e.elib.tables.ArrayHelper;
+import org.erights.e.elib.tables.Equalizer;
 import org.erights.e.elib.tables.Selfless;
 import org.erights.e.elib.util.OneArgFunc;
 
@@ -184,7 +185,10 @@ public class MirandaMethods {
         } else if (self instanceof Callable) {
             return ((Callable)self).getAllegedType();
         } else {
-            return ClassDesc.make(self.getClass());
+            // Reveal only the simplification of our class, so that we don't
+            // reveal distinctions which should be invisible (according to
+            // sameness).
+            return ClassDesc.make(Equalizer.Simplification(self.getClass()));
         }
     }
 

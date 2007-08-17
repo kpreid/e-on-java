@@ -1,0 +1,60 @@
+# Copyright 2007 Kevin Reid, under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+Bug: Distinct implementation types (which should be hidden by promotions/simplifications) were being exposed, breaking sameness.
+
+Integers:
+
+  ? 2147483648.subtract(1) == 2147483647
+  # value: true
+
+  ? 2147483648.subtract(1).__getAllegedType() == 2147483647.__getAllegedType()
+  # value: true
+(was false)
+
+  ? <import:java.lang.makeByte>(1).__getAllegedType()
+  # value: int
+(was int8)
+
+  ? <import:java.lang.makeShort>(1).__getAllegedType()
+  # value: int
+(was int16)
+
+  ? 2147483647.__getAllegedType()
+  # value: int
+(was int32)
+
+  ? <import:java.lang.makeLong>(1).__getAllegedType()
+  # value: int
+(was int64)
+
+  ? 2147483648.subtract(1).__getAllegedType()
+  # value: int
+(was BigInteger)
+
+Twines:
+
+  ? <elib:tables.makeTwine>."fromString"("abc", null) == "abc"
+  # value: true
+
+  ? <elib:tables.makeTwine>."fromString"("abc", null).__getAllegedType() == "abc".__getAllegedType()
+  # value: true
+
+ClassDescs:
+
+  ? def t1 := <type:java.lang.String>
+  # value: String
+
+  ? def t2 := "".__getAllegedType()
+  # value: String
+
+  ? t1 == t2
+  # value: true
+
+  ? t1.__getAllegedType()
+  # value: Class
+
+  ? t2.__getAllegedType()
+  # value: Class
+(was StringGuardSugar)
+
