@@ -31,6 +31,7 @@ setup:
 	cp -rf $(TOP)/src/safej/* $(TOP)/classes/
 	cp -rf $(TOP)/src/bin/resources/* $(TOP)/classes/
 	-rm -rf `find $(TOP)/classes -name CVS`
+	-rm -rf `find $(TOP)/classes -name .svn`
 	-rm -f `find $(TOP)/classes -name '*~'` \
 	# (cd $(TOP)/classes; jar xf ../src/bin/jars/hydro.jar)
 	-rm -rf $(TOP)/classes/META-INF
