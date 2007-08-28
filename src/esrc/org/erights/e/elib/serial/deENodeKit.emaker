@@ -20,6 +20,10 @@ def makeKernelECopyVisitor := <elang:visitors.makeKernelECopyVisitor>
 
 def ANY := makeSimpleNounExpr(null, "any", null)
 
+def makeFinalPatternS(span, name :String, layout) :FinalPattern {
+  return makeFinalPattern(span, makeSimpleNounExpr(span, name, null), null, layout)
+}
+
 def DEBuilderOf := <elib:serial.DEBuilderOf>
 
 /**
@@ -121,7 +125,7 @@ def deENodeKit {
                 nextTemp += 1
                 varReused[tempIndex] := false
                 def tempPatt :=
-                  makeFinalPattern(null, `t__$tempIndex`, null)
+                  makeFinalPatternS(null, `t__$tempIndex`, null)
                 def defExpr :=
                   makeDefineExpr(null, tempPatt, null, rValue, null)
                 [defExpr, tempIndex]
@@ -142,14 +146,14 @@ def deENodeKit {
             to buildDefrec(resIndex :int, rValue :EExpr) :EExpr {
                 def promIndex := resIndex-1
                 def promPatt :=
-                  makeFinalPattern(null, `t__$promIndex`, null)
+                  makeFinalPatternS(null, `t__$promIndex`, null)
 
                 if (varReused[promIndex]) {
                     # We have a cycle
                     def promNoun :=
                       makeSimpleNounExpr(null, `t__$promIndex`, null)
                     def resPatt :=
-                      makeFinalPattern (null, `t__$resIndex`, null)
+                      makeFinalPatternS (null, `t__$resIndex`, null)
                     def resNoun  :=
                       makeSimpleNounExpr(null, `t__$resIndex`, null)
 

@@ -1,0 +1,14 @@
+# Copyright 2007 Kevin Reid, under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+  ? def deSubgraphKit := <elib:serial.deSubgraphKit>; null
+
+  ? def deENodeKit := <import:org.erights.e.elib.serial.deENodeKit>
+  # value: <deENodeKit>
+
+  Bug: makeFinalPattern was being used incorrectly
+  ? deSubgraphKit.recognize(def x := [x], deENodeKit.makeBuilder())
+  # value: e`def [t__0, t__1] := Ref.promise()
+  #        t__1.resolve(__makeList.run(t__0))
+  #        t__0`
+
