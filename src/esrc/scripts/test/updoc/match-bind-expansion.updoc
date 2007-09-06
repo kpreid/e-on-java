@@ -23,9 +23,9 @@ found at http://www.opensource.org/licenses/mit-license.html ..................
     # value: 1
 
     ? if ((def y := 2) !~ []) {y} else {"b"}
-    # expansion: if ((def sp__9 := def y := 2
-    #                  escape ej__11 {
-    #                      def [] exit ej__11 := sp__9
+    # expansion: if ((def sp__5 := def y := 2
+    #                  escape ej__7 {
+    #                      def [] exit ej__7 := sp__5
     #                      true
     #                  } catch _ {
     #                      false
@@ -38,8 +38,8 @@ found at http://www.opensource.org/licenses/mit-license.html ..................
     # value: 2
 
     ? if ((def z := 3) =~ _) {z} else {"b"}
-    # expansion: escape ej__13 {
-    #                def _ exit ej__13 := def z := 3
+    # expansion: escape ej__9 {
+    #                def _ exit ej__9 := def z := 3
     #                z
     #            } catch _ {
     #                "b"
