@@ -101,7 +101,7 @@ and works the same way for Ref.broken/1)
   ? def remotePromise := makeProxy(promiseHandler,
   >                                (def resolution; resolution),
   >                                false)
-  # value: <Remote Promise>
+  # value: <Promise>
 
   ? remotePromise.hi()
   # problem: Failed: not synchronously callable
@@ -154,13 +154,13 @@ and works the same way for Ref.broken/1)
   ? makeProxy(stubHandler, stubResolution, false) ==
   >   makeProxy(stubHandler, stubResolution, true)
   # problem: <NotSettledException: \
-  #           Not sufficiently settled: <Remote Promise> == <Far ref>>
+  #           Not sufficiently settled: <Promise> == <Far ref>>
 
   unresolved both
   ? makeProxy(stubHandler, stubResolution, false) ==
   >   makeProxy(stubHandler, stubResolution, false)
   # problem: <NotSettledException: \
-  #           Not sufficiently settled: <Remote Promise> == <Remote Promise>>
+  #           Not sufficiently settled: <Promise> == <Promise>>
 
   unresolved-but-same
   ? (def pr := makeProxy(stubHandler, stubResolution, false)) == pr

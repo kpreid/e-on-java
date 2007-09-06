@@ -38,10 +38,10 @@ rune(["~/e/src/esrc/com/hp/donutLab/makeIOUIssuer.updoc"])
 # value: [Shell {watching - am2}, Label {<manages <has (44 - 0) Sugar>>}]
 
 ? rune(["~/e/src/esrc/scripts/piggy.e-swt"])
-# value: <Remote Promise>
+# value: <Promise>
 
 ? rune(["~/e/src/esrc/scripts/piggy.e-swt"])
-# value: <Remote Promise>
+# value: <Promise>
 
 ? introducer.onTheAir()
 # value: ["3DES_SDH_M2", "3DES_SDH_M"]

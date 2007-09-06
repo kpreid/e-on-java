@@ -12,16 +12,16 @@
 # value: <a SturdyRef>
 
 ? def evalServerRcvr := sr.getRcvr()
-# value: <Remote Promise>
+# value: <Promise>
 
 ? evalServerRcvr
-# value: <Remote Promise>
+# value: <Promise>
 
 ? def seRcvr1 := evalServerRcvr <- newScriptEvaluator(["se1", "arg"])
-# value: <Remote Promise>
+# value: <Promise>
 
 ? def r1 := seRcvr1 <- evalCmdReportVow("2 + 3")
-# value: <Remote Promise>
+# value: <Promise>
 
 ? r1
 # value: "# value: 5
@@ -33,7 +33,7 @@
 
 
 ? def v1 := seRcvr1 <- evalCmdValueVow("2 + 3")
-# value: <Remote Promise>
+# value: <Promise>
 
 ? v1
 # value: [5, true]

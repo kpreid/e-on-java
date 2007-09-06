@@ -52,7 +52,7 @@
     # value: <SturdyRef>
 
     ? def farSlot := sr.getRcvr()
-    # value: <Remote Promise>
+    # value: <Promise>
 
     ? def adder { to add(x,y):any { return x+y }}
     # value: <adder>
@@ -68,7 +68,7 @@
     # value: <Far ref>
 
     ? def y := x <- add(3,5)
-    # value: <Remote Promise>
+    # value: <Promise>
 
     ? interp.waitAtTop(y)
     ? y

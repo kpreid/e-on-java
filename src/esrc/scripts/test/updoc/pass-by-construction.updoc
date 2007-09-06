@@ -37,10 +37,10 @@
     # value: <Far ref>
 
     ? r <- push(1)
-    # value: <Remote Promise>
+    # value: <Promise>
 
     ? r <- push(2)
-    # value: <Remote Promise>
+    # value: <Promise>
 
     ? def s := interp.waitAtTop(r <- snapshot())
     ? s
@@ -62,7 +62,7 @@ Odd case: maker is near only on receipt
     # value: <Far ref>
 
     ? def otherCall := otherEval <- ("fn r,v,a { E.call(r,v,a) }")
-    # value: <Remote Promise>
+    # value: <Promise>
 
     ? def t := interp.waitAtTop(otherCall <- (E, "toString", [r])); null
     ? t

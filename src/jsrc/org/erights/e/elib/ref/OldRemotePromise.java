@@ -84,7 +84,7 @@ class OldRemotePromise extends EProxy {
      */
     public void __printOn(TextWriter out) throws IOException {
         if (null == myOptTarget) {
-            out.print("<Remote Promise>");
+            out.print("<Promise>");
         } else {
             myOptTarget.__printOn(out);
         }

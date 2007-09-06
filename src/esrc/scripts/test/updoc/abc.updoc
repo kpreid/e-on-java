@@ -28,10 +28,10 @@
     >  def sr := introducer.sturdyFromURI(uri))
 
     ? def farBob := sr.getRcvr()
-    # value: <Remote Promise>
+    # value: <Promise>
 
     ? def result := farBob <- foo()
-    # value: <Remote Promise>
+    # value: <Promise>
 
     ? interp.waitAtTop(result)
 
@@ -39,12 +39,12 @@
     # value: true
 
     ? farBob <- setX(carol)
-    # value: <Remote Promise>
+    # value: <Promise>
 
 ?? in vat vatB
 
     ? def answer := x <- bar()
-    # value: <Remote Promise>
+    # value: <Promise>
 
     ? interp.waitAtTop(answer)
 

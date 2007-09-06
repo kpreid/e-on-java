@@ -33,7 +33,7 @@
 # value: <Far ref>
 
 ? def farPrintln := farPrintlnSlot <- get()
-# value: <Remote Promise>
+# value: <Promise>
 
 ? interp.waitAtTop(farPrintln)
 
@@ -41,7 +41,7 @@
 # value: <Far ref>
 
 ? def x := server <- run(farPrintln, "run", ["Foo!!"])
-# value: <Remote Promise>
+# value: <Promise>
 
 Foo!!
 

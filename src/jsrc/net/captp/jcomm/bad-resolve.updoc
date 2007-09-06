@@ -60,10 +60,10 @@ Import a remote reference to the 'carol' server
     -# match: "captp://*/*/*/*"
 
     ? def farCarol := sr.getRcvr()
-    # value: <Remote Promise>
+    # value: <Promise>
 
     ? def result := farCarol <- run()
-    # value: <Remote Promise>
+    # value: <Promise>
 
 Wait until the result is resolved before continuing the
 test script.
@@ -92,10 +92,10 @@ Import a remote reference to the 'bob' server
     -# match: "captp://*/*/*/*"
 
     ? def farBob := sr.getRcvr()
-    # value: <Remote Promise>
+    # value: <Promise>
 
     ? def result := farBob <- run()
-    # value: <Remote Promise>
+    # value: <Promise>
 
 Wait until the result is resolved before continuing the
 test script.
@@ -123,7 +123,7 @@ test script.
 ?? in vat CarolVat
 
     ? def farBob := carolState
-    # value: <Remote Promise>
+    # value: <Promise>
 
     ? interp.waitAtTop(farBob)
     ? farBob
@@ -141,10 +141,10 @@ test script.
     # value: <SturdyRef>
 
     ? def farAlice := bobState.getRcvr()
-    # value: <Remote Promise>
+    # value: <Promise>
 
     ? def farCarol := farAlice <- run()
-    # value: <Remote Promise>
+    # value: <Promise>
 
     ? interp.waitAtTop(farCarol)
     ? farCarol
@@ -165,12 +165,12 @@ Export an unresolved LocalPromise
 ?? in vat CarolVat
 
     ? carolState
-    # value: <Remote Promise>
+    # value: <Promise>
 
 Send a message to an unresolved imported RemotePromise
 
     ? def y := carolState <- add(3)
-    # value: <Remote Promise>
+    # value: <Promise>
 
 ?? in vat AliceVat
 
@@ -199,7 +199,7 @@ Check that the pending message was processed.
 Sending an imported reference as argument...
 
     ? def res2 := farCarol <- setX(farCarol)
-    # value: <Remote Promise>
+    # value: <Promise>
 
     ? interp.waitAtTop(res2)
 

@@ -50,10 +50,10 @@ def makeLazyPromiseAuthor(makeProxyResolver) :any {
     # value: <makeLazyPromise>
 
     ? def p := makeLazyPromise(fn{println("what me worry"); 3 + 4})
-    # value: <Remote Promise>
+    # value: <Promise>
 
     ? p
-    # value: <Remote Promise>
+    # value: <Promise>
 
     ? def q := p <- add(5)
     # value: <Promise>

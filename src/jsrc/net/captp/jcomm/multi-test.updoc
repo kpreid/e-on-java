@@ -38,10 +38,10 @@ Import a remote reference to the 'thing' server
     -# match: "captp://*/*/*/*"
 
     ? def farThing := sr.getRcvr()
-    # value: <Remote Promise>
+    # value: <Promise>
 
     ? def result := farThing <- run()
-    # value: <Remote Promise>
+    # value: <Promise>
 
 Wait until the result is resolved before continuing the
 test script.
@@ -67,17 +67,17 @@ Export an unresolved LocalPromise
     # value: [<Promise>, <Resolver>]
 
     ? farThing <- setX(p)
-    # value: <Remote Promise>
+    # value: <Promise>
 
 ?? in vat server
 
     ? x
-    # value: <Remote Promise>
+    # value: <Promise>
 
 Send a message to an unresolved imported RemotePromise
 
     ? def y := x <- add(3)
-    # value: <Remote Promise>
+    # value: <Promise>
 
 ?? in vat client
 

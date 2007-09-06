@@ -34,6 +34,6 @@ final class RemotePromise extends Proxy {
 
     protected void __printOnIfNotForwarding(TextWriter out)
       throws IOException {
-        out.write("<Remote Promise>");
+        out.write("<Promise>");
     }
 }
