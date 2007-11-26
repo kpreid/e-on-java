@@ -40,6 +40,7 @@
   "Feed the current line to the E Compiler." t)
 
 (defun run-e ()
+  (c-mode)
   "Major mode for editing E files."
   (interactive)
   ;-----------------------------------
