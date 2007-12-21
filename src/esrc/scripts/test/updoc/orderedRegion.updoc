@@ -1,0 +1,22 @@
+#!/usr/bin/env rune
+
+Former bug: the sense of the 'isEmpty' tests in
+org.erights.e.elang.coord.OrderedRegionMaker$OrderedRegionMaker$self.op__cmp
+was reversed.
+
+    ? pragma.syntax("0.9")
+
+    ? (1..10).op__cmp(1..10)
+    # value: 0.0
+
+    ? (1..10).op__cmp(3..7)
+    # value: 1.0
+
+    ?(1..10).op__cmp(1..20)
+    # value: -1.0
+
+    ?(1..10).op__cmp(-10..10)
+    # value: -1.0
+
+    ?(1..10).op__cmp(20..30)
+    # value: NaN

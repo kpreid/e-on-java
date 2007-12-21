@@ -30,9 +30,10 @@ public class MetaRune {
         "    <prelude> --help             Prints this text\n" +
         "    <prelude> --version          Identical to \n" +
         "                                   \"<prelude> --rune --version\"\n" +
-        "Especially for the \"--rune\" or \"--spawn\" cases, it's helpful if\n" +
-        "the <j-opt> list includes \"-De.home=<ehome>\" or for the current\n" +
-        "directory to be <ehome>. So, for example, for more usage help, say\n" +
+        "Especially for the \"--rune\" or \"--spawn\" cases, it's helpful\n" +
+        "if the <j-opt> list includes \"-De.home=<ehome>\" or for the\n" +
+        "current directory to be <ehome>. So, for example, for more usage\n" +
+        "help, say" +
         "  $ cd <ehome>\n" + "  $ java -jar e.jar --rune --help";
 
     /**

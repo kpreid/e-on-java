@@ -514,8 +514,8 @@ def OrderedRegionMaker {
              * As a region, my comparison is a subset test.
              */
             to op__cmp(other) :float64 {
-                def selfExtra := (self & !other).isEmpty()
-                def otherExtra := (other & !self).isEmpty()
+                def selfExtra := !(self & !other).isEmpty()
+                def otherExtra := !(other & !self).isEmpty()
                 if (selfExtra) {
                     if (otherExtra) {
                         # Both have left-overs, so they're incomparable.

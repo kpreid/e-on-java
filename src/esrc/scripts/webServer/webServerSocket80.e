@@ -5,6 +5,8 @@ pragma.syntax("0.8")
 # Copyright 2002 Combex, Inc. under the terms of the MIT X license
 # found at http://www.opensource.org/licenses/mit-license.html ................
 
+def argParser := <import:org.erights.e.tools.args.argParser>
+
 /**
  * set up tracing; stub out all the printing for operational version
  */
@@ -31,6 +33,34 @@ def forwarderMaker(target) :near {
 
 ############## Web Server Specific Code ################
 
+var portNum := 80
+
+def [props, options, fname, args] := argParser(["--help", "--version"].asSet(),
+                                               interp.getArgs())
+switch (fname) {
+    match `--help` {
+        println(`
+Usage: webServerSocket80.e [--port=<portNum>]
+`)
+        interp.exitAtTop()
+    }
+    match `--version` {
+        println("webServerSocket80.e")
+        rune(["--version"])
+        interp.exitAtTop()
+    }
+    match _ {
+        for k => v in options {
+            switch (k) {
+                match `--port` {
+                    portNum := __makeInt(v)
+                }
+            }
+        }
+    }
+}
+
+
 def header1 := "HTTP/1.0 200 OK
 Content-Type: "
 def htmlMime := "text/html"
@@ -49,7 +79,7 @@ def composeHeader(mimeType,length) :pbc {
     header
 }
 
-def serverSocket := <unsafe:java.net.makeServerSocket>(80)
+def serverSocket := <unsafe:java.net.makeServerSocket>(portNum)
 
 def terminateServer(socket,serverSocket) :void {
     traceline("serviced request")
@@ -122,6 +152,5 @@ def webServer() :void {
 
 introducer.onTheAir()
 traceline("introducer on the air")
-#def commandArgs := interp getArgs
 webServer()
 interp.blockAtTop()

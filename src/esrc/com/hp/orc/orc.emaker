@@ -18,7 +18,7 @@ def orc {
     ########################### orc syntactic primitives ####################
 
     /**
-     * orc`@site(@args*)` => e`orc.call($site, [$args*])
+     * orc`@site(@args*)` => e`orc.call($site, [$args*])`
      * <p>
      * We assume that a nullary call to a site is written as
      * orc`@site()`, so that we may interpret orc`@site` as
