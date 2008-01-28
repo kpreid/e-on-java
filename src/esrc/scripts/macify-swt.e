@@ -1,13 +1,24 @@
 #!/usr/bin/env rune
 
-# Copyright 2005-2006 Kevin Reid, under the terms of the MIT X license
+# Copyright 2005-2008 Kevin Reid, under the terms of the MIT X license
 # found at http://www.opensource.org/licenses/mit-license.html ................
 
-pragma.syntax("0.9")
+# This program generates Mac OS X application bundles (.app) wrapping E-SWT
+# programs, so that they will run properly on Mac OS X.
+#
+# Usage: macify-swt.e [--name-program] [--arg <arg>] <source>.e-swt <output>.app
+#
+# If --name-program is passed, then the program will be referenced at its original absolute path from the bundle, rather than being copied into the bundle. --arg specifies a command-line argument to be passed to the program at startup; it may be used several times for multiple arguments.
 
 # TODO:
 #   bundle options like icons, name, specific bundle ID
 #   option to invoke PATH's rune
+#   option to prompt for args when app is launched?
+#   catch open events at launch time and turn into args
+#   establish protocol for catching open events after launch
+
+pragma.syntax("0.9")
+pragma.enable("accumulator")
 
 def chmod := makeCommand("chmod")
 def setExecutable(file) {
@@ -25,7 +36,7 @@ def shesc(s :String) {
     return "'" + s.replaceAll("'", "'\''") + "'"
 }
 
-def scriptOptions := {[
+def programOptions := {[
     "copy" => fn script, platformDir { 
         platformDir["script.e-swt"].setText(script.getText())
         `"``dirname $$0``/script.e-swt"`
@@ -37,7 +48,8 @@ def scriptOptions := {[
 
 def macifySwt(script, target, [=> bundleID, 
                                => optEHome,
-                               => scriptOption := scriptOptions["copy"]]) {
+                               => programOption := programOptions["copy"],
+                               => bakedArgs := []]) {
     def contents := target["Contents"]
     def platformDir := contents["MacOS"]
     platformDir.mkdirs(null)
@@ -45,12 +57,12 @@ def macifySwt(script, target, [=> bundleID,
     def runeCmd := shesc(if (optEHome != null) { `$optEHome/rune` } \
                                           else { "rune" })
 
-    def scriptArg := scriptOption(script, platformDir)
+    def scriptArg := programOption(script, platformDir)
 
     def executable := platformDir["run"]
     executable.setText(`$\
 #!/bin/sh
-exec $runeCmd -J-XstartOnFirstThread $scriptArg
+exec $runeCmd -J-XstartOnFirstThread $scriptArg${accum "" for x in bakedArgs {_ + (" " + shesc(x))}}
 `)
     setExecutable(executable)
     
@@ -71,13 +83,18 @@ exec $runeCmd -J-XstartOnFirstThread $scriptArg
 }
 
 def main(var args, <file>, entropy, eHome) {
-    var scriptOption := scriptOptions["copy"]
+    var programOption := programOptions["copy"]
+    var bakedArgs := []
 
     while (true) {
         switch (args) {
-            match [`--@what-script`] + r { 
+            match [`--@what-program`] + r { 
                 args := r
-                scriptOption := scriptOptions[what] 
+                programOption := programOptions[what] 
+            }
+            match [`--arg`, ba] + r {
+              args := r
+              bakedArgs with= ba
             }
             match [`--`] + r { break }
             match [`-@o`] + _ { throw(`unrecognized option: -$o`) }
@@ -90,7 +107,7 @@ def main(var args, <file>, entropy, eHome) {
               <file>[targetPath],
               ["bundleID" => `org.erights.e.mac-bundle.${script.getName()}-${entropy.nextSwiss()}`, 
                "optEHome" => eHome,
-               => scriptOption])
+               => programOption, => bakedArgs])
 }
 
 main(interp.getArgs(), <file>, entropy, interp.getProps()["e.home"])
