@@ -18,8 +18,6 @@ def MenuItem := <widgetType:MenuItem>
 def ToolBar  := <widgetType:ToolBar>
 def ToolItem := <widgetType:ToolItem>
 
-def causewayEditor
-
 def sky__uriGetter := <import:com.skyhunter.*>
 
 def <swttools> := <import:org.erights.e.ui.swt.*>
@@ -55,6 +53,8 @@ def causewayEditorAuthor(rezKit,
                                                        makers.get("frame")(),
                                                        traceline)
     def makeCausewayEditor() :near {
+
+        def causewayEditor
 
         def &everOptFile := makeLamportSlot(null)
 
@@ -185,7 +185,20 @@ def causewayEditorAuthor(rezKit,
          *
          */
         bind doOpen extends abstractAction(doOpen) {
-            to run() :void {}
+            to run() :void {
+                def waitCursor := makers["cursor"](SWT.getCURSOR_WAIT())
+                def oldShell := causewayEditor.getShell()
+                var optPaths :List := openner(oldShell)
+                if (optPaths != []) {
+                    oldShell.setCursor(waitCursor)
+                    def openAction() :void {
+                        def editor := makeCausewayEditor()
+                        editor.open(optPaths)
+                        oldShell.close()
+                    }
+                    openAction <- run()
+                }
+            }
             to getLabel()            :String { "&Open..." }
             to getOptMenuAccelDesc() :String { "Ctrl+O" }
             to getOptTip()           :String { "Open a file" }
@@ -797,14 +810,7 @@ def causewayEditorAuthor(rezKit,
             to getCausewayApp() :near { causewayApp }
             to getStatusBar() :near { statusBar }
 
-            /**
-             *
-             */
-            to open(traces :List) :void {
-                def model := makeCausalityTree(traces, traceline)
-                causewayEditor.getCausewayApp().setCausalityTree(model)
-
-                causewayEditor.getCausewayApp().layout()
+            to openEmpty() :void {
 
                 swtGrid`${causewayEditor.getShell()}:
                         ${causewayEditor.getToolArea()}.X
@@ -817,19 +823,48 @@ def causewayEditorAuthor(rezKit,
 
                 def appName := causewayEditor.getAppName()
 
-                var names := ""
-                for i in 0 ..! traces.size() {
-                    def path := traces[i].getAbsolutePath()
-                    names := names + path
-                    if (i != traces.size() -1) {
-                        names := names + " "
-                    }
-                }
-                shell.setText(`$appName - $names`)
+                shell.setText(`$appName`)
 
                 shell.open()
+            }
 
-                causewayEditor.getCausewayApp().open()
+            /**
+             *
+             */
+            to open(traces :List) :void {
+                if (traces == []) {
+                    causewayEditor.openEmpty()
+                } else {
+                    def model := makeCausalityTree(traces, traceline)
+                    causewayEditor.getCausewayApp().setCausalityTree(model)
+
+                    causewayEditor.getCausewayApp().layout()
+
+                    swtGrid`${causewayEditor.getShell()}:
+                            ${causewayEditor.getToolArea()}.X
+                            ${causewayEditor.getCausewayApp().getTopLevelPane()}.X.Y
+                            ${causewayEditor.getStatusBar()}.X`
+
+                    setMargins(causewayEditor.getShell().getLayout(), 0)
+
+                    def menuBar := barAction.makeMenu(shell, menuMap)
+
+                    def appName := causewayEditor.getAppName()
+
+                    var names := ""
+                    for i in 0 ..! traces.size() {
+                        def path := traces[i].getAbsolutePath()
+                        names := names + path
+                        if (i != traces.size() -1) {
+                            names := names + " "
+                        }
+                    }
+                    shell.setText(`$appName - $names`)
+
+                    shell.open()
+
+                    causewayEditor.getCausewayApp().open()
+                }
             }
         }
         causewayEditor

@@ -18,15 +18,23 @@ def EverReporter := <type:org.erights.e.elib.slot.EverReporter>
 def <swttools> := <import:org.erights.e.ui.swt.*>
 def swtGrid__quasiParser := <swttools:swtGridQParserMaker>()
 
+def getText(file) :String {
+    if (!(file.__respondsTo("exists",0)) || file.exists()) {
+        file.getText()
+    } else {
+        `*** "${file.getPath()}" not found ***`
+    }
+}
+
 def stackWalkerAuthor(<file>, <jar>, traceline) :near {
-
+    
     def makeStackWalker(parent, makers, shell, palette, vatMapVow) :near {
-
+        
         def sideToSideSash := <custom:makeSashForm>(parent, SWT.getHORIZONTAL())
-
+        
         def stackPane := <widget:makeComposite>(sideToSideSash, SWT.getBORDER())
         def stack := <widget:makeList>(stackPane, SWT.getSINGLE())
-
+        
         def sp := palette.makeEStackPalette()
         stackPane.setForeground(sp.getFg())
         stackPane.setBackground(sp.getBg())
@@ -34,56 +42,56 @@ def stackWalkerAuthor(<file>, <jar>, traceline) :near {
         stack.setForeground(sp.getFg())
         stack.setBackground(sp.getBg())
         stack.setFont(sp.getFont())
-
+        
         def dp := palette.makeDescPalette()
-
+        
         def description := <custom:makeCLabel>(stackPane,
-                                           SWT.getCENTER() | SWT.getSHADOW_NONE())
+                                               SWT.getCENTER() | SWT.getSHADOW_NONE())
         description.setForeground(dp.getFg())
         description.setBackground(dp.getBg())
         description.setFont(dp.getFont())
-
+        
         def esp := palette.makeECodePalette()
         def sourcePane := <widget:makeComposite>(sideToSideSash, SWT.getBORDER())
         sourcePane.setForeground(esp.getFg())
         sourcePane.setBackground(esp.getBg())
         sourcePane.setFont(esp.getFont())
         def source := <custom:makeStyledText>(sourcePane,
-                                          SWT.getH_SCROLL() | SWT.getV_SCROLL())
+                                              SWT.getH_SCROLL() | SWT.getV_SCROLL())
         source.setForeground(esp.getFg())
         source.setBackground(esp.getBg())
         source.setFont(esp.getFont())
-
+        
         def fnp := palette.makeFilenamePalette()
         def filename := <custom:makeCLabel>(sourcePane,
-                                        SWT.getLEFT() | SWT.getSHADOW_OUT())
+                                            SWT.getLEFT() | SWT.getSHADOW_OUT())
         filename.setForeground(fnp.getFg())
         filename.setBackground(fnp.getBg())
         filename.setFont(fnp.getFont())
-
+        
         sideToSideSash.setWeights([30, 70])
-
+        
         # strip crs
         source.addVerifyListener(def verifyListener {
             to verifyText(event) :void {
                 event.setText(event.getText().canonical())
             }
         })
-
+        
         def &everDirty := makeLamportSlot(false)
         source.addExtendedModifyListener(def eml {
             to modifyText(_) :void { everDirty := true }
         })
-
+        
         def &everWordWrap := makeLamportSlot(true)
         whenever([&everWordWrap], fn{
             source.setWordWrap(everWordWrap)
         }, fn{
             ! source.isDisposed()
         })
-
+        
         source.setEditable(false)
-
+        
         /**
          * Returns either a java.io.File or a java.net.URL
          */
@@ -100,27 +108,31 @@ def stackWalkerAuthor(<file>, <jar>, traceline) :near {
                 }
             }
         }
-
+        
         def getLine(file, first :int, fo :int, last :int, lo :int) :String {
-            def source := file.getText()
-            def lines := source.split("\n")
-            lines[first -1].trim()
+            if (!(file.__respondsTo("exists",0)) || file.exists()) {
+                def source := file.getText()
+                def lines := source.split("\n")
+                lines[first -1].trim()
+            } else {
+                `*** "${file.getPath()}" not found ***`
+            }
         }
-
+        
         def showSource(file, pathname) :void {
             filename.setText(pathname)
-            source.setText(file.getText())
+            source.setText(getText(file))
         }
-
+        
         def showAndSelect(file, pathname, first, fo, last, lo) :void {
             showSource(file, pathname)
             def line1 := source.getOffsetAtLine(first -1)
             def line2 := source.getOffsetAtLine(last -1)
             source.setSelection(line1 + fo, line2 + lo +1)
         }
-
+        
         var stackMap := [].diverge()
-
+        
         stack.addSelectionListener(def selectionListener {
             to widgetSelected(event) :void {
                 def i := stack.getSelectionIndex()
@@ -130,47 +142,47 @@ def stackWalkerAuthor(<file>, <jar>, traceline) :near {
                 }
             }
         })
-
+        
         def stackWalker {
-
+            
             to open() :void {}
-
+            
             to layout() :void {
-
+                
                 swtGrid`${stackPane}:
                     ${description}.X
                     ${stack}.X.Y`
-
+                
                 stackPane.getLayout().setMarginWidth(0)
                 stackPane.getLayout().setMarginHeight(0)
-
+                
                 stackPane.getLayout().setHorizontalSpacing(0)
                 stackPane.getLayout().setVerticalSpacing(2)
-
+                
                 swtGrid`${sourcePane}:
                     ${filename}.X
                     ${source}.X.Y`
-
+                
                 sourcePane.getLayout().setMarginWidth(5)
                 sourcePane.getLayout().setMarginHeight(0)
-
+                
                 sourcePane.getLayout().setHorizontalSpacing(0)
                 sourcePane.getLayout().setVerticalSpacing(2)
             }
-
+            
             to showStackFrame(cause, effect, frame) :void {
                 def [cp, cv, ct] := cause
                 def [ep, ev, et] := effect
-
+                
                 def attr1 := vatMapVow.fetchDisplayAttributes(cp, cv)
                 def attr2 := vatMapVow.fetchDisplayAttributes(ep, ev)
-
+                
                 description.setText(`[${attr1[0]}:$ct] causes [${attr2[0]}:$et]`)
-
+                
                 stack.removeAll()
-
+                
                 stackMap := [].diverge()
-
+                
                 if (frame.size() > 0) {
                     for [pathname, [[first, fo], [last, lo]]] in frame {
                         def line :String := getLine(getFile(pathname), first, fo, last, lo)
@@ -179,7 +191,7 @@ def stackWalkerAuthor(<file>, <jar>, traceline) :near {
                     }
                     stack.setSelection(0)
                     def [pathname, [[first, fo], [last, lo]]] := stackMap[0]
-
+                    
                     showAndSelect(getFile(pathname), pathname, first, fo, last, lo)
                 } else {
                     filename.setText("")

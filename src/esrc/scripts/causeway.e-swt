@@ -50,7 +50,7 @@ def makeFontDialog() :near {
     return <uwidget:FontDialog>(currentDisplay.getActiveShell(), 0)
 }
 
-def openner(shell :Shell) :vow {
+def openner(shell :Shell) :List {
     def dialog := <widget:makeFileDialog>(shell, SWT.getMULTI() | SWT.getOPEN())
     dialog.open()
     var optNames := dialog.getFileNames()
@@ -73,7 +73,7 @@ def shutdown() :void {
 }
 
 def runtime := <unsafe:java.lang.makeRuntime>.getRuntime()
-def tcr := <unsafe:org.erights.e.develop.trace.TraceController>
+def tcr := <unsafe:org.erights.e.develop.trace.makeTraceController>
 
 def <swttools> := <import:org.erights.e.ui.swt.*>
 def abstractActionAuthor := <swttools:abstractActionAuthor>
@@ -83,6 +83,10 @@ def abstractAction := abstractActionAuthor(rezKit)
 
 def makeGCer := makeGCerAuthor(runtime, timer, abstractAction)
 
+def makeCursor(style :int) :any {
+    return <swt:graphics.makeCursor>(currentDisplay, style)
+}
+
 def makers := [].asMap().diverge()
 
 makers.put("frame", makeFrame)
@@ -91,6 +95,7 @@ makers.put("modelessDialog", makeModelessDialog)
 makers.put("fontDialog", makeFontDialog)
 makers.put("font", makeFont)
 makers.put("gcer", makeGCer)
+makers.put("cursor", makeCursor)
 
 def causewayEditorAuthor := <import:org.erights.e.tools.causeway.causewayEditorAuthor>
 
