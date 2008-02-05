@@ -69,7 +69,7 @@ def activate(shell :Shell) :void {
 }
 
 def shutdown() :void {
-    interp.exitAtTop()
+    interp.continueAtTop()
 }
 
 def runtime := <unsafe:java.lang.makeRuntime>.getRuntime()

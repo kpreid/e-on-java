@@ -17,6 +17,7 @@ def Menu     := <widgetType:Menu>
 def MenuItem := <widgetType:MenuItem>
 def ToolBar  := <widgetType:ToolBar>
 def ToolItem := <widgetType:ToolItem>
+def ShellListener := <swtType:events.ShellListener>
 
 def sky__uriGetter := <import:com.skyhunter.*>
 
@@ -52,6 +53,14 @@ def causewayEditorAuthor(rezKit,
     def makeDialogVow := <sky:swt.makeDialogVowAuthor>(rezKit,
                                                        makers.get("frame")(),
                                                        traceline)
+    def shellListener :ShellListener := def _ {
+        to shellClosed(event) :void { shutdown() }
+        to shellActivated(event) :void {}
+        to shellDeactivated(event) :void {}
+        to shellIconified(event) :void {}
+        to shellDeiconified(event) :void {}
+    }
+    
     def makeCausewayEditor() :near {
 
         def causewayEditor
@@ -59,6 +68,7 @@ def causewayEditorAuthor(rezKit,
         def &everOptFile := makeLamportSlot(null)
 
         def shell := makers.get("frame")()
+        shell.addShellListener(shellListener)
         def makePalette := paletteAuthor(rezKit, makers, traceline)
         def palette := makePalette()
 
@@ -190,6 +200,7 @@ def causewayEditorAuthor(rezKit,
                 def oldShell := causewayEditor.getShell()
                 var optPaths :List := openner(oldShell)
                 if (optPaths != []) {
+                    oldShell.removeShellListener(shellListener)
                     oldShell.setCursor(waitCursor)
                     def openAction() :void {
                         def editor := makeCausewayEditor()

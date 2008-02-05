@@ -33,7 +33,7 @@ def activate(shell :Shell) :void {
 }
 
 def shutdown() :void {
-    interp.exitAtTop()
+    interp.continueAtTop()
 }
 
 /**
