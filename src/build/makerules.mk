@@ -229,10 +229,10 @@ COMMON_PATH=$(TOP)/classes
 # When we run, we need to run against our platform's swt.jar if there
 # is one. Since there may not be one available for the current
 # platform, and we'd like to build at least the posix distribution of
-# E anyway, we just always compile against the win32 version of
+# E anyway, we just always compile against the win32/x86 version of
 # swt.jar (the swt.jar for Microsoft Windows). The result should be
 # able to run with any other swt.jar.
-COMP_PATH0=$(COMMON_PATH)$(SEP)$(TOP)/src/bin/win32/swt.jar
+COMP_PATH0=$(COMMON_PATH)$(SEP)$(TOP)/src/bin/win32/x86/swt.jar
 
 ifdef JAVA_HOME
  # If JAVA_HOME is defined, then reach into it for the various commands
@@ -274,14 +274,13 @@ ifeq "$(OSDIR)" "posix"
  # We know of no swt.jar for this platform.
  RUN_PATH=$(RUN_PATH1)
 else
- ifeq "$(findstring -motif,$(OSDIR))" "-motif"
-  # All OSes whose OSDIR ends in "-motif" share the same swt.jar file,
-  # which we place in the pseudo-OSDIR "motif".
-  RUN_PATH=$(RUN_PATH1)$(SEP)$(TOP)/src/bin/motif/swt.jar
+ ifeq "$(MACHDIR)" "unknown"
+  # We know of no swt.jar for this platform.
+  RUN_PATH=$(RUN_PATH1)
  else
-  # Otherwise, assume the OSDIR itself contains the swt.jar for the
+  # Otherwise, assume the OSDIR/MACHDIR contains the swt.jar for the
   # current platform
-  RUN_PATH=$(RUN_PATH1)$(SEP)$(TOP)/src/bin/$(OSDIR)/swt.jar
+  RUN_PATH=$(RUN_PATH1)$(SEP)$(TOP)/src/bin/$(OSDIR)/$(MACHDIR)/swt.jar
  endif
 endif
 

@@ -80,8 +80,8 @@ e.version=${{e.version}}
 
 # What subdirectory name is used for files specific to this OS?
 #
-# One of "win32", "linux-motif", "linux-gtk", "mac", "freebsd",
-#        "aix-motif", "hpux-motif", "solaris-motif", "qnx", or, for
+# One of "win32", "linux-motif", "linux-gtk", "mac",
+#        "aix-motif", "solaris-motif", "qnx", or, for
 #        any other OS, "posix".
 
 e.osdir=${{e.osdir}}
@@ -90,7 +90,7 @@ e.osdir=${{e.osdir}}
 # What subdirectory name is used for files specific to this hardware
 # architecture (instruction set)?
 #
-# One of "x86", "ppc", "sparc", "hp9000", "arm", or, for any other
+# One of "x86", "ppc", "sparc", "arm", or, for any other
 #        hardware platform, "unknown".
 
 e.machdir=${{e.machdir}}

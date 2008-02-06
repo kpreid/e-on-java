@@ -15,4 +15,4 @@ SET OSDIR=${{e.osdir}}
 
 SET MACHDIR=${{e.machdir}}
 
-"%JCMD%" -cp "%EHOME%/e.jar;%EHOME%/bin/%OSDIR%/swt.jar" "-De.home=%EHOME%" "-Djava.library.path=%EHOME%/bin/%OSDIR%/%MACHDIR%" org.erights.e.elang.interp.Rune
+"%JCMD%" -cp "%EHOME%/e.jar;%EHOME%/bin/%OSDIR%/%MACHDIR%/swt.jar" "-De.home=%EHOME%" "-Djava.library.path=%EHOME%/bin/%OSDIR%/%MACHDIR%" org.erights.e.elang.interp.Rune

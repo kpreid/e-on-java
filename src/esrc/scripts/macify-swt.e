@@ -8,7 +8,11 @@
 #
 # Usage: macify-swt.e [--name-program] [--arg <arg>] <source>.e-swt <output>.app
 #
-# If --name-program is passed, then the program will be referenced at its original absolute path from the bundle, rather than being copied into the bundle. --arg specifies a command-line argument to be passed to the program at startup; it may be used several times for multiple arguments.
+# If --name-program is passed, then the program will be referenced at
+# its original absolute path from the bundle, rather than being copied
+# into the bundle. --arg specifies a command-line argument to be
+# passed to the program at startup; it may be used several times for
+# multiple arguments.
 
 # TODO:
 #   bundle options like icons, name, specific bundle ID

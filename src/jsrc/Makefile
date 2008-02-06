@@ -129,8 +129,8 @@ _ui:
 	@echo ""
 	@echo "------------------"
 	@echo "About to compile the ui support of ELib, including the SWT"
-	@echo "support classes. This compiles against the swt.jar for the"
-	@echo "win32 OS regardless of what platform you're actually on."
+	@echo "support classes. This compiles against the swt.jar for"
+	@echo "win32/x86 regardless of what platform you're actually on."
 	find $(ER)/ui                   -name '*.java' > files.tmp
 	find $(ER)/meta/java/awt        -name '*.java' >> files.tmp
 	find $(ER)/meta/javax           -name '*.java' >> files.tmp

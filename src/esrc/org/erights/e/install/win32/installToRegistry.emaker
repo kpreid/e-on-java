@@ -38,7 +38,9 @@ def installToRegistry(var ehome :String,
     }
     def ecmd := [
         javacmd,
-        "-cp", `$ehome/e.jar;$ehome/bin/win32/swt.jar`,
+        # XXX The following "/x86" should actually be based on the value of
+        # the system property e.machdir
+        "-cp", `$ehome/e.jar;$ehome/bin/win32/x86/swt.jar`,
         "-Xfuture",
         # XXX The following "/x86" should actually be based on the value of
         # the system property e.machdir

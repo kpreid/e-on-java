@@ -37,10 +37,6 @@ setup:
 	cp -rf $(TOP)/src/bin/icons $(TOP)/dist/bin
 ifneq "$(OSDIR)" "posix"
 	cp -rf $(TOP)/src/bin/$(OSDIR) $(TOP)/dist/bin
- ifeq "$(findstring -motif,$(OSDIR))" "-motif"
-	# Then grab the generic swt.jar for motif
-	cp $(TOP)/src/bin/motif/swt.jar $(TOP)/dist/bin/$(OSDIR)
- endif
 endif
 	@echo ""
 	@echo "------------------"
@@ -94,6 +90,7 @@ export:
 	-rm -rf `find $(TOP)/export -name *.ipr`
 	-rm -rf `find $(TOP)/export -name *.iws`
 	-rm -rf `find $(TOP)/export -name *.stackdump`
+	-rm -rf `find $(TOP)/export -name *.DS_Store`
 	-rm -f $(TOP)/export/dist/bin/icons/*.png
 	-rm -f $(TOP)/export/dist/bin/jars/hydro.jar
 	-rm -rf $(TOP)/export/dist/bin/resources

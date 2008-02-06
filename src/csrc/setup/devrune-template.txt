@@ -50,9 +50,6 @@ JCMD="${{e.javacmd}}"
 # OSDIR is the local subdirectory name used for files specific to
 # this platform.
 #
-# If OSDIR ends in "-motif", then the generic motif swt.jar is added
-# to the classpath as well.
-#
 # For example, "win32"
 
 OSDIR="${{e.osdir}}"
@@ -101,11 +98,7 @@ fi
 # swt.jar conditionally. However, including it unconditionally doesn't seem
 # to hurt.
 
-EPATH=${EDEV}src/safej${SEP}${EDEV}src/esrc${SEP}${EDEV}src/bin/resources${SEP}${EDEV}classes${SEP}${EDEV}src/bin/${OSDIR}/swt.jar
-
-case $OSDIR in
-     *-motif) EPATH=${EPATH}${SEP}${EDEV}src/bin/motif/swt.jar;;
-esac
+EPATH=${EDEV}src/safej${SEP}${EDEV}src/esrc${SEP}${EDEV}src/bin/resources${SEP}${EDEV}classes${SEP}${EDEV}src/bin/${OSDIR}/${MACHDIR}/swt.jar
 
 
 # This function normalizes a file path so that bash will recognize it

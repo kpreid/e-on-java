@@ -35,16 +35,6 @@ ifndef OSDIR
  endif
 endif
 ifndef OSDIR
- ifeq "$(findstring HP-UX,$(UNAME_SYSNAME))" "HP-UX"
-  OSDIR=hpux-motif
- endif
-endif
-ifndef OSDIR
- ifeq "$(findstring hpux,$(UNAME_SYSNAME))" "hpux"
-  OSDIR=hpux-motif
- endif
-endif
-ifndef OSDIR
  ifeq "$(findstring Linux,$(UNAME_SYSNAME))" "Linux"
   # Linux defaults to the OSDIR "linux-motif", but you can try
   # "linux-gtk" if you wish.
@@ -53,18 +43,12 @@ ifndef OSDIR
 endif
 ifndef OSDIR
  ifeq "$(findstring Mac OS X,$(UNAME_SYSNAME))" "Mac OS X"
-  # SWT Support for Mac OS X isn't yet ready.
-  # Treating this as a generic 'posix' platform.
   OSDIR=mac
-  # OSDIR=posix
  endif
 endif
 ifndef OSDIR
  ifeq "$(findstring Darwin,$(UNAME_SYSNAME))" "Darwin"
-  # SWT Support for Mac OS X isn't yet ready.
-  # Treating this as a generic 'posix' platform.
   OSDIR=mac
-  # OSDIR=posix
  endif
 endif
 ifndef OSDIR
@@ -109,11 +93,6 @@ ifndef MACHDIR
  endif
 endif
 ifndef MACHDIR
- ifeq "$(findstring 9000,$(UNAME_MACHINE))" "9000"
-  MACHDIR=hp9000
- endif
-endif
-ifndef MACHDIR
  ifeq "$(findstring ppc,$(UNAME_MACHINE))" "ppc"
   MACHDIR=ppc
  endif
@@ -130,7 +109,11 @@ ifndef MACHDIR
 endif
 ifndef MACHDIR
  ifeq "$(findstring 86,$(UNAME_MACHINE))" "86"
-  MACHDIR=x86
+  ifeq "$(findstring _64,$(UNAME_MACHINE))" "_64"
+   MACHDIR=x86_64
+  else
+   MACHDIR=x86
+  endif
  endif
 endif
 ifndef MACHDIR

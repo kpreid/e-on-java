@@ -96,7 +96,7 @@ fi
 # swt.jar conditionally. However, including it unconditionally doesn't seem
 # to hurt.
 
-EPATH=${EHOME}e.jar${SEP}${EHOME}bin/${OSDIR}/swt.jar
+EPATH=${EHOME}e.jar${SEP}${EHOME}bin/${OSDIR}/${MACHDIR}/swt.jar
 
 
 # This function normalizes a file path so that bash will recognize it
