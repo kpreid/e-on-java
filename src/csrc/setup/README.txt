@@ -197,11 +197,11 @@ copying these files, you don't need to edit these, but you may.
 
 E scripts by convention begin with "#!/usr/bin/env rune". So if you wish
 to run E scripts directly as executables, you will need to have
-"/usr/bin/env" installed on your system. This looks on your PATH for
-its argument, so you will need to install the "rune" driver script (made
-in the previous step) on your path. For a system install under *nix,
-we recommend "/usr/local/bin/rune". For a personal install under *nix,
-we recommend "~/bin/rune". For installing under Windows2K or
+"/usr/bin/env" installed on your system. This looks on your PATH for its
+argument, so you will need to copy or symlink the "rune" driver script
+(made in the previous step) into your path. For a system install under
+*nix, we recommend "/usr/local/bin/rune". For a personal install under
+*nix, we recommend "~/bin/rune". For installing under Windows2K or
 WindowsXP, we recommend "c:/Windows/rune".
 
 "rune" is a bash script, and requires a bash >= 2.01 to be installed
