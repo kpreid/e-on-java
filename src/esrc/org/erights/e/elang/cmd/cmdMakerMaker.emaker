@@ -219,10 +219,10 @@ def cmdMakerMaker(cmdLoop,
                     # failure is always noisy
                     cmdMaker.reportProblem(optProblem)
                 }
-                cmdLoop.enqueue(fn {
+                fn {
                     takeStreamAnswers()
                     exitStatusRes.resolve(exitStatus)
-                })
+                } <- ()
             }
             return [exitStatusVow, cmdAnswerer]
         }
