@@ -60,7 +60,7 @@ if (osname != null && osname.startsWith("Windows")) {
 
 } else {
     # XXX This is stupid. We should do common install logic regardless.
-    println("Unrecognized OS, probably Ctrl-C to exit.")
+    println(`Unrecognized OS ${E.toQuote(osname)}, probably Ctrl-C to exit.`)
     def readme := ehomeDir["README.txt"]
     if (readme.exists()) {
         println(`Then read the manual install instructions in "${
