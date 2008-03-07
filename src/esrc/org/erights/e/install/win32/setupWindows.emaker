@@ -241,8 +241,7 @@ def setupWindows(var props,
     confirm(props,
             interp,
             stderr,
-            <awt>,
-            <swing>,
+            <swing:makeJFrame>,
             optIconImage,
             HocusFocusMaker)
 }

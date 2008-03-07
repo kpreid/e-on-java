@@ -6,6 +6,9 @@ pragma.syntax("0.8")
 # found at http://www.opensource.org/licenses/mit-license.html ................
 
 def __versionLauncherAuthor := <elang:launcher.__versionLauncherAuthor>
+
+def <awt> := <import:java.awt.*>
+def <swing> := <import:javax.swing.*>
 def JPanel__quasiParser := <import:org.erights.ex.swing.JPanel__quasiParser>
 
 /**
@@ -15,8 +18,7 @@ def JPanel__quasiParser := <import:org.erights.ex.swing.JPanel__quasiParser>
 def confirm(props,
             interp,
             stderr,
-            <awt>,
-            <swing>,
+            makeJFrame,
             optIconImage,
             HocusFocusMaker
 ) :void {
@@ -32,7 +34,7 @@ def confirm(props,
         stderr.println(welcome)
 
     } else {
-        def root := <swing:makeJFrame>(welcome, null)
+        def root := makeJFrame(welcome, null)
         root.addWindowListener(def closeListener {
             to windowClosing(_) :void {
                 exitIt()
