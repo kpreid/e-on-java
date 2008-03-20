@@ -55,10 +55,12 @@ def buildPOList(parent, palette, poList, vatMap, traceline) :void {
 
 def poListPaneAuthor(traceline) :near {
     
-    def makePOListPane(parent, palette, poList, vatName, vatMap) :near {
+    def makePOListPane(parent, palette, poList, vatName, vatMap, treePane) :near {
         
         def pane := <widget:makeComposite>(parent, 0)
-        def list := <widget:makeList>(pane, SWT.getH_SCROLL() | SWT.getV_SCROLL())
+        def list := <widget:makeList>(pane,
+                                      SWT.getSINGLE() |
+                                        (SWT.getH_SCROLL() | SWT.getV_SCROLL()))
         
         def polp := palette.makePOListPalette()
         list.setForeground(polp.getFg())
@@ -69,6 +71,18 @@ def poListPaneAuthor(traceline) :near {
         #list.setForeground(color)
         
         buildPOList(list, palette, poList, vatMap, traceline)
+        
+        def listenerForTree {
+            to widgetSelected(event) :void {
+                def i := list.getSelectionIndex()
+                if (i >= 0) {
+                    treePane.syncSelect(poList[i])
+                }
+            }
+            to widgetDefaultSelected(event) :void {}
+        }
+        
+        list.addSelectionListener(listenerForTree)
         
         def poListPane {
             

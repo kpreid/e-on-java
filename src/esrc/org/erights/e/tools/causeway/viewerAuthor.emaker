@@ -154,7 +154,7 @@ def viewerAuthor(<file>, <jar>, makers, shell, tcr, traceline) :near {
         
         topToBottom.setWeights([50, 50])
         #sideToSide.setWeights([5, 20, 75])
-        sideToSide.setWeights([20, 80])
+        sideToSide.setWeights([35, 65])
         
         def viewer {
             
@@ -189,7 +189,8 @@ def viewerAuthor(<file>, <jar>, makers, shell, tcr, traceline) :near {
                 for i in 0 ..! vatSet.size() {
                     def poList := model.getOrdered(vatSet[i])
                     if (poList != []) {
-                        def poListPane := makePOListPane(poListFolder, palette, poList, vatSet[i], vatMap)
+                        def poListPane := makePOListPane(poListFolder, palette, poList,
+                                                         vatSet[i], vatMap, treePane)
                         poListFolderGroup.add(poListPane, poListPane.getTabLabel(), i == 0)
                     }
                 }

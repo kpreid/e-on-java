@@ -40,10 +40,10 @@ def buildTree(parent, palette, edge, vatMap, otMap, traceline) :void {
     
     #traceline(`buildTree o: ${edge.getOrigin()} t: ${edge.getTarget()}`)
     
-    if (otMap.hasSeen(edge.getOrigin(), edge.getTarget())) {
-        return;
-    }
-    otMap.see(edge.getOrigin(), edge.getTarget())
+    #if (otMap.hasSeen(edge.getOrigin(), edge.getTarget())) {
+    #return;
+    #}
+    #otMap.see(edge.getOrigin(), edge.getTarget())
     
     def item := <widget:makeTreeItem>(parent, 0)
     
@@ -102,6 +102,29 @@ def treePaneAuthor(traceline) :near {
             to getPane() :near { return pane }
             
             to getWidget() :near { return tree }
+            
+            to selectAndShow(item) :void {
+                # swt requires an array even for single selection
+                def selection := [].diverge()
+                selection.push(item)
+                tree.setSelection(selection.snapshot())
+                tree.showItem(item)
+            }
+            
+            to deselect() :void {
+                if (tree.getSelectionCount() > 0) {
+                    tree.deselectAll()
+                }
+            }
+            
+            to syncSelect(selection) :void {
+                def item := modelToItemMap.fetch(selection, fn{})
+                if (item != null) {
+                    treePane.selectAndShow(item)
+                } else {
+                    treePane.deselect()
+                }
+            }
             
             to activate() :void {}
             
