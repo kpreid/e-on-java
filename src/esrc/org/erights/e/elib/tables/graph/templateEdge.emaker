@@ -17,20 +17,58 @@ def templateGraphElement := <elib:tables.graph.templateGraphElement>
  * @author Terry Stanley
  * @author Mark S. Miller
  */
-def templateEdge(self, origin, target) :near {
+def templateEdge(self, var origin, var target) :near {
     
-    def originNextOut := origin.getNextOut()
-    def targetNextIn := target.getNextIn()
+    def ono := origin.getNextOut()
+    def tni := target.getNextIn()
     
     def baseEdge extends
-      templateGraphElement(self, target, targetNextIn, origin, originNextOut) {
+      templateGraphElement(self, target, tni, origin, ono) {
         
         to getOrigin() :any { return origin }
         to getTarget() :any { return target }
+        
+        to setOrigin(newOrigin) :void {
+            #throw.breakpoint(`setOrigin()`)
+            
+            # splice out the old
+            def no := self.getNextOut()
+            def po := self.getPrevOut()
+            no.setPrevOut(po)
+            po.setNextOut(no)
+            
+            # splice in the new
+            def nono := newOrigin.getNextOut()
+            nono.setPrevOut(self)
+            newOrigin.setNextOut(self)
+            self.setNextOut(nono)
+            self.setPrevOut(newOrigin)
+            
+            origin := newOrigin
+        }
+        
+        to setTarget(newTarget) :void {
+            #throw.breakpoint(`setTarget()`)
+            
+            # splice out the old
+            def ni := self.getNextIn()
+            def pi := self.getPrevIn()
+            ni.setPrevIn(pi)
+            pi.setNextIn(ni)
+            
+            # splice in the new
+            def ntni := newTarget.getNextIn()
+            ntni.setPrevIn(self)
+            newTarget.setNextIn(self)
+            self.setNextIn(ntni)
+            self.setPrevIn(newTarget)
+            
+            target := newTarget
+        }
     }
-    originNextOut.setPrevOut(self)
+    ono.setPrevOut(self)
     origin.setNextOut(self)
-    targetNextIn.setPrevIn(self)
+    tni.setPrevIn(self)
     target.setNextIn(self)
     
     return baseEdge

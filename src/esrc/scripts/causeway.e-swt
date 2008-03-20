@@ -7,6 +7,10 @@ pragma.syntax("0.8")
 
 def traceline(str) :void { stderr.println(str) }
 
+# XXX why is this necessary? Is it a devrune config issue?
+interp.setShowEStack(true)
+
+
 def widget__uriGetter := <swt:widgets.*>
 def custom__uriGetter := <swt:custom.*>
 
@@ -56,7 +60,7 @@ def openner(shell :Shell) :List {
     var optNames := dialog.getFileNames()
     def dir := <file>[dialog.getFilterPath()]
     if (optNames == null) { return [] }
-
+    
     var paths := []
     for name in optNames {
         paths with= dir[name]
@@ -109,14 +113,13 @@ def makeCausewayEditor := causewayEditorAuthor(rezKit,
                                                tcr,
                                                traceline)
 
-def causewayEditor := makeCausewayEditor()
-
-def traces := interp.getArgs()
+def [rootDirName] + traces := interp.getArgs()
 def files := [].diverge()
 for i in 0 ..! traces.size() {
     files[i] := <file>[traces[i]]
 }
 
-causewayEditor.open(files.snapshot())
+def causewayEditor := makeCausewayEditor(rootDirName, files.snapshot())
+causewayEditor.open()
 
 interp.blockAtTop()

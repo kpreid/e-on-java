@@ -49,7 +49,7 @@ def causewayEditorAuthor(rezKit,
                          activate, shutdown,
                          tcr,
                          traceline) :near {
-
+    
     def makeDialogVow := <sky:swt.makeDialogVowAuthor>(rezKit,
                                                        makers.get("frame")(),
                                                        traceline)
@@ -61,17 +61,17 @@ def causewayEditorAuthor(rezKit,
         to shellDeiconified(event) :void {}
     }
     
-    def makeCausewayEditor() :near {
-
+    def makeCausewayEditor(rootDirName :String, traces :List) :near {
+        
         def causewayEditor
-
+        
         def &everOptFile := makeLamportSlot(null)
-
+        
         def shell := makers.get("frame")()
         shell.addShellListener(shellListener)
         def makePalette := paletteAuthor(rezKit, makers, traceline)
         def palette := makePalette()
-
+        
         var hasMetrics := false
         def listenerForMetrics {
             to paintControl(event) :void {
@@ -79,80 +79,80 @@ def causewayEditorAuthor(rezKit,
             }
         }
         shell.addPaintListener(listenerForMetrics)
-
+        
 #        if (hasMetrics) {
 #            shell.removePaintListener(listenerForMetrics)
 #        }
-
+        
         def toolArea := <widget:makeGroup>(shell, 0)
-
+        
         def toolBar :=
           <widget:makeToolBar>(toolArea, SWT.getFLAT() | SWT.getHORIZONTAL())
-
+        
         def gCer := makers.get("gcer")(toolArea)
         swtGrid`$toolArea:
                 $toolBar.X ${gCer.getLabel()} ${gCer.getToolBar()}`
         setMargins(toolArea.getLayout(), 0)
-
+        
         def &everShowMainToolbar := makeLamportSlot(true)
         whenever([&everShowMainToolbar], fn{
             toolArea.setVisible(everShowMainToolbar)
         }, fn{
             ! toolArea.isDisposed()
         })
-
+        
         def statusBar := <widget:makeLabel>(shell, 0)
-
+        
         def debugln(str) :void {
             traceline(str)
             statusBar.setText(str)
         }
-
+        
         def &everShowStatusBar := makeLamportSlot(true)
         whenever([&everShowStatusBar], fn{
             statusBar.setVisible(everShowStatusBar)
         }, fn{
             ! statusBar.isDisposed()
         })
-
+        
         def &everDirty := makeLamportSlot(false)
         def &everWordWrap := makeLamportSlot(true)
-
+        
         # menuFile
         [def doNew,
          def doOpen,
          def doClose,
-
+         
          def doSave,
          def doSaveAs,
          def doSaveAll,
          def doRevert,
-
+         
          def doPageSetup,
          def doPrint,
-
+         
          def doExit]
-
+        
         # menuEdit
         [def doUndo,
          def doRedo,
-
+         
          def doCut,
          def doCopy,
          def doPaste,
          def doDelete,
          def doSelectAll,
-
+         
          def doIndent,
          def doOutdent]
-
+        
         # menuSearch
         [def doFindReplace,
          def doFindNext,
          def doFindPrevious,
-
+         
          def doGoTo]
-
+        
         # menuView
         [def doSmallerFont,
          def doLargerFont,
@@ -160,24 +160,24 @@ def causewayEditorAuthor(rezKit,
          [def doMainToolbar],
          def doWordWrap,
          def doStatusBar]
-
+        
         # menuTools
         [def doConfigure,
          def doOptions]
-
+        
         # menuCausality
         [def doRelevanceOptions,
          def doFilters]
-
+        
         # menuWindows
         [def doNextTab,
          def doPreviousTab]
-
+        
         # menuHelp
         [def doHelpTopics,
-
+         
          def doAbout]
-
+        
         /**
          *
          */
@@ -190,7 +190,7 @@ def causewayEditorAuthor(rezKit,
                 "com/skyhunter/e/icons/new_page16-16.gif"
             }
         }
-
+        
         /**
          *
          */
@@ -203,8 +203,8 @@ def causewayEditorAuthor(rezKit,
                     oldShell.removeShellListener(shellListener)
                     oldShell.setCursor(waitCursor)
                     def openAction() :void {
-                        def editor := makeCausewayEditor()
-                        editor.open(optPaths)
+                        def editor := makeCausewayEditor(rootDirName, optPaths)
+                        editor.open()
                         oldShell.close()
                     }
                     openAction <- run()
@@ -217,7 +217,7 @@ def causewayEditorAuthor(rezKit,
                 "com/skyhunter/e/icons/fileOpen.gif"
             }
         }
-
+        
         /**
          *
          */
@@ -229,8 +229,8 @@ def causewayEditorAuthor(rezKit,
             to getOptMenuAccelDesc() :String { "Ctrl+W" }
             to getOptTip()           :String { "Closes the editor" }
         }
-
-
+        
+        
         /**
          *
          */
@@ -248,7 +248,7 @@ def causewayEditorAuthor(rezKit,
                 })
             }
         }
-
+        
         /**
          *
          */
@@ -262,8 +262,8 @@ def causewayEditorAuthor(rezKit,
                 "com/skyhunter/e/icons/saveas16-16.gif"
             }
         }
-
-
+        
+        
         /**
          *
          */
@@ -276,7 +276,7 @@ def causewayEditorAuthor(rezKit,
                 "com/skyhunter/e/icons/saveall16-16.gif"
             }
         }
-
+        
         /**
          *
          */
@@ -287,7 +287,7 @@ def causewayEditorAuthor(rezKit,
             to getLabel()            :String { "&Revert" }
             to getOptTip()           :String { "Revert to last saved version" }
         }
-
+        
         /**
          *
          */
@@ -298,7 +298,7 @@ def causewayEditorAuthor(rezKit,
             to getLabel()            :String { "Page Set&up..." }
             to getOptTip()           :String { "Printing preferences" }
         }
-
+        
         /**
          *
          */
@@ -313,7 +313,7 @@ def causewayEditorAuthor(rezKit,
                 "com/skyhunter/e/icons/print16-16.gif"
             }
         }
-
+        
         /**
          *
          */
@@ -325,7 +325,7 @@ def causewayEditorAuthor(rezKit,
             to getOptMenuAccelDesc() :String { "Ctrl+Q" }
             to getOptTip()           :String { "Shuts down these editors" }
         }
-
+        
         /**
          *
          */
@@ -340,7 +340,7 @@ def causewayEditorAuthor(rezKit,
                 "com/skyhunter/e/icons/undo16-16.gif"
             }
         }
-
+        
         /**
          *
          */
@@ -357,7 +357,7 @@ def causewayEditorAuthor(rezKit,
                 "com/skyhunter/e/icons/redo16-16.gif"
             }
         }
-
+        
         /**
          *
          */
@@ -374,7 +374,7 @@ def causewayEditorAuthor(rezKit,
                 "com/skyhunter/e/icons/cut16-16.gif"
             }
         }
-
+        
         /**
          *
          */
@@ -391,7 +391,7 @@ def causewayEditorAuthor(rezKit,
                 "com/skyhunter/e/icons/copy16-16.gif"
             }
         }
-
+        
         /**
          *
          */
@@ -408,7 +408,7 @@ def causewayEditorAuthor(rezKit,
                 "com/skyhunter/e/icons/paste16-16.gif"
             }
         }
-
+        
         /**
          *
          */
@@ -425,7 +425,7 @@ def causewayEditorAuthor(rezKit,
                 "com/skyhunter/e/icons/delete16-16.gif"
             }
         }
-
+        
         /**
          *
          */
@@ -437,7 +437,7 @@ def causewayEditorAuthor(rezKit,
             to getOptMenuAccelDesc() :String { "Ctrl+A" }
             to getOptTip()           :String { "Selects all the text" }
         }
-
+        
         /**
          *
          */
@@ -452,7 +452,7 @@ def causewayEditorAuthor(rezKit,
                 "com/skyhunter/e/icons/indent16-16.gif"
             }
         }
-
+        
         /**
          *
          */
@@ -469,8 +469,8 @@ def causewayEditorAuthor(rezKit,
                 "com/skyhunter/e/icons/outdent16-16.gif"
             }
         }
-
-
+        
+        
         /**
          *
          */
@@ -487,8 +487,8 @@ def causewayEditorAuthor(rezKit,
                 "com/skyhunter/e/icons/find16-16.gif"
             }
         }
-
-
+        
+        
         /**
          *
          */
@@ -500,8 +500,8 @@ def causewayEditorAuthor(rezKit,
             to getOptMenuAccelDesc() :String { "F3" }
             to getOptTip()           :String { "Find the next one" }
         }
-
-
+        
+        
         /**
          *
          */
@@ -513,8 +513,8 @@ def causewayEditorAuthor(rezKit,
             to getOptMenuAccelDesc() :String { "Shift+F3" }
             to getOptTip()           :String { "Find the previous one" }
         }
-
-
+        
+        
         /**
          *
          */
@@ -531,8 +531,8 @@ def causewayEditorAuthor(rezKit,
                 "com/skyhunter/e/icons/goto16-16.gif"
             }
         }
-
-
+        
+        
         /**
          *
          */
@@ -543,7 +543,7 @@ def causewayEditorAuthor(rezKit,
             to getLabel()            :String { "S&maller Font" }
             to getOptMenuAccelDesc() :String { "Ctrl+[" }
         }
-
+        
         /**
          *
          */
@@ -557,7 +557,7 @@ def causewayEditorAuthor(rezKit,
                 "com/skyhunter/e/icons/magnify.gif"
             }
         }
-
+        
         /**
          *
          */
@@ -575,7 +575,7 @@ def causewayEditorAuthor(rezKit,
             }
             to optEverCheckedReporter() :EverReporter { &everShowMainToolbar }
         }
-
+        
         /**
          *
          */
@@ -589,7 +589,7 @@ def causewayEditorAuthor(rezKit,
             to getOptTip()            :String { "Toggle word wrapping" }
             to optEverCheckedReporter() :EverReporter { &everWordWrap }
         }
-
+        
         /**
          *
          */
@@ -607,7 +607,7 @@ def causewayEditorAuthor(rezKit,
             }
             to optEverCheckedReporter() :EverReporter { &everShowStatusBar }
         }
-
+        
         /**
          *
          */
@@ -618,7 +618,7 @@ def causewayEditorAuthor(rezKit,
             to getLabel()            :String { "&Configure..." }
             to getOptTip()           :String { "Move actions where you like" }
         }
-
+        
         /**
          *
          */
@@ -627,7 +627,7 @@ def causewayEditorAuthor(rezKit,
             to getLabel()            :String { "&Options..." }
             to getOptTip()           :String { "Set Preferences" }
         }
-
+        
         /**
          *
          */
@@ -638,7 +638,7 @@ def causewayEditorAuthor(rezKit,
             to getLabel()            :String { "&Relevance Options..." }
             to getOptTip()           :String { "Show Relevance Function Options" }
         }
-
+        
         /**
          *
          */
@@ -649,7 +649,7 @@ def causewayEditorAuthor(rezKit,
             to getLabel()            :String { "&Filters..." }
             to getOptTip()           :String { "Show File Filters" }
         }
-
+        
         /**
          *
          */
@@ -661,7 +661,7 @@ def causewayEditorAuthor(rezKit,
             to getOptMenuAccelDesc() :String { "Ctrl+Tab" }
             to getOptTip()           :String { "Bring next to top" }
         }
-
+        
         /**
          *
          */
@@ -673,7 +673,7 @@ def causewayEditorAuthor(rezKit,
             to getOptMenuAccelDesc() :String { "Shift+Ctrl+Tab" }
             to getOptTip()           :String { "Bring previous to top" }
         }
-
+        
         /**
          *
          */
@@ -688,7 +688,7 @@ def causewayEditorAuthor(rezKit,
                 "com/skyhunter/e/icons/help.gif"
             }
         }
-
+        
         /**
          *
          */
@@ -714,7 +714,7 @@ def causewayEditorAuthor(rezKit,
             }
             to getOptTip() :String { "What program is this?" }
         }
-
+        
         def barAction :=
           M.bar([def menuFile :=
                    M.menu("&File",
@@ -779,8 +779,8 @@ def causewayEditorAuthor(rezKit,
                           [doHelpTopics,
                            M.sep(),
                            doAbout])])
-
-
+        
+        
         def toolActions :=
           [doNew,
            doOpen,
@@ -797,85 +797,52 @@ def causewayEditorAuthor(rezKit,
            doPaste,
            M.sep(),
            doFindReplace]
-
+        
         def menuMap := [].asMap().diverge()
         def toolMap := [].asMap().diverge()
-
+        
         for action in toolActions {
             action.makeToolItem(toolBar, toolMap)
         }
         toolMap.putAll(gCer.getToolMap(), true)
-
-        def causewayAppAuthor := <import:org.erights.e.tools.causeway.causewayAppAuthor>
-        def makeCausewayApp := causewayAppAuthor(<file>, <jar>, makers, shell, tcr, traceline)
-
-        def causewayApp := makeCausewayApp(shell, palette)
-
-        def makeCausalityTree :=
-          <import:org.erights.e.tools.causeway.makeCausalityTree>
-
+        
+        def viewerDirectorAuthor :=
+          <import:org.erights.e.tools.causeway.viewerDirectorAuthor>
+        def makeViewerDirector :=
+          viewerDirectorAuthor(<file>, <jar>, makers, shell, tcr, traceline)
+        
+        def viewerDirector := makeViewerDirector(shell, palette, rootDirName, traces)
+        
         bind causewayEditor {
             to getAppName() :String { "Causeway" }
             to getShell() :Shell { shell }
             to getToolArea()  :near { toolArea }
-            to getCausewayApp() :near { causewayApp }
+            to getViewer() :near { viewerDirector.getView() }
             to getStatusBar() :near { statusBar }
-
-            to openEmpty() :void {
-
-                swtGrid`${causewayEditor.getShell()}:
-                        ${causewayEditor.getToolArea()}.X
-                        ${causewayEditor.getCausewayApp().getTopLevelPane()}.X.Y
-                        ${causewayEditor.getStatusBar()}.X`
-
-                setMargins(causewayEditor.getShell().getLayout(), 0)
-
-                def menuBar := barAction.makeMenu(shell, menuMap)
-
-                def appName := causewayEditor.getAppName()
-
-                shell.setText(`$appName`)
-
-                shell.open()
-            }
-
+            
             /**
              *
              */
-            to open(traces :List) :void {
-                if (traces == []) {
-                    causewayEditor.openEmpty()
-                } else {
-                    def model := makeCausalityTree(traces, traceline)
-                    causewayEditor.getCausewayApp().setCausalityTree(model)
-
-                    causewayEditor.getCausewayApp().layout()
-
-                    swtGrid`${causewayEditor.getShell()}:
-                            ${causewayEditor.getToolArea()}.X
-                            ${causewayEditor.getCausewayApp().getTopLevelPane()}.X.Y
-                            ${causewayEditor.getStatusBar()}.X`
-
-                    setMargins(causewayEditor.getShell().getLayout(), 0)
-
-                    def menuBar := barAction.makeMenu(shell, menuMap)
-
-                    def appName := causewayEditor.getAppName()
-
-                    var names := ""
-                    for i in 0 ..! traces.size() {
-                        def path := traces[i].getAbsolutePath()
-                        names := names + path
-                        if (i != traces.size() -1) {
-                            names := names + " "
-                        }
-                    }
-                    shell.setText(`$appName - $names`)
-
-                    shell.open()
-
-                    causewayEditor.getCausewayApp().open()
-                }
+            to open() :void {
+                
+                causewayEditor.getViewer().layout()
+                
+                swtGrid`${causewayEditor.getShell()}:
+                        ${causewayEditor.getToolArea()}.X
+                        ${causewayEditor.getViewer().getTopLevelPane()}.X.Y
+                        ${causewayEditor.getStatusBar()}.X`
+                
+                setMargins(causewayEditor.getShell().getLayout(), 0)
+                
+                def menuBar := barAction.makeMenu(shell, menuMap)
+                
+                def appName := causewayEditor.getAppName()
+                
+                shell.setText(`$appName`)
+                
+                shell.open()
+                
+                causewayEditor.getViewer().open()
             }
         }
         causewayEditor

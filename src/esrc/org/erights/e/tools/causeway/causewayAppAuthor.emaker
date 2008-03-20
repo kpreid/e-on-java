@@ -587,6 +587,9 @@ def causewayAppAuthor(<file>, <jar>, makers, shell, tcr, traceline) :near {
                 stackWalker.layout()
             }
             
+            to setModel(model) :void {
+            }
+            
             to setCausalityTree(causalityTree) :any {
                 
                 vatMapResolver.resolve(makeVatMap(causalityTree,
@@ -620,7 +623,7 @@ def causewayAppAuthor(<file>, <jar>, makers, shell, tcr, traceline) :near {
                 cpane.getWidget().addSelectionListener(listenerForStackWalker)
                 cpane.getWidget().addSelectionListener(listenerForGroup)
                 
-                treeFolderGroup.add(cpane, "Causality Tree", true)
+                treeFolderGroup.add(cpane, "Message Tree", true)
                 def prunedCausalityTree :=
                   makePrunedCausalityTree(top, getRelevance, traceline)
                 def po := prunedCausalityTree.getOrdered()
@@ -637,7 +640,7 @@ def causewayAppAuthor(<file>, <jar>, makers, shell, tcr, traceline) :near {
                 ppane.getWidget().addSelectionListener(listenerForStackWalker)
                 #ppane.getWidget().addSelectionListener(listenerForGroup)
                 
-                treeFolderGroup.add(ppane, "Pruned Causality Tree", false)
+                treeFolderGroup.add(ppane, "Pruned Message Tree", false)
                 
                 for op in loops {
                     op.getWidget().addSelectionListener(def swl {

@@ -1,0 +1,99 @@
+#!/usr/bin/env rune
+
+pragma.syntax("0.8")
+
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def swt__uriGetter := <import:org.eclipse.swt.*>
+def widget__uriGetter := <swt:widgets.*>
+def custom__uriGetter := <swt:custom.*>
+def SWT := <swt:makeSWT>
+
+def <swttools> := <import:org.erights.e.ui.swt.*>
+def swtGrid__quasiParser := <swttools:swtGridQParserMaker>()
+
+def buildPOList(parent, palette, poList, vatMap, traceline) :void {
+    
+    var min := 256
+    var max := 0
+    var tally := 0
+    
+    for edge in poList {
+        if (edge != null) {
+            def [vatName, turn] := edge.getTarget().getID()
+            def [name, color] := vatMap.fetchDisplayAttributes(vatName)
+            def len := `[ $name, $turn ]`.size()
+            if (len < min) {
+                min := len
+            }
+            if (len > max) {
+                max := len
+            }
+            tally += len
+        }
+    }
+    def avg := tally // poList.size()
+    
+    for edge in poList {
+        if (edge != null) {
+            var prefix := ""
+            def [vatName, turn] := edge.getTarget().getID()
+            def [name, color] := vatMap.fetchDisplayAttributes(vatName)
+            def id := `[ $name, $turn ]`
+            var n := max - id.size()
+            n += 1
+            for i in 0 ..! n {
+                prefix := prefix + " "
+            }
+            
+            def str := `$prefix$id ${edge.getTarget().getMessage()}`
+            parent.add(str)
+        }
+    }
+}
+
+def poListPaneAuthor(traceline) :near {
+    
+    def makePOListPane(parent, palette, poList, vatName, vatMap) :near {
+        
+        def pane := <widget:makeComposite>(parent, 0)
+        def list := <widget:makeList>(pane, SWT.getH_SCROLL() | SWT.getV_SCROLL())
+        
+        def polp := palette.makePOListPalette()
+        list.setForeground(polp.getFg())
+        list.setBackground(polp.getBg())
+        list.setFont(polp.getFont())
+        
+        #def [_, color] := vatMap.fetchDisplayAttributes(vatName)
+        #list.setForeground(color)
+        
+        buildPOList(list, palette, poList, vatMap, traceline)
+        
+        def poListPane {
+            
+            to getPane() :near { return pane }
+            
+            to getWidget() :near { return list }
+            
+            to activate() :void {}
+            
+            to layout() :void {
+                
+                swtGrid`${pane}:
+                        ${list}.X.Y`
+                
+                pane.getLayout().setMarginWidth(0)
+                pane.getLayout().setMarginHeight(0)
+                pane.getLayout().setHorizontalSpacing(0)
+                pane.getLayout().setVerticalSpacing(0)
+            }
+            
+            to getTabLabel() :String {
+                def [name, _] := vatMap.fetchDisplayAttributes(vatName)
+                return name
+            }
+        }
+        return poListPane
+    }
+}

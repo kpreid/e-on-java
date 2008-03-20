@@ -18,6 +18,18 @@ def EverReporter := <type:org.erights.e.elib.slot.EverReporter>
 def <swttools> := <import:org.erights.e.ui.swt.*>
 def swtGrid__quasiParser := <swttools:swtGridQParserMaker>()
 
+# [[start-line, start-col], [end-line, end-col]]
+def SourceSpan := Tuple[Tuple[int,int], Tuple[int, int]]
+
+# [filename, fncname]
+def SourceName := Tuple[String, String]
+
+# A [source-name, source-span]
+def StackEntry := Tuple[SourceName, SourceSpan]
+
+# top-to-bottom list of stack entries
+def Stack := List[StackEntry]
+
 def getText(file) :String {
     if (!(file.__respondsTo("exists",0)) || file.exists()) {
         file.getText()
@@ -28,7 +40,7 @@ def getText(file) :String {
 
 def stackWalkerAuthor(<file>, <jar>, traceline) :near {
     
-    def makeStackWalker(parent, makers, shell, palette, vatMapVow) :near {
+    def makeStackWalker(parent, makers, palette) :near {
         
         def sideToSideSash := <custom:makeSashForm>(parent, SWT.getHORIZONTAL())
         
@@ -170,24 +182,26 @@ def stackWalkerAuthor(<file>, <jar>, traceline) :near {
                 sourcePane.getLayout().setVerticalSpacing(2)
             }
             
-            to showStackFrame(cause, effect, frame) :void {
-                def [cp, cv, ct] := cause
-                def [ep, ev, et] := effect
+            to showStackFrame(origin, target, frame :Stack, vatMap) :void {
+                def [ov, ot] := origin
+                def [tv, tt] := target
                 
-                def attr1 := vatMapVow.fetchDisplayAttributes(cp, cv)
-                def attr2 := vatMapVow.fetchDisplayAttributes(ep, ev)
+                def oattr := vatMap.fetchDisplayAttributes(ov)
+                def tattr := vatMap.fetchDisplayAttributes(tv)
                 
-                description.setText(`[${attr1[0]}:$ct] causes [${attr2[0]}:$et]`)
+                description.setText(`[ ${oattr[0]}, $ot ] causes [ ${tattr[0]}, $tt ]`)
                 
                 stack.removeAll()
                 
                 stackMap := [].diverge()
                 
                 if (frame.size() > 0) {
-                    for [pathname, [[first, fo], [last, lo]]] in frame {
-                        def line :String := getLine(getFile(pathname), first, fo, last, lo)
-                        stack.add(line)
-                        stackMap.push([pathname, [[first, fo], [last, lo]]])
+                    for [[pathname, _], [[first, fo], [last, lo]]] in frame {
+                        if (pathname != "" ) {
+                            def line :String := getLine(getFile(pathname), first, fo, last, lo)
+                            stack.add(line)
+                            stackMap.push([pathname, [[first, fo], [last, lo]]])
+                        }
                     }
                     stack.setSelection(0)
                     def [pathname, [[first, fo], [last, lo]]] := stackMap[0]

@@ -1,0 +1,201 @@
+#!/usr/bin/env rune
+
+pragma.syntax("0.8")
+
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def swt__uriGetter := <import:org.eclipse.swt.*>
+def widget__uriGetter := <swt:widgets.*>
+def custom__uriGetter := <swt:custom.*>
+def SWT := <swt:makeSWT>
+
+def <swttools> := <import:org.erights.e.ui.swt.*>
+def swtGrid__quasiParser := <swttools:swtGridQParserMaker>()
+
+def stackWalkerAuthor :=
+  <import:org.erights.e.tools.causeway.stackWalkerAuthor>
+
+def treePaneAuthor :=
+  <import:org.erights.e.tools.causeway.treePaneAuthor>
+
+def poListPaneAuthor :=
+  <import:org.erights.e.tools.causeway.poListPaneAuthor>
+
+def getDisplayName(vatName) :String {
+    
+    # find most specific folder name
+    def parts := vatName.split("/")
+    var i := parts.size() -1
+    while (i >= 0) {
+        def part := parts[i]
+        if (part != "") { return part }
+        i -= 1
+    }
+    return vatName
+}
+
+def makeVatMap(vats, palette, traceline) :near {
+    
+    def attributes := [].asMap().diverge()
+    
+    for i in 0 ..! vats.size() {
+        def name := getDisplayName(vats[i])
+        def color := palette.getVatColor(i)
+        attributes.put([vats[i]],[name, color], true)
+    }
+    def vatMap {
+        to fetchDisplayAttributes(vat) :near {
+            return attributes.fetch([vat], fn{
+                [vat, palette.getDefaultVatColor()]
+            })
+        }
+    }
+    return vatMap
+}
+
+def makeDebugPane(folder, graph, palette, traceline) :near {
+    
+    def pane := <widget:makeComposite>(folder, 0)
+    def trace := <custom:makeStyledText>(pane, SWT.getH_SCROLL() | SWT.getV_SCROLL())
+    trace.setEditable(false)
+    
+    def debugPane {
+        
+        to getPane() :near { return pane }
+        
+        to getWidget() :near { return trace }
+        
+        to activate() :void {
+        }
+        
+        to layout() :void {
+            
+            swtGrid`${pane}:
+                    ${trace}.X.Y`
+            
+            pane.getLayout().setMarginWidth(0)
+            pane.getLayout().setMarginHeight(0)
+            pane.getLayout().setHorizontalSpacing(0)
+            pane.getLayout().setVerticalSpacing(0)
+        }
+    }
+    return debugPane
+}
+
+def makeFolderGroup(folder, palette, traceline) :near {
+    
+    def initialSelection := [].diverge()
+    def tabKeeper := [].diverge()
+    
+    def folderGroup {
+        
+        to add(tabbedPane, label, selected) :void {
+            def tab := <widget:makeTabItem>(folder, 0)
+            
+            tab.setControl(tabbedPane.getPane())
+            tab.setText(label)
+            tabKeeper.push([tab, tabbedPane])
+            
+            if (selected == true) {
+                initialSelection.push(tab)
+            }
+        }
+        
+        to layout() :void {
+            for [_, tabbedPane] in tabKeeper {
+                tabbedPane.layout()
+            }
+        }
+        
+        to open() :void {
+            #if (tabKeeper == []) { return }
+            #def ndx := folder.indexOf(initialSelection[0])
+            #if (ndx != -1 ) {
+            #    folder.setSelection(ndx)
+            #}
+            #for t in tabKeeper {
+            #    def [tab, tabbedPane] := t
+            #    if (tab == initialSelection[0]) {
+            #        tabbedPane.activate()
+            #        return
+            #    }
+            #}
+        }
+    }
+    return folderGroup
+}
+
+
+/**
+ */
+def viewerAuthor(<file>, <jar>, makers, shell, tcr, traceline) :near {
+    
+    def makeViewer(parent, palette) :near {
+        
+        def messageGraph
+        
+        def topToBottom := <custom:makeSashForm>(parent, SWT.getVERTICAL())
+        def sideToSide := <custom:makeSashForm>(topToBottom, SWT.getHORIZONTAL())
+        
+        #def debugFolder := <widget:makeTabFolder>(sideToSide, 0)
+        #def debugFolderGroup := makeFolderGroup(debugFolder, palette, traceline)
+        
+        def poListFolder := <widget:makeTabFolder>(sideToSide, 0)
+        def poListFolderGroup := makeFolderGroup(poListFolder, palette, traceline)
+        def makePOListPane := poListPaneAuthor(traceline)
+        
+        def treeFolder := <widget:makeTabFolder>(sideToSide, 0)
+        def treeFolderGroup := makeFolderGroup(treeFolder, palette, traceline)
+        def makeTreePane := treePaneAuthor(traceline)
+        
+        def makeStackWalker := stackWalkerAuthor(<file>, <jar>, traceline)
+        def stackWalker := makeStackWalker(topToBottom, makers, palette)
+        
+        topToBottom.setWeights([50, 50])
+        #sideToSide.setWeights([5, 20, 75])
+        sideToSide.setWeights([20, 80])
+        
+        def viewer {
+            
+            to getTopLevelPane() :near { return topToBottom }
+            
+            to open() :void {
+                #debugFolderGroup.open()
+                poListFolderGroup.open()
+                treeFolderGroup.open()
+                stackWalker.open()
+            }
+            
+            to layout() :void {
+                #debugFolderGroup.layout()
+                poListFolderGroup.layout()
+                treeFolderGroup.layout()
+                stackWalker.layout()
+            }
+            
+            to setModel(model) :void {
+                bind messageGraph := model.getTop()
+                def vatSet := model.getVatSet()
+                
+                def vatMap := makeVatMap(vatSet, palette, traceline)
+                
+                #def debugPane := makeDebugPane(debugFolder, messageGraph, palette, traceline)
+                #debugFolderGroup.add(debugPane, "Message Graph", true)
+                
+                def treePane := makeTreePane(treeFolder, palette, messageGraph, vatMap, stackWalker)
+                treeFolderGroup.add(treePane, treePane.getTabLabel(), true)
+                
+                for i in 0 ..! vatSet.size() {
+                    def poList := model.getOrdered(vatSet[i])
+                    if (poList != []) {
+                        def poListPane := makePOListPane(poListFolder, palette, poList, vatSet[i], vatMap)
+                        poListFolderGroup.add(poListPane, poListPane.getTabLabel(), i == 0)
+                    }
+                }
+            }
+        }
+        return viewer
+    }
+}
+

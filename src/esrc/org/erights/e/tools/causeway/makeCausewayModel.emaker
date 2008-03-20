@@ -1,0 +1,295 @@
+#!/usr/bin/env rune
+
+pragma.syntax("0.8")
+
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def makeMessageGraph :=
+  <import:org.erights.e.tools.causeway.makeMessageGraph>
+
+def File := <type:java.io.File>
+
+# [[start-line, start-col], [end-line, end-col]]
+# [[1, 0]] is the first character in a source file.
+def SourceSpan := Tuple[Tuple[int,int], Tuple[int, int]]
+
+# [filename, fncname]
+def SourceName := Tuple[String, String]
+
+# A [source-name, source-span]
+def StackEntry := Tuple[SourceName, SourceSpan]
+
+# top-to-bottom list of stack entries
+def Stack := List[StackEntry]
+
+def VatName := String
+
+def Turn := int
+
+def UTurn := Tuple[VatName, Turn]
+
+# one of "org.ref_send.log.Sent", ...
+def SendingContext := String
+
+# The root directory of the source files
+# specified on Causeway command line.
+def sourceCodeRootDirName
+
+def fixupSource(source :String) :String {
+    #def path := source.replaceAll(".", "/")
+    return sourceCodeRootDirName + source
+}
+
+# Turn valid trace file spans into a fully-specified SourceSpan.
+# [[start-line, start-col], [end-line, end-col]]
+# [[1, 0]] is the first character in a source file.
+# def SourceSpan := Tuple[Tuple[int,int], Tuple[int, int]]
+# For example,
+# [ [ 5 ] ] ==>        [ [ 5, 0 ], [ 5, 0 ] ]
+# [ [ 5 ], [ 6 ] ] ==> [ [ 5, 0 ], [ 6, 0 ] ]
+
+def spanner(span) :SourceSpan {
+    def term`[ [@{sline :int},
+                @{scolL :List[int]}?], 
+              ([@{elineL :List[int]}, 
+                @{ecolLL :List[List[int]]}?])?]` := span
+    return [[sline,
+             if (scolL =~ [scol]) {scol} else {0}],
+            [if (elineL =~ [eline]) {eline} else {sline},
+             if (ecolLL =~ [[ecol]]) {ecol} else {
+        if (scolL =~ [scol]) {scol} else {0}}]]
+}
+
+/**
+ * <tt>makeCausewayModel</tt>
+ * <p>
+ *
+ */
+def makeCausewayModel(var rootDirName :String, traceFiles :List[File], <file>, traceline) :near {
+    
+    if (!(rootDirName.endsWith("/"))) {
+        rootDirName += "/"
+    }
+    
+    bind sourceCodeRootDirName := rootDirName
+    
+    # TurnTable := List[MessageEvent]
+    # Map[VatName, TurnTable]
+    def vatMap := [].asMap().diverge()
+    
+    # Map[MsgID, MessageContext]
+    def msgMap := [].asMap().diverge()
+    
+    # Map[VatName, List[MessageContext]]
+    def ordered := [].asMap().diverge()
+    
+    def graph := makeMessageGraph(traceline)
+    def ether := graph.makeMessageEvent(["ether", 0], "ether placeholder")
+    graph.addMessageEvent(ether)
+    
+    def jp := <import:org.quasiliteral.term.makeTermParser>
+    
+    # Add the edge to the process-order list.
+    # Sent ticket numbers define order.
+    def storeEdge(edge) :void {
+        def [vatName, turn] := edge.getOrigin().getID()
+        def anchorPair := [turn, edge.getTicket()]
+        def poMap := ordered.fetch(vatName, fn{[].asMap().diverge()})
+        ordered[vatName] := poMap
+        poMap[anchorPair] := edge
+    }
+    
+    for tfile in traceFiles {
+        
+        #traceline(`tracefile: $tfile`)
+        
+        def t := tfile.getText()
+        def tt := jp(t)
+        
+        tt =~ term`[@chunks*]`
+        
+        for chunk in chunks {
+            switch (chunk) {
+                
+                match term`{ "$$" : [ "org.ref_send.log.Sent",
+                                      "org.ref_send.log.Event" ],
+                             "anchor" : {
+                                 "number" : @{ticket :int},
+                                 "turn" : {
+                                     "loop" : @{name :String},
+                                     "number" : @{turn :int}
+                                 }
+                             },
+                             "message" : @{message :String},
+                             "trace" : { "calls" : [@stack*] }
+                           }` {
+                    def turns := vatMap.fetch(name, fn{[].diverge()})
+                    turns.ensureSize(turn+1)
+                    vatMap[name] := turns
+                    var origin := turns[turn]
+                    if (origin == null) {
+                        origin := graph.makeMessageEvent([name, turn], "")
+                        graph.addMessageEvent(origin)
+                        turns[turn] := origin
+                    }
+                    def entries := [].diverge()
+                    entries.ensureSize(stack.size())
+                    
+                    for i in 0 ..! stack.size() {
+                        
+                        switch (stack[i]) {
+                            match term`{ "name" : @{fnc :String},
+                                         "source" : @{source :String},
+                                         "span" : @span }` {
+                                entries[i] := [[fixupSource(source), fnc], spanner(span)]
+                            }
+                            
+                            match term`{ "name" : @{fnc :String},
+                                         "source" : @{source :String} }` {
+                                entries[i] := [[fixupSource(source), fnc], spanner(term`[[1]]`)]
+                            }
+                        }
+                    }
+                    
+                    var edge := msgMap.fetch(message, fn{null})
+                    if (edge == null) {
+                        
+                        # Sent seen first. Make the edge and put it in the msgMap.
+                        # The corresponding Got will fetch the edge from the msgMap.
+                        # The ticket number for an edge is set by the Sent.
+                        
+                        edge := graph.makeMessageContext(origin, ether,
+                                                         ["org.ref_send.log.Sent",
+                                                          entries.snapshot()])
+                        edge.setTicket(ticket)
+                        msgMap[message] := edge
+                        
+                    } else {
+                        
+                        # Got (or something) seen first. Fetch the edge from the msgMap.
+                        # Replace place-holder ether object with origin.
+                        # Update context object with stack trace.
+                        
+                        if (edge.getOrigin() == ether) {
+                            edge.setOrigin(origin)
+                            edge.setContext(["org.ref_send.log.Sent",
+                                             entries.snapshot()])
+                            edge.setTicket(ticket)
+                            if (entries =~ [[[_, topFnc], _]]+_) {
+                                if (topFnc != "") {
+                                    # For now, this function name is useful.
+                                    # Comments or descriptive messages would be better.
+                                    edge.getTarget().setMessage(topFnc)
+                                }
+                            }
+                            
+                            # Add the edge to the process-order list.
+                            storeEdge(edge)
+                            
+                        } else { traceline(`origin conflict`) }
+                    }
+                }
+                match term`{ "$$" : [ "org.ref_send.log.Got",
+                                      "org.ref_send.log.Event" ],
+                             "anchor" : {
+                                 "number" : @{ticket :int},
+                                 "turn" : {
+                                     "loop" : @{name :String},
+                                     "number" : @{turn :int}
+                                 }
+                             },
+                             "message" : @{message :String},
+                             "trace" : { "calls" : [@stack*] }
+                           }` {
+                    def turns := vatMap.fetch(name, fn{[].diverge()})
+                    turns.ensureSize(turn+1)
+                    vatMap[name] := turns
+                    var target := turns[turn]
+                    if (target == null) {
+                        target := graph.makeMessageEvent([name, turn], "")
+                        graph.addMessageEvent(target)
+                        turns[turn] := target
+                    }
+                    
+                    var edge := msgMap.fetch(message, fn{null})
+                    if (edge == null) {
+                        
+                        # Got seen first. Make the edge and put it in the msgMap.
+                        # The corresponding Sent will fetch the edge from the msgMap.
+                        
+                        edge := graph.makeMessageContext(ether, target,
+                                                         ["org.ref_send.log.Got", []])
+                        msgMap[message] := edge
+                        
+                    } else {
+                        
+                        # Sent (or something) seen first. Fetch the edge from the msgMap.
+                        # Replace place-holder ether object with target.
+                        
+                        if (edge.getTarget() == ether) {
+                            edge.setTarget(target)
+                            
+                            def [_, entries] := edge.getContext()
+                            if (entries =~ [[[_, topFnc], _]]+_) {
+                                if (topFnc != "") {
+                                    # For now, this function name is useful.
+                                    # Comments or descriptive messages would be better.
+                                    target.setMessage(topFnc)
+                                }
+                            }
+                            
+                            # Add the edge to the process-order list.
+                            # Sent ticket numbers define order.
+                            storeEdge(edge)
+                            
+                        } else { traceline(`target conflict`) }
+                    }
+                }
+                match _ {}
+            }
+        }
+    }
+    
+    for name => poMap in ordered {
+        ordered[name] := poMap.sortKeys()
+    }
+    
+    def sz := graph.getSize()
+    traceline(`graph size: $sz`)
+    if (sz > 0) {
+        def roots := graph.getRoots()
+        for r in roots {
+            graph.walkRelations(r, 0, traceline)
+        }
+    }
+    
+    def causewayModel {
+        
+        to getTop() :near {
+            def roots := graph.getRoots()
+            if (roots.size()== 1) {
+                return roots[0]
+            }
+            def top := graph.makeMessageEvent(["top", 0], "top")
+            graph.addMessageEvent(top)
+            for r in roots {
+                graph.makeMessageContext(top, r, ["", []])
+            }
+            return top
+        }
+        
+        to getVatSet() :near {
+            return vatMap.getKeys().snapshot()
+        }
+        
+        to getOrdered(vatName :String) :List {
+            def poMap := ordered.fetch(vatName, fn{[].asMap()})
+            return poMap.getValues()
+        }
+    }
+    
+    return causewayModel
+}
+
+
