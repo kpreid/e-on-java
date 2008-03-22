@@ -5,6 +5,6 @@ class(safe,
       "java.awt.event.ActionEvent",
       statics(method(suppress, "run(Object, int, String)"),
               method(suppress, "run(Object, int, String, int)")),
-      methods(method(suppress, "getActionCommand()"),
+      methods(method("getActionCommand()"),
               method("getModifiers()"),
               method(suppress, "paramString()")))
