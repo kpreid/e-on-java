@@ -13,6 +13,7 @@ import org.erights.e.elib.serial.Persistent;
 import org.erights.e.elib.tables.AssocFunc;
 import org.erights.e.elib.tables.EIteratable;
 import org.erights.e.elib.tables.Twine;
+import org.erights.e.elib.util.OneArgFunc;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -220,6 +221,12 @@ public class ReadOnlyFile extends BaseLoader
 
     public byte[] getBytes() throws IOException {
         return FileSugar.getBytes(myPrecious);
+    }
+
+    public void copyTo(File dest, OneArgFunc optEjector) {
+        // Even though this is a "write" operation, its authorization is the
+        // dest argument, so it is safe to provide on read-only files.
+        FileSugar.copyTo(myPrecious, dest, optEjector);
     }
 
     /**

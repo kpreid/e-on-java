@@ -1,0 +1,28 @@
+# Copyright 2008 Kevin Reid, under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+  ? def tempLoc := <unsafe:java.io.makeFile>.createTempFile("efiletest", "")
+  > tempLoc.deleteOnExit()
+  > tempLoc.delete(null)
+  > tempLoc.mkdirs(null)
+  > require(tempLoc.isDirectory())
+  > traceln(`Using temporary directory: $tempLoc`)
+
+Testing that ReadOnlyFile#copyTo exists and works
+
+  ? def aDir := tempLoc["foo"]
+  > def bDir := tempLoc["foo.2"]
+  > aDir.mkdir(null)
+  > aDir["bar"].setText("baz\n")
+  > aDir.deepReadOnly().copyTo(bDir, null)
+  > bDir["bar"].getText()
+  # value: "baz
+  #        "
+
+XXX use this updoc file for other file operation tests
+
+Cleaning up
+
+  ? for file in [aDir["bar"], bDir["bar"], aDir, bDir, tempLoc] {
+  >  file.delete(null)
+  > }
