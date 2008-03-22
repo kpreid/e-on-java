@@ -19,10 +19,24 @@ Testing that ReadOnlyFile#copyTo exists and works
   # value: "baz
   #        "
 
-XXX use this updoc file for other file operation tests
+  ? for file in [aDir["bar"], bDir["bar"], aDir, bDir] { file.delete(__continue) }
 
-Cleaning up
+makeParentDirs
 
-  ? for file in [aDir["bar"], bDir["bar"], aDir, bDir, tempLoc] {
-  >  file.delete(null)
-  > }
+  ? def above := tempLoc["a/b"]
+  > def deep := above["c"]
+  > null
+
+  ? [above.exists(), deep.exists()]
+  # value: [false, false]
+
+  ? deep.makeParentDirs(null)
+
+  ? [above.exists(), deep.exists()]
+  # value: [true, false]
+
+  ? for file in [deep, above, tempLoc["a"]] { file.delete(__continue) }
+
+XXX use this updoc file for a more complete set of file operation tests
+
+  ? tempLoc.delete(null)

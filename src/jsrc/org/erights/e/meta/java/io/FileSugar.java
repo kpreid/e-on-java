@@ -476,6 +476,19 @@ public class FileSugar {
                                   "Can't mkdirs " + E.toQuote(getPath(self)));
         }
     }
+    
+    /**
+     * Creates all but the last directory {@link mkdirs(File, OneArgFunc)}
+     * would create.
+     * <p>
+     * This makes it possible to, given only a File, create the directories
+     * necessary to create a file there.
+     */
+    static public boolean makeParentDirs(File self, OneArgFunc optEjector) {
+        // Operating on getParentFile is safe here because it does no more than
+        // mkdirs() itself allows.
+        return mkdirs(self.getParentFile(), optEjector);
+    }
 
     /**
      * Like {@link File#renameTo}, but under conditions where that method would
