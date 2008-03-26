@@ -90,7 +90,8 @@ def makeMessageGraph(traceline) :near {
                          target :near,
                          var context :Tuple[SendingContext, Stack]) :near {
         var why :String := ""
-        var ticket :int := 0
+        var anchor :int := 0
+        var message :Message := ""
         def messageContext extends templateEdge(messageContext,
                                                 origin,
                                                 target) {
@@ -101,9 +102,11 @@ def makeMessageGraph(traceline) :near {
                 context := ctx
             }
             
-            to setTicket(newTicket :int) :void { ticket := newTicket }
+            to getAnchor() :int { return anchor }
+            to setAnchor(newAnchor :int) :void { anchor := newAnchor }
             
-            to getTicket() :int { return ticket }
+            to getMessage() :Message { message }
+            to setMessage(newMessage :Message) :void { message := newMessage }
             
             to rememberWhy(reason :String) :void {
                 why := reason

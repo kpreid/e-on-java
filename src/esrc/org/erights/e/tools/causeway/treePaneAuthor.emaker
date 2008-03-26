@@ -55,7 +55,8 @@ def buildTree(parent, palette, edge, vatMap, otMap, traceline) :void {
     def attr := vatMap.fetchDisplayAttributes(vatName)
     item.setForeground(attr[1])
     
-    item.setText(`[ ${attr[0]}, $turn ] ${edge.getTarget().getMessage()}`)
+    #item.setText(`[ ${attr[0]}, $turn ] ${edge.getTarget().getMessage()}`)
+    item.setText(`[ ${attr[0]}, $turn ] ${edge.getMessage()}`)
     
     for ge => _ in edge.getTarget().outs() {
         buildTree(item, palette, ge, vatMap, otMap, traceline)

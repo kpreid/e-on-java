@@ -47,7 +47,9 @@ def buildPOList(parent, palette, poList, vatMap, traceline) :void {
                 prefix := prefix + " "
             }
             
-            def str := `$prefix$id ${edge.getTarget().getMessage()}`
+            #def str := `$prefix$id ${edge.getTarget().getMessage()}`
+            def str := `$prefix$id ${edge.getMessage()}`
+            
             parent.add(str)
         }
     }
