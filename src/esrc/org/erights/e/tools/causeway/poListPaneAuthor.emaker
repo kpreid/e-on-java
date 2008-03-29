@@ -48,7 +48,13 @@ def buildPOList(parent, palette, poList, vatMap, traceline) :void {
             }
             
             #def str := `$prefix$id ${edge.getTarget().getMessage()}`
-            def str := `$prefix$id ${edge.getMessage()}`
+            
+            def [sc, _] := edge.getContext()
+            # find most specific sending context event type
+            def parts := sc.split(".")
+            def part := parts.last()
+            
+            def str := `$prefix$id ${edge.getMessage()} ($part)`
             
             parent.add(str)
         }

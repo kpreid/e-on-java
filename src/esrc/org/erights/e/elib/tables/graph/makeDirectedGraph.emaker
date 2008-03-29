@@ -13,31 +13,31 @@ pragma.syntax("0.8")
  * @author Mark S. Miller
  */
 def makeDirectedGraph(traceline) :near {
-
+    
     def graph := [].asMap().diverge()
-
+    
     def directedGraph {
-
-        to addVertex(vertex) :any {
-            graph.put(vertex.getID(), vertex, true)
+        
+        to addNode(node) :any {
+            graph.put(node.getID(), node, true)
         }
-
+        
         to fetch(id, insteadThunk) :near {
             return graph.fetch(id, insteadThunk)
         }
-
+        
         to optGet(id) :near {
             return graph.fetch(id, fn{})
         }
-
+        
         to get(id) :near {
             return graph.get(id)
         }
-
+        
         to getSize() :int {
             return graph.size()
         }
-
+        
         to getRoots() :near {
             def roots := [].diverge()
             if (graph.size() > 0) {

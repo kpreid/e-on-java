@@ -56,7 +56,13 @@ def buildTree(parent, palette, edge, vatMap, otMap, traceline) :void {
     item.setForeground(attr[1])
     
     #item.setText(`[ ${attr[0]}, $turn ] ${edge.getTarget().getMessage()}`)
-    item.setText(`[ ${attr[0]}, $turn ] ${edge.getMessage()}`)
+    
+    def [sc, _] := edge.getContext()
+    # find most specific sending context event type
+    def parts := sc.split(".")
+    def part := parts.last()
+    
+    item.setText(`[ ${attr[0]}, $turn ] ${edge.getMessage()} ($part)`)
     
     for ge => _ in edge.getTarget().outs() {
         buildTree(item, palette, ge, vatMap, otMap, traceline)

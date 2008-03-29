@@ -5,8 +5,8 @@ pragma.syntax("0.8")
 # Copyright 2002 Combex, Inc. under the terms of the MIT X license
 # found at http://www.opensource.org/licenses/mit-license.html ................
 
-def templateVertex := <elib:tables.graph.templateVertex>
-def templateEdge := <elib:tables.graph.templateEdge>
+def templateNode := <elib:tables.graph.templateNode>
+def templateArc := <elib:tables.graph.templateArc>
 
 def makeDirectedGraph := <elib:tables.graph.makeDirectedGraph>
 
@@ -46,8 +46,8 @@ def walk(edge, level, traceline) :void {
     def [tname, tturn] := toWhom
     def tmsg := target.getMessage()
     
-    traceline(`origin [$oname:$oturn] $omsg`)
-    traceline(`target [$tname:$tturn] $tmsg`)
+    traceline(`origin [ $oname, $oturn ] $omsg`)
+    traceline(`target [ $tname, $tturn ] $tmsg`)
     traceline(``)
     
     for grandEdge => _ in target.outs() {
@@ -64,9 +64,9 @@ def makeMessageGraph(traceline) :near {
     
     def dag := makeDirectedGraph(traceline)
     
-    def mkMessageEvent(id :UTurn, var message :Message) :near {
+    def mkTurnNode(id :UTurn, var message :Message) :near {
         var leafStack :Stack := []
-        def messageEvent extends templateVertex(messageEvent, id) {
+        def turnNode extends templateNode(turnNode, id) {
             to getMessage() :Message { message }
             to setMessage(newMessage :Message) :void { message := newMessage }
             
@@ -86,15 +86,13 @@ def makeMessageGraph(traceline) :near {
         }
     }
     
-    def mkMessageContext(origin :near,
-                         target :near,
-                         var context :Tuple[SendingContext, Stack]) :near {
+    def mkEventArc(origin :near,
+                   target :near,
+                   var context :Tuple[SendingContext, Stack]) :near {
         var why :String := ""
         var anchor :int := 0
         var message :Message := ""
-        def messageContext extends templateEdge(messageContext,
-                                                origin,
-                                                target) {
+        def eventArc extends templateArc(eventArc, origin, target) {
             to getContext() :Tuple[SendingContext, Stack] {
                 return context
             }
@@ -119,18 +117,18 @@ def makeMessageGraph(traceline) :near {
     
     def messageGraph {
         
-        to addMessageEvent(me) :void {
-            dag.addVertex(me)
+        to addTurnNode(node) :void {
+            dag.addNode(node)
         }
         
-        to makeMessageEvent(id :UTurn, message :Message) :near {
-            return mkMessageEvent(id, message)
+        to makeTurnNode(id :UTurn, message :Message) :near {
+            return mkTurnNode(id, message)
         }
         
-        to makeMessageContext(origin :near,
-                              target :near,
-                              context :Tuple[SendingContext, Stack]) :near {
-            return mkMessageContext(origin, target, context)
+        to makeEventArc(origin :near,
+                        target :near,
+                        context :Tuple[SendingContext, Stack]) :near {
+            return mkEventArc(origin, target, context)
         }
         
         to optGet(id) :any { return dag.optGet(id) }
@@ -142,7 +140,7 @@ def makeMessageGraph(traceline) :near {
         to walkRelations(root, level, traceline) :void {
             def [rname, rturn] := root.getID()
             def rmsg := root.getMessage()
-            traceline(`root [$rname:$rturn] $rmsg`)
+            traceline(`root [ $rname, $rturn ] $rmsg`)
             traceline(``)
             
             for edge => _ in root.outs() {

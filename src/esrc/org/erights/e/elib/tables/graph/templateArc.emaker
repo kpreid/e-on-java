@@ -1,0 +1,74 @@
+#!/usr/bin/env rune
+
+pragma.syntax("0.8")
+
+# Copyright 2003 Hewlett Packard, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def templateGraphElement := <elib:tables.graph.templateGraphElement>
+
+/**
+ * <tt>templateArc</tt> makes an arc object for a directed graph.
+ *
+ * @param self A derived arc object.
+ * @param origin The node this arc originates from.
+ * @param target The node this arc terminates in.
+ * @return A base arc object.
+ * @author Terry Stanley
+ * @author Mark S. Miller
+ */
+def templateArc(self, var origin, var target) :near {
+    
+    # To ensure a well-formed graph graphElements are
+    # instantiated with prevIn, nextIn, prevOut, nextOut.
+    
+    def ono := origin.getNextOut()
+    def tni := target.getNextIn()
+    
+    def baseArc extends
+      templateGraphElement(self, target, tni, origin, ono) {
+        
+        to getOrigin() :any { return origin }
+        to getTarget() :any { return target }
+        
+        to setOrigin(newOrigin) :void {
+            # splice out the old
+            def no := self.getNextOut()
+            def po := self.getPrevOut()
+            no.setPrevOut(po)
+            po.setNextOut(no)
+            
+            # splice in the new
+            def nono := newOrigin.getNextOut()
+            nono.setPrevOut(self)
+            newOrigin.setNextOut(self)
+            self.setNextOut(nono)
+            self.setPrevOut(newOrigin)
+            
+            origin := newOrigin
+        }
+        
+        to setTarget(newTarget) :void {
+            # splice out the old
+            def ni := self.getNextIn()
+            def pi := self.getPrevIn()
+            ni.setPrevIn(pi)
+            pi.setNextIn(ni)
+            
+            # splice in the new
+            def ntni := newTarget.getNextIn()
+            ntni.setPrevIn(self)
+            newTarget.setNextIn(self)
+            self.setNextIn(ntni)
+            self.setPrevIn(newTarget)
+            
+            target := newTarget
+        }
+    }
+    ono.setPrevOut(self)
+    origin.setNextOut(self)
+    tni.setPrevIn(self)
+    target.setNextIn(self)
+    
+    return baseArc
+}

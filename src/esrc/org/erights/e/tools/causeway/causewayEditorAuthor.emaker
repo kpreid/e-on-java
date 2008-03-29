@@ -43,8 +43,8 @@ def setMargins(layout, marginSize) :void {
 
 def causewayEditorAuthor(rezKit,
                          abstractAction,
-                         makers,
-                         openner, <file>, <jar>,
+                         makers, openners,
+                         <file>, <jar>,
                          props,
                          activate, shutdown,
                          tcr,
@@ -198,7 +198,7 @@ def causewayEditorAuthor(rezKit,
             to run() :void {
                 def waitCursor := makers["cursor"](SWT.getCURSOR_WAIT())
                 def oldShell := causewayEditor.getShell()
-                var optPaths :List := openner(oldShell)
+                var optPaths :List := openners["file"](oldShell)
                 if (optPaths != []) {
                     oldShell.removeShellListener(shellListener)
                     oldShell.setCursor(waitCursor)

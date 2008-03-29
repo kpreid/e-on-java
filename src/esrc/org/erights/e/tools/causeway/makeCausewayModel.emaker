@@ -61,6 +61,18 @@ def spanner(span) :SourceSpan {
         if (scolL =~ [scol]) {scol} else {0}}]]
 }
 
+def sortTree(node) :void {
+    var edges := [].asMap().diverge()
+    for edge => target in node.outs() {
+        sortTree(target)
+        edges[edge.getAnchor()] := edge
+    }
+    edges := edges.sortKeys()
+    for edge in edges {
+        edge.setOrigin(node)
+    }
+}
+
 /**
  * <tt>makeCausewayModel</tt>
  * <p>
@@ -74,20 +86,20 @@ def makeCausewayModel(var rootDirName :String, traceFiles :List[File], <file>, t
     
     bind sourceCodeRootDirName := rootDirName
     
-    # TurnTable := List[MessageEvent]
+    # TurnTable := List[TurnNode]
     # Map[VatName, TurnTable]
     def vatMap := [].asMap().diverge()
     
-    # Map[MsgID, MessageContext]
+    # Map[MsgID, EventArc]
     def msgMap := [].asMap().diverge()
     
-    # Map[VatName, List[MessageContext]]
+    # Map[VatName, List[EventArc]]
     def ordered := [].asMap().diverge()
     
     def graph := makeMessageGraph(traceline)
-    def ether := graph.makeMessageEvent(["ether", 0], "ether placeholder")
+    def ether := graph.makeTurnNode(["ether", 0], "ether placeholder")
     # ether does not really belong in the graph, but it's useful for debugging, for now
-    graph.addMessageEvent(ether)
+    graph.addTurnNode(ether)
     
     def jp := <import:org.quasiliteral.term.makeTermParser>
     
@@ -111,7 +123,7 @@ def makeCausewayModel(var rootDirName :String, traceFiles :List[File], <file>, t
                 }
             }
         }
-        return entries
+        return entries.snapshot()
     }
     
     # Each vat has a turn table of nodes, one node for each turn.
@@ -123,8 +135,8 @@ def makeCausewayModel(var rootDirName :String, traceFiles :List[File], <file>, t
         vatMap[name] := turns
         var node := turns[turn]
         if (node == null) {
-            node := graph.makeMessageEvent([name, turn], "")
-            graph.addMessageEvent(node)
+            node := graph.makeTurnNode([name, turn], "")
+            graph.addTurnNode(node)
             turns[turn] := node
         }
         return node
@@ -168,26 +180,7 @@ def makeCausewayModel(var rootDirName :String, traceFiles :List[File], <file>, t
                     def origin := getOrMakeTurnNode(name, turn)
                     
                     # Create E Stack object, possibly empty, from term tree.
-                    #def entries := parseStack(stack)
-                    
-                    def entries := [].diverge()
-                    entries.ensureSize(stack.size())
-                    
-                    for i in 0 ..! stack.size() {
-                        
-                        switch (stack[i]) {
-                            match term`{ "name" : @{fnc :String},
-                                         "source" : @{source :String},
-                                         "span" : @span }` {
-                                entries[i] := [[fixupSource(source), fnc], spanner(span)]
-                            }
-                            
-                            match term`{ "name" : @{fnc :String},
-                                         "source" : @{source :String} }` {
-                                entries[i] := [[fixupSource(source), fnc], spanner(term`[[1]]`)]
-                            }
-                        }
-                    }
+                    def entries := parseStack(stack)
                     
                     var edge := msgMap.fetch(message, fn{null})
                     if (edge == null) {
@@ -196,9 +189,9 @@ def makeCausewayModel(var rootDirName :String, traceFiles :List[File], <file>, t
                         # The corresponding Got will fetch the edge from the msgMap.
                         # The anchor number for an edge is set by the Sent.
                         
-                        edge := graph.makeMessageContext(origin, ether,
-                                                         ["org.ref_send.log.Sent",
-                                                          entries.snapshot()])
+                        edge := graph.makeEventArc(origin, ether,
+                                                   ["org.ref_send.log.Sent",
+                                                    entries])
                         edge.setAnchor(anchor)
                         msgMap[message] := edge
                         
@@ -211,7 +204,7 @@ def makeCausewayModel(var rootDirName :String, traceFiles :List[File], <file>, t
                         if (edge.getOrigin() == ether) {
                             edge.setOrigin(origin)
                             edge.setContext(["org.ref_send.log.Sent",
-                                             entries.snapshot()])
+                                             entries])
                             edge.setAnchor(anchor)
                             if (entries =~ [[[_, topFnc], _]]+_) {
                                 if (topFnc != "") {
@@ -246,37 +239,18 @@ def makeCausewayModel(var rootDirName :String, traceFiles :List[File], <file>, t
                     def origin := getOrMakeTurnNode(name, turn)
                     
                     # Create E Stack object, possibly empty, from term tree.
-                    #def entries := parseStack(stack)
-                    
-                    def entries := [].diverge()
-                    entries.ensureSize(stack.size())
-                    
-                    for i in 0 ..! stack.size() {
-                        
-                        switch (stack[i]) {
-                            match term`{ "name" : @{fnc :String},
-                                         "source" : @{source :String},
-                                         "span" : @span }` {
-                                entries[i] := [[fixupSource(source), fnc], spanner(span)]
-                            }
-                            
-                            match term`{ "name" : @{fnc :String},
-                                         "source" : @{source :String} }` {
-                                entries[i] := [[fixupSource(source), fnc], spanner(term`[[1]]`)]
-                            }
-                        }
-                    }
+                    def entries := parseStack(stack)
                     
                     var edge := msgMap.fetch(message, fn{null})
                     if (edge == null) {
                         
                         # SentIf seen first. Make the edge and put it in the msgMap.
                         # The corresponding Got will fetch the edge from the msgMap.
-                        # The anchor number for an edge is set by the Sent.
+                        # The anchor number for an edge is set by the SentIf.
                         
-                        edge := graph.makeMessageContext(origin, ether,
-                                                         ["org.ref_send.log.SentIf",
-                                                          entries.snapshot()])
+                        edge := graph.makeEventArc(origin, ether,
+                                                   ["org.ref_send.log.SentIf",
+                                                    entries])
                         edge.setAnchor(anchor)
                         msgMap[message] := edge
                         
@@ -288,8 +262,8 @@ def makeCausewayModel(var rootDirName :String, traceFiles :List[File], <file>, t
                         
                         if (edge.getOrigin() == ether) {
                             edge.setOrigin(origin)
-                            edge.setContext(["org.ref_send.log.Sent",
-                                             entries.snapshot()])
+                            edge.setContext(["org.ref_send.log.SentIf",
+                                             entries])
                             edge.setAnchor(anchor)
                             if (entries =~ [[[_, topFnc], _]]+_) {
                                 if (topFnc != "") {
@@ -327,8 +301,8 @@ def makeCausewayModel(var rootDirName :String, traceFiles :List[File], <file>, t
                         # Got seen first. Make the edge and put it in the msgMap.
                         # The corresponding Sent will fetch the edge from the msgMap.
                         
-                        edge := graph.makeMessageContext(ether, target,
-                                                         ["org.ref_send.log.Got", []])
+                        edge := graph.makeEventArc(ether, target,
+                                                   ["org.ref_send.log.Got", []])
                         msgMap[message] := edge
                         
                     } else {
@@ -373,29 +347,11 @@ def makeCausewayModel(var rootDirName :String, traceFiles :List[File], <file>, t
                     def origin := getOrMakeTurnNode(name, turn)
                     
                     # Create E Stack object, possibly empty, from term tree.
-                    #def entries := parseStack(stack)
+                    def entries := parseStack(stack)
                     
-                    def entries := [].diverge()
-                    entries.ensureSize(stack.size())
-                    
-                    for i in 0 ..! stack.size() {
-                        
-                        switch (stack[i]) {
-                            match term`{ "name" : @{fnc :String},
-                                         "source" : @{source :String},
-                                         "span" : @span }` {
-                                entries[i] := [[fixupSource(source), fnc], spanner(span)]
-                            }
-                            
-                            match term`{ "name" : @{fnc :String},
-                                         "source" : @{source :String} }` {
-                                entries[i] := [[fixupSource(source), fnc], spanner(term`[[1]]`)]
-                            }
-                        }
-                    }
-                    def edge := graph.makeMessageContext(origin, ether,
-                                                         ["org.ref_send.log.Comment",
-                                                          entries.snapshot()])
+                    def edge := graph.makeEventArc(origin, ether,
+                                                   ["org.ref_send.log.Comment",
+                                                    entries])
                     edge.setAnchor(anchor)
                     
                     var omsg := "# " + comment
@@ -420,26 +376,25 @@ def makeCausewayModel(var rootDirName :String, traceFiles :List[File], <file>, t
     
     def sz := graph.getSize()
     traceline(`graph size: $sz`)
-    if (sz > 0) {
-        def roots := graph.getRoots()
+    def roots := graph.getRoots()
+    def root
+    if (roots.size() == 1) {
+        bind root := roots[0]
+    } else {
+        bind root := graph.makeTurnNode(["top", 0], "top")
+        graph.addTurnNode(root)
         for r in roots {
-            graph.walkRelations(r, 0, traceline)
+            graph.makeEventArc(root, r, ["", []])
         }
     }
+    graph.walkRelations(root, 0, traceline)
+    
+    sortTree(root)
     
     def causewayModel {
         
         to getTop() :near {
-            def roots := graph.getRoots()
-            if (roots.size()== 1) {
-                return roots[0]
-            }
-            def top := graph.makeMessageEvent(["top", 0], "top")
-            graph.addMessageEvent(top)
-            for r in roots {
-                graph.makeMessageContext(top, r, ["", []])
-            }
-            return top
+            return root
         }
         
         to getVatSet() :near {

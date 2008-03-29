@@ -54,7 +54,20 @@ def makeFontDialog() :near {
     return <uwidget:FontDialog>(currentDisplay.getActiveShell(), 0)
 }
 
-def openner(shell :Shell) :List {
+def openDir(shell :Shell, message :String) :near {
+    def dialog := <widget:makeDirectoryDialog>(shell, SWT.getOPEN())
+    if (message != "") {
+        dialog.setMessage(message)
+    }
+    # The absolute path of the directory selected, or null.
+    def abs := dialog.open()
+    
+    if (abs == null) { return null }
+    
+    return <file>[abs]
+}
+
+def openFile(shell :Shell) :List {
     def dialog := <widget:makeFileDialog>(shell, SWT.getMULTI() | SWT.getOPEN())
     dialog.open()
     var optNames := dialog.getFileNames()
@@ -91,6 +104,11 @@ def makeCursor(style :int) :any {
     return <swt:graphics.makeCursor>(currentDisplay, style)
 }
 
+def openners := [].asMap().diverge()
+
+openners.put("file", openFile)
+openners.put("dir", openDir)
+
 def makers := [].asMap().diverge()
 
 makers.put("frame", makeFrame)
@@ -107,7 +125,8 @@ def causewayEditorAuthor := <import:org.erights.e.tools.causeway.causewayEditorA
 def makeCausewayEditor := causewayEditorAuthor(rezKit,
                                                abstractAction,
                                                makers.snapshot(),
-                                               openner, <file>, <jar>,
+                                               openners.snapshot(),
+                                               <file>, <jar>,
                                                interp.getProps(),
                                                activate, shutdown,
                                                tcr,
