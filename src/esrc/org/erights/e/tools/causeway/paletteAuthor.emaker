@@ -205,7 +205,7 @@ def paletteAuthor(rezKit, makers, traceline) :near {
             }
             to makeFolderPalette() :near {
                 return makeBasicPalette("justBlack",
-                                        "bgGray",
+                                        "justWhite",
                                         ["Arial", "10", "bold"])
             }
             to makeTabPalette() :near {
@@ -213,19 +213,21 @@ def paletteAuthor(rezKit, makers, traceline) :near {
                                         "bgGray",
                                         ["Arial", "10", "bold"])
             }
-            
-            
             to makePOListPalette() :near {
                 return makeBasicPalette("justBlack",
                                         "justWhite",
                                         ["Courier New", "9", "normal"])
+            }
+            to makePOTreePalette() :near {
+                return makeBasicPalette("justBlack",
+                                        "justWhite",
+                                        ["Microsoft Sans Serif", "10", "normal"])
             }
             to makeMessageTreePalette() :near {
                 return makeBasicPalette("justBlack",
                                         "justWhite",
                                         ["Microsoft Sans Serif", "10", "normal"])
             }
-            
             to makeEStackPalette() :near {
                 return makeBasicPalette("justBlack",
                                         "justWhite",
@@ -235,6 +237,11 @@ def paletteAuthor(rezKit, makers, traceline) :near {
                 return makeBasicPalette("justBlack",
                                         "justWhite",
                                         ["Courier New", "9", "normal"])
+            }
+            to makeDebugPanePalette() :near {
+                return makeBasicPalette("justBlack",
+                                        "justWhite",
+                                        ["Courier New", "8", "normal"])
             }
             to makeFilenamePalette() :near {
                 return makeBasicPalette("justBlack",

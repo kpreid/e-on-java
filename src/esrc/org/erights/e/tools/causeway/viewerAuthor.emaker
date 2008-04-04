@@ -19,8 +19,11 @@ def stackWalkerAuthor :=
 def treePaneAuthor :=
   <import:org.erights.e.tools.causeway.treePaneAuthor>
 
-def poListPaneAuthor :=
-  <import:org.erights.e.tools.causeway.poListPaneAuthor>
+def poTreePaneAuthor :=
+  <import:org.erights.e.tools.causeway.poTreePaneAuthor>
+
+def debugPaneAuthor :=
+  <import:org.erights.e.tools.causeway.debugPaneAuthor>
 
 def getDisplayName(vatName) :String {
     
@@ -52,35 +55,6 @@ def makeVatMap(vats, palette, traceline) :near {
         }
     }
     return vatMap
-}
-
-def makeDebugPane(folder, graph, palette, traceline) :near {
-    
-    def pane := <widget:makeComposite>(folder, 0)
-    def trace := <custom:makeStyledText>(pane, SWT.getH_SCROLL() | SWT.getV_SCROLL())
-    trace.setEditable(false)
-    
-    def debugPane {
-        
-        to getPane() :near { return pane }
-        
-        to getWidget() :near { return trace }
-        
-        to activate() :void {
-        }
-        
-        to layout() :void {
-            
-            swtGrid`${pane}:
-                    ${trace}.X.Y`
-            
-            pane.getLayout().setMarginWidth(0)
-            pane.getLayout().setMarginHeight(0)
-            pane.getLayout().setHorizontalSpacing(0)
-            pane.getLayout().setVerticalSpacing(0)
-        }
-    }
-    return debugPane
 }
 
 def makeFolderGroup(folder, palette, traceline) :near {
@@ -138,38 +112,53 @@ def viewerAuthor(<file>, <jar>, makers, shell, tcr, traceline) :near {
         def topToBottom := <custom:makeSashForm>(parent, SWT.getVERTICAL())
         def sideToSide := <custom:makeSashForm>(topToBottom, SWT.getHORIZONTAL())
         
-        #def debugFolder := <widget:makeTabFolder>(sideToSide, 0)
-        #def debugFolderGroup := makeFolderGroup(debugFolder, palette, traceline)
+        def fp := palette.makeFolderPalette()
         
-        def poListFolder := <widget:makeTabFolder>(sideToSide, 0)
-        def poListFolderGroup := makeFolderGroup(poListFolder, palette, traceline)
-        def makePOListPane := poListPaneAuthor(traceline)
+        # top-left
+        def poTreeFolder := <widget:makeTabFolder>(sideToSide, 0)
+        poTreeFolder.setForeground(fp.getFg())
+        poTreeFolder.setBackground(fp.getBg())
+        poTreeFolder.setFont(fp.getFont())
+        def poTreeFolderGroup := makeFolderGroup(poTreeFolder, palette, traceline)
+        def makePOTreePane := poTreePaneAuthor(traceline)
         
+        # top-middle
         def treeFolder := <widget:makeTabFolder>(sideToSide, 0)
+        treeFolder.setForeground(fp.getFg())
+        treeFolder.setBackground(fp.getBg())
+        treeFolder.setFont(fp.getFont())
         def treeFolderGroup := makeFolderGroup(treeFolder, palette, traceline)
         def makeTreePane := treePaneAuthor(traceline)
         
+        # top-right
+        def debugFolder := <widget:makeTabFolder>(sideToSide, 0)
+        debugFolder.setForeground(fp.getFg())
+        debugFolder.setBackground(fp.getBg())
+        debugFolder.setFont(fp.getFont())
+        def debugFolderGroup := makeFolderGroup(debugFolder, palette, traceline)
+        def makeDebugPane := debugPaneAuthor(<file>, <jar>, traceline)
+        
+        # bottom
         def makeStackWalker := stackWalkerAuthor(<file>, <jar>, traceline)
         def stackWalker := makeStackWalker(topToBottom, makers, palette)
         
         topToBottom.setWeights([50, 50])
-        #sideToSide.setWeights([5, 20, 75])
-        sideToSide.setWeights([35, 65])
+        sideToSide.setWeights([40, 35, 25])
         
         def viewer {
             
             to getTopLevelPane() :near { return topToBottom }
             
             to open() :void {
-                #debugFolderGroup.open()
-                poListFolderGroup.open()
+                debugFolderGroup.open()
+                poTreeFolderGroup.open()
                 treeFolderGroup.open()
                 stackWalker.open()
             }
             
             to layout() :void {
-                #debugFolderGroup.layout()
-                poListFolderGroup.layout()
+                debugFolderGroup.layout()
+                poTreeFolderGroup.layout()
                 treeFolderGroup.layout()
                 stackWalker.layout()
             }
@@ -180,18 +169,18 @@ def viewerAuthor(<file>, <jar>, makers, shell, tcr, traceline) :near {
                 
                 def vatMap := makeVatMap(vatSet, palette, traceline)
                 
-                #def debugPane := makeDebugPane(debugFolder, messageGraph, palette, traceline)
-                #debugFolderGroup.add(debugPane, "Message Graph", true)
+                def debugPane := makeDebugPane(debugFolder, makers, palette)
+                debugFolderGroup.add(debugPane, debugPane.getTabLabel(), true)
                 
-                def treePane := makeTreePane(treeFolder, palette, messageGraph, vatMap, stackWalker)
+                def treePane := makeTreePane(treeFolder, palette, messageGraph, vatMap, stackWalker, debugPane)
                 treeFolderGroup.add(treePane, treePane.getTabLabel(), true)
                 
                 for i in 0 ..! vatSet.size() {
                     def poList := model.getOrdered(vatSet[i])
                     if (poList != []) {
-                        def poListPane := makePOListPane(poListFolder, palette, poList,
+                        def poTreePane := makePOTreePane(poTreeFolder, palette, poList,
                                                          vatSet[i], vatMap, treePane)
-                        poListFolderGroup.add(poListPane, poListPane.getTabLabel(), i == 0)
+                        poTreeFolderGroup.add(poTreePane, poTreePane.getTabLabel(), i == 0)
                     }
                 }
             }

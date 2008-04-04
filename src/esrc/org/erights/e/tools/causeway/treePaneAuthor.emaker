@@ -33,8 +33,51 @@ def makeOTMap() :near {
     return otMap
 }
 
+# Useful maps for lookups in event handling.
 def itemToModelMap := [].asMap().diverge()
 def modelToItemMap := [].asMap().diverge()
+
+def labelNodeItem(vatMap, node, item) :void {
+    def [vatName, turn] := node.getID()
+    
+    # Set descriptive text to vat name and turn.
+    def attr := vatMap.fetchDisplayAttributes(vatName)
+    item.setForeground(attr[1])
+    item.setText(`[${attr[0]}, $turn]`)
+}
+
+def getEdgePart(edge) :String {
+    def [sc, _] := edge.getContext()
+    # find most specific sending context event type
+    if (sc != "") {
+        def parts := sc.split(".")
+        if (parts.size() >= 1) {
+            def part := parts.last()
+            switch (part) {
+                match `Sent` { return " ->" }
+                match `SentIf` { return " ..." }
+                match `Comment` { return "" }
+                match _ { return ` ($part)` }
+            }
+        }
+    }
+    return ":"
+}
+
+def labelArcItem(vatMap, edge, item) :void {
+    def [tVatName, tTurn] := edge.getTarget().getID()
+    
+    # Set descriptive text to vat name and turn.
+    def tAttr := vatMap.fetchDisplayAttributes(tVatName)
+    item.setForeground(tAttr[1])
+    def part := getEdgePart(edge)
+    def msg := edge.getMessage()
+    if (tAttr[0] == "ether") {
+        item.setText(`$msg$part`)
+    } else {
+        item.setText(`$msg$part [${tAttr[0]}, $tTurn]`)
+    }
+}
 
 def buildTree(parent, palette, edge, vatMap, otMap, traceline) :void {
     
@@ -50,19 +93,7 @@ def buildTree(parent, palette, edge, vatMap, otMap, traceline) :void {
     itemToModelMap.put(item, edge, true)
     modelToItemMap.put(edge, item, true)
     
-    def [vatName, turn] := edge.getTarget().getID()
-    
-    def attr := vatMap.fetchDisplayAttributes(vatName)
-    item.setForeground(attr[1])
-    
-    #item.setText(`[ ${attr[0]}, $turn ] ${edge.getTarget().getMessage()}`)
-    
-    def [sc, _] := edge.getContext()
-    # find most specific sending context event type
-    def parts := sc.split(".")
-    def part := parts.last()
-    
-    item.setText(`[ ${attr[0]}, $turn ] ${edge.getMessage()} ($part)`)
+    labelArcItem(vatMap, edge, item)
     
     for ge => _ in edge.getTarget().outs() {
         buildTree(item, palette, ge, vatMap, otMap, traceline)
@@ -71,7 +102,7 @@ def buildTree(parent, palette, edge, vatMap, otMap, traceline) :void {
 
 def treePaneAuthor(traceline) :near {
     
-    def makeTreePane(parent, palette, graph, vatMap, stackWalker) :near {
+    def makeTreePane(parent, palette, graph, vatMap, stackWalker, debugPane) :near {
         
         def pane := <widget:makeComposite>(parent, 0)
         def tree := <widget:makeTree>(pane,
@@ -90,19 +121,31 @@ def treePaneAuthor(traceline) :near {
         def listenerForStackWalker {
             to widgetSelected(event) :void {
                 def item := event.getItem()
-                def edge := itemToModelMap[item]
-                
-                def [_, stack] := edge.getContext()
-                #traceline(`stack: $stack`)
-                
-                stackWalker.showStackFrame(edge.getOrigin().getID(),
-                                           edge.getTarget().getID(),
-                                           stack, vatMap)
+                def edge := itemToModelMap.fetch(item, fn{})
+                if (edge != null) {
+                    def [_, stack] := edge.getContext()
+                    stackWalker.showStackFrame(edge.getOrigin().getID(),
+                                               edge.getTarget().getID(),
+                                               stack, vatMap)
+                }
             }
             to widgetDefaultSelected(event) :void {}
         }
         
         tree.addSelectionListener(listenerForStackWalker)
+        
+        def listenerForDebugPane {
+            to widgetSelected(event) :void {
+                def item := event.getItem()
+                def edge := itemToModelMap.fetch(item, fn{})
+                if (edge != null) {
+                    debugPane.showLogFiles(edge.getLogFiles())
+                }
+            }
+            to widgetDefaultSelected(event) :void {}
+        }
+        
+        tree.addSelectionListener(listenerForDebugPane)
         
         def treePane {
             

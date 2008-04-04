@@ -1,0 +1,99 @@
+#!/usr/bin/env rune
+
+pragma.syntax("0.8")
+
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def swt__uriGetter := <import:org.eclipse.swt.*>
+def widget__uriGetter := <swt:widgets.*>
+def custom__uriGetter := <swt:custom.*>
+def layout__uriGetter := <swt:layout.*>
+def SWT := <swt:makeSWT>
+
+def <swttools> := <import:org.erights.e.ui.swt.*>
+def swtGrid__quasiParser := <swttools:swtGridQParserMaker>()
+
+def getText(file) :String {
+    if (!(file.__respondsTo("exists",0)) || file.exists()) {
+        file.getText()
+    } else {
+        `*** "${file.getPath()}" not found ***`
+    }
+}
+
+def debugPaneAuthor(<file>, <jar>, traceline) :near {
+    
+    def makeDebugPane(parent, makers, palette) :near {
+        
+        def pane := <widget:makeComposite>(parent, 0)
+        def text := <custom:makeStyledText>(pane,
+                                            SWT.getH_SCROLL() | SWT.getV_SCROLL())
+        
+        def dpp := palette.makeDebugPanePalette()
+        text.setForeground(dpp.getFg())
+        text.setBackground(dpp.getBg())
+        text.setFont(dpp.getFont())
+        
+        text.setWordWrap(false)
+        text.setEditable(false)
+        text.setText("")
+        
+        /**
+         * Returns either a java.io.File or a java.net.URL
+         */
+        def getFile(pathname) :any {
+            switch (pathname) {
+                match `file:@body` {
+                    return <file>[body]
+                }
+                match `jar:@body` {
+                    return <jar>[body]
+                }
+                match _ {
+                    return <file>[pathname]
+                }
+            }
+        }
+        
+        def debugPane {
+            
+            to getPane() :near { return pane }
+            
+            to getWidget() :near { return text }
+            
+            to showLogFiles(logFiles :List) :void {
+                text.append("\n\n")
+                def sos := text.getCharCount()
+                text.append("##############################")
+                def eos := text.getCharCount()
+                text.append("\n")
+                
+                for log in logFiles {
+                    text.append(log.getText())
+                }
+                # set selection scrolls the content into view
+                text.setSelection(sos, text.getCharCount())
+                # just highlight the horizontal break
+                text.setSelection(sos, eos)
+            }
+            
+            to activate() :void {}
+            
+            to layout() :void {
+                
+                swtGrid`${pane}:
+                        ${text}.X.Y`
+                
+                pane.getLayout().setMarginWidth(0)
+                pane.getLayout().setMarginHeight(0)
+                pane.getLayout().setHorizontalSpacing(0)
+                pane.getLayout().setVerticalSpacing(0)
+                
+            }
+            
+            to getTabLabel() :String { return "Debug Pane" }
+        }
+        return debugPane
+    }
+}

@@ -193,6 +193,7 @@ def makeCausewayModel(var rootDirName :String, traceFiles :List[File], <file>, t
                                                    ["org.ref_send.log.Sent",
                                                     entries])
                         edge.setAnchor(anchor)
+                        edge.addLogFile(tfile)
                         msgMap[message] := edge
                         
                     } else {
@@ -206,12 +207,12 @@ def makeCausewayModel(var rootDirName :String, traceFiles :List[File], <file>, t
                             edge.setContext(["org.ref_send.log.Sent",
                                              entries])
                             edge.setAnchor(anchor)
+                            edge.addLogFile(tfile)
                             if (entries =~ [[[_, topFnc], _]]+_) {
                                 if (topFnc != "") {
                                     # For now, this function name is useful.
                                     # Comments or descriptive messages would be better.
                                     edge.setMessage(topFnc)
-                                    edge.getTarget().setMessage(topFnc)
                                 }
                             }
                             
@@ -252,6 +253,7 @@ def makeCausewayModel(var rootDirName :String, traceFiles :List[File], <file>, t
                                                    ["org.ref_send.log.SentIf",
                                                     entries])
                         edge.setAnchor(anchor)
+                        edge.addLogFile(tfile)
                         msgMap[message] := edge
                         
                     } else {
@@ -265,12 +267,12 @@ def makeCausewayModel(var rootDirName :String, traceFiles :List[File], <file>, t
                             edge.setContext(["org.ref_send.log.SentIf",
                                              entries])
                             edge.setAnchor(anchor)
+                            edge.addLogFile(tfile)
                             if (entries =~ [[[_, topFnc], _]]+_) {
                                 if (topFnc != "") {
                                     # For now, this function name is useful.
                                     # Comments or descriptive messages would be better.
                                     edge.setMessage(topFnc)
-                                    edge.getTarget().setMessage(topFnc)
                                 }
                             }
                             
@@ -303,6 +305,7 @@ def makeCausewayModel(var rootDirName :String, traceFiles :List[File], <file>, t
                         
                         edge := graph.makeEventArc(ether, target,
                                                    ["org.ref_send.log.Got", []])
+                        edge.addLogFile(tfile)
                         msgMap[message] := edge
                         
                     } else {
@@ -312,6 +315,7 @@ def makeCausewayModel(var rootDirName :String, traceFiles :List[File], <file>, t
                         
                         if (edge.getTarget() == ether) {
                             edge.setTarget(target)
+                            edge.addLogFile(tfile)
                             
                             def [_, entries] := edge.getContext()
                             if (entries =~ [[[_, topFnc], _]]+_) {
@@ -319,7 +323,6 @@ def makeCausewayModel(var rootDirName :String, traceFiles :List[File], <file>, t
                                     # For now, this function name is useful.
                                     # Comments or descriptive messages would be better.
                                     edge.setMessage(topFnc)
-                                    target.setMessage(topFnc)
                                 }
                             }
                             
@@ -353,6 +356,7 @@ def makeCausewayModel(var rootDirName :String, traceFiles :List[File], <file>, t
                                                    ["org.ref_send.log.Comment",
                                                     entries])
                     edge.setAnchor(anchor)
+                    edge.addLogFile(tfile)
                     
                     var omsg := "# " + comment
                     if (entries =~ [[[_, topFnc], _]]+_) {
