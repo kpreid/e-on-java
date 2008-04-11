@@ -132,13 +132,7 @@ def makeCausewayEditor := causewayEditorAuthor(rezKit,
                                                tcr,
                                                traceline)
 
-def [rootDirName] + traces := interp.getArgs()
-def files := [].diverge()
-for i in 0 ..! traces.size() {
-    files[i] := <file>[traces[i]]
-}
-
-def causewayEditor := makeCausewayEditor(rootDirName, files.snapshot())
+def causewayEditor := makeCausewayEditor("", [])
 causewayEditor.open()
 
 interp.blockAtTop()

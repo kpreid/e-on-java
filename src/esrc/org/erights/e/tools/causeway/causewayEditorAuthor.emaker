@@ -61,7 +61,7 @@ def causewayEditorAuthor(rezKit,
         to shellDeiconified(event) :void {}
     }
     
-    def makeCausewayEditor(rootDirName :String, traces :List) :near {
+    def makeCausewayEditor(var rootDirName :String, traces :List) :near {
         
         def causewayEditor
         
@@ -200,6 +200,9 @@ def causewayEditorAuthor(rezKit,
                 def oldShell := causewayEditor.getShell()
                 var optPaths :List := openners["file"](oldShell)
                 if (optPaths != []) {
+                    if (rootDirName == "") {
+                        doOptions()
+                    }
                     oldShell.removeShellListener(shellListener)
                     oldShell.setCursor(waitCursor)
                     def openAction() :void {
@@ -623,7 +626,13 @@ def causewayEditorAuthor(rezKit,
          *
          */
         bind doOptions extends abstractAction(doOptions) {
-            to run() :void {}
+            to run() :void {
+                def dir := openners["dir"](causewayEditor.getShell(),
+                                           "Select the source code root directory.")
+                if (dir != null) {
+                    rootDirName := dir.getPath()
+                }
+            }
             to getLabel()            :String { "&Options..." }
             to getOptTip()           :String { "Set Preferences" }
         }
@@ -643,9 +652,9 @@ def causewayEditorAuthor(rezKit,
          *
          */
         bind doFilters extends abstractAction(doFilters) {
-            to run() :void {
-                causewayEditor.getCausewayApp().openFiltersDialog()
-            }
+            to run() :void {}
+            #causewayEditor.getCausewayApp().openFiltersDialog()
+            #}
             to getLabel()            :String { "&Filters..." }
             to getOptTip()           :String { "Show File Filters" }
         }
