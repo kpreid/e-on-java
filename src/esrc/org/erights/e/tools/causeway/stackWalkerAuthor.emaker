@@ -38,9 +38,9 @@ def getText(file) :String {
     }
 }
 
-def stackWalkerAuthor(<file>, <jar>, traceline) :near {
+def stackWalkerAuthor(<file>, <jar>, makers, traceline) :near {
     
-    def makeStackWalker(parent, makers, palette) :near {
+    def makeStackWalker(parent, palette, vatMap, selectionModel) :near {
         
         def sideToSideSash := <custom:makeSashForm>(parent, SWT.getHORIZONTAL())
         
@@ -131,17 +131,14 @@ def stackWalkerAuthor(<file>, <jar>, traceline) :near {
             }
         }
         
-        def showSource(file, pathname) :void {
-            filename.setText(pathname)
-            source.setText(getText(file))
-        }
-        
         def showAndSelect(file, pathname, first, fo, last, lo) :void {
-            showSource(file, pathname)
+            filename.setText(`$pathname  line: $first`)
+            source.setText(getText(file))
             
             # Get the number of lines.
             def lineCount := source.getLineCount()
             
+            def lineAtBottom
             if (last + 5 < lineCount) {
                 bind lineAtBottom := last + 5
             } else {
@@ -152,14 +149,64 @@ def stackWalkerAuthor(<file>, <jar>, traceline) :near {
             source.setSelection(source.getOffsetAtLine(lineAtBottom -1))
             
             # Now do the real selection.
-            def line1 := source.getOffsetAtLine(first -1)
-            def line2 := source.getOffsetAtLine(last -1)
-            source.setSelection(line1 + fo, line2 + lo +1)
+            if (first <= lineCount && last <= lineCount) {
+                def line1 := source.getOffsetAtLine(first -1)
+                def line2 := source.getOffsetAtLine(last -1)
+                source.setSelection(line1 + fo, line2 + lo +1)
+            }
         }
         
+        # Useful map for lookup in event handling.
         var stackMap := [].diverge()
         
-        stack.addSelectionListener(def selectionListener {
+        def showStackFrame(origin, target, frame :Stack) :void {
+            def [ov, ot] := origin
+            def [tv, tt] := target
+            
+            def oattr := vatMap.fetchDisplayAttributes(ov)
+            def tattr := vatMap.fetchDisplayAttributes(tv)
+            
+            description.setText(`[${oattr[0]}, $ot] causes [${tattr[0]}, $tt]`)
+            
+            # Remove stack entry items from list widget.
+            stack.removeAll()
+            
+            stackMap := [].diverge()
+            
+            # Clear source filename label and source code text pane.
+            filename.setText("")
+            source.setText("")
+            
+            if (frame.size() > 0) {
+                for [[pathname, _], [[first, fo], [last, lo]]] in frame {
+                    if (pathname != "" ) {
+                        def line :String := getLine(getFile(pathname), first, fo, last, lo)
+                        stack.add(line)
+                        # Useful map for event handling.
+                        stackMap.push([pathname, [[first, fo], [last, lo]]])
+                    }
+                }
+            }
+            if (stack.getItemCount() > 0) {
+                stack.setSelection(0)
+                def [pathname, [[first, fo], [last, lo]]] := stackMap[0]
+                showAndSelect(getFile(pathname), pathname, first, fo, last, lo)
+            }
+        }
+        
+        def selectionObserver {
+            to edgeSelected(optEdge) :void {
+                if (optEdge != null) {
+                    def [_, stackFrame] := optEdge.getContext()
+                    showStackFrame(optEdge.getOrigin().getID(),
+                                   optEdge.getTarget().getID(),
+                                   stackFrame)
+                }
+            }
+        }
+        selectionModel.addObserver(selectionObserver)
+        
+        def selectionListener {
             to widgetSelected(event) :void {
                 def i := stack.getSelectionIndex()
                 if (i >= 0) {
@@ -167,7 +214,10 @@ def stackWalkerAuthor(<file>, <jar>, traceline) :near {
                     showAndSelect(getFile(pathname), pathname, first, fo, last, lo)
                 }
             }
-        })
+            to widgetDefaultSelected(event) :void {}
+            
+        }
+        stack.addSelectionListener(selectionListener)
         
         def stackWalker {
             
@@ -194,41 +244,6 @@ def stackWalkerAuthor(<file>, <jar>, traceline) :near {
                 
                 sourcePane.getLayout().setHorizontalSpacing(0)
                 sourcePane.getLayout().setVerticalSpacing(2)
-            }
-            
-            to showStackFrame(origin, target, frame :Stack, vatMap) :void {
-                def [ov, ot] := origin
-                def [tv, tt] := target
-                
-                def oattr := vatMap.fetchDisplayAttributes(ov)
-                def tattr := vatMap.fetchDisplayAttributes(tv)
-                
-                description.setText(`[${oattr[0]}, $ot] causes [${tattr[0]}, $tt]`)
-                
-                # Remove stack entry items from list widget.
-                stack.removeAll()
-                
-                stackMap := [].diverge()
-                
-                # Clear source filename label and source code text pane.
-                filename.setText("")
-                source.setText("")
-                
-                if (frame.size() > 0) {
-                    for [[pathname, _], [[first, fo], [last, lo]]] in frame {
-                        if (pathname != "" ) {
-                            def line :String := getLine(getFile(pathname), first, fo, last, lo)
-                            stack.add(line)
-                            # Useful map for event handling.
-                            stackMap.push([pathname, [[first, fo], [last, lo]]])
-                        }
-                    }
-                }
-                if (stack.getItemCount() > 0) {
-                    stack.setSelection(0)
-                    def [pathname, [[first, fo], [last, lo]]] := stackMap[0]
-                    showAndSelect(getFile(pathname), pathname, first, fo, last, lo)
-                }
             }
         }
     }

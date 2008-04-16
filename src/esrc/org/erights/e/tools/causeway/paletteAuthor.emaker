@@ -195,7 +195,7 @@ def paletteAuthor(rezKit, makers, traceline) :near {
             
             to makeFramePalette() :near {
                 return makeBasicPalette("justBlack",
-                                        "bgGray",
+                                        "justWhite",
                                         ["Arial", "12", "bold"])
             }
             to makeTitlePalette() :near {
@@ -218,15 +218,15 @@ def paletteAuthor(rezKit, makers, traceline) :near {
                                         "justWhite",
                                         ["Courier New", "9", "normal"])
             }
-            to makePOTreePalette() :near {
+            to makePOPanePalette() :near {
                 return makeBasicPalette("justBlack",
                                         "justWhite",
-                                        ["Microsoft Sans Serif", "10", "normal"])
+                                        ["Arial", "9", "normal"])
             }
             to makeMessageTreePalette() :near {
                 return makeBasicPalette("justBlack",
                                         "justWhite",
-                                        ["Microsoft Sans Serif", "10", "normal"])
+                                        ["Arial", "9", "normal"])
             }
             to makeEStackPalette() :near {
                 return makeBasicPalette("justBlack",

@@ -1,0 +1,23 @@
+#!/usr/bin/env rune
+
+pragma.syntax("0.8")
+
+# Copyright 2008 Terry Stanley under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def makeSelectionModel() :near {
+    var optCurrentEdge := null
+    def observers := [].diverge()
+    def selectionModel {
+        to setOptEdge(optEdge) :void {
+            optCurrentEdge := optEdge
+            for observer in observers {
+                observer <- edgeSelected(optEdge)
+            }
+        }
+        to addObserver(observer) :void {
+            observers.push(observer)
+        }
+    }
+    return selectionModel
+}

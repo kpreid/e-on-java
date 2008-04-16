@@ -19,8 +19,8 @@ def stackWalkerAuthor :=
 def treePaneAuthor :=
   <import:org.erights.e.tools.causeway.treePaneAuthor>
 
-def poTreePaneAuthor :=
-  <import:org.erights.e.tools.causeway.poTreePaneAuthor>
+def makePOGroup :=
+  <import:org.erights.e.tools.causeway.makePOGroup>
 
 def debugPaneAuthor :=
   <import:org.erights.e.tools.causeway.debugPaneAuthor>
@@ -59,21 +59,16 @@ def makeVatMap(vats, palette, traceline) :near {
 
 def makeFolderGroup(folder, palette, traceline) :near {
     
-    def initialSelection := [].diverge()
     def tabKeeper := [].diverge()
     
     def folderGroup {
         
-        to add(tabbedPane, label, selected) :void {
+        to add(tabbedPane, label) :void {
             def tab := <widget:makeTabItem>(folder, 0)
             
             tab.setControl(tabbedPane.getPane())
             tab.setText(label)
             tabKeeper.push([tab, tabbedPane])
-            
-            if (selected == true) {
-                initialSelection.push(tab)
-            }
         }
         
         to layout() :void {
@@ -82,24 +77,10 @@ def makeFolderGroup(folder, palette, traceline) :near {
             }
         }
         
-        to open() :void {
-            #if (tabKeeper == []) { return }
-            #def ndx := folder.indexOf(initialSelection[0])
-            #if (ndx != -1 ) {
-            #    folder.setSelection(ndx)
-            #}
-            #for t in tabKeeper {
-            #    def [tab, tabbedPane] := t
-            #    if (tab == initialSelection[0]) {
-            #        tabbedPane.activate()
-            #        return
-            #    }
-            #}
-        }
+        to open() :void {}
     }
     return folderGroup
 }
-
 
 /**
  */
@@ -115,12 +96,10 @@ def viewerAuthor(<file>, <jar>, makers, shell, tcr, traceline) :near {
         def fp := palette.makeFolderPalette()
         
         # top-left
-        def poTreeFolder := <widget:makeTabFolder>(sideToSide, 0)
-        poTreeFolder.setForeground(fp.getFg())
-        poTreeFolder.setBackground(fp.getBg())
-        poTreeFolder.setFont(fp.getFont())
-        def poTreeFolderGroup := makeFolderGroup(poTreeFolder, palette, traceline)
-        def makePOTreePane := poTreePaneAuthor(traceline)
+        def pogFolder := <widget:makeTabFolder>(sideToSide, 0)
+        pogFolder.setForeground(fp.getFg())
+        pogFolder.setBackground(fp.getBg())
+        pogFolder.setFont(fp.getFont())
         
         # top-middle
         def treeFolder := <widget:makeTabFolder>(sideToSide, 0)
@@ -136,11 +115,14 @@ def viewerAuthor(<file>, <jar>, makers, shell, tcr, traceline) :near {
         debugFolder.setBackground(fp.getBg())
         debugFolder.setFont(fp.getFont())
         def debugFolderGroup := makeFolderGroup(debugFolder, palette, traceline)
-        def makeDebugPane := debugPaneAuthor(<file>, <jar>, traceline)
+        def makeDebugPane := debugPaneAuthor(<file>, <jar>, makers, traceline)
         
         # bottom
-        def makeStackWalker := stackWalkerAuthor(<file>, <jar>, traceline)
-        def stackWalker := makeStackWalker(topToBottom, makers, palette)
+        def stackPane := <widget:makeComposite>(topToBottom, 0)
+        stackPane.setForeground(fp.getFg())
+        stackPane.setBackground(fp.getBg())
+        stackPane.setFont(fp.getFont())
+        def makeStackWalker := stackWalkerAuthor(<file>, <jar>, makers, traceline)
         
         topToBottom.setWeights([50, 50])
         sideToSide.setWeights([40, 35, 25])
@@ -149,40 +131,44 @@ def viewerAuthor(<file>, <jar>, makers, shell, tcr, traceline) :near {
             
             to getTopLevelPane() :near { return topToBottom }
             
-            to open() :void {
-                debugFolderGroup.open()
-                poTreeFolderGroup.open()
-                treeFolderGroup.open()
-                stackWalker.open()
-            }
+            to open() :void {}
             
             to layout() :void {
-                debugFolderGroup.layout()
-                poTreeFolderGroup.layout()
-                treeFolderGroup.layout()
-                stackWalker.layout()
+                sideToSide.layout()
+                topToBottom.layout()
             }
             
-            to setModel(model) :void {
+            to setModel(model, selectionModel) :void {
                 bind messageGraph := model.getTop()
-                def vatSet := model.getVatSet()
                 
+                def vatSet := model.getVatSet()
                 def vatMap := makeVatMap(vatSet, palette, traceline)
                 
-                def debugPane := makeDebugPane(debugFolder, makers, palette)
-                debugFolderGroup.add(debugPane, debugPane.getTabLabel(), true)
+                def debugPane := makeDebugPane(debugFolder, palette, selectionModel)
+                debugFolderGroup.add(debugPane, debugPane.getTabLabel())
+                debugFolderGroup.layout()
                 
-                def treePane := makeTreePane(treeFolder, palette, messageGraph, vatMap, stackWalker, debugPane)
-                treeFolderGroup.add(treePane, treePane.getTabLabel(), true)
+                stackPane.setVisible(false)
+                def stackWalker := makeStackWalker(topToBottom, palette,
+                                                   vatMap, selectionModel)
+                stackWalker.layout()
                 
+                def treePane := makeTreePane(treeFolder, palette, vatMap,
+                                             messageGraph, selectionModel)
+                treeFolderGroup.add(treePane, treePane.getTabLabel())
+                treeFolderGroup.layout()
+                
+                # Map [VatName, List[EventArc]]
+                def pogModel := [].asMap().diverge()
                 for i in 0 ..! vatSet.size() {
                     def poList := model.getOrdered(vatSet[i])
                     if (poList != []) {
-                        def poTreePane := makePOTreePane(poTreeFolder, palette, poList,
-                                                         vatSet[i], vatMap, treePane)
-                        poTreeFolderGroup.add(poTreePane, poTreePane.getTabLabel(), i == 0)
+                        pogModel[vatSet[i]] := poList
                     }
                 }
+                def pogView := makePOGroup(pogFolder, palette, vatMap,
+                                           pogModel.snapshot(), selectionModel)
+                pogView.layout()
             }
         }
         return viewer

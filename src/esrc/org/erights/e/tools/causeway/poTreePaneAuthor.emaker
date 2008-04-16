@@ -17,6 +17,8 @@ def swtGrid__quasiParser := <swttools:swtGridQParserMaker>()
 def itemToModelMap := [].asMap().diverge()
 def modelToItemMap := [].asMap().diverge()
 
+
+
 def getNestedEdges(origin, edges, offset) :List {
     def nested := [].diverge()
     
@@ -115,9 +117,50 @@ def buildPOTree(parent, palette, poList, vatMap, traceline) :void {
     }
 }
 
+def makePOFolderGroup(folder, palette, traceline) :near {
+    
+    def tabKeeper := [].diverge()
+    
+    def poFolderGroup {
+        
+        to add(tabbedPane, label) :void {
+            def tab := <widget:makeTabItem>(folder, 0)
+            
+            tab.setControl(tabbedPane.getPane())
+            tab.setText(label)
+            tabKeeper.push([tab, tabbedPane])
+        }
+        
+        to layout() :void {
+            for [_, tabbedPane] in tabKeeper {
+                tabbedPane.layout()
+            }
+        }
+        
+        to open() :void {}
+        
+        to setSelectionModel(selectionModel) :void {
+            def selectionObserver {
+                to edgeSelected(optEdge) :void {
+                    def item := modelToItemMap.fetch(optEdge, fn{})
+                    if (item != null) {
+                        tree.setSelection([item])
+                        tree.showItem(item)
+                    } else {
+                        tree.deselectAll()
+                    }
+                }
+            }
+            selectionModel.addObserver(selectionObserver)
+        }
+    }
+    return poFolderGroup
+}
+
+
 def poTreePaneAuthor(traceline) :near {
     
-    def makePOTreePane(parent, palette, poList, vatName, vatMap, messageTreePane) :near {
+    def makePOTreePane(parent, palette, poList, vatName, vatMap, selectionModel) :near {
         
         def pane := <widget:makeComposite>(parent, 0)
         def tree := <widget:makeTree>(pane,
@@ -131,18 +174,15 @@ def poTreePaneAuthor(traceline) :near {
         
         buildPOTree(tree, palette, poList, vatMap, traceline)
         
-        def listenerForMessageTree {
+        def selectionListener {
             to widgetSelected(event) :void {
                 def item := event.getItem()
                 def edge := itemToModelMap.fetch(item, fn{})
-                if (edge != null) {
-                    messageTreePane.syncSelect(edge)
-                }
+                selectionModel.setOptEdge(edge)
             }
             to widgetDefaultSelected(event) :void {}
         }
-        
-        tree.addSelectionListener(listenerForMessageTree)
+        tree.addSelectionListener(selectionListener)
         
         def poTreePane {
             

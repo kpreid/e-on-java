@@ -379,7 +379,7 @@ def makeCausewayModel(var rootDirName :String, traceFiles :List[File], <file>, t
     }
     
     def sz := graph.getSize()
-    traceline(`graph size: $sz`)
+    #traceline(`graph size: $sz`)
     def roots := graph.getRoots()
     def root
     if (roots.size() == 1) {
@@ -391,7 +391,7 @@ def makeCausewayModel(var rootDirName :String, traceFiles :List[File], <file>, t
             graph.makeEventArc(root, r, ["", []])
         }
     }
-    graph.walkRelations(root, 0, traceline)
+    #graph.walkRelations(root, 0, traceline)
     
     sortTree(root)
     

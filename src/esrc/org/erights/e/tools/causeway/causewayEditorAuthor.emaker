@@ -84,6 +84,10 @@ def causewayEditorAuthor(rezKit,
 #            shell.removePaintListener(listenerForMetrics)
 #        }
         
+        def fp := palette.makeFramePalette()
+        shell.setForeground(fp.getFg())
+        shell.setBackground(fp.getBg())
+        
         def toolArea := <widget:makeGroup>(shell, 0)
         
         def toolBar :=

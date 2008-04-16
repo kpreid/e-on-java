@@ -102,7 +102,8 @@ def buildTree(parent, palette, edge, vatMap, otMap, traceline) :void {
 
 def treePaneAuthor(traceline) :near {
     
-    def makeTreePane(parent, palette, graph, vatMap, stackWalker, debugPane) :near {
+    def makeTreePane(parent, palette, vatMap,
+                     graph, selectionModel) :near {
         
         def pane := <widget:makeComposite>(parent, 0)
         def tree := <widget:makeTree>(pane,
@@ -118,63 +119,34 @@ def treePaneAuthor(traceline) :near {
             buildTree(tree, mtp, edge, vatMap, makeOTMap(), traceline)
         }
         
-        def listenerForStackWalker {
+        def selectionObserver {
+            to edgeSelected(optEdge) :void {
+                def item := modelToItemMap.fetch(optEdge, fn{})
+                if (item != null) {
+                    tree.setSelection([item])
+                    tree.showItem(item)
+                } else {
+                    tree.deselectAll()
+                }
+            }
+        }
+        selectionModel.addObserver(selectionObserver)
+        
+        def selectionListener {
             to widgetSelected(event) :void {
                 def item := event.getItem()
                 def edge := itemToModelMap.fetch(item, fn{})
-                if (edge != null) {
-                    def [_, stack] := edge.getContext()
-                    stackWalker.showStackFrame(edge.getOrigin().getID(),
-                                               edge.getTarget().getID(),
-                                               stack, vatMap)
-                }
+                selectionModel.setOptEdge(edge)
             }
             to widgetDefaultSelected(event) :void {}
         }
-        
-        tree.addSelectionListener(listenerForStackWalker)
-        
-        def listenerForDebugPane {
-            to widgetSelected(event) :void {
-                def item := event.getItem()
-                def edge := itemToModelMap.fetch(item, fn{})
-                if (edge != null) {
-                    debugPane.showLogFiles(edge.getLogFiles())
-                }
-            }
-            to widgetDefaultSelected(event) :void {}
-        }
-        
-        tree.addSelectionListener(listenerForDebugPane)
+        tree.addSelectionListener(selectionListener)
         
         def treePane {
             
             to getPane() :near { return pane }
             
             to getWidget() :near { return tree }
-            
-            to selectAndShow(item) :void {
-                # swt requires an array even for single selection
-                def selection := [].diverge()
-                selection.push(item)
-                tree.setSelection(selection.snapshot())
-                tree.showItem(item)
-            }
-            
-            to deselect() :void {
-                if (tree.getSelectionCount() > 0) {
-                    tree.deselectAll()
-                }
-            }
-            
-            to syncSelect(selection) :void {
-                def item := modelToItemMap.fetch(selection, fn{})
-                if (item != null) {
-                    treePane.selectAndShow(item)
-                } else {
-                    treePane.deselect()
-                }
-            }
             
             to activate() :void {}
             

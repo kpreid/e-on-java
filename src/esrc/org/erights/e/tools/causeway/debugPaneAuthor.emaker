@@ -22,9 +22,9 @@ def getText(file) :String {
     }
 }
 
-def debugPaneAuthor(<file>, <jar>, traceline) :near {
+def debugPaneAuthor(<file>, <jar>, makers, traceline) :near {
     
-    def makeDebugPane(parent, makers, palette) :near {
+    def makeDebugPane(parent, palette, selectionModel) :near {
         
         def pane := <widget:makeComposite>(parent, 0)
         def text := <custom:makeStyledText>(pane,
@@ -56,27 +56,33 @@ def debugPaneAuthor(<file>, <jar>, traceline) :near {
             }
         }
         
+        def selectionObserver {
+            to edgeSelected(optEdge) :void {
+                if (optEdge != null) {
+                    def logFiles := optEdge.getLogFiles()
+                    text.append("\n\n")
+                    def sos := text.getCharCount()
+                    text.append("--------------")
+                    def eos := text.getCharCount()
+                    text.append("\n")
+                    
+                    for log in logFiles {
+                        text.append(log.getText())
+                    }
+                    # set selection scrolls the content into view
+                    text.setSelection(sos, text.getCharCount())
+                    # just highlight the horizontal break
+                    text.setSelection(sos, eos)
+                }
+            }
+        }
+        selectionModel.addObserver(selectionObserver)
+        
         def debugPane {
             
             to getPane() :near { return pane }
             
             to getWidget() :near { return text }
-            
-            to showLogFiles(logFiles :List) :void {
-                text.append("\n\n")
-                def sos := text.getCharCount()
-                text.append("##############################")
-                def eos := text.getCharCount()
-                text.append("\n")
-                
-                for log in logFiles {
-                    text.append(log.getText())
-                }
-                # set selection scrolls the content into view
-                text.setSelection(sos, text.getCharCount())
-                # just highlight the horizontal break
-                text.setSelection(sos, eos)
-            }
             
             to activate() :void {}
             
