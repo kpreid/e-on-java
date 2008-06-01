@@ -42,5 +42,6 @@ public class RunnerThread extends Thread {
     public RunnerThread(Runner runner, String name) {
         super((Runnable)runner, name);
         myRunner = runner;
+        setDaemon(false);
     }
 }
