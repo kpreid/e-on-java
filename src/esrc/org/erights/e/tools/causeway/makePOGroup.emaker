@@ -42,40 +42,35 @@ def labelNodeItem(vatMap, node, item) :void {
     item.setText(`[${attr[0]}, $turn]`)
 }
 
-def getEdgePart(edge) :String {
-    def [sc, _] := edge.getContext()
-    # find most specific sending context event type
-    if (sc != "") {
-        def parts := sc.split(".")
-        if (parts.size() >= 1) {
-            def part := parts.last()
-            switch (part) {
-                match `Sent` { return " ->" }
-                match `SentIf` { return " ..." }
-                match `Comment` { return "" }
-                match _ { return ` ($part)` }
-            }
-        }
+def getEdgePart(edge, stackWalker) :nullOk[String] {
+    def [_, stack] := edge.getContext()
+    if ([] != stack) {
+        return stackWalker.getOptSourceLine(stack[0])
     }
-    return ":"
+    return null
 }
 
-def labelArcItem(vatMap, edge, item) :void {
+def labelArcItem(vatMap, edge, item, stackWalker) :void {
     def [tVatName, tTurn] := edge.getTarget().getID()
     
     # Set descriptive text to vat name and turn.
     def tAttr := vatMap.fetchDisplayAttributes(tVatName)
     item.setForeground(tAttr[1])
-    def part := getEdgePart(edge)
-    def msg := edge.getMessage()
+    
+    var msg := getEdgePart(edge, stackWalker)
+    if (null == msg) {
+        msg := edge.getMessage()
+    }
+    
     if (tAttr[0] == "ether") {
-        item.setText(`$msg$part`)
+        item.setText(`$msg`)
     } else {
-        item.setText(`$msg$part [${tAttr[0]}, $tTurn]`)
+        item.setText(`[${tAttr[0]}, $tTurn] $msg`)
     }
 }
 
-def buildTreeItems(parent, palette, vatMap, origin, edges, ndx) : void {
+def buildTreeItems(parent, palette, vatMap,
+                   origin, edges, ndx, stackWalker) : void {
     
     # Make tree item for origin.
     def item := <widget:makeTreeItem>(parent, 0)
@@ -91,11 +86,12 @@ def buildTreeItems(parent, palette, vatMap, origin, edges, ndx) : void {
         itemToModelMap.put([nested, ndx], edge, true)
         modelToItemMap.put(edge, [nested, ndx], true)
         
-        labelArcItem(vatMap, edge, nested)
+        labelArcItem(vatMap, edge, nested, stackWalker)
     }
 }
 
-def buildTree(parent, palette, vatMap, poList, ndx) :void {
+def buildTree(parent, palette, vatMap,
+              poList, ndx, stackWalker) :void {
     
     var i := 0
     while (i < poList.size()) {
@@ -105,7 +101,8 @@ def buildTree(parent, palette, vatMap, poList, ndx) :void {
             def origin := edge.getOrigin()
             # edges will contain at least one edge
             def edges := getNestedEdges(origin, poList, i)
-            buildTreeItems(parent, palette, vatMap, origin, edges, ndx)
+            buildTreeItems(parent, palette, vatMap,
+                           origin, edges, ndx, stackWalker)
             
             i += edges.size()
             
@@ -115,7 +112,8 @@ def buildTree(parent, palette, vatMap, poList, ndx) :void {
     }
 }
 
-def makePOPane(parent, palette, vatMap, poList, ndx, selectionModel) :near {
+def makePOPane(parent, palette, vatMap, poList, ndx,
+               selectionModel, stackWalker) :near {
     
     def pane := <widget:makeComposite>(parent, 0)
     def tree := <widget:makeTree>(pane,
@@ -130,7 +128,7 @@ def makePOPane(parent, palette, vatMap, poList, ndx, selectionModel) :near {
     tree.setBackground(popp.getBg())
     tree.setFont(popp.getFont())
     
-    buildTree(tree, palette, vatMap, poList, ndx)
+    buildTree(tree, palette, vatMap, poList, ndx, stackWalker)
     
     def selectionListener {
         to widgetSelected(event) :void {
@@ -164,7 +162,8 @@ def makePOPane(parent, palette, vatMap, poList, ndx, selectionModel) :near {
     return pop
 }
 
-def makePOGroup(folder, palette, vatMap, model, selectionModel) :near {
+def makePOGroup(folder, palette, vatMap, model,
+                selectionModel, stackWalker) :near {
     
     def tabKeeper := [].diverge()
     
@@ -174,7 +173,8 @@ def makePOGroup(folder, palette, vatMap, model, selectionModel) :near {
         def tab := <widget:makeTabItem>(folder, 0)
         
         def pop := makePOPane(folder, palette, vatMap,
-                              poList, folder.indexOf(tab), selectionModel)
+                              poList, folder.indexOf(tab),
+                              selectionModel, stackWalker)
         
         tab.setControl(pop.getPane())
         tab.setText(vatMap.fetchDisplayAttributes(vatName)[0])

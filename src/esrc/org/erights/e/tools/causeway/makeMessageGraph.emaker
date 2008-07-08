@@ -17,7 +17,7 @@ def SourceSpan := Tuple[Tuple[int,int], Tuple[int, int]]
 def SourceName := Tuple[String, String]
 
 # A [source-name, source-span]
-def StackEntry := Tuple[SourceName, SourceSpan]
+def StackEntry := Tuple[SourceName, nullOk[SourceSpan]]
 
 # top-to-bottom list of stack entries
 def Stack := List[StackEntry]
@@ -88,7 +88,9 @@ def makeMessageGraph(traceline) :near {
     
     def mkEventArc(origin :near,
                    target :near,
-                   var context :Tuple[SendingContext, Stack]) :near {
+                   var sendContext :SendingContext,
+                   var sendStack :Stack,
+                   var gotStack :Stack) :near {
         var anchor :int := 0
         var message :Message := ""
         def logs := [].diverge()
@@ -96,10 +98,14 @@ def makeMessageGraph(traceline) :near {
         
         def eventArc extends templateArc(eventArc, origin, target) {
             to getContext() :Tuple[SendingContext, Stack] {
-                return context
+                return [sendContext, gotStack + sendStack]
             }
-            to setContext(ctx :Tuple[SendingContext, Stack]) :void {
-                context := ctx
+            to setSendContext(sendCtx :SendingContext, sendStk :Stack) :void {
+                sendContext := sendCtx
+                sendStack := sendStk
+            }
+            to setGotContext(gotStk :Stack) :void {
+                gotStack := gotStk
             }
             
             to getAnchor() :int { return anchor }
@@ -111,8 +117,10 @@ def makeMessageGraph(traceline) :near {
             to getLogFiles() :List {
                 return logs.snapshot()
             }
-            to addLogFile(logFile) :void {
-                logs.push(logFile)
+            to addLogFile(optSpan) :void {
+                if (null != optSpan) {
+                    logs.push(optSpan)
+                }
             }
             
             to rememberWhy(reason :String) :void {
@@ -136,8 +144,11 @@ def makeMessageGraph(traceline) :near {
         
         to makeEventArc(origin :near,
                         target :near,
-                        context :Tuple[SendingContext, Stack]) :near {
-            return mkEventArc(origin, target, context)
+                        sendContext :SendingContext,
+                        sendStack :Stack,
+                        gotStack :Stack) :near {
+            return mkEventArc(origin, target,
+                              sendContext, sendStack, gotStack)
         }
         
         to optGet(id) :any { return dag.optGet(id) }

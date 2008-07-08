@@ -46,40 +46,34 @@ def labelNodeItem(vatMap, node, item) :void {
     item.setText(`[${attr[0]}, $turn]`)
 }
 
-def getEdgePart(edge) :String {
-    def [sc, _] := edge.getContext()
-    # find most specific sending context event type
-    if (sc != "") {
-        def parts := sc.split(".")
-        if (parts.size() >= 1) {
-            def part := parts.last()
-            switch (part) {
-                match `Sent` { return " ->" }
-                match `SentIf` { return " ..." }
-                match `Comment` { return "" }
-                match _ { return ` ($part)` }
-            }
-        }
+def getEdgePart(edge, stackWalker) :nullOk[String] {
+    def [_, stack] := edge.getContext()
+    if ([] != stack) {
+        return stackWalker.getOptSourceLine(stack[0])
     }
-    return ":"
+    return null
 }
 
-def labelArcItem(vatMap, edge, item) :void {
+def labelArcItem(vatMap, edge, item, stackWalker) :void {
     def [tVatName, tTurn] := edge.getTarget().getID()
     
     # Set descriptive text to vat name and turn.
     def tAttr := vatMap.fetchDisplayAttributes(tVatName)
     item.setForeground(tAttr[1])
-    def part := getEdgePart(edge)
-    def msg := edge.getMessage()
+    
+    var msg := getEdgePart(edge, stackWalker)
+    if (null == msg) {
+        msg := edge.getMessage()
+    }
+    
     if (tAttr[0] == "ether") {
-        item.setText(`$msg$part`)
+        item.setText(`$msg`)
     } else {
-        item.setText(`$msg$part [${tAttr[0]}, $tTurn]`)
+        item.setText(`[${tAttr[0]}, $tTurn] $msg`)
     }
 }
 
-def buildTree(parent, palette, edge, vatMap, otMap, traceline) :void {
+def buildTree(parent, palette, edge, vatMap, otMap, stackWalker, traceline) :void {
     
     #traceline(`buildTree o: ${edge.getOrigin()} t: ${edge.getTarget()}`)
     
@@ -93,17 +87,17 @@ def buildTree(parent, palette, edge, vatMap, otMap, traceline) :void {
     itemToModelMap.put(item, edge, true)
     modelToItemMap.put(edge, item, true)
     
-    labelArcItem(vatMap, edge, item)
+    labelArcItem(vatMap, edge, item, stackWalker)
     
     for ge => _ in edge.getTarget().outs() {
-        buildTree(item, palette, ge, vatMap, otMap, traceline)
+        buildTree(item, palette, ge, vatMap, otMap, stackWalker, traceline)
     }
 }
 
 def treePaneAuthor(traceline) :near {
     
     def makeTreePane(parent, palette, vatMap,
-                     graph, selectionModel) :near {
+                     graph, selectionModel, stackWalker) :near {
         
         def pane := <widget:makeComposite>(parent, 0)
         def tree := <widget:makeTree>(pane,
@@ -116,7 +110,7 @@ def treePaneAuthor(traceline) :near {
         tree.setFont(mtp.getFont())
         
         for  edge => _ in graph.outs() {
-            buildTree(tree, mtp, edge, vatMap, makeOTMap(), traceline)
+            buildTree(tree, mtp, edge, vatMap, makeOTMap(), stackWalker, traceline)
         }
         
         def selectionObserver {

@@ -14,6 +14,35 @@ def SWT := <swt:makeSWT>
 def <swttools> := <import:org.erights.e.ui.swt.*>
 def swtGrid__quasiParser := <swttools:swtGridQParserMaker>()
 
+def getTextSpan(file, first :int, last :int) :String {
+    if (!(file.__respondsTo("exists",0)) || file.exists()) {
+        var span :String := ""
+        def text := file.getText()
+        def lines := text.split("\n")
+        
+        if (first <= lines.size()) {
+            def lastLine
+            if (first == last || last > lines.size()) {
+                bind lastLine := lines.size()
+            } else {
+                bind lastLine := last -1
+            }
+            
+            def n := lastLine - first +1
+            
+            for i in first ..! first + n {
+                
+                span += lines[i -1]
+                span += "\n"
+            }
+        }
+        return span
+        
+    } else {
+        `*** "${file.getPath()}" not found ***`
+    }
+}
+
 def getText(file) :String {
     if (!(file.__respondsTo("exists",0)) || file.exists()) {
         file.getText()
@@ -56,18 +85,33 @@ def debugPaneAuthor(<file>, <jar>, makers, traceline) :near {
             }
         }
         
+# def pathname:String := span.getUrl()
+# def startLine := span.getStartLine()
+# def endLine := span.getEndLine()
+        
         def selectionObserver {
             to edgeSelected(optEdge) :void {
                 if (optEdge != null) {
                     def logFiles := optEdge.getLogFiles()
-                    text.append("\n\n")
+                    text.append("\n")
                     def sos := text.getCharCount()
-                    text.append("--------------")
+                    text.append(">>>>> Log entries:")
                     def eos := text.getCharCount()
                     text.append("\n")
                     
-                    for log in logFiles {
-                        text.append(log.getText())
+                    for span in logFiles {
+                        def pathname := span.getUrl()
+                        def startLine := span.getStartLine()
+                        def endLine := span.getEndLine()
+                        
+                        #traceline(`span pathname: $pathname start: $startLine end: $endLine`)
+                        
+                        def file := getFile(pathname)
+                        
+                        def textSpan := getTextSpan(file, startLine, endLine)
+                        
+                        text.append(textSpan)
+                        text.append("\n")
                     }
                     # set selection scrolls the content into view
                     text.setSelection(sos, text.getCharCount())

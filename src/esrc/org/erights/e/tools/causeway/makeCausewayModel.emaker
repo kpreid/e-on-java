@@ -18,7 +18,7 @@ def SourceSpan := Tuple[Tuple[int,int], Tuple[int, int]]
 def SourceName := Tuple[String, String]
 
 # A [source-name, source-span]
-def StackEntry := Tuple[SourceName, SourceSpan]
+def StackEntry := Tuple[SourceName, nullOk[SourceSpan]]
 
 # top-to-bottom list of stack entries
 def Stack := List[StackEntry]
@@ -37,7 +37,6 @@ def SendingContext := String
 def sourceCodeRootDirName
 
 def fixupSource(source :String) :String {
-    #def path := source.replaceAll(".", "/")
     return sourceCodeRootDirName + source
 }
 
@@ -101,6 +100,8 @@ def makeCausewayModel(var rootDirName :String, traceFiles :List[File], <file>, t
     # ether does not really belong in the graph, but it's useful for debugging, for now
     graph.addTurnNode(ether)
     
+    def makeSourceSpan := <elib:base.makeSourceSpan>
+    
     def jp := <import:org.quasiliteral.term.makeTermParser>
     
     # Parse term tree structure. Return E Stack object which could be empty.
@@ -119,7 +120,7 @@ def makeCausewayModel(var rootDirName :String, traceFiles :List[File], <file>, t
                 
                 match term`{ "name" : @{fnc :String},
                              "source" : @{source :String} }` {
-                    entries[i] := [[fixupSource(source), fnc], spanner(term`[[1]]`)]
+                    entries[i] := [[fixupSource(source), fnc], null]
                 }
             }
         }
@@ -156,13 +157,29 @@ def makeCausewayModel(var rootDirName :String, traceFiles :List[File], <file>, t
         
         #traceline(`tracefile: $tfile`)
         
-        def t := tfile.getText()
+        def t := tfile.getTwine()
         def tt := jp(t)
         
         tt =~ term`[@chunks*]`
         
-        for chunk in chunks {
-            switch (chunk) {
+        for i in 0 ..! chunks.size() {
+            
+            var optSpan := null
+            
+            if (chunks[i] =~ term`{@dollar: @_, @_*}`) {
+                optSpan := dollar.getOptSpan()
+                if (null != optSpan && i +1 < chunks.size()) {
+                    
+                    if (chunks[i +1] =~ term`{@nextDollar: @_, @_*}`) {
+                        def nextOptSpan := nextDollar.getOptSpan()
+                        if (null != nextOptSpan) {
+                            optSpan := makeSourceSpan.optCover(optSpan, nextOptSpan)
+                        }
+                    }
+                }
+            }
+            
+            switch (chunks[i]) {
                 
                 match term`{ "$$" : [ "org.ref_send.log.Sent",
                                       "org.ref_send.log.Event" ],
@@ -190,10 +207,10 @@ def makeCausewayModel(var rootDirName :String, traceFiles :List[File], <file>, t
                         # The anchor number for an edge is set by the Sent.
                         
                         edge := graph.makeEventArc(origin, ether,
-                                                   ["org.ref_send.log.Sent",
-                                                    entries])
+                                                   "org.ref_send.log.Sent",
+                                                   entries, [])
                         edge.setAnchor(anchor)
-                        edge.addLogFile(tfile)
+                        edge.addLogFile(optSpan)
                         msgMap[message] := edge
                         
                     } else {
@@ -204,17 +221,10 @@ def makeCausewayModel(var rootDirName :String, traceFiles :List[File], <file>, t
                         
                         if (edge.getOrigin() == ether) {
                             edge.setOrigin(origin)
-                            edge.setContext(["org.ref_send.log.Sent",
-                                             entries])
+                            edge.setSendContext("org.ref_send.log.Sent",
+                                                entries)
                             edge.setAnchor(anchor)
-                            edge.addLogFile(tfile)
-                            if (entries =~ [[[_, topFnc], _]]+_) {
-                                if (topFnc != "") {
-                                    # For now, this function name is useful.
-                                    # Comments or descriptive messages would be better.
-                                    edge.setMessage(topFnc)
-                                }
-                            }
+                            edge.addLogFile(optSpan)
                             
                             # Add the edge to the process-order list.
                             storeEdge(edge)
@@ -250,10 +260,10 @@ def makeCausewayModel(var rootDirName :String, traceFiles :List[File], <file>, t
                         # The anchor number for an edge is set by the SentIf.
                         
                         edge := graph.makeEventArc(origin, ether,
-                                                   ["org.ref_send.log.SentIf",
-                                                    entries])
+                                                   "org.ref_send.log.SentIf",
+                                                   entries, [])
                         edge.setAnchor(anchor)
-                        edge.addLogFile(tfile)
+                        edge.addLogFile(optSpan)
                         msgMap[message] := edge
                         
                     } else {
@@ -264,17 +274,10 @@ def makeCausewayModel(var rootDirName :String, traceFiles :List[File], <file>, t
                         
                         if (edge.getOrigin() == ether) {
                             edge.setOrigin(origin)
-                            edge.setContext(["org.ref_send.log.SentIf",
-                                             entries])
+                            edge.setSendContext("org.ref_send.log.SentIf",
+                                                entries)
                             edge.setAnchor(anchor)
-                            edge.addLogFile(tfile)
-                            if (entries =~ [[[_, topFnc], _]]+_) {
-                                if (topFnc != "") {
-                                    # For now, this function name is useful.
-                                    # Comments or descriptive messages would be better.
-                                    edge.setMessage(topFnc)
-                                }
-                            }
+                            edge.addLogFile(optSpan)
                             
                             # Add the edge to the process-order list.
                             storeEdge(edge)
@@ -297,6 +300,9 @@ def makeCausewayModel(var rootDirName :String, traceFiles :List[File], <file>, t
                     
                     def target := getOrMakeTurnNode(name, turn)
                     
+                    # Create E Stack object, possibly empty, from term tree.
+                    def entries := parseStack(stack)
+                    
                     var edge := msgMap.fetch(message, fn{null})
                     if (edge == null) {
                         
@@ -304,8 +310,9 @@ def makeCausewayModel(var rootDirName :String, traceFiles :List[File], <file>, t
                         # The corresponding Sent will fetch the edge from the msgMap.
                         
                         edge := graph.makeEventArc(ether, target,
-                                                   ["org.ref_send.log.Got", []])
-                        edge.addLogFile(tfile)
+                                                   "org.ref_send.log.Got",
+                                                   [], entries)
+                        edge.addLogFile(optSpan)
                         msgMap[message] := edge
                         
                     } else {
@@ -315,16 +322,8 @@ def makeCausewayModel(var rootDirName :String, traceFiles :List[File], <file>, t
                         
                         if (edge.getTarget() == ether) {
                             edge.setTarget(target)
-                            edge.addLogFile(tfile)
-                            
-                            def [_, entries] := edge.getContext()
-                            if (entries =~ [[[_, topFnc], _]]+_) {
-                                if (topFnc != "") {
-                                    # For now, this function name is useful.
-                                    # Comments or descriptive messages would be better.
-                                    edge.setMessage(topFnc)
-                                }
-                            }
+                            edge.setGotContext(entries)
+                            edge.addLogFile(optSpan)
                             
                             # Add the edge to the process-order list.
                             # Sent anchor numbers define order.
@@ -353,18 +352,10 @@ def makeCausewayModel(var rootDirName :String, traceFiles :List[File], <file>, t
                     def entries := parseStack(stack)
                     
                     def edge := graph.makeEventArc(origin, ether,
-                                                   ["org.ref_send.log.Comment",
-                                                    entries])
+                                                   "org.ref_send.log.Comment",
+                                                   entries, [])
                     edge.setAnchor(anchor)
-                    edge.addLogFile(tfile)
-                    
-                    var omsg := "# " + comment
-                    if (entries =~ [[[_, topFnc], _]]+_) {
-                        if (topFnc != "") {
-                            omsg := topFnc + "    " + omsg
-                        }
-                    }
-                    edge.setMessage(omsg)
+                    edge.addLogFile(optSpan)
                     
                     # Add the edge to the process-order list.
                     storeEdge(edge)
@@ -388,7 +379,7 @@ def makeCausewayModel(var rootDirName :String, traceFiles :List[File], <file>, t
         bind root := graph.makeTurnNode(["top", 0], "top")
         graph.addTurnNode(root)
         for r in roots {
-            graph.makeEventArc(root, r, ["", []])
+            graph.makeEventArc(root, r, "", [], [])
         }
     }
     #graph.walkRelations(root, 0, traceline)

@@ -25,7 +25,7 @@ def SourceSpan := Tuple[Tuple[int,int], Tuple[int, int]]
 def SourceName := Tuple[String, String]
 
 # A [source-name, source-span]
-def StackEntry := Tuple[SourceName, SourceSpan]
+def StackEntry := Tuple[SourceName, nullOk[SourceSpan]]
 
 # top-to-bottom list of stack entries
 def Stack := List[StackEntry]
@@ -45,15 +45,18 @@ def stackWalkerAuthor(<file>, <jar>, makers, traceline) :near {
         def sideToSideSash := <custom:makeSashForm>(parent, SWT.getHORIZONTAL())
         
         def stackPane := <widget:makeComposite>(sideToSideSash, SWT.getBORDER())
-        def stack := <widget:makeList>(stackPane, SWT.getSINGLE())
+        
+        def stackExplorer := <widget:makeTree>(stackPane, SWT.getSINGLE() |
+                                                 (SWT.getH_SCROLL() |
+                                                    SWT.getV_SCROLL()))
         
         def sp := palette.makeEStackPalette()
         stackPane.setForeground(sp.getFg())
         stackPane.setBackground(sp.getBg())
         stackPane.setFont(sp.getFont())
-        stack.setForeground(sp.getFg())
-        stack.setBackground(sp.getBg())
-        stack.setFont(sp.getFont())
+        stackExplorer.setForeground(sp.getFg())
+        stackExplorer.setBackground(sp.getBg())
+        stackExplorer.setFont(sp.getFont())
         
         def dp := palette.makeDescPalette()
         
@@ -81,7 +84,7 @@ def stackWalkerAuthor(<file>, <jar>, makers, traceline) :near {
         filename.setBackground(fnp.getBg())
         filename.setFont(fnp.getFont())
         
-        sideToSideSash.setWeights([30, 70])
+        sideToSideSash.setWeights([35, 65])
         
         # strip crs
         source.addVerifyListener(def verifyListener {
@@ -121,15 +124,52 @@ def stackWalkerAuthor(<file>, <jar>, makers, traceline) :near {
             }
         }
         
-        def getLine(file, first :int, fo :int, last :int, lo :int) :String {
+        def getOptLine(file, first :int, fo :int, last :int, lo :int) :nullOk[String] {
             if (!(file.__respondsTo("exists",0)) || file.exists()) {
                 def source := file.getText()
                 def lines := source.split("\n")
-                lines[first -1].trim()
+                if (first <= lines.size()) {
+                    return lines[first -1].trim()
+                }
+            }
+            return null
+        }
+        
+        def getLine(file, first :int, fo :int, last :int, lo :int) :String {
+            if (getOptLine(file, first, fo, last, lo) =~ result :notNull) {
+                return result
             } else {
-                `*** "${file.getPath()}" not found ***`
+                return `*** "${file.getPath()}" not found ***`
             }
         }
+        
+        def getOptMessage(se :StackEntry) :nullOk[String] {
+            if (se =~ [[pathname, _], [[first, fo], [last, lo]]]) {
+                if (pathname != "" ) {
+                    def optResult := getOptLine(getFile(pathname), first, fo, last, lo)
+                    if (null != optResult) {
+                        return optResult
+                    }
+                }
+            }
+            if (se =~ [[pathname, topFnc], _]) {
+                if (pathname != "" && topFnc != "") {
+                    def lastSlash := pathname.lastStartOf("/");
+                    if (lastSlash >= 0) {
+                        def lastPart := pathname(lastSlash+1)
+                        if (lastPart =~ `@base.@_`) {
+                            return `$base#$topFnc`
+                        } else {
+                            return `$lastPart#$topFnc`
+                        }
+                    } else {
+                        return topFnc
+                    }
+                }
+            }
+            return null
+        }
+        
         
         def showAndSelect(file, pathname, first, fo, last, lo) :void {
             filename.setText(`$pathname  line: $first`)
@@ -157,39 +197,78 @@ def stackWalkerAuthor(<file>, <jar>, makers, traceline) :near {
         }
         
         # Useful map for lookup in event handling.
-        var stackMap := [].diverge()
+        var itemToModelMap := [].asMap().diverge()
         
-        def showStackFrame(origin, target, frame :Stack) :void {
-            def [ov, ot] := origin
-            def [tv, tt] := target
+        def buildTreeItem(parent, se :StackEntry) :near {
+            if (getOptMessage(se) =~ message :notNull) {
+                def item := <widget:makeTreeItem>(parent, 0)
+                var se2 := se
+                if (se[1] == null) {
+                    se2 := [se[0], [[1,0],[1,0]]]
+                }
+                itemToModelMap.put(item, se2, true)
+                item.setText(message)
+                return item
+            }
+            return null
+        }
+        
+        def buildSubTree(parent, entries :Stack) :void {
+            for i in 0 ..! entries.size() {
+                
+                def item := buildTreeItem(parent, entries[i])
+                
+                if (null != item) {
+                    
+                    for j in i +1 ..! entries.size() {
+                        
+                        buildTreeItem(item, entries[j])
+                    }
+                    return
+                }
+            }
+        }
+        
+        def showStackFrame(edge) :void {
+            def [ov, ot] := edge.getOrigin().getID()
+            def [tv, tt] := edge.getTarget().getID()
             
             def oattr := vatMap.fetchDisplayAttributes(ov)
             def tattr := vatMap.fetchDisplayAttributes(tv)
             
             description.setText(`[${oattr[0]}, $ot] causes [${tattr[0]}, $tt]`)
             
-            # Remove stack entry items from list widget.
-            stack.removeAll()
+            # Remove stack entry items from tree widget.
+            stackExplorer.removeAll()
             
-            stackMap := [].diverge()
+            itemToModelMap := [].asMap().diverge()
             
             # Clear source filename label and source code text pane.
             filename.setText("")
             source.setText("")
             
-            if (frame.size() > 0) {
-                for [[pathname, _], [[first, fo], [last, lo]]] in frame {
-                    if (pathname != "" ) {
-                        def line :String := getLine(getFile(pathname), first, fo, last, lo)
-                        stack.add(line)
-                        # Useful map for event handling.
-                        stackMap.push([pathname, [[first, fo], [last, lo]]])
-                    }
+            var curEdge := edge
+            while (null != curEdge) {
+                def [_, entries] := curEdge.getContext()
+                
+                buildSubTree(stackExplorer, entries)
+                
+                def origin := curEdge.getOrigin()
+                if (origin.getIncomingCount() == 1) {
+                    curEdge := origin.getPrevIn()
+                } else {
+                    curEdge := null
                 }
             }
-            if (stack.getItemCount() > 0) {
-                stack.setSelection(0)
-                def [pathname, [[first, fo], [last, lo]]] := stackMap[0]
+            if (stackExplorer.getItemCount() > 0) {
+                
+                def items := stackExplorer.getItems()
+                
+                stackExplorer.setSelection([items[0]])
+                stackExplorer.showItem(items[0])
+                
+                def [[pathname, _], [[first, fo], [last, lo]]] :=
+                  itemToModelMap.fetch(items[0], fn{})
                 showAndSelect(getFile(pathname), pathname, first, fo, last, lo)
             }
         }
@@ -197,10 +276,7 @@ def stackWalkerAuthor(<file>, <jar>, makers, traceline) :near {
         def selectionObserver {
             to edgeSelected(optEdge) :void {
                 if (optEdge != null) {
-                    def [_, stackFrame] := optEdge.getContext()
-                    showStackFrame(optEdge.getOrigin().getID(),
-                                   optEdge.getTarget().getID(),
-                                   stackFrame)
+                    showStackFrame(optEdge)
                 }
             }
         }
@@ -208,16 +284,16 @@ def stackWalkerAuthor(<file>, <jar>, makers, traceline) :near {
         
         def selectionListener {
             to widgetSelected(event) :void {
-                def i := stack.getSelectionIndex()
-                if (i >= 0) {
-                    def [pathname, [[first, fo], [last, lo]]] := stackMap[i]
+                def item := event.getItem()
+                if (itemToModelMap.fetch(item, fn{}) =~
+                      [[pathname, _], [[first, fo], [last, lo]]]) {
+                    
                     showAndSelect(getFile(pathname), pathname, first, fo, last, lo)
                 }
             }
             to widgetDefaultSelected(event) :void {}
-            
         }
-        stack.addSelectionListener(selectionListener)
+        stackExplorer.addSelectionListener(selectionListener)
         
         def stackWalker {
             
@@ -227,7 +303,7 @@ def stackWalkerAuthor(<file>, <jar>, makers, traceline) :near {
                 
                 swtGrid`${stackPane}:
                     ${description}.X
-                    ${stack}.X.Y`
+                    ${stackExplorer}.X.Y`
                 
                 stackPane.getLayout().setMarginWidth(2)
                 stackPane.getLayout().setMarginHeight(0)
@@ -244,6 +320,10 @@ def stackWalkerAuthor(<file>, <jar>, makers, traceline) :near {
                 
                 sourcePane.getLayout().setHorizontalSpacing(0)
                 sourcePane.getLayout().setVerticalSpacing(2)
+            }
+            
+            to getOptSourceLine(stackEntry :StackEntry) :nullOk[String] {
+                return getOptMessage(stackEntry)
             }
         }
     }

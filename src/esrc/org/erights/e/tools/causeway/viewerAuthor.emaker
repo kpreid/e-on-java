@@ -27,6 +27,10 @@ def debugPaneAuthor :=
 
 def getDisplayName(vatName) :String {
     
+    if (vatName =~ `<Vat @name @_`) {
+        return name
+    }
+    
     # find most specific folder name
     def parts := vatName.split("/")
     var i := parts.size() -1
@@ -154,7 +158,7 @@ def viewerAuthor(<file>, <jar>, makers, shell, tcr, traceline) :near {
                 stackWalker.layout()
                 
                 def treePane := makeTreePane(treeFolder, palette, vatMap,
-                                             messageGraph, selectionModel)
+                                             messageGraph, selectionModel, stackWalker)
                 treeFolderGroup.add(treePane, treePane.getTabLabel())
                 treeFolderGroup.layout()
                 
@@ -167,7 +171,7 @@ def viewerAuthor(<file>, <jar>, makers, shell, tcr, traceline) :near {
                     }
                 }
                 def pogView := makePOGroup(pogFolder, palette, vatMap,
-                                           pogModel.snapshot(), selectionModel)
+                                           pogModel.snapshot(), selectionModel, stackWalker)
                 pogView.layout()
             }
         }
