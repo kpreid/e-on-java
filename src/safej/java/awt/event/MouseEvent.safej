@@ -9,6 +9,6 @@ class(safe,
               method("getPoint()"),
               method("translatePoint(int, int)"),
               method("getClickCount()"),
-              method(suppress, "getButton()"),
+              method("getButton()"),
               method("isPopupTrigger()"),
               method(suppress, "paramString()")))
