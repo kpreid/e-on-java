@@ -81,6 +81,27 @@ def openFile(shell :Shell) :List {
     return paths
 }
 
+def exportFile(shell :Shell,
+               optFileName :nullOk[String],
+               extensions :List[String]) :near {
+    def dialog := <widget:makeFileDialog>(shell, SWT.getSAVE())
+    if (optFileName != null) {
+        dialog.setFileName(optFileName)
+    }
+    if (extensions.size() >= 1) {
+        dialog.setFilterExtensions(extensions)
+    }
+    
+    # The absolute path of the file selected, or null.
+    def abs := dialog.open()
+    
+    if (abs == null) {
+        return null
+    } else {
+        return <file>[abs]
+    }
+}
+
 def activate(shell :Shell) :void {
     <widget:makeShell>.activate(shell)
 }
@@ -106,8 +127,9 @@ def makeCursor(style :int) :any {
 
 def openners := [].asMap().diverge()
 
-openners.put("file", openFile)
-openners.put("dir", openDir)
+openners.put("openFile", openFile)
+openners.put("openDir", openDir)
+openners.put("exportFile", exportFile)
 
 def makers := [].asMap().diverge()
 

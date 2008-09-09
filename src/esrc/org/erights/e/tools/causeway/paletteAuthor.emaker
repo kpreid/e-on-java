@@ -196,62 +196,62 @@ def paletteAuthor(rezKit, makers, traceline) :near {
             to makeFramePalette() :near {
                 return makeBasicPalette("justBlack",
                                         "justWhite",
-                                        ["Arial", "12", "bold"])
+                                        ["Arial", "10", "bold"])
             }
             to makeTitlePalette() :near {
                 return makeBasicPalette("justWhite",
                                         "bgBlue",
-                                        ["Arial", "14", "bold"])
+                                        ["Arial", "12", "bold"])
             }
             to makeFolderPalette() :near {
                 return makeBasicPalette("justBlack",
                                         "justWhite",
-                                        ["Arial", "10", "bold"])
+                                        ["Arial", "9", "bold"])
             }
             to makeTabPalette() :near {
                 return makeBasicPalette("justBlack",
                                         "bgGray",
-                                        ["Arial", "10", "bold"])
+                                        ["Arial", "9", "bold"])
             }
             to makePOListPalette() :near {
                 return makeBasicPalette("justBlack",
                                         "justWhite",
-                                        ["Courier New", "12", "normal"])
+                                        ["Courier New", "9", "normal"])
             }
             to makePOPanePalette() :near {
                 return makeBasicPalette("justBlack",
                                         "justWhite",
-                                        ["Arial", "12", "normal"])
+                                        ["Arial", "9", "normal"])
             }
             to makeMessageTreePalette() :near {
                 return makeBasicPalette("justBlack",
                                         "justWhite",
-                                        ["Arial", "12", "normal"])
+                                        ["Arial", "9", "normal"])
             }
             to makeEStackPalette() :near {
                 return makeBasicPalette("justBlack",
                                         "justWhite",
-                                        ["Courier New", "12", "normal"])
+                                        ["Courier New", "9", "normal"])
             }
             to makeECodePalette() :near {
                 return makeBasicPalette("justBlack",
                                         "justWhite",
-                                        ["Courier New", "12", "normal"])
+                                        ["Courier New", "9", "normal"])
             }
             to makeDebugPanePalette() :near {
                 return makeBasicPalette("justBlack",
                                         "justWhite",
-                                        ["Courier New", "12", "normal"])
+                                        ["Courier New", "8", "normal"])
             }
             to makeFilenamePalette() :near {
                 return makeBasicPalette("justBlack",
                                         "bgGray",
-                                        ["Arial", "12", "normal"])
+                                        ["Arial", "10", "normal"])
             }
             to makeDescPalette() :near {
                 return makeBasicPalette("justBlack",
                                         "bgGray",
-                                        ["Arial", "12", "normal"])
+                                        ["Arial", "10", "normal"])
             }
         }
         

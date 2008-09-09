@@ -132,6 +132,8 @@ def causewayEditorAuthor(rezKit,
          def doSaveAll,
          def doRevert,
          
+         def doExport,
+         
          def doPageSetup,
          def doPrint,
          
@@ -202,7 +204,7 @@ def causewayEditorAuthor(rezKit,
             to run() :void {
                 def waitCursor := makers["cursor"](SWT.getCURSOR_WAIT())
                 def oldShell := causewayEditor.getShell()
-                var optPaths :List := openners["file"](oldShell)
+                var optPaths :List := openners["openFile"](oldShell)
                 if (optPaths != []) {
                     if (rootDirName == "") {
                         doOptions()
@@ -270,7 +272,6 @@ def causewayEditorAuthor(rezKit,
             }
         }
         
-        
         /**
          *
          */
@@ -293,6 +294,26 @@ def causewayEditorAuthor(rezKit,
             }
             to getLabel()            :String { "&Revert" }
             to getOptTip()           :String { "Revert to last saved version" }
+        }
+        
+        /**
+         *
+         */
+        bind doExport extends abstractAction(doExport) {
+            to run() :void {
+                #def waitCursor := makers["cursor"](SWT.getCURSOR_WAIT())
+                def shell := causewayEditor.getShell()
+                
+                def dotFile := openners["exportFile"](shell, "messageGraph.gv", [])
+                
+                if (dotFile != null) {
+                    
+                    #shell.setCursor(waitCursor)
+                    causewayEditor.getViewer().exportModelToDotFile(dotFile)
+                }
+            }
+            to getLabel()            :String { "&Export..." }
+            to getOptTip()           :String { "Export message graph to GraphViz DOT format" }
         }
         
         /**
@@ -631,8 +652,8 @@ def causewayEditorAuthor(rezKit,
          */
         bind doOptions extends abstractAction(doOptions) {
             to run() :void {
-                def dir := openners["dir"](causewayEditor.getShell(),
-                                           "Select the source code root directory.")
+                def dir := openners["openDir"](causewayEditor.getShell(),
+                                               "Select the source code root directory.")
                 if (dir != null) {
                     rootDirName := dir.getPath()
                 }
@@ -739,6 +760,8 @@ def causewayEditorAuthor(rezKit,
                            doSaveAs,
                            doSaveAll,
                            doRevert,
+                           M.sep(),
+                           doExport,
                            M.sep(),
                            doPageSetup,
                            doPrint,

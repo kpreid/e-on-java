@@ -12,6 +12,9 @@ def File := <type:java.io.File>
 
 # [[start-line, start-col], [end-line, end-col]]
 # [[1, 0]] is the first character in a source file.
+# start-col refers to the first character of interest.
+# end-col refers to the last character of interest.
+
 def SourceSpan := Tuple[Tuple[int,int], Tuple[int, int]]
 
 # [filename, fncname]
@@ -33,7 +36,6 @@ def UTurn := Tuple[VatName, Turn]
 def SendingContext := String
 
 # The root directory of the source files
-# specified on Causeway command line.
 def sourceCodeRootDirName
 
 def fixupSource(source :String) :String {
@@ -41,9 +43,6 @@ def fixupSource(source :String) :String {
 }
 
 # Turn valid trace file spans into a fully-specified SourceSpan.
-# [[start-line, start-col], [end-line, end-col]]
-# [[1, 0]] is the first character in a source file.
-# def SourceSpan := Tuple[Tuple[int,int], Tuple[int, int]]
 # For example,
 # [ [ 5 ] ] ==>        [ [ 5, 0 ], [ 5, 0 ] ]
 # [ [ 5 ], [ 6 ] ] ==> [ [ 5, 0 ], [ 6, 0 ] ]
@@ -60,24 +59,14 @@ def spanner(span) :SourceSpan {
         if (scolL =~ [scol]) {scol} else {0}}]]
 }
 
-def sortTree(node) :void {
-    var edges := [].asMap().diverge()
-    for edge => target in node.outs() {
-        sortTree(target)
-        edges[edge.getAnchor()] := edge
-    }
-    edges := edges.sortKeys()
-    for edge in edges {
-        edge.setOrigin(node)
-    }
-}
-
 /**
  * <tt>makeCausewayModel</tt>
  * <p>
  *
  */
-def makeCausewayModel(var rootDirName :String, traceFiles :List[File], <file>, traceline) :near {
+def makeCausewayModel(var rootDirName :String,
+                      traceFiles :List[File],
+                      <file>, traceline) :near {
     
     if (!(rootDirName.endsWith("/"))) {
         rootDirName += "/"
@@ -92,13 +81,13 @@ def makeCausewayModel(var rootDirName :String, traceFiles :List[File], <file>, t
     # Map[MsgID, EventArc]
     def msgMap := [].asMap().diverge()
     
-    # Map[VatName, List[EventArc]]
-    def ordered := [].asMap().diverge()
-    
     def graph := makeMessageGraph(traceline)
-    def ether := graph.makeTurnNode(["ether", 0], "ether placeholder")
-    # ether does not really belong in the graph, but it's useful for debugging, for now
-    graph.addTurnNode(ether)
+    
+    # top has no incoming edges; bottom has no outgoing edges
+    def top := graph.makeTurnNode(["top", 0])
+    def bottom := graph.makeTurnNode(["bottom", 0])
+    graph.addTurnNode(top)
+    graph.addTurnNode(bottom)
     
     def makeSourceSpan := <elib:base.makeSourceSpan>
     
@@ -107,7 +96,6 @@ def makeCausewayModel(var rootDirName :String, traceFiles :List[File], <file>, t
     # Parse term tree structure. Return E Stack object which could be empty.
     def parseStack(stack) :Stack {
         def entries := [].diverge()
-        entries.ensureSize(stack.size())
         
         for i in 0 ..! stack.size() {
             
@@ -115,12 +103,19 @@ def makeCausewayModel(var rootDirName :String, traceFiles :List[File], <file>, t
                 match term`{ "name" : @{fnc :String},
                              "source" : @{source :String},
                              "span" : @span }` {
-                    entries[i] := [[fixupSource(source), fnc], spanner(span)]
+                    # filter E infrastructure stack items
+                    if (source !~ `org/erights/e/elang/cmd/@_`) {
+                        entries.push([[fixupSource(source), fnc],
+                                      spanner(span)])
+                    }
                 }
                 
                 match term`{ "name" : @{fnc :String},
                              "source" : @{source :String} }` {
-                    entries[i] := [[fixupSource(source), fnc], null]
+                    # filter E infrastructure stack items
+                    if (source !~ `org/erights/e/elang/cmd/@_`) {
+                        entries.push([[fixupSource(source), fnc], null])
+                    }
                 }
             }
         }
@@ -136,52 +131,54 @@ def makeCausewayModel(var rootDirName :String, traceFiles :List[File], <file>, t
         vatMap[name] := turns
         var node := turns[turn]
         if (node == null) {
-            node := graph.makeTurnNode([name, turn], "")
+            node := graph.makeTurnNode([name, turn])
             graph.addTurnNode(node)
             turns[turn] := node
         }
         return node
     }
     
-    # Add the edge to the process-order list.
-    # Sent anchor numbers define order.
-    def storeEdge(edge) :void {
-        def [vatName, turn] := edge.getOrigin().getID()
-        def anchorPair := [turn, edge.getAnchor()]
-        def poMap := ordered.fetch(vatName, fn{[].asMap().diverge()})
-        ordered[vatName] := poMap
-        poMap[anchorPair] := edge
-    }
-    
     for tfile in traceFiles {
         
         #traceline(`tracefile: $tfile`)
         
-        def t := tfile.getTwine()
-        def tt := jp(t)
+        # getTwine is broken -- don't know why
+        #def t := tfile.getTwine()
         
+        def txt := tfile.getText()
+        
+        # fixup E-on-Java traces
+        def t := txt.replaceAll("][", ",")
+        
+        def tt := jp(t)
         tt =~ term`[@chunks*]`
         
         for i in 0 ..! chunks.size() {
             
             var optSpan := null
             
-            if (chunks[i] =~ term`{@dollar: @_, @_*}`) {
-                optSpan := dollar.getOptSpan()
-                if (null != optSpan && i +1 < chunks.size()) {
-                    
-                    if (chunks[i +1] =~ term`{@nextDollar: @_, @_*}`) {
-                        def nextOptSpan := nextDollar.getOptSpan()
-                        if (null != nextOptSpan) {
-                            optSpan := makeSourceSpan.optCover(optSpan, nextOptSpan)
-                        }
-                    }
-                }
-            }
+            # getTwine is broken -- don't know why
+            # The debug pane showing the relevant trace file records
+            # for the selected tree item is disabled for now.
+            
+            #if (chunks[i] =~ term`{@dollar: @_, @_*}`) {
+            #    optSpan := dollar.getOptSpan()
+            #    if (null != optSpan && i +1 < chunks.size()) {
+            #
+            #        if (chunks[i +1] =~ term`{@nextDollar: @_, @_*}`) {
+            #            def nextOptSpan := nextDollar.getOptSpan()
+            #            if (null != nextOptSpan) {
+            #                optSpan := makeSourceSpan.optCover(optSpan,
+            #                                                   nextOptSpan)
+            #            }
+            #        }
+            #    }
+            #}
             
             switch (chunks[i]) {
                 
-                match term`{ "$$" : [ "org.ref_send.log.Sent",
+                match term`{
+                             "$$" : [ "org.ref_send.log.Sent",
                                       "org.ref_send.log.Event" ],
                              "anchor" : {
                                  "number" : @{anchor :int},
@@ -202,11 +199,13 @@ def makeCausewayModel(var rootDirName :String, traceFiles :List[File], <file>, t
                     var edge := msgMap.fetch(message, fn{null})
                     if (edge == null) {
                         
-                        # Sent seen first. Make the edge and put it in the msgMap.
-                        # The corresponding Got will fetch the edge from the msgMap.
+                        # Sent seen first.
+                        # Make the edge and put it in the msgMap.
+                        # The corresponding Got will fetch the edge from the
+                        # msgMap.
                         # The anchor number for an edge is set by the Sent.
                         
-                        edge := graph.makeEventArc(origin, ether,
+                        edge := graph.makeEventArc(origin, bottom,
                                                    "org.ref_send.log.Sent",
                                                    entries, [])
                         edge.setAnchor(anchor)
@@ -215,24 +214,25 @@ def makeCausewayModel(var rootDirName :String, traceFiles :List[File], <file>, t
                         
                     } else {
                         
-                        # Got (or something) seen first. Fetch the edge from the msgMap.
-                        # Replace place-holder ether object with origin.
-                        # Update context object with stack trace.
+                        # Got (or something) seen first.
+                        # Fetch the edge from the msgMap.
+                        # Replace place-holder top object with origin.
+                        # Update send context with stack trace.
+                        # Update anchor number.
                         
-                        if (edge.getOrigin() == ether) {
+                        if (edge.getOrigin() == top) {
                             edge.setOrigin(origin)
                             edge.setSendContext("org.ref_send.log.Sent",
                                                 entries)
                             edge.setAnchor(anchor)
                             edge.addLogFile(optSpan)
-                            
-                            # Add the edge to the process-order list.
-                            storeEdge(edge)
-                            
-                        } else { traceline(`origin conflict`) }
+                        } else {
+                            traceline(`origin conflict for $message (Sent)`)
+                        }
                     }
                 }
-                match term`{ "$$" : [ "org.ref_send.log.SentIf",
+                match term`{
+                             "$$" : [ "org.ref_send.log.SentIf",
                                       "org.ref_send.log.Sent",
                                       "org.ref_send.log.Event" ],
                              "anchor" : {
@@ -255,11 +255,13 @@ def makeCausewayModel(var rootDirName :String, traceFiles :List[File], <file>, t
                     var edge := msgMap.fetch(message, fn{null})
                     if (edge == null) {
                         
-                        # SentIf seen first. Make the edge and put it in the msgMap.
-                        # The corresponding Got will fetch the edge from the msgMap.
+                        # SentIf seen first.
+                        # Make the edge and put it in the msgMap.
+                        # The corresponding Got will fetch the edge from the
+                        # msgMap. For now, SentIfs are treated like Sents.
                         # The anchor number for an edge is set by the SentIf.
                         
-                        edge := graph.makeEventArc(origin, ether,
+                        edge := graph.makeEventArc(origin, bottom,
                                                    "org.ref_send.log.SentIf",
                                                    entries, [])
                         edge.setAnchor(anchor)
@@ -268,24 +270,25 @@ def makeCausewayModel(var rootDirName :String, traceFiles :List[File], <file>, t
                         
                     } else {
                         
-                        # Got (or something) seen first. Fetch the edge from the msgMap.
-                        # Replace place-holder ether object with origin.
-                        # Update context object with stack trace.
+                        # Got (or something) seen first.
+                        # Fetch the edge from the msgMap.
+                        # Replace place-holder top object with origin.
+                        # Update send context with stack trace.
+                        # Update anchor number.
                         
-                        if (edge.getOrigin() == ether) {
+                        if (edge.getOrigin() == top) {
                             edge.setOrigin(origin)
                             edge.setSendContext("org.ref_send.log.SentIf",
                                                 entries)
                             edge.setAnchor(anchor)
                             edge.addLogFile(optSpan)
-                            
-                            # Add the edge to the process-order list.
-                            storeEdge(edge)
-                            
-                        } else { traceline(`origin conflict`) }
+                        } else {
+                            traceline(`origin conflict for $message (SentIf)`)
+                        }
                     }
                 }
-                match term`{ "$$" : [ "org.ref_send.log.Got",
+                match term`{
+                             "$$" : [ "org.ref_send.log.Got",
                                       "org.ref_send.log.Event" ],
                              "anchor" : {
                                  "number" : @{anchor :int},
@@ -306,10 +309,12 @@ def makeCausewayModel(var rootDirName :String, traceFiles :List[File], <file>, t
                     var edge := msgMap.fetch(message, fn{null})
                     if (edge == null) {
                         
-                        # Got seen first. Make the edge and put it in the msgMap.
-                        # The corresponding Sent will fetch the edge from the msgMap.
+                        # Got seen first.
+                        # Make the edge and put it in the msgMap.
+                        # The corresponding Sent will fetch the edge from the
+                        # msgMap.
                         
-                        edge := graph.makeEventArc(ether, target,
+                        edge := graph.makeEventArc(top, target,
                                                    "org.ref_send.log.Got",
                                                    [], entries)
                         edge.addLogFile(optSpan)
@@ -317,19 +322,18 @@ def makeCausewayModel(var rootDirName :String, traceFiles :List[File], <file>, t
                         
                     } else {
                         
-                        # Sent (or something) seen first. Fetch the edge from the msgMap.
-                        # Replace place-holder ether object with target.
+                        # Sent (or something) seen first.
+                        # Fetch the edge from the msgMap.
+                        # Replace place-holder bottom object with target.
+                        # Update got context with stack trace.
                         
-                        if (edge.getTarget() == ether) {
+                        if (edge.getTarget() == bottom) {
                             edge.setTarget(target)
                             edge.setGotContext(entries)
                             edge.addLogFile(optSpan)
-                            
-                            # Add the edge to the process-order list.
-                            # Sent anchor numbers define order.
-                            storeEdge(edge)
-                            
-                        } else { traceline(`target conflict`) }
+                        } else {
+                            traceline(`target conflict for $message (Got)`)
+                        }
                     }
                 }
                 
@@ -351,45 +355,88 @@ def makeCausewayModel(var rootDirName :String, traceFiles :List[File], <file>, t
                     # Create E Stack object, possibly empty, from term tree.
                     def entries := parseStack(stack)
                     
-                    def edge := graph.makeEventArc(origin, ether,
+                    def edge := graph.makeEventArc(origin, bottom,
                                                    "org.ref_send.log.Comment",
                                                    entries, [])
                     edge.setAnchor(anchor)
                     edge.addLogFile(optSpan)
-                    
-                    # Add the edge to the process-order list.
-                    storeEdge(edge)
                 }
-                match _ {}
+                match _ {
+                    traceline(`no match: ${chunks[i]}`)
+                }
             }
         }
     }
     
-    for name => poMap in ordered {
-        ordered[name] := poMap.sortKeys()
-    }
-    
-    def sz := graph.getSize()
-    #traceline(`graph size: $sz`)
     def roots := graph.getRoots()
-    def root
-    if (roots.size() == 1) {
-        bind root := roots[0]
-    } else {
-        bind root := graph.makeTurnNode(["top", 0], "top")
-        graph.addTurnNode(root)
-        for r in roots {
-            graph.makeEventArc(root, r, "", [], [])
+    for r in roots {
+        if (r != top) {
+            graph.makeEventArc(top, r, "", [], [])
         }
     }
-    #graph.walkRelations(root, 0, traceline)
     
-    sortTree(root)
+    #graph.walkRelations(top, 0, traceline)
+    
+    #graph.connectTheDots(top, traceline)
+    
+    def sortTree(root) :any {
+        def seen := [].asSet().diverge()
+        def subSort(node) :any {
+            if (seen.contains(node)) { return node }
+            seen.addElement(node)
+            
+            def edgeList := [].diverge()
+            for edge => _ in node.outs() {
+                edgeList.push(edge)
+            }
+            var edges := [].asMap().diverge()
+            for edge in edgeList {
+                subSort(edge.getTarget())
+                edges[edge.getKey()] := edge
+            }
+            edges := edges.sortKeys()
+            for edge in edges {
+                edge.setOrigin(node)
+            }
+            return node
+        }
+        return subSort(root)
+    }
+    
+    #sortTree(top)
+    
+    # Map[VatName, List[EventArc]]
+    def ordered := [].asMap().diverge()
+    
+    def orderEdges(root) :void {
+        def seen := [].asSet().diverge()
+        
+        # Add the edge to the process-order list.
+        # Sent anchor numbers define order.
+        def storeEdges(node) :void {
+            if (seen.contains(node)) { return }
+            seen.addElement(node)
+            
+            for edge => target in node.outs() {
+                def [vatName, turn] := node.getID()
+                def anchorPair := [turn, edge.getAnchor()]
+                def poMap := ordered.fetch(vatName, fn{[].asMap().diverge()})
+                ordered[vatName] := poMap
+                poMap[anchorPair] := edge
+                storeEdges(target)
+            }
+        }
+        storeEdges(root)
+        for name => poMap in ordered {
+            ordered[name] := poMap.sortKeys()
+        }
+    }
+    orderEdges(top)
     
     def causewayModel {
         
         to getTop() :near {
-            return root
+            return top
         }
         
         to getVatSet() :near {
@@ -400,9 +447,11 @@ def makeCausewayModel(var rootDirName :String, traceFiles :List[File], <file>, t
             def poMap := ordered.fetch(vatName, fn{[].asMap()})
             return poMap.getValues()
         }
+        
+        to exportToDotFile(dotFile :File) :void {
+            graph.connectTheDots(top, dotFile)
+        }
     }
     
     return causewayModel
 }
-
-

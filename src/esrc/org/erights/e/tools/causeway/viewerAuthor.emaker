@@ -9,6 +9,7 @@ def swt__uriGetter := <import:org.eclipse.swt.*>
 def widget__uriGetter := <swt:widgets.*>
 def custom__uriGetter := <swt:custom.*>
 def SWT := <swt:makeSWT>
+def File := <type:java.io.File>
 
 def <swttools> := <import:org.erights.e.ui.swt.*>
 def swtGrid__quasiParser := <swttools:swtGridQParserMaker>()
@@ -22,13 +23,17 @@ def treePaneAuthor :=
 def makePOGroup :=
   <import:org.erights.e.tools.causeway.makePOGroup>
 
-def debugPaneAuthor :=
-  <import:org.erights.e.tools.causeway.debugPaneAuthor>
+#def debugPaneAuthor :=
+#  <import:org.erights.e.tools.causeway.debugPaneAuthor>
 
 def getDisplayName(vatName) :String {
     
-    if (vatName =~ `<Vat @name @_`) {
-        return name
+    if (vatName =~ `<Vat @vn>`) {
+        if (vn =~ `@_/-/@name`) {
+            return name
+        } else {
+            return vn
+        }
     }
     
     # find most specific folder name
@@ -92,10 +97,15 @@ def viewerAuthor(<file>, <jar>, makers, shell, tcr, traceline) :near {
     
     def makeViewer(parent, palette) :near {
         
+        # model is an unresolved promise until setModel binds it
+        def model
+        
+        # messageGraph is an unresolved promise until setModel binds it
         def messageGraph
         
         def topToBottom := <custom:makeSashForm>(parent, SWT.getVERTICAL())
-        def sideToSide := <custom:makeSashForm>(topToBottom, SWT.getHORIZONTAL())
+        def sideToSide := <custom:makeSashForm>(topToBottom,
+                                                SWT.getHORIZONTAL())
         
         def fp := palette.makeFolderPalette()
         
@@ -118,15 +128,20 @@ def viewerAuthor(<file>, <jar>, makers, shell, tcr, traceline) :near {
         debugFolder.setForeground(fp.getFg())
         debugFolder.setBackground(fp.getBg())
         debugFolder.setFont(fp.getFont())
-        def debugFolderGroup := makeFolderGroup(debugFolder, palette, traceline)
-        def makeDebugPane := debugPaneAuthor(<file>, <jar>, makers, traceline)
+        def debugFolderGroup := makeFolderGroup(debugFolder,
+                                                palette,
+                                                traceline)
+        #def makeDebugPane := debugPaneAuthor(<file>, <jar>, makers, traceline)
         
         # bottom
         def stackPane := <widget:makeComposite>(topToBottom, 0)
         stackPane.setForeground(fp.getFg())
         stackPane.setBackground(fp.getBg())
         stackPane.setFont(fp.getFont())
-        def makeStackWalker := stackWalkerAuthor(<file>, <jar>, makers, traceline)
+        def makeStackWalker := stackWalkerAuthor(<file>,
+                                                 <jar>,
+                                                 makers,
+                                                 traceline)
         
         topToBottom.setWeights([50, 50])
         sideToSide.setWeights([40, 35, 25])
@@ -142,15 +157,17 @@ def viewerAuthor(<file>, <jar>, makers, shell, tcr, traceline) :near {
                 topToBottom.layout()
             }
             
-            to setModel(model, selectionModel) :void {
+            to setModel(viewerModel, selectionModel) :void {
+                bind model := viewerModel
                 bind messageGraph := model.getTop()
                 
                 def vatSet := model.getVatSet()
                 def vatMap := makeVatMap(vatSet, palette, traceline)
                 
-                def debugPane := makeDebugPane(debugFolder, palette, selectionModel)
-                debugFolderGroup.add(debugPane, debugPane.getTabLabel())
-                debugFolderGroup.layout()
+                #def debugPane := makeDebugPane(debugFolder,
+                #                               palette, selectionModel)
+                #debugFolderGroup.add(debugPane, debugPane.getTabLabel())
+                #debugFolderGroup.layout()
                 
                 stackPane.setVisible(false)
                 def stackWalker := makeStackWalker(topToBottom, palette,
@@ -158,7 +175,8 @@ def viewerAuthor(<file>, <jar>, makers, shell, tcr, traceline) :near {
                 stackWalker.layout()
                 
                 def treePane := makeTreePane(treeFolder, palette, vatMap,
-                                             messageGraph, selectionModel, stackWalker)
+                                             messageGraph, selectionModel,
+                                             stackWalker)
                 treeFolderGroup.add(treePane, treePane.getTabLabel())
                 treeFolderGroup.layout()
                 
@@ -171,8 +189,17 @@ def viewerAuthor(<file>, <jar>, makers, shell, tcr, traceline) :near {
                     }
                 }
                 def pogView := makePOGroup(pogFolder, palette, vatMap,
-                                           pogModel.snapshot(), selectionModel, stackWalker)
+                                           pogModel.snapshot(),
+                                           selectionModel, stackWalker)
                 pogView.layout()
+            }
+            
+            to exportModelToDotFile(dotFile :File) :void {
+                if (Ref.isNear(model)) {
+                    model.exportToDotFile(dotFile)
+                } else {
+                    # do something
+                }
             }
         }
         return viewer

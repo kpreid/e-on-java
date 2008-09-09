@@ -42,9 +42,11 @@ def stackWalkerAuthor(<file>, <jar>, makers, traceline) :near {
     
     def makeStackWalker(parent, palette, vatMap, selectionModel) :near {
         
-        def sideToSideSash := <custom:makeSashForm>(parent, SWT.getHORIZONTAL())
+        def sideToSideSash := <custom:makeSashForm>(parent,
+                                                    SWT.getHORIZONTAL())
         
-        def stackPane := <widget:makeComposite>(sideToSideSash, SWT.getBORDER())
+        def stackPane := <widget:makeComposite>(sideToSideSash,
+                                                SWT.getBORDER())
         
         def stackExplorer := <widget:makeTree>(stackPane, SWT.getSINGLE() |
                                                  (SWT.getH_SCROLL() |
@@ -60,26 +62,30 @@ def stackWalkerAuthor(<file>, <jar>, makers, traceline) :near {
         
         def dp := palette.makeDescPalette()
         
-        def description := <custom:makeCLabel>(stackPane,
-                                               SWT.getCENTER() | SWT.getSHADOW_OUT())
+        def description :=
+          <custom:makeCLabel>(stackPane,
+                              SWT.getCENTER() | SWT.getSHADOW_OUT())
         description.setForeground(dp.getFg())
         description.setBackground(dp.getBg())
         description.setFont(dp.getFont())
         
         def esp := palette.makeECodePalette()
-        def sourcePane := <widget:makeComposite>(sideToSideSash, SWT.getBORDER())
+        def sourcePane :=
+          <widget:makeComposite>(sideToSideSash, SWT.getBORDER())
         sourcePane.setForeground(esp.getFg())
         sourcePane.setBackground(esp.getBg())
         sourcePane.setFont(esp.getFont())
-        def source := <custom:makeStyledText>(sourcePane,
-                                              SWT.getH_SCROLL() | SWT.getV_SCROLL())
+        def source :=
+          <custom:makeStyledText>(sourcePane,
+                                  SWT.getH_SCROLL() | SWT.getV_SCROLL())
         source.setForeground(esp.getFg())
         source.setBackground(esp.getBg())
         source.setFont(esp.getFont())
         
         def fnp := palette.makeFilenamePalette()
-        def filename := <custom:makeCLabel>(sourcePane,
-                                            SWT.getLEFT() | SWT.getSHADOW_OUT())
+        def filename :=
+          <custom:makeCLabel>(sourcePane,
+                              SWT.getLEFT() | SWT.getSHADOW_OUT())
         filename.setForeground(fnp.getFg())
         filename.setBackground(fnp.getBg())
         filename.setFont(fnp.getFont())
@@ -124,7 +130,11 @@ def stackWalkerAuthor(<file>, <jar>, makers, traceline) :near {
             }
         }
         
-        def getOptLine(file, first :int, fo :int, last :int, lo :int) :nullOk[String] {
+        def getOptLine(file,
+                       first :int,
+                       fo :int,
+                       last :int,
+                       lo :int) :nullOk[String] {
             if (!(file.__respondsTo("exists",0)) || file.exists()) {
                 def source := file.getText()
                 def lines := source.split("\n")
@@ -143,12 +153,20 @@ def stackWalkerAuthor(<file>, <jar>, makers, traceline) :near {
             }
         }
         
-        def getOptMessage(se :StackEntry) :nullOk[String] {
+        def getOptMessage(se :StackEntry, hasGot :boolean) :nullOk[String] {
             if (se =~ [[pathname, _], [[first, fo], [last, lo]]]) {
                 if (pathname != "" ) {
-                    def optResult := getOptLine(getFile(pathname), first, fo, last, lo)
+                    def optResult := getOptLine(getFile(pathname),
+                                                first,
+                                                fo,
+                                                last,
+                                                lo)
                     if (null != optResult) {
-                        return optResult
+                        if (hasGot) {
+                            return optResult
+                        } else {
+                            return `...$optResult`
+                        }
                     }
                 }
             }
@@ -199,8 +217,8 @@ def stackWalkerAuthor(<file>, <jar>, makers, traceline) :near {
         # Useful map for lookup in event handling.
         var itemToModelMap := [].asMap().diverge()
         
-        def buildTreeItem(parent, se :StackEntry) :near {
-            if (getOptMessage(se) =~ message :notNull) {
+        def buildTreeItem(parent, se :StackEntry, hasGot :boolean) :near {
+            if (getOptMessage(se, hasGot) =~ message :notNull) {
                 def item := <widget:makeTreeItem>(parent, 0)
                 var se2 := se
                 if (se[1] == null) {
@@ -213,20 +231,23 @@ def stackWalkerAuthor(<file>, <jar>, makers, traceline) :near {
             return null
         }
         
-        def buildSubTree(parent, entries :Stack) :void {
+        def buildSubTree(parent, entries :Stack, hasGot :boolean) :near {
             for i in 0 ..! entries.size() {
                 
-                def item := buildTreeItem(parent, entries[i])
+                # first, get top-level item
+                def optItem := buildTreeItem(parent, entries[i], hasGot)
                 
-                if (null != item) {
+                if (null != optItem) {
                     
+                    # then, second-level item(s)
                     for j in i +1 ..! entries.size() {
                         
-                        buildTreeItem(item, entries[j])
+                        buildTreeItem(optItem, entries[j], hasGot)
                     }
-                    return
+                    return optItem
                 }
             }
+            return null
         }
         
         def showStackFrame(edge) :void {
@@ -251,7 +272,16 @@ def stackWalkerAuthor(<file>, <jar>, makers, traceline) :near {
             while (null != curEdge) {
                 def [_, entries] := curEdge.getContext()
                 
-                buildSubTree(stackExplorer, entries)
+                def optItem := buildSubTree(stackExplorer,
+                                            entries,
+                                            curEdge.hasGotStack())
+                if (null != optItem) {
+                    def [vat, turn] := curEdge.getTarget().getID()
+                    def attr := vatMap.fetchDisplayAttributes(vat)
+                    # include [vat, turn] for item at top of turn
+                    optItem.setText(
+                        `[${attr[0]}, $turn] ${optItem.getText()}`)
+                }
                 
                 def origin := curEdge.getOrigin()
                 if (origin.getIncomingCount() == 1) {
@@ -269,7 +299,12 @@ def stackWalkerAuthor(<file>, <jar>, makers, traceline) :near {
                 
                 def [[pathname, _], [[first, fo], [last, lo]]] :=
                   itemToModelMap.fetch(items[0], fn{})
-                showAndSelect(getFile(pathname), pathname, first, fo, last, lo)
+                showAndSelect(getFile(pathname),
+                              pathname,
+                              first,
+                              fo,
+                              last,
+                              lo)
             }
         }
         
@@ -288,7 +323,12 @@ def stackWalkerAuthor(<file>, <jar>, makers, traceline) :near {
                 if (itemToModelMap.fetch(item, fn{}) =~
                       [[pathname, _], [[first, fo], [last, lo]]]) {
                     
-                    showAndSelect(getFile(pathname), pathname, first, fo, last, lo)
+                    showAndSelect(getFile(pathname),
+                                  pathname,
+                                  first,
+                                  fo,
+                                  last,
+                                  lo)
                 }
             }
             to widgetDefaultSelected(event) :void {}
@@ -322,8 +362,9 @@ def stackWalkerAuthor(<file>, <jar>, makers, traceline) :near {
                 sourcePane.getLayout().setVerticalSpacing(2)
             }
             
-            to getOptSourceLine(stackEntry :StackEntry) :nullOk[String] {
-                return getOptMessage(stackEntry)
+            to getOptSourceLine(stackEntry :StackEntry,
+                                hasGot :boolean) :nullOk[String] {
+                return getOptMessage(stackEntry, hasGot)
             }
         }
     }

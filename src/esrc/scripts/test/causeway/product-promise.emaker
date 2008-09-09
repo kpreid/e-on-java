@@ -1,0 +1,33 @@
+#!/usr/bin/env rune
+
+pragma.syntax("0.9")
+
+# Copyright 2008 Teleometry Design under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+# This is a toy implementation of a purchase order system,
+# written to demonstrate the Causeway Debugger.
+
+
+def inventory {
+    to isAvailable(partNo :String) :boolean {
+	return true
+    }
+    to placeOrder(buyer :String, partNo :String) :boolean {
+	return true
+    }
+}
+    
+def creditBureau {
+    to doCreditCheck(name :String) :boolean {
+	return true
+    }
+}
+    
+def shipper {
+    to canDeliver(profile :String) :boolean {
+	return true
+    }
+}
+
+[=> inventory, => creditBureau, => shipper]
