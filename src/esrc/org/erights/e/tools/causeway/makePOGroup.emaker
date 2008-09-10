@@ -2,7 +2,7 @@
 
 pragma.syntax("0.8")
 
-# Copyright 2008 Terry Stanley under the terms of the MIT X license
+# Copyright 2008 Teleometry Design under the terms of the MIT X license
 # found at http://www.opensource.org/licenses/mit-license.html ................
 
 def swt__uriGetter := <import:org.eclipse.swt.*>
@@ -33,51 +33,12 @@ def getNestedEdges(origin, edges, offset) :List {
     return nested.snapshot()
 }
 
-def labelNodeItem(vatMap, node, item) :void {
-    def [vatName, turn] := node.getID()
-    
-    # Set descriptive text to vat name and turn.
-    def attr := vatMap.fetchDisplayAttributes(vatName)
-    item.setForeground(attr[1])
-    item.setText(`[${attr[0]}, $turn]`)
-}
-
-def getEdgePart(edge, stackWalker) :nullOk[String] {
-    def [_, stack] := edge.getContext()
-    if ([] != stack) {
-        return stackWalker.getOptSourceLine(stack[0],
-                                            edge.hasGotStack())
-    }
-    return null
-}
-
-def labelArcItem(vatMap, edge, item, stackWalker) :void {
-    def [tVatName, tTurn] := edge.getTarget().getID()
-    
-    # Set descriptive text to vat name and turn.
-    def tAttr := vatMap.fetchDisplayAttributes(tVatName)
-    item.setForeground(tAttr[1])
-    
-    var msg := getEdgePart(edge, stackWalker)
-    if (null == msg) {
-        msg := ""
-    }
-    
-    if (tAttr[0] == "top") {
-        item.setText(`(top)$msg`)
-    } else if (tAttr[0] == "bottom") {
-        item.setText(`(bottom)$msg`)
-    } else {
-        item.setText(`[${tAttr[0]}, $tTurn] $msg`)
-    }
-}
-
 def buildTreeItems(parent, palette, vatMap,
                    origin, edges, ndx, stackWalker) : void {
     
     # Make tree item for origin.
     def item := <widget:makeTreeItem>(parent, 0)
-    labelNodeItem(vatMap, origin, item)
+    stackWalker.labelNodeItem(vatMap, origin, item)
     
     for i in 0 ..! edges.size() {
         
@@ -89,7 +50,7 @@ def buildTreeItems(parent, palette, vatMap,
         itemToModelMap.put([nested, ndx], edge, true)
         modelToItemMap.put(edge, [nested, ndx], true)
         
-        labelArcItem(vatMap, edge, nested, stackWalker)
+        stackWalker.labelArcItem(vatMap, edge, nested)
     }
 }
 
