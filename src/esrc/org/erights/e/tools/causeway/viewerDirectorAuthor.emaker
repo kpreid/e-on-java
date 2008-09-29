@@ -1,33 +1,50 @@
 #!/usr/bin/env rune
 
-pragma.syntax("0.8")
+pragma.syntax("0.9")
 
 # Copyright 2002 Combex, Inc. under the terms of the MIT X license
 # found at http://www.opensource.org/licenses/mit-license.html ................
 
-def viewerAuthor := <import:org.erights.e.tools.causeway.viewerAuthor>
-def makeCausewayModel := <import:org.erights.e.tools.causeway.makeCausewayModel>
-def makeSelectionModel := <import:org.erights.e.tools.causeway.makeSelectionModel>
+def makeWelcomeView :=
+  <import:org.erights.e.tools.causeway.makeWelcomeView>
+
+def viewerAuthor :=
+  <import:org.erights.e.tools.causeway.viewerAuthor>
+
+def makeCausewayModel :=
+  <import:org.erights.e.tools.causeway.makeCausewayModel>
+def makeSelectionModel :=
+  <import:org.erights.e.tools.causeway.makeSelectionModel>
 
 /**
  */
-def viewerDirectorAuthor(<file>, <jar>, makers, shell, tcr, traceline) :near {
+def viewerDirectorAuthor(<file>, <jar>, makers, shell,
+                         abstractAction, tcr, traceline) :near {
     
-    def makeViewer :=
-      viewerAuthor(<file>, <jar>, makers, shell, tcr, traceline)
+    def makeViewer := viewerAuthor(<file>, <jar>, makers, shell,
+                                   abstractAction, tcr, traceline)
     
-    def makeViewerDirector(parent, palette, rootDirName :String, traces) :near {
+    def makeViewerDirector(parent, palette,
+                           rootDirName :String, traces) :near {
         
-        def view := makeViewer(parent, palette)
+        def view
+        
         if (traces != []) {
-            def model := makeCausewayModel(rootDirName, traces, <file>, traceline)
+            def model := makeCausewayModel(rootDirName,
+                                           traces, <file>, traceline)
             def selectionModel := makeSelectionModel()
-            view.setModel(model, selectionModel)
+            
+            bind view := makeViewer(parent, palette, model, selectionModel)
+        } else {
+            bind view := makeWelcomeView(parent, palette, traceline)
         }
         
         def viewerDirector {
             to getView() : near { return view }
         }
+        
         return viewerDirector
     }
+    
+    return makeViewerDirector
 }

@@ -1,6 +1,6 @@
 #!/usr/bin/env rune
 
-pragma.syntax("0.8")
+pragma.syntax("0.9")
 
 # Copyright 2002 Combex, Inc. under the terms of the MIT X license
 # found at http://www.opensource.org/licenses/mit-license.html ................
@@ -117,30 +117,15 @@ def paletteAuthor(rezKit, makers, traceline) :near {
     fonts.put(["Courier New", "14", "bold"], rezKit.makeFont("Courier New", 14, bold), true)
     fonts.put(["Courier New", "14", "italic"], rezKit.makeFont("Courier New", 14, italic), true)
     
-    fonts.put(["Microsoft Sans Serif", "7", "normal"], rezKit.makeFont("Microsoft Sans Serif", 7, normal), true)
-    fonts.put(["Microsoft Sans Serif", "7", "bold"], rezKit.makeFont("Microsoft Sans Serif", 7, bold), true)
-    fonts.put(["Microsoft Sans Serif", "7", "italic"], rezKit.makeFont("Microsoft Sans Serif", 7, italic), true)
-    
-    fonts.put(["Microsoft Sans Serif", "8", "normal"], rezKit.makeFont("Microsoft Sans Serif", 8, normal), true)
-    fonts.put(["Microsoft Sans Serif", "8", "bold"], rezKit.makeFont("Microsoft Sans Serif", 8, bold), true)
-    fonts.put(["Microsoft Sans Serif", "8", "italic"], rezKit.makeFont("Microsoft Sans Serif", 8, italic), true)
-    
-    fonts.put(["Microsoft Sans Serif", "9", "normal"], rezKit.makeFont("Microsoft Sans Serif", 9, normal), true)
-    fonts.put(["Microsoft Sans Serif", "9", "bold"], rezKit.makeFont("Microsoft Sans Serif", 9, bold), true)
-    fonts.put(["Microsoft Sans Serif", "9", "italic"], rezKit.makeFont("Microsoft Sans Serif", 9, italic), true)
-    
-    fonts.put(["Microsoft Sans Serif", "10", "normal"], rezKit.makeFont("Microsoft Sans Serif", 10, normal), true)
-    fonts.put(["Microsoft Sans Serif", "10", "bold"], rezKit.makeFont("Microsoft Sans Serif", 10, bold), true)
-    fonts.put(["Microsoft Sans Serif", "10", "italic"], rezKit.makeFont("Microsoft Sans Serif", 10, italic), true)
-    
     def metrics := [].asMap().diverge()
     
     def images := [].asMap().diverge()
     
     def multiplesURL := <resource:org/erights/e/tools/causeway/multiples.gif>
+    def giantsCausewayURL := <resource:org/erights/e/tools/causeway/giants-causeway.jpg>
     
     images.put("multiples", rezKit.makeImage(multiplesURL.openStream()))
-    
+    images.put("giantsCauseway", rezKit.makeImage(giantsCausewayURL.openStream()))
     
     def makeBasicPalette(fgName, bgName, fontName) :near {
         
@@ -155,9 +140,6 @@ def paletteAuthor(rezKit, makers, traceline) :near {
             to getFont() :near { return font }
             to getCharExtent() :near {
                 return metrics.fetch(fontName, fn{})
-            }
-            to getImage(imageName :String) :near {
-                return images.fetch(imageName, fn{})
             }
         }
         return basicPalette
@@ -185,12 +167,22 @@ def paletteAuthor(rezKit, makers, traceline) :near {
                 return true
             }
             
+            to getImage(imageName :String) :near {
+                return images.fetch(imageName, fn{})
+            }
+            
             to getDefaultVatColor() :near {
                 return colors.fetch("almostBlack", fn{})
             }
             
             to getVatColor(i :int) :near {
                 return vatColors[i]
+            }
+            
+            to makeWelcomePalette() :near {
+                return makeBasicPalette("justBlack",
+                                        "justWhite",
+                                        ["Arial", "14", "bold"])
             }
             
             to makeFramePalette() :near {
@@ -253,8 +245,35 @@ def paletteAuthor(rezKit, makers, traceline) :near {
                                         "bgGray",
                                         ["Arial", "10", "normal"])
             }
+            to makeSmallerFont(font) :near {
+                def fontData := font.getFontData()[0]
+                fontData.setHeight(fontData.getHeight() -2)
+                return rezKit.makeFont(fontData)
+            }
+            
+            to makeLargerFont(font) :near {
+                def fontData := font.getFontData()[0]
+                fontData.setHeight(fontData.getHeight() +2)
+                return rezKit.makeFont(fontData)
+            }
+            
+            to setMargins(layout, w, h, hz, vt) :void {
+                layout.setMarginWidth(w)
+                layout.setMarginHeight(h)
+                layout.setHorizontalSpacing(hz)
+                layout.setVerticalSpacing(vt)
+            }
+            
+            to zeroMargins(layout) :void {
+                layout.setMarginWidth(0)
+                layout.setMarginHeight(0)
+                layout.setHorizontalSpacing(0)
+                layout.setVerticalSpacing(0)
+            }
+            
+            
         }
-        
         return palette
     }
+    return makePalette
 }

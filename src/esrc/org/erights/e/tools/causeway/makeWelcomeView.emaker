@@ -1,0 +1,81 @@
+#!/usr/bin/env rune
+
+pragma.syntax("0.9")
+
+# Copyright 2008 Teleometry Design under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def swt__uriGetter := <import:org.eclipse.swt.*>
+def widget__uriGetter := <swt:widgets.*>
+def custom__uriGetter := <swt:custom.*>
+def SWT := <swt:makeSWT>
+
+def File := <type:java.io.File>
+
+def <swttools> := <import:org.erights.e.ui.swt.*>
+def swtGrid__quasiParser := <swttools:swtGridQParserMaker>()
+
+def makeWelcomeView(swtParent, palette, traceline) :near {
+    
+    def wp := palette.makeWelcomePalette()
+    
+    def swtWelcomeView := <widget:makeComposite>(swtParent, 0)
+    
+    # left side
+    def swtSplash := <widget:makeCanvas>(swtWelcomeView, 0)
+    #swtSplash.setSize(588, 372)
+    def swtImage := palette.getImage("giantsCauseway")
+    
+    def swtPaintListener {
+        to paintControl(swtEvent) :void {
+            swtEvent.getGc().drawImage(swtImage, 0, 0)
+        }
+    }
+    swtSplash.addPaintListener(swtPaintListener)
+    
+    # right side
+    def swtWelcomeText := <custom:makeStyledText>(swtWelcomeView, 0)
+    swtWelcomeText.setFont(wp.getFont())
+    swtWelcomeText.setText("Welcome...")
+    
+    def showBounds(s, r) :void {
+        traceline(`$s bounds: [${r.getX()}, ${r.getY()}, ${r.getWidth()}, ${r.getHeight()}]`)
+    }
+    
+    def showSize(s, p) :void {
+        traceline(`$s size: [${p.getX()}, ${p.getY()}]`)
+    }
+    
+    def welcomeView {
+        
+        to getTopLevelPane() :near { return swtWelcomeView }
+        
+        to open() :void {}
+        
+        to layout() :void {
+            
+            #showBounds("swtImage", swtImage.getBounds())
+            #showBounds("swtWelcomeView", swtWelcomeView.getBounds())
+            #showBounds("swtSplash", swtSplash.getBounds())
+            #showBounds("swtWelcomeText", swtWelcomeText.getBounds())
+            
+            #showSize("swtWelcomeView",
+            #         swtWelcomeView.computeSize(1000, 700))
+            #showSize("swtSplash",
+            #         swtSplash.computeSize(588, 372))
+            
+            swtGrid`${welcomeView.getTopLevelPane()}:
+                    $swtSplash.X.Y $swtWelcomeText.X` 
+            
+            #showBounds("swtImage", swtImage.getBounds())
+            #showBounds("swtWelcomeView", swtWelcomeView.getBounds())
+            #showBounds("swtSplash", swtSplash.getBounds())
+            #showBounds("swtWelcomeText", swtWelcomeText.getBounds())
+        }
+        
+        to exportModelToDotFile(dotFile :File) :void {}
+    }
+    
+    return welcomeView
+}
+

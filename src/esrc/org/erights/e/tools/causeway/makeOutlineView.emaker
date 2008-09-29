@@ -1,0 +1,177 @@
+#!/usr/bin/env rune
+
+pragma.syntax("0.9")
+
+# Copyright 2008 Teleometry Design under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def swt__uriGetter := <import:org.eclipse.swt.*>
+def widget__uriGetter := <swt:widgets.*>
+def custom__uriGetter := <swt:custom.*>
+def SWT := <swt:makeSWT>
+
+def swtType__uriGetter := <type:org.eclipse.swt.*>
+def widgetType__uriGetter := <swtType:widgets.*>
+def ToolBar  := <widgetType:ToolBar>
+def ToolItem := <widgetType:ToolItem>
+
+def <swttools> := <import:org.erights.e.ui.swt.*>
+def swtGrid__quasiParser := <swttools:swtGridQParserMaker>()
+def M := <swttools:menuKit>
+
+def makeLamportSlot := <elib:slot.makeLamportSlot>
+def whenever := <elib:slot.whenever>
+def EverReporter := <type:org.erights.e.elib.slot.EverReporter>
+
+def collapseItem(swtItem) :void {
+    swtItem.setExpanded(false)
+    if (swtItem.getItemCount() > 0) {
+        def swtNested := swtItem.getItems()
+        for n in swtNested {
+            collapseItem(n)
+        }
+    }
+}
+
+def collapseTree(swtTree) :void {
+    def swtSelected := swtTree.getSelection()
+    if (swtSelected.size() == 1) {
+        def swtItems := swtTree.getItems()
+        if (swtSelected[0] == swtItems[0]) {
+            for swtItem in swtItems {
+                collapseItem(swtItem)
+            }
+        } else {
+            collapseItem(swtSelected[0])
+        }
+    } else {
+        #traceline(`getSelection returns ${swtSelected.size()} items`)
+    }
+}
+
+def expandItem(swtItem) :void {
+    swtItem.setExpanded(true)
+    if (swtItem.getItemCount() > 0) {
+        def swtNested := swtItem.getItems()
+        for n in swtNested {
+            expandItem(n)
+        }
+    }
+}
+
+def expandTree(swtTree) :void {
+    def swtSelected := swtTree.getSelection()
+    if (swtSelected.size() == 1) {
+        def swtItems := swtTree.getItems()
+        if (swtSelected[0] == swtItems[0]) {
+            for swtItem in swtItems {
+                expandItem(swtItem)
+            }
+        } else {
+            expandItem(swtSelected[0])
+        }
+    } else {
+        #traceline(`getSelection returns ${swtSelected.size()} items`)
+    }
+}
+
+def makeOutlineView(swtParent, palette,
+                    abstractAction, getCurrentTree) :near {
+    
+    def swtToolGroup := <widget:makeGroup>(swtParent, 0)
+    def swtToolBar := <widget:makeToolBar>(swtToolGroup,
+                                           SWT.getFLAT() |
+                                             SWT.getHORIZONTAL())
+    [def doExpand,
+     def doCollapse,
+     
+     def doIncreaseFontSize,
+     def doDecreaseFontSize]
+    
+    bind doExpand extends abstractAction(doExpand) {
+        to run() :void {
+            def swtTree := getCurrentTree()
+            if (null != swtTree) {
+                expandTree(swtTree)
+            }
+        }
+        to getLabel()            :String { return "&Expand" }
+        to getOptTip()           :String { return "Expand tree" }
+        to getOptIconFQName()    :String {
+            return "org/erights/e/tools/causeway/plus16-16.gif"
+        }
+    }
+    
+    bind doCollapse extends abstractAction(doCollapse) {
+        to run() :void {
+            def swtTree := getCurrentTree()
+            if (null != swtTree) {
+                collapseTree(swtTree)
+            }
+        }
+        to getLabel()            :String { return "&Collapse" }
+        to getOptTip()           :String { return "Collapse tree" }
+        to getOptIconFQName()    :String {
+            return "org/erights/e/tools/causeway/minus16-16.gif"
+        }
+    }
+    
+    bind doIncreaseFontSize extends abstractAction(doIncreaseFontSize) {
+        to run() :void {
+            def swtTree := getCurrentTree()
+            if (null != swtTree) {
+                swtTree.setFont(palette.makeLargerFont(swtTree.getFont()))
+            }
+        }
+        to getLabel()            :String { return "&LargerText" }
+        to getOptTip()           :String { return "Make text larger" }
+        to getOptIconFQName()    :String {
+            return "org/erights/e/tools/causeway/bigT16-16.gif"
+        }
+    }
+    
+    bind doDecreaseFontSize extends abstractAction(doDecreaseFontSize) {
+        to run() :void {
+            def swtTree := getCurrentTree()
+            if (null != swtTree) {
+                swtTree.setFont(palette.makeSmallerFont(swtTree.getFont()))
+            }
+        }
+        to getLabel()            :String { return "&SmallerText" }
+        to getOptTip()           :String { return "Make text smaller" }
+        to getOptIconFQName()    :String {
+            return "org/erights/e/tools/causeway/littleT16-16.gif"
+        }
+    }
+    
+    def toolActions :=
+      [doExpand,
+       doCollapse,
+       M.sep(),
+       doIncreaseFontSize,
+       doDecreaseFontSize]
+    
+    def toolMap := [].asMap().diverge()
+    
+    for action in toolActions {
+        action.makeToolItem(swtToolBar, toolMap)
+    }
+    
+    def ov {
+        
+        to open() :void {}
+        
+        to layout() :void {
+            
+            swtGrid`${swtToolGroup}:
+                    ${swtToolBar}.X`
+            
+            palette.zeroMargins(swtToolGroup.getLayout())
+        }
+        
+        to getTopLevelPane() :near {
+            return swtToolGroup
+        }
+    }
+    return ov
+}

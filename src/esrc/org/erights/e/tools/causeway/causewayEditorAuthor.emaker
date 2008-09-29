@@ -23,7 +23,6 @@ def sky__uriGetter := <import:com.skyhunter.*>
 
 def <swttools> := <import:org.erights.e.ui.swt.*>
 def swtGrid__quasiParser := <swttools:swtGridQParserMaker>()
-def abstractActionAuthor := <swttools:abstractActionAuthor>
 def M := <swttools:menuKit>
 
 def paletteAuthor := <import:org.erights.e.tools.causeway.paletteAuthor>
@@ -33,13 +32,6 @@ def whenever := <elib:slot.whenever>
 def EverReporter := <type:org.erights.e.elib.slot.EverReporter>
 
 def __versionLauncherAuthor := <elang:launcher.__versionLauncherAuthor>
-
-def setMargins(layout, marginSize) :void {
-    layout.setMarginWidth(marginSize)
-    layout.setMarginHeight(marginSize)
-    layout.setHorizontalSpacing(marginSize)
-    layout.setVerticalSpacing(marginSize)
-}
 
 def causewayEditorAuthor(rezKit,
                          abstractAction,
@@ -96,7 +88,7 @@ def causewayEditorAuthor(rezKit,
         def gCer := makers.get("gcer")(toolArea)
         swtGrid`$toolArea:
                 $toolBar.X ${gCer.getLabel()} ${gCer.getToolBar()}`
-        setMargins(toolArea.getLayout(), 0)
+        palette.zeroMargins(toolArea.getLayout())
         
         def &everShowMainToolbar := makeLamportSlot(true)
         whenever([&everShowMainToolbar], fn{
@@ -212,7 +204,8 @@ def causewayEditorAuthor(rezKit,
                     oldShell.removeShellListener(shellListener)
                     oldShell.setCursor(waitCursor)
                     def openAction() :void {
-                        def editor := makeCausewayEditor(rootDirName, optPaths)
+                        def editor := makeCausewayEditor(rootDirName,
+                                                         optPaths)
                         editor.open()
                         oldShell.close()
                     }
@@ -238,7 +231,6 @@ def causewayEditorAuthor(rezKit,
             to getOptMenuAccelDesc() :String { "Ctrl+W" }
             to getOptTip()           :String { "Closes the editor" }
         }
-        
         
         /**
          *
@@ -279,7 +271,9 @@ def causewayEditorAuthor(rezKit,
             to run() :void {}
             to getLabel()            :String { "Save A&ll" }
             to getOptMenuAccelDesc() :String { "Alt+S" }
-            to getOptTip()           :String { "Save all files in this group" }
+            to getOptTip()           :String {
+                "Save all files in this group"
+            }
             to getOptIconFQName()    :String {
                 "com/skyhunter/e/icons/saveall16-16.gif"
             }
@@ -304,16 +298,18 @@ def causewayEditorAuthor(rezKit,
                 #def waitCursor := makers["cursor"](SWT.getCURSOR_WAIT())
                 def shell := causewayEditor.getShell()
                 
-                def dotFile := openners["exportFile"](shell, "messageGraph.gv", [])
+                def dotFile := openners["exportFile"](shell,
+                                                      "messageGraph.gv", [])
                 
                 if (dotFile != null) {
-                    
                     #shell.setCursor(waitCursor)
                     causewayEditor.getViewer().exportModelToDotFile(dotFile)
                 }
             }
             to getLabel()            :String { "&Export..." }
-            to getOptTip()           :String { "Export message graph to GraphViz DOT format" }
+            to getOptTip()           :String {
+                "Export message graph to GraphViz DOT format"
+            }
         }
         
         /**
@@ -498,7 +494,6 @@ def causewayEditorAuthor(rezKit,
             }
         }
         
-        
         /**
          *
          */
@@ -516,7 +511,6 @@ def causewayEditorAuthor(rezKit,
             }
         }
         
-        
         /**
          *
          */
@@ -529,7 +523,6 @@ def causewayEditorAuthor(rezKit,
             to getOptTip()           :String { "Find the next one" }
         }
         
-        
         /**
          *
          */
@@ -541,7 +534,6 @@ def causewayEditorAuthor(rezKit,
             to getOptMenuAccelDesc() :String { "Shift+F3" }
             to getOptTip()           :String { "Find the previous one" }
         }
-        
         
         /**
          *
@@ -559,7 +551,6 @@ def causewayEditorAuthor(rezKit,
                 "com/skyhunter/e/icons/goto16-16.gif"
             }
         }
-        
         
         /**
          *
@@ -670,7 +661,9 @@ def causewayEditorAuthor(rezKit,
             #causewayEditor.getCausewayApp().openRelevanceOptionsDialog()
             #}
             to getLabel()            :String { "&Relevance Options..." }
-            to getOptTip()           :String { "Show Relevance Function Options" }
+            to getOptTip()           :String {
+                "Show Relevance Function Options"
+            }
         }
         
         /**
@@ -845,9 +838,11 @@ def causewayEditorAuthor(rezKit,
         def viewerDirectorAuthor :=
           <import:org.erights.e.tools.causeway.viewerDirectorAuthor>
         def makeViewerDirector :=
-          viewerDirectorAuthor(<file>, <jar>, makers, shell, tcr, traceline)
+          viewerDirectorAuthor(<file>, <jar>, makers, shell,
+                               abstractAction, tcr, traceline)
         
-        def viewerDirector := makeViewerDirector(shell, palette, rootDirName, traces)
+        def viewerDirector := makeViewerDirector(shell, palette,
+                                                 rootDirName, traces)
         
         bind causewayEditor {
             to getAppName() :String { "Causeway" }
@@ -868,7 +863,7 @@ def causewayEditorAuthor(rezKit,
                         ${causewayEditor.getViewer().getTopLevelPane()}.X.Y
                         ${causewayEditor.getStatusBar()}.X`
                 
-                setMargins(causewayEditor.getShell().getLayout(), 0)
+                palette.zeroMargins(causewayEditor.getShell().getLayout())
                 
                 def menuBar := barAction.makeMenu(shell, menuMap)
                 
@@ -881,6 +876,7 @@ def causewayEditorAuthor(rezKit,
                 causewayEditor.getViewer().open()
             }
         }
-        causewayEditor
+        return causewayEditor
     }
+    return makeCausewayEditor
 }

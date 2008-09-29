@@ -1,0 +1,172 @@
+#!/usr/bin/env rune
+
+pragma.syntax("0.9")
+
+# Copyright 2008 Teleometry Design under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def swt__uriGetter := <import:org.eclipse.swt.*>
+def widget__uriGetter := <swt:widgets.*>
+def custom__uriGetter := <swt:custom.*>
+def SWT := <swt:makeSWT>
+
+def <swttools> := <import:org.erights.e.ui.swt.*>
+def swtGrid__quasiParser := <swttools:swtGridQParserMaker>()
+
+# Useful maps for lookups in event handling.
+def itemToModelMap := [].asMap().diverge()
+def modelToItemMap := [].asMap().diverge()
+
+def getNestedEdges(origin, edges, offset) :List {
+    def nested := [].diverge()
+    
+    for i in offset ..! edges.size() {
+        def edge := edges[i]
+        if (edge != null) {
+            if (edge.getOrigin() == origin) {
+                nested.push(edge)
+            } else {
+                return nested.snapshot()
+            }
+        }
+    }
+    return nested.snapshot()
+}
+
+def buildTreeItems(swtParent, origin, edges, ndx,
+                   vatMap, graphWalker) : void {
+    
+    # Make tree item for origin.
+    def swtItem := <widget:makeTreeItem>(swtParent, 0)
+    graphWalker.labelNodeItem(vatMap, origin, swtItem)
+    
+    for i in 0 ..! edges.size() {
+        
+        def edge := edges[i]
+        
+        # Make nested tree item for edge.
+        def swtNestedItem := <widget:makeTreeItem>(swtItem, 0)
+        
+        itemToModelMap.put([swtNestedItem, ndx], edge, true)
+        modelToItemMap.put(edge, [swtNestedItem, ndx], true)
+        
+        graphWalker.labelArcItem(vatMap, edge, swtNestedItem)
+    }
+}
+
+def buildTree(swtParent, poList, ndx,
+              vatMap, graphWalker) :void {
+    
+    var i := 0
+    while (i < poList.size()) {
+        
+        def edge := poList[i]
+        if (edge != null) {
+            def origin := edge.getOrigin()
+            # edges will contain at least one edge
+            def edges := getNestedEdges(origin, poList, i)
+            buildTreeItems(swtParent, origin, edges, ndx,
+                           vatMap, graphWalker)
+            i += edges.size()
+        } else {
+            i := i +1
+        }
+    }
+}
+
+def makePOPane(swtParent, poList, ndx,
+               selectionModel, vatMap, graphWalker) :near {
+    
+    def swtPane := <widget:makeComposite>(swtParent, 0)
+    def swtTree := <widget:makeTree>(swtPane,
+                                     SWT.getSINGLE() |
+                                       (SWT.getH_SCROLL() | SWT.getV_SCROLL()))
+    
+    buildTree(swtTree, poList, ndx, vatMap, graphWalker)
+    
+    def swtSelectionListener {
+        to widgetSelected(swtEvent) :void {
+            def swtItem := swtEvent.getItem()
+            def edge := itemToModelMap.fetch([swtItem, ndx], fn{})
+            selectionModel.setOptEdge(edge)
+        }
+        to widgetDefaultSelected(swtEvent) :void {}
+    }
+    swtTree.addSelectionListener(swtSelectionListener)
+    
+    def pop {
+        
+        to getPane() :near { return swtPane }
+        
+        to getWidget() :near { return swtTree }
+        
+        to activate() :void {}
+        
+        to layout() :void {
+            
+            swtGrid`${swtPane}:
+                    ${swtTree}.X.Y`
+            
+            swtPane.getLayout().setMarginWidth(0)
+            swtPane.getLayout().setMarginHeight(0)
+            swtPane.getLayout().setHorizontalSpacing(0)
+            swtPane.getLayout().setVerticalSpacing(0)
+        }
+    }
+    return pop
+}
+
+def makeProcessOrderView(swtParent, palette,
+                         abstractAction,
+                         poModel, selectionModel,
+                         vatMap, graphWalker) :near {
+    
+    def swtPOView := <widget:makeComposite>(swtParent, 0)
+    
+    def swtFolder := <widget:makeTabFolder>(swtPOView, 0)
+    
+    def tabKeeper := [].diverge()
+    
+    # Map [VatName, List[EventArc]]
+    for vatName => poList in poModel {
+        
+        def swtTab := <widget:makeTabItem>(swtFolder, 0)
+        
+        def pop := makePOPane(swtFolder,
+                              poList, swtFolder.indexOf(swtTab),
+                              selectionModel, vatMap, graphWalker)
+        
+        swtTab.setControl(pop.getPane())
+        swtTab.setText(vatMap.fetchDisplayAttributes(vatName)[0])
+        tabKeeper[swtFolder.indexOf(swtTab)] := [swtTab, pop]
+    }
+    
+    def selectionObserver {
+        to edgeSelected(optEdge) :void {
+            def tabbedItem := modelToItemMap.fetch(optEdge, fn{})
+            if (tabbedItem != null) {
+                def [swtItem, ndx] := tabbedItem
+                swtFolder.setSelection(ndx)
+                def [_, pop] := tabKeeper[ndx]
+                pop.getWidget().setSelection([swtItem])
+                pop.getWidget().showItem(swtItem)
+            }
+        }
+    }
+    selectionModel.addObserver(selectionObserver)
+    
+    def pov {
+        
+        to open() :void {}
+        
+        to layout() :void {
+            for [_, pop] in tabKeeper {
+                pop.layout()
+            }
+            swtGrid`${swtPOView}:
+                    ${swtFolder}.X.Y`
+            
+        }
+    }
+    return pov
+}

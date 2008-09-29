@@ -49,7 +49,6 @@ def makeWatcher() :near {
     return watcher
 }
 
-
 def getDisplayName(vatName) :String {
     
     if (vatName =~ `<Vat @vn>`) {
@@ -71,25 +70,61 @@ def getDisplayName(vatName) :String {
     return vatName
 }
 
-def walkDots(edge, watcher, textWriter) :void {
+def getHexTriple(color) :String {
+    
+    def rgb := [].diverge()
+    
+    rgb[0] := color.getRed()
+    rgb[1] := color.getGreen()
+    rgb[2] := color.getBlue()
+    
+    var result := ""
+    
+    for c in rgb {
+        def hex := c.toString(16).toUpperCase()
+        if (hex.size() == 1) {
+            result += "0"
+        }
+        result += hex
+    }
+    
+    return result
+}
+
+def walkDots(edge, textWriter, palette,
+             vatMap, graphWalker, watcher) :void {
     
     if (watcher.hasSeen(edge)) {
         return;
     }
     watcher.see(edge)
     
-    def [oname, oturn] := edge.getOrigin().getID()
-    def [tname, tturn] := edge.getTarget().getID()
+    def [ovat, oturn] := edge.getOrigin().getID()
+    def [tvat, tturn] := edge.getTarget().getID()
     
-    def doname := getDisplayName(oname)
-    def dtname := getDisplayName(tname)
+    def oattr := vatMap.fetchDisplayAttributes(ovat)
+    def tattr := vatMap.fetchDisplayAttributes(tvat)
+    
+    def oname := oattr[0]
+    def tname := tattr[0]
     
     # "[buyer, 100]" -> "[product, 154]";
     
-    textWriter.println(`"[$doname, $oturn]" -> "[$dtname, $tturn]";`)
+    #def ocolor := getHexTriple(oattr[1])
+    #def tcolor := getHexTriple(tattr[1])
+    
+    #textWriter.println(`"[$oname, $oturn]" [color=#${ocolor}];`)
+    #textWriter.println(`"[$tname, $tturn]" [color=#${tcolor}];`)
+    
+    var ep := graphWalker.getEdgePart(edge)
+    if (null == ep) {
+        ep := "[]"
+    }
+    textWriter.println(`"[$oname, $oturn]" -> "[$tname, $tturn]" [label="$ep"];`)
     
     for grandEdge => _ in edge.getTarget().outs() {
-        walkDots(grandEdge, watcher, textWriter)
+        walkDots(grandEdge, textWriter, palette,
+                 vatMap, graphWalker, watcher)
     }
 }
 
@@ -224,14 +259,19 @@ def makeMessageGraph(traceline) :near {
         
         to getSize() :any { return dag.getSize() }
         
-        to connectTheDots(root, dotFile :File) :void {
+        to connectTheDots(root, dotFile :File, palette,
+                          vatMap, graphWalker) :void {
             def textWriter := dotFile.textWriter()
             try {
                 textWriter.println(`digraph messageGraph {`)
+                textWriter.println(`node [fontname=Helvetica, fontsize=10];`)
+                
                 def watcher := makeWatcher()
                 for edge => _ in root.outs() {
-                    walkDots(edge, watcher, textWriter)
+                    walkDots(edge, textWriter, palette,
+                             vatMap, graphWalker, watcher)
                 }
+                
                 textWriter.println(`}`)
                 textWriter.println(``)
             } finally {

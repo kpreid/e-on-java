@@ -448,8 +448,10 @@ def makeCausewayModel(var rootDirName :String,
             return poMap.getValues()
         }
         
-        to exportToDotFile(dotFile :File) :void {
-            graph.connectTheDots(top, dotFile)
+        to exportToDotFile(dotFile :File, palette,
+                           vatMap, graphWalker) :void {
+            graph.connectTheDots(top, dotFile, palette,
+                                 vatMap, graphWalker)
         }
     }
     

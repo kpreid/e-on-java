@@ -1,14 +1,15 @@
 #!/usr/bin/env rune
 
-pragma.syntax("0.8")
+pragma.syntax("0.9")
 
-# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# Copyright 2008 Teleometry Design under the terms of the MIT X license
 # found at http://www.opensource.org/licenses/mit-license.html ................
 
 def swt__uriGetter := <import:org.eclipse.swt.*>
 def widget__uriGetter := <swt:widgets.*>
 def custom__uriGetter := <swt:custom.*>
 def SWT := <swt:makeSWT>
+
 def File := <type:java.io.File>
 
 def <swttools> := <import:org.erights.e.ui.swt.*>
@@ -17,14 +18,14 @@ def swtGrid__quasiParser := <swttools:swtGridQParserMaker>()
 def stackWalkerAuthor :=
   <import:org.erights.e.tools.causeway.stackWalkerAuthor>
 
-def treePaneAuthor :=
-  <import:org.erights.e.tools.causeway.treePaneAuthor>
+def makeMessageOrderView :=
+  <import:org.erights.e.tools.causeway.makeMessageOrderView>
 
-def makePOGroup :=
-  <import:org.erights.e.tools.causeway.makePOGroup>
+def makeProcessOrderView :=
+  <import:org.erights.e.tools.causeway.makeProcessOrderView>
 
-#def debugPaneAuthor :=
-#  <import:org.erights.e.tools.causeway.debugPaneAuthor>
+#def makeDebugView :=
+#<import:org.erights.e.tools.causeway.makeDebugView>
 
 def getDisplayName(vatName) :String {
     
@@ -66,137 +67,92 @@ def makeVatMap(vats, palette, traceline) :near {
     return vatMap
 }
 
-def makeFolderGroup(folder, palette, traceline) :near {
-    
-    def tabKeeper := [].diverge()
-    
-    def folderGroup {
-        
-        to add(tabbedPane, label) :void {
-            def tab := <widget:makeTabItem>(folder, 0)
-            
-            tab.setControl(tabbedPane.getPane())
-            tab.setText(label)
-            tabKeeper.push([tab, tabbedPane])
-        }
-        
-        to layout() :void {
-            for [_, tabbedPane] in tabKeeper {
-                tabbedPane.layout()
-            }
-        }
-        
-        to open() :void {}
-    }
-    return folderGroup
-}
-
 /**
  */
-def viewerAuthor(<file>, <jar>, makers, shell, tcr, traceline) :near {
+def viewerAuthor(<file>, <jar>, makers,
+                 shell, abstractAction, tcr, traceline) :near {
     
-    def makeViewer(parent, palette) :near {
+    def makeStackWalker := stackWalkerAuthor(<file>,
+                                             <jar>,
+                                             makers,
+                                             traceline)
+    
+    def makeViewer(swtParent, palette, viewerModel, selectionModel) :near {
         
-        # model is an unresolved promise until setModel binds it
-        def model
+        def swtViewerView := <widget:makeComposite>(swtParent, 0)
         
-        # messageGraph is an unresolved promise until setModel binds it
-        def messageGraph
+        def swtTopToBottom := <custom:makeSashForm>(swtViewerView,
+                                                    SWT.getVERTICAL())
+        def swtSideToSide := <custom:makeSashForm>(swtTopToBottom,
+                                                   SWT.getHORIZONTAL())
         
-        def topToBottom := <custom:makeSashForm>(parent, SWT.getVERTICAL())
-        def sideToSide := <custom:makeSashForm>(topToBottom,
-                                                SWT.getHORIZONTAL())
+        def model := viewerModel
+        def messageGraph := model.getTop()
         
-        def fp := palette.makeFolderPalette()
-        
-        # top-left
-        def pogFolder := <widget:makeTabFolder>(sideToSide, 0)
-        pogFolder.setForeground(fp.getFg())
-        pogFolder.setBackground(fp.getBg())
-        pogFolder.setFont(fp.getFont())
-        
-        # top-middle
-        def treeFolder := <widget:makeTabFolder>(sideToSide, 0)
-        treeFolder.setForeground(fp.getFg())
-        treeFolder.setBackground(fp.getBg())
-        treeFolder.setFont(fp.getFont())
-        def treeFolderGroup := makeFolderGroup(treeFolder, palette, traceline)
-        def makeTreePane := treePaneAuthor(traceline)
-        
-        # top-right
-        def debugFolder := <widget:makeTabFolder>(sideToSide, 0)
-        debugFolder.setForeground(fp.getFg())
-        debugFolder.setBackground(fp.getBg())
-        debugFolder.setFont(fp.getFont())
-        def debugFolderGroup := makeFolderGroup(debugFolder,
-                                                palette,
-                                                traceline)
-        #def makeDebugPane := debugPaneAuthor(<file>, <jar>, makers, traceline)
+        def vatSet := model.getVatSet()
+        def vatMap := makeVatMap(vatSet, palette, traceline)
         
         # bottom
-        def stackPane := <widget:makeComposite>(topToBottom, 0)
-        stackPane.setForeground(fp.getFg())
-        stackPane.setBackground(fp.getBg())
-        stackPane.setFont(fp.getFont())
-        def makeStackWalker := stackWalkerAuthor(<file>,
-                                                 <jar>,
-                                                 makers,
-                                                 traceline)
+        def stackWalker := makeStackWalker(swtTopToBottom, palette,
+                                           abstractAction,
+                                           selectionModel, vatMap)
         
-        topToBottom.setWeights([50, 50])
-        sideToSide.setWeights([40, 35, 25])
+        # top-left
+        # Map [VatName, List[EventArc]]
+        def poModel := [].asMap().diverge()
+        for i in 0 ..! vatSet.size() {
+            def poList := model.getOrdered(vatSet[i])
+            if (poList != []) {
+                poModel[vatSet[i]] := poList
+            }
+        }
+        def pov := makeProcessOrderView(swtSideToSide, palette,
+                                        abstractAction,
+                                        poModel.snapshot(), selectionModel,
+                                        vatMap, stackWalker)
+        
+        # top-middle
+        def mov := makeMessageOrderView(swtSideToSide, palette,
+                                        abstractAction,
+                                        messageGraph, selectionModel,
+                                        vatMap, stackWalker)
+        
+        # top-right
+        #def dv := makeDebugView(swtSideToSide, palette)
+        
+        swtTopToBottom.setWeights([50, 50])
+        #swtSideToSide.setWeights([40, 35, 25])
+        swtSideToSide.setWeights([40, 60])
+        
+        stackWalker.layout()
+        pov.layout()
+        mov.layout()
         
         def viewer {
             
-            to getTopLevelPane() :near { return topToBottom }
+            to getTopLevelPane() :near { return swtViewerView }
             
             to open() :void {}
             
             to layout() :void {
-                sideToSide.layout()
-                topToBottom.layout()
-            }
-            
-            to setModel(viewerModel, selectionModel) :void {
-                bind model := viewerModel
-                bind messageGraph := model.getTop()
                 
-                def vatSet := model.getVatSet()
-                def vatMap := makeVatMap(vatSet, palette, traceline)
-                
-                #def debugPane := makeDebugPane(debugFolder,
-                #                               palette, selectionModel)
-                #debugFolderGroup.add(debugPane, debugPane.getTabLabel())
-                #debugFolderGroup.layout()
-                
-                stackPane.setVisible(false)
-                def stackWalker := makeStackWalker(topToBottom, palette,
-                                                   vatMap, selectionModel)
-                stackWalker.layout()
-                
-                def treePane := makeTreePane(treeFolder, palette, vatMap,
-                                             messageGraph, selectionModel,
-                                             stackWalker)
-                treeFolderGroup.add(treePane, treePane.getTabLabel())
-                treeFolderGroup.layout()
-                
-                # Map [VatName, List[EventArc]]
-                def pogModel := [].asMap().diverge()
-                for i in 0 ..! vatSet.size() {
-                    def poList := model.getOrdered(vatSet[i])
-                    if (poList != []) {
-                        pogModel[vatSet[i]] := poList
-                    }
+                def ssKids := swtSideToSide.getChildren()
+                for ssKid in ssKids {
+                    ssKid.layout()
                 }
-                def pogView := makePOGroup(pogFolder, palette, vatMap,
-                                           pogModel.snapshot(),
-                                           selectionModel, stackWalker)
-                pogView.layout()
+                def tbKids := swtTopToBottom.getChildren()
+                for tbKid in tbKids {
+                    tbKid.layout()
+                }
+                
+                swtGrid`${viewer.getTopLevelPane()}:
+                        ${swtTopToBottom}.X.Y`
             }
             
             to exportModelToDotFile(dotFile :File) :void {
                 if (Ref.isNear(model)) {
-                    model.exportToDotFile(dotFile)
+                    model.exportToDotFile(dotFile, palette,
+                                          vatMap, stackWalker)
                 } else {
                     # do something
                 }
@@ -204,5 +160,6 @@ def viewerAuthor(<file>, <jar>, makers, shell, tcr, traceline) :near {
         }
         return viewer
     }
+    return makeViewer
 }
 

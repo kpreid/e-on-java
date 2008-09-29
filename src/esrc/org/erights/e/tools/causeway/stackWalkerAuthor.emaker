@@ -40,161 +40,143 @@ def getText(file) :String {
 
 def stackWalkerAuthor(<file>, <jar>, makers, traceline) :near {
     
-    def makeStackWalker(parent, palette, vatMap, selectionModel) :near {
+    /**
+     * Returns either a java.io.File or a java.net.URL
+     */
+    def getFile(pathname) :any {
+        switch (pathname) {
+            match `file:@body` {
+                return <file>[body]
+            }
+            match `jar:@body` {
+                return <jar>[body]
+            }
+            match _ {
+                return <file>[pathname]
+            }
+        }
+    }
+    
+    def getOptLine(file,
+                   first :int,
+                   fo :int,
+                   last :int,
+                   lo :int) :nullOk[String] {
+        if (!(file.__respondsTo("exists",0)) || file.exists()) {
+            def source := file.getText()
+            def lines := source.split("\n")
+            if (first <= lines.size()) {
+                return lines[first -1].trim()
+            }
+        }
+        return null
+    }
+    
+    def getLine(file, first :int, fo :int, last :int, lo :int) :String {
+        if (getOptLine(file, first, fo, last, lo) =~ result :notNull) {
+            return result
+        } else {
+            return `*** "${file.getPath()}" not found ***`
+        }
+    }
+    
+    def getOptMessage(se :StackEntry, hasGot :boolean) :nullOk[String] {
+        if (se =~ [[pathname, _], [[first, fo], [last, lo]]]) {
+            if (pathname != "" ) {
+                def optResult := getOptLine(getFile(pathname),
+                                            first,
+                                            fo,
+                                            last,
+                                            lo)
+                if (null != optResult) {
+                    if (hasGot) {
+                        return optResult
+                    } else {
+                        return `...$optResult`
+                    }
+                }
+            }
+        }
+        if (se =~ [[pathname, topFnc], _]) {
+            if (pathname != "" && topFnc != "") {
+                def lastSlash := pathname.lastStartOf("/");
+                if (lastSlash >= 0) {
+                    def lastPart := pathname(lastSlash+1)
+                    if (lastPart =~ `@base.@_`) {
+                        return `$base#$topFnc`
+                    } else {
+                        return `$lastPart#$topFnc`
+                    }
+                } else {
+                    return topFnc
+                }
+            }
+        }
+        return null
+    }
+    
+    def makeStackWalker(swtParent, palette,
+                        abstractAction,
+                        selectionModel, vatMap) :near {
         
-        def sideToSideSash := <custom:makeSashForm>(parent,
-                                                    SWT.getHORIZONTAL())
         
-        def stackPane := <widget:makeComposite>(sideToSideSash,
-                                                SWT.getBORDER())
+        def swtStackWalkerView := <widget:makeComposite>(swtParent, 0)
         
-        def stackExplorer := <widget:makeTree>(stackPane, SWT.getSINGLE() |
-                                                 (SWT.getH_SCROLL() |
-                                                    SWT.getV_SCROLL()))
+        def swtSideToSide := <custom:makeSashForm>(swtStackWalkerView,
+                                                   SWT.getHORIZONTAL())
         
-        def sp := palette.makeEStackPalette()
-        stackPane.setForeground(sp.getFg())
-        stackPane.setBackground(sp.getBg())
-        stackPane.setFont(sp.getFont())
-        stackExplorer.setForeground(sp.getFg())
-        stackExplorer.setBackground(sp.getBg())
-        stackExplorer.setFont(sp.getFont())
+        def swtStackPane := <widget:makeComposite>(swtSideToSide,
+                                                   SWT.getBORDER())
         
-        def dp := palette.makeDescPalette()
+        def swtStackExplorer := <widget:makeTree>(swtStackPane,
+                                                  SWT.getSINGLE() |
+                                                    (SWT.getH_SCROLL() |
+                                                       SWT.getV_SCROLL()))
         
-        def description :=
-          <custom:makeCLabel>(stackPane,
-                              SWT.getCENTER() | SWT.getSHADOW_OUT())
-        description.setForeground(dp.getFg())
-        description.setBackground(dp.getBg())
-        description.setFont(dp.getFont())
+        def swtDescription := <custom:makeCLabel>(swtStackPane,
+                                                  SWT.getCENTER() |
+                                                    SWT.getSHADOW_OUT())
         
-        def esp := palette.makeECodePalette()
-        def sourcePane :=
-          <widget:makeComposite>(sideToSideSash, SWT.getBORDER())
-        sourcePane.setForeground(esp.getFg())
-        sourcePane.setBackground(esp.getBg())
-        sourcePane.setFont(esp.getFont())
-        def source :=
-          <custom:makeStyledText>(sourcePane,
-                                  SWT.getH_SCROLL() | SWT.getV_SCROLL())
-        source.setForeground(esp.getFg())
-        source.setBackground(esp.getBg())
-        source.setFont(esp.getFont())
+        def swtSourcePane := <widget:makeComposite>(swtSideToSide,
+                                                    SWT.getBORDER())
         
-        def fnp := palette.makeFilenamePalette()
-        def filename :=
-          <custom:makeCLabel>(sourcePane,
-                              SWT.getLEFT() | SWT.getSHADOW_OUT())
-        filename.setForeground(fnp.getFg())
-        filename.setBackground(fnp.getBg())
-        filename.setFont(fnp.getFont())
+        def swtSourceCode := <custom:makeStyledText>(swtSourcePane,
+                                                     SWT.getH_SCROLL() |
+                                                       SWT.getV_SCROLL())
         
-        sideToSideSash.setWeights([35, 65])
+        def swtFilename := <custom:makeCLabel>(swtSourcePane,
+                                               SWT.getLEFT() |
+                                                 SWT.getSHADOW_OUT())
+        
+        swtSideToSide.setWeights([35, 65])
         
         # strip crs
-        source.addVerifyListener(def verifyListener {
+        swtSourceCode.addVerifyListener(def verifyListener {
             to verifyText(event) :void {
                 event.setText(event.getText().canonical())
             }
         })
         
         def &everDirty := makeLamportSlot(false)
-        source.addExtendedModifyListener(def eml {
+        swtSourceCode.addExtendedModifyListener(def eml {
             to modifyText(_) :void { everDirty := true }
         })
         
         def &everWordWrap := makeLamportSlot(true)
         whenever([&everWordWrap], fn{
-            source.setWordWrap(everWordWrap)
+            swtSourceCode.setWordWrap(everWordWrap)
         }, fn{
-            ! source.isDisposed()
+            ! swtSourceCode.isDisposed()
         })
         
-        source.setEditable(false)
-        
-        /**
-         * Returns either a java.io.File or a java.net.URL
-         */
-        def getFile(pathname) :any {
-            switch (pathname) {
-                match `file:@body` {
-                    return <file>[body]
-                }
-                match `jar:@body` {
-                    return <jar>[body]
-                }
-                match _ {
-                    return <file>[pathname]
-                }
-            }
-        }
-        
-        def getOptLine(file,
-                       first :int,
-                       fo :int,
-                       last :int,
-                       lo :int) :nullOk[String] {
-            if (!(file.__respondsTo("exists",0)) || file.exists()) {
-                def source := file.getText()
-                def lines := source.split("\n")
-                if (first <= lines.size()) {
-                    return lines[first -1].trim()
-                }
-            }
-            return null
-        }
-        
-        def getLine(file, first :int, fo :int, last :int, lo :int) :String {
-            if (getOptLine(file, first, fo, last, lo) =~ result :notNull) {
-                return result
-            } else {
-                return `*** "${file.getPath()}" not found ***`
-            }
-        }
-        
-        def getOptMessage(se :StackEntry, hasGot :boolean) :nullOk[String] {
-            if (se =~ [[pathname, _], [[first, fo], [last, lo]]]) {
-                if (pathname != "" ) {
-                    def optResult := getOptLine(getFile(pathname),
-                                                first,
-                                                fo,
-                                                last,
-                                                lo)
-                    if (null != optResult) {
-                        if (hasGot) {
-                            return optResult
-                        } else {
-                            return `...$optResult`
-                        }
-                    }
-                }
-            }
-            if (se =~ [[pathname, topFnc], _]) {
-                if (pathname != "" && topFnc != "") {
-                    def lastSlash := pathname.lastStartOf("/");
-                    if (lastSlash >= 0) {
-                        def lastPart := pathname(lastSlash+1)
-                        if (lastPart =~ `@base.@_`) {
-                            return `$base#$topFnc`
-                        } else {
-                            return `$lastPart#$topFnc`
-                        }
-                    } else {
-                        return topFnc
-                    }
-                }
-            }
-            return null
-        }
-        
+        swtSourceCode.setEditable(false)
         
         def showAndSelect(file, pathname, first, fo, last, lo) :void {
-            filename.setText(`$pathname  line: $first`)
-            source.setText(getText(file))
+            swtFilename.setText(`$pathname  line: $first`)
+            swtSourceCode.setText(getText(file))
             
             # Get the number of lines.
-            def lineCount := source.getLineCount()
+            def lineCount := swtSourceCode.getLineCount()
             
             def lineAtBottom
             if (last + 5 < lineCount) {
@@ -204,83 +186,83 @@ def stackWalkerAuthor(<file>, <jar>, makers, traceline) :near {
             }
             
             # Scroll the specified offset into view.
-            source.setSelection(source.getOffsetAtLine(lineAtBottom -1))
+            swtSourceCode.setSelection(swtSourceCode.getOffsetAtLine(lineAtBottom -1))
             
             # Now do the real selection.
             if (first <= lineCount && last <= lineCount) {
-                def line1 := source.getOffsetAtLine(first -1)
-                def line2 := source.getOffsetAtLine(last -1)
-                source.setSelection(line1 + fo, line2 + lo +1)
+                def line1 := swtSourceCode.getOffsetAtLine(first -1)
+                def line2 := swtSourceCode.getOffsetAtLine(last -1)
+                swtSourceCode.setSelection(line1 + fo, line2 + lo +1)
             }
         }
         
         # Useful map for lookup in event handling.
         var itemToModelMap := [].asMap().diverge()
         
-        def buildTreeItem(parent, se :StackEntry, hasGot :boolean) :near {
+        def buildTreeItem(swtParent, se :StackEntry, hasGot :boolean) :near {
             if (getOptMessage(se, hasGot) =~ message :notNull) {
-                def item := <widget:makeTreeItem>(parent, 0)
+                def swtItem := <widget:makeTreeItem>(swtParent, 0)
                 var se2 := se
                 if (se[1] == null) {
                     se2 := [se[0], [[1,0],[1,0]]]
                 }
-                itemToModelMap.put(item, se2, true)
-                item.setText(message)
-                return item
+                itemToModelMap.put(swtItem, se2, true)
+                swtItem.setText(message)
+                return swtItem
             }
             return null
         }
         
-        def buildSubTree(parent, entries :Stack, hasGot :boolean) :near {
+        def buildSubTree(swtParent, entries :Stack, hasGot :boolean) :near {
             for i in 0 ..! entries.size() {
                 
                 # first, get top-level item
-                def optItem := buildTreeItem(parent, entries[i], hasGot)
+                def swtOptItem := buildTreeItem(swtParent, entries[i], hasGot)
                 
-                if (null != optItem) {
+                if (null != swtOptItem) {
                     
                     # then, second-level item(s)
                     for j in i +1 ..! entries.size() {
                         
-                        buildTreeItem(optItem, entries[j], hasGot)
+                        buildTreeItem(swtOptItem, entries[j], hasGot)
                     }
-                    return optItem
+                    return swtOptItem
                 }
             }
             return null
         }
         
-        def showStackFrame(edge) :void {
+        def showStackFrame(edge, vatMap) :void {
             def [ov, ot] := edge.getOrigin().getID()
             def [tv, tt] := edge.getTarget().getID()
             
             def oattr := vatMap.fetchDisplayAttributes(ov)
             def tattr := vatMap.fetchDisplayAttributes(tv)
             
-            description.setText(`[${oattr[0]}, $ot] causes [${tattr[0]}, $tt]`)
+            swtDescription.setText(`[${oattr[0]}, $ot] causes [${tattr[0]}, $tt]`)
             
             # Remove stack entry items from tree widget.
-            stackExplorer.removeAll()
+            swtStackExplorer.removeAll()
             
             itemToModelMap := [].asMap().diverge()
             
             # Clear source filename label and source code text pane.
-            filename.setText("")
-            source.setText("")
+            swtFilename.setText("")
+            swtSourceCode.setText("")
             
             var curEdge := edge
             while (null != curEdge) {
                 def [_, entries] := curEdge.getContext()
                 
-                def optItem := buildSubTree(stackExplorer,
-                                            entries,
-                                            curEdge.hasGotStack())
-                if (null != optItem) {
+                def swtOptItem := buildSubTree(swtStackExplorer,
+                                               entries,
+                                               curEdge.hasGotStack())
+                if (null != swtOptItem) {
                     def [vat, turn] := curEdge.getTarget().getID()
                     def attr := vatMap.fetchDisplayAttributes(vat)
                     # include [vat, turn] for item at top of turn
-                    optItem.setText(
-                        `[${attr[0]}, $turn] ${optItem.getText()}`)
+                    swtOptItem.setText(
+                        `[${attr[0]}, $turn] ${swtOptItem.getText()}`)
                 }
                 
                 def origin := curEdge.getOrigin()
@@ -290,15 +272,15 @@ def stackWalkerAuthor(<file>, <jar>, makers, traceline) :near {
                     curEdge := null
                 }
             }
-            if (stackExplorer.getItemCount() > 0) {
+            if (swtStackExplorer.getItemCount() > 0) {
                 
-                def items := stackExplorer.getItems()
+                def swtItems := swtStackExplorer.getItems()
                 
-                stackExplorer.setSelection([items[0]])
-                stackExplorer.showItem(items[0])
+                swtStackExplorer.setSelection([swtItems[0]])
+                swtStackExplorer.showItem(swtItems[0])
                 
                 def [[pathname, _], [[first, fo], [last, lo]]] :=
-                  itemToModelMap.fetch(items[0], fn{})
+                  itemToModelMap.fetch(swtItems[0], fn{})
                 showAndSelect(getFile(pathname),
                               pathname,
                               first,
@@ -307,15 +289,6 @@ def stackWalkerAuthor(<file>, <jar>, makers, traceline) :near {
                               lo)
             }
         }
-        
-        def selectionObserver {
-            to edgeSelected(optEdge) :void {
-                if (optEdge != null) {
-                    showStackFrame(optEdge)
-                }
-            }
-        }
-        selectionModel.addObserver(selectionObserver)
         
         def selectionListener {
             to widgetSelected(event) :void {
@@ -333,7 +306,16 @@ def stackWalkerAuthor(<file>, <jar>, makers, traceline) :near {
             }
             to widgetDefaultSelected(event) :void {}
         }
-        stackExplorer.addSelectionListener(selectionListener)
+        swtStackExplorer.addSelectionListener(selectionListener)
+        
+        def selectionObserver {
+            to edgeSelected(optEdge) :void {
+                if (optEdge != null) {
+                    showStackFrame(optEdge, vatMap)
+                }
+            }
+        }
+        selectionModel.addObserver(selectionObserver)
         
         def stackWalker {
             
@@ -341,25 +323,26 @@ def stackWalkerAuthor(<file>, <jar>, makers, traceline) :near {
             
             to layout() :void {
                 
-                swtGrid`${stackPane}:
-                    ${description}.X
-                    ${stackExplorer}.X.Y`
+                swtGrid`${swtStackPane}:
+                    ${swtDescription}.X
+                    ${swtStackExplorer}.X.Y`
                 
-                stackPane.getLayout().setMarginWidth(2)
-                stackPane.getLayout().setMarginHeight(0)
+                swtStackPane.getLayout().setMarginWidth(2)
+                swtStackPane.getLayout().setMarginHeight(0)
+                swtStackPane.getLayout().setHorizontalSpacing(0)
+                swtStackPane.getLayout().setVerticalSpacing(2)
                 
-                stackPane.getLayout().setHorizontalSpacing(0)
-                stackPane.getLayout().setVerticalSpacing(2)
+                swtGrid`${swtSourcePane}:
+                    ${swtFilename}.X
+                    ${swtSourceCode}.X.Y`
                 
-                swtGrid`${sourcePane}:
-                    ${filename}.X
-                    ${source}.X.Y`
+                swtSourcePane.getLayout().setMarginWidth(2)
+                swtSourcePane.getLayout().setMarginHeight(0)
+                swtSourcePane.getLayout().setHorizontalSpacing(0)
+                swtSourcePane.getLayout().setVerticalSpacing(2)
                 
-                sourcePane.getLayout().setMarginWidth(2)
-                sourcePane.getLayout().setMarginHeight(0)
-                
-                sourcePane.getLayout().setHorizontalSpacing(0)
-                sourcePane.getLayout().setVerticalSpacing(2)
+                swtGrid`${swtStackWalkerView}:
+                        ${swtSideToSide}.X.Y`
             }
             
             to getOptSourceLine(stackEntry :StackEntry,
@@ -405,6 +388,8 @@ def stackWalkerAuthor(<file>, <jar>, makers, traceline) :near {
                 }
             }
         }
+        return stackWalker
     }
+    return makeStackWalker
 }
 
