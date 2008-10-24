@@ -76,7 +76,7 @@ def expandTree(swtTree) :void {
 }
 
 def makeOutlineView(swtParent, palette,
-                    abstractAction, getCurrentTree) :near {
+                    abstractAction, getActionTargets) :near {
     
     def swtToolGroup := <widget:makeGroup>(swtParent, 0)
     def swtToolBar := <widget:makeToolBar>(swtToolGroup,
@@ -90,9 +90,11 @@ def makeOutlineView(swtParent, palette,
     
     bind doExpand extends abstractAction(doExpand) {
         to run() :void {
-            def swtTree := getCurrentTree()
-            if (null != swtTree) {
-                expandTree(swtTree)
+            def targets := getActionTargets("doExpand")
+            if (null != targets) {
+                for swtTree in targets {
+                    expandTree(swtTree)
+                }
             }
         }
         to getLabel()            :String { return "&Expand" }
@@ -104,9 +106,11 @@ def makeOutlineView(swtParent, palette,
     
     bind doCollapse extends abstractAction(doCollapse) {
         to run() :void {
-            def swtTree := getCurrentTree()
-            if (null != swtTree) {
-                collapseTree(swtTree)
+            def targets := getActionTargets("doCollapse")
+            if (null != targets) {
+                for swtTree in targets {
+                    collapseTree(swtTree)
+                }
             }
         }
         to getLabel()            :String { return "&Collapse" }
@@ -118,9 +122,11 @@ def makeOutlineView(swtParent, palette,
     
     bind doIncreaseFontSize extends abstractAction(doIncreaseFontSize) {
         to run() :void {
-            def swtTree := getCurrentTree()
-            if (null != swtTree) {
-                swtTree.setFont(palette.makeLargerFont(swtTree.getFont()))
+            def targets := getActionTargets("doIncreaseFontSize")
+            if (null != targets) {
+                for swtControl in targets {
+                    swtControl.setFont(palette.makeLargerFont(swtControl.getFont()))
+                }
             }
         }
         to getLabel()            :String { return "&LargerText" }
@@ -132,9 +138,11 @@ def makeOutlineView(swtParent, palette,
     
     bind doDecreaseFontSize extends abstractAction(doDecreaseFontSize) {
         to run() :void {
-            def swtTree := getCurrentTree()
-            if (null != swtTree) {
-                swtTree.setFont(palette.makeSmallerFont(swtTree.getFont()))
+            def targets := getActionTargets("doDecreaseFontSize")
+            if (null != targets) {
+                for swtControl in targets {
+                    swtControl.setFont(palette.makeSmallerFont(swtControl.getFont()))
+                }
             }
         }
         to getLabel()            :String { return "&SmallerText" }

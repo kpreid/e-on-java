@@ -105,22 +105,40 @@ def walkDots(edge, textWriter, palette,
     def oattr := vatMap.fetchDisplayAttributes(ovat)
     def tattr := vatMap.fetchDisplayAttributes(tvat)
     
+    # [vatDisplayName, [vatColor, colorName]]
+    
     def oname := oattr[0]
     def tname := tattr[0]
     
     # "[buyer, 100]" -> "[product, 154]";
     
+    # Should work but doesn't. Must use color names.
     #def ocolor := getHexTriple(oattr[1])
     #def tcolor := getHexTriple(tattr[1])
-    
     #textWriter.println(`"[$oname, $oturn]" [color=#${ocolor}];`)
     #textWriter.println(`"[$tname, $tturn]" [color=#${tcolor}];`)
+    
+    var ocolor := oattr[1][1]
+    if (edge.getOrigin().isTagged("red")) {
+        ocolor := "firebrick"
+    }
+    var tcolor := tattr[1][1]
+    if (edge.getTarget().isTagged("red")) {
+        tcolor := "firebrick"
+    }
+    
+    textWriter.println(`"[$oname, $oturn]" [color=$ocolor fontcolor=$ocolor];`)
+    textWriter.println(`"[$tname, $tturn]" [color=$tcolor fontcolor=$tcolor];`)
     
     var ep := graphWalker.getEdgePart(edge)
     if (null == ep) {
         ep := "[]"
     }
-    textWriter.println(`"[$oname, $oturn]" -> "[$tname, $tturn]" [label="$ep"];`)
+    var ecolor := "black"
+    if (edge.isTagged("red")) {
+        ecolor := "firebrick"
+    }
+    textWriter.println(`"[$oname, $oturn]" -> "[$tname, $tturn]" [color=$ecolor label="$ep"];`)
     
     for grandEdge => _ in edge.getTarget().outs() {
         walkDots(grandEdge, textWriter, palette,
@@ -172,11 +190,20 @@ def makeMessageGraph(traceline) :near {
     def dag := makeDirectedGraph(traceline)
     
     def mkTurnNode(id :UTurn) :near {
+        var tag :String := ""
+        
         def turnNode extends templateNode(turnNode, id) {
             
             to getVatName() :VatName {
                 id =~ [name, _]
                 return name
+            }
+            
+            to tagWith(name :String) :void {
+                tag := name
+            }
+            to isTagged(name :String) :boolean {
+                return name == tag
             }
             
             to __printOn(out :TextWriter) :void {
@@ -193,6 +220,7 @@ def makeMessageGraph(traceline) :near {
         var anchor :int := 0
         def logs := [].diverge()
         var why :String := ""
+        var tag :String := ""
         
         def eventArc extends templateArc(eventArc, origin, target) {
             to getContext() :Tuple[SendingContext, Stack] {
@@ -225,6 +253,13 @@ def makeMessageGraph(traceline) :near {
                 }
             }
             
+            to tagWith(name :String) :void {
+                tag := name
+            }
+            to isTagged(name :String) :boolean {
+                return name == tag
+            }
+            
             to rememberWhy(reason :String) :void {
                 why := reason
             }
@@ -240,6 +275,10 @@ def makeMessageGraph(traceline) :near {
             dag.addNode(node)
         }
         
+        to removeTurnNode(node) :void {
+            dag.removeNode(node)
+        }
+        
         to makeTurnNode(id :UTurn) :near {
             return mkTurnNode(id)
         }
@@ -253,11 +292,12 @@ def makeMessageGraph(traceline) :near {
                               sendContext, sendStack, gotStack)
         }
         
-        to optGet(id) :any { return dag.optGet(id) }
+        to optGet(id) :near { return dag.optGet(id) }
         
-        to getRoots() :any { return dag.getRoots() }
+        to getRoots() :near { return dag.getRoots() }
+        to getLeaves() :near { return dag.getLeaves() }
         
-        to getSize() :any { return dag.getSize() }
+        to getSize() :near { return dag.getSize() }
         
         to connectTheDots(root, dotFile :File, palette,
                           vatMap, graphWalker) :void {

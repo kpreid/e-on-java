@@ -57,8 +57,6 @@ def causewayEditorAuthor(rezKit,
         
         def causewayEditor
         
-        def &everOptFile := makeLamportSlot(null)
-        
         def shell := makers.get("frame")()
         shell.addShellListener(shellListener)
         def makePalette := paletteAuthor(rezKit, makers, traceline)
@@ -111,18 +109,11 @@ def causewayEditorAuthor(rezKit,
             ! statusBar.isDisposed()
         })
         
-        def &everDirty := makeLamportSlot(false)
-        def &everWordWrap := makeLamportSlot(true)
-        
         # menuFile
-        [def doNew,
-         def doOpen,
+        [def doOpen,
          def doClose,
          
-         def doSave,
-         def doSaveAs,
-         def doSaveAll,
-         def doRevert,
+         def doSetSourceRoot,
          
          def doExport,
          
@@ -131,21 +122,8 @@ def causewayEditorAuthor(rezKit,
          
          def doExit]
         
-        # menuEdit
-        [def doUndo,
-         def doRedo,
-         
-         def doCut,
-         def doCopy,
-         def doPaste,
-         def doDelete,
-         def doSelectAll,
-         
-         def doIndent,
-         def doOutdent]
-        
         # menuSearch
-        [def doFindReplace,
+        [def doFind,
          def doFindNext,
          def doFindPrevious,
          
@@ -156,16 +134,11 @@ def causewayEditorAuthor(rezKit,
          def doLargerFont,
          # menuToolbars
          [def doMainToolbar],
-         def doWordWrap,
          def doStatusBar]
         
         # menuTools
-        [def doConfigure,
-         def doOptions]
-        
-        # menuCausality
-        [def doRelevanceOptions,
-         def doFilters]
+        [def doDevoraOne,
+         def doDevoraTwo]
         
         # menuWindows
         [def doNextTab,
@@ -179,19 +152,6 @@ def causewayEditorAuthor(rezKit,
         /**
          *
          */
-        bind doNew extends abstractAction(doNew) {
-            to run() :void {}
-            to getLabel()            :String { "&New" }
-            to getOptMenuAccelDesc() :String { "Ctrl+N" }
-            to getOptTip()           :String { "Makes a new editor" }
-            to getOptIconFQName()    :String {
-                "com/skyhunter/e/icons/new_page16-16.gif"
-            }
-        }
-        
-        /**
-         *
-         */
         bind doOpen extends abstractAction(doOpen) {
             to run() :void {
                 def waitCursor := makers["cursor"](SWT.getCURSOR_WAIT())
@@ -199,7 +159,7 @@ def causewayEditorAuthor(rezKit,
                 var optPaths :List := openners["openFile"](oldShell)
                 if (optPaths != []) {
                     if (rootDirName == "") {
-                        doOptions()
+                        doSetSourceRoot()
                     }
                     oldShell.removeShellListener(shellListener)
                     oldShell.setCursor(waitCursor)
@@ -230,64 +190,9 @@ def causewayEditorAuthor(rezKit,
             to getLabel()            :String { "&Close" }
             to getOptMenuAccelDesc() :String { "Ctrl+W" }
             to getOptTip()           :String { "Closes the editor" }
-        }
-        
-        /**
-         *
-         */
-        bind doSave extends abstractAction(doSave) {
-            to run() :void {}
-            to getLabel()            :String { "&Save" }
-            to getOptMenuAccelDesc() :String { "Ctrl+S" }
-            to getOptTip()           :String { "Saves the file" }
-            to getOptIconFQName()    :String {
-                "com/skyhunter/e/icons/save16-16.gif"
-            }
             to everEnabledReporter() :EverReporter {
-                whenever([&everDirty, &everOptFile], fn{
-                    everDirty | (everOptFile == null)
-                })
+                whenever([], fn{false})
             }
-        }
-        
-        /**
-         *
-         */
-        bind doSaveAs extends abstractAction(doSaveAs) {
-            to run() :void {}
-            to getLabel()            :String { "Save &As..." }
-            to getOptTip()           :String {
-                "Saves a copy as a chosen file"
-            }
-            to getOptIconFQName()    :String {
-                "com/skyhunter/e/icons/saveas16-16.gif"
-            }
-        }
-        
-        /**
-         *
-         */
-        bind doSaveAll extends abstractAction(doSaveAll) {
-            to run() :void {}
-            to getLabel()            :String { "Save A&ll" }
-            to getOptMenuAccelDesc() :String { "Alt+S" }
-            to getOptTip()           :String {
-                "Save all files in this group"
-            }
-            to getOptIconFQName()    :String {
-                "com/skyhunter/e/icons/saveall16-16.gif"
-            }
-        }
-        
-        /**
-         *
-         */
-        bind doRevert extends abstractAction(doRevert) {
-            to run() :void {
-                debugln("doRevert()")
-            }
-            to getLabel()            :String { "&Revert" }
-            to getOptTip()           :String { "Revert to last saved version" }
         }
         
         /**
@@ -295,15 +200,19 @@ def causewayEditorAuthor(rezKit,
          */
         bind doExport extends abstractAction(doExport) {
             to run() :void {
-                #def waitCursor := makers["cursor"](SWT.getCURSOR_WAIT())
+                def waitCursor := makers["cursor"](SWT.getCURSOR_WAIT())
                 def shell := causewayEditor.getShell()
                 
                 def dotFile := openners["exportFile"](shell,
                                                       "messageGraph.gv", [])
                 
                 if (dotFile != null) {
-                    #shell.setCursor(waitCursor)
-                    causewayEditor.getViewer().exportModelToDotFile(dotFile)
+                    shell.setCursor(waitCursor)
+                    try {
+                        causewayEditor.getViewer().exportModelToDotFile(dotFile)
+                    } finally {  # set cursor to default cursor
+                        shell.setCursor(null)
+                    }
                 }
             }
             to getLabel()            :String { "&Export..." }
@@ -321,6 +230,9 @@ def causewayEditorAuthor(rezKit,
             }
             to getLabel()            :String { "Page Set&up..." }
             to getOptTip()           :String { "Printing preferences" }
+            to everEnabledReporter() :EverReporter {
+                whenever([], fn{false})
+            }
         }
         
         /**
@@ -336,6 +248,9 @@ def causewayEditorAuthor(rezKit,
             to getOptIconFQName()    :String {
                 "com/skyhunter/e/icons/print16-16.gif"
             }
+            to everEnabledReporter() :EverReporter {
+                whenever([], fn{false})
+            }
         }
         
         /**
@@ -350,164 +265,24 @@ def causewayEditorAuthor(rezKit,
             to getOptTip()           :String { "Shuts down these editors" }
         }
         
-        /**
-         *
-         */
-        bind doUndo extends abstractAction(doUndo) {
-            to run() :void {
-                debugln("doUndo()")
-            }
-            to getLabel()            :String { "&Undo" }
-            to getOptMenuAccelDesc() :String { "Ctrl+Z" }
-            to getOptTip()           :String { "Undo the last edit" }
-            to getOptIconFQName()    :String {
-                "com/skyhunter/e/icons/undo16-16.gif"
-            }
-        }
         
         /**
          *
          */
-        bind doRedo extends abstractAction(doRedo) {
+        bind doFind extends abstractAction(doFind) {
             to run() :void {
-                debugln("doRedo()")
+                debugln("doFind()")
             }
-            to getLabel()            :String { "&Redo" }
-            to getOptMenuAccelDesc() :String { "Shift+Ctrl+Z" }
-            to getOptTip()           :String {
-                "The last undone edit is redone"
-            }
-            to getOptIconFQName()    :String {
-                "com/skyhunter/e/icons/redo16-16.gif"
-            }
-        }
-        
-        /**
-         *
-         */
-        bind doCut extends abstractAction(doCut) {
-            to run() :void {
-                debugln("doCut()")
-            }
-            to getLabel()            :String { "Cu&t" }
-            to getOptMenuAccelDesc() :String { "Ctrl+X" }
-            to getOptTip()           :String {
-                "Moves the selection to the clipboard"
-            }
-            to getOptIconFQName()    :String {
-                "com/skyhunter/e/icons/cut16-16.gif"
-            }
-        }
-        
-        /**
-         *
-         */
-        bind doCopy extends abstractAction(doCopy) {
-            to run() :void {
-                debugln("doCopy()")
-            }
-            to getLabel()            :String { "&Copy" }
-            to getOptMenuAccelDesc() :String { "Ctrl+C" }
-            to getOptTip()           :String {
-                "Copies the selection to the clipboard"
-            }
-            to getOptIconFQName()    :String {
-                "com/skyhunter/e/icons/copy16-16.gif"
-            }
-        }
-        
-        /**
-         *
-         */
-        bind doPaste extends abstractAction(doPaste) {
-            to run() :void {
-                debugln("doPaste()")
-            }
-            to getLabel()            :String { "&Paste" }
-            to getOptMenuAccelDesc() :String { "Ctrl+V" }
-            to getOptTip()           :String {
-                "Replaces the selection with a copy of the clipboard"
-            }
-            to getOptIconFQName()    :String {
-                "com/skyhunter/e/icons/paste16-16.gif"
-            }
-        }
-        
-        /**
-         *
-         */
-        bind doDelete extends abstractAction(doDelete) {
-            to run() :void {
-                debugln("doDelete()")
-            }
-            to getLabel()            :String { "&Delete" }
-            to getOptMenuAccelDesc() :String { "Del" }
-            to getOptTip()           :String {
-                "Deletes the selection or next character"
-            }
-            to getOptIconFQName()    :String {
-                "com/skyhunter/e/icons/delete16-16.gif"
-            }
-        }
-        
-        /**
-         *
-         */
-        bind doSelectAll extends abstractAction(doSelectAll) {
-            to run() :void {
-                debugln("doSelectAll()")
-            }
-            to getLabel()            :String { "Select &All" }
-            to getOptMenuAccelDesc() :String { "Ctrl+A" }
-            to getOptTip()           :String { "Selects all the text" }
-        }
-        
-        /**
-         *
-         */
-        bind doIndent extends abstractAction(doIndent) {
-            to run() :void {}
-            to getLabel()            :String { "&Indent" }
-            to getOptMenuAccelDesc() :String { "Tab" }
-            to getOptTip()           :String {
-                "Indent the selection right to the next tab stop"
-            }
-            to getOptIconFQName()    :String {
-                "com/skyhunter/e/icons/indent16-16.gif"
-            }
-        }
-        
-        /**
-         *
-         */
-        bind doOutdent extends abstractAction(doOutdent) {
-            to run() :void {
-                debugln("doOutdent()")
-            }
-            to getLabel()            :String { "&Outdent" }
-            to getOptMenuAccelDesc() :String { "Shift+Tab" }
-            to getOptTip()           :String {
-                "Outdent the selection left to the previous tab stop"
-            }
-            to getOptIconFQName()    :String {
-                "com/skyhunter/e/icons/outdent16-16.gif"
-            }
-        }
-        
-        /**
-         *
-         */
-        bind doFindReplace extends abstractAction(doFindReplace) {
-            to run() :void {
-                debugln("doFindReplace()")
-            }
-            to getLabel()            :String { "Find/Replace..." }
+            to getLabel()            :String { "Find..." }
             to getOptMenuAccelDesc() :String { "Ctrl+F" }
             to getOptTip()           :String {
-                "Find and possibly replace"
+                "Find"
             }
             to getOptIconFQName()    :String {
                 "com/skyhunter/e/icons/find16-16.gif"
+            }
+            to everEnabledReporter() :EverReporter {
+                whenever([], fn{false})
             }
         }
         
@@ -521,6 +296,9 @@ def causewayEditorAuthor(rezKit,
             to getLabel()            :String { "Find &Next" }
             to getOptMenuAccelDesc() :String { "F3" }
             to getOptTip()           :String { "Find the next one" }
+            to everEnabledReporter() :EverReporter {
+                whenever([], fn{false})
+            }
         }
         
         /**
@@ -533,6 +311,9 @@ def causewayEditorAuthor(rezKit,
             to getLabel()            :String { "Find &Previous" }
             to getOptMenuAccelDesc() :String { "Shift+F3" }
             to getOptTip()           :String { "Find the previous one" }
+            to everEnabledReporter() :EverReporter {
+                whenever([], fn{false})
+            }
         }
         
         /**
@@ -550,6 +331,9 @@ def causewayEditorAuthor(rezKit,
             to getOptIconFQName()    :String {
                 "com/skyhunter/e/icons/goto16-16.gif"
             }
+            to everEnabledReporter() :EverReporter {
+                whenever([], fn{false})
+            }
         }
         
         /**
@@ -559,8 +343,11 @@ def causewayEditorAuthor(rezKit,
             to run() :void {
                 debugln("doSmallerFont()")
             }
-            to getLabel()            :String { "S&maller Font" }
-            to getOptMenuAccelDesc() :String { "Ctrl+[" }
+            to getLabel()            :String { return "&SmallerText" }
+            to getOptTip()           :String { return "Make text smaller" }
+            to everEnabledReporter() :EverReporter {
+                whenever([], fn{false})
+            }
         }
         
         /**
@@ -570,10 +357,13 @@ def causewayEditorAuthor(rezKit,
             to run() :void {
                 debugln("doLargerFont()")
             }
-            to getLabel()            :String { "&Larger Font" }
-            to getOptMenuAccelDesc() :String { "Ctrl+]" }
+            to getLabel()            :String { return "&LargerText" }
+            to getOptTip()           :String { return "Make text larger" }
             to getOptIconFQName()    :String {
-                "com/skyhunter/e/icons/magnify.gif"
+                return "com/skyhunter/e/icons/magnify.gif"
+            }
+            to everEnabledReporter() :EverReporter {
+                whenever([], fn{false})
             }
         }
         
@@ -590,23 +380,9 @@ def causewayEditorAuthor(rezKit,
                 "Toggle visibility of main toolbar"
             }
             to everEnabledReporter() :EverReporter {
-                whenever([], fn{false})
+                whenever([], fn{true})
             }
             to optEverCheckedReporter() :EverReporter { &everShowMainToolbar }
-        }
-        
-        /**
-         *
-         */
-        bind doWordWrap extends abstractAction(doWordWrap) {
-            to run() :void {
-                everWordWrap := ! everWordWrap
-            }
-            to getLabel()             :String { "&Word Wrap" }
-            to getMenuItemStyle()     :int    { SWT.getCHECK() }
-            to getOptMenuAccelDesc()  :String { "Alt+W" }
-            to getOptTip()            :String { "Toggle word wrapping" }
-            to optEverCheckedReporter() :EverReporter { &everWordWrap }
         }
         
         /**
@@ -622,7 +398,7 @@ def causewayEditorAuthor(rezKit,
                 "Toggle visibility of status bar"
             }
             to everEnabledReporter() :EverReporter {
-                whenever([], fn{false})
+                whenever([], fn{true})
             }
             to optEverCheckedReporter() :EverReporter { &everShowStatusBar }
         }
@@ -630,18 +406,35 @@ def causewayEditorAuthor(rezKit,
         /**
          *
          */
-        bind doConfigure extends abstractAction(doConfigure) {
+        bind doDevoraOne extends abstractAction(doDevoraOne) {
             to run() :void {
-                debugln("doConfigure()")
+                debugln("doDevoraOne()")
             }
-            to getLabel()            :String { "&Configure..." }
-            to getOptTip()           :String { "Move actions where you like" }
+            to getLabel()            :String { "&Devora (pass 1)" }
+            to getOptTip()           :String { "Run Devora filter" }
+            to everEnabledReporter() :EverReporter {
+                whenever([], fn{false})
+            }
         }
         
         /**
          *
          */
-        bind doOptions extends abstractAction(doOptions) {
+        bind doDevoraTwo extends abstractAction(doDevoraTwo) {
+            to run() :void {
+                debugln("doDevoraTwo()")
+            }
+            to getLabel()            :String { "&Devora (pass 2)" }
+            to getOptTip()           :String { "Run Devora filter" }
+            to everEnabledReporter() :EverReporter {
+                whenever([], fn{false})
+            }
+        }
+        
+        /**
+         *
+         */
+        bind doSetSourceRoot extends abstractAction(doSetSourceRoot) {
             to run() :void {
                 def dir := openners["openDir"](causewayEditor.getShell(),
                                                "Select the source code root directory.")
@@ -649,32 +442,10 @@ def causewayEditorAuthor(rezKit,
                     rootDirName := dir.getPath()
                 }
             }
-            to getLabel()            :String { "&Options..." }
-            to getOptTip()           :String { "Set Preferences" }
-        }
-        
-        /**
-         *
-         */
-        bind doRelevanceOptions extends abstractAction(doRelevanceOptions) {
-            to run() :void {}
-            #causewayEditor.getCausewayApp().openRelevanceOptionsDialog()
-            #}
-            to getLabel()            :String { "&Relevance Options..." }
+            to getLabel()            :String { "&Set Source Root..." }
             to getOptTip()           :String {
-                "Show Relevance Function Options"
+                "Set source code root directory"
             }
-        }
-        
-        /**
-         *
-         */
-        bind doFilters extends abstractAction(doFilters) {
-            to run() :void {}
-            #causewayEditor.getCausewayApp().openFiltersDialog()
-            #}
-            to getLabel()            :String { "&Filters..." }
-            to getOptTip()           :String { "Show File Filters" }
         }
         
         /**
@@ -687,6 +458,9 @@ def causewayEditorAuthor(rezKit,
             to getLabel()            :String { "&Next Tab" }
             to getOptMenuAccelDesc() :String { "Ctrl+Tab" }
             to getOptTip()           :String { "Bring next to top" }
+            to everEnabledReporter() :EverReporter {
+                whenever([], fn{false})
+            }
         }
         
         /**
@@ -699,6 +473,9 @@ def causewayEditorAuthor(rezKit,
             to getLabel()            :String { "&Previous Tab" }
             to getOptMenuAccelDesc() :String { "Shift+Ctrl+Tab" }
             to getOptTip()           :String { "Bring previous to top" }
+            to everEnabledReporter() :EverReporter {
+                whenever([], fn{false})
+            }
         }
         
         /**
@@ -745,14 +522,10 @@ def causewayEditorAuthor(rezKit,
         def barAction :=
           M.bar([def menuFile :=
                    M.menu("&File",
-                          [doNew,
-                           doOpen,
+                          [doOpen,
                            doClose,
                            M.sep(),
-                           doSave,
-                           doSaveAs,
-                           doSaveAll,
-                           doRevert,
+                           doSetSourceRoot,
                            M.sep(),
                            doExport,
                            M.sep(),
@@ -760,22 +533,9 @@ def causewayEditorAuthor(rezKit,
                            doPrint,
                            M.sep(),
                            doExit]),
-                 def menuEdit :=
-                   M.menu("&Edit",
-                          [doUndo,
-                           doRedo,
-                           M.sep(),
-                           doCut,
-                           doCopy,
-                           doPaste,
-                           doDelete,
-                           doSelectAll,
-                           M.sep(),
-                           doIndent,
-                           doOutdent]),
                  def menuSearch :=
                    M.menu("Sea&rch",
-                          [doFindReplace,
+                          [doFind,
                            doFindNext,
                            doFindPrevious,
                            M.sep(),
@@ -787,18 +547,13 @@ def causewayEditorAuthor(rezKit,
                            M.sep(),
                            M.menu("&Toolbars",
                                   [doMainToolbar]),
-                           doWordWrap,
                            doStatusBar]),
                  def menuTools :=
                    M.menu("&Tools",
                           [gCer.getGCAction(),
                            M.sep(),
-                           doConfigure,
-                           doOptions]),
-                 def menuCausality :=
-                   M.menu("&Causality",
-                          [doRelevanceOptions,
-                           doFilters]),
+                           doDevoraOne,
+                           doDevoraTwo]),
                  def menuWindow :=
                    M.menu("&Window",
                           [doNextTab,
@@ -811,21 +566,11 @@ def causewayEditorAuthor(rezKit,
         
         
         def toolActions :=
-          [doNew,
-           doOpen,
-           doSave,
-           doSaveAll,
+          [doOpen,
            M.sep(),
            doPrint,
            M.sep(),
-           doUndo,
-           doRedo,
-           M.sep(),
-           doCut,
-           doCopy,
-           doPaste,
-           M.sep(),
-           doFindReplace]
+           doFind]
         
         def menuMap := [].asMap().diverge()
         def toolMap := [].asMap().diverge()

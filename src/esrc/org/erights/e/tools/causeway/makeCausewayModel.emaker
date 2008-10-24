@@ -375,9 +375,55 @@ def makeCausewayModel(var rootDirName :String,
         }
     }
     
-    #graph.walkRelations(top, 0, traceline)
+    def devora() :void {
+        
+        var leaves := graph.getLeaves()
+        
+        while (leaves.size() > 0) {
+            
+            def edgeList := [].diverge()
+            for leaf in leaves {
+                # collect all incoming edges for all leaves
+                for edge => _ in leaf.ins() {
+                    edgeList.push(edge)
+                }
+            }
+            def newLeaves := [].diverge()
+            for edge in edgeList {
+                def [_, stack] := edge.getContext()
+                if ([] == stack) {
+                    edge.tagWith("red")
+                    
+                    def target := edge.getTarget()
+                    var nin := target.getIncomingCount()
+                    for incoming => _ in target.ins() {
+                        if (! incoming.isTagged("red")) {
+                            break
+                        }
+                        nin -= 1
+                    }
+                    if (nin == 0) {
+                        target.tagWith("red")
+                    }
+                    
+                    def origin := edge.getOrigin()
+                    var nout := origin.getOutgoingCount()
+                    for outgoing => _ in origin.outs() {
+                        if (! outgoing.isTagged("red")) {
+                            break
+                        }
+                        nout -= 1
+                    }
+                    if (nout == 0) {
+                        newLeaves.push(origin)
+                    }
+                }
+            }
+            leaves := newLeaves.snapshot()
+        }
+    }
     
-    #graph.connectTheDots(top, traceline)
+    devora()
     
     def sortTree(root) :any {
         def seen := [].asSet().diverge()

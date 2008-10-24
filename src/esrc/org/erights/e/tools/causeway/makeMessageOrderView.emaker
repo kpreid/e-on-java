@@ -114,9 +114,9 @@ def makeMessageOrderView(swtParent, palette,
     
     def swtMOView := <widget:makeComposite>(swtParent, 0)
     
-    def getCurrentTree
+    def getActionTargets
     def outlineView := makeOutlineView(swtMOView, palette,
-                                       abstractAction, getCurrentTree)
+                                       abstractAction, getActionTargets)
     
     def swtFolder := <widget:makeTabFolder>(swtMOView, 0)
     
@@ -146,11 +146,19 @@ def makeMessageOrderView(swtParent, palette,
     }
     selectionModel.addObserver(selectionObserver)
     
-    bind getCurrentTree() :near {
+    def getCurrentTree() :near {
         def ndx := swtFolder.getSelectionIndex()
         if (ndx != -1) {
             def [_, mop] := tabKeeper[ndx]
             return mop.getWidget()
+        }
+        return null
+    }
+    
+    bind getActionTargets(_ :String) :List {
+        def swtTree := getCurrentTree()
+        if (null != swtTree) {
+            return [swtTree]
         }
         return null
     }

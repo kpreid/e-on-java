@@ -18,6 +18,8 @@ def EverReporter := <type:org.erights.e.elib.slot.EverReporter>
 def <swttools> := <import:org.erights.e.ui.swt.*>
 def swtGrid__quasiParser := <swttools:swtGridQParserMaker>()
 
+def makeOutlineView := <import:org.erights.e.tools.causeway.makeOutlineView>
+
 # [[start-line, start-col], [end-line, end-col]]
 def SourceSpan := Tuple[Tuple[int,int], Tuple[int, int]]
 
@@ -121,6 +123,10 @@ def stackWalkerAuthor(<file>, <jar>, makers, traceline) :near {
         
         
         def swtStackWalkerView := <widget:makeComposite>(swtParent, 0)
+        
+        def getActionTargets
+        def outlineView := makeOutlineView(swtStackWalkerView, palette,
+                                           abstractAction, getActionTargets)
         
         def swtSideToSide := <custom:makeSashForm>(swtStackWalkerView,
                                                    SWT.getHORIZONTAL())
@@ -236,6 +242,8 @@ def stackWalkerAuthor(<file>, <jar>, makers, traceline) :near {
             def [ov, ot] := edge.getOrigin().getID()
             def [tv, tt] := edge.getTarget().getID()
             
+            # [vatDisplayName, [vatColor, colorName]]
+            
             def oattr := vatMap.fetchDisplayAttributes(ov)
             def tattr := vatMap.fetchDisplayAttributes(tv)
             
@@ -317,31 +325,45 @@ def stackWalkerAuthor(<file>, <jar>, makers, traceline) :near {
         }
         selectionModel.addObserver(selectionObserver)
         
+        bind getActionTargets(action :String) :List {
+            if (action == "doExpand" || action == "doCollapse") {
+                if (swtStackExplorer.getItemCount() > 0) {
+                    return [swtStackExplorer]
+                } else {
+                    return null
+                }
+            }
+            if (action == "doIncreaseFontSize" ||
+                  action == "doDecreaseFontSize") {
+                return [swtStackExplorer, swtSourceCode]
+            }
+            return null
+        }
+        
         def stackWalker {
             
             to open() :void {}
             
             to layout() :void {
                 
+                outlineView.layout()
+                
                 swtGrid`${swtStackPane}:
                     ${swtDescription}.X
                     ${swtStackExplorer}.X.Y`
                 
-                swtStackPane.getLayout().setMarginWidth(2)
-                swtStackPane.getLayout().setMarginHeight(0)
-                swtStackPane.getLayout().setHorizontalSpacing(0)
-                swtStackPane.getLayout().setVerticalSpacing(2)
+                palette.setMargins(
+                    swtStackPane.getLayout(), 2, 0, 0, 2)
                 
                 swtGrid`${swtSourcePane}:
                     ${swtFilename}.X
                     ${swtSourceCode}.X.Y`
                 
-                swtSourcePane.getLayout().setMarginWidth(2)
-                swtSourcePane.getLayout().setMarginHeight(0)
-                swtSourcePane.getLayout().setHorizontalSpacing(0)
-                swtSourcePane.getLayout().setVerticalSpacing(2)
+                palette.setMargins(
+                    swtSourcePane.getLayout(), 2, 0, 0, 2)
                 
                 swtGrid`${swtStackWalkerView}:
+                        ${outlineView.getTopLevelPane()}.X
                         ${swtSideToSide}.X.Y`
             }
             
@@ -355,7 +377,7 @@ def stackWalkerAuthor(<file>, <jar>, makers, traceline) :near {
                 
                 # Set descriptive text to vat name and turn.
                 def attr := vatMap.fetchDisplayAttributes(vatName)
-                item.setForeground(attr[1])
+                item.setForeground(attr[1][0])
                 item.setText(`[${attr[0]}, $turn]`)
             }
             
@@ -372,7 +394,7 @@ def stackWalkerAuthor(<file>, <jar>, makers, traceline) :near {
                 
                 # Set descriptive text to vat name and turn.
                 def tAttr := vatMap.fetchDisplayAttributes(tVatName)
-                item.setForeground(tAttr[1])
+                item.setForeground(tAttr[1][0])
                 
                 var msg := stackWalker.getEdgePart(edge)
                 if (msg == null) {
