@@ -20,9 +20,17 @@ def makeWelcomeView(swtParent, palette, traceline) :near {
     def wp := palette.makeWelcomePalette()
     
     def swtWelcomeView := <widget:makeComposite>(swtParent, 0)
+    swtWelcomeView.setForeground(wp.getFg())
+    swtWelcomeView.setBackground(wp.getBg())
+    swtWelcomeView.setFont(wp.getFont())
+    
+    def swtSideToSide := <custom:makeSashForm>(swtWelcomeView,
+                                               SWT.getHORIZONTAL())
     
     # left side
-    def swtSplash := <widget:makeCanvas>(swtWelcomeView, 0)
+    def swtSplash := <widget:makeCanvas>(swtSideToSide, 0)
+    swtSplash.setBackground(wp.getBg())
+    
     #swtSplash.setSize(588, 372)
     def swtImage := palette.getImage("giantsCauseway")
     
@@ -34,9 +42,15 @@ def makeWelcomeView(swtParent, palette, traceline) :near {
     swtSplash.addPaintListener(swtPaintListener)
     
     # right side
-    def swtWelcomeText := <custom:makeStyledText>(swtWelcomeView, 0)
+    def swtWelcomeText := <custom:makeStyledText>(swtSideToSide, 0)
+    swtWelcomeText.setForeground(wp.getFg())
+    swtWelcomeText.setBackground(wp.getBg())
     swtWelcomeText.setFont(wp.getFont())
-    swtWelcomeText.setText("Welcome...")
+    swtWelcomeText.setText("  Welcome...")
+    swtWelcomeText.setEditable(false)
+    swtWelcomeText.getCaret().setVisible(false)
+    
+    swtSideToSide.setWeights([60, 40])
     
     def showBounds(s, r) :void {
         traceline(`$s bounds: [${r.getX()}, ${r.getY()}, ${r.getWidth()}, ${r.getHeight()}]`)
@@ -65,7 +79,8 @@ def makeWelcomeView(swtParent, palette, traceline) :near {
             #         swtSplash.computeSize(588, 372))
             
             swtGrid`${welcomeView.getTopLevelPane()}:
-                    $swtSplash.X.Y $swtWelcomeText.X` 
+                    $swtSideToSide.X.Y`
+            #$swtSplash.X.Y $swtWelcomeText.X`
             
             #showBounds("swtImage", swtImage.getBounds())
             #showBounds("swtWelcomeView", swtWelcomeView.getBounds())

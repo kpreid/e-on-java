@@ -304,7 +304,7 @@ def makeMessageGraph(traceline) :near {
             def textWriter := dotFile.textWriter()
             try {
                 textWriter.println(`digraph messageGraph {`)
-                textWriter.println(`node [fontname=Helvetica, fontsize=10];`)
+                #textWriter.println(`node [fontname=Helvetica, fontsize=10];`)
                 
                 def watcher := makeWatcher()
                 for edge => _ in root.outs() {

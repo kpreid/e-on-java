@@ -21,14 +21,14 @@ if (args =~ [`--local`] + _) {
     def productVat := makeVat.make("headless", "product")
     var seedVat := <elang:interp.seedVatAuthor>(<unsafe>)
     if (args =~ [`--captp`] + _) {
-	traceline("captp")
-	introducer.onTheAir()
-	seedVat := seedVat.virtualize(introducer)
+        traceline("captp")
+        introducer.onTheAir()
+        seedVat := seedVat.virtualize(introducer)
     } else {
-	traceline("boot")
+        traceline("boot")
     }
     bind productVow := seedVat(productVat,
-			       "<import:scripts.test.causeway.product-ajax>")
+                               "<import:scripts.test.causeway.product-ajax>")
 }
 
 def partNo := "123abc"
@@ -72,14 +72,14 @@ when (productVow) -> {
     def checkAnswers(allOK :boolean) :void {
         if (allOK) {
             inventory <- placeOrder(name, partNo, 
-				    def done(placed :boolean) :void {
-		if (placed) {
-		    report(`Order placed for $name, $partNo`)
-		} else {
-		    report(`Order for $name, $partNo not placed`)
-		}
-		tcr.setProperty("TraceLog_causality", "warning")
-		interp.exitAtTop()
+                                    def done(placed :boolean) :void {
+                if (placed) {
+                    report(`Order placed for $name, $partNo`)
+                } else {
+                    report(`Order for $name, $partNo not placed`)
+                }
+                tcr.setProperty("TraceLog_causality", "warning")
+                interp.exitAtTop()
             })
         }
     }

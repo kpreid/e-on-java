@@ -23,14 +23,14 @@ if (args =~ [`--local`] + _) {
     def productVat := makeVat.make("headless", "product")
     var seedVat := <elang:interp.seedVatAuthor>(<unsafe>)
     if (args =~ [`--captp`] + _) {
-	traceline("captp")
-	introducer.onTheAir()
-	seedVat := seedVat.virtualize(introducer)
+        traceline("captp")
+        introducer.onTheAir()
+        seedVat := seedVat.virtualize(introducer)
     } else {
-	traceline("boot")
+        traceline("boot")
     }
     bind productVow := seedVat(productVat,
-			       "<import:scripts.test.causeway.product-promise>")
+                               "<import:scripts.test.causeway.product-promise>")
 }
 
 def partNo := "123abc"
@@ -45,22 +45,22 @@ when (productVow) -> {
     tcr.setProperty("TraceLog_causality", "debug")
     
     def promises := [inventory <- isAvailable(partNo),
-		     creditBureau <- doCreditCheck(name),
-		     shipper <- canDeliver(profile)]
+                     creditBureau <- doCreditCheck(name),
+                     shipper <- canDeliver(profile)]
     def allOK := asyncAnd(promises)
     
     when (allOK) -> {
-	# All conditions must be met before an order is placed.
+        # All conditions must be met before an order is placed.
         if (allOK) {
             def placed := inventory <- placeOrder(name, partNo)
-	    when (placed) -> {
-		if (placed) {
-		    report(`Order placed for $name, $partNo`)
-		} else {
-		    report(`Order for $name, $partNo not placed`)
-		}
-		tcr.setProperty("TraceLog_causality", "warning")
-		interp.exitAtTop()
+            when (placed) -> {
+                if (placed) {
+                    report(`Order placed for $name, $partNo`)
+                } else {
+                    report(`Order for $name, $partNo not placed`)
+                }
+                tcr.setProperty("TraceLog_causality", "warning")
+                interp.exitAtTop()
             }
         }
     }

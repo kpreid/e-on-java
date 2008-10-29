@@ -42,6 +42,13 @@ def paletteAuthor(rezKit, makers, traceline) :near {
     colorMap.put("darkslategray",
                  [rezKit.makeColor(47, 79, 79), "darkslategray"], true) # 2F4F4F
     
+    colorMap.put("midnightblue",
+                 [rezKit.makeColor(25, 25, 112), "midnightblue"], true) # 191970
+    colorMap.put("darkblue",
+                 [rezKit.makeColor(0, 0, 139), "darkblue"], true) # 00008B
+    colorMap.put("navy",
+                 [rezKit.makeColor(0, 0, 128), "navy"], true) # 000080
+    
     colorMap.put("darkred",
                  [rezKit.makeColor(139, 0, 0), "darkred"], true) # 8B0000
     colorMap.put("firebrick",
@@ -97,6 +104,10 @@ def paletteAuthor(rezKit, makers, traceline) :near {
     fonts.put(["Arial", "14", "normal"], rezKit.makeFont("Arial", 14, normal), true)
     fonts.put(["Arial", "14", "bold"], rezKit.makeFont("Arial", 14, bold), true)
     fonts.put(["Arial", "14", "italic"], rezKit.makeFont("Arial", 14, italic), true)
+    
+    fonts.put(["Arial", "22", "normal"], rezKit.makeFont("Arial", 22, normal), true)
+    fonts.put(["Arial", "22", "bold"], rezKit.makeFont("Arial", 22, bold), true)
+    fonts.put(["Arial", "22", "italic"], rezKit.makeFont("Arial", 22, italic), true)
     
     fonts.put(["Courier New", "8", "normal"], rezKit.makeFont("Courier New", 8, normal), true)
     fonts.put(["Courier New", "8", "bold"], rezKit.makeFont("Courier New", 8, bold), true)
@@ -194,9 +205,9 @@ def paletteAuthor(rezKit, makers, traceline) :near {
             }
             
             to makeWelcomePalette() :near {
-                return makeBasicPalette("darkslateblue",
-                                        "linen",
-                                        ["Arial", "14", "bold"])
+                return makeBasicPalette("navy",
+                                        "whitesmoke",
+                                        ["Arial", "22", "normal"])
             }
             
             to makeFramePalette() :near {

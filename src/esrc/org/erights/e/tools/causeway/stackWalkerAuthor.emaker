@@ -19,6 +19,7 @@ def <swttools> := <import:org.erights.e.ui.swt.*>
 def swtGrid__quasiParser := <swttools:swtGridQParserMaker>()
 
 def makeOutlineView := <import:org.erights.e.tools.causeway.makeOutlineView>
+def makeTextView := <import:org.erights.e.tools.causeway.makeTextView>
 
 # [[start-line, start-col], [end-line, end-col]]
 def SourceSpan := Tuple[Tuple[int,int], Tuple[int, int]]
@@ -94,7 +95,7 @@ def stackWalkerAuthor(<file>, <jar>, makers, traceline) :near {
                     if (hasGot) {
                         return optResult
                     } else {
-                        return `...$optResult`
+                        return `[] $optResult`
                     }
                 }
             }
@@ -124,10 +125,6 @@ def stackWalkerAuthor(<file>, <jar>, makers, traceline) :near {
         
         def swtStackWalkerView := <widget:makeComposite>(swtParent, 0)
         
-        def getActionTargets
-        def outlineView := makeOutlineView(swtStackWalkerView, palette,
-                                           abstractAction, getActionTargets)
-        
         def swtSideToSide := <custom:makeSashForm>(swtStackWalkerView,
                                                    SWT.getHORIZONTAL())
         
@@ -143,6 +140,10 @@ def stackWalkerAuthor(<file>, <jar>, makers, traceline) :near {
                                                   SWT.getCENTER() |
                                                     SWT.getSHADOW_OUT())
         
+        def getOutlineActionTargets
+        def outlineView := makeOutlineView(swtStackPane, palette,
+                                           abstractAction, getOutlineActionTargets)
+        
         def swtSourcePane := <widget:makeComposite>(swtSideToSide,
                                                     SWT.getBORDER())
         
@@ -153,6 +154,10 @@ def stackWalkerAuthor(<file>, <jar>, makers, traceline) :near {
         def swtFilename := <custom:makeCLabel>(swtSourcePane,
                                                SWT.getLEFT() |
                                                  SWT.getSHADOW_OUT())
+        
+        def getTextActionTargets
+        def textView := makeTextView(swtSourcePane, palette,
+                                     abstractAction, getTextActionTargets)
         
         swtSideToSide.setWeights([35, 65])
         
@@ -271,6 +276,11 @@ def stackWalkerAuthor(<file>, <jar>, makers, traceline) :near {
                     # include [vat, turn] for item at top of turn
                     swtOptItem.setText(
                         `[${attr[0]}, $turn] ${swtOptItem.getText()}`)
+                    swtOptItem.setForeground(attr[1][0])
+                    def nested := swtOptItem.getItems()
+                    for n in nested {
+                        n.setForeground(attr[1][0])
+                    }
                 }
                 
                 def origin := curEdge.getOrigin()
@@ -325,7 +335,7 @@ def stackWalkerAuthor(<file>, <jar>, makers, traceline) :near {
         }
         selectionModel.addObserver(selectionObserver)
         
-        bind getActionTargets(action :String) :List {
+        bind getOutlineActionTargets(action :String) :List {
             if (action == "doExpand" || action == "doCollapse") {
                 if (swtStackExplorer.getItemCount() > 0) {
                     return [swtStackExplorer]
@@ -335,7 +345,15 @@ def stackWalkerAuthor(<file>, <jar>, makers, traceline) :near {
             }
             if (action == "doIncreaseFontSize" ||
                   action == "doDecreaseFontSize") {
-                return [swtStackExplorer, swtSourceCode]
+                return [swtStackExplorer, swtDescription]
+            }
+            return null
+        }
+        
+        bind getTextActionTargets(action :String) :List {
+            if (action == "doIncreaseFontSize" ||
+                  action == "doDecreaseFontSize") {
+                return [swtSourceCode, swtFilename]
             }
             return null
         }
@@ -349,13 +367,17 @@ def stackWalkerAuthor(<file>, <jar>, makers, traceline) :near {
                 outlineView.layout()
                 
                 swtGrid`${swtStackPane}:
+                    ${outlineView.getTopLevelPane()}.X
                     ${swtDescription}.X
                     ${swtStackExplorer}.X.Y`
                 
                 palette.setMargins(
                     swtStackPane.getLayout(), 2, 0, 0, 2)
                 
+                textView.layout()
+                
                 swtGrid`${swtSourcePane}:
+                    ${textView.getTopLevelPane()}.X
                     ${swtFilename}.X
                     ${swtSourceCode}.X.Y`
                 
@@ -363,7 +385,6 @@ def stackWalkerAuthor(<file>, <jar>, makers, traceline) :near {
                     swtSourcePane.getLayout(), 2, 0, 0, 2)
                 
                 swtGrid`${swtStackWalkerView}:
-                        ${outlineView.getTopLevelPane()}.X
                         ${swtSideToSide}.X.Y`
             }
             

@@ -78,36 +78,13 @@ def causewayEditorAuthor(rezKit,
         shell.setForeground(fp.getFg())
         shell.setBackground(fp.getBg())
         
-        def toolArea := <widget:makeGroup>(shell, 0)
-        
-        def toolBar :=
-          <widget:makeToolBar>(toolArea, SWT.getFLAT() | SWT.getHORIZONTAL())
-        
-        def gCer := makers.get("gcer")(toolArea)
-        swtGrid`$toolArea:
-                $toolBar.X ${gCer.getLabel()} ${gCer.getToolBar()}`
-        palette.zeroMargins(toolArea.getLayout())
-        
-        def &everShowMainToolbar := makeLamportSlot(true)
-        whenever([&everShowMainToolbar], fn{
-            toolArea.setVisible(everShowMainToolbar)
-        }, fn{
-            ! toolArea.isDisposed()
-        })
-        
-        def statusBar := <widget:makeLabel>(shell, 0)
+        #def statusBar := <widget:makeLabel>(shell, 0)
+        #statusBar.setText("Causeway's internal status messages displayed here...")
         
         def debugln(str) :void {
             traceline(str)
-            statusBar.setText(str)
+            #statusBar.setText(str)
         }
-        
-        def &everShowStatusBar := makeLamportSlot(true)
-        whenever([&everShowStatusBar], fn{
-            statusBar.setVisible(everShowStatusBar)
-        }, fn{
-            ! statusBar.isDisposed()
-        })
         
         # menuFile
         [def doOpen,
@@ -131,10 +108,7 @@ def causewayEditorAuthor(rezKit,
         
         # menuView
         [def doSmallerFont,
-         def doLargerFont,
-         # menuToolbars
-         [def doMainToolbar],
-         def doStatusBar]
+         def doLargerFont]
         
         # menuTools
         [def doDevoraOne,
@@ -265,7 +239,6 @@ def causewayEditorAuthor(rezKit,
             to getOptTip()           :String { "Shuts down these editors" }
         }
         
-        
         /**
          *
          */
@@ -365,42 +338,6 @@ def causewayEditorAuthor(rezKit,
             to everEnabledReporter() :EverReporter {
                 whenever([], fn{false})
             }
-        }
-        
-        /**
-         *
-         */
-        bind doMainToolbar extends abstractAction(doMainToolbar) {
-            to run() :void {
-                everShowMainToolbar := ! everShowMainToolbar
-            }
-            to getLabel()             :String { "&Main Toolbar" }
-            to getMenuItemStyle()     :int    { SWT.getCHECK() }
-            to getOptTip()            :String {
-                "Toggle visibility of main toolbar"
-            }
-            to everEnabledReporter() :EverReporter {
-                whenever([], fn{true})
-            }
-            to optEverCheckedReporter() :EverReporter { &everShowMainToolbar }
-        }
-        
-        /**
-         *
-         */
-        bind doStatusBar extends abstractAction(doStatusBar) {
-            to run() :void {
-                everShowStatusBar := ! everShowStatusBar
-            }
-            to getLabel()            :String  { "&Status Bar" }
-            to getMenuItemStyle()    :int     { SWT.getCHECK() }
-            to getOptTip()           :String  {
-                "Toggle visibility of status bar"
-            }
-            to everEnabledReporter() :EverReporter {
-                whenever([], fn{true})
-            }
-            to optEverCheckedReporter() :EverReporter { &everShowStatusBar }
         }
         
         /**
@@ -543,16 +480,10 @@ def causewayEditorAuthor(rezKit,
                  def menuView :=
                    M.menu("&View",
                           [doSmallerFont,
-                           doLargerFont,
-                           M.sep(),
-                           M.menu("&Toolbars",
-                                  [doMainToolbar]),
-                           doStatusBar]),
+                           doLargerFont]),
                  def menuTools :=
                    M.menu("&Tools",
-                          [gCer.getGCAction(),
-                           M.sep(),
-                           doDevoraOne,
+                          [doDevoraOne,
                            doDevoraTwo]),
                  def menuWindow :=
                    M.menu("&Window",
@@ -564,21 +495,7 @@ def causewayEditorAuthor(rezKit,
                            M.sep(),
                            doAbout])])
         
-        
-        def toolActions :=
-          [doOpen,
-           M.sep(),
-           doPrint,
-           M.sep(),
-           doFind]
-        
         def menuMap := [].asMap().diverge()
-        def toolMap := [].asMap().diverge()
-        
-        for action in toolActions {
-            action.makeToolItem(toolBar, toolMap)
-        }
-        toolMap.putAll(gCer.getToolMap(), true)
         
         def viewerDirectorAuthor :=
           <import:org.erights.e.tools.causeway.viewerDirectorAuthor>
@@ -592,9 +509,8 @@ def causewayEditorAuthor(rezKit,
         bind causewayEditor {
             to getAppName() :String { "Causeway" }
             to getShell() :Shell { shell }
-            to getToolArea()  :near { toolArea }
             to getViewer() :near { viewerDirector.getView() }
-            to getStatusBar() :near { statusBar }
+            #to getStatusBar() :near { statusBar }
             
             /**
              *
@@ -604,9 +520,8 @@ def causewayEditorAuthor(rezKit,
                 causewayEditor.getViewer().layout()
                 
                 swtGrid`${causewayEditor.getShell()}:
-                        ${causewayEditor.getToolArea()}.X
-                        ${causewayEditor.getViewer().getTopLevelPane()}.X.Y
-                        ${causewayEditor.getStatusBar()}.X`
+                        ${causewayEditor.getViewer().getTopLevelPane()}.X.Y`
+                #${causewayEditor.getStatusBar()}.X`
                 
                 palette.zeroMargins(causewayEditor.getShell().getLayout())
                 

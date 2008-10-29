@@ -11,22 +11,22 @@ pragma.syntax("0.9")
 
 def inventory {
     to isAvailable(partNo :String, tellIsAvailable) :void {
-	tellIsAvailable <- run(true)
+        tellIsAvailable <- run(true)
     }
     to placeOrder(buyer :String, partNo :String, tellOrderPlaced) :void {
-	tellOrderPlaced <- run(true)
+        tellOrderPlaced <- run(true)
     }
 }
     
 def creditBureau {
     to doCreditCheck(name :String, tellIsCreditOK) :void {
-	tellIsCreditOK <- run(true)
+        tellIsCreditOK <- run(true)
     }
 }
     
 def shipper {
     to canDeliver(profile :String, tellCanDeliver) :void {
-	tellCanDeliver <- run(true)
+        tellCanDeliver <- run(true)
     }
 }
 

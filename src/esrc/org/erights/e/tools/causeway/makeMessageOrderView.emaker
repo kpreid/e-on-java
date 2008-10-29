@@ -12,8 +12,6 @@ def SWT := <swt:makeSWT>
 
 def swtType__uriGetter := <type:org.eclipse.swt.*>
 def widgetType__uriGetter := <swtType:widgets.*>
-def ToolBar  := <widgetType:ToolBar>
-def ToolItem := <widgetType:ToolItem>
 
 def <swttools> := <import:org.erights.e.ui.swt.*>
 def swtGrid__quasiParser := <swttools:swtGridQParserMaker>()
@@ -131,6 +129,13 @@ def makeMessageOrderView(swtParent, palette,
     swtTab.setControl(mop.getPane())
     swtTab.setText("Message Order Tree")
     tabKeeper[swtFolder.indexOf(swtTab)] := [swtTab, mop]
+    
+    # default selection
+    swtFolder.setSelection(swtFolder.indexOf(swtTab))
+    def swtItems := mop.getWidget().getItems()
+    if (swtItems.size() > 0) {
+        mop.getWidget().setSelection([swtItems[0]])
+    }
     
     def selectionObserver {
         to edgeSelected(optEdge) :void {

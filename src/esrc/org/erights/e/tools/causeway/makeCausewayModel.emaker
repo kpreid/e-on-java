@@ -375,7 +375,7 @@ def makeCausewayModel(var rootDirName :String,
         }
     }
     
-    def devora() :void {
+    def devoraOne() :void {
         
         var leaves := graph.getLeaves()
         
@@ -422,8 +422,27 @@ def makeCausewayModel(var rootDirName :String,
             leaves := newLeaves.snapshot()
         }
     }
+    def dummy := graph.makeTurnNode(["dummy", 0])
     
-    devora()
+    def devoraTwo(root) :void {
+        
+        def edgeList := [].diverge()
+        for outgoing => _ in root.outs() {
+            edgeList.push(outgoing)
+        }
+        for edge in edgeList {
+            if (edge.isTagged("red")) {
+                # snip
+                edge.setOrigin(dummy)
+            } else {
+                devoraTwo(edge.getTarget())
+            }
+        }
+    }
+    
+    devoraOne()
+    devoraTwo(top)
+    
     
     def sortTree(root) :any {
         def seen := [].asSet().diverge()

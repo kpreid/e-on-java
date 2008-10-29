@@ -13,6 +13,8 @@ def SWT := <swt:makeSWT>
 def <swttools> := <import:org.erights.e.ui.swt.*>
 def swtGrid__quasiParser := <swttools:swtGridQParserMaker>()
 
+def makeOutlineView := <import:org.erights.e.tools.causeway.makeOutlineView>
+
 # Useful maps for lookups in event handling.
 def itemToModelMap := [].asMap().diverge()
 def modelToItemMap := [].asMap().diverge()
@@ -123,6 +125,10 @@ def makeProcessOrderView(swtParent, palette,
     
     def swtPOView := <widget:makeComposite>(swtParent, 0)
     
+    def getActionTargets
+    def outlineView := makeOutlineView(swtPOView, palette,
+                                       abstractAction, getActionTargets)
+    
     def swtFolder := <widget:makeTabFolder>(swtPOView, 0)
     
     def tabKeeper := [].diverge()
@@ -155,17 +161,37 @@ def makeProcessOrderView(swtParent, palette,
     }
     selectionModel.addObserver(selectionObserver)
     
+    def getCurrentTree() :near {
+        def ndx := swtFolder.getSelectionIndex()
+        if (ndx != -1) {
+            def [_, pop] := tabKeeper[ndx]
+            return pop.getWidget()
+        }
+        return null
+    }
+    
+    bind getActionTargets(_ :String) :List {
+        def swtTree := getCurrentTree()
+        if (null != swtTree) {
+            return [swtTree]
+        }
+        return null
+    }
+    
     def pov {
         
         to open() :void {}
         
         to layout() :void {
+            
+            outlineView.layout()
+            
             for [_, pop] in tabKeeper {
                 pop.layout()
             }
             swtGrid`${swtPOView}:
+                    ${outlineView.getTopLevelPane()}.X
                     ${swtFolder}.X.Y`
-            
         }
     }
     return pov

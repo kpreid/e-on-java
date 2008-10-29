@@ -8,25 +8,24 @@ pragma.syntax("0.9")
 # This is a toy implementation of a purchase order system,
 # written to demonstrate the Causeway Debugger.
 
-
 def inventory {
     to isAvailable(partNo :String) :boolean {
-	return true
+        return true
     }
     to placeOrder(buyer :String, partNo :String) :boolean {
-	return true
+        return true
     }
 }
     
 def creditBureau {
     to doCreditCheck(name :String) :boolean {
-	return true
+        return true
     }
 }
     
 def shipper {
     to canDeliver(profile :String) :boolean {
-	return true
+        return true
     }
 }
 
