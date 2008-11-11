@@ -368,6 +368,12 @@ public class Rune {
                 throw optNoStart;
             }
 
+            // For some reason, SWT on Mac OS X 10.5 doesn't work if the main thread exits. It looks like SWT should actually be *used* only from the main thread, but this seems sufficient, so we just don't let the main thread exit. (It will be killed when the Terminator does System.exit())
+        Object stub = new Object();
+        synchronized (stub) {
+            while (true) stub.wait();
+        }
+
         } catch (Throwable problem) {
             errorExit(errs, problem);
         }
