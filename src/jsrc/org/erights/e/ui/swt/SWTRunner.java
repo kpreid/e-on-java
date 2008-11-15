@@ -6,6 +6,7 @@ package org.erights.e.ui.swt;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.internal.Library;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.SWTException;
 import org.erights.e.develop.assertion.T;
 import org.erights.e.develop.trace.Trace;
 import org.erights.e.elib.vat.PendingEvent;
@@ -146,7 +147,13 @@ final class SWTRunner extends Runner implements Runnable {
      */
     protected Throwable enqueue(PendingEvent todo) {
         T.notNull(myDisplay, "SWTRunner not initialized");
-        myDisplay.asyncExec(todo);
+        try {
+            myDisplay.asyncExec(todo);
+        } catch (SWTException e) {
+            // This is in place to catch the "Device is disposed" error -
+            // XXX is there any other exception that we *shouldn't* catch?
+            return e;
+        }
         return null;
     }
 
@@ -181,7 +188,7 @@ final class SWTRunner extends Runner implements Runnable {
             myDisplay = new Display();
             myLock.notifyAll();
         }
-        while (true) {
+        while (!myDisplay.isDisposed()) {
             try {
                 if (!myDisplay.readAndDispatch()) {
                     myDisplay.sleep();
@@ -194,10 +201,12 @@ final class SWTRunner extends Runner implements Runnable {
                 }
             }
         }
+        // XXX We should properly shut down the runner here; what is required?
     }
 
     /**
-     * AWT doesn't shut down or merge, so do nothing.
+     * SWT doesn't shut down or merge, so do nothing.
+     * XXX this is false, see run()
      */
     protected void addDeadManSwitch(Object deadManSwitch) {
     }
