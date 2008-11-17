@@ -188,6 +188,7 @@ def makeCausewayModel(var rootDirName :String,
                                  }
                              },
                              "message" : @{message :String},
+                             ("text" : @{comment :List[String]})?,
                              "trace" : { "calls" : [@stack*] }
                            }` {
                     
@@ -230,6 +231,9 @@ def makeCausewayModel(var rootDirName :String,
                             traceline(`origin conflict for $message (Sent)`)
                         }
                     }
+                    if (comment =~ [text]) {
+                        edge.setOptText(text)
+                    }
                 }
                 match term`{
                              "$$" : [ "org.ref_send.log.SentIf",
@@ -244,6 +248,7 @@ def makeCausewayModel(var rootDirName :String,
                              },
                              "condition" : @{condition :String},
                              "message" : @{message :String},
+                             ("text" : @{comment :List[String]})?,
                              "trace" : { "calls" : [@stack*] }
                            }` {
                     
@@ -285,6 +290,9 @@ def makeCausewayModel(var rootDirName :String,
                         } else {
                             traceline(`origin conflict for $message (SentIf)`)
                         }
+                    }
+                    if (comment =~ [text]) {
+                        edge.setOptText(text)
                     }
                 }
                 match term`{
@@ -346,7 +354,7 @@ def makeCausewayModel(var rootDirName :String,
                                      "number" : @{turn :int}
                                  }
                              },
-                             "text" : @{comment :String},
+                             ("text" : @{comment :List[String]})?,
                              "trace" : { "calls" : [@stack*] }
                            }` {
                     
@@ -360,6 +368,10 @@ def makeCausewayModel(var rootDirName :String,
                                                    entries, [])
                     edge.setAnchor(anchor)
                     edge.addLogFile(optSpan)
+                    
+                    if (comment =~ [text]) {
+                        edge.setOptText(text)
+                    }
                 }
                 match _ {
                     traceline(`no match: ${chunks[i]}`)

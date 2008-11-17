@@ -221,6 +221,7 @@ def makeMessageGraph(traceline) :near {
         def logs := [].diverge()
         var why :String := ""
         var tag :String := ""
+        var optText := null
         
         def eventArc extends templateArc(eventArc, origin, target) {
             to getContext() :Tuple[SendingContext, Stack] {
@@ -265,6 +266,13 @@ def makeMessageGraph(traceline) :near {
             }
             to tellWhy() :String {
                 return why
+            }
+            
+            to setOptText(text :String) :void {
+                optText := text
+            }
+            to getOptText() :nullOk[String] {
+                return optText
             }
         }
     }

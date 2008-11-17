@@ -210,7 +210,10 @@ def stackWalkerAuthor(<file>, <jar>, makers, traceline) :near {
         # Useful map for lookup in event handling.
         var itemToModelMap := [].asMap().diverge()
         
-        def buildTreeItem(swtParent, se :StackEntry, hasGot :boolean) :near {
+        def buildTreeItem(swtParent,
+                          se :StackEntry,
+                          hasGot :boolean,
+                          optText :nullOk[String]) :near {
             if (getOptMessage(se, hasGot) =~ message :notNull) {
                 def swtItem := <widget:makeTreeItem>(swtParent, 0)
                 var se2 := se
@@ -218,24 +221,34 @@ def stackWalkerAuthor(<file>, <jar>, makers, traceline) :near {
                     se2 := [se[0], [[1,0],[1,0]]]
                 }
                 itemToModelMap.put(swtItem, se2, true)
-                swtItem.setText(message)
+                if (null != optText) {
+                    swtItem.setText(optText)
+                } else {
+                    swtItem.setText(message)
+                }
                 return swtItem
             }
             return null
         }
         
-        def buildSubTree(swtParent, entries :Stack, hasGot :boolean) :near {
+        def buildSubTree(swtParent,
+                         entries :Stack,
+                         hasGot :boolean,
+                         optText :nullOk[String]) :near {
             for i in 0 ..! entries.size() {
                 
                 # first, get top-level item
-                def swtOptItem := buildTreeItem(swtParent, entries[i], hasGot)
+                def swtOptItem := buildTreeItem(swtParent,
+                                                entries[i],
+                                                hasGot,
+                                                optText)
                 
                 if (null != swtOptItem) {
                     
                     # then, second-level item(s)
                     for j in i +1 ..! entries.size() {
                         
-                        buildTreeItem(swtOptItem, entries[j], hasGot)
+                        buildTreeItem(swtOptItem, entries[j], true, null)
                     }
                     return swtOptItem
                 }
@@ -252,7 +265,8 @@ def stackWalkerAuthor(<file>, <jar>, makers, traceline) :near {
             def oattr := vatMap.fetchDisplayAttributes(ov)
             def tattr := vatMap.fetchDisplayAttributes(tv)
             
-            swtDescription.setText(`[${oattr[0]}, $ot] causes [${tattr[0]}, $tt]`)
+            swtDescription.setText(
+                `[${oattr[0]}, $ot] causes [${tattr[0]}, $tt]`)
             
             # Remove stack entry items from tree widget.
             swtStackExplorer.removeAll()
@@ -269,7 +283,8 @@ def stackWalkerAuthor(<file>, <jar>, makers, traceline) :near {
                 
                 def swtOptItem := buildSubTree(swtStackExplorer,
                                                entries,
-                                               curEdge.hasGotStack())
+                                               curEdge.hasGotStack(),
+                                               curEdge.getOptText())
                 if (null != swtOptItem) {
                     def [vat, turn] := curEdge.getTarget().getID()
                     def attr := vatMap.fetchDisplayAttributes(vat)
@@ -403,19 +418,22 @@ def stackWalkerAuthor(<file>, <jar>, makers, traceline) :near {
             }
             
             to getEdgePart(edge) :nullOk[String] {
+                def optText := edge.getOptText()
+                if (null != optText) { return optText }
                 def [_, stack] := edge.getContext()
                 if ([] != stack) {
-                    return stackWalker.getOptSourceLine(stack[0], edge.hasGotStack())
+                    return stackWalker.getOptSourceLine(stack[0],
+                                                        edge.hasGotStack())
                 }
                 return null
             }
             
-            to labelArcItem(vatMap, edge, item) :void {
+            to labelArcItem(vatMap, edge, swtItem) :void {
                 def [tVatName, tTurn] := edge.getTarget().getID()
                 
                 # Set descriptive text to vat name and turn.
                 def tAttr := vatMap.fetchDisplayAttributes(tVatName)
-                item.setForeground(tAttr[1][0])
+                swtItem.setForeground(tAttr[1][0])
                 
                 var msg := stackWalker.getEdgePart(edge)
                 if (msg == null) {
@@ -423,11 +441,11 @@ def stackWalkerAuthor(<file>, <jar>, makers, traceline) :near {
                 }
                 
                 if (tAttr[0] == "top") {
-                    item.setText(`(top)$msg`)
+                    swtItem.setText(`(top)$msg`)
                 } else if (tAttr[0] == "bottom") {
-                    item.setText(`(bottom)$msg`)
+                    swtItem.setText(`(bottom)$msg`)
                 } else {
-                    item.setText(`[${tAttr[0]}, $tTurn] $msg`)
+                    swtItem.setText(`[${tAttr[0]}, $tTurn] $msg`)
                 }
             }
         }
