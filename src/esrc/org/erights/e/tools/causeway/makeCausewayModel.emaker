@@ -479,8 +479,7 @@ def makeCausewayModel(var rootDirName :String,
         }
         return subSort(root)
     }
-    
-    #sortTree(top)
+    sortTree(top)
     
     # Map[VatName, List[EventArc]]
     def ordered := [].asMap().diverge()
