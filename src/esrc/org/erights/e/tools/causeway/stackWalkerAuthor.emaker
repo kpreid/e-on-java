@@ -95,7 +95,8 @@ def stackWalkerAuthor(<file>, <jar>, makers, traceline) :near {
                     if (hasGot) {
                         return optResult
                     } else {
-                        return `[] $optResult`
+                        #return `[] $optResult`
+                        return optResult
                     }
                 }
             }
@@ -299,8 +300,9 @@ def stackWalkerAuthor(<file>, <jar>, makers, traceline) :near {
                 }
                 
                 def origin := curEdge.getOrigin()
-                if (origin.getIncomingCount() == 1) {
-                    curEdge := origin.getPrevIn()
+                if (origin.getIncomingCount() >= 1) {
+                    # walk back along last edge added
+                    curEdge := origin.getNextIn()
                 } else {
                     curEdge := null
                 }
@@ -441,9 +443,11 @@ def stackWalkerAuthor(<file>, <jar>, makers, traceline) :near {
                 }
                 
                 if (tAttr[0] == "top") {
-                    swtItem.setText(`(top)$msg`)
+                    #swtItem.setText(`(top)$msg`)
+                    swtItem.setText(`$msg`)
                 } else if (tAttr[0] == "bottom") {
-                    swtItem.setText(`(bottom)$msg`)
+                    #swtItem.setText(`(bottom)$msg`)
+                    swtItem.setText(`$msg`)
                 } else {
                     swtItem.setText(`[${tAttr[0]}, $tTurn] $msg`)
                 }

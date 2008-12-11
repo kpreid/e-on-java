@@ -29,6 +29,7 @@ def Stack := List[StackEntry]
 def VatName := String
 
 def Turn := int
+def Anchor := int
 
 def UTurn := Tuple[VatName, Turn]
 
@@ -80,6 +81,12 @@ def makeCausewayModel(var rootDirName :String,
     
     # Map[MsgID, EventArc]
     def msgMap := [].asMap().diverge()
+    
+    # Messages := List[MsgID]
+    # Map[Condition, Messages]
+    def condMap := [].asMap().diverge()
+    
+    def resolveds := [].diverge()
     
     def graph := makeMessageGraph(traceline)
     
@@ -294,6 +301,10 @@ def makeCausewayModel(var rootDirName :String,
                     if (comment =~ [text]) {
                         edge.setOptText(text)
                     }
+                    
+                    def messages := condMap.fetch(condition, fn{[].diverge()})
+                    messages.push(message)
+                    condMap[condition] := messages
                 }
                 match term`{
                              "$$" : [ "org.ref_send.log.Got",
@@ -345,6 +356,15 @@ def makeCausewayModel(var rootDirName :String,
                     }
                 }
                 
+                match term`{ "$$" : [ "org.ref_send.log.Resolved",
+                                      "org.ref_send.log.Event" ],
+                                      @_*
+
+                           }` {
+                    
+                    resolveds.push(chunks[i])
+                }
+                
                 match term`{ "$$" : [ "org.ref_send.log.Comment",
                                       "org.ref_send.log.Event" ],
                              "anchor" : {
@@ -375,6 +395,42 @@ def makeCausewayModel(var rootDirName :String,
                 }
                 match _ {
                     traceline(`no match: ${chunks[i]}`)
+                }
+            }
+        }
+    }
+    
+    for r in resolveds {
+        if (r =~ term`{ "$$" : [ "org.ref_send.log.Resolved",
+                                 "org.ref_send.log.Event" ],
+                                 "anchor" : {
+                                     "number" : @{anchor :int},
+                                     "turn" : {
+                                         "loop" : @{name :String},
+                                         "number" : @{turn :int}
+                                     }
+                                 },
+                                 "condition" : @{condition :String},
+                                 ("text" : @{comment :List[String]})?,
+                                 "trace" : { "calls" : [@stack*] }
+                               }`) {
+            
+            def messages := condMap.fetch(condition, fn{null})
+            if (messages != null) {
+                
+                def origin := getOrMakeTurnNode(name, turn)
+                
+                # Create E Stack object, possibly empty, from term tree.
+                def entries := parseStack(stack)
+                
+                for m in messages {
+                    
+                    def target := msgMap[m].getTarget()
+                    
+                    def edge := graph.makeEventArc(origin, target,
+                                                   "org.ref_send.log.Resolved",
+                                                   entries, [])
+                    edge.setAnchor(anchor)
                 }
             }
         }
@@ -443,23 +499,23 @@ def makeCausewayModel(var rootDirName :String,
             edgeList.push(outgoing)
         }
         for edge in edgeList {
+            def target := edge.getTarget()
             if (edge.isTagged("red")) {
                 # snip
                 edge.setOrigin(dummy)
-            } else {
-                devoraTwo(edge.getTarget())
+                edge.setTarget(dummy)
             }
+            devoraTwo(target)
         }
     }
     
     devoraOne()
     devoraTwo(top)
     
-    
-    def sortTree(root) :any {
+    def sortTree(root) :void {
         def seen := [].asSet().diverge()
         def subSort(node) :any {
-            if (seen.contains(node)) { return node }
+            if (seen.contains(node)) { return }
             seen.addElement(node)
             
             def edgeList := [].diverge()
@@ -468,20 +524,23 @@ def makeCausewayModel(var rootDirName :String,
             }
             var edges := [].asMap().diverge()
             for edge in edgeList {
+                # depth-first
                 subSort(edge.getTarget())
                 edges[edge.getKey()] := edge
             }
             edges := edges.sortKeys()
             for edge in edges {
+                # splice out, splice back in
+                # doesn't change graph topology, but
+                # does change the order of edges
                 edge.setOrigin(node)
             }
-            return node
         }
-        return subSort(root)
+        subSort(root)
     }
     sortTree(top)
     
-    # Map[VatName, List[EventArc]]
+    # Map[VatName, Map[Tuple[Turn, Anchor], EventArc]]
     def ordered := [].asMap().diverge()
     
     def orderEdges(root) :void {
@@ -504,6 +563,7 @@ def makeCausewayModel(var rootDirName :String,
         }
         storeEdges(root)
         for name => poMap in ordered {
+            # each vatName is mapped to a sorted list of events
             ordered[name] := poMap.sortKeys()
         }
     }

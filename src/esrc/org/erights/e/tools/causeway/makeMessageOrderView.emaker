@@ -43,7 +43,10 @@ def makeWatcher() :near {
 def itemToModelMap := [].asMap().diverge()
 def modelToItemMap := [].asMap().diverge()
 
-def buildTree(swtParent, edge, ndx, vatMap, graphWalker, watcher) :void {
+def buildTree(swtParent, palette,
+              edge, ndx,
+              vatMap, graphWalker,
+              watcher) :void {
     
     if (watcher.hasSeen(edge)) {
         return;
@@ -57,8 +60,28 @@ def buildTree(swtParent, edge, ndx, vatMap, graphWalker, watcher) :void {
     
     graphWalker.labelArcItem(vatMap, edge, swtItem)
     
-    for ge => _ in edge.getTarget().outs() {
-        buildTree(swtItem, ge, ndx, vatMap, graphWalker, watcher)
+    var doKids :boolean := true
+    # check for multiple senders
+    if (edge.getTarget().getIncomingCount() > 1) {
+        def [vatName, _] := edge.getTarget().getID()
+        def attr := vatMap.fetchDisplayAttributes(vatName)
+        # bottom most likely has multiple incoming, but ignore it
+        if (attr[0] != "bottom") {
+            swtItem.setImage(palette.getImage("multiples"))
+            # if not last edge, doKids := false
+            if (edge.getTarget().getNextIn() != edge) {
+                doKids := false
+            }
+        }
+    }
+    
+    if (doKids) {
+        for ge => _ in edge.getTarget().outs() {
+            buildTree(swtItem, palette,
+                      ge, ndx,
+                      vatMap, graphWalker,
+                      watcher)
+        }
     }
 }
 
@@ -73,7 +96,10 @@ def makeMOPane(swtParent, palette,
                                           SWT.getV_SCROLL()))
     def watcher := makeWatcher()
     for  edge => _ in graph.outs() {
-        buildTree(swtTree, edge, ndx, vatMap, graphWalker, watcher)
+        buildTree(swtTree, palette,
+                  edge, ndx,
+                  vatMap, graphWalker,
+                  watcher)
     }
     
     def swtSelectionListener {

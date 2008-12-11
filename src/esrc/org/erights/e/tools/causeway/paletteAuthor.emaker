@@ -133,7 +133,8 @@ def paletteAuthor(rezKit, makers, traceline) :near {
     
     def images := [].asMap().diverge()
     
-    def multiplesURL := <resource:org/erights/e/tools/causeway/multiples.gif>
+    #def multiplesURL := <resource:org/erights/e/tools/causeway/multiples.gif>
+    def multiplesURL := <resource:org/erights/e/tools/causeway/multiples-long.png>
     def giantsCausewayURL := <resource:org/erights/e/tools/causeway/giants-causeway.jpg>
     
     images.put("multiples", rezKit.makeImage(multiplesURL.openStream()))
