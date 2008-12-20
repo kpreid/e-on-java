@@ -153,8 +153,10 @@ function jpush {
     JOPTS[${#JOPTS[@]}]=$1
 }
 
-
 jpush "-Xfuture"
+if [ "$OSDIR" = "mac" ]; then
+    jpush "-XstartOnFirstThread"
+fi
 jpush "-De.osdir=${OSDIR}"
 jpush "-De.machdir=${MACHDIR}"
 

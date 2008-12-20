@@ -151,9 +151,10 @@ function jpush {
     JOPTS[${#JOPTS[@]}]=$1
 }
 
-
 jpush "-Xfuture"
-
+if [ "$OSDIR" = "mac" ]; then
+    jpush "-XstartOnFirstThread"
+fi
 jpush "-De.home=${EHOME}"
 
 # Note that the java.library.path must be provided on the command line

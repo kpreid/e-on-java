@@ -67,7 +67,8 @@ public abstract class BaseLoader implements Loader {
     /**
      * Even though it would seem more natural to implement optUncall out of
      * optUnget, it should actually go the other way for reasons explained <a
-     * href= "http://www.erights.org/data/serial/jhu-paper/subgraph-security.html"
+     * href=
+     * "http://www.erights.org/data/serial/jhu-paper/subgraph-security.html"
      * >here</a>.
      */
     public String optUnget(Object child) {

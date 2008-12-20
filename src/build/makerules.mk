@@ -237,7 +237,7 @@ COMP_PATH0=$(COMMON_PATH)$(SEP)$(TOP)/src/bin/win32/x86/swt.jar
 ifdef JAVA_HOME
  # If JAVA_HOME is defined, then reach into it for the various commands
  ifndef JAVACMD
-  JAVACMD=$(JAVA_HOME)/jre/bin/java
+  JAVACMD=$(JAVA_HOME)/bin/java
  endif
  ifndef JAVAC
   JAVAC=$(JAVA_HOME)/bin/javac
@@ -248,7 +248,7 @@ ifdef JAVA_HOME
  # If JAVA_HOME is defined, then reach into it for additional jar
  # files to support compilation with jikes, and compilation of
  # doclets, respectively.
- COMP_PATH=$(JAVA_HOME)/jre/lib/rt.jar$(SEP)$(COMP_PATH0)
+ COMP_PATH=$(JAVA_HOME)/lib/rt.jar$(SEP)$(COMP_PATH0)
  TOOL_PATH=$(COMP_PATH)$(SEP)$(JAVA_HOME)/lib/tools.jar
 
 else
