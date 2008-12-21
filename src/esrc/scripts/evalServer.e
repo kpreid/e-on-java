@@ -9,11 +9,11 @@ def traceline(str) :void { stderr.println(`$\nevalServer $str`) }
 #def traceline(str) {}
 traceline("started")
 
-def makeScopeSetup := <unsafe:org.erights.e.elang.interp.ScopeSetup>
+def makeScopeSetup := <unsafe:org.erights.e.elang.interp.makeScopeSetup>
 def makeVat := <unsafe:org.erights.e.elib.vat.makeVat>
 def runeAuthor := <elang:cmd.runeAuthor>
 
-def makeIntroducer := <unsafe:net.captp.jcomm.Introducer>
+def makeIntroducer := <unsafe:net.captp.jcomm.makeIntroducer>
 
 def <updoc> := <import:org.erights.e.tools.updoc.*>
 
@@ -127,7 +127,8 @@ def joinArg := optionsMap["putFrontFacet"][0]
 
 traceline("args parsed")
 
-def ack := exportCap(makeSturdyRef(evalServer), joinArg)
+# XXX review: does it make sense to add persistence support?
+def ack := exportCap(makeSturdyRef.temp(evalServer), joinArg)
 
 when (ack) -> done(_) :void {
     traceline("args connected")

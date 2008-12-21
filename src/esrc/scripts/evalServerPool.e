@@ -8,7 +8,7 @@ pragma.syntax("0.8")
 def traceline(str) :void { stderr.println(`$\nevalServerPool $str`) }
 
 def makeVatHolder :=
-  <elang:cmd.vatHolderMakerAuthor>(<unsafe>, introducer, traceline)
+  <import:com.skyhunter.e.lang.vatHolderMakerAuthor>(<unsafe>, introducer, traceline)
 
 # Sturdy refs of all eval servers that have joined this pool
 var members := [].diverge()
@@ -30,7 +30,8 @@ var busy := [].asMap().diverge()
 var waiting := [].diverge()
 
 def objToURI(obj) :String {
-    introducer.sturdyToURI(makeSturdyRef(obj))
+    # XXX review lifetime policy for this sturdy ref
+    introducer.sturdyToURI(makeSturdyRef.temp(obj))
 }
 
 def checkWaiting() :void {
@@ -178,6 +179,8 @@ def clientFacet {
             for i in 0 ..! (n - active.size()) {
                 # the local eval server will join this pool through the
                 # connectorFacet
+                
+                # XXX this does not match the current makeVatHolder implementation's expected args -- kpreid 2008-12-20
                 def vatHolder := makeVatHolder(["--putFrontFacet",
                                                 objToURI(connectorFacet)],
                                                [].asMap(),
@@ -328,7 +331,8 @@ traceline("args parsed")
 
 def exportFacet(optionName, face) :void {
     for arg in optionsMap.fetch(optionName, fn{[]}) {
-        when (exportCap(makeSturdyRef(face), arg)) -> done(_) :void {
+        # XXX change if for persistence
+        when (exportCap(makeSturdyRef.temp(face), arg)) -> done(_) :void {
             traceline("arg connected")
         } catch problem {
             traceline(`couldn't connect to $arg: $problem`)
