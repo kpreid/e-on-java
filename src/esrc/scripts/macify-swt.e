@@ -66,7 +66,7 @@ def macifySwt(script, target, [=> bundleID,
     def executable := platformDir["run"]
     executable.setText(`$\
 #!/bin/sh
-exec $runeCmd -J-XstartOnFirstThread $scriptArg${accum "" for x in bakedArgs {_ + (" " + shesc(x))}}
+exec $runeCmd $scriptArg${accum "" for x in bakedArgs {_ + (" " + shesc(x))}}
 `)
     setExecutable(executable)
     
