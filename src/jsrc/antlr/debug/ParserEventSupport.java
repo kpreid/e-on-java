@@ -33,22 +33,22 @@ public class ParserEventSupport {
     private TraceEvent traceEvent;
     private NewLineEvent newLineEvent;
     private ParserController controller;
-    protected static final int CONSUME = 0;
-    protected static final int ENTER_RULE = 1;
-    protected static final int EXIT_RULE = 2;
-    protected static final int LA = 3;
-    protected static final int MATCH = 4;
-    protected static final int MATCH_NOT = 5;
-    protected static final int MISMATCH = 6;
-    protected static final int MISMATCH_NOT = 7;
-    protected static final int REPORT_ERROR = 8;
-    protected static final int REPORT_WARNING = 9;
-    protected static final int SEMPRED = 10;
-    protected static final int SYNPRED_FAILED = 11;
-    protected static final int SYNPRED_STARTED = 12;
-    protected static final int SYNPRED_SUCCEEDED = 13;
-    protected static final int NEW_LINE = 14;
-    protected static final int DONE_PARSING = 15;
+    static protected final int CONSUME = 0;
+    static protected final int ENTER_RULE = 1;
+    static protected final int EXIT_RULE = 2;
+    static protected final int LA = 3;
+    static protected final int MATCH = 4;
+    static protected final int MATCH_NOT = 5;
+    static protected final int MISMATCH = 6;
+    static protected final int MISMATCH_NOT = 7;
+    static protected final int REPORT_ERROR = 8;
+    static protected final int REPORT_WARNING = 9;
+    static protected final int SEMPRED = 10;
+    static protected final int SYNPRED_FAILED = 11;
+    static protected final int SYNPRED_STARTED = 12;
+    static protected final int SYNPRED_SUCCEEDED = 13;
+    static protected final int NEW_LINE = 14;
+    static protected final int DONE_PARSING = 15;
     private int ruleDepth = 0;
 
 

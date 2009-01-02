@@ -211,7 +211,7 @@ public class ANTLRTokdefParser extends antlr.LLkParser
     }
 
 
-    public static final String[] _tokenNames = {"<0>",
+    static public final String[] _tokenNames = {"<0>",
       "EOF",
       "<2>",
       "NULL_TREE_LOOKAHEAD",
@@ -228,18 +228,18 @@ public class ANTLRTokdefParser extends antlr.LLkParser
       "DIGIT",
       "XDIGIT"};
 
-    private static long[] mk_tokenSet_0() {
+    static private long[] mk_tokenSet_0() {
         long[] data = {2L, 0L};
         return data;
     }
 
-    public static final BitSet _tokenSet_0 = new BitSet(mk_tokenSet_0());
+    static public final BitSet _tokenSet_0 = new BitSet(mk_tokenSet_0());
 
-    private static long[] mk_tokenSet_1() {
+    static private long[] mk_tokenSet_1() {
         long[] data = {50L, 0L};
         return data;
     }
 
-    public static final BitSet _tokenSet_1 = new BitSet(mk_tokenSet_1());
+    static public final BitSet _tokenSet_1 = new BitSet(mk_tokenSet_1());
 
 }

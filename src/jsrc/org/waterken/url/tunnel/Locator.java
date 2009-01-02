@@ -45,7 +45,7 @@ public final class Locator
      * @param proxy        The proxy locator.
      * @param default_port The default port.
      */
-    public static org.waterken.url.Locator make(final org.waterken.url.Locator proxy,
+    static public org.waterken.url.Locator make(final org.waterken.url.Locator proxy,
                                                 final int default_port) {
         return new Locator(proxy, default_port);
     }

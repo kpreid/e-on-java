@@ -18,7 +18,7 @@ public final class TokenList {
      * @param token The <code>token</code> array.
      * @return The encoded <code>token</code> list.
      */
-    public static String encode(final String[] token) {
+    static public String encode(final String[] token) {
         final StringBuffer buffer = new StringBuffer();
         for (int i = 0; i != token.length; ++i) {
             if (0 != i) {
@@ -35,7 +35,7 @@ public final class TokenList {
      * @param list The <code>token</code> list.
      * @return The <code>token</code> array.
      */
-    public static String[] decode(final String list) {
+    static public String[] decode(final String list) {
         String[] r = new String[1];
         int n = 0;
 

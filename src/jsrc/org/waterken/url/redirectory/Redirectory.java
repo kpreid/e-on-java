@@ -28,7 +28,7 @@ public final class Redirectory {
      * @return The <code>&lt;<a href="http://yurl.org/Author-assign">http://yurl.org/Author-assign</a>&gt;</code>
      *         capability URL.
      */
-    public static String define(final String cap,
+    static public String define(final String cap,
                                 final String mid,
                                 final String name) throws IOException {
         final String args =
@@ -45,7 +45,7 @@ public final class Redirectory {
      * @param mid      The message identifier for this request.
      * @param location The new redirection URLs.
      */
-    public static void assign(final String cap,
+    static public void assign(final String cap,
                               final String mid,
                               final String[] location) throws IOException {
         String args;

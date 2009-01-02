@@ -47,37 +47,37 @@ import java.io.IOException;
 public abstract class ParseNode extends SamenessHashCacher
   implements MatchMaker, EPrintable, DeepPassByCopy {
 
-    private static final long serialVersionUID = -6942996288431352411L;    
+    static private final long serialVersionUID = -6942996288431352411L;    
 
     /**
      * lowest priority
      */
-    protected static final int PR_START = 0;
+    static protected final int PR_START = 0;
 
     /**
      * lowest priority expression
      */
-    protected static final int PR_EEXPR = 0;
+    static protected final int PR_EEXPR = 0;
 
-    protected static final int PR_ASSIGN = 1;
+    static protected final int PR_ASSIGN = 1;
 
-    protected static final int PR_COMP = 2;
+    static protected final int PR_COMP = 2;
 
-    protected static final int PR_ORDER = 3;
+    static protected final int PR_ORDER = 3;
 
-    protected static final int PR_CALL = 4;
+    static protected final int PR_CALL = 4;
 
     /**
      * highest priority expression
      */
-    protected static final int PR_PRIM = 5;
+    static protected final int PR_PRIM = 5;
 
     /**
      * lowest priority pattern
      */
-    protected static final int PR_PATTERN = 0;
+    static protected final int PR_PATTERN = 0;
 
-    protected static final int PR_LISTPATT = 1;
+    static protected final int PR_LISTPATT = 1;
 
 //    /** Number of priority levels */
 //    static public final int NUM_PR = 6;

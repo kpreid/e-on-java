@@ -158,7 +158,7 @@ public class Lookahead implements Cloneable {
         return fset.nil() && !hasEpsilon;
     }
 
-    public static Lookahead of(int el) {
+    static public Lookahead of(int el) {
         Lookahead look = new Lookahead();
         look.fset.add(el);
         return look;

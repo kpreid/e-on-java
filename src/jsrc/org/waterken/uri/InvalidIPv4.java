@@ -17,12 +17,12 @@ public class InvalidIPv4 extends RuntimeException {
     /**
      * The instance.
      */
-    private static final InvalidIPv4 INSTANCE = new InvalidIPv4();
+    static private final InvalidIPv4 INSTANCE = new InvalidIPv4();
 
     /**
      * Constructs an <code>InvalidIPv4</code>.
      */
-    public static InvalidIPv4 make() {
+    static public InvalidIPv4 make() {
         return INSTANCE;
     }
 }

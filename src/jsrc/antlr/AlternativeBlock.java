@@ -30,7 +30,7 @@ class AlternativeBlock extends AlternativeElement {
 
     protected int ID =
       0;                                // used to generate unique variables
-    protected static int nblks;        // how many blocks have we allocated?
+    static protected int nblks;        // how many blocks have we allocated?
     boolean not =
       false;                                // true if block is inverted.
 

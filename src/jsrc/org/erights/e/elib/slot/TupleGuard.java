@@ -60,7 +60,7 @@ public class TupleGuard implements Guard {
     /**
      * Exists for consistency with match__of_1.
      */
-    public static TupleGuard of(Guard[] elemGuards) {
+    static public TupleGuard of(Guard[] elemGuards) {
         return new TupleGuard(elemGuards);
     }
 
@@ -70,7 +70,7 @@ public class TupleGuard implements Guard {
      * <p>
      * Must use a call-pattern of the form Tuple.of([x, y, ...])
      */
-    public static Object match__of_1(Object specimen, OneArgFunc optEjector) {
+    static public Object match__of_1(Object specimen, OneArgFunc optEjector) {
         ClassDesc kind = ClassDesc.make(TupleGuard.class);
         TupleGuard ofKind = (TupleGuard)kind.coerce(specimen, optEjector);
         Object[] result = {ConstList.fromArray(ofKind.myElemGuards)};

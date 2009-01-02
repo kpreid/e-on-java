@@ -18,7 +18,7 @@ public final class PathSegment {
      * @param candidate The path segment.
      * @return The vouched for path segment.
      */
-    public static String vouch(final String candidate) throws InvalidPath {
+    static public String vouch(final String candidate) throws InvalidPath {
 
         // Check for disallowed characters.
         for (int i = candidate.length(); 0 != i--;) {

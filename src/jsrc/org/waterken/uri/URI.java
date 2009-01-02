@@ -19,12 +19,12 @@ public final class URI {
      * @param uri       An absolute URI.
      * @return The <code>scheme</code> component.
      */
-    public static String scheme(final String otherwise, final String uri) {
+    static public String scheme(final String otherwise, final String uri) {
         final int last = scheme_end(uri);
         return -1 != last ? uri.substring(0, last).toLowerCase() : otherwise;
     }
 
-    private static int scheme_end(final String uri) {
+    static private int scheme_end(final String uri) {
         int last;
         final int len = uri.length();
         if (0 == len || !isStartSymbol(uri.charAt(0))) {
@@ -41,11 +41,11 @@ public final class URI {
         return last;
     }
 
-    private static boolean isStartSymbol(final char c) {
+    static private boolean isStartSymbol(final char c) {
         return ('a' <= c && 'z' >= c) || ('A' <= c && 'Z' >= c);
     }
 
-    private static boolean isComponentSymbol(final char c) {
+    static private boolean isComponentSymbol(final char c) {
         return ('a' <= c && 'z' >= c) || ('A' <= c && 'Z' >= c) ||
           ('0' <= c && '9' >= c) || '+' == c || '.' == c || '-' == c;
     }
@@ -56,13 +56,13 @@ public final class URI {
      * @param uri An absolute URI.
      * @return The <code>authority</code> component.
      */
-    public static String authority(final String uri) {
+    static public String authority(final String uri) {
         final int first = authority_begin(uri, scheme_end(uri));
         final int last = authority_end(uri, first);
         return uri.substring(first, last);
     }
 
-    private static int authority_begin(final String uri, int first) {
+    static private int authority_begin(final String uri, int first) {
         ++first;    // Skip past the ':' separator.
         if (uri.startsWith("//", first)) {
             first += 2;
@@ -70,12 +70,12 @@ public final class URI {
         return first;
     }
 
-    private static int authority_end(final String uri, final int first) {
+    static private int authority_end(final String uri, final int first) {
         final int last = uri.indexOf('/', first);
         return -1 != last ? last : hierarchy_end(uri, first);
     }
 
-    private static int hierarchy_end(final String uri, final int first) {
+    static private int hierarchy_end(final String uri, final int first) {
         final int query = uri.indexOf('?', first);
         final int fragment = uri.indexOf('#', first);
         return -1 == query ?
@@ -89,13 +89,13 @@ public final class URI {
      * @param uri An absolute URI.
      * @return The rootless <code>path</code> component.
      */
-    public static String path(final String uri) {
+    static public String path(final String uri) {
         final int first = service_end(uri);
         final int last = hierarchy_end(uri, first);
         return last != first ? uri.substring(first + 1, last) : "";
     }
 
-    private static int service_end(final String uri) {
+    static private int service_end(final String uri) {
         return authority_end(uri, authority_begin(uri, scheme_end(uri)));
     }
 
@@ -106,7 +106,7 @@ public final class URI {
      * @param uri       An absolute URI.
      * @return The <code>query</code> component.
      */
-    public static String query(final String otherwise, final String uri) {
+    static public String query(final String otherwise, final String uri) {
         String r;
         final int start = uri.indexOf('?');
         if (-1 == start) {
@@ -127,7 +127,7 @@ public final class URI {
      * @param uri       An absolute URI.
      * @return The <code>fragment</code> component.
      */
-    public static String fragment(final String otherwise, final String uri) {
+    static public String fragment(final String otherwise, final String uri) {
         final int start = uri.indexOf('#');
         return -1 != start ? uri.substring(start + 1) : otherwise;
     }
@@ -138,7 +138,7 @@ public final class URI {
      * @param uri An absolute URI.
      * @return The URI, stripped of any <code>fragment</code> component.
      */
-    public static String proxy(final String uri) {
+    static public String proxy(final String uri) {
         final int start_fragment = uri.indexOf('#');
         return -1 == start_fragment ? uri : uri.substring(0, start_fragment);
     }
@@ -149,7 +149,7 @@ public final class URI {
      * @param uri An absolute URI.
      * @return The <code>scheme</code> and <code>authority</code> components.
      */
-    public static String service(final String uri) {
+    static public String service(final String uri) {
         return uri.substring(0, service_end(uri));
     }
 
@@ -159,7 +159,7 @@ public final class URI {
      * @param uri An absolute URI.
      * @return The <code>path</code> and <code>query</code> components.
      */
-    public static String request(final String uri) {
+    static public String request(final String uri) {
         final int first = service_end(uri);
         final int last = uri.indexOf('#', first);
         return -1 == last ? uri.substring(first) : uri.substring(first, last);
@@ -172,7 +172,7 @@ public final class URI {
      * @param relative A relative URI string.
      * @return The resolved URI.
      */
-    public static String resolve(final String base, final String relative) {
+    static public String resolve(final String base, final String relative) {
         String r;
         if ("".equals(relative)) {
             r = proxy(base);
@@ -213,7 +213,7 @@ public final class URI {
      * @param target The absolute target URI.
      * @return The relative URI string from base to target.
      */
-    public static String relate(final String base, final String target) {
+    static public String relate(final String base, final String target) {
         String r;
         final int first = service_end(base);
         if (base.regionMatches(0, target, 0, first)) {

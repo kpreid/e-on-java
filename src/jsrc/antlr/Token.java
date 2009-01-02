@@ -14,17 +14,17 @@ package antlr;
 public class Token implements Cloneable {
 
     // constants
-    public static final int MIN_USER_TYPE = 4;
-    public static final int NULL_TREE_LOOKAHEAD = 3;
-    public static final int INVALID_TYPE = 0;
-    public static final int EOF_TYPE = 1;
-    public static final int SKIP = -1;
+    static public final int MIN_USER_TYPE = 4;
+    static public final int NULL_TREE_LOOKAHEAD = 3;
+    static public final int INVALID_TYPE = 0;
+    static public final int EOF_TYPE = 1;
+    static public final int SKIP = -1;
 
     // each Token has at least a token type
     protected int type = INVALID_TYPE;
 
     // the illegal token object
-    public static Token badToken = new Token(INVALID_TYPE, "<no text>");
+    static public Token badToken = new Token(INVALID_TYPE, "<no text>");
 
     public Token() {
     }

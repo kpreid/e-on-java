@@ -484,7 +484,7 @@ public final class Session {
                                           new InflaterInputStream(message);
                                     } else
                                     if ("identity".equalsIgnoreCase(token[j])) {
-                                        message = message;
+//                                        message = message;
                                     } else {
                                         throw new IOException(
                                           "Unrecognized transfer-coding: " +

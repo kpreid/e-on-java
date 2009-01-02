@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <malloc.h>
+#include <stdlib.h>
 
 #ifndef MSW  /*rwj  --  make portable*/
 #include <signal.h>

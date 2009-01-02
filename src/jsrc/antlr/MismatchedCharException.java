@@ -14,12 +14,12 @@ public class MismatchedCharException extends RecognitionException {
     static private final long serialVersionUID = 2302090128897631403L;
 
     // Types of chars
-    public static final int CHAR = 1;
-    public static final int NOT_CHAR = 2;
-    public static final int RANGE = 3;
-    public static final int NOT_RANGE = 4;
-    public static final int SET = 5;
-    public static final int NOT_SET = 6;
+    static public final int CHAR = 1;
+    static public final int NOT_CHAR = 2;
+    static public final int RANGE = 3;
+    static public final int NOT_RANGE = 4;
+    static public final int SET = 5;
+    static public final int NOT_SET = 6;
 
     // One of the above
     public int mismatchType;

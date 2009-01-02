@@ -30,7 +30,7 @@ public final class LimitedInputStream extends InputStream {
      * @param in    The underlying stream.
      * @param limit The maximum number of bytes that can be read.
      */
-    public static InputStream make(final InputStream in, final long limit) {
+    static public InputStream make(final InputStream in, final long limit) {
         return new LimitedInputStream(in, limit);
     }
 

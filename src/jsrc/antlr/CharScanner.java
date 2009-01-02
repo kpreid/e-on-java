@@ -14,7 +14,7 @@ import java.util.Hashtable;
 public abstract class CharScanner implements TokenStream {
 
     static final char NO_CHAR = 0;
-    public static final char EOF_CHAR = (char)-1;
+    static public final char EOF_CHAR = (char)-1;
     protected ANTLRStringBuffer text; // text of current token
 
     protected boolean saveConsumedInput =
@@ -172,9 +172,8 @@ public abstract class CharScanner implements TokenStream {
     public char LA(int i) throws CharStreamException {
         if (caseSensitive) {
             return inputState.input.LA(i);
-        } else {
-            return toLower(inputState.input.LA(i));
         }
+        return toLower(inputState.input.LA(i));
     }
 
     protected Token makeToken(int t) {
@@ -209,9 +208,8 @@ public abstract class CharScanner implements TokenStream {
       throws MismatchedCharException, CharStreamException {
         if (!b.member(LA(1))) {
             throw new MismatchedCharException(LA(1), b, false, this);
-        } else {
-            consume();
         }
+        consume();
     }
 
     public void match(String s)

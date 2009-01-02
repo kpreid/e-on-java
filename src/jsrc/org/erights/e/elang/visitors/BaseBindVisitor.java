@@ -4,6 +4,7 @@
 package org.erights.e.elang.visitors;
 
 import org.erights.e.elang.evm.AtomicExpr;
+import org.erights.e.elang.evm.BindingPattern;
 import org.erights.e.elang.evm.EExpr;
 import org.erights.e.elang.evm.ENode;
 import org.erights.e.elang.evm.FinalPattern;
@@ -124,6 +125,21 @@ public abstract class BaseBindVisitor extends KernelECopyVisitor {
                                              newNounExpr,
                                              xformEExpr(optGuardExpr),
                                              getOptScopeLayout());
+        myLayout = myLayout.with(varName, result);
+        return result;
+    }
+
+    /**
+     *
+     */
+    public Object visitBindingPattern(ENode optOriginal,
+                                      AtomicExpr nounExpr) {
+        String varName = nounExpr.asNoun().getName();
+        myLayout.requireShadowable(varName, nounExpr);
+        NounExpr newNounExpr = newVar(nounExpr.getOptSpan(), varName);
+        NounPattern result = new BindingPattern(getOptSpan(optOriginal),
+                                                newNounExpr,
+                                                getOptScopeLayout());
         myLayout = myLayout.with(varName, result);
         return result;
     }

@@ -30,7 +30,7 @@ public final class ChunkedInputStream extends InputStream {
      *
      * @param in The underlying stream.
      */
-    public static InputStream make(final InputStream in) {
+    static public InputStream make(final InputStream in) {
         return new ChunkedInputStream(in);
     }
 

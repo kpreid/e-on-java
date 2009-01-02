@@ -6,7 +6,7 @@ import antlr.collections.impl.BitSet;
 
 public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
 
-    private static final boolean DEBUG_PARSER = false;
+//    static private final boolean DEBUG_PARSER = false;
 
     ANTLRGrammarParseBehavior behavior;
     Tool antlrTool;
@@ -748,9 +748,8 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
                 } else {
                     if (1 <= _cnt68) {
                         break _loop68;
-                    } else {
-                        throw new NoViableAltException(LT(1), getFilename());
                     }
+                    throw new NoViableAltException(LT(1), getFilename());
                 }
 
                 _cnt68++;
@@ -1145,9 +1144,8 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
                 } else {
                     if (1 <= _cnt43) {
                         break _loop43;
-                    } else {
-                        throw new NoViableAltException(LT(1), getFilename());
                     }
+                    throw new NoViableAltException(LT(1), getFilename());
                 }
 
                 _cnt43++;
@@ -1539,9 +1537,8 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
                 } else {
                     if (1 <= _cnt95) {
                         break _loop95;
-                    } else {
-                        throw new NoViableAltException(LT(1), getFilename());
                     }
+                    throw new NoViableAltException(LT(1), getFilename());
                 }
 
                 _cnt95++;
@@ -2637,9 +2634,8 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
                 } else {
                     if (1 <= _cnt122) {
                         break _loop122;
-                    } else {
-                        throw new NoViableAltException(LT(1), getFilename());
                     }
+                    throw new NoViableAltException(LT(1), getFilename());
                 }
 
                 _cnt122++;
@@ -2726,7 +2722,7 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
     }
 
 
-    public static final String[] _tokenNames = {"<0>",
+    static public final String[] _tokenNames = {"<0>",
       "EOF",
       "<2>",
       "NULL_TREE_LOOKAHEAD",
@@ -2791,88 +2787,88 @@ public class ANTLRParser extends antlr.LLkParser implements ANTLRTokenTypes {
       "INTERNAL_RULE_REF",
       "WS_OPT"};
 
-    private static long[] mk_tokenSet_0() {
+    static private long[] mk_tokenSet_0() {
         long[] data = {2206556225792L, 0L};
         return data;
     }
 
-    public static final BitSet _tokenSet_0 = new BitSet(mk_tokenSet_0());
+    static public final BitSet _tokenSet_0 = new BitSet(mk_tokenSet_0());
 
-    private static long[] mk_tokenSet_1() {
+    static private long[] mk_tokenSet_1() {
         long[] data = {2472844214400L, 0L};
         return data;
     }
 
-    public static final BitSet _tokenSet_1 = new BitSet(mk_tokenSet_1());
+    static public final BitSet _tokenSet_1 = new BitSet(mk_tokenSet_1());
 
-    private static long[] mk_tokenSet_2() {
+    static private long[] mk_tokenSet_2() {
         long[] data = {1158885407195328L, 0L};
         return data;
     }
 
-    public static final BitSet _tokenSet_2 = new BitSet(mk_tokenSet_2());
+    static public final BitSet _tokenSet_2 = new BitSet(mk_tokenSet_2());
 
-    private static long[] mk_tokenSet_3() {
+    static private long[] mk_tokenSet_3() {
         long[] data = {1159461236965568L, 0L};
         return data;
     }
 
-    public static final BitSet _tokenSet_3 = new BitSet(mk_tokenSet_3());
+    static public final BitSet _tokenSet_3 = new BitSet(mk_tokenSet_3());
 
-    private static long[] mk_tokenSet_4() {
+    static private long[] mk_tokenSet_4() {
         long[] data = {1132497128128576L, 0L};
         return data;
     }
 
-    public static final BitSet _tokenSet_4 = new BitSet(mk_tokenSet_4());
+    static public final BitSet _tokenSet_4 = new BitSet(mk_tokenSet_4());
 
-    private static long[] mk_tokenSet_5() {
+    static private long[] mk_tokenSet_5() {
         long[] data = {1722479914074304L, 0L};
         return data;
     }
 
-    public static final BitSet _tokenSet_5 = new BitSet(mk_tokenSet_5());
+    static public final BitSet _tokenSet_5 = new BitSet(mk_tokenSet_5());
 
-    private static long[] mk_tokenSet_6() {
+    static private long[] mk_tokenSet_6() {
         long[] data = {1722411194597568L, 0L};
         return data;
     }
 
-    public static final BitSet _tokenSet_6 = new BitSet(mk_tokenSet_6());
+    static public final BitSet _tokenSet_6 = new BitSet(mk_tokenSet_6());
 
-    private static long[] mk_tokenSet_7() {
+    static private long[] mk_tokenSet_7() {
         long[] data = {1125899924144192L, 0L};
         return data;
     }
 
-    public static final BitSet _tokenSet_7 = new BitSet(mk_tokenSet_7());
+    static public final BitSet _tokenSet_7 = new BitSet(mk_tokenSet_7());
 
-    private static long[] mk_tokenSet_8() {
+    static private long[] mk_tokenSet_8() {
         long[] data = {1722411190386880L, 0L};
         return data;
     }
 
-    public static final BitSet _tokenSet_8 = new BitSet(mk_tokenSet_8());
+    static public final BitSet _tokenSet_8 = new BitSet(mk_tokenSet_8());
 
-    private static long[] mk_tokenSet_9() {
+    static private long[] mk_tokenSet_9() {
         long[] data = {1159444023476416L, 0L};
         return data;
     }
 
-    public static final BitSet _tokenSet_9 = new BitSet(mk_tokenSet_9());
+    static public final BitSet _tokenSet_9 = new BitSet(mk_tokenSet_9());
 
-    private static long[] mk_tokenSet_10() {
+    static private long[] mk_tokenSet_10() {
         long[] data = {2251345007067328L, 0L};
         return data;
     }
 
-    public static final BitSet _tokenSet_10 = new BitSet(mk_tokenSet_10());
+    static public final BitSet _tokenSet_10 = new BitSet(mk_tokenSet_10());
 
-    private static long[] mk_tokenSet_11() {
+    static private long[] mk_tokenSet_11() {
         long[] data = {1721861130420416L, 0L};
         return data;
     }
 
-    public static final BitSet _tokenSet_11 = new BitSet(mk_tokenSet_11());
+    static public final BitSet _tokenSet_11 = new BitSet(mk_tokenSet_11());
 
 }

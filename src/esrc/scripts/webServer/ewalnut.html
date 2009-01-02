@@ -912,7 +912,7 @@ println(`default capacity is: ${makeQueue.getDEFAULT_CAPACITY()}`)</pre>
 </blockquote>
 
 <p>Note also that one can use methods such as getDEFAULT_CAPACITY() to achieve
-the same effect as Java achieves with public static final variables.</p>
+the same effect as Java achieves with static public final variables.</p>
 
 <h4>Polymorphism</h4>
 
@@ -1479,7 +1479,7 @@ parens after the name as if it was a method returning a value, not a
 variable.</p>
 
 <p>As noted earlier, <span class="e"><em>E</em></span> does not have an expression to directly represent
-public static final variables. To use such static finals from a Java class,
+static public final variables. To use such static finals from a Java class,
 put parentheses at the end of the variable name, making it syntactically look
 like a function call, prefix it with "get", uppercase the first letter,
 and <span class="e"><em>E</em></span> will get the value for you:</p>
@@ -2001,7 +2001,7 @@ def makeInstrumentPanel(car) :near {
             yIndicator.setText(makeYIndicator(-(car.getVelocity().getY())))
             acceleration := makeCoord(0,0)
             submitButton.setEnabled(true)
-            # Note, public static transferFocus on awt Component is not Java API, added in E environment
+            # Note, static public transferFocus on awt Component is not Java API, added in E environment
             &lt;awt:makeComponent&gt;.transferFocus([frame.getContentPane()], statusPane)
         }
         to setStatus(status) {statusPane.setText(status)}

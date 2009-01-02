@@ -23,7 +23,7 @@ public final class ErrorInputStream extends InputStream {
      *
      * @param error The error.
      */
-    public static InputStream make(final IOException error) {
+    static public InputStream make(final IOException error) {
         return new ErrorInputStream(error);
     }
 

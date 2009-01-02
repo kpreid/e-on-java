@@ -255,7 +255,7 @@ public class ClassFile {
      * @return a ClassFile object representing the class file information read
      *         from 'in'.
      */
-    public static ClassFile read(DataInputStream in) throws IOException {
+    static public ClassFile read(DataInputStream in) throws IOException {
         int magic = in.readInt();
         int minor_version = in.readUnsignedShort();
         int major_version = in.readUnsignedShort();
@@ -319,7 +319,7 @@ public class ClassFile {
      * @return a ClassFile object representing the class file information read
      *         from the indicated file.
      */
-    public static ClassFile read(String filename) throws IOException {
+    static public ClassFile read(String filename) throws IOException {
         DataInputStream in =
           new DataInputStream(new BufferedInputStream(new FileInputStream(
             filename)));

@@ -9,14 +9,14 @@ package antlr;
 
 public abstract class FileLineFormatter {
 
-    private static FileLineFormatter formatter =
+    static private FileLineFormatter formatter =
       new DefaultFileLineFormatter();
 
-    public static FileLineFormatter getFormatter() {
+    static public FileLineFormatter getFormatter() {
         return formatter;
     }
 
-    public static void setFormatter(FileLineFormatter f) {
+    static public void setFormatter(FileLineFormatter f) {
         formatter = f;
     }
 

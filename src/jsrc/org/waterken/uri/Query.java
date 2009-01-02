@@ -24,7 +24,7 @@ public final class Query {
      * @param name      The parameter name.
      * @return The argument.
      */
-    public static String arg(final String otherwise,
+    static public String arg(final String otherwise,
                              final String query,
                              final String name) {
         int start;

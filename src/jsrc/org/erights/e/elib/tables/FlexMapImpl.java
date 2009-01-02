@@ -59,7 +59,7 @@ class FlexMapImpl extends FlexMap {
      * threshold -- how many a default map can hold without growing: 75. But
      * we're using 5 instead.
      */
-    static private final int DEFAULT_THRESH = /*75*/ 5;
+//    static private final int DEFAULT_THRESH = /*75*/ 5;
 
     /**
      *
@@ -118,12 +118,12 @@ class FlexMapImpl extends FlexMap {
         this(keyType, valueType, DEFAULT_INIT_CAPACITY, DEFAULT_LOAD_FACTOR);
     }
 
-    /**
-     * Reasonable defaults
-     */
-    private FlexMapImpl(KeyColumn keys, Column values) {
-        this(keys, values, DEFAULT_LOAD_FACTOR);
-    }
+//    /**
+//     * Reasonable defaults
+//     */
+//    private FlexMapImpl(KeyColumn keys, Column values) {
+//        this(keys, values, DEFAULT_LOAD_FACTOR);
+//    }
 
     /**
      *

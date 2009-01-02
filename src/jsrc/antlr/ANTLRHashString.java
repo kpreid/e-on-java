@@ -18,7 +18,7 @@ public class ANTLRHashString {
     private char[] buf;
     private int len;
     private final CharScanner lexer;
-    private static final int prime = 151;
+    static private final int prime = 151;
 
 
     public ANTLRHashString(char[] buf, int length, CharScanner lexer) {

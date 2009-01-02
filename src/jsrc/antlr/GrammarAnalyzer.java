@@ -30,7 +30,7 @@ public interface GrammarAnalyzer {
      * indicates an incomplete look() computation. Must be kept consistent with
      * Token constants to be between MIN_USER_TYPE and INVALID_TYPE.
      */
-    // public static final int EPSILON_TYPE = 2;
+    // static public final int EPSILON_TYPE = 2;
     int NONDETERMINISTIC =
       Integer.MAX_VALUE; // lookahead depth
     int LOOKAHEAD_DEPTH_INIT = -1;

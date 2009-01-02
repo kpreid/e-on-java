@@ -24,7 +24,7 @@ import java.io.Writer;
 
 public class Tool {
 
-    public static String version = "";
+    static public String version = "";
 
     /**
      * Object that handles analysis errors
@@ -54,7 +54,7 @@ public class Tool {
     /**
      * Current output directory for generated files
      */
-    protected static String outputDir = ".";
+    static protected String outputDir = ".";
 
     // Grammar input
     protected String grammarFile;
@@ -62,8 +62,8 @@ public class Tool {
     // SAS: changed for proper text io
     //  transient DataInputStream in = null;
 
-    protected static String literalsPrefix = "LITERAL_";
-    protected static boolean upperCaseMangledLiterals = false;
+    static protected String literalsPrefix = "LITERAL_";
+    static protected boolean upperCaseMangledLiterals = false;
 
     /**
      * C++ file level options
@@ -337,7 +337,7 @@ public class Tool {
     }
 
     /**
-     * When we are 1.1 compatible... public static Object factory2 (String p,
+     * When we are 1.1 compatible... static public Object factory2 (String p,
      * Object[] initargs) { Class c; Object o = null; try { int argslen =
      * initargs.length; Class cl[] = new Class[argslen]; for (int
      * i=0;i&lt;argslen;i++) { cl[i] = Class.forName(initargs[i].getClass().getName());
@@ -391,7 +391,7 @@ public class Tool {
         return outputDir;
     }
 
-    private static void help() {
+    static private void help() {
         System.err.println("usage: java antlr.Tool [args] file.g");
         System.err
           .println(
@@ -424,7 +424,7 @@ public class Tool {
         System.err.println("  -h|-help|--help    this message");
     }
 
-    public static void main(String[] args) {
+    static public void main(String[] args) {
         System.err
           .println("ANTLR Parser Generator   Version " + Version
             .project_version + "   1989-2005 jGuru.com");
@@ -542,7 +542,7 @@ public class Tool {
      * exception or call System.exit</em>.
      *
      * @param s The message
-     * @deprecated as of 2.7.2 use {@link #fatalError(String)}. By defaykt this
+     * @deprecated as of 2.7.2 use {@link #fatalError(String)}. By default this
      *             method executes <code>fatalError("panic: " + s);</code>.
      */
     public void panic(String s) {
@@ -568,7 +568,7 @@ public class Tool {
      * Parse a list such as "f1.g;f2.g;..." and return a Vector of the
      * elements.
      */
-    public static Vector parseSeparatedList(String list, char separator) {
+    static public Vector parseSeparatedList(String list, char separator) {
         java.util.StringTokenizer st =
           new java.util.StringTokenizer(list, String.valueOf(separator));
         Vector v = new Vector(10);

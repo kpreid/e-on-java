@@ -20,7 +20,7 @@ public final class Filename {
      * @param name The candidate name.
      * @return The vouched for name.
      */
-    public static String vouch(final String name) throws InvalidFilename {
+    static public String vouch(final String name) throws InvalidFilename {
 
         // Check for disallowed characters.
         for (int i = name.length(); 0 != i--;) {
@@ -54,7 +54,7 @@ public final class Filename {
      * @param name      The filename.
      * @return The extension.
      */
-    public static String ext(final String otherwise, final String name) {
+    static public String ext(final String otherwise, final String name) {
         final int dot = name.lastIndexOf('.');
         return -1 != dot ? name.substring(dot + 1) : otherwise;
     }
@@ -65,7 +65,7 @@ public final class Filename {
      * @param name The filename.
      * @return The filename, less any extension.
      */
-    public static String key(final String name) {
+    static public String key(final String name) {
         final int dot = name.lastIndexOf('.');
         return -1 != dot ? name.substring(0, dot) : name;
     }

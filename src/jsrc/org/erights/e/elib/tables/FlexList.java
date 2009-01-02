@@ -153,7 +153,7 @@ public abstract class FlexList extends EList implements PassByProxy {
      */
     public ConstList removeRun(int start, int bound) {
         ConstList result = run(start, bound);
-        setRun(start, bound, ConstListImpl.EmptyList);
+        setRun(start, bound, ConstList.EmptyList);
         return result;
     }
 

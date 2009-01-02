@@ -265,7 +265,7 @@ public abstract class EList implements EPrintable, Persistent, EIteratable {
      */
     public ConstList multiply(int n) {
         if (0 == n) {
-            return ConstListImpl.EmptyList;
+            return ConstList.EmptyList;
         } else if (1 == n) {
             return snapshot();
         } else if (0 > n) {

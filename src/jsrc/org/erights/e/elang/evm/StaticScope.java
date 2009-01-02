@@ -30,12 +30,12 @@ public class StaticScope {
 
     //XXX should really use an identity map, and nouns (variable
     //names) should be interned.
-    private static final ConstMap EmptyMap =
+    static private final ConstMap EmptyMap =
       FlexMap.fromTypes(String.class, Void.class).snapshot();
 
     static public final StaticScope EmptyScope =
       new StaticScope(EmptyMap, EmptyMap, false, EmptyMap, EmptyMap);
-    private static final StaticScope META_SCOPE =
+    static private final StaticScope META_SCOPE =
       new StaticScope(EmptyMap, EmptyMap, true, EmptyMap, EmptyMap);
 
     /**

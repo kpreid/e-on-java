@@ -34,7 +34,7 @@ public final class Keyspace
     /**
      * A prototype self-signed certificate.
      */
-    private static final byte[] prototype = new byte[]{(byte)0x30,
+    static private final byte[] prototype = new byte[]{(byte)0x30,
       (byte)0x82,
       (byte)0x02,
       (byte)0x40,
@@ -618,32 +618,32 @@ public final class Keyspace
     /**
      * The start of the encoded TBS certificate in the prototype certificate.
      */
-    private static final int begin_tbs = 4;
+    static private final int begin_tbs = 4;
 
     /**
      * The length of the encoded TBS certificate.
      */
-    private static final int tbs_length = 429;
+    static private final int tbs_length = 429;
 
     /**
      * The start of the encoded public key in the prototype certificate.
      */
-    private static final int begin_key_value = 271;
+    static private final int begin_key_value = 271;
 
     /**
      * The length of the encoded public key.
      */
-    private static final int key_value_length = 162;
+    static private final int key_value_length = 162;
 
     /**
      * The start of the encoded signature in the prototype certificate.
      */
-    private static final int begin_signature = 452;
+    static private final int begin_signature = 452;
 
     /**
      * The length of the encoded signature.
      */
-    private static final int signature_length = 128;
+    static private final int signature_length = 128;
 
     private Keyspace() {
     }
@@ -651,12 +651,12 @@ public final class Keyspace
     /**
      * The instance.
      */
-    private static final Keyspace INSTANCE = new Keyspace();
+    static private final Keyspace INSTANCE = new Keyspace();
 
     /**
      * Constructs a <code>Keyspace</code>.
      */
-    public static org.waterken.url.tls.Keyspace make() {
+    static public org.waterken.url.tls.Keyspace make() {
         return INSTANCE;
     }
 
@@ -665,7 +665,7 @@ public final class Keyspace
     /**
      * The acceptable ciphersuites.
      */
-    private static final String[] ACCEPTABLE = new String[]{
+    static private final String[] ACCEPTABLE = new String[]{
       "TLS_DHE_RSA_WITH_AES_128_CBC_SHA",
       "SSL_DHE_RSA_WITH_3DES_EDE_CBC_SHA",
       "TLS_RSA_WITH_AES_128_CBC_SHA",

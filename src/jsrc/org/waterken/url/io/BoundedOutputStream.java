@@ -26,7 +26,7 @@ public final class BoundedOutputStream extends OutputStream {
      * @param out       The underlying stream.
      * @param remaining The number of bytes remaining.
      */
-    public static OutputStream make(final OutputStream out,
+    static public OutputStream make(final OutputStream out,
                                     final int remaining) {
         return new BoundedOutputStream(out, remaining);
     }

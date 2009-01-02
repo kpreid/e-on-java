@@ -58,7 +58,7 @@ import java.util.Map;
  */
 public class TokenStreamRewriteEngine implements TokenStream {
 
-    public static final int MIN_TOKEN_INDEX = 0;
+    static public final int MIN_TOKEN_INDEX = 0;
 
     static class RewriteOperation {
 
@@ -115,8 +115,8 @@ public class TokenStreamRewriteEngine implements TokenStream {
         }
     }
 
-    public static final String DEFAULT_PROGRAM_NAME = "default";
-    public static final int PROGRAM_INIT_SIZE = 100;
+    static public final String DEFAULT_PROGRAM_NAME = "default";
+    static public final int PROGRAM_INIT_SIZE = 100;
 
     /**
      * Track the incoming list of tokens

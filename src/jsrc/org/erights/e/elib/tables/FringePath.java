@@ -33,7 +33,7 @@ class FringePath {
     /**
      * Non-recursive comparison of two possibly-null FringePaths.
      */
-    public static boolean equals(FringePath a, FringePath b) {
+    static public boolean equals(FringePath a, FringePath b) {
         while (a != null) {
             if (b == null || a.myPosition != b.myPosition) {
                 return false;
@@ -47,7 +47,7 @@ class FringePath {
     /**
      * Non-recursive hashing of a possibly-null FringePath.
      */
-    public static int hashCode(FringePath a) {
+    static public int hashCode(FringePath a) {
         int h = 0;
         int shift = 0;
         while (a != null) {

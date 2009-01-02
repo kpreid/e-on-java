@@ -4,7 +4,6 @@ package org.erights.e.elib.vat;
 // found at http://www.opensource.org/licenses/mit-license.html ...............
 
 import org.erights.e.elib.ref.EProxyResolver;
-import org.erights.e.elib.ref.Ref;
 import org.erights.e.elib.sealing.Unsealer;
 
 /**
@@ -22,14 +21,14 @@ final class DeadRunner extends Runner {
      */
     private final Throwable myProblem;
 
-    private final Ref myBroken;
+//    private final Ref myBroken;
 
     /**
      * @param problem Why is this Vat dead?
      */
     DeadRunner(Throwable problem) {
         myProblem = problem;
-        myBroken = Ref.broken(problem);
+//        myBroken = Ref.broken(problem);
     }
 
     /**

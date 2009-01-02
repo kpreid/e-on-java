@@ -100,4 +100,13 @@ public class RenameVisitor extends CopyVisitor {
         myRenamings.removeKey(nounExpr.asNoun().getName());
         return super.visitSlotPattern(optOriginal, nounExpr, optGuardExpr);
     }
+
+    /**
+     *
+     */
+    public Object visitBindingPattern(ENode optOriginal,
+                                      AtomicExpr nounExpr) {
+        myRenamings.removeKey(nounExpr.asNoun().getName());
+        return super.visitBindingPattern(optOriginal, nounExpr);
+    }
 }

@@ -86,7 +86,7 @@ public class Hierarchy {
         return (Grammar)symbols.get(gr);
     }
 
-    public static String optionsToString(IndexedVector options) {
+    static public String optionsToString(IndexedVector options) {
         String s = "options {" + System.getProperty("line.separator");
         for (Enumeration e = options.elements(); e.hasMoreElements();) {
             s +=

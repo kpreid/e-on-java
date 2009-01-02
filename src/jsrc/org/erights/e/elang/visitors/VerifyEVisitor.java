@@ -3,7 +3,7 @@ package org.erights.e.elang.visitors;
 // Copyright 2002 Combex, Inc. under the terms of the MIT X license
 // found at http://www.opensource.org/licenses/mit-license.html ...............
 
-import org.erights.e.elang.evm.EExpr;
+import org.erights.e.elang.evm.AuditorExprs;
 import org.erights.e.elang.evm.ENode;
 import org.erights.e.elang.evm.EScript;
 import org.erights.e.elang.evm.GuardedPattern;
@@ -83,11 +83,11 @@ public class VerifyEVisitor extends BaseBindVisitor {
     public Object visitObjectExpr(ENode optOriginal,
                                   String docComment,
                                   GuardedPattern oName,
-                                  EExpr[] auditors,
+                                  AuditorExprs auditors,
                                   EScript eScript) {
         GuardedPattern guarded = (GuardedPattern)xformPattern(oName);
         VerifyEVisitor t = (VerifyEVisitor)nest(guarded);
-        EExpr[] xauds = t.xformEExprs(auditors);
+        AuditorExprs xauds = (AuditorExprs)t.run(auditors);
 
         StaticScope ss = eScript.staticScope();
         ConstMap usedMap = ss.namesUsed();

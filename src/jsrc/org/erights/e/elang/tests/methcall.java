@@ -10,7 +10,7 @@ public class methcall {
     private methcall() {
     }
 
-    public static void main(String[] args) throws IOException {
+    static public void main(String[] args) throws IOException {
         int n = Integer.parseInt(args[0]);
 
         boolean val = true;

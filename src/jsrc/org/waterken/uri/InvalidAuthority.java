@@ -17,12 +17,12 @@ public class InvalidAuthority extends RuntimeException {
     /**
      * The instance.
      */
-    private static final InvalidAuthority INSTANCE = new InvalidAuthority();
+    static private final InvalidAuthority INSTANCE = new InvalidAuthority();
 
     /**
      * Constructs an <code>InvalidAuthority</code>.
      */
-    public static InvalidAuthority make() {
+    static public InvalidAuthority make() {
         return INSTANCE;
     }
 }

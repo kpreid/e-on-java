@@ -34,7 +34,7 @@ public final class Locator
      *
      * @param default_port The default port.
      */
-    public static org.waterken.url.Locator make(final int default_port) {
+    static public org.waterken.url.Locator make(final int default_port) {
         return new Locator(default_port);
     }
 

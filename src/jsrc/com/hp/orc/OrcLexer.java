@@ -90,10 +90,9 @@ public class OrcLexer extends BaseLexer {
             if (!Character.isWhitespace(ch)) {
                 if ('#' == ch) {
                     return true;
-                } else {
-                    return '/' == ch && i + 1 < len &&
-                      '/' == myOptLData[i + 1];
                 }
+                return '/' == ch && i + 1 < len &&
+                  '/' == myOptLData[i + 1];
             }
         }
         return true;
@@ -172,9 +171,8 @@ public class OrcLexer extends BaseLexer {
                 if (EOFTOK == result.getOptTagCode()) {
                     needMore("continued line");
                     return null; //make compiler happy
-                } else {
-                    return result;
                 }
+                return result;
             }
             syntaxError("unrecognized escape");
             return null; //keep compiler happy
@@ -197,11 +195,10 @@ public class OrcLexer extends BaseLexer {
         default: {
             if (isIdentifierStart(myChar)) {
                 return identifier();
-            } else {
-                syntaxError("unrecognized character: '" + myChar + "' code: " +
-                  (int)myChar);
-                return null; //keep compiler happy
             }
+            syntaxError("unrecognized character: '" + myChar + "' code: " +
+              (int)myChar);
+            return null; //keep compiler happy
         }
         }
     }
@@ -221,10 +218,9 @@ public class OrcLexer extends BaseLexer {
         short tagCode = optKeywordType(source.bare());
         if (-1 == tagCode) {
             return composite(OrcParser.ID, source.bare(), source.getOptSpan());
-        } else {
-            //keyword
-            return leafTag(tagCode, source.getOptSpan());
         }
+        //keyword
+        return leafTag(tagCode, source.getOptSpan());
     }
 
     /**
@@ -238,9 +234,8 @@ public class OrcLexer extends BaseLexer {
         AstroTag optTag = myBuilder.getSchema().getOptTagForName(name);
         if (null == optTag) {
             return (short)-1;
-        } else {
-            return optTag.getOptTagCode();
         }
+        return optTag.getOptTagCode();
     }
 
     /**

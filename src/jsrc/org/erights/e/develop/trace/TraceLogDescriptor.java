@@ -409,11 +409,11 @@ class TraceLogDescriptor implements Cloneable, TraceConstants {
             Trace.trace
               .errorm("Could not open new trace file '" + nextFile + "'.");
             throw e;
-        } catch (IOException e) {
-            Trace.trace
-              .errorm("Unknown error when opening new trace file '" +
-                nextFile + "'.");
-            throw e;
+//        } catch (IOException e) {
+//            Trace.trace
+//              .errorm("Unknown error when opening new trace file '" +
+//                nextFile + "'.");
+//            throw e;
         }
     }
 

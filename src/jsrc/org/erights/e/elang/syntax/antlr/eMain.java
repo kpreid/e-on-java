@@ -16,7 +16,7 @@ class eMain {
     private eMain() {
     }
 
-    public static void main(String[] args) throws Exception {
+    static public void main(String[] args) throws Exception {
         BaseAST.setVerboseStringConversion(true, EParser._tokenNames);
         File f = new File(args[0]);
         if (f.isFile()) {
@@ -26,13 +26,13 @@ class eMain {
         }
     }
 
-    public static void processAll(File[] args) throws Exception {
+    static public void processAll(File[] args) throws Exception {
         for (int i = 0, max = args.length; i < max; i++) {
             processOne(args[i]);
         }
     }
 
-    public static void processOne(File f) throws Exception {
+    static public void processOne(File f) throws Exception {
         if (f.isFile()) {
             String arg = f.getName();
             if (arg.endsWith(".e") || arg.endsWith(".e-awt") ||

@@ -607,7 +607,7 @@ public class Vat {
      * Does the redirection scheduled by {@link #mergeInto}, {@link
      * #morphInto}, and {@link #orderlyShutdown}.
      */
-    private static class VatRedirector implements Runnable {
+    static private class VatRedirector implements Runnable {
 
         /**
          *

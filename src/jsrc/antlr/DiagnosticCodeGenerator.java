@@ -359,12 +359,12 @@ public class DiagnosticCodeGenerator extends CodeGenerator {
               "\tPerhaps the rule is misspelled, or you forgot to define it.");
             return;
         }
-        if (!(rs instanceof RuleSymbol)) {
-            // Should this ever happen??
-            println("Rule '" + rr.targetRule +
-              "' is referenced, but that is not a grammar rule.");
-            return;
-        }
+//        if (!(rs instanceof RuleSymbol)) {
+//            // Should this ever happen??
+//            println("Rule '" + rr.targetRule +
+//              "' is referenced, but that is not a grammar rule.");
+//            return;
+//        }
         if (rr.idAssign != null) {
             // Warn if the rule has no return type
             if (rs.block.returnAction == null) {
@@ -667,7 +667,7 @@ public class DiagnosticCodeGenerator extends CodeGenerator {
         println("");
         println("Terence Parr, MageLang Institute");
         println("with John Lilley, Empathy Software");
-        println("ANTLR Version " + antlrTool.version + "; 1989-2005");
+        println("ANTLR Version " + Tool.version + "; 1989-2005");
         println("");
         println("*** Header Action.");
         println("This action will appear at the top of all generated files.");

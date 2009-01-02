@@ -29,7 +29,7 @@ Contributor(s): ______________________________________.
  */
 public final class StringHelper {
 
-    public static final String TheLineSeparator =
+    static public final String TheLineSeparator =
 //      System.getProperty("line.separator");
         "\n";
 

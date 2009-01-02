@@ -6,12 +6,12 @@ public class ParserMatchEvent extends GuessingEvent {
 
     // NOTE: for a mismatch on type STRING, the "text" is used as the lookahead
     //       value.  Normally "value" is this
-    public static int TOKEN = 0;
-    public static int BITSET = 1;
-    public static int CHAR = 2;
-    public static int CHAR_BITSET = 3;
-    public static int STRING = 4;
-    public static int CHAR_RANGE = 5;
+    static public int TOKEN = 0;
+    static public int BITSET = 1;
+    static public int CHAR = 2;
+    static public int CHAR_BITSET = 3;
+    static public int STRING = 4;
+    static public int CHAR_RANGE = 5;
     private boolean inverse;
     private boolean matched;
     private Object target;

@@ -22,7 +22,7 @@ public final class Authority {
      * @param authority A YURL authority.
      * @return The <code>key-id</code>.
      */
-    public static String fingerprint(final String authority)
+    static public String fingerprint(final String authority)
       throws InvalidAuthority {
         final int end_userinfo = authority.indexOf('@');
         String userinfo = -1 != end_userinfo ?
@@ -46,7 +46,7 @@ public final class Authority {
      * @param authority A YURL authority.
      * @return The <code>host:port</code>.
      */
-    public static String location(String authority) {
+    static public String location(String authority) {
         final int end_userinfo = authority.indexOf('@');
         return -1 == end_userinfo ?
           authority :
@@ -59,14 +59,14 @@ public final class Authority {
      * @param authority A YURL authority.
      * @return The <code>[ host:port ]</code>.
      */
-    public static String[] hint(String authority) {
+    static public String[] hint(String authority) {
         final int end_userinfo = authority.indexOf('@');
         return -1 != end_userinfo ?
           list(',', authority, end_userinfo + 1) :
           new String[]{};
     }
 
-    private static String[] list(final char separator, final String s, int i) {
+    static private String[] list(final char separator, final String s, int i) {
         String[] r = new String[1];
         int n = 0;
         while (true) {

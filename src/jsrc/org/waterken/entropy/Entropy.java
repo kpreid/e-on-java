@@ -31,7 +31,7 @@ public final class Entropy extends SecureRandom {
     /**
      * Constructs the best available random number generator.
      */
-    public static SecureRandom make() {
+    static public SecureRandom make() {
         SecureRandom r;
         try {
             r = new Entropy(new FileInputStream("/dev/random"));

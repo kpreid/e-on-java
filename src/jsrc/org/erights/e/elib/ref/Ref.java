@@ -592,7 +592,7 @@ public abstract class Ref implements Callable {
      * Returns whether the reference is near and suitable for
      * pass-by-construction using Java serialization.
      */
-    public static boolean isJOSSPBC(Object ref) {
+    static public boolean isJOSSPBC(Object ref) {
         ref = resolution(ref);
         if (!isNear(ref)) {
             return false;
@@ -603,7 +603,7 @@ public abstract class Ref implements Callable {
     /**
      * allows non-near, for use by CapTPReplacer
      */
-    public static boolean isJOSSPBCRef(Object ref) {
+    static public boolean isJOSSPBCRef(Object ref) {
         if (null == ref) {
             //null is trivially PassByCopy
             return true;

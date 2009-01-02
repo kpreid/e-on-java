@@ -476,11 +476,10 @@ class CapTPConnection implements MsgHandler {
         if (-1 == index) {
             // the wireCount is initialized to 1
             return newFarDesc(obj);
-        } else {
-            // increments the wireCount
-            myExports.incr(index);
-            return new ImportDesc(index);
         }
+        // increments the wireCount
+        myExports.incr(index);
+        return new ImportDesc(index);
     }
 
     private Object new3Desc(RemoteHandler handler, Ref ref) {
@@ -512,14 +511,12 @@ class CapTPConnection implements MsgHandler {
         if (null == optHandler) {
             //a local promise
             return newRemotePromiseDesc(ref);
-        } else {
-            if (this == optHandler.myConn) {
-                int pos = optHandler.getPos();
-                return new IncomingDesc(pos);
-            } else {
-                return new3Desc(optHandler, ref);
-            }
         }
+        if (this == optHandler.myConn) {
+            int pos = optHandler.getPos();
+            return new IncomingDesc(pos);
+        }
+        return new3Desc(optHandler, ref);
     }
 
 //    /**

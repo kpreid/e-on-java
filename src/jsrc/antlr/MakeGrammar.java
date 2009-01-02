@@ -133,7 +133,7 @@ public class MakeGrammar extends DefineGrammarSymbols {
      *                 alternate block.
      * @param rname    The name of the resulting rule.
      */
-    public static RuleBlock createNextTokenRule(Grammar g,
+    static public RuleBlock createNextTokenRule(Grammar g,
                                                 Vector lexRules,
                                                 String rname) {
         // create actual rule data structure
@@ -868,7 +868,7 @@ public class MakeGrammar extends DefineGrammarSymbols {
         lastRuleRef.setArgs(argAction.getText());
     }
 
-    public static void setBlock(AlternativeBlock b, AlternativeBlock src) {
+    static public void setBlock(AlternativeBlock b, AlternativeBlock src) {
         b.setAlternatives(src.getAlternatives());
         b.initAction = src.initAction;
         //b.lookaheadDepth = src.lookaheadDepth;
@@ -888,7 +888,7 @@ public class MakeGrammar extends DefineGrammarSymbols {
     }
 
     public void setSubruleOption(Token key, Token value) {
-        ((AlternativeBlock)context().block).setOption(key, value);
+        context().block.setOption(key, value);
     }
 
     public void synPred() {

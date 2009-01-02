@@ -31,7 +31,7 @@ public final class AMP {
      * @param entropy A random number generator.
      * @return The generated <code>mid</code> value.
      */
-    public static String request(final SecureRandom entropy) {
+    static public String request(final SecureRandom entropy) {
         final byte[] bytes = new byte[16];
         entropy.nextBytes(bytes);
         return Base32.encode(bytes);
@@ -44,7 +44,7 @@ public final class AMP {
      * @param mid The {@link #request message identifier} for the request.
      * @return The pipelined return value capability URL.
      */
-    public static String pipeline(final String cap, final String mid) {
+    static public String pipeline(final String cap, final String mid) {
         try {
             return cap.substring(0, cap.lastIndexOf('/') + 1) +
               Base32.encode(MessageDigest.getInstance("SHA-1").digest(mid.getBytes(
@@ -75,7 +75,7 @@ public final class AMP {
      * @throws IOException           An I/O error while writing the request or
      *                               reading the response.
      */
-    public static String invoke(final String cap,
+    static public String invoke(final String cap,
                                 final String mid,
                                 final byte[] args)
       throws FileNotFoundException, HTTPException, IOException {

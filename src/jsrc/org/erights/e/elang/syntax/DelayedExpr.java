@@ -145,15 +145,14 @@ abstract class DelayedExpr extends EExpr {
                                                   b.finalPattern(rs4),
                                                   exports), escExpr),
                               noun(rs4));
-        } else {
-            return b.escape(b.finalPattern(ej1),
-                            b.sequence(forControl(b,
-                                                  ej1,
-                                                  StaticScope.EmptyScope),
-                                       ENodeBuilder.TRUE),
-                            b.ignore(),
-                            ENodeBuilder.FALSE);
         }
+        return b.escape(b.finalPattern(ej1),
+                        b.sequence(forControl(b,
+                                              ej1,
+                                              StaticScope.EmptyScope),
+                                   ENodeBuilder.TRUE),
+                        b.ignore(),
+                        ENodeBuilder.FALSE);
     }
 
     /**
@@ -190,11 +189,10 @@ abstract class DelayedExpr extends EExpr {
                                                          exports,
                                                          ConstMap.EmptyMap,
                                                          br3))));
-        } else {
-            return b.escape(b.finalPattern(ej1),
-                            forControl(b, ej1, StaticScope.EmptyScope),
-                            null);
         }
+        return b.escape(b.finalPattern(ej1),
+                        forControl(b, ej1, StaticScope.EmptyScope),
+                        null);
     }
 
     /**

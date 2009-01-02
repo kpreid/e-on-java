@@ -74,7 +74,7 @@ class DataCommThunk implements Runnable {
 
     private NetAddr myLocalNetAddr;
 
-    private String myAddress;
+//    private String myAddress;
 
     /**
      * Construct a DataCommThunk to call noticeProblem() in a VatTPMgr object.

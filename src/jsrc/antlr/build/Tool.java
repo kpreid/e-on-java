@@ -48,7 +48,7 @@ public class Tool {
         os = System.getProperty("os.name");
     }
 
-    public static void main(String[] args) {
+    static public void main(String[] args) {
         if (1 != args.length) {
             System.err.println("usage: java antlr.build.Tool action");
             return;

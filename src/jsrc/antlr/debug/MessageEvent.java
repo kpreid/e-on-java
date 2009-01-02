@@ -5,8 +5,8 @@ public class MessageEvent extends Event {
     static private final long serialVersionUID = -4634645612449373388L;
 
     private String text;
-    public static int WARNING = 0;
-    public static int ERROR = 1;
+    static public int WARNING = 0;
+    static public int ERROR = 1;
 
 
     public MessageEvent(Object source) {

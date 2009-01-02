@@ -90,7 +90,7 @@ public class StringUtils {
      * @param tail exact string to strip from tail
      * @return The resulting string
      */
-    public static String stripFrontBack(String src, String head, String tail) {
+    static public String stripFrontBack(String src, String head, String tail) {
         int h = src.indexOf(head);
         int t = src.lastIndexOf(tail);
         if (-1 == h || -1 == t) {

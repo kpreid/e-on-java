@@ -3,6 +3,9 @@ package org.erights.e.elang.visitors;
 import org.erights.e.develop.assertion.T;
 import org.erights.e.elang.evm.AssignExpr;
 import org.erights.e.elang.evm.AtomicExpr;
+import org.erights.e.elang.evm.AuditorExprs;
+import org.erights.e.elang.evm.BindingExpr;
+import org.erights.e.elang.evm.BindingPattern;
 import org.erights.e.elang.evm.CallExpr;
 import org.erights.e.elang.evm.CatchExpr;
 import org.erights.e.elang.evm.DefineExpr;
@@ -65,9 +68,8 @@ public class KernelECopyVisitor implements ETreeVisitor {
     static SourceSpan getOptSpan(ENode optNode) {
         if (null == optNode) {
             return null;
-        } else {
-            return optNode.getOptSpan();
         }
+        return optNode.getOptSpan();
     }
 
     /**
@@ -255,16 +257,25 @@ public class KernelECopyVisitor implements ETreeVisitor {
     public Object visitObjectExpr(ENode optOriginal,
                                   String docComment,
                                   GuardedPattern oName,
-                                  EExpr[] auditors,
+                                  AuditorExprs auditors,
                                   EScript eScript) {
         GuardedPattern guarded = (GuardedPattern)xformPattern(oName);
         KernelECopyVisitor t = nest(guarded);
         return new ObjectExpr(getOptSpan(optOriginal),
                               docComment,
                               guarded,
-                              t.xformEExprs(auditors),
+                              (AuditorExprs)t.run(auditors),
                               t.xformEScript(eScript),
                               getOptScopeLayout());
+    }
+
+    public Object visitAuditorExprs(ENode optOriginal,
+                                    EExpr optAs,
+                                    EExpr[] impls) {
+        return new AuditorExprs(getOptSpan(optOriginal),
+                                xformEExpr(optAs),
+                                xformEExprs(impls),
+                                getOptScopeLayout());
     }
 
     /**
@@ -286,12 +297,8 @@ public class KernelECopyVisitor implements ETreeVisitor {
      *
      */
     public Object visitSeqExpr(ENode optOriginal, EExpr[] subs) {
-        EExpr[] newSubs = new EExpr[subs.length];
-        for (int i = 0, max = subs.length; i < max; i++) {
-            newSubs[i] = xformEExpr(subs[i]);
-        }
         return new SeqExpr(getOptSpan(optOriginal),
-                           newSubs,
+                           xformEExprs(subs),
                            getOptScopeLayout());
     }
 
@@ -302,6 +309,12 @@ public class KernelECopyVisitor implements ETreeVisitor {
         return new SlotExpr(getOptSpan(optOriginal),
                             (AtomicExpr)xformEExpr(noun),
                             getOptScopeLayout());
+    }
+
+    public Object visitBindingExpr(ENode optOriginal, AtomicExpr noun) {
+        return new BindingExpr(getOptSpan(optOriginal),
+                               (AtomicExpr)xformEExpr(noun),
+                               getOptScopeLayout());
     }
 
     /**
@@ -382,6 +395,16 @@ public class KernelECopyVisitor implements ETreeVisitor {
                                (AtomicExpr)xformEExpr(nounExpr),
                                xformEExpr(optGuardExpr),
                                getOptScopeLayout());
+    }
+
+    /**
+     *
+     */
+    public Object visitBindingPattern(ENode optOriginal,
+                                      AtomicExpr nounExpr) {
+        return new BindingPattern(getOptSpan(optOriginal),
+                                  (AtomicExpr)xformEExpr(nounExpr),
+                                  getOptScopeLayout());
     }
 
     /**

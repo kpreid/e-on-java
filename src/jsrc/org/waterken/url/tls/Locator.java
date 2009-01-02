@@ -64,7 +64,7 @@ public final class Locator
      * @param network The underlying network.
      * @param client  The client to authenticate as.
      */
-    public static org.waterken.url.Locator make(final org.waterken.url.Locator network,
+    static public org.waterken.url.Locator make(final org.waterken.url.Locator network,
                                                 final Host client) {
         return new Locator(network, client);
     }
@@ -103,7 +103,7 @@ public final class Locator
     /**
      * Simple random number generator for load balancing.
      */
-    private static final Random entropy = new Random();
+    static private final Random entropy = new Random();
 
     private final class Race {
 

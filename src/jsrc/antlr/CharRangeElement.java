@@ -52,8 +52,7 @@ class CharRangeElement extends AlternativeElement {
     public String toString() {
         if (label != null) {
             return " " + label + ":" + beginText + ".." + endText;
-        } else {
-            return " " + beginText + ".." + endText;
         }
+        return " " + beginText + ".." + endText;
     }
 }

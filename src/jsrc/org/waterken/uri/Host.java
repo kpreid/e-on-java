@@ -21,7 +21,7 @@ public final class Host {
      * @param host A URL host.
      * @return The <code>reg-name</code>.
      */
-    public static String name(final String host) {
+    static public String name(final String host) {
         try {
             return URLDecoder.decode(host, "US-ASCII").toLowerCase();
         } catch (final java.io.UnsupportedEncodingException e) {
@@ -37,7 +37,7 @@ public final class Host {
      * @param s A URL host.
      * @return The IPv4 address literal.
      */
-    public static String ipv4(final String s) throws InvalidIPv4 {
+    static public String ipv4(final String s) throws InvalidIPv4 {
         boolean r = true;
         for (int i = 0, q = 4; r && 0 != q--;) {
             int j = 0 == q ? s.length() : s.indexOf('.', i);

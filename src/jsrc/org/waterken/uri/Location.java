@@ -22,7 +22,7 @@ public final class Location {
      * @param location A URL location.
      * @return The <code>host</code>.
      */
-    public static String host(final String location) {
+    static public String host(final String location) {
         final int end_host = location.indexOf(':');
         try {
             return URLDecoder.decode(
@@ -42,7 +42,7 @@ public final class Location {
      * @param standard The standard port number.
      * @return The <code>port</code>.
      */
-    public static int port(final String location, final int standard) {
+    static public int port(final String location, final int standard) {
         final int end_host = location.indexOf(':');
         return -1 == end_host || location.length() == end_host + 1 ?
           standard :

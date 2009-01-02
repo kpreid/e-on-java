@@ -12,12 +12,12 @@ public final class Locator {
     /**
      * The default HTTP port = <code>80</code>.
      */
-    public static final int DEFAULT_PORT = 80;
+    static public final int DEFAULT_PORT = 80;
 
     private Locator() {
     }
 
-    private static final org.waterken.url.Locator INSTANCE;
+    static private final org.waterken.url.Locator INSTANCE;
 
     static {
         org.waterken.url.Locator locator =
@@ -40,7 +40,7 @@ public final class Locator {
     /**
      * Constructs an HTTP locator.
      */
-    public static org.waterken.url.Locator make() {
+    static public org.waterken.url.Locator make() {
         return INSTANCE;
     }
 }

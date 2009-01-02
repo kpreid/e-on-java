@@ -6,10 +6,10 @@ public class InputBufferEvent extends Event {
 
     char c;
     int lookaheadAmount; // amount of lookahead
-    public static final int CONSUME = 0;
-    public static final int LA = 1;
-    public static final int MARK = 2;
-    public static final int REWIND = 3;
+    static public final int CONSUME = 0;
+    static public final int LA = 1;
+    static public final int MARK = 2;
+    static public final int REWIND = 3;
 
 
     /**

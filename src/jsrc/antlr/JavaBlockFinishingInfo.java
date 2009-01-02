@@ -23,7 +23,7 @@ class JavaBlockFinishingInfo {
 
     JavaBlockFinishingInfo() {
         postscript = null;
-        generatedSwitch = generatedSwitch = false;
+//        generatedSwitch = generatedSwitch = false;
         needAnErrorClause = true;
     }
 

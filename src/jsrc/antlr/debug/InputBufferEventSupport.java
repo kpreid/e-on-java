@@ -7,10 +7,10 @@ public class InputBufferEventSupport {
     private Object source;
     private Vector inputBufferListeners;
     private InputBufferEvent inputBufferEvent;
-    protected static final int CONSUME = 0;
-    protected static final int LA = 1;
-    protected static final int MARK = 2;
-    protected static final int REWIND = 3;
+    static protected final int CONSUME = 0;
+    static protected final int LA = 1;
+    static protected final int MARK = 2;
+    static protected final int REWIND = 3;
 
 
     public InputBufferEventSupport(Object source) {

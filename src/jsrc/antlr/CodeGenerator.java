@@ -94,14 +94,14 @@ public abstract class CodeGenerator {
     /**
      * Default values for code-generation thresholds
      */
-    protected static final int DEFAULT_MAKE_SWITCH_THRESHOLD = 2;
-    protected static final int DEFAULT_BITSET_TEST_THRESHOLD = 4;
+    static protected final int DEFAULT_MAKE_SWITCH_THRESHOLD = 2;
+    static protected final int DEFAULT_BITSET_TEST_THRESHOLD = 4;
 
     /**
      * If there are more than 8 long words to init in a bitset, try to optimize
      * it; e.g., detect runs of -1L and 0L.
      */
-    protected static final int BITSET_OPTIMIZE_INIT_THRESHOLD = 8;
+    static protected final int BITSET_OPTIMIZE_INIT_THRESHOLD = 8;
 
     /**
      * This is a hint for the language-specific code generator. A switch() or
@@ -121,10 +121,10 @@ public abstract class CodeGenerator {
      */
     protected int bitsetTestThreshold = DEFAULT_BITSET_TEST_THRESHOLD;
 
-    private static boolean OLD_ACTION_TRANSLATOR = true;
+//    static private boolean OLD_ACTION_TRANSLATOR = true;
 
-    public static String TokenTypesFileSuffix = "TokenTypes";
-    public static String TokenTypesFileExt = ".txt";
+    static public String TokenTypesFileSuffix = "TokenTypes";
+    static public String TokenTypesFileExt = ".txt";
 
     /**
      * Construct code generator base class
@@ -217,7 +217,7 @@ public abstract class CodeGenerator {
      *              BitSet.toArray().
      * @return true if the elements are a contiguous range (with two or more).
      */
-    public static boolean elementsAreRange(int[] elems) {
+    static public boolean elementsAreRange(int[] elems) {
         if (0 == elems.length) {
             return false;
         }
@@ -449,7 +449,7 @@ public abstract class CodeGenerator {
         String fName = tm.getName() + TokenTypesFileSuffix + TokenTypesFileExt;
         currentOutput = antlrTool.openOutputFile(fName);
 
-        println("// $ANTLR " + antlrTool.version + ": " +
+        println("// $ANTLR " + Tool.version + ": " +
           antlrTool.fileMinusPath(antlrTool.grammarFile) + " -> " + fName +
           "$");
 
@@ -532,11 +532,11 @@ public abstract class CodeGenerator {
         return "_tokenSet_" + index;
     }
 
-    public static String encodeLexerRuleName(String id) {
+    static public String encodeLexerRuleName(String id) {
         return "m" + id;
     }
 
-    public static String decodeLexerRuleName(String id) {
+    static public String decodeLexerRuleName(String id) {
         if (id == null) {
             return null;
         }
@@ -693,7 +693,7 @@ public abstract class CodeGenerator {
         bitsetTestThreshold = DEFAULT_BITSET_TEST_THRESHOLD;
     }
 
-    public static String reverseLexerRuleName(String id) {
+    static public String reverseLexerRuleName(String id) {
         return id.substring(1, id.length());
     }
 

@@ -21,7 +21,7 @@ public class ArithTimer {
     private ArithTimer() {
     }
 
-    public static void main(String[] argv) {
+    static public void main(String[] argv) {
 
         int repeat;
         for (repeat = 0; PASSES > repeat; repeat++) {
@@ -183,11 +183,11 @@ public class ArithTimer {
         }
     }
 
-    public static int intAdd(int b, int c) {
+    static public int intAdd(int b, int c) {
         return b + c;
     }
 
-    public static Integer integerAdd(Integer ib, Integer ic) {
+    static public Integer integerAdd(Integer ib, Integer ic) {
         return new Integer(ib.intValue() + ic.intValue());
     }
 }

@@ -83,9 +83,8 @@ public class ClassFileAuditor implements ClassFileConstants {
                                                                     u.pString(
                                                                       field.name_index())));
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
 
     /**
@@ -144,8 +143,7 @@ public class ClassFileAuditor implements ClassFileConstants {
                                                                   u.pString(
                                                                     method.name_index())));
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
 }

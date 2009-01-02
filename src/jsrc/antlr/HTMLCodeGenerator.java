@@ -577,7 +577,7 @@ public class HTMLCodeGenerator extends CodeGenerator {
         println("<p>");
         println(
           "Terence Parr, <a href=\"http://www.magelang.com\">MageLang Institute</a>");
-        println("<br>ANTLR Version " + antlrTool.version + "; 1989-2005");
+        println("<br>ANTLR Version " + Tool.version + "; 1989-2005");
         println("</td>");
         println("</tr>");
         println("</table>");

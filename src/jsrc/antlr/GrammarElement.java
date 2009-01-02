@@ -15,9 +15,9 @@ package antlr;
  */
 abstract class GrammarElement {
 
-    public static final int AUTO_GEN_NONE = 1;
-    public static final int AUTO_GEN_CARET = 2;
-    public static final int AUTO_GEN_BANG = 3;
+    static public final int AUTO_GEN_NONE = 1;
+    static public final int AUTO_GEN_CARET = 2;
+    static public final int AUTO_GEN_BANG = 3;
 
     /*
 	 * Note that Java does static argument type matching to

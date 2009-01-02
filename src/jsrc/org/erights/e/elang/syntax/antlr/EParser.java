@@ -4,19 +4,14 @@ package org.erights.e.elang.syntax.antlr;
 
 import antlr.TokenBuffer;
 import antlr.TokenStreamException;
-import antlr.TokenStreamIOException;
-import antlr.ANTLRException;
-import antlr.LLkParser;
 import antlr.Token;
 import antlr.TokenStream;
 import antlr.RecognitionException;
 import antlr.NoViableAltException;
-import antlr.MismatchedTokenException;
 import antlr.SemanticException;
 import antlr.ParserSharedInputState;
 import antlr.collections.impl.BitSet;
 import antlr.collections.AST;
-import java.util.Hashtable;
 import antlr.ASTFactory;
 import antlr.ASTPair;
 import antlr.collections.impl.ASTArray;
@@ -45,7 +40,7 @@ public void reportWarning(String s) {
 
 // pocket mechanisms: add a boolean, and test in the grammar with {foo}?
 private boolean pocketNounString = false;
-private boolean pocketDotProps = false;
+//private boolean pocketDotProps = false;
 
 protected EParser(TokenBuffer tokenBuf, int k) {
   super(tokenBuf,k);
@@ -77,11 +72,11 @@ public EParser(ParserSharedInputState state) {
 }
 
 	public final void start() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST start_AST = null;
-		
+
 		try {      // for error handling
 			{
 			_loop4:
@@ -197,13 +192,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = start_AST;
 	}
-	
+
 	public final void pragma() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST pragma_AST = null;
-		
+
 		try {      // for error handling
 			AST tmp4_AST = null;
 			tmp4_AST = astFactory.create(LT(1));
@@ -227,13 +222,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = pragma_AST;
 	}
-	
+
 	public final void seq() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST seq_AST = null;
-		
+
 		try {      // for error handling
 			eExpr();
 			astFactory.addASTChild(currentAST, returnAST);
@@ -335,7 +330,7 @@ public EParser(ParserSharedInputState state) {
 					else {
 						if ( _cnt16>=1 ) { break _loop16; } else {throw new NoViableAltException(LT(1), getFilename());}
 					}
-					
+
 					_cnt16++;
 				} while (true);
 				}
@@ -373,13 +368,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = seq_AST;
 	}
-	
+
 	public final void message() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST message_AST = null;
-		
+
 		try {      // for error handling
 			verb();
 			astFactory.addASTChild(currentAST, returnAST);
@@ -413,7 +408,7 @@ public EParser(ParserSharedInputState state) {
 			else {
 				throw new NoViableAltException(LT(1), getFilename());
 			}
-			
+
 			}
 			message_AST = (AST)currentAST.root;
 		}
@@ -427,13 +422,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = message_AST;
 	}
-	
+
 	public final void metaExpr() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST metaExpr_AST = null;
-		
+
 		try {      // for error handling
 			AST tmp8_AST = null;
 			tmp8_AST = astFactory.create(LT(1));
@@ -457,13 +452,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = metaExpr_AST;
 	}
-	
+
 	public final void br() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST br_AST = null;
-		
+
 		try {      // for error handling
 			{
 			_loop10:
@@ -474,7 +469,7 @@ public EParser(ParserSharedInputState state) {
 				else {
 					break _loop10;
 				}
-				
+
 			} while (true);
 			}
 			br_AST = (AST)currentAST.root;
@@ -489,13 +484,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = br_AST;
 	}
-	
+
 	public final void eExpr() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST eExpr_AST = null;
-		
+
 		try {      // for error handling
 			switch ( LA(1)) {
 			case QUASIOPEN:
@@ -571,13 +566,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = eExpr_AST;
 	}
-	
+
 	public final void assign() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST assign_AST = null;
-		
+
 		try {      // for error handling
 			switch ( LA(1)) {
 			case QUASIOPEN:
@@ -695,7 +690,7 @@ public EParser(ParserSharedInputState state) {
 					else {
 						throw new NoViableAltException(LT(1), getFilename());
 					}
-					
+
 					}
 					if ( inputState.guessing==0 ) {
 						assign_AST = (AST)currentAST.root;
@@ -757,13 +752,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = assign_AST;
 	}
-	
+
 	public final void ejector() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST ejector_AST = null;
-		
+
 		try {      // for error handling
 			switch ( LA(1)) {
 			case LITERAL_break:
@@ -851,7 +846,7 @@ public EParser(ParserSharedInputState state) {
 				else {
 					throw new NoViableAltException(LT(1), getFilename());
 				}
-				
+
 				}
 				ejector_AST = (AST)currentAST.root;
 				break;
@@ -887,13 +882,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = ejector_AST;
 	}
-	
+
 	public final void basic() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST basic_AST = null;
-		
+
 		try {      // for error handling
 			switch ( LA(1)) {
 			case LITERAL_if:
@@ -975,13 +970,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = basic_AST;
 	}
-	
+
 	public final void ifExpr() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST ifExpr_AST = null;
-		
+
 		try {      // for error handling
 			AST tmp19_AST = null;
 			tmp19_AST = astFactory.create(LT(1));
@@ -1108,13 +1103,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = ifExpr_AST;
 	}
-	
+
 	public final void forExpr() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST forExpr_AST = null;
-		
+
 		try {      // for error handling
 			AST tmp21_AST = null;
 			tmp21_AST = astFactory.create(LT(1));
@@ -1227,13 +1222,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = forExpr_AST;
 	}
-	
+
 	public final void whileExpr() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST whileExpr_AST = null;
-		
+
 		try {      // for error handling
 			AST tmp23_AST = null;
 			tmp23_AST = astFactory.create(LT(1));
@@ -1341,13 +1336,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = whileExpr_AST;
 	}
-	
+
 	public final void switchExpr() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST switchExpr_AST = null;
-		
+
 		try {      // for error handling
 			AST tmp24_AST = null;
 			tmp24_AST = astFactory.create(LT(1));
@@ -1368,7 +1363,7 @@ public EParser(ParserSharedInputState state) {
 				else {
 					break _loop45;
 				}
-				
+
 			} while (true);
 			}
 			match(RCURLY);
@@ -1388,13 +1383,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = switchExpr_AST;
 	}
-	
+
 	public final void tryExpr() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST tryExpr_AST = null;
-		
+
 		try {      // for error handling
 			AST tmp27_AST = null;
 			tmp27_AST = astFactory.create(LT(1));
@@ -1412,7 +1407,7 @@ public EParser(ParserSharedInputState state) {
 				else {
 					break _loop48;
 				}
-				
+
 			} while (true);
 			}
 			{
@@ -1514,13 +1509,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = tryExpr_AST;
 	}
-	
+
 	public final void escapeExpr() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST escapeExpr_AST = null;
-		
+
 		try {      // for error handling
 			AST tmp29_AST = null;
 			tmp29_AST = astFactory.create(LT(1));
@@ -1628,13 +1623,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = escapeExpr_AST;
 	}
-	
+
 	public final void whenExpr() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST whenExpr_AST = null;
-		
+
 		try {      // for error handling
 			AST tmp30_AST = null;
 			tmp30_AST = astFactory.create(LT(1));
@@ -1655,7 +1650,7 @@ public EParser(ParserSharedInputState state) {
 				else {
 					break _loop34;
 				}
-				
+
 			} while (true);
 			}
 			{
@@ -1760,13 +1755,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = whenExpr_AST;
 	}
-	
+
 	public final void accumExpr() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST accumExpr_AST = null;
-		
+
 		try {      // for error handling
 			AST tmp33_AST = null;
 			tmp33_AST = astFactory.create(LT(1));
@@ -1788,13 +1783,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = accumExpr_AST;
 	}
-	
+
 	public final void parenExpr() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST parenExpr_AST = null;
-		
+
 		try {      // for error handling
 			match(116);
 			seq();
@@ -1812,13 +1807,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = parenExpr_AST;
 	}
-	
+
 	public final void body() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST body_AST = null;
-		
+
 		try {      // for error handling
 			match(97);
 			{
@@ -1896,13 +1891,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = body_AST;
 	}
-	
+
 	public final void forPatt() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST forPatt_AST = null;
-		
+
 		try {      // for error handling
 			pattern();
 			astFactory.addASTChild(currentAST, returnAST);
@@ -1953,13 +1948,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = forPatt_AST;
 	}
-	
+
 	public final void catcher() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST catcher_AST = null;
-		
+
 		try {      // for error handling
 			AST tmp39_AST = null;
 			tmp39_AST = astFactory.create(LT(1));
@@ -1981,13 +1976,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = catcher_AST;
 	}
-	
+
 	public final void pattern() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST pattern_AST = null;
-		
+
 		try {      // for error handling
 			subPattern();
 			astFactory.addASTChild(currentAST, returnAST);
@@ -2059,16 +2054,16 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = pattern_AST;
 	}
-	
+
 	public final void call() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST call_AST = null;
 		AST p_AST = null;
 		AST a_AST = null;
 		AST l_AST = null;
-		
+
 		try {      // for error handling
 			prim();
 			p_AST = (AST)returnAST;
@@ -2238,13 +2233,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = call_AST;
 	}
-	
+
 	public final void accumulator() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST accumulator_AST = null;
-		
+
 		try {      // for error handling
 			switch ( LA(1)) {
 			case LITERAL_for:
@@ -2305,13 +2300,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = accumulator_AST;
 	}
-	
+
 	public final void logical() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST logical_AST = null;
-		
+
 		try {      // for error handling
 			order();
 			astFactory.addASTChild(currentAST, returnAST);
@@ -2416,7 +2411,7 @@ public EParser(ParserSharedInputState state) {
 					else {
 						if ( _cnt152>=1 ) { break _loop152; } else {throw new NoViableAltException(LT(1), getFilename());}
 					}
-					
+
 					_cnt152++;
 				} while (true);
 				}
@@ -2447,7 +2442,7 @@ public EParser(ParserSharedInputState state) {
 					else {
 						if ( _cnt154>=1 ) { break _loop154; } else {throw new NoViableAltException(LT(1), getFilename());}
 					}
-					
+
 					_cnt154++;
 				} while (true);
 				}
@@ -2478,7 +2473,7 @@ public EParser(ParserSharedInputState state) {
 					else {
 						if ( _cnt156>=1 ) { break _loop156; } else {throw new NoViableAltException(LT(1), getFilename());}
 					}
-					
+
 					_cnt156++;
 				} while (true);
 				}
@@ -2532,13 +2527,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = logical_AST;
 	}
-	
+
 	public final void accumBody() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST accumBody_AST = null;
-		
+
 		try {      // for error handling
 			match(97);
 			{
@@ -2649,13 +2644,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = accumBody_AST;
 	}
-	
+
 	public final void verb() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST verb_AST = null;
-		
+
 		try {      // for error handling
 			switch ( LA(1)) {
 			case IDENT:
@@ -2692,13 +2687,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = verb_AST;
 	}
-	
+
 	public final void parenArgs() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST parenArgs_AST = null;
-		
+
 		try {      // for error handling
 			match(116);
 			argList();
@@ -2716,13 +2711,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = parenArgs_AST;
 	}
-	
+
 	public final void whenFn() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST whenFn_AST = null;
-		
+
 		try {      // for error handling
 			objName();
 			astFactory.addASTChild(currentAST, returnAST);
@@ -2769,13 +2764,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = whenFn_AST;
 	}
-	
+
 	public final void objName() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST objName_AST = null;
-		
+
 		try {      // for error handling
 			switch ( LA(1)) {
 			case URIGetter:
@@ -2891,13 +2886,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = objName_AST;
 	}
-	
+
 	public final void params() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST params_AST = null;
-		
+
 		try {      // for error handling
 			match(116);
 			paramList();
@@ -2925,13 +2920,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = params_AST;
 	}
-	
+
 	public final void guard() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST guard_AST = null;
-		
+
 		try {      // for error handling
 			{
 			switch ( LA(1)) {
@@ -2983,7 +2978,7 @@ public EParser(ParserSharedInputState state) {
 				else {
 					break _loop223;
 				}
-				
+
 			} while (true);
 			}
 			guard_AST = (AST)currentAST.root;
@@ -2998,13 +2993,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = guard_AST;
 	}
-	
+
 	public final void lambdaExpr() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST lambdaExpr_AST = null;
-		
+
 		try {      // for error handling
 			switch ( LA(1)) {
 			case LITERAL_thunk:
@@ -3055,13 +3050,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = lambdaExpr_AST;
 	}
-	
+
 	public final void paramList() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST paramList_AST = null;
-		
+
 		try {      // for error handling
 			boolean synPredMatched94 = false;
 			if (((_tokenSet_23.member(LA(1))) && (_tokenSet_24.member(LA(2))))) {
@@ -3178,7 +3173,7 @@ public EParser(ParserSharedInputState state) {
 			else {
 				throw new NoViableAltException(LT(1), getFilename());
 			}
-			
+
 		}
 		catch (RecognitionException ex) {
 			if (inputState.guessing==0) {
@@ -3190,13 +3185,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = paramList_AST;
 	}
-	
+
 	public final void matcher() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST matcher_AST = null;
-		
+
 		try {      // for error handling
 			AST tmp87_AST = null;
 			tmp87_AST = astFactory.create(LT(1));
@@ -3222,13 +3217,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = matcher_AST;
 	}
-	
+
 	public final void bindNamer() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST bindNamer_AST = null;
-		
+
 		try {      // for error handling
 			AST tmp88_AST = null;
 			tmp88_AST = astFactory.create(LT(1));
@@ -3301,13 +3296,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = bindNamer_AST;
 	}
-	
+
 	public final void noun() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST noun_AST = null;
-		
+
 		try {      // for error handling
 			switch ( LA(1)) {
 			case IDENT:
@@ -3387,13 +3382,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = noun_AST;
 	}
-	
+
 	public final void varNamer() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST varNamer_AST = null;
-		
+
 		try {      // for error handling
 			AST tmp95_AST = null;
 			tmp95_AST = astFactory.create(LT(1));
@@ -3466,13 +3461,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = varNamer_AST;
 	}
-	
+
 	public final void nounExpr() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST nounExpr_AST = null;
-		
+
 		try {      // for error handling
 			switch ( LA(1)) {
 			case URIGetter:
@@ -3525,13 +3520,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = nounExpr_AST;
 	}
-	
+
 	public final void slotNamer() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST slotNamer_AST = null;
-		
+
 		try {      // for error handling
 			AST tmp97_AST = null;
 			tmp97_AST = astFactory.create(LT(1));
@@ -3604,13 +3599,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = slotNamer_AST;
 	}
-	
+
 	public final void docoDef() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST docoDef_AST = null;
-		
+
 		try {      // for error handling
 			doco();
 			astFactory.addASTChild(currentAST, returnAST);
@@ -3655,13 +3650,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = docoDef_AST;
 	}
-	
+
 	public final void doco() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST doco_AST = null;
-		
+
 		try {      // for error handling
 			switch ( LA(1)) {
 			case DOC_COMMENT:
@@ -3710,13 +3705,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = doco_AST;
 	}
-	
+
 	public final void defExpr() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST defExpr_AST = null;
-		
+
 		try {      // for error handling
 			switch ( LA(1)) {
 			case LITERAL_def:
@@ -3829,13 +3824,13 @@ public EParser(ParserSharedInputState state) {
 			}
 			returnAST = defExpr_AST;
 		}
-		
+
 	public final void interfaceExpr() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST interfaceExpr_AST = null;
-		
+
 		try {      // for error handling
 			AST tmp104_AST = null;
 			tmp104_AST = astFactory.create(LT(1));
@@ -3902,7 +3897,7 @@ public EParser(ParserSharedInputState state) {
 						else {
 							break _loop111;
 						}
-						
+
 					} while (true);
 					}
 					break;
@@ -3944,7 +3939,7 @@ public EParser(ParserSharedInputState state) {
 						else {
 							break _loop114;
 						}
-						
+
 					} while (true);
 					}
 					break;
@@ -3975,7 +3970,7 @@ public EParser(ParserSharedInputState state) {
 					else {
 						break _loop116;
 					}
-					
+
 				} while (true);
 				}
 				match(RCURLY);
@@ -4036,13 +4031,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = interfaceExpr_AST;
 	}
-	
+
 	public final void objectPredict() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST objectPredict_AST = null;
-		
+
 		try {      // for error handling
 			objName();
 			astFactory.addASTChild(currentAST, returnAST);
@@ -4098,13 +4093,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = objectPredict_AST;
 	}
-	
+
 	public final void objectExpr() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST objectExpr_AST = null;
-		
+
 		try {      // for error handling
 			{
 			switch ( LA(1)) {
@@ -4163,7 +4158,7 @@ public EParser(ParserSharedInputState state) {
 						else {
 							break _loop76;
 						}
-						
+
 					} while (true);
 					}
 					break;
@@ -4210,13 +4205,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = objectExpr_AST;
 	}
-	
+
 	public final void rValue() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST rValue_AST = null;
-		
+
 		try {      // for error handling
 			boolean synPredMatched66 = false;
 			if (((LA(1)==116) && (_tokenSet_39.member(LA(2))))) {
@@ -4268,7 +4263,7 @@ public EParser(ParserSharedInputState state) {
 			else {
 				throw new NoViableAltException(LT(1), getFilename());
 			}
-			
+
 		}
 		catch (RecognitionException ex) {
 			if (inputState.guessing==0) {
@@ -4280,13 +4275,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = rValue_AST;
 	}
-	
+
 	public final void bindName() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST bindName_AST = null;
-		
+
 		try {      // for error handling
 			{
 			switch ( LA(1)) {
@@ -4390,13 +4385,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = bindName_AST;
 	}
-	
+
 	public final void bindExpr() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST bindExpr_AST = null;
-		
+
 		try {      // for error handling
 			bindName();
 			astFactory.addASTChild(currentAST, returnAST);
@@ -4444,13 +4439,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = bindExpr_AST;
 	}
-	
+
 	public final void order() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST order_AST = null;
-		
+
 		try {      // for error handling
 			interval();
 			astFactory.addASTChild(currentAST, returnAST);
@@ -4547,13 +4542,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = order_AST;
 	}
-	
+
 	public final void script() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST script_AST = null;
-		
+
 		try {      // for error handling
 			AST tmp128_AST = null;
 			tmp128_AST = astFactory.create(LT(1));
@@ -4571,7 +4566,7 @@ public EParser(ParserSharedInputState state) {
 				else {
 					break _loop83;
 				}
-				
+
 			} while (true);
 			}
 			{
@@ -4586,7 +4581,7 @@ public EParser(ParserSharedInputState state) {
 				else {
 					break _loop85;
 				}
-				
+
 			} while (true);
 			}
 			match(RCURLY);
@@ -4606,13 +4601,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = script_AST;
 	}
-	
+
 	public final void resultGuard() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST resultGuard_AST = null;
-		
+
 		try {      // for error handling
 			{
 			switch ( LA(1)) {
@@ -4680,13 +4675,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = resultGuard_AST;
 	}
-	
+
 	public final void method() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST method_AST = null;
-		
+
 		try {      // for error handling
 			doco();
 			astFactory.addASTChild(currentAST, returnAST);
@@ -4750,13 +4745,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = method_AST;
 	}
-	
+
 	public final void methHead() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST methHead_AST = null;
-		
+
 		try {      // for error handling
 			switch ( LA(1)) {
 			case 116:
@@ -4796,13 +4791,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = methHead_AST;
 	}
-	
+
 	public final void key() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST key_AST = null;
-		
+
 		try {      // for error handling
 			switch ( LA(1)) {
 			case 116:
@@ -4840,13 +4835,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = key_AST;
 	}
-	
+
 	public final void mapPattList() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST mapPattList_AST = null;
-		
+
 		try {      // for error handling
 			{
 			switch ( LA(1)) {
@@ -4910,13 +4905,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = mapPattList_AST;
 	}
-	
+
 	public final void patternList() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST patternList_AST = null;
-		
+
 		try {      // for error handling
 			{
 			switch ( LA(1)) {
@@ -4990,13 +4985,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = patternList_AST;
 	}
-	
+
 	public final void guardList() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST guardList_AST = null;
-		
+
 		try {      // for error handling
 			guard();
 			astFactory.addASTChild(currentAST, returnAST);
@@ -5011,7 +5006,7 @@ public EParser(ParserSharedInputState state) {
 				else {
 					break _loop105;
 				}
-				
+
 			} while (true);
 			}
 			guardList_AST = (AST)currentAST.root;
@@ -5026,13 +5021,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = guardList_AST;
 	}
-	
+
 	public final void imethod() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST imethod_AST = null;
-		
+
 		try {      // for error handling
 			doco();
 			astFactory.addASTChild(currentAST, returnAST);
@@ -5090,13 +5085,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = imethod_AST;
 	}
-	
+
 	public final void mtypes() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST mtypes_AST = null;
-		
+
 		try {      // for error handling
 			match(116);
 			typeList();
@@ -5124,13 +5119,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = mtypes_AST;
 	}
-	
+
 	public final void imethHead() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST imethHead_AST = null;
-		
+
 		try {      // for error handling
 			switch ( LA(1)) {
 			case 116:
@@ -5170,13 +5165,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = imethHead_AST;
 	}
-	
+
 	public final void ptype() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST ptype_AST = null;
-		
+
 		try {      // for error handling
 			switch ( LA(1)) {
 			case URIGetter:
@@ -5272,13 +5267,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = ptype_AST;
 	}
-	
+
 	public final void typeList() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST typeList_AST = null;
-		
+
 		try {      // for error handling
 			{
 			switch ( LA(1)) {
@@ -5339,13 +5334,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = typeList_AST;
 	}
-	
+
 	public final void cond() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST cond_AST = null;
-		
+
 		try {      // for error handling
 			condAnd();
 			astFactory.addASTChild(currentAST, returnAST);
@@ -5367,7 +5362,7 @@ public EParser(ParserSharedInputState state) {
 				else {
 					break _loop144;
 				}
-				
+
 			} while (true);
 			}
 			cond_AST = (AST)currentAST.root;
@@ -5382,13 +5377,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = cond_AST;
 	}
-	
+
 	public final void assignOp() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST assignOp_AST = null;
-		
+
 		try {      // for error handling
 			switch ( LA(1)) {
 			case 129:
@@ -5524,13 +5519,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = assignOp_AST;
 	}
-	
+
 	public final void condAnd() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST condAnd_AST = null;
-		
+
 		try {      // for error handling
 			logical();
 			astFactory.addASTChild(currentAST, returnAST);
@@ -5552,7 +5547,7 @@ public EParser(ParserSharedInputState state) {
 				else {
 					break _loop147;
 				}
-				
+
 			} while (true);
 			}
 			condAnd_AST = (AST)currentAST.root;
@@ -5567,13 +5562,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = condAnd_AST;
 	}
-	
+
 	public final void interval() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST interval_AST = null;
-		
+
 		try {      // for error handling
 			shift();
 			astFactory.addASTChild(currentAST, returnAST);
@@ -5681,13 +5676,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = interval_AST;
 	}
-	
+
 	public final void compareOp() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST compareOp_AST = null;
-		
+
 		try {      // for error handling
 			switch ( LA(1)) {
 			case 153:
@@ -5753,13 +5748,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = compareOp_AST;
 	}
-	
+
 	public final void shift() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST shift_AST = null;
-		
+
 		try {      // for error handling
 			add();
 			astFactory.addASTChild(currentAST, returnAST);
@@ -5805,7 +5800,7 @@ public EParser(ParserSharedInputState state) {
 				else {
 					break _loop166;
 				}
-				
+
 			} while (true);
 			}
 			shift_AST = (AST)currentAST.root;
@@ -5820,13 +5815,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = shift_AST;
 	}
-	
+
 	public final void add() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST add_AST = null;
-		
+
 		try {      // for error handling
 			mult();
 			astFactory.addASTChild(currentAST, returnAST);
@@ -5872,7 +5867,7 @@ public EParser(ParserSharedInputState state) {
 				else {
 					break _loop170;
 				}
-				
+
 			} while (true);
 			}
 			add_AST = (AST)currentAST.root;
@@ -5887,13 +5882,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = add_AST;
 	}
-	
+
 	public final void mult() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST mult_AST = null;
-		
+
 		try {      // for error handling
 			pow();
 			astFactory.addASTChild(currentAST, returnAST);
@@ -5963,7 +5958,7 @@ public EParser(ParserSharedInputState state) {
 				else {
 					break _loop174;
 				}
-				
+
 			} while (true);
 			}
 			mult_AST = (AST)currentAST.root;
@@ -5978,13 +5973,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = mult_AST;
 	}
-	
+
 	public final void pow() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST pow_AST = null;
-		
+
 		try {      // for error handling
 			prefix();
 			astFactory.addASTChild(currentAST, returnAST);
@@ -6082,9 +6077,9 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = pow_AST;
 	}
-	
+
 	public final void prefix() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST prefix_AST = null;
@@ -6093,7 +6088,7 @@ public EParser(ParserSharedInputState state) {
 		Token  neg = null;
 		AST neg_AST = null;
 		AST b_AST = null;
-		
+
 		try {      // for error handling
 			switch ( LA(1)) {
 			case QUASIOPEN:
@@ -6183,13 +6178,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = prefix_AST;
 	}
-	
+
 	public final void postfix() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST postfix_AST = null;
-		
+
 		try {      // for error handling
 			call();
 			astFactory.addASTChild(currentAST, returnAST);
@@ -6205,13 +6200,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = postfix_AST;
 	}
-	
+
 	public final void prefixOp() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST prefixOp_AST = null;
-		
+
 		try {      // for error handling
 			{
 			switch ( LA(1)) {
@@ -6273,13 +6268,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = prefixOp_AST;
 	}
-	
+
 	public final void prim() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST prim_AST = null;
-		
+
 		try {      // for error handling
 			switch ( LA(1)) {
 			case HEX:
@@ -6646,7 +6641,7 @@ public EParser(ParserSharedInputState state) {
 				else {
 					throw new NoViableAltException(LT(1), getFilename());
 				}
-				
+
 				}
 				match(171);
 				prim_AST = (AST)currentAST.root;
@@ -6683,13 +6678,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = prim_AST;
 	}
-	
+
 	public final void argList() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST argList_AST = null;
-		
+
 		try {      // for error handling
 			boolean synPredMatched200 = false;
 			if (((_tokenSet_66.member(LA(1))) && (_tokenSet_67.member(LA(2))))) {
@@ -6867,7 +6862,7 @@ public EParser(ParserSharedInputState state) {
 			else {
 				throw new NoViableAltException(LT(1), getFilename());
 			}
-			
+
 		}
 		catch (RecognitionException ex) {
 			if (inputState.guessing==0) {
@@ -6879,13 +6874,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = argList_AST;
 	}
-	
+
 	public final void prop() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST prop_AST = null;
-		
+
 		try {      // for error handling
 			switch ( LA(1)) {
 			case IDENT:
@@ -6922,13 +6917,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = prop_AST;
 	}
-	
+
 	public final void lambdaArgs() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST lambdaArgs_AST = null;
-		
+
 		try {      // for error handling
 			match(116);
 			argList();
@@ -7059,13 +7054,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = lambdaArgs_AST;
 	}
-	
+
 	public final void sepword() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST sepword_AST = null;
-		
+
 		try {      // for error handling
 			switch ( LA(1)) {
 			case LITERAL_catch:
@@ -7265,13 +7260,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = sepword_AST;
 	}
-	
+
 	public final void exprList() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST exprList_AST = null;
-		
+
 		try {      // for error handling
 			{
 			switch ( LA(1)) {
@@ -7368,13 +7363,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = exprList_AST;
 	}
-	
+
 	public final void mapList() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST mapList_AST = null;
-		
+
 		try {      // for error handling
 			{
 			switch ( LA(1)) {
@@ -7474,13 +7469,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = mapList_AST;
 	}
-	
+
 	public final void literal() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST literal_AST = null;
-		
+
 		try {      // for error handling
 			switch ( LA(1)) {
 			case STRING:
@@ -7553,13 +7548,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = literal_AST;
 	}
-	
+
 	public final void quasiString() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST quasiString_AST = null;
-		
+
 		try {      // for error handling
 			match(QUASIOPEN);
 			{
@@ -7630,13 +7625,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = quasiString_AST;
 	}
-	
+
 	public final void map() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST map_AST = null;
-		
+
 		try {      // for error handling
 			switch ( LA(1)) {
 			case QUASIOPEN:
@@ -7762,13 +7757,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = map_AST;
 	}
-	
+
 	public final void subPattern() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST subPattern_AST = null;
-		
+
 		try {      // for error handling
 			switch ( LA(1)) {
 			case URIGetter:
@@ -8298,13 +8293,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = subPattern_AST;
 	}
-	
+
 	public final void namePatt() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST namePatt_AST = null;
-		
+
 		try {      // for error handling
 			switch ( LA(1)) {
 			case URIGetter:
@@ -8390,13 +8385,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = namePatt_AST;
 	}
-	
+
 	public final void dollarHole() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST dollarHole_AST = null;
-		
+
 		try {      // for error handling
 			switch ( LA(1)) {
 			case 176:
@@ -8454,13 +8449,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = dollarHole_AST;
 	}
-	
+
 	public final void atHole() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST atHole_AST = null;
-		
+
 		try {      // for error handling
 			switch ( LA(1)) {
 			case 179:
@@ -8506,13 +8501,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = atHole_AST;
 	}
-	
+
 	public final void mapPattern() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST mapPattern_AST = null;
-		
+
 		try {      // for error handling
 			switch ( LA(1)) {
 			case HEX:
@@ -8613,13 +8608,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = mapPattern_AST;
 	}
-	
+
 	public final void exprHole() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST exprHole_AST = null;
-		
+
 		try {      // for error handling
 			AST tmp248_AST = null;
 			tmp248_AST = astFactory.create(LT(1));
@@ -8648,13 +8643,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = exprHole_AST;
 	}
-	
+
 	public final void pattHole() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST pattHole_AST = null;
-		
+
 		try {      // for error handling
 			match(ATCURLY);
 			br();
@@ -8680,13 +8675,13 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = pattHole_AST;
 	}
-	
+
 	public final void reserved() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST reserved_AST = null;
-		
+
 		try {      // for error handling
 			switch ( LA(1)) {
 			case 97:
@@ -9466,9 +9461,9 @@ public EParser(ParserSharedInputState state) {
 		}
 		returnAST = reserved_AST;
 	}
-	
-	
-	public static final String[] _tokenNames = {
+
+
+	static public final String[] _tokenNames = {
 		"<0>",
 		"EOF",
 		"<2>",
@@ -9735,37 +9730,37 @@ public EParser(ParserSharedInputState state) {
 		"\"volatile\"",
 		"\"wstring\""
 	};
-	
+
 	protected void buildTokenTypeASTClassMap() {
 		tokenTypeToASTClassMap=null;
 	};
-	
-	private static final long[] mk_tokenSet_0() {
+
+	static private final long[] mk_tokenSet_0() {
 		long[] data = { 2L, 0L, 0L, 0L, 0L};
 		return data;
 	}
-	public static final BitSet _tokenSet_0 = new BitSet(mk_tokenSet_0());
-	private static final long[] mk_tokenSet_1() {
+	static public final BitSet _tokenSet_0 = new BitSet(mk_tokenSet_0());
+	static private final long[] mk_tokenSet_1() {
 		long[] data = { 0L, 4195328L, 0L, 0L, 0L};
 		return data;
 	}
-	public static final BitSet _tokenSet_1 = new BitSet(mk_tokenSet_1());
-	private static final long[] mk_tokenSet_2() {
+	static public final BitSet _tokenSet_1 = new BitSet(mk_tokenSet_1());
+	static private final long[] mk_tokenSet_2() {
 		long[] data = { 258L, 18014398509481984L, 0L, 0L, 0L};
 		return data;
 	}
-	public static final BitSet _tokenSet_2 = new BitSet(mk_tokenSet_2());
-	private static final long[] mk_tokenSet_3() {
+	static public final BitSet _tokenSet_2 = new BitSet(mk_tokenSet_2());
+	static private final long[] mk_tokenSet_3() {
 		long[] data = { -6917529027641081840L, 4636447827035582848L, 8768622411628544L, 0L, 0L, 0L};
 		return data;
 	}
-	public static final BitSet _tokenSet_3 = new BitSet(mk_tokenSet_3());
-	private static final long[] mk_tokenSet_4() {
+	static public final BitSet _tokenSet_3 = new BitSet(mk_tokenSet_3());
+	static private final long[] mk_tokenSet_4() {
 		long[] data = { 258L, 141868316556936192L, 207807697534974L, 0L, 0L, 0L};
 		return data;
 	}
-	public static final BitSet _tokenSet_4 = new BitSet(mk_tokenSet_4());
-	private static final long[] mk_tokenSet_5() {
+	static public final BitSet _tokenSet_4 = new BitSet(mk_tokenSet_4());
+	static private final long[] mk_tokenSet_5() {
 		long[] data = new long[10];
 		data[0]=-6917529027641073806L;
 		data[1]=-2722432L;
@@ -9773,313 +9768,313 @@ public EParser(ParserSharedInputState state) {
 		data[4]=511L;
 		return data;
 	}
-	public static final BitSet _tokenSet_5 = new BitSet(mk_tokenSet_5());
-	private static final long[] mk_tokenSet_6() {
+	static public final BitSet _tokenSet_5 = new BitSet(mk_tokenSet_5());
+	static private final long[] mk_tokenSet_6() {
 		long[] data = { -6917529027641081584L, 6807187261580800384L, 8777419547983872L, 0L, 0L, 0L};
 		return data;
 	}
-	public static final BitSet _tokenSet_6 = new BitSet(mk_tokenSet_6());
-	private static final long[] mk_tokenSet_7() {
+	static public final BitSet _tokenSet_6 = new BitSet(mk_tokenSet_6());
+	static private final long[] mk_tokenSet_7() {
 		long[] data = { 258L, 27021598842160128L, 8796093022208L, 0L, 0L, 0L};
 		return data;
 	}
-	public static final BitSet _tokenSet_7 = new BitSet(mk_tokenSet_7());
-	private static final long[] mk_tokenSet_8() {
+	static public final BitSet _tokenSet_7 = new BitSet(mk_tokenSet_7());
+	static private final long[] mk_tokenSet_8() {
 		long[] data = { -6917529027641081840L, 4618433427452359040L, 8768622411382784L, 0L, 0L, 0L};
 		return data;
 	}
-	public static final BitSet _tokenSet_8 = new BitSet(mk_tokenSet_8());
-	private static final long[] mk_tokenSet_9() {
+	static public final BitSet _tokenSet_8 = new BitSet(mk_tokenSet_8());
+	static private final long[] mk_tokenSet_9() {
 		long[] data = { -6917529027641073806L, 4647711516229793152L, 8796093022207998L, 0L, 0L, 0L};
 		return data;
 	}
-	public static final BitSet _tokenSet_9 = new BitSet(mk_tokenSet_9());
-	private static final long[] mk_tokenSet_10() {
+	static public final BitSet _tokenSet_9 = new BitSet(mk_tokenSet_9());
+	static private final long[] mk_tokenSet_10() {
 		long[] data = { 258L, 27021607432094720L, 8796093022208L, 0L, 0L, 0L};
 		return data;
 	}
-	public static final BitSet _tokenSet_10 = new BitSet(mk_tokenSet_10());
-	private static final long[] mk_tokenSet_11() {
+	static public final BitSet _tokenSet_10 = new BitSet(mk_tokenSet_10());
+	static private final long[] mk_tokenSet_11() {
 		long[] data = { 274L, 3456517642301625344L, 207807697534974L, 0L, 0L, 0L};
 		return data;
 	}
-	public static final BitSet _tokenSet_11 = new BitSet(mk_tokenSet_11());
-	private static final long[] mk_tokenSet_12() {
+	static public final BitSet _tokenSet_11 = new BitSet(mk_tokenSet_11());
+	static private final long[] mk_tokenSet_12() {
 		long[] data = { 258L, 2303598336852251648L, 278176441712638L, 0L, 0L, 0L};
 		return data;
 	}
-	public static final BitSet _tokenSet_12 = new BitSet(mk_tokenSet_12());
-	private static final long[] mk_tokenSet_13() {
+	static public final BitSet _tokenSet_12 = new BitSet(mk_tokenSet_12());
+	static private final long[] mk_tokenSet_13() {
 		long[] data = { 0L, 536870912L, 0L, 0L, 0L};
 		return data;
 	}
-	public static final BitSet _tokenSet_13 = new BitSet(mk_tokenSet_13());
-	private static final long[] mk_tokenSet_14() {
+	static public final BitSet _tokenSet_13 = new BitSet(mk_tokenSet_13());
+	static private final long[] mk_tokenSet_14() {
 		long[] data = { 258L, 141870515580191744L, 278176441712638L, 0L, 0L, 0L};
 		return data;
 	}
-	public static final BitSet _tokenSet_14 = new BitSet(mk_tokenSet_14());
-	private static final long[] mk_tokenSet_15() {
+	static public final BitSet _tokenSet_14 = new BitSet(mk_tokenSet_14());
+	static private final long[] mk_tokenSet_15() {
 		long[] data = { 258L, 137359798839690240L, 8796093825022L, 0L, 0L, 0L};
 		return data;
 	}
-	public static final BitSet _tokenSet_15 = new BitSet(mk_tokenSet_15());
-	private static final long[] mk_tokenSet_16() {
+	static public final BitSet _tokenSet_15 = new BitSet(mk_tokenSet_15());
+	static private final long[] mk_tokenSet_16() {
 		long[] data = { 258L, 101335919356953600L, 9895604535294L, 0L, 0L, 0L};
 		return data;
 	}
-	public static final BitSet _tokenSet_16 = new BitSet(mk_tokenSet_16());
-	private static final long[] mk_tokenSet_17() {
+	static public final BitSet _tokenSet_16 = new BitSet(mk_tokenSet_16());
+	static private final long[] mk_tokenSet_17() {
 		long[] data = { 258L, 29273407245927424L, 8796093825022L, 0L, 0L, 0L};
 		return data;
 	}
-	public static final BitSet _tokenSet_17 = new BitSet(mk_tokenSet_17());
-	private static final long[] mk_tokenSet_18() {
+	static public final BitSet _tokenSet_17 = new BitSet(mk_tokenSet_17());
+	static private final long[] mk_tokenSet_18() {
 		long[] data = { 258L, 141868316556936192L, 207807697534975L, 0L, 0L, 0L};
 		return data;
 	}
-	public static final BitSet _tokenSet_18 = new BitSet(mk_tokenSet_18());
-	private static final long[] mk_tokenSet_19() {
+	static public final BitSet _tokenSet_18 = new BitSet(mk_tokenSet_18());
+	static private final long[] mk_tokenSet_19() {
 		long[] data = { 258L, 141869416068563968L, 207807697534974L, 0L, 0L, 0L};
 		return data;
 	}
-	public static final BitSet _tokenSet_19 = new BitSet(mk_tokenSet_19());
-	private static final long[] mk_tokenSet_20() {
+	static public final BitSet _tokenSet_19 = new BitSet(mk_tokenSet_19());
+	static private final long[] mk_tokenSet_20() {
 		long[] data = { 0L, -9110782037580578816L, 0L, 0L, 0L};
 		return data;
 	}
-	public static final BitSet _tokenSet_20 = new BitSet(mk_tokenSet_20());
-	private static final long[] mk_tokenSet_21() {
+	static public final BitSet _tokenSet_20 = new BitSet(mk_tokenSet_20());
+	static private final long[] mk_tokenSet_21() {
 		long[] data = { 0L, 2305847415850139648L, 0L, 0L, 0L};
 		return data;
 	}
-	public static final BitSet _tokenSet_21 = new BitSet(mk_tokenSet_21());
-	private static final long[] mk_tokenSet_22() {
+	static public final BitSet _tokenSet_21 = new BitSet(mk_tokenSet_21());
+	static private final long[] mk_tokenSet_22() {
 		long[] data = { 258L, 3456513136528610304L, 149533614817278L, 0L, 0L, 0L};
 		return data;
 	}
-	public static final BitSet _tokenSet_22 = new BitSet(mk_tokenSet_22());
-	private static final long[] mk_tokenSet_23() {
+	static public final BitSet _tokenSet_22 = new BitSet(mk_tokenSet_22());
+	static private final long[] mk_tokenSet_23() {
 		long[] data = { 0L, 22518007801865600L, 0L, 0L, 0L};
 		return data;
 	}
-	public static final BitSet _tokenSet_23 = new BitSet(mk_tokenSet_23());
-	private static final long[] mk_tokenSet_24() {
+	static public final BitSet _tokenSet_23 = new BitSet(mk_tokenSet_23());
+	static private final long[] mk_tokenSet_24() {
 		long[] data = { -6917529027641081584L, 6942295234295788928L, 8768622411628544L, 0L, 0L, 0L};
 		return data;
 	}
-	public static final BitSet _tokenSet_24 = new BitSet(mk_tokenSet_24());
-	private static final long[] mk_tokenSet_25() {
+	static public final BitSet _tokenSet_24 = new BitSet(mk_tokenSet_24());
+	static private final long[] mk_tokenSet_25() {
 		long[] data = { -9223372036854775792L, 18863384695014400L, 8765307739963392L, 0L, 0L, 0L};
 		return data;
 	}
-	public static final BitSet _tokenSet_25 = new BitSet(mk_tokenSet_25());
-	private static final long[] mk_tokenSet_26() {
+	static public final BitSet _tokenSet_25 = new BitSet(mk_tokenSet_25());
+	static private final long[] mk_tokenSet_26() {
 		long[] data = { -6917529027641073808L, 6951302450730923392L, 8918157036339200L, 0L, 0L, 0L};
 		return data;
 	}
-	public static final BitSet _tokenSet_26 = new BitSet(mk_tokenSet_26());
-	private static final long[] mk_tokenSet_27() {
+	static public final BitSet _tokenSet_26 = new BitSet(mk_tokenSet_26());
+	static private final long[] mk_tokenSet_27() {
 		long[] data = { 0L, 18014407099417600L, 0L, 0L, 0L};
 		return data;
 	}
-	public static final BitSet _tokenSet_27 = new BitSet(mk_tokenSet_27());
-	private static final long[] mk_tokenSet_28() {
+	static public final BitSet _tokenSet_27 = new BitSet(mk_tokenSet_27());
+	static private final long[] mk_tokenSet_28() {
 		long[] data = { 256L, 1152921504606848000L, 0L, 0L, 0L};
 		return data;
 	}
-	public static final BitSet _tokenSet_28 = new BitSet(mk_tokenSet_28());
-	private static final long[] mk_tokenSet_29() {
+	static public final BitSet _tokenSet_28 = new BitSet(mk_tokenSet_28());
+	static private final long[] mk_tokenSet_29() {
 		long[] data = { 258L, 137359798839690240L, 149533582180350L, 0L, 0L, 0L};
 		return data;
 	}
-	public static final BitSet _tokenSet_29 = new BitSet(mk_tokenSet_29());
-	private static final long[] mk_tokenSet_30() {
+	static public final BitSet _tokenSet_29 = new BitSet(mk_tokenSet_29());
+	static private final long[] mk_tokenSet_30() {
 		long[] data = { 274L, -5766854394553150464L, 207807697534974L, 0L, 0L, 0L};
 		return data;
 	}
-	public static final BitSet _tokenSet_30 = new BitSet(mk_tokenSet_30());
-	private static final long[] mk_tokenSet_31() {
+	static public final BitSet _tokenSet_30 = new BitSet(mk_tokenSet_30());
+	static private final long[] mk_tokenSet_31() {
 		long[] data = { 0L, 5622515436353486848L, 0L, 0L, 0L};
 		return data;
 	}
-	public static final BitSet _tokenSet_31 = new BitSet(mk_tokenSet_31());
-	private static final long[] mk_tokenSet_32() {
+	static public final BitSet _tokenSet_31 = new BitSet(mk_tokenSet_31());
+	static private final long[] mk_tokenSet_32() {
 		long[] data = { -9223372036854775808L, 844579549102080L, 8760908650119168L, 0L, 0L, 0L};
 		return data;
 	}
-	public static final BitSet _tokenSet_32 = new BitSet(mk_tokenSet_32());
-	private static final long[] mk_tokenSet_33() {
+	static public final BitSet _tokenSet_32 = new BitSet(mk_tokenSet_32());
+	static private final long[] mk_tokenSet_33() {
 		long[] data = { -9223372036854775808L, 112589999274868736L, 8760908650119168L, 0L, 0L, 0L};
 		return data;
 	}
-	public static final BitSet _tokenSet_33 = new BitSet(mk_tokenSet_33());
-	private static final long[] mk_tokenSet_34() {
+	static public final BitSet _tokenSet_33 = new BitSet(mk_tokenSet_33());
+	static private final long[] mk_tokenSet_34() {
 		long[] data = { -9223372036854775792L, 848977595596800L, 8765307739963392L, 0L, 0L, 0L};
 		return data;
 	}
-	public static final BitSet _tokenSet_34 = new BitSet(mk_tokenSet_34());
-	private static final long[] mk_tokenSet_35() {
+	static public final BitSet _tokenSet_34 = new BitSet(mk_tokenSet_34());
+	static private final long[] mk_tokenSet_35() {
 		long[] data = { -6917529027641074064L, 7824845595108736L, 8914841321340928L, 0L, 0L, 0L};
 		return data;
 	}
-	public static final BitSet _tokenSet_35 = new BitSet(mk_tokenSet_35());
-	private static final long[] mk_tokenSet_36() {
+	static public final BitSet _tokenSet_35 = new BitSet(mk_tokenSet_35());
+	static private final long[] mk_tokenSet_36() {
 		long[] data = { -9223372036854775808L, 137439100928L, 8760908650119168L, 0L, 0L, 0L};
 		return data;
 	}
-	public static final BitSet _tokenSet_36 = new BitSet(mk_tokenSet_36());
-	private static final long[] mk_tokenSet_37() {
+	static public final BitSet _tokenSet_36 = new BitSet(mk_tokenSet_36());
+	static private final long[] mk_tokenSet_37() {
 		long[] data = { -9223372036854775550L, 27026005479277568L, 8769704743141376L, 0L, 0L, 0L};
 		return data;
 	}
-	public static final BitSet _tokenSet_37 = new BitSet(mk_tokenSet_37());
-	private static final long[] mk_tokenSet_38() {
+	static public final BitSet _tokenSet_37 = new BitSet(mk_tokenSet_37());
+	static private final long[] mk_tokenSet_38() {
 		long[] data = { 0L, 1008806316530995200L, 0L, 0L, 0L};
 		return data;
 	}
-	public static final BitSet _tokenSet_38 = new BitSet(mk_tokenSet_38());
-	private static final long[] mk_tokenSet_39() {
+	static public final BitSet _tokenSet_38 = new BitSet(mk_tokenSet_38());
+	static private final long[] mk_tokenSet_39() {
 		long[] data = { -6917529027641081840L, 4618433427452359040L, 8768622411628544L, 0L, 0L, 0L};
 		return data;
 	}
-	public static final BitSet _tokenSet_39 = new BitSet(mk_tokenSet_39());
-	private static final long[] mk_tokenSet_40() {
+	static public final BitSet _tokenSet_39 = new BitSet(mk_tokenSet_39());
+	static private final long[] mk_tokenSet_40() {
 		long[] data = { 258L, 141863397930042368L, 8796093022208L, 0L, 0L, 0L};
 		return data;
 	}
-	public static final BitSet _tokenSet_40 = new BitSet(mk_tokenSet_40());
-	private static final long[] mk_tokenSet_41() {
+	static public final BitSet _tokenSet_40 = new BitSet(mk_tokenSet_40());
+	static private final long[] mk_tokenSet_41() {
 		long[] data = { 258L, 101331413600715776L, 8796126461950L, 0L, 0L, 0L};
 		return data;
 	}
-	public static final BitSet _tokenSet_41 = new BitSet(mk_tokenSet_41());
-	private static final long[] mk_tokenSet_42() {
+	static public final BitSet _tokenSet_41 = new BitSet(mk_tokenSet_41());
+	static private final long[] mk_tokenSet_42() {
 		long[] data = { 256L, 1008806325120930816L, 0L, 0L, 0L};
 		return data;
 	}
-	public static final BitSet _tokenSet_42 = new BitSet(mk_tokenSet_42());
-	private static final long[] mk_tokenSet_43() {
+	static public final BitSet _tokenSet_42 = new BitSet(mk_tokenSet_42());
+	static private final long[] mk_tokenSet_43() {
 		long[] data = { 256L, 2161727821137843200L, 0L, 0L, 0L};
 		return data;
 	}
-	public static final BitSet _tokenSet_43 = new BitSet(mk_tokenSet_43());
-	private static final long[] mk_tokenSet_44() {
+	static public final BitSet _tokenSet_43 = new BitSet(mk_tokenSet_43());
+	static private final long[] mk_tokenSet_44() {
 		long[] data = { 0L, 8589934592L, 0L, 0L, 0L};
 		return data;
 	}
-	public static final BitSet _tokenSet_44 = new BitSet(mk_tokenSet_44());
-	private static final long[] mk_tokenSet_45() {
+	static public final BitSet _tokenSet_44 = new BitSet(mk_tokenSet_44());
+	static private final long[] mk_tokenSet_45() {
 		long[] data = { 0L, 1073741824L, 0L, 0L, 0L};
 		return data;
 	}
-	public static final BitSet _tokenSet_45 = new BitSet(mk_tokenSet_45());
-	private static final long[] mk_tokenSet_46() {
+	static public final BitSet _tokenSet_45 = new BitSet(mk_tokenSet_45());
+	static private final long[] mk_tokenSet_46() {
 		long[] data = { 0L, 18014407099417600L, 8796093022208L, 0L, 0L, 0L};
 		return data;
 	}
-	public static final BitSet _tokenSet_46 = new BitSet(mk_tokenSet_46());
-	private static final long[] mk_tokenSet_47() {
+	static public final BitSet _tokenSet_46 = new BitSet(mk_tokenSet_46());
+	static private final long[] mk_tokenSet_47() {
 		long[] data = { 0L, 1024L, 8796093022208L, 0L, 0L, 0L};
 		return data;
 	}
-	public static final BitSet _tokenSet_47 = new BitSet(mk_tokenSet_47());
-	private static final long[] mk_tokenSet_48() {
+	static public final BitSet _tokenSet_47 = new BitSet(mk_tokenSet_47());
+	static private final long[] mk_tokenSet_48() {
 		long[] data = { 256L, 1008806316530996224L, 0L, 0L, 0L};
 		return data;
 	}
-	public static final BitSet _tokenSet_48 = new BitSet(mk_tokenSet_48());
-	private static final long[] mk_tokenSet_49() {
+	static public final BitSet _tokenSet_48 = new BitSet(mk_tokenSet_48());
+	static private final long[] mk_tokenSet_49() {
 		long[] data = { 258L, 3341675331223294976L, 8796093022208L, 0L, 0L, 0L};
 		return data;
 	}
-	public static final BitSet _tokenSet_49 = new BitSet(mk_tokenSet_49());
-	private static final long[] mk_tokenSet_50() {
+	static public final BitSet _tokenSet_49 = new BitSet(mk_tokenSet_49());
+	static private final long[] mk_tokenSet_50() {
 		long[] data = { 0L, 27021597764224000L, 0L, 0L, 0L};
 		return data;
 	}
-	public static final BitSet _tokenSet_50 = new BitSet(mk_tokenSet_50());
-	private static final long[] mk_tokenSet_51() {
+	static public final BitSet _tokenSet_50 = new BitSet(mk_tokenSet_50());
+	static private final long[] mk_tokenSet_51() {
 		long[] data = { 0L, 18014398509483008L, 0L, 0L, 0L};
 		return data;
 	}
-	public static final BitSet _tokenSet_51 = new BitSet(mk_tokenSet_51());
-	private static final long[] mk_tokenSet_52() {
+	static public final BitSet _tokenSet_51 = new BitSet(mk_tokenSet_51());
+	static private final long[] mk_tokenSet_52() {
 		long[] data = { 258L, 29273407245927424L, 8796093038590L, 0L, 0L, 0L};
 		return data;
 	}
-	public static final BitSet _tokenSet_52 = new BitSet(mk_tokenSet_52());
-	private static final long[] mk_tokenSet_53() {
+	static public final BitSet _tokenSet_52 = new BitSet(mk_tokenSet_52());
+	static private final long[] mk_tokenSet_53() {
 		long[] data = { 258L, 29273407245927424L, 8796093300734L, 0L, 0L, 0L};
 		return data;
 	}
-	public static final BitSet _tokenSet_53 = new BitSet(mk_tokenSet_53());
-	private static final long[] mk_tokenSet_54() {
+	static public final BitSet _tokenSet_53 = new BitSet(mk_tokenSet_53());
+	static private final long[] mk_tokenSet_54() {
 		long[] data = { 258L, 101335811647226880L, 8797166649342L, 0L, 0L, 0L};
 		return data;
 	}
-	public static final BitSet _tokenSet_54 = new BitSet(mk_tokenSet_54());
-	private static final long[] mk_tokenSet_55() {
+	static public final BitSet _tokenSet_54 = new BitSet(mk_tokenSet_54());
+	static private final long[] mk_tokenSet_55() {
 		long[] data = { -6917529027641081840L, 4724307629859200L, 8768622411382784L, 0L, 0L, 0L};
 		return data;
 	}
-	public static final BitSet _tokenSet_55 = new BitSet(mk_tokenSet_55());
-	private static final long[] mk_tokenSet_56() {
+	static public final BitSet _tokenSet_55 = new BitSet(mk_tokenSet_55());
+	static private final long[] mk_tokenSet_56() {
 		long[] data = { 258L, 101335811647226880L, 8800387874814L, 0L, 0L, 0L};
 		return data;
 	}
-	public static final BitSet _tokenSet_56 = new BitSet(mk_tokenSet_56());
-	private static final long[] mk_tokenSet_57() {
+	static public final BitSet _tokenSet_56 = new BitSet(mk_tokenSet_56());
+	static private final long[] mk_tokenSet_57() {
 		long[] data = { 258L, 101335811647226880L, 8813272776702L, 0L, 0L, 0L};
 		return data;
 	}
-	public static final BitSet _tokenSet_57 = new BitSet(mk_tokenSet_57());
-	private static final long[] mk_tokenSet_58() {
+	static public final BitSet _tokenSet_57 = new BitSet(mk_tokenSet_57());
+	static private final long[] mk_tokenSet_58() {
 		long[] data = { 0L, 68719476736L, 515396075520L, 0L, 0L, 0L};
 		return data;
 	}
-	public static final BitSet _tokenSet_58 = new BitSet(mk_tokenSet_58());
-	private static final long[] mk_tokenSet_59() {
+	static public final BitSet _tokenSet_58 = new BitSet(mk_tokenSet_58());
+	static private final long[] mk_tokenSet_59() {
 		long[] data = { 258L, 101335846006965248L, 8830452645886L, 0L, 0L, 0L};
 		return data;
 	}
-	public static final BitSet _tokenSet_59 = new BitSet(mk_tokenSet_59());
-	private static final long[] mk_tokenSet_60() {
+	static public final BitSet _tokenSet_59 = new BitSet(mk_tokenSet_59());
+	static private final long[] mk_tokenSet_60() {
 		long[] data = { 258L, 101335914726441984L, 9345848721406L, 0L, 0L, 0L};
 		return data;
 	}
-	public static final BitSet _tokenSet_60 = new BitSet(mk_tokenSet_60());
-	private static final long[] mk_tokenSet_61() {
+	static public final BitSet _tokenSet_60 = new BitSet(mk_tokenSet_60());
+	static private final long[] mk_tokenSet_61() {
 		long[] data = { 258L, 101335914726441984L, 9895604535294L, 0L, 0L, 0L};
 		return data;
 	}
-	public static final BitSet _tokenSet_61 = new BitSet(mk_tokenSet_61());
-	private static final long[] mk_tokenSet_62() {
+	static public final BitSet _tokenSet_61 = new BitSet(mk_tokenSet_61());
+	static private final long[] mk_tokenSet_62() {
 		long[] data = { -6917529027641081840L, 4724067111690624L, 8765306696630272L, 0L, 0L, 0L};
 		return data;
 	}
-	public static final BitSet _tokenSet_62 = new BitSet(mk_tokenSet_62());
-	private static final long[] mk_tokenSet_63() {
+	static public final BitSet _tokenSet_62 = new BitSet(mk_tokenSet_62());
+	static private final long[] mk_tokenSet_63() {
 		long[] data = { -6917529027641081840L, 4618433428526100864L, 8777418504650752L, 0L, 0L, 0L};
 		return data;
 	}
-	public static final BitSet _tokenSet_63 = new BitSet(mk_tokenSet_63());
-	private static final long[] mk_tokenSet_64() {
+	static public final BitSet _tokenSet_63 = new BitSet(mk_tokenSet_63());
+	static private final long[] mk_tokenSet_64() {
 		long[] data = { -6917529027641073806L, 4755797907823555968L, 8936830510563326L, 0L, 0L, 0L};
 		return data;
 	}
-	public static final BitSet _tokenSet_64 = new BitSet(mk_tokenSet_64());
-	private static final long[] mk_tokenSet_65() {
+	static public final BitSet _tokenSet_64 = new BitSet(mk_tokenSet_64());
+	static private final long[] mk_tokenSet_65() {
 		long[] data = { -6917529027641081840L, 4618433427452359040L, 8777418504650752L, 0L, 0L, 0L};
 		return data;
 	}
-	public static final BitSet _tokenSet_65 = new BitSet(mk_tokenSet_65());
-	private static final long[] mk_tokenSet_66() {
+	static public final BitSet _tokenSet_65 = new BitSet(mk_tokenSet_65());
+	static private final long[] mk_tokenSet_66() {
 		long[] data = { -6917529027641081840L, 4636447827035582848L, 8777418504650752L, 0L, 0L, 0L};
 		return data;
 	}
-	public static final BitSet _tokenSet_66 = new BitSet(mk_tokenSet_66());
-	private static final long[] mk_tokenSet_67() {
+	static public final BitSet _tokenSet_66 = new BitSet(mk_tokenSet_66());
+	static private final long[] mk_tokenSet_67() {
 		long[] data = new long[10];
 		data[0]=-6917529027641073806L;
 		data[1]=-1152921504617433728L;
@@ -10088,56 +10083,56 @@ public EParser(ParserSharedInputState state) {
 		data[4]=511L;
 		return data;
 	}
-	public static final BitSet _tokenSet_67 = new BitSet(mk_tokenSet_67());
-	private static final long[] mk_tokenSet_68() {
+	static public final BitSet _tokenSet_67 = new BitSet(mk_tokenSet_67());
+	static private final long[] mk_tokenSet_68() {
 		long[] data = { -6917529027641081840L, 4636447825961841024L, 8777418504650752L, 0L, 0L, 0L};
 		return data;
 	}
-	public static final BitSet _tokenSet_68 = new BitSet(mk_tokenSet_68());
-	private static final long[] mk_tokenSet_69() {
+	static public final BitSet _tokenSet_68 = new BitSet(mk_tokenSet_68());
+	static private final long[] mk_tokenSet_69() {
 		long[] data = { 0L, 18014398509481984L, 8796093022208L, 0L, 0L, 0L};
 		return data;
 	}
-	public static final BitSet _tokenSet_69 = new BitSet(mk_tokenSet_69());
-	private static final long[] mk_tokenSet_70() {
+	static public final BitSet _tokenSet_69 = new BitSet(mk_tokenSet_69());
+	static private final long[] mk_tokenSet_70() {
 		long[] data = { 258L, 105839519001101312L, 67070209179646L, 0L, 0L, 0L};
 		return data;
 	}
-	public static final BitSet _tokenSet_70 = new BitSet(mk_tokenSet_70());
-	private static final long[] mk_tokenSet_71() {
+	static public final BitSet _tokenSet_70 = new BitSet(mk_tokenSet_70());
+	static private final long[] mk_tokenSet_71() {
 		long[] data = { 0L, 0L, 8796093022208L, 0L, 0L, 0L};
 		return data;
 	}
-	public static final BitSet _tokenSet_71 = new BitSet(mk_tokenSet_71());
-	private static final long[] mk_tokenSet_72() {
+	static public final BitSet _tokenSet_71 = new BitSet(mk_tokenSet_71());
+	static private final long[] mk_tokenSet_72() {
 		long[] data = { 0L, 27021597764224000L, 8796093022208L, 0L, 0L, 0L};
 		return data;
 	}
-	public static final BitSet _tokenSet_72 = new BitSet(mk_tokenSet_72());
-	private static final long[] mk_tokenSet_73() {
+	static public final BitSet _tokenSet_72 = new BitSet(mk_tokenSet_72());
+	static private final long[] mk_tokenSet_73() {
 		long[] data = { 0L, 4503600702449024L, 8796093022208L, 0L, 0L, 0L};
 		return data;
 	}
-	public static final BitSet _tokenSet_73 = new BitSet(mk_tokenSet_73());
-	private static final long[] mk_tokenSet_74() {
+	static public final BitSet _tokenSet_73 = new BitSet(mk_tokenSet_73());
+	static private final long[] mk_tokenSet_74() {
 		long[] data = { -9223372036854775792L, 848977595597824L, 8774103832985600L, 0L, 0L, 0L};
 		return data;
 	}
-	public static final BitSet _tokenSet_74 = new BitSet(mk_tokenSet_74());
-	private static final long[] mk_tokenSet_75() {
+	static public final BitSet _tokenSet_74 = new BitSet(mk_tokenSet_74());
+	static private final long[] mk_tokenSet_75() {
 		long[] data = { 0L, 29273406167843840L, 8796093022208L, 0L, 0L, 0L};
 		return data;
 	}
-	public static final BitSet _tokenSet_75 = new BitSet(mk_tokenSet_75());
-	private static final long[] mk_tokenSet_76() {
+	static public final BitSet _tokenSet_75 = new BitSet(mk_tokenSet_75());
+	static private final long[] mk_tokenSet_76() {
 		long[] data = { 0L, 27021606354158592L, 8796093022208L, 0L, 0L, 0L};
 		return data;
 	}
-	public static final BitSet _tokenSet_76 = new BitSet(mk_tokenSet_76());
-	private static final long[] mk_tokenSet_77() {
+	static public final BitSet _tokenSet_76 = new BitSet(mk_tokenSet_76());
+	static private final long[] mk_tokenSet_77() {
 		long[] data = { 7776L, 0L, 0L, 0L, 0L};
 		return data;
 	}
-	public static final BitSet _tokenSet_77 = new BitSet(mk_tokenSet_77());
-	
+	static public final BitSet _tokenSet_77 = new BitSet(mk_tokenSet_77());
+
 	}

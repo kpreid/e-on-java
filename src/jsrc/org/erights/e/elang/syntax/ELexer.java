@@ -555,7 +555,7 @@ public class ELexer extends BaseLexer {
      * If the verb is a {@link org.erights.e.elang.syntax.ELexer#isIdentifier
      * valid E identifier}, then print it, else print it as a quoted string.
      */
-    public static void printVerbOn(String verb, TextWriter out)
+    static public void printVerbOn(String verb, TextWriter out)
       throws IOException {
         if (isIdentifier(verb)) {
             out.print(verb);
@@ -569,7 +569,7 @@ public class ELexer extends BaseLexer {
      * valid E identifier}, then print it, else print it as "::" followed by a
      * quoted string.
      */
-    public static void printNounOn(String noun, TextWriter out)
+    static public void printNounOn(String noun, TextWriter out)
       throws IOException {
         if (isIdentifier(noun)) {
             out.print(noun);

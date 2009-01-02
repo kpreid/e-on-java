@@ -12,7 +12,6 @@ import antlr.LexerSharedInputState;
 import antlr.NoViableAltForCharException;
 import antlr.RecognitionException;
 import antlr.Token;
-import antlr.TokenStream;
 import antlr.TokenStreamException;
 import antlr.TokenStreamIOException;
 import antlr.TokenStreamRecognitionException;
@@ -1599,7 +1598,7 @@ public class PreprocessorLexer extends antlr.CharScanner
     }
 
 
-    private static long[] mk_tokenSet_0() {
+    static private long[] mk_tokenSet_0() {
         long[] data = new long[8];
         data[0] = -576460752303423496L;
         for (int i = 1; 3 >= i; i++) {
@@ -1608,16 +1607,16 @@ public class PreprocessorLexer extends antlr.CharScanner
         return data;
     }
 
-    public static final BitSet _tokenSet_0 = new BitSet(mk_tokenSet_0());
+    static public final BitSet _tokenSet_0 = new BitSet(mk_tokenSet_0());
 
-    private static long[] mk_tokenSet_1() {
+    static private long[] mk_tokenSet_1() {
         long[] data = {4294977024L, 0L, 0L, 0L, 0L};
         return data;
     }
 
-    public static final BitSet _tokenSet_1 = new BitSet(mk_tokenSet_1());
+    static public final BitSet _tokenSet_1 = new BitSet(mk_tokenSet_1());
 
-    private static long[] mk_tokenSet_2() {
+    static private long[] mk_tokenSet_2() {
         long[] data = new long[8];
         data[0] = -2199023255560L;
         for (int i = 1; 3 >= i; i++) {
@@ -1626,9 +1625,9 @@ public class PreprocessorLexer extends antlr.CharScanner
         return data;
     }
 
-    public static final BitSet _tokenSet_2 = new BitSet(mk_tokenSet_2());
+    static public final BitSet _tokenSet_2 = new BitSet(mk_tokenSet_2());
 
-    private static long[] mk_tokenSet_3() {
+    static private long[] mk_tokenSet_3() {
         long[] data = new long[8];
         data[0] = -576462951326679048L;
         for (int i = 1; 3 >= i; i++) {
@@ -1637,16 +1636,16 @@ public class PreprocessorLexer extends antlr.CharScanner
         return data;
     }
 
-    public static final BitSet _tokenSet_3 = new BitSet(mk_tokenSet_3());
+    static public final BitSet _tokenSet_3 = new BitSet(mk_tokenSet_3());
 
-    private static long[] mk_tokenSet_4() {
+    static private long[] mk_tokenSet_4() {
         long[] data = {4294977024L, 1152921504606846976L, 0L, 0L, 0L};
         return data;
     }
 
-    public static final BitSet _tokenSet_4 = new BitSet(mk_tokenSet_4());
+    static public final BitSet _tokenSet_4 = new BitSet(mk_tokenSet_4());
 
-    private static long[] mk_tokenSet_5() {
+    static private long[] mk_tokenSet_5() {
         long[] data = new long[8];
         data[0] = -576605355262354440L;
         data[1] = -576460752303423489L;
@@ -1656,9 +1655,9 @@ public class PreprocessorLexer extends antlr.CharScanner
         return data;
     }
 
-    public static final BitSet _tokenSet_5 = new BitSet(mk_tokenSet_5());
+    static public final BitSet _tokenSet_5 = new BitSet(mk_tokenSet_5());
 
-    private static long[] mk_tokenSet_6() {
+    static private long[] mk_tokenSet_6() {
         long[] data = new long[8];
         data[0] = -549755813896L;
         for (int i = 1; 3 >= i; i++) {
@@ -1667,9 +1666,9 @@ public class PreprocessorLexer extends antlr.CharScanner
         return data;
     }
 
-    public static final BitSet _tokenSet_6 = new BitSet(mk_tokenSet_6());
+    static public final BitSet _tokenSet_6 = new BitSet(mk_tokenSet_6());
 
-    private static long[] mk_tokenSet_7() {
+    static private long[] mk_tokenSet_7() {
         long[] data = new long[8];
         data[0] = -17179869192L;
         data[1] = -268435457L;
@@ -1679,9 +1678,9 @@ public class PreprocessorLexer extends antlr.CharScanner
         return data;
     }
 
-    public static final BitSet _tokenSet_7 = new BitSet(mk_tokenSet_7());
+    static public final BitSet _tokenSet_7 = new BitSet(mk_tokenSet_7());
 
-    private static long[] mk_tokenSet_8() {
+    static private long[] mk_tokenSet_8() {
         long[] data = new long[8];
         data[0] = -549755813896L;
         data[1] = -268435457L;
@@ -1691,20 +1690,20 @@ public class PreprocessorLexer extends antlr.CharScanner
         return data;
     }
 
-    public static final BitSet _tokenSet_8 = new BitSet(mk_tokenSet_8());
+    static public final BitSet _tokenSet_8 = new BitSet(mk_tokenSet_8());
 
-    private static long[] mk_tokenSet_9() {
+    static private long[] mk_tokenSet_9() {
         long[] data = {140758963201536L, 576460752303423488L, 0L, 0L, 0L};
         return data;
     }
 
-    public static final BitSet _tokenSet_9 = new BitSet(mk_tokenSet_9());
+    static public final BitSet _tokenSet_9 = new BitSet(mk_tokenSet_9());
 
-    private static long[] mk_tokenSet_10() {
+    static private long[] mk_tokenSet_10() {
         long[] data = {140741783332352L, 576460752303423488L, 0L, 0L, 0L};
         return data;
     }
 
-    public static final BitSet _tokenSet_10 = new BitSet(mk_tokenSet_10());
+    static public final BitSet _tokenSet_10 = new BitSet(mk_tokenSet_10());
 
 }

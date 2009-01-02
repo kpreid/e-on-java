@@ -8,11 +8,11 @@ import java.io.FilenameFilter;
  */
 public class ANTLR {
 
-    public static String compiler = "javac";
-    public static String jarName = "antlr.jar";
-    public static String root = ".";
+    static public String compiler = "javac";
+    static public String jarName = "antlr.jar";
+    static public String root = ".";
 
-    public static String[] srcdir = {"antlr",
+    static public String[] srcdir = {"antlr",
       "antlr/actions/cpp",
       "antlr/actions/java",
       "antlr/actions/csharp",

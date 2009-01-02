@@ -34,7 +34,7 @@ public final class Locator
      * @param network The underlying network.
      * @param address The proxy address.
      */
-    public static org.waterken.url.Locator make(final org.waterken.url.Locator network,
+    static public org.waterken.url.Locator make(final org.waterken.url.Locator network,
                                                 final String address) {
         return new Locator(network, address);
     }

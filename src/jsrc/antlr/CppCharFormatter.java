@@ -47,9 +47,8 @@ class CppCharFormatter implements CharFormatter {
                         s = '0' + s;
                     }
                     return "\\u" + s;
-                } else {
-                    return "\\" + Integer.toString(c, 8);
                 }
+                return "\\" + Integer.toString(c, 8);
             } else {
                 return String.valueOf((char)c);
             }

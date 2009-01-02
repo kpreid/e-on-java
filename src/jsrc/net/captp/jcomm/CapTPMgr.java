@@ -232,9 +232,8 @@ public class CapTPMgr implements NewConnectionReactor {
           myConnMgr.getConnection(vatID, searchPath);
         if (null == optDataConn) {
             return null;
-        } else {
-            return arrangeProxyConnection(optDataConn);
         }
+        return arrangeProxyConnection(optDataConn);
     }
 
     /**

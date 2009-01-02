@@ -38,14 +38,14 @@ public class TwineException extends RuntimeException implements EPrintable {
 
     static private final long serialVersionUID = 7987249635503164532L;
 
-    private final Twine myTwineMsg;
+//    private final Twine myTwineMsg;
 
     /**
      *
      */
     private TwineException(String bareMsg, Twine msg) {
         super(bareMsg);
-        myTwineMsg = msg;
+//        myTwineMsg = msg;
     }
 
     /**

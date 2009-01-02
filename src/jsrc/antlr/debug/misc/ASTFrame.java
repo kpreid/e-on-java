@@ -61,7 +61,7 @@ public class ASTFrame extends JFrame {
         setSize(WIDTH, HEIGHT);
     }
 
-    public static void main(String[] args) {
+    static public void main(String[] args) {
         // Create the tree nodes
         ASTFactory factory = new ASTFactory();
         CommonAST r = (CommonAST)factory.create(0, "ROOT");

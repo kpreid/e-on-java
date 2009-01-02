@@ -27,7 +27,7 @@ class CSharpBlockFinishingInfo {
 
     CSharpBlockFinishingInfo() {
         postscript = null;
-        generatedSwitch = generatedSwitch = false;
+//        generatedSwitch = generatedSwitch = false;
         needAnErrorClause = true;
     }
 

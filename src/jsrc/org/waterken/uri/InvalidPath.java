@@ -17,12 +17,12 @@ public class InvalidPath extends RuntimeException {
     /**
      * The instance.
      */
-    private static final InvalidPath INSTANCE = new InvalidPath();
+    static private final InvalidPath INSTANCE = new InvalidPath();
 
     /**
      * Constructs an <code>InvalidPath</code>.
      */
-    public static InvalidPath make() {
+    static public InvalidPath make() {
         return INSTANCE;
     }
 }

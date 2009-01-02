@@ -8,6 +8,9 @@ import org.erights.e.develop.exception.ExceptionMgr;
 import org.erights.e.develop.exception.NestedException;
 import org.erights.e.elang.evm.AssignExpr;
 import org.erights.e.elang.evm.AtomicExpr;
+import org.erights.e.elang.evm.AuditorExprs;
+import org.erights.e.elang.evm.BindingExpr;
+import org.erights.e.elang.evm.BindingPattern;
 import org.erights.e.elang.evm.CallExpr;
 import org.erights.e.elang.evm.CatchExpr;
 import org.erights.e.elang.evm.DefineExpr;
@@ -88,13 +91,12 @@ public abstract class BaseENodeBuilder implements BaseEBuilder {
     static String docComment(Object doco) {
         if (doco instanceof String) {
             return (String)doco;
-        } else {
-            T.require(doco instanceof Astro,
-                      "unrecognized type of doco: ",
-                      doco);
-            Astro docTerm = (Astro)doco;
-            return docTerm.getOptArgString(EParser.DocComment);
         }
+        T.require(doco instanceof Astro,
+                  "unrecognized type of doco: ",
+                  doco);
+        Astro docTerm = (Astro)doco;
+        return docTerm.getOptArgString(EParser.DocComment);
     }
 
     /**
@@ -143,9 +145,8 @@ public abstract class BaseENodeBuilder implements BaseEBuilder {
             SourceSpan optSpan = ((ParseNode)poser).getOptSpan();
             if (null == optSpan) {
                 return null;
-            } else {
-                return optSpan.notOneToOne();
             }
+            return optSpan.notOneToOne();
         } else if (poser.getClass().isArray() && 1 <= Array.getLength(poser)) {
             return optSpan(Array.get(poser, 0));
         } else {
@@ -191,9 +192,8 @@ public abstract class BaseENodeBuilder implements BaseEBuilder {
             SourceSpan optSpan = optSpan(poser);
             if (null == optSpan) {
                 throw sex;
-            } else {
-                throw new NestedException(sex, "@ " + optSpan);
             }
+            throw new NestedException(sex, "@ " + optSpan);
         }
     }
 
@@ -398,12 +398,20 @@ public abstract class BaseENodeBuilder implements BaseEBuilder {
     }
 
     /**
-     *
-     */
-    public EExpr slotExpr(Object poser, Object eExpr) {
-        AtomicExpr noun = (AtomicExpr)eExpr;
-        return new SlotExpr(noun.getOptSpan(), noun, null);
-    }
+    *
+    */
+   public EExpr slotExpr(Object poser, Object eExpr) {
+       AtomicExpr noun = (AtomicExpr)eExpr;
+       return new SlotExpr(noun.getOptSpan(), noun, null);
+   }
+
+   /**
+    *
+    */
+   public EExpr bindingExpr(Object poser, Object eExpr) {
+       AtomicExpr noun = (AtomicExpr)eExpr;
+       return new BindingExpr(noun.getOptSpan(), noun, null);
+   }
 
     /**
      *
@@ -498,9 +506,9 @@ public abstract class BaseENodeBuilder implements BaseEBuilder {
      */
     EExpr object(String docComment,
                  GuardedPattern oName,
-                 EExpr[] impls,
+                 AuditorExprs auditors,
                  EScript script) {
-        return new ObjectExpr(null, docComment, oName, impls, script, null);
+        return new ObjectExpr(null, docComment, oName, auditors, script, null);
     }
 
     /**
@@ -517,31 +525,28 @@ public abstract class BaseENodeBuilder implements BaseEBuilder {
         if (null == optCatchers) {
             if (null == optFinally) {
                 return hide(eExpr);
-            } else {
-                return new FinallyExpr(null,
-                                       forValue(eExpr, StaticScope.EmptyScope),
-                                       forValue(optFinally,
-                                                StaticScope.EmptyScope),
-                                       null);
             }
-        } else {
-            EMatcher catcher = (EMatcher)optCatchers;
-            EExpr result = new CatchExpr(null,
-                                         forValue(eExpr,
-                                                  StaticScope.EmptyScope),
-                                         catcher.getPattern(),
-                                         catcher.getBody(),
-                                         null);
-            if (null == optFinally) {
-                return result;
-            } else {
-                return new FinallyExpr(null,
-                                       result,
-                                       forValue(optFinally,
-                                                StaticScope.EmptyScope),
-                                       null);
-            }
+            return new FinallyExpr(null,
+                                   forValue(eExpr, StaticScope.EmptyScope),
+                                   forValue(optFinally,
+                                            StaticScope.EmptyScope),
+                                   null);
         }
+        EMatcher catcher = (EMatcher)optCatchers;
+        EExpr result = new CatchExpr(null,
+                                     forValue(eExpr,
+                                              StaticScope.EmptyScope),
+                                     catcher.getPattern(),
+                                     catcher.getBody(),
+                                     null);
+        if (null == optFinally) {
+            return result;
+        }
+        return new FinallyExpr(null,
+                               result,
+                               forValue(optFinally,
+                                        StaticScope.EmptyScope),
+                               null);
     }
 
     /**
@@ -578,14 +583,21 @@ public abstract class BaseENodeBuilder implements BaseEBuilder {
     }
 
     /**
-     *
-     */
-    public Pattern slotPattern(Object atom, Object optGuardExpr) {
-        return new SlotPattern(null,
-                               atomic(atom),
-                               forValue(optGuardExpr, null),
-                               null);
-    }
+    *
+    */
+   public Pattern slotPattern(Object atom, Object optGuardExpr) {
+       return new SlotPattern(null,
+                              atomic(atom),
+                              forValue(optGuardExpr, null),
+                              null);
+   }
+
+   /**
+    *
+    */
+   public Pattern bindingPattern(Object atom) {
+       return new BindingPattern(null, atomic(atom), null);
+   }
 
     public Pattern ignore(Object optGuardExpr) {
         return new IgnorePattern(null, forValue(optGuardExpr, null), null);

@@ -45,8 +45,8 @@ public abstract class BaseAST implements AST, Serializable {
     protected BaseAST down;
     protected BaseAST right;
 
-    private static boolean verboseStringConversion = false;
-    private static String[] tokenNames = null;
+    static private boolean verboseStringConversion = false;
+    static private String[] tokenNames = null;
 
     /**
      * Add a node to the end of the child list for this node
@@ -87,7 +87,7 @@ public abstract class BaseAST implements AST, Serializable {
         AST sibling;
 
         // Start walking sibling lists, looking for matches.
-        siblingWalk:
+//        siblingWalk:
         for (sibling = this;
              sibling != null;
              sibling = sibling.getNextSibling()) {
@@ -348,7 +348,7 @@ public abstract class BaseAST implements AST, Serializable {
     public void setType(int ttype) {
     }
 
-    public static void setVerboseStringConversion(boolean verbose,
+    static public void setVerboseStringConversion(boolean verbose,
                                                   String[] names) {
         verboseStringConversion = verbose;
         tokenNames = names;
@@ -358,7 +358,7 @@ public abstract class BaseAST implements AST, Serializable {
      * Return an array of strings that maps token ID to it's text. @since
      * 2.7.3
      */
-    public static String[] getTokenNames() {
+    static public String[] getTokenNames() {
         return tokenNames;
     }
 
@@ -418,7 +418,7 @@ public abstract class BaseAST implements AST, Serializable {
         return ts;
     }
 
-    public static String decode(String text) {
+    static public String decode(String text) {
         char c, c1, c2, c3, c4, c5;
         StringBuffer n = new StringBuffer();
         for (int i = 0; i < text.length(); i++) {
@@ -457,7 +457,7 @@ public abstract class BaseAST implements AST, Serializable {
         return new String(n);
     }
 
-    public static String encode(String text) {
+    static public String encode(String text) {
         char c;
         StringBuffer n = new StringBuffer();
         for (int i = 0; i < text.length(); i++) {

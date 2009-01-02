@@ -21,7 +21,7 @@ public final class Path {
      * @param path The candidate path.
      * @return The canonicalized path.
      */
-    public static String vouch(String path) throws InvalidPath {
+    static public String vouch(String path) throws InvalidPath {
 
         // Check for disallowed characters.
         for (int i = path.length(); 0 != i--;) {
@@ -85,7 +85,7 @@ public final class Path {
      * @param path The canonicalized path.
      * @return The path, less the last segment.
      */
-    public static String folder(final String path) {
+    static public String folder(final String path) {
         return path.substring(0, path.lastIndexOf('/') + 1);
     }
 
@@ -95,7 +95,7 @@ public final class Path {
      * @param path The canonicalized path.
      * @return The last path segment.
      */
-    public static String name(final String path) {
+    static public String name(final String path) {
         try {
             return URLDecoder.decode(path.substring(path.lastIndexOf('/') + 1),
                                      "US-ASCII");

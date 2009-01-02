@@ -15,7 +15,7 @@ public final class Nobody {
     /**
      * The instance.
      */
-    private static final Host INSTANCE =
+    static private final Host INSTANCE =
       new Host(org.waterken.url.tls.sha1withrsa.Keyspace.make(),
                null,
                new javax.net.ssl.KeyManager[]{});
@@ -23,7 +23,7 @@ public final class Nobody {
     /**
      * Constructs a <code>Nobody</code>.
      */
-    public static Host make() {
+    static public Host make() {
         return INSTANCE;
     }
 }

@@ -11,7 +11,7 @@ public class ParseTreeRule extends ParseTree {
 
     static private final long serialVersionUID = 8027466942234062354L;
 
-    public static final int INVALID_ALT = -1;
+    static public final int INVALID_ALT = -1;
 
     protected String ruleName;
     protected int altNumber;  // unused until I modify antlr to record this

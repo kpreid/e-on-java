@@ -166,9 +166,8 @@ public class ANTLRTokdefLexer extends antlr.CharScanner
             } catch (CharStreamException cse) {
                 if (cse instanceof CharStreamIOException) {
                     throw new TokenStreamIOException(((CharStreamIOException)cse).io);
-                } else {
-                    throw new TokenStreamException(cse.getMessage());
                 }
+                throw new TokenStreamException(cse.getMessage());
             }
         }
     }
@@ -795,12 +794,11 @@ public class ANTLRTokdefLexer extends antlr.CharScanner
                 } else {
                     if (1 <= _cnt261) {
                         break _loop261;
-                    } else {
-                        throw new NoViableAltForCharException((char)LA(1),
-                                                              getFilename(),
-                                                              getLine(),
-                                                              getColumn());
                     }
+                    throw new NoViableAltForCharException((char)LA(1),
+                                                          getFilename(),
+                                                          getLine(),
+                                                          getColumn());
                 }
 
                 _cnt261++;
@@ -816,7 +814,7 @@ public class ANTLRTokdefLexer extends antlr.CharScanner
     }
 
 
-    private static long[] mk_tokenSet_0() {
+    static private long[] mk_tokenSet_0() {
         long[] data = new long[8];
         data[0] = -9224L;
         for (int i = 1; 3 >= i; i++) {
@@ -825,9 +823,9 @@ public class ANTLRTokdefLexer extends antlr.CharScanner
         return data;
     }
 
-    public static final BitSet _tokenSet_0 = new BitSet(mk_tokenSet_0());
+    static public final BitSet _tokenSet_0 = new BitSet(mk_tokenSet_0());
 
-    private static long[] mk_tokenSet_1() {
+    static private long[] mk_tokenSet_1() {
         long[] data = new long[8];
         data[0] = -140737488355336L;
         for (int i = 1; 3 >= i; i++) {
@@ -836,9 +834,9 @@ public class ANTLRTokdefLexer extends antlr.CharScanner
         return data;
     }
 
-    public static final BitSet _tokenSet_1 = new BitSet(mk_tokenSet_1());
+    static public final BitSet _tokenSet_1 = new BitSet(mk_tokenSet_1());
 
-    private static long[] mk_tokenSet_2() {
+    static private long[] mk_tokenSet_2() {
         long[] data = new long[8];
         data[0] = -4398046512136L;
         for (int i = 1; 3 >= i; i++) {
@@ -847,9 +845,9 @@ public class ANTLRTokdefLexer extends antlr.CharScanner
         return data;
     }
 
-    public static final BitSet _tokenSet_2 = new BitSet(mk_tokenSet_2());
+    static public final BitSet _tokenSet_2 = new BitSet(mk_tokenSet_2());
 
-    private static long[] mk_tokenSet_3() {
+    static private long[] mk_tokenSet_3() {
         long[] data = new long[8];
         data[0] = -17179869192L;
         data[1] = -268435457L;
@@ -859,6 +857,6 @@ public class ANTLRTokdefLexer extends antlr.CharScanner
         return data;
     }
 
-    public static final BitSet _tokenSet_3 = new BitSet(mk_tokenSet_3());
+    static public final BitSet _tokenSet_3 = new BitSet(mk_tokenSet_3());
 
 }

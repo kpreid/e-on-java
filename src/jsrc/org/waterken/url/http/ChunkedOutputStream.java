@@ -27,7 +27,7 @@ public final class ChunkedOutputStream extends OutputStream {
      * @param chunk_size The chunk size.
      * @param out        The underlying stream.
      */
-    public static OutputStream make(final int chunk_size,
+    static public OutputStream make(final int chunk_size,
                                     final OutputStream out) {
         return new ChunkedOutputStream(chunk_size, out);
     }

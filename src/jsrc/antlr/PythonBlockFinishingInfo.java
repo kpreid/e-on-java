@@ -23,7 +23,7 @@ class PythonBlockFinishingInfo {
 
     PythonBlockFinishingInfo() {
         postscript = null;
-        generatedSwitch = generatedSwitch = false;
+//        generatedSwitch = generatedSwitch = false;
         needAnErrorClause = true;
     }
 

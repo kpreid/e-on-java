@@ -4,6 +4,7 @@ package org.erights.e.elang.visitors;
 // found at http://www.opensource.org/licenses/mit-license.html ...............
 
 import org.erights.e.elang.evm.AtomicExpr;
+import org.erights.e.elang.evm.AuditorExprs;
 import org.erights.e.elang.evm.EExpr;
 import org.erights.e.elang.evm.EMatcher;
 import org.erights.e.elang.evm.EMethod;
@@ -22,7 +23,8 @@ import org.erights.e.elang.evm.Pattern;
  * the most primitive form of code that objects outside the TCB may submit to
  * the TCB for "loading", and therefore it is the form that's passed between
  * machines and verified. The loader then transforms this to Bound-E, which is
- * the form handed to auditors for <a href= "http://www.sims.berkeley.edu/~ping/sid/">auditing</a>.
+ * the form handed to auditors for <a href=
+ * "http://www.sims.berkeley.edu/~ping/sid/">auditing</a>.
  * <p/>
  * All but Transformed-E are official parts of E. Transformed-E is instead part
  * of this implementation, and not part of the definition of E.
@@ -140,7 +142,8 @@ public interface ETreeVisitor {
     Object visitNounExpr(ENode optOriginal, String varName);
 
     /**
-     * "##" synopsys "def" oName ("implements" auditors)? (eScript | matcher)
+     * "##" synopsys "def" oName ("as" eExpr)? ("implements" eExpr+)?
+     * (eScript | matcher)
      * <p/>
      * Define an object that responds to messages according to eScript
      * <p/>
@@ -162,8 +165,13 @@ public interface ETreeVisitor {
     Object visitObjectExpr(ENode optOriginal,
                            String docComment,
                            GuardedPattern oName,
-                           EExpr[] auditors,
+                           AuditorExprs auditors,
                            EScript eScript);
+
+    /**
+     * ("as" eExpr)? ("implements" eExpr+)?
+     */
+    Object visitAuditorExprs(ENode optOriginal, EExpr optAs, EExpr[] impls);
 
     /**
      * "$" "{" index "}". <p>
@@ -217,6 +225,13 @@ public interface ETreeVisitor {
      * The value is the slot named by varName.
      */
     Object visitSlotExpr(ENode optOriginal, AtomicExpr noun);
+
+    /**
+     * "&&" varName. <p>
+     * <p/>
+     * The value is the binder named by varName.
+     */
+    Object visitBindingExpr(ENode optOriginal, AtomicExpr noun);
 
     /**
      * "try" "{" attempt "}" "catch" patt "{" catcher "}". <p>
@@ -287,6 +302,17 @@ public interface ETreeVisitor {
     Object visitSlotPattern(ENode optOriginal,
                             AtomicExpr nounExpr,
                             EExpr optGuardExpr);
+
+    /**
+     * "&&" varName.
+     * <p/>
+     * Define the coerced specimen to be the binder responsible for
+     * representing varName's current value.
+     *
+     * @see <a href="{@docroot}/../elang/kernel/BindingPattern.html"
+     * >The Kernel-E Binding Pattern</a>
+     */
+    Object visitBindingPattern(ENode optOriginal, AtomicExpr nounExpr);
 
     /**
      * "_" (":" guardExpr)?.

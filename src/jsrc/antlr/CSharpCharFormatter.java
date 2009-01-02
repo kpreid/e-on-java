@@ -51,9 +51,8 @@ class CSharpCharFormatter implements CharFormatter {
                 } else {
                     return "\\u" + Integer.toString(c, 16);
                 }
-            } else {
-                return String.valueOf((char)c);
             }
+            return String.valueOf((char)c);
         }
     }
 

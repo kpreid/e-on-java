@@ -22,6 +22,7 @@ Contributor(s): ______________________________________.
 import org.erights.e.develop.assertion.T;
 import org.erights.e.develop.exception.ExceptionMgr;
 import org.erights.e.elang.evm.AtomicExpr;
+import org.erights.e.elang.evm.AuditorExprs;
 import org.erights.e.elang.evm.CallExpr;
 import org.erights.e.elang.evm.EExpr;
 import org.erights.e.elang.evm.EMatcher;
@@ -166,8 +167,6 @@ public class ENodeBuilder extends BaseENodeBuilder implements EBuilder {
 
     static private final String BAD_FOR =
       "For-loop body isn't valid after for-loop exits.";
-
-    static private final EExpr[] NO_EEXPRS = {};
 
     /**
      *
@@ -748,9 +747,8 @@ public class ENodeBuilder extends BaseENodeBuilder implements EBuilder {
         str = HilbertHotel.rename(str);
         if ("_".equals(str)) {
             return ignore();
-        } else {
-            return finalPattern(str);
         }
+        return finalPattern(str);
     }
 
     /**
@@ -857,13 +855,12 @@ public class ENodeBuilder extends BaseENodeBuilder implements EBuilder {
     public EExpr escape(Object pattern, Object bodyExpr, Object optCatcher) {
         if (null == optCatcher) {
             return escape(pattern, bodyExpr, null, null);
-        } else {
-            EMatcher matcher = (EMatcher)optCatcher;
-            return escape(pattern,
-                          bodyExpr,
-                          matcher.getPattern(),
-                          matcher.getBody());
         }
+        EMatcher matcher = (EMatcher)optCatcher;
+        return escape(pattern,
+                      bodyExpr,
+                      matcher.getPattern(),
+                      matcher.getBody());
     }
 
 
@@ -924,7 +921,7 @@ public class ENodeBuilder extends BaseENodeBuilder implements EBuilder {
         EExpr closure = object(" For-loop body ",
                                ignoreOName(),
                                null,
-                               NO_EEXPRS,
+                               AuditorExprs.NO_AUDITORS,
                                methScriptDecl(mpatt, body, false));
 
         return escape(finalPattern("__break"),
@@ -1120,10 +1117,9 @@ public class ENodeBuilder extends BaseENodeBuilder implements EBuilder {
         if (nameExpr instanceof SlotExpr) {
             NounExpr noun = ((SlotExpr)nameExpr).getNoun().asNoun();
             return assoc(literal("&" + noun.getName()), nameExpr);
-        } else {
-            NounExpr noun = (NounExpr)nameExpr;
-            return assoc(literal(noun.getName()), nameExpr);
         }
+        NounExpr noun = (NounExpr)nameExpr;
+        return assoc(literal(noun.getName()), nameExpr);
     }
 
     /**
@@ -1311,14 +1307,14 @@ public class ENodeBuilder extends BaseENodeBuilder implements EBuilder {
         return object(decl.getDocComment(),
                       decl.getOName(),
                       decl.getOptExtends(),
-                      decl.getAuditors(),
+                      decl.getAuditorExprs(),
                       decl.getOptScript());
     }
 
     private EExpr object(String docComment,
                          Pattern[] oName,
                          EExpr optSuperExpr,
-                         EExpr[] impls,
+                         AuditorExprs auditors,
                          EScriptDecl script) {
         T.notNull(oName, "Internal: missing qualified name");
         if (1 == oName.length) {
@@ -1330,7 +1326,7 @@ public class ENodeBuilder extends BaseENodeBuilder implements EBuilder {
                 //base case
                 return super.object(docComment,
                                     guarded,
-                                    impls,
+                                    auditors,
                                     script.makeEScript(this));
             }
             //The Tribble inheritance pattern
@@ -1339,7 +1335,7 @@ public class ENodeBuilder extends BaseENodeBuilder implements EBuilder {
                                     object(docComment,
                                            oName,
                                            null,
-                                           impls,
+                                           auditors,
                                            script));
             if (guarded instanceof VarPattern) {
                 String optName = guarded.getOptName();
@@ -1356,7 +1352,7 @@ public class ENodeBuilder extends BaseENodeBuilder implements EBuilder {
                           hide(object(docComment,
                                       new Pattern[]{oName[1]},
                                       optSuperExpr,
-                                      impls,
+                                      auditors,
                                       script)));
         } else {
             T.fail("internal: Unexpected oName: " + E.toString(oName));
@@ -1371,9 +1367,8 @@ public class ENodeBuilder extends BaseENodeBuilder implements EBuilder {
         antiPocket(poser, "explicit-result-guard");
         if (ConstMap.testProp(myProps, "e.enable.easy-return")) {
             return null;
-        } else {
-            return VOID;
         }
+        return VOID;
     }
 
     /**
@@ -1384,9 +1379,8 @@ public class ENodeBuilder extends BaseENodeBuilder implements EBuilder {
 //      XXX use instead: antiPocket(poser, "explicit-when-guard");
         if (ConstMap.testProp(myProps, "e.enable.easy-return")) {
             return null;
-        } else {
-            return VOID;
         }
+        return VOID;
     }
 
     /**
@@ -1469,11 +1463,10 @@ public class ENodeBuilder extends BaseENodeBuilder implements EBuilder {
     public QuasiLiteralExpr quasiLiteralExpr(Object optLitIndex) {
         if (null == optLitIndex) {
             return new QuasiLiteralExpr(null, 0, null);
-        } else {
-            Astro lit = (Astro)optLitIndex;
-            int index = ((Number)lit.getOptData()).intValue();
-            return new QuasiLiteralExpr(null, index, null);
         }
+        Astro lit = (Astro)optLitIndex;
+        int index = ((Number)lit.getOptData()).intValue();
+        return new QuasiLiteralExpr(null, index, null);
     }
 
     /**
@@ -1657,17 +1650,14 @@ public class ENodeBuilder extends BaseENodeBuilder implements EBuilder {
         if (null == optCatcher) {
             if (null == optFinally) {
                 return hide(eExpr);
-            } else {
-                return super.tryx(eExpr, null, optFinally);
             }
-        } else {
-            EExpr result = super.tryx(eExpr, optCatcher, null);
-            if (null == optFinally) {
-                return result;
-            } else {
-                return super.tryx(result, null, optFinally);
-            }
+            return super.tryx(eExpr, null, optFinally);
         }
+        EExpr result = super.tryx(eExpr, optCatcher, null);
+        if (null == optFinally) {
+            return result;
+        }
+        return super.tryx(result, null, optFinally);
     }
 
     /**
@@ -1869,7 +1859,7 @@ public class ENodeBuilder extends BaseENodeBuilder implements EBuilder {
                      optPatterns(typeParams),
                      (Pattern)optAudit,
                      tuple(objDecl.getSupers()),
-                     tuple(objDecl.getAuditors()),
+                     tuple(objDecl.getImpls()),
                      tuple(mTypes));
     }
 
@@ -1963,25 +1953,23 @@ public class ENodeBuilder extends BaseENodeBuilder implements EBuilder {
             if (null == optOPatt) {
                 return hide(typeParams,
                             call(MAKE_PROT, NO_POSER, "run", args));
-            } else {
-                return define(optOPatt,
-                              hide(typeParams,
-                                   call(MAKE_PROT, NO_POSER, "run", args)));
             }
-        } else {
-            if (null == optOPatt) {
-                optOPatt = ignore();
-            }
-            return call(define(listPattern(list(optOPatt, optAuditorPatt)),
-                               hide(typeParams,
-                                    call(MAKE_PROT,
-                                         NO_POSER,
-                                         "makePair",
-                                         args))),
-                        NO_POSER,
-                        "get",
-                        list(literal(EInt.valueOf(0))));
+            return define(optOPatt,
+                          hide(typeParams,
+                               call(MAKE_PROT, NO_POSER, "run", args)));
         }
+        if (null == optOPatt) {
+            optOPatt = ignore();
+        }
+        return call(define(listPattern(list(optOPatt, optAuditorPatt)),
+                           hide(typeParams,
+                                call(MAKE_PROT,
+                                     NO_POSER,
+                                     "makePair",
+                                     args))),
+                    NO_POSER,
+                    "get",
+                    list(literal(EInt.valueOf(0))));
     }
 
     /**

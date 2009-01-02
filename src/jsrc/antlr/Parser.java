@@ -266,7 +266,7 @@ public abstract class Parser {
      *             avoid these problems. ANTLR no longer uses this method
      *             internally or in generated code.
      */
-    public static void panic() {
+    static public void panic() {
         System.err.println("Parser: panic");
         System.exit(1);
     }

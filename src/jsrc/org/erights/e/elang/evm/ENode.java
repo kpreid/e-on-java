@@ -17,13 +17,21 @@ import org.erights.e.elib.tables.ConstMap;
  */
 public abstract class ENode extends ParseNode {
 
-    private static final long serialVersionUID = -7476986257531757419L;
+    static private final long serialVersionUID = -7476986257531757419L;
 
     private transient StaticScope myOptStaticScope = null;
 
     private final ScopeLayout myOptScopeLayout;
 
     private transient ConstMap myOptSynEnv = null;
+
+    static StaticScope staticScopeOfList(ENode[] nodes) {
+        StaticScope result = StaticScope.EmptyScope;
+        for (int i = 0, len = nodes.length; i < len; i++) {
+            result = result.add(nodes[i].staticScope());
+        }
+        return result;
+    }
 
     /**
      * @param optScopeLayout By convention, this parameter should remain last

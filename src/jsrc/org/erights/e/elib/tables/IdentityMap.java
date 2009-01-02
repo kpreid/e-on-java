@@ -81,21 +81,21 @@ public class IdentityMap implements EIteratable {
              FlexMapImpl.DEFAULT_LOAD_FACTOR);
     }
 
-    /**
-     * Reasonable defaults
-     */
-    private IdentityMap(IdentityKeyColumn keys, Column values) {
-        this(keys, values, FlexMapImpl.DEFAULT_LOAD_FACTOR);
-    }
+//    /**
+//     * Reasonable defaults
+//     */
+//    private IdentityMap(IdentityKeyColumn keys, Column values) {
+//        this(keys, values, FlexMapImpl.DEFAULT_LOAD_FACTOR);
+//    }
 
-    /**
-     *
-     */
-    private IdentityMap(IdentityKeyColumn keys,
-                        Column values,
-                        float loadFactor) {
-        this(keys, values, loadFactor, new ShareCount());
-    }
+//    /**
+//     *
+//     */
+//    private IdentityMap(IdentityKeyColumn keys,
+//                        Column values,
+//                        float loadFactor) {
+//        this(keys, values, loadFactor, new ShareCount());
+//    }
 
     /**
      *

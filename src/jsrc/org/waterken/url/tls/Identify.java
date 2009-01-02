@@ -23,7 +23,7 @@ public final class Identify {
      * The parameters are: <ol> <li>keystore file</li> <li>keystore
      * passphrase</li> <li>key alias</li> <ol>
      */
-    public static void main(final String[] args) throws Exception {
+    static public void main(final String[] args) throws Exception {
 
         // Get the arguments.
         final File key_file = new File(1 > args.length ? "keys.jks" : args[0]);

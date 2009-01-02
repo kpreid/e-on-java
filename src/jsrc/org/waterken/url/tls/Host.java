@@ -56,9 +56,9 @@ public final class Host implements java.io.Serializable {
      */
     private final KeyManager[] key_manager;
 
-    private Host() {
-        key_manager = new KeyManager[]{};
-    }
+//    private Host() {
+//        key_manager = new KeyManager[]{};
+//    }
 
     /**
      * Constructs a <code>Host</code>.
@@ -84,7 +84,7 @@ public final class Host implements java.io.Serializable {
      * @return The requested host {@link Keyspace#identify fingerprint} in
      *         canonical form.
      */
-    public static String receive(final Socket incoming) throws IOException {
+    static public String receive(final Socket incoming) throws IOException {
         final LineInput in = new LineInput(incoming.getInputStream(), 1024);
 
         // Read the Request-Line.
@@ -194,7 +194,7 @@ public final class Host implements java.io.Serializable {
      *
      * @param incoming The incoming socket.
      */
-    public static void reject(final Socket incoming) throws IOException {
+    static public void reject(final Socket incoming) throws IOException {
         final OutputStream out = incoming.getOutputStream();
         out.write("HTTP/1.1 404 Not Found\r\n".getBytes("US-ASCII"));
         out.write("Content-Length: 0\r\n".getBytes("US-ASCII"));

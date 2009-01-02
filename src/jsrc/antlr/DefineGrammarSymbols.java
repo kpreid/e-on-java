@@ -650,12 +650,12 @@ public class DefineGrammarSymbols implements ANTLRGrammarParseBehavior {
      */
     public void setFileOption(Token key, Token value, String filename) {
         if ("language".equals(key.getText())) {
-            if (ANTLRParser.STRING_LITERAL == value.getType()) {
+            if (ANTLRTokenTypes.STRING_LITERAL == value.getType()) {
                 language =
                   StringUtils.stripBack(StringUtils.stripFront(value.getText(),
                                                                '"'), '"');
-            } else if (ANTLRParser.TOKEN_REF == value.getType() ||
-              ANTLRParser.RULE_REF == value.getType()) {
+            } else if (ANTLRTokenTypes.TOKEN_REF == value.getType() ||
+              ANTLRTokenTypes.RULE_REF == value.getType()) {
                 language = value.getText();
             } else {
                 tool.error("language option must be string or identifier",
@@ -664,8 +664,8 @@ public class DefineGrammarSymbols implements ANTLRGrammarParseBehavior {
                            value.getColumn());
             }
         } else if ("mangleLiteralPrefix".equals(key.getText())) {
-            if (ANTLRParser.STRING_LITERAL == value.getType()) {
-                tool.literalsPrefix =
+            if (ANTLRTokenTypes.STRING_LITERAL == value.getType()) {
+                Tool.literalsPrefix =
                   StringUtils.stripFrontBack(value.getText(), "\"", "\"");
             } else {
                 tool.error("mangleLiteralPrefix option must be string",
@@ -675,9 +675,9 @@ public class DefineGrammarSymbols implements ANTLRGrammarParseBehavior {
             }
         } else if ("upperCaseMangledLiterals".equals(key.getText())) {
             if ("true".equals(value.getText())) {
-                tool.upperCaseMangledLiterals = true;
+                Tool.upperCaseMangledLiterals = true;
             } else if ("false".equals(value.getText())) {
-                tool.upperCaseMangledLiterals = false;
+                Tool.upperCaseMangledLiterals = false;
             } else {
                 grammar.antlrTool
                   .error(
@@ -715,7 +715,7 @@ public class DefineGrammarSymbols implements ANTLRGrammarParseBehavior {
                     }
                     tool.genHashLines = "true".equals(value.getText());
                 } else {
-                    if (ANTLRParser.STRING_LITERAL != value.getType()) {
+                    if (ANTLRTokenTypes.STRING_LITERAL != value.getType()) {
                         tool.error(key.getText() + " option must be a string",
                                    filename,
                                    value.getLine(),
@@ -737,7 +737,7 @@ public class DefineGrammarSymbols implements ANTLRGrammarParseBehavior {
                            key.getLine(),
                            key.getColumn());
             } else {
-                if (ANTLRParser.STRING_LITERAL != value.getType()) {
+                if (ANTLRTokenTypes.STRING_LITERAL != value.getType()) {
                     tool.error(key.getText() + " option must be a string",
                                filename,
                                value.getLine(),
@@ -784,8 +784,8 @@ public class DefineGrammarSymbols implements ANTLRGrammarParseBehavior {
                        value.getColumn());
         } else if ("exportVocab".equals(key.getText())) {
             // Set the token manager associated with the parser
-            if (ANTLRParser.RULE_REF == value.getType() ||
-              ANTLRParser.TOKEN_REF == value.getType()) {
+            if (ANTLRTokenTypes.RULE_REF == value.getType() ||
+              ANTLRTokenTypes.TOKEN_REF == value.getType()) {
                 grammar.exportVocab = value.getText();
             } else {
                 tool.error("exportVocab must be an identifier",
@@ -794,8 +794,8 @@ public class DefineGrammarSymbols implements ANTLRGrammarParseBehavior {
                            value.getColumn());
             }
         } else if ("importVocab".equals(key.getText())) {
-            if (ANTLRParser.RULE_REF == value.getType() ||
-              ANTLRParser.TOKEN_REF == value.getType()) {
+            if (ANTLRTokenTypes.RULE_REF == value.getType() ||
+              ANTLRTokenTypes.TOKEN_REF == value.getType()) {
                 grammar.importVocab = value.getText();
             } else {
                 tool.error("importVocab must be an identifier",

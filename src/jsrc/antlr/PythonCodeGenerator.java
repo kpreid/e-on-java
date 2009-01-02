@@ -39,8 +39,8 @@ public class PythonCodeGenerator extends CodeGenerator {
     String exceptionThrown;
     String throwNoViable;
 
-    public static final String initHeaderAction = "__init__";
-    public static final String mainHeaderAction = "__main__";
+    static public final String initHeaderAction = "__init__";
+    static public final String mainHeaderAction = "__main__";
 
     String lexerClassName;
     String parserClassName;
@@ -74,9 +74,9 @@ public class PythonCodeGenerator extends CodeGenerator {
     /**
      * Special value used to mark duplicate in treeVariableMap
      */
-    protected static final String NONUNIQUE = new String();
+    static protected final String NONUNIQUE = new String();
 
-    public static final int caseSizeThreshold = 127; // ascii is max
+    static public final int caseSizeThreshold = 127; // ascii is max
 
     private Vector semPreds;
 
@@ -673,7 +673,7 @@ public class PythonCodeGenerator extends CodeGenerator {
             nonGreedyExitDepth = blk.exitLookaheadDepth;
         } else {
             if (!blk.greedy &&
-              LLkGrammarAnalyzer.NONDETERMINISTIC == blk.exitLookaheadDepth) {
+              GrammarAnalyzer.NONDETERMINISTIC == blk.exitLookaheadDepth) {
                 generateNonGreedyExitPath = true;
             }
         }
@@ -895,15 +895,15 @@ public class PythonCodeGenerator extends CodeGenerator {
                             rr.getColumn());
             return;
         }
-        if (!(rs instanceof RuleSymbol)) {
-            // Is this redundant???
-            antlrTool.error(
-              "'" + rr.targetRule + "' does not name a grammar rule",
-              grammar.getFilename(),
-              rr.getLine(),
-              rr.getColumn());
-            return;
-        }
+//        if (!(rs instanceof RuleSymbol)) {
+//            // Is this redundant???
+//            antlrTool.error(
+//              "'" + rr.targetRule + "' does not name a grammar rule",
+//              grammar.getFilename(),
+//              rr.getLine(),
+//              rr.getColumn());
+//            return;
+//        }
 
         genErrorTryForElement(rr);
 
@@ -1339,7 +1339,7 @@ public class PythonCodeGenerator extends CodeGenerator {
             generateNonGreedyExitPath = true;
             nonGreedyExitDepth = blk.exitLookaheadDepth;
         } else if (!blk.greedy &&
-          LLkGrammarAnalyzer.NONDETERMINISTIC == blk.exitLookaheadDepth) {
+          GrammarAnalyzer.NONDETERMINISTIC == blk.exitLookaheadDepth) {
             generateNonGreedyExitPath = true;
         }
         if (generateNonGreedyExitPath) {
@@ -1453,9 +1453,9 @@ public class PythonCodeGenerator extends CodeGenerator {
     }
 
     /**
-     * Do something simple like: private static final long[] mk_tokenSet_0() {
+     * Do something simple like: static private final long[] mk_tokenSet_0() {
      * long[] data = { -2305839160922996736L, 63L, 16777216L, 0L, 0L, 0L };
-     * return data; } public static final BitSet _tokenSet_0 = new
+     * return data; } static public final BitSet _tokenSet_0 = new
      * BitSet(mk_tokenSet_0());
      * <p/>
      * Or, for large bitsets, optimize init so ranges are collapsed into loops.
@@ -2020,7 +2020,7 @@ public class PythonCodeGenerator extends CodeGenerator {
         return finishingInfo;
     }
 
-    private static boolean suitableForCaseExpression(Alternative a) {
+    static private boolean suitableForCaseExpression(Alternative a) {
         return 1 == a.lookaheadDepth && a.semPred == null &&
           !a.cache[1].containsEpsilon() &&
           caseSizeThreshold >= a.cache[1].fset.degree();
@@ -3552,14 +3552,14 @@ public class PythonCodeGenerator extends CodeGenerator {
      *         possible.
      */
     private String mangleLiteral(String s) {
-        String mangled = antlrTool.literalsPrefix;
+        String mangled = Tool.literalsPrefix;
         for (int i = 1; i < s.length() - 1; i++) {
             if (!Character.isLetter(s.charAt(i)) && '_' != s.charAt(i)) {
                 return null;
             }
             mangled += s.charAt(i);
         }
-        if (antlrTool.upperCaseMangledLiterals) {
+        if (Tool.upperCaseMangledLiterals) {
             mangled = mangled.toUpperCase();
         }
         return mangled;

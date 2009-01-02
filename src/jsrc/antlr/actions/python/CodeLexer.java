@@ -11,7 +11,6 @@ import antlr.LexerSharedInputState;
 import antlr.NoViableAltForCharException;
 import antlr.RecognitionException;
 import antlr.Token;
-import antlr.TokenStream;
 import antlr.TokenStreamException;
 import antlr.TokenStreamIOException;
 import antlr.TokenStreamRecognitionException;
@@ -382,7 +381,7 @@ public class CodeLexer extends antlr.CharScanner
     }
 
 
-    private static long[] mk_tokenSet_0() {
+    static private long[] mk_tokenSet_0() {
         long[] data = new long[8];
         data[0] = -145135534866440L;
         for (int i = 1; 3 >= i; i++) {
@@ -391,9 +390,9 @@ public class CodeLexer extends antlr.CharScanner
         return data;
     }
 
-    public static final BitSet _tokenSet_0 = new BitSet(mk_tokenSet_0());
+    static public final BitSet _tokenSet_0 = new BitSet(mk_tokenSet_0());
 
-    private static long[] mk_tokenSet_1() {
+    static private long[] mk_tokenSet_1() {
         long[] data = new long[8];
         data[0] = -140737488364552L;
         for (int i = 1; 3 >= i; i++) {
@@ -402,6 +401,6 @@ public class CodeLexer extends antlr.CharScanner
         return data;
     }
 
-    public static final BitSet _tokenSet_1 = new BitSet(mk_tokenSet_1());
+    static public final BitSet _tokenSet_1 = new BitSet(mk_tokenSet_1());
 
 }

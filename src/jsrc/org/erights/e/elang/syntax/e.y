@@ -35,7 +35,6 @@ import org.erights.e.develop.assertion.T;
 import org.erights.e.elang.evm.ENode;
 import org.erights.e.elang.evm.NounExpr;
 import org.erights.e.elang.evm.Pattern;
-import org.erights.e.elang.evm.EExpr;
 import org.erights.e.elib.base.ValueThunk;
 import org.erights.e.elib.prim.StaticMaker;
 import org.erights.e.elib.tables.ConstList;
@@ -91,7 +90,7 @@ import java.io.ObjectInputStream;
 %token DocComment       /* /-*-* ... *-/ (without the '-'s) */
 
 /* Keywords */
-%token BIND BREAK CATCH CONTINUE DEF
+%token AS BIND BREAK CATCH CONTINUE DEF
 %token ELSE ESCAPE EXIT EXTENDS
 %token FINALLY FN FOR GUARDS
 %token IF IMPLEMENTS IN INTERFACE
@@ -102,7 +101,7 @@ import java.io.ObjectInputStream;
 %token ACCUM INTO MODULE ON SELECT THROWS THUNK
 
 /* Reserved Keywords */
-%token ABSTRACT AN AS ASSERT ATTRIBUTE
+%token ABSTRACT AN ASSERT ATTRIBUTE
 %token BE BEGIN BEHALF BELIEF BELIEVE BELIEVES
 %token CASE CLASS CONST CONSTRUCTOR
 %token DATATYPE DECLARE DEFAULT DEFINE DEFMACRO
@@ -453,6 +452,7 @@ prefix:
  |      '!' postfix             { $$ = b.call($2, $1,"not", b.list()); }
  |      '~' postfix             { $$ = b.call($2, $1,"complement", b.list());}
  |      '&' postfix             { $$ = b.slotExpr($1, $2); }
+ |      OpLAnd postfix          { $$ = b.bindingExpr($1, $2); }
  |      '*' postfix             { b.pocket($1,"unary-star");
                                   $$ = b.call($2, $1,"get", b.list()); }
  |      '-' prim                { $$ = b.call($2, $1,"negate", b.list()); }
@@ -469,10 +469,12 @@ postfix:
 
  |      postfix OpScope prop            { $$ = b.propValue($1, $3); }
  |      postfix OpScope '&' prop        { $$ = b.propSlot($1, $4); }
+ |      postfix OpScope OpLAnd prop     { b.reserved($3,"::&"); }
  |      metaoid OpScope prop            { $$ = b.doMetaProp($1, $3); }
 
  |      postfix Send OpScope prop       { $$ = b.sendPropValue($1, $4); }
  |      postfix Send OpScope '&' prop   { $$ = b.sendPropSlot($1, $5); }
+ |      postfix Send OpScope OpLAnd prop { b.reserved($4,"<-::&"); }
  ;
 
 /**
@@ -724,6 +726,8 @@ map:
                                           $$ = b.exporter($3); }
  |      br    MapsTo '&' nounExpr       { b.pocket($2,"exporter");
                                           $$ = b.exporter(b.slotExpr($3,$4)); }
+ |      br    MapsTo OpLAnd nounExpr    { b.pocket($2,"exporter");
+                                          $$=b.exporter(b.bindingExpr($3,$4));}
  |      br    MapsTo DEF noun           { b.pocket($2,"exporter");
                                           b.reserved($3,"Forward exporter"); }
  ;
@@ -843,6 +847,7 @@ slotNamer:
  |      '&' nounExpr                    { b.antiPocket($1,
                                                        "explicit-slot-guard");
                                           $$ = b.slotPattern($2); }
+ |      OpLAnd nounExpr                 { $$ = b.bindingPattern($2); }
  ;
 
 
@@ -960,26 +965,17 @@ defName:
  *
  */
 oDeclTail:
-        /*empty*/                       { $$ = ODECL; }
- |      extends                         { $$ = ODECL.withExtends(b,$1); }
- |              impls                   { $$ = ODECL.withAuditors(b,$1);}
- |      extends impls                   { $$ = ODECL.withExtends(b,$1)
-                                                          .withAuditors(b,$2);}
- /* thanks to Dean for suggesting the following error-catch clause: */
- |      impls extends   { yyerror("'extends' must come before 'implements'"); }
+        extends optAs impls             { $$ = ODECL.withExtends(b,$1)
+                                                          .withOptAs($2)
+                                                          .withImpls(b,$3);}
  ;
 
 /**
  *
  */
 iDeclTail:
-        /*empty*/                       { $$ = ODECL; }
- |      iExtends                        { $$ = ODECL.withExtends(b,$1); }
- |               impls                  { $$ = ODECL.withAuditors(b,$1);}
- |      iExtends impls                  { $$ = ODECL.withExtends(b,$1)
-                                                          .withAuditors(b,$2);}
- /* thanks to Dean for suggesting the following error-catch clause: */
- |      impls iExtends  { yyerror("'extends' must come before 'implements'"); }
+        iExtends impls                  { $$ = ODECL.withExtends(b,$1)
+                                                          .withImpls(b,$2);}
  ;
 
 
@@ -988,27 +984,40 @@ iDeclTail:
  * to for any messages that don't match.
  */
 extends:
-        EXTENDS base                    { $$ = b.list($2); }
+        /*empty*/                       { $$ = b.list(); }
+ |      EXTENDS base                    { $$ = b.list($2); }
  ;
 
 /**
  * An interface may extend any number of other interfaces.
  */
 iExtends:
+        /*empty*/                       { $$ = b.list(); }
+ |      iExtendsList
+ ;
+iExtendsList:
         EXTENDS base                    { $$ = b.list($2); }
- |      iExtends ',' base               { $$ = b.with($1, $3); }
+ |      iExtendsList ',' base           { $$ = b.with($1, $3); }
  ;
 
 /**
  * The list of auditors.
  */
+optAs:
+        /*empty*/                       { $$ = null; }
+ |      AS base                         { $$ = $2; }
+ ;
 impls:
+        /*empty*/                       { $$ = b.list(); }
+ |      implsList
+ ;
+implsList:
         IMPLEMENTS base                 { $$ = b.list($2); }
- |      impls ',' base                  { $$ = b.with($1, $3); }
+ |      implsList ',' base              { $$ = b.with($1, $3); }
  ;
 
 /**
- * The kinds of expression that can appear after "extends" or
+ * The kinds of expression that can appear after "extends", "as", or
  * "implements", i.e., a base-object construction or an auditor.
  */
 base:
@@ -1041,6 +1050,7 @@ method:
  |      doco TO field body                   { b.reserved($2,"field getter"); }
  |      doco TO field OpAss pattern body     { b.reserved($4,"field setter"); }
  |      doco TO '&' field body               { b.reserved($3,"field's slot"); }
+ |      doco TO OpLAnd field body            {b.reserved($3,"field's binder");}
 
  |      doco META parenExpr body             { b.reserved($2,"sealed meta1"); }
  |      doco META parenExpr MapsTo parenExpr { b.reserved($2,"sealed meta2"); }
@@ -1067,16 +1077,19 @@ methHead:
  * Appears in "function" definition
  */
 funcHead:
-                 '(' paramList ')' resultGuard
+                 '(' paramList ')' funcNeck
                                         { $$ = b.methHead($1,"run", $2, $4);}
- |      TO  verb '(' paramList ')' resultGuard
+ |      TO  verb '(' paramList ')' funcNeck
                                         { b.pocket($1,"one-method-object");
                                           $$ = b.methHead($2, $4, $6); }
- |      '.' verb '(' paramList ')' resultGuard
+ |      '.' verb '(' paramList ')' funcNeck
                                         { b.pocket($1,"one-method-object");
                                           $$ = b.methHead($2, $4, $6); }
  ;
 
+funcNeck:
+        resultGuard optAs impls
+ ;
 
 /**
  * Within a script, this will generically match any message
@@ -1225,7 +1238,8 @@ vcurry:
  * A property name. The value of property name "foo" is "getFoo".
  * The assignment transformation will turn getFoo/0 into setFoo/1.
  *
- * XXX Should probably expand this to include " '&' ident" | " '&' litString".
+ * XXX Should probably expand this to include 
+ * ('&' | '&&') (ident | litString)
  */
 prop:
         ident                           { b.pocket($1,"dot-props");
@@ -1517,7 +1531,7 @@ sepWord:
  * Reserved Keywords
  */
 reserved:
-        ABSTRACT | AN | AS | ASSERT | ATTRIBUTE
+        ABSTRACT | AN | ASSERT | ATTRIBUTE
  |      BE | BEGIN | BEHALF | BELIEF | BELIEVE | BELIEVES
  |      CASE | CLASS | CONST | CONSTRUCTOR
  |      DATATYPE | DECLARE | DEFAULT | DEFINE | DEFMACRO
@@ -1812,7 +1826,7 @@ public boolean isEndOfFile() {
  *
  */
 static NounExpr noun(Object name) {
-    return ENodeBuilder.noun(name);
+    return BaseENodeBuilder.noun(name);
 }
 
 /**
@@ -1899,6 +1913,7 @@ static {
     TheTokens[DocComment]       = "DocComment";
 
     /* Keywords */
+    TheTokens[AS]               = "as";
     TheTokens[BIND]             = "bind";
     TheTokens[BREAK]            = "break";
     TheTokens[CATCH]            = "catch";
@@ -1941,7 +1956,6 @@ static {
     /* reserved keywords */
     TheTokens[ABSTRACT]         = "abstract";
     TheTokens[AN]               = "an";
-    TheTokens[AS]               = "as";
     TheTokens[ASSERT]           = "assert";
     TheTokens[ATTRIBUTE]        = "attribute";
     TheTokens[BE]               = "be";

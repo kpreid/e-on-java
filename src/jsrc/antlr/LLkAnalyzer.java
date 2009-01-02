@@ -97,14 +97,14 @@ public class LLkAnalyzer implements LLkGrammarAnalyzer {
             return true;        // always deterministic for one alt
         }
 
-        outer:
+//        outer:
         for (int i = 0; i < nalts - 1; i++) {
             currentBlock.alti = i;
             currentBlock.analysisAlt = i;        // which alt are we analyzing?
             currentBlock.altj =
               i + 1;                // reset this alt.  Haven't computed yet,
             // but we need the alt number.
-            inner:
+//            inner:
             // compare against other alternatives with lookahead depth k
             for (int j = i + 1; j < nalts; j++) {
                 currentBlock.altj = j;
@@ -1148,7 +1148,7 @@ public class LLkAnalyzer implements LLkGrammarAnalyzer {
      * If the first k-1 sets are singleton sets, the appoximate lookahead
      * analysis is equivalent to full lookahead analysis.
      */
-    public static boolean lookaheadEquivForApproxAndFullAnalysis(Lookahead[] bset,
+    static public boolean lookaheadEquivForApproxAndFullAnalysis(Lookahead[] bset,
                                                                  int k) {
         // first k-1 sets degree 1?
         for (int i = 1; i <= k - 1; i++) {

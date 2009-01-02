@@ -4,6 +4,7 @@ package org.erights.e.elang.syntax;
 // found at http://www.opensource.org/licenses/mit-license.html ...............
 
 import org.erights.e.develop.assertion.T;
+import org.erights.e.elang.evm.AuditorExprs;
 import org.erights.e.elang.evm.EExpr;
 import org.erights.e.elang.evm.IgnorePattern;
 import org.erights.e.elang.evm.Pattern;
@@ -18,7 +19,7 @@ class ObjDecl {
 
     static private final EExpr[] NONE = {};
 
-    static final ObjDecl EMPTY = new ObjDecl(null, "", null, NONE, NONE, null);
+    static final ObjDecl EMPTY = new ObjDecl(null, "", null, NONE, null, NONE, null);
 
     private final SourceSpan myOptSpan;
 
@@ -28,7 +29,9 @@ class ObjDecl {
 
     private final EExpr[] mySupers;
 
-    private final EExpr[] myAuditors;
+    private final EExpr myOptAs;
+
+    private final EExpr[] myImpls;
 
     private final EScriptDecl myOptScript;
 
@@ -39,20 +42,22 @@ class ObjDecl {
                     String docComment,
                     Pattern[] optOName,
                     EExpr[] supers,
-                    EExpr[] auditors,
+                    EExpr optAs,
+                    EExpr[] impls,
                     EScriptDecl optScript) {
         myOptSpan = optSpan;
         myDocComment = docComment;
         myOptOName = optOName;
         mySupers = supers;
-        myAuditors = auditors;
+        myOptAs = optAs;
+        myImpls = impls;
         myOptScript = optScript;
     }
 
     /**
      *
      */
-    public SourceSpan getOptSpan() {
+    SourceSpan getOptSpan() {
         return myOptSpan;
     }
 
@@ -78,9 +83,8 @@ class ObjDecl {
 //                  "Internal: Missing qualified name");
         if (null == myOptOName) {
             return new Pattern[]{new IgnorePattern(null, null, null)};
-        } else {
-            return myOptOName;
         }
+        return myOptOName;
     }
 
     /**
@@ -97,36 +101,35 @@ class ObjDecl {
         }
     }
 
-    /**
-     *
-     */
-    public EExpr[] getSupers() {
+    EExpr[] getSupers() {
         return mySupers;
     }
 
-    /**
-     *
-     */
-    EExpr[] getAuditors() {
-        return myAuditors;
+    EExpr getOptAs() {
+        return myOptAs;
     }
 
-    /**
-     *
-     */
+    EExpr[] getImpls() {
+        return myImpls;
+    }
+
+    AuditorExprs getAuditorExprs() {
+        return new AuditorExprs(null, myOptAs, myImpls, null);
+    }
+
     EScriptDecl getOptScript() {
         return myOptScript;
     }
 
-    /**
-     *
-     */
+
+
     ObjDecl withOptSpan(SourceSpan optSpan) {
         return new ObjDecl(optSpan,
                            myDocComment,
                            myOptOName,
                            mySupers,
-                           myAuditors,
+                           myOptAs,
+                           myImpls,
                            myOptScript);
     }
 
@@ -138,7 +141,8 @@ class ObjDecl {
                            BaseENodeBuilder.docComment(doco),
                            myOptOName,
                            mySupers,
-                           myAuditors,
+                           myOptAs,
+                           myImpls,
                            myOptScript);
     }
 
@@ -150,7 +154,8 @@ class ObjDecl {
                            myDocComment,
                            (Pattern[])oName,
                            mySupers,
-                           myAuditors,
+                           myOptAs,
+                           myImpls,
                            myOptScript);
     }
 
@@ -163,20 +168,32 @@ class ObjDecl {
                            myDocComment,
                            myOptOName,
                            supers,
-                           myAuditors,
+                           myOptAs,
+                           myImpls,
                            myOptScript);
+    }
+
+    ObjDecl withOptAs(Object optAs) {
+      return new ObjDecl(myOptSpan,
+          myDocComment,
+          myOptOName,
+          mySupers,
+          (EExpr)optAs,
+          myImpls,
+          myOptScript);
     }
 
     /**
      *
      */
-    ObjDecl withAuditors(BaseEBuilder b, Object auditors) {
-        EExpr[] auditorExprs = b.optExprs(auditors);
+    ObjDecl withImpls(BaseEBuilder b, Object impls) {
+        EExpr[] implExprs = b.optExprs(impls);
         return new ObjDecl(myOptSpan,
                            myDocComment,
                            myOptOName,
                            mySupers,
-                           auditorExprs,
+                           myOptAs,
+                           implExprs,
                            myOptScript);
     }
 
@@ -188,7 +205,8 @@ class ObjDecl {
                            myDocComment,
                            myOptOName,
                            mySupers,
-                           myAuditors,
+                           myOptAs,
+                           myImpls,
                            (EScriptDecl)script);
     }
 }

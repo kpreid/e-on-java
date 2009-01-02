@@ -60,7 +60,7 @@ public class SmallcapsActivation implements SmallcapsOps {
     /**
      *
      */
-    private final SmallcapsHandler[] myHandlerStack;
+//    private final SmallcapsHandler[] myHandlerStack;
 
     /**
      *
@@ -70,7 +70,7 @@ public class SmallcapsActivation implements SmallcapsOps {
     /**
      *
      */
-    private final EvalContext myCtx;
+//    private final EvalContext myCtx;
 
     /**
      *
@@ -80,9 +80,9 @@ public class SmallcapsActivation implements SmallcapsOps {
         myPC = pc;
         myOperandStack = new Object[readWholeInt()];
         myTOS = -1;
-        myHandlerStack = new SmallcapsHandler[readWholeInt()];
+//        myHandlerStack = new SmallcapsHandler[readWholeInt()];
         myHandlerTOS = -1;
-        myCtx = ctx;
+//        myCtx = ctx;
     }
 
     /**

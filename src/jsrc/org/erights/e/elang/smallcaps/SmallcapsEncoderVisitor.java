@@ -5,6 +5,7 @@ package org.erights.e.elang.smallcaps;
 
 import org.erights.e.develop.assertion.T;
 import org.erights.e.elang.evm.AtomicExpr;
+import org.erights.e.elang.evm.AuditorExprs;
 import org.erights.e.elang.evm.EExpr;
 import org.erights.e.elang.evm.EMatcher;
 import org.erights.e.elang.evm.EMethod;
@@ -533,6 +534,11 @@ class SmallcapsEncoderVisitor implements ETreeVisitor, SmallcapsOps {
         return null;
     }
 
+    public Object visitBindingExpr(ENode optOriginal, AtomicExpr noun) {
+        T.fail("XXX not yet implemented");
+        return null;
+    }
+
     /**
      * Sets a variable's value to the value of an rValue expression.
      * <pre>
@@ -562,7 +568,7 @@ class SmallcapsEncoderVisitor implements ETreeVisitor, SmallcapsOps {
     public Object visitObjectExpr(ENode optOriginal,
                                   String docComment,
                                   GuardedPattern oName,
-                                  EExpr[] auditors,
+                                  AuditorExprs auditors,
                                   EScript eScript) {
         T.fail("XXX not yet implemented");
 //        myEnc.writeByte(OP_OBJECT);
@@ -570,6 +576,13 @@ class SmallcapsEncoderVisitor implements ETreeVisitor, SmallcapsOps {
 //        myEnc.writeWholeNum(auditors.length);
 //        writeNodes(auditors);
 //        eScript.welcome(this);
+        return null;
+    }
+
+    public Object visitAuditorExprs(ENode optOriginal,
+                                    EExpr optAs,
+                                    EExpr[] impls) {
+        T.fail("XXX not yet implemented");
         return null;
     }
 
@@ -638,6 +651,11 @@ class SmallcapsEncoderVisitor implements ETreeVisitor, SmallcapsOps {
     public Object visitSlotPattern(ENode optOriginal,
                                    AtomicExpr nounExpr,
                                    EExpr optGuardExpr) {
+        T.fail("XXX not yet implemented");
+        return null;
+    }
+
+    public Object visitBindingPattern(ENode optOriginal, AtomicExpr nounExpr) {
         T.fail("XXX not yet implemented");
         return null;
     }

@@ -251,12 +251,12 @@ public abstract class JavaMemberNode extends MethodNode implements EStackItem {
         return null;
     }
 
-    public static String asGetterVerb(String propName) {
+    static public String asGetterVerb(String propName) {
         return "get" + Character.toUpperCase(propName.charAt(0)) +
           propName.substring(1);
     }
 
-    public static String asSetterVerb(String propName) {
+    static public String asSetterVerb(String propName) {
         return "set" + Character.toUpperCase(propName.charAt(0)) +
           propName.substring(1);
     }

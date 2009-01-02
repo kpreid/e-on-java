@@ -54,6 +54,7 @@ import java.net.URL;
  * @author E. Dean Tribble
  */
 class ImportLoader extends BaseLoader implements JOSSPassByConstruction {
+    static private final long serialVersionUID = 1L;
 
     /**
      * The values in the slots are either EStaticWrappers on Class objects (for
@@ -83,9 +84,8 @@ class ImportLoader extends BaseLoader implements JOSSPassByConstruction {
             int makeLen = "make".length();
             return fqName.substring(0, fqLen - flatLen) +
               flatName.substring(makeLen);
-        } else {
-            return null;
         }
+        return null;
     }
 
     static String getFQName(String jfqName) {

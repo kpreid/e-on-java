@@ -45,7 +45,7 @@ import org.erights.e.elib.util.OneArgFunc;
 import java.io.IOException;
 
 /**
- * BNF: "def" oName ("implements" eExpr+)? "{" method* matcher* "}"
+ * BNF: "def" oName ("as" eExpr)? ("implements" eExpr+)? "{" method* matcher* "}"
  * <p/>
  * Yields an object that closes over the current scope, and responds to
  * requests by dispatching to one of its matching methods, or to a matcher if
@@ -69,7 +69,7 @@ public class ObjectExpr extends EExpr {
 
     private final GuardedPattern myOName;
 
-    private final EExpr[] myAuditorExprs;
+    private final AuditorExprs myAuditorExprs;
 
     private transient FlexSet myOptAuditorCache = null;
 
@@ -87,7 +87,7 @@ public class ObjectExpr extends EExpr {
     public ObjectExpr(SourceSpan optSpan,
                       String docComment,
                       GuardedPattern oName,
-                      EExpr[] auditorExprs,
+                      AuditorExprs auditorExprs,
                       EScript eScript,
                       ScopeLayout optScopeLayout) {
         super(optSpan, optScopeLayout);
@@ -109,7 +109,7 @@ public class ObjectExpr extends EExpr {
     public ObjectExpr(SourceSpan optSpan,
                       String docComment,
                       GuardedPattern oName,
-                      EExpr[] auditorExprs,
+                      AuditorExprs auditorExprs,
                       EScript eScript,
                       NounExpr[] fieldNouns,
                       ObjectExpr source,
@@ -130,7 +130,7 @@ public class ObjectExpr extends EExpr {
         T.require(null == myOName.getOptGuardExpr(),
                   "ObjExpr oName cannot be guarded",
                   myOName);
-        StaticScope audScope = staticScopeOfList(myAuditorExprs);
+        StaticScope audScope = myAuditorExprs.staticScope();
         ConstMap selfNames = myOName.staticScope().outNames();
         T.require(!selfNames.intersects(audScope.namesUsed()),
                   "Auditors can't use self: ",
@@ -194,24 +194,16 @@ public class ObjectExpr extends EExpr {
      */
     protected StaticScope computeStaticScope() {
         StaticScope result = myOName.staticScope();
-        result = result.add(staticScopeOfList(myAuditorExprs));
+        result = result.add(myAuditorExprs.staticScope());
         return result.add(myEScript.staticScope());
-    }
-
-    static private StaticScope staticScopeOfList(ENode[] nodes) {
-        StaticScope result = StaticScope.EmptyScope;
-        for (int i = 0, len = nodes.length; i < len; i++) {
-            result = result.add(nodes[i].staticScope());
-        }
-        return result;
     }
 
     /**
      *
      */
     protected Object subEval(EvalContext ctx, boolean forValue) {
-        int numAuditors = myAuditorExprs.length;
-        int numFields = myOptFieldInits.length;
+        EExpr[] audExprs = myAuditorExprs.getAll();
+        int numAuditors = audExprs.length;
         Auditor[] auditors;
         if (0 == numAuditors) {
             auditors = NO_AUDITORS;
@@ -219,7 +211,7 @@ public class ObjectExpr extends EExpr {
             // Auditing always happens, regardless of forValue.
             auditors = new Auditor[numAuditors];
             for (int i = 0; i < numAuditors; i++) {
-                Object aud = myAuditorExprs[i].subEval(ctx, true);
+                Object aud = audExprs[i].subEval(ctx, true);
                 auditors[i] = (Auditor)AuditorGuard.coerce(aud, null);
             }
         }
@@ -232,13 +224,14 @@ public class ObjectExpr extends EExpr {
             approvals = NO_AUDITORS;
         } else {
             FlexList approvers = FlexList.fromType(Auditor.class, numAuditors);
-            PrimAudition audtition = new PrimAudition(ctx, approvers);
+            PrimAudition audition = new PrimAudition(ctx, approvers);
             for (int i = 0; i < numAuditors; i++) {
-                audtition.ask(auditors[i]);
+                audition.ask(auditors[i]);
             }
             approvals = (Auditor[])approvers.getArray(Auditor.class);
         }
 
+        int numFields = myOptFieldInits.length;
         Object[] fields = new Object[numFields];
         Object result =
           new EImplByProxy(approvals, fields, ctx.outers(), eMethodTable());
@@ -254,11 +247,11 @@ public class ObjectExpr extends EExpr {
      */
     class PrimAudition implements Audition {
 
-        private final EvalContext myCtx;
+//        private final EvalContext myCtx;
         private final FlexList myApprovers;
 
         PrimAudition(EvalContext ctx, FlexList approvers) {
-            myCtx = ctx;
+//            myCtx = ctx;
             myApprovers = approvers;
         }
 
@@ -319,11 +312,7 @@ public class ObjectExpr extends EExpr {
             throw Thrower.toEject(optEjector, cce);
         }
         myOName.subMatchBind(args, other.myOName, optEjector, bindings);
-        matchBind(myAuditorExprs,
-                  args,
-                  other.myAuditorExprs,
-                  optEjector,
-                  bindings);
+        myAuditorExprs.subMatchBind(args, other.myAuditorExprs, optEjector, bindings);
         myEScript.subMatchBind(args, other.myEScript, optEjector, bindings);
     }
 
@@ -393,15 +382,7 @@ public class ObjectExpr extends EExpr {
         MessageDesc.synopsize(out, myDocComment);
         out.print("def ");
         myOName.subPrintOn(out, PR_ORDER);
-        int numAuditors = myAuditorExprs.length;
-        if (1 <= numAuditors) {
-            out.print(" implements ");
-            myAuditorExprs[0].subPrintOn(out, PR_ORDER);
-            for (int i = 1; i < numAuditors; i++) {
-                out.print(", ");
-                myAuditorExprs[i].subPrintOn(out, PR_ORDER);
-            }
-        }
+        myAuditorExprs.subPrintOn(out, PR_ORDER);
         myEScript.subPrintOn(out, PR_START);
     }
 

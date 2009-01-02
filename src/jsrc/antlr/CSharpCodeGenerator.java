@@ -109,16 +109,16 @@ public class CSharpCodeGenerator extends CodeGenerator {
     /**
      * Special value used to mark duplicate in treeVariableMap
      */
-    protected static final String NONUNIQUE = new String();
+    static protected final String NONUNIQUE = new String();
 
-    public static final int caseSizeThreshold = 127; // ascii is max
+    static public final int caseSizeThreshold = 127; // ascii is max
 
     private Vector semPreds;
     // Used to keep track of which (heterogeneous AST types are used)
     // which need to be set in the ASTFactory of the generated parser
-    private java.util.Vector astTypes;
+//    private java.util.Vector astTypes;
 
-    private static CSharpNameSpace nameSpace = null;
+    static private CSharpNameSpace nameSpace = null;
 
     // _saveIndex creation optimization -- don't create it unless we need to use it
     int saveIndexCreateLevel;
@@ -420,7 +420,7 @@ public class CSharpCodeGenerator extends CodeGenerator {
             generateNonGreedyExitPath = true;
             nonGreedyExitDepth = blk.exitLookaheadDepth;
         } else if (!blk.greedy &&
-          LLkGrammarAnalyzer.NONDETERMINISTIC == blk.exitLookaheadDepth) {
+          GrammarAnalyzer.NONDETERMINISTIC == blk.exitLookaheadDepth) {
             generateNonGreedyExitPath = true;
         }
 
@@ -498,15 +498,15 @@ public class CSharpCodeGenerator extends CodeGenerator {
                             rr.getColumn());
             return;
         }
-        if (!(rs instanceof RuleSymbol)) {
-            // Is this redundant???
-            antlrTool.error(
-              "'" + rr.targetRule + "' does not name a grammar rule",
-              grammar.getFilename(),
-              rr.getLine(),
-              rr.getColumn());
-            return;
-        }
+//        if (!(rs instanceof RuleSymbol)) {
+//            // Is this redundant???
+//            antlrTool.error(
+//              "'" + rr.targetRule + "' does not name a grammar rule",
+//              grammar.getFilename(),
+//              rr.getLine(),
+//              rr.getColumn());
+//            return;
+//        }
 
         genErrorTryForElement(rr);
 
@@ -863,7 +863,7 @@ public class CSharpCodeGenerator extends CodeGenerator {
             generateNonGreedyExitPath = true;
             nonGreedyExitDepth = blk.exitLookaheadDepth;
         } else if (!blk.greedy &&
-          LLkGrammarAnalyzer.NONDETERMINISTIC == blk.exitLookaheadDepth) {
+          GrammarAnalyzer.NONDETERMINISTIC == blk.exitLookaheadDepth) {
             generateNonGreedyExitPath = true;
         }
         if (generateNonGreedyExitPath) {
@@ -986,9 +986,9 @@ public class CSharpCodeGenerator extends CodeGenerator {
     }
 
     /**
-     * Do something simple like: private static final long[] mk_tokenSet_0() {
+     * Do something simple like: static private final long[] mk_tokenSet_0() {
      * long[] data = { -2305839160922996736L, 63L, 16777216L, 0L, 0L, 0L };
-     * return data; } public static final BitSet _tokenSet_0 = new
+     * return data; } static public final BitSet _tokenSet_0 = new
      * BitSet(mk_tokenSet_0());
      * <p/>
      * Or, for large bitsets, optimize init so ranges are collapsed into loops.
@@ -996,7 +996,7 @@ public class CSharpCodeGenerator extends CodeGenerator {
      */
     private void genBitSet(BitSet p, int id) {
         // initialization data
-        println("private static long[] mk_" + getBitsetName(id) + "()");
+        println("static private long[] mk_" + getBitsetName(id) + "()");
         println("{");
         tabs++;
         int n = p.lengthInLongWords();
@@ -1031,7 +1031,7 @@ public class CSharpCodeGenerator extends CodeGenerator {
         tabs--;
         println("}");
         // BitSet object
-        println("public static readonly BitSet " + getBitsetName(id) +
+        println("static public readonly BitSet " + getBitsetName(id) +
           " = new BitSet(" + "mk_" + getBitsetName(id) + "()" + ");");
     }
 
@@ -1400,7 +1400,7 @@ public class CSharpCodeGenerator extends CodeGenerator {
         // generate the rule name array for debugging
         if (grammar.debuggingOutput) {
             println(
-              "private static readonly string[] _ruleNames = new string[] {");
+              "static private readonly string[] _ruleNames = new string[] {");
 
             ids = grammar.rules.elements();
             int ruleNum = 0;
@@ -1590,7 +1590,7 @@ public class CSharpCodeGenerator extends CodeGenerator {
         // keep track of them only by number -- less to store in tree...
         if (grammar.debuggingOutput) {
             println(
-              "private static readonly string[] _ruleNames = new string[] {");
+              "static private readonly string[] _ruleNames = new string[] {");
             tabs++;
 
             Enumeration ids = grammar.rules.elements();
@@ -1674,7 +1674,7 @@ public class CSharpCodeGenerator extends CodeGenerator {
         println("}");
         println("");
 
-        astTypes = new java.util.Vector(100);
+//        astTypes = new java.util.Vector(100);
 
         // Generate code for each rule in the grammar
         Enumeration ids = grammar.rules.elements();
@@ -1854,7 +1854,7 @@ public class CSharpCodeGenerator extends CodeGenerator {
         println("}");
         println("");
 
-        astTypes = new java.util.Vector();
+//        astTypes = new java.util.Vector();
         // Generate code for each rule in the grammar
         Enumeration ids = grammar.rules.elements();
         int ruleNum = 0;
@@ -2293,7 +2293,7 @@ public class CSharpCodeGenerator extends CodeGenerator {
         return finishingInfo;
     }
 
-    private static boolean suitableForCaseExpression(Alternative a) {
+    static private boolean suitableForCaseExpression(Alternative a) {
         return 1 == a.lookaheadDepth && a.semPred == null &&
           !a.cache[1].containsEpsilon() &&
           caseSizeThreshold >= a.cache[1].fset.degree();
@@ -3467,7 +3467,7 @@ public class CSharpCodeGenerator extends CodeGenerator {
         // Generate a string for each token.  This creates a static
         // array of Strings indexed by token type.
         println("");
-        println("public static readonly string[] tokenNames_ = new string[] {");
+        println("static public readonly string[] tokenNames_ = new string[] {");
         tabs++;
 
         // Walk the token vocabulary and generate a Vector of strings
@@ -3612,10 +3612,9 @@ public class CSharpCodeGenerator extends CodeGenerator {
           !(grammar.tokenManager.tokenDefined(str))) {
             //System.out.println("processStringForASTConstructor: "+str+" with cast");
             return "(AST)" + str;
-        } else {
-            //System.out.println("processStringForASTConstructor: "+str);
-            return str;
         }
+        //System.out.println("processStringForASTConstructor: "+str);
+        return str;
     }
 
     /**
@@ -3649,30 +3648,29 @@ public class CSharpCodeGenerator extends CodeGenerator {
 
         if (atom == null) {
             return getASTCreateString(astCtorArgs);
-        } else {
-            if (atom.getASTNodeType() != null) {
-                // this Atom was instantiated from a Token that had an "AST" option - associating
-                // it with a specific heterogeneous AST type - applied to either:
-                // 1) it's underlying TokenSymbol (in the "tokens {} section" or,
+        }
+        if (atom.getASTNodeType() != null) {
+            // this Atom was instantiated from a Token that had an "AST" option - associating
+            // it with a specific heterogeneous AST type - applied to either:
+            // 1) it's underlying TokenSymbol (in the "tokens {} section" or,
 // 2) a particular token reference in the grammar
 //
-                // For option (1), we simply generate a cast to hetero-AST type
-                // For option (2), we generate a call to factory.create(Token, ASTNodeType) and cast it too
-                TokenSymbol ts =
-                  grammar.tokenManager.getTokenSymbol(atom.getText());
-                if ((ts == null) ||
-                  (ts.getASTNodeType() != atom.getASTNodeType())) {
-                    astCreateString = "(" + atom.getASTNodeType() +
-                      ") astFactory.create(" + astCtorArgs + ", \"" +
-                      atom.getASTNodeType() + "\")";
-                } else if ((ts != null) && (ts.getASTNodeType() != null)) {
-                    astCreateString =
-                      "(" + ts.getASTNodeType() + ") " + astCreateString;
-                }
-            } else if (usingCustomAST) {
+            // For option (1), we simply generate a cast to hetero-AST type
+            // For option (2), we generate a call to factory.create(Token, ASTNodeType) and cast it too
+            TokenSymbol ts =
+              grammar.tokenManager.getTokenSymbol(atom.getText());
+            if ((ts == null) ||
+              (ts.getASTNodeType() != atom.getASTNodeType())) {
+                astCreateString = "(" + atom.getASTNodeType() +
+                  ") astFactory.create(" + astCtorArgs + ", \"" +
+                  atom.getASTNodeType() + "\")";
+            } else if ((ts != null) && (ts.getASTNodeType() != null)) {
                 astCreateString =
-                  "(" + labeledElementASTType + ") " + astCreateString;
+                  "(" + ts.getASTNodeType() + ") " + astCreateString;
             }
+        } else if (usingCustomAST) {
+            astCreateString =
+              "(" + labeledElementASTType + ") " + astCreateString;
         }
         return astCreateString;
     }
@@ -3934,14 +3932,14 @@ public class CSharpCodeGenerator extends CodeGenerator {
      *         possible.
      */
     private String mangleLiteral(String s) {
-        String mangled = antlrTool.literalsPrefix;
+        String mangled = Tool.literalsPrefix;
         for (int i = 1; i < s.length() - 1; i++) {
             if (!Character.isLetter(s.charAt(i)) && '_' != s.charAt(i)) {
                 return null;
             }
             mangled += s.charAt(i);
         }
-        if (antlrTool.upperCaseMangledLiterals) {
+        if (Tool.upperCaseMangledLiterals) {
             mangled = mangled.toUpperCase();
         }
         return mangled;
@@ -4020,10 +4018,9 @@ public class CSharpCodeGenerator extends CodeGenerator {
                 }
             }
             return r;
-        } else {
-            // id does not map to anything -- return itself.
-            return id;
         }
+        // id does not map to anything -- return itself.
+        return id;
     }
 
     /**
@@ -4231,7 +4228,7 @@ public class CSharpCodeGenerator extends CodeGenerator {
     /**
      * Helper method from Eric Smith's version of CSharpCodeGenerator.
      */
-    private static String OctalToUnicode(String str) {
+    static private String OctalToUnicode(String str) {
         // only do any conversion if the string looks like "'\003'"
         if ((4 <= str.length()) && ('\'' == str.charAt(0)) &&
           ('\\' == str.charAt(1)) &&
@@ -4241,9 +4238,8 @@ public class CSharpCodeGenerator extends CodeGenerator {
             Integer x = Integer.valueOf(str.substring(2, str.length() - 1), 8);
 
             return "'\\x" + Integer.toHexString(x.intValue()) + "'";
-        } else {
-            return str;
         }
+        return str;
     }
 
     /**

@@ -71,15 +71,15 @@ public class IntTable extends FlexMapImpl {
         super(keys, values, loadFactor, shareCount);
     }
 
-    /**
-     *
-     */
-    private IntTable(KeyColumn keys,
-                     IntColumn values,
-                     float loadFactor,
-                     ShareCount shareCount) {
-        super(keys, values, loadFactor, shareCount);
-    }
+//    /**
+//     *
+//     */
+//    private IntTable(KeyColumn keys,
+//                     IntColumn values,
+//                     float loadFactor,
+//                     ShareCount shareCount) {
+//        super(keys, values, loadFactor, shareCount);
+//    }
 
     /**
      *

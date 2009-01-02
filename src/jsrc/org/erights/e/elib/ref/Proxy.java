@@ -52,7 +52,7 @@ public abstract class Proxy extends Ref {
         myResolutionBox = resolutionBox;
     }
 
-    public static Proxy run(Object handler,
+    static public Proxy run(Object handler,
                             Object resolutionBox,
                             boolean isFar) throws NotSettledException {
         if (isFar) {

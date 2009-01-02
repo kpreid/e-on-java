@@ -96,7 +96,7 @@ public class BitSet implements Cloneable {
         }
     }
 
-    private static long bitMask(int bitNumber) {
+    static private long bitMask(int bitNumber) {
         int bitPosition = bitNumber & MOD_MASK; // bitNumber mod BITS
         return 1L << bitPosition;
     }
@@ -179,7 +179,7 @@ public class BitSet implements Cloneable {
      *
      * @return Vector of ranges.
      */
-    public static Vector getRanges(int[] elems) {
+    static public Vector getRanges(int[] elems) {
         if (0 == elems.length) {
             return null;
         }
@@ -274,7 +274,7 @@ public class BitSet implements Cloneable {
         return (el >> LOG_BITS) + 1;
     }
 
-    public static BitSet of(int el) {
+    static public BitSet of(int el) {
         BitSet s = new BitSet(el + 1);
         s.add(el);
         return s;
@@ -337,7 +337,7 @@ public class BitSet implements Cloneable {
      * Is this contained within a?
      */
     public boolean subset(BitSet a) {
-        if (a == null || !(a instanceof BitSet)) {
+        if (a == null) {
             return false;
         }
         return and(a).equals(this);
@@ -523,7 +523,7 @@ public class BitSet implements Cloneable {
         return str;
     }
 
-    private static int wordNumber(int bit) {
+    static private int wordNumber(int bit) {
         return bit >> LOG_BITS; // bit / BITS
     }
 }

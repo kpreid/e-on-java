@@ -12,7 +12,7 @@ public final class Locator {
     /**
      * The default HTTPSY port = <code>80</code>.
      */
-    public static final int DEFAULT_PORT = 80;
+    static public final int DEFAULT_PORT = 80;
 
     private Locator() {
     }
@@ -20,7 +20,7 @@ public final class Locator {
     /**
      * The instance.
      */
-    private static final org.waterken.url.Locator INSTANCE = org.waterken
+    static private final org.waterken.url.Locator INSTANCE = org.waterken
       .url
       .tls
       .Locator
@@ -30,7 +30,7 @@ public final class Locator {
     /**
      * Constructs an HTTPSY locator.
      */
-    public static org.waterken.url.Locator make() {
+    static public org.waterken.url.Locator make() {
         return INSTANCE;
     }
 }

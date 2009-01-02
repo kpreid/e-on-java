@@ -49,7 +49,7 @@ import java.io.IOException;
  */
 public class CallExpr extends EExpr implements EStackItem {
 
-    private static final long serialVersionUID = 756352279313115342L;
+    static private final long serialVersionUID = 756352279313115342L;
 
     /**
      *

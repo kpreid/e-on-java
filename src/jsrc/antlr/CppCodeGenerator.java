@@ -73,9 +73,9 @@ public class CppCodeGenerator extends CodeGenerator {
     // Count of unnamed generated variables
     int astVarNumber = 1;
     // Special value used to mark duplicate in treeVariableMap
-    protected static final String NONUNIQUE = new String();
+    static protected final String NONUNIQUE = new String();
 
-    public static final int caseSizeThreshold = 127; // ascii is max
+    static public final int caseSizeThreshold = 127; // ascii is max
 
     private Vector semPreds;
 
@@ -83,14 +83,14 @@ public class CppCodeGenerator extends CodeGenerator {
     // which need to be set in the ASTFactory of the generated parser
     private Vector astTypes;
 
-    private static String namespaceStd = "ANTLR_USE_NAMESPACE(std)";
-    private static String namespaceAntlr = "ANTLR_USE_NAMESPACE(antlr)";
-    private static NameSpace nameSpace = null;
+    static private String namespaceStd = "ANTLR_USE_NAMESPACE(std)";
+    static private String namespaceAntlr = "ANTLR_USE_NAMESPACE(antlr)";
+    static private NameSpace nameSpace = null;
 
-    private static final String preIncludeCpp = "pre_include_cpp";
-    private static final String preIncludeHpp = "pre_include_hpp";
-    private static final String postIncludeCpp = "post_include_cpp";
-    private static final String postIncludeHpp = "post_include_hpp";
+    static private final String preIncludeCpp = "pre_include_cpp";
+    static private final String preIncludeHpp = "pre_include_hpp";
+    static private final String postIncludeCpp = "post_include_cpp";
+    static private final String postIncludeHpp = "post_include_hpp";
 
     /**
      * Create a C++ code-generator using the given Grammar. The caller must
@@ -758,7 +758,7 @@ public class CppCodeGenerator extends CodeGenerator {
             generateNonGreedyExitPath = true;
             nonGreedyExitDepth = blk.exitLookaheadDepth;
         } else if (!blk.greedy &&
-          LLkGrammarAnalyzer.NONDETERMINISTIC == blk.exitLookaheadDepth) {
+          GrammarAnalyzer.NONDETERMINISTIC == blk.exitLookaheadDepth) {
             generateNonGreedyExitPath = true;
         }
 
@@ -830,15 +830,15 @@ public class CppCodeGenerator extends CodeGenerator {
                             rr.getColumn());
             return;
         }
-        if (!(rs instanceof RuleSymbol)) {
-            // Is this redundant???
-            antlrTool.error(
-              "'" + rr.targetRule + "' does not name a grammar rule",
-              grammar.getFilename(),
-              rr.getLine(),
-              rr.getColumn());
-            return;
-        }
+//        if (!(rs instanceof RuleSymbol)) {
+//            // Is this redundant???
+//            antlrTool.error(
+//              "'" + rr.targetRule + "' does not name a grammar rule",
+//              grammar.getFilename(),
+//              rr.getLine(),
+//              rr.getColumn());
+//            return;
+//        }
 
         genErrorTryForElement(rr);
 
@@ -1193,7 +1193,7 @@ public class CppCodeGenerator extends CodeGenerator {
             generateNonGreedyExitPath = true;
             nonGreedyExitDepth = blk.exitLookaheadDepth;
         } else if (!blk.greedy &&
-          LLkGrammarAnalyzer.NONDETERMINISTIC == blk.exitLookaheadDepth) {
+          GrammarAnalyzer.NONDETERMINISTIC == blk.exitLookaheadDepth) {
             generateNonGreedyExitPath = true;
         }
         if (generateNonGreedyExitPath) {
@@ -2438,7 +2438,7 @@ public class CppCodeGenerator extends CodeGenerator {
         return finishingInfo;
     }
 
-    private static boolean suitableForCaseExpression(Alternative a) {
+    static private boolean suitableForCaseExpression(Alternative a) {
         return 1 == a.lookaheadDepth && a.semPred == null &&
           !a.cache[1].containsEpsilon() &&
           caseSizeThreshold >= a.cache[1].fset.degree();
@@ -2695,7 +2695,7 @@ public class CppCodeGenerator extends CodeGenerator {
      * Generate a header that is common to all C++ files
      */
     protected void genHeader(String fileName) {
-        println("/* $ANTLR " + antlrTool.version + ": " + "\"" +
+        println("/* $ANTLR " + Tool.version + ": " + "\"" +
           antlrTool.fileMinusPath(antlrTool.grammarFile) + "\"" + " -> " +
           "\"" + fileName + "\"$ */");
     }
@@ -4749,14 +4749,14 @@ boolean first = true;
      *         possible.
      */
     private String mangleLiteral(String s) {
-        String mangled = antlrTool.literalsPrefix;
+        String mangled = Tool.literalsPrefix;
         for (int i = 1; i < s.length() - 1; i++) {
             if (!Character.isLetter(s.charAt(i)) && '_' != s.charAt(i)) {
                 return null;
             }
             mangled += s.charAt(i);
         }
-        if (antlrTool.upperCaseMangledLiterals) {
+        if (Tool.upperCaseMangledLiterals) {
             mangled = mangled.toUpperCase();
         }
         return mangled;

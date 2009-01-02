@@ -6,6 +6,7 @@ package org.erights.e.elang.visitors;
 import org.erights.e.develop.assertion.T;
 import org.erights.e.develop.exception.ExceptionMgr;
 import org.erights.e.elang.evm.AtomicExpr;
+import org.erights.e.elang.evm.AuditorExprs;
 import org.erights.e.elang.evm.EExpr;
 import org.erights.e.elang.evm.EMatcher;
 import org.erights.e.elang.evm.EMethod;
@@ -258,21 +259,29 @@ public class CapSlang2JVisitor implements ETreeVisitor {
     public Object visitObjectExpr(ENode optOriginal,
                                   String docComment,
                                   GuardedPattern oName,
-                                  EExpr[] auditors,
+                                  AuditorExprs auditors,
                                   EScript eScript) {
         doco(docComment);
         run("\npublic class ");
         //XXX last part of qualifiedName
-        int numAuditors = auditors.length;
-        if (1 <= numAuditors) {
+        run(auditors);
+        run(eScript);
+        return null;
+    }
+
+    public Object visitAuditorExprs(ENode optOriginal,
+                                    EExpr optAs,
+                                    EExpr[] impls) {
+        // XXX should optAs be treated as another impl?
+        int numImpls = impls.length;
+        if (1 <= numImpls) {
             run(" implements ");
-            typeExpr(auditors[0]);
-            for (int i = 1; i < numAuditors; i++) {
+            typeExpr(impls[0]);
+            for (int i = 1; i < numImpls; i++) {
                 run(", ");
-                typeExpr(auditors[i]);
+                typeExpr(impls[i]);
             }
         }
-        run(eScript);
         return null;
     }
 
@@ -316,6 +325,11 @@ public class CapSlang2JVisitor implements ETreeVisitor {
         return null;
     }
 
+    public Object visitBindingExpr(ENode optOriginal, AtomicExpr noun) {
+        T.fail("BindingExpr ('&&name') not supported in CapSlang");
+        return null;
+    }
+
     public Object visitVarPattern(ENode optOriginal,
                                   AtomicExpr nounExpr,
                                   EExpr optGuardExpr) {
@@ -326,6 +340,12 @@ public class CapSlang2JVisitor implements ETreeVisitor {
     public Object visitSlotPattern(ENode optOriginal,
                                    AtomicExpr nounExpr,
                                    EExpr optGuardExpr) {
+        T.fail("Not yet implemented");
+        return null;
+    }
+
+    public Object visitBindingPattern(ENode optOriginal,
+                                      AtomicExpr nounExpr) {
         T.fail("Not yet implemented");
         return null;
     }

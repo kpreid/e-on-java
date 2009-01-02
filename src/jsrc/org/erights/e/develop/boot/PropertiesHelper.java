@@ -12,9 +12,9 @@ import java.util.Properties;
  */
 public class PropertiesHelper {
 
-    private static final String VERSION = "PropertiesHelper version 1.0";
+    static private final String VERSION = "PropertiesHelper version 1.0";
 
-    private static final String HELPSTR =
+    static private final String HELPSTR =
       "java ... org.erights.e.develop.boot.PropertiesHelper [propertyName]\n" +
         "Given a propertyName, its value is printed out literally.\n" +
         "If absent, all key-value pairs are printed out escaped.";
@@ -26,7 +26,7 @@ public class PropertiesHelper {
      * Flattens 'self' into a single Properties containing all the associations
      * in 'self'
      */
-    private static Properties flatten(Properties self) {
+    static private Properties flatten(Properties self) {
         Properties result = new Properties();
         for (Enumeration iter = self.propertyNames(); iter.hasMoreElements();)
         {

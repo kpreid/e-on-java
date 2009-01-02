@@ -6,9 +6,9 @@ public class TraceEvent extends GuessingEvent {
 
     private int ruleNum;
     private int data;
-    public static int ENTER = 0;
-    public static int EXIT = 1;
-    public static int DONE_PARSING = 2;
+    static public int ENTER = 0;
+    static public int EXIT = 1;
+    static public int DONE_PARSING = 2;
 
 
     public TraceEvent(Object source) {

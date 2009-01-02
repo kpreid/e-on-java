@@ -17,7 +17,7 @@ public class TreeParser {
      * to be null.  This way, we can test the token type of a node without
      * having to have tests for null everywhere.
      */
-    public static ASTNULLType ASTNULL = new ASTNULLType();
+    static public ASTNULLType ASTNULL = new ASTNULLType();
 
     /**
      * Where did this rule leave off parsing; avoids a return parameter
@@ -116,7 +116,7 @@ public class TreeParser {
      *             avoid these problems. ANTLR no longer uses this method
      *             internally or in generated code.
      */
-    public static void panic() {
+    static public void panic() {
         System.err.println("TreeWalker: panic");
         System.exit(1);
     }

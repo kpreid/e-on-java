@@ -20,7 +20,7 @@ public final class Base32 {
      * @param b The binary data.
      * @return The base32 encoding.
      */
-    public static String encode(byte[] b) {
+    static public String encode(byte[] b) {
         final StringBuffer r = new StringBuffer(b.length * 8 / 5 + 1);
         long buffer = 0;
         for (int i = 0; i != b.length;) {
@@ -75,7 +75,7 @@ public final class Base32 {
         return r.toString();
     }
 
-    private static char _encode(final int v) {
+    static private char _encode(final int v) {
         return (char)(26 > v ? v + 'a' : v - 26 + '2');
     }
 }

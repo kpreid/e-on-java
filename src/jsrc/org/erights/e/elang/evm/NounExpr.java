@@ -66,11 +66,6 @@ public abstract class NounExpr extends AtomicExpr {
 
     /**
      * To E code, this acts as a constructor on NounExpr
-     *
-     * @param optSpan
-     * @param name
-     * @param optScopeLayout
-     * @return
      */
     static public NounExpr run(SourceSpan optSpan,
                                String name,

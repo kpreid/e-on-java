@@ -41,7 +41,7 @@ public final class KeyManager
      * @param key         The private key.
      * @param certificate The certificate chain.
      */
-    public static javax.net.ssl.X509KeyManager make(final PrivateKey key,
+    static public javax.net.ssl.X509KeyManager make(final PrivateKey key,
                                                     final X509Certificate[] certificate) {
         return new KeyManager(key, certificate);
     }
@@ -51,7 +51,7 @@ public final class KeyManager
     /**
      * The singleton identifier.
      */
-    private static final String PUMPKIN = "pumpkin";
+    static private final String PUMPKIN = "pumpkin";
 
     public String chooseClientAlias(final String[] keyType,
                                     final Principal[] issuers,

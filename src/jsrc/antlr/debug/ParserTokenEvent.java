@@ -6,8 +6,8 @@ public class ParserTokenEvent extends Event {
 
     private int value;
     private int amount;
-    public static int LA = 0;
-    public static int CONSUME = 1;
+    static public int LA = 0;
+    static public int CONSUME = 1;
 
 
     public ParserTokenEvent(Object source) {

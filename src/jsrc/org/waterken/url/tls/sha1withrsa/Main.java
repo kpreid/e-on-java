@@ -27,7 +27,7 @@ public final class Main {
      * <p/>
      * The identifier for the new site is printed to standard output. </p>
      */
-    public static void main(final String[] args) throws Exception {
+    static public void main(final String[] args) throws Exception {
 
         // Get the arguments.
         final File key_file = new File(1 > args.length ? "keys.jks" : args[0]);

@@ -28,7 +28,7 @@ public final class BoundedInputStream extends InputStream {
      * @param in        The underlying stream.
      * @param remaining The number of bytes remaining.
      */
-    public static InputStream make(final InputStream in, final int remaining) {
+    static public InputStream make(final InputStream in, final int remaining) {
         return new BoundedInputStream(in, remaining);
     }
 

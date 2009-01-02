@@ -31,7 +31,7 @@ public class Tool {
         processArguments(args);
     }
 
-    public static void main(String[] args) {
+    static public void main(String[] args) {
         antlr.Tool antlrTool = new antlr.Tool();
         Tool theTool = new Tool(antlrTool, args);
         theTool.preprocess();

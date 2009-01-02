@@ -32,7 +32,7 @@ public final class Main {
      * The command line parameters are: </p> <ol> <li>The remote Vat to connect
      * to.</li> </ol>
      */
-    public static void main(final String[] args) throws Exception {
+    static public void main(final String[] args) throws Exception {
 
         // Generate a new identity.
         final Keyspace crypto =

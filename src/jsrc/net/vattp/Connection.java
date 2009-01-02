@@ -147,7 +147,7 @@ public final class Connection {
     /**
      * The maximum number of bytes required to encode an int.
      */
-    private static final int MAX_LENGTH_BYTES = 5;
+    static private final int MAX_LENGTH_BYTES = 5;
 
     /**
      * Sends a record.

@@ -29,7 +29,7 @@ tokens {
 }
 
 {
-	private static final boolean DEBUG_PARSER = false;
+	static private final boolean DEBUG_PARSER = false;
 
 	ANTLRGrammarParseBehavior behavior;
 	Tool antlrTool;
@@ -729,7 +729,7 @@ tokens {
 
 {
 	/**Convert 'c' to an integer char value. */
-	public static int escapeCharValue(String cs) {
+	static public int escapeCharValue(String cs) {
 		//System.out.println("escapeCharValue("+cs+")");
 		if ( cs.charAt(1)!='\\' ) return 0;
 		switch ( cs.charAt(2) ) {
@@ -781,7 +781,7 @@ tokens {
 		}
 	}
 
-	public static int tokenTypeForCharLiteral(String lit) {
+	static public int tokenTypeForCharLiteral(String lit) {
 		if ( lit.length()>3 ) {  // does char contain escape?
 			return escapeCharValue(lit);
 		}

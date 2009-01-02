@@ -43,10 +43,10 @@ public class BaseSchema
      */
     private final String mySchemaName;
 
-    /**
-     *
-     */
-    private final ConstList myTagNames;
+//    /**
+//     *
+//     */
+//    private final ConstList myTagNames;
 
     /**
      * Indexed by tag (a short)
@@ -95,7 +95,7 @@ public class BaseSchema
                       String literalFloat64TagName,
                       String literalStringTagName) {
         mySchemaName = schemaName.intern();
-        myTagNames = tagNames;
+//        myTagNames = tagNames;
 
         FlexList byCodes = FlexList.fromType(AstroTag.class, tagNames.size());
         FlexMap byNames = FlexMap.interning(AstroTag.class, tagNames.size());
