@@ -57,8 +57,8 @@ public class ClassDesc extends TypeDesc {
      * InterfaceGuardSugar by default, and fully unmatched types make use of
      * ClassDesc itself.
      */
-    static private final String[][] GuardSugarings = {{"java.lang.Class",
-      "org.erights.e.meta.java.lang.ClassGuardSugar"},
+    static private final String[][] GuardSugarings = {
+      {"java.lang.Class", "org.erights.e.meta.java.lang.ClassGuardSugar"},
       {"java.lang.String", "org.erights.e.meta.java.lang.StringGuardSugar"},
 
       {"java.lang.Throwable",

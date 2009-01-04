@@ -625,6 +625,9 @@ public abstract class BaseENodeBuilder implements BaseEBuilder {
      */
     public EExpr[] optExprs(Object optVec) {
         EExpr[] result = (EExpr[])optTypedArray(optVec, EExpr.class);
+        if (null == result) {
+            return null;
+        }
         for (int i = 0, len = result.length; i < len; i++) {
             result[i] = forValue(result[i], null);
         }

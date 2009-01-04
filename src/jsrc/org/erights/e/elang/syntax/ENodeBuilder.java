@@ -168,6 +168,34 @@ public class ENodeBuilder extends BaseENodeBuilder implements EBuilder {
     static private final String BAD_FOR =
       "For-loop body isn't valid after for-loop exits.";
 
+    static private final EExpr[] NO_EXPRS = {};
+
+    static private final Pattern[] NO_PATTERNS = {};
+
+    static private Object take(FlexMap decl, String name) {
+        Object result = decl.fetch(name, ValueThunk.NULL_THUNK);
+        if (null == result) {
+            T.fail("internal: " + name + " attribute was null");
+        }
+        decl.removeKey(name, true);
+        return result;
+    }
+
+    static private Object optTake(FlexMap decl, String name) {
+        Object result = decl.fetch(name, ValueThunk.NULL_THUNK);
+        decl.removeKey(name);
+        return result;
+    }
+
+    static private EExpr[] takeExprs(FlexMap decl, String name) {
+        EExpr[] result = (EExpr[])optTypedArray(optTake(decl, name),
+                                                EExpr.class);
+        if (null == result) {
+            result = NO_EXPRS;
+        }
+        return result;
+    }
+
     /**
      *
      */
@@ -1198,27 +1226,29 @@ public class ENodeBuilder extends BaseENodeBuilder implements EBuilder {
     /**
      * For defining an eScript that consists of exactly one method
      */
-    public ObjDecl methDecl(Object msgPatt,
+    public ConstMap methDecl(Object msgPatt,
                             Object bodyExpr,
                             boolean bindReturn) {
         EScriptDecl script = methScriptDecl(msgPatt, bodyExpr, bindReturn);
-        return ObjDecl.EMPTY.withScript(script);
+        return ConstMap.fromPairs(new Object[][]{
+                 { "script", script }});
     }
 
-    public ObjDecl fnDecl(Object poser, Object params, Object bodyExpr) {
+    public ConstMap fnDecl(Object poser, Object params, Object bodyExpr) {
         return methDecl(methHead(poser, "run", params, null),
                         bodyExpr,
-                        false).withOName(ignoreOName());
+                        false);
     }
 
     /**
      * Add extra ejector parameter and move param patterns, in order to address
-     * bug <a href= "https://sourceforge.net/tracker/index.php?func=detail&aid=1593160&group_id=75274&atid=551529"
+     * bug <a href=
+"https://sourceforge.net/tracker/index.php?func=detail&aid=1593160&group_id=75274&atid=551529"
      * >Change lambda-args expansion</a>
      */
-    private ObjDecl blockDecl(Object poser,
-                              EList patternList,
-                              Object bodyExpr) {
+    private ConstMap blockDecl(Object poser,
+                               EList patternList,
+                               Object bodyExpr) {
         int nPatterns = patternList.size();
         EList params = list();
         EList args = list();
@@ -1245,7 +1275,7 @@ public class ENodeBuilder extends BaseENodeBuilder implements EBuilder {
                          Object body) {
         EList paramList = (EList)params;
         int nParams = paramList.size();
-        ObjDecl blockFunc;
+        ConstMap blockFunc;
         String suffix;
         if (0 == nParams) {
             blockFunc = fnDecl(sep, paramList, body);
@@ -1271,7 +1301,7 @@ public class ENodeBuilder extends BaseENodeBuilder implements EBuilder {
                          Object body) {
         EList paramList = (EList)params;
         int nParams = paramList.size();
-        ObjDecl blockFunc;
+        ConstMap blockFunc;
         String suffix;
         if (0 == nParams) {
             blockFunc = fnDecl(sep, paramList, body);
@@ -1293,6 +1323,13 @@ public class ENodeBuilder extends BaseENodeBuilder implements EBuilder {
         return call(recip, sep, verb, list(lam));
     }
 
+    private AuditorExprs takeAuditorExprs(FlexMap decl) {
+        return new AuditorExprs(null,
+                                (EExpr)optTake(decl, "as"),
+                                takeExprs(decl, "impls"),
+                                null);
+    }
+
     /**
      *
      */
@@ -1302,23 +1339,30 @@ public class ENodeBuilder extends BaseENodeBuilder implements EBuilder {
             // looses the doco
             return (EExpr)oDecl;
         }
-        ObjDecl decl = (ObjDecl)oDecl;
-        decl = decl.withDoco(doco);
-        return object(decl.getDocComment(),
-                      decl.getOName(),
-                      decl.getOptExtends(),
-                      decl.getAuditorExprs(),
-                      decl.getOptScript());
+        FlexMap decl = ((ConstMap)oDecl).diverge();
+        EExpr result = object(docComment(doco),
+                              (Pattern[])optTake(decl, "oName"),
+                              (EExpr)optTake(decl, "extends"),
+                              takeAuditorExprs(decl),
+                              (EScriptDecl)take(decl, "script"));
+        T.require(decl.size() == 0, "internal: unconsumed attrs");
+        return result;
     }
 
     private EExpr object(String docComment,
-                         Pattern[] oName,
+                         Pattern[] optOName,
                          EExpr optSuperExpr,
                          AuditorExprs auditors,
                          EScriptDecl script) {
-        T.notNull(oName, "Internal: missing qualified name");
-        if (1 == oName.length) {
-            GuardedPattern guarded = (GuardedPattern)oName[0];
+        if (null == optOName) {
+            return object(docComment,
+                          ignoreOName(),
+                          optSuperExpr,
+                          auditors,
+                          script);
+        }
+        if (1 == optOName.length) {
+            GuardedPattern guarded = (GuardedPattern)optOName[0];
             if (null != guarded.getOptGuardExpr()) {
                 syntaxError(guarded, "self-variable may not be guarded");
             }
@@ -1333,7 +1377,7 @@ public class ENodeBuilder extends BaseENodeBuilder implements EBuilder {
             script = script.withMatcher(delegatex(noun("super")));
             EExpr defobj = sequence(kdef(finalPattern("super"), optSuperExpr),
                                     object(docComment,
-                                           oName,
+                                           optOName,
                                            null,
                                            auditors,
                                            script));
@@ -1347,17 +1391,17 @@ public class ENodeBuilder extends BaseENodeBuilder implements EBuilder {
                                                               self)))), self);
             }
             return define(guarded, hide(defobj));
-        } else if (2 == oName.length) {
-            return define(oName[0],
+        }
+        if (2 == optOName.length) {
+            return define(optOName[0],
                           hide(object(docComment,
-                                      new Pattern[]{oName[1]},
+                                      new Pattern[]{optOName[1]},
                                       optSuperExpr,
                                       auditors,
                                       script)));
-        } else {
-            T.fail("internal: Unexpected oName: " + E.toString(oName));
-            return null; // make the compiler happy
         }
+        T.fail("internal: Unexpected oName: " + E.toString(optOName));
+        return null; // make the compiler happy
     }
 
     /**
@@ -1635,7 +1679,7 @@ public class ENodeBuilder extends BaseENodeBuilder implements EBuilder {
         EExpr meth = doco(" While loop body ",
                           methDecl(methHead(NO_POSER, "run", list(), BOOLEAN),
                                    methBody,
-                                   false).withOName(ignoreOName()));
+                                   false));
 
         return escape(finalPattern("__break"),
                       call(LOOP, NO_POSER, "run", list(meth)),
@@ -1682,7 +1726,7 @@ public class ENodeBuilder extends BaseENodeBuilder implements EBuilder {
      * rules, they should only be visible from patt1 and body1.
      */
     private EExpr whenBase(EExpr eExpr,
-                           ObjDecl objDecl,
+                           Pattern[] optOName,
                            Object poser,
                            Pattern patt1,
                            EExpr resultGuard,
@@ -1708,7 +1752,9 @@ public class ENodeBuilder extends BaseENodeBuilder implements EBuilder {
                          "whenResolved",
                          list(eExpr,
                               doco(" when-catch 'done' function ",
-                                   objDecl.withScript(script)))));
+                                   ConstMap.fromPairs(new Object[][]{
+                                     { "oName", optOName },
+                                     { "script", script }})))));
     }
 
     /**
@@ -1734,7 +1780,7 @@ public class ENodeBuilder extends BaseENodeBuilder implements EBuilder {
      * #whenBase}
      */
     private EExpr whenList(EExpr[] eExprs,
-                           ObjDecl objDecl,
+                           Pattern[] optOName,
                            Object poser,
                            Pattern[] optPatts,
                            EExpr resultGuard,
@@ -1767,7 +1813,7 @@ public class ENodeBuilder extends BaseENodeBuilder implements EBuilder {
             patt1 = listPattern(optPatts);
         }
         return whenBase(eExpr,
-                        objDecl,
+                        optOName,
                         poser,
                         patt1,
                         resultGuard,
@@ -1793,30 +1839,31 @@ public class ENodeBuilder extends BaseENodeBuilder implements EBuilder {
     /**
      *
      */
-    public EExpr when(Object exprs, Object poser, Object tailList) {
-        EList tails = (EList)tailList;
-        T.requireSI(5 == tails.size(),
-                    "unrecognized whenTail arity: ",
-                    tails.size());
-        EList whenBodyParts = (EList)tails.get(3);
-        EExpr body1 = forValue(whenBodyParts.get(0), StaticScope.EmptyScope);
-        EList optCatches = (EList)whenBodyParts.get(1);
+    public EExpr when(Object exprs, Object poser, Object tailMap) {
+        FlexMap tails = ((ConstMap)tailMap).diverge();
+        EExpr body1 = forValue((EExpr)take(tails, "whenBody"),
+                               StaticScope.EmptyScope);
+        EList optCatches = (EList)optTake(tails, "whenCatches");
         if (null == optCatches) {
             optCatches = defaultWhenCatches(poser);
         }
-        EExpr optFinally = (EExpr)whenBodyParts.get(2);
+        EExpr optFinally = (EExpr)optTake(tails, "whenFinally");
         if (null != optFinally) {
             optFinally = forValue(optFinally, StaticScope.EmptyScope);
         }
-        return whenList(optExprs(exprs),
-                        (ObjDecl)tails.get(0),
-                        poser,
-                        optPatterns(tails.get(1)),
-                        forValue(tails.get(2), null),
-                        body1,
-                        optCatches,
-                        optFinally,
-                        ((Boolean)tails.get(4)).booleanValue());
+        EExpr result = whenList(optExprs(exprs),
+                                (Pattern[])optTake(tails, "oName"),
+                                poser,
+                                (Pattern[])optTypedArray(optTake(tails,
+                                                                 "whenParams"),
+                                                         Pattern.class),
+                                (EExpr)optTake(tails, "whenGuard"),
+                                body1,
+                                optCatches,
+                                optFinally,
+                                null != (Boolean)optTake(tails,"bindReturn"));
+        T.require(tails.size() == 0, "internal: unconsumed attributes");
+        return result;
     }
 
     /**
@@ -1824,7 +1871,7 @@ public class ENodeBuilder extends BaseENodeBuilder implements EBuilder {
      */
     public EExpr whenSeq(Object exprs, Object poser, Object whenRest) {
         return whenList(optExprs(exprs),
-                        ObjDecl.EMPTY.withOName(ignoreOName()),
+                        null,
                         poser,
                         null,
                         null,
@@ -1841,7 +1888,12 @@ public class ENodeBuilder extends BaseENodeBuilder implements EBuilder {
                        Object optOName,
                        Object typeParams,
                        Object mTypes) {
-        return oType(doco, optOName, typeParams, null, ObjDecl.EMPTY, mTypes);
+        return oType(doco,
+                     optOName,
+                     typeParams,
+                     null,
+                     ConstMap.EmptyMap,
+                     mTypes);
     }
 
     /**
@@ -1851,16 +1903,18 @@ public class ENodeBuilder extends BaseENodeBuilder implements EBuilder {
                        Object optOName,
                        Object typeParams,
                        Object optAudit,
-                       Object decl,
+                       Object objDecl,
                        Object mTypes) {
-        ObjDecl objDecl = (ObjDecl)decl;
-        return oType(literal(docComment(doco)),
-                     optOName,
-                     optPatterns(typeParams),
-                     (Pattern)optAudit,
-                     tuple(objDecl.getSupers()),
-                     tuple(objDecl.getImpls()),
-                     tuple(mTypes));
+        FlexMap decl = ((ConstMap)objDecl).diverge();
+        EExpr result = oType(literal(docComment(doco)),
+                             optOName,
+                             optPatterns(typeParams),
+                             (Pattern)optAudit,
+                             tuple(takeExprs(decl, "supers")),
+                             tuple(takeExprs(decl, "impls")),
+                             tuple(mTypes));
+        T.require(decl.size() == 0, "internal: unconsumed attributes");
+        return result;
     }
 
     /**

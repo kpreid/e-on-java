@@ -1352,7 +1352,7 @@ final static String yyrule[] = {
 "reserved : WSTRING",
 };
 
-//#line 1557 "e.y"
+//#line 1577 "e.y"
 
 
 /**
@@ -2050,16 +2050,11 @@ static public int continueCount(int tagCode) {
 }
 
 /**
- *
- */
-static private final ObjDecl ODECL = ObjDecl.EMPTY;
-
-/**
  * Used to mark places where we should be providing a poser (an object
  * from which source position info can be derived).
  */
 static private final Object NO_POSER = BaseEBuilder.NO_POSER;
-//#line 5519 "EParser.java"
+//#line 5514 "EParser.java"
 //###############################################################
 // method: yylexdebug : check lexer state
 //###############################################################
@@ -2632,957 +2627,968 @@ case 130:
 break;
 case 131:
 //#line 571 "e.y"
-{ yyval = ((ObjDecl)val_peek(0)).withOName(val_peek(1)); }
+{ yyval = ((ConstMap)val_peek(0)).with(
+					         "oName", val_peek(1), true); }
 break;
 case 132:
-//#line 573 "e.y"
+//#line 574 "e.y"
 { yyval = b.oType("",val_peek(6),b.list(),
                                                        val_peek(5),val_peek(4),val_peek(1)); }
 break;
 case 133:
-//#line 575 "e.y"
+//#line 576 "e.y"
 { b.pocket(NO_POSER,"thunk");
                                           /* doesn't bind __return */
                                           yyval = b.fnDecl(val_peek(1), b.list(), val_peek(0)); }
 break;
 case 134:
-//#line 579 "e.y"
+//#line 580 "e.y"
 { b.pocket(NO_POSER,"anon-lambda");
                                           /* doesn't bind __return */
                                           yyval = b.fnDecl(val_peek(2), val_peek(1), val_peek(0)); }
 break;
 case 135:
-//#line 588 "e.y"
-{ yyval = ((ObjDecl)val_peek(1)).withScript(val_peek(0)); }
+//#line 589 "e.y"
+{ yyval = ((ConstMap)val_peek(1)).with(
+						 "script", val_peek(0), true); }
 break;
 case 136:
-//#line 589 "e.y"
+//#line 591 "e.y"
 { /* binds __return */
                                           yyval = b.methDecl(val_peek(1), val_peek(0), true); }
 break;
 case 137:
-//#line 598 "e.y"
+//#line 600 "e.y"
 { yyval = noun(val_peek(0)); }
 break;
 case 138:
-//#line 599 "e.y"
+//#line 601 "e.y"
 { yyval = b.quasiLiteralExpr(val_peek(0)); }
 break;
 case 139:
-//#line 600 "e.y"
+//#line 602 "e.y"
 { yyval = b.quasiPatternExpr(val_peek(0)); }
 break;
 case 140:
-//#line 604 "e.y"
+//#line 606 "e.y"
 { yyval = val_peek(1); }
 break;
 case 141:
-//#line 605 "e.y"
+//#line 607 "e.y"
 { yyval = val_peek(0); }
 break;
 case 142:
-//#line 606 "e.y"
+//#line 608 "e.y"
 { yyval = null; }
 break;
 case 143:
-//#line 610 "e.y"
+//#line 612 "e.y"
 { yyval = val_peek(1); }
 break;
 case 144:
-//#line 611 "e.y"
+//#line 613 "e.y"
 { yyval = val_peek(0); }
 break;
 case 145:
-//#line 618 "e.y"
+//#line 620 "e.y"
 { yyval = val_peek(1); }
 break;
 case 146:
-//#line 626 "e.y"
+//#line 628 "e.y"
 { yyval = b.ifx(val_peek(1), val_peek(0)); }
 break;
 case 147:
-//#line 627 "e.y"
+//#line 629 "e.y"
 { yyval = b.ifx(val_peek(3), val_peek(2), val_peek(0)); }
 break;
 case 148:
-//#line 628 "e.y"
+//#line 630 "e.y"
 { yyval = b.ifx(val_peek(3), val_peek(2), val_peek(0)); }
 break;
 case 150:
-//#line 633 "e.y"
+//#line 635 "e.y"
 { b.reserved(val_peek(1),"if-match"); }
 break;
 case 151:
-//#line 641 "e.y"
+//#line 643 "e.y"
 { yyval = b.forx(val_peek(4),val_peek(2),val_peek(1),val_peek(0)); }
 break;
 case 152:
-//#line 642 "e.y"
+//#line 644 "e.y"
 { b.reserved(val_peek(2),"when-in"); }
 break;
 case 154:
-//#line 654 "e.y"
+//#line 656 "e.y"
 { yyval = noun("simple__quasiParser"); }
 break;
 case 155:
-//#line 655 "e.y"
+//#line 657 "e.y"
 { yyval = noun(b.mangle(val_peek(0),
                                                      "__quasiParser")); }
 break;
 case 156:
-//#line 660 "e.y"
+//#line 662 "e.y"
 { yyval = b.list(val_peek(0)); }
 break;
 case 157:
-//#line 661 "e.y"
+//#line 663 "e.y"
 { yyval = b.with(val_peek(1), val_peek(0)); }
 break;
 case 158:
-//#line 665 "e.y"
+//#line 667 "e.y"
 { yyval = b.list(val_peek(1), val_peek(0)); }
 break;
 case 159:
-//#line 666 "e.y"
+//#line 668 "e.y"
 { yyval = b.with(b.with(val_peek(2), val_peek(1)), val_peek(0)); }
 break;
 case 160:
-//#line 670 "e.y"
+//#line 672 "e.y"
 { yyval = b.dollarNoun(val_peek(0)); }
 break;
 case 161:
-//#line 671 "e.y"
+//#line 673 "e.y"
 { yyval = val_peek(1); }
 break;
 case 162:
-//#line 682 "e.y"
+//#line 684 "e.y"
 { yyval = val_peek(1); }
 break;
 case 168:
-//#line 708 "e.y"
+//#line 710 "e.y"
 { yyval = b.list(val_peek(0)); }
 break;
 case 169:
-//#line 709 "e.y"
+//#line 711 "e.y"
 { yyval = b.with(val_peek(2), val_peek(0)); }
 break;
 case 171:
-//#line 713 "e.y"
+//#line 715 "e.y"
 { yyval = b.list(val_peek(0)); }
 break;
 case 172:
-//#line 714 "e.y"
+//#line 716 "e.y"
 { yyval = b.with(val_peek(2), val_peek(0)); }
 break;
 case 173:
-//#line 719 "e.y"
+//#line 721 "e.y"
 { yyval = b.list(val_peek(0)); }
 break;
 case 174:
-//#line 720 "e.y"
+//#line 722 "e.y"
 { yyval = b.with(val_peek(2), val_peek(0)); }
 break;
 case 176:
-//#line 724 "e.y"
+//#line 726 "e.y"
 { yyval = b.assoc(val_peek(2), val_peek(0)); }
 break;
 case 177:
-//#line 725 "e.y"
+//#line 727 "e.y"
 { b.pocket(val_peek(1),"exporter");
                                           yyval = b.exporter(val_peek(0)); }
 break;
 case 178:
-//#line 727 "e.y"
+//#line 729 "e.y"
 { b.pocket(val_peek(2),"exporter");
                                           yyval = b.exporter(b.slotExpr(val_peek(1),val_peek(0))); }
 break;
 case 179:
-//#line 729 "e.y"
+//#line 731 "e.y"
 { b.pocket(val_peek(2),"exporter");
                                           yyval=b.exporter(b.bindingExpr(val_peek(1),val_peek(0)));}
 break;
 case 180:
-//#line 731 "e.y"
+//#line 733 "e.y"
 { b.pocket(val_peek(2),"exporter");
                                           b.reserved(val_peek(1),"Forward exporter"); }
 break;
 case 181:
-//#line 746 "e.y"
+//#line 748 "e.y"
 { yyval = b.assoc(b.ignore(), val_peek(0)); }
 break;
 case 182:
-//#line 747 "e.y"
+//#line 749 "e.y"
 { yyval = b.assoc(val_peek(2), val_peek(0)); }
 break;
 case 184:
-//#line 753 "e.y"
+//#line 755 "e.y"
 { yyval = b.suchThat(val_peek(2), val_peek(0)); }
 break;
 case 185:
-//#line 754 "e.y"
+//#line 756 "e.y"
 { yyval = b.via(val_peek(1),val_peek(0)); }
 break;
 case 186:
-//#line 756 "e.y"
+//#line 758 "e.y"
 { b.reserved(val_peek(1),"meta pattern"); }
 break;
 case 189:
-//#line 762 "e.y"
+//#line 764 "e.y"
 { yyval = b.quasiPattern(val_peek(1), val_peek(0)); }
 break;
 case 190:
-//#line 763 "e.y"
+//#line 765 "e.y"
 { yyval = b.patternEquals(val_peek(0)); }
 break;
 case 191:
-//#line 764 "e.y"
+//#line 766 "e.y"
 { b.reserved(val_peek(1),"not-same pattern"); }
 break;
 case 192:
-//#line 765 "e.y"
+//#line 767 "e.y"
 { b.reserved(val_peek(1),
                                                      "comparison pattern"); }
 break;
 case 193:
-//#line 768 "e.y"
+//#line 770 "e.y"
 { b.pocket(val_peek(4),"call-pattern");
                                                  yyval = b.callPattern(val_peek(3), val_peek(2),"run", val_peek(1));}
 break;
 case 194:
-//#line 770 "e.y"
+//#line 772 "e.y"
 { b.pocket(val_peek(6),"call-pattern");
                                                  yyval = b.callPattern(val_peek(5), val_peek(3), val_peek(1)); }
 break;
 case 195:
-//#line 772 "e.y"
+//#line 774 "e.y"
 { b.pocket(val_peek(4),"call-pattern");
                                                  yyval = b.callPattern(val_peek(3), val_peek(2),"get", val_peek(1));}
 break;
 case 196:
-//#line 775 "e.y"
+//#line 777 "e.y"
 { yyval = b.listPattern(val_peek(0)); }
 break;
 case 197:
-//#line 776 "e.y"
+//#line 778 "e.y"
 { yyval = b.mapPattern(val_peek(1),null); }
 break;
 case 198:
-//#line 777 "e.y"
+//#line 779 "e.y"
 { yyval = b.cdrPattern(val_peek(2), val_peek(0)); }
 break;
 case 199:
-//#line 778 "e.y"
+//#line 780 "e.y"
 { yyval = b.mapPattern(val_peek(3), val_peek(0)); }
 break;
 case 200:
-//#line 782 "e.y"
+//#line 784 "e.y"
 { yyval = val_peek(1); }
 break;
 case 201:
-//#line 786 "e.y"
+//#line 788 "e.y"
 { yyval = b.list(val_peek(0)); }
 break;
 case 202:
-//#line 787 "e.y"
+//#line 789 "e.y"
 { yyval = b.with(val_peek(1), val_peek(0)); }
 break;
 case 203:
-//#line 791 "e.y"
+//#line 793 "e.y"
 { yyval = b.list(val_peek(1), val_peek(0)); }
 break;
 case 204:
-//#line 792 "e.y"
+//#line 794 "e.y"
 { yyval = b.with(b.with(val_peek(2), val_peek(1)),
                                                               val_peek(0)); }
 break;
 case 207:
-//#line 802 "e.y"
+//#line 804 "e.y"
 { yyval = b.atNoun(val_peek(0)); }
 break;
 case 208:
-//#line 803 "e.y"
+//#line 805 "e.y"
 { yyval = val_peek(2); }
 break;
 case 209:
-//#line 816 "e.y"
+//#line 818 "e.y"
 { yyval = b.ignore(); }
 break;
 case 210:
-//#line 817 "e.y"
+//#line 819 "e.y"
 { yyval = b.ignore(val_peek(0)); }
 break;
 case 211:
-//#line 818 "e.y"
+//#line 820 "e.y"
 { yyval = b.ignore(val_peek(0));}
 break;
 case 212:
-//#line 822 "e.y"
+//#line 824 "e.y"
 { yyval = b.finalPattern(val_peek(2),val_peek(0));}
 break;
 case 213:
-//#line 823 "e.y"
+//#line 825 "e.y"
 { b.antiPocket(val_peek(0),
                                                        "explicit-final-guard");
                                           yyval = b.finalPattern(val_peek(0)); }
 break;
 case 217:
-//#line 832 "e.y"
+//#line 834 "e.y"
 { yyval = b.bindDefiner(val_peek(2),val_peek(0)); }
 break;
 case 218:
-//#line 833 "e.y"
+//#line 835 "e.y"
 { b.antiPocket(val_peek(1),
                                                        "explicit-final-guard");
                                           yyval = b.bindDefiner(val_peek(0)); }
 break;
 case 219:
-//#line 839 "e.y"
+//#line 841 "e.y"
 { yyval = b.varPattern(val_peek(2),val_peek(0)); }
 break;
 case 220:
-//#line 840 "e.y"
+//#line 842 "e.y"
 { b.antiPocket(val_peek(1),
                                                        "explicit-var-guard");
                                           yyval = b.varPattern(val_peek(0)); }
 break;
 case 221:
-//#line 846 "e.y"
+//#line 848 "e.y"
 { yyval = b.slotPattern(val_peek(2),val_peek(0)); }
 break;
 case 222:
-//#line 847 "e.y"
+//#line 849 "e.y"
 { b.antiPocket(val_peek(1),
                                                        "explicit-slot-guard");
                                           yyval = b.slotPattern(val_peek(0)); }
 break;
 case 223:
-//#line 850 "e.y"
+//#line 852 "e.y"
 { yyval = b.bindingPattern(val_peek(0)); }
 break;
 case 224:
-//#line 859 "e.y"
+//#line 861 "e.y"
 { yyval = b.finalOName(val_peek(0)); }
 break;
 case 225:
-//#line 860 "e.y"
+//#line 862 "e.y"
 { yyval = b.ignoreOName(); }
 break;
 case 226:
-//#line 861 "e.y"
+//#line 863 "e.y"
 { yyval = b.bindOName(val_peek(0)); }
 break;
 case 227:
-//#line 862 "e.y"
+//#line 864 "e.y"
 { yyval = b.varOName(val_peek(0)); }
 break;
 case 228:
-//#line 863 "e.y"
+//#line 865 "e.y"
 { b.reserved(val_peek(0),
                                 "literal qualified name no longer accepted"); }
 break;
 case 230:
-//#line 876 "e.y"
+//#line 878 "e.y"
 { yyval = val_peek(1); }
 break;
 case 233:
-//#line 902 "e.y"
+//#line 904 "e.y"
 { yyval = val_peek(1); }
 break;
 case 234:
-//#line 906 "e.y"
+//#line 908 "e.y"
 { yyval = b.list(val_peek(0)); }
 break;
 case 235:
-//#line 907 "e.y"
+//#line 909 "e.y"
 { yyval = b.with(val_peek(2), val_peek(0)); }
 break;
 case 236:
-//#line 911 "e.y"
+//#line 913 "e.y"
 { yyval = val_peek(1); }
 break;
 case 237:
-//#line 915 "e.y"
+//#line 917 "e.y"
 { yyval = b.list(val_peek(0)); }
 break;
 case 238:
-//#line 916 "e.y"
+//#line 918 "e.y"
 { yyval = b.with(val_peek(2), val_peek(0)); }
 break;
 case 239:
-//#line 920 "e.y"
+//#line 922 "e.y"
 { yyval = b.assoc(val_peek(2), val_peek(0)); }
 break;
 case 240:
-//#line 921 "e.y"
+//#line 923 "e.y"
 { b.pocket(val_peek(1),"pattern-default");
                                           yyval = b.assoc(val_peek(4), b.assoc(val_peek(0),val_peek(2))); }
 break;
 case 241:
-//#line 923 "e.y"
+//#line 925 "e.y"
 { b.pocket(val_peek(1),"pattern-default");
                                      b.reserved(val_peek(1),"default in map pattern"); }
 break;
 case 242:
-//#line 925 "e.y"
+//#line 927 "e.y"
 { b.pocket(val_peek(1),"importer");
                                           yyval = b.importer(val_peek(0)); }
 break;
 case 243:
-//#line 927 "e.y"
+//#line 929 "e.y"
 { b.pocket(val_peek(1),"pattern-default");
                                           b.pocket(val_peek(3),"importer");
                                           yyval = b.importer(b.assoc(val_peek(0),val_peek(2))); }
 break;
 case 244:
-//#line 930 "e.y"
+//#line 932 "e.y"
 { b.pocket(val_peek(1),"pattern-default");
                                           b.pocket(val_peek(3),"importer");
                                      b.reserved(val_peek(0),"default in map pattern"); }
 break;
 case 247:
-//#line 951 "e.y"
+//#line 953 "e.y"
 { yyval = ""; }
 break;
 case 249:
-//#line 959 "e.y"
+//#line 961 "e.y"
 { yyval = val_peek(0); }
 break;
 case 250:
-//#line 960 "e.y"
+//#line 962 "e.y"
 { yyval = b.bindOName(val_peek(0)); }
 break;
 case 251:
-//#line 961 "e.y"
+//#line 963 "e.y"
 { yyval = b.varOName(val_peek(0)); }
 break;
 case 252:
-//#line 968 "e.y"
-{ yyval = ODECL.withExtends(b,val_peek(2))
-                                                          .withOptAs(val_peek(1))
-                                                          .withImpls(b,val_peek(0));}
+//#line 970 "e.y"
+{yyval=ConstMap.fromPairs(new Object[][]{
+                                              { "extends", val_peek(2) },
+                                              { "as", val_peek(1) },
+                                              { "impls", b.optExprs(val_peek(0)) }}); }
 break;
 case 253:
-//#line 977 "e.y"
-{ yyval = ODECL.withExtends(b,val_peek(1))
-                                                          .withImpls(b,val_peek(0));}
+//#line 980 "e.y"
+{yyval=ConstMap.fromPairs(new Object[][]{
+                                              { "supers", b.optExprs(val_peek(1)) },
+                                              { "impls", b.optExprs(val_peek(0)) }}); }
 break;
 case 254:
-//#line 987 "e.y"
-{ yyval = b.list(); }
+//#line 991 "e.y"
+{ yyval = null; }
 break;
 case 255:
-//#line 988 "e.y"
-{ yyval = b.list(val_peek(0)); }
+//#line 992 "e.y"
+{ yyval = val_peek(0); }
 break;
 case 256:
-//#line 995 "e.y"
+//#line 999 "e.y"
 { yyval = b.list(); }
 break;
 case 258:
-//#line 999 "e.y"
+//#line 1003 "e.y"
 { yyval = b.list(val_peek(0)); }
 break;
 case 259:
-//#line 1000 "e.y"
+//#line 1004 "e.y"
 { yyval = b.with(val_peek(2), val_peek(0)); }
 break;
 case 260:
-//#line 1007 "e.y"
+//#line 1011 "e.y"
 { yyval = null; }
 break;
 case 261:
-//#line 1008 "e.y"
+//#line 1012 "e.y"
 { yyval = val_peek(0); }
 break;
 case 262:
-//#line 1011 "e.y"
+//#line 1015 "e.y"
 { yyval = b.list(); }
 break;
 case 264:
-//#line 1015 "e.y"
+//#line 1019 "e.y"
 { yyval = b.list(val_peek(0)); }
 break;
 case 265:
-//#line 1016 "e.y"
+//#line 1020 "e.y"
 { yyval = b.with(val_peek(2), val_peek(0)); }
 break;
 case 269:
-//#line 1030 "e.y"
+//#line 1034 "e.y"
 { b.reserved(val_peek(0),"literal concat"); }
 break;
 case 270:
-//#line 1031 "e.y"
+//#line 1035 "e.y"
 { b.reserved(val_peek(0),"literal concat"); }
 break;
 case 271:
-//#line 1040 "e.y"
+//#line 1044 "e.y"
 { /* binds __return */
                                                yyval = b.to(val_peek(3), val_peek(1), val_peek(0)); }
 break;
 case 272:
-//#line 1042 "e.y"
+//#line 1046 "e.y"
 { /* doesn't bind __return */
                                                yyval = b.method(val_peek(3), val_peek(1), val_peek(0)); }
 break;
 case 273:
-//#line 1071 "e.y"
+//#line 1075 "e.y"
 { yyval = b.methHead(val_peek(3),"run",val_peek(2),val_peek(0)); }
 break;
 case 274:
-//#line 1072 "e.y"
+//#line 1076 "e.y"
 { yyval = b.methHead(val_peek(4),      val_peek(2),val_peek(0)); }
 break;
 case 275:
-//#line 1081 "e.y"
+//#line 1085 "e.y"
 { yyval = b.methHead(val_peek(3),"run", val_peek(2), val_peek(0));}
 break;
 case 276:
-//#line 1083 "e.y"
+//#line 1087 "e.y"
 { b.pocket(val_peek(5),"one-method-object");
                                           yyval = b.methHead(val_peek(4), val_peek(2), val_peek(0)); }
 break;
 case 277:
-//#line 1086 "e.y"
+//#line 1090 "e.y"
 { b.pocket(val_peek(5),"one-method-object");
                                           yyval = b.methHead(val_peek(4), val_peek(2), val_peek(0)); }
 break;
 case 279:
-//#line 1101 "e.y"
+//#line 1105 "e.y"
 { yyval = b.matcher(val_peek(1), val_peek(0)); }
 break;
 case 281:
-//#line 1109 "e.y"
+//#line 1113 "e.y"
 { yyval = b.uriExpr(val_peek(0)); }
 break;
 case 283:
-//#line 1111 "e.y"
+//#line 1115 "e.y"
 { yyval = b.call(val_peek(3), val_peek(2),"get", val_peek(1)); }
 break;
 case 284:
-//#line 1112 "e.y"
+//#line 1116 "e.y"
 { yyval = b.propValue(val_peek(2), val_peek(0)); }
 break;
 case 290:
-//#line 1124 "e.y"
+//#line 1128 "e.y"
 { yyval = val_peek(0); }
 break;
 case 291:
-//#line 1125 "e.y"
+//#line 1129 "e.y"
 { yyval = b.defaultOptResultGuard(yylval); }
 break;
 case 292:
-//#line 1126 "e.y"
+//#line 1130 "e.y"
 { b.reserved(val_peek(1),"throws"); }
 break;
 case 293:
-//#line 1127 "e.y"
+//#line 1131 "e.y"
 { b.reserved(val_peek(1),"throws"); }
 break;
 case 294:
-//#line 1130 "e.y"
+//#line 1134 "e.y"
 { yyval = b.list(val_peek(0)); }
 break;
 case 295:
-//#line 1131 "e.y"
+//#line 1135 "e.y"
 { yyval = b.with(val_peek(2),val_peek(0)); }
 break;
 case 296:
-//#line 1139 "e.y"
+//#line 1143 "e.y"
 { yyval = b.when(val_peek(4), val_peek(1), val_peek(0)); }
 break;
 case 297:
-//#line 1140 "e.y"
-{ b.pocket(val_peek(2),"when-sequence");
+//#line 1144 "e.y"
+{ b.pocket(val_peek(1),"when-sequence");
                                               yyval = b.whenSeq(val_peek(4), val_peek(1), val_peek(0)); }
 break;
 case 298:
-//#line 1149 "e.y"
+//#line 1160 "e.y"
 { /* binds __return */
                                   b.pocket(val_peek(5),"hard-when");
-                                  yyval = b.list(ODECL.withOName(val_peek(5)),
-                                              val_peek(3), val_peek(1), val_peek(0),
-                                              Boolean.TRUE); }
+                                  yyval = ConstMap.fromPairs(new Object[][]{
+                                         { "oName", val_peek(5) },
+                                         { "whenParams", val_peek(3) },
+				         { "whenGuard", b.forValue(val_peek(1), null) },
+                                         { "bindReturn", Boolean.TRUE }
+				       }).or((ConstMap)val_peek(0), true); }
 break;
 case 299:
-//#line 1155 "e.y"
+//#line 1169 "e.y"
 { /* XXX should this bind __return ?? */
                                   /* Currently, it does. */
                                   b.pocket(val_peek(2),"easy-when");
                                   b.pocket(val_peek(2),"hard-when");
-                                  yyval = b.list(ODECL.withOName(val_peek(2)),
-                                              null, val_peek(1), val_peek(0),
-                                              Boolean.TRUE); }
+                                  yyval = ConstMap.fromPairs(new Object[][]{
+                                         { "oName", val_peek(2) },
+				         { "whenGuard", b.forValue(val_peek(1), null) },
+                                         { "bindReturn", Boolean.TRUE }
+				       }).or((ConstMap)val_peek(0), true); }
 break;
 case 300:
-//#line 1163 "e.y"
-{ /* Binds bind __return ?? */
+//#line 1179 "e.y"
+{ /* Doesn't bind __return */
                                   b.pocket(val_peek(0),"easy-when");
-                                  yyval = b.list(ODECL.withOName(b.ignoreOName()),
-                                              null, null, val_peek(0),
-                                              Boolean.FALSE); }
+                                  yyval = val_peek(0); }
 break;
 case 301:
-//#line 1171 "e.y"
+//#line 1185 "e.y"
 { b.pocket(val_peek(1),"hard-when");
                                           yyval = val_peek(0); }
 break;
 case 302:
-//#line 1173 "e.y"
+//#line 1187 "e.y"
 { yyval = b.defaultOptWhenGuard(yylval); }
 break;
 case 303:
-//#line 1174 "e.y"
+//#line 1188 "e.y"
 { b.reserved(val_peek(1),"throws"); }
 break;
 case 304:
-//#line 1175 "e.y"
+//#line 1189 "e.y"
 { b.reserved(val_peek(1),"throws"); }
 break;
 case 305:
-//#line 1187 "e.y"
-{ yyval = b.list(val_peek(2), val_peek(1), val_peek(0)); }
+//#line 1203 "e.y"
+{ yyval = ConstMap.fromPairs(new Object[][]{
+	                                    { "whenBody", val_peek(2) },
+		                            { "whenCatches", val_peek(1) },
+		                            { "whenFinally", val_peek(0) }}); }
 break;
 case 306:
-//#line 1188 "e.y"
+//#line 1207 "e.y"
 { b.pocket(val_peek(0),"easy-when");
-                                     yyval = b.list(val_peek(0), null, null); }
+                                     yyval = ConstMap.fromPairs(new Object[][]{
+	                                    { "whenBody", val_peek(0) }}); }
 break;
 case 311:
-//#line 1209 "e.y"
+//#line 1229 "e.y"
 { yyval = b.list(); }
 break;
 case 312:
-//#line 1213 "e.y"
+//#line 1233 "e.y"
 { yyval = b.list(); }
 break;
 case 314:
-//#line 1222 "e.y"
+//#line 1242 "e.y"
 { b.pocket(val_peek(0),"verb-string");
                                           yyval = val_peek(0); }
 break;
 case 315:
-//#line 1230 "e.y"
+//#line 1250 "e.y"
 { b.pocket(val_peek(0),"verb-curry");
                                           yyval = val_peek(0); }
 break;
 case 316:
-//#line 1232 "e.y"
+//#line 1252 "e.y"
 { b.pocket(val_peek(0),"verb-curry");
                                           b.pocket(val_peek(0),"verb-string");
                                           yyval = val_peek(0); }
 break;
 case 317:
-//#line 1245 "e.y"
+//#line 1265 "e.y"
 { b.pocket(val_peek(0),"dot-props");
                                           yyval = val_peek(0); }
 break;
 case 318:
-//#line 1247 "e.y"
+//#line 1267 "e.y"
 { b.pocket(val_peek(0),"dot-props");
                                           yyval = val_peek(0); }
 break;
 case 319:
-//#line 1255 "e.y"
+//#line 1275 "e.y"
 { yyval = b.varName(val_peek(0)); }
 break;
 case 320:
-//#line 1256 "e.y"
+//#line 1276 "e.y"
 { b.pocket(val_peek(1),"noun-string");
                                           yyval = b.varName(val_peek(0)); }
 break;
 case 321:
-//#line 1258 "e.y"
+//#line 1278 "e.y"
 { b.pocket(val_peek(1),"noun-string");
                                           yyval = b.varName(val_peek(0)); }
 break;
 case 323:
-//#line 1267 "e.y"
+//#line 1287 "e.y"
 { b.reserved(val_peek(0),"keyword \"" +
                                      ((Astro)val_peek(0)).getTag().getTagName() +
                                      "\""); }
 break;
 case 324:
-//#line 1283 "e.y"
+//#line 1303 "e.y"
 { yyval = b.ident(val_peek(0), "add"); }
 break;
 case 325:
-//#line 1284 "e.y"
+//#line 1304 "e.y"
 { yyval = b.ident(val_peek(0), "and"); }
 break;
 case 326:
-//#line 1285 "e.y"
+//#line 1305 "e.y"
 { yyval = b.ident(val_peek(0), "approxDivide"); }
 break;
 case 327:
-//#line 1286 "e.y"
+//#line 1306 "e.y"
 { yyval = b.ident(val_peek(0), "floorDivide"); }
 break;
 case 328:
-//#line 1287 "e.y"
+//#line 1307 "e.y"
 { yyval = b.ident(val_peek(0), "shiftLeft"); }
 break;
 case 329:
-//#line 1288 "e.y"
+//#line 1308 "e.y"
 { yyval = b.ident(val_peek(0), "shiftRight"); }
 break;
 case 330:
-//#line 1289 "e.y"
+//#line 1309 "e.y"
 { yyval = b.ident(val_peek(0), "remainder"); }
 break;
 case 331:
-//#line 1290 "e.y"
+//#line 1310 "e.y"
 { yyval = b.ident(val_peek(0), "mod"); }
 break;
 case 332:
-//#line 1291 "e.y"
+//#line 1311 "e.y"
 { yyval = b.ident(val_peek(0), "multiply"); }
 break;
 case 333:
-//#line 1292 "e.y"
+//#line 1312 "e.y"
 { yyval = b.ident(val_peek(0), "or"); }
 break;
 case 334:
-//#line 1293 "e.y"
+//#line 1313 "e.y"
 { yyval = b.ident(val_peek(0), "pow"); }
 break;
 case 335:
-//#line 1294 "e.y"
+//#line 1314 "e.y"
 { yyval = b.ident(val_peek(0), "subtract"); }
 break;
 case 336:
-//#line 1295 "e.y"
+//#line 1315 "e.y"
 { yyval = b.ident(val_peek(0), "xor"); }
 break;
 case 337:
-//#line 1306 "e.y"
+//#line 1326 "e.y"
 { yyval = b.ident(val_peek(0), "add"); }
 break;
 case 338:
-//#line 1307 "e.y"
+//#line 1327 "e.y"
 { yyval = b.ident(val_peek(0), "and"); }
 break;
 case 339:
-//#line 1308 "e.y"
+//#line 1328 "e.y"
 { yyval = b.ident(val_peek(0), "approxDivide"); }
 break;
 case 340:
-//#line 1309 "e.y"
+//#line 1329 "e.y"
 { yyval = b.ident(val_peek(0), "floorDivide"); }
 break;
 case 341:
-//#line 1310 "e.y"
+//#line 1330 "e.y"
 { yyval = b.ident(val_peek(0), "shiftLeft"); }
 break;
 case 342:
-//#line 1311 "e.y"
+//#line 1331 "e.y"
 { yyval = b.ident(val_peek(0), "shiftRight"); }
 break;
 case 343:
-//#line 1312 "e.y"
+//#line 1332 "e.y"
 { yyval = b.ident(val_peek(0), "remainder"); }
 break;
 case 344:
-//#line 1313 "e.y"
+//#line 1333 "e.y"
 { yyval = b.ident(val_peek(0), "mod"); }
 break;
 case 345:
-//#line 1314 "e.y"
+//#line 1334 "e.y"
 { yyval = b.ident(val_peek(0), "multiply"); }
 break;
 case 346:
-//#line 1315 "e.y"
+//#line 1335 "e.y"
 { yyval = b.ident(val_peek(0), "or"); }
 break;
 case 347:
-//#line 1316 "e.y"
+//#line 1336 "e.y"
 { yyval = b.ident(val_peek(0), "pow"); }
 break;
 case 348:
-//#line 1317 "e.y"
+//#line 1337 "e.y"
 { yyval = b.ident(val_peek(0), "subtract"); }
 break;
 case 349:
-//#line 1318 "e.y"
+//#line 1338 "e.y"
 { yyval = b.ident(val_peek(0), "xor"); }
 break;
 case 350:
-//#line 1327 "e.y"
+//#line 1347 "e.y"
 { yyval = b.getNULL(); }
 break;
 case 351:
-//#line 1328 "e.y"
+//#line 1348 "e.y"
 { yyval = val_peek(1); }
 break;
 case 352:
-//#line 1336 "e.y"
+//#line 1356 "e.y"
 { b.pocket(val_peek(2),"accumulator");
                                                   yyval = b.accumulate(val_peek(1),val_peek(0)); }
 break;
 case 353:
-//#line 1341 "e.y"
+//#line 1361 "e.y"
 { yyval = b.accumFor(val_peek(3),val_peek(1),val_peek(0)); }
 break;
 case 354:
-//#line 1342 "e.y"
+//#line 1362 "e.y"
 { yyval = b.accumIf(val_peek(1),val_peek(0)); }
 break;
 case 355:
-//#line 1343 "e.y"
+//#line 1363 "e.y"
 { yyval = b.accumWhile(val_peek(1),val_peek(0)); }
 break;
 case 356:
-//#line 1347 "e.y"
+//#line 1367 "e.y"
 { yyval = b.accumBody(val_peek(3),
                                                                  b.list(val_peek(2))); }
 break;
 case 357:
-//#line 1349 "e.y"
+//#line 1369 "e.y"
 { yyval = b.accumBody(val_peek(3),val_peek(2)); }
 break;
 case 358:
-//#line 1350 "e.y"
+//#line 1370 "e.y"
 { yyval = val_peek(2); }
 break;
 case 359:
-//#line 1355 "e.y"
+//#line 1375 "e.y"
 { yyval = val_peek(1); }
 break;
 case 360:
-//#line 1359 "e.y"
+//#line 1379 "e.y"
 { yyval = b.vTable(val_peek(2), val_peek(1)); }
 break;
 case 361:
-//#line 1360 "e.y"
+//#line 1380 "e.y"
 { b.pocket(NO_POSER,
                                                            "plumbing");
                                                   yyval = b.vTable(null,
                                                                 b.list(val_peek(0))); }
 break;
 case 363:
-//#line 1375 "e.y"
+//#line 1395 "e.y"
 { yyval = b.with(val_peek(2), val_peek(1)); }
 break;
 case 366:
-//#line 1385 "e.y"
+//#line 1405 "e.y"
 { yyval = b.with(val_peek(2), val_peek(1)); }
 break;
 case 369:
-//#line 1402 "e.y"
+//#line 1422 "e.y"
 { yyval = b.with(val_peek(1), val_peek(0)); }
 break;
 case 370:
-//#line 1406 "e.y"
+//#line 1426 "e.y"
 { yyval = null; }
 break;
 case 371:
-//#line 1407 "e.y"
+//#line 1427 "e.y"
 { b.pocket(NO_POSER,
                                                            "escape-handler");
                                                   yyval = val_peek(0); }
 break;
 case 372:
-//#line 1413 "e.y"
+//#line 1433 "e.y"
 { yyval = b.matcher(val_peek(1), val_peek(0)); }
 break;
 case 373:
-//#line 1420 "e.y"
+//#line 1440 "e.y"
 { yyval = null; }
 break;
 case 374:
-//#line 1421 "e.y"
+//#line 1441 "e.y"
 { yyval = val_peek(0); }
 break;
 case 375:
-//#line 1431 "e.y"
+//#line 1451 "e.y"
 { yyval = b.oType("", val_peek(1), b.list(),
                                                        b.list(val_peek(0))); }
 break;
 case 376:
-//#line 1440 "e.y"
+//#line 1460 "e.y"
 { yyval = null; }
 break;
 case 377:
-//#line 1441 "e.y"
+//#line 1461 "e.y"
 { yyval = val_peek(0); }
 break;
 case 380:
-//#line 1450 "e.y"
+//#line 1470 "e.y"
 { yyval = b.list(val_peek(0)); }
 break;
 case 381:
-//#line 1451 "e.y"
+//#line 1471 "e.y"
 { yyval = b.with(val_peek(2),val_peek(0)); }
 break;
 case 383:
-//#line 1459 "e.y"
+//#line 1479 "e.y"
 { b.reserved(NO_POSER,"causality"); }
 break;
 case 384:
-//#line 1464 "e.y"
+//#line 1484 "e.y"
 { yyval = b.mType(val_peek(6), val_peek(4), val_peek(2), val_peek(0)); }
 break;
 case 385:
-//#line 1466 "e.y"
+//#line 1486 "e.y"
 { yyval = b.mType(val_peek(5), "run", val_peek(2), val_peek(0));}
 break;
 case 387:
-//#line 1474 "e.y"
+//#line 1494 "e.y"
 { b.reserved(NO_POSER,"causality"); }
 break;
 case 388:
-//#line 1478 "e.y"
+//#line 1498 "e.y"
 { yyval = b.mType("", "run", val_peek(2), val_peek(0)); }
 break;
 case 389:
-//#line 1479 "e.y"
+//#line 1499 "e.y"
 { b.pocket(val_peek(5),"one-method-object");
                                             yyval = b.mType("", val_peek(4),    val_peek(2), val_peek(0)); }
 break;
 case 390:
-//#line 1481 "e.y"
+//#line 1501 "e.y"
 {b.pocket(val_peek(5),"one-method-object");
                                             yyval = b.mType("", val_peek(4),    val_peek(2), val_peek(0)); }
 break;
 case 391:
-//#line 1486 "e.y"
+//#line 1506 "e.y"
 { yyval = val_peek(0); }
 break;
 case 392:
-//#line 1487 "e.y"
+//#line 1507 "e.y"
 { yyval = val_peek(1); }
 break;
 case 393:
-//#line 1492 "e.y"
+//#line 1512 "e.y"
 { yyval = b.list(val_peek(0)); }
 break;
 case 394:
-//#line 1493 "e.y"
+//#line 1513 "e.y"
 { yyval = b.with(val_peek(2),val_peek(0)); }
 break;
 case 395:
-//#line 1500 "e.y"
+//#line 1520 "e.y"
 { yyval = b.pType(val_peek(1),val_peek(0)); }
 break;
 case 396:
-//#line 1501 "e.y"
+//#line 1521 "e.y"
 { yyval = b.pType(null,val_peek(0)); }
 break;
 case 397:
-//#line 1502 "e.y"
+//#line 1522 "e.y"
 { yyval = b.pType(null,val_peek(0)); }
 break;
 case 398:
-//#line 1510 "e.y"
+//#line 1530 "e.y"
 { yyval = null; }
 break;
 case 399:
-//#line 1511 "e.y"
+//#line 1531 "e.y"
 { yyval = val_peek(0); }
 break;
 case 413:
-//#line 1527 "e.y"
+//#line 1547 "e.y"
 { yyval = "->"; }
 break;
-//#line 7039 "EParser.java"
+//#line 7045 "EParser.java"
 //########## END OF USER-SUPPLIED ACTIONS ##########
     }//switch
     //#### Now let's reduce... ####

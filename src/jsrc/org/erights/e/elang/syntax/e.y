@@ -568,7 +568,8 @@ docodef:
  * productions.
  */
 postdocodef:
-        defName script                  { $$ = ((ObjDecl)$2).withOName($1); }
+        defName script                  { $$ = ((ConstMap)$2).with(
+					         "oName", $1, true); }
  |      INTERFACE oName guards iDeclTail '{' br mTypeList '}'
                                         { $$ = b.oType("",$2,b.list(),
                                                        $3,$4,$7); }
@@ -585,7 +586,8 @@ postdocodef:
  *
  */
 script:
-        oDeclTail vTable                { $$ = ((ObjDecl)$1).withScript($2); }
+        oDeclTail vTable                { $$ = ((ConstMap)$1).with(
+						 "script", $2, true); }
  |      funcHead body                   { /* binds __return */
                                           $$ = b.methDecl($1, $2, true); }
  ;
@@ -965,17 +967,19 @@ defName:
  *
  */
 oDeclTail:
-        extends optAs impls             { $$ = ODECL.withExtends(b,$1)
-                                                          .withOptAs($2)
-                                                          .withImpls(b,$3);}
+        extends optAs impls             {$$=ConstMap.fromPairs(new Object[][]{
+                                              { "extends", $1 },
+                                              { "as", $2 },
+                                              { "impls", b.optExprs($3) }}); }
  ;
 
 /**
  *
  */
 iDeclTail:
-        iExtends impls                  { $$ = ODECL.withExtends(b,$1)
-                                                          .withImpls(b,$2);}
+        iExtends impls                  {$$=ConstMap.fromPairs(new Object[][]{
+                                              { "supers", b.optExprs($1) },
+                                              { "impls", b.optExprs($2) }}); }
  ;
 
 
@@ -984,8 +988,8 @@ iDeclTail:
  * to for any messages that don't match.
  */
 extends:
-        /*empty*/                       { $$ = b.list(); }
- |      EXTENDS base                    { $$ = b.list($2); }
+        /*empty*/                       { $$ = null; }
+ |      EXTENDS base                    { $$ = $2; }
  ;
 
 /**
@@ -1137,34 +1141,44 @@ throws:
  */
 whenRest:
         '(' exprList ')' br OpWhen whenTail { $$ = b.when($2, $5, $6); }
- |      '(' exprList ')' br OpWhen whenRest { b.pocket($4,"when-sequence");
+ |      '(' exprList ')' br OpWhen whenRest { b.pocket($5,"when-sequence");
                                               $$ = b.whenSeq($2, $5, $6); }
  ;
 
 /**
- * @returns [oNameDecl, optPatts, optGuard, whenBody]
+ * @returns [(=> oName,)? 
+ *           (=> whenParams,)?
+ *           (=> whenGuard,)?
+ *           ("bindReturn" => true,)?
+ *           => whenBody,
+ *           (=> whenCatches)?
+ *           (=> whenFinally)]
  */
 whenTail:
-        oName '(' patternList ')' whenGuard whenBody
+        oName '(' patternList ')' 
+              whenGuard whenBody
                                 { /* binds __return */
                                   b.pocket($1,"hard-when");
-                                  $$ = b.list(ODECL.withOName($1),
-                                              $3, $5, $6,
-                                              Boolean.TRUE); }
- |      oName                     whenGuard whenBody
+                                  $$ = ConstMap.fromPairs(new Object[][]{
+                                         { "oName", $1 },
+                                         { "whenParams", $3 },
+				         { "whenGuard", b.forValue($5, null) },
+                                         { "bindReturn", Boolean.TRUE }
+				       }).or((ConstMap)$6, true); }
+ |      oName whenGuard whenBody
                                 { /* XXX should this bind __return ?? */
                                   /* Currently, it does. */
                                   b.pocket($1,"easy-when");
                                   b.pocket($1,"hard-when");
-                                  $$ = b.list(ODECL.withOName($1),
-                                              null, $2, $3,
-                                              Boolean.TRUE); }
- |                                whenBody
-                                { /* Binds bind __return ?? */
+                                  $$ = ConstMap.fromPairs(new Object[][]{
+                                         { "oName", $1 },
+				         { "whenGuard", b.forValue($2, null) },
+                                         { "bindReturn", Boolean.TRUE }
+				       }).or((ConstMap)$3, true); }
+ |                      whenBody
+                                { /* Doesn't bind __return */
                                   b.pocket($1,"easy-when");
-                                  $$ = b.list(ODECL.withOName(b.ignoreOName()),
-                                              null, null, $1,
-                                              Boolean.FALSE); }
+                                  $$ = $1; }
  ;
 
 whenGuard:
@@ -1181,12 +1195,18 @@ whenGuard:
  * expands to
  * <pre>    when ... -> ... { ... } catch ex { throw(ex) }</pre>
  *
- * @returns [body, optCatches, optFinally]
+ * @returns [=> whenBody,
+ *           (=> whenCatches)?
+ *           (=> whenFinally)]
  */
 whenBody:
-        body catches finallyClause { $$ = b.list($1, $2, $3); }
+        body catches finallyClause { $$ = ConstMap.fromPairs(new Object[][]{
+	                                    { "whenBody", $1 },
+		                            { "whenCatches", $2 },
+		                            { "whenFinally", $3 }}); }
  |      body                       { b.pocket($1,"easy-when");
-                                     $$ = b.list($1, null, null); }
+                                     $$ = ConstMap.fromPairs(new Object[][]{
+	                                    { "whenBody", $1 }}); }
  ;
 
 
@@ -2249,11 +2269,6 @@ static {
 static public int continueCount(int tagCode) {
     return TheContinuers[tagCode];
 }
-
-/**
- *
- */
-static private final ObjDecl ODECL = ObjDecl.EMPTY;
 
 /**
  * Used to mark places where we should be providing a poser (an object

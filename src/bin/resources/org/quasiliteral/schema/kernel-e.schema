@@ -7,44 +7,45 @@
 
 
 <e> ::=
-     assign(<noun>,<e>)                      # noun := e
-  |  call(<e>,<verb>,[<e>*])                 # e.verb(<e>**,)
-  |  def(<p>,<e>?,<e>)                       # def p <exit e1>? := e2
-  |  escape(<p>,<e>,(<p>,<e>)?)              # escape p1 {e1} <catch p2 {e2}>?
-  |  hide(<e>)                               # {e}
-  |  if(<e>,<e>,<e>)                         # if (e1) {e2} else {e3}
-  |  quote(.char.|.int.|.float64.|.String.)  # String|Char|Integer|Float64
-  |  noun(<noun>)                            # noun
-  |  object(<comment>,<oname>,[<e>*],<script>)
-                                # comment def oname <implements <e>++,>? script
-  |  metaState()                             # meta.getState()
-  |  metaContext()                           # meta.context()
-  |  seq(<e>,<e>+)                           # e1; e2
-  |  slot(<noun>)                            # &noun
-  |  catch(<e>,<p>,<e>)                      # try {e1} catch p {e2}
-  |  finally(<e>,<e>);                       # try {e1} finally {e2}
+     assign(<noun>,<e>)                     # noun := e
+  |  call(<e>,<verb>,[<e>*])                # e1.verb(e2**,)
+  |  def(<p>,<e>?,<e>)                      # def p <exit e1>? := e2
+  |  escape(<p>,<e>,(<p>,<e>)?)             # escape p1 {e1} <catch p2 {e2}>?
+  |  hide(<e>)                              # {e}
+  |  if(<e>,<e>,<e>)                        # if (e1) {e2} else {e3}
+  |  quote(.char.|.int.|.float64.|.String.) # String|Char|Integer|Float64
+  |  noun(<noun>)                           # noun
+  |  object(<comment>,<oname>,<auditors>,<script>)
+                                            # comment def oname auditors script
+  |  metaState()                            # meta.getState()
+  |  metaContext()                          # meta.context()
+  |  seq(<e>,<e>+)                          # e1; e2
+  |  binding(<noun>)                        # &&noun
+  |  catch(<e>,<p>,<e>)                     # try {e1} catch p {e2}
+  |  finally(<e>,<e>);                      # try {e1} finally {e2}
 
 <p> ::=
      <oname>
-  |  guardP(<oname>, <e>)                    # oname <:e>
-  |  listP([<p>*])                           # [<p>**,]
-  |  viaP(<e>,<p>);                          # via (e) p
+  |  guardP(<oname>, <e>)                   # oname :e
+  |  listP([<p>*])                          # [p**,]
+  |  viaP(<e>,<p>);                         # via (e) p
 <oname> ::=
-     finalP(<noun>)                          # noun
-  |  varP(<noun>)                            # var noun
-  |  slotP(<noun>)                           # &noun
-  |  ignoreP();                              # _
+     finalP(<noun>)                         # noun
+  |  varP(<noun>)                           # var noun
+  |  bindingP(<noun>)                       # &&noun
+  |  ignoreP();                             # _
 
+<auditors> ::= (<e>?,[<e>*])                # <as e1>? <implements e2++,>?
 <script> ::=
-     <matcher>                               # matcher
-  |  dispatch([<method>*], [<matcher>*]);    # {<method>* <matcher>*}
-<matcher> ::= matcher(<p>,<e>);              # match p {e}
+     <matcher>                              # matcher
+  |  dispatch([<method>*], [<matcher>*]);   # {method* matcher*}
+<matcher> ::= matcher(<p>,<e>);             # match p {e}
 <method> ::= method(<comment>,<verb>,[<p>*],<e>?,<e>);
-                                      # comment method verb(<p>**,) <:e1>? {e2}
+                                        # comment method verb(p**,) <:e1>? {e2}
 
-<verb> ::= .String.;                         # Ident | String
-<noun> ::= .String.;                         # Ident | ::String
-<comment> ::= .String.;                      # </** ... */>?
+<verb> ::= .String.;                        # Ident | String
+<noun> ::= .String.;                        # Ident | ::String
+<comment> ::= .String.;                     # </** ... */>?
 
 
 # i + j

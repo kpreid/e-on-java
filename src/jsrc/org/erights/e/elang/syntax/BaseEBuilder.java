@@ -183,14 +183,14 @@ public interface BaseEBuilder {
     EExpr tryx(Object eExpr, Object optCatchers, Object optFinally);
 
     /**
-    *
-    */
-   EExpr slotExpr(Object poser, Object eExpr);
+     *
+     */
+    EExpr slotExpr(Object poser, Object eExpr);
 
-   /**
-    *
-    */
-   EExpr bindingExpr(Object poser, Object eExpr);
+    /**
+     *
+     */
+    EExpr bindingExpr(Object poser, Object eExpr);
 
     /**
      *
@@ -203,14 +203,14 @@ public interface BaseEBuilder {
     Pattern varPattern(Object atom, Object optGuardExpr);
 
     /**
-    *
-    */
-   Pattern slotPattern(Object atom, Object optGuardExpr);
+     *
+     */
+    Pattern slotPattern(Object atom, Object optGuardExpr);
 
-   /**
-    *
-    */
-   Pattern bindingPattern(Object atom);
+    /**
+     *
+     */
+    Pattern bindingPattern(Object atom);
 
     /**
      *

@@ -16,6 +16,7 @@ import org.erights.e.elang.evm.QuasiPatternExpr;
 import org.erights.e.elang.evm.QuasiPatternPatt;
 import org.erights.e.elang.evm.StaticScope;
 import org.erights.e.elang.scope.ScopeLayout;
+import org.erights.e.elib.tables.ConstMap;
 import org.quasiliteral.astro.Astro;
 
 /**
@@ -466,7 +467,7 @@ public interface EBuilder extends BaseEBuilder {
     /**
      * For defining an eScript that consists of exactly one method
      */
-    ObjDecl methDecl(Object msgPatt, Object bodyExpr, boolean bindReturn);
+    ConstMap methDecl(Object msgPatt, Object bodyExpr, boolean bindReturn);
 
     /**
      * Expands<pre>
@@ -474,7 +475,7 @@ public interface EBuilder extends BaseEBuilder {
      * to<pre>
      *     def _ { method run(params) { bodyExpr }}</pre>
      */
-    ObjDecl fnDecl(Object poser, Object params, Object bodyExpr);
+    ConstMap fnDecl(Object poser, Object params, Object bodyExpr);
 
     /**
      * Expands<pre>

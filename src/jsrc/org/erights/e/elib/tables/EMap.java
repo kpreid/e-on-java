@@ -377,11 +377,19 @@ public abstract class EMap implements EPrintable, Persistent, EIteratable {
      *
      * @param key      nullOk;
      * @param newValue nullOk;
+     * @param strict Only allows new keys
+     */
+    public ConstMap with(Object key, Object newValue, boolean strict) {
+        FlexMap flex = diverge();
+        flex.put(key, newValue, strict);
+        return flex.snapshot();
+    }
+
+    /**
+     * Like {@link #with(Object, Object)} but defaults strict to false
      */
     public ConstMap with(Object key, Object newValue) {
-        FlexMap flex = diverge();
-        flex.put(key, newValue);
-        return flex.snapshot();
+        return with(key, newValue, false);
     }
 
     /**
@@ -394,11 +402,19 @@ public abstract class EMap implements EPrintable, Persistent, EIteratable {
      * backward deltas.
      *
      * @param key nullOk;
+     * @param strict Requires key to be present
+     */
+    public ConstMap without(Object key, boolean strict) {
+        FlexMap flex = diverge();
+        flex.removeKey(key, strict);
+        return flex.snapshot();
+    }
+
+    /**
+     * Like {@link #without(Object, boolean)} but defaults strict to false.
      */
     public ConstMap without(Object key) {
-        FlexMap flex = diverge();
-        flex.removeKey(key);
-        return flex.snapshot();
+        return without(key, false);
     }
 
     /**

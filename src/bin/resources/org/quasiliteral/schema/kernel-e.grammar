@@ -14,11 +14,11 @@ e ::=
   |  "{" e=1 "}"                                                -> hide
   |  e=1 ";" e=2++";"                                           -> seq
   |  noun=1                                                     -> noun
-  |  "&" noun=1                                                 -> slot
+  |  "&&" noun=1                                                -> binding
   |  "if" "(" e=1 ")" "{" e=2 "}" "else" "{" e=3 "}"            -> if
   |  "try" "{" e=1 "}" "catch" p=2 "{" e=3 "}"                  -> catch
   |  "try" "{" e=1 "}" "finally" "{" e=2 "}"                    -> finally
-  |  comment=1 "def" oname=2 ("implements" e=3++",")? script=4  -> object
+  |  comment=1 "def" oname=2 auditors=3 script=4                -> object
   |  "meta" "." "context" "(" ")"                               -> metaContext
   |  "meta" "." "getState" "(" ")"                              -> metaState;
 
@@ -29,9 +29,10 @@ p ::=
 oname ::=
      noun=1                                                     -> finalP
   |  "var" noun=1                                               -> varP
-  |  "&" noun=1                                                 -> slotP
+  |  "&&" noun=1                                                -> bindingP
   |  "_"                                                        -> ignoreP;
-
+  
+auditors ::= ("as" e=1)? ("implements" e=2++",")?               -> auditors
 script ::=
      matcher
   |  "{" method=1* matcher=2* "}"                               -> script;
