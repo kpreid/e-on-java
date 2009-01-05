@@ -6,6 +6,7 @@ pragma.syntax("0.8")
 # found at http://www.opensource.org/licenses/mit-license.html ................
 
 def AtomicExpr     := <type:org.erights.e.elang.evm.AtomicExpr>
+def AuditorExprs   := <type:org.erights.e.elang.evm.AuditorExprs>
 def EExpr          := <type:org.erights.e.elang.evm.EExpr>
 def EMatcher       := <type:org.erights.e.elang.evm.EMatcher>
 def EMethod        := <type:org.erights.e.elang.evm.EMethod>
@@ -132,14 +133,21 @@ def makeConvertENode2Term() :any {
         to visitObjectExpr(optOriginal :nullOk[ENode],
                            docComment :String,
                            oName :GuardedPattern,
-                           auditors :List[EExpr],
+                           auditors :AuditorExprs,
                            eScript :EScript) :Term {
             require(null == oName.getOptGuardExpr(),
                     fn{`Can't guard object definition variable: $oName`})
             return term`object($docComment,
                                ${convert(oName)},
-                               [${convert(auditors)}*],
+                               ${convert(auditors)},
                                ${convert(eScript)})`
+        }
+        
+        to visitAuditorExprs(optOriginal :nullOk[ENode],
+                             optAs :nullOk[EExpr],
+                             impls :List[EExpr]) :Term {
+            return term`auditors(${convert(optAs)},
+                                 [${convert(impls)}*])`
         }
 
         to visitMetaStateExpr(optOriginal :nullOk[ENode]) :Term {
@@ -160,6 +168,13 @@ def makeConvertENode2Term() :any {
             # XXX Deal with noun as quasi
             def varName := noun.asNoun().getName()
             return term`slot($varName)`
+        }
+
+        to visitBindingExpr(optOriginal :nullOk[ENode],
+                            noun :AtomicExpr) :Term {
+            # XXX Deal with noun as quasi
+            def varName := noun.asNoun().getName()
+            return term`binding($varName)`
         }
 
         to visitCatchExpr(optOriginal :nullOk[ENode],
@@ -208,6 +223,11 @@ def makeConvertENode2Term() :any {
                             nounExpr :AtomicExpr,
                             optGuardExpr :nullOk[EExpr]) :Term {
             return guardPatt(term`slotP`, nounExpr, optGuardExpr)
+        }
+
+        to visitBindingPattern(optOriginal :nullOk[ENode],
+                               nounExpr :AtomicExpr) :Term {
+            return guardPatt(term`bindingP`, nounExpr, null)
         }
 
         to visitIgnorePattern(optOriginal :nullOk[ENode],

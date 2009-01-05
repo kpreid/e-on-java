@@ -35,7 +35,7 @@
   |  bindingP(<noun>)                       # &&noun
   |  ignoreP();                             # _
 
-<auditors> ::= (<e>?,[<e>*])                # <as e1>? <implements e2++,>?
+<auditors> ::= auditors(<e>?,[<e>*])        # <as e1>? <implements e2++,>?
 <script> ::=
      <matcher>                              # matcher
   |  dispatch([<method>*], [<matcher>*]);   # {method* matcher*}

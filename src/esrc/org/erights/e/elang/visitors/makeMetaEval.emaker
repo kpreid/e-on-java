@@ -7,6 +7,7 @@ pragma.syntax("0.9")
 
 def Throwable     := <type:java.lang.Throwable>
 def AtomicExpr    := <type:org.erights.e.elang.evm.AtomicExpr>
+def AuditorExprs  := <type:org.erights.e.elang.evm.AuditorExprs>
 def EExpr         := <type:org.erights.e.elang.evm.EExpr>
 def EMatcher      := <type:org.erights.e.elang.evm.EMatcher>
 def EMethod       := <type:org.erights.e.elang.evm.EMethod>
@@ -111,6 +112,11 @@ def makeMetaEval(AuditionStamp) :any {
             to visitSlotExpr(_,
                              noun :AtomicExpr) :EvalResult {
                 return [getSlot(ctx, noun.getName()), ctx]
+            }
+
+            to visitBindingExpr(_,
+                                noun :AtomicExpr) :EvalResult {
+                throw("XXX bind expr not yet implemented")
             }
 
             to visitCallExpr(_,
@@ -219,7 +225,7 @@ def makeMetaEval(AuditionStamp) :any {
             to visitObjectExpr(original :ObjectExpr,
                                docComment :String,
                                qualifiedName :String,
-                               auditorExprs :List[EExpr],
+                               auditorExprs :AuditorExprs,
                                eScript :EScript) :EvalResult {
                 var approvers := []
                 def audition implements AuditionStamp {
@@ -231,7 +237,7 @@ def makeMetaEval(AuditionStamp) :any {
                     to getSource() :ObjectExpr { return original }
                 }
                 var c1 := ctx
-                for auditorExpr in auditorExprs {
+                for auditorExpr in auditorExprs.getAll() {
                     def [auditor :Auditor, c2] := eval(auditorExpr, c1)
                     c1 := c2
                     audition.ask(auditor)
@@ -301,6 +307,11 @@ def makeMetaEval(AuditionStamp) :any {
                                 optGuardExpr :nullOk[EExpr]) :Context {
                 def [slot, c1] := coercedSpecimen(optGuardExpr)
                 return withSlot(c1, nounExpr.getName(), slot, original)
+            }
+
+            to visitBindingPattern(original :SlotPattern,
+                                   nounExpr :AtomicExpr) :Context {
+                throw("XXX binding pattern not yet implemented")
             }
 
             to visitIgnorePattern(_,
