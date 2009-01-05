@@ -152,9 +152,6 @@ function jpush {
 }
 
 jpush "-Xfuture"
-if [ "$OSDIR" = "mac" ]; then
-    jpush "-XstartOnFirstThread"
-fi
 jpush "-De.home=${EHOME}"
 
 # Note that the java.library.path must be provided on the command line
@@ -222,6 +219,16 @@ while [ $(($# >= 1)) = 1 ]; do
                       break;;
     esac
 done
+
+# XXX kludge: For SWT to work on the Mac (starting with OS X 10.5), we
+# need the -XstartOnFirstThread flag for some reason. However, this
+# flag is incompatible with AWT on the Mac for some reason, so we use
+# it only if the FNAME extension is e-swt and we're on a Mac
+if [ "${FNAME[@]##*.}" = "e-swt" ]; then
+    if [ "$OSDIR" = "mac" ]; then
+        jpush "-XstartOnFirstThread"
+    fi
+fi
 
 CMD=("${JCMD}" -cp "${EPATH}" "${JOPTS[@]}" \
     org.erights.e.elang.interp.Rune "${EOPTS[@]}" \
