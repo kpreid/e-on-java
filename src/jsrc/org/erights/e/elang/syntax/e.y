@@ -588,8 +588,10 @@ postdocodef:
 script:
         oDeclTail vTable                { $$ = ((ConstMap)$1).with(
 						 "script", $2, true); }
- |      funcHead body                   { /* binds __return */
-                                          $$ = b.methDecl($1, $2, true); }
+ |      funcHead auditors body          { /* binds __return */
+                                          $$ = ((ConstMap)$2).
+                                                 or(b.methDecl($1, $3, true), 
+                                                    true); }
  ;
 
 
@@ -967,10 +969,8 @@ defName:
  *
  */
 oDeclTail:
-        extends optAs impls             {$$=ConstMap.fromPairs(new Object[][]{
-                                              { "extends", $1 },
-                                              { "as", $2 },
-                                              { "impls", b.optExprs($3) }}); }
+        extends auditors                { $$ = ((ConstMap)$2).
+                                                 with("extends", $1, true); }
  ;
 
 /**
@@ -1007,6 +1007,11 @@ iExtendsList:
 /**
  * The list of auditors.
  */
+auditors:
+        optAs impls                     {$$=ConstMap.fromPairs(new Object[][]{
+                                              { "as", $1 },
+                                              { "impls", b.optExprs($2) }}); }
+ ;
 optAs:
         /*empty*/                       { $$ = null; }
  |      AS base                         { $$ = $2; }
@@ -1081,18 +1086,14 @@ methHead:
  * Appears in "function" definition
  */
 funcHead:
-                 '(' paramList ')' funcNeck
+                 '(' paramList ')' resultGuard
                                         { $$ = b.methHead($1,"run", $2, $4);}
- |      TO  verb '(' paramList ')' funcNeck
+ |      TO  verb '(' paramList ')' resultGuard
                                         { b.pocket($1,"one-method-object");
                                           $$ = b.methHead($2, $4, $6); }
- |      '.' verb '(' paramList ')' funcNeck
+ |      '.' verb '(' paramList ')' resultGuard
                                         { b.pocket($1,"one-method-object");
                                           $$ = b.methHead($2, $4, $6); }
- ;
-
-funcNeck:
-        resultGuard optAs impls
  ;
 
 /**

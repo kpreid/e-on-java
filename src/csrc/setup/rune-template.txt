@@ -220,11 +220,13 @@ while [ $(($# >= 1)) = 1 ]; do
     esac
 done
 
+FNAME1="{$FNAME[@]}"
+
 # XXX kludge: For SWT to work on the Mac (starting with OS X 10.5), we
 # need the -XstartOnFirstThread flag for some reason. However, this
 # flag is incompatible with AWT on the Mac for some reason, so we use
 # it only if the FNAME extension is e-swt and we're on a Mac
-if [ "${FNAME[@]##*.}" = "e-swt" ]; then
+if [ "${FNAME1##*.}" = "e-swt" ]; then
     if [ "$OSDIR" = "mac" ]; then
         jpush "-XstartOnFirstThread"
     fi
