@@ -6,13 +6,11 @@ pragma.syntax("0.8")
 # found at http://www.opensource.org/licenses/mit-license.html ................
 
 def makeSelectionModel() :near {
-    var optCurrentEdge := null
     def observers := [].diverge()
     def selectionModel {
-        to setOptEdge(optEdge) :void {
-            optCurrentEdge := optEdge
+        to setOptElement(optElement) :void {
             for observer in observers {
-                observer <- edgeSelected(optEdge)
+                observer <- elementSelected(optElement)
             }
         }
         to addObserver(observer) :void {

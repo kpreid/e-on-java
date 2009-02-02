@@ -98,17 +98,11 @@ def viewerAuthor(<file>, <jar>, makers,
                                            selectionModel, vatMap)
         
         # top-left
-        # Map [VatName, List[EventArc]]
-        def poModel := [].asMap().diverge()
-        for i in 0 ..! vatSet.size() {
-            def poList := model.getOrdered(vatSet[i])
-            if (poList != []) {
-                poModel[vatSet[i]] := poList
-            }
-        }
+        # Map [VatName, List[TurnNode]]
+        def poModel := model.getPOMap()
         def pov := makeProcessOrderView(swtSideToSide, palette,
                                         abstractAction,
-                                        poModel.snapshot(), selectionModel,
+                                        poModel, selectionModel,
                                         vatMap, stackWalker)
         
         # top-middle

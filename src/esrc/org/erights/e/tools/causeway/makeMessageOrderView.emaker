@@ -54,11 +54,9 @@ def buildTree(swtParent, palette,
     watcher.see(edge)
     
     def swtItem := <widget:makeTreeItem>(swtParent, 0)
-    
     itemToModelMap.put([swtItem, ndx], edge, true)
     modelToItemMap.put(edge, [swtItem, ndx], true)
-    
-    graphWalker.labelArcItem(vatMap, edge, swtItem)
+    graphWalker.labelItem(vatMap, edge, swtItem)
     
     var doKids :boolean := true
     # check for multiple senders
@@ -76,7 +74,15 @@ def buildTree(swtParent, palette,
     }
     
     if (doKids) {
-        for ge => _ in edge.getTarget().outs() {
+        def target := edge.getTarget()
+        if (target.getID()[0] == "bottom") { return }
+        
+        def swtGotItem := <widget:makeTreeItem>(swtItem, 0)
+        itemToModelMap.put([swtGotItem, ndx], target, true)
+        modelToItemMap.put(target, [swtGotItem, ndx], true)
+        graphWalker.labelItem(vatMap, target, swtGotItem)
+        
+        for ge => _ in target.outs() {
             buildTree(swtItem, palette,
                       ge, ndx,
                       vatMap, graphWalker,
@@ -105,8 +111,8 @@ def makeMOPane(swtParent, palette,
     def swtSelectionListener {
         to widgetSelected(swtEvent) :void {
             def swtItem := swtEvent.getItem()
-            def edge := itemToModelMap.fetch([swtItem, ndx], fn{})
-            selectionModel.setOptEdge(edge)
+            def element := itemToModelMap.fetch([swtItem, ndx], fn{})
+            selectionModel.setOptElement(element)
         }
         to widgetDefaultSelected(swtEvent) :void {}
     }
@@ -164,8 +170,8 @@ def makeMessageOrderView(swtParent, palette,
     }
     
     def selectionObserver {
-        to edgeSelected(optEdge) :void {
-            def tabbedItem := modelToItemMap.fetch(optEdge, fn{})
+        to elementSelected(optElement) :void {
+            def tabbedItem := modelToItemMap.fetch(optElement, fn{})
             if (tabbedItem != null) {
                 def [swtItem, ndx] := tabbedItem
                 swtFolder.setSelection(ndx)

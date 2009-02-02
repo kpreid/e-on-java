@@ -27,6 +27,8 @@ def templateArc(self, var origin, var target) :near {
     
     def baseArc extends
       templateGraphElement(self, target, tni, origin, ono) {
+
+        to isNode() :boolean { return false }
         
         to getOrigin() :any { return origin }
         to getTarget() :any { return target }

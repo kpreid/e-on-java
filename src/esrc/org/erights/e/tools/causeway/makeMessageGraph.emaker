@@ -130,7 +130,7 @@ def walkDots(edge, textWriter, palette,
     textWriter.println(`"[$oname, $oturn]" [color=$ocolor fontcolor=$ocolor];`)
     textWriter.println(`"[$tname, $tturn]" [color=$tcolor fontcolor=$tcolor];`)
     
-    var ep := graphWalker.getEdgePart(edge)
+    var ep := graphWalker.getElementLabel(edge)
     if (null == ep) {
         ep := "[]"
     }
@@ -191,12 +191,19 @@ def makeMessageGraph(traceline) :near {
     
     def mkTurnNode(id :UTurn) :near {
         var tag :String := ""
+        var sendContext := ""
+        var sendStack := []
+        def logs := [].diverge()
         
         def turnNode extends templateNode(turnNode, id) {
+
+            # A node's origin is itself.
+            to getOrigin() :near {
+                return turnNode
+            }
             
             to getVatName() :VatName {
-                id =~ [name, _]
-                return name
+                return id[0]
             }
             
             to tagWith(name :String) :void {
@@ -206,6 +213,26 @@ def makeMessageGraph(traceline) :near {
                 return name == tag
             }
             
+            to getContext() :Tuple[SendingContext, Stack] {
+                return [sendContext, sendStack]
+            }
+            to setSendContext(sendCtx :SendingContext, sendStk :Stack) :void {
+                sendContext := sendCtx
+                sendStack := sendStk
+            }
+            
+            to getLogFiles() :List {
+                return logs.snapshot()
+            }
+            to addLogFile(optSpan) :void {
+                if (null != optSpan) {
+                    logs.push(optSpan)
+                }
+            }
+            
+            to getOptText() :nullOk[String] {
+                return null
+            }
             to __printOn(out :TextWriter) :void {
                 out.print(id)
             }
@@ -215,8 +242,7 @@ def makeMessageGraph(traceline) :near {
     def mkEventArc(origin :near,
                    target :near,
                    var sendContext :SendingContext,
-                   var sendStack :Stack,
-                   var gotStack :Stack) :near {
+                   var sendStack :Stack) :near {
         var anchor :int := 0
         def logs := [].diverge()
         var why :String := ""
@@ -225,17 +251,11 @@ def makeMessageGraph(traceline) :near {
         
         def eventArc extends templateArc(eventArc, origin, target) {
             to getContext() :Tuple[SendingContext, Stack] {
-                return [sendContext, gotStack + sendStack]
-            }
-            to hasGotStack() :boolean {
-                return gotStack.size() >= 1
+                return [sendContext, sendStack]
             }
             to setSendContext(sendCtx :SendingContext, sendStk :Stack) :void {
                 sendContext := sendCtx
                 sendStack := sendStk
-            }
-            to setGotContext(gotStk :Stack) :void {
-                gotStack := gotStk
             }
             
             to getAnchor() :int { return anchor }
@@ -294,10 +314,9 @@ def makeMessageGraph(traceline) :near {
         to makeEventArc(origin :near,
                         target :near,
                         sendContext :SendingContext,
-                        sendStack :Stack,
-                        gotStack :Stack) :near {
+                        sendStack :Stack) :near {
             return mkEventArc(origin, target,
-                              sendContext, sendStack, gotStack)
+                              sendContext, sendStack)
         }
         
         to optGet(id) :near { return dag.optGet(id) }

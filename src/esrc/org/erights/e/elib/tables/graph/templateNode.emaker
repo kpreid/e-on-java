@@ -20,6 +20,8 @@ def templateNode(self, id) :near {
     
     def baseNode extends templateGraphElement(self) {
         
+        to isNode() :boolean { return true }
+        
         to getID() :any { return id }
         
         /**

@@ -19,59 +19,22 @@ def makeOutlineView := <import:org.erights.e.tools.causeway.makeOutlineView>
 def itemToModelMap := [].asMap().diverge()
 def modelToItemMap := [].asMap().diverge()
 
-def getNestedEdges(origin, edges, offset) :List {
-    def nested := [].diverge()
-    
-    for i in offset ..! edges.size() {
-        def edge := edges[i]
-        if (edge != null) {
-            if (edge.getOrigin() == origin) {
-                nested.push(edge)
-            } else {
-                return nested.snapshot()
-            }
-        }
-    }
-    return nested.snapshot()
-}
-
-def buildTreeItems(swtParent, origin, edges, ndx,
-                   vatMap, graphWalker) : void {
-    
-    # Make tree item for origin.
+def buildTreeItem(swtParent, element, ndx, vatMap, graphWalker) :near {
     def swtItem := <widget:makeTreeItem>(swtParent, 0)
-    graphWalker.labelNodeItem(vatMap, origin, swtItem)
-    
-    for i in 0 ..! edges.size() {
-        
-        def edge := edges[i]
-        
-        # Make nested tree item for edge.
-        def swtNestedItem := <widget:makeTreeItem>(swtItem, 0)
-        
-        itemToModelMap.put([swtNestedItem, ndx], edge, true)
-        modelToItemMap.put(edge, [swtNestedItem, ndx], true)
-        
-        graphWalker.labelArcItem(vatMap, edge, swtNestedItem)
-    }
+    itemToModelMap.put([swtItem, ndx], element, true)
+    modelToItemMap.put(element, [swtItem, ndx], true)
+    graphWalker.labelItem(vatMap, element, swtItem)
+    return swtItem
 }
 
 def buildTree(swtParent, poList, ndx,
               vatMap, graphWalker) :void {
     
-    var i := 0
-    while (i < poList.size()) {
-        
-        def edge := poList[i]
-        if (edge != null) {
-            def origin := edge.getOrigin()
-            # edges will contain at least one edge
-            def edges := getNestedEdges(origin, poList, i)
-            buildTreeItems(swtParent, origin, edges, ndx,
-                           vatMap, graphWalker)
-            i += edges.size()
-        } else {
-            i := i +1
+    for node in poList {
+        def swtNodeItem := buildTreeItem(swtParent, node, 
+                                         ndx, vatMap, graphWalker)
+        for edge => _ in node.outs() {
+            buildTreeItem(swtNodeItem, edge, ndx, vatMap, graphWalker)
         }
     }
 }
@@ -89,8 +52,8 @@ def makePOPane(swtParent, poList, ndx,
     def swtSelectionListener {
         to widgetSelected(swtEvent) :void {
             def swtItem := swtEvent.getItem()
-            def edge := itemToModelMap.fetch([swtItem, ndx], fn{})
-            selectionModel.setOptEdge(edge)
+            def element := itemToModelMap.fetch([swtItem, ndx], fn{})
+            selectionModel.setOptElement(element)
         }
         to widgetDefaultSelected(swtEvent) :void {}
     }
@@ -133,7 +96,7 @@ def makeProcessOrderView(swtParent, palette,
     
     def tabKeeper := [].diverge()
     
-    # Map [VatName, List[EventArc]]
+    # Map [VatName, List[TurnNode]]
     for vatName => poList in poModel {
         
         def swtTab := <widget:makeTabItem>(swtFolder, 0)
@@ -148,8 +111,8 @@ def makeProcessOrderView(swtParent, palette,
     }
     
     def selectionObserver {
-        to edgeSelected(optEdge) :void {
-            def tabbedItem := modelToItemMap.fetch(optEdge, fn{})
+        to elementSelected(optElement) :void {
+            def tabbedItem := modelToItemMap.fetch(optElement, fn{})
             if (tabbedItem != null) {
                 def [swtItem, ndx] := tabbedItem
                 swtFolder.setSelection(ndx)

@@ -198,6 +198,7 @@ def makeCausewayModel(var rootDirName :String,
                              ("text" : @{comment :List[String]})?,
                              "trace" : { "calls" : [@stack*] }
                            }` {
+                    if (message =~ `@_-return`) { continue }
                     
                     def origin := getOrMakeTurnNode(name, turn)
                     
@@ -215,7 +216,7 @@ def makeCausewayModel(var rootDirName :String,
                         
                         edge := graph.makeEventArc(origin, bottom,
                                                    "org.ref_send.log.Sent",
-                                                   entries, [])
+                                                   entries)
                         edge.setAnchor(anchor)
                         edge.addLogFile(optSpan)
                         msgMap[message] := edge
@@ -258,6 +259,7 @@ def makeCausewayModel(var rootDirName :String,
                              ("text" : @{comment :List[String]})?,
                              "trace" : { "calls" : [@stack*] }
                            }` {
+                    if (message =~ `@_-return`) { continue }
                     
                     def origin := getOrMakeTurnNode(name, turn)
                     
@@ -275,7 +277,7 @@ def makeCausewayModel(var rootDirName :String,
                         
                         edge := graph.makeEventArc(origin, bottom,
                                                    "org.ref_send.log.SentIf",
-                                                   entries, [])
+                                                   entries)
                         edge.setAnchor(anchor)
                         edge.addLogFile(optSpan)
                         msgMap[message] := edge
@@ -319,11 +321,9 @@ def makeCausewayModel(var rootDirName :String,
                              "message" : @{message :String},
                              "trace" : { "calls" : [@stack*] }
                            }` {
+                    if (message =~ `@_-return`) { continue }
                     
                     def target := getOrMakeTurnNode(name, turn)
-                    
-                    # Create E Stack object, possibly empty, from term tree.
-                    def entries := parseStack(stack)
                     
                     var edge := msgMap.fetch(message, fn{null})
                     if (edge == null) {
@@ -335,7 +335,7 @@ def makeCausewayModel(var rootDirName :String,
                         
                         edge := graph.makeEventArc(top, target,
                                                    "org.ref_send.log.Got",
-                                                   [], entries)
+                                                   [])
                         edge.addLogFile(optSpan)
                         msgMap[message] := edge
                         
@@ -348,12 +348,17 @@ def makeCausewayModel(var rootDirName :String,
                         
                         if (edge.getTarget() == bottom) {
                             edge.setTarget(target)
-                            edge.setGotContext(entries)
                             edge.addLogFile(optSpan)
                         } else {
                             traceline(`target conflict for $message (Got)`)
                         }
                     }
+                    
+                    
+                    # Create E Stack object, possibly empty, from term tree.
+                    def entries := parseStack(stack)
+                    target.setSendContext("org.ref_send.log.Got", entries)
+                    target.addLogFile(optSpan)
                 }
                 
                 match term`{ "$$" : [ "org.ref_send.log.Resolved",
@@ -385,7 +390,7 @@ def makeCausewayModel(var rootDirName :String,
                     
                     def edge := graph.makeEventArc(origin, bottom,
                                                    "org.ref_send.log.Comment",
-                                                   entries, [])
+                                                   entries)
                     edge.setAnchor(anchor)
                     edge.addLogFile(optSpan)
                     
@@ -429,7 +434,7 @@ def makeCausewayModel(var rootDirName :String,
                     
                     def edge := graph.makeEventArc(origin, target,
                                                    "org.ref_send.log.Resolved",
-                                                   entries, [])
+                                                   entries)
                     edge.setAnchor(anchor)
                 }
             }
@@ -439,7 +444,7 @@ def makeCausewayModel(var rootDirName :String,
     def roots := graph.getRoots()
     for r in roots {
         if (r != top) {
-            graph.makeEventArc(top, r, "", [], [])
+            graph.makeEventArc(top, r, "", [])
         }
     }
     
@@ -540,34 +545,34 @@ def makeCausewayModel(var rootDirName :String,
     }
     sortTree(top)
     
-    # Map[VatName, Map[Tuple[Turn, Anchor], EventArc]]
+    # Map[VatName, Map[Turn, TurnNode]]
     def ordered := [].asMap().diverge()
     
-    def orderEdges(root) :void {
-        def seen := [].asSet().diverge()
+    def orderNodes(root) :void {
+        def seen := [bottom].asSet().diverge()
         
-        # Add the edge to the process-order list.
-        # Sent anchor numbers define order.
-        def storeEdges(node) :void {
+        # Add the nodes to the process-order list.
+        def storeNodes(node) :void {
             if (seen.contains(node)) { return }
             seen.addElement(node)
-            
-            for edge => target in node.outs() {
-                def [vatName, turn] := node.getID()
-                def anchorPair := [turn, edge.getAnchor()]
-                def poMap := ordered.fetch(vatName, fn{[].asMap().diverge()})
-                ordered[vatName] := poMap
-                poMap[anchorPair] := edge
-                storeEdges(target)
+            def [vatName, turn] := node.getID()
+            def map := ordered.fetch(vatName, fn{[].asMap().diverge()})
+            ordered[vatName] := map
+            map[turn] := node
+
+            for target in node.outs() {
+                storeNodes(target)
             }
         }
-        storeEdges(root)
-        for name => poMap in ordered {
+        for sub in root.outs() {
+            storeNodes(sub)
+        }
+        for name => map in ordered {
             # each vatName is mapped to a sorted list of events
-            ordered[name] := poMap.sortKeys()
+            ordered[name] := map.sortKeys()
         }
     }
-    orderEdges(top)
+    orderNodes(top)
     
     def causewayModel {
         
@@ -579,9 +584,13 @@ def makeCausewayModel(var rootDirName :String,
             return vatMap.getKeys().snapshot()
         }
         
-        to getOrdered(vatName :String) :List {
-            def poMap := ordered.fetch(vatName, fn{[].asMap()})
-            return poMap.getValues()
+        # Map[VatName, List[TurnNode]]
+        to getPOMap() :Map {
+            def result := [].asMap().diverge()
+            for vatName => map in ordered {
+                result[vatName] := map.getValues().snapshot()
+            }
+            return result.snapshot()
         }
         
         to exportToDotFile(dotFile :File, palette,
