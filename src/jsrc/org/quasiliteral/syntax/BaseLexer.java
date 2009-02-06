@@ -616,6 +616,12 @@ public abstract class BaseLexer implements LexerFace {
                 return (int)'\'';
             case'\\':
                 return (int)'\\';
+            case'/': // XXX This was added for JSON compatibility in the
+                     // TermLexer.
+                     // Consider a refactoring so that the particular set of
+                     // backslash escapes can be controlled in subclasses.
+                     // -- kpreid 2009-01-14
+                return (int)'/';
             case'\n':
                 return -1;
             case EOFCHAR:
