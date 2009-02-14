@@ -18,14 +18,16 @@ def swtGrid__quasiParser := <swttools:swtGridQParserMaker>()
 def stackWalkerAuthor :=
   <import:org.erights.e.tools.causeway.stackWalkerAuthor>
 
+def debugViewAuthor :=
+  <import:org.erights.e.tools.causeway.debugPaneAuthor>
+
+
 def makeMessageOrderView :=
   <import:org.erights.e.tools.causeway.makeMessageOrderView>
 
 def makeProcessOrderView :=
   <import:org.erights.e.tools.causeway.makeProcessOrderView>
 
-#def makeDebugView :=
-#<import:org.erights.e.tools.causeway.makeDebugView>
 
 def getDisplayName(vatName) :String {
     
@@ -76,7 +78,12 @@ def viewerAuthor(<file>, <jar>, makers,
                                              <jar>,
                                              makers,
                                              traceline)
-    
+
+    def makeDebugView := debugViewAuthor(<file>,
+                                         <jar>,
+                                         makers,
+                                         traceline)
+
     def makeViewer(swtParent, palette, viewerModel, selectionModel) :near {
         
         def swtViewerView := <widget:makeComposite>(swtParent, 0)
@@ -112,15 +119,17 @@ def viewerAuthor(<file>, <jar>, makers,
                                         vatMap, stackWalker)
         
         # top-right
-        #def dv := makeDebugView(swtSideToSide, palette)
+        def dv := makeDebugView(swtSideToSide, palette, 
+                                abstractAction,selectionModel)
         
         swtTopToBottom.setWeights([50, 50])
-        #swtSideToSide.setWeights([40, 35, 25])
-        swtSideToSide.setWeights([40, 60])
+        swtSideToSide.setWeights([40, 35, 25])
+        #swtSideToSide.setWeights([40, 60])
         
         stackWalker.layout()
         pov.layout()
         mov.layout()
+        dv.layout()
         
         def viewer {
             
@@ -145,10 +154,19 @@ def viewerAuthor(<file>, <jar>, makers,
             
             to exportModelToDotFile(dotFile :File) :void {
                 if (Ref.isNear(model)) {
-                    model.exportToDotFile(dotFile, palette,
+                    # if message-order view has a selected item,
+                    # start graph walk at that node
+                    var root := mov.getSelectionModel()
+                    if (root == null) {
+                        # else, walk entire messageGraph
+                        root := messageGraph
+                    }
+
+                    model.exportToDotFile(root,
+                                          dotFile, palette,
                                           vatMap, stackWalker)
                 } else {
-                    # do something
+                    traceline("There is no model to export to dot file.")
                 }
             }
         }

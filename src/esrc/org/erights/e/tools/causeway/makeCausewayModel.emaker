@@ -128,6 +128,13 @@ def makeCausewayModel(var rootDirName :String,
         }
         return entries.snapshot()
     }
+
+    def parseOptStack(optStack) :Stack {
+        switch (optStack) {
+            match [] { return [] }
+            match [stack] { return parseStack(stack) }
+        }
+    }
     
     # Each vat has a turn table of nodes, one node for each turn.
     # Return the node for the turn in the vat.
@@ -149,10 +156,9 @@ def makeCausewayModel(var rootDirName :String,
         
         #traceline(`tracefile: $tfile`)
         
-        # getTwine is broken -- don't know why
-        #def t := tfile.getTwine()
+        def txt := tfile.getTwine()
         
-        def txt := tfile.getText()
+        #def txt := tfile.getText()
         
         # fixup E-on-Java traces
         def t := txt.replaceAll("][", ",")
@@ -163,24 +169,20 @@ def makeCausewayModel(var rootDirName :String,
         for i in 0 ..! chunks.size() {
             
             var optSpan := null
+                        
+            if (chunks[i] =~ term`{@dollar: @_, @_*}`) {
+                optSpan := dollar.getOptSpan()
+                if (null != optSpan && i +1 < chunks.size()) {
             
-            # getTwine is broken -- don't know why
-            # The debug pane showing the relevant trace file records
-            # for the selected tree item is disabled for now.
-            
-            #if (chunks[i] =~ term`{@dollar: @_, @_*}`) {
-            #    optSpan := dollar.getOptSpan()
-            #    if (null != optSpan && i +1 < chunks.size()) {
-            #
-            #        if (chunks[i +1] =~ term`{@nextDollar: @_, @_*}`) {
-            #            def nextOptSpan := nextDollar.getOptSpan()
-            #            if (null != nextOptSpan) {
-            #                optSpan := makeSourceSpan.optCover(optSpan,
-            #                                                   nextOptSpan)
-            #            }
-            #        }
-            #    }
-            #}
+                    if (chunks[i +1] =~ term`{@nextDollar: @_, @_*}`) {
+                        def nextOptSpan := nextDollar.getOptSpan()
+                        if (null != nextOptSpan) {
+                            optSpan := makeSourceSpan.optCover(optSpan,
+                                                               nextOptSpan)
+                        }
+                    }
+                }
+            }
             
             switch (chunks[i]) {
                 
@@ -196,14 +198,13 @@ def makeCausewayModel(var rootDirName :String,
                              },
                              "message" : @{message :String},
                              ("text" : @{comment :List[String]})?,
-                             "trace" : { "calls" : [@stack*] }
+                             ("trace" : { "calls" : [@optStack*] })?
                            }` {
-                    if (message =~ `@_-return`) { continue }
                     
                     def origin := getOrMakeTurnNode(name, turn)
                     
                     # Create E Stack object, possibly empty, from term tree.
-                    def entries := parseStack(stack)
+                    def entries := parseOptStack(optStack)
                     
                     var edge := msgMap.fetch(message, fn{null})
                     if (edge == null) {
@@ -242,6 +243,69 @@ def makeCausewayModel(var rootDirName :String,
                     if (comment =~ [text]) {
                         edge.setOptText(text)
                     }
+                    edge.setMessageID(message)
+                }
+                match term`{
+                             "$$" : [ "org.ref_send.log.Returned",
+                                      "org.ref_send.log.Sent",
+                                      "org.ref_send.log.Event" ],
+                             "anchor" : {
+                                 "number" : @{anchor :int},
+                                 "turn" : {
+                                     "loop" : @{name :String},
+                                     "number" : @{turn :int}
+                                 }
+                             },
+                             "message" : @{message :String},
+                             ("text" : @{comment :List[String]})?,
+                             ("trace" : { "calls" : [@optStack*] })?
+                           }` {
+                    
+                    def origin := getOrMakeTurnNode(name, turn)
+                    
+                    # Create E Stack object, possibly empty, from term tree.
+                    def entries := parseOptStack(optStack)
+                    
+                    var edge := msgMap.fetch(message, fn{null})
+                    if (edge == null) {
+                        
+                        # Sent seen first.
+                        # Make the edge and put it in the msgMap.
+                        # The corresponding Got will fetch the edge from the
+                        # msgMap.
+                        # The anchor number for an edge is set by the Sent.
+                        
+                        edge := graph.makeEventArc(origin, bottom,
+                                                   "org.ref_send.log.Returned",
+                                                   entries)
+                        edge.setAnchor(anchor)
+                        edge.addLogFile(optSpan)
+                        msgMap[message] := edge
+                        
+                    } else {
+                        
+                        # Got (or something) seen first.
+                        # Fetch the edge from the msgMap.
+                        # Replace place-holder top object with origin.
+                        # Update send context with stack trace.
+                        # Update anchor number.
+                        
+                        if (edge.getOrigin() == top) {
+                            edge.setOrigin(origin)
+                            edge.setSendContext("org.ref_send.log.Returned",
+                                                entries)
+                            edge.setAnchor(anchor)
+                            edge.addLogFile(optSpan)
+                        } else {
+                            traceline(`origin conflict for $message (Sent)`)
+                        }
+                    }
+                    if (comment =~ [text]) {
+                        edge.setOptText(text)
+                    } else if (entries =~ []) {
+                        edge.setOptText("return ...");
+                    }
+                    edge.setMessageID(message)
                 }
                 match term`{
                              "$$" : [ "org.ref_send.log.SentIf",
@@ -257,14 +321,13 @@ def makeCausewayModel(var rootDirName :String,
                              "condition" : @{condition :String},
                              "message" : @{message :String},
                              ("text" : @{comment :List[String]})?,
-                             "trace" : { "calls" : [@stack*] }
+                             ("trace" : { "calls" : [@optStack*] })?
                            }` {
-                    if (message =~ `@_-return`) { continue }
                     
                     def origin := getOrMakeTurnNode(name, turn)
                     
                     # Create E Stack object, possibly empty, from term tree.
-                    def entries := parseStack(stack)
+                    def entries := parseOptStack(optStack)
                     
                     var edge := msgMap.fetch(message, fn{null})
                     if (edge == null) {
@@ -307,6 +370,7 @@ def makeCausewayModel(var rootDirName :String,
                     def messages := condMap.fetch(condition, fn{[].diverge()})
                     messages.push(message)
                     condMap[condition] := messages
+                    edge.setMessageID(message)
                 }
                 match term`{
                              "$$" : [ "org.ref_send.log.Got",
@@ -319,9 +383,8 @@ def makeCausewayModel(var rootDirName :String,
                                  }
                              },
                              "message" : @{message :String},
-                             "trace" : { "calls" : [@stack*] }
+                             ("trace" : { "calls" : [@optStack*] })?
                            }` {
-                    if (message =~ `@_-return`) { continue }
                     
                     def target := getOrMakeTurnNode(name, turn)
                     
@@ -336,7 +399,6 @@ def makeCausewayModel(var rootDirName :String,
                         edge := graph.makeEventArc(top, target,
                                                    "org.ref_send.log.Got",
                                                    [])
-                        edge.addLogFile(optSpan)
                         msgMap[message] := edge
                         
                     } else {
@@ -348,7 +410,6 @@ def makeCausewayModel(var rootDirName :String,
                         
                         if (edge.getTarget() == bottom) {
                             edge.setTarget(target)
-                            edge.addLogFile(optSpan)
                         } else {
                             traceline(`target conflict for $message (Got)`)
                         }
@@ -356,9 +417,10 @@ def makeCausewayModel(var rootDirName :String,
                     
                     
                     # Create E Stack object, possibly empty, from term tree.
-                    def entries := parseStack(stack)
+                    def entries := parseOptStack(optStack)
                     target.setSendContext("org.ref_send.log.Got", entries)
                     target.addLogFile(optSpan)
+                    target.setMessageID(message)
                 }
                 
                 match term`{ "$$" : [ "org.ref_send.log.Resolved",
@@ -367,7 +429,7 @@ def makeCausewayModel(var rootDirName :String,
 
                            }` {
                     
-                    resolveds.push(chunks[i])
+                    resolveds.push([chunks[i], optSpan])
                 }
                 
                 match term`{ "$$" : [ "org.ref_send.log.Comment",
@@ -380,13 +442,13 @@ def makeCausewayModel(var rootDirName :String,
                                  }
                              },
                              ("text" : @{comment :List[String]})?,
-                             "trace" : { "calls" : [@stack*] }
+                             ("trace" : { "calls" : [@optStack*] })?
                            }` {
                     
                     def origin := getOrMakeTurnNode(name, turn)
                     
                     # Create E Stack object, possibly empty, from term tree.
-                    def entries := parseStack(stack)
+                    def entries := parseOptStack(optStack)
                     
                     def edge := graph.makeEventArc(origin, bottom,
                                                    "org.ref_send.log.Comment",
@@ -405,7 +467,8 @@ def makeCausewayModel(var rootDirName :String,
         }
     }
     
-    for r in resolveds {
+    def resolvedEdges := [].diverge()
+    for [r, span] in resolveds {
         if (r =~ term`{ "$$" : [ "org.ref_send.log.Resolved",
                                  "org.ref_send.log.Event" ],
                                  "anchor" : {
@@ -417,7 +480,7 @@ def makeCausewayModel(var rootDirName :String,
                                  },
                                  "condition" : @{condition :String},
                                  ("text" : @{comment :List[String]})?,
-                                 "trace" : { "calls" : [@stack*] }
+                                 ("trace" : { "calls" : [@optStack*] })?
                                }`) {
             
             def messages := condMap.fetch(condition, fn{null})
@@ -426,7 +489,7 @@ def makeCausewayModel(var rootDirName :String,
                 def origin := getOrMakeTurnNode(name, turn)
                 
                 # Create E Stack object, possibly empty, from term tree.
-                def entries := parseStack(stack)
+                def entries := parseOptStack(optStack)
                 
                 for m in messages {
                     
@@ -435,16 +498,35 @@ def makeCausewayModel(var rootDirName :String,
                     def edge := graph.makeEventArc(origin, target,
                                                    "org.ref_send.log.Resolved",
                                                    entries)
+                    resolvedEdges.push(edge)
                     edge.setAnchor(anchor)
+                    edge.addLogFile(span)
                 }
             }
         }
     }
-    
+
     def roots := graph.getRoots()
     for r in roots {
         if (r != top) {
             graph.makeEventArc(top, r, "", [])
+        }
+    }
+    
+    for re in resolvedEdges {
+        def stack := re.getContext()[1]
+        if ([] == stack) {
+            def origin := re.getOrigin()
+            def context := origin.getContext()[0]
+            if (context == "org.ref_send.log.Got" && 
+                origin.getIncomingCount() == 1) {
+
+                def pre := origin.getNextIn()
+                if (pre.getContext()[0] == "org.ref_send.log.Returned") {
+                    pre.setTarget(re.getTarget())
+                    #traceline("killed one")
+                }
+            }
         }
     }
     
@@ -593,9 +675,9 @@ def makeCausewayModel(var rootDirName :String,
             return result.snapshot()
         }
         
-        to exportToDotFile(dotFile :File, palette,
-                           vatMap, graphWalker) :void {
-            graph.connectTheDots(top, dotFile, palette,
+        to exportToDotFile(root, dotFile :File, 
+                           palette, vatMap, graphWalker) :void {
+            graph.connectTheDots(root, dotFile, palette,
                                  vatMap, graphWalker)
         }
     }

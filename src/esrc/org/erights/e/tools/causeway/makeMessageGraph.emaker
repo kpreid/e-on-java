@@ -194,6 +194,7 @@ def makeMessageGraph(traceline) :near {
         var sendContext := ""
         var sendStack := []
         def logs := [].diverge()
+        var optMessageID := null
         
         def turnNode extends templateNode(turnNode, id) {
 
@@ -233,6 +234,10 @@ def makeMessageGraph(traceline) :near {
             to getOptText() :nullOk[String] {
                 return null
             }
+
+            to setMessageID(msg :String) :void { optMessageID := msg }
+            to getMessageID() :nullOk[String] { return optMessageID }
+
             to __printOn(out :TextWriter) :void {
                 out.print(id)
             }
@@ -248,6 +253,7 @@ def makeMessageGraph(traceline) :near {
         var why :String := ""
         var tag :String := ""
         var optText := null
+        var optMessageID := null
         
         def eventArc extends templateArc(eventArc, origin, target) {
             to getContext() :Tuple[SendingContext, Stack] {
@@ -294,6 +300,9 @@ def makeMessageGraph(traceline) :near {
             to getOptText() :nullOk[String] {
                 return optText
             }
+
+            to setMessageID(msg :String) :void { optMessageID := msg }
+            to getMessageID() :nullOk[String] { return optMessageID }
         }
     }
     

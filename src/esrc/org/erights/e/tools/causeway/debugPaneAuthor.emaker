@@ -14,6 +14,8 @@ def SWT := <swt:makeSWT>
 def <swttools> := <import:org.erights.e.ui.swt.*>
 def swtGrid__quasiParser := <swttools:swtGridQParserMaker>()
 
+def makeTextView := <import:org.erights.e.tools.causeway.makeTextView>
+
 def getTextSpan(file, first :int, last :int) :String {
     if (!(file.__respondsTo("exists",0)) || file.exists()) {
         var span :String := ""
@@ -51,22 +53,27 @@ def getText(file) :String {
     }
 }
 
-def debugPaneAuthor(<file>, <jar>, makers, traceline) :near {
+def debugViewAuthor(<file>, <jar>, makers, traceline) :near {
     
-    def makeDebugPane(parent, palette, selectionModel) :near {
+    def makeDebugView(swtParent, palette, 
+                      abstractAction, selectionModel) :near {
         
-        def pane := <widget:makeComposite>(parent, 0)
-        def text := <custom:makeStyledText>(pane,
-                                            SWT.getH_SCROLL() | SWT.getV_SCROLL())
+        def swtDebugView := <widget:makeComposite>(swtParent, 0)
+        def swtTextView := <custom:makeStyledText>(swtDebugView,
+                                                   SWT.getH_SCROLL() | SWT.getV_SCROLL())
         
-        def dpp := palette.makeDebugPanePalette()
-        text.setForeground(dpp.getFg())
-        text.setBackground(dpp.getBg())
-        text.setFont(dpp.getFont())
+        def getTextActionTargets
+        def textView := makeTextView(swtDebugView, palette,
+                                     abstractAction, getTextActionTargets)
+
+        def dpp := palette.makeDebugViewPalette()
+        swtTextView.setForeground(dpp.getFg())
+        swtTextView.setBackground(dpp.getBg())
+        swtTextView.setFont(dpp.getFont())
         
-        text.setWordWrap(false)
-        text.setEditable(false)
-        text.setText("")
+        swtTextView.setWordWrap(false)
+        swtTextView.setEditable(false)
+        swtTextView.setText("")
         
         /**
          * Returns either a java.io.File or a java.net.URL
@@ -84,20 +91,20 @@ def debugPaneAuthor(<file>, <jar>, makers, traceline) :near {
                 }
             }
         }
-        
-# def pathname:String := span.getUrl()
-# def startLine := span.getStartLine()
-# def endLine := span.getEndLine()
-        
+                
         def selectionObserver {
-            to edgeSelected(optEdge) :void {
-                if (optEdge != null) {
-                    def logFiles := optEdge.getLogFiles()
-                    text.append("\n")
-                    def sos := text.getCharCount()
-                    text.append(">>>>> Log entries:")
-                    def eos := text.getCharCount()
-                    text.append("\n")
+            to elementSelected(optElement) :void {
+                if (optElement != null) {
+                    def logFiles := optElement.getLogFiles()
+                    swtTextView.append("\n")
+                    def sos := swtTextView.getCharCount()
+                    if (optElement.isNode()) {
+                        swtTextView.append(">>>>> Log entries for node:")
+                    } else {
+                        swtTextView.append(">>>>> Log entries for edge:")
+                    }
+                    def eos := swtTextView.getCharCount()
+                    swtTextView.append("\n")
                     
                     for span in logFiles {
                         def pathname := span.getUrl()
@@ -110,40 +117,40 @@ def debugPaneAuthor(<file>, <jar>, makers, traceline) :near {
                         
                         def textSpan := getTextSpan(file, startLine, endLine)
                         
-                        text.append(textSpan)
-                        text.append("\n")
+                        swtTextView.append(textSpan)
+                        swtTextView.append("\n")
                     }
                     # set selection scrolls the content into view
-                    text.setSelection(sos, text.getCharCount())
+                    swtTextView.setSelection(sos, swtTextView.getCharCount())
                     # just highlight the horizontal break
-                    text.setSelection(sos, eos)
+                    swtTextView.setSelection(sos, eos)
                 }
             }
         }
         selectionModel.addObserver(selectionObserver)
         
-        def debugPane {
-            
-            to getPane() :near { return pane }
-            
-            to getWidget() :near { return text }
-            
-            to activate() :void {}
+        bind getTextActionTargets(action :String) :List {
+            if (action == "doIncreaseFontSize" ||
+                  action == "doDecreaseFontSize") {
+                return [swtTextView]
+            }
+            return null
+        }
+
+        def debugView {
+                        
+            to open() :void {}
             
             to layout() :void {
+
+                textView.layout()
                 
-                swtGrid`${pane}:
-                        ${text}.X.Y`
+                swtGrid`${swtDebugView}:
+                        ${swtTextView}.X.Y`
                 
-                pane.getLayout().setMarginWidth(0)
-                pane.getLayout().setMarginHeight(0)
-                pane.getLayout().setHorizontalSpacing(0)
-                pane.getLayout().setVerticalSpacing(0)
-                
+                palette.zeroMargins(swtDebugView.getLayout())                
             }
-            
-            to getTabLabel() :String { return "Debug Pane" }
         }
-        return debugPane
+        return debugView
     }
 }

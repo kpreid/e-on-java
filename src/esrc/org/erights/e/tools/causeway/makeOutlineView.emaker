@@ -180,6 +180,10 @@ def makeOutlineView(swtParent, palette,
         to getTopLevelPane() :near {
             return swtToolGroup
         }
+
+        to expandTree(swtTree) :void {
+            return expandTree(swtTree)
+        }
     }
     return ov
 }

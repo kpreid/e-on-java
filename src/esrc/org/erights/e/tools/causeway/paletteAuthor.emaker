@@ -252,7 +252,7 @@ def paletteAuthor(rezKit, makers, traceline) :near {
                                         "whitesmoke",
                                         ["Courier New", "9", "normal"])
             }
-            to makeDebugPanePalette() :near {
+            to makeDebugViewPalette() :near {
                 return makeBasicPalette("black",
                                         "whitesmoke",
                                         ["Courier New", "8", "normal"])

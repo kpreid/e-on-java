@@ -57,37 +57,29 @@ def buildTree(swtParent, palette,
     itemToModelMap.put([swtItem, ndx], edge, true)
     modelToItemMap.put(edge, [swtItem, ndx], true)
     graphWalker.labelItem(vatMap, edge, swtItem)
-    
-    var doKids :boolean := true
+
+    def target := edge.getTarget()
+    if (target.getID()[0] == "bottom") { return }
+        
+    def swtGotItem := <widget:makeTreeItem>(swtItem, 0)
+    itemToModelMap.put([swtGotItem, ndx], target, true)
+    graphWalker.labelItem(vatMap, target, swtGotItem)
+        
     # check for multiple senders
-    if (edge.getTarget().getIncomingCount() > 1) {
-        def [vatName, _] := edge.getTarget().getID()
-        def attr := vatMap.fetchDisplayAttributes(vatName)
-        # bottom most likely has multiple incoming, but ignore it
-        if (attr[0] != "bottom") {
-            swtItem.setImage(palette.getImage("multiples"))
-            # if not last edge, doKids := false
-            if (edge.getTarget().getNextIn() != edge) {
-                doKids := false
-            }
+    if (target.getIncomingCount() > 1) {
+        swtGotItem.setImage(palette.getImage("multiples"))
+        # if not last edge, don't show kids
+        if (target.getNextIn() != edge) {
+            return
         }
     }
-    
-    if (doKids) {
-        def target := edge.getTarget()
-        if (target.getID()[0] == "bottom") { return }
-        
-        def swtGotItem := <widget:makeTreeItem>(swtItem, 0)
-        itemToModelMap.put([swtGotItem, ndx], target, true)
-        modelToItemMap.put(target, [swtGotItem, ndx], true)
-        graphWalker.labelItem(vatMap, target, swtGotItem)
-        
-        for ge => _ in target.outs() {
-            buildTree(swtItem, palette,
-                      ge, ndx,
-                      vatMap, graphWalker,
-                      watcher)
-        }
+    # Only map the "real" appearance of target
+    modelToItemMap.put(target, [swtGotItem, ndx], true)
+    for ge => _ in target.outs() {
+        buildTree(swtItem, palette,
+                  ge, ndx,
+                  vatMap, graphWalker,
+                  watcher)
     }
 }
 
@@ -167,6 +159,7 @@ def makeMessageOrderView(swtParent, palette,
     def swtItems := mop.getWidget().getItems()
     if (swtItems.size() > 0) {
         mop.getWidget().setSelection([swtItems[0]])
+        outlineView.expandTree(mop.getWidget())
     }
     
     def selectionObserver {
@@ -217,6 +210,24 @@ def makeMessageOrderView(swtParent, palette,
                     ${swtFolder}.X.Y`
         }
         
+        to getSelectionModel() :near {
+            def swtTree := getCurrentTree()
+            if (null != swtTree) {
+                def selection := swtTree.getSelection()
+                if (selection.size() > 0) {
+                    def ndx := swtFolder.getSelectionIndex()
+                    def element := itemToModelMap.fetch([selection[0], ndx], fn{})
+                    if (element != null) {
+                        if (element.isNode()) {
+                            return element
+                        } else {
+                            return element.getTarget()
+                        }
+                    }
+                }
+            }
+            return null
+        }
     }
     return mov
 }
