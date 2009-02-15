@@ -141,6 +141,8 @@ makers.put("font", makeFont)
 makers.put("gcer", makeGCer)
 makers.put("cursor", makeCursor)
 
+def props := interp.getProps()
+
 def causewayEditorAuthor := <import:org.erights.e.tools.causeway.causewayEditorAuthor>
 
 
@@ -149,12 +151,31 @@ def makeCausewayEditor := causewayEditorAuthor(rezKit,
                                                makers.snapshot(),
                                                openners.snapshot(),
                                                <file>, <jar>,
-                                               interp.getProps(),
+                                               props,
                                                activate, shutdown,
                                                tcr,
                                                traceline)
 
-def causewayEditor := makeCausewayEditor("", [])
+# If invoked without a "src" property or arguments, causeway will wait
+# for these to be provided interactively. Or, you can provide them on
+# the command line. For example, when run from this scripts directory,
+# the the following command line will launch causeway on the
+# Waterken/Joe-E 2vat ajax-oriented purchase order example:
+#
+# devrune -Dsrc=test/causeway causeway.e-swt test/causeway/purchase_ajax.json
+
+def srcRoot := if (props.maps("src")) {
+    props["src"]
+} else {
+    ""
+}
+
+var traces := []
+for arg in interp.getArgs() {
+    traces with= <file>[arg]
+}
+
+def causewayEditor := makeCausewayEditor(srcRoot, traces)
 causewayEditor.open()
 
 interp.blockAtTop()

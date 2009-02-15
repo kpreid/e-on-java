@@ -220,7 +220,7 @@ while [ $(($# >= 1)) = 1 ]; do
     esac
 done
 
-FNAME1="{$FNAME[@]}"
+FNAME1="${FNAME[@]}"
 
 # XXX kludge: For SWT to work on the Mac (starting with OS X 10.5), we
 # need the -XstartOnFirstThread flag for some reason. However, this

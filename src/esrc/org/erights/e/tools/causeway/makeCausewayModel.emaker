@@ -107,9 +107,9 @@ def makeCausewayModel(var rootDirName :String,
         for i in 0 ..! stack.size() {
             
             switch (stack[i]) {
-                match term`{ "name" : @{fnc :String},
-                             "source" : @{source :String},
-                             "span" : @span }` {
+                match term`{ "name": @{fnc :String},
+                             "source": @{source :String},
+                             "span": @span }` {
                     # filter E infrastructure stack items
                     if (source !~ `org/erights/e/elang/cmd/@_`) {
                         entries.push([[fixupSource(source), fnc],
@@ -117,8 +117,8 @@ def makeCausewayModel(var rootDirName :String,
                     }
                 }
                 
-                match term`{ "name" : @{fnc :String},
-                             "source" : @{source :String} }` {
+                match term`{ "name": @{fnc :String},
+                             "source": @{source :String} }` {
                     # filter E infrastructure stack items
                     if (source !~ `org/erights/e/elang/cmd/@_`) {
                         entries.push([[fixupSource(source), fnc], null])
@@ -167,10 +167,17 @@ def makeCausewayModel(var rootDirName :String,
         tt =~ term`[@chunks*]`
         
         for i in 0 ..! chunks.size() {
+            def chunk := chunks[i]
+
+            # types is the list of type names of the current chunk, in order,
+            # from most specific subtype to more general supertypes.
+            def term`{"$$": [@{types :List[String]}*], @_* }` := chunk
+            def subtype := types[0]
+            def subtypeName := subtype.split(".").last()
             
             var optSpan := null
                         
-            if (chunks[i] =~ term`{@dollar: @_, @_*}`) {
+            if (chunk =~ term`{@dollar: @_, @_*}`) {
                 optSpan := dollar.getOptSpan()
                 if (null != optSpan && i +1 < chunks.size()) {
             
@@ -184,23 +191,24 @@ def makeCausewayModel(var rootDirName :String,
                 }
             }
             
-            switch (chunks[i]) {
+            switch (chunk) {
                 
-                match term`{
-                             "$$" : [ "org.ref_send.log.Sent",
-                                      "org.ref_send.log.Event" ],
-                             "anchor" : {
-                                 "number" : @{anchor :int},
-                                 "turn" : {
-                                     "loop" : @{name :String},
-                                     "number" : @{turn :int}
+                match term`{ "$$": [ @_*,
+                                     "org.ref_send.log.Sent",
+                                     "org.ref_send.log.Event" ],
+                             "anchor": {
+                                 "number": @{anchor :int},
+                                 "turn": {
+                                     "loop": @{name :String},
+                                     "number": @{turn :int}
                                  }
                              },
-                             "message" : @{message :String},
-                             ("text" : @{comment :List[String]})?,
-                             ("trace" : { "calls" : [@optStack*] })?
+                             ("condition": @{optCondition :List[String]})?,
+                             "message": @{message :String},
+                             ("text": @{comment :List[String]})?,
+                             ("trace": { "calls": [@optStack*] })?,
+                             @_*
                            }` {
-                    
                     def origin := getOrMakeTurnNode(name, turn)
                     
                     # Create E Stack object, possibly empty, from term tree.
@@ -216,8 +224,7 @@ def makeCausewayModel(var rootDirName :String,
                         # The anchor number for an edge is set by the Sent.
                         
                         edge := graph.makeEventArc(origin, bottom,
-                                                   "org.ref_send.log.Sent",
-                                                   entries)
+                                                   subtype, entries)
                         edge.setAnchor(anchor)
                         edge.addLogFile(optSpan)
                         msgMap[message] := edge
@@ -232,158 +239,43 @@ def makeCausewayModel(var rootDirName :String,
                         
                         if (edge.getOrigin() == top) {
                             edge.setOrigin(origin)
-                            edge.setSendContext("org.ref_send.log.Sent",
-                                                entries)
+                            edge.setSendContext(subtype, entries)
                             edge.setAnchor(anchor)
                             edge.addLogFile(optSpan)
                         } else {
-                            traceline(`origin conflict for $message (Sent)`)
-                        }
-                    }
-                    if (comment =~ [text]) {
-                        edge.setOptText(text)
-                    }
-                    edge.setMessageID(message)
-                }
-                match term`{
-                             "$$" : [ "org.ref_send.log.Returned",
-                                      "org.ref_send.log.Sent",
-                                      "org.ref_send.log.Event" ],
-                             "anchor" : {
-                                 "number" : @{anchor :int},
-                                 "turn" : {
-                                     "loop" : @{name :String},
-                                     "number" : @{turn :int}
-                                 }
-                             },
-                             "message" : @{message :String},
-                             ("text" : @{comment :List[String]})?,
-                             ("trace" : { "calls" : [@optStack*] })?
-                           }` {
-                    
-                    def origin := getOrMakeTurnNode(name, turn)
-                    
-                    # Create E Stack object, possibly empty, from term tree.
-                    def entries := parseOptStack(optStack)
-                    
-                    var edge := msgMap.fetch(message, fn{null})
-                    if (edge == null) {
-                        
-                        # Sent seen first.
-                        # Make the edge and put it in the msgMap.
-                        # The corresponding Got will fetch the edge from the
-                        # msgMap.
-                        # The anchor number for an edge is set by the Sent.
-                        
-                        edge := graph.makeEventArc(origin, bottom,
-                                                   "org.ref_send.log.Returned",
-                                                   entries)
-                        edge.setAnchor(anchor)
-                        edge.addLogFile(optSpan)
-                        msgMap[message] := edge
-                        
-                    } else {
-                        
-                        # Got (or something) seen first.
-                        # Fetch the edge from the msgMap.
-                        # Replace place-holder top object with origin.
-                        # Update send context with stack trace.
-                        # Update anchor number.
-                        
-                        if (edge.getOrigin() == top) {
-                            edge.setOrigin(origin)
-                            edge.setSendContext("org.ref_send.log.Returned",
-                                                entries)
-                            edge.setAnchor(anchor)
-                            edge.addLogFile(optSpan)
-                        } else {
-                            traceline(`origin conflict for $message (Sent)`)
+                            traceline(
+                              `origin conflict for $message ($subtypeName)`)
                         }
                     }
                     if (comment =~ [text]) {
                         edge.setOptText(text)
                     } else if (entries =~ []) {
-                        edge.setOptText("return ...");
-                    }
-                    edge.setMessageID(message)
-                }
-                match term`{
-                             "$$" : [ "org.ref_send.log.SentIf",
-                                      "org.ref_send.log.Sent",
-                                      "org.ref_send.log.Event" ],
-                             "anchor" : {
-                                 "number" : @{anchor :int},
-                                 "turn" : {
-                                     "loop" : @{name :String},
-                                     "number" : @{turn :int}
-                                 }
-                             },
-                             "condition" : @{condition :String},
-                             "message" : @{message :String},
-                             ("text" : @{comment :List[String]})?,
-                             ("trace" : { "calls" : [@optStack*] })?
-                           }` {
-                    
-                    def origin := getOrMakeTurnNode(name, turn)
-                    
-                    # Create E Stack object, possibly empty, from term tree.
-                    def entries := parseOptStack(optStack)
-                    
-                    var edge := msgMap.fetch(message, fn{null})
-                    if (edge == null) {
-                        
-                        # SentIf seen first.
-                        # Make the edge and put it in the msgMap.
-                        # The corresponding Got will fetch the edge from the
-                        # msgMap. For now, SentIfs are treated like Sents.
-                        # The anchor number for an edge is set by the SentIf.
-                        
-                        edge := graph.makeEventArc(origin, bottom,
-                                                   "org.ref_send.log.SentIf",
-                                                   entries)
-                        edge.setAnchor(anchor)
-                        edge.addLogFile(optSpan)
-                        msgMap[message] := edge
-                        
-                    } else {
-                        
-                        # Got (or something) seen first.
-                        # Fetch the edge from the msgMap.
-                        # Replace place-holder top object with origin.
-                        # Update send context with stack trace.
-                        # Update anchor number.
-                        
-                        if (edge.getOrigin() == top) {
-                            edge.setOrigin(origin)
-                            edge.setSendContext("org.ref_send.log.SentIf",
-                                                entries)
-                            edge.setAnchor(anchor)
-                            edge.addLogFile(optSpan)
-                        } else {
-                            traceline(`origin conflict for $message (SentIf)`)
+                        if (types.contains("org.ref_send.log.Returned")) {
+                            edge.setOptText("return ...");
                         }
                     }
-                    if (comment =~ [text]) {
-                        edge.setOptText(text)
-                    }
-                    
-                    def messages := condMap.fetch(condition, fn{[].diverge()})
-                    messages.push(message)
-                    condMap[condition] := messages
                     edge.setMessageID(message)
+                    if (optCondition =~ [condition]) {
+                        # TODO assert that types must include SentIf
+                        def messages := condMap.fetch(condition, 
+                                                      fn{[].diverge()})
+                        messages.push(message)
+                        condMap[condition] := messages
+                    }
                 }
-                match term`{
-                             "$$" : [ "org.ref_send.log.Got",
-                                      "org.ref_send.log.Event" ],
-                             "anchor" : {
-                                 "number" : @{anchor :int},
-                                 "turn" : {
-                                     "loop" : @{name :String},
-                                     "number" : @{turn :int}
+                match term`{ "$$": [ @_*,
+                                     "org.ref_send.log.Got",
+                                     "org.ref_send.log.Event" ],
+                             "anchor": {
+                                 "number": @{anchor :int},
+                                 "turn": {
+                                     "loop": @{name :String},
+                                     "number": @{turn :int}
                                  }
                              },
-                             "message" : @{message :String},
-                             ("trace" : { "calls" : [@optStack*] })?
+                             "message": @{message :String},
+                             ("trace": { "calls": [@optStack*] })?,
+                             @_*
                            }` {
                     
                     def target := getOrMakeTurnNode(name, turn)
@@ -397,8 +289,7 @@ def makeCausewayModel(var rootDirName :String,
                         # msgMap.
                         
                         edge := graph.makeEventArc(top, target,
-                                                   "org.ref_send.log.Got",
-                                                   [])
+                                                   subtype, [])
                         msgMap[message] := edge
                         
                     } else {
@@ -411,38 +302,40 @@ def makeCausewayModel(var rootDirName :String,
                         if (edge.getTarget() == bottom) {
                             edge.setTarget(target)
                         } else {
-                            traceline(`target conflict for $message (Got)`)
+                            traceline(
+                              `target conflict for $message ($subtypeName)`)
                         }
                     }
                     
-                    
                     # Create E Stack object, possibly empty, from term tree.
                     def entries := parseOptStack(optStack)
-                    target.setSendContext("org.ref_send.log.Got", entries)
+                    target.setSendContext(subtype, entries)
                     target.addLogFile(optSpan)
                     target.setMessageID(message)
                 }
                 
-                match term`{ "$$" : [ "org.ref_send.log.Resolved",
-                                      "org.ref_send.log.Event" ],
-                                      @_*
-
+                match term`{ "$$": [ @_*,
+                                     "org.ref_send.log.Resolved",
+                                     "org.ref_send.log.Event" ],
+                             @_*
                            }` {
                     
-                    resolveds.push([chunks[i], optSpan])
+                    resolveds.push([chunk, optSpan])
                 }
                 
-                match term`{ "$$" : [ "org.ref_send.log.Comment",
-                                      "org.ref_send.log.Event" ],
-                             "anchor" : {
-                                 "number" : @{anchor :int},
-                                 "turn" : {
-                                     "loop" : @{name :String},
-                                     "number" : @{turn :int}
+                match term`{ "$$": [ @_*,
+                                     "org.ref_send.log.Comment",
+                                     "org.ref_send.log.Event" ],
+                             "anchor": {
+                                 "number": @{anchor :int},
+                                 "turn": {
+                                     "loop": @{name :String},
+                                     "number": @{turn :int}
                                  }
                              },
-                             ("text" : @{comment :List[String]})?,
-                             ("trace" : { "calls" : [@optStack*] })?
+                             ("text": @{comment :List[String]})?,
+                             ("trace": { "calls": [@optStack*] })?,
+                             @_*
                            }` {
                     
                     def origin := getOrMakeTurnNode(name, turn)
@@ -461,7 +354,7 @@ def makeCausewayModel(var rootDirName :String,
                     }
                 }
                 match _ {
-                    traceline(`no match: ${chunks[i]}`)
+                    traceline(`no match: $chunk`)
                 }
             }
         }
@@ -469,19 +362,21 @@ def makeCausewayModel(var rootDirName :String,
     
     def resolvedEdges := [].diverge()
     for [r, span] in resolveds {
-        if (r =~ term`{ "$$" : [ "org.ref_send.log.Resolved",
-                                 "org.ref_send.log.Event" ],
-                                 "anchor" : {
-                                     "number" : @{anchor :int},
-                                     "turn" : {
-                                         "loop" : @{name :String},
-                                         "number" : @{turn :int}
-                                     }
-                                 },
-                                 "condition" : @{condition :String},
-                                 ("text" : @{comment :List[String]})?,
-                                 ("trace" : { "calls" : [@optStack*] })?
-                               }`) {
+        if (r =~ term`{ "$$": [ @_*,
+                                "org.ref_send.log.Resolved",
+                                "org.ref_send.log.Event" ],
+                        "anchor": {
+                            "number": @{anchor :int},
+                            "turn": {
+                                "loop": @{name :String},
+                                "number": @{turn :int}
+                            }
+                        },
+                        "condition": @{condition :String},
+                        ("text": @{comment :List[String]})?,
+                        ("trace": { "calls": [@optStack*] })?,
+                        @_*
+                      }`) {
             
             def messages := condMap.fetch(condition, fn{null})
             if (messages != null) {
