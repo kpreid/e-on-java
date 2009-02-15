@@ -104,26 +104,21 @@ def makeCausewayModel(var rootDirName :String,
     def parseStack(stack) :Stack {
         def entries := [].diverge()
         
-        for i in 0 ..! stack.size() {
+        for stackFrame in stack {
             
-            switch (stack[i]) {
-                match term`{ "name": @{fnc :String},
-                             "source": @{source :String},
-                             "span": @span }` {
-                    # filter E infrastructure stack items
-                    if (source !~ `org/erights/e/elang/cmd/@_`) {
-                        entries.push([[fixupSource(source), fnc],
-                                      spanner(span)])
-                    }
+            def term`{ "name": @{fnc :String},
+                       "source": @{source :String},
+                       ("span": @optSpan)?,
+                       @_* 
+                     }` := stackFrame
+            # filter E infrastructure stack items
+            if (source !~ `org/erights/e/elang/cmd/@_`) {
+                def optSpanner := if (optSpan =~ [span]) {
+                    spanner(span)
+                } else {
+                    null
                 }
-                
-                match term`{ "name": @{fnc :String},
-                             "source": @{source :String} }` {
-                    # filter E infrastructure stack items
-                    if (source !~ `org/erights/e/elang/cmd/@_`) {
-                        entries.push([[fixupSource(source), fnc], null])
-                    }
-                }
+                entries.push([[fixupSource(source), fnc], optSpanner])
             }
         }
         return entries.snapshot()
@@ -164,7 +159,7 @@ def makeCausewayModel(var rootDirName :String,
         def t := txt.replaceAll("][", ",")
         
         def tt := jp(t)
-        tt =~ term`[@chunks*]`
+        def term`[@chunks*]` := tt
         
         for i in 0 ..! chunks.size() {
             def chunk := chunks[i]
