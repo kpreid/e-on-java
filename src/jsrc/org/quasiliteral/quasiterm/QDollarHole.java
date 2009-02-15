@@ -166,7 +166,8 @@ public final class QDollarHole extends QHole {
     public int matchBindSlice(ConstList args,
                               ConstList specimenList,
                               FlexList bindings,
-                              int[] index) {
+                              int[] index,
+                              int max) {
         if (0 >= specimenList.size()) {
             return -1;
         }
@@ -175,10 +176,15 @@ public final class QDollarHole extends QHole {
         Astro optTerm = optCoerce(termoid);
         T.require(null != optTerm, "Term ", termoid, " doesn't match ", this);
         if (0.0 == E.asFloat64(E.call(optTerm, "op__cmp", specimen))) {
-            return 1;
-        } else {
-            return -1;
+            if (max >= 1) {
+                return 1;
+            }
         }
+        return -1;
+    }
+
+    public int reserve() {
+        return 1;
     }
 
     /**

@@ -72,7 +72,12 @@ public final class QEmptySeq extends QAstroArg {
     public int matchBindSlice(ConstList args,
                               ConstList specimenList,
                               FlexList bindings,
-                              int[] index) {
+                              int[] index,
+                              int max) {
+        return 0;
+    }
+
+    public int reserve() {
         return 0;
     }
 

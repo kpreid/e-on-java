@@ -166,7 +166,8 @@ public final class QFunctor extends QAstro {
     public int matchBindSlice(ConstList args,
                               ConstList specimenList,
                               FlexList bindings,
-                              int[] index) {
+                              int[] index,
+                              int max) {
         if (0 >= specimenList.size()) {
             return -1;
         }
@@ -197,8 +198,15 @@ public final class QFunctor extends QAstro {
                 }
             }
         }
-        //functor info matches, so we match one (the first) element of
-        //specimenList
+        if (max >= 1) {
+            //functor info matches, so we match one (the first) element of
+            //specimenList
+            return 1;
+        }
+        return -1;
+    }
+
+    public int reserve() {
         return 1;
     }
 

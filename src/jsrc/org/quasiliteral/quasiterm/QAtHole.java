@@ -145,7 +145,8 @@ public final class QAtHole extends QHole {
     public int matchBindSlice(ConstList args,
                               ConstList specimenList,
                               FlexList bindings,
-                              int[] index) {
+                              int[] index,
+                              int max) {
         if (0 >= specimenList.size()) {
             return -1;
         }
@@ -156,12 +157,16 @@ public final class QAtHole extends QHole {
         Object optOldValue = multiPut(bindings, myHoleNum, index, optSpecimen);
         if (null == optOldValue ||
           0.0 == E.asFloat64(E.call(optOldValue, "op__cmp", optSpecimen))) {
-
-            return 1;
-        } else {
-            //XXX Should this throw?
-            return -1;
+            if (max >= 1) {
+                return 1;
+            }
         }
+        //XXX Should this throw?
+        return -1;
+    }
+
+    public int reserve() {
+        return 1;
     }
 
     /**

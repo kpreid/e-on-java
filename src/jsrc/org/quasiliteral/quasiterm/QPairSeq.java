@@ -118,19 +118,26 @@ public final class QPairSeq extends QAstroArg {
     public int matchBindSlice(ConstList args,
                               ConstList specimenList,
                               FlexList bindings,
-                              int[] index) {
+                              int[] index,
+                              int max) {
         int leftNum =
-          myLeft.matchBindSlice(args, specimenList, bindings, index);
+          myLeft.matchBindSlice(args, specimenList, bindings, index,
+                                max - myRight.reserve());
         if (-1 >= leftNum) {
             return -1;
         }
         specimenList = specimenList.run(leftNum, specimenList.size());
         int rightNum =
-          myRight.matchBindSlice(args, specimenList, bindings, index);
+          myRight.matchBindSlice(args, specimenList, bindings, index,
+                                 max - leftNum);
         if (-1 >= rightNum) {
             return -1;
         }
         return leftNum + rightNum;
+    }
+
+    public int reserve() {
+        return myLeft.reserve() + myRight.reserve();
     }
 
     /**

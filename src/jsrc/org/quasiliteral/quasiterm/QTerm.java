@@ -168,7 +168,8 @@ public final class QTerm extends QAstro {
     public int matchBindSlice(ConstList args,
                               ConstList specimenList,
                               FlexList bindings,
-                              int[] index) {
+                              int[] index,
+                              int max) {
         if (0 >= specimenList.size()) {
             return -1;
         }
@@ -181,7 +182,8 @@ public final class QTerm extends QAstro {
         int matches = myQFunctor.matchBindSlice(args,
                                                 singletonFunctorList,
                                                 bindings,
-                                                index);
+                                                index,
+                                                1);
         if (0 >= matches) {
             return -1;
         }
@@ -189,12 +191,21 @@ public final class QTerm extends QAstro {
                     "Functor may only match 0 or 1 specimen: ",
                     matches);
         ConstList tArgs = optSpecimen.getArgs();
-        int num = myQArgs.matchBindSlice(args, tArgs, bindings, index);
+        int num = myQArgs.matchBindSlice(args,
+                                         tArgs,
+                                         bindings,
+                                         index,
+                                         tArgs.size());
         if (tArgs.size() == num) {
-            return 1;
-        } else {
-            return -1;
+            if (max >= 1) {
+                return 1;
+            }
         }
+        return -1;
+    }
+
+    public int reserve() {
+        return 1;
     }
 
     /**

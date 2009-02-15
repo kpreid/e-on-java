@@ -59,7 +59,8 @@ public abstract class QAstro extends QAstroArg
         if (1 == matchBindSlice(args,
                                 ConstList.EmptyList.with(specimen),
                                 bindings,
-                                EMPTY_INDEX)) {
+                                EMPTY_INDEX,
+                                1)) {
             return bindings.snapshot();
         } else {
             throw Thrower.toEject(optEjector,

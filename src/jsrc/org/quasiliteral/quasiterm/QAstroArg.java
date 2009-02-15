@@ -83,6 +83,7 @@ public abstract class QAstroArg
      *                     is [4,5], then the dollar-hole would access
      *                     args[3][4][5]. Similarly, an at-hole with hole-num 3
      *                     would store into bindings[3][4][5].
+     * @param max          Number of elements matched must not exceed max.
      * @return How many elements of specimen are matched?  Zero indicates a
      *         successful match of no elements, so -1 is used to instead
      *         indicate a failed match.
@@ -90,7 +91,16 @@ public abstract class QAstroArg
     public abstract int matchBindSlice(ConstList args,
                                        ConstList specimenList,
                                        FlexList bindings,
-                                       int[] index);
+                                       int[] index,
+                                       int max);
+
+    /**
+     * What is the least number of specimen elements this pattern might need
+     * to consume in order to match?
+     * <p>
+     * In ignorance, the answer should default to zero.
+     */
+    public abstract int reserve();
 
     /**
      * For this substree and this index-prefix, what's the most number of index
@@ -98,7 +108,7 @@ public abstract class QAstroArg
      * <p/>
      * If this subtree has no dollar-holes, it should just return shapeSoFar.
      * The initial shapeSoFar is -1 (meaning "indeterminate"), so a tree with
-     * no dollar-holes will just return -1. An non-ranking inner node (eg, a
+     * no dollar-holes will just return -1. A non-ranking inner node (eg, a
      * QTerm) just asks all its children, passing to each the shapeSoFar from
      * the previous.
      * <p/>

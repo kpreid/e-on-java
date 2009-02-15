@@ -116,15 +116,16 @@ public final class QSome extends QAstroArg {
     public int matchBindSlice(ConstList args,
                               ConstList specimenList,
                               FlexList bindings,
-                              int[] index) {
+                              int[] index,
+                              int max) {
         if (null == myOptSubPattern) {
             int result = specimenList.size();
             switch (myQuant) {
-            case'?':
+            case '?':
                 return StrictMath.min(result, 1);
-            case'+':
+            case '+':
                 return 0 >= result ? -1 : result;
-            case'*':
+            case '*':
                 return result;
             default:
                 T.fail("Unrecognized: " + myQuant);
@@ -147,10 +148,12 @@ public final class QSome extends QAstroArg {
             int more = myOptSubPattern.matchBindSlice(args,
                                                       specimenList,
                                                       bindings,
-                                                      subIndex);
+                                                      subIndex,
+                                                      max);
             if (-1 == more) {
                 break;
             }
+            max -= more;
             T.require(1 <= more || -1 != maxShape,
                       "Patterns of indeterminate rank must make progress: ",
                       this,
@@ -166,9 +169,24 @@ public final class QSome extends QAstroArg {
         return result;
     }
 
-    /**
-     *
-     */
+
+    public int reserve() {
+        switch (myQuant) {
+            case '?':
+                return 0;
+            case '+':
+                if (null == myOptSubPattern) {
+                    return 1;
+                } else {
+                    return myOptSubPattern.reserve();
+                }
+            case '*':
+                return 0;
+            default:
+                T.fail("Unrecognized: " + myQuant);
+        }
+        return -666; //just so the compiler will know
+    }
 
     int startShape(ConstList args,
                    FlexList optBindings,
