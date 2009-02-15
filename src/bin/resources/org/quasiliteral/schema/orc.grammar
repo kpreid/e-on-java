@@ -25,4 +25,4 @@ useID ::= <Ident>=1;
 # However, in a grammar or schema definition, as with a quasi-context, they
 # must be doubled in order to be quoted.
 hole  ::= "$$" "{" .int.=1 "}"                                    -> dollarHole
-      |   "@@" "{" .int.=1 "}"                                    -> asHole;
+      |   "@@" "{" .int.=1 "}"                                    -> atHole;

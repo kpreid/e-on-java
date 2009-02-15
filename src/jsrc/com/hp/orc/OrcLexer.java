@@ -38,7 +38,7 @@ import java.io.FileReader;
 import java.io.IOException;
 
 /**
- * Breaks textually input into a stream of tokens according to the Orc
+ * Breaks textual input into a stream of tokens according to the Orc
  * language's defined grammar.
  *
  * @author Mark S. Miller
