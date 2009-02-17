@@ -1,0 +1,228 @@
+#!/usr/bin/env rune
+
+pragma.syntax("0.8")
+
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def makeSourceSpan := <elib:base.makeSourceSpan>
+def <causeway> := <import:org.erights.e.tools.causeway.*>
+def makeMessageGraph := <causeway:makeMessageGraph>
+
+
+# [[start-line, start-col], [end-line, end-col]]
+# [[1, 0]] is the first character in a source file.
+# start-col refers to the first character of interest.
+# end-col refers to the last character of interest.
+def SourceSpan := Tuple[Tuple[int,int], Tuple[int, int]]
+
+# [filename, fncname]
+def SourceName := Tuple[String, String]
+
+# A [source-name, source-span]
+def StackEntry := Tuple[SourceName, nullOk[SourceSpan]]
+
+# top-to-bottom list of stack entries
+def Stack := List[StackEntry]
+
+def VatName := String
+
+def Turn := int
+def Anchor := int
+
+def UTurn := Tuple[VatName, Turn]
+
+# one of "org.ref_send.log.Sent", ...
+def SendingContext := String
+
+def CLIP := 0
+def SKIP := 1
+def KEEP := 2
+
+
+/**
+ * Sort the out edges from a given turn by anchor.
+ */
+def sortOutgoing(top, traceline) :void {
+    # seen is still useful, since deepOuts* only suppresses duplicate
+    # edge visits, not duplicate node visits.
+    def seen := [].asSet().diverge()
+
+    for node in top.deepOutsPre() {
+        if (seen.contains(node)) { continue }
+        seen.addElement(node)
+
+        var edges := [].asMap().diverge()
+        for edge => _ in node.outs() {
+            edges[edge.getKey()] := edge
+        }
+        edges := edges.sortKeys()
+        for edge in edges {
+            # splice out, splice back in
+            # doesn't change graph topology, but
+            # does change the order of edges
+            edge.setOrigin(node)
+        }
+    }
+}
+
+# A list of pairs of src path prefixes and whether src paths that
+# match them should be considered interesting.
+# <p>
+# For now, list from most specific to least specific, since the first
+# matching prefix wins. Must contain an entry for the empty prefix,
+# whose value determines the default interestingness.
+def interesting := [
+    ["org/erights/e/elang/cmd/", false],
+#    ["org/waterken/purchase_ajax/AsyncAnd.java", false],
+    # XXX The following is a kludge, since we should be using the
+    # original src path, not the fixed one.
+    ["test/causeway/org/waterken/purchase_ajax/AsyncAnd.java", true],
+    ["test/causeway/org/waterken/purchase_promise/AsyncAnd.java", true],
+    ["", true]
+]
+
+def hideFrames(stack :Stack) :Stack {
+    def result := [].diverge()
+    for entry in stack {
+        def srcPath := entry[0][0]
+        for [prefix, isInteresting] in interesting {
+            if (srcPath.startsWith(prefix)) {
+                if (isInteresting) {
+                    result.push(entry)
+                }
+                break;
+            }
+        }
+    }
+    return result.snapshot()
+}
+
+/**
+ * Hide the stack frames corresponding to uninteresting source paths
+ */
+def hideDetail(top, traceline) :void {
+    # seen is still useful, since deepOuts* only suppresses duplicate
+    # edge visits, not duplicate node visits.
+    def seen := [].asSet().diverge()
+
+    for edge => node in top.deepOutsPre() {
+        def [sendCtx, sendStk] := edge.getContext()
+        edge.setContext(sendCtx, hideFrames(sendStk))
+
+        if (seen.contains(node)) { continue }
+        seen.addElement(node)
+        def [gotCtx, gotStk] := node.getContext()
+        node.setContext(gotCtx, hideFrames(gotStk))
+    }
+}
+
+def lastCause(edge) :boolean {
+    return edge == edge.getTarget().getNextIn()
+}
+
+def setTarget(edge, newTarget, lastCause :boolean) :void {
+    def curLast := newTarget.getNextIn()
+    edge.setTarget(newTarget)
+    if (curLast.isNode() || lastCause) { return }
+    curLast.setTarget(newTarget)
+}
+
+/**
+ * Highlight the significance of some state-based causal relations by
+ * promoting them to virtual message order.
+ * <p>
+ * Must be careful that promotion preserves non-virtual last incoming
+ * edge. 
+ */
+def promote(top, traceline) :void {
+    # String => TurnNode
+    def happenings := [].asMap().diverge()
+    for edge => _ in top.deepOutsPre() {
+        if (edge.getOptText() =~ `happened: @what`) {
+            if (happenings.maps(what)) {
+                traceline(`Happening conflict warning: $what`)
+            }
+            happenings[what] := edge.getOrigin()
+        }
+    }
+    for edge => _ in top.deepOutsPre() {
+        if (edge.getOptText() =~ `leadsto: @what` && happenings.maps(what)) {
+            def target := happenings[what]
+            setTarget(edge, target, false)
+        }
+    }
+}
+
+def devoraOne(top, traceline) :void {
+    for edge => node in top.deepOutsPost() {
+        def nodeStack := node.getContext()[1]
+        if (nodeStack =~ []) {
+            var tag := CLIP
+            for grandEdge => _ in node.outs() {
+                tag max= grandEdge.getTag()
+            }
+            node.setTag(tag)
+        }
+        def edgeStack := edge.getContext()[1]
+        if (edgeStack =~ []) {
+            edge.setTag(node.getTag().min(SKIP))
+        }
+    }
+}
+
+def devoraTwo(graph, top, traceline) :void {
+    def dummy := graph.makeTurnNode(["dummy", 0])
+    def seen := [].asSet().diverge()
+
+    def orphans := [].diverge()
+
+    def devoraThree(root) :void {
+        if (seen.contains(root)) { return }
+        seen.addElement(root)
+
+        def edgeList := [].diverge()
+        for outgoing => _ in root.outs() {
+            edgeList.push(outgoing)
+        }
+        for edge in edgeList {
+            def target := edge.getTarget()
+            devoraThree(target)
+
+            if (edge.getTag() == CLIP) {
+                edge.setOrigin(dummy)
+                edge.setTarget(dummy)
+            } else if (target.getTag() <= SKIP &&
+                         target.getOutgoingCount() == 1 &&
+                         target.getPrevOut() =~ grandEdge &&
+                         grandEdge.getTag() <= SKIP) {
+                setTarget(edge, grandEdge.getTarget(),
+                          lastCause(edge) && lastCause(grandEdge))
+                orphans.push(grandEdge)
+            }
+        }
+    }
+    devoraThree(top)
+
+    for orphan in orphans {
+        orphan.setOrigin(dummy)
+        orphan.setTarget(dummy)
+    }
+}
+
+
+def filterGraph(graph, top, traceline) :Tuple[near, near] {
+
+    sortOutgoing(top, traceline)
+
+    # could be done by a frontline filter
+    hideDetail(top, traceline)
+
+    promote(top, traceline)
+
+    devoraOne(top, traceline)
+
+    devoraTwo(graph, top, traceline)
+
+    return [graph, top]
+}

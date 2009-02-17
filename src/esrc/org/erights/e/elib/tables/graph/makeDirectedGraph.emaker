@@ -44,12 +44,10 @@ def makeDirectedGraph(traceline) :near {
         
         to getRoots() :near {
             def roots := [].diverge()
-            if (graph.size() > 0) {
-                def values := graph.getValues()
-                for v in values {
-                    if (v.getPrevIn() == v && v.getNextIn() == v) {
-                        roots.push(v)
-                    }
+            def values := graph.getValues()
+            for v in values {
+                if (v.getPrevIn() == v && v.getNextIn() == v) {
+                    roots.push(v)
                 }
             }
             return roots.snapshot()
@@ -57,13 +55,11 @@ def makeDirectedGraph(traceline) :near {
         
         to getLeaves() :near {
             def leaves := [].diverge()
-            if (graph.size() > 0) {
-                def values := graph.getValues()
-                for v in values {
-                    if (v.getPrevOut() == v && v.getNextOut() == v) {
-                        leaves.push(v)
-                    }
-                }
+            def values := graph.getValues()
+            for v in values {
+                if (v.getPrevOut() == v && v.getNextOut() == v) {
+                    leaves.push(v)
+                 }
             }
             return leaves.snapshot()
         }

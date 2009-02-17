@@ -23,12 +23,12 @@ public class AsyncAnd implements Callback, Serializable {
             expected -= 1;
             if (expected == 0) {
                 if (tellAreAllTrue != null) {
-                    _.log.comment("all true");
+                    _.log.comment("happened: all true");
                     _._(tellAreAllTrue).run(true);
                     tellAreAllTrue = null;
                 }
             } else {
-                _.log.comment("getting closer");
+                _.log.comment("leadsto: all true");
             }
         } else {
             if (tellAreAllTrue != null) {

@@ -27,10 +27,10 @@ public class AsyncAnd implements Serializable {
             if (answer) {
                 myExpected[0]--;
                 if (myExpected[0] == 0) {
-                    _.log.comment("all true");
+                    _.log.comment("happened: all true");
                     myResolver.run(true);
                 } else {
-                    _.log.comment("getting closer");
+                    _.log.comment("leadsto: all true");
                 }
             } else {
                 _.log.comment("found a false");

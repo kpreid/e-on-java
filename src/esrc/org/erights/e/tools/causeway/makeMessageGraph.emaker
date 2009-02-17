@@ -6,10 +6,8 @@ pragma.syntax("0.8")
 # found at http://www.opensource.org/licenses/mit-license.html ................
 
 def File := <type:java.io.File>
-
 def templateNode := <elib:tables.graph.templateNode>
 def templateArc := <elib:tables.graph.templateArc>
-
 def makeDirectedGraph := <elib:tables.graph.makeDirectedGraph>
 
 # [[start-line, start-col], [end-line, end-col]]
@@ -32,6 +30,11 @@ def UTurn := Tuple[VatName, Turn]
 
 # one of "org.ref_send.log.Sent", ...
 def SendingContext := String
+
+def CLIP := 0
+def SKIP := 1
+def KEEP := 2
+
 
 def makeWatcher() :near {
     def items := [].asSet().diverge()
@@ -91,6 +94,14 @@ def getHexTriple(color) :String {
     return result
 }
 
+def tagToColor(tag :int, normal :String) :String {
+    switch (tag) {
+        match ==CLIP { return "firebrick" }
+        match ==SKIP { return "yellow" }
+        match ==KEEP { return normal }
+    }
+} 
+
 def walkDots(edge, textWriter, palette,
              vatMap, graphWalker, watcher) :void {
     
@@ -118,14 +129,8 @@ def walkDots(edge, textWriter, palette,
     #textWriter.println(`"[$oname, $oturn]" [color=#${ocolor}];`)
     #textWriter.println(`"[$tname, $tturn]" [color=#${tcolor}];`)
     
-    var ocolor := oattr[1][1]
-    if (edge.getOrigin().isTagged("red")) {
-        ocolor := "firebrick"
-    }
-    var tcolor := tattr[1][1]
-    if (edge.getTarget().isTagged("red")) {
-        tcolor := "firebrick"
-    }
+    def ocolor := tagToColor(edge.getOrigin().getTag(), oattr[1][1])
+    def tcolor := tagToColor(edge.getTarget().getTag(), tattr[1][1])
     
     textWriter.println(`"[$oname, $oturn]" [color=$ocolor fontcolor=$ocolor];`)
     textWriter.println(`"[$tname, $tturn]" [color=$tcolor fontcolor=$tcolor];`)
@@ -134,10 +139,7 @@ def walkDots(edge, textWriter, palette,
     if (null == ep) {
         ep := "[]"
     }
-    var ecolor := "black"
-    if (edge.isTagged("red")) {
-        ecolor := "firebrick"
-    }
+    def ecolor := tagToColor(edge.getTag(), "black")
     textWriter.println(`"[$oname, $oturn]" -> "[$tname, $tturn]" [color=$ecolor label="$ep"];`)
     
     for grandEdge => _ in edge.getTarget().outs() {
@@ -190,9 +192,9 @@ def makeMessageGraph(traceline) :near {
     def dag := makeDirectedGraph(traceline)
     
     def mkTurnNode(id :UTurn) :near {
-        var tag :String := ""
-        var sendContext := ""
-        var sendStack := []
+        var tag :int := KEEP
+        var gotContext := ""
+        var gotStack := []
         def logs := [].diverge()
         var optMessageID := null
         
@@ -207,19 +209,19 @@ def makeMessageGraph(traceline) :near {
                 return id[0]
             }
             
-            to tagWith(name :String) :void {
-                tag := name
+            to setTag(newTag :int) :void {
+                tag := newTag
             }
-            to isTagged(name :String) :boolean {
-                return name == tag
+            to getTag() :int {
+                return tag
             }
             
             to getContext() :Tuple[SendingContext, Stack] {
-                return [sendContext, sendStack]
+                return [gotContext, gotStack]
             }
-            to setSendContext(sendCtx :SendingContext, sendStk :Stack) :void {
-                sendContext := sendCtx
-                sendStack := sendStk
+            to setContext(gotCtx :SendingContext, gotStk :Stack) :void {
+                gotContext := gotCtx
+                gotStack := gotStk
             }
             
             to getLogFiles() :List {
@@ -251,7 +253,7 @@ def makeMessageGraph(traceline) :near {
         var anchor :int := 0
         def logs := [].diverge()
         var why :String := ""
-        var tag :String := ""
+        var tag :int := KEEP
         var optText := null
         var optMessageID := null
         
@@ -259,7 +261,7 @@ def makeMessageGraph(traceline) :near {
             to getContext() :Tuple[SendingContext, Stack] {
                 return [sendContext, sendStack]
             }
-            to setSendContext(sendCtx :SendingContext, sendStk :Stack) :void {
+            to setContext(sendCtx :SendingContext, sendStk :Stack) :void {
                 sendContext := sendCtx
                 sendStack := sendStk
             }
@@ -280,13 +282,13 @@ def makeMessageGraph(traceline) :near {
                 }
             }
             
-            to tagWith(name :String) :void {
-                tag := name
+            to setTag(newTag :int) :void {
+                tag := newTag
             }
-            to isTagged(name :String) :boolean {
-                return name == tag
+            to getTag() :int {
+                return tag
             }
-            
+
             to rememberWhy(reason :String) :void {
                 why := reason
             }

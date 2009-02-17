@@ -5,16 +5,19 @@ pragma.syntax("0.8")
 # Copyright 2002 Combex, Inc. under the terms of the MIT X license
 # found at http://www.opensource.org/licenses/mit-license.html ................
 
-def makeMessageGraph :=
-  <import:org.erights.e.tools.causeway.makeMessageGraph>
-
 def File := <type:java.io.File>
+def makeSourceSpan := <elib:base.makeSourceSpan>
+def jp := <import:org.quasiliteral.term.makeTermParser>
+def <causeway> := <import:org.erights.e.tools.causeway.*>
+def makeMessageGraph := <causeway:makeMessageGraph>
+def makeRawGraph := <causeway:makeRawGraph>
+def filterGraph := <causeway:filterGraph>
+
 
 # [[start-line, start-col], [end-line, end-col]]
 # [[1, 0]] is the first character in a source file.
 # start-col refers to the first character of interest.
 # end-col refers to the last character of interest.
-
 def SourceSpan := Tuple[Tuple[int,int], Tuple[int, int]]
 
 # [filename, fncname]
@@ -36,29 +39,6 @@ def UTurn := Tuple[VatName, Turn]
 # one of "org.ref_send.log.Sent", ...
 def SendingContext := String
 
-# The root directory of the source files
-def sourceCodeRootDirName
-
-def fixupSource(source :String) :String {
-    return sourceCodeRootDirName + source
-}
-
-# Turn valid trace file spans into a fully-specified SourceSpan.
-# For example,
-# [ [ 5 ] ] ==>        [ [ 5, 0 ], [ 5, 0 ] ]
-# [ [ 5 ], [ 6 ] ] ==> [ [ 5, 0 ], [ 6, 0 ] ]
-
-def spanner(span) :SourceSpan {
-    def term`[ [@{sline :int},
-                @{scolL :List[int]}?], 
-              ([@{elineL :List[int]}, 
-                @{ecolLL :List[List[int]]}?])?]` := span
-    return [[sline,
-             if (scolL =~ [scol]) {scol} else {0}],
-            [if (elineL =~ [eline]) {eline} else {sline},
-             if (ecolLL =~ [[ecol]]) {ecol} else {
-        if (scolL =~ [scol]) {scol} else {0}}]]
-}
 
 /**
  * <tt>makeCausewayModel</tt>
@@ -67,484 +47,28 @@ def spanner(span) :SourceSpan {
  */
 def makeCausewayModel(var rootDirName :String,
                       traceFiles :List[File],
-                      <file>, traceline) :near {
-    
-    if (!(rootDirName.endsWith("/"))) {
-        rootDirName += "/"
-    }
-    
-    bind sourceCodeRootDirName := rootDirName
-    
-    # TurnTable := List[TurnNode]
-    # Map[VatName, TurnTable]
-    def vatMap := [].asMap().diverge()
-    
-    # Map[MsgID, EventArc]
-    def msgMap := [].asMap().diverge()
-    
-    # Messages := List[MsgID]
-    # Map[Condition, Messages]
-    def condMap := [].asMap().diverge()
-    
-    def resolveds := [].diverge()
-    
-    def graph := makeMessageGraph(traceline)
-    
-    # top has no incoming edges; bottom has no outgoing edges
-    def top := graph.makeTurnNode(["top", 0])
-    def bottom := graph.makeTurnNode(["bottom", 0])
-    graph.addTurnNode(top)
-    graph.addTurnNode(bottom)
-    
-    def makeSourceSpan := <elib:base.makeSourceSpan>
-    
-    def jp := <import:org.quasiliteral.term.makeTermParser>
-    
-    # Parse term tree structure. Return E Stack object which could be empty.
-    def parseStack(stack) :Stack {
-        def entries := [].diverge()
-        
-        for stackFrame in stack {
-            
-            def term`{ "name": @{fnc :String},
-                       "source": @{source :String},
-                       ("span": @optSpan)?,
-                       @_* 
-                     }` := stackFrame
-            # filter E infrastructure stack items
-            if (source !~ `org/erights/e/elang/cmd/@_`) {
-                def optSpanner := if (optSpan =~ [span]) {
-                    spanner(span)
-                } else {
-                    null
-                }
-                entries.push([[fixupSource(source), fnc], optSpanner])
-            }
-        }
-        return entries.snapshot()
-    }
+                      <file>, 
+                      traceline) :near {
+    def [rawGraph, rawTop] := makeRawGraph(rootDirName, 
+                                           traceFiles, 
+                                           <file>, 
+                                           traceline)
+    def [graph, top] := filterGraph(rawGraph, rawTop, traceline)
 
-    def parseOptStack(optStack) :Stack {
-        switch (optStack) {
-            match [] { return [] }
-            match [stack] { return parseStack(stack) }
-        }
-    }
-    
-    # Each vat has a turn table of nodes, one node for each turn.
-    # Return the node for the turn in the vat.
-    # If the node does not exist yet, make it.
-    def getOrMakeTurnNode(name :VatName, turn :Turn) :near {
-        def turns := vatMap.fetch(name, fn{[].diverge()})
-        turns.ensureSize(turn+1)
-        vatMap[name] := turns
-        var node := turns[turn]
-        if (node == null) {
-            node := graph.makeTurnNode([name, turn])
-            graph.addTurnNode(node)
-            turns[turn] := node
-        }
-        return node
-    }
-    
-    for tfile in traceFiles {
-        
-        #traceline(`tracefile: $tfile`)
-        
-        def txt := tfile.getTwine()
-        
-        #def txt := tfile.getText()
-        
-        # fixup E-on-Java traces
-        def t := txt.replaceAll("][", ",")
-        
-        def tt := jp(t)
-        def term`[@chunks*]` := tt
-        
-        for i in 0 ..! chunks.size() {
-            def chunk := chunks[i]
-
-            # types is the list of type names of the current chunk, in order,
-            # from most specific subtype to more general supertypes.
-            def term`{"$$": [@{types :List[String]}*], @_* }` := chunk
-            def subtype := types[0]
-            def subtypeName := subtype.split(".").last()
-            
-            var optSpan := null
-                        
-            if (chunk =~ term`{@dollar: @_, @_*}`) {
-                optSpan := dollar.getOptSpan()
-                if (null != optSpan && i +1 < chunks.size()) {
-            
-                    if (chunks[i +1] =~ term`{@nextDollar: @_, @_*}`) {
-                        def nextOptSpan := nextDollar.getOptSpan()
-                        if (null != nextOptSpan) {
-                            optSpan := makeSourceSpan.optCover(optSpan,
-                                                               nextOptSpan)
-                        }
-                    }
-                }
-            }
-            
-            switch (chunk) {
-                
-                match term`{ "$$": [ @_*,
-                                     "org.ref_send.log.Sent",
-                                     "org.ref_send.log.Event" ],
-                             "anchor": {
-                                 "number": @{anchor :int},
-                                 "turn": {
-                                     "loop": @{name :String},
-                                     "number": @{turn :int}
-                                 }
-                             },
-                             ("condition": @{optCondition :List[String]})?,
-                             "message": @{message :String},
-                             ("text": @{comment :List[String]})?,
-                             ("trace": { "calls": [@optStack*] })?,
-                             @_*
-                           }` {
-                    def origin := getOrMakeTurnNode(name, turn)
-                    
-                    # Create E Stack object, possibly empty, from term tree.
-                    def entries := parseOptStack(optStack)
-                    
-                    var edge := msgMap.fetch(message, fn{null})
-                    if (edge == null) {
-                        
-                        # Sent seen first.
-                        # Make the edge and put it in the msgMap.
-                        # The corresponding Got will fetch the edge from the
-                        # msgMap.
-                        # The anchor number for an edge is set by the Sent.
-                        
-                        edge := graph.makeEventArc(origin, bottom,
-                                                   subtype, entries)
-                        edge.setAnchor(anchor)
-                        edge.addLogFile(optSpan)
-                        msgMap[message] := edge
-                        
-                    } else {
-                        
-                        # Got (or something) seen first.
-                        # Fetch the edge from the msgMap.
-                        # Replace place-holder top object with origin.
-                        # Update send context with stack trace.
-                        # Update anchor number.
-                        
-                        if (edge.getOrigin() == top) {
-                            edge.setOrigin(origin)
-                            edge.setSendContext(subtype, entries)
-                            edge.setAnchor(anchor)
-                            edge.addLogFile(optSpan)
-                        } else {
-                            traceline(
-                              `origin conflict for $message ($subtypeName)`)
-                        }
-                    }
-                    if (comment =~ [text]) {
-                        edge.setOptText(text)
-                    } else if (entries =~ []) {
-                        if (types.contains("org.ref_send.log.Returned")) {
-                            edge.setOptText("return ...");
-                        }
-                    }
-                    edge.setMessageID(message)
-                    if (optCondition =~ [condition]) {
-                        # TODO assert that types must include SentIf
-                        def messages := condMap.fetch(condition, 
-                                                      fn{[].diverge()})
-                        messages.push(message)
-                        condMap[condition] := messages
-                    }
-                }
-                match term`{ "$$": [ @_*,
-                                     "org.ref_send.log.Got",
-                                     "org.ref_send.log.Event" ],
-                             "anchor": {
-                                 "number": @{anchor :int},
-                                 "turn": {
-                                     "loop": @{name :String},
-                                     "number": @{turn :int}
-                                 }
-                             },
-                             "message": @{message :String},
-                             ("trace": { "calls": [@optStack*] })?,
-                             @_*
-                           }` {
-                    
-                    def target := getOrMakeTurnNode(name, turn)
-                    
-                    var edge := msgMap.fetch(message, fn{null})
-                    if (edge == null) {
-                        
-                        # Got seen first.
-                        # Make the edge and put it in the msgMap.
-                        # The corresponding Sent will fetch the edge from the
-                        # msgMap.
-                        
-                        edge := graph.makeEventArc(top, target,
-                                                   subtype, [])
-                        msgMap[message] := edge
-                        
-                    } else {
-                        
-                        # Sent (or something) seen first.
-                        # Fetch the edge from the msgMap.
-                        # Replace place-holder bottom object with target.
-                        # Update got context with stack trace.
-                        
-                        if (edge.getTarget() == bottom) {
-                            edge.setTarget(target)
-                        } else {
-                            traceline(
-                              `target conflict for $message ($subtypeName)`)
-                        }
-                    }
-                    
-                    # Create E Stack object, possibly empty, from term tree.
-                    def entries := parseOptStack(optStack)
-                    target.setSendContext(subtype, entries)
-                    target.addLogFile(optSpan)
-                    target.setMessageID(message)
-                }
-                
-                match term`{ "$$": [ @_*,
-                                     "org.ref_send.log.Resolved",
-                                     "org.ref_send.log.Event" ],
-                             @_*
-                           }` {
-                    
-                    resolveds.push([chunk, optSpan])
-                }
-                
-                match term`{ "$$": [ @_*,
-                                     "org.ref_send.log.Comment",
-                                     "org.ref_send.log.Event" ],
-                             "anchor": {
-                                 "number": @{anchor :int},
-                                 "turn": {
-                                     "loop": @{name :String},
-                                     "number": @{turn :int}
-                                 }
-                             },
-                             ("text": @{comment :List[String]})?,
-                             ("trace": { "calls": [@optStack*] })?,
-                             @_*
-                           }` {
-                    
-                    def origin := getOrMakeTurnNode(name, turn)
-                    
-                    # Create E Stack object, possibly empty, from term tree.
-                    def entries := parseOptStack(optStack)
-                    
-                    def edge := graph.makeEventArc(origin, bottom,
-                                                   "org.ref_send.log.Comment",
-                                                   entries)
-                    edge.setAnchor(anchor)
-                    edge.addLogFile(optSpan)
-                    
-                    if (comment =~ [text]) {
-                        edge.setOptText(text)
-                    }
-                }
-                match _ {
-                    traceline(`no match: $chunk`)
-                }
-            }
-        }
-    }
-    
-    def resolvedEdges := [].diverge()
-    for [r, span] in resolveds {
-        if (r =~ term`{ "$$": [ @_*,
-                                "org.ref_send.log.Resolved",
-                                "org.ref_send.log.Event" ],
-                        "anchor": {
-                            "number": @{anchor :int},
-                            "turn": {
-                                "loop": @{name :String},
-                                "number": @{turn :int}
-                            }
-                        },
-                        "condition": @{condition :String},
-                        ("text": @{comment :List[String]})?,
-                        ("trace": { "calls": [@optStack*] })?,
-                        @_*
-                      }`) {
-            
-            def messages := condMap.fetch(condition, fn{null})
-            if (messages != null) {
-                
-                def origin := getOrMakeTurnNode(name, turn)
-                
-                # Create E Stack object, possibly empty, from term tree.
-                def entries := parseOptStack(optStack)
-                
-                for m in messages {
-                    
-                    def target := msgMap[m].getTarget()
-                    
-                    def edge := graph.makeEventArc(origin, target,
-                                                   "org.ref_send.log.Resolved",
-                                                   entries)
-                    resolvedEdges.push(edge)
-                    edge.setAnchor(anchor)
-                    edge.addLogFile(span)
-                }
-            }
-        }
-    }
-
-    def roots := graph.getRoots()
-    for r in roots {
-        if (r != top) {
-            graph.makeEventArc(top, r, "", [])
-        }
-    }
-    
-    for re in resolvedEdges {
-        def stack := re.getContext()[1]
-        if ([] == stack) {
-            def origin := re.getOrigin()
-            def context := origin.getContext()[0]
-            if (context == "org.ref_send.log.Got" && 
-                origin.getIncomingCount() == 1) {
-
-                def pre := origin.getNextIn()
-                if (pre.getContext()[0] == "org.ref_send.log.Returned") {
-                    pre.setTarget(re.getTarget())
-                    #traceline("killed one")
-                }
-            }
-        }
-    }
-    
-    def devoraOne() :void {
-        
-        var leaves := graph.getLeaves()
-        
-        while (leaves.size() > 0) {
-            
-            def edgeList := [].diverge()
-            for leaf in leaves {
-                # collect all incoming edges for all leaves
-                for edge => _ in leaf.ins() {
-                    edgeList.push(edge)
-                }
-            }
-            def newLeaves := [].diverge()
-            for edge in edgeList {
-                def [_, stack] := edge.getContext()
-                if ([] == stack) {
-                    edge.tagWith("red")
-                    
-                    def target := edge.getTarget()
-                    var nin := target.getIncomingCount()
-                    for incoming => _ in target.ins() {
-                        if (! incoming.isTagged("red")) {
-                            break
-                        }
-                        nin -= 1
-                    }
-                    if (nin == 0) {
-                        target.tagWith("red")
-                    }
-                    
-                    def origin := edge.getOrigin()
-                    var nout := origin.getOutgoingCount()
-                    for outgoing => _ in origin.outs() {
-                        if (! outgoing.isTagged("red")) {
-                            break
-                        }
-                        nout -= 1
-                    }
-                    if (nout == 0) {
-                        newLeaves.push(origin)
-                    }
-                }
-            }
-            leaves := newLeaves.snapshot()
-        }
-    }
-    def dummy := graph.makeTurnNode(["dummy", 0])
-    
-    def devoraTwo(root) :void {
-        
-        def edgeList := [].diverge()
-        for outgoing => _ in root.outs() {
-            edgeList.push(outgoing)
-        }
-        for edge in edgeList {
-            def target := edge.getTarget()
-            if (edge.isTagged("red")) {
-                # snip
-                edge.setOrigin(dummy)
-                edge.setTarget(dummy)
-            }
-            devoraTwo(target)
-        }
-    }
-    
-    devoraOne()
-    devoraTwo(top)
-    
-    def sortTree(root) :void {
-        def seen := [].asSet().diverge()
-        def subSort(node) :any {
-            if (seen.contains(node)) { return }
-            seen.addElement(node)
-            
-            def edgeList := [].diverge()
-            for edge => _ in node.outs() {
-                edgeList.push(edge)
-            }
-            var edges := [].asMap().diverge()
-            for edge in edgeList {
-                # depth-first
-                subSort(edge.getTarget())
-                edges[edge.getKey()] := edge
-            }
-            edges := edges.sortKeys()
-            for edge in edges {
-                # splice out, splice back in
-                # doesn't change graph topology, but
-                # does change the order of edges
-                edge.setOrigin(node)
-            }
-        }
-        subSort(root)
-    }
-    sortTree(top)
-    
     # Map[VatName, Map[Turn, TurnNode]]
     def ordered := [].asMap().diverge()
-    
-    def orderNodes(root) :void {
-        def seen := [bottom].asSet().diverge()
-        
-        # Add the nodes to the process-order list.
-        def storeNodes(node) :void {
-            if (seen.contains(node)) { return }
-            seen.addElement(node)
-            def [vatName, turn] := node.getID()
+    for node in top.deepOutsPre() {
+        def [vatName, turn] := node.getID()
+        if (vatName != "bottom") {
             def map := ordered.fetch(vatName, fn{[].asMap().diverge()})
-            ordered[vatName] := map
             map[turn] := node
-
-            for target in node.outs() {
-                storeNodes(target)
-            }
-        }
-        for sub in root.outs() {
-            storeNodes(sub)
-        }
-        for name => map in ordered {
-            # each vatName is mapped to a sorted list of events
-            ordered[name] := map.sortKeys()
+            ordered[vatName] := map
         }
     }
-    orderNodes(top)
+    for name => map in ordered {
+        # each vatName is mapped to a sorted list of events
+        ordered[name] := map.sortKeys()
+    }
     
     def causewayModel {
         
@@ -553,7 +77,7 @@ def makeCausewayModel(var rootDirName :String,
         }
         
         to getVatSet() :near {
-            return vatMap.getKeys().snapshot()
+            return ordered.getKeys().snapshot()
         }
         
         # Map[VatName, List[TurnNode]]

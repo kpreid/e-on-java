@@ -25,8 +25,8 @@ def templateNode(self, id) :near {
         to getID() :any { return id }
         
         /**
-         * <tt>outs</tt> iterates through the outgoing circular list,
-         * invoking the function on each target.
+         * <tt>outs</tt> iterates through the outgoing edges,
+         * invoking the function on each edge,target pair.
          * <p>
          * Each outgoing edge is used as the key, and its target is used as
          * the value.
@@ -36,16 +36,59 @@ def templateNode(self, id) :near {
                 to iterate(func) :void {
                     var ge := self.getPrevOut()
                     while (ge != self) {
+                        def next := ge.getPrevOut()
                         func(ge, ge.getTarget())
-                        ge := ge.getPrevOut()
+                        ge := next
                     }
                 }
             }
         }
         
         /**
-         * <tt>ins</tt> iterates through the incoming circular list,
-         * invoking the function on each origin.
+         * Iterates through all edges transitively outgoing from this
+         * node in pre-order without duplicate visits.
+         */
+        to deepOutsPre() :near {
+            def iterAllOuts {
+                to iterate(func) :void {
+                    def seen := [].asSet().diverge()
+                    def walk(node) :void {
+                        if (seen.contains(node)) { return }
+                        seen.addElement(node)
+                        for edge => target in node.outs() {
+                            func(edge, target)
+                            walk(target)
+                        }
+                    }
+                    walk(self)
+                }
+            }
+        }
+
+        /**
+         * Iterates through all edges transitively outgoing from this
+         * node in post-order without duplicate visits.
+         */
+        to deepOutsPost() :near {
+            def iterAllOuts {
+                to iterate(func) :void {
+                    def seen := [].asSet().diverge()
+                    def walk(node) :void {
+                        if (seen.contains(node)) { return }
+                        seen.addElement(node)
+                        for edge => target in node.outs() {
+                            walk(target)
+                            func(edge, target)
+                        }
+                    }
+                    walk(self)
+                }
+            }
+        }
+
+        /**
+         * <tt>ins</tt> iterates through the incoming edges,
+         * invoking the function on each edge,origin pair.
          * <p>
          * Each incoming edge is used as a key, and its origin is used as the
          * value.
@@ -55,8 +98,9 @@ def templateNode(self, id) :near {
                 to iterate(func) :void {
                     var ge := self.getPrevIn()
                     while (ge != self) {
+                        def next := ge.getPrevIn()
                         func(ge, ge.getOrigin())
-                        ge := ge.getPrevIn()
+                        ge := next
                     }
                 }
             }

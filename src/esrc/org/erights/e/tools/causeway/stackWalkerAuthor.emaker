@@ -152,7 +152,7 @@ def stackWalkerAuthor(<file>, <jar>, makers, traceline) :near {
             }
         }
         if (result == "") {
-            result += "??"
+            result := "??"
         }
         return result
     }
