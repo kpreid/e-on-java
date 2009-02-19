@@ -161,43 +161,51 @@ def stackWalkerAuthor(<file>, <jar>, makers, traceline) :near {
                         abstractAction,
                         selectionModel, vatMap) :near {
         
-        
         def swtStackWalkerView := <widget:makeComposite>(swtParent, 0)
         
         def swtSideToSide := <custom:makeSashForm>(swtStackWalkerView,
                                                    SWT.getHORIZONTAL())
         
-        def swtStackPane := <widget:makeComposite>(swtSideToSide,
+        def swtStackView := <widget:makeComposite>(swtSideToSide, 0)
+
+        def getOutlineActionTargets
+        def outlineView := makeOutlineView(swtStackView, palette,
+                                           abstractAction, 
+                                           getOutlineActionTargets)
+
+        def swtStackFolder := <widget:makeTabFolder>(swtStackView, 0)
+        def swtDescription := <widget:makeTabItem>(swtStackFolder, 0)
+
+        def swtStackPane := <widget:makeComposite>(swtStackFolder,
                                                    SWT.getBORDER())
         
         def swtStackExplorer := <widget:makeTree>(swtStackPane,
                                                   SWT.getSINGLE() |
                                                     (SWT.getH_SCROLL() |
                                                        SWT.getV_SCROLL()))
-        
-        def swtDescription := <custom:makeCLabel>(swtStackPane,
-                                                  SWT.getCENTER() |
-                                                    SWT.getSHADOW_OUT())
-        
-        def getOutlineActionTargets
-        def outlineView := makeOutlineView(swtStackPane, palette,
-                                           abstractAction, 
-                                           getOutlineActionTargets)
-        
-        def swtSourcePane := <widget:makeComposite>(swtSideToSide,
+        swtDescription.setControl(swtStackPane)
+        swtDescription.setText("Stack Explorer")
+        swtStackFolder.setSelection(swtStackFolder.indexOf(swtDescription))
+
+        def swtSourceView := <widget:makeComposite>(swtSideToSide, 0)
+
+        def getTextActionTargets
+        def textView := makeTextView(swtSourceView, palette,
+                                     abstractAction, getTextActionTargets)
+
+        def swtSourceFolder := <widget:makeTabFolder>(swtSourceView, 0)
+        def swtFilename := <widget:makeTabItem>(swtSourceFolder, 0)
+
+        def swtSourcePane := <widget:makeComposite>(swtSourceFolder,
                                                     SWT.getBORDER())
         
         def swtSourceCode := <custom:makeStyledText>(swtSourcePane,
                                                      SWT.getH_SCROLL() |
                                                        SWT.getV_SCROLL())
-        
-        def swtFilename := <custom:makeCLabel>(swtSourcePane,
-                                               SWT.getLEFT() |
-                                                 SWT.getSHADOW_OUT())
-        
-        def getTextActionTargets
-        def textView := makeTextView(swtSourcePane, palette,
-                                     abstractAction, getTextActionTargets)
+
+        swtFilename.setControl(swtSourcePane)
+        swtFilename.setText("")
+        swtSourceFolder.setSelection(swtSourceFolder.indexOf(swtFilename))
         
         swtSideToSide.setWeights([35, 65])
         
@@ -276,15 +284,6 @@ def stackWalkerAuthor(<file>, <jar>, makers, traceline) :near {
             def [ov, ot] := origin.getID()
             # [vatDisplayName, [vatColor, colorName]]
             def oattr := vatMap.fetchDisplayAttributes(ov)
-
-            if (element.isNode()) {
-                swtDescription.setText(`[${oattr[0]}, $ot]`)
-            } else {
-                def [tv, tt] := element.getTarget().getID()
-                def tattr := vatMap.fetchDisplayAttributes(tv)
-                swtDescription.setText(
-                    `[${oattr[0]}, $ot] causes [${tattr[0]}, $tt]`)
-            }
             
             # Remove stack entry items from tree widget.
             swtStackExplorer.removeAll()
@@ -376,7 +375,7 @@ def stackWalkerAuthor(<file>, <jar>, makers, traceline) :near {
             }
             if (action == "doIncreaseFontSize" ||
                   action == "doDecreaseFontSize") {
-                return [swtStackExplorer, swtDescription]
+                return [swtStackExplorer]
             }
             return null
         }
@@ -384,7 +383,7 @@ def stackWalkerAuthor(<file>, <jar>, makers, traceline) :near {
         bind getTextActionTargets(action :String) :List {
             if (action == "doIncreaseFontSize" ||
                   action == "doDecreaseFontSize") {
-                return [swtSourceCode, swtFilename]
+                return [swtSourceCode]
             }
             return null
         }
@@ -396,24 +395,32 @@ def stackWalkerAuthor(<file>, <jar>, makers, traceline) :near {
             to layout() :void {
                 
                 outlineView.layout()
-                
+            
                 swtGrid`${swtStackPane}:
+                        ${swtStackExplorer}.X.Y`
+            
+                palette.zeroMargins(swtStackPane.getLayout())
+
+                swtGrid`${swtStackView}:
                     ${outlineView.getTopLevelPane()}.X
-                    ${swtDescription}.X
-                    ${swtStackExplorer}.X.Y`
+                    ${swtStackFolder}.X.Y`
                 
                 palette.setMargins(
-                    swtStackPane.getLayout(), 2, 0, 0, 2)
+                    swtStackView.getLayout(), 2, 0, 0, 2)
                 
                 textView.layout()
-                
+
                 swtGrid`${swtSourcePane}:
+                        ${swtSourceCode}.X.Y`
+            
+                palette.zeroMargins(swtSourcePane.getLayout())
+                
+                swtGrid`${swtSourceView}:
                     ${textView.getTopLevelPane()}.X
-                    ${swtFilename}.X
-                    ${swtSourceCode}.X.Y`
+                    ${swtSourceFolder}.X.Y`
                 
                 palette.setMargins(
-                    swtSourcePane.getLayout(), 2, 0, 0, 2)
+                    swtSourceView.getLayout(), 2, 0, 0, 2)
                 
                 swtGrid`${swtStackWalkerView}:
                         ${swtSideToSide}.X.Y`
