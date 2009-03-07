@@ -221,7 +221,7 @@ def stackWalkerAuthor(<file>, <jar>, makers, traceline) :near {
             to modifyText(_) :void { everDirty := true }
         })
         
-        def &everWordWrap := makeLamportSlot(true)
+        def &everWordWrap := makeLamportSlot(false)
         whenever([&everWordWrap], fn{
             swtSourceCode.setWordWrap(everWordWrap)
         }, fn{
