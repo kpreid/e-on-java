@@ -31,7 +31,7 @@ def makeMembraneAuthor(makeWeakKeyMap) {
                 # Being marked with MyExemptStamp allows it to pass
                 return exempt
             } else if (m.fetch(wrapped, fn{null}) =~ wrapper :notNull) {
-                # Reuse the wrapped with which I've already wrapped it
+                # Reuse the wrapper with which I've already wrapped it
                 return wrapper
             }
             def caretaker implements MyExemptStamp {
