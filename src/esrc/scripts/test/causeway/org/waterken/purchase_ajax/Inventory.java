@@ -2,7 +2,7 @@ package org.waterken.purchase_ajax;
 
 public interface Inventory {
 
-    void isAvailable(String partNo, Callback tellIsAvailable);
+    void partInStock(String partNo, Callback tellPartInStock);
     
     void placeOrder(String buyer, 
                     String partNo, 

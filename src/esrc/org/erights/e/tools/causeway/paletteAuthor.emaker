@@ -27,6 +27,16 @@ def paletteAuthor(rezKit, makers, traceline) :near {
     # Map the colors to X Windows color names
     # These names specify color attributes in DOT files, e.g., [color=dodgerblue]
     
+    # Use paper colors just for screen shots. They don't map
+    # to X Windows colors and this will break Export... translating
+    # to GraphViz DOT files.
+    colorMap.put("paperblue",
+                 [rezKit.makeColor(51, 51, 255), "paperblue"], true) # 3333FF
+    colorMap.put("papergreen",
+                 [rezKit.makeColor(11, 111, 36), "papergreen"], true) # 0B6F24
+    colorMap.put("papercoral",
+                 [rezKit.makeColor(168, 69, 42), "papercoral"], true) # A8452A
+
     colorMap.put("mediumblue",
                  [rezKit.makeColor(0, 0, 205), "mediumblue"], true) # 0000CD
     colorMap.put("dodgerblue",
@@ -41,14 +51,33 @@ def paletteAuthor(rezKit, makers, traceline) :near {
                  [rezKit.makeColor(210, 105, 30), "chocolate"], true) # D2691E
     colorMap.put("darkslategray",
                  [rezKit.makeColor(47, 79, 79), "darkslategray"], true) # 2F4F4F
-    
     colorMap.put("midnightblue",
                  [rezKit.makeColor(25, 25, 112), "midnightblue"], true) # 191970
     colorMap.put("darkblue",
                  [rezKit.makeColor(0, 0, 139), "darkblue"], true) # 00008B
     colorMap.put("navy",
                  [rezKit.makeColor(0, 0, 128), "navy"], true) # 000080
-    
+    colorMap.put("goldenrod",
+                 [rezKit.makeColor(218, 165, 32), "goldenrod"], true) # DAA520
+    colorMap.put("teal",
+                 [rezKit.makeColor(0, 128, 128), "teal"], true) # 008080
+    colorMap.put("indian red",
+                 [rezKit.makeColor(205, 92, 92), "indian red"], true) # CD5C5C
+    colorMap.put("medium sea green",
+                 [rezKit.makeColor(60, 179, 113), "medium sea green"], true) # 3CB371
+    colorMap.put("cornflower",
+                 [rezKit.makeColor(100, 149, 237), "cornflower"], true) # 6495ED
+    colorMap.put("dark cyan",
+                 [rezKit.makeColor(0, 139, 139), "dark cyan"], true) # 008B8B
+    colorMap.put("dark magenta",
+                 [rezKit.makeColor(139, 0, 139), "dark magenta"], true) # 8B008B
+    colorMap.put("dark orange",
+                 [rezKit.makeColor(255, 140, 0), "dark orange"], true) # FF8C00
+    colorMap.put("fuchsia",
+                 [rezKit.makeColor(255, 0, 255), "fuchsia"], true) # FF00FF
+    colorMap.put("rosy brown",
+                 [rezKit.makeColor(188, 143, 143), "rosy brown"], true) # BC8F8F
+
     colorMap.put("darkred",
                  [rezKit.makeColor(139, 0, 0), "darkred"], true) # 8B0000
     colorMap.put("firebrick",
@@ -56,7 +85,6 @@ def paletteAuthor(rezKit, makers, traceline) :near {
     
     colorMap.put("lightsteelblue",
                  [rezKit.makeColor(176, 196, 222), "lightsteelblue"], true) #B0C4DE
-    
     
     colorMap.put("whitesmoke",
                  [rezKit.makeColor(245, 245, 245), "whitesmoke"], true) # F5F5F5
@@ -69,65 +97,64 @@ def paletteAuthor(rezKit, makers, traceline) :near {
     colorMap.put("black",
                  [rezKit.makeColor(0, 0, 51), "black"], true) # Not really black
     
-    def nVatColors := 6
+    def nVatColors := 15
     def vatColors := [].diverge()
     
+    #vatColors[0] := colorMap.fetch("paperblue", fn{})
+    #vatColors[1] := colorMap.fetch("papergreen", fn{})
+    #vatColors[2] := colorMap.fetch("papercoral", fn{})
+
     vatColors[0] := colorMap.fetch("mediumblue", fn{})
     vatColors[1] := colorMap.fetch("forestgreen", fn{})
     vatColors[2] := colorMap.fetch("indigo", fn{})
     vatColors[3] := colorMap.fetch("chocolate", fn{})
     vatColors[4] := colorMap.fetch("darkslategray", fn{})
-    vatColors[5] := colorMap.fetch("dodgerblue", fn{})
+
+    vatColors[5] := colorMap.fetch("goldenrod", fn{})
+    vatColors[6] := colorMap.fetch("teal", fn{})
+    vatColors[7] := colorMap.fetch("indian red", fn{})
+    vatColors[8] := colorMap.fetch("medium sea green", fn{})
+    vatColors[9] := colorMap.fetch("cornflower", fn{})
+
+    vatColors[10] := colorMap.fetch("dark cyan", fn{})
+    vatColors[11] := colorMap.fetch("dark magenta", fn{})
+    vatColors[12] := colorMap.fetch("dark orange", fn{})
+    vatColors[13] := colorMap.fetch("fuchsia", fn{})
+    vatColors[14] := colorMap.fetch("rosy brown", fn{})
     
     def fonts := [].asMap().diverge()
     
     def normal := SWT.getNORMAL()
     def bold := SWT.getBOLD()
     def italic := SWT.getITALIC()
+        
+    fonts.put(["Monaco", "9", "normal"], rezKit.makeFont("Monaco", 9, normal), true)
+    fonts.put(["Monaco", "9", "bold"], rezKit.makeFont("Monaco", 9, bold), true)
+    fonts.put(["Monaco", "9", "italic"], rezKit.makeFont("Monaco", 9, italic), true)
+
+    fonts.put(["Monaco", "10", "normal"], rezKit.makeFont("Monaco", 10, normal), true)
+    fonts.put(["Monaco", "10", "bold"], rezKit.makeFont("Monaco", 10, bold), true)
+    fonts.put(["Monaco", "10", "italic"], rezKit.makeFont("Monaco", 10, italic), true)
+
+    fonts.put(["Monaco", "12", "normal"], rezKit.makeFont("Monaco", 12, normal), true)
+    fonts.put(["Monaco", "12", "bold"], rezKit.makeFont("Monaco", 12, bold), true)
+    fonts.put(["Monaco", "12", "italic"], rezKit.makeFont("Monaco", 12, italic), true)
+
+    fonts.put(["Verdana", "9", "normal"], rezKit.makeFont("Verdana", 9, normal), true)
+    fonts.put(["Verdana", "9", "bold"], rezKit.makeFont("Verdana", 9, bold), true)
+    fonts.put(["Verdana", "9", "italic"], rezKit.makeFont("Verdana", 9, italic), true)
     
-    fonts.put(["Arial", "8", "normal"], rezKit.makeFont("Arial", 8, normal), true)
-    fonts.put(["Arial", "8", "bold"], rezKit.makeFont("Arial", 8, bold), true)
-    fonts.put(["Arial", "8", "italic"], rezKit.makeFont("Arial", 8, italic), true)
-    
-    fonts.put(["Arial", "9", "normal"], rezKit.makeFont("Arial", 9, normal), true)
-    fonts.put(["Arial", "9", "bold"], rezKit.makeFont("Arial", 9, bold), true)
-    fonts.put(["Arial", "9", "italic"], rezKit.makeFont("Arial", 9, italic), true)
-    
-    fonts.put(["Arial", "10", "normal"], rezKit.makeFont("Arial", 10, normal), true)
-    fonts.put(["Arial", "10", "bold"], rezKit.makeFont("Arial", 10, bold), true)
-    fonts.put(["Arial", "10", "italic"], rezKit.makeFont("Arial", 10, italic), true)
-    
-    fonts.put(["Arial", "12", "normal"], rezKit.makeFont("Arial", 12, normal), true)
-    fonts.put(["Arial", "12", "bold"], rezKit.makeFont("Arial", 12, bold), true)
-    fonts.put(["Arial", "12", "italic"], rezKit.makeFont("Arial", 12, italic), true)
-    
-    fonts.put(["Arial", "14", "normal"], rezKit.makeFont("Arial", 14, normal), true)
-    fonts.put(["Arial", "14", "bold"], rezKit.makeFont("Arial", 14, bold), true)
-    fonts.put(["Arial", "14", "italic"], rezKit.makeFont("Arial", 14, italic), true)
-    
-    fonts.put(["Arial", "22", "normal"], rezKit.makeFont("Arial", 22, normal), true)
-    fonts.put(["Arial", "22", "bold"], rezKit.makeFont("Arial", 22, bold), true)
-    fonts.put(["Arial", "22", "italic"], rezKit.makeFont("Arial", 22, italic), true)
-    
-    fonts.put(["Courier New", "8", "normal"], rezKit.makeFont("Courier New", 8, normal), true)
-    fonts.put(["Courier New", "8", "bold"], rezKit.makeFont("Courier New", 8, bold), true)
-    fonts.put(["Courier New", "8", "italic"], rezKit.makeFont("Courier New", 8, italic), true)
-    
-    fonts.put(["Courier New", "9", "normal"], rezKit.makeFont("Courier New", 9, normal), true)
-    fonts.put(["Courier New", "9", "bold"], rezKit.makeFont("Courier New", 9, bold), true)
-    fonts.put(["Courier New", "9", "italic"], rezKit.makeFont("Courier New", 9, italic), true)
-    
-    fonts.put(["Courier New", "10", "normal"], rezKit.makeFont("Courier New", 10, normal), true)
-    fonts.put(["Courier New", "10", "bold"], rezKit.makeFont("Courier New", 10, bold), true)
-    fonts.put(["Courier New", "10", "italic"], rezKit.makeFont("Courier New", 10, italic), true)
-    
-    fonts.put(["Courier New", "12", "normal"], rezKit.makeFont("Courier New", 12, normal), true)
-    fonts.put(["Courier New", "12", "bold"], rezKit.makeFont("Courier New", 12, bold), true)
-    fonts.put(["Courier New", "12", "italic"], rezKit.makeFont("Courier New", 12, italic), true)
-    
-    fonts.put(["Courier New", "14", "normal"], rezKit.makeFont("Courier New", 14, normal), true)
-    fonts.put(["Courier New", "14", "bold"], rezKit.makeFont("Courier New", 14, bold), true)
-    fonts.put(["Courier New", "14", "italic"], rezKit.makeFont("Courier New", 14, italic), true)
+    fonts.put(["Verdana", "10", "normal"], rezKit.makeFont("Verdana", 10, normal), true)
+    fonts.put(["Verdana", "10", "bold"], rezKit.makeFont("Verdana", 10, bold), true)
+    fonts.put(["Verdana", "10", "italic"], rezKit.makeFont("Verdana", 10, italic), true)
+
+    fonts.put(["Verdana", "12", "normal"], rezKit.makeFont("Verdana", 12, normal), true)
+    fonts.put(["Verdana", "12", "bold"], rezKit.makeFont("Verdana", 12, bold), true)
+    fonts.put(["Verdana", "12", "italic"], rezKit.makeFont("Verdana", 12, italic), true)
+
+    fonts.put(["Verdana", "22", "normal"], rezKit.makeFont("Verdana", 22, normal), true)
+    fonts.put(["Verdana", "22", "bold"], rezKit.makeFont("Verdana", 22, bold), true)
+    fonts.put(["Verdana", "22", "italic"], rezKit.makeFont("Verdana", 22, italic), true)
     
     def metrics := [].asMap().diverge()
     
@@ -208,64 +235,64 @@ def paletteAuthor(rezKit, makers, traceline) :near {
             to makeWelcomePalette() :near {
                 return makeBasicPalette("navy",
                                         "whitesmoke",
-                                        ["Arial", "22", "normal"])
+                                        ["Verdana", "22", "normal"])
             }
             
             to makeFramePalette() :near {
                 return makeBasicPalette("black",
-                                        "whitesmoke",
-                                        ["Arial", "10", "bold"])
+                                        "white",
+                                        ["Verdana", "12", "normal"])
             }
             
             to makeTitlePalette() :near {
                 return makeBasicPalette("white",
                                         "darkslateblue",
-                                        ["Arial", "12", "bold"])
+                                        ["Verdana", "12", "bold"])
             }
             to makeFolderPalette() :near {
                 return makeBasicPalette("black",
-                                        "whitesmoke",
-                                        ["Arial", "9", "bold"])
+                                        "white",
+                                        ["Verdana", "12", "normal"])
             }
             to makeTabPalette() :near {
                 return makeBasicPalette("black",
                                         "lightsteelblue",
-                                        ["Arial", "9", "bold"])
+                                        ["Verdana", "10", "bold"])
             }
             to makePOPanePalette() :near {
                 return makeBasicPalette("black",
-                                        "whitesmoke",
-                                        ["Arial", "9", "normal"])
+                                        "white",
+                                        ["Verdana", "12", "normal"])
             }
             to makeMessageTreePalette() :near {
                 return makeBasicPalette("black",
-                                        "whitesmoke",
-                                        ["Arial", "9", "normal"])
+                                        "white",
+                                        ["Verdana", "12", "normal"])
             }
-            to makeEStackPalette() :near {
+            to makeStackPalette() :near {
                 return makeBasicPalette("black",
-                                        "whitesmoke",
-                                        ["Courier New", "9", "normal"])
+                                        "white",
+                                        ["Verdana", "12", "normal"])
             }
-            to makeECodePalette() :near {
+            to makeSourcePalette() :near {
                 return makeBasicPalette("black",
-                                        "whitesmoke",
-                                        ["Courier New", "9", "normal"])
+                                        "white",
+                                        ["Monaco", "12", "normal"])
             }
             to makeDebugViewPalette() :near {
                 return makeBasicPalette("black",
-                                        "whitesmoke",
-                                        ["Courier New", "8", "normal"])
+                                        "white",
+                                        ["Monaco", "10", "normal"])
             }
             to makeFilenamePalette() :near {
                 return makeBasicPalette("black",
                                         "lightsteelblue",
-                                        ["Arial", "10", "normal"])
+                                        ["Verdana", "10", "normal"])
             }
             to makeDescPalette() :near {
                 return makeBasicPalette("black",
                                         "lightsteelblue",
-                                        ["Arial", "10", "normal"])
+                                        ["Verdana", "10", "normal"])
             }
             to makeSmallerFont(font) :near {
                 def fontData := font.getFontData()[0]

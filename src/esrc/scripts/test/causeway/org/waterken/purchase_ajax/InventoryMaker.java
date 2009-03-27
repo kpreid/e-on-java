@@ -3,7 +3,7 @@ package org.waterken.purchase_ajax;
 import java.io.Serializable;
 
 import org.joe_e.Struct;
-import org.ref_send.promise.eventual.Eventual;
+import org.ref_send.promise.Eventual;
 
 public final class
 InventoryMaker {
@@ -15,14 +15,12 @@ InventoryMaker {
             static private final long serialVersionUID = 1L;
 
             public void
-            isAvailable(String partNo,  Callback tellIsAvailable) {
-                _.log.comment("is available");
-                _._(tellIsAvailable).run(true);
+            partInStock(String partNo,  Callback tellPartInStock) {
+                _._(tellPartInStock).run(true);
             }
 
             public void
             placeOrder(String buyer, String partNo,  Callback tellOrderPlaced) {
-                _.log.comment("placing order");
                 _._(tellOrderPlaced).run(true);
             }
         }

@@ -61,8 +61,12 @@ def getText(file) :String {
     }
 }
 
-def stackWalkerAuthor(<file>, <jar>, makers, traceline) :near {
+def stackWalkerAuthor(var rootDirName, <file>, <jar>, makers, traceline) :near {
     
+    if (!(rootDirName.endsWith("/"))) {
+        rootDirName += "/"
+    }
+
     /**
      * Returns either a java.io.File or a java.net.URL
      */
@@ -75,7 +79,7 @@ def stackWalkerAuthor(<file>, <jar>, makers, traceline) :near {
                 return <jar>[body]
             }
             match _ {
-                return <file>[pathname]
+                return <file>[rootDirName + pathname]
             }
         }
     }
@@ -163,10 +167,19 @@ def stackWalkerAuthor(<file>, <jar>, makers, traceline) :near {
         
         def swtStackWalkerView := <widget:makeComposite>(swtParent, 0)
         
+        def fldrPalette := palette. makeFolderPalette()
+
+        swtStackWalkerView.setForeground(fldrPalette.getFg())
+        swtStackWalkerView.setBackground(fldrPalette.getBg())
+        swtStackWalkerView.setFont(fldrPalette.getFont())
+
         def swtSideToSide := <custom:makeSashForm>(swtStackWalkerView,
                                                    SWT.getHORIZONTAL())
         
         def swtStackView := <widget:makeComposite>(swtSideToSide, 0)
+        swtStackView.setForeground(fldrPalette.getFg())
+        swtStackView.setBackground(fldrPalette.getBg())
+        swtStackView.setFont(fldrPalette.getFont())
 
         def getOutlineActionTargets
         def outlineView := makeOutlineView(swtStackView, palette,
@@ -174,6 +187,10 @@ def stackWalkerAuthor(<file>, <jar>, makers, traceline) :near {
                                            getOutlineActionTargets)
 
         def swtStackFolder := <widget:makeTabFolder>(swtStackView, 0)
+        swtStackFolder.setForeground(fldrPalette.getFg())
+        swtStackFolder.setBackground(fldrPalette.getBg())
+        swtStackFolder.setFont(fldrPalette.getFont())
+
         def swtDescription := <widget:makeTabItem>(swtStackFolder, 0)
 
         def swtStackPane := <widget:makeComposite>(swtStackFolder,
@@ -183,17 +200,33 @@ def stackWalkerAuthor(<file>, <jar>, makers, traceline) :near {
                                                   SWT.getSINGLE() |
                                                     (SWT.getH_SCROLL() |
                                                        SWT.getV_SCROLL()))
+
+        def stkPalette := palette.makeStackPalette()
+        swtStackPane.setForeground(stkPalette.getFg())
+        swtStackPane.setBackground(stkPalette.getBg())
+        swtStackPane.setFont(stkPalette.getFont())
+        swtStackExplorer.setForeground(stkPalette.getFg())
+        swtStackExplorer.setBackground(stkPalette.getBg())
+        swtStackExplorer.setFont(stkPalette.getFont())
+
         swtDescription.setControl(swtStackPane)
         swtDescription.setText("Stack Explorer")
         swtStackFolder.setSelection(swtStackFolder.indexOf(swtDescription))
 
         def swtSourceView := <widget:makeComposite>(swtSideToSide, 0)
+        swtSourceView.setForeground(fldrPalette.getFg())
+        swtSourceView.setBackground(fldrPalette.getBg())
+        swtSourceView.setFont(fldrPalette.getFont())
 
         def getTextActionTargets
         def textView := makeTextView(swtSourceView, palette,
                                      abstractAction, getTextActionTargets)
 
         def swtSourceFolder := <widget:makeTabFolder>(swtSourceView, 0)
+        swtSourceFolder.setForeground(fldrPalette.getFg())
+        swtSourceFolder.setBackground(fldrPalette.getBg())
+        swtSourceFolder.setFont(fldrPalette.getFont())
+
         def swtFilename := <widget:makeTabItem>(swtSourceFolder, 0)
 
         def swtSourcePane := <widget:makeComposite>(swtSourceFolder,
@@ -202,6 +235,14 @@ def stackWalkerAuthor(<file>, <jar>, makers, traceline) :near {
         def swtSourceCode := <custom:makeStyledText>(swtSourcePane,
                                                      SWT.getH_SCROLL() |
                                                        SWT.getV_SCROLL())
+
+        def srcPalette := palette.makeSourcePalette()
+        swtSourcePane.setForeground(srcPalette.getFg())
+        swtSourcePane.setBackground(srcPalette.getBg())
+        swtSourcePane.setFont(srcPalette.getFont())
+        swtSourceCode.setForeground(srcPalette.getFg())
+        swtSourceCode.setBackground(srcPalette.getBg())
+        swtSourceCode.setFont(srcPalette.getFont())
 
         swtFilename.setControl(swtSourcePane)
         swtFilename.setText("")
@@ -231,6 +272,7 @@ def stackWalkerAuthor(<file>, <jar>, makers, traceline) :near {
         swtSourceCode.setEditable(false)
         
         def showAndSelect(file, pathname, first, fo, last, lo) :void {
+
             swtFilename.setText(`$pathname  line: $first`)
             swtSourceCode.setText(getText(file))
             

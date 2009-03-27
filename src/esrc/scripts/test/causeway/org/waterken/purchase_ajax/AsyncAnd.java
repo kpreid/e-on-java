@@ -2,7 +2,8 @@ package org.waterken.purchase_ajax;
 
 import java.io.Serializable;
 
-import org.ref_send.promise.eventual.Eventual;
+import org.ref_send.promise.Eventual;
+
 
 public class AsyncAnd implements Callback, Serializable {
     static private final long serialVersionUID = 1L;
@@ -19,19 +20,17 @@ public class AsyncAnd implements Callback, Serializable {
     }
 
     public void run(boolean answer) {
-        if (answer) {
-            expected -= 1;
-            if (expected == 0) {
-                if (tellAreAllTrue != null) {
+        if (tellAreAllTrue != null) {
+            if (answer) {
+                expected -= 1;
+                if (expected == 0) {
                     _.log.comment("happened: all true");
                     _._(tellAreAllTrue).run(true);
                     tellAreAllTrue = null;
+                } else {
+                    _.log.comment("leadsto: all true");
                 }
             } else {
-                _.log.comment("leadsto: all true");
-            }
-        } else {
-            if (tellAreAllTrue != null) {
                 _.log.comment("found a false");
                 _._(tellAreAllTrue).run(false);
                 tellAreAllTrue = null;

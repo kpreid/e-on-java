@@ -37,13 +37,6 @@ def UTurn := Tuple[VatName, Turn]
 # one of "org.ref_send.log.Sent", ...
 def SendingContext := String
 
-# The root directory of the source files
-def sourceCodeRootDirName
-
-def fixupSource(source :String) :String {
-    return sourceCodeRootDirName + source
-}
-
 # Turn valid trace file spans into a fully-specified SourceSpan.
 # For example,
 # [ [ 5 ] ] ==>        [ [ 5, 0 ], [ 5, 0 ] ]
@@ -65,16 +58,9 @@ def spanner(span) :SourceSpan {
  * <tt>makeRawGraph</tt> returns a pair of the messageGraph and the
  * top element for navigating the significant portion of that graph.
  */
-def makeRawGraph(var rootDirName :String,
-                 traceFiles :List[File],
+def makeRawGraph(traceFiles :List[File],
                  <file>, 
                  traceline) :Tuple[near, near] {
-    
-    if (!(rootDirName.endsWith("/"))) {
-        rootDirName += "/"
-    }
-    
-    bind sourceCodeRootDirName := rootDirName
     
     # Map[MsgID, EventArc]
     def msgMap := [].asMap().diverge()
@@ -109,7 +95,7 @@ def makeRawGraph(var rootDirName :String,
             } else {
                 null
             }
-            entries.push([[fixupSource(source), fnc], optSpanner])
+            entries.push([[source, fnc], optSpanner])
         }
         return entries.snapshot()
     }

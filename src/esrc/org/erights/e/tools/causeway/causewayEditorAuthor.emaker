@@ -77,6 +77,7 @@ def causewayEditorAuthor(rezKit,
         def fp := palette.makeFramePalette()
         shell.setForeground(fp.getFg())
         shell.setBackground(fp.getBg())
+        shell.setFont(fp.getFont())
         
         #def statusBar := <widget:makeLabel>(shell, 0)
         #statusBar.setText("Causeway's internal status messages displayed here...")
@@ -500,11 +501,12 @@ def causewayEditorAuthor(rezKit,
         def viewerDirectorAuthor :=
           <import:org.erights.e.tools.causeway.viewerDirectorAuthor>
         def makeViewerDirector :=
-          viewerDirectorAuthor(<file>, <jar>, makers, shell,
+          viewerDirectorAuthor(rootDirName, <file>, <jar>, 
+                               makers, shell,
                                abstractAction, tcr, traceline)
         
         def viewerDirector := makeViewerDirector(shell, palette,
-                                                 rootDirName, traces)
+                                                 traces)
         
         bind causewayEditor {
             to getAppName() :String { "Causeway" }

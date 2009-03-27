@@ -19,7 +19,9 @@ def makeOutlineView := <import:org.erights.e.tools.causeway.makeOutlineView>
 def itemToModelMap := [].asMap().diverge()
 def modelToItemMap := [].asMap().diverge()
 
-def buildTreeItem(swtParent, element, ndx, vatMap, graphWalker) :near {
+def buildTreeItem(swtParent, palette,
+                  element, ndx, 
+                  vatMap, graphWalker) :near {
     def swtItem := <widget:makeTreeItem>(swtParent, 0)
     itemToModelMap.put([swtItem, ndx], element, true)
     modelToItemMap.put(element, [swtItem, ndx], true)
@@ -27,27 +29,42 @@ def buildTreeItem(swtParent, element, ndx, vatMap, graphWalker) :near {
     return swtItem
 }
 
-def buildTree(swtParent, poList, ndx,
+def buildTree(swtParent, palette,
+              poList, ndx,
               vatMap, graphWalker) :void {
     
     for node in poList {
-        def swtNodeItem := buildTreeItem(swtParent, node, 
-                                         ndx, vatMap, graphWalker)
+        def swtNodeItem := buildTreeItem(swtParent, palette,
+                                         node, ndx, 
+                                         vatMap, graphWalker)
         for edge => _ in node.outs() {
-            buildTreeItem(swtNodeItem, edge, ndx, vatMap, graphWalker)
+            buildTreeItem(swtNodeItem, palette,
+                          edge, ndx, 
+                          vatMap, graphWalker)
         }
     }
 }
 
-def makePOPane(swtParent, poList, ndx,
-               selectionModel, vatMap, graphWalker) :near {
+def makePOPane(swtParent, palette,
+               poList, ndx, selectionModel, 
+               vatMap, graphWalker) :near {
     
     def swtPane := <widget:makeComposite>(swtParent, 0)
     def swtTree := <widget:makeTree>(swtPane,
                                      SWT.getSINGLE() |
                                        (SWT.getH_SCROLL() | SWT.getV_SCROLL()))
-    
-    buildTree(swtTree, poList, ndx, vatMap, graphWalker)
+
+    def popPalette := palette. makePOPanePalette()
+    swtPane.setForeground(popPalette.getFg())
+    swtPane.setBackground(popPalette.getBg())
+    swtPane.setFont(popPalette.getFont())
+    swtTree.setForeground(popPalette.getFg())
+    swtTree.setBackground(popPalette.getBg())
+    swtTree.setFont(popPalette.getFont())
+
+    buildTree(swtTree, palette,
+              poList, ndx, 
+              vatMap, graphWalker)
     
     def swtSelectionListener {
         to widgetSelected(swtEvent) :void {
@@ -72,10 +89,7 @@ def makePOPane(swtParent, poList, ndx,
             swtGrid`${swtPane}:
                     ${swtTree}.X.Y`
             
-            swtPane.getLayout().setMarginWidth(0)
-            swtPane.getLayout().setMarginHeight(0)
-            swtPane.getLayout().setHorizontalSpacing(0)
-            swtPane.getLayout().setVerticalSpacing(0)
+            palette.zeroMargins(swtPane.getLayout())
         }
     }
     return pop
@@ -88,11 +102,20 @@ def makeProcessOrderView(swtParent, palette,
     
     def swtPOView := <widget:makeComposite>(swtParent, 0)
     
+    def fPalette := palette. makeFolderPalette()
+
+    swtPOView.setForeground(fPalette.getFg())
+    swtPOView.setBackground(fPalette.getBg())
+    swtPOView.setFont(fPalette.getFont())
+
     def getActionTargets
     def outlineView := makeOutlineView(swtPOView, palette,
                                        abstractAction, getActionTargets)
     
     def swtFolder := <widget:makeTabFolder>(swtPOView, 0)
+    swtFolder.setForeground(fPalette.getFg())
+    swtFolder.setBackground(fPalette.getBg())
+    swtFolder.setFont(fPalette.getFont())
     
     def tabKeeper := [].diverge()
     
@@ -101,7 +124,7 @@ def makeProcessOrderView(swtParent, palette,
         
         def swtTab := <widget:makeTabItem>(swtFolder, 0)
         
-        def pop := makePOPane(swtFolder,
+        def pop := makePOPane(swtFolder, palette,
                               poList, swtFolder.indexOf(swtTab),
                               selectionModel, vatMap, graphWalker)
         

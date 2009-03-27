@@ -18,20 +18,20 @@ def makeSelectionModel :=
 
 /**
  */
-def viewerDirectorAuthor(<file>, <jar>, makers, shell,
+def viewerDirectorAuthor(rootDirName :String, <file>, <jar>, 
+                         makers, shell,
                          abstractAction, tcr, traceline) :near {
     
-    def makeViewer := viewerAuthor(<file>, <jar>, makers, shell,
+    def makeViewer := viewerAuthor(rootDirName :String, <file>, <jar>, 
+                                   makers, shell,
                                    abstractAction, tcr, traceline)
     
-    def makeViewerDirector(parent, palette,
-                           rootDirName :String, traces) :near {
+    def makeViewerDirector(parent, palette, traces) :near {
         
         def view
         
         if (traces != []) {
-            def model := makeCausewayModel(rootDirName,
-                                           traces, <file>, traceline)
+            def model := makeCausewayModel(traces, <file>, traceline)
             def selectionModel := makeSelectionModel()
             
             bind view := makeViewer(parent, palette, model, selectionModel)

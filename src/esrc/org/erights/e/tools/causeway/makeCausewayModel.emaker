@@ -45,12 +45,10 @@ def SendingContext := String
  * <p>
  *
  */
-def makeCausewayModel(var rootDirName :String,
-                      traceFiles :List[File],
+def makeCausewayModel(traceFiles :List[File],
                       <file>, 
                       traceline) :near {
-    def [rawGraph, rawTop] := makeRawGraph(rootDirName, 
-                                           traceFiles, 
+    def [rawGraph, rawTop] := makeRawGraph(traceFiles, 
                                            <file>, 
                                            traceline)
     def [graph, top] := filterGraph(rawGraph, rawTop, traceline)

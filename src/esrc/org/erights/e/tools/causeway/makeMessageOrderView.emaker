@@ -92,6 +92,15 @@ def makeMOPane(swtParent, palette,
                                      SWT.getSINGLE() |
                                        (SWT.getH_SCROLL() |
                                           SWT.getV_SCROLL()))
+
+    def mopPalette := palette. makeMessageTreePalette()
+    swtPane.setForeground(mopPalette.getFg())
+    swtPane.setBackground(mopPalette.getBg())
+    swtPane.setFont(mopPalette.getFont())
+    swtTree.setForeground(mopPalette.getFg())
+    swtTree.setBackground(mopPalette.getBg())
+    swtTree.setFont(mopPalette.getFont())
+
     def watcher := makeWatcher()
     for  edge => _ in graph.outs() {
         buildTree(swtTree, palette,
@@ -135,13 +144,22 @@ def makeMessageOrderView(swtParent, palette,
                          vatMap, graphWalker) :near {
     
     def swtMOView := <widget:makeComposite>(swtParent, 0)
-    
+
+    def fldrPalette := palette. makeFolderPalette()
+
+    swtMOView.setForeground(fldrPalette.getFg())
+    swtMOView.setBackground(fldrPalette.getBg())
+    swtMOView.setFont(fldrPalette.getFont())
+
     def getActionTargets
     def outlineView := makeOutlineView(swtMOView, palette,
                                        abstractAction, getActionTargets)
     
     def swtFolder := <widget:makeTabFolder>(swtMOView, 0)
-    
+    swtFolder.setForeground(fldrPalette.getFg())
+    swtFolder.setBackground(fldrPalette.getBg())
+    swtFolder.setFont(fldrPalette.getFont())
+
     def tabKeeper := [].diverge()
     
     def swtTab := <widget:makeTabItem>(swtFolder, 0)

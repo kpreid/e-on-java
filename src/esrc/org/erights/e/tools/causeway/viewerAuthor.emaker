@@ -71,10 +71,11 @@ def makeVatMap(vats, palette, traceline) :near {
 
 /**
  */
-def viewerAuthor(<file>, <jar>, makers,
+def viewerAuthor(rootDirName :String, <file>, <jar>, makers,
                  shell, abstractAction, tcr, traceline) :near {
     
-    def makeStackWalker := stackWalkerAuthor(<file>,
+    def makeStackWalker := stackWalkerAuthor(rootDirName,
+                                             <file>,
                                              <jar>,
                                              makers,
                                              traceline)

@@ -4,10 +4,13 @@ package org.waterken.purchase_ajax;
 
 import java.io.Serializable;
 
+import org.ref_send.promise.Do;
+import org.ref_send.promise.Eventual;
 import org.ref_send.promise.Promise;
-import org.ref_send.promise.eventual.Do;
-import org.ref_send.promise.eventual.Eventual;
+import org.ref_send.promise.Vat;
 import org.waterken.bang.Drum;
+
+import static org.ref_send.promise.Eventual.ref;
 
 /**
  * An introduction to eventual operations in Java.
@@ -26,25 +29,36 @@ Main {
 
     /**
      * Constructs an instance.
+     * @throws Exception 
      */
-    static public void
-    make(final Eventual _) {
-        class Buy extends Do<Product,Void> implements Serializable {
+    static public Promise<Product>
+    make(final Eventual _) throws Exception {
+        class Buy extends Do<Product,Promise<Product>> implements Serializable {
             static private final long serialVersionUID = 1L;
             
-            public @Override Void
+            private final CreditBureau creditBureau;
+            
+            public Buy(CreditBureau creditBureau) {
+                this.creditBureau = creditBureau;
+            }
+
+            public @Override Promise<Product>
             fulfill(final Product product) {
-                Callback teller =
-                    new AsyncAnd(_, 3, checkAnswers(_, product.inventory));
+                Inventory inventory = product.inventory;
+                Shipper shipper = product.shipper;
                 
-                _._(product.inventory).isAvailable(partNo, teller);
-                _._(product.creditBureau).doCreditCheck(name, teller);
-                _._(product.shipper).canDeliver(profile, teller);
-                return null;
+                Callback teller =
+                    new AsyncAnd(_, 3, checkAnswers(_, inventory));
+                
+                _._(inventory).partInStock(partNo, teller);
+                _._(creditBureau).checkCredit(name, teller);
+                _._(shipper).canDeliver(profile, teller);
+                return ref(product);
             }
         }
-        final Promise<Product> child = _.spawn("product", Product.class);
-        _.when(child, new Buy());
+        final Vat<Promise<Product>> prodVat = _.spawn("product", Product.class);
+        final Vat<CreditBureau> credVat = _.spawn("accounts", CreditBureauMaker.class);
+        return _.when(prodVat.top, new Buy(credVat.top));
     }
     
     static private Callback

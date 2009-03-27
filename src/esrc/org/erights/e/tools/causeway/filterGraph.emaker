@@ -74,18 +74,16 @@ def sortOutgoing(top, traceline) :void {
 # whose value determines the default interestingness.
 def interesting := [
     ["org/erights/e/elang/cmd/", false],
-#    ["org/waterken/purchase_ajax/AsyncAnd.java", false],
-    # XXX The following is a kludge, since we should be using the
-    # original src path, not the fixed one.
-    ["test/causeway/org/waterken/purchase_ajax/AsyncAnd.java", true],
-    ["test/causeway/org/waterken/purchase_promise/AsyncAnd.java", true],
+    #["org/waterken/purchase_ajax/AsyncAnd.java", false],
+    #["org/waterken/purchase_promise/AsyncAnd.java", false],
     ["", true]
 ]
 
-def hideFrames(stack :Stack) :Stack {
+def hideFrames(stack :Stack, traceline) :Stack {
     def result := [].diverge()
     for entry in stack {
         def srcPath := entry[0][0]
+        #traceline(`srcPath: $srcPath`)
         for [prefix, isInteresting] in interesting {
             if (srcPath.startsWith(prefix)) {
                 if (isInteresting) {
@@ -108,12 +106,12 @@ def hideDetail(top, traceline) :void {
 
     for edge => node in top.deepOutsPre() {
         def [sendCtx, sendStk] := edge.getContext()
-        edge.setContext(sendCtx, hideFrames(sendStk))
+        edge.setContext(sendCtx, hideFrames(sendStk, traceline))
 
         if (seen.contains(node)) { continue }
         seen.addElement(node)
         def [gotCtx, gotStk] := node.getContext()
-        node.setContext(gotCtx, hideFrames(gotStk))
+        node.setContext(gotCtx, hideFrames(gotStk, traceline))
     }
 }
 

@@ -3,7 +3,7 @@ package org.waterken.purchase_ajax;
 import java.io.Serializable;
 
 import org.joe_e.Struct;
-import org.ref_send.promise.eventual.Eventual;
+import org.ref_send.promise.Eventual;
 
 public final class
 ShipperMaker {
@@ -16,7 +16,6 @@ ShipperMaker {
             
             public void
             canDeliver(String profile, Callback tellCanDeliver) {
-                _.log.comment("can deliver");
                 _._(tellCanDeliver).run(true);
             }
         }
