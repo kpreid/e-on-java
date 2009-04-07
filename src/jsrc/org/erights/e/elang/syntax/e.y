@@ -211,7 +211,7 @@ start:
  |      br MODULE litString EOL eExpr           { b.reserved($2,"module"); }
 
         /* Kludges to parse other productions at the top */
- |      MatchBind pattern                       { myOptResult = (Pattern)$2; }
+ |      MatchBind pattern br                    { myOptResult = (Pattern)$2; }
  ;
 
 /**
