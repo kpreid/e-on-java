@@ -3,11 +3,11 @@
 
 package org.erights.e.meta.java.math;
 
-import org.erights.e.elib.prim.Thrower;
-import org.erights.e.elib.util.OneArgFunc;
-
 import java.math.BigInteger;
 import java.util.Random;
+
+import org.erights.e.elib.prim.Thrower;
+import org.erights.e.elib.util.OneArgFunc;
 
 /**
  * Represents the type of E integers, which can concretely be represented by
@@ -480,4 +480,271 @@ public abstract class EInt extends Number {
     static public Number run(int numBits, Random rnd) {
         return normal(new BigInteger(numBits, rnd));
     }
+
+
+    /**
+     * Always gives back a Double This corresponds to the Java floating-point
+     * "/" operator and the E "/" operator.
+     */
+    public abstract double approxDivide(double arg);
+
+    /**
+     * Returns the Unicode character with this character code.
+     */
+    public abstract char asChar();
+
+    /**
+     * Returns the "best" IEEE double precision floating point equivalent to
+     * this number. If this number is representable in IEEE double precision,
+     * then that IEEE value is returned. Otherwise, convert by rounding to
+     * even.
+     */
+    public abstract double asFloat64();
+
+    /**
+     * Used in the expansion of E's ">" operator
+     */
+    public abstract boolean aboveZero();
+
+    /**
+     * Used in the expansion of E's ">=" operator
+     */
+    public abstract boolean atLeastZero();
+
+    /**
+     * Used in the expansion of E's "<=" operator
+     */
+    public abstract boolean atMostZero();
+
+    /**
+     * Used in the expansion of E's "<" operator
+     */
+    public abstract boolean belowZero();
+
+    /**
+     * Used for arithmetic equality
+     */
+    public abstract boolean isZero();
+
+    /**
+     * All integers are numbers, so this is always false
+     */
+    public abstract boolean isNaN();
+
+    /**
+     * Defined both here and in DoubleSugar, so you can use this to get a
+     * ceil'ed integer no matter what kind of number you start with. Similarly,
+     * the "doubleValue" message will get you a floating point value no matter
+     * what you start with.
+     */
+    public abstract EInt ceil();
+
+    /**
+     * Overrides the inherited 'op__cmp' to coerce 'o' to an E number.
+     * <p/>
+     * If o is floating point, then. like other mixed operators, we coerce
+     * ourselves to floating point and do a floating comparison.
+     */
+    public abstract double op__cmp(Object o);
+
+    /**
+     * This method supports the C-tradition expectation that unary "~" will
+     * work as bit complement.
+     * <p/>
+     * However, the E style, supported by other set-like abstractions, is to
+     * use unary "!" instead.
+     *
+     * @deprecated Use {@link EInt#not()} instead.
+     */
+    public abstract EInt complement();
+
+    /**
+     * Defined both here and in DoubleSugar, so you can use this to get a
+     * floor'ed integer no matter what kind of number you start with.
+     * Similarly, the "doubleValue" message will get you a floating point value
+     * no matter what you start with.
+     */
+    public abstract EInt floor();
+
+    /**
+     * Always gives an integer, resulting from rounding towards negative
+     * infinity, ie, flooring. This corresponds to the E "//" operator.
+     */
+    public abstract Number floorDivide(Number o);
+
+    /**
+     * In E, andNot() is called butNot()
+     */
+    public abstract EInt butNot(EInt arg);
+
+    /**
+     * Defined both here and in DoubleSugar, so you can use this to get
+     * round'ed integer no matter what kind of number you start with.
+     * Similarly, the "doubleValue" message will get you a floating point value
+     * no matter what you start with.
+     */
+    public abstract EInt round();
+
+    /**
+     * Defined both here and in DoubleSugar, so you can use this to get
+     * truncate'd integer no matter what kind of number you start with.
+     * Similarly, the "doubleValue" message will get you a floating point value
+     * no matter what you start with.
+     */
+    public abstract EInt truncate();
+
+    /**
+     * Always gives an integer resulting from rounding towards zero, ie,
+     * truncating. This corresponds to the Java integer "/" operator.
+     * BigInteger's existing 'remainder' gives the correct remainder from the
+     * truncDivide operation. <p>
+     * <p/>
+     * <pre>
+     *      (a truncDivide b)*b + (a remainder b) == a
+     *      [ 5, 3]: ( 1* 3) +  2 ==  5
+     *      [ 5,-3]: (-1*-3) +  2 ==  5
+     *      [-5, 3]: (-1* 3) + -2 == -5
+     *      [-5,-3]: ( 1*-3) + -2 == -5
+     * </pre><p>
+     * <p/>
+     * Therefore, if the result is non-zero, the sign of the result must be the
+     * same as the sign of a. This corresponds to the Java and E "%" operator.
+     */
+    public abstract Number truncDivide(Number o);
+
+    /**
+     * The next higher integer
+     */
+    public abstract EInt next();
+
+    /**
+     * The next lower integer
+     */
+    public abstract EInt previous();
+
+    /**
+     * Convert an integer to a 6-bits-per-char string, with an optional leading
+     * minus sign.
+     * <p/>
+     * A negative integer is encoded as a "-" followed by the encoding of the
+     * absolute magnitude. For a positive integer, the encoded length will be
+     * (4 * b.length)/3, rounded up to the next integral (non-fractional)
+     * character length.
+     * <p/>
+     * Each 6-bit-unit is encoded by one of the characters <ul> <li>'0'..'9'
+     * for 0..9 <li>'A'..'Z' for 10..35 <li>'a'..'z' for 37..61 <li>'='
+     * for 62 <li>'_'      for 63 </pre>
+     *
+     * @return a string which represents the integer in 6-bits-per-char
+     *         encoding.
+     */
+    public abstract String toString64();
+
+    /**
+     * The 5-bit-per-char encoding to be used in "captp://..." and other YURL
+     * schemes.
+     * <p/>
+     * Negative numbers are shown with an optional leading minus sign.
+     *
+     * @return
+     * @see <a href="http://www.waterken.com/dev/Enc/base32/" >Waterken<font
+     *      size="-1"><sup>TM</sup></font> Enc base32 Encoding</a>
+     */
+    public abstract String toYURL32();
+
+    /**
+     * Returns the base-2 magnitude of self, which must be non-negative.
+     * <p/>
+     * The returned form is compatible with the {@link BigInteger#BigInteger(int,
+     *byte[]) BigInteger(1, byteArray)} constructor
+     *
+     * @return
+     */
+    public abstract byte[] toBase2ByteArray();
+
+    /**
+     * Actually, a SHA hash.
+     * <p/>
+     * Hashes the two's complement representation, with the hash as the
+     * magnitude of a non-negative number.
+     */
+    public abstract EInt cryptoHash();
+
+    ///// Override from BigInteger in order to coerce if arg is float64.///////
+
+    /**
+     * Override {@link BigInteger#add} in order to coerce if arg is float64,
+     *
+     * @return
+     */
+    public abstract Number add(Number o);
+
+    /**
+     * Override {@link BigInteger#max} in order to coerce if arg is float64.
+     *
+     * @return
+     */
+    public abstract Number max(Number o);
+
+    /**
+     * Override {@link BigInteger#min} in order to coerce if arg is float64.
+     *
+     * @return
+     */
+    public abstract Number min(Number o);
+
+    /**
+     * Override {@link BigInteger#multiply} in order to coerce if arg is
+     * float64.
+     *
+     * @return
+     */
+    public abstract Number multiply(Number o);
+
+    /**
+     * Override {@link BigInteger#pow} in order to coerce if arg is float64.
+     *
+     * @return
+     */
+    public abstract Number pow(Number o);
+
+    /**
+     * Override {@link BigInteger#remainder} in order to coerce if arg is
+     * float64.
+     *
+     * @return
+     */
+    public abstract Number remainder(Number o);
+
+    /**
+     * Override {@link BigInteger#subtract} in order to coerce if arg is
+     * float64.
+     *
+     * @return
+     */
+    public abstract Number subtract(Number o);
+
+    /**
+     * Remainder from the floorDivide operation.
+     * <p><pre>
+     *     (a // b)*b + (a %% b) == a
+     *      [ 5, 3]: ( 1* 3) +  2 ==  5
+     *      [ 5,-3]: (-2*-3) + -1 ==  5
+     *      [-5, 3]: (-2* 3) +  1 == -5
+     *      [-5,-3]: ( 1*-3) + -2 == -5
+     * </pre><p>
+     * Therefore, if the result is non-zero, the sign of the result must be the
+     * same as the sign of b, and so the result ranges from 0 inclusive to b
+     * exclusive. This corresponds to the E "%%" operator. When b >= 0, it also
+     * corresponds to Java's BigInteger.mod().
+     */
+    public abstract Number mod(Number o);
+
+    /**
+     * Override {@link BigInteger#modPow} in order to coerce if arg is
+     * float64.
+     *
+     * @return
+     */
+    public abstract Number modPow(Number exp, Number modulus);
 }
