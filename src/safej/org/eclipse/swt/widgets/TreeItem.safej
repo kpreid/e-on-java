@@ -21,6 +21,6 @@ class(safe,
                    method(suppress, "getDisplay()"),
                    method("getGrayed()"),
                    method("setBackground(Color)"),
-                   method(suppress, "setChecked(boolean)"),
+                   method("setChecked(boolean)"),
                    method("setForeground(Color)"),
                    method("setGrayed(boolean)"))) 

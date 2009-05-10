@@ -39,7 +39,7 @@ def makeFrame() :Shell {
     return frame
 }
 def makeModelessDialog(parent) :Shell {
-    return <uwidget:Shell>(parent, SWT.getMODELESS() | SWT.getSHELL_TRIM())
+    return <uwidget:makeShell>(parent, SWT.getMODELESS() | SWT.getSHELL_TRIM())
 }
 
 def makePopup() :PopupList {
@@ -51,7 +51,7 @@ def makeFont(fontData) :Font {
 }
 
 def makeFontDialog() :near {
-    return <uwidget:FontDialog>(currentDisplay.getActiveShell(), 0)
+    return <uwidget:makeFontDialog>(currentDisplay.getActiveShell(), 0)
 }
 
 def openDir(shell :Shell, message :String) :near {

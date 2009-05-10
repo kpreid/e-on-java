@@ -182,7 +182,7 @@ def makeOutlineView(swtParent, palette,
         }
 
         to expandTree(swtTree) :void {
-            return expandTree(swtTree)
+            expandTree(swtTree)
         }
     }
     return ov

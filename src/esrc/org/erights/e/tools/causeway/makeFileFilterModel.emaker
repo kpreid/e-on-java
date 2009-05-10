@@ -1,0 +1,210 @@
+#!/usr/bin/env rune
+
+pragma.syntax("0.9")
+
+# Copyright 2009 Teleometry Design under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+/**
+ * <tt> makeFileFilterModel</tt> 
+ * pathnames is the set of source paths seen during the trace log parse
+ * uniFilter is the set of uninteresting source files to filter out
+ * returns a fileFilterModel
+ *
+ */
+
+def makeFileFilterModel(pathnames, uniFilter, traceline) :near {
+    
+    def fileFilterModel
+    
+    def makeFileNode(optParent, name :String, fullName :nullOk[String]) :near {
+        def isLeaf := fullName != null
+        var totalChecked := if (isLeaf && !uniFilter.contains(fullName)) { 1 } else { 0 }
+        var totalUnchecked := if (isLeaf && uniFilter.contains(fullName)) { 1 } else { 0 }
+        def children := [].diverge()
+        
+        def fileNode {
+        
+            to initCounters() :void {
+                if (!isLeaf) {
+                    totalChecked := 0
+                    totalUnchecked := 0
+                    for child in children {
+                        child.initCounters()
+                        totalChecked += child.getTotalChecked()
+                        totalUnchecked += child.getTotalUnchecked()
+                    }
+                }
+            }
+            
+            to collectUncheckedLeaves(uncheckedLeaves) :void {
+                if (isLeaf && !fileNode.isChecked()) {
+                    uncheckedLeaves.addElement(fullName)
+                }
+                if (!isLeaf) {
+                    for child in children {
+                        child.collectUncheckedLeaves(uncheckedLeaves)
+                    }
+                }
+            }
+            
+            to getName() :String {
+                return name
+            }
+            
+            to isChecked() :boolean {
+                return totalUnchecked == 0 && totalChecked > 0
+            }
+            
+            to isGrayed() :boolean {
+                return totalChecked > 0 && totalUnchecked > 0
+            }
+            
+            to isLeaf() :boolean {
+                return isLeaf
+            }
+            
+            to getChildren() :near {
+                return children.snapshot()
+            }
+            
+            to getTotalChecked() :int {
+                return totalChecked
+            }
+            
+            to getTotalUnchecked() :int {
+                return totalUnchecked
+            }
+
+           /**
+             * internal message from child to parent
+             */
+            to childChecked(deltaChecked) :void {
+                if (optParent != null) {
+                    optParent.childChecked(deltaChecked)
+                }
+                totalChecked += deltaChecked
+                totalUnchecked -= deltaChecked
+                fileFilterModel.notifyObservers(fileNode)
+            }
+            
+            /**
+             * internal message from parent to child
+             */
+            to parentChecked() :void {
+                totalChecked += totalUnchecked
+                totalUnchecked := 0
+                fileFilterModel.notifyObservers(fileNode)
+                for child in children {
+                    child.parentChecked()
+                }
+            }
+            
+            /**
+             * internal message from parent to child
+             */
+            to parentUnchecked() :void {
+                totalUnchecked += totalChecked
+                totalChecked := 0
+                fileFilterModel.notifyObservers(fileNode)
+                for child in children {
+                    child.parentUnchecked()
+                }
+            }
+            
+            to check() :void {
+                def delta := totalUnchecked
+                fileNode.parentChecked()
+                if (optParent != null) {
+                    optParent.childChecked(delta)
+                }
+            }
+            
+            to uncheck() :void {
+                def delta := -totalChecked
+                fileNode.parentUnchecked()
+                if (optParent != null) {
+                    optParent.childChecked(delta)
+                }
+            }
+            
+            to addChild(child) :void {
+                children.push(child)
+            }
+        }
+        if (optParent != null) {
+            optParent.addChild(fileNode)
+        }
+        return fileNode
+    }
+    
+    def getOrMakeFileNode(parent, name, fullName, traceline) :near {
+        
+        # if make, add child to parent & increment counters all the way up
+        
+        def children := parent.getChildren()
+        if (children.size() >= 1 && children.last().getName() == name) {
+            return children.last()
+        }
+        return makeFileNode(parent, name, fullName)
+    }
+    
+    def top := makeFileNode(null, "", null)
+    
+    # pathnames is the set of source paths seen during trace log parse
+    for pn in pathnames {
+        var parent := top
+        def names := pn.split("/")
+        for i => name in names {
+            def fullName := if (i == names.size() -1) { pn } else { null }
+            parent := getOrMakeFileNode(parent,
+                                        name,
+                                        fullName,
+                                        traceline)
+        }
+    }
+    
+    top.initCounters()
+    
+    def observers := [].diverge()
+    
+    bind fileFilterModel {
+        
+        to getTop() :near {
+            return top
+        }
+        
+        to toggleChecked(fileNode) :void {
+            if (fileNode.isChecked()) {
+                fileNode.uncheck()
+            } else {
+                fileNode.check()
+            }
+        }
+        
+        to notifyObservers(fileNode) :void {
+            for observer in observers {
+                observer <- fileNodeChanged(fileNode)
+            }
+        }
+        
+        to addObserver(observer) :void {
+            observers.push(observer)
+        }
+        
+        to removeObserver(observer) :void {
+            def i := observers.indexOf1(observer)
+            if (i != -1) { 
+                observers.removeRun(i, i +1)
+            }
+        }
+
+        to asUninterestingFilter() :near {
+            var uniFilter := [].asSet().diverge()
+            top.collectUncheckedLeaves(uniFilter)
+            return uniFilter.snapshot()
+        }        
+    }
+    
+    return fileFilterModel
+}

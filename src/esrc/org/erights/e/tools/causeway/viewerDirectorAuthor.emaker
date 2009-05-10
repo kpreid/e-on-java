@@ -11,36 +11,93 @@ def makeWelcomeView :=
 def viewerAuthor :=
   <import:org.erights.e.tools.causeway.viewerAuthor>
 
-def makeCausewayModel :=
-  <import:org.erights.e.tools.causeway.makeCausewayModel>
+def causewayModelAuthor :=
+  <import:org.erights.e.tools.causeway.causewayModelAuthor>
 def makeSelectionModel :=
   <import:org.erights.e.tools.causeway.makeSelectionModel>
 
+def makeDefaultUniFilter() :near {
+    var uniFilter := [].asSet().diverge()
+    
+    uniFilter.addElement("org/waterken/purchase_ajax/AsyncAnd.java")
+    
+#  uniFilter.addElement("org/erights/e/elang/cmd/cmdLoopMakerAuthor.emaker")
+#  uniFilter.addElement("org/erights/e/elang/cmd/cmdMakerMaker.emaker")
+#  uniFilter.addElement("org/erights/e/elang/cmd/controlLoopMaker.emaker")
+#  uniFilter.addElement("org/erights/e/elang/cmd/makeAnswerer.emaker")
+#  uniFilter.addElement("org/erights/e/elang/cmd/makeEvalContextAuthor.emaker")
+#  uniFilter.addElement("org/erights/e/elang/cmd/makeEvalPrinterAuthor.emaker")
+#  uniFilter.addElement("org/erights/e/elang/cmd/makeParseFuncAuthor.emaker")
+#  uniFilter.addElement("org/erights/e/elang/cmd/makeRepl.emaker")
+#  uniFilter.addElement("org/erights/e/elang/cmd/runeAuthor.emaker")
+    
+    return uniFilter.snapshot()
+}
+
 /**
  */
-def viewerDirectorAuthor(rootDirName :String, <file>, <jar>, 
+def viewerDirectorAuthor(rootDirName :String,
+                         <file>, <jar>, props,
                          makers, shell,
                          abstractAction, tcr, traceline) :near {
     
-    def makeViewer := viewerAuthor(rootDirName :String, <file>, <jar>, 
+    
+    def makeViewer := viewerAuthor(rootDirName :String,
+                                   <file>, <jar>, props,
                                    makers, shell,
                                    abstractAction, tcr, traceline)
     
     def makeViewerDirector(parent, palette, traces) :near {
         
-        def view
+        def makeCausewayModel
+        
+        var view := null
+        var model := null
+        
+        var uniFilter := makeDefaultUniFilter()
+        
+        if (uniFilter.size() >= 1) {
+            traceline(``)
+            traceline(`>>>>> uniFilter default pathnames:`)
+            for pn in uniFilter {
+                traceline(`$pn`)
+            }
+        }
         
         if (traces != []) {
-            def model := makeCausewayModel(traces, <file>, traceline)
+            bind makeCausewayModel := causewayModelAuthor(traces,
+                                                          props,
+                                                          traceline)
+            model := makeCausewayModel(uniFilter)
             def selectionModel := makeSelectionModel()
-            
-            bind view := makeViewer(parent, palette, model, selectionModel)
+            view := makeViewer(parent, palette, model, selectionModel)
         } else {
-            bind view := makeWelcomeView(parent, palette, traceline)
+            view := makeWelcomeView(parent, palette, traceline)
         }
         
         def viewerDirector {
-            to getView() : near { return view }
+            
+            to getView() :near { return view }
+            
+            to updateView(parent) :void {
+                if (model != null) {
+                    def ffm := model.getOrMakeFileFilterModel()
+                    uniFilter := ffm.asUninterestingFilter()
+                    
+                    if (uniFilter.size() >= 1) {
+                        traceline(``)
+                        traceline(`>>>>> updateView uniFilter pathnames:`)
+                        for pn in uniFilter {
+                            traceline(`$pn`)
+                        }
+                    }
+                    
+                    model := makeCausewayModel(uniFilter)
+                    def selectionModel := makeSelectionModel()
+                    
+                    view := makeViewer(parent, palette, model, selectionModel)
+                }
+            }
         }
         
         return viewerDirector

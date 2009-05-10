@@ -1,0 +1,163 @@
+#!/usr/bin/env rune
+
+pragma.syntax("0.8")
+
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def File := <type:java.io.File>
+def makeSourceSpan := <elib:base.makeSourceSpan>
+def jp := <import:org.quasiliteral.term.makeTermParser>
+def <causeway> := <import:org.erights.e.tools.causeway.*>
+def makeMessageGraph := <causeway:makeMessageGraph>
+def makeRawGraph := <causeway:makeRawGraph>
+def filterGraph := <causeway:filterGraph>
+def makeFileFilterModel := <causeway:makeFileFilterModel>
+
+# [[start-line, start-col], [end-line, end-col]]
+# [[1, 0]] is the first character in a source file.
+# start-col refers to the first character of interest.
+# end-col refers to the last character of interest.
+def SourceSpan := Tuple[Tuple[int,int], Tuple[int, int]]
+
+# [filename, fncname]
+def SourceName := Tuple[String, String]
+
+# A [source-name, source-span]
+def StackEntry := Tuple[SourceName, nullOk[SourceSpan]]
+
+# top-to-bottom list of stack entries
+def Stack := List[StackEntry]
+
+def VatName := String
+
+def Turn := int
+def Anchor := int
+
+def UTurn := Tuple[VatName, Turn]
+
+# one of "org.ref_send.log.Sent", ...
+def SendingContext := String
+
+def makeConstMap := <elib:tables.makeConstMap>
+
+/**
+ * <tt>makeCausewayModelAuthor</tt>
+ * <p>
+ *
+ */
+def causewayModelAuthor(traceFiles :List[File],
+                        props,
+                        traceline) :near {
+    var ttChunks := [].diverge()
+    for tfile in traceFiles {
+        
+        #traceline(`tracefile: $tfile`)
+        
+        def txt := if (makeConstMap.testProp(props, "causeway_debug")) {
+            tfile.getTwine()
+        } else {
+            tfile.getText()
+        }
+        
+        # fixup E-on-Java traces
+        var t := txt.trim().replaceAll("][", ",")
+        # fixup Waterken traces
+        if (!(t.endsWith("]"))) {
+            t += "]"
+        }
+        
+        # parse Json records into term trees
+        def tt := jp(t)
+        def term`[@chunks*]` := tt
+        ttChunks.append(chunks)
+    }
+    ttChunks := ttChunks.snapshot()
+    
+    def makeCausewayModel(var uninterestingFilter) :near {
+        
+        var fileFilterModel := null
+        
+        def [rawGraph, rawTop, pathnames] := makeRawGraph(ttChunks,
+                                                          traceline)
+        def [graph, top] := filterGraph(rawGraph,
+                                        rawTop,
+                                        uninterestingFilter,
+                                        traceline)
+        
+        # Map[VatName, Map[Turn, TurnNode]]
+        def ordered := [].asMap().diverge()
+        for node in top.deepOutsPre() {
+            def [vatName, turn] := node.getID()
+            if (vatName != "bottom") {
+                def map := ordered.fetch(vatName, fn{[].asMap().diverge()})
+                map[turn] := node
+                ordered[vatName] := map
+            }
+        }
+        for name => map in ordered {
+            # each vatName is mapped to a sorted list of events
+            ordered[name] := map.sortKeys()
+        }
+        
+        def causewayModel {
+            
+            to getTop() :near {
+                return top
+            }
+            
+            to getVatSet() :near {
+                return ordered.getKeys().snapshot()
+            }
+            
+            # Map[VatName, List[TurnNode]]
+            to getPOMap() :Map {
+                def result := [].asMap().diverge()
+                for vatName => map in ordered {
+                    result[vatName] := map.getValues().snapshot()
+                }
+                return result.snapshot()
+            }
+            
+            to exportToDotFile(root, dotFile :File,
+                               palette, vatMap, graphWalker) :void {
+                graph.connectTheDots(root, dotFile, palette,
+                                     vatMap, graphWalker)
+            }
+            
+            to getOrMakeFileFilterModel() :near {
+                if (fileFilterModel == null) {
+                    # merge the intersection of pathnames and uninteresting filter
+                    fileFilterModel := makeFileFilterModel(pathnames,
+                                                           uninterestingFilter,
+                                                           traceline)
+                }
+                return fileFilterModel
+            }
+            
+            to remakeFileFilterModel() :void {  # changes were cancelled; revert model
+                fileFilterModel := makeFileFilterModel(pathnames,
+                                                       uninterestingFilter,
+                                                       traceline)
+                
+            }
+            
+            to remakeFileFilterModel(ffModel) :void {  # remake model from current model
+                uninterestingFilter := ffModel.asUninterestingFilter()
+                if (uninterestingFilter.size() >= 1) {
+                    traceline(``)
+                    traceline(`>>>>> remakeFileFilterModel uninterestingFilter pathnames:`)
+                    for pn in uninterestingFilter {
+                        traceline(`$pn`)
+                    }
+                }
+                
+                fileFilterModel := makeFileFilterModel(pathnames,
+                                                       uninterestingFilter,
+                                                       traceline)
+            }
+        }
+        return causewayModel
+    }
+    return makeCausewayModel
+}

@@ -9,6 +9,7 @@ def swt__uriGetter := <import:org.eclipse.swt.*>
 def widget__uriGetter := <swt:widgets.*>
 def custom__uriGetter := <swt:custom.*>
 def SWT := <swt:makeSWT>
+def makeConstMap := <elib:tables.makeConstMap>
 
 def File := <type:java.io.File>
 
@@ -27,6 +28,10 @@ def makeMessageOrderView :=
 
 def makeProcessOrderView :=
   <import:org.erights.e.tools.causeway.makeProcessOrderView>
+
+def makeFilterOptionsView :=
+  <import:org.erights.e.tools.causeway.makeFilterOptionsView>
+
 
 
 def getDisplayName(vatName) :String {
@@ -71,20 +76,26 @@ def makeVatMap(vats, palette, traceline) :near {
 
 /**
  */
-def viewerAuthor(rootDirName :String, <file>, <jar>, makers,
-                 shell, abstractAction, tcr, traceline) :near {
+def viewerAuthor(rootDirName :String,
+                 <file>, <jar>, props,
+                 makers, shell, abstractAction, tcr, traceline) :near {
     
     def makeStackWalker := stackWalkerAuthor(rootDirName,
                                              <file>,
                                              <jar>,
                                              makers,
                                              traceline)
-
-    def makeDebugView := debugViewAuthor(<file>,
-                                         <jar>,
-                                         makers,
-                                         traceline)
-
+    
+    def optMakeDebugView := if (makeConstMap.testProp(props,
+                                                      "causeway_debug")) {
+        debugViewAuthor(<file>,
+                        <jar>,
+                        makers,
+                        traceline)
+    } else {
+        null
+    }
+    
     def makeViewer(swtParent, palette, viewerModel, selectionModel) :near {
         
         def swtViewerView := <widget:makeComposite>(swtParent, 0)
@@ -120,17 +131,20 @@ def viewerAuthor(rootDirName :String, <file>, <jar>, makers,
                                         vatMap, stackWalker)
         
         # top-right
-        def dv := makeDebugView(swtSideToSide, palette, 
-                                abstractAction,selectionModel)
-        
+        if (null == optMakeDebugView) {
+            swtSideToSide.setWeights([40, 60])
+        } else {
+            def dv := optMakeDebugView(swtSideToSide, palette,
+                                       abstractAction,selectionModel)
+            
+            swtSideToSide.setWeights([40, 35, 25])
+            dv.layout()
+        }
         swtTopToBottom.setWeights([50, 50])
-        swtSideToSide.setWeights([40, 35, 25])
-        #swtSideToSide.setWeights([40, 60])
         
         stackWalker.layout()
         pov.layout()
         mov.layout()
-        dv.layout()
         
         def viewer {
             
@@ -162,13 +176,118 @@ def viewerAuthor(rootDirName :String, <file>, <jar>, makers,
                         # else, walk entire messageGraph
                         root := messageGraph
                     }
-
+                    
                     model.exportToDotFile(root,
                                           dotFile, palette,
                                           vatMap, stackWalker)
                 } else {
                     traceline("There is no model to export to dot file.")
                 }
+            }
+            
+            to showFilterOptions() :any {
+                
+                def result
+                
+                def CANCEL := 0
+                def SAVE := 1
+                def UPDATE_VIEWER := 2
+                
+                def swtDialog := makers["modelessDialog"](shell)
+                def dialogPalette := palette.makeDialogPalette()
+                def [xe, ye] := dialogPalette.getCharExtent()
+                swtDialog.setForeground(dialogPalette.getFg())
+                swtDialog.setBackground(dialogPalette.getBg())
+                swtDialog.setFont(dialogPalette.getFont())
+                swtDialog.setText("Filter Options")
+                
+                def ffModel := model.getOrMakeFileFilterModel()
+                def fov := makeFilterOptionsView(swtDialog,
+                                                 palette,
+                                                 ffModel)
+                
+                def swtCancel := <widget:makeButton>(swtDialog,
+                                                     SWT.getPUSH())
+                swtCancel.setForeground(dialogPalette.getFg())
+                swtCancel.setBackground(dialogPalette.getBg())
+                swtCancel.setFont(dialogPalette.getFont())
+                swtCancel.setText("Cancel")
+                swtCancel.setSize((swtCancel.getText().size() +4) * xe, ye)
+                
+                #traceline(`swtCancel size: ${swtCancel.getSize()}`)
+                
+                swtCancel.addSelectionListener(def swtListenerForCancel {
+                    to widgetSelected(swtEvent) :void {
+                        # revert file filter model to original
+                        model.remakeFileFilterModel()
+                        swtDialog.close()
+                        swtDialog.dispose()
+                        bind result := CANCEL
+                    }
+                    to widgetDefaultSelected(swtEvent) :void {}
+                })
+                
+                def swtSave := <widget:makeButton>(swtDialog,
+                                                   SWT.getPUSH())
+                swtSave.setEnabled(false)  # not working yet
+                swtSave.setForeground(dialogPalette.getFg())
+                swtSave.setBackground(dialogPalette.getBg())
+                swtSave.setFont(dialogPalette.getFont())
+                swtSave.setText("Save")
+                swtSave.setSize((swtSave.getText().size() +4) * xe, ye)
+                
+                #traceline(`swtSave size: ${swtSave.getSize()}`)
+                
+                swtSave.addSelectionListener(def swtListenerForSave {
+                    to widgetSelected(swtEvent) :void {
+                        # remake file filter model from current model to
+                        # cleanly break connections between model & observers
+                        model.remakeFileFilterModel(ffModel)
+                        swtDialog.close()
+                        swtDialog.dispose()
+                        bind result := SAVE
+                    }
+                    to widgetDefaultSelected(swtEvent) :void {}
+                })
+                
+                def swtUpdateViewer := <widget:makeButton>(swtDialog,
+                                                           SWT.getPUSH())
+                swtUpdateViewer.setForeground(dialogPalette.getFg())
+                swtUpdateViewer.setBackground(dialogPalette.getBg())
+                swtUpdateViewer.setFont(dialogPalette.getFont())
+                swtUpdateViewer.setText("Update Viewer")
+                swtUpdateViewer.setSize(
+                    (swtUpdateViewer.getText().size() +4) * xe, ye)
+                
+                #traceline(`swtUpdateViewer size: ${
+                #           swtUpdateViewer.getSize()}`)
+                
+                swtUpdateViewer.addSelectionListener(
+                    def swtListenerForUpdateViewer {
+                        to widgetSelected(swtEvent) :void {
+                            # remake file filter model from current model to
+                            # cleanly break connections between model & observers
+                            model.remakeFileFilterModel(ffModel)
+                            swtDialog.close()
+                            swtDialog.dispose()
+                            bind result := UPDATE_VIEWER
+                        }
+                        to widgetDefaultSelected(swtEvent) :void {}
+                    })
+                
+                swtDialog.setDefaultButton(swtUpdateViewer)
+                
+                fov.layout()
+                
+                swtGrid`${swtDialog}:
+                            ${fov.getTopLevelPane()}.X.Y
+                            ${swtCancel}     ${swtSave}     ${swtUpdateViewer}`
+                
+                palette.setMargins(swtDialog.getLayout(), 5, 10, 15, 10)
+                
+                #swtDialog.pack()
+                swtDialog.open()
+                return result
             }
         }
         return viewer

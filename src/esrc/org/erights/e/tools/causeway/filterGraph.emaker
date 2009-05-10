@@ -66,31 +66,14 @@ def sortOutgoing(top, traceline) :void {
     }
 }
 
-# A list of pairs of src path prefixes and whether src paths that
-# match them should be considered interesting.
-# <p>
-# For now, list from most specific to least specific, since the first
-# matching prefix wins. Must contain an entry for the empty prefix,
-# whose value determines the default interestingness.
-def interesting := [
-    ["org/erights/e/elang/cmd/", false],
-    #["org/waterken/purchase_ajax/AsyncAnd.java", false],
-    #["org/waterken/purchase_promise/AsyncAnd.java", false],
-    ["", true]
-]
-
-def hideFrames(stack :Stack, traceline) :Stack {
+def hideFrames(stack :Stack, uniFilter, traceline) :Stack {
     def result := [].diverge()
     for entry in stack {
         def srcPath := entry[0][0]
         #traceline(`srcPath: $srcPath`)
-        for [prefix, isInteresting] in interesting {
-            if (srcPath.startsWith(prefix)) {
-                if (isInteresting) {
-                    result.push(entry)
-                }
-                break;
-            }
+        if (!uniFilter.contains(srcPath)) {
+            # passes the uninteresting filter; it's a keeper
+            result.push(entry)
         }
     }
     return result.snapshot()
@@ -99,19 +82,19 @@ def hideFrames(stack :Stack, traceline) :Stack {
 /**
  * Hide the stack frames corresponding to uninteresting source paths
  */
-def hideDetail(top, traceline) :void {
+def hideDetail(top, uniFilter, traceline) :void {
     # seen is still useful, since deepOuts* only suppresses duplicate
     # edge visits, not duplicate node visits.
     def seen := [].asSet().diverge()
 
     for edge => node in top.deepOutsPre() {
         def [sendCtx, sendStk] := edge.getContext()
-        edge.setContext(sendCtx, hideFrames(sendStk, traceline))
+        edge.setContext(sendCtx, hideFrames(sendStk, uniFilter, traceline))
 
         if (seen.contains(node)) { continue }
         seen.addElement(node)
         def [gotCtx, gotStk] := node.getContext()
-        node.setContext(gotCtx, hideFrames(gotStk, traceline))
+        node.setContext(gotCtx, hideFrames(gotStk, uniFilter, traceline))
     }
 }
 
@@ -209,12 +192,12 @@ def devoraTwo(graph, top, traceline) :void {
 }
 
 
-def filterGraph(graph, top, traceline) :Tuple[near, near] {
+def filterGraph(graph, top, uniFilter, traceline) :Tuple[near, near] {
 
     sortOutgoing(top, traceline)
 
     # could be done by a frontline filter
-    hideDetail(top, traceline)
+    hideDetail(top, uniFilter, traceline)
 
     promote(top, traceline)
 

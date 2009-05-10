@@ -36,7 +36,7 @@ def paletteAuthor(rezKit, makers, traceline) :near {
                  [rezKit.makeColor(11, 111, 36), "papergreen"], true) # 0B6F24
     colorMap.put("papercoral",
                  [rezKit.makeColor(168, 69, 42), "papercoral"], true) # A8452A
-
+    
     colorMap.put("mediumblue",
                  [rezKit.makeColor(0, 0, 205), "mediumblue"], true) # 0000CD
     colorMap.put("dodgerblue",
@@ -77,7 +77,7 @@ def paletteAuthor(rezKit, makers, traceline) :near {
                  [rezKit.makeColor(255, 0, 255), "fuchsia"], true) # FF00FF
     colorMap.put("rosy brown",
                  [rezKit.makeColor(188, 143, 143), "rosy brown"], true) # BC8F8F
-
+    
     colorMap.put("darkred",
                  [rezKit.makeColor(139, 0, 0), "darkred"], true) # 8B0000
     colorMap.put("firebrick",
@@ -97,49 +97,55 @@ def paletteAuthor(rezKit, makers, traceline) :near {
     colorMap.put("black",
                  [rezKit.makeColor(0, 0, 51), "black"], true) # Not really black
     
-    def nVatColors := 15
+    def nVatColors := 20
     def vatColors := [].diverge()
     
     #vatColors[0] := colorMap.fetch("paperblue", fn{})
     #vatColors[1] := colorMap.fetch("papergreen", fn{})
     #vatColors[2] := colorMap.fetch("papercoral", fn{})
-
+    
     vatColors[0] := colorMap.fetch("mediumblue", fn{})
     vatColors[1] := colorMap.fetch("forestgreen", fn{})
     vatColors[2] := colorMap.fetch("indigo", fn{})
     vatColors[3] := colorMap.fetch("chocolate", fn{})
     vatColors[4] := colorMap.fetch("darkslategray", fn{})
-
+    
     vatColors[5] := colorMap.fetch("goldenrod", fn{})
     vatColors[6] := colorMap.fetch("teal", fn{})
     vatColors[7] := colorMap.fetch("indian red", fn{})
     vatColors[8] := colorMap.fetch("medium sea green", fn{})
     vatColors[9] := colorMap.fetch("cornflower", fn{})
-
+    
     vatColors[10] := colorMap.fetch("dark cyan", fn{})
     vatColors[11] := colorMap.fetch("dark magenta", fn{})
     vatColors[12] := colorMap.fetch("dark orange", fn{})
     vatColors[13] := colorMap.fetch("fuchsia", fn{})
     vatColors[14] := colorMap.fetch("rosy brown", fn{})
     
+    vatColors[15] := colorMap.fetch("dodgerblue", fn{})
+    vatColors[16] := colorMap.fetch("darkslateblue", fn{})
+    vatColors[17] := colorMap.fetch("navy", fn{})
+    vatColors[18] := colorMap.fetch("midnightblue", fn{})
+    vatColors[19] := colorMap.fetch("darkblue", fn{})
+    
     def fonts := [].asMap().diverge()
     
     def normal := SWT.getNORMAL()
     def bold := SWT.getBOLD()
     def italic := SWT.getITALIC()
-        
+    
     fonts.put(["Monaco", "9", "normal"], rezKit.makeFont("Monaco", 9, normal), true)
     fonts.put(["Monaco", "9", "bold"], rezKit.makeFont("Monaco", 9, bold), true)
     fonts.put(["Monaco", "9", "italic"], rezKit.makeFont("Monaco", 9, italic), true)
-
+    
     fonts.put(["Monaco", "10", "normal"], rezKit.makeFont("Monaco", 10, normal), true)
     fonts.put(["Monaco", "10", "bold"], rezKit.makeFont("Monaco", 10, bold), true)
     fonts.put(["Monaco", "10", "italic"], rezKit.makeFont("Monaco", 10, italic), true)
-
+    
     fonts.put(["Monaco", "12", "normal"], rezKit.makeFont("Monaco", 12, normal), true)
     fonts.put(["Monaco", "12", "bold"], rezKit.makeFont("Monaco", 12, bold), true)
     fonts.put(["Monaco", "12", "italic"], rezKit.makeFont("Monaco", 12, italic), true)
-
+    
     fonts.put(["Verdana", "9", "normal"], rezKit.makeFont("Verdana", 9, normal), true)
     fonts.put(["Verdana", "9", "bold"], rezKit.makeFont("Verdana", 9, bold), true)
     fonts.put(["Verdana", "9", "italic"], rezKit.makeFont("Verdana", 9, italic), true)
@@ -147,11 +153,11 @@ def paletteAuthor(rezKit, makers, traceline) :near {
     fonts.put(["Verdana", "10", "normal"], rezKit.makeFont("Verdana", 10, normal), true)
     fonts.put(["Verdana", "10", "bold"], rezKit.makeFont("Verdana", 10, bold), true)
     fonts.put(["Verdana", "10", "italic"], rezKit.makeFont("Verdana", 10, italic), true)
-
+    
     fonts.put(["Verdana", "12", "normal"], rezKit.makeFont("Verdana", 12, normal), true)
     fonts.put(["Verdana", "12", "bold"], rezKit.makeFont("Verdana", 12, bold), true)
     fonts.put(["Verdana", "12", "italic"], rezKit.makeFont("Verdana", 12, italic), true)
-
+    
     fonts.put(["Verdana", "22", "normal"], rezKit.makeFont("Verdana", 22, normal), true)
     fonts.put(["Verdana", "22", "bold"], rezKit.makeFont("Verdana", 22, bold), true)
     fonts.put(["Verdana", "22", "italic"], rezKit.makeFont("Verdana", 22, italic), true)
@@ -249,6 +255,11 @@ def paletteAuthor(rezKit, makers, traceline) :near {
                                         "darkslateblue",
                                         ["Verdana", "12", "bold"])
             }
+            to makeDialogPalette() :near {
+                return makeBasicPalette("black",
+                                        "white",
+                                        ["Verdana", "12", "normal"])
+            }
             to makeFolderPalette() :near {
                 return makeBasicPalette("black",
                                         "white",
@@ -293,6 +304,11 @@ def paletteAuthor(rezKit, makers, traceline) :near {
                 return makeBasicPalette("black",
                                         "lightsteelblue",
                                         ["Verdana", "10", "normal"])
+            }
+            to makeFilterOptionsViewPalette() :near {
+                return makeBasicPalette("black",
+                                        "white",
+                                        ["Monaco", "12", "normal"])
             }
             to makeSmallerFont(font) :near {
                 def fontData := font.getFontData()[0]
