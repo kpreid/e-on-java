@@ -37,10 +37,10 @@ orc: (CNN() | BBC()) >m> println(m)
 
     # value: [null, null]
 
-orc: def newsOnce := println(m) where m (CNN() | BBC())
+orc: def newsOnce := println(m) <m< (CNN() | BBC())
 
-    ? def newsOnceAgent := orc.where(fn m{orc.call(println,[m])}, newsAgent)
-    # value: <whereAgent>
+    ? def newsOnceAgent := orc.prune(fn m{orc.call(println,[m])}, newsAgent)
+    # value: <pruneAgent>
 
     ? interp.waitAtTop(def results := orcShell(newsOnceAgent))
     ? results
@@ -58,12 +58,12 @@ orc: def newsLoop(t) := newsOnce >> Rtimer(t) >> newsLoop(t)
     > }
     # value: <newsLoop>
 
-orc: never() where x (newsLoop(3) | Rtimer(20))
+orc: never() <x< (newsLoop(3) | Rtimer(20))
 
-    ? def someNews := orc.where(fn x{orc.call(orc.never,[])},
+    ? def someNews := orc.prune(fn x{orc.call(orc.never,[])},
     >                           orc.par(newsLoop(3),
     >                                   orc.call(orcShell.rtimer,[20])))
-    # value: <whereAgent>
+    # value: <pruneAgent>
 
     ? interp.waitAtTop(def results := orcShell(someNews))
     ? results
@@ -108,7 +108,7 @@ def bm(n) := Signal() | Rtimer(1) >> bm(n-1)
     #         now: 24
     #
 
-    # value: [null, null, null]
+    # value: [[], [], []]
 
 orc: def accept(x) := if (x %% 5 == 0) >> let(x)
 
@@ -152,11 +152,11 @@ orc: bm(20) >> pseudoRand.nextInt() >x> accept(x)
     # value: [-723955400, 1431162155, 1085665355, -65105105]
 
 orc barrier:
-def barrier(m,n,f,g) := ((let(u,v) where u m()) where v n())
+def barrier(m,n,f,g) := ((let(u,v) <u< m()) <v< n())
                         >(u,v)> (f(u) | g(v))
 
     ? def barrier(m,n,f,g) {
-    >     return orc.pipe(orc.where(fn v{orc.where(fn u{orc.call(orc,[u,v])},
+    >     return orc.pipe(orc.prune(fn v{orc.prune(fn u{orc.call(orc,[u,v])},
     >                                              orc.call(m,[]))},
     >                               orc.call(n,[])),
     >                     fn [u,v]{orc.par(orc.call(f,[u]),
@@ -194,11 +194,11 @@ assumed valid.
     > }
     # value: <extend>
 
-orc: def choose1(expr) := let(x) where x expr
+orc: def choose1(expr) := let(x) <x< expr
 Is it possible to write choose1 in orc itself? I'm not sure.
 
     ? def choose1(agent) {
-    >     return orc.where(fn x{orc.call(orc,[x])},agent)
+    >     return orc.prune(fn x{orc.call(orc,[x])},agent)
     > }
     # value: <choose1>
 
@@ -232,12 +232,12 @@ Is it possible to write choose1 in orc itself? I'm not sure.
     #                                      expr(use("a"))]))),
     #                       use("g")))`
 
-    ? op("let z where z in a >> x | b >> y")
+    ? op("let z <z< a >> x | b >> y")
     # value: term`expr(expr(use("let")),
-    #                  expr(where(use("z"),
-    #                             in(var("z"),
-    #                                par(pipe(use("a"),
-    #                                         use("x")),
-    #                                    pipe(use("b"),
-    #                                         use("y")))))))`
+    #                  expr(prune(use("z"),
+    #                             var("z"),
+    #                             par(pipe(use("a"),
+    #                                      use("x")),
+    #                                 pipe(use("b"),
+    #                                      use("y"))))))`
 

@@ -10,39 +10,45 @@ pragma.enable("lambda-args")
 
 def makeOrcCompiler(orcShell) {
     def orcCompiler {
-        to run(orcVarTerm,orcFnTerm) {
-            
+        to func(orcVarTerm,orcFnTerm) {
+            def param = orcCompiler.pattern(orcVarTerm)
+            def body = orcCompiler.func(orcFnTerm)
+            return termE`fn $param { $body }`
         }
-        to run(orcTerm) {
+        to expr(orcTerm) {
             switch (orcTerm) {
                 match term`expr(@exprTs*)` {
-                    def exprs := ::"for" (exprTs) map eT { orcCompiler(eT) }
+                    def exprs := ::"for" (exprTs) map eT { orcCompiler.expr(eT) }
                     return termE`$exprs`
                 }
                 match term`call(@leftT,[@argTs*])` {
-                    def left := orcCompiler(leftT)
-                    def args := ::"for" (argTs) map argT { orcCompiler(argT) }
+                    def left := orcCompiler.expr(leftT)
+                    def args := ::"for" (argTs) map argT { orcCompiler.expr(argT) }
                     return termE`orc.call($left, [$args])`
                 }
                 match term`par(@leftT,@rightT)` {
-                    def left := orcCompiler(leftT)
-                    def right := orcCompiler(rightT)
+                    def left := orcCompiler.expr(leftT)
+                    def right := orcCompiler.expr(rightT)
                     return termE`orc.par($left, $right)`
                 }
                 match term`pipe(@leftT,@varT,@rightFnT)` {
-                    def left := orcCompiler(leftT)
-                    def rightFn := orcCompiler(varT,rightFnT)
+                    def left := orcCompiler.expr(leftT)
+                    def rightFn := orcCompiler.func(varT,rightFnT)
                     return termE`orc.pipe($left, $rightFn)`
                 }
-                match term`where(@leftFnT,@varT,@rightT)` {
-                    def leftFn := orcCompiler(varT,leftFnT)
-                    def right := orcCompiler(rightT)
-                    return term`orc.where($leftFn, $right)`
+                match term`prune(@leftFnT,@varT,@rightT)` {
+                    def leftFn := orcCompiler.func(varT,leftFnT)
+                    def right := orcCompiler.expr(rightT)
+                    return termE`orc.prune($leftFn, $right)`
                 }
                 match term`.DollarHole.(.int.@num)` {
                     
                 }
             }
+        }
+        to pattern(orcTerm) {
+            // XXX fix
+            return orcTerm
         }
     }
     return orcCompiler

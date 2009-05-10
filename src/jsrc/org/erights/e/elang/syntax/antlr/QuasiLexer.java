@@ -8,18 +8,23 @@ import antlr.TokenStreamIOException;
 import antlr.TokenStreamRecognitionException;
 import antlr.CharStreamException;
 import antlr.CharStreamIOException;
+import antlr.ANTLRException;
 import java.io.Reader;
 import java.util.Hashtable;
+import antlr.CharScanner;
 import antlr.InputBuffer;
 import antlr.ByteBuffer;
 import antlr.CharBuffer;
 import antlr.Token;
+import antlr.CommonToken;
 import antlr.RecognitionException;
 import antlr.NoViableAltForCharException;
+import antlr.MismatchedCharException;
 import antlr.TokenStream;
 import antlr.ANTLRHashString;
 import antlr.LexerSharedInputState;
 import antlr.collections.impl.BitSet;
+import antlr.SemanticException;
 
 public class QuasiLexer extends antlr.SwitchingLexer implements QuasiLexerTokenTypes, TokenStream
  {
@@ -57,7 +62,7 @@ tryAgain:
 					if (LA(1)==EOF_CHAR) {uponEOF(); _returnToken = makeToken(Token.EOF_TYPE);}
 				else {throw new NoViableAltForCharException((char)LA(1), getFilename(), getLine(), getColumn());}
 				}
-
+				
 				if ( _returnToken==null ) continue tryAgain; // found SKIP token
 				_ttype = _returnToken.getType();
 				_returnToken.setType(_ttype);
@@ -82,7 +87,7 @@ tryAgain:
 		int _ttype; Token _token=null; int _begin=text.length();
 		_ttype = QUASIBODY;
 		int _saveIndex;
-
+		
 		if ((LA(1)=='$') && (LA(2)=='{')) {
 			match("${");
 			if ( inputState.guessing==0 ) {
@@ -173,12 +178,12 @@ tryAgain:
 			}
 			_returnToken = _token;
 		}
-
+		
 	protected final void mIDENT(boolean _createToken) throws RecognitionException, CharStreamException, TokenStreamException {
 		int _ttype; Token _token=null; int _begin=text.length();
 		_ttype = IDENT;
 		int _saveIndex;
-
+		
 		{
 		switch ( LA(1)) {
 		case 'a':  case 'b':  case 'c':  case 'd':
@@ -265,12 +270,12 @@ tryAgain:
 		}
 		_returnToken = _token;
 	}
-
+	
 	protected final void mQUASIn(boolean _createToken) throws RecognitionException, CharStreamException, TokenStreamException {
 		int _ttype; Token _token=null; int _begin=text.length();
 		_ttype = QUASIn;
 		int _saveIndex;
-
+		
 		{
 		_loop8:
 		do {
@@ -321,12 +326,12 @@ tryAgain:
 			}
 			_returnToken = _token;
 		}
-
+		
 	protected final void mQUASI1(boolean _createToken) throws RecognitionException, CharStreamException, TokenStreamException {
 		int _ttype; Token _token=null; int _begin=text.length();
 		_ttype = QUASI1;
 		int _saveIndex;
-
+		
 		if ((_tokenSet_2.member(LA(1)))) {
 			{
 			match(_tokenSet_2);
@@ -346,7 +351,7 @@ tryAgain:
 			else {
 				throw new NoViableAltForCharException((char)LA(1), getFilename(), getLine(), getColumn());
 			}
-
+			
 			}
 			if ( inputState.guessing==0 ) {
 				newline();
@@ -355,19 +360,19 @@ tryAgain:
 		else {
 			throw new NoViableAltForCharException((char)LA(1), getFilename(), getLine(), getColumn());
 		}
-
+		
 		if ( _createToken && _token==null && _ttype!=Token.SKIP ) {
 			_token = makeToken(_ttype);
 			_token.setText(new String(text.getBuffer(), _begin, text.length()-_begin));
 		}
 		_returnToken = _token;
 	}
-
+	
 	protected final void mESC(boolean _createToken) throws RecognitionException, CharStreamException, TokenStreamException {
 		int _ttype; Token _token=null; int _begin=text.length();
 		_ttype = ESC;
 		int _saveIndex;
-
+		
 		match('\\');
 		{
 		switch ( LA(1)) {
@@ -438,7 +443,7 @@ tryAgain:
 				else {
 					if ( _cnt19>=1 ) { break _loop19; } else {throw new NoViableAltForCharException((char)LA(1), getFilename(), getLine(), getColumn());}
 				}
-
+				
 				_cnt19++;
 			} while (true);
 			}
@@ -460,12 +465,12 @@ tryAgain:
 				}
 				else {
 				}
-
+				
 				}
 			}
 			else {
 			}
-
+			
 			}
 			break;
 		}
@@ -478,7 +483,7 @@ tryAgain:
 			}
 			else {
 			}
-
+			
 			}
 			break;
 		}
@@ -494,12 +499,12 @@ tryAgain:
 		}
 		_returnToken = _token;
 	}
-
+	
 	protected final void mHEX_DIGIT(boolean _createToken) throws RecognitionException, CharStreamException, TokenStreamException {
 		int _ttype; Token _token=null; int _begin=text.length();
 		_ttype = HEX_DIGIT;
 		int _saveIndex;
-
+		
 		{
 		switch ( LA(1)) {
 		case '0':  case '1':  case '2':  case '3':
@@ -533,8 +538,8 @@ tryAgain:
 		}
 		_returnToken = _token;
 	}
-
-
+	
+	
 	static private final long[] mk_tokenSet_0() {
 		long[] data = { 0L, 576460745995190270L, 0L, 0L, 0L};
 		return data;
@@ -556,5 +561,5 @@ tryAgain:
 		return data;
 	}
 	static public final BitSet _tokenSet_2 = new BitSet(mk_tokenSet_2());
-
+	
 	}

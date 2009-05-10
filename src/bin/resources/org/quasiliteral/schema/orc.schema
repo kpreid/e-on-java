@@ -10,7 +10,7 @@
 <orc> ::= expr(<expr>*);
 <expr> ::= <orc>
        |   def(<varID>,<varID>*,<expr>)
-       |   where(<expr>,in(<varID>,<expr>)*)
+       |   prune(<expr>,<varID>?,<expr>)
        |   par(<expr>,<expr>)
        |   pipe(<expr>,<varID>?,<expr>)
        |   <useID>

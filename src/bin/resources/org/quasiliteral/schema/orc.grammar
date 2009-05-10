@@ -6,15 +6,17 @@
 # ? makeSchema.parseGrammar(<schema:orc.grammar>.getTwine())
 
 # Directly based on the Orc 0.5 grammar as documented in the Orc user's manual.
+# In transition to the Orc 0.9.8 grammar, in which 
+# * The prune syntax "<x<" replaces "where x in".
+# * There is no "!".
 # We added hole to extend it into a quasi-grammar.
 
 orc   ::= expr=1*                                                -> orc;
-expr  ::= def=1* goal=2                                          -> expr;
+expr  ::= def=1* prune=2                                         -> expr;
 def   ::= "def" varID=1 ("(" varID=2**"," ")")? "=" expr         -> def;
-goal  ::= par=1 ("where" (varID=2 "in" par=3)++";")?             -> where;
+prune ::= par=1 ("<" varID=2? "<" par=3)?                        -> prune;
 par   ::= seq=1**"|"                                             -> par;
-seq   ::= basic=1**(">" bang=2? varID=3? ">")                    -> pipe;
-bang  ::= "!";
+seq   ::= basic=1**(">" varID=3? ">")                            -> pipe;
 basic ::= useID=1 | .int.=1 | .String.=1 | call=1 | block=1 | hole=1;
 call  ::= useID=1 "(" expr=2**"," ")"                            -> call;
 block ::= "{" expr=1 "}";

@@ -33,95 +33,83 @@ import java.io.IOException;
 
 
 /* keywords */
-%token DEF WHERE IN
+%token DEF
 
 
 %%
 
 start:
-        exprs                   { myOptResult = b.namedTerm("expr",
-                                                            (AstroArg)$1); }
+        exprs                       { myOptResult = b.namedTerm("expr",
+                                                                (AstroArg)$1); }
  ;
 
 exprs:
         empty
- |      exprs expr              { $$ = b.seq((AstroArg)$1, (AstroArg)$2); }
+ |      exprs expr                  { $$ = b.seq((AstroArg)$1, (AstroArg)$2); }
  ;
 
 expr:
-        defs goal               { $$ = b.namedTerm("expr",
-                                                   b.seq((AstroArg)$1,
-                                                         (AstroArg)$2)); }
+        defs prune                  { $$ = b.namedTerm("expr",
+                                                       b.seq((AstroArg)$1,
+                                                             (AstroArg)$2)); }
  ;
 
 defs:
         empty
- |      defs def                { $$ = b.seq((AstroArg)$1, (AstroArg)$2); }
+ |      defs def                    { $$ = b.seq((AstroArg)$1, (AstroArg)$2); }
  ;
 
 def:
         DEF varID optFormals '=' expr   
-                                { AstroArg params = b.tuple((AstroArg)$3);
-                                  $$ = b.namedTerm("def",
-                                                   b.seq((AstroArg)$2,
-                                                         params,
-                                                         (AstroArg)$5)); }
+                                    { AstroArg params = b.tuple((AstroArg)$3);
+                                      $$ = b.namedTerm("def",
+                                                       b.seq((AstroArg)$2,
+                                                             params,
+                                                             (AstroArg)$5)); }
  ;
 
 optFormals:
         empty
- |      '(' ')'                 // not allowed by official orc 0.5, but ok
-                                { $$ = b.empty(); }
- |      '(' idList ')'          { $$ = $2; }
+ |      '(' ')'                     // not allowed by official orc 0.5, but ok
+                                    { $$ = b.empty(); }
+ |      '(' idList ')'              { $$ = $2; }
  ;
 
 empty:
-        /*empty*/               { $$ = b.empty(); }
+        /*empty*/                   { $$ = b.empty(); }
  ;
 
 idList:
         varID
- |      idList ',' varID        { $$ = b.seq((AstroArg)$1, (AstroArg)$3); }
+ |      idList ',' varID            { $$ = b.seq((AstroArg)$1, (AstroArg)$3); }
  ;
 
-goal:
+prune:
         par
- |      par WHERE bindingList   { $$ = b.namedTerm("where",
-                                                   b.seq((AstroArg)$1, 
-                                                         (AstroArg)$3)); }
- ;
-
-bindingList:
-        binding
- |      bindingList ';' binding { $$ = b.seq((AstroArg)$1, (AstroArg)$3); }
- ;
-
-binding:
-        varID IN par            { $$ = b.namedTerm("in",
-                                                   b.seq((AstroArg)$1, 
-                                                         (AstroArg)$3)); }
+ |      par '<' optVar '<' prune    { $$ = b.namedTerm("prune",
+                                                       b.seq((AstroArg)$1, 
+                                                             (AstroArg)$3,
+							     (AstroArg)$5)); }
  ;
 
 par:
         seq
- |      par '|' seq             { $$ = b.namedTerm("par",
-                                                   b.seq((AstroArg)$1, 
-                                                         (AstroArg)$3)); }
+ |      par '|' seq                 { $$ = b.namedTerm("par",
+                                                       b.seq((AstroArg)$1, 
+                                                             (AstroArg)$3)); }
  ;
 
 seq:
         basic
- |      seq '>' pipeVar '>' basic   { $$ = b.namedTerm("pipe",
+ |      seq '>' optVar '>' basic    { $$ = b.namedTerm("pipe",
                                                        b.seq((AstroArg)$1, 
                                                              (AstroArg)$3,
                                                              (AstroArg)$5)); }
  ;
 
-pipeVar:
+optVar:
         empty
- |          varID
- |      '!'                     { reserved("What does '!' mean?"); }
- |      '!' varID               { reserved("What does '!' mean?"); }
+ |      varID
  ;
 
 basic:
@@ -134,10 +122,10 @@ basic:
  ;
 
 call:
-        useID '(' args ')'      { AstroArg args = b.tuple((AstroArg)$3);
-                                  $$ = b.namedTerm("call",
-                                                   b.seq((AstroArg)$1,
-                                                         args)); }
+        useID '(' args ')'          { AstroArg args = b.tuple((AstroArg)$3);
+                                      $$ = b.namedTerm("call",
+                                                       b.seq((AstroArg)$1,
+                                                             args)); }
  ;
 
 args:
@@ -147,19 +135,19 @@ args:
 
 argList:
         expr
- |      argList ',' expr        { $$ = b.seq((AstroArg)$1, (AstroArg)$3); }
+ |      argList ',' expr            { $$ = b.seq((AstroArg)$1, (AstroArg)$3); }
  ;
 
 block:
-        '{' expr '}'            { $$ = $2; }
+        '{' expr '}'                { $$ = $2; }
  ;
 
 varID:
-        id                      { $$ = b.namedTerm("var", (AstroArg)$1); }
+        id                          { $$ = b.namedTerm("var", (AstroArg)$1); }
  ;
 
 useID:
-        id                      { $$ = b.namedTerm("use", (AstroArg)$1); }
+        id                          { $$ = b.namedTerm("use", (AstroArg)$1); }
  ;
 
 id:
@@ -315,8 +303,6 @@ static {
 
     /* Keywords */
     TheTokens[DEF]              = "def";
-    TheTokens[WHERE]            = "where";
-    TheTokens[IN]               = "in";
 
     /* Single-Character Tokens */
     TheTokens['(']              = "OpenParen";
@@ -325,7 +311,7 @@ static {
     TheTokens[',']              = "Comma";
     TheTokens[';']              = "Semicolon";
     TheTokens['>']              = "CloseAngle";
-    TheTokens['!']              = "Bang";
+    TheTokens['<']              = "OpenAngle";
     TheTokens['|']              = "VerticalBar";
     TheTokens['{']              = "OpenBrace";
     TheTokens['}']              = "CloseBrace";

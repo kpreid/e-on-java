@@ -16,12 +16,13 @@ def makeLazySlot(maker) :Slot {
         try {
           bind v := maker()
         } catch p {
-          v__Resolver.resolveRace(getter := Ref.broken(p))
+          getter := Ref.broken(p)
+          v__Resolver.resolve(getter, false)
           throw(p)
         } finally {
             if (!Ref.isResolved(v)) {
-                v__Resolver.resolveRace(getter := 
-                    Ref.broken("nonlocal exit by lazy slot's maker"))
+                getter := Ref.broken("nonlocal exit by lazy slot's maker")
+                v__Resolver.resolve(getter, false)
             }
         }
         return v

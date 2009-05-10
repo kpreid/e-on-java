@@ -7,7 +7,11 @@ pragma.syntax("0.9")
 
 def promiseAllResolved := <elang:interp.promiseAllResolved>
 def [NEVER,_] := Ref.promise()
-def UNIT := null
+# UNIT is [] since let() (like signal()) publishes UNIT, and
+# let(2,3) publishes [2,3]. Note that let(2) publishes 2 rather than
+# [2], so both let([2,3]) and let(2,3) publish [2,3]. Such are the hazards
+# of ML-style tuples.
+def UNIT := []
 
 /**
  *
@@ -71,25 +75,26 @@ def orc {
     }
 
     /**
-     * orc`@left where @x @right` => e`orc.where(fn $x{$left}, $right)`
+     * orc`@left <@x< @right` => e`orc.prune(fn $x{$left}, $right)`
+     * orc`@left << @right` => e`orc.prune(fn $_{$left}, $right)`
      */
-    to where(leftAgentFn, rightAgent) {
-        def whereAgent(term, chan) {
+    to prune(leftAgentFn, rightAgent) {
+        def pruneAgent(term, chan) {
             def [x,xR] := Ref.promise()
             leftAgentFn <- run(x) <- run(term, chan)
             def [rightTerm,rightTermR] := Ref.promise()
             def leftChan {
                 to publish(val) {
                     if (!Ref.isResolved(term)) {
-                        xR.resolveRace(val)
-                        rightTermR.resolveRace(null)
+                        xR.resolve(val, false)
+                        rightTermR.resolve(null, false)
                     }
                 }
             }
-            when (term) -> { rightTermR.resolveRace(null) }
+            when (term) -> { rightTermR.resolve(null, false) }
             rightAgent <- run(rightTerm, leftChan)
         }
-        return whereAgent
+        return pruneAgent
     }
 
     ####################### built in sites ########################
