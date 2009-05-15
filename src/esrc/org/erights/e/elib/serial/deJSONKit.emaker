@@ -1,0 +1,385 @@
+# Copyright 2004-2009 Kevin Reid, under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+pragma.syntax("0.9")
+pragma.enable("accumulator")
+
+def makeLazySlot := <elib:slot.makeLazySlot>
+
+def termParser := <import:org.quasiliteral.term.makeTermParser>
+def Term := <type:org.quasiliteral.term.Term>
+def DEBuilderOf := <elib:serial.DEBuilderOf>
+
+def &makeSurgeon      := makeLazySlot(fn{ <elib:serial.makeSurgeon>      })
+def &makeCycleBreaker := makeLazySlot(fn{ <elib:tables.makeCycleBreaker> })
+
+def makeBMAR(strict :boolean) {
+    
+    # This is the list of identifiers which will be permitted in incoming JSON and mapped to specific E objects
+    def permittedExits := if (strict) {
+        ["true", "false", "null"].asSet()
+    } else {
+        ["true", "false", "null", "Infinity", "NaN"].asSet()
+    }
+    
+    return def deJSONKitBuilderMakerAndRecognizer {
+        to __printOn(out) {
+            out.print("<deJSONKit, ")
+            if (!strict) {
+                out.print("non-")
+            }
+            out.print("strict>")
+        }
+        
+        /** Data-E builder maker protocol: make a fresh Data-E builder which produces JSON strings. */
+        to makeBuilder() {
+            
+            # Stores the value corresponding to each temp index, so that when we Data-E with structure sharing, e.g. [def x := 1, x], we generate the expanded tree [1, 1].
+            def tempsFlex := [].diverge()
+            var nextTemp := 0
+            
+            def Node := Term
+            def Root := String
+            
+            def deJSONBuilder implements DEBuilderOf(Node, Root) {
+                to getNodeType() :Guard { return Node }
+                to getRootType() :Guard { return Root }
+                
+                to buildRoot(root :Node) :Root { 
+                    if (strict && (root =~ term`__makeList` ||
+                                   root =~ term`__makeMap`)) {
+                        throw(`deJSONKit: Cannot represent list or map makers in strict JSON`)
+                    } else {
+                        return root.asText()
+                    }
+                }
+    
+                to buildLiteral(value :any) :Node {
+                    # note int must be tried before float64
+                    if (   !strict \
+                        ||    value =~ v :any[int, float64, String] \
+                           && v != Infinity && v != -Infinity && v != NaN \
+                           && v == value) {
+                        return term`$value`
+                    } else {
+                        throw("deJSONKit: Literal not representable in strict JSON: " + E.toQuote(value))
+                    }
+                }
+                
+                to buildImport(varName :String) :Node { 
+                    return term`$varName()`
+                }
+                
+                to buildIbid(tempIndex :int) :Node {
+                    return tempsFlex[tempIndex]
+                }
+                
+                to buildCall(rec :Node, verb :String, args :List[Node]) :Node {
+                    switch ([rec, verb, args]) {
+                        match [term`__makeList`, =="run", elems] {
+                            return term`[$elems*]`
+                        }
+                        match [term`__makeMap`,
+                               =="fromColumns", 
+                               [term`[@keys*]`,
+                                term`[@values*]`] ? \
+                                  (keys.size() == values.size())] \
+                        {
+                            return term`{${
+                              accum [] for i => k in keys { _.with(term`$k: ${values[i]}`) }
+                            }*}`
+                        }
+                        match _ {
+                          if (strict) {
+                              def call := rec.asText() + "." + verb + "(" + ", ".rjoin(accum [] for arg in args { _.with(arg.asText()) }) + ")"
+                              throw("deJSONKit: Call not representable in strict JSON: " + call) 
+                          } else {
+                              # It would arguably be more appropriate to use rec[verb](args), but that is not valid term-tree syntax
+                              return term`__call($rec, .String.$verb, $args)`
+                          }
+                        }
+                    }
+                }
+    
+                to buildDefine(rValue :Node) :Tuple[Node, int] {
+                # JSON has no define/use so we just record the value to repeat it later, as well as returning it
+                    def tempIndex := nextTemp
+                    nextTemp += 1
+                    tempsFlex[tempIndex] := rValue
+                    return [rValue, tempIndex]
+                }
+                
+                to buildPromise() :int {
+                    throw(`deJSONKit: Cannot represent cyclic structure in JSON`)
+                    # XXX arrange to defer this error long enough so we can say what the cyclic structure is
+                    
+                    # def promIndex := nextTemp
+                    # nextTemp += 2
+                    # tempsFlex[promIndex] := term`__promise(${promIndex})`
+                    # return promIndex
+                }
+                
+                to buildDefrec(resIndex :int, rValue :Node) :Node {
+                    # XXX we don't *know* that the structure is *actually* circular yet
+                    # throw(`deJSONKit: Cannot represent cyclic structure in JSON: ${rValue.asText()}`)
+                    
+                    def promIndex := resIndex - 1
+                    tempsFlex[promIndex] := rValue
+                    return rValue
+                }
+            }
+            return deJSONBuilder
+        }
+        
+        /** Data-E recognizer protocol: feed the Data-E builder 'builder' with the Data-E representation of the JSON structure 'json'. */
+        to recognize(json :String, builder) {
+            # This method body is derived from deASTKit, and therefore
+            # Copyright 2003 Hewlett Packard, Inc. under the terms of the MIT X license
+            # found at http://www.opensource.org/licenses/mit-license.html ................
+            
+            def Node := builder.getNodeType()
+            
+            # Maps from represented (unpacked) to reported (packed) temporary
+            # variable indicies.
+            def tempIndices := [].asMap().diverge()
+            
+            def subRecognize(sub :Term) :Node {
+                return switch (sub) {
+                    match term`.int.@i` {
+                        builder.buildLiteral(i.getOptData())
+                    }
+                    match term`.float64.@f` {
+                        builder.buildLiteral(f.getOptData())
+                    }
+                    match term`.char.@c` {
+                        builder.buildLiteral(c.getOptData())
+                    }
+                    match term`.String.@str` {
+                        builder.buildLiteral(str.getOptString())
+                    }
+                    
+                    match term`@term()` ? (permittedExits.contains(def varName := term.getTag().getTagName())) {
+                        builder.buildImport(varName)
+                    }
+                    
+                    match term`[@elems*]` {
+                        var nodes := []
+                        for elem in elems {
+                            nodes with= subRecognize(elem)
+                        }
+                        builder.buildCall(builder.buildImport("__makeList"), "run", nodes)
+                    }
+                    
+                    match term`{@pairs*}` {
+                        var pairNodes := []
+                        for pair in pairs {
+                            def term`@key: @value` := pair
+                            if (strict && key !~ term`.String.@_`) {
+                                throw(`deJSONKit: This key is not a string: ${key.asText()}`)
+                            }
+                            pairNodes with= builder.buildCall(builder.buildImport("__makeList"), "run", [
+                                subRecognize(key), subRecognize(value)
+                            ])
+                        }
+                        builder.buildCall(builder.buildImport("__makeMap"), "fromPairs", [pairNodes])
+                    }
+                    
+                    match _ {
+                        throw(`deJSONKit: This is not JSON: ${sub.asText()}`)
+                    }
+                }
+            }
+            
+            return builder.buildRoot(subRecognize(termParser(json)))
+        }
+        
+        /** Constructs a surgeon which uses the deJSONKit and has the appropriate exits to map between E ConstLists/ConstMaps and JSON structures in the obvious manner. */
+        to makeSurgeon() {
+            def scope := [
+              => null,
+              => false,
+              => true,
+              => NaN,
+              => Infinity,
+              => __makeList,
+              => __makeMap,
+            ]
+            def unscope := makeCycleBreaker.byInverting(scope)
+            
+            return makeSurgeon([
+              => unscope, => scope,
+              "depictionBuilderMaker" => deJSONKitBuilderMakerAndRecognizer,
+              "depictionRecognizer" => deJSONKitBuilderMakerAndRecognizer]).snapshot()
+        }
+    }
+}
+
+/** JSON ( http://www.json.org/ ) kit for Data-E.
+
+    Data-E has no builtin data structures but has calls and exits, whereas JSON has builtin lists and maps but no calls or general exits. To reconcile this, deJSONKit specially handles the calls
+      __makeList.run
+      __makeMap.fromColumns/2
+    and the exits
+      __makeList
+      __makeMap
+      null
+      false
+      true
+      NaN       (nonstrict mode)
+      Infinity  (nonstrict mode)
+    to map between them and JSON constructs. 
+    
+    Note that even in strict mode (the default), deJSONKit operates on JSON /value/s, not JSON /object/s; it does not require that the root of the subgraph be a JSON object (E map). */
+def deJSONKit extends makeBMAR(true) {
+    to __printOn(out) {
+        out.print("<deJSONKit, default strict>")
+    }
+
+    /** Produces a kit which permits a larger range of values, particularly including characters, NaN and Infinity, than in the JSON specification. */
+    to nonstrict() {
+        return makeBMAR(false)
+    }
+}
+
+
+
+? def [surgeon, surgeonNS] := [<elib:serial.deJSONKit>.makeSurgeon(), <elib:serial.deJSONKit>.nonstrict().makeSurgeon()]
+# value: [<readOnlySurgeon>, <readOnlySurgeon>]
+
+
+? surgeon.unserialize(`{}`)
+# value: [].asMap()
+
+? surgeon.unserialize(`{"a":"b"}`)
+# value: ["a" => "b"]
+
+? surgeon.unserialize(`{"a":"b","c":"d"}`)
+# value: ["a" => "b", "c" => "d"]
+
+? surgeon.serialize([].asMap())
+# value: "{}"
+
+? surgeon.serialize(["a" => "b"])
+# value: "{\"a\": \"b\"}"
+
+? surgeon.serialize(["a" => "b", "c" => "d"])
+# value: "{\"a\": \"b\",
+#         \"c\": \"d\"}"
+
+
+? surgeon.unserialize(`[]`)
+# value: []
+
+? surgeon.unserialize(`["a"]`)
+# value: ["a"]
+
+? surgeon.unserialize(`["a","b"]`)
+# value: ["a", "b"]
+
+? surgeon.serialize([])
+# value: "[]"
+
+? surgeon.serialize(["a"])
+# value: "[\"a\"]"
+
+? surgeon.serialize(["a","b"])
+# value: "[\"a\", \"b\"]"
+
+
+
+? surgeon.unserialize(`"a\"\\\/\b\f\n\r\t\u2022z"`)
+# value: "a\"\\/\b\f
+#        \r\t\u2022z"
+
+? surgeon.serialize("a\"\\\/\b\f\n\r\t\u2022z")
+# value: "\"a\\\"\\\\/\\b\\f
+#        \\r\\t\\u2022z\""
+
+
+? surgeon.unserialize(`123`)
+# value: 123
+
+? surgeon.unserialize(`1.23`)
+# value: 1.23
+
+? surgeon.serialize(123)
+# value: "123"
+
+? surgeon.serialize(1.23)
+# value: "1.23"
+
+
+? surgeon.unserialize(`true`)
+# value: true
+
+? surgeon.unserialize(`false`)
+# value: false
+
+? [surgeon.unserialize(`null`)]
+# value: [null]
+
+? surgeon.serialize(true)
+# value: "true"
+
+? surgeon.serialize(false)
+# value: "false"
+
+? surgeon.serialize(null)
+# value: "null"
+
+
+## Not strictly JSON
+
+? surgeon.unserialize(`NaN`)
+# problem: deJSONKit: This is not JSON: NaN
+? surgeonNS.unserialize(`NaN`)
+# value: NaN
+? surgeon.unserialize(`Infinity`)
+# problem: deJSONKit: This is not JSON: Infinity
+? surgeonNS.unserialize(`Infinity`)
+# value: Infinity
+
+# ? surgeonNS.unserialize(`-Infinity`)  -- XXX should work for completeness, but doesn't due to the term parser
+# # value: -Infinity
+? surgeon.serialize(NaN)
+# value: "NaN"
+? surgeon.serialize(Infinity)
+# value: "Infinity"
+
+# ? surgeon.serialize(-Infinity)  -- XXX ditto
+# # value: "-Infinity"
+
+
+## Check that arbitrary names aren't defined as in E
+? surgeon.unserialize(`Ref`)
+# problem: deJSONKit: This is not JSON: Ref
+? surgeon.unserialize(`__makeList`)
+# problem: deJSONKit: This is not JSON: __makeList
+
+## Check that arbitrary objects are rejected
+? surgeon.serialize(Ref)
+# problem: Can't uneval <import>
+? surgeon.serialize(__makeList)
+# problem: deJSONKit: Cannot represent list or map makers in strict JSON
+? surgeon.serialize(surgeon)
+# problem: Can't uneval <readOnlySurgeon>
+
+
+# Check handling of shared structure and circularity
+
+? def x := [1]
+> surgeonNS.serialize([x, x])
+# value: "[[1],
+#        [1]]"
+
+? surgeon.serialize([x, x])
+# value: "[[1],
+#        [1]]"
+
+? def x := [1, x]; null
+
+? surgeonNS.serialize(x)
+# problem: deJSONKit: Cannot represent cyclic structure in JSON
+
+? surgeon.serialize(x)
+# problem: deJSONKit: Cannot represent cyclic structure in JSON
