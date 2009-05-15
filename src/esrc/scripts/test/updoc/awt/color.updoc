@@ -1,0 +1,17 @@
+# Copyright 2004-2009 Kevin Reid, under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+Testing the taming of java.awt.Color.
+
+? interp.waitAtTop(currentVat.morphInto("awt"))
+? def red := <awt:makeColor>.getRed()
+# value: java.awt.Color[r=255,g=0,b=0]
+
+? def blue := <awt:makeColor>.getBlue()
+# value: java.awt.Color[r=0,g=0,b=255]
+
+? red.getColorComponents(null)
+# problem: Failed: Use getColorComponents/0
+
+? red.getColorComponents()
+# value: [1.0, 0.0, 0.0]

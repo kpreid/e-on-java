@@ -1,0 +1,8 @@
+# Copyright 2004-2009 Kevin Reid, under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+? def FlexMap := <type:org.erights.e.elib.tables.FlexMap>
+# value: FlexMap
+
+? FlexMap.getSupers()
+# value: [EMap]
