@@ -3,6 +3,7 @@
 
 class(safe,
       "javax.swing.text.JTextComponent",
+      makerSugaredBy("org.erights.e.meta.javax.swing.text.JTextComponentMakerSugar"),
       statics(method("run()")),
       methods(method(suppress, "getUI()"),
               method(suppress, "setUI(TextUI)"),

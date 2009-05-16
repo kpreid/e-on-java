@@ -1,5 +1,6 @@
 class(safe,
            "org.eclipse.swt.graphics.Image",
+           makerSugaredBy("org.erights.e.meta.org.eclipse.swt.graphics.ImageMakerSugar"),
            statics(method("run(Device, int, int)"),
                    method("run(Device, Image, int)"),
                    method("run(Device, Rectangle)"),

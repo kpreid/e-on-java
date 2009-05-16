@@ -3,6 +3,8 @@
 
 class(safe,
       "java.security.KeyPairGenerator",
+      makerSugaredBy(
+        "org.erights.e.meta.java.security.KeyPairGeneratorMakerSugar"),
       statics(),
       methods(method("getAlgorithm()"),
               method("generateKeyPair()")))

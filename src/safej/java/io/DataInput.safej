@@ -1,5 +1,6 @@
 class(safe,
       "java.io.DataInput",
+      sugaredBy("org.erights.e.meta.java.io.DataInputSugar"),
       statics(),
       methods(method("readBoolean()"),
               method("readByte()"),

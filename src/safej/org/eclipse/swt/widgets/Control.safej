@@ -1,4 +1,5 @@
 class(safe, "org.eclipse.swt.widgets.Control",
+           makerSugaredBy("org.erights.e.meta.org.eclipse.swt.widgets.ControlMakerSugar"),
            statics(method("run(Composite, int)")),
            methods(method("addControlListener(ControlListener)"),
                    method("addFocusListener(FocusListener)"),

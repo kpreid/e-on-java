@@ -3,6 +3,8 @@
 
 class(safe,
       "java.awt.Component",
+      sugaredBy("org.erights.e.meta.java.awt.ComponentSugar"),
+      makerSugaredBy("org.erights.e.meta.java.awt.ComponentMakerSugar"),
       statics,
       methods(method("getName()"),
               method("setName(String)"),

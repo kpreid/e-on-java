@@ -1,5 +1,6 @@
 class(safe,
       "java.io.InputStream",
+      sugaredBy("org.erights.e.meta.java.io.InputStreamSugar"),
       statics(),
       methods(method("available()"),
               method("close()"),

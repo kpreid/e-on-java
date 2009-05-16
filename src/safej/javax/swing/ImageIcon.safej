@@ -3,6 +3,7 @@
 
 class(safe,
       "javax.swing.ImageIcon",
+      makerSugaredBy("org.erights.e.meta.javax.swing.ImageIconMakerSugar"),
       statics(method(suppress, "run(String, String)"),
               method(suppress,
                      "run(String)",

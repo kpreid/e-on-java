@@ -6,6 +6,7 @@ package org.erights.e.elib.prim;
 import org.erights.e.develop.assertion.T;
 import org.erights.e.develop.exception.ExceptionMgr;
 import org.erights.e.develop.format.StringHelper;
+import org.erights.e.develop.trace.Trace;
 import org.erights.e.elib.base.ValueThunk;
 import org.erights.e.elib.tables.ConstList;
 import org.erights.e.elib.tables.ConstMap;
@@ -13,6 +14,8 @@ import org.erights.e.elib.tables.FlexMap;
 import org.erights.e.elib.tables.FlexSet;
 import org.erights.e.elib.tables.IdentityCacheTable;
 import org.erights.e.elib.tables.Twine;
+import org.erights.e.elib.util.ClassCache;
+import org.erights.e.elib.vat.StackContext;
 import org.erights.e.meta.java.net.URLSugar;
 import org.quasiliteral.astro.Astro;
 import org.quasiliteral.astro.AstroTag;
@@ -23,6 +26,12 @@ import java.io.IOException;
 import java.net.URL;
 
 /**
+ * Represents the taming decisions about a Java class.
+ *
+ * Note that a given SafeJ instance refers to either the static members/sugar
+ * (StaticMaker) or the non-static members and sugar of a given Java class --
+ * not both, and it does not note which it is.
+ *
  * @author Mark S. Miller
  */
 public final class SafeJ {
@@ -32,6 +41,11 @@ public final class SafeJ {
      * <p/>
      * XXX What happens if a class has a safej file and is listed here as
      * well?
+     *
+     * XXX The information in this list should be transferred into safej files.
+     * To support this, there should be a shortcut syntax in safej files for
+     * "this class is written to obey E rules, and as such all of its members
+     * should be approved without explicit whitelisting here".
      */
     static private final String[] ApprovedClassList = {"boolean",
       "char",
@@ -421,20 +435,24 @@ public final class SafeJ {
     /**
      *
      */
-    static SafeJ getSafeJ(Class clazz, Class optSugar, boolean staticFlag) {
+    static SafeJ getSafeJ(Class clazz, boolean staticFlag) {
         SafeJ result = ALL;
         Term optSafeJTerm = getOptSafeJTerm(clazz.getName());
         if (null != optSafeJTerm) {
+            FlexMap safeJMap;
+
             //Hard code Term-tree walking in order to avoid having elib depend
             //on quasi-Terms
+            
+            // Read the applicable list of methods
             String attrName = staticFlag ? "statics" : "methods";
             Astro optMeths =
               AstroTag.optAttribute(optSafeJTerm, "class", attrName);
             if (null != optMeths) {
                 ConstList methList = optMeths.getArgs();
-                FlexMap safeJMap = FlexMap.fromTypes(String.class,
-                                                     String.class,
-                                                     methList.size());
+                safeJMap = FlexMap.fromTypes(String.class,
+                                             String.class,
+                                             methList.size());
                 for (int i = 0, len = methList.size(); i < len; i++) {
                     Term meth = (Term)methList.get(i);
                     Term methArg0 = (Term)meth.getArgs().get(0);
@@ -450,9 +468,38 @@ public final class SafeJ {
                               optSig);
                     safeJMap.put(optSig, arg0tag, true);
                 }
-                result =
-                  new SafeJ(clazz.getName(), safeJMap.snapshot(), false);
+            } else {
+                safeJMap = FlexMap.fromTypes(String.class,
+                                             String.class,
+                                             0);
             }
+
+            // Read the sugaredBy or makerSugaredBy attribute from the term
+            Class optSugaredBy = null;
+            Term term = (Term)AstroTag.optAttribute(
+              optSafeJTerm,
+              "class", 
+              staticFlag ? "makerSugaredBy" : "sugaredBy");
+            if (null != term) {
+                String className =
+                  ((Term)term.getArgs().get(0)).getOptString();
+                try {
+                    optSugaredBy = ClassCache.forName(className);
+                } catch (ClassNotFoundException ex) {
+                    // XXX is this message type and code to generate it 
+                    // appropriate? -- kpreid 2009-05-15
+                    Trace.eruntime
+                      .warningm("SafeJ: " + 
+                        (staticFlag ? "Maker sugar" : "Sugar") + " class " + 
+                        className + " not found for " + clazz.getName(), null);
+                }
+            }
+
+            // Assemble SafeJ object from parse result
+            result = new SafeJ(clazz.getName(),
+                               safeJMap.snapshot(),
+                               false,
+                               optSugaredBy);
         }
         return result;
     }
@@ -479,9 +526,9 @@ public final class SafeJ {
 //    }
 
     static public final SafeJ NONE =
-      new SafeJ("none", ConstMap.EmptyMap, false);
+      new SafeJ("none", ConstMap.EmptyMap, false, null);
 
-    static public final SafeJ ALL = new SafeJ("all", null, false);
+    static public final SafeJ ALL = new SafeJ("all", null, false, null);
 
     ///////////////////// instance stuff ////////////////////
 
@@ -501,12 +548,21 @@ public final class SafeJ {
     private final boolean myInheritFlag;
 
     /**
+     * Class which this vtable is sugared by.
+     */
+    private final Class myOptSugaredBy;
+
+    /**
      *
      */
-    public SafeJ(String baseName, ConstMap optMap, boolean inheritFlag) {
+    public SafeJ(String baseName,
+                 ConstMap optMap,
+                 boolean inheritFlag,
+                 Class optSugaredBy) {
         myBaseName = baseName;
         myOptMap = optMap;
         myInheritFlag = inheritFlag;
+        myOptSugaredBy = optSugaredBy;
     }
 
     /**
@@ -607,33 +663,19 @@ public final class SafeJ {
         return false;
     }
 
+
     /**
-     *
+     * The sugar class whose static methods should be added to the vtable
+     * controlled by this SafeJ.
      */
-    public SafeJ or(SafeJ other, boolean strict) {
-        ConstMap optNewMap;
-        if (null == myOptMap) {
-            if (null == other.myOptMap) {
-                optNewMap = null;
-            } else {
-                //XXX null is also a plausible answer
-                optNewMap = other.myOptMap;
-            }
-        } else {
-            if (null == other.myOptMap) {
-                //XXX null is also a plausible answer
-                optNewMap = myOptMap;
-            } else {
-                optNewMap = myOptMap.or(other.myOptMap, strict);
-            }
-        }
-        return new SafeJ(myBaseName, optNewMap, myInheritFlag);
+    public Class getOptSugaredBy() {
+        return myOptSugaredBy;
     }
 
     /**
      *
      */
     public SafeJ forInheritance() {
-        return new SafeJ(myBaseName, myOptMap, true);
+        return new SafeJ(myBaseName, myOptMap, true, myOptSugaredBy);
     }
 }

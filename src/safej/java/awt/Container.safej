@@ -3,6 +3,7 @@
 
 class(safe,
       "java.awt.Container",
+      sugaredBy("org.erights.e.meta.java.awt.ContainerSugar"),
       statics(method(suppress, "run()")),
       methods(method("getComponentCount()"),
               method(suppress, "countComponents()"),

@@ -96,29 +96,15 @@ public class ScriptMaker {
      * To the E programmer, the left hand (key) types seem to have methods
      * according to this Java type, but as modified (sugared) by the right hand
      * (value) types.
+     *
+     * XXX This table is DEPRECATED in favor of definitions in the safej files
+     * using the sugaredBy("fqn") term. These entries exist solely because
+     * these particular classes do not have safej files at all.
      */
-    static private final String[][] Sugarings = {{"java.lang.Boolean",
-      "org.erights.e.meta.java.lang.BooleanSugar"},
-      {"java.lang.Character", "org.erights.e.meta.java.lang.CharacterSugar"},
-      {"java.lang.Comparable", "org.erights.e.meta.java.lang.ComparableSugar"},
-      {"java.lang.Integer", "org.erights.e.meta.java.lang.IntegerSugar"},
+    static private final String[][] Sugarings = {
       {"java.lang.Process", "org.erights.e.meta.java.lang.ProcessSugar"},
-      {"java.lang.StringBuffer",
-        "org.erights.e.meta.java.lang.StringBufferSugar"},
-      {"java.lang.Throwable",
-        //Note the irregular location!
-        "org.erights.e.develop.exception.ThrowableSugar"},
 
-      {"java.math.BigInteger", "org.erights.e.meta.java.math.BigIntegerSugar"},
-      {"java.lang.Double", "org.erights.e.meta.java.lang.DoubleSugar"},
-
-      {"java.io.BufferedReader",
-        "org.erights.e.meta.java.io.BufferedReaderSugar"},
-      {"java.io.DataInput", "org.erights.e.meta.java.io.DataInputSugar"},
       {"java.io.DataOutput", "org.erights.e.meta.java.io.DataOutputSugar"},
-      {"java.io.File", "org.erights.e.meta.java.io.FileSugar"},
-      {"java.io.InputStream", "org.erights.e.meta.java.io.InputStreamSugar"},
-      {"java.io.Reader", "org.erights.e.meta.java.io.ReaderSugar"},
 
       {"java.security.KeyFactory",
         "org.erights.e.meta.java.security.KeyFactorySugar"},
@@ -156,10 +142,6 @@ public class ScriptMaker {
 
       {"java.net.URL", "org.erights.e.meta.java.net.URLSugar"},
 
-      {"java.awt.Color", "org.erights.e.meta.java.awt.ColorSugar"},
-      {"java.awt.Component", "org.erights.e.meta.java.awt.ComponentSugar"},
-      {"java.awt.Container", "org.erights.e.meta.java.awt.ContainerSugar"},
-
       {"java.awt.event.WindowEvent",
         "org.erights.e.meta.java.awt.event.WindowEventSugar"},
 
@@ -178,11 +160,13 @@ public class ScriptMaker {
      * Maps fq class names to the fqName of the classes that sugar them.
      * TheSugars is initialized lazily in order to avoid possible circular
      * static initialization dependencies.
+     * XXX once Sugarings is empty, delete this
      */
     static private EMap TheSugars = null;
 
     /**
      * Map a class to its sugaring class, or null if it doesn't have one
+     * XXX once Sugarings is empty, delete this
      */
     static public Class OptSugar(Class clazz) {
         if (null == TheSugars) {
@@ -276,8 +260,7 @@ public class ScriptMaker {
             //all arrays share the same behavior
             inherit(vTable, Object[].class, SafeJ.ALL);
         } else {
-            Class optSugar = OptSugar(clazz);
-            SafeJ safeJ = SafeJ.getSafeJ(clazz, optSugar, false);
+            SafeJ safeJ = SafeJ.getSafeJ(clazz, false);
             SafeJ inheritJ = safeJ.forInheritance();
             Class optSuper = clazz.getSuperclass();
             if (null != optSuper) {
@@ -289,6 +272,10 @@ public class ScriptMaker {
                 inherit(vTable, faces[i], inheritJ);
             }
             InstanceMethodNode.defineMembers(vTable, clazz, safeJ);
+            Class optSugar = safeJ.getOptSugaredBy();
+            if (null == optSugar) {
+                optSugar = OptSugar(clazz);
+            }
             if (null != optSugar) {
                 SugarMethodNode.defineMembers(vTable, optSugar);
             }

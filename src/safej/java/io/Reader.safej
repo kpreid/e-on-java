@@ -1,5 +1,6 @@
 class(safe,
       "java.io.Reader",
+      sugaredBy("org.erights.e.meta.java.io.ReaderSugar"),
       statics(),
       methods(method("close()"),
               method("read()"),

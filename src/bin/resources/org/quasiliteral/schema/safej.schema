@@ -48,6 +48,7 @@
                   # supertype.
                   honorary(<fqn>*)? &
 
+                  # If these are absent, it is equivalent to an empty list.
                   statics(<method>*)? &  # Classifies static methods
                   methods(<method>*)?);  # Classifies instance methods
 

@@ -1,5 +1,6 @@
 class(safe,
       "java.io.BufferedReader",
+      sugaredBy("org.erights.e.meta.java.io.BufferedReaderSugar"),
       statics(method("run(Reader)"),
               method("run(Reader, int)")),
       methods(method("readLine()")))

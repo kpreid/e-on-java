@@ -3,6 +3,7 @@
 
 class(safe,
       "java.math.BigInteger",
+      makerSugaredBy("org.erights.e.meta.java.math.EInt"),
       sugaredBy("org.erights.e.meta.java.math.BigIntegerSugar"),
       statics(method("getONE()"),
               method("getZERO()"),

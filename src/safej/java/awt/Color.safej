@@ -3,6 +3,8 @@
 
 class(safe,
       "java.awt.Color",
+      sugaredBy("org.erights.e.meta.java.awt.ColorSugar"),
+      makerSugaredBy("org.erights.e.meta.java.awt.ColorMakerSugar"),
       statics(method("getWhite()",
                      comment("XXX Is a Color truly client-immutable?  I (MarkM)
                               checked all the instance variables of the JDK1.3

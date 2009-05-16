@@ -1,4 +1,5 @@
 class("org.eclipse.swt.widgets.Shell",
+           makerSugaredBy("org.erights.e.meta.org.eclipse.swt.widgets.ShellMakerSugar"),
            statics(method(suppress, "run()"),
                    method(suppress, "run(int)"),
                    method("run(Display)"),
