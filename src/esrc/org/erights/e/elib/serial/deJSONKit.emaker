@@ -15,7 +15,8 @@ def &makeCycleBreaker := makeLazySlot(fn{ <elib:tables.makeCycleBreaker> })
 
 def makeBMAR(strict :boolean) {
     
-    # This is the list of identifiers which will be permitted in incoming JSON and mapped to specific E objects
+    # This is the list of identifiers which will be permitted in
+    # incoming JSON and mapped to specific E objects
     def permittedExits := if (strict) {
         ["true", "false", "null"].asSet()
     } else {
@@ -31,10 +32,15 @@ def makeBMAR(strict :boolean) {
             out.print("strict>")
         }
         
-        /** Data-E builder maker protocol: make a fresh Data-E builder which produces JSON strings. */
+        /**
+         * Data-E builder maker protocol: make a fresh Data-E builder
+         * which produces JSON strings.
+         */
         to makeBuilder() {
             
-            # Stores the value corresponding to each temp index, so that when we Data-E with structure sharing, e.g. [def x := 1, x], we generate the expanded tree [1, 1].
+            # Stores the value corresponding to each temp index, so
+            # that when we Data-E with structure sharing, e.g.
+            # [def x := 1, x], we generate the expanded tree [1, 1].
             def tempsFlex := [].diverge()
             var nextTemp := 0
             
@@ -45,28 +51,30 @@ def makeBMAR(strict :boolean) {
                 to getNodeType() :Guard { return Node }
                 to getRootType() :Guard { return Root }
                 
-                to buildRoot(root :Node) :Root { 
+                to buildRoot(root :Node) :Root {
                     if (strict && (root =~ term`__makeList` ||
-                                   root =~ term`__makeMap`)) {
-                        throw(`deJSONKit: Cannot represent list or map makers in strict JSON`)
+                                     root =~ term`__makeMap`)) {
+                        throw("\
+deJSONKit: Cannot represent list or map makers in strict JSON")
                     } else {
                         return root.asText()
                     }
                 }
-    
+                
                 to buildLiteral(value :any) :Node {
                     # note int must be tried before float64
                     if (   !strict \
-                        ||    value =~ v :any[int, float64, String] \
-                           && v != Infinity && v != -Infinity && v != NaN \
-                           && v == value) {
+                          ||    value =~ v :any[int, float64, String] \
+                          && v != Infinity && v != -Infinity && v != NaN \
+                          && v == value) {
                         return term`$value`
                     } else {
-                        throw("deJSONKit: Literal not representable in strict JSON: " + E.toQuote(value))
+                        throw("\
+deJSONKit: Literal not representable in strict JSON: " + E.toQuote(value))
                     }
                 }
                 
-                to buildImport(varName :String) :Node { 
+                to buildImport(varName :String) :Node {
                     return term`$varName()`
                 }
                 
@@ -80,29 +88,38 @@ def makeBMAR(strict :boolean) {
                             return term`[$elems*]`
                         }
                         match [term`__makeMap`,
-                               =="fromColumns", 
+                               =="fromColumns",
                                [term`[@keys*]`,
                                 term`[@values*]`] ? \
-                                  (keys.size() == values.size())] \
-                        {
+                                 (keys.size() == values.size())] \
+                          {
                             return term`{${
-                              accum [] for i => k in keys { _.with(term`$k: ${values[i]}`) }
-                            }*}`
+                                    accum [] for i => k in keys {
+                                        _.with(term`$k: ${values[i]}`)
+                                    }
+                                }*}`
                         }
                         match _ {
-                          if (strict) {
-                              def call := rec.asText() + "." + verb + "(" + ", ".rjoin(accum [] for arg in args { _.with(arg.asText()) }) + ")"
-                              throw("deJSONKit: Call not representable in strict JSON: " + call) 
-                          } else {
-                              # It would arguably be more appropriate to use rec[verb](args), but that is not valid term-tree syntax
-                              return term`__call($rec, .String.$verb, $args)`
-                          }
+                            if (strict) {
+                                def call := rec.asText() + "." + verb + "(" +
+                                  ", ".rjoin(accum [] for arg in args {
+                                    _.with(arg.asText())
+                                }) + ")"
+                                throw("\
+deJSONKit: Call not representable in strict JSON: " + call)
+                            } else {
+                                # It would arguably be more appropriate to use
+                                # rec[verb](args), but that is not valid
+                                # term-tree syntax
+                                return term`__call($rec, .String.$verb, $args)`
+                            }
                         }
                     }
                 }
-    
+                
                 to buildDefine(rValue :Node) :Tuple[Node, int] {
-                # JSON has no define/use so we just record the value to repeat it later, as well as returning it
+                    # JSON has no define/use so we just record the value to
+                    # repeat it later, as well as returning it
                     def tempIndex := nextTemp
                     nextTemp += 1
                     tempsFlex[tempIndex] := rValue
@@ -110,8 +127,10 @@ def makeBMAR(strict :boolean) {
                 }
                 
                 to buildPromise() :int {
-                    throw(`deJSONKit: Cannot represent cyclic structure in JSON`)
-                    # XXX arrange to defer this error long enough so we can say what the cyclic structure is
+                    throw("\
+deJSONKit: Cannot represent cyclic structure in JSON")
+                    # XXX arrange to defer this error long enough so we can
+                    # say what the cyclic structure is
                     
                     # def promIndex := nextTemp
                     # nextTemp += 2
@@ -120,8 +139,11 @@ def makeBMAR(strict :boolean) {
                 }
                 
                 to buildDefrec(resIndex :int, rValue :Node) :Node {
-                    # XXX we don't *know* that the structure is *actually* circular yet
-                    # throw(`deJSONKit: Cannot represent cyclic structure in JSON: ${rValue.asText()}`)
+                    # XXX we don't *know* that the structure is *actually*
+                    # circular yet
+                    # throw(`\
+                    # deJSONKit: Cannot represent cyclic structure in JSON: ${
+                    #     rValue.asText()}`)
                     
                     def promIndex := resIndex - 1
                     tempsFlex[promIndex] := rValue
@@ -131,11 +153,15 @@ def makeBMAR(strict :boolean) {
             return deJSONBuilder
         }
         
-        /** Data-E recognizer protocol: feed the Data-E builder 'builder' with the Data-E representation of the JSON structure 'json'. */
+        /**
+         * Data-E recognizer protocol: feed the Data-E builder 'builder' with
+         * the Data-E representation of the JSON structure 'json'.
+         */
         to recognize(json :String, builder) {
             # This method body is derived from deASTKit, and therefore
-            # Copyright 2003 Hewlett Packard, Inc. under the terms of the MIT X license
-            # found at http://www.opensource.org/licenses/mit-license.html ................
+            # Copyright 2003 Hewlett Packard, Inc. under the terms of the
+            # MIT X license found at
+            # http://www.opensource.org/licenses/mit-license.html
             
             def Node := builder.getNodeType()
             
@@ -158,7 +184,8 @@ def makeBMAR(strict :boolean) {
                         builder.buildLiteral(str.getOptString())
                     }
                     
-                    match term`@term()` ? (permittedExits.contains(def varName := term.getTag().getTagName())) {
+                    match term`@term()` ? (permittedExits.contains(
+                        def varName := term.getTag().getTagName())) {
                         builder.buildImport(varName)
                     }
                     
@@ -167,7 +194,9 @@ def makeBMAR(strict :boolean) {
                         for elem in elems {
                             nodes with= subRecognize(elem)
                         }
-                        builder.buildCall(builder.buildImport("__makeList"), "run", nodes)
+                        builder.buildCall(builder.buildImport("__makeList"),
+                                          "run",
+                                          nodes)
                     }
                     
                     match term`{@pairs*}` {
@@ -175,13 +204,17 @@ def makeBMAR(strict :boolean) {
                         for pair in pairs {
                             def term`@key: @value` := pair
                             if (strict && key !~ term`.String.@_`) {
-                                throw(`deJSONKit: This key is not a string: ${key.asText()}`)
+                                throw(`$\
+deJSONKit: This key is not a string: ${key.asText()}`)
                             }
-                            pairNodes with= builder.buildCall(builder.buildImport("__makeList"), "run", [
-                                subRecognize(key), subRecognize(value)
-                            ])
+                            pairNodes with= builder.buildCall(
+                                builder.buildImport("__makeList"),
+                                "run",
+                                [subRecognize(key), subRecognize(value)])
                         }
-                        builder.buildCall(builder.buildImport("__makeMap"), "fromPairs", [pairNodes])
+                        builder.buildCall(builder.buildImport("__makeMap"),
+                                          "fromPairs",
+                                          [pairNodes])
                     }
                     
                     match _ {
@@ -193,49 +226,66 @@ def makeBMAR(strict :boolean) {
             return builder.buildRoot(subRecognize(termParser(json)))
         }
         
-        /** Constructs a surgeon which uses the deJSONKit and has the appropriate exits to map between E ConstLists/ConstMaps and JSON structures in the obvious manner. */
+        /**
+         * Constructs a surgeon which uses the deJSONKit and has the
+         * appropriate exits to map between E ConstLists/ConstMaps and JSON
+         * structures in the obvious manner.
+         */
         to makeSurgeon() {
             def scope := [
-              => null,
-              => false,
-              => true,
-              => NaN,
-              => Infinity,
-              => __makeList,
-              => __makeMap,
-            ]
+                => null,
+                => false,
+                => true,
+                => NaN,
+                => Infinity,
+                => __makeList,
+                => __makeMap,
+                ]
             def unscope := makeCycleBreaker.byInverting(scope)
             
             return makeSurgeon([
-              => unscope, => scope,
-              "depictionBuilderMaker" => deJSONKitBuilderMakerAndRecognizer,
-              "depictionRecognizer" => deJSONKitBuilderMakerAndRecognizer]).snapshot()
+                => unscope, => scope,
+                "depictionBuilderMaker" => deJSONKitBuilderMakerAndRecognizer,
+                "depictionRecognizer" => deJSONKitBuilderMakerAndRecognizer
+            ]).snapshot()
         }
     }
 }
 
-/** JSON ( http://www.json.org/ ) kit for Data-E.
-
-    Data-E has no builtin data structures but has calls and exits, whereas JSON has builtin lists and maps but no calls or general exits. To reconcile this, deJSONKit specially handles the calls
-      __makeList.run
-      __makeMap.fromColumns/2
-    and the exits
-      __makeList
-      __makeMap
-      null
-      false
-      true
-      NaN       (nonstrict mode)
-      Infinity  (nonstrict mode)
-    to map between them and JSON constructs. 
-    
-    Note that even in strict mode (the default), deJSONKit operates on JSON /value/s, not JSON /object/s; it does not require that the root of the subgraph be a JSON object (E map). */
+/**
+ * JSON ( http://www.json.org/ ) kit for Data-E.
+ * <p>
+ * Data-E has no builtin data structures but has calls and exits, whereas
+ * JSON has builtin lists and maps but no calls or general exits. To reconcile
+ * this, deJSONKit specially handles the calls.
+ * <ul>
+ * <li>__makeList.run
+ * <li>__makeMap.fromColumns/2
+ * <li>and the exits
+ * <li>__makeList
+ * <li>__makeMap
+ * <li>null
+ * <li>false
+ * <li>true
+ * <li>NaN       (nonstrict mode)
+ * <li>Infinity  (nonstrict mode)
+ * </ul>
+ * to map between them and JSON constructs.
+ * <p>
+ * Note that even in strict mode (the default), deJSONKit operates on
+ * JSON /value/s, not JSON /object/s; it does not require that the root of
+ * the subgraph be a JSON object (E map).
+ */
 def deJSONKit extends makeBMAR(true) {
     to __printOn(out) {
         out.print("<deJSONKit, default strict>")
     }
-
-    /** Produces a kit which permits a larger range of values, particularly including characters, NaN and Infinity, than in the JSON specification. */
+    
+    /**
+     * Produces a kit which permits a larger range of values, particularly
+     * including characters, NaN and Infinity, than in the JSON
+     * specification.
+     */
     to nonstrict() {
         return makeBMAR(false)
     }
@@ -243,7 +293,9 @@ def deJSONKit extends makeBMAR(true) {
 
 
 
-? def [surgeon, surgeonNS] := [<elib:serial.deJSONKit>.makeSurgeon(), <elib:serial.deJSONKit>.nonstrict().makeSurgeon()]
+? def [surgeon, surgeonNS] := [
+>     <elib:serial.deJSONKit>.makeSurgeon(),
+>     <elib:serial.deJSONKit>.nonstrict().makeSurgeon()]
 # value: [<readOnlySurgeon>, <readOnlySurgeon>]
 
 
@@ -339,7 +391,8 @@ def deJSONKit extends makeBMAR(true) {
 ? surgeonNS.unserialize(`Infinity`)
 # value: Infinity
 
-# ? surgeonNS.unserialize(`-Infinity`)  -- XXX should work for completeness, but doesn't due to the term parser
+# ? surgeonNS.unserialize(`-Infinity`)  -- XXX should work for completeness, 
+#                                          but doesn't due to the term parser
 # # value: -Infinity
 ? surgeon.serialize(NaN)
 # value: "NaN"
