@@ -2,7 +2,7 @@
 
 pragma.syntax("0.9")
 
-# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# Copyright 2009 Teleometry Design under the terms of the MIT X license
 # found at http://www.opensource.org/licenses/mit-license.html ................
 
 def makeWelcomeView :=
@@ -15,11 +15,13 @@ def causewayModelAuthor :=
   <import:org.erights.e.tools.causeway.causewayModelAuthor>
 def makeSelectionModel :=
   <import:org.erights.e.tools.causeway.makeSelectionModel>
+def makeSearchModel :=
+  <import:org.erights.e.tools.causeway.makeSearchModel>
 
 def makeDefaultUniFilter() :near {
     var uniFilter := [].asSet().diverge()
     
-    uniFilter.addElement("org/waterken/purchase_ajax/AsyncAnd.java")
+#  uniFilter.addElement("org/waterken/purchase_ajax/AsyncAnd.java")
     
 #  uniFilter.addElement("org/erights/e/elang/cmd/cmdLoopMakerAuthor.emaker")
 #  uniFilter.addElement("org/erights/e/elang/cmd/cmdMakerMaker.emaker")
@@ -30,6 +32,18 @@ def makeDefaultUniFilter() :near {
 #  uniFilter.addElement("org/erights/e/elang/cmd/makeParseFuncAuthor.emaker")
 #  uniFilter.addElement("org/erights/e/elang/cmd/makeRepl.emaker")
 #  uniFilter.addElement("org/erights/e/elang/cmd/runeAuthor.emaker")
+
+#uniFilter.addElement("hp/fred/FredRegisterX.java")
+
+#uniFilter.addElement("hp/polling/Guarantee.java")
+#uniFilter.addElement("hp/polling/PollerX.java")
+#uniFilter.addElement("hp/polling/WhenCyclerX.java")
+
+#uniFilter.addElement("hp/scoopfs/FileMarkerX.java")
+#uniFilter.addElement("hp/scoopfs/Log.java")
+#uniFilter.addElement("hp/scoopfs/MailArchiverX.java")
+#uniFilter.addElement("hp/scoopfs/Main.java")
+#uniFilter.addElement("hp/scoopfs/UIModelX.java")
     
     return uniFilter.snapshot()
 }
@@ -38,8 +52,8 @@ def makeDefaultUniFilter() :near {
  */
 def viewerDirectorAuthor(rootDirName :String,
                          <file>, <jar>, props,
-                         makers, shell,
-                         abstractAction, tcr, traceline) :near {
+                         makers, shell, abstractAction,
+                         tcr, traceline) :near {
     
     
     def makeViewer := viewerAuthor(rootDirName :String,
@@ -56,13 +70,13 @@ def viewerDirectorAuthor(rootDirName :String,
         
         var uniFilter := makeDefaultUniFilter()
         
-        if (uniFilter.size() >= 1) {
-            traceline(``)
-            traceline(`>>>>> uniFilter default pathnames:`)
-            for pn in uniFilter {
-                traceline(`$pn`)
-            }
-        }
+#        if (uniFilter.size() >= 1) {
+#            traceline(``)
+#            traceline(`>>>>> uniFilter default pathnames:`)
+#            for pn in uniFilter {
+#                traceline(`$pn`)
+#            }
+#        }
         
         if (traces != []) {
             bind makeCausewayModel := causewayModelAuthor(traces,
@@ -70,7 +84,10 @@ def viewerDirectorAuthor(rootDirName :String,
                                                           traceline)
             model := makeCausewayModel(uniFilter)
             def selectionModel := makeSelectionModel()
-            view := makeViewer(parent, palette, model, selectionModel)
+            def searchModel := makeSearchModel(model.getTop())
+
+            view := makeViewer(parent, palette, 
+                               model, selectionModel, searchModel)
         } else {
             view := makeWelcomeView(parent, palette, traceline)
         }
@@ -84,18 +101,19 @@ def viewerDirectorAuthor(rootDirName :String,
                     def ffm := model.getOrMakeFileFilterModel()
                     uniFilter := ffm.asUninterestingFilter()
                     
-                    if (uniFilter.size() >= 1) {
-                        traceline(``)
-                        traceline(`>>>>> updateView uniFilter pathnames:`)
-                        for pn in uniFilter {
-                            traceline(`$pn`)
-                        }
-                    }
+#                    if (uniFilter.size() >= 1) {
+#                        traceline(``)
+#                        traceline(`>>>>> updateView uniFilter pathnames:`)
+#                        for pn in uniFilter {
+#                            traceline(`$pn`)
+#                        }
+#                    }
                     
                     model := makeCausewayModel(uniFilter)
                     def selectionModel := makeSelectionModel()
-                    
-                    view := makeViewer(parent, palette, model, selectionModel)
+                    def searchModel := makeSearchModel(model.getTop())
+                    view := makeViewer(parent, palette, 
+                                       model, selectionModel, searchModel)
                 }
             }
         }

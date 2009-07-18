@@ -2,7 +2,7 @@
 
 pragma.syntax("0.9")
 
-# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# Copyright 2009 Teleometry Design under the terms of the MIT X license
 # found at http://www.opensource.org/licenses/mit-license.html ................
 
 def swt__uriGetter := <import:org.eclipse.swt.*>
@@ -57,8 +57,6 @@ def paletteAuthor(rezKit, makers, traceline) :near {
                  [rezKit.makeColor(0, 0, 139), "darkblue"], true) # 00008B
     colorMap.put("navy",
                  [rezKit.makeColor(0, 0, 128), "navy"], true) # 000080
-    colorMap.put("goldenrod",
-                 [rezKit.makeColor(218, 165, 32), "goldenrod"], true) # DAA520
     colorMap.put("teal",
                  [rezKit.makeColor(0, 128, 128), "teal"], true) # 008080
     colorMap.put("indian red",
@@ -77,11 +75,20 @@ def paletteAuthor(rezKit, makers, traceline) :near {
                  [rezKit.makeColor(255, 0, 255), "fuchsia"], true) # FF00FF
     colorMap.put("rosy brown",
                  [rezKit.makeColor(188, 143, 143), "rosy brown"], true) # BC8F8F
-    
+    colorMap.put("plum",
+                 [rezKit.makeColor(221, 160, 221), "plum"], true) # DDA0DD
+    colorMap.put("saddle brown",
+                 [rezKit.makeColor(139, 69, 19), "saddle brown"], true) # 8B4513
+
     colorMap.put("darkred",
                  [rezKit.makeColor(139, 0, 0), "darkred"], true) # 8B0000
+
+    # firebrick & goldenrod are used by makeMessageGraph.walkDots() to indicate filter tags
+
     colorMap.put("firebrick",
                  [rezKit.makeColor(178, 34, 34), "firebrick"], true) # B22222
+    colorMap.put("goldenrod",
+                 [rezKit.makeColor(218, 165, 32), "goldenrod"], true) # DAA520
     
     colorMap.put("lightsteelblue",
                  [rezKit.makeColor(176, 196, 222), "lightsteelblue"], true) #B0C4DE
@@ -110,7 +117,7 @@ def paletteAuthor(rezKit, makers, traceline) :near {
     vatColors[3] := colorMap.fetch("chocolate", fn{})
     vatColors[4] := colorMap.fetch("darkslategray", fn{})
     
-    vatColors[5] := colorMap.fetch("goldenrod", fn{})
+    vatColors[5] := colorMap.fetch("saddle brown", fn{})
     vatColors[6] := colorMap.fetch("teal", fn{})
     vatColors[7] := colorMap.fetch("indian red", fn{})
     vatColors[8] := colorMap.fetch("medium sea green", fn{})
@@ -134,6 +141,10 @@ def paletteAuthor(rezKit, makers, traceline) :near {
     def bold := SWT.getBOLD()
     def italic := SWT.getITALIC()
     
+    fonts.put(["Monaco", "8", "normal"], rezKit.makeFont("Monaco", 8, normal), true)
+    fonts.put(["Monaco", "8", "bold"], rezKit.makeFont("Monaco", 8, bold), true)
+    fonts.put(["Monaco", "8", "italic"], rezKit.makeFont("Monaco", 8, italic), true)
+
     fonts.put(["Monaco", "9", "normal"], rezKit.makeFont("Monaco", 9, normal), true)
     fonts.put(["Monaco", "9", "bold"], rezKit.makeFont("Monaco", 9, bold), true)
     fonts.put(["Monaco", "9", "italic"], rezKit.makeFont("Monaco", 9, italic), true)
@@ -145,6 +156,10 @@ def paletteAuthor(rezKit, makers, traceline) :near {
     fonts.put(["Monaco", "12", "normal"], rezKit.makeFont("Monaco", 12, normal), true)
     fonts.put(["Monaco", "12", "bold"], rezKit.makeFont("Monaco", 12, bold), true)
     fonts.put(["Monaco", "12", "italic"], rezKit.makeFont("Monaco", 12, italic), true)
+    
+    fonts.put(["Verdana", "8", "normal"], rezKit.makeFont("Verdana", 8, normal), true)
+    fonts.put(["Verdana", "8", "bold"], rezKit.makeFont("Verdana", 8, bold), true)
+    fonts.put(["Verdana", "8", "italic"], rezKit.makeFont("Verdana", 8, italic), true)
     
     fonts.put(["Verdana", "9", "normal"], rezKit.makeFont("Verdana", 9, normal), true)
     fonts.put(["Verdana", "9", "bold"], rezKit.makeFont("Verdana", 9, bold), true)
@@ -158,6 +173,10 @@ def paletteAuthor(rezKit, makers, traceline) :near {
     fonts.put(["Verdana", "12", "bold"], rezKit.makeFont("Verdana", 12, bold), true)
     fonts.put(["Verdana", "12", "italic"], rezKit.makeFont("Verdana", 12, italic), true)
     
+    fonts.put(["Verdana", "20", "normal"], rezKit.makeFont("Verdana", 20, normal), true)
+    fonts.put(["Verdana", "20", "bold"], rezKit.makeFont("Verdana", 20, bold), true)
+    fonts.put(["Verdana", "20", "italic"], rezKit.makeFont("Verdana", 20, italic), true)
+
     fonts.put(["Verdana", "22", "normal"], rezKit.makeFont("Verdana", 22, normal), true)
     fonts.put(["Verdana", "22", "bold"], rezKit.makeFont("Verdana", 22, bold), true)
     fonts.put(["Verdana", "22", "italic"], rezKit.makeFont("Verdana", 22, italic), true)
@@ -169,9 +188,11 @@ def paletteAuthor(rezKit, makers, traceline) :near {
     #def multiplesURL := <resource:org/erights/e/tools/causeway/multiples.gif>
     def multiplesURL := <resource:org/erights/e/tools/causeway/multiples-long.png>
     def giantsCausewayURL := <resource:org/erights/e/tools/causeway/giants-causeway.jpg>
+    def gc300x300URL :=  <resource:org/erights/e/tools/causeway/gc300x300.jpg>
     
     images.put("multiples", rezKit.makeImage(multiplesURL.openStream()))
-    images.put("giantsCauseway", rezKit.makeImage(giantsCausewayURL.openStream()))
+    #images.put("giantsCauseway", rezKit.makeImage(giantsCausewayURL.openStream()))
+    images.put("giantsCauseway", rezKit.makeImage(gc300x300URL.openStream()))
     
     def makeBasicPalette(fgName, bgName, fontName) :near {
         
@@ -238,10 +259,33 @@ def paletteAuthor(rezKit, makers, traceline) :near {
                 return palette.getDefaultVatColor()
             }
             
-            to makeWelcomePalette() :near {
+            to makeWelcomeTitlePalette() :near {
                 return makeBasicPalette("navy",
                                         "whitesmoke",
                                         ["Verdana", "22", "normal"])
+            }
+            to makeWelcomeDescPalette() :near {
+                return makeBasicPalette("navy",
+                                        "whitesmoke",
+                                        ["Verdana", "12", "normal"])
+            }
+            to makeWelcomeCreditPalette() :near {
+                return makeBasicPalette("navy",
+                                        "whitesmoke",
+                                        ["Verdana", "9", "italic"])
+            }
+            to makeWelcomeCodePalette() :near {
+                return makeBasicPalette("navy",
+                                        "whitesmoke",
+                                        ["Monaco", "10", "normal"])
+            }
+            to makeWelcomePalette() :near {
+                def paletteMap := [].asMap().diverge()
+                paletteMap.put("welcome", palette.makeWelcomeTitlePalette(), true)
+                paletteMap.put("desc", palette.makeWelcomeDescPalette(), true)
+                paletteMap.put("code", palette.makeWelcomeCodePalette(), true)
+                paletteMap.put("credit", palette.makeWelcomeCreditPalette(), true)
+                return paletteMap.snapshot()
             }
             
             to makeFramePalette() :near {
@@ -295,6 +339,11 @@ def paletteAuthor(rezKit, makers, traceline) :near {
                                         "white",
                                         ["Monaco", "10", "normal"])
             }
+            to makeSearchViewPalette() :near {
+                return makeBasicPalette("black",
+                                        "white",
+                                        ["Monaco", "10", "normal"])
+            }
             to makeFilenamePalette() :near {
                 return makeBasicPalette("black",
                                         "lightsteelblue",
@@ -309,6 +358,52 @@ def paletteAuthor(rezKit, makers, traceline) :near {
                 return makeBasicPalette("black",
                                         "white",
                                         ["Monaco", "12", "normal"])
+            }
+            to makeAppNamePalette() :near {
+                return makeBasicPalette("navy",
+                                        "white",
+                                        ["Verdana", "20", "normal"])
+            }
+            to makeAppVersionPalette() :near {
+                return makeBasicPalette("black",
+                                        "white",
+                                        ["Verdana", "10", "normal"])
+            }
+            to makeComponentPalette() :near {
+                return makeBasicPalette("black",
+                                        "white",
+                                        ["Verdana", "9", "normal"])
+            }
+            to makeCopyrightPalette() :near {
+                return makeBasicPalette("black",
+                                        "white",
+                                        ["Verdana", "10", "normal"])
+            }
+            to makeAboutDialogPalette() :near {
+                def paletteMap := [].asMap().diverge()
+                paletteMap.put("dialog", palette.makeDialogPalette(), true)
+                paletteMap.put("appName", palette.makeAppNamePalette(), true)
+                paletteMap.put("appVersion", palette.makeAppVersionPalette(), true)
+                paletteMap.put("component", palette.makeComponentPalette(), true)
+                paletteMap.put("copyright", palette.makeCopyrightPalette(), true)
+                return paletteMap.snapshot()
+            }
+            to makeOnlineHelpDescPalette() :near {
+                return makeBasicPalette("black",
+                                        "white",
+                                        ["Verdana", "12", "normal"])
+            }
+            to makeOnlineHelpCodePalette() :near {
+                return makeBasicPalette("black",
+                                        "white",
+                                        ["Monaco", "10", "normal"])
+            }
+            to makeOnlineHelpPalette() :near {
+                def paletteMap := [].asMap().diverge()
+                paletteMap.put("dialog", palette.makeDialogPalette(), true)
+                paletteMap.put("desc", palette.makeOnlineHelpDescPalette(), true)
+                paletteMap.put("code", palette.makeOnlineHelpCodePalette(), true)
+                return paletteMap.snapshot()
             }
             to makeSmallerFont(font) :near {
                 def fontData := font.getFontData()[0]

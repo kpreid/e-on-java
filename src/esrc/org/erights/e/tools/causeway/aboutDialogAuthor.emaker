@@ -1,0 +1,136 @@
+#!/usr/bin/env rune
+
+pragma.syntax("0.9")
+
+# Copyright 2009 Teleometry Design under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def swt__uriGetter := <import:org.eclipse.swt.*>
+def widget__uriGetter := <swt:widgets.*>
+def custom__uriGetter := <swt:custom.*>
+def SWT := <swt:makeSWT>
+
+def <swttools> := <import:org.erights.e.ui.swt.*>
+def swtGrid__quasiParser := <swttools:swtGridQParserMaker>()
+
+def copyrightNotice1 := `Copyright 2009 Teleometry Design under the terms of the MIT X license`
+def copyrightNotice2 := `found at http://www.opensource.org/licenses/mit-license.html`
+
+def __versionLauncherAuthor := <elang:launcher.__versionLauncherAuthor>
+
+/**
+ *
+ */
+def aboutDialogAuthor(props, modelessDialogMaker, 
+                      abstractAction, traceline) :near {
+    
+    def makeAboutDialog(shell, appName, palette) :near {
+    
+        def paletteMap := palette.makeAboutDialogPalette()
+        
+        def swtDialog := modelessDialogMaker(shell, SWT.getDIALOG_TRIM())
+        swtDialog.setForeground(paletteMap["dialog"].getFg())
+        swtDialog.setBackground(paletteMap["dialog"].getBg())
+        swtDialog.setFont(paletteMap["dialog"].getFont())
+        #swtDialog.setText(`About $appName`)
+        
+        def swtAppName := <custom:makeCLabel>(swtDialog, SWT.getCENTER())
+        swtAppName.setForeground(paletteMap["appName"].getFg())
+        swtAppName.setBackground(paletteMap["appName"].getBg())
+        swtAppName.setFont(paletteMap["appName"].getFont())
+        swtAppName.setText(`$appName`)
+
+        def swtSWTComponent := <custom:makeCLabel>(swtDialog, SWT.getCENTER())
+        swtSWTComponent.setForeground(paletteMap["component"].getFg())
+        swtSWTComponent.setBackground(paletteMap["component"].getBg())
+        swtSWTComponent.setFont(paletteMap["component"].getFont())
+        swtSWTComponent.setText(`SWT: ${SWT.getVersion()} for ${SWT.getPlatform()}`)
+
+        def swtEComponent := <custom:makeCLabel>(swtDialog, SWT.getCENTER())
+        swtEComponent.setForeground(paletteMap["component"].getFg())
+        swtEComponent.setBackground(paletteMap["component"].getBg())
+        swtEComponent.setFont(paletteMap["component"].getFont())
+
+        def swtJavaComponent := <custom:makeCLabel>(swtDialog, SWT.getCENTER())
+        swtJavaComponent.setForeground(paletteMap["component"].getFg())
+        swtJavaComponent.setBackground(paletteMap["component"].getBg())
+        swtJavaComponent.setFont(paletteMap["component"].getFont())
+
+        def swtOSComponent := <custom:makeCLabel>(swtDialog, SWT.getCENTER())
+        swtOSComponent.setForeground(paletteMap["component"].getFg())
+        swtOSComponent.setBackground(paletteMap["component"].getBg())
+        swtOSComponent.setFont(paletteMap["component"].getFont())
+
+        def swtUserComponent := <custom:makeCLabel>(swtDialog, SWT.getCENTER())
+        swtUserComponent.setForeground(paletteMap["component"].getFg())
+        swtUserComponent.setBackground(paletteMap["component"].getBg())
+        swtUserComponent.setFont(paletteMap["component"].getFont())
+
+        def optVersionText := __versionLauncherAuthor.getOptVersionText(props)
+        if (optVersionText != null) {
+            if (optVersionText =~ 
+                  `E version: @ev at @eat
+on Java version: @jv at @jat
+on OS: @osName version: @osv on @osRest
+@user`) {
+                swtEComponent.setText(`E: $ev at $eat`)
+                swtJavaComponent.setText(`Java: $jv at $jat`)
+                swtOSComponent.setText(`$osName: $osv on $osRest`)
+                swtUserComponent.setText(`$user`)
+            }
+        }
+        
+        def swtCopyright1 := <custom:makeCLabel>(swtDialog, SWT.getCENTER())
+        swtCopyright1.setForeground(paletteMap["copyright"].getFg())
+        swtCopyright1.setBackground(paletteMap["copyright"].getBg())
+        swtCopyright1.setFont(paletteMap["copyright"].getFont())
+        swtCopyright1.setText(`$copyrightNotice1`)
+        
+        def swtCopyright2 := <custom:makeCLabel>(swtDialog, SWT.getCENTER())
+        swtCopyright2.setForeground(paletteMap["copyright"].getFg())
+        swtCopyright2.setBackground(paletteMap["copyright"].getBg())
+        swtCopyright2.setFont(paletteMap["copyright"].getFont())
+        swtCopyright2.setText(`$copyrightNotice2`)
+
+        def swtTopSeparator := <custom:makeCLabel>(swtDialog, SWT.getCENTER())
+        swtTopSeparator.setForeground(paletteMap["appName"].getFg())
+        swtTopSeparator.setBackground(paletteMap["appName"].getBg())
+        swtTopSeparator.setFont(paletteMap["component"].getFont())
+        swtTopSeparator.setText(`----------------`)
+        
+        def swtBottomSeparator := <custom:makeCLabel>(swtDialog, SWT.getCENTER())
+        swtBottomSeparator.setForeground(paletteMap["appName"].getFg())
+        swtBottomSeparator.setBackground(paletteMap["appName"].getBg())
+        swtBottomSeparator.setFont(paletteMap["component"].getFont())
+        swtBottomSeparator.setText(`----------`)
+
+        def aboutDialog {
+            
+            to open() :void {
+                aboutDialog.layout()
+                swtDialog.open()
+            }
+            
+            to layout() :void {
+            
+                swtGrid`$swtDialog:
+                        $swtAppName
+                        $swtTopSeparator
+                        $swtEComponent
+                        $swtJavaComponent
+                        $swtSWTComponent
+                        $swtOSComponent
+                        $swtUserComponent
+                        $swtBottomSeparator
+                        $swtCopyright1
+                        $swtCopyright2`
+                        
+                swtDialog.pack()
+                swtDialog.setSize(500, 350)
+            }
+        }
+        return aboutDialog
+    }
+    return makeAboutDialog
+}
+

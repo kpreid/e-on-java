@@ -69,6 +69,7 @@ def extensions := [
     "in" => true,
     "sash" => true,
     "bot" => true,
+    "log" => true,
 
     "cap" => true,
     "cap-acct" => true,

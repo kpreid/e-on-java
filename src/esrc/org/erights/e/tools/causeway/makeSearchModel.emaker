@@ -1,0 +1,143 @@
+#!/usr/bin/env rune
+
+pragma.syntax("0.9")
+
+# Copyright 2009 Teleometry Design under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def <causeway> := <import:org.erights.e.tools.causeway.*>
+def makePlace := <causeway:makePlace>
+
+/**
+ * <tt> makeSearchModel</tt> 
+ *
+ */
+
+def makeSearchModel(messageGraph) :near {
+
+    def commands := [].diverge()
+    
+    def makeSearchCommand(description, places) :near {
+    
+        def searchCommand {
+    
+            to getDescription() :String {
+                return description
+            }
+        
+            to getPlaces() :near {
+                return places
+            }
+        }
+        return searchCommand
+    }
+            
+    def observers := [].diverge()
+
+    def searchModel {
+    
+        to searchStacks(pathname, lineNo) :void {
+            def places := [].diverge()
+            def searchForPlaces(element) {
+                def stack := element.getContext()[1]
+                for i => se in stack {
+                    def srcPath := se[0][0]
+                    if (se[1] != null) {
+                        def firstLine := se[1][0][0]
+                        if (pathname == srcPath && lineNo == firstLine) {
+                            places.push(makePlace(element, i))
+                        }
+                    }
+                }
+            }
+
+            # deepOutsPre iterates through all edges transitively outgoing from
+            # the message graph root, in pre-order.
+            # seen is still useful, since deepOuts* only suppresses duplicate
+            # edge visits, not duplicate node visits.
+            
+            def seen := [].asSet().diverge()
+            
+            for edge => node in messageGraph.deepOutsPre() {
+                searchForPlaces(edge)
+
+                if (seen.contains(node)) { continue }
+                seen.addElement(node)
+
+                searchForPlaces(node)
+            }
+            
+            def n := places.size()
+            # grammatical number
+            def gn
+            if (n == 1) {
+                bind gn := "match"
+            } else {
+                bind gn := "matches"
+            }
+            def description := `searchStacks(pathname: $pathname, line: $lineNo) found $n $gn`
+                                
+            def command := makeSearchCommand(description, places.snapshot())
+            commands.push(command)
+            searchModel.notifyObservers(command)
+        }
+        
+        to findLostMessages(bottom) :void {
+            def places := [].diverge()        
+            if (bottom != null) {
+                # look at each of bottom's incoming edges
+                # Sents and SentIfs without corresponding Gots
+                # have bottom as the message target
+                for edge => _ in bottom.ins() {
+                    def sendContext := edge.getContext()[0].split(".").last()
+                    if ("Sent" == sendContext || "SentIf" == sendContext) {
+                        places.push(makePlace(edge, 0))
+                    }
+                }
+            }
+            def command := makeSearchCommand("findLostMessages", 
+                                             places.snapshot())
+            commands.push(command)
+            searchModel.notifyObservers(command)
+        }
+        
+        to findMultiples(target, label) :void {
+            def places := [].diverge()        
+            if (target != null) {
+                for edge => _ in target.ins() {
+                    places.push(makePlace(edge, 0))
+                }
+            }
+            def command := makeSearchCommand(`findMultiples for $label`, 
+                                             places.snapshot())
+            commands.push(command)
+            searchModel.notifyObservers(command)
+        }
+        
+        to getCommandList() :near {
+            return commands.snapshot()
+        }
+        
+        to clearCommandList() :void {
+        }
+        
+       to notifyObservers(command) :void {
+            for observer in observers {
+                observer <- searchCommandAdded(command)
+            }
+        }
+        
+        to addObserver(observer) :void {
+            observers.push(observer)
+        }
+        
+        to removeObserver(observer) :void {
+            def i := observers.indexOf1(observer)
+            if (i != -1) { 
+                observers.removeRun(i, i +1)
+            }
+        }
+    }
+    
+    return searchModel
+}

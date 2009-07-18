@@ -2,13 +2,12 @@
 
 pragma.syntax("0.8")
 
-# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# Copyright 2009 Teleometry Design under the terms of the MIT X license
 # found at http://www.opensource.org/licenses/mit-license.html ................
 
 def makeSourceSpan := <elib:base.makeSourceSpan>
 def <causeway> := <import:org.erights.e.tools.causeway.*>
 def makeMessageGraph := <causeway:makeMessageGraph>
-
 
 # [[start-line, start-col], [end-line, end-col]]
 # [[1, 0]] is the first character in a source file.
@@ -38,7 +37,6 @@ def SendingContext := String
 def CLIP := 0
 def SKIP := 1
 def KEEP := 2
-
 
 /**
  * Sort the out edges from a given turn by anchor.
@@ -174,12 +172,19 @@ def devoraTwo(graph, top, traceline) :void {
                 edge.setOrigin(dummy)
                 edge.setTarget(dummy)
             } else if (target.getTag() <= SKIP &&
-                         target.getOutgoingCount() == 1 &&
+                         target.getOutgoingCount() >= 1 &&
                          target.getPrevOut() =~ grandEdge &&
-                         grandEdge.getTag() <= SKIP) {
-                setTarget(edge, grandEdge.getTarget(),
-                          lastCause(edge) && lastCause(grandEdge))
-                orphans.push(grandEdge)
+                         grandEdge.getTarget() =~ grandTarget) {
+                escape cantPrune {
+                    for ge => gt in target.outs() {
+                        if (ge.getTag() > SKIP || grandTarget != gt) {
+                            cantPrune()
+                        }
+                    }
+                    setTarget(edge, grandTarget,
+                              lastCause(edge) && lastCause(grandEdge))
+                    orphans.push(grandEdge)
+                }
             }
         }
     }

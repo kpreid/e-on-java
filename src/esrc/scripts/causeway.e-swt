@@ -38,8 +38,8 @@ def makeFrame() :Shell {
     frame.setImage(rezKit.makeImage(logoURL.openStream()))
     return frame
 }
-def makeModelessDialog(parent) :Shell {
-    return <uwidget:makeShell>(parent, SWT.getMODELESS() | SWT.getSHELL_TRIM())
+def makeModelessDialog(parent, trim) :Shell {
+    return <uwidget:makeShell>(parent, SWT.getMODELESS() | trim)
 }
 
 def makePopup() :PopupList {

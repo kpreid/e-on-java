@@ -1,0 +1,138 @@
+#!/usr/bin/env rune
+
+pragma.syntax("0.9")
+
+# Copyright 2009 Teleometry Design under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def swt__uriGetter := <import:org.eclipse.swt.*>
+def widget__uriGetter := <swt:widgets.*>
+def custom__uriGetter := <swt:custom.*>
+def SWT := <swt:makeSWT>
+
+def swtType__uriGetter := <type:org.eclipse.swt.*>
+def widgetType__uriGetter := <swtType:widgets.*>
+
+def <swttools> := <import:org.erights.e.ui.swt.*>
+def swtGrid__quasiParser := <swttools:swtGridQParserMaker>()
+def M := <swttools:menuKit>
+
+def makeLamportSlot := <elib:slot.makeLamportSlot>
+def whenever := <elib:slot.whenever>
+def EverReporter := <type:org.erights.e.elib.slot.EverReporter>
+
+def makeOutlineView := <import:org.erights.e.tools.causeway.makeOutlineView>
+
+def makeSearchView(swtParent, palette, 
+                   abstractAction,
+                   searchModel, 
+                   selectionModel,
+                   vatMap, graphWalker) :near {
+    
+    def swtSearchView := <widget:makeComposite>(swtParent, 0)
+    
+    def svp := palette. makeSearchViewPalette()
+
+    swtSearchView.setForeground(svp.getFg())
+    swtSearchView.setBackground(svp.getBg())
+    swtSearchView.setFont(svp.getFont())
+    
+    def getActionTargets
+    def outlineView := makeOutlineView(swtSearchView, palette,
+                                       abstractAction, getActionTargets)
+
+    def swtTree := <widget:makeTree>(swtSearchView, 
+                                     SWT.getSINGLE() | 
+                                     (SWT.getH_SCROLL() | SWT.getV_SCROLL()))
+    
+    swtTree.setForeground(svp.getFg())
+    swtTree.setBackground(svp.getBg())
+    swtTree.setFont(svp.getFont())
+    
+    def swtTop := <widget:makeTreeItem>(swtTree, 0)
+    swtTop.setText(`Search Commands & Places`)
+
+    # Useful maps for lookups in event handling.
+    def itemToModelMap := [].asMap().diverge()
+    def modelToItemMap := [].asMap().diverge()
+    
+    def appendSearchCommand(swtCommandParent, command) :near {
+    
+        def swtItem := <widget:makeTreeItem>(swtCommandParent, 0)
+        swtItem.setText(command.getDescription())
+        
+        def places := command.getPlaces()
+        
+        for place in places {
+            def swtNested := <widget:makeTreeItem>(swtItem, 0)
+            itemToModelMap.put(swtNested, place, true)
+            graphWalker.labelItem(vatMap, 
+                                  place.getElement(), 
+                                  place.getEntryIndex(), 
+                                  swtNested)
+        }
+        return swtItem
+    }
+        
+    def swtSelectionListener {
+        to widgetSelected(swtEvent) :void {
+            def swtItem := swtEvent.getItem()
+            def place := itemToModelMap.fetch(swtItem, fn{})
+            if (place != null) {
+                selectionModel.setOptPlace([place.getElement(), 
+                                            place.getEntryIndex()])
+            }
+        }
+        to widgetDefaultSelected(swtEvent) :void {}
+    }
+    swtTree.addSelectionListener(swtSelectionListener)
+    
+    # default selection: top item selected & tree fully expanded
+    def swtItems := swtTree.getItems()
+    if (swtItems.size() > 0) {
+        swtTree.setSelection([swtItems[0]])
+        outlineView.expandTree(swtTree)
+    }
+    
+    def changeObserver {
+        to searchCommandAdded(command) :void {
+            def swtItems := swtTree.getItems()
+            def n := swtItems.size()
+            def swtCommandParent
+            if (n > 0) {
+                bind swtCommandParent := swtItems[n -1]
+            } else {
+                bind swtCommandParent := swtTree
+            }
+            
+            def swtCommandItem := appendSearchCommand(swtCommandParent, command)
+            # select & expand
+            swtTree.setSelection([swtCommandItem])
+            outlineView.expandTree(swtTree)
+        }
+    }
+    searchModel.addObserver(changeObserver)
+    
+    bind getActionTargets(_ :String) :List {
+        return [swtTree]
+    }
+    
+    def searchView {
+        
+        to open() :void {}
+        
+        to layout() :void {
+            
+            outlineView.layout()
+
+            swtGrid`${swtSearchView}:
+                    ${outlineView.getTopLevelSWTControl()}.X
+                    ${swtTree}.X.Y`
+        }
+        
+        to getTopLevelSWTControl() :near {
+            return swtSearchView
+        }
+    }
+    return searchView
+}

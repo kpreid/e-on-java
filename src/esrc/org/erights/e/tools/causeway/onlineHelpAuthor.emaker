@@ -1,0 +1,75 @@
+#!/usr/bin/env rune
+
+pragma.syntax("0.9")
+
+# Copyright 2009 Teleometry Design under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+def swt__uriGetter := <import:org.eclipse.swt.*>
+def widget__uriGetter := <swt:widgets.*>
+def custom__uriGetter := <swt:custom.*>
+def SWT := <swt:makeSWT>
+
+def <swttools> := <import:org.erights.e.ui.swt.*>
+def swtGrid__quasiParser := <swttools:swtGridQParserMaker>()
+
+def WikiDesc := `
+    Documentation on the Causeway Viewer and an introduction to
+    Causeway's language-neutral trace file format can be found
+    at the erights.org wiki.`
+
+def WikiURL := `
+              http://wiki.erights.org/wiki/Causeway`
+
+/**
+ *
+ */
+def onlineHelpAuthor(modelessDialogMaker, abstractAction, traceline) :near {
+    
+    def makeOnlineHelp(shell, palette) :near {
+    
+        def paletteMap := palette.makeOnlineHelpPalette()
+        
+        def swtDialog := modelessDialogMaker(shell, SWT.getDIALOG_TRIM())
+        swtDialog.setForeground(paletteMap["dialog"].getFg())
+        swtDialog.setBackground(paletteMap["dialog"].getBg())
+        swtDialog.setFont(paletteMap["dialog"].getFont())
+        
+        def swtWikiDesc := <custom:makeStyledText>(swtDialog, 0)
+        swtWikiDesc.setForeground(paletteMap["desc"].getFg())
+        swtWikiDesc.setBackground(paletteMap["desc"].getBg())
+        swtWikiDesc.setFont(paletteMap["desc"].getFont())
+        swtWikiDesc.setText(WikiDesc)
+        swtWikiDesc.setEditable(false)
+        swtWikiDesc.getCaret().setVisible(false)
+    
+        def swtWikiURL := <custom:makeStyledText>(swtDialog, 0)
+        swtWikiURL.setForeground(paletteMap["code"].getFg())
+        swtWikiURL.setBackground(paletteMap["code"].getBg())
+        swtWikiURL.setFont(paletteMap["code"].getFont())
+        swtWikiURL.setText(WikiURL)
+        swtWikiURL.setEditable(false)
+        swtWikiURL.getCaret().setVisible(false)
+
+        def onlineHelp {
+            
+            to open() :void {
+                onlineHelp.layout()
+                swtDialog.open()
+            }
+            
+            to layout() :void {
+            
+                swtGrid`$swtDialog:
+                        $swtWikiDesc    
+                        $swtWikiURL`
+                        
+                swtDialog.pack()
+                swtDialog.setSize(450, 250)
+            }
+        }
+        return onlineHelp
+    }
+    return makeOnlineHelp
+}
+

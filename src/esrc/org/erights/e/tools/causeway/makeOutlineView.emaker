@@ -2,7 +2,7 @@
 
 pragma.syntax("0.9")
 
-# Copyright 2008 Teleometry Design under the terms of the MIT X license
+# Copyright 2009 Teleometry Design under the terms of the MIT X license
 # found at http://www.opensource.org/licenses/mit-license.html ................
 
 def swt__uriGetter := <import:org.eclipse.swt.*>
@@ -177,7 +177,7 @@ def makeOutlineView(swtParent, palette,
             palette.zeroMargins(swtToolGroup.getLayout())
         }
         
-        to getTopLevelPane() :near {
+        to getTopLevelSWTControl() :near {
             return swtToolGroup
         }
 

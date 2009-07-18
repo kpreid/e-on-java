@@ -87,10 +87,10 @@ export:
 	-rm -rf `find $(TOP)/export -name '_.#*#.0'`
 	-rm -rf `find $(TOP)/export -name _notes`
 	-rm -rf `find $(TOP)/export -name Thumbs.db`
-	-rm -rf `find $(TOP)/export -name *.ipr`
-	-rm -rf `find $(TOP)/export -name *.iws`
-	-rm -rf `find $(TOP)/export -name *.stackdump`
-	-rm -rf `find $(TOP)/export -name *.DS_Store`
+	-rm -rf `find $(TOP)/export -name '*.ipr'`
+	-rm -rf `find $(TOP)/export -name '*.iws'`
+	-rm -rf `find $(TOP)/export -name '*.stackdump'`
+	-rm -rf `find $(TOP)/export -name '*.DS_Store'`
 	-rm -f $(TOP)/export/dist/bin/icons/*.png
 	-rm -f $(TOP)/export/dist/bin/jars/hydro.jar
 	-rm -rf $(TOP)/export/dist/bin/resources

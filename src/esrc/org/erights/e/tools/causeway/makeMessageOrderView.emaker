@@ -2,7 +2,7 @@
 
 pragma.syntax("0.9")
 
-# Copyright 2008 Teleometry Design under the terms of the MIT X license
+# Copyright 2009 Teleometry Design under the terms of the MIT X license
 # found at http://www.opensource.org/licenses/mit-license.html ................
 
 def swt__uriGetter := <import:org.eclipse.swt.*>
@@ -23,143 +23,139 @@ def EverReporter := <type:org.erights.e.elib.slot.EverReporter>
 
 def makeOutlineView := <import:org.erights.e.tools.causeway.makeOutlineView>
 
-def makeWatcher() :near {
-    def items := [].asSet().diverge()
-    
-    def watcher {
-        
-        to see(item) :void {
-            items.addElement(item)
-        }
-        
-        to hasSeen(item) :boolean {
-            return items.contains(item)
-        }
-    }
-    return watcher
-}
-
-# Useful maps for lookups in event handling.
-def itemToModelMap := [].asMap().diverge()
-def modelToItemMap := [].asMap().diverge()
-
-def buildTree(swtParent, palette,
-              edge, ndx,
-              vatMap, graphWalker,
-              watcher) :void {
-    
-    if (watcher.hasSeen(edge)) {
-        return;
-    }
-    watcher.see(edge)
-    
-    def swtItem := <widget:makeTreeItem>(swtParent, 0)
-    itemToModelMap.put([swtItem, ndx], edge, true)
-    modelToItemMap.put(edge, [swtItem, ndx], true)
-    graphWalker.labelItem(vatMap, edge, swtItem)
-
-    def target := edge.getTarget()
-    if (target.getID()[0] == "bottom") { return }
-        
-    def swtGotItem := <widget:makeTreeItem>(swtItem, 0)
-    itemToModelMap.put([swtGotItem, ndx], target, true)
-    graphWalker.labelItem(vatMap, target, swtGotItem)
-        
-    # check for multiple senders
-    if (target.getIncomingCount() > 1) {
-        swtGotItem.setImage(palette.getImage("multiples"))
-        # if not last edge, don't show kids
-        if (target.getNextIn() != edge) {
-            return
-        }
-    }
-    # Only map the "real" appearance of target
-    modelToItemMap.put(target, [swtGotItem, ndx], true)
-    for ge => _ in target.outs() {
-        buildTree(swtItem, palette,
-                  ge, ndx,
-                  vatMap, graphWalker,
-                  watcher)
-    }
-}
-
-def makeMOPane(swtParent, palette,
-               graph, ndx, selectionModel,
-               vatMap, graphWalker) :near {
-    
-    def swtPane := <widget:makeComposite>(swtParent, 0)
-    def swtTree := <widget:makeTree>(swtPane,
-                                     SWT.getSINGLE() |
-                                       (SWT.getH_SCROLL() |
-                                          SWT.getV_SCROLL()))
-
-    def mopPalette := palette. makeMessageTreePalette()
-    swtPane.setForeground(mopPalette.getFg())
-    swtPane.setBackground(mopPalette.getBg())
-    swtPane.setFont(mopPalette.getFont())
-    swtTree.setForeground(mopPalette.getFg())
-    swtTree.setBackground(mopPalette.getBg())
-    swtTree.setFont(mopPalette.getFont())
-
-    def watcher := makeWatcher()
-    for  edge => _ in graph.outs() {
-        buildTree(swtTree, palette,
-                  edge, ndx,
-                  vatMap, graphWalker,
-                  watcher)
-    }
-    
-    def swtSelectionListener {
-        to widgetSelected(swtEvent) :void {
-            def swtItem := swtEvent.getItem()
-            def element := itemToModelMap.fetch([swtItem, ndx], fn{})
-            selectionModel.setOptElement(element)
-        }
-        to widgetDefaultSelected(swtEvent) :void {}
-    }
-    swtTree.addSelectionListener(swtSelectionListener)
-    
-    def mop {
-        
-        to getPane() :near { return swtPane }
-        
-        to getWidget() :near { return swtTree }
-        
-        to activate() :void {}
-        
-        to layout() :void {
-            
-            swtGrid`${swtPane}:
-                        ${swtTree}.X.Y`
-            
-            palette.zeroMargins(swtPane.getLayout())
-        }
-    }
-    return mop
-}
-
 def makeMessageOrderView(swtParent, palette,
                          abstractAction,
-                         moModel, selectionModel,
+                         moModel,
+                         selectionModel, searchModel,
                          vatMap, graphWalker) :near {
     
+    # Useful maps for lookups in event handling.
+    def itemToModelMap := [].asMap().diverge()
+    def modelToItemMap := [].asMap().diverge()
+    
+    def seen := [].asSet().diverge()
+    
+    def buildTreeFromNode
+    def buildTreeFromEdge(swtParent, palette,
+                          edge, ndx,
+                          vatMap, graphWalker) :void {
+        
+        if (seen.contains(edge)) {
+            return;
+        }
+        seen.addElement(edge)
+        
+        def swtItem := <widget:makeTreeItem>(swtParent, 0)
+        itemToModelMap.put([swtItem, ndx], edge, true)
+        modelToItemMap.put(edge, [swtItem, ndx], true)
+        graphWalker.labelItem(vatMap, edge, 0, swtItem)
+        
+        def target := edge.getTarget()
+        buildTreeFromNode(swtItem, palette,
+                          target, ndx,
+                          vatMap, graphWalker,
+                          target.getNextIn() != edge)
+    }
+    
+    bind buildTreeFromNode(swtParent, palette,
+                           node, ndx,
+                           vatMap, graphWalker,
+                           skipKids :boolean) :void {
+        
+        if (node.getID()[0] == "bottom") { return }
+        
+        def swtGotItem := <widget:makeTreeItem>(swtParent, 0)
+        itemToModelMap.put([swtGotItem, ndx], node, true)
+        graphWalker.labelItem(vatMap, node, 0, swtGotItem)
+        
+        # check for multiple senders
+        if (node.getIncomingCount() > 1) {
+            swtGotItem.setImage(palette.getImage("multiples"))
+            # if not last edge, don't show kids
+            if (skipKids) {
+                return
+            }
+        }
+        # Only map the "real" appearance of node
+        modelToItemMap.put(node, [swtGotItem, ndx], true)
+        for ge => gt in node.outs() {
+            buildTreeFromEdge(swtParent, palette,
+                              ge, ndx,
+                              vatMap, graphWalker)
+        }
+    }
+    
+    def makeMOPane(swtParent, palette,
+                   graph, ndx, selectionModel,
+                   vatMap, graphWalker) :near {
+        
+        def swtPane := <widget:makeComposite>(swtParent, 0)
+        def swtTree := <widget:makeTree>(swtPane,
+                                         SWT.getSINGLE() |
+                                           (SWT.getH_SCROLL() |
+                                              SWT.getV_SCROLL()))
+        
+        def mopPalette := palette. makeMessageTreePalette()
+        swtPane.setForeground(mopPalette.getFg())
+        swtPane.setBackground(mopPalette.getBg())
+        swtPane.setFont(mopPalette.getFont())
+        swtTree.setForeground(mopPalette.getFg())
+        swtTree.setBackground(mopPalette.getBg())
+        swtTree.setFont(mopPalette.getFont())
+        
+        buildTreeFromNode(swtTree, palette,
+                          graph, ndx,
+                          vatMap, graphWalker,
+                          false)
+        
+        # handle swt user events
+        def swtSelectionListener {
+            to widgetSelected(swtEvent) :void {
+                def swtItem := swtEvent.getItem()
+                def element := itemToModelMap.fetch([swtItem, ndx], fn{})
+                selectionModel.setOptElement(element)
+            }
+            to widgetDefaultSelected(swtEvent) :void {}
+        }
+        swtTree.addSelectionListener(swtSelectionListener)
+        
+        def mop {
+            
+            to getPane() :near { return swtPane }
+            
+            to getWidget() :near { return swtTree }
+            
+            to activate() :void {}
+            
+            to layout() :void {
+                
+                swtGrid`${swtPane}:
+                        ${swtTree}.X.Y`
+                
+                palette.zeroMargins(swtPane.getLayout())
+            }
+        }
+        return mop
+    }
+    
+    
     def swtMOView := <widget:makeComposite>(swtParent, 0)
-
-    def fldrPalette := palette. makeFolderPalette()
-
-    swtMOView.setForeground(fldrPalette.getFg())
-    swtMOView.setBackground(fldrPalette.getBg())
-    swtMOView.setFont(fldrPalette.getFont())
-
+    
+    def fPalette := palette. makeFolderPalette()
+    
+    swtMOView.setForeground(fPalette.getFg())
+    swtMOView.setBackground(fPalette.getBg())
+    swtMOView.setFont(fPalette.getFont())
+    
     def getActionTargets
     def outlineView := makeOutlineView(swtMOView, palette,
                                        abstractAction, getActionTargets)
     
     def swtFolder := <widget:makeTabFolder>(swtMOView, 0)
-    swtFolder.setForeground(fldrPalette.getFg())
-    swtFolder.setBackground(fldrPalette.getBg())
-    swtFolder.setFont(fldrPalette.getFont())
-
+    swtFolder.setForeground(fPalette.getFg())
+    swtFolder.setBackground(fPalette.getBg())
+    swtFolder.setFont(fPalette.getFont())
+    
     def tabKeeper := [].diverge()
     
     def swtTab := <widget:makeTabItem>(swtFolder, 0)
@@ -172,7 +168,7 @@ def makeMessageOrderView(swtParent, palette,
     swtTab.setText("Message Order Tree")
     tabKeeper[swtFolder.indexOf(swtTab)] := [swtTab, mop]
     
-    # default selection
+    # select top item & expand tree as default selection
     swtFolder.setSelection(swtFolder.indexOf(swtTab))
     def swtItems := mop.getWidget().getItems()
     if (swtItems.size() > 0) {
@@ -180,15 +176,74 @@ def makeMessageOrderView(swtParent, palette,
         outlineView.expandTree(mop.getWidget())
     }
     
-    def selectionObserver {
-        to elementSelected(optElement) :void {
-            def tabbedItem := modelToItemMap.fetch(optElement, fn{})
-            if (tabbedItem != null) {
-                def [swtItem, ndx] := tabbedItem
-                swtFolder.setSelection(ndx)
+    # context menu for mop
+    [def doFindMultiples,
+     def doFindSomething,
+     
+     def doGoTo]
+    
+    bind doFindMultiples extends abstractAction(doFindMultiples) {
+        to run() :void {
+            def ndx := swtFolder.getSelectionIndex()
+            if (ndx != -1) {
                 def [_, mop] := tabKeeper[ndx]
-                mop.getWidget().setSelection([swtItem])
-                mop.getWidget().showItem(swtItem)
+                def swtItems := mop.getWidget().getSelection()
+                if (swtItems.size() > 0) {
+                    def element := itemToModelMap.fetch([swtItems[0], ndx], fn{})
+                    if (element != null) {
+                        searchModel.findMultiples(element, 
+                                                  swtItems[0].getText())
+                    }
+                }
+            }
+        }
+        to getLabel()            :String { return "&Find Multiples" }
+        to getOptTip()           :String { 
+            return "Finds all senders for this target" 
+        }
+    }
+    
+    bind doFindSomething extends abstractAction(doFindSomething) {
+        to run() :void {
+            #traceline("doFindSomething()")
+        }
+        to getLabel()            :String { return "&Find Something" }
+        to everEnabledReporter() :EverReporter {
+            return whenever([], fn{false})
+        }
+    }
+    
+    bind doGoTo extends abstractAction(doGoTo) {
+        to run() :void {
+            #traceline("doGoTo()")
+        }
+        to getLabel()            :String { return "&Go To" }
+        to everEnabledReporter() :EverReporter {
+            return whenever([], fn{false})
+        }
+    }
+    
+    def menuAction := M.menu([doFindMultiples,
+                              doFindSomething,
+                              M.sep(),
+                              doGoTo])
+    
+    def menuMap := [].asMap().diverge()
+    
+    def swtContextMenu := menuAction.makeMenu(mop.getWidget(), menuMap)
+    
+    # participate in synchronized selection across views
+    def selectionObserver {
+        to placeSelected(optPlace) :void {
+            if (optPlace != null && optPlace =~ [element, _]) {
+                def tabbedItem := modelToItemMap.fetch(element, fn{})
+                if (tabbedItem != null) {
+                    def [swtItem, ndx] := tabbedItem
+                    swtFolder.setSelection(ndx)
+                    def [_, mop] := tabKeeper[ndx]
+                    mop.getWidget().setSelection([swtItem])
+                    mop.getWidget().showItem(swtItem)
+                }
             }
         }
     }
@@ -224,10 +279,11 @@ def makeMessageOrderView(swtParent, palette,
             }
             
             swtGrid`${swtMOView}:
-                    ${outlineView.getTopLevelPane()}.X
+                    ${outlineView.getTopLevelSWTControl()}.X
                     ${swtFolder}.X.Y`
         }
         
+        # exportModelToDotFile starts with the currently select mov item
         to getSelectionModel() :near {
             def swtTree := getCurrentTree()
             if (null != swtTree) {

@@ -2,8 +2,8 @@
 
 pragma.syntax("0.8")
 
-# Copyright 2008 Teleometry Design under the terms of the MIT X license
-# found at http://www.opensource.org/licenses/mit-license.html ................
+# Copyright 2009 Teleometry Design under the terms of the MIT X license
+# found at http:3www.opensource.org/licenses/mit-license.html ................
 
 def swt__uriGetter := <import:org.eclipse.swt.*>
 def widget__uriGetter := <swt:widgets.*>
@@ -17,6 +17,7 @@ def EverReporter := <type:org.erights.e.elib.slot.EverReporter>
 
 def <swttools> := <import:org.erights.e.ui.swt.*>
 def swtGrid__quasiParser := <swttools:swtGridQParserMaker>()
+def M := <swttools:menuKit>
 
 def makeOutlineView := <import:org.erights.e.tools.causeway.makeOutlineView>
 def makeTextView := <import:org.erights.e.tools.causeway.makeTextView>
@@ -140,13 +141,18 @@ def stackWalkerAuthor(var rootDirName, <file>, <jar>, makers, traceline) :near {
     
     def getEntryLabel(element, entryIndex :int) :String {
         var result := ""
-        if (element.isNode()) {
+        if (element.isNode()) {  # nodes represent turns
             def [vatName, turn] := element.getID()
             result := `[${getDisplayName(vatName)}, $turn] `
         }
         def optText := element.getOptText()
+        # comments are first-class message events at top of stack
         if (entryIndex == 0 && null != optText) {
-            result += `# $optText` 
+            result += if (optText.startsWith("#")) {  # Causeway-generated
+                `#$optText` 
+            } else {  # User-generated comment from trace log
+                `# $optText` 
+            }
         } else {
             def stack := element.getContext()[1]
             if (stack.size() > entryIndex) {
@@ -155,15 +161,19 @@ def stackWalkerAuthor(var rootDirName, <file>, <jar>, makers, traceline) :near {
                 }
             }
         }
-        if (result == "") {
-            result := "??"
+        if (result == "") {  # if nothing else...
+            # Causeway-generated comment label showing event type
+            def sendCtx := element.getContext()[0].split(".").last()
+            result := `## $sendCtx`
         }
         return result
     }
 
     def makeStackWalker(swtParent, palette,
                         abstractAction,
-                        selectionModel, vatMap) :near {
+                        selectionModel,
+                        searchModel,
+                        vatMap) :near {
         
         def swtStackWalkerView := <widget:makeComposite>(swtParent, 0)
         
@@ -271,6 +281,80 @@ def stackWalkerAuthor(var rootDirName, <file>, <jar>, makers, traceline) :near {
         
         swtSourceCode.setEditable(false)
         
+        # Useful map for lookup in event handling.
+        var itemToModelMap := [].asMap().diverge()
+        var modelToItemMap := [].asMap().diverge()
+
+        def getStackEntry(element, entryIndex) :nullOk[StackEntry] {
+            def entries := element.getContext()[1]
+            if (entries.size() > entryIndex) {
+                var se := entries[entryIndex]
+                if (se[1] == null) {  # fixup null span
+                    se := [se[0], [[1,0],[1,0]]]
+                }
+                return se
+            }
+            return null
+        }
+        
+        # context menu for swtSourceCode
+        [def doSearchStacks,
+         def doFindSomething,
+         
+         def doGoTo]
+         
+        bind doSearchStacks extends abstractAction(doSearchStacks) {
+            to run() :void {
+                def xy := swtSourceCode.getSelection()
+                def n := swtSourceCode.getLineAtOffset(xy.getX())
+                
+                def swtItem := swtStackExplorer.getSelection()
+                if (itemToModelMap.fetch(swtItem[0], fn{}) =~
+                    [element, entryIndex]) {
+                    
+                    if (getStackEntry(element, entryIndex) =~ 
+                        [[pathname, _], _]) {
+                        
+#                        traceline(`calling searchStacks($pathname, ${n +1})`)
+                        searchModel.searchStacks(pathname, n +1)
+                    }
+                }
+            }
+            to getLabel()            :String { return "&Search Stacks" }
+            to getOptTip()           :String { 
+                return "Finds all events with this stack entry" 
+            }
+        }
+        
+        bind doFindSomething extends abstractAction(doFindSomething) {
+            to run() :void {
+#                traceline("doFindSomething()")
+            }
+            to getLabel()            :String { return "&Find Something" }
+            to everEnabledReporter() :EverReporter {
+                return whenever([], fn{false})
+            }
+        }
+        
+        bind doGoTo extends abstractAction(doGoTo) {
+            to run() :void {
+#                traceline("doGoTo()")
+            }
+            to getLabel()            :String { return "&Go To" }
+            to everEnabledReporter() :EverReporter {
+                return whenever([], fn{false})
+            }
+        }
+        
+        def menuAction := M.menu([doSearchStacks,
+                                  doFindSomething,
+                                  M.sep(),
+                                  doGoTo])
+                                         
+        def menuMap := [].asMap().diverge()
+        
+        def swtContextMenu := menuAction.makeMenu(swtSourceCode, menuMap)
+        
         def showAndSelect(file, pathname, first, fo, last, lo) :void {
 
             swtFilename.setText(`$pathname  line: $first`)
@@ -297,23 +381,38 @@ def stackWalkerAuthor(var rootDirName, <file>, <jar>, makers, traceline) :near {
                 swtSourceCode.setSelection(line1 + fo, line2 + lo +1)
             }
         }
-        
-        # Useful map for lookup in event handling.
-        var itemToModelMap := [].asMap().diverge()
+
+        def selectStackEntry(element, var entryIndex) :void {
+            if (swtStackExplorer.getItemCount() < 1) { return }
+            
+            var swtItem := modelToItemMap.fetch([element, entryIndex], fn{})
+            if (swtItem == null) {
+                swtItem := swtStackExplorer.getItems()[0]  # default selection
+                entryIndex := 0
+            }
+            swtStackExplorer.setSelection([swtItem])
+            swtStackExplorer.showItem(swtItem)
+            
+            if (getStackEntry(element, entryIndex) =~
+                [[pathname, _], [[first, fo], [last, lo]]]) {
+                    
+                showAndSelect(getFile(pathname),
+                                      pathname,
+                                      first,
+                                      fo,
+                                      last,
+                                      lo)
+            }
+        }
         
         def buildTreeItem(swtParent, vatMap, 
                           element, entryIndex :int) :near {
             def swtItem := <widget:makeTreeItem>(swtParent, 0)
-            def entries := element.getContext()[1]
-            if (entries.size() > entryIndex) {
-                var se := entries[entryIndex]
-                if (se[1] == null) {
-                    se := [se[0], [[1,0],[1,0]]]
-                }
-                itemToModelMap.put(swtItem, se, true)
-            }
+            
+            itemToModelMap.put(swtItem, [element, entryIndex], true)
+            modelToItemMap.put([element, entryIndex], swtItem, true)
+            
             swtItem.setText(getEntryLabel(element, entryIndex))
-
             def [ov, ot] := element.getOrigin().getID()
             # [vatDisplayName, [vatColor, colorName]]
             def oattr := vatMap.fetchDisplayAttributes(ov)
@@ -331,6 +430,7 @@ def stackWalkerAuthor(var rootDirName, <file>, <jar>, makers, traceline) :near {
             swtStackExplorer.removeAll()
             
             itemToModelMap := [].asMap().diverge()
+            modelToItemMap := [].asMap().diverge()
             
             # Clear source filename label and source code text pane.
             swtFilename.setText("")
@@ -347,8 +447,11 @@ def stackWalkerAuthor(var rootDirName, <file>, <jar>, makers, traceline) :near {
                 }
                 def curOrigin := curElement.getOrigin()
                 if (curOrigin != curElement) {
+                    # curElement is an arc (Sent)
+                    # swtOptItem (top-level item) represents the Sent
+                    # nested items represent Sent stack followed by Got stack
                     def oStackSize := curOrigin.getContext()[1].size()
-                    for j in 0..!oStackSize {
+                    for j in 0..!oStackSize {  # the Got stack
                         buildTreeItem(swtOptItem, vatMap,
                                       curOrigin, j)
                     }
@@ -361,47 +464,36 @@ def stackWalkerAuthor(var rootDirName, <file>, <jar>, makers, traceline) :near {
                     curElement := null
                 }
             }
-            if (swtStackExplorer.getItemCount() > 0) {
-                
-                def swtItems := swtStackExplorer.getItems()
-                
-                swtStackExplorer.setSelection([swtItems[0]])
-                swtStackExplorer.showItem(swtItems[0])
-                
-                def mm := itemToModelMap.fetch(swtItems[0], fn{})
-                if (mm =~ [[pathname, _], [[first, fo], [last, lo]]]) {
-                    showAndSelect(getFile(pathname),
-                                  pathname,
-                                  first,
-                                  fo,
-                                  last,
-                                  lo)
-                }
-            }
         }
         
-        def selectionListener {
-            to widgetSelected(event) :void {
-                def item := event.getItem()
-                if (itemToModelMap.fetch(item, fn{}) =~
-                      [[pathname, _], [[first, fo], [last, lo]]]) {
+        def swtSelectionListener {
+            to widgetSelected(swtEvent) :void {
+                def swtItem := swtEvent.getItem()
+                
+                if (itemToModelMap.fetch(swtItem, fn{}) =~ 
+                    [element, entryIndex]) {
                     
-                    showAndSelect(getFile(pathname),
-                                  pathname,
-                                  first,
-                                  fo,
-                                  last,
-                                  lo)
+                    if (getStackEntry(element, entryIndex) =~
+                        [[pathname, _], [[first, fo], [last, lo]]]) {
+                    
+                        showAndSelect(getFile(pathname),
+                                      pathname,
+                                      first,
+                                      fo,
+                                      last,
+                                      lo)
+                    }
                 }
             }
-            to widgetDefaultSelected(event) :void {}
+            to widgetDefaultSelected(swtEvent) :void {}
         }
-        swtStackExplorer.addSelectionListener(selectionListener)
+        swtStackExplorer.addSelectionListener(swtSelectionListener)
         
         def selectionObserver {
-            to elementSelected(optElement) :void {
-                if (optElement != null) {
-                    showStack(optElement, vatMap)
+            to placeSelected(optPlace) :void {
+                if (optPlace != null && optPlace =~ [element, entryIndex]) {
+                    showStack(element, vatMap)
+                    selectStackEntry(element, entryIndex)
                 }
             }
         }
@@ -444,7 +536,7 @@ def stackWalkerAuthor(var rootDirName, <file>, <jar>, makers, traceline) :near {
                 palette.zeroMargins(swtStackPane.getLayout())
 
                 swtGrid`${swtStackView}:
-                    ${outlineView.getTopLevelPane()}.X
+                    ${outlineView.getTopLevelSWTControl()}.X
                     ${swtStackFolder}.X.Y`
                 
                 palette.setMargins(
@@ -458,7 +550,7 @@ def stackWalkerAuthor(var rootDirName, <file>, <jar>, makers, traceline) :near {
                 palette.zeroMargins(swtSourcePane.getLayout())
                 
                 swtGrid`${swtSourceView}:
-                    ${textView.getTopLevelPane()}.X
+                    ${textView.getTopLevelSWTControl()}.X
                     ${swtSourceFolder}.X.Y`
                 
                 palette.setMargins(
@@ -468,15 +560,16 @@ def stackWalkerAuthor(var rootDirName, <file>, <jar>, makers, traceline) :near {
                         ${swtSideToSide}.X.Y`
             }
             
-            to getElementLabel(element) :nullOk[String] {
-                return getEntryLabel(element, 0)
+            # used for labelling exported dotfiles
+            to getElementLabel(element, entryIndex) :nullOk[String] {
+                return getEntryLabel(element, entryIndex)
             }
             
-            to labelItem(vatMap, element, swtItem) :void {
+            to labelItem(vatMap, element, entryIndex, swtItem) :void {
                 def oVatName := element.getOrigin().getID()[0]
                 def oAttr := vatMap.fetchDisplayAttributes(oVatName)
                 swtItem.setForeground(oAttr[1][0])
-                var msg := getEntryLabel(element, 0)
+                def msg := getEntryLabel(element, entryIndex)
                 swtItem.setText(msg)
             }
         }

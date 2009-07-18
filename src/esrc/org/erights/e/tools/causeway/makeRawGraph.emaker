@@ -2,7 +2,7 @@
 
 pragma.syntax("0.8")
 
-# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# Copyright 2009 Teleometry Design under the terms of the MIT X license
 # found at http://www.opensource.org/licenses/mit-license.html ................
 
 def makeSourceSpan := <elib:base.makeSourceSpan>
@@ -119,6 +119,9 @@ def makeRawGraph(ttChunks,
         }
         return node
     }
+
+    # Maps from elements to chunks
+    def chunkMap := [].asMap().diverge()
     
     for i => chunk in ttChunks {
         
@@ -195,6 +198,10 @@ def makeRawGraph(ttChunks,
                         edge.setContext(subtype, entries)
                         edge.setAnchor(anchor)
                         edge.addLogFile(optSpan)
+                    } else if ((chunkMap.fetch(edge, fn{}) =~ 
+                                  oldChunk :notNull) &&
+                               chunk <=> oldChunk) {  # term tree compare
+                        # ignore duplicate
                     } else {
                         traceline(
                             `origin conflict for $message ($subtypeName)`)
@@ -204,7 +211,7 @@ def makeRawGraph(ttChunks,
                     edge.setOptText(text)
                 } else if (entries =~ []) {
                     if (types.contains("org.ref_send.log.Returned")) {
-                        edge.setOptText("return ...");
+                        edge.setOptText("# return ...");
                     }
                 }
                 edge.setMessageID(message)
@@ -215,6 +222,7 @@ def makeRawGraph(ttChunks,
                     messages.push(message)
                     condMap[condition] := messages
                 }
+                chunkMap[edge] := chunk
             }
             match term`{ "$$": [ @_*,
                                      "org.ref_send.log.Got",
@@ -242,7 +250,7 @@ def makeRawGraph(ttChunks,
                     # msgMap.
                     
                     edge := graph.makeEventArc(top, target,
-                                               subtype, [])
+                                               "unknown sender", [])
                     msgMap[message] := edge
                     
                 } else {
@@ -254,6 +262,10 @@ def makeRawGraph(ttChunks,
                     
                     if (edge.getTarget() == bottom) {
                         edge.setTarget(target)
+                    } else if ((chunkMap.fetch(target, fn{}) =~ 
+                                  oldChunk :notNull) &&
+                               chunk <=> oldChunk) {  # term tree compare
+                        # ignore duplicate
                     } else {
                         traceline(
                             `target conflict for $message ($subtypeName)`)
@@ -265,6 +277,7 @@ def makeRawGraph(ttChunks,
                 target.setContext(subtype, entries)
                 target.addLogFile(optSpan)
                 target.setMessageID(message)
+                chunkMap[target] := chunk
             }
             
             match term`{ "$$": [ @_*,
@@ -305,6 +318,7 @@ def makeRawGraph(ttChunks,
                 if (comment =~ [text]) {
                     edge.setOptText(text)
                 }
+#               chunkMap[edge] := chunk
             }
             match _ {
                 traceline(`no match: $chunk`)
@@ -348,6 +362,9 @@ def makeRawGraph(ttChunks,
                     resolvedEdges.push(edge)
                     edge.setAnchor(anchor)
                     edge.addLogFile(span)
+
+                    edge.setOptText("# resolved ...");
+#                   chunkMap[edge] := r
                 }
             }
         }

@@ -21,6 +21,7 @@ def makeFilterOptionsView(swtParent, palette, foModel) :near {
     def swtFOView := <widget:makeComposite>(swtParent, 0)
     
     def fovPalette := palette.makeFilterOptionsViewPalette()
+    def [xe, ye] := fovPalette.getCharExtent()
     swtFOView.setForeground(fovPalette.getFg())
     swtFOView.setBackground(fovPalette.getBg())
     swtFOView.setFont(fovPalette.getFont())
@@ -39,24 +40,29 @@ def makeFilterOptionsView(swtParent, palette, foModel) :near {
     def itemToModelMap := [].asMap().diverge()
     def modelToItemMap := [].asMap().diverge()
     
-    def buildTree(swtParent, palette, fileNode) :void {
+    var maxLen := 0
+    var nItems := 0
+    
+    def buildTree(swtParent, palette, fileNode, level) :void {
         
         def swtItem := <widget:makeTreeItem>(swtParent, 0)
         itemToModelMap.put(swtItem, fileNode, true)
         modelToItemMap.put(fileNode, swtItem, true)
         swtItem.setText(fileNode.getName())
+        maxLen max= fileNode.getName().size() + level * 8
+        nItems += 1
         swtItem.setChecked(fileNode.isChecked())
         swtItem.setGrayed(fileNode.isGrayed())
         
         if (!fileNode.isLeaf()) {
             def children := fileNode.getChildren()
             for child in children {  # depth-first
-                buildTree(swtItem, palette, child)
+                buildTree(swtItem, palette, child, level +1)
             }
         }
     }
     
-    buildTree(swtTree, fovPalette, foModel.getTop())
+    buildTree(swtTree, fovPalette, foModel.getTop(), 0)
     
     def swtSelectionListener {
         to widgetSelected(swtEvent) :void {
@@ -70,7 +76,6 @@ def makeFilterOptionsView(swtParent, palette, foModel) :near {
         to widgetDefaultSelected(swtEvent) :void {}
     }
     swtTree.addSelectionListener(swtSelectionListener)
-    
     
     def expandItem(swtItem) :void {
         swtItem.setExpanded(true)
@@ -102,7 +107,6 @@ def makeFilterOptionsView(swtParent, palette, foModel) :near {
     }
     foModel.addObserver(changeObserver)
     
-    
     def fov {
         
         to open() :void {}
@@ -111,9 +115,15 @@ def makeFilterOptionsView(swtParent, palette, foModel) :near {
             
             swtGrid`${swtFOView}:
                     ${swtTree}.X.Y`
+                    
+            swtFOView.pack()
+            
+            def w := maxLen * xe
+            def h := nItems * ye *2
+            swtFOView.setSize(w, h)
         }
         
-        to getTopLevelPane() :near {
+        to getTopLevelSWTControl() :near {
             return swtFOView
         }
     }

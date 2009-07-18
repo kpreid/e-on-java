@@ -2,7 +2,7 @@
 
 pragma.syntax("0.8")
 
-# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# Copyright 2009 Teleometry Design under the terms of the MIT X license
 # found at http://www.opensource.org/licenses/mit-license.html ................
 
 def File := <type:java.io.File>
@@ -97,7 +97,7 @@ def getHexTriple(color) :String {
 def tagToColor(tag :int, normal :String) :String {
     switch (tag) {
         match ==CLIP { return "firebrick" }
-        match ==SKIP { return "yellow" }
+        match ==SKIP { return "goldenrod" }
         match ==KEEP { return normal }
     }
 } 
@@ -135,7 +135,7 @@ def walkDots(edge, textWriter, palette,
     textWriter.println(`"[$oname, $oturn]" [color=$ocolor fontcolor=$ocolor];`)
     textWriter.println(`"[$tname, $tturn]" [color=$tcolor fontcolor=$tcolor];`)
     
-    var ep := graphWalker.getElementLabel(edge)
+    var ep := graphWalker.getElementLabel(edge, 0)
     if (null == ep) {
         ep := "[]"
     }

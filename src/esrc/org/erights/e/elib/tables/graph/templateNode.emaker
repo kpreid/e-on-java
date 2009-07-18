@@ -26,7 +26,7 @@ def templateNode(self, id) :near {
         
         /**
          * <tt>outs</tt> iterates through the outgoing edges,
-         * invoking the function on each edge,target pair.
+         * invoking the function on each edge, target pair.
          * <p>
          * Each outgoing edge is used as the key, and its target is used as
          * the value.
@@ -34,9 +34,12 @@ def templateNode(self, id) :near {
         to outs() :any {
             def iterOuts {
                 to iterate(func) :void {
+                    # left-to-right order
                     var ge := self.getPrevOut()
                     while (ge != self) {
+                        # a bit more robust in case graph changes
                         def next := ge.getPrevOut()
+                        # func is the body of the for-loop
                         func(ge, ge.getTarget())
                         ge := next
                     }
@@ -46,7 +49,9 @@ def templateNode(self, id) :near {
         
         /**
          * Iterates through all edges transitively outgoing from this
-         * node in pre-order without duplicate visits.
+         * node in pre-order without duplicate visits. 
+         * To iterate through all edge-node pairs a node can be visited
+         * multiple times, but not an edge.
          */
         to deepOutsPre() :near {
             def iterAllOuts {
@@ -56,7 +61,9 @@ def templateNode(self, id) :near {
                         if (seen.contains(node)) { return }
                         seen.addElement(node)
                         for edge => target in node.outs() {
+                            # do parent before children
                             func(edge, target)
+                            # depth-first
                             walk(target)
                         }
                     }
@@ -68,6 +75,8 @@ def templateNode(self, id) :near {
         /**
          * Iterates through all edges transitively outgoing from this
          * node in post-order without duplicate visits.
+         * To iterate through all edge-node pairs a node can be visited
+         * multiple times, but not an edge.
          */
         to deepOutsPost() :near {
             def iterAllOuts {
@@ -77,7 +86,9 @@ def templateNode(self, id) :near {
                         if (seen.contains(node)) { return }
                         seen.addElement(node)
                         for edge => target in node.outs() {
+                            # depth-first
                             walk(target)
+                            # do children before parent
                             func(edge, target)
                         }
                     }
@@ -88,7 +99,7 @@ def templateNode(self, id) :near {
 
         /**
          * <tt>ins</tt> iterates through the incoming edges,
-         * invoking the function on each edge,origin pair.
+         * invoking the function on each edge, origin pair.
          * <p>
          * Each incoming edge is used as a key, and its origin is used as the
          * value.
@@ -96,9 +107,12 @@ def templateNode(self, id) :near {
         to ins() :any {
             def iterIns {
                 to iterate(func) :void {
+                    # left-to-right order
                     var ge := self.getPrevIn()
                     while (ge != self) {
+                        # a bit more robust in case graph changes
                         def next := ge.getPrevIn()
+                        # func is the body of the for-loop
                         func(ge, ge.getOrigin())
                         ge := next
                     }

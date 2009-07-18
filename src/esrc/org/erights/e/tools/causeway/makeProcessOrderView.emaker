@@ -2,7 +2,7 @@
 
 pragma.syntax("0.9")
 
-# Copyright 2008 Teleometry Design under the terms of the MIT X license
+# Copyright 2009 Teleometry Design under the terms of the MIT X license
 # found at http://www.opensource.org/licenses/mit-license.html ................
 
 def swt__uriGetter := <import:org.eclipse.swt.*>
@@ -25,7 +25,7 @@ def buildTreeItem(swtParent, palette,
     def swtItem := <widget:makeTreeItem>(swtParent, 0)
     itemToModelMap.put([swtItem, ndx], element, true)
     modelToItemMap.put(element, [swtItem, ndx], true)
-    graphWalker.labelItem(vatMap, element, swtItem)
+    graphWalker.labelItem(vatMap, element, 0, swtItem)
     return swtItem
 }
 
@@ -97,7 +97,8 @@ def makePOPane(swtParent, palette,
 
 def makeProcessOrderView(swtParent, palette,
                          abstractAction,
-                         poModel, selectionModel,
+                         poModel, 
+                         selectionModel, searchModel,
                          vatMap, graphWalker) :near {
     
     def swtPOView := <widget:makeComposite>(swtParent, 0)
@@ -112,7 +113,7 @@ def makeProcessOrderView(swtParent, palette,
     def outlineView := makeOutlineView(swtPOView, palette,
                                        abstractAction, getActionTargets)
     
-    def swtFolder := <widget:makeTabFolder>(swtPOView, 0)
+    def swtFolder := <custom:makeCTabFolder>(swtPOView, 0)
     swtFolder.setForeground(fPalette.getFg())
     swtFolder.setBackground(fPalette.getBg())
     swtFolder.setFont(fPalette.getFont())
@@ -122,7 +123,7 @@ def makeProcessOrderView(swtParent, palette,
     # Map [VatName, List[TurnNode]]
     for vatName => poList in poModel {
         
-        def swtTab := <widget:makeTabItem>(swtFolder, 0)
+        def swtTab := <custom:makeCTabItem>(swtFolder, 0)
         
         def pop := makePOPane(swtFolder, palette,
                               poList, swtFolder.indexOf(swtTab),
@@ -134,14 +135,16 @@ def makeProcessOrderView(swtParent, palette,
     }
     
     def selectionObserver {
-        to elementSelected(optElement) :void {
-            def tabbedItem := modelToItemMap.fetch(optElement, fn{})
-            if (tabbedItem != null) {
-                def [swtItem, ndx] := tabbedItem
-                swtFolder.setSelection(ndx)
-                def [_, pop] := tabKeeper[ndx]
-                pop.getWidget().setSelection([swtItem])
-                pop.getWidget().showItem(swtItem)
+        to placeSelected(optPlace) :void {
+            if (optPlace != null && optPlace =~ [element, _]) {
+                def tabbedItem := modelToItemMap.fetch(element, fn{})
+                if (tabbedItem != null) {
+                    def [swtItem, ndx] := tabbedItem
+                    swtFolder.setSelection(ndx)
+                    def [_, pop] := tabKeeper[ndx]
+                    pop.getWidget().setSelection([swtItem])
+                    pop.getWidget().showItem(swtItem)
+                }
             }
         }
     }
@@ -176,7 +179,7 @@ def makeProcessOrderView(swtParent, palette,
                 pop.layout()
             }
             swtGrid`${swtPOView}:
-                    ${outlineView.getTopLevelPane()}.X
+                    ${outlineView.getTopLevelSWTControl()}.X
                     ${swtFolder}.X.Y`
         }
     }

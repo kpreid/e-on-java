@@ -2,7 +2,7 @@
 
 pragma.syntax("0.9")
 
-# Copyright 2008 Teleometry Design under the terms of the MIT X license
+# Copyright 2009 Teleometry Design under the terms of the MIT X license
 # found at http://www.opensource.org/licenses/mit-license.html ................
 
 def swt__uriGetter := <import:org.eclipse.swt.*>
@@ -15,23 +15,65 @@ def File := <type:java.io.File>
 def <swttools> := <import:org.erights.e.ui.swt.*>
 def swtGrid__quasiParser := <swttools:swtGridQParserMaker>()
 
+def WelcomeTitle := `
+  Welcome to Causeway: a message-oriented distributed debugger`
+
+def CausewayDesc := `
+
+With the emergence of the web as an application platform, 
+communicating event loops are rapidly becoming the 
+mainstream model for distributed computation.
+
+Causeway is an open source postmortem distributed debugger 
+for examining the behavior of distributed programs built as
+communicating event loops. Its message-oriented approach follows 
+the flow of messages across process and machine boundaries.`
+
+def ImageDesc := `
+Giant's Causeway`
+def ImageCredit := `
+(by courtesy of Northern Ireland Tourist Board)`
+
+def TechReportDesc := `
+In this HP Labs Technical Report we discuss our experience with 
+the Waterken web server which we have instrumented to generate 
+Causeway's language-neutral trace log format.`
+
+def TechReportURL := `
+    http://www.hpl.hp.com/techreports/2009/HPL-2009-78.html`
+
+def ExampleDesc := `
+To open a viewer on the example program described in the paper, 
+select the Waterken example under the Help menu.`
+
+def ExampleCommand := `
+    Help >> Open Waterken Example (Ajax-style)`
+
+def WikiDesc := `
+Documentation on the Causeway Viewer and an introduction to
+Causeway's language-neutral trace file format can be found
+at the erights.org wiki.`
+
+def WikiURL := `
+    http://wiki.erights.org/wiki/Causeway`
+    
 def makeWelcomeView(swtParent, palette, traceline) :near {
     
-    def wp := palette.makeWelcomePalette()
+    def paletteMap := palette.makeWelcomePalette()
     
     def swtWelcomeView := <widget:makeComposite>(swtParent, 0)
-    swtWelcomeView.setForeground(wp.getFg())
-    swtWelcomeView.setBackground(wp.getBg())
-    swtWelcomeView.setFont(wp.getFont())
-    
-    def swtSideToSide := <custom:makeSashForm>(swtWelcomeView,
-                                               SWT.getHORIZONTAL())
-    
-    # left side
-    def swtSplash := <widget:makeCanvas>(swtSideToSide, 0)
-    swtSplash.setBackground(wp.getBg())
-    
-    #swtSplash.setSize(588, 372)
+    swtWelcomeView.setForeground(paletteMap["welcome"].getFg())
+    swtWelcomeView.setBackground(paletteMap["welcome"].getBg())
+    swtWelcomeView.setFont(paletteMap["welcome"].getFont())
+        
+    def swtWelcomeImage := <widget:makeComposite>(swtWelcomeView, 0)
+    swtWelcomeImage.setForeground(paletteMap["welcome"].getFg())
+    swtWelcomeImage.setBackground(paletteMap["welcome"].getBg())
+    swtWelcomeImage.setFont(paletteMap["welcome"].getFont())
+
+    def swtSplash := <widget:makeCanvas>(swtWelcomeImage, 0)
+    swtSplash.setBackground(paletteMap["welcome"].getBg())
+        
     def swtImage := palette.getImage("giantsCauseway")
     
     def swtPaintListener {
@@ -41,19 +83,95 @@ def makeWelcomeView(swtParent, palette, traceline) :near {
     }
     swtSplash.addPaintListener(swtPaintListener)
     
-    # right side
-    def swtWelcomeText := <custom:makeStyledText>(swtSideToSide, 0)
-    swtWelcomeText.setForeground(wp.getFg())
-    swtWelcomeText.setBackground(wp.getBg())
-    swtWelcomeText.setFont(wp.getFont())
-    swtWelcomeText.setText("  Welcome...")
-    swtWelcomeText.setEditable(false)
-    swtWelcomeText.getCaret().setVisible(false)
+    def swtImageDesc := <custom:makeStyledText>(swtWelcomeImage, 0)
+    swtImageDesc.setForeground(paletteMap["desc"].getFg())
+    swtImageDesc.setBackground(paletteMap["desc"].getBg())
+    swtImageDesc.setFont(paletteMap["desc"].getFont())
+    swtImageDesc.setText(ImageDesc)
+    swtImageDesc.setEditable(false)
+    swtImageDesc.getCaret().setVisible(false)
     
-    swtSideToSide.setWeights([60, 40])
+    def swtImageCredit := <custom:makeStyledText>(swtWelcomeImage, 0)
+    swtImageCredit.setForeground(paletteMap["credit"].getFg())
+    swtImageCredit.setBackground(paletteMap["credit"].getBg())
+    swtImageCredit.setFont(paletteMap["credit"].getFont())
+    swtImageCredit.setText(ImageCredit)
+    swtImageCredit.setEditable(false)
+    swtImageCredit.getCaret().setVisible(false)
+
+    def swtWelcomeTitle := <custom:makeStyledText>(swtWelcomeView, 0)
+    swtWelcomeTitle.setForeground(paletteMap["welcome"].getFg())
+    swtWelcomeTitle.setBackground(paletteMap["welcome"].getBg())
+    swtWelcomeTitle.setFont(paletteMap["welcome"].getFont())
+    swtWelcomeTitle.setText(WelcomeTitle)
+    swtWelcomeTitle.setEditable(false)
+    swtWelcomeTitle.getCaret().setVisible(false)
     
+    def swtCausewayDesc := <custom:makeStyledText>(swtWelcomeView, 0)
+    swtCausewayDesc.setForeground(paletteMap["desc"].getFg())
+    swtCausewayDesc.setBackground(paletteMap["desc"].getBg())
+    swtCausewayDesc.setFont(paletteMap["desc"].getFont())
+    swtCausewayDesc.setText(CausewayDesc)
+    swtCausewayDesc.setEditable(false)
+    swtCausewayDesc.getCaret().setVisible(false)
+
+    def swtHowToView := <widget:makeComposite>(swtWelcomeView, 0)
+    swtHowToView.setForeground(paletteMap["welcome"].getFg())
+    swtHowToView.setBackground(paletteMap["welcome"].getBg())
+    swtHowToView.setFont(paletteMap["welcome"].getFont())
+
+    def swtTechReportDesc := <custom:makeStyledText>(swtHowToView, 0)
+    swtTechReportDesc.setForeground(paletteMap["desc"].getFg())
+    swtTechReportDesc.setBackground(paletteMap["desc"].getBg())
+    swtTechReportDesc.setFont(paletteMap["desc"].getFont())
+    swtTechReportDesc.setText(TechReportDesc)
+    swtTechReportDesc.setEditable(false)
+    swtTechReportDesc.getCaret().setVisible(false)
+    
+    def swtTechReportURL := <custom:makeStyledText>(swtHowToView, 0)
+    swtTechReportURL.setForeground(paletteMap["code"].getFg())
+    swtTechReportURL.setBackground(paletteMap["code"].getBg())
+    swtTechReportURL.setFont(paletteMap["code"].getFont())
+    swtTechReportURL.setText(TechReportURL)
+    swtTechReportURL.setEditable(false)
+    swtTechReportURL.getCaret().setVisible(false)
+
+    def swtExampleDesc := <custom:makeStyledText>(swtHowToView, 0)
+    swtExampleDesc.setForeground(paletteMap["desc"].getFg())
+    swtExampleDesc.setBackground(paletteMap["desc"].getBg())
+    swtExampleDesc.setFont(paletteMap["desc"].getFont())
+    swtExampleDesc.setText(ExampleDesc)
+    swtExampleDesc.setEditable(false)
+    swtExampleDesc.getCaret().setVisible(false)
+    
+    def swtExampleCommand := <custom:makeStyledText>(swtHowToView, 0)
+    swtExampleCommand.setForeground(paletteMap["code"].getFg())
+    swtExampleCommand.setBackground(paletteMap["code"].getBg())
+    swtExampleCommand.setFont(paletteMap["code"].getFont())
+    swtExampleCommand.setText(ExampleCommand)
+    swtExampleCommand.setEditable(false)
+    swtExampleCommand.getCaret().setVisible(false)
+    
+    def swtWikiDesc := <custom:makeStyledText>(swtHowToView, 0)
+    swtWikiDesc.setForeground(paletteMap["desc"].getFg())
+    swtWikiDesc.setBackground(paletteMap["desc"].getBg())
+    swtWikiDesc.setFont(paletteMap["desc"].getFont())
+    swtWikiDesc.setText(WikiDesc)
+    swtWikiDesc.setEditable(false)
+    swtWikiDesc.getCaret().setVisible(false)
+    
+    def swtWikiURL := <custom:makeStyledText>(swtHowToView, 0)
+    swtWikiURL.setForeground(paletteMap["code"].getFg())
+    swtWikiURL.setBackground(paletteMap["code"].getBg())
+    swtWikiURL.setFont(paletteMap["code"].getFont())
+    swtWikiURL.setText(WikiURL)
+    swtWikiURL.setEditable(false)
+    swtWikiURL.getCaret().setVisible(false)
+
+
     def showBounds(s, r) :void {
-        traceline(`$s bounds: [${r.getX()}, ${r.getY()}, ${r.getWidth()}, ${r.getHeight()}]`)
+        traceline(`$s bounds: $\
+[${r.getX()}, ${r.getY()}, ${r.getWidth()}, ${r.getHeight()}]`)
     }
     
     def showSize(s, p) :void {
@@ -62,30 +180,34 @@ def makeWelcomeView(swtParent, palette, traceline) :near {
     
     def welcomeView {
         
-        to getTopLevelPane() :near { return swtWelcomeView }
+        to getTopLevelSWTControl() :near { return swtWelcomeView }
         
         to open() :void {}
         
         to layout() :void {
+                        
+            def ib := swtImage.getBounds()
             
-            #showBounds("swtImage", swtImage.getBounds())
-            #showBounds("swtWelcomeView", swtWelcomeView.getBounds())
-            #showBounds("swtSplash", swtSplash.getBounds())
-            #showBounds("swtWelcomeText", swtWelcomeText.getBounds())
+            swtGrid`$swtWelcomeImage:
+                    $swtSplash.X.Y
+                    $swtImageDesc.X
+                    $swtImageCredit.X`
             
-            #showSize("swtWelcomeView",
-            #         swtWelcomeView.computeSize(1000, 700))
-            #showSize("swtSplash",
-            #         swtSplash.computeSize(588, 372))
+            swtGrid`$swtHowToView:
+                    $swtTechReportDesc     $swtTechReportURL
+                    $swtExampleDesc        $swtExampleCommand
+                    $swtWikiDesc           $swtWikiURL`
+
+            swtGrid`${welcomeView.getTopLevelSWTControl()}:
+                    $swtWelcomeTitle.X
+                    $swtWelcomeImage.X.Y $swtCausewayDesc.X
+                    $swtHowToView.X`
             
-            swtGrid`${welcomeView.getTopLevelPane()}:
-                    $swtSideToSide.X.Y`
-            #$swtSplash.X.Y $swtWelcomeText.X`
+            swtWelcomeView.pack()
             
-            #showBounds("swtImage", swtImage.getBounds())
-            #showBounds("swtWelcomeView", swtWelcomeView.getBounds())
-            #showBounds("swtSplash", swtSplash.getBounds())
-            #showBounds("swtWelcomeText", swtWelcomeText.getBounds())
+            swtSplash.setSize(ib.getWidth(), ib.getHeight())
+                        
+            swtWelcomeView.setSize(900, 600)
         }
         
         to exportModelToDotFile(dotFile :File) :void {}

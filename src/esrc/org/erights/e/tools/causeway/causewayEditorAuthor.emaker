@@ -2,7 +2,7 @@
 
 pragma.syntax("0.8")
 
-# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# Copyright 2009 Teleometry Design under the terms of the MIT X license
 # found at http://www.opensource.org/licenses/mit-license.html ................
 
 def swt__uriGetter := <import:org.eclipse.swt.*>
@@ -18,6 +18,7 @@ def MenuItem := <widgetType:MenuItem>
 def ToolBar  := <widgetType:ToolBar>
 def ToolItem := <widgetType:ToolItem>
 def ShellListener := <swtType:events.ShellListener>
+def PaintListener := <swtType:events.PaintListener>
 
 def sky__uriGetter := <import:com.skyhunter.*>
 
@@ -25,13 +26,14 @@ def <swttools> := <import:org.erights.e.ui.swt.*>
 def swtGrid__quasiParser := <swttools:swtGridQParserMaker>()
 def M := <swttools:menuKit>
 
-def paletteAuthor := <import:org.erights.e.tools.causeway.paletteAuthor>
-
 def makeLamportSlot := <elib:slot.makeLamportSlot>
 def whenever := <elib:slot.whenever>
 def EverReporter := <type:org.erights.e.elib.slot.EverReporter>
 
-def __versionLauncherAuthor := <elang:launcher.__versionLauncherAuthor>
+def <causeway> := <import:org.erights.e.tools.causeway.*>
+def paletteAuthor := <causeway:paletteAuthor>
+def aboutDialogAuthor := <causeway:aboutDialogAuthor>
+def onlineHelpAuthor := <causeway:onlineHelpAuthor>
 
 def causewayEditorAuthor(rezKit,
                          abstractAction,
@@ -41,37 +43,47 @@ def causewayEditorAuthor(rezKit,
                          tcr,
                          traceline) :near {
     
-    def makeDialogVow := <sky:swt.makeDialogVowAuthor>(rezKit,
-                                                       makers.get("frame")(),
-                                                       traceline)
+    def debugln(str) :void {
+        traceline(str)
+        #statusBar.setText(str)
+    }
+    
+
     def editorShellListener :ShellListener := def _ {
-        to shellClosed(event) :void { shutdown() }
+        to shellClosed(event) :void {
+#            def shell := event.getSource()
+#            if (shell == causewayEditor.getEditorShell()) {
+#                rezKit.disposeAll()
+#                shutdown()
+#            }
+        }
         to shellActivated(event) :void {}
         to shellDeactivated(event) :void {}
         to shellIconified(event) :void {}
         to shellDeiconified(event) :void {}
     }
     
+    def makePalette := paletteAuthor(rezKit, makers, traceline)
+    def palette := makePalette()
+
     def makeCausewayEditor(var rootDirName :String, traces :List) :near {
-        
+    
         def causewayEditor
-        
-        def editorShell := makers.get("frame")()
+
+        def editorShell := makers["frame"]()
         editorShell.addShellListener(editorShellListener)
-        def makePalette := paletteAuthor(rezKit, makers, traceline)
-        def palette := makePalette()
         
         var hasMetrics := false
-        def listenerForMetrics {
+        def listenerForMetrics :PaintListener := def _ {
             to paintControl(event) :void {
                 hasMetrics := palette.setMetrics(event.getGc())
             }
         }
         editorShell.addPaintListener(listenerForMetrics)
         
-#        if (hasMetrics) {
-#            editorShell.removePaintListener(listenerForMetrics)
-#        }
+        if (hasMetrics) {
+            editorShell.removePaintListener(listenerForMetrics)
+        }
         
         def fp := palette.makeFramePalette()
         editorShell.setForeground(fp.getFg())
@@ -80,11 +92,6 @@ def causewayEditorAuthor(rezKit,
         
         #def statusBar := <widget:makeLabel>(editorShell, 0)
         #statusBar.setText("Causeway's internal status messages displayed here...")
-        
-        def debugln(str) :void {
-            traceline(str)
-            #statusBar.setText(str)
-        }
         
         # menuFile
         [def doOpen,
@@ -104,6 +111,8 @@ def causewayEditorAuthor(rezKit,
          def doFindNext,
          def doFindPrevious,
          
+         def doFindLostMessages,
+         
          def doGoTo]
         
         # menuView
@@ -122,8 +131,32 @@ def causewayEditorAuthor(rezKit,
         
         # menuHelp
         [def doHelpTopics,
+        
+         def doExamples,
          
          def doAbout]
+         
+        def openNewEditor(sources :String, traces :List) :void {
+        
+            def waitCursor := makers["cursor"](SWT.getCURSOR_WAIT())
+            def oldEditorShell := causewayEditor.getEditorShell()
+            def oldViewer := causewayEditor.getViewer().getTopLevelSWTControl()
+            if (oldViewer != null && !oldViewer.isDisposed()) {
+                oldViewer.dispose()
+            }
+            
+            oldEditorShell.removeShellListener(editorShellListener)
+            oldEditorShell.setCursor(waitCursor)
+            def openAction() :void {
+                def editor := makeCausewayEditor(sources, traces)
+                editor.open()
+                oldEditorShell.close()
+                if (!oldEditorShell.isDisposed()) {
+                    oldEditorShell.dispose()
+                }
+            }
+            openAction <- run()
+        }
         
         /**
          *
@@ -137,6 +170,12 @@ def causewayEditorAuthor(rezKit,
                     if (rootDirName == "") {
                         doSetSourceRoot()
                     }
+                    def oldViewer := 
+                      causewayEditor.getViewer().getTopLevelSWTControl()
+                    if (oldViewer != null && !oldViewer.isDisposed()) {
+                        oldViewer.dispose()
+                    }
+
                     oldEditorShell.removeShellListener(editorShellListener)
                     oldEditorShell.setCursor(waitCursor)
                     def openAction() :void {
@@ -144,7 +183,9 @@ def causewayEditorAuthor(rezKit,
                                                          optPaths)
                         editor.open()
                         oldEditorShell.close()
-                        # dispose ?
+                        if (!oldEditorShell.isDisposed()) {
+                            oldEditorShell.dispose()
+                        }
                     }
                     openAction <- run()
                 }
@@ -162,14 +203,11 @@ def causewayEditorAuthor(rezKit,
          */
         bind doClose extends abstractAction(doClose) {
             to run() :void {
-                debugln("doClose()")
+                causewayEditor.getEditorShell().close()         
             }
             to getLabel()            :String { "&Close" }
             to getOptMenuAccelDesc() :String { "Ctrl+W" }
-            to getOptTip()           :String { "Closes the editor" }
-            to everEnabledReporter() :EverReporter {
-                whenever([], fn{false})
-            }
+            to getOptTip()           :String { "Closes the editor and quits" }
         }
         
         /**
@@ -235,11 +273,12 @@ def causewayEditorAuthor(rezKit,
          */
         bind doExit extends abstractAction(doExit) {
             to run() :void {
-                debugln("doExit()")
+                causewayEditor.getEditorShell().close()
             }
             to getLabel()            :String { "E&xit" }
             to getOptMenuAccelDesc() :String { "Ctrl+Q" }
-            to getOptTip()           :String { "Shuts down these editors" }
+            to getOptTip()           :String { 
+                "Closes editor and quits Causeway" }
         }
         
         /**
@@ -289,6 +328,19 @@ def causewayEditorAuthor(rezKit,
             to getOptTip()           :String { "Find the previous one" }
             to everEnabledReporter() :EverReporter {
                 whenever([], fn{false})
+            }
+        }
+        
+        /**
+         *
+         */
+        bind doFindLostMessages extends abstractAction(doFindLostMessages) {
+            to run() :void {
+                causewayEditor.getViewer().findLostMessages()
+            }
+            to getLabel()            :String { "Find Lost Messages" }
+            to getOptTip()           :String { 
+                return "Find messages without targets" 
             }
         }
         
@@ -388,8 +440,12 @@ def causewayEditorAuthor(rezKit,
                     }
                 }
             }
-            to getLabel()            :String { "&Set Filter Options..." }
-            to getOptTip()           :String { "Set filter options" }
+            to getLabel()            :String { 
+                return "&Set Filter Options..."
+            }
+            to getOptTip()           :String { 
+                return "Set filter options" 
+            }
         }
         
         /**
@@ -403,9 +459,11 @@ def causewayEditorAuthor(rezKit,
                     rootDirName := dir.getPath()
                 }
             }
-            to getLabel()            :String { "&Set Source Root..." }
+            to getLabel()            :String { 
+                return "&Set Source Root..." 
+            }
             to getOptTip()           :String {
-                "Set source code root directory"
+                return "Set source code root directory"
             }
         }
         
@@ -444,13 +502,42 @@ def causewayEditorAuthor(rezKit,
          */
         bind doHelpTopics extends abstractAction(doHelpTopics) {
             to run() :void {
-                debugln("doHelpTopics()")
+                def makeOnlineHelp := onlineHelpAuthor(makers["modelessDialog"],
+                                                       abstractAction,
+                                                       traceline)
+                def onlineHelp := makeOnlineHelp(causewayEditor.getEditorShell(),
+                                                 palette)
+                onlineHelp.open()
             }
-            to getLabel()            :String { "Help Topics..." }
-            to getOptMenuAccelDesc() :String { "F1" }
-            to getOptTip()           :String { "Helps clear up all confusion" }
+            to getLabel()            :String { return "Help Topics" }
+            to getOptMenuAccelDesc() :String { return "F1" }
+            to getOptTip()           :String { return "Online help" }
             to getOptIconFQName()    :String {
-                "com/skyhunter/e/icons/help.gif"
+                return "com/skyhunter/e/icons/help.gif"
+            }
+        }
+        
+        /**
+         *
+         */
+        bind doExamples extends abstractAction(doExamples) {
+            to run() :void {
+#               for devrune
+#               def eHome := "~/e/src/esrc"
+
+                def eHome := props["e.home"]
+                
+                def eHomeDir := <file>[eHome]
+                
+                def traces := [eHomeDir["/scripts/test/causeway/waterken/traces/live-expect3.log"]]
+                def sources := eHome + "/scripts/test/causeway/waterken/sources"
+                openNewEditor(sources, traces)
+            }
+            to getLabel()            :String { 
+                return "Open Waterken Example (Ajax-style)" 
+            }
+            to getOptTip()           :String { 
+                return "Makes new viewer for example sources and trace log" 
             }
         }
         
@@ -459,25 +546,21 @@ def causewayEditorAuthor(rezKit,
          */
         bind doAbout extends abstractAction(doAbout) {
             to run() :void {
-#                def appName := self.getAppName()
-#                makeDialogVow(`About $appName`,
-#                              term`text(b($appName),
-#                                   "
-                #by Terry Stanley and Mark S. Miller
-                #
-                #",
-#                                   ${doAbout.getVersionString()})`,
-#                              null,
-#                              ["Ok"])
-            }
-            to getVersionString() :String {
-                __versionLauncherAuthor.getOptVersionText(props)
+                def makeAboutDialog := aboutDialogAuthor(props,
+                                                         makers["modelessDialog"],
+                                                         abstractAction,
+                                                         traceline)
+                def aboutDialog := makeAboutDialog(causewayEditor.getEditorShell(),
+                                                   causewayEditor.getAppName(),
+                                                   palette)
+                aboutDialog.open()
             }
             to getLabel()  :String {
-                ""
-#                `&About ${self.getAppName()}...`
+                return `&About ${causewayEditor.getAppName()}`
             }
-            to getOptTip() :String { "What program is this?" }
+            to getOptTip() :String { 
+                return "About Causeway and components"
+            }
         }
         
         def barAction :=
@@ -500,6 +583,8 @@ def causewayEditorAuthor(rezKit,
                            doFindNext,
                            doFindPrevious,
                            M.sep(),
+                           doFindLostMessages,
+                           M.sep(),
                            doGoTo]),
                  def menuView :=
                    M.menu("&View",
@@ -519,6 +604,8 @@ def causewayEditorAuthor(rezKit,
                    M.menu("&Help",
                           [doHelpTopics,
                            M.sep(),
+                           doExamples,
+                           M.sep(),
                            doAbout])])
         
         def menuMap := [].asMap().diverge()
@@ -528,104 +615,82 @@ def causewayEditorAuthor(rezKit,
         def makeViewerDirector :=
           viewerDirectorAuthor(rootDirName,
                                <file>, <jar>, props,
-                               makers, editorShell,
-                               abstractAction, tcr, traceline)
+                               makers, editorShell, abstractAction,
+                               tcr, traceline)
         
-        def viewerShellListener :ShellListener := def _ {
-            to shellClosed(event) :void {}  # dispose ?
-            to shellActivated(event) :void {}
-            to shellDeactivated(event) :void {}
-            to shellIconified(event) :void {}
-            to shellDeiconified(event) :void {}
-        }
-        
-        def makeViewerShell(parent, palette) :Shell {
-            
-            def vShell := makers.get("modelessDialog")(parent)
-            vShell.addShellListener(viewerShellListener)
-            
-            def fp := palette.makeFramePalette()
-            vShell.setForeground(fp.getFg())
-            vShell.setBackground(fp.getBg())
-            vShell.setFont(fp.getFont())
-            
-            return vShell
-        }
-        
-        var viewerShell := makeViewerShell(editorShell, palette)
-        
-        def viewerDirector := makeViewerDirector(viewerShell,
+        def viewerDirector := makeViewerDirector(editorShell,
                                                  palette,
                                                  traces)
         
         bind causewayEditor {
-            to getAppName() :String { "Causeway" }
-            to getEditorShell() :Shell { editorShell }
-            to getViewerShell() :Shell { viewerShell }
+        
+            to getAppName() :String { return "Causeway" }
             
-            to getViewer() :near { viewerDirector.getView() }
+            to getEditorShell() :Shell { return editorShell }
             
-            to updateViewer() :void {
-                
-                def waitCursor := makers["cursor"](SWT.getCURSOR_WAIT())
-                def oldViewerShell := viewerShell
-                oldViewerShell.removeShellListener(viewerShellListener)
-                oldViewerShell.setCursor(waitCursor)
-                
-                def vShell := makeViewerShell(editorShell, palette)
-                viewerDirector.updateView(vShell)
-                
-                oldViewerShell.setCursor(null)
-                oldViewerShell.close()
-                oldViewerShell.dispose()
-                
-                viewerShell := vShell
-                
+            to getViewer() :near { return viewerDirector.getView() }
+            
+            to layout() :void {
+            
                 causewayEditor.getViewer().layout()
                 
-                swtGrid`${causewayEditor.getViewerShell()}:
-                        ${causewayEditor.getViewer().getTopLevelPane()}.X.Y`
+                def swtTopView := 
+                      causewayEditor.getViewer().getTopLevelSWTControl()
+                def topViewSize := swtTopView.getSize()
                 
-                swtGrid`${causewayEditor.getEditorShell()}:
-                        ${causewayEditor.getViewerShell()}.X.Y`
+#                traceline(`topViewSize: $\
+#${topViewSize.getX()}, $\
+#${topViewSize.getY()}`)
                 
-                #${causewayEditor.getViewer().getTopLevelPane()}.X.Y`
-                #${causewayEditor.getStatusBar()}.X`
+                def es := causewayEditor.getEditorShell()
                 
-                palette.zeroMargins(causewayEditor.getEditorShell().getLayout())
+                swtGrid`$es:
+                        $swtTopView.X.Y`
+                        
+#                      ${causewayEditor.getStatusBar()}.X`
                 
-                causewayEditor.getEditorShell().open()
-                causewayEditor.getViewerShell().open()
+                if (topViewSize.getX() > 0 || topViewSize.getY() > 0) {
+                    es.pack()
+                    swtTopView.setSize(topViewSize.getX(), topViewSize.getY())
+                    es.setSize(topViewSize.getX(), topViewSize.getY())
+                }
+
+                es.layout(true)  # flushes layout caches
+            }
+
+            to updateViewer() :void {
                 
-                causewayEditor.getViewer().open()
+                def es := causewayEditor.getEditorShell()
+                
+                def waitCursor := makers["cursor"](SWT.getCURSOR_WAIT())
+                es.setCursor(waitCursor)
+                
+                def oldViewer := causewayEditor.getViewer().getTopLevelSWTControl()
+                if (oldViewer != null && !oldViewer.isDisposed()) {
+                    oldViewer.dispose()
+                }
+                
+                viewerDirector.updateView(es)
+                
+                causewayEditor.layout()
+                
+                es.setCursor(null)
             }
             
             /**
              *
              */
             to open() :void {
+            
+                causewayEditor.layout()
                 
-                causewayEditor.getViewer().layout()
+                def es := causewayEditor.getEditorShell()
                 
-                swtGrid`${causewayEditor.getViewerShell()}:
-                        ${causewayEditor.getViewer().getTopLevelPane()}.X.Y`
+                def menuBar := barAction.makeMenu(es, menuMap)
                 
-                swtGrid`${causewayEditor.getEditorShell()}:
-                        ${causewayEditor.getViewerShell()}.X.Y`
+                es.setText(`${causewayEditor.getAppName()}`)
                 
-                #${causewayEditor.getViewer().getTopLevelPane()}.X.Y`
-                #${causewayEditor.getStatusBar()}.X`
-                
-                palette.zeroMargins(causewayEditor.getEditorShell().getLayout())
-                
-                def menuBar := barAction.makeMenu(causewayEditor.getEditorShell(), menuMap)
-                
-                def appName := causewayEditor.getAppName()
-                
-                causewayEditor.getEditorShell().setText(`$appName`)
-                
-                causewayEditor.getEditorShell().open()
-                causewayEditor.getViewerShell().open()
+                es.open()
                 
                 causewayEditor.getViewer().open()
             }

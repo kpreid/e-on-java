@@ -1,0 +1,26 @@
+#!/usr/bin/env rune
+
+pragma.syntax("0.9")
+
+# Copyright 2009 Teleometry Design under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+/**
+ * <tt> makePlace</tt> 
+ *
+ */
+
+def makePlace(element, entryIndex :int) :near {
+        
+    def place {
+        
+        to getElement() :near {
+            return element
+        }
+            
+        to getEntryIndex() :int {
+            return entryIndex
+        }
+    }
+    return place
+}

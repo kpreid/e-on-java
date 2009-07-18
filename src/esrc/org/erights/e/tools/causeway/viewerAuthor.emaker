@@ -2,7 +2,7 @@
 
 pragma.syntax("0.9")
 
-# Copyright 2008 Teleometry Design under the terms of the MIT X license
+# Copyright 2009 Teleometry Design under the terms of the MIT X license
 # found at http://www.opensource.org/licenses/mit-license.html ................
 
 def swt__uriGetter := <import:org.eclipse.swt.*>
@@ -16,23 +16,13 @@ def File := <type:java.io.File>
 def <swttools> := <import:org.erights.e.ui.swt.*>
 def swtGrid__quasiParser := <swttools:swtGridQParserMaker>()
 
-def stackWalkerAuthor :=
-  <import:org.erights.e.tools.causeway.stackWalkerAuthor>
-
-def debugViewAuthor :=
-  <import:org.erights.e.tools.causeway.debugPaneAuthor>
-
-
-def makeMessageOrderView :=
-  <import:org.erights.e.tools.causeway.makeMessageOrderView>
-
-def makeProcessOrderView :=
-  <import:org.erights.e.tools.causeway.makeProcessOrderView>
-
-def makeFilterOptionsView :=
-  <import:org.erights.e.tools.causeway.makeFilterOptionsView>
-
-
+def <causeway> := <import:org.erights.e.tools.causeway.*>
+def makeSearchView := <causeway:makeSearchView>
+def debugViewAuthor := <causeway:debugPaneAuthor>
+def stackWalkerAuthor := <causeway:stackWalkerAuthor>
+def makeMessageOrderView := <causeway:makeMessageOrderView>
+def makeProcessOrderView := <causeway:makeProcessOrderView>
+def makeFilterOptionsView := <causeway:makeFilterOptionsView>
 
 def getDisplayName(vatName) :String {
     
@@ -96,14 +86,8 @@ def viewerAuthor(rootDirName :String,
         null
     }
     
-    def makeViewer(swtParent, palette, viewerModel, selectionModel) :near {
-        
-        def swtViewerView := <widget:makeComposite>(swtParent, 0)
-        
-        def swtTopToBottom := <custom:makeSashForm>(swtViewerView,
-                                                    SWT.getVERTICAL())
-        def swtSideToSide := <custom:makeSashForm>(swtTopToBottom,
-                                                   SWT.getHORIZONTAL())
+    def makeViewer(swtParent, palette, 
+                   viewerModel, selectionModel, searchModel) :near {
         
         def model := viewerModel
         def messageGraph := model.getTop()
@@ -111,49 +95,77 @@ def viewerAuthor(rootDirName :String,
         def vatSet := model.getVatSet()
         def vatMap := makeVatMap(vatSet, palette, traceline)
         
-        # bottom
-        def stackWalker := makeStackWalker(swtTopToBottom, palette,
-                                           abstractAction,
-                                           selectionModel, vatMap)
+        def swtViewerView := <widget:makeComposite>(swtParent, 0)
         
-        # top-left
+        # a little confusing...
+        # visually, its a vertical sash, but its children span the horizontal
+        def swtSearchDivider := <custom:makeSashForm>(swtViewerView,
+                                                      SWT.getHORIZONTAL())
+                                                      
+        def stackWalker
+        # left-most, full-length view, left of search divider, first child
+        def searchView := makeSearchView(swtSearchDivider, palette,
+                                         abstractAction,
+                                         searchModel,
+                                         selectionModel,
+                                         vatMap, stackWalker)
+
+        def swtTopToBottom := <custom:makeSashForm>(swtSearchDivider,
+                                                    SWT.getVERTICAL())
+        def swtSideToSide := <custom:makeSashForm>(swtTopToBottom,
+                                                   SWT.getHORIZONTAL())
+        
+        # bottom
+        bind stackWalker := makeStackWalker(swtTopToBottom, palette,
+                                            abstractAction,
+                                            selectionModel, 
+                                            searchModel,
+                                            vatMap)
+        
+
         # Map [VatName, List[TurnNode]]
         def poModel := model.getPOMap()
         def pov := makeProcessOrderView(swtSideToSide, palette,
                                         abstractAction,
-                                        poModel, selectionModel,
+                                        poModel, 
+                                        selectionModel, searchModel,
                                         vatMap, stackWalker)
         
-        # top-middle
         def mov := makeMessageOrderView(swtSideToSide, palette,
                                         abstractAction,
-                                        messageGraph, selectionModel,
+                                        messageGraph, 
+                                        selectionModel, searchModel,
                                         vatMap, stackWalker)
         
         # top-right
         if (null == optMakeDebugView) {
-            swtSideToSide.setWeights([40, 60])
+            swtSideToSide.setWeights([35, 65])
         } else {
             def dv := optMakeDebugView(swtSideToSide, palette,
                                        abstractAction,selectionModel)
             
-            swtSideToSide.setWeights([40, 35, 25])
+            swtSideToSide.setWeights([30, 55, 15])
             dv.layout()
         }
-        swtTopToBottom.setWeights([50, 50])
+        # all views to the right of search divider
+        swtTopToBottom.setWeights([60, 40])
+        
+        swtSearchDivider.setWeights([15, 85])
         
         stackWalker.layout()
+        searchView.layout()
         pov.layout()
         mov.layout()
         
         def viewer {
             
-            to getTopLevelPane() :near { return swtViewerView }
+            to getTopLevelSWTControl() :near { return swtViewerView }
             
             to open() :void {}
             
             to layout() :void {
-                
+            
+                # layout kids starting with most nested
                 def ssKids := swtSideToSide.getChildren()
                 for ssKid in ssKids {
                     ssKid.layout()
@@ -162,9 +174,13 @@ def viewerAuthor(rootDirName :String,
                 for tbKid in tbKids {
                     tbKid.layout()
                 }
-                
-                swtGrid`${viewer.getTopLevelPane()}:
-                        ${swtTopToBottom}.X.Y`
+                def sdKids := swtSearchDivider.getChildren()
+                for sdKid in sdKids {
+                    sdKid.layout()
+                }
+
+                swtGrid`${viewer.getTopLevelSWTControl()}:
+                        ${swtSearchDivider}.X.Y`
             }
             
             to exportModelToDotFile(dotFile :File) :void {
@@ -185,6 +201,10 @@ def viewerAuthor(rootDirName :String,
                 }
             }
             
+            to findLostMessages() :void {
+                searchModel.findLostMessages(model.getBottom())
+            }
+            
             to showFilterOptions() :any {
                 
                 def result
@@ -193,9 +213,9 @@ def viewerAuthor(rootDirName :String,
                 def SAVE := 1
                 def UPDATE_VIEWER := 2
                 
-                def swtDialog := makers["modelessDialog"](shell)
+                def swtDialog := makers["modelessDialog"](shell, 
+                                                          SWT.getSHELL_TRIM())
                 def dialogPalette := palette.makeDialogPalette()
-                def [xe, ye] := dialogPalette.getCharExtent()
                 swtDialog.setForeground(dialogPalette.getFg())
                 swtDialog.setBackground(dialogPalette.getBg())
                 swtDialog.setFont(dialogPalette.getFont())
@@ -205,16 +225,19 @@ def viewerAuthor(rootDirName :String,
                 def fov := makeFilterOptionsView(swtDialog,
                                                  palette,
                                                  ffModel)
-                
+                fov.layout()
+                def swtFOV := fov.getTopLevelSWTControl()
+                def fovSize := swtFOV.getSize()  # remember size
+#                traceline(`fovSize: $\
+#${fovSize.getX()}, $\
+#${fovSize.getY()}`)
+
                 def swtCancel := <widget:makeButton>(swtDialog,
                                                      SWT.getPUSH())
                 swtCancel.setForeground(dialogPalette.getFg())
                 swtCancel.setBackground(dialogPalette.getBg())
                 swtCancel.setFont(dialogPalette.getFont())
                 swtCancel.setText("Cancel")
-                swtCancel.setSize((swtCancel.getText().size() +4) * xe, ye)
-                
-                #traceline(`swtCancel size: ${swtCancel.getSize()}`)
                 
                 swtCancel.addSelectionListener(def swtListenerForCancel {
                     to widgetSelected(swtEvent) :void {
@@ -229,19 +252,17 @@ def viewerAuthor(rootDirName :String,
                 
                 def swtSave := <widget:makeButton>(swtDialog,
                                                    SWT.getPUSH())
-                swtSave.setEnabled(false)  # not working yet
+                swtSave.setEnabled(false)  # not implemented yet
                 swtSave.setForeground(dialogPalette.getFg())
                 swtSave.setBackground(dialogPalette.getBg())
                 swtSave.setFont(dialogPalette.getFont())
                 swtSave.setText("Save")
-                swtSave.setSize((swtSave.getText().size() +4) * xe, ye)
-                
-                #traceline(`swtSave size: ${swtSave.getSize()}`)
                 
                 swtSave.addSelectionListener(def swtListenerForSave {
                     to widgetSelected(swtEvent) :void {
-                        # remake file filter model from current model to
-                        # cleanly break connections between model & observers
+                        # remake file filter model from current model
+                        # to cleanly break connections between 
+                        # model & observers
                         model.remakeFileFilterModel(ffModel)
                         swtDialog.close()
                         swtDialog.dispose()
@@ -256,17 +277,13 @@ def viewerAuthor(rootDirName :String,
                 swtUpdateViewer.setBackground(dialogPalette.getBg())
                 swtUpdateViewer.setFont(dialogPalette.getFont())
                 swtUpdateViewer.setText("Update Viewer")
-                swtUpdateViewer.setSize(
-                    (swtUpdateViewer.getText().size() +4) * xe, ye)
                 
-                #traceline(`swtUpdateViewer size: ${
-                #           swtUpdateViewer.getSize()}`)
-                
-                swtUpdateViewer.addSelectionListener(
+               swtUpdateViewer.addSelectionListener(
                     def swtListenerForUpdateViewer {
                         to widgetSelected(swtEvent) :void {
-                            # remake file filter model from current model to
-                            # cleanly break connections between model & observers
+                            # remake file filter model from current model
+                            # to cleanly break connections between 
+                            # model & observers
                             model.remakeFileFilterModel(ffModel)
                             swtDialog.close()
                             swtDialog.dispose()
@@ -276,16 +293,50 @@ def viewerAuthor(rootDirName :String,
                     })
                 
                 swtDialog.setDefaultButton(swtUpdateViewer)
-                
-                fov.layout()
+
+                def swtFiller := <widget:makeLabel>(swtDialog, 0)
+                swtFiller.setForeground(dialogPalette.getFg())
+                swtFiller.setBackground(dialogPalette.getBg())
+
+                # swtGrid sets up the relative bounds of SWT display widgets
+                # in this case,
+                #   fov spans 4 columns and grabs available X & Y area;
+                #   the last row contains the 3 push buttons which
+                #   are right justified since filler grabs X
                 
                 swtGrid`${swtDialog}:
-                            ${fov.getTopLevelPane()}.X.Y
-                            ${swtCancel}     ${swtSave}     ${swtUpdateViewer}`
+              $swtFOV.X.Y  >          >        >
+              $swtFiller.X $swtCancel $swtSave $swtUpdateViewer`
                 
-                palette.setMargins(swtDialog.getLayout(), 5, 10, 15, 10)
+                # for this dialog, set specific sizes to 
+                # constrain the general layout defined by swtGrid
                 
-                #swtDialog.pack()
+                swtDialog.pack()
+                
+                swtFOV.setSize(fovSize.getX(), fovSize.getY())  # restore size
+
+                def [xe, ye] := dialogPalette.getCharExtent()
+
+                var width := 0
+                var height := ye *2  # just one row, plus a bit more
+
+                swtFiller.setSize(0, ye)
+                swtCancel.setSize((swtCancel.getText().size() +4) * xe, ye)
+                swtSave.setSize((swtSave.getText().size() +4) * xe, ye)
+                swtUpdateViewer.setSize(
+                    (swtUpdateViewer.getText().size() +4) * xe, ye)
+                    
+                width += swtCancel.getSize().getX()
+                width += swtSave.getSize().getX()
+                width += swtUpdateViewer.getSize().getX()
+                                
+                width max= fovSize.getX()
+                height += fovSize.getY()
+                
+                swtDialog.setSize(width, height)
+
+#                palette.setMargins(swtDialog.getLayout(), 5, 10, 15, 10)
+                
                 swtDialog.open()
                 return result
             }

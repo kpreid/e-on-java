@@ -1,3 +1,5 @@
-class(safe, "org.eclipse.swt.SWT",
-           statics,
+class(safe,
+           "org.eclipse.swt.SWT",
+           statics(method("getPlatform()"),
+                   method("getVersion()")),
            methods)

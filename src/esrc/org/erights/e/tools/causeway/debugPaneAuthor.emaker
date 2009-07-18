@@ -2,7 +2,7 @@
 
 pragma.syntax("0.8")
 
-# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# Copyright 2009 Teleometry Design under the terms of the MIT X license
 # found at http://www.opensource.org/licenses/mit-license.html ................
 
 def swt__uriGetter := <import:org.eclipse.swt.*>
@@ -93,12 +93,12 @@ def debugViewAuthor(<file>, <jar>, makers, traceline) :near {
         }
                 
         def selectionObserver {
-            to elementSelected(optElement) :void {
-                if (optElement != null) {
-                    def logFiles := optElement.getLogFiles()
+            to placeSelected(optPlace) :void {
+                if (optPlace != null && optPlace =~ [element, _]) {
+                    def logFiles := element.getLogFiles()
                     swtTextView.append("\n")
                     def sos := swtTextView.getCharCount()
-                    if (optElement.isNode()) {
+                    if (element.isNode()) {
                         swtTextView.append(">>>>> Log entries for node:")
                     } else {
                         swtTextView.append(">>>>> Log entries for edge:")
