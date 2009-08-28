@@ -27,6 +27,7 @@ import net.vattp.data.VatIdentity;
 import net.vattp.security.ESecureRandom;
 import org.erights.e.develop.exception.ExceptionMgr;
 import org.erights.e.elib.ref.NullMonitor;
+import org.erights.e.elib.ref.Ref;
 import org.erights.e.elib.ref.ReferenceMonitor;
 import org.erights.e.elib.serial.BaseLoader;
 import org.erights.e.elib.serial.PassByProxy;
@@ -318,6 +319,7 @@ public class Introducer extends BaseLoader implements PassByProxy {
      *
      */
     public Object[] optUncall(Object obj) {
+        obj = Ref.resolution(obj);
         if (!(obj instanceof SturdyRef)) {
             return null;
         }

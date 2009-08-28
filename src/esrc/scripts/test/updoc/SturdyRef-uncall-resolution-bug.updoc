@@ -1,0 +1,39 @@
+#!/usr/bin/env rune
+
+# Copyright 2009 Kevin Reid under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+On Aug 28, 2009, at 10:27, Thomas Leonard wrote:
+
+> A sturdy ref can only be serialised if fully resolved (is this a bug?),
+> e.g.
+> 
+>   ? introducer.onTheAir()
+>   ? def surgeon := <elib:serial.makeSurgeon>.withSrcKit("de: ").diverge()
+>   ? surgeon.addLoader(introducer, "cap__uriGetter")
+>   ? def a
+>   ? def b := makeSturdyRef.temp(3)
+>   ? bind a := b
+> 
+>   ? surgeon.serialize(a)
+>   # problem: Can't uneval <SturdyRef to 3>
+> 
+>   ? a == b
+>   # value: true
+> 
+>   ? surgeon.serialize(b)
+>   # value: "de: <cap://*qvcmrxvqy66rest6gfzhhxwrjni6nrdq@192.9.206.110:59905/jo6sk4nehnrewzo7bvntfz7rl32f6q2g>"
+
+This is indeed a bug and the following is a regression test for it. The Introducer was performing an instanceof without shortening the ref first.
+
+? introducer.onTheAir()
+> def sr := makeSturdyRef.temp("x")
+> def p
+> bind p := sr
+# value: <SturdyRef to "x">
+
+? introducer.optUncall(sr) != null
+# value: true
+
+? introducer.optUncall(p) != null
+# value: true
