@@ -39,6 +39,14 @@ set -e
 
 EDEV="${{e.dev.home}}"
 
+# What directory should be treated at the root directory where is E
+# installed? This may be the actual E installation directory (see
+# EHOME in rune-template.txt) or the src/esrc subdirectory of
+# EDEV. In either case, it should be the parent directory of the
+# "scripts" directory where *.e scripts are stored.
+
+EHOME="$EDEV/src/esrc/"
+
 
 # What executable Java command should be used?
 #
@@ -69,9 +77,10 @@ MACHDIR="${{e.machdir}}"
 ###########################################################################
 
 
-# Ensure that EDEV ends with a slash, even if not supplied.
+# Ensure that EDEV and EHOME end with a slash, even if not supplied.
 
 EDEV="${EDEV%/}/"
+EHOME="${EHOME%/}/"
 
 
 # SEP is the platform dependent pathlist separator. On
@@ -156,6 +165,7 @@ function jpush {
 jpush "-Xfuture"
 jpush "-De.osdir=${OSDIR}"
 jpush "-De.machdir=${MACHDIR}"
+jpush "-De.home=${EHOME}"
 
 # Note that the java.library.path must be provided on the command line
 # rather than by eprops.txt, since eprops.txt is processed after the
