@@ -51,11 +51,8 @@ def causewayEditorAuthor(rezKit,
 
     def editorShellListener :ShellListener := def _ {
         to shellClosed(event) :void {
-#            def shell := event.getSource()
-#            if (shell == causewayEditor.getEditorShell()) {
-#                rezKit.disposeAll()
-#                shutdown()
-#            }
+#           rezKit.disposeAll()
+            shutdown()
         }
         to shellActivated(event) :void {}
         to shellDeactivated(event) :void {}
@@ -274,6 +271,11 @@ def causewayEditorAuthor(rezKit,
         bind doExit extends abstractAction(doExit) {
             to run() :void {
                 causewayEditor.getEditorShell().close()
+                def exitAction() :void {
+#                   rezKit.disposeAll()
+                    shutdown()
+                }
+                exitAction <- run()
             }
             to getLabel()            :String { "E&xit" }
             to getOptMenuAccelDesc() :String { "Ctrl+Q" }
