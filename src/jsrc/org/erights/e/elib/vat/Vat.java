@@ -369,25 +369,47 @@ public class Vat {
      * that this event might never be delivered, then the reference eventually
      * becomes broken with a complaint explaining why.
      * <p/>
-     * May be called from any thead.
+     * Must only be called from the vat's own thread, since otherwise the
+     * returned promise may change as you access it (and, in particular, it
+     * may briefly turn into a ViciousCycleException).
      * <p/>
      * XXX to be made non-public. Uses outside this package should use {@link
      * BootRefHandler boot-refs} instead.
      */
-    public Ref qSendAll(Object rec,
+    Ref qSendAll(Object rec,
                         boolean nowFlag,
                         String verb,
                         Object[] args) {
         Object[] promise = Ref.promise();
         Resolver resolver = (Resolver)promise[1];
-        PendingDelivery pe =
-          new PendingDelivery(this, rec, resolver, nowFlag, verb, args);
-        Throwable optProblem = getRunner().enqueue(pe);
+
+        Throwable optProblem = qSendAll(rec, nowFlag, verb, args, resolver);
         if (null == optProblem) {
             return (Ref)promise[0];
         } else {
             return Ref.broken(optProblem);
         }
+    }
+
+    /**
+     * Enqueues a 'rec <- verb(args...)'.
+     * <p/>
+     * If this vat is shut down, returns a Throwable explaining the problem.
+     * Otherwise, if it becomes known that this event might never be delivered,
+     * then the reference eventually becomes broken with a complaint explaining
+     * why.
+     * <p/>
+     * The only outside user of this call is {@link BootRefHandler}; everyone else
+     * should go via that.
+     */
+    public Throwable qSendAll(Object rec,
+                        boolean nowFlag,
+                        String verb,
+                        Object[] args,
+                        Resolver resolver) {
+        PendingDelivery pe =
+          new PendingDelivery(this, rec, resolver, nowFlag, verb, args);
+        return getRunner().enqueue(pe);
     }
 
     /**

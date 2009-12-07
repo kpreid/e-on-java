@@ -9,6 +9,7 @@ import org.erights.e.elib.ref.DelayedRedirector;
 import org.erights.e.elib.ref.EProxyHandler;
 import org.erights.e.elib.ref.EProxyResolver;
 import org.erights.e.elib.ref.Ref;
+import org.erights.e.elib.ref.Resolver;
 import org.erights.e.elib.sealing.Brand;
 import org.erights.e.elib.sealing.SealedBox;
 import org.erights.e.elib.sealing.Sealer;
@@ -119,8 +120,8 @@ class BootRefHandler implements EProxyHandler {
      * except that it's thread-safe.
      * <p/>
      * <tt>getOptBootRefHandler/1</tt> must be thread safe, in order for {@link
-     * org.erights.e.elib.vat.BootRefHandler#packageArg(Object,Vat,Vat,Vat)
-     * BootRefHandler.packageArg/4} to be thread safe: Callers of this should
+     * org.erights.e.elib.vat.BootRefHandler#packageArg(Object,Vat,Vat)
+     * BootRefHandler.packageArg/3} to be thread safe: Callers of this should
      * keep in mind that ref may be shortened after the handler is gotten but
      * before these callers use it. If they access only final fields of the
      * handler in a thread safe way, then everything should be fine.
@@ -153,15 +154,16 @@ class BootRefHandler implements EProxyHandler {
      * to the eventual reference in the src vat, where the argument is a
      * boot-ref on a {@link DelayedRedirector} on the returned boot-ref. <li>In
      * all other cases, an exception is thrown. </ul>
+     * <p/>
+     * If <tt>arg</tt> is not in <tt>src</tt> then you must ensure that it
+     * won't change during this method call (this is only used in the
+     * recursive case).
      *
      * @param arg        The reference to be packaged.
      * @param src        The vat that 'arg' is valid within.
      * @param dest       The vat the return result needs to be valid within.
-     * @param currentVat The vat within which we're currently executing, which
-     *                   may be src, dest, or a third introducing vat (Alice).
-     *                   This is used to resolve race conditions.
      */
-    private Object packageArg(Object arg, Vat src, Vat dest, Vat currentVat) {
+    private Object packageArg(Object arg, Vat src, Vat dest) {
         arg = Ref.resolution(arg);
         String state = Ref.state(arg);
         arg = Ref.resolution(arg);
@@ -187,7 +189,7 @@ class BootRefHandler implements EProxyHandler {
                 Object[] result = new Object[argList.size()];
                 for (int i = 0, len = result.length; i < len; i++) {
                     result[i] =
-                      packageArg(argList.get(i), src, dest, currentVat);
+                      packageArg(argList.get(i), src, dest);
                 }
                 return ConstList.fromArray(result);
             }
@@ -197,9 +199,9 @@ class BootRefHandler implements EProxyHandler {
                 //XXX Perhaps we should abstract out arrays as a separate case?
                 ConstMap argMap = (ConstMap)arg;
                 ConstList keys = ConstList.fromArray(argMap.getKeys());
-                keys = (ConstList)packageArg(keys, src, dest, currentVat);
+                keys = (ConstList)packageArg(keys, src, dest);
                 ConstList vals = ConstList.fromArray(argMap.getValues());
-                vals = (ConstList)packageArg(vals, src, dest, currentVat);
+                vals = (ConstList)packageArg(vals, src, dest);
                 try {
                     return ConstMap.fromColumns(keys, vals);
                 } catch (ArityMismatchException e) {
@@ -229,23 +231,22 @@ class BootRefHandler implements EProxyHandler {
                 T.require(src != optHandler.myTargetsVat,
                           "Unshortened boot-ref: ",
                           arg);
+                //XXX This doesn't look safe; what if optHandler.myTarget changes
+                //while we're packaging it? We could just fall-through to the code
+                //below, but that seems to break one of the test cases.
                 return packageArg(optHandler.myTarget,
                                   optHandler.myTargetsVat,
-                                  dest,
-                                  currentVat);
+                                  dest);
             }
-
-            //arg is EVENTUAL (or was at the time of the test), and is not
-            //handled by a BootRefHandler, so we treat it as a promise in the
-            //src vat.
 
             BootRefHandler handler = new BootRefHandler(src, arg);
             DelayedRedirector rdr = new DelayedRedirector(handler.myResolver);
-            //handler and rdr are in the dest vat
-            Object[] args = {packageArg(rdr, dest, src, currentVat)};
+            //handler and rdr will be in the dest vat
+            Object[] args = {packageArg(rdr, dest, src)};
             src.qSendAllOnly(arg, false, "__whenMoreResolved", args);
             //Is it ok to ignore the E.sendOnly return result here?
             return handler.myResolver.getProxy();
+
         }
     }
 
@@ -258,7 +259,7 @@ class BootRefHandler implements EProxyHandler {
         Object[] result = new Object[args.length];
         for (int i = 0, len = args.length; i < len; i++) {
             result[i] =
-              packageArg(args[i], currentVat, myTargetsVat, currentVat);
+              packageArg(args[i], currentVat, myTargetsVat);
         }
         return result;
     }
@@ -281,13 +282,37 @@ class BootRefHandler implements EProxyHandler {
      */
     public Ref handleSendAll(String verb, Object[] args) {
         myFreshFlag = false;
-        Ref promise =
-          myTargetsVat.qSendAll(myTarget, false, verb, packageArgs(args));
+
+        Object[] promisePair = Ref.promise();
+        Ref promise = (Ref)promisePair[0];  // In myTargetsVat
+
         Vat currentVat = Vat.getCurrentVat();
-        return Ref.toRef(packageArg(promise,
-                                    myTargetsVat,
-                                    currentVat,
-                                    currentVat));
+
+        Ref remotePromise;                  // In currentVat
+
+        if (myTargetsVat == currentVat) {
+            remotePromise = promise;
+        } else {
+            BootRefHandler handler = new BootRefHandler(myTargetsVat, promise);
+            Ref proxy = handler.myResolver.getProxy();
+
+            DelayedRedirector rdr = new DelayedRedirector(handler.myResolver);
+            //handler and rdr are in the dest (current) vat
+            Object[] moreArgs = {packageArg(rdr, currentVat, myTargetsVat)};
+            myTargetsVat.qSendAllOnly(promise, false, "__whenMoreResolved", moreArgs);
+            //Is it ok to ignore the E.sendOnly return result here?
+
+            remotePromise = proxy;
+        }
+
+        Throwable optProblem =
+          myTargetsVat.qSendAll(myTarget, false, verb, packageArgs(args), (Resolver)promisePair[1]);
+
+        if (null == optProblem) {
+            return remotePromise;
+        } else {
+            return Ref.broken(optProblem);
+        }
     }
 
     /**
