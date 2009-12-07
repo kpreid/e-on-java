@@ -664,7 +664,7 @@ def eBrowserMaker(textModel) :any {
                 requestTextPaneFocus()
                 #textPane requestFocus()
             } else if (theEvent.isPopupTrigger() ||
-                         <unsafe:javax.swing.SwingUtilities>.isRightMouseButton(theEvent)) {
+                         <unsafe:javax.swing.makeSwingUtilities>.isRightMouseButton(theEvent)) {
                 def clickLocation := <unsafe:java.awt.makePoint>(theEvent.getX(), theEvent.getY())
                 def selectionIndex := funcListPane.locationToIndex(clickLocation)
                 funcListPane.setSelectedIndex(selectionIndex)
@@ -682,10 +682,10 @@ def eBrowserMaker(textModel) :any {
     #scrollingFuncPane setPreferredSize(<awt:makeDimension>(200, 100)) # why no effect?
 
     # build output viewpane
-    def outputPane
-    #def outputPane := <swing:makeJTextArea>()
-    #outputPane setMinimumSize(<awt:makeDimension>(20, 20))
-    #outputPane setText("Execution Output")
+    # XXX either remove or actually enable.
+    def outputPane := <swing:makeJTextArea>()
+    outputPane.setMinimumSize(<awt:makeDimension>(20, 20))
+    outputPane.setText("Execution Output")
     #def scrollingOutputPane := <swing:makeJScrollPane>(
     #    <swing:makeScrollPaneConstants>.getVERTICAL_SCROLLBAR_AS_NEEDED(),
     #    <swing:makeScrollPaneConstants>.getHORIZONTAL_SCROLLBAR_AS_NEEDED())
