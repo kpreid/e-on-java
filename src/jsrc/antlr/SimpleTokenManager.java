@@ -54,7 +54,7 @@ class SimpleTokenManager implements TokenManager, Cloneable {
             tm.antlrTool = antlrTool;
             tm.name = name;
         } catch (CloneNotSupportedException e) {
-            antlrTool.panic("cannot clone token manager");
+            antlrTool.fatalError("cannot clone token manager");
             return null;
         }
         return tm;

@@ -417,7 +417,7 @@ public abstract class CodeGenerator {
     /**
      * Generate code for the given grammar element.
      *
-     * @param blk The tree to generate code for.
+     * @param t The tree to generate code for.
      */
     public abstract void gen(TreeElement t);
 

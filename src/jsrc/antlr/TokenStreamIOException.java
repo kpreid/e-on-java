@@ -20,8 +20,6 @@ public class TokenStreamIOException extends TokenStreamException {
 
     /**
      * TokenStreamIOException constructor comment.
-     *
-     * @param s java.lang.String
      */
     public TokenStreamIOException(IOException io) {
         super(io.getMessage());

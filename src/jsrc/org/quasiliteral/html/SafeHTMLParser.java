@@ -10,6 +10,7 @@ import org.erights.e.elib.tables.ConstSet;
 import org.erights.e.elib.tables.FlexMap;
 import org.erights.e.elib.tables.FlexSet;
 
+import javax.swing.JEditorPane;
 import javax.swing.text.ChangedCharSetException;
 import javax.swing.text.html.parser.AttributeList;
 import javax.swing.text.html.parser.DTD;

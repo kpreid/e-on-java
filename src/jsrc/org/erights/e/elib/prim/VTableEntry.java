@@ -17,7 +17,7 @@ public interface VTableEntry extends Script {
      * vTable.
      * <p/>
      * It should extract information from the vTable that would allow its
-     * {@link Script#canHandle} method to give a quick but safe answer.
+     * {@link Script#canHandleR(Object)} method to give a quick but safe answer.
      *
      * @return
      */

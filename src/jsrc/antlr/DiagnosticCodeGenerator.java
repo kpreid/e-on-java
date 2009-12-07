@@ -58,7 +58,7 @@ public class DiagnosticCodeGenerator extends CodeGenerator {
                 g.generate();
 
                 if (antlrTool.hasError()) {
-                    antlrTool.panic("Exiting due to errors.");
+                    antlrTool.fatalError("Exiting due to errors.");
                 }
 
             }
@@ -80,7 +80,7 @@ public class DiagnosticCodeGenerator extends CodeGenerator {
     /**
      * Generate code for the given grammar element.
      *
-     * @param blk The {...} action to generate
+     * @param action The {...} action to generate
      */
     public void gen(ActionElement action) {
         if (action.isSemPred) {
@@ -112,7 +112,7 @@ public class DiagnosticCodeGenerator extends CodeGenerator {
     /**
      * Generate code for the given grammar element.
      *
-     * @param blk The block-end element to generate.  Block-end elements are
+     * @param end The block-end element to generate.  Block-end elements are
      *            synthesized by the grammar parser to represent the end of a
      *            block.
      */
@@ -123,7 +123,7 @@ public class DiagnosticCodeGenerator extends CodeGenerator {
     /**
      * Generate code for the given grammar element.
      *
-     * @param blk The character literal reference to generate
+     * @param atom The character literal reference to generate
      */
     public void gen(CharLiteralElement atom) {
         print("Match character ");
@@ -140,7 +140,7 @@ public class DiagnosticCodeGenerator extends CodeGenerator {
     /**
      * Generate code for the given grammar element.
      *
-     * @param blk The character-range reference to generate
+     * @param r The character-range reference to generate
      */
     public void gen(CharRangeElement r) {
         print("Match character range: " + r.beginText + ".." + r.endText);
@@ -336,7 +336,7 @@ public class DiagnosticCodeGenerator extends CodeGenerator {
     /**
      * Generate code for the given grammar element.
      *
-     * @param blk The rule-reference to generate
+     * @param rr The rule-reference to generate
      */
     public void gen(RuleRefElement rr) {
         RuleSymbol rs = (RuleSymbol)grammar.getSymbol(rr.targetRule);
@@ -388,7 +388,7 @@ public class DiagnosticCodeGenerator extends CodeGenerator {
     /**
      * Generate code for the given grammar element.
      *
-     * @param blk The string-literal reference to generate
+     * @param atom The string-literal reference to generate
      */
     public void gen(StringLiteralElement atom) {
         print("Match string literal ");
@@ -402,7 +402,7 @@ public class DiagnosticCodeGenerator extends CodeGenerator {
     /**
      * Generate code for the given grammar element.
      *
-     * @param blk The token-range reference to generate
+     * @param r The token-range reference to generate
      */
     public void gen(TokenRangeElement r) {
         print("Match token range: " + r.beginText + ".." + r.endText);
@@ -415,7 +415,7 @@ public class DiagnosticCodeGenerator extends CodeGenerator {
     /**
      * Generate code for the given grammar element.
      *
-     * @param blk The token-reference to generate
+     * @param atom The token-reference to generate
      */
     public void gen(TokenRefElement atom) {
         print("Match token ");

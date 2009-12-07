@@ -47,7 +47,7 @@ public class IndexedVector {
     /**
      * Returns the element at the specified index.
      *
-     * @param index the index of the desired element
+     * @param i the index of the desired element
      * @throws ArrayIndexOutOfBoundsException If an invalid index was given.
      */
     public Object elementAt(int i) {

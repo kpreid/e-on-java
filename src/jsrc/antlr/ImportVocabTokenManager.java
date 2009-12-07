@@ -42,7 +42,7 @@ class ImportVocabTokenManager extends SimpleTokenManager {
             grammarFile = new File(antlrTool.getOutputDirectory(), filename);
 
             if (!grammarFile.exists()) {
-                antlrTool.panic(
+                antlrTool.fatalError(
                   "Cannot find importVocab file '" + filename + "'");
             }
         }
@@ -59,12 +59,12 @@ class ImportVocabTokenManager extends SimpleTokenManager {
             tokdefParser.setFilename(filename);
             tokdefParser.file(this);
         } catch (FileNotFoundException fnf) {
-            antlrTool.panic("Cannot find importVocab file '" + filename + "'");
+            antlrTool.fatalError("Cannot find importVocab file '" + filename + "'");
         } catch (RecognitionException ex) {
-            antlrTool.panic("Error parsing importVocab file '" + filename +
+            antlrTool.fatalError("Error parsing importVocab file '" + filename +
               "': " + ex.toString());
         } catch (TokenStreamException ex) {
-            antlrTool.panic(
+            antlrTool.fatalError(
               "Error reading importVocab file '" + filename + "'");
         }
     }

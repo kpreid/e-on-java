@@ -4,6 +4,7 @@ import org.erights.e.elib.base.SourceSpan;
 import org.erights.e.elib.serial.PassByProxy;
 import org.erights.e.elib.tables.Twine;
 import org.quasiliteral.astro.Astro;
+import org.quasiliteral.astro.AstroBuilder;
 
 import java.io.IOException;
 

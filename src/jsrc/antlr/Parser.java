@@ -369,7 +369,7 @@ public abstract class Parser {
     }
 
     public void setASTNodeClass(String cl) {
-        astFactory.setASTNodeType(cl);
+        astFactory.setASTNodeClass(cl);
     }
 
     /**

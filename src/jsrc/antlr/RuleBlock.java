@@ -195,7 +195,7 @@ public class RuleBlock extends AlternativeBlock {
                 TokenSymbol ts = grammar.tokenManager.getTokenSymbol(ruleName);
                 if (ts == null) {
                     grammar.antlrTool
-                      .panic(
+                      .fatalError(
                         "cannot find token associated with rule " + ruleName);
                 }
                 ts.setParaphrase(value.getText());

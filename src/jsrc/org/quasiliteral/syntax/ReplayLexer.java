@@ -83,7 +83,7 @@ public class ReplayLexer implements LexerFace {
     }
 
     /**
-     * XXX This really sucks compared to {@link BaseLexer#syntaxError) for
+     * XXX This really sucks compared to {@link BaseLexer#syntaxError} for
      * printing to a human, but at least it does report where the error is
      * adequately for programmatic use.
      */

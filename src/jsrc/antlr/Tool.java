@@ -508,7 +508,7 @@ public class Tool {
     /**
      * An error occured that should stop the Tool from doing any work. The
      * default implementation currently exits (via {@link
-     * java.lang.System.exit(int)} after printing an error message to
+     * java.lang.System#exit(int)} after printing an error message to
      * <var>stderr</var>. However, the tools should expect that a subclass will
      * override this to throw an unchecked exception such as {@link
      * java.lang.IllegalStateException} or another subclass of {@link
@@ -516,7 +516,7 @@ public class Tool {
      * must never return normally</strong>; i.e. it must always throw an
      * exception or call System.exit</em>.
      *
-     * @param s The message
+     * @param message The message
      * @since 2.7.2
      */
     public void fatalError(String message) {

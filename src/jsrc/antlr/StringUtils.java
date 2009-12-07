@@ -85,7 +85,7 @@ public class StringUtils {
      * General-purpose utility function for removing characters from the front
      * and back of string
      *
-     * @param s    The string to process
+     * @param src  The string to process
      * @param head exact string to strip from head
      * @param tail exact string to strip from tail
      * @return The resulting string

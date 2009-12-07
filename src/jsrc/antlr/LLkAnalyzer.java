@@ -783,7 +783,7 @@ public class LLkAnalyzer implements LLkGrammarAnalyzer {
             }
         } else {
             // Should have been avoided by MakeGrammar
-            tool.panic("Character literal reference found in parser");
+            tool.fatalError("Character literal reference found in parser");
             // ... so we make the compiler happy
             return Lookahead.of(atom.getType());
         }
@@ -812,7 +812,7 @@ public class LLkAnalyzer implements LLkGrammarAnalyzer {
 
         if (lexicalAnalysis) {
             // MakeGrammar should have created a rule reference instead
-            tool.panic("token reference found in lexer");
+            tool.fatalError("token reference found in lexer");
         }
         // Skip until analysis hits k==1
         if (1 < k) {

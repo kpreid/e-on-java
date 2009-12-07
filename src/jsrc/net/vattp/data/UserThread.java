@@ -23,8 +23,8 @@ Contributor(s): ______________________________________.
 /**
  * "I have seen things you would not believe..."
  *
- * @see ListenThread.startup()
- * @see ListenThread.shutdown()
+ * @see ListenThread#startup()
+ * @see ListenThread#shutdown()
  */
 class UserThread extends Thread {
 

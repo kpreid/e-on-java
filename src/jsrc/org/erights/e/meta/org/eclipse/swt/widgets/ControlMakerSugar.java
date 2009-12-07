@@ -42,8 +42,8 @@ public class ControlMakerSugar {
      * If any of 'sources' currently has or contains the focus, then requests
      * that 'dest' gets the focus.
      *
-     * @param 'sources' Provided to show that the requestor has rights to the
-     *                  focus, in order to authorize the transfer to 'dest'.
+     * @param sources Provided to show that the requestor has rights to the
+     *                focus, in order to authorize the transfer to 'dest'.
      * @return Whether the operation was authorized by 'sources', and whether
      *         the 'setFocus()' succeeded.
      */

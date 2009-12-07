@@ -53,8 +53,8 @@ public class QuasiElement extends QuasiContent {
      *                   it's a non-negative Integer, then it's a $-hole with
      *                   that index. If it's a negative Integer, then it's a
      *                   @-hole whose 1's complement (~) is the index.
-     * @param myChildren represent the quasi-literal XML between the start tag
-     *                   and the end tag.
+     * @param children represent the quasi-literal XML between the start tag
+     *                 and the end tag.
      */
     public QuasiElement(Object tagName, QuasiContent children) {
         myTagName = tagName;

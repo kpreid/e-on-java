@@ -31,9 +31,9 @@ import java.util.TimeZone;
  * respresentation) but enhanced to represent milliseconds.
  *
  * @author Mark S. Miller
- * @see <a href="http://www.w3.org/TR/1998/NOTE-datetime-19980827">w3c's
+ * @See <a href="http://www.w3.org/TR/1998/NOTE-datetime-19980827">w3c's
  *      explanation of </a>
- * @see <a href="http://www.w3.org/TR/REC-html40/types.html#type-datetime"
+ * @See <a href="http://www.w3.org/TR/REC-html40/types.html#type-datetime"
  *      >html4.0's explanation</a>
  */
 public class ETimeFormat {

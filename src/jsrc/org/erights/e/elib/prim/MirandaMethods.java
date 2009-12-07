@@ -278,7 +278,7 @@ public class MirandaMethods {
      * '<tt>foo.setBar(newValue)</tt>' <li>and whose '<tt>isFinal()</tt>'
      * returns false</tt>'. </ul>
      *
-     * @see <a href= "http://www.eros-os.org/pipermail/e-lang/2004-April/009720.html"
+     * @See <a href= "http://www.eros-os.org/pipermail/e-lang/2004-April/009720.html"
      *      >Re: On kernel-E, operators, and properties (part 1)</a>.
      * @deprecated Even if E does again decide to support explicit properties,
      *             it'll do it with a global function that asks the object's

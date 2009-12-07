@@ -35,8 +35,8 @@ public class RecognitionException extends ANTLRException {
     }
 
     /**
-     * @deprecated As of ANTLR 2.7.2 use {@see #RecognitionException(char,
-     *String,int,int) }
+     * @deprecated As of ANTLR 2.7.2 use 
+     *             {@link #RecognitionException(String,String,int,int) }
      */
     public RecognitionException(String s, String fileName_, int line_) {
         this(s, fileName_, line_, -1);

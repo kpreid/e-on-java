@@ -20,7 +20,7 @@ class DefaultToolErrorHandler implements ToolErrorHandler {
 
     /**
      * Dump token/character sets to a string array suitable for {@link
-     * antlr.Tool.warning(String[], String, int, int)
+     * antlr.Tool#warning(String[], String, int, int)}
      *
      * @param output           The array that will contain the token/character
      *                         set dump, one element per k (lookahead) value

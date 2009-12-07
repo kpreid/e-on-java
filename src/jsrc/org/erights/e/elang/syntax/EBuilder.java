@@ -276,7 +276,8 @@ public interface EBuilder extends BaseEBuilder {
      *                   following the for loop for receiving the break
      *                   argument.
      * @return The expression for computing the for-loop.
-     * @see <a href= "https://bugs.sieve.net/bugs/?func=detailbug&bug_id=125606&group_id=16380"
+     * @See <a href= 
+     * "http://www.eros-os.org/pipermail/e-lang/2003-November/009285.html"
      *      >'for' loop security concerns</a>
      */
     EExpr forx(Object assoc, Object collExpr, Object mBody, Object optCatcher);

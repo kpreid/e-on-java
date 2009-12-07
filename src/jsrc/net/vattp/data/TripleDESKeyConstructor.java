@@ -58,7 +58,9 @@ final class TripleDESKeyConstructor {
      * @param dhSecret the Diffie-Hellman secret
      * @return a byte[] containing the constructed key.
      * @see cryptix.provider.key.RawKey
-     * @see http://www.erights.org/doc/to-be-sorted/DataComm_startup.html
+     * @see <a href=
+     * "http://www.erights.org/elib/distrib/vattp/DataComm_startup.html"
+     * >VatTP Startup Protocol</a>
      */
     static byte[] make(final byte[] dhSecret) {
         try {

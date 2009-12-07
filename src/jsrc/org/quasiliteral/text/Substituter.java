@@ -238,9 +238,9 @@ public class Substituter implements ValueMaker, MatchMaker {
      * the only circumstance in which we return an empty string: A dollar hole
      * may be filled by an expression whose value is the empty string.
      *
-     * @see <a href= "http://bugs.sieve.net/bugs/?func=detailbug&bug_id=125589&group_id=16380
+     * @See <a href= "http://bugs.sieve.net/bugs/?func=detailbug&bug_id=125589&group_id=16380
      *      ">simple__quasiParser fails on empty quasi string (``)</a>
-     * @see <a href= "http://bugs.sieve.net/bugs/?func=detailbug&bug_id=125595&group_id=16380
+     * @See <a href= "http://bugs.sieve.net/bugs/?func=detailbug&bug_id=125595&group_id=16380
      *      ">CapDesk fails on new simple__quasiParser bug</a>
      */
     private Twine optSegments(int[] iPtr, ConstList args) {

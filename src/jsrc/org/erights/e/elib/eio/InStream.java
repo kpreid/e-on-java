@@ -14,7 +14,7 @@ import java.io.IOException;
  * A client of an InStream is a <i>consumer</i>.
  *
  * @author Mark S. Miller
- * @see <a href="http://www.erights.org/elib/concurrency/eio/obtaining.html"
+ * @See <a href="http://www.erights.org/elib/concurrency/eio/obtaining.html"
  *      >obtaining</a> for more info.
  */
 public interface InStream extends Stream {

@@ -18,7 +18,7 @@ public class ANTLRTokdefParser extends antlr.LLkParser
      * In order to make it so existing subclasses don't break, we won't require
      * that the antlr.Tool instance be passed as a constructor element.
      * Instead, the antlr.Tool instance should register itself via {@link
-     * #initTool(antlr.Tool)}
+     * #setTool(antlr.Tool)}
      *
      * @throws IllegalStateException if a tool has already been registered
      * @since 2.7.2
@@ -40,7 +40,7 @@ public class ANTLRTokdefParser extends antlr.LLkParser
 
     /**
      * Delegates the error message to the tool if any was registered via {@link
-     * #initTool(antlr.Tool)}
+     * #setTool(antlr.Tool)}
      *
      * @since 2.7.2
      */
@@ -54,13 +54,13 @@ public class ANTLRTokdefParser extends antlr.LLkParser
 
     /**
      * Delegates the error message to the tool if any was registered via {@link
-     * #initTool(antlr.Tool)}
+     * #setTool(antlr.Tool)}
      *
      * @since 2.7.2
      */
     public void reportError(RecognitionException e) {
         if (getTool() != null) {
-            getTool().error(e.getErrorMessage(),
+            getTool().error(e.getMessage(),
                             e.getFilename(),
                             e.getLine(),
                             e.getColumn());
@@ -71,7 +71,7 @@ public class ANTLRTokdefParser extends antlr.LLkParser
 
     /**
      * Delegates the warning message to the tool if any was registered via
-     * {@link #initTool(antlr.Tool)}
+     * {@link #setTool(antlr.Tool)}
      *
      * @since 2.7.2
      */

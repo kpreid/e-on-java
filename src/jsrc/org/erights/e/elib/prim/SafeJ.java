@@ -3,6 +3,9 @@ package org.erights.e.elib.prim;
 // Copyright 2002 Combex, Inc. under the terms of the MIT X license
 // found at http://www.opensource.org/licenses/mit-license.html ...............
 
+import java.io.IOException;
+import java.net.URL;
+
 import org.erights.e.develop.assertion.T;
 import org.erights.e.develop.exception.ExceptionMgr;
 import org.erights.e.develop.format.StringHelper;
@@ -15,15 +18,11 @@ import org.erights.e.elib.tables.FlexSet;
 import org.erights.e.elib.tables.IdentityCacheTable;
 import org.erights.e.elib.tables.Twine;
 import org.erights.e.elib.util.ClassCache;
-import org.erights.e.elib.vat.StackContext;
 import org.erights.e.meta.java.net.URLSugar;
 import org.quasiliteral.astro.Astro;
 import org.quasiliteral.astro.AstroTag;
 import org.quasiliteral.term.Term;
 import org.quasiliteral.term.TermParser;
-
-import java.io.IOException;
-import java.net.URL;
 
 /**
  * Represents the taming decisions about a Java class.

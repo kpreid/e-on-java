@@ -50,7 +50,7 @@ public class Vector implements Cloneable {
     /**
      * Returns the element at the specified index.
      *
-     * @param index the index of the desired element
+     * @param i the index of the desired element
      * @throws ArrayIndexOutOfBoundsException If an invalid index was given.
      */
     public synchronized Object elementAt(int i) {

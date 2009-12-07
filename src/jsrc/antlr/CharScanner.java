@@ -277,8 +277,8 @@ public abstract class CharScanner implements TokenStream {
     /**
      * This method is executed by ANTLR internally when it detected an illegal
      * state that cannot be recovered from. The default implementation of this
-     * method calls {@link java.lang.System.exit(int)} and writes directly to
-     * {@link java.lang.System.err)} , which is usually not appropriate when a
+     * method calls {@link java.lang.System#exit(int)} and writes directly to
+     * {@link java.lang.System#err} , which is usually not appropriate when a
      * translator is embedded into a larger application. <em>It is highly
      * recommended that this method be overridden to handle the error in a way
      * appropriate for your application (e.g. throw an unchecked

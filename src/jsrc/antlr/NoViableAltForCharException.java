@@ -22,8 +22,8 @@ public class NoViableAltForCharException extends RecognitionException {
     }
 
     /**
-     * @deprecated As of ANTLR 2.7.2 use {@see #NoViableAltForCharException(char,
-     *String,int,int) }
+     * @deprecated As of ANTLR 2.7.2 use 
+     *             {@link #NoViableAltForCharException(char,String,int,int) }
      */
     public NoViableAltForCharException(char c, String fileName, int line) {
         this(c, fileName, line, -1);

@@ -19,6 +19,9 @@ Copyright (C) 1998 Electric Communities. All Rights Reserved.
 Contributor(s): ______________________________________.
 */
 
+import java.io.IOException;
+import java.lang.reflect.Modifier;
+
 import org.erights.e.develop.assertion.T;
 import org.erights.e.develop.exception.NestedException;
 import org.erights.e.elib.base.Callable;
@@ -34,14 +37,9 @@ import org.erights.e.elib.serial.JOSSPassByConstruction;
 import org.erights.e.elib.serial.Persistent;
 import org.erights.e.elib.slot.Guard;
 import org.erights.e.elib.tables.ConstList;
-import org.erights.e.elib.tables.EMap;
 import org.erights.e.elib.tables.FlexList;
 import org.erights.e.elib.tables.FlexMap;
 import org.erights.e.elib.util.AlreadyDefinedException;
-import org.erights.e.elib.util.ClassCache;
-
-import java.io.IOException;
-import java.lang.reflect.Modifier;
 
 /**
  * How a Java class's static methods are made accessible to E.

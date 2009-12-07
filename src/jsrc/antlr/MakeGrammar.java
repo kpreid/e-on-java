@@ -64,7 +64,7 @@ public class MakeGrammar extends DefineGrammarSymbols {
     public void beginExceptionGroup() {
         super.beginExceptionGroup();
         if (!(context().block instanceof RuleBlock)) {
-            tool.panic("beginExceptionGroup called outside of rule block");
+            tool.fatalError("beginExceptionGroup called outside of rule block");
         }
     }
 
@@ -314,7 +314,7 @@ public class MakeGrammar extends DefineGrammarSymbols {
     public void endExceptionSpec() {
         super.endExceptionSpec();
         if (currentExceptionSpec == null) {
-            tool.panic(
+            tool.fatalError(
               "exception processing internal error -- no active exception spec");
         }
         if (context().block instanceof RuleBlock) {
@@ -585,7 +585,7 @@ public class MakeGrammar extends DefineGrammarSymbols {
         TokenSymbol ts =
           (TokenSymbol)grammar.tokenManager.getTokenSymbol(tok.getText());
         if (ts == null) {
-            tool.panic("cannot find " + tok.getText() + "in tokens {...}");
+            tool.fatalError("cannot find " + tok.getText() + "in tokens {...}");
         }
         if ("AST".equals(option.getText())) {
             ts.setASTNodeType(value.getText());
@@ -622,7 +622,7 @@ public class MakeGrammar extends DefineGrammarSymbols {
     public void refExceptionHandler(Token exTypeAndName, Token action) {
         super.refExceptionHandler(exTypeAndName, action);
         if (currentExceptionSpec == null) {
-            tool.panic("exception handler processing internal error");
+            tool.fatalError("exception handler processing internal error");
         }
         currentExceptionSpec.addHandler(new ExceptionHandler(exTypeAndName,
                                                              action));

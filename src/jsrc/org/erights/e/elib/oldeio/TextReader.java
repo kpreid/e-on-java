@@ -9,6 +9,7 @@ import org.erights.e.meta.java.lang.CharacterMakerSugar;
 
 import java.io.IOException;
 import java.io.Reader;
+import java.io.StringWriter;
 
 /**
  * A non-blocking {@link Reader} for reading the text that appears in a shared

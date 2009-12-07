@@ -164,7 +164,7 @@ public class TreeParser {
      * Specify the type of node to create during tree building
      */
     public void setASTNodeClass(String nodeType) {
-        astFactory.setASTNodeType(nodeType);
+        astFactory.setASTNodeClass(nodeType);
     }
 
     public void traceIndent() {

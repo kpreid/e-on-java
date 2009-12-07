@@ -239,7 +239,7 @@ public class PythonCodeGenerator extends CodeGenerator {
     /**
      * Generate code for the given grammar element.
      *
-     * @param blk The {...} action to generate
+     * @param action The {...} action to generate
      */
     public void gen(ActionElement action) {
         if (action.isSemPred) {
@@ -327,7 +327,7 @@ public class PythonCodeGenerator extends CodeGenerator {
     /**
      * Generate code for the given grammar element.
      *
-     * @param blk The block-end element to generate.  Block-end elements are
+     * @param end The block-end element to generate.  Block-end elements are
      *            synthesized by the grammar parser to represent the end of a
      *            block.
      */
@@ -340,7 +340,7 @@ public class PythonCodeGenerator extends CodeGenerator {
     /**
      * Generate code for the given grammar element.
      *
-     * @param blk The character literal reference to generate
+     * @param atom The character literal reference to generate
      */
     public void gen(CharLiteralElement atom) {
         if (DEBUG_CODE_GENERATOR) {
@@ -373,7 +373,7 @@ public class PythonCodeGenerator extends CodeGenerator {
     /**
      * Generate code for the given grammar element.
      *
-     * @param blk The character-range reference to generate
+     * @param r The character-range reference to generate
      */
     public void gen(CharRangeElement r) {
         if (r.getLabel() != null && 0 == syntacticPredLevel) {
@@ -403,7 +403,7 @@ public class PythonCodeGenerator extends CodeGenerator {
 
         setGrammar(g);
         if (!(grammar instanceof LexerGrammar)) {
-            antlrTool.panic("Internal error generating lexer");
+            antlrTool.fatalError("Internal error generating lexer");
         }
 
         // SAS: moved output creation to method so a subclass can change
@@ -727,7 +727,7 @@ public class PythonCodeGenerator extends CodeGenerator {
 
         setGrammar(g);
         if (!(grammar instanceof ParserGrammar)) {
-            antlrTool.panic("Internal error generating parser");
+            antlrTool.fatalError("Internal error generating parser");
         }
 
         // Open the output stream for the parser and set the currentOutput
@@ -880,7 +880,7 @@ public class PythonCodeGenerator extends CodeGenerator {
     /**
      * Generate code for the given grammar element.
      *
-     * @param blk The rule-reference to generate
+     * @param rr The rule-reference to generate
      */
     public void gen(RuleRefElement rr) {
         if (DEBUG_CODE_GENERATOR) {
@@ -996,7 +996,7 @@ public class PythonCodeGenerator extends CodeGenerator {
     /**
      * Generate code for the given grammar element.
      *
-     * @param blk The string-literal reference to generate
+     * @param atom The string-literal reference to generate
      */
     public void gen(StringLiteralElement atom) {
         if (DEBUG_CODE_GENERATOR) {
@@ -1030,7 +1030,7 @@ public class PythonCodeGenerator extends CodeGenerator {
     /**
      * Generate code for the given grammar element.
      *
-     * @param blk The token-range reference to generate
+     * @param r The token-range reference to generate
      */
     public void gen(TokenRangeElement r) {
         genErrorTryForElement(r);
@@ -1049,14 +1049,14 @@ public class PythonCodeGenerator extends CodeGenerator {
     /**
      * Generate code for the given grammar element.
      *
-     * @param blk The token-reference to generate
+     * @param atom The token-reference to generate
      */
     public void gen(TokenRefElement atom) {
         if (DEBUG_CODE_GENERATOR) {
             System.out.println("genTokenRef(" + atom + ")");
         }
         if (grammar instanceof LexerGrammar) {
-            antlrTool.panic("Token reference found in lexer");
+            antlrTool.fatalError("Token reference found in lexer");
         }
         genErrorTryForElement(atom);
         // Assign Token value to token label variable
@@ -1151,7 +1151,7 @@ public class PythonCodeGenerator extends CodeGenerator {
         // SAS: debugging stuff removed for now...
         setGrammar(g);
         if (!(grammar instanceof TreeWalkerGrammar)) {
-            antlrTool.panic("Internal error generating tree-walker");
+            antlrTool.fatalError("Internal error generating tree-walker");
         }
         // Open the output stream for the parser and set the currentOutput
         // SAS: move file open to method so subclass can override it
@@ -2177,7 +2177,7 @@ public class PythonCodeGenerator extends CodeGenerator {
         }
         RuleSymbol rs = (RuleSymbol)grammar.getSymbol(r);
         if (rs == null) {
-            antlrTool.panic("Enclosing rule not found!");
+            antlrTool.fatalError("Enclosing rule not found!");
         }
         ExceptionSpec ex = rs.block.findExceptionSpec(el.getLabel());
         if (ex != null) {
@@ -2237,7 +2237,7 @@ public class PythonCodeGenerator extends CodeGenerator {
         }
         RuleSymbol rs = (RuleSymbol)grammar.getSymbol(r);
         if (rs == null) {
-            antlrTool.panic("Enclosing rule not found!");
+            antlrTool.fatalError("Enclosing rule not found!");
         }
         ExceptionSpec ex = rs.block.findExceptionSpec(el.getLabel());
         if (ex != null) {
@@ -2663,7 +2663,7 @@ public class PythonCodeGenerator extends CodeGenerator {
      * <p/>
      * A rule finishes by setting the returnAST variable from the ASTPair.
      *
-     * @param rule        The name of the rule to generate
+     * @param s           The name of the rule to generate
      * @param startSymbol true if the rule is a start symbol (i.e., not
      *                    referenced elsewhere)
      */
@@ -3237,7 +3237,7 @@ public class PythonCodeGenerator extends CodeGenerator {
                     StringLiteralSymbol sl =
                       (StringLiteralSymbol)tm.getTokenSymbol(s);
                     if (sl == null) {
-                        antlrTool.panic(
+                        antlrTool.fatalError(
                           "String literal " + s + " not in symbol table");
                     }
 
@@ -3292,7 +3292,7 @@ public class PythonCodeGenerator extends CodeGenerator {
      * Get a string for an expression to generate creating of an AST node
      *
      * @param atom The grammar node for which you are creating the node
-     * @param str  The arguments to the AST constructor
+     * @param astCtorArgs  The arguments to the AST constructor
      */
     public String getASTCreateString(GrammarAtom atom, String astCtorArgs) {
         if (atom != null && atom.getASTNodeType() != null) {
@@ -3312,7 +3312,7 @@ public class PythonCodeGenerator extends CodeGenerator {
      * add to the end if only 2 arguments.  The forms are #[T], #[T,"t"], and
      * as of 2.7.2 #[T,"t",ASTclassname].
      *
-     * @param str The arguments to the AST constructor
+     * @param astCtorArgs The arguments to the AST constructor
      */
     public String getASTCreateString(String astCtorArgs) {
         if (astCtorArgs == null) {
@@ -3464,7 +3464,7 @@ public class PythonCodeGenerator extends CodeGenerator {
      */
     public String getRangeExpression(int k, int[] elems) {
         if (!elementsAreRange(elems)) {
-            antlrTool.panic("getRangeExpression called with non-range");
+            antlrTool.fatalError("getRangeExpression called with non-range");
         }
         int begin = elems[0];
         int end = elems[elems.length - 1];
@@ -3720,9 +3720,9 @@ public class PythonCodeGenerator extends CodeGenerator {
         } catch (RecognitionException ex) {
             lexer.reportError(ex);
         } catch (TokenStreamException tex) {
-            antlrTool.panic("Error reading action:" + actionStr);
+            antlrTool.fatalError("Error reading action:" + actionStr);
         } catch (CharStreamException io) {
-            antlrTool.panic("Error reading action:" + actionStr);
+            antlrTool.fatalError("Error reading action:" + actionStr);
         }
         return actionStr;
     }
@@ -3768,9 +3768,9 @@ public class PythonCodeGenerator extends CodeGenerator {
         } catch (RecognitionException ex) {
             lexer.reportError(ex);
         } catch (TokenStreamException tex) {
-            antlrTool.panic("Error reading action:" + actionStr);
+            antlrTool.fatalError("Error reading action:" + actionStr);
         } catch (CharStreamException io) {
-            antlrTool.panic("Error reading action:" + actionStr);
+            antlrTool.fatalError("Error reading action:" + actionStr);
         }
         return actionStr;
     }
@@ -3885,7 +3885,7 @@ public class PythonCodeGenerator extends CodeGenerator {
         }
 
         /* serious error */
-        antlrTool.panic("Unknown grammar type");
+        antlrTool.fatalError("Unknown grammar type");
     }
 
     /**

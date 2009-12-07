@@ -19,6 +19,7 @@ Copyright (C) 1998 Electric Communities. All Rights Reserved.
 Contributor(s): ______________________________________.
 */
 
+import org.erights.e.develop.exception.NestedException;
 import org.erights.e.elib.oldeio.TextWriter;
 import org.erights.e.elib.prim.E;
 import org.erights.e.elib.serial.PassByProxy;
@@ -85,7 +86,7 @@ public abstract class FlexMap extends EMap implements PassByProxy {
      * If the key is overwritten, then the key order is unchanged. If the key
      * is novel, it's added to the end of the order.
      *
-     * @throws NotSettledException if the key is not settled
+     * @throws NestedException of NotSettledException if the key is not settled
      * @see org.erights.e.elib.ref.Ref#isSettled
      */
     public abstract void put(Object key, Object value, boolean strict);

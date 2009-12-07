@@ -67,7 +67,7 @@ public class TestELib {
     /**
      * run -- this is the closure for the message send.
      *
-     * @param Object resolution -- the result value from the message send.
+     * @param resolution -- the result value from the message send.
      */
     public Object run(Object resolution) {
         PrintStreamWriter.stdout().println("result is " + resolution);
