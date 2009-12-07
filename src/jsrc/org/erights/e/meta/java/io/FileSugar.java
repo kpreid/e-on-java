@@ -148,6 +148,15 @@ public class FileSugar {
     }
 
     /**
+     * Open 'self' for reading data.
+     */
+    static public InputStream inputStream(File self)
+      throws FileNotFoundException {
+        return new FileInputStream(self);
+    }
+
+
+    /**
      * Open 'self' for reading text, decoding UTF-8 and turning platform
      * newlines into '\n's
      */
@@ -336,6 +345,14 @@ public class FileSugar {
     }
 
     /**
+     * Open 'self' for appending data.
+     */
+    static public OutputStream outputStream(File self, boolean append)
+      throws IOException {
+        return new FileOutputStream(self.getPath(), append);
+    }
+
+    /**
      * Write the file (or append to the file) so that its contents represents
      * the string 'text', turning '\n's into platform newlines, and converting
      * to UTF-8
@@ -478,7 +495,7 @@ public class FileSugar {
     }
     
     /**
-     * Creates all but the last directory {@link mkdirs(File, OneArgFunc)}
+     * Creates all but the last directory {@link #mkdirs(File, OneArgFunc)}
      * would create.
      * <p>
      * This makes it possible to, given only a File, create the directories

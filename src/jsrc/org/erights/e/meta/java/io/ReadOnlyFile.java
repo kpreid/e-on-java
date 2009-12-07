@@ -16,6 +16,7 @@ import org.erights.e.elib.tables.Twine;
 import org.erights.e.elib.util.OneArgFunc;
 
 import java.io.BufferedReader;
+import java.io.InputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FilenameFilter;
@@ -276,6 +277,13 @@ public class ReadOnlyFile extends BaseLoader
      */
     public BufferedReader textReader() throws FileNotFoundException {
         return FileSugar.textReader(myPrecious);
+    }
+
+    /**
+     * Open 'self' for reading data.
+     */
+    public InputStream inputStream() throws FileNotFoundException {
+        return FileSugar.inputStream(myPrecious);
     }
 
     /**
