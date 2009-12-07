@@ -3,7 +3,7 @@
 pragma.syntax("0.8")
 
 # Copyright 2002 Combex, Inc. under the terms of the MIT X license
-# found at http://www.opensource.org/licenses/mit-license.html ................
+# found at http://www.opensource.org/licenses/mit-license.html .................
 
 # MODIFIED by MarkM to partially integrate some of kpreid's changes from
 # the e-on-cl tree.
@@ -72,14 +72,14 @@ def OrderedRegionMaker {
            var initBoundedLeft :boolean,
            var initEdges
           ) :any {
-
+        
         /**
          * Notational convenience
          */
         def region(boundedLeft :boolean, edges) :any {
             OrderedRegionMaker(myType, myName, boundedLeft, edges)
         }
-
+        
         if (initEdges.size() >= 1 && initEdges[0].previous() <=> initEdges[0]) {
             # if the first edge is the least element, get rid of it and
             # flip parity
@@ -89,22 +89,22 @@ def OrderedRegionMaker {
         initEdges := initEdges.snapshot()
         def myInParity := if (initBoundedLeft) {0} else {1}
         def myLen := initEdges.size()
-
+        
         def myBoundedLeft := initBoundedLeft
         def myEdges := initEdges
-
+        
         /**
          * As guards, regions only accept positions in the region.
          */
         def self implements Guard {
-
+            
             /**
              * Returns a ConstList of edge positions in ascending order
              */
             to getEdges() :any {
                 myEdges
             }
-
+            
             /**
              * mostly prints in E sugared expression syntax
              */
@@ -125,7 +125,7 @@ def OrderedRegionMaker {
                     } else {
                         out.print("<full ", myName, " region>")
                     }
-
+                    
                 } else if (myLen == 1) {
                     printEdge(myBoundedLeft, myEdges[0])
                 } else {
@@ -147,7 +147,7 @@ def OrderedRegionMaker {
                     }
                 }
             }
-
+            
             /**
              * Is pos in the region?
              * <p>
@@ -168,7 +168,7 @@ def OrderedRegionMaker {
                 # bounded right
                 myLen %% 2 != myInParity
             }
-
+            
             /**
              * All Regions are also Guards, either coercing a
              * specimen to a position in the region, or rejecting it.
@@ -180,25 +180,30 @@ def OrderedRegionMaker {
                 } else {
                     throw.eject(optEjector,
                                 `${E.toQuote(specimen)} is not in the region ${
-                                  E.toQuote(self)}`)
+                            E.toQuote(self)}`)
                 }
             }
-
-            /** Return the type's trivial value if it is in the region, otherwise fail. */
+            
+            /**
+             * Return the type's trivial value if it is in the region,
+             * otherwise fail.
+             */
             to getTheTrivialValue() :any {
-              return self.coerce(
-                       def t := myType.getTheTrivialValue(),
-                       def cantTrivialize(_) :void {
-                         throw(`trivial value $t is not available in region $self`)
-                       })
+                return self.coerce(
+                    def t := myType.getTheTrivialValue(),
+                    def cantTrivialize(_) :void {
+                        throw(
+                            `trivial value $t is not available in region $self`
+                        )
+                    })
             }
-
+            
             /**
              * Note that the empty region is bounded left, but it doesn't
              * have a start
              */
             to isBoundedLeft() :boolean { myBoundedLeft }
-
+            
             /**
              * Note that the empty region is bounded left, but it doesn't
              * have a start.
@@ -213,13 +218,13 @@ def OrderedRegionMaker {
                     null
                 }
             }
-
+            
             /**
              * Note that the empty region is bounded right, but it doesn't
              * have a bound
              */
             to isBoundedRight() :boolean { myLen %% 2 == myInParity }
-
+            
             /**
              * Note that the empty region is bounded right, but it doesn't
              * have a bound.
@@ -235,7 +240,7 @@ def OrderedRegionMaker {
                     null
                 }
             }
-
+            
             /**
              * Does this region contain no positions?
              * <p>
@@ -246,7 +251,7 @@ def OrderedRegionMaker {
             to isEmpty() :boolean {
                 myLen == 0 && myBoundedLeft
             }
-
+            
             /**
              * Does this region contain all positions?
              * <p>
@@ -256,7 +261,7 @@ def OrderedRegionMaker {
             to isFull() :boolean {
                 myLen == 0 && !myBoundedLeft
             }
-
+            
             /**
              * All regions of a coordinate space can be made by and/or/nots
              * of distinctions.
@@ -267,7 +272,7 @@ def OrderedRegionMaker {
             to isDistinction() :boolean {
                 myLen == 1
             }
-
+            
             /**
              * The intersection of distinctions must be an interval (it may
              * or may not also be a distinction).
@@ -293,7 +298,7 @@ def OrderedRegionMaker {
                     false
                 }
             }
-
+            
             /**
              * A region can be asked to decompose itself into intervals.
              * <p>
@@ -322,7 +327,7 @@ def OrderedRegionMaker {
                 }
                 flex.snapshot()
             }
-
+            
             /**
              * An interval can be asked to decompose itself into distinctions.
              * <p>
@@ -337,12 +342,12 @@ def OrderedRegionMaker {
                 if (myLen == 1) {
                     # a distinctions is one inequality
                     [self]
-
+                    
                 } else if (myLen == 2 && myBoundedLeft) {
                     # an interval is the intersection of two inequalities
                     [region(true, [myEdges[0]]),
                      region(false, [myEdges[1]])]
-
+                    
                 } else if (myLen == 0) {
                     if (myBoundedLeft) {
                         # the empty region is the intersection of two
@@ -360,7 +365,7 @@ def OrderedRegionMaker {
                     throw("can only get distinctions from an interval")
                 }
             }
-
+            
             /**
              * the region you get if you displace all my positions by
              * offset.
@@ -375,21 +380,21 @@ def OrderedRegionMaker {
                 }
                 region(myBoundedLeft, flex)
             }
-
+            
             /**
              * the region you get if you displace all my positions by -offset
              */
             to subtract(offset) :any {
                 self + -offset
             }
-
+            
             /**
              * A region whose membership is the opposite of this one.
              */
             to not() :any {
                 region(!myBoundedLeft, myEdges)
             }
-
+            
             /**
              * only those positions in both regions
              */
@@ -425,21 +430,21 @@ def OrderedRegionMaker {
                 }
                 region(newBoundedLeft, flex)
             }
-
+            
             /**
              * all positions in either region
              */
             to or(other) :any {
                 !(!self & !other)
             }
-
+            
             /**
              * all position in me but not in other.
              */
             to butNot(other) :any {
                 self & !other
             }
-
+            
             /**
              * enumerates positions in ascending order.
              * <p>
@@ -474,7 +479,7 @@ def OrderedRegionMaker {
                     }
                 }
             }
-
+            
             /**
              * returned object will enumerate positions in descending order
              */
@@ -509,7 +514,7 @@ def OrderedRegionMaker {
                     }
                 }
             }
-
+            
             /**
              * As a region, my comparison is a subset test.
              */
