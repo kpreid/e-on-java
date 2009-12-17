@@ -207,7 +207,7 @@ def makeWelcomeView(swtParent, palette, traceline) :near {
             
             swtSplash.setSize(ib.getWidth(), ib.getHeight())
                         
-            swtWelcomeView.setSize(900, 600)
+            swtWelcomeView.setSize(900, 675)
         }
         
         to exportModelToDotFile(dotFile :File) :void {}

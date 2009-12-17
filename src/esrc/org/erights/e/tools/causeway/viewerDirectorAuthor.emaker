@@ -5,6 +5,14 @@ pragma.syntax("0.9")
 # Copyright 2009 Teleometry Design under the terms of the MIT X license
 # found at http://www.opensource.org/licenses/mit-license.html ................
 
+def swt__uriGetter := <import:org.eclipse.swt.*>
+def widget__uriGetter := <swt:widgets.*>
+def custom__uriGetter := <swt:custom.*>
+def SWT := <swt:makeSWT>
+
+def <swttools> := <import:org.erights.e.ui.swt.*>
+def swtGrid__quasiParser := <swttools:swtGridQParserMaker>()
+
 def makeWelcomeView :=
   <import:org.erights.e.tools.causeway.makeWelcomeView>
 
@@ -32,18 +40,18 @@ def makeDefaultUniFilter() :near {
 #  uniFilter.addElement("org/erights/e/elang/cmd/makeParseFuncAuthor.emaker")
 #  uniFilter.addElement("org/erights/e/elang/cmd/makeRepl.emaker")
 #  uniFilter.addElement("org/erights/e/elang/cmd/runeAuthor.emaker")
-
-#uniFilter.addElement("hp/fred/FredRegisterX.java")
-
-#uniFilter.addElement("hp/polling/Guarantee.java")
-#uniFilter.addElement("hp/polling/PollerX.java")
-#uniFilter.addElement("hp/polling/WhenCyclerX.java")
-
-#uniFilter.addElement("hp/scoopfs/FileMarkerX.java")
-#uniFilter.addElement("hp/scoopfs/Log.java")
-#uniFilter.addElement("hp/scoopfs/MailArchiverX.java")
-#uniFilter.addElement("hp/scoopfs/Main.java")
-#uniFilter.addElement("hp/scoopfs/UIModelX.java")
+    
+    #uniFilter.addElement("hp/fred/FredRegisterX.java")
+    
+    #uniFilter.addElement("hp/polling/Guarantee.java")
+    #uniFilter.addElement("hp/polling/PollerX.java")
+    #uniFilter.addElement("hp/polling/WhenCyclerX.java")
+    
+    #uniFilter.addElement("hp/scoopfs/FileMarkerX.java")
+    #uniFilter.addElement("hp/scoopfs/Log.java")
+    #uniFilter.addElement("hp/scoopfs/MailArchiverX.java")
+    #uniFilter.addElement("hp/scoopfs/Main.java")
+    #uniFilter.addElement("hp/scoopfs/UIModelX.java")
     
     return uniFilter.snapshot()
 }
@@ -70,24 +78,40 @@ def viewerDirectorAuthor(rootDirName :String,
         
         var uniFilter := makeDefaultUniFilter()
         
-#        if (uniFilter.size() >= 1) {
-#            traceline(``)
-#            traceline(`>>>>> uniFilter default pathnames:`)
-#            for pn in uniFilter {
-#                traceline(`$pn`)
-#            }
-#        }
-        
         if (traces != []) {
+            
+            def swtDialog := makers["modelessDialog"](shell,
+                                                      SWT.getDIALOG_TRIM())
+            
+            def swtProgressMsg := <widget:makeLabel>(swtDialog,
+                                                     SWT.getCENTER())
+            def swtProgressBar := <widget:makeProgressBar>(swtDialog,
+                                                           SWT.getSMOOTH())
+            swtGrid`$swtDialog:
+                    $swtProgressMsg.X
+                    $swtProgressBar.X`
+            
+            swtDialog.pack()
+            swtDialog.setSize(400, 150)
+            
+            swtDialog.open()
+            
             bind makeCausewayModel := causewayModelAuthor(traces,
                                                           props,
+                                                          swtProgressMsg,
+                                                          swtProgressBar,
                                                           traceline)
-            model := makeCausewayModel(uniFilter)
+            model := makeCausewayModel(uniFilter,
+                                       swtProgressMsg,
+                                       swtProgressBar)
+            
             def selectionModel := makeSelectionModel()
             def searchModel := makeSearchModel(model.getTop())
-
-            view := makeViewer(parent, palette, 
+            
+            view := makeViewer(parent, palette,
                                model, selectionModel, searchModel)
+            swtDialog.close()
+            
         } else {
             view := makeWelcomeView(parent, palette, traceline)
         }
@@ -101,19 +125,34 @@ def viewerDirectorAuthor(rootDirName :String,
                     def ffm := model.getOrMakeFileFilterModel()
                     uniFilter := ffm.asUninterestingFilter()
                     
-#                    if (uniFilter.size() >= 1) {
-#                        traceline(``)
-#                        traceline(`>>>>> updateView uniFilter pathnames:`)
-#                        for pn in uniFilter {
-#                            traceline(`$pn`)
-#                        }
-#                    }
+                    def swtDialog :=
+                      makers["modelessDialog"](shell,
+                                               SWT.getDIALOG_TRIM())
+                    def swtProgressMsg :=
+                      <widget:makeLabel>(swtDialog,
+                                         SWT.getCENTER())
+                    def swtProgressBar :=
+                      <widget:makeProgressBar>(swtDialog,
+                                               SWT.getSMOOTH())
+                    swtGrid`$swtDialog:
+                            $swtProgressMsg.X
+                            $swtProgressBar.X`
                     
-                    model := makeCausewayModel(uniFilter)
+                    swtDialog.pack()
+                    swtDialog.setSize(400, 150)
+                    
+                    swtDialog.open()
+                    
+                    model := makeCausewayModel(uniFilter,
+                                               swtProgressMsg,
+                                               swtProgressBar)
+                    
                     def selectionModel := makeSelectionModel()
                     def searchModel := makeSearchModel(model.getTop())
-                    view := makeViewer(parent, palette, 
+                    
+                    view := makeViewer(parent, palette,
                                        model, selectionModel, searchModel)
+                    swtDialog.close()
                 }
             }
         }

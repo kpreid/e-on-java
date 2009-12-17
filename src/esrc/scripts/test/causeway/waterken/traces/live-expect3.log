@@ -1,5 +1,5 @@
 [ {
-    "$" : [ "org.ref_send.log.Got", "org.ref_send.log.Event" ],
+    "class" : [ "org.ref_send.log.Got", "org.ref_send.log.Event" ],
     "anchor" : {
       "number" : 0,
       "turn" : {
@@ -15,7 +15,7 @@
         } ]
     }
   }, {
-    "$" : [ "org.ref_send.log.Got", "org.ref_send.log.Event" ],
+    "class" : [ "org.ref_send.log.Got", "org.ref_send.log.Event" ],
     "anchor" : {
       "number" : 0,
       "turn" : {
@@ -31,7 +31,7 @@
         } ]
     }
   }, {
-    "$" : [ "org.ref_send.log.Got", "org.ref_send.log.Event" ],
+    "class" : [ "org.ref_send.log.Got", "org.ref_send.log.Event" ],
     "anchor" : {
       "number" : 0,
       "turn" : {
@@ -47,7 +47,7 @@
         } ]
     }
   }, {
-    "$" : [ "org.ref_send.log.Sent", "org.ref_send.log.Event" ],
+    "class" : [ "org.ref_send.log.Sent", "org.ref_send.log.Event" ],
     "anchor" : {
       "number" : 1,
       "turn" : {
@@ -64,7 +64,7 @@
         } ]
     }
   }, {
-    "$" : [ "org.ref_send.log.Sent", "org.ref_send.log.Event" ],
+    "class" : [ "org.ref_send.log.Sent", "org.ref_send.log.Event" ],
     "anchor" : {
       "number" : 2,
       "turn" : {
@@ -81,7 +81,7 @@
         } ]
     }
   }, {
-    "$" : [ "org.ref_send.log.Sent", "org.ref_send.log.Event" ],
+    "class" : [ "org.ref_send.log.Sent", "org.ref_send.log.Event" ],
     "anchor" : {
       "number" : 3,
       "turn" : {
@@ -98,7 +98,7 @@
         } ]
     }
   }, {
-    "$" : [ "org.ref_send.log.Got", "org.ref_send.log.Event" ],
+    "class" : [ "org.ref_send.log.Got", "org.ref_send.log.Event" ],
     "anchor" : {
       "number" : 0,
       "turn" : {
@@ -108,7 +108,7 @@
     },
     "message" : "5p2k3ehc2edjre-0-1"
   }, {
-    "$" : [ "org.ref_send.log.Sent", "org.ref_send.log.Event" ],
+    "class" : [ "org.ref_send.log.Sent", "org.ref_send.log.Event" ],
     "anchor" : {
       "number" : 1,
       "turn" : {
@@ -118,7 +118,7 @@
     },
     "message" : "https://y-3tideqmd4uutjcv3.yurl.net:8443/-/buyer/#t1"
   }, {
-    "$" : [ "org.ref_send.log.Got", "org.ref_send.log.Event" ],
+    "class" : [ "org.ref_send.log.Got", "org.ref_send.log.Event" ],
     "anchor" : {
       "number" : 0,
       "turn" : {
@@ -128,7 +128,7 @@
     },
     "message" : "https://y-3tideqmd4uutjcv3.yurl.net:8443/-/buyer/#t1"
   }, {
-    "$" : [ "org.ref_send.log.Sent", "org.ref_send.log.Event" ],
+    "class" : [ "org.ref_send.log.Sent", "org.ref_send.log.Event" ],
     "anchor" : {
       "number" : 1,
       "turn" : {
@@ -145,7 +145,7 @@
         } ]
     }
   }, {
-    "$" : [ "org.ref_send.log.Sent", "org.ref_send.log.Event" ],
+    "class" : [ "org.ref_send.log.Sent", "org.ref_send.log.Event" ],
     "anchor" : {
       "number" : 2,
       "turn" : {
@@ -162,7 +162,7 @@
         } ]
     }
   }, {
-    "$" : [ "org.ref_send.log.Sent", "org.ref_send.log.Event" ],
+    "class" : [ "org.ref_send.log.Sent", "org.ref_send.log.Event" ],
     "anchor" : {
       "number" : 3,
       "turn" : {
@@ -179,7 +179,7 @@
         } ]
     }
   }, {
-    "$" : [ "org.ref_send.log.Resolved", "org.ref_send.log.Event" ],
+    "class" : [ "org.ref_send.log.Resolved", "org.ref_send.log.Event" ],
     "anchor" : {
       "number" : 4,
       "turn" : {
@@ -189,7 +189,7 @@
     },
     "condition" : "https://y-3tideqmd4uutjcv3.yurl.net:8443/-/buyer/#p1"
   }, {
-    "$" : [ "org.ref_send.log.Resolved", "org.ref_send.log.Event" ],
+    "class" : [ "org.ref_send.log.Resolved", "org.ref_send.log.Event" ],
     "anchor" : {
       "number" : 5,
       "turn" : {
@@ -199,7 +199,7 @@
     },
     "condition" : "https://y-3tideqmd4uutjcv3.yurl.net:8443/-/buyer/#p2"
   }, {
-    "$" : [ "org.ref_send.log.Got", "org.ref_send.log.Event" ],
+    "class" : [ "org.ref_send.log.Got", "org.ref_send.log.Event" ],
     "anchor" : {
       "number" : 0,
       "turn" : {
@@ -215,7 +215,7 @@
         } ]
     }
   }, {
-    "$" : [ "org.ref_send.log.Sent", "org.ref_send.log.Event" ],
+    "class" : [ "org.ref_send.log.Sent", "org.ref_send.log.Event" ],
     "anchor" : {
       "number" : 1,
       "turn" : {
@@ -232,7 +232,7 @@
         } ]
     }
   }, {
-    "$" : [ "org.ref_send.log.Got", "org.ref_send.log.Event" ],
+    "class" : [ "org.ref_send.log.Got", "org.ref_send.log.Event" ],
     "anchor" : {
       "number" : 0,
       "turn" : {
@@ -248,7 +248,7 @@
         } ]
     }
   }, {
-    "$" : [ "org.ref_send.log.Sent", "org.ref_send.log.Event" ],
+    "class" : [ "org.ref_send.log.Sent", "org.ref_send.log.Event" ],
     "anchor" : {
       "number" : 1,
       "turn" : {
@@ -265,7 +265,7 @@
         } ]
     }
   }, {
-    "$" : [ "org.ref_send.log.Got", "org.ref_send.log.Event" ],
+    "class" : [ "org.ref_send.log.Got", "org.ref_send.log.Event" ],
     "anchor" : {
       "number" : 0,
       "turn" : {
@@ -281,7 +281,7 @@
         } ]
     }
   }, {
-    "$" : [ "org.ref_send.log.Comment", "org.ref_send.log.Event" ],
+    "class" : [ "org.ref_send.log.Comment", "org.ref_send.log.Event" ],
     "anchor" : {
       "number" : 1,
       "turn" : {
@@ -298,7 +298,7 @@
         } ]
     }
   }, {
-    "$" : [ "org.ref_send.log.Got", "org.ref_send.log.Event" ],
+    "class" : [ "org.ref_send.log.Got", "org.ref_send.log.Event" ],
     "anchor" : {
       "number" : 0,
       "turn" : {
@@ -314,7 +314,7 @@
         } ]
     }
   }, {
-    "$" : [ "org.ref_send.log.Comment", "org.ref_send.log.Event" ],
+    "class" : [ "org.ref_send.log.Comment", "org.ref_send.log.Event" ],
     "anchor" : {
       "number" : 1,
       "turn" : {
@@ -331,7 +331,7 @@
         } ]
     }
   }, {
-    "$" : [ "org.ref_send.log.Got", "org.ref_send.log.Event" ],
+    "class" : [ "org.ref_send.log.Got", "org.ref_send.log.Event" ],
     "anchor" : {
       "number" : 0,
       "turn" : {
@@ -347,7 +347,7 @@
         } ]
     }
   }, {
-    "$" : [ "org.ref_send.log.Sent", "org.ref_send.log.Event" ],
+    "class" : [ "org.ref_send.log.Sent", "org.ref_send.log.Event" ],
     "anchor" : {
       "number" : 1,
       "turn" : {
@@ -368,7 +368,7 @@
         } ]
     }
   }, {
-    "$" : [ "org.ref_send.log.Got", "org.ref_send.log.Event" ],
+    "class" : [ "org.ref_send.log.Got", "org.ref_send.log.Event" ],
     "anchor" : {
       "number" : 0,
       "turn" : {
@@ -384,7 +384,7 @@
         } ]
     }
   }, {
-    "$" : [ "org.ref_send.log.Comment", "org.ref_send.log.Event" ],
+    "class" : [ "org.ref_send.log.Comment", "org.ref_send.log.Event" ],
     "anchor" : {
       "number" : 1,
       "turn" : {
@@ -401,7 +401,7 @@
         } ]
     }
   }, {
-    "$" : [ "org.ref_send.log.Sent", "org.ref_send.log.Event" ],
+    "class" : [ "org.ref_send.log.Sent", "org.ref_send.log.Event" ],
     "anchor" : {
       "number" : 2,
       "turn" : {
@@ -418,7 +418,7 @@
         } ]
     }
   }, {
-    "$" : [ "org.ref_send.log.Got", "org.ref_send.log.Event" ],
+    "class" : [ "org.ref_send.log.Got", "org.ref_send.log.Event" ],
     "anchor" : {
       "number" : 0,
       "turn" : {
@@ -434,7 +434,7 @@
         } ]
     }
   }, {
-    "$" : [ "org.ref_send.log.Sent", "org.ref_send.log.Event" ],
+    "class" : [ "org.ref_send.log.Sent", "org.ref_send.log.Event" ],
     "anchor" : {
       "number" : 1,
       "turn" : {
@@ -451,7 +451,7 @@
         } ]
     }
   }, {
-    "$" : [ "org.ref_send.log.Got", "org.ref_send.log.Event" ],
+    "class" : [ "org.ref_send.log.Got", "org.ref_send.log.Event" ],
     "anchor" : {
       "number" : 0,
       "turn" : {
@@ -467,7 +467,7 @@
         } ]
     }
   }, {
-    "$" : [ "org.ref_send.log.Sent", "org.ref_send.log.Event" ],
+    "class" : [ "org.ref_send.log.Sent", "org.ref_send.log.Event" ],
     "anchor" : {
       "number" : 1,
       "turn" : {
@@ -484,7 +484,7 @@
         } ]
     }
   }, {
-    "$" : [ "org.ref_send.log.Got", "org.ref_send.log.Event" ],
+    "class" : [ "org.ref_send.log.Got", "org.ref_send.log.Event" ],
     "anchor" : {
       "number" : 0,
       "turn" : {
@@ -500,7 +500,7 @@
         } ]
     }
   }, {
-    "$" : [ "org.ref_send.log.Comment", "org.ref_send.log.Event" ],
+    "class" : [ "org.ref_send.log.Comment", "org.ref_send.log.Event" ],
     "anchor" : {
       "number" : 1,
       "turn" : {

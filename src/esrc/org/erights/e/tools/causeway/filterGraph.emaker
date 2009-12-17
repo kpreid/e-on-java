@@ -45,11 +45,11 @@ def sortOutgoing(top, traceline) :void {
     # seen is still useful, since deepOuts* only suppresses duplicate
     # edge visits, not duplicate node visits.
     def seen := [].asSet().diverge()
-
+    
     for node in top.deepOutsPre() {
         if (seen.contains(node)) { continue }
         seen.addElement(node)
-
+        
         var edges := [].asMap().diverge()
         for edge => _ in node.outs() {
             edges[edge.getKey()] := edge
@@ -84,11 +84,11 @@ def hideDetail(top, uniFilter, traceline) :void {
     # seen is still useful, since deepOuts* only suppresses duplicate
     # edge visits, not duplicate node visits.
     def seen := [].asSet().diverge()
-
+    
     for edge => node in top.deepOutsPre() {
         def [sendCtx, sendStk] := edge.getContext()
         edge.setContext(sendCtx, hideFrames(sendStk, uniFilter, traceline))
-
+        
         if (seen.contains(node)) { continue }
         seen.addElement(node)
         def [gotCtx, gotStk] := node.getContext()
@@ -112,7 +112,7 @@ def setTarget(edge, newTarget, lastCause :boolean) :void {
  * promoting them to virtual message order.
  * <p>
  * Must be careful that promotion preserves non-virtual last incoming
- * edge. 
+ * edge.
  */
 def promote(top, traceline) :void {
     # String => TurnNode
@@ -153,13 +153,13 @@ def devoraOne(top, traceline) :void {
 def devoraTwo(graph, top, traceline) :void {
     def dummy := graph.makeTurnNode(["dummy", 0])
     def seen := [].asSet().diverge()
-
+    
     def orphans := [].diverge()
-
+    
     def devoraThree(root) :void {
         if (seen.contains(root)) { return }
         seen.addElement(root)
-
+        
         def edgeList := [].diverge()
         for outgoing => _ in root.outs() {
             edgeList.push(outgoing)
@@ -167,7 +167,7 @@ def devoraTwo(graph, top, traceline) :void {
         for edge in edgeList {
             def target := edge.getTarget()
             devoraThree(target)
-
+            
             if (edge.getTag() == CLIP) {
                 edge.setOrigin(dummy)
                 edge.setTarget(dummy)
@@ -189,7 +189,7 @@ def devoraTwo(graph, top, traceline) :void {
         }
     }
     devoraThree(top)
-
+    
     for orphan in orphans {
         orphan.setOrigin(dummy)
         orphan.setTarget(dummy)
@@ -197,18 +197,37 @@ def devoraTwo(graph, top, traceline) :void {
 }
 
 
-def filterGraph(graph, top, uniFilter, traceline) :Tuple[near, near] {
+def filterGraph(graph,
+                top,
+                uniFilter,
+                swtProgressMsg,
+                swtProgressBar,
+                traceline) :Tuple[near, near] {
 
+    swtProgressBar.setMinimum(0)
+    swtProgressBar.setMaximum(600)
+    swtProgressMsg.setText("Sorting outgoing edges ...")    
+    swtProgressBar.setSelection(0)
     sortOutgoing(top, traceline)
-
+    
     # could be done by a frontline filter
+    swtProgressMsg.setText("Hiding uninformative detail ...")    
+    swtProgressBar.setSelection(100)
     hideDetail(top, uniFilter, traceline)
-
+    
+    swtProgressMsg.setText("Promoting events ...")    
+    swtProgressBar.setSelection(200)
     promote(top, traceline)
-
+    
+    swtProgressMsg.setText("Devora filter (first pass) ...")    
+    swtProgressBar.setSelection(300)
     devoraOne(top, traceline)
-
+    
+    swtProgressMsg.setText("Devora filter (second pass) ...")    
+    swtProgressBar.setSelection(400)
     devoraTwo(graph, top, traceline)
-
+    
+    swtProgressMsg.setText("Building user interface ...")    
+    swtProgressBar.setSelection(500)
     return [graph, top]
 }

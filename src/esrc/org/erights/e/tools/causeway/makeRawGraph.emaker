@@ -57,6 +57,8 @@ def spanner(span) :SourceSpan {
  * and the set of pathnames seen by the parse.
  */
 def makeRawGraph(ttChunks,
+                 swtProgressMsg,
+                 swtProgressBar,
                  traceline) :Tuple[near, near, near] {
     
     # Map[MsgID, EventArc]
@@ -122,12 +124,17 @@ def makeRawGraph(ttChunks,
 
     # Maps from elements to chunks
     def chunkMap := [].asMap().diverge()
+    swtProgressMsg.setText(`Building message graph ...`)
+    swtProgressBar.setMinimum(0)
+    swtProgressBar.setMaximum(ttChunks.size() -1)
     
     for i => chunk in ttChunks {
         
+        swtProgressBar.setSelection(i)
+
         # types is the list of type names of the current chunk, in order,
         # from most specific subtype to more general supertypes.
-        def term`{"$$": [@{types :List[String]}*], @_* }` := chunk
+        def term`{"class": [@{types :List[String]}*], @_* }` := chunk
         def subtype := types[0]
         def subtypeName := subtype.split(".").last()
         
@@ -149,7 +156,7 @@ def makeRawGraph(ttChunks,
         
         switch (chunk) {
             
-            match term`{ "$$": [ @_*,
+            match term`{ "class": [ @_*,
                                      "org.ref_send.log.Sent",
                                      "org.ref_send.log.Event" ],
                              "anchor": {
@@ -224,7 +231,7 @@ def makeRawGraph(ttChunks,
                 }
                 chunkMap[edge] := chunk
             }
-            match term`{ "$$": [ @_*,
+            match term`{ "class": [ @_*,
                                      "org.ref_send.log.Got",
                                      "org.ref_send.log.Event" ],
                              "anchor": {
@@ -280,7 +287,7 @@ def makeRawGraph(ttChunks,
                 chunkMap[target] := chunk
             }
             
-            match term`{ "$$": [ @_*,
+            match term`{ "class": [ @_*,
                                      "org.ref_send.log.Resolved",
                                      "org.ref_send.log.Event" ],
                              @_*
@@ -289,7 +296,7 @@ def makeRawGraph(ttChunks,
                 resolveds.push([chunk, optSpan])
             }
             
-            match term`{ "$$": [ @_*,
+            match term`{ "class": [ @_*,
                                      "org.ref_send.log.Comment",
                                      "org.ref_send.log.Event" ],
                              "anchor": {
@@ -328,7 +335,7 @@ def makeRawGraph(ttChunks,
     
     def resolvedEdges := [].diverge()
     for [r, span] in resolveds {
-        if (r =~ term`{ "$$": [ @_*,
+        if (r =~ term`{ "class": [ @_*,
                                 "org.ref_send.log.Resolved",
                                 "org.ref_send.log.Event" ],
                         "anchor": {
@@ -377,6 +384,6 @@ def makeRawGraph(ttChunks,
         }
     }
     pathnames := pathnames.sort()
-    
+        
     return [graph, top, pathnames.snapshot()]
 }

@@ -30,7 +30,7 @@ def onlineHelpAuthor(modelessDialogMaker, abstractAction, traceline) :near {
     
         def paletteMap := palette.makeOnlineHelpPalette()
         
-        def swtDialog := modelessDialogMaker(shell, SWT.getDIALOG_TRIM())
+        def swtDialog := modelessDialogMaker(shell, SWT.getSHELL_TRIM())
         swtDialog.setForeground(paletteMap["dialog"].getFg())
         swtDialog.setBackground(paletteMap["dialog"].getBg())
         swtDialog.setFont(paletteMap["dialog"].getFont())
@@ -65,7 +65,7 @@ def onlineHelpAuthor(modelessDialogMaker, abstractAction, traceline) :near {
                         $swtWikiURL`
                         
                 swtDialog.pack()
-                swtDialog.setSize(450, 250)
+                swtDialog.setSize(500, 300)
             }
         }
         return onlineHelp

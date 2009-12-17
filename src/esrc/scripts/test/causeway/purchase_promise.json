@@ -1,5 +1,5 @@
 [ {
-    "$" : [ "org.ref_send.log.Got", "org.ref_send.log.Event" ],
+    "class" : [ "org.ref_send.log.Got", "org.ref_send.log.Event" ],
     "anchor" : {
       "number" : 0,
       "turn" : {
@@ -15,7 +15,7 @@
         } ]
     }
   }, {
-    "$" : [ "org.ref_send.log.Got", "org.ref_send.log.Event" ],
+    "class" : [ "org.ref_send.log.Got", "org.ref_send.log.Event" ],
     "anchor" : {
       "number" : 0,
       "turn" : {
@@ -31,7 +31,7 @@
         } ]
     }
   }, {
-    "$" : [ "org.ref_send.log.Sent", "org.ref_send.log.Event" ],
+    "class" : [ "org.ref_send.log.Sent", "org.ref_send.log.Event" ],
     "anchor" : {
       "number" : 1,
       "turn" : {
@@ -48,7 +48,7 @@
         } ]
     }
   }, {
-    "$" : [ "org.ref_send.log.Sent", "org.ref_send.log.Event" ],
+    "class" : [ "org.ref_send.log.Sent", "org.ref_send.log.Event" ],
     "anchor" : {
       "number" : 2,
       "turn" : {
@@ -65,7 +65,7 @@
         } ]
     }
   }, {
-    "$" : [ "org.ref_send.log.Got", "org.ref_send.log.Event" ],
+    "class" : [ "org.ref_send.log.Got", "org.ref_send.log.Event" ],
     "anchor" : {
       "number" : 0,
       "turn" : {
@@ -75,7 +75,7 @@
     },
     "message" : "diz2td2jl5u6jf-0-1"
   }, {
-    "$" : [ "org.ref_send.log.Sent", "org.ref_send.log.Event" ],
+    "class" : [ "org.ref_send.log.Sent", "org.ref_send.log.Event" ],
     "anchor" : {
       "number" : 1,
       "turn" : {
@@ -85,7 +85,7 @@
     },
     "message" : "http://localhost:8080/-/buyer/#t1"
   }, {
-    "$" : [ "org.ref_send.log.Got", "org.ref_send.log.Event" ],
+    "class" : [ "org.ref_send.log.Got", "org.ref_send.log.Event" ],
     "anchor" : {
       "number" : 0,
       "turn" : {
@@ -101,7 +101,7 @@
         } ]
     }
   }, {
-    "$" : [ "org.ref_send.log.Sent", "org.ref_send.log.Event" ],
+    "class" : [ "org.ref_send.log.Sent", "org.ref_send.log.Event" ],
     "anchor" : {
       "number" : 1,
       "turn" : {
@@ -118,7 +118,7 @@
         } ]
     }
   }, {
-    "$" : [ "org.ref_send.log.Sent", "org.ref_send.log.Event" ],
+    "class" : [ "org.ref_send.log.Sent", "org.ref_send.log.Event" ],
     "anchor" : {
       "number" : 2,
       "turn" : {
@@ -135,7 +135,7 @@
         } ]
     }
   }, {
-    "$" : [ "org.ref_send.log.Sent", "org.ref_send.log.Event" ],
+    "class" : [ "org.ref_send.log.Sent", "org.ref_send.log.Event" ],
     "anchor" : {
       "number" : 3,
       "turn" : {
@@ -152,7 +152,7 @@
         } ]
     }
   }, {
-    "$" : [ "org.ref_send.log.SentIf", "org.ref_send.log.Sent", "org.ref_send.log.Event" ],
+    "class" : [ "org.ref_send.log.SentIf", "org.ref_send.log.Sent", "org.ref_send.log.Event" ],
     "anchor" : {
       "number" : 4,
       "turn" : {
@@ -174,7 +174,7 @@
         } ]
     }
   }, {
-    "$" : [ "org.ref_send.log.SentIf", "org.ref_send.log.Sent", "org.ref_send.log.Event" ],
+    "class" : [ "org.ref_send.log.SentIf", "org.ref_send.log.Sent", "org.ref_send.log.Event" ],
     "anchor" : {
       "number" : 5,
       "turn" : {
@@ -196,7 +196,7 @@
         } ]
     }
   }, {
-    "$" : [ "org.ref_send.log.SentIf", "org.ref_send.log.Sent", "org.ref_send.log.Event" ],
+    "class" : [ "org.ref_send.log.SentIf", "org.ref_send.log.Sent", "org.ref_send.log.Event" ],
     "anchor" : {
       "number" : 6,
       "turn" : {
@@ -218,7 +218,7 @@
         } ]
     }
   }, {
-    "$" : [ "org.ref_send.log.SentIf", "org.ref_send.log.Sent", "org.ref_send.log.Event" ],
+    "class" : [ "org.ref_send.log.SentIf", "org.ref_send.log.Sent", "org.ref_send.log.Event" ],
     "anchor" : {
       "number" : 7,
       "turn" : {
@@ -236,7 +236,7 @@
         } ]
     }
   }, {
-    "$" : [ "org.ref_send.log.Got", "org.ref_send.log.Event" ],
+    "class" : [ "org.ref_send.log.Got", "org.ref_send.log.Event" ],
     "anchor" : {
       "number" : 0,
       "turn" : {
@@ -252,7 +252,7 @@
         } ]
     }
   }, {
-    "$" : [ "org.ref_send.log.Comment", "org.ref_send.log.Event" ],
+    "class" : [ "org.ref_send.log.Comment", "org.ref_send.log.Event" ],
     "anchor" : {
       "number" : 1,
       "turn" : {
@@ -269,7 +269,7 @@
         } ]
     }
   }, {
-    "$" : [ "org.ref_send.log.Returned", "org.ref_send.log.Sent", "org.ref_send.log.Event" ],
+    "class" : [ "org.ref_send.log.Returned", "org.ref_send.log.Sent", "org.ref_send.log.Event" ],
     "anchor" : {
       "number" : 2,
       "turn" : {
@@ -279,7 +279,7 @@
     },
     "message" : "diz2td2jl5u6jf-1-0-return"
   }, {
-    "$" : [ "org.ref_send.log.Got", "org.ref_send.log.Event" ],
+    "class" : [ "org.ref_send.log.Got", "org.ref_send.log.Event" ],
     "anchor" : {
       "number" : 0,
       "turn" : {
@@ -295,7 +295,7 @@
         } ]
     }
   }, {
-    "$" : [ "org.ref_send.log.Comment", "org.ref_send.log.Event" ],
+    "class" : [ "org.ref_send.log.Comment", "org.ref_send.log.Event" ],
     "anchor" : {
       "number" : 1,
       "turn" : {
@@ -312,7 +312,7 @@
         } ]
     }
   }, {
-    "$" : [ "org.ref_send.log.Returned", "org.ref_send.log.Sent", "org.ref_send.log.Event" ],
+    "class" : [ "org.ref_send.log.Returned", "org.ref_send.log.Sent", "org.ref_send.log.Event" ],
     "anchor" : {
       "number" : 2,
       "turn" : {
@@ -322,7 +322,7 @@
     },
     "message" : "diz2td2jl5u6jf-1-1-return"
   }, {
-    "$" : [ "org.ref_send.log.Got", "org.ref_send.log.Event" ],
+    "class" : [ "org.ref_send.log.Got", "org.ref_send.log.Event" ],
     "anchor" : {
       "number" : 0,
       "turn" : {
@@ -332,7 +332,7 @@
     },
     "message" : "diz2td2jl5u6jf-1-0-return"
   }, {
-    "$" : [ "org.ref_send.log.Resolved", "org.ref_send.log.Event" ],
+    "class" : [ "org.ref_send.log.Resolved", "org.ref_send.log.Event" ],
     "anchor" : {
       "number" : 1,
       "turn" : {
@@ -342,7 +342,7 @@
     },
     "condition" : "http://localhost:8080/-/buyer/#p1"
   }, {
-    "$" : [ "org.ref_send.log.Got", "org.ref_send.log.Event" ],
+    "class" : [ "org.ref_send.log.Got", "org.ref_send.log.Event" ],
     "anchor" : {
       "number" : 0,
       "turn" : {
@@ -358,7 +358,7 @@
         } ]
     }
   }, {
-    "$" : [ "org.ref_send.log.Comment", "org.ref_send.log.Event" ],
+    "class" : [ "org.ref_send.log.Comment", "org.ref_send.log.Event" ],
     "anchor" : {
       "number" : 1,
       "turn" : {
@@ -375,7 +375,7 @@
         } ]
     }
   }, {
-    "$" : [ "org.ref_send.log.Returned", "org.ref_send.log.Sent", "org.ref_send.log.Event" ],
+    "class" : [ "org.ref_send.log.Returned", "org.ref_send.log.Sent", "org.ref_send.log.Event" ],
     "anchor" : {
       "number" : 2,
       "turn" : {
@@ -385,7 +385,7 @@
     },
     "message" : "diz2td2jl5u6jf-1-2-return"
   }, {
-    "$" : [ "org.ref_send.log.Got", "org.ref_send.log.Event" ],
+    "class" : [ "org.ref_send.log.Got", "org.ref_send.log.Event" ],
     "anchor" : {
       "number" : 0,
       "turn" : {
@@ -395,7 +395,7 @@
     },
     "message" : "diz2td2jl5u6jf-1-1-return"
   }, {
-    "$" : [ "org.ref_send.log.Resolved", "org.ref_send.log.Event" ],
+    "class" : [ "org.ref_send.log.Resolved", "org.ref_send.log.Event" ],
     "anchor" : {
       "number" : 1,
       "turn" : {
@@ -405,7 +405,7 @@
     },
     "condition" : "http://localhost:8080/-/buyer/#p2"
   }, {
-    "$" : [ "org.ref_send.log.Got", "org.ref_send.log.Event" ],
+    "class" : [ "org.ref_send.log.Got", "org.ref_send.log.Event" ],
     "anchor" : {
       "number" : 0,
       "turn" : {
@@ -421,7 +421,7 @@
         } ]
     }
   }, {
-    "$" : [ "org.ref_send.log.Comment", "org.ref_send.log.Event" ],
+    "class" : [ "org.ref_send.log.Comment", "org.ref_send.log.Event" ],
     "anchor" : {
       "number" : 1,
       "turn" : {
@@ -438,7 +438,7 @@
         } ]
     }
   }, {
-    "$" : [ "org.ref_send.log.Got", "org.ref_send.log.Event" ],
+    "class" : [ "org.ref_send.log.Got", "org.ref_send.log.Event" ],
     "anchor" : {
       "number" : 0,
       "turn" : {
@@ -448,7 +448,7 @@
     },
     "message" : "diz2td2jl5u6jf-1-2-return"
   }, {
-    "$" : [ "org.ref_send.log.Resolved", "org.ref_send.log.Event" ],
+    "class" : [ "org.ref_send.log.Resolved", "org.ref_send.log.Event" ],
     "anchor" : {
       "number" : 1,
       "turn" : {
@@ -458,7 +458,7 @@
     },
     "condition" : "http://localhost:8080/-/buyer/#p3"
   }, {
-    "$" : [ "org.ref_send.log.Got", "org.ref_send.log.Event" ],
+    "class" : [ "org.ref_send.log.Got", "org.ref_send.log.Event" ],
     "anchor" : {
       "number" : 0,
       "turn" : {
@@ -474,7 +474,7 @@
         } ]
     }
   }, {
-    "$" : [ "org.ref_send.log.Comment", "org.ref_send.log.Event" ],
+    "class" : [ "org.ref_send.log.Comment", "org.ref_send.log.Event" ],
     "anchor" : {
       "number" : 1,
       "turn" : {
@@ -491,7 +491,7 @@
         } ]
     }
   }, {
-    "$" : [ "org.ref_send.log.Got", "org.ref_send.log.Event" ],
+    "class" : [ "org.ref_send.log.Got", "org.ref_send.log.Event" ],
     "anchor" : {
       "number" : 0,
       "turn" : {
@@ -507,7 +507,7 @@
         } ]
     }
   }, {
-    "$" : [ "org.ref_send.log.Comment", "org.ref_send.log.Event" ],
+    "class" : [ "org.ref_send.log.Comment", "org.ref_send.log.Event" ],
     "anchor" : {
       "number" : 1,
       "turn" : {
@@ -524,7 +524,7 @@
         } ]
     }
   }, {
-    "$" : [ "org.ref_send.log.Resolved", "org.ref_send.log.Event" ],
+    "class" : [ "org.ref_send.log.Resolved", "org.ref_send.log.Event" ],
     "anchor" : {
       "number" : 2,
       "turn" : {
@@ -541,7 +541,7 @@
         } ]
     }
   }, {
-    "$" : [ "org.ref_send.log.Got", "org.ref_send.log.Event" ],
+    "class" : [ "org.ref_send.log.Got", "org.ref_send.log.Event" ],
     "anchor" : {
       "number" : 0,
       "turn" : {
@@ -557,7 +557,7 @@
         } ]
     }
   }, {
-    "$" : [ "org.ref_send.log.Sent", "org.ref_send.log.Event" ],
+    "class" : [ "org.ref_send.log.Sent", "org.ref_send.log.Event" ],
     "anchor" : {
       "number" : 1,
       "turn" : {
@@ -574,7 +574,7 @@
         } ]
     }
   }, {
-    "$" : [ "org.ref_send.log.SentIf", "org.ref_send.log.Sent", "org.ref_send.log.Event" ],
+    "class" : [ "org.ref_send.log.SentIf", "org.ref_send.log.Sent", "org.ref_send.log.Event" ],
     "anchor" : {
       "number" : 2,
       "turn" : {
@@ -592,7 +592,7 @@
         } ]
     }
   }, {
-    "$" : [ "org.ref_send.log.Got", "org.ref_send.log.Event" ],
+    "class" : [ "org.ref_send.log.Got", "org.ref_send.log.Event" ],
     "anchor" : {
       "number" : 0,
       "turn" : {
@@ -608,7 +608,7 @@
         } ]
     }
   }, {
-    "$" : [ "org.ref_send.log.Comment", "org.ref_send.log.Event" ],
+    "class" : [ "org.ref_send.log.Comment", "org.ref_send.log.Event" ],
     "anchor" : {
       "number" : 1,
       "turn" : {
@@ -625,7 +625,7 @@
         } ]
     }
   }, {
-    "$" : [ "org.ref_send.log.Returned", "org.ref_send.log.Sent", "org.ref_send.log.Event" ],
+    "class" : [ "org.ref_send.log.Returned", "org.ref_send.log.Sent", "org.ref_send.log.Event" ],
     "anchor" : {
       "number" : 2,
       "turn" : {
@@ -635,7 +635,7 @@
     },
     "message" : "diz2td2jl5u6jf-1-3-return"
   }, {
-    "$" : [ "org.ref_send.log.Got", "org.ref_send.log.Event" ],
+    "class" : [ "org.ref_send.log.Got", "org.ref_send.log.Event" ],
     "anchor" : {
       "number" : 0,
       "turn" : {
@@ -645,7 +645,7 @@
     },
     "message" : "diz2td2jl5u6jf-1-3-return"
   }, {
-    "$" : [ "org.ref_send.log.Resolved", "org.ref_send.log.Event" ],
+    "class" : [ "org.ref_send.log.Resolved", "org.ref_send.log.Event" ],
     "anchor" : {
       "number" : 1,
       "turn" : {
@@ -655,7 +655,7 @@
     },
     "condition" : "http://localhost:8080/-/buyer/#p5"
   }, {
-    "$" : [ "org.ref_send.log.Got", "org.ref_send.log.Event" ],
+    "class" : [ "org.ref_send.log.Got", "org.ref_send.log.Event" ],
     "anchor" : {
       "number" : 0,
       "turn" : {
@@ -671,7 +671,7 @@
         } ]
     }
   }, {
-    "$" : [ "org.ref_send.log.Comment", "org.ref_send.log.Event" ],
+    "class" : [ "org.ref_send.log.Comment", "org.ref_send.log.Event" ],
     "anchor" : {
       "number" : 1,
       "turn" : {

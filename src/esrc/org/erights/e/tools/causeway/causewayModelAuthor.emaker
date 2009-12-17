@@ -48,12 +48,20 @@ def makeConstMap := <elib:tables.makeConstMap>
  */
 def causewayModelAuthor(traceFiles :List[File],
                         props,
+                        swtProgressMsg,
+                        swtProgressBar,
                         traceline) :near {
     var ttChunks := [].diverge()
+    
+    swtProgressMsg.setText(`Parsing JSON records ...`)
+    swtProgressBar.setMinimum(0)
+    swtProgressBar.setMaximum(1)
+    swtProgressBar.setSelection(0)
+    
     for tfile in traceFiles {
         
         #traceline(`tracefile: $tfile`)
-        
+                
         def txt := if (makeConstMap.testProp(props, "causeway_debug")) {
             tfile.getTwine()
         } else {
@@ -74,15 +82,21 @@ def causewayModelAuthor(traceFiles :List[File],
     }
     ttChunks := ttChunks.snapshot()
     
-    def makeCausewayModel(var uninterestingFilter) :near {
+    def makeCausewayModel(var uninterestingFilter,
+                          swtProgressMsg,
+                          swtProgressBar) :near {
         
         var fileFilterModel := null
         
         def [rawGraph, rawTop, pathnames] := makeRawGraph(ttChunks,
+                                                          swtProgressMsg,
+                                                          swtProgressBar,
                                                           traceline)
         def [graph, top] := filterGraph(rawGraph,
                                         rawTop,
                                         uninterestingFilter,
+                                        swtProgressMsg,
+                                        swtProgressBar,
                                         traceline)
         
         # Map[VatName, Map[Turn, TurnNode]]
