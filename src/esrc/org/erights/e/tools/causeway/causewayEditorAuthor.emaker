@@ -48,7 +48,7 @@ def causewayEditorAuthor(rezKit,
         #statusBar.setText(str)
     }
     
-
+    
     def editorShellListener :ShellListener := def _ {
         to shellClosed(event) :void {
 #           rezKit.disposeAll()
@@ -62,11 +62,11 @@ def causewayEditorAuthor(rezKit,
     
     def makePalette := paletteAuthor(rezKit, makers, traceline)
     def palette := makePalette()
-
-    def makeCausewayEditor(var rootDirName :String, traces :List) :near {
     
+    def makeCausewayEditor(var rootDirName :String, traces :List) :near {
+        
         def causewayEditor
-
+        
         def editorShell := makers["frame"]()
         editorShell.addShellListener(editorShellListener)
         
@@ -128,13 +128,14 @@ def causewayEditorAuthor(rezKit,
         
         # menuHelp
         [def doHelpTopics,
-        
-         def doExamples,
+         
+         def doWaterkenExample,
+         def doAmbientTalkExample,
          
          def doAbout]
-         
-        def openNewEditor(sources :String, traces :List) :void {
         
+        def openNewEditor(sources :String, traces :List) :void {
+            
             def waitCursor := makers["cursor"](SWT.getCURSOR_WAIT())
             def oldEditorShell := causewayEditor.getEditorShell()
             def oldViewer := causewayEditor.getViewer().getTopLevelSWTControl()
@@ -167,12 +168,12 @@ def causewayEditorAuthor(rezKit,
                     if (rootDirName == "") {
                         doSetSourceRoot()
                     }
-                    def oldViewer := 
+                    def oldViewer :=
                       causewayEditor.getViewer().getTopLevelSWTControl()
                     if (oldViewer != null && !oldViewer.isDisposed()) {
                         oldViewer.dispose()
                     }
-
+                    
                     oldEditorShell.removeShellListener(editorShellListener)
                     oldEditorShell.setCursor(waitCursor)
                     def openAction() :void {
@@ -200,7 +201,7 @@ def causewayEditorAuthor(rezKit,
          */
         bind doClose extends abstractAction(doClose) {
             to run() :void {
-                causewayEditor.getEditorShell().close()         
+                causewayEditor.getEditorShell().close()
             }
             to getLabel()            :String { "&Close" }
             to getOptMenuAccelDesc() :String { "Ctrl+W" }
@@ -279,7 +280,7 @@ def causewayEditorAuthor(rezKit,
             }
             to getLabel()            :String { "E&xit" }
             to getOptMenuAccelDesc() :String { "Ctrl+Q" }
-            to getOptTip()           :String { 
+            to getOptTip()           :String {
                 "Closes editor and quits Causeway" }
         }
         
@@ -341,8 +342,8 @@ def causewayEditorAuthor(rezKit,
                 causewayEditor.getViewer().findLostMessages()
             }
             to getLabel()            :String { "Find Lost Messages" }
-            to getOptTip()           :String { 
-                return "Find messages without targets" 
+            to getOptTip()           :String {
+                return "Find messages without targets"
             }
         }
         
@@ -442,11 +443,11 @@ def causewayEditorAuthor(rezKit,
                     }
                 }
             }
-            to getLabel()            :String { 
+            to getLabel()            :String {
                 return "&Set Filter Options..."
             }
-            to getOptTip()           :String { 
-                return "Set filter options" 
+            to getOptTip()           :String {
+                return "Set filter options"
             }
         }
         
@@ -461,8 +462,8 @@ def causewayEditorAuthor(rezKit,
                     rootDirName := dir.getPath()
                 }
             }
-            to getLabel()            :String { 
-                return "&Set Source Root..." 
+            to getLabel()            :String {
+                return "&Set Source Root..."
             }
             to getOptTip()           :String {
                 return "Set source code root directory"
@@ -522,11 +523,11 @@ def causewayEditorAuthor(rezKit,
         /**
          *
          */
-        bind doExamples extends abstractAction(doExamples) {
+        bind doWaterkenExample extends abstractAction(doWaterkenExample) {
             to run() :void {
 #               for devrune
 #               def eHome := "~/e/src/esrc"
-
+                
                 def eHome := props["e.home"]
                 
                 def eHomeDir := <file>[eHome]
@@ -535,11 +536,40 @@ def causewayEditorAuthor(rezKit,
                 def sources := eHome + "/scripts/test/causeway/waterken/sources"
                 openNewEditor(sources, traces)
             }
-            to getLabel()            :String { 
-                return "Open Waterken Example (Ajax-style)" 
+            to getLabel()            :String {
+                return "Open Waterken Example (Ajax-style)"
             }
-            to getOptTip()           :String { 
-                return "Makes new viewer for example sources and trace log" 
+            to getOptTip()           :String {
+                return "Makes new viewer for example sources and trace log"
+            }
+        }
+        
+        /**
+         *
+         */
+        bind doAmbientTalkExample extends abstractAction(doAmbientTalkExample) {
+            to run() :void {
+#               for devrune
+#               def eHome := "~/e/src/esrc"
+                
+                def eHome := props["e.home"]
+                
+                def eHomeDir := <file>[eHome]
+                
+                var traces := []
+                traces with= eHomeDir["/scripts/test/causeway/ambientTalk/traces/account.json"]
+                traces with= eHomeDir["/scripts/test/causeway/ambientTalk/traces/buyer.json"]
+                traces with= eHomeDir["/scripts/test/causeway/ambientTalk/traces/product.json"]
+                traces with= eHomeDir["/scripts/test/causeway/ambientTalk/traces/shipper.json"]
+                
+                def sources := eHome + "/scripts/test/causeway/ambientTalk/sources"
+                openNewEditor(sources, traces)
+            }
+            to getLabel()            :String {
+                return "Open AmbientTalk Example (Ajax-style)"
+            }
+            to getOptTip()           :String {
+                return "Makes new viewer for example sources and trace log"
             }
         }
         
@@ -560,7 +590,7 @@ def causewayEditorAuthor(rezKit,
             to getLabel()  :String {
                 return `&About ${causewayEditor.getAppName()}`
             }
-            to getOptTip() :String { 
+            to getOptTip() :String {
                 return "About Causeway and components"
             }
         }
@@ -606,7 +636,8 @@ def causewayEditorAuthor(rezKit,
                    M.menu("&Help",
                           [doHelpTopics,
                            M.sep(),
-                           doExamples,
+                           doWaterkenExample,
+                           doAmbientTalkExample,
                            M.sep(),
                            doAbout])])
         
@@ -625,7 +656,7 @@ def causewayEditorAuthor(rezKit,
                                                  traces)
         
         bind causewayEditor {
-        
+            
             to getAppName() :String { return "Causeway" }
             
             to getEditorShell() :Shell { return editorShell }
@@ -633,22 +664,22 @@ def causewayEditorAuthor(rezKit,
             to getViewer() :near { return viewerDirector.getView() }
             
             to layout() :void {
-            
+                
                 causewayEditor.getViewer().layout()
                 
-                def swtTopView := 
-                      causewayEditor.getViewer().getTopLevelSWTControl()
+                def swtTopView :=
+                  causewayEditor.getViewer().getTopLevelSWTControl()
                 def topViewSize := swtTopView.getSize()
                 
 #                traceline(`topViewSize: $\
-#${topViewSize.getX()}, $\
-#${topViewSize.getY()}`)
+                #${topViewSize.getX()}, $\
+                #${topViewSize.getY()}`)
                 
                 def es := causewayEditor.getEditorShell()
                 
                 swtGrid`$es:
                         $swtTopView.X.Y`
-                        
+                
 #                      ${causewayEditor.getStatusBar()}.X`
                 
                 if (topViewSize.getX() > 0 || topViewSize.getY() > 0) {
@@ -656,10 +687,10 @@ def causewayEditorAuthor(rezKit,
                     swtTopView.setSize(topViewSize.getX(), topViewSize.getY())
                     es.setSize(topViewSize.getX(), topViewSize.getY())
                 }
-
+                
                 es.layout(true)  # flushes layout caches
             }
-
+            
             to updateViewer() :void {
                 
                 def es := causewayEditor.getEditorShell()
@@ -683,7 +714,7 @@ def causewayEditorAuthor(rezKit,
              *
              */
             to open() :void {
-            
+                
                 causewayEditor.layout()
                 
                 def es := causewayEditor.getEditorShell()
