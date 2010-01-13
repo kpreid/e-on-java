@@ -48,20 +48,23 @@ public class NetConfig implements Persistent, DeepPassByCopy, EPrintable {
 
     /**
      * Make a NetConfig initialized from configuration propoerties (as might be
-     * provided by eprops.txt or "-D" on the command line). <ul> <li>e.VLSPath
-     * is an optional semicolon-separated list of TCP/IP addresses of VLSs this
-     * vat should register with. Defaults to "" -- the null list. Doesn't
-     * actually mean anything until the VLS code is revived. <li>e.SearchPath
-     * is an optional semicolon-separated list of TCP/IP addresses for others
-     * to look for me. Defaults to the VLSPath. Once a vat knows its own
-     * ListenAddressPath, these should be added to the front of the list.
+     * provided by eprops.txt or "-D" on the command line). 
+     * <ul> 
+     * <li>e.VLSPath is an optional semicolon-separated list of TCP/IP addresses
+     *     of VLSs this vat should register with. Defaults to "" -- the null 
+     *     list. Doesn't actually mean anything until the VLS code is revived. 
+     * <li>e.SearchPath is an optional semicolon-separated list of TCP/IP 
+     *     addresses for others to look for me. Defaults to the VLSPath. Once a
+     *     vat knows its own ListenAddressPath, these should be added to the 
+     *     front of the list.
      * <li>e.ListenAddressPath is the optional TCP/IP addresses at which this
-     * vat should create the sockets it listens to. For each element of the
-     * path, if an IP address isn't given, the socket defaults to listening on
-     * all IP addresses of this host. If an IP address is given, it must be one
-     * of the IP addresses of this host. If the TCP port isn't given, it
-     * defaults to 0. A TCP port of 0 instructs the OS to pick any free TCP
-     * port. </ul>
+     *     vat should create the sockets it listens to. For each element of the
+     *     path, if an IP address isn't given, the socket defaults to listening
+     *     on all IP addresses of this host. If an IP address is given, it must
+     *     be one of the IP addresses of this host. If the TCP port isn't given,
+     *     it defaults to 0. A TCP port of 0 instructs the OS to pick any free 
+     *     TCP port. 
+     * </ul>
      */
     static public NetConfig make(ConstMap optProps) {
         String flattenedVLSPath =
@@ -91,7 +94,7 @@ public class NetConfig implements Persistent, DeepPassByCopy, EPrintable {
      *
      */
     public NetConfig() {
-        this(ConstList.EmptyList, ConstList.EmptyList, null);
+        this(ConstList.EmptyList, ConstList.EmptyList, ConstList.EmptyList);
     }
 
     /**
