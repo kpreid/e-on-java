@@ -1,6 +1,6 @@
 package org.erights.e.elib.base;
 
-import org.erights.e.develop.exception.NestedException;
+import org.erights.e.develop.exception.EBacktraceException;
 import org.erights.e.develop.exception.ThrowableSugar;
 
 /*
@@ -39,7 +39,8 @@ public class Ejection extends RuntimeException {
      * unwrapped and optMsg is ignored.
      *
      * @param optMsg may equivalently be null or "", in which case it will be
-     *               ignored by eStack(). See {@link org.erights.e.develop.exception.NestedThrowable}
+     *               ignored by eStack(). See {@link
+     *               org.erights.e.develop.exception.EBacktraceThrowable}
      *               for the convention that optMsg should follow.
      */
     static public RuntimeException backtrace(Throwable problem,
@@ -54,7 +55,7 @@ public class Ejection extends RuntimeException {
         if (problem instanceof RuntimeException && 0 == optMsg.length()) {
             return (RuntimeException)problem;
         }
-        return new NestedException(problem, optMsg);
+        return new EBacktraceException(problem, optMsg);
     }
 
     /**

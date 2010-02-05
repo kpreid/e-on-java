@@ -4,7 +4,7 @@
 %{
 package com.hp.orc;
 
-import org.erights.e.develop.exception.NestedException;
+import org.erights.e.develop.exception.EBacktraceException;
 import org.erights.e.elib.tables.ConstList;
 import org.erights.e.elib.tables.Twine;
 import org.quasiliteral.astro.Astro;
@@ -212,7 +212,7 @@ static public AstroArg run(Twine source, QuasiBuilder builder) {
         OrcParser parser = new OrcParser(lexer, builder);
         return parser.parse();
     } catch (IOException iox) {
-        throw new NestedException(iox, "# parsing a string?!");
+        throw new EBacktraceException(iox, "# parsing a string?!");
     }
 }
 

@@ -96,24 +96,28 @@ public class ThrowableSugar {
      * Returns the Throwable wrapped by self.
      * <p/>
      * If self doesn't wrap a Throwable, return null.
+     * <p/>
+     * XXX This is now deprecated in favor of the Java 1.4 getCause() method.
+     * Its original behavior has been preserved: it will unwrap E backtrace
+     * exceptions and the Java standard library exceptions
+     * {@link java.lang.ExceptionInInitializerError},
+     * {@link java.lang.reflect.InvocationTargetException}, and
+     * {@link java.lang.reflect.UndeclaredThrowableException}.
      */
     static public Throwable unwrap(Throwable self) {
-        if (self instanceof NestedThrowable) {
-            return ((NestedThrowable)self).getNestedThrowable();
-        } else if (self instanceof ExceptionInInitializerError) {
-            return ((ExceptionInInitializerError)self).getException();
-        } else if (self instanceof InvocationTargetException) {
-            return ((InvocationTargetException)self).getTargetException();
-        } else if (self instanceof UndeclaredThrowableException) {
-            return ((UndeclaredThrowableException)self).
-              getUndeclaredThrowable();
+        if (self instanceof EBacktraceThrowable
+                || self instanceof ExceptionInInitializerError
+                || self instanceof InvocationTargetException
+                || self instanceof UndeclaredThrowableException) {
+            return self.getCause();
         } else {
             return null;
         }
     }
 
     /**
-     * Return the non-wrapping throwable at the end of a wrapping chain
+     * Return the non-wrapping throwable at the end of a wrapping chain:
+     * repeatedly {@link unwrap()}.
      */
     static public Throwable leaf(Throwable self) {
         while (true) {

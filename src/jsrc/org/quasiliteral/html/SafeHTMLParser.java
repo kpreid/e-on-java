@@ -2,7 +2,7 @@ package org.quasiliteral.html;
 
 import org.erights.e.develop.assertion.T;
 import org.erights.e.develop.exception.ExceptionMgr;
-import org.erights.e.develop.exception.NestedException;
+import org.erights.e.develop.exception.EBacktraceException;
 import org.erights.e.develop.format.StringHelper;
 import org.erights.e.elib.base.ValueThunk;
 import org.erights.e.elib.tables.ConstMap;
@@ -10,7 +10,6 @@ import org.erights.e.elib.tables.ConstSet;
 import org.erights.e.elib.tables.FlexMap;
 import org.erights.e.elib.tables.FlexSet;
 
-import javax.swing.JEditorPane;
 import javax.swing.text.ChangedCharSetException;
 import javax.swing.text.html.parser.AttributeList;
 import javax.swing.text.html.parser.DTD;
@@ -107,7 +106,7 @@ public class SafeHTMLParser extends Parser {
         try {
             make(text).parse(new StringReader(text));
         } catch (Throwable th) {
-            throw new NestedException(th, "# unsafe html: " + text);
+            throw new EBacktraceException(th, "# unsafe html: " + text);
         }
     }
 

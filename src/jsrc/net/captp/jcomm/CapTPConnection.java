@@ -33,7 +33,7 @@ import net.vattp.data.VatTPConnection;
 import net.vattp.security.ESecureRandom;
 import org.erights.e.develop.assertion.T;
 import org.erights.e.develop.exception.ExceptionMgr;
-import org.erights.e.develop.exception.NestedException;
+import org.erights.e.develop.exception.EBacktraceException;
 import org.erights.e.develop.trace.Trace;
 import org.erights.e.elib.prim.E;
 import org.erights.e.elib.ref.DelayedRedirector;
@@ -1184,7 +1184,7 @@ class CapTPConnection implements MsgHandler {
     public void connectionDead(VatTPConnection dataConn, Throwable problem) {
         T.require(dataConn == myDataConnection,
                   "dead VatTPConnection doesn't match");
-        killConnection(new NestedException(problem, "# lost " + dataConn),
+        killConnection(new EBacktraceException(problem, "# lost " + dataConn),
                        myShuttingDownFlag);
     }
 

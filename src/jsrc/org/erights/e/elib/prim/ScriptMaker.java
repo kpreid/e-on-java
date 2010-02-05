@@ -19,7 +19,7 @@ Copyright (C) 1998 Electric Communities. All Rights Reserved.
 Contributor(s): ______________________________________.
 */
 
-import org.erights.e.develop.exception.NestedException;
+import org.erights.e.develop.exception.EBacktraceException;
 import org.erights.e.elib.base.Callable;
 import org.erights.e.elib.base.Script;
 import org.erights.e.elib.base.ValueThunk;
@@ -88,7 +88,7 @@ public class ScriptMaker {
         try {
             return ClassCache.forName(promotionName);
         } catch (Exception ex) {
-            throw new NestedException(ex, "# promotion not found");
+            throw new EBacktraceException(ex, "# promotion not found");
         }
     }
 
@@ -180,7 +180,7 @@ public class ScriptMaker {
         try {
             return ClassCache.forName(sugarName);
         } catch (Exception ex) {
-            throw new NestedException(ex,
+            throw new EBacktraceException(ex,
                                       "# sweetener not found: " + sugarName);
         }
     }

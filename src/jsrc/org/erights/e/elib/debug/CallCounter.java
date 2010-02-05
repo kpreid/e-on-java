@@ -3,7 +3,7 @@ package org.erights.e.elib.debug;
 // Copyright 2002 Combex, Inc. under the terms of the MIT X license
 // found at http://www.opensource.org/licenses/mit-license.html ...............
 
-import org.erights.e.develop.exception.NestedException;
+import org.erights.e.develop.exception.EBacktraceException;
 import org.erights.e.develop.exception.ThrowableSugar;
 import org.erights.e.elib.base.Ejection;
 import org.erights.e.elib.base.SourceSpan;
@@ -91,7 +91,7 @@ public class CallCounter {
             if (null != myOptSpan) {
                 msg += ": " + myOptSpan;
             }
-            return new NestedException(problem, msg);
+            return new EBacktraceException(problem, msg);
         }
     }
 

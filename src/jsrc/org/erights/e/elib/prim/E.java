@@ -19,7 +19,7 @@ Copyright (C) 1998 Electric Communities. All Rights Reserved.
 Contributor(s): ______________________________________.
 */
 
-import org.erights.e.develop.exception.NestedException;
+import org.erights.e.develop.exception.EBacktraceException;
 import org.erights.e.develop.exception.ThrowableSugar;
 import org.erights.e.develop.format.StringHelper;
 import org.erights.e.elib.base.ClassDesc;
@@ -242,7 +242,7 @@ public class E {
                                              String verb,
                                              Object[] args) {
         if (Backtracing) {
-            return new NestedException(ex, "# Problem reporting problem!");
+            return new EBacktraceException(ex, "# Problem reporting problem!");
         }
 
         try {
@@ -253,10 +253,11 @@ public class E {
                 return (Ejection)leaf;
             }
             String msg = ". " + abbrevCall(rec, ".", verb, args);
-            return new NestedException(ex, msg);
+            return new EBacktraceException(ex, msg);
 
         } catch (Throwable th) {
-            return new NestedException(ex, "# Problem reporting (" + th + ")");
+            return new EBacktraceException(ex, "# Problem reporting (" + th +
+                ")");
 
         } finally {
             Backtracing = false;

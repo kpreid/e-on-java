@@ -20,7 +20,7 @@ Contributor(s): ______________________________________.
 */
 
 import org.erights.e.develop.assertion.T;
-import org.erights.e.develop.exception.NestedException;
+import org.erights.e.develop.exception.EBacktraceException;
 import org.erights.e.elib.base.SourceSpan;
 import org.erights.e.elib.oldeio.EPrintable;
 import org.erights.e.elib.oldeio.TextWriter;
@@ -199,7 +199,7 @@ public abstract class ParseNode extends SamenessHashCacher
         if (null != optPoser) {
             SourceSpan optSpan = optPoser.myOptSpan;
             if (null != optSpan) {
-                problem = new NestedException(problem, "@ " + optSpan);
+                problem = new EBacktraceException(problem, "@ " + optSpan);
             }
         }
         throw problem;
@@ -266,7 +266,7 @@ public abstract class ParseNode extends SamenessHashCacher
         try {
             subPrintOn(tw, PR_START);
         } catch (IOException iox) {
-            throw new NestedException(iox, "# in ParseNode.asText()");
+            throw new EBacktraceException(iox, "# in ParseNode.asText()");
         }
         return sb.toString();
     }

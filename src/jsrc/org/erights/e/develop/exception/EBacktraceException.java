@@ -20,26 +20,23 @@ Contributor(s): ______________________________________.
 */
 
 /**
- * Nested version of the Java Error class
+ * Backtrace version of the Java RuntimeException class.
+ * 
+ * This is identical to RuntimeException except that it indicates that this
+ * exception should be unwrapped as part of the E backtrace-reporting
+ * mechanisms, and its message follows the convention described in 
+ * {@link EBacktraceThrowable}.
  */
-public class NestedError extends Error implements NestedThrowable {
+public class EBacktraceException extends RuntimeException
+  implements EBacktraceThrowable {
 
-    static private final long serialVersionUID = -8224390403639236240L;
-
-    private final Throwable myContainedThrowable;
-
-    /**
-     *
-     */
-    public NestedError(Throwable t, String msg) {
-        super(msg);
-        myContainedThrowable = t;
-    }
+    static private final long serialVersionUID = 2636038350623448267L;
 
     /**
-     *
+     * See {@link EBacktraceThrowable} for the convention that msg should
+     * follow.
      */
-    public Throwable getNestedThrowable() {
-        return myContainedThrowable;
+    public EBacktraceException(Throwable t, String msg) {
+        super(msg, t);
     }
 }

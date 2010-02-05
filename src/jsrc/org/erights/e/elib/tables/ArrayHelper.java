@@ -3,7 +3,7 @@
 
 package org.erights.e.elib.tables;
 
-import org.erights.e.develop.exception.NestedException;
+import org.erights.e.develop.exception.EBacktraceException;
 import org.erights.e.elib.prim.E;
 import org.erights.e.meta.java.math.EInt;
 
@@ -179,7 +179,7 @@ public class ArrayHelper {
             try {
                 Array.set(array, index, val);
             } catch (IllegalArgumentException iae2) {
-                throw new NestedException(iae2,
+                throw new EBacktraceException(iae2,
                                           "# Can't fit " + E.toQuote(val) +
                                             " into array of " + type);
             }

@@ -5,7 +5,7 @@ package org.erights.e.elang.syntax;
 
 import org.erights.e.develop.assertion.T;
 import org.erights.e.develop.exception.ExceptionMgr;
-import org.erights.e.develop.exception.NestedException;
+import org.erights.e.develop.exception.EBacktraceException;
 import org.erights.e.elang.evm.AssignExpr;
 import org.erights.e.elang.evm.AtomicExpr;
 import org.erights.e.elang.evm.AuditorExprs;
@@ -193,7 +193,7 @@ public abstract class BaseENodeBuilder implements BaseEBuilder {
             if (null == optSpan) {
                 throw sex;
             }
-            throw new NestedException(sex, "@ " + optSpan);
+            throw new EBacktraceException(sex, "@ " + optSpan);
         }
     }
 

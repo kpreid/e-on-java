@@ -4,7 +4,7 @@ package org.erights.e.elib.tables;
 // found at http://www.opensource.org/licenses/mit-license.html ...............
 
 import org.erights.e.develop.exception.ExceptionMgr;
-import org.erights.e.develop.exception.NestedException;
+import org.erights.e.develop.exception.EBacktraceException;
 import org.erights.e.elib.base.ClassDesc;
 import org.erights.e.elib.prim.E;
 import org.erights.e.elib.prim.ScriptMaker;
@@ -106,7 +106,7 @@ public final class Equalizer {
         try {
             return ClassCache.forName(simpName);
         } catch (Exception ex) {
-            throw new NestedException(ex,
+            throw new EBacktraceException(ex,
                                       "# simplification not found: " +
                                         simpName);
         }

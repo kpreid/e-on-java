@@ -25,7 +25,7 @@ Contributor(s): ______________________________________.
 
 import net.vattp.security.MicroTime;
 import org.erights.e.develop.assertion.T;
-import org.erights.e.develop.exception.NestedIOException;
+import org.erights.e.develop.exception.EBacktraceIOException;
 import org.erights.e.develop.trace.Trace;
 import org.erights.e.elib.util.HexStringUtils;
 import org.erights.e.elib.vat.SynchQueue;
@@ -573,7 +573,7 @@ class SendThread extends Thread {
                     myAddressesTried.put(remoteInetAddress, remoteInetAddress);
                     throw he;
                 } catch (BindException be) {
-                    throw new NestedIOException(be,
+                    throw new EBacktraceIOException(be,
                                                 "BindException binding to " +
                                                   remoteNetAddr);
                 }

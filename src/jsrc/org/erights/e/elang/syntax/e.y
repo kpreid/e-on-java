@@ -29,7 +29,7 @@ Contributor(s): ______________________________________.
 %{
 package org.erights.e.elang.syntax;
 
-import org.erights.e.develop.exception.NestedException;
+import org.erights.e.develop.exception.EBacktraceException;
 import org.erights.e.develop.exception.PrintStreamWriter;
 import org.erights.e.develop.assertion.T;
 import org.erights.e.elang.evm.ENode;
@@ -1755,7 +1755,7 @@ static public ENode run(Twine sourceCode,
         return parser.parse();
 
     } catch (IOException iox) {
-        throw new NestedException(iox, "# parsing a string?!");
+        throw new EBacktraceException(iox, "# parsing a string?!");
     }
 }
 

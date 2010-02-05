@@ -19,23 +19,25 @@ Copyright (C) 1998 Electric Communities. All Rights Reserved.
 Contributor(s): ______________________________________.
 */
 
+import java.io.IOException;
+
 /**
- * Wraps a Throwable in order to turn it into some other kind of Throwable, in
- * order to add backtrace info, or both.
- * <p/>
- * For a NestedThrowable, the convention for the message is that it should be
- * empty, or each line should begin with <ul> <li>"# " to indicate a message
- * intended only for human parsing. <li>". " to indicate a printing of a
- * problematic call's value <li>"@ " to indicate where the problem occurred
- * <li>"- " to indicate what was called. </ul> If the message is empty, it will
- * be ignored by {@link ThrowableSugar#eStack}.
- *
- * @author modification by Mark S. Miller
+ * Backtrace version of the Java IOException class.
+ * 
+ * This is identical to RuntimeException except that it indicates that this
+ * exception should be unwrapped as part of the E backtrace-reporting
+ * mechanisms, and its message follows the convention described in 
+ * {@link EBacktraceThrowable}.
  */
-public interface NestedThrowable {
+public class EBacktraceIOException extends IOException
+        implements EBacktraceThrowable {
+
+    static private final long serialVersionUID = 8627311147539613684L;
 
     /**
      *
      */
-    Throwable getNestedThrowable();
+    public EBacktraceIOException(Throwable t, String msg) {
+        super(msg, t);
+    }
 }

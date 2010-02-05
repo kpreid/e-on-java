@@ -71,7 +71,8 @@ public class EYaccFixer {
             "            T.fail(rName + \" bad checkhash: \" +\n" +
             "                                       hash);\n" + "        }\n" +
             "    } catch (Exception ex) {\n" +
-            "        throw new NestedException(ex, \"# initing parser\");\n" +
+            "        throw new EBacktraceException(ex,\n" +
+            "            \"# initing parser\");\n" +
             "    }\n" + "}\n\n" + "${3}int yyparse() ${4}"));
     }
 

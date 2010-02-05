@@ -19,7 +19,7 @@ Copyright (C) 1998 Electric Communities. All Rights Reserved.
 Contributor(s): ______________________________________.
 */
 
-import org.erights.e.develop.exception.NestedException;
+import org.erights.e.develop.exception.EBacktraceException;
 import org.erights.e.elib.prim.E;
 import org.erights.e.elib.prim.StaticMaker;
 import org.erights.e.elib.util.ClassCache;
@@ -48,7 +48,7 @@ public class MicroTime {
             //PrintStreamWriter.err().println("not using native timers: " +
             //                                ule);
         } catch (ClassNotFoundException cnf) {
-            throw new NestedException(cnf, "# no Native");
+            throw new EBacktraceException(cnf, "# no Native");
         }
         initializeTimer();
     }

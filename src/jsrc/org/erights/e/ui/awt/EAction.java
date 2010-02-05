@@ -3,7 +3,7 @@ package org.erights.e.ui.awt;
 // Copyright 2002 Combex, Inc. under the terms of the MIT X license
 // found at http://www.opensource.org/licenses/mit-license.html ...............
 
-import org.erights.e.develop.exception.NestedException;
+import org.erights.e.develop.exception.EBacktraceException;
 import org.erights.e.develop.format.StringHelper;
 import org.erights.e.elib.oldeio.EPrintable;
 import org.erights.e.elib.oldeio.TextWriter;
@@ -249,13 +249,13 @@ public class EAction extends AbstractAction implements EPrintable {
         try {
             field = KeyEvent.class.getField("VK_" + accel);
         } catch (NoSuchFieldException nsfe) {
-            throw new NestedException(nsfe, "# building menu: " + accel);
+            throw new EBacktraceException(nsfe, "# building menu: " + accel);
         }
         int c;
         try {
             c = field.getInt(null);
         } catch (IllegalAccessException iae) {
-            throw new NestedException(iae, "# building menu: " + field);
+            throw new EBacktraceException(iae, "# building menu: " + field);
         }
 
         KeyStroke stroke = KeyStroke.getKeyStroke(c, mask);

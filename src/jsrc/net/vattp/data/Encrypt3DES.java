@@ -22,7 +22,7 @@ package net.vattp.data;
 
 import net.vattp.security.MicroTime;
 import org.erights.e.develop.assertion.T;
-import org.erights.e.develop.exception.NestedException;
+import org.erights.e.develop.exception.EBacktraceException;
 import org.erights.e.develop.trace.Trace;
 
 import java.security.InvalidKeyException;
@@ -64,7 +64,8 @@ class Encrypt3DES extends MsgTransformer {
             myDes3.initEncrypt(key);
         } catch (InvalidKeyException ike) {
             Trace.comm.errorm("Problem initializing DES keys", ike);
-            throw new NestedException(ike, "# Problem initializing DES keys");
+            throw new EBacktraceException(ike,
+                "# Problem initializing DES keys");
         }
         System.arraycopy(myIV, 0, myPreviousBlock, 0, 8);
     }

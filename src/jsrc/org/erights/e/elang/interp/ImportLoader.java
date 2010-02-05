@@ -20,7 +20,7 @@ Contributor(s): ______________________________________.
 */
 
 import org.erights.e.develop.assertion.T;
-import org.erights.e.develop.exception.NestedException;
+import org.erights.e.develop.exception.EBacktraceException;
 import org.erights.e.develop.trace.Trace;
 import org.erights.e.elang.evm.EExpr;
 import org.erights.e.elang.scope.Scope;
@@ -121,7 +121,7 @@ class ImportLoader extends BaseLoader implements JOSSPassByConstruction {
             try {
                 return URLSugar.getTwine(resource);
             } catch (IOException ioe) {
-                throw new NestedException(ioe, "# getting E source");
+                throw new EBacktraceException(ioe, "# getting E source");
             }
         }
     }

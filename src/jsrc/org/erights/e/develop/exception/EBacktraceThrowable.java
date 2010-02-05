@@ -20,27 +20,17 @@ Contributor(s): ______________________________________.
 */
 
 /**
- * Nested version of the Java RuntimeException class.
+ * Wraps a Throwable (stored in the cause field) in order to add backtrace 
+ * info.
+ * <p/>
+ * For a EBacktraceThrowable, the convention for the message is that it should
+ * be empty, or each line should begin with <ul> <li>"# " to indicate a message
+ * intended only for human parsing. <li>". " to indicate a printing of a
+ * problematic call's value <li>"@ " to indicate where the problem occurred
+ * <li>"- " to indicate what was called. </ul> If the message is empty, it will
+ * be ignored by {@link ThrowableSugar#eStack}.
+ *
+ * @author modification by Mark S. Miller
  */
-public class NestedException extends RuntimeException
-  implements NestedThrowable {
-
-    static private final long serialVersionUID = 2241355872285197147L;
-
-    private final Throwable myContainedThrowable;
-
-    /**
-     * See {@link NestedThrowable} for the convention that msg should follow.
-     */
-    public NestedException(Throwable t, String msg) {
-        super(msg);
-        myContainedThrowable = t;
-    }
-
-    /**
-     *
-     */
-    public Throwable getNestedThrowable() {
-        return myContainedThrowable;
-    }
+public interface EBacktraceThrowable {
 }

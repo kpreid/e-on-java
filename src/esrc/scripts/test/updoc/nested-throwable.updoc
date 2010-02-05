@@ -1,0 +1,268 @@
+# Copyright 2010 Kevin Reid, under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+As of r721 (2010-01-12), E-on-Java has a mechanism for wrapping throwables with
+other throwables (the NestedThrowable interface, and classes implementing),
+invented before java.lang.Throwable gained the 'cause' facility (Java 1.4).
+These two are now being integrated. Additionally, Nested* have been renamed to
+EBacktrace* to reflect their sole purpose now that the "nesting" concept is in
+core Java. This file contains tests written to confirm that no
+external/programmer-visible behavior has not changed as a result of this, and
+that the cause-related methods are usable from E.
+
+
+We're going to be looking at stack traces, so this print-func alteration avoids
+showing changes to pathnames.
+
+  ? def makeTextWriter := <elib:oldeio.makeTextWriter>
+  > interp.setPrintFunc({
+  >   def oldPrint := interp.getPrintFunc()
+  >   def newPrint(value, out) {
+  >     def [tw, sb] := makeTextWriter.makeBufferingPair()
+  >     oldPrint(value, tw)
+  >     var string := sb.snapshot()
+  >     # XXX messy, E needs a proper regexp-substitute operation
+  >     while (string =~ rx`(?sx)(@left.*?)
+  >       <file:(?:[^>]*?)/(@fname[^>/#]*)#(?:[a-z:0-9]+?)>
+  >     (@right.*)`) {
+  >       string := `$left<file:.../$fname#...>$right`
+  >     }
+  >     while (string =~ rx`(?sx)(@left.*?)
+  >       \((@fname[\w$$]+.java):\d+\)
+  >     (@right.*)`) {
+  >       string := `$left($fname:...)$right`
+  >     }
+  >     while (string =~ rx`(?sx)(@left.*?)
+  >       GeneratedMethodAccessor\d+
+  >     (@right.*)`) {
+  >       string := `${left}GeneratedMethodAccessor...$right`
+  >     }
+  >     out.print(string)
+  >   }
+  > })
+
+An exception value to test with.
+
+  ? def anEInterpException := try {
+  >   throw("bang")
+  > } catch e {
+  >   e
+  > }
+  # value: problem: bang
+
+  ? anEInterpException.__getAllegedType()
+  # value: EBacktraceException
+
+  ? anEInterpException.getMessage()
+  # value: "@ run/1: <file:.../nested-throwable.updoc#...>"
+
+(Yes, these values will need revision as the E interp and other things change.
+Sorry!)
+
+  ? anEInterpException.eStack()
+  # value: "
+  #        - Thrower#run(RuntimeException)
+  #        . throw(\"bang\")
+  #        @ run/1: <file:.../nested-throwable.updoc#...>"
+
+  ? anEInterpException.javaStack()
+  # value: "java.lang.RuntimeException: bang
+  #        \tat org.erights.e.meta.java.lang.ThrowableGuardSugar.subCoerceR(ThrowableGuardSugar.java:...)
+  #        \tat org.erights.e.elib.base.ClassDesc.tryCoerceR(ClassDesc.java:...)
+  #        \tat org.erights.e.elib.slot.BaseAuditor.coerce(BaseAuditor.java:...)
+  #        \tat org.erights.e.elib.prim.E.as(E.java:...)
+  #        \tat org.erights.e.elib.prim.JavaMemberNode.coerceArgs(JavaMemberNode.java:...)
+  #        \tat org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:...)
+  #        \tat org.erights.e.elib.prim.Selector.callIt(Selector.java:...)
+  #        \tat org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:...)
+  #        \tat org.erights.e.elang.evm.CatchExpr.subEval(CatchExpr.java:...)
+  #        \tat org.erights.e.elang.evm.DefineExpr.subEval(DefineExpr.java:...)
+  #        \tat org.erights.e.elang.evm.EExpr.eval(EExpr.java:...)
+  #        \tat org.erights.e.elang.evm.EExpr.evalToPair(EExpr.java:...)
+  #        \tat sun.reflect.GeneratedMethodAccessor....invoke(Unknown Source)
+  #        \tat sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:...)
+  #        \tat java.lang.reflect.Method.invoke(Method.java:...)
+  #        \tat org.erights.e.elib.prim.InstanceMethodNode.innerExecute(InstanceMethodNode.java:...)
+  #        \tat org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:...)
+  #        \tat org.erights.e.elib.prim.Selector.callIt(Selector.java:...)
+  #        \tat org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:...)
+  #        \tat org.erights.e.elang.evm.DefineExpr.subEval(DefineExpr.java:...)
+  #        \tat org.erights.e.elang.evm.SeqExpr.subEval(SeqExpr.java:...)
+  #        \tat org.erights.e.elang.evm.CatchExpr.subEval(CatchExpr.java:...)
+  #        \tat org.erights.e.elang.evm.FinallyExpr.subEval(FinallyExpr.java:...)
+  #        \tat org.erights.e.elang.evm.SeqExpr.subEval(SeqExpr.java:...)
+  #        \tat org.erights.e.elang.evm.EMethod.execute(EMethod.java:...)
+  #        \tat org.erights.e.elang.evm.EMethodNode.execute(EMethodNode.java:...)
+  #        \tat org.erights.e.elib.prim.Selector.callIt(Selector.java:...)
+  #        \tat org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:...)
+  #        \tat org.erights.e.elang.evm.SeqExpr.subEval(SeqExpr.java:...)
+  #        \tat org.erights.e.elang.evm.EMethod.execute(EMethod.java:...)
+  #        \tat org.erights.e.elang.evm.EMethodNode.execute(EMethodNode.java:...)
+  #        \tat org.erights.e.elib.prim.Selector.callIt(Selector.java:...)
+  #        \tat org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:...)
+  #        \tat org.erights.e.elang.evm.SeqExpr.subEval(SeqExpr.java:...)
+  #        \tat org.erights.e.elang.evm.CatchExpr.subEval(CatchExpr.java:...)
+  #        \tat org.erights.e.elang.evm.SeqExpr.subEval(SeqExpr.java:...)
+  #        \tat org.erights.e.elang.evm.EscapeExpr.subEval(EscapeExpr.java:...)
+  #        \tat org.erights.e.elang.evm.IfExpr.subEval(IfExpr.java:...)
+  #        \tat org.erights.e.elang.evm.IfExpr.subEval(IfExpr.java:...)
+  #        \tat org.erights.e.elang.evm.SeqExpr.subEval(SeqExpr.java:...)
+  #        \tat org.erights.e.elang.evm.EMethod.execute(EMethod.java:...)
+  #        \tat org.erights.e.elang.evm.EMethodNode.execute(EMethodNode.java:...)
+  #        \tat org.erights.e.elib.prim.E.callAll(E.java:...)
+  #        \tat org.erights.e.elib.vat.PendingDelivery.innerRun(PendingDelivery.java:...)
+  #        \tat org.erights.e.elib.vat.PendingEvent.run(PendingEvent.java:...)
+  #        \tat org.erights.e.elib.vat.HeadlessRunner.run(HeadlessRunner.java:...)
+  #        \tat java.lang.Thread.run(Thread.java:...)
+  #        "
+
+  ? anEInterpException.unwrap().__getAllegedType()
+  # value: EBacktraceException
+
+  ? anEInterpException.unwrap().getMessage()
+  # value: ". throw(\"bang\")"
+
+  ? anEInterpException.leaf().__getAllegedType()
+  # value: RuntimeException
+
+  ? anEInterpException.leaf().getMessage()
+  # value: "bang"
+
+Note that unwrap() is superseded by getCause(), but leaf()'s functionality is
+unique. Furthermore, on consideration I (Kevin Reid) decided that (XXX review
+if this is still true) leaf() should not unwrap more things than it used to;
+therefore it still has the explicit unwrapping functionality.
+
+OK, now that that's been established, on to testing existing things which
+(before the transition) mentioned Nested*, unwrap(), or leaf().
+
+com.skyhunter.e.util.stackTraceFunc
+
+  ? def stackTraceFunc := <import:com.skyhunter.e.util.stackTraceFunc>
+  > stackTraceFunc(anEInterpException)
+  # value: "
+  #        - Thrower#run(RuntimeException)
+  #        . throw(\"bang\")
+  #        @ run/1: <file:.../nested-throwable.updoc#...>
+  #  
+  #        java.lang.RuntimeException: bang
+  #        \tat org.erights.e.meta.java.lang.ThrowableGuardSugar.subCoerceR(ThrowableGuardSugar.java:...)
+  #        \tat org.erights.e.elib.base.ClassDesc.tryCoerceR(ClassDesc.java:...)
+  #        \tat org.erights.e.elib.slot.BaseAuditor.coerce(BaseAuditor.java:...)
+  #        \tat org.erights.e.elib.prim.E.as(E.java:...)
+  #        \tat org.erights.e.elib.prim.JavaMemberNode.coerceArgs(JavaMemberNode.java:...)
+  #        \tat org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:...)
+  #        \tat org.erights.e.elib.prim.Selector.callIt(Selector.java:...)
+  #        \tat org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:...)
+  #        \tat org.erights.e.elang.evm.CatchExpr.subEval(CatchExpr.java:...)
+  #        \tat org.erights.e.elang.evm.DefineExpr.subEval(DefineExpr.java:...)
+  #        \tat org.erights.e.elang.evm.EExpr.eval(EExpr.java:...)
+  #        \tat org.erights.e.elang.evm.EExpr.evalToPair(EExpr.java:...)
+  #        \tat sun.reflect.GeneratedMethodAccessor....invoke(Unknown Source)
+  #        \tat sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:...)
+  #        \tat java.lang.reflect.Method.invoke(Method.java:...)
+  #        \tat org.erights.e.elib.prim.InstanceMethodNode.innerExecute(InstanceMethodNode.java:...)
+  #        \tat org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:...)
+  #        \tat org.erights.e.elib.prim.Selector.callIt(Selector.java:...)
+  #        \tat org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:...)
+  #        \tat org.erights.e.elang.evm.DefineExpr.subEval(DefineExpr.java:...)
+  #        \tat org.erights.e.elang.evm.SeqExpr.subEval(SeqExpr.java:...)
+  #        \tat org.erights.e.elang.evm.CatchExpr.subEval(CatchExpr.java:...)
+  #        \tat org.erights.e.elang.evm.FinallyExpr.subEval(FinallyExpr.java:...)
+  #        \tat org.erights.e.elang.evm.SeqExpr.subEval(SeqExpr.java:...)
+  #        \tat org.erights.e.elang.evm.EMethod.execute(EMethod.java:...)
+  #        \tat org.erights.e.elang.evm.EMethodNode.execute(EMethodNode.java:...)
+  #        \tat org.erights.e.elib.prim.Selector.callIt(Selector.java:...)
+  #        \tat org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:...)
+  #        \tat org.erights.e.elang.evm.SeqExpr.subEval(SeqExpr.java:...)
+  #        \tat org.erights.e.elang.evm.EMethod.execute(EMethod.java:...)
+  #        \tat org.erights.e.elang.evm.EMethodNode.execute(EMethodNode.java:...)
+  #        \tat org.erights.e.elib.prim.Selector.callIt(Selector.java:...)
+  #        \tat org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:...)
+  #        \tat org.erights.e.elang.evm.SeqExpr.subEval(SeqExpr.java:...)
+  #        \tat org.erights.e.elang.evm.CatchExpr.subEval(CatchExpr.java:...)
+  #        \tat org.erights.e.elang.evm.SeqExpr.subEval(SeqExpr.java:...)
+  #        \tat org.erights.e.elang.evm.EscapeExpr.subEval(EscapeExpr.java:...)
+  #        \tat org.erights.e.elang.evm.IfExpr.subEval(IfExpr.java:...)
+  #        \tat org.erights.e.elang.evm.IfExpr.subEval(IfExpr.java:...)
+  #        \tat org.erights.e.elang.evm.SeqExpr.subEval(SeqExpr.java:...)
+  #        \tat org.erights.e.elang.evm.EMethod.execute(EMethod.java:...)
+  #        \tat org.erights.e.elang.evm.EMethodNode.execute(EMethodNode.java:...)
+  #        \tat org.erights.e.elib.prim.E.callAll(E.java:...)
+  #        \tat org.erights.e.elib.vat.PendingDelivery.innerRun(PendingDelivery.java:...)
+  #        \tat org.erights.e.elib.vat.PendingEvent.run(PendingEvent.java:...)
+  #        \tat org.erights.e.elib.vat.HeadlessRunner.run(HeadlessRunner.java:...)
+  #        \tat java.lang.Thread.run(Thread.java:...)
+  #        "
+
+org.erights.e.elang.cmd.makeAnswerer
+
+  ? def makeAnswerer := <import:org.erights.e.elang.cmd.makeAnswerer>
+  > def [tw, sb] := makeTextWriter.makeBufferingPair()
+  > def answerer := makeAnswerer(tw)
+  > answerer.reportProblem(anEInterpException, true, true)
+  > sb.snapshot()
+  # value: "# problem: bang
+  #         #
+  #         #   java.lang.RuntimeException: bang
+  #         #   \tat org.erights.e.meta.java.lang.ThrowableGuardSugar.subCoerceR(ThrowableGuardSugar.java:...)
+  #         #   \tat org.erights.e.elib.base.ClassDesc.tryCoerceR(ClassDesc.java:...)
+  #         #   \tat org.erights.e.elib.slot.BaseAuditor.coerce(BaseAuditor.java:...)
+  #         #   \tat org.erights.e.elib.prim.E.as(E.java:...)
+  #         #   \tat org.erights.e.elib.prim.JavaMemberNode.coerceArgs(JavaMemberNode.java:...)
+  #         #   \tat org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:...)
+  #         #   \tat org.erights.e.elib.prim.Selector.callIt(Selector.java:...)
+  #         #   \tat org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:...)
+  #         #   \tat org.erights.e.elang.evm.CatchExpr.subEval(CatchExpr.java:...)
+  #         #   \tat org.erights.e.elang.evm.DefineExpr.subEval(DefineExpr.java:...)
+  #         #   \tat org.erights.e.elang.evm.EExpr.eval(EExpr.java:...)
+  #         #   \tat org.erights.e.elang.evm.EExpr.evalToPair(EExpr.java:...)
+  #         #   \tat sun.reflect.GeneratedMethodAccessor....invoke(Unknown Source)
+  #         #   \tat sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:...)
+  #         #   \tat java.lang.reflect.Method.invoke(Method.java:...)
+  #         #   \tat org.erights.e.elib.prim.InstanceMethodNode.innerExecute(InstanceMethodNode.java:...)
+  #         #   \tat org.erights.e.elib.prim.JavaMemberNode.execute(JavaMemberNode.java:...)
+  #         #   \tat org.erights.e.elib.prim.Selector.callIt(Selector.java:...)
+  #         #   \tat org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:...)
+  #         #   \tat org.erights.e.elang.evm.DefineExpr.subEval(DefineExpr.java:...)
+  #         #   \tat org.erights.e.elang.evm.SeqExpr.subEval(SeqExpr.java:...)
+  #         #   \tat org.erights.e.elang.evm.CatchExpr.subEval(CatchExpr.java:...)
+  #         #   \tat org.erights.e.elang.evm.FinallyExpr.subEval(FinallyExpr.java:...)
+  #         #   \tat org.erights.e.elang.evm.SeqExpr.subEval(SeqExpr.java:...)
+  #         #   \tat org.erights.e.elang.evm.EMethod.execute(EMethod.java:...)
+  #         #   \tat org.erights.e.elang.evm.EMethodNode.execute(EMethodNode.java:...)
+  #         #   \tat org.erights.e.elib.prim.Selector.callIt(Selector.java:...)
+  #         #   \tat org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:...)
+  #         #   \tat org.erights.e.elang.evm.SeqExpr.subEval(SeqExpr.java:...)
+  #         #   \tat org.erights.e.elang.evm.EMethod.execute(EMethod.java:...)
+  #         #   \tat org.erights.e.elang.evm.EMethodNode.execute(EMethodNode.java:...)
+  #         #   \tat org.erights.e.elib.prim.Selector.callIt(Selector.java:...)
+  #         #   \tat org.erights.e.elang.evm.CallExpr.subEval(CallExpr.java:...)
+  #         #   \tat org.erights.e.elang.evm.SeqExpr.subEval(SeqExpr.java:...)
+  #         #   \tat org.erights.e.elang.evm.CatchExpr.subEval(CatchExpr.java:...)
+  #         #   \tat org.erights.e.elang.evm.SeqExpr.subEval(SeqExpr.java:...)
+  #         #   \tat org.erights.e.elang.evm.EscapeExpr.subEval(EscapeExpr.java:...)
+  #         #   \tat org.erights.e.elang.evm.IfExpr.subEval(IfExpr.java:...)
+  #         #   \tat org.erights.e.elang.evm.IfExpr.subEval(IfExpr.java:...)
+  #         #   \tat org.erights.e.elang.evm.SeqExpr.subEval(SeqExpr.java:...)
+  #         #   \tat org.erights.e.elang.evm.EMethod.execute(EMethod.java:...)
+  #         #   \tat org.erights.e.elang.evm.EMethodNode.execute(EMethodNode.java:...)
+  #         #   \tat org.erights.e.elib.prim.E.callAll(E.java:...)
+  #         #   \tat org.erights.e.elib.vat.PendingDelivery.innerRun(PendingDelivery.java:...)
+  #         #   \tat org.erights.e.elib.vat.PendingEvent.run(PendingEvent.java:...)
+  #         #   \tat org.erights.e.elib.vat.HeadlessRunner.run(HeadlessRunner.java:...)
+  #         #   \tat java.lang.Thread.run(Thread.java:...)
+  #         #
+  #         #   - Thrower#run(RuntimeException)
+  #         #   . throw(\"bang\")
+  #         #   @ run/1: <file:.../nested-throwable.updoc#...>
+  #  
+  #         "
+
+eBrowser.* problemReporterMaker matches SyntaxExceptions: can't test this in
+updoc because it's intertwined in GUI code. The effect should be to jump to the
+location of a syntax error.
+
+parseAndPlay in updoc.e matches SyntaxExceptions: the effect should be that
+syntax exceptions there don't show backtraces.
+

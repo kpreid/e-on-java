@@ -49,7 +49,10 @@ public class ExceptionMgr {
         if (th instanceof RuntimeException) {
             return (RuntimeException)th;
         }
-        return new NestedException(th, "");
+        // XXX review: in the new getCause()-based world, should this be not
+        // a backtrace exception but a plain RuntimeException? If so, how
+        // should the backtrace facilities know to walk through it?
+        return new EBacktraceException(th, "");
     }
 
     /**

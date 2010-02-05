@@ -4,7 +4,7 @@ package org.erights.e.elib.prim;
 // found at http://www.opensource.org/licenses/mit-license.html ...............
 
 import org.erights.e.develop.assertion.T;
-import org.erights.e.develop.exception.NestedException;
+import org.erights.e.develop.exception.EBacktraceException;
 import org.erights.e.elib.util.OneArgFunc;
 
 /**
@@ -65,7 +65,7 @@ public class Thrower {
             return problem;
         }
         optEjector.run(problem);
-        throw new NestedException(problem,
+        throw new EBacktraceException(problem,
                                   "# optEjector returned: " + optEjector);
     }
 
