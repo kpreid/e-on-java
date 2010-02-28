@@ -1577,7 +1577,7 @@ public class ENodeBuilder extends BaseENodeBuilder implements EBuilder {
     /**
      * switch (eExpr) { match pattern1 { body1 } match pattern2 { body2 } }
      * expands to { def temp = eExpr if (temp =~ pattern1) { body1 } else if
-     * (temp =~ pattern2) { body2 } else { throw("no match: " + temp) } }
+     * (temp =~ pattern2) { body2 } else { throw("no match: " + E.toQuote(temp)) } }
      */
     public EExpr switchx(Object specimen, Object matchers) {
         EMatcher[] mtchrs =
@@ -1597,8 +1597,11 @@ public class ENodeBuilder extends BaseENodeBuilder implements EBuilder {
         EExpr result;
 
         if (null == optOtherwise) {
+            EExpr[] quoteArgs = {specimen};
+            EExpr quotedSpecimen = call(EE, NO_POSER, "toQuote", quoteArgs);
+
             EExpr str = literal("no match: ");
-            EExpr[] addArgs = {specimen};
+            EExpr[] addArgs = {quotedSpecimen};
             EExpr[] runArgs = {call(str, NO_POSER, "add", addArgs)};
             result = call(THROW, NO_POSER, "run", runArgs);
 
