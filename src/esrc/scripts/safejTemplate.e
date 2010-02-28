@@ -10,20 +10,28 @@
 #     safejTemplate.e [-classpath <classpath>] [-o <dir>] <Java class names>
 # 
 # DESCRIPTION
-#    This is a useful hack for getting started in writing a safej file. It extracts the protocol of a class using 'javap', then writes a corresponding safej term with everything suppressed, for you to edit.
+#    This is a useful hack for getting started in writing a safej file. It
+#    extracts the protocol of a class using 'javap', then writes a
+#    corresponding safej term with everything suppressed, for you to edit.
 # 
 # OPTIONS
 #     -classpath <classpath>
 #         Controls where the class to be examined will be searched for.
 #     -o <dir>
-#         The safej file will be written into the appropriate package subdirectory of <dir>.
+#         The safej file will be written into the appropriate package
+#         subdirectory of <dir>.
 #
 # BUGS
-#     Java reflection should perhaps be used instead of parsing the textual output of javap. There is no guarantee that the parser understands everything javap might output. (Note however that using reflection implies loading the classes into the same jvm as the host E.)
+#     Java reflection should perhaps be used instead of parsing the textual
+#     output of javap. There is no guarantee that the parser understands
+#     everything javap might output. (Note however that using reflection
+#     implies loading the classes into the same jvm as the host E.)
 #     
 #     It doesn't know when to use reject instead of suppress.
 #     
 #     The regular expressions may be too lenient in some cases.
+#     
+#     Java identifier characters that are not in ASCII are not recognized.
 
 pragma.syntax("0.9")
 pragma.enable("accumulator")
@@ -67,7 +75,11 @@ for className in classNames {
     /** Remove package qualification from a type name. */
     def shortenType(rx`(?:.*\.)?(@x[][A-Za-z_$$]+)`) { return x }
 
-    /** Remove package qualification from a comma-separated list of type names and insert spaces after the commas, thus converting javap argument lists to safej argument lists. */
+    /**
+     * Remove package qualification from a comma-separated list of
+     * type names and insert spaces after the commas, thus converting
+     * javap argument lists to safej argument lists. 
+     */ 
     def shortenArgs(argStr) {
       if (argStr == "") {
         return ""
@@ -77,8 +89,9 @@ for className in classNames {
       })
     }
 
-    # Names which SafeJ automatically suppresses, so we don't need to mention.
-    # I'd like to import instead of copying this list, but SafeJ doesn't make it public.
+    # Names which SafeJ automatically suppresses, so we don't need to
+    # mention.  I'd like to import instead of copying this list, but
+    # SafeJ doesn't make it public.
     def ALWAYS_REMOVE := [
             "clone()",
             "equals(Object)",
@@ -113,16 +126,21 @@ for className in classNames {
 
         # Public constructor
         match rx`    public $className\((@argStr.*)\);` {
-          def mterm := term`method(suppress, .String.${`run(${shortenArgs(argStr)})`})`
+          def mterm := 
+              term`method(suppress,
+                          .String.${`run(${shortenArgs(argStr)})`})`
           statics with= mterm
         }
 
         # Public field
         match rx`    public(@stat static)?(@fin final)? (@type[][A-Za-z0-9_$$.]+) (@noun[A-Za-z0-9_]+);` {
           def [initial] + rest := noun
-          def capped := __makeTwine.fromChars([initial], null).toUpperCase() + rest
+          def capped := __makeTwine.fromChars([initial], null).toUpperCase() \
+                          + rest
           def mtermGet := term`method(suppress, .String.${`get$capped()`})`
-          def mtermSet := term`method(suppress, .String.${`set$capped(${shortenType(type)})`})`
+          def mtermSet := 
+              term`method(suppress,
+                          .String.${`set$capped(${shortenType(type)})`})`
           {
             def &list := (stat != null).pick(&statics, &methodz)
             list with= mtermGet
@@ -149,7 +167,8 @@ for className in classNames {
                           methods($methodz*))`.asText()
 
     if (optOutputDir != null) {
-        def rx`(@outputSubdirName.*/)(?:[^/]*)` := className.replaceAll(".", "/")
+        def rx`(@outputSubdirName.*/)(?:[^/]*)` := 
+            className.replaceAll(".", "/")
         optOutputDir[outputSubdirName].mkdirs(null)
         def outputFile := optOutputDir[className.replaceAll(".", "/") + ".safej"]
         if (outputFile.exists()) {
