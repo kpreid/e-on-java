@@ -112,8 +112,7 @@ def cmdMakerMaker(cmdLoop,
                         eExpr := eExpr.substitute(substs)
                     }
                     if (cmdLoop.getExpand()) {
-                        def layout := scope.getScopeLayout()
-                        def vev := makeVerifyEVisitor(layout)
+                        def vev := makeVerifyEVisitor.fromScope(scope)
                         def expansion := try {
                             vev.xformEExpr(eExpr).asText()
                         } catch _ {

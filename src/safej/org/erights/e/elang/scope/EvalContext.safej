@@ -1,0 +1,11 @@
+class(unsafe, "org.erights.e.elang.scope.EvalContext",
+      statics(method(suppress, "make(int, Object[], Slot[])"),
+              method(suppress, "make(int, Slot[])")),
+      methods(method(suppress, "extended(int)"),
+              method(suppress, "local(int)"),
+              method(suppress, "field(int)"),
+              method(suppress, "outer(int)"),
+              method(suppress, "outers()"),
+              method(suppress, "initLocal(int, Object)"),
+              method(suppress, "initField(int, Object)"),
+              method(suppress, "initOuter(int, Slot)")))

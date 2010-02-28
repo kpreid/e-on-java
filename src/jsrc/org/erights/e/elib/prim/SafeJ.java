@@ -157,8 +157,6 @@ public final class SafeJ {
       "org.erights.e.elang.interp.Loop",
       "org.erights.e.elang.interp.ProtocolDesc",
 
-//        "org.erights.e.elang.scope.Scope",
-      "org.erights.e.elang.scope.ScopeLayout",
       "org.erights.e.elang.scope.StaticContext",
 
       "org.erights.e.elang.smallcaps.SmallcapsExpr",

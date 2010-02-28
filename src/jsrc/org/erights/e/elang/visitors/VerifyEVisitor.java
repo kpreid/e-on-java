@@ -13,6 +13,7 @@ import org.erights.e.elang.evm.ObjectExpr;
 import org.erights.e.elang.evm.ParseNode;
 import org.erights.e.elang.evm.SimpleNounExpr;
 import org.erights.e.elang.evm.StaticScope;
+import org.erights.e.elang.scope.Scope;
 import org.erights.e.elang.scope.ScopeLayout;
 import org.erights.e.elib.base.SourceSpan;
 import org.erights.e.elib.tables.ConstMap;
@@ -30,6 +31,10 @@ import org.erights.e.elib.tables.FlexMap;
  * @author Mark S. Miller
  */
 public class VerifyEVisitor extends BaseBindVisitor {
+
+    static public VerifyEVisitor fromScope(Scope scope) {
+      return new VerifyEVisitor(scope.getScopeLayout());
+    }
 
     /**
      *
