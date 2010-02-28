@@ -5,4 +5,5 @@ class("org.eclipse.swt.events.KeyEvent",
                    method("getKeyCode()"),
                    method(suppress, "setKeyCode(int)"),
                    method("getStateMask()"),
-                   method(suppress, "setStateMask(int)"))) 
+                   method(suppress, "setStateMask(int)"),
+                   method("setDoit(boolean)")))
