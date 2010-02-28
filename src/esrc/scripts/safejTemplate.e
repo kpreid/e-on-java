@@ -7,7 +7,7 @@
 #     safejTemplate -- generate safej from Java classes
 #
 # SYNOPSIS
-#     safejTemplate.e [-classpath <classpath>] [-o <dir>] <Java class name>
+#     safejTemplate.e [-classpath <classpath>] [-o <dir>] <Java class names>
 # 
 # DESCRIPTION
 #    This is a useful hack for getting started in writing a safej file. It extracts the protocol of a class using 'javap', then writes a corresponding safej term with everything suppressed, for you to edit.
@@ -20,8 +20,6 @@
 #
 # BUGS
 #     Java reflection should perhaps be used instead of parsing the textual output of javap. There is no guarantee that the parser understands everything javap might output. (Note however that using reflection implies loading the classes into the same jvm as the host E.)
-#     
-#     There ought to be an option to write the safej into a file into a directory according to the FQN.
 #     
 #     It doesn't know when to use reject instead of suppress.
 #     
@@ -100,7 +98,7 @@ for className in classNames {
       # stderr.println(line) -- for debugging parser
       switch (line) {
         # Public method
-        match rx`    public(?: abstract)?(@stat static)?(?: final)?(?: synchronized)? [][A-Za-z0-9_$$.]+ (@verb[A-Za-z_]+)\((@argStr.*)\)(?:\s+throws [A-Za-z_$$., ]+?)?;` {
+        match rx`    public(?: abstract)?(@stat static)?(?: final)?(?: synchronized)? [][A-Za-z0-9_$$.]+ (@verb[A-Za-z0-9_$$]+)\((@argStr.*)\)(?:\s+throws [A-Za-z0-9_$$., ]+?)?;` {
           def name := `$verb(${shortenArgs(argStr)})`
           if (ALWAYS_REMOVE.contains(name)) {
             continue
@@ -137,7 +135,7 @@ for className in classNames {
         # Uninteresting
         match `Compiled from @_` {}
         match `interface @_{` {}
-        match rx`public(?: abstract)?(?: final)? class [A-Za-z0-9_$$.]+( extends [A-Za-z0-9_$$.]+)?( implements [A-Za-z0-9_$$., ]+)?{` {}
+        match rx`public(?: abstract)?(?: final)? (?:class|interface) [A-Za-z0-9_$$.]+( extends [A-Za-z0-9_$$.]+)?( implements [A-Za-z0-9_$$., ]+)?{` {}
         match `       throws @_` {}
         match `` {}
         match `}` {}
@@ -151,6 +149,8 @@ for className in classNames {
                           methods($methodz*))`.asText()
 
     if (optOutputDir != null) {
+        def rx`(@outputSubdirName.*/)(?:[^/]*)` := className.replaceAll(".", "/")
+        optOutputDir[outputSubdirName].mkdirs(null)
         def outputFile := optOutputDir[className.replaceAll(".", "/") + ".safej"]
         if (outputFile.exists()) {
             stderr.println(`Output file $outputFile exists, skipping.`)
