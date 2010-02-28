@@ -157,6 +157,8 @@ public final class SafeJ {
       "org.erights.e.elang.interp.Loop",
       "org.erights.e.elang.interp.ProtocolDesc",
 
+//        "org.erights.e.elang.scope.Scope",
+//      "org.erights.e.elang.scope.ScopeLayout",
       "org.erights.e.elang.scope.StaticContext",
 
       "org.erights.e.elang.smallcaps.SmallcapsExpr",
@@ -583,27 +585,36 @@ public final class SafeJ {
     /**
      * An optional mapping from flat signatures to interned strings
      * representing an enumeration of cases of what to do with methods matching
-     * that signature. <p><ul> <li>If myOptMap is null, then all methods may be
+     * that signature. 
+     * <p>
+     * <ul> 
+     * <li>If myOptMap is null, then all methods may be
      * added or inherited. <li>If the signature is absent or maps to null, then
      * the method may be inherited but not added. This corresponds to the
      * absence of an entry for the method in the safej file, but does not
      * correspond to the absence of a tag on the method. The absence of a tag
-     * is treated as an implicit "allow" and translated on input. <li>If the
+     * is treated as an implicit "allow" and translated on input. 
+     * <li>If the
      * signature maps to <b>allow</b>, then the method may be added or
      * inherited. "allow" should only be used where the method is introduced,
      * or a warning will be traced. The signature should only be enumerated by
-     * subclasses of the introducing class in order to "reject" it. <li>If the
+     * subclasses of the introducing class in order to "reject" it. 
+     * <li>If the
      * signature maps to <b>suppress</b>, then the method not may be added, or
      * inherited. "suppress" should only be used where the method is
      * introduced, not where it is inherited, or a warning will be traced. In
      * order to suppress the inheriting of a method allowed by a supertype, one
-     * should use "reject" instead. <li>If the signature maps to <b>reject</b>,
+     * should use "reject" instead. 
+     * <li>If the signature maps to <b>reject</b>,
      * then the method not may be added, or inherited. "reject" should only be
      * used where the method is inherited, not where it is introduced, or a
      * warning will be traced. In order to suppress the introduction of a
-     * method, one should use "suppress" instead. <li>If the signature maps to
+     * method, one should use "suppress" instead. 
+     * <li>If the signature maps to
      * anything else, an error is traced and the method may not be added or
-     * inherited. </ul> XXX Some of the warnings above are not yet implemented,
+     * inherited. 
+     * </ul> 
+     * XXX Some of the warnings above are not yet implemented,
      * and will require enhancements to this API in order to support.
      */
     public ConstMap getOptMap() {
