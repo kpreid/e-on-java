@@ -23,7 +23,7 @@ showing changes to pathnames.
   >     var string := sb.snapshot()
   >     # XXX messy, E needs a proper regexp-substitute operation
   >     while (string =~ rx`(?sx)(@left.*?)
-  >       <file:(?:[^>]*?)/(@fname[^>/#]*)#(?:[a-z:0-9]+?)>
+  >       <file:(?:[^>]*?)/(@fname[^>/#]*)\#(?:[a-z:0-9]+?)>
   >     (@right.*)`) {
   >       string := `$left<file:.../$fname#...>$right`
   >     }
