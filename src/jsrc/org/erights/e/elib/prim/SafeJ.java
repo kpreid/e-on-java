@@ -5,6 +5,7 @@ package org.erights.e.elib.prim;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.erights.e.develop.assertion.T;
 import org.erights.e.develop.exception.ExceptionMgr;
@@ -14,7 +15,6 @@ import org.erights.e.elib.base.ValueThunk;
 import org.erights.e.elib.tables.ConstList;
 import org.erights.e.elib.tables.ConstMap;
 import org.erights.e.elib.tables.FlexMap;
-import org.erights.e.elib.tables.FlexSet;
 import org.erights.e.elib.tables.IdentityCacheTable;
 import org.erights.e.elib.tables.Twine;
 import org.erights.e.elib.util.ClassCache;
@@ -257,13 +257,20 @@ public final class SafeJ {
       "org.quasiliteral.text.Identifiers",
       "org.quasiliteral.text.Substituter",};
 
-    static private final FlexSet ApprovedClasses;
+    /**
+     * The names of all classes which are unconditionally approved (not those
+     * which have safej files) are keys of this map. Note that this is mutated
+     * by approve() and so it is not a ConstSet and must be thread-safe. Its
+     * elements are either in the ApprovedClassList above, or they are array
+     * types.
+     */
+    static private final ConcurrentHashMap ApprovedClasses;
 
     static {
-        int len = ApprovedClassList.length;
-        ApprovedClasses = FlexSet.fromType(String.class, len);
+        final int len = ApprovedClassList.length;
+        ApprovedClasses = new ConcurrentHashMap();
         for (int i = 0; i < len; i++) {
-            ApprovedClasses.addElement(ApprovedClassList[i], true);
+            ApprovedClasses.put(ApprovedClassList[i], ApprovedClassList[i]);
         }
     }
 
@@ -371,31 +378,40 @@ public final class SafeJ {
 //    }
 
     /**
-     *
+     * Given a class FQN, return the Term parse of the corresponding .safej 
+     * file.
      */
     static public Term getOptSafeJTerm(String fqName) {
         Twine tfqn = Twine.fromString(fqName);
-        Term optResult = (Term)SAFEJ_CACHE.fetch(tfqn, ValueThunk.NULL_THUNK);
-        if (null != optResult) {
-            return optResult;
-        }
-        String path = StringHelper.replaceAll(fqName, ".", "/") + ".safej";
-        URL optTermURL = ClassLoader.getSystemResource(path);
-        if (null == optTermURL) {
-            return null;
-        }
-        String termSrc;
-        try {
-            termSrc = URLSugar.getText(optTermURL);
-        } catch (IOException ioe) {
-            throw ExceptionMgr.asSafe(ioe);
-        }
+        
+        // NOTE: This is potentially called from any thread. We assume that the
+        // high-frequency accesses are handled by the ScriptMaker's concurrent
+        // cache, and so we can afford to have mutual exclusion in this layer
+        // of the system.
+        synchronized (SAFEJ_CACHE) {
+            Term optResult =
+                (Term)SAFEJ_CACHE.fetch(tfqn, ValueThunk.NULL_THUNK);
+            if (null != optResult) {
+                return optResult;
+            }
+            String path = StringHelper.replaceAll(fqName, ".", "/") + ".safej";
+            URL optTermURL = ClassLoader.getSystemResource(path);
+            if (null == optTermURL) {
+                return null;
+            }
+            String termSrc;
+            try {
+                termSrc = URLSugar.getText(optTermURL);
+            } catch (IOException ioe) {
+                throw ExceptionMgr.asSafe(ioe);
+            }
 // XXX Bug: Investigate why the commented out version doesn't work.
-//        Term result = (Term)TermParser.run(Twine.fromString(termSrc),
-//                                           GetSafeJQBuilder());
-        Term result = TermParser.run(Twine.fromString(termSrc));
-        SAFEJ_CACHE.put(tfqn, result);
-        return result;
+//          Term result = (Term)TermParser.run(Twine.fromString(termSrc),
+//                                             GetSafeJQBuilder());
+            Term result = TermParser.run(Twine.fromString(termSrc));
+            SAFEJ_CACHE.put(tfqn, result);
+            return result;
+        }
     }
 
     /**
@@ -411,12 +427,12 @@ public final class SafeJ {
      */
     static public boolean approve(Class clazz, boolean safe) {
         String fqName = clazz.getName();
-        if (ApprovedClasses.contains(fqName)) {
+        if (ApprovedClasses.containsKey(fqName)) {
             return true;
         }
         if (clazz.isArray()) {
             //Array types are safe
-            ApprovedClasses.addElement(fqName, true);
+            ApprovedClasses.put(fqName, fqName);
             return true;
         }
         Term optTerm = getOptSafeJTerm(fqName);

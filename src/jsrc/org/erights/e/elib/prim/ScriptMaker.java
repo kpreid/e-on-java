@@ -29,15 +29,12 @@ import org.erights.e.elib.tables.FlexMap;
 import org.erights.e.elib.util.ClassCache;
 
 import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * From a Java class, obtain a corresponding Script enabling its tamed behavior
  * to be invoked from ELib.
- * <p/>
- * XXX BUG: mutable static state. Fortunately, it's a semantics free cache, so
- * it doesn't actually violate capability semantics. Unfortunately, it needs to
- * be synchronized, and isn't yet.
- *
+ * 
  * @author Mark S. Miller
  */
 public class ScriptMaker {
@@ -62,11 +59,16 @@ public class ScriptMaker {
       {"java.lang.String", "org.erights.e.elib.tables.Twine"},};
 
     /**
-     * Maps fq class names to the fqName of the classes they promote to. <p>
-     * <p/>
+     * Maps fq class names to the fqName of the classes they promote to.
+     * 
+     * <p>
      * ThePromotions is initialized lazily in order to avoid possible circular
      * static initialization dependencies. Uses legacy HashMap rather than EMap
      * in order to avoid a circular dependency by way of the Equalizer.
+     * <p>
+     * Thread safety note: Reads of this HashMap are done without any
+     * synchronization, but this is safe since nothing ever mutates the map
+     * except before it is assigned to ThePromotions.
      */
     static private HashMap ThePromotions = null;
 
@@ -170,6 +172,8 @@ public class ScriptMaker {
      */
     static public Class OptSugar(Class clazz) {
         if (null == TheSugars) {
+            // thread safe because reference assignment is atomic; the
+            // worst that will happen is the cache gets cleared
             TheSugars = FlexMap.fromPairs(Sugarings, true).snapshot();
         }
         String sugarName =
@@ -180,8 +184,8 @@ public class ScriptMaker {
         try {
             return ClassCache.forName(sugarName);
         } catch (Exception ex) {
-            throw new EBacktraceException(ex,
-                                      "# sweetener not found: " + sugarName);
+            throw new EBacktraceException(ex, "# sweetener not found: "
+                                              + sugarName);
         }
     }
 
@@ -190,17 +194,22 @@ public class ScriptMaker {
      */
     static public final ScriptMaker THE_ONE = new ScriptMaker();
 
-
     /**
      * maps java classes to scripts
+     * 
+     * <p>
+     * NOTE: This is shared among threads, thus it must be a thread-safe map.
+     * However, the identity of Scripts is not significant, so our lookup-or-
+     * create need not be careful to ensure that each class's script is only
+     * created once.
      */
-    private final FlexMap myScripts;
+    private final ConcurrentHashMap myScripts;
 
     /**
      *
      */
     private ScriptMaker() {
-        myScripts = FlexMap.fromTypes(Class.class, Script.class);
+        myScripts = new ConcurrentHashMap/*<Class, Script>*/();
 
         //preload with special cases
 
@@ -235,13 +244,13 @@ public class ScriptMaker {
      *
      */
     public Script instanceScript(Class clazz) {
-        Script result = (Script)myScripts.fetch(clazz, ValueThunk.NULL_THUNK);
+        Script result = (Script)myScripts.get(clazz);
         if (null != result) {
             return result;
         }
 
         if (Callable.class.isAssignableFrom(clazz)) {
-            myScripts.put(clazz, CallableScript.THE_ONE);
+            myScripts.putIfAbsent(clazz, CallableScript.THE_ONE);
             return CallableScript.THE_ONE;
         }
 
@@ -252,7 +261,7 @@ public class ScriptMaker {
         Class optPromotion = OptPromotion(clazz);
         if (null != optPromotion) {
             inherit(vTable, optPromotion, SafeJ.ALL);
-            myScripts.put(clazz, vTable);
+            myScripts.putIfAbsent(clazz, vTable);
             return vTable;
         }
 
@@ -280,7 +289,7 @@ public class ScriptMaker {
                 SugarMethodNode.defineMembers(vTable, optSugar);
             }
         }
-        myScripts.put(clazz, vTable);
+        myScripts.putIfAbsent(clazz, vTable);
         return vTable;
     }
 }

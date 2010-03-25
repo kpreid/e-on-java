@@ -19,7 +19,7 @@ Copyright (C) 1998 Electric Communities. All Rights Reserved.
 Contributor(s): ______________________________________.
 */
 
-import java.util.Hashtable;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * A performance optimizing hack: by hanging onto classes that are looked up by
@@ -36,11 +36,11 @@ import java.util.Hashtable;
 public class ClassCache {
 
     /**
-     * Using java.util.Hashtables instead of ELib's tables in order to avoid
+     * Using java.util.concurrent instead of ELib's tables in order to avoid
      * circular dependencies, and in order to get the thread-safety necessary
      * for static used globally shared across a JVM.
      */
-    static private final Hashtable OurCache = new Hashtable();
+    static private final ConcurrentHashMap OurCache = new ConcurrentHashMap();
 
     static {
         OurCache.put("boolean", Boolean.TYPE);
@@ -71,7 +71,7 @@ public class ClassCache {
         Class result = (Class)OurCache.get(name);
         if (result == null) {
             result = Class.forName(name);
-            OurCache.put(name, result);
+            OurCache.putIfAbsent(name, result);
         }
         return result;
     }
