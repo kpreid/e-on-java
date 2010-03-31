@@ -38,6 +38,7 @@ import org.erights.e.elang.evm.QuasiLiteralExpr;
 import org.erights.e.elang.evm.QuasiLiteralPatt;
 import org.erights.e.elang.evm.QuasiPatternExpr;
 import org.erights.e.elang.evm.QuasiPatternPatt;
+import org.erights.e.elang.evm.SimpleNounExpr;
 import org.erights.e.elang.evm.SlotExpr;
 import org.erights.e.elang.evm.SlotPattern;
 import org.erights.e.elang.evm.StaticScope;
@@ -785,7 +786,9 @@ public class ENodeBuilder extends BaseENodeBuilder implements EBuilder {
     public EExpr dollarNoun(Object token) {
         String str = ((Astro)token).getOptArgString(EParser.DollarIdent);
         str = HilbertHotel.rename(str);
-        return noun(str);
+        return new SimpleNounExpr(optSpan(token),
+                                  str,
+                                  null);
     }
 
     /**
