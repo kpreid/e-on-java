@@ -49,6 +49,7 @@ def runeAuthor {
         def metaout := makeTextWriter(makePrintStreamWriter.stdout(), true)
         def metaerr := makeTextWriter(makePrintStreamWriter.stderr(), true)
         def makeVat := <ue:elib.vat.makeVat>
+        def seedVat := <elang:interp.seedVatAuthor>(<unsafe>)
         def makeELexer := <ue:elang.syntax.makeELexer>
         def makeFileFeeder := <unsafe:org.quasiliteral.syntax.makeFileFeeder>
         def makeScopeSetup := <ue:elang.interp.makeScopeSetup>
@@ -66,6 +67,7 @@ def runeAuthor {
                 "metaerr"         => metaerr,
 
                 "makeVat"         => makeVat,
+                "seedVat"         => seedVat,
                 "makeELexer"      => makeELexer,
                 "makeFileFeeder"  => makeFileFeeder,
                 "makeScopeSetup"  => makeScopeSetup,

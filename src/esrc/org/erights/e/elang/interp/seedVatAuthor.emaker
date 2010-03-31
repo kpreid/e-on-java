@@ -60,8 +60,8 @@ def virtualSeedVatAuthor(makeVat, seedVat, introducer) :near {
  */
 def seedVatAuthor(<unsafe>) :near {
 
-    def auths := runeAuthor.defaultAuths(<unsafe>)
-    def makeVat := auths["makeVat"]
+    def makeVat := <unsafe:org.erights.e.elib.vat.makeVat>
+    def makeVatSeeder := <unsafe:org.erights.e.elang.interp.makeVatSeeder>
 
     def seedVat {
 
@@ -79,28 +79,28 @@ def seedVatAuthor(<unsafe>) :near {
          *         trying to resolve the promise.
          */
         to run(vat :Vat, privSrc :String) :rcvr {
+            def bootstrapCode := `
+                def eval(privSrc :String) {
+                    def eParser := <elang:syntax.makeEParser>
+                    def runeAuthor := <elang:cmd.runeAuthor>
+                    def auths := runeAuthor.defaultAuths(<unsafe>)
+                    def makeScopeSetup :=
+                      <unsafe:org.erights.e.elang.interp.makeScopeSetup>
 
-            return vat.seed(fn{
-                def eParser := <elang:syntax.makeEParser>
-                def makeScopeSetup :=
-                  <unsafe:org.erights.e.elang.interp.makeScopeSetup>
-
-                def props := auths["defaultProps"]
-                def bogusInterp {
-                    to getProps() :near {
-                        return props
-                    }
+                    def privScope := makeScopeSetup.privileged("__main$$",
+                                                               auths["metain"],
+                                                               auths["metaout"],
+                                                               auths["metaerr"],
+                                                               interp.getProps(),
+                                                               interp,
+                                                               null)
+                    def privExpr := eParser(privSrc)
+                    return privExpr.eval(privScope)
                 }
-                def privScope := makeScopeSetup.privileged("__main$",
-                                                           auths["metain"],
-                                                           auths["metaout"],
-                                                           auths["metaerr"],
-                                                           props,
-                                                           bogusInterp,
-                                                           vat)
-                def privExpr := eParser(privSrc)
-                privExpr.eval(privScope)
-            })
+            `
+            def auths := runeAuthor.defaultAuths(<unsafe>)
+            def eval := vat.seed(makeVatSeeder(bootstrapCode, auths["defaultProps"]))
+            return eval <- (privSrc)
         }
 
         /**
