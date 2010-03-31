@@ -16,8 +16,6 @@ def Scope := <type:org.erights.e.elang.scope.Scope>
 def StringBuffer := <type:java.lang.StringBuffer>
 def BufferedReader := <type:java.io.BufferedReader>
 
-def makeTwineFeeder := <import:org.quasiliteral.syntax.makeTwineFeeder>
-
 /**
  *
  */
@@ -89,33 +87,15 @@ Other E options:
                 def optRunnerKind := options.fetch("--runnerKind", fn{})
 
                 def makeVat := auths["makeVat"]
+                def seedVat := auths["seedVat"]
                 def name := fname.split("/").last()
                 def parserVat := makeVat.make("headless", `parsing $name`)
 
                 def makeParseFunc :=
                   makeParseFuncAuthor(auths["makeELexer"])
 
-                def parseFunc :rcvr := parserVat.seed(fn{
-
-                    def input := if (fname =~ `-` || fname.startsWith("-.")) {
-                        auths["metain"]
-                    } else {
-                        def <file> := auths["file__uriGetter"]
-                        <file>[fname].textReader()
-                    }
-
-                    def optPromptOut := if (isInteractive) {
-                        auths["metaout"]
-                    } else {
-                        null
-                    }
-
-                    def lineFeeder := auths["makeFileFeeder"](fname,
-                                                              input,
-                                                              optPromptOut)
-
-                    makeParseFunc(lineFeeder, props, auths["metaerr"])
-                })
+                def parseSetup := seedVat(parserVat, "<elang:launcher.makeParseSetup>(<unsafe>)")
+                def parseFunc :rcvr := parseSetup <- parseFile(fname, props, isInteractive)
 
                 def replVat := if (optRunnerKind == null) {
                     makeVat.getCurrentVat()
@@ -165,23 +145,11 @@ Other E options:
                 def optRunnerKind := options.fetch("--runnerKind", fn{})
 
                 def makeVat := auths["makeVat"]
+                def seedVat := auths["seedVat"]
                 def parserVat := makeVat.make("headless", `parsing source`)
 
-                def makeParseFunc :=
-                  makeParseFuncAuthor(auths["makeELexer"])
-
-                def parseFunc :rcvr := parserVat.seed(fn{
-
-                    def optPromptOut := if (isInteractive) {
-                        auths["metaout"]
-                    } else {
-                        null
-                    }
-
-                    def lineFeeder := makeTwineFeeder(src)
-
-                    makeParseFunc(lineFeeder, props, auths["metaerr"])
-                })
+                def parseSetup := seedVat(parserVat, "<elang:launcher.makeParseSetup>(<unsafe>)")
+                def parseFunc :rcvr := parseSetup <- parseTwine(src, props, isInteractive)
 
                 def replVat := if (optRunnerKind == null) {
                     makeVat.getCurrentVat()
