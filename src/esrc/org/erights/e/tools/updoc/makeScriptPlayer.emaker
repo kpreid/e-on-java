@@ -50,8 +50,12 @@ def makeTestcasePlayer(testcase) :near {
          */
         to reportResults(out) :boolean {
             def parser := makeOldUpdocParser(report)
-            def newAnswers := parser.readAnswers()
-            return testcase.printDiffsOn(newAnswers, out)
+            def [newAnswers, optStackTrace] := parser.readAnswers()
+            def result := testcase.printDiffsOn(newAnswers, out)
+            if (optStackTrace != null) {
+                out.print("\n".rjoin(optStackTrace))
+            }
+            return result
         }
 
         /**
@@ -65,7 +69,7 @@ def makeTestcasePlayer(testcase) :near {
             def expr := testcase.getExpr()
             # when-catch construct returns a promise
             # for the value of the done function
-            when (evaluator <- evaluateForReport(expr)) ->
+            when (evaluator <- evaluateForReport(expr, testcase.getExpectingProblem())) ->
               done([newReport, status]) :any {
                 # XXX look at status
                 report := newReport

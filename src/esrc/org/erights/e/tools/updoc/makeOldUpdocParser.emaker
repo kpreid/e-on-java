@@ -82,7 +82,7 @@ def makeOldUpdocParser(source) :any {
      *     #        bar"
      * </pre>
      * For answers with the keyword "problem" or "syntax error", the stack
-     * trace is skipped.
+     * trace is returned as the third component of the result.
      *
      * @return The answer as a <tt>ConstList</tt> or <tt>null</tt>.
      *         The result includes the key-value pair with all
@@ -91,6 +91,7 @@ def makeOldUpdocParser(source) :any {
     def readOptAnswer() :any {
         var keyword := null
         var answer := ""
+        var stackTrace := null
         if (index >= lines.size()) {
             return null
         }
@@ -107,10 +108,12 @@ def makeOldUpdocParser(source) :any {
                 if (nextLine =~ `` && (keyword =~ `problem` ||
                                          keyword =~ `syntax error`)) {
                     index += 1
+                    def firstStackLine := index
                     while (index < lines.size() &&
                              lines[index].trim() =~ `#@_`) {
                         index += 1
                     }
+                    stackTrace := lines(firstStackLine, index)
                     break
                 }
                 answer += nextLine + "\n"
@@ -120,7 +123,7 @@ def makeOldUpdocParser(source) :any {
             require(answer.endsWith("\n"), fn{
                 `${E.toQuote(answer)} must end with a newline`
             })
-            return [keyword.bare(), answer]
+            return [keyword.bare(), answer, stackTrace]
         } else {
             return null
         }
@@ -140,14 +143,18 @@ def makeOldUpdocParser(source) :any {
      *
      * @return The answers as a <tt>ConstMap</tt> mapping keywords to answers.
      */
-    def readAnswers() :any {
+    def readAnswers() :Tuple[any,nullOk[List[String]]] {
         def answers := [].asMap().diverge()
-        while (readOptAnswer() =~ [keyword, answer]) {
+        var stackTrace := null
+        while (readOptAnswer() =~ [keyword, answer, answerStackTrace]) {
             answers[keyword] := answer
+            if (answerStackTrace != null) {
+                stackTrace := answerStackTrace
+            }
             # blank line follows answer block
             readBlankLine()
         }
-        answers.snapshot()
+        [answers.snapshot(), stackTrace]
     }
     
     /**
@@ -200,7 +207,7 @@ def makeOldUpdocParser(source) :any {
                 break
             } else if (current.startsWith("?")) {
                 def expr := readExpr()
-                def answers := readAnswers()
+                def [answers, ==null] := readAnswers()
                 cases.push(updocScriptMaker.makeTestcase(expr, answers))
             } else {
                 index += 1

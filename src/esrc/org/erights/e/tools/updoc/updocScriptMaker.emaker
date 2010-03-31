@@ -179,7 +179,7 @@ def updocScriptMaker {
      * @param answers
      * @return A <tt>testcase</tt> object
      */
-    to makeTestcase(expr :Twine, answers) :near {
+    to makeTestcase(expr :Twine, answers :Map) :near {
 
         /**
          * <tt>printExpr</tt>
@@ -235,6 +235,10 @@ def updocScriptMaker {
              */
             to getExpr() :Twine {
                 expr
+            }
+
+            to getExpectingProblem() :boolean {
+                return answers.maps("problem")
             }
 
             /**

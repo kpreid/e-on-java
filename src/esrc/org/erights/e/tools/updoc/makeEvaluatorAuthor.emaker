@@ -57,7 +57,9 @@ def makeEvaluatorAuthor(gc, auths, options, vat) :any {
                  * command in the evaluator's current scope, and returns a
                  * vow for a textual report of the outcome
                  */
-                to evaluateForReport(expr :Expr) :vow[Tuple[String, boolean]] {
+                to evaluateForReport(expr :Expr, expectProblem :boolean) :vow[Tuple[String, boolean]] {
+                    cmdLoop.setShowEStack(!expectProblem)
+
                     when (evalPrint(expr)) ->
                       done(exitStatus :boolean) :Tuple[String, boolean] {
                         
