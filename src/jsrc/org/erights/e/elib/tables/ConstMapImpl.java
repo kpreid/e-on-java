@@ -22,6 +22,8 @@ Contributor(s): ______________________________________.
 import org.erights.e.elib.base.Thunk;
 import org.erights.e.elib.serial.RemoteCall;
 
+import java.io.NotSerializableException;
+import java.io.ObjectInputStream;
 import java.io.ObjectStreamException;
 
 /**
@@ -106,5 +108,10 @@ class ConstMapImpl extends ConstMap {
      */
     public Class valueType() {
         return myTable.valueType();
+    }
+
+    /* We can't be instantiated directly. The sender should have used ConstMap.fromColumns() instead. */
+    private void readObject(ObjectInputStream stream) throws NotSerializableException {
+        throw new NotSerializableException("ConstMapImpl must be serialized specially.");
     }
 }

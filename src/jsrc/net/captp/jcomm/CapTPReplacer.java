@@ -14,6 +14,9 @@ import org.erights.e.elib.serial.Replacer;
 import org.erights.e.elib.slot.AuditChecker;
 import org.erights.e.elib.tables.ConstList;
 
+import java.lang.reflect.Method;
+import java.lang.reflect.InvocationTargetException;
+
 /**
  * Used to specialize the SerializationStream for encoding a reference over a
  * CapTP connection.
@@ -50,7 +53,30 @@ class CapTPReplacer extends Replacer {
      * sure we're actually permitted to pass it by construction.
      */
     public Object substitute(Object ref) {
-        ref = Ref.resolution(ref);
+        Object resolvedRef = Ref.resolution(ref);
+        if (resolvedRef != ref) {
+            /* Java serialization has given the original ref the chance to
+             * writeReplace itself, but not the target. Do that now.
+             */
+            Method writeReplaceMethod;
+            try {
+                writeReplaceMethod = resolvedRef.getClass().getDeclaredMethod("writeReplace", new Class[] {});
+            } catch (NoSuchMethodException ex) {
+                writeReplaceMethod = null;
+            }
+            if (writeReplaceMethod == null) {
+                ref = resolvedRef;
+            } else {
+                try {
+                    writeReplaceMethod.setAccessible(true);
+                    ref = writeReplaceMethod.invoke(resolvedRef, new Object[] {});
+                } catch (InvocationTargetException ex) {
+                    throw new RuntimeException(ex);
+                } catch (IllegalAccessException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        }
 
         if (Ref.isJOSSPBCRef(ref)) {
             return ref;
