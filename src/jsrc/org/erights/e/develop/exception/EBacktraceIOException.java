@@ -38,6 +38,7 @@ public class EBacktraceIOException extends IOException
      *
      */
     public EBacktraceIOException(Throwable t, String msg) {
-        super(msg, t);
+        super(msg);
+        initCause(t);
     }
 }
