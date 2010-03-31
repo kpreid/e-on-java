@@ -42,6 +42,9 @@ def makeVerbFacet(kind :String, recipient, verb, caller) :near {
                                [],
                                newMsgs)
         }
+        match [verb, args] {
+            throw(`$verbFacet.$verb/${args.size()}: can only call "run" on a verb facet`)
+        }
     }
     return verbFacet
 }
