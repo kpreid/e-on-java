@@ -1,0 +1,46 @@
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+# Copyright University of Southampton IT Innovation Centre, 2010,
+# under the terms of the MIT X license, available from
+# http://www.opensource.org/licenses/mit-license.html
+
+pragma.syntax("0.9")
+
+def runeAuthor := <elang:cmd.runeAuthor>
+def makeRepl := <elang:cmd.makeRepl>
+def makeEvalPrinterAuthor := <elang:cmd.makeEvalPrinterAuthor>
+def makeEvalContextAuthor := <elang:cmd.makeEvalContextAuthor>
+def argParser := <import:org.erights.e.tools.args.argParser>
+
+def makeEvalSetup(<unsafe>) {
+    def auths := runeAuthor.defaultAuths(<unsafe>)
+    def makeVat := auths["makeVat"]
+
+    return def startRepl(options, props :Map, isInteractive :boolean, receivedArgs :List, parseFunc :rcvr) :vow[boolean] {
+        def isConfined :=
+          argParser.getFlag("--confine", options, false)
+        def isExplicit :=
+          argParser.getFlag("--explicitIO", options, false)
+
+        def makeEvalContext := makeEvalContextAuthor(auths,
+                                                     options,
+                                                     makeVat.getCurrentVat(),
+                                                     isConfined,
+                                                     isExplicit)
+
+        def makeEvalPrinter :=
+          makeEvalPrinterAuthor(auths["systemGC"],
+                                auths["metaout"],
+                                auths["metaerr"])
+
+        def evalPrinter := makeEvalPrinter(makeEvalContext,
+                                           receivedArgs,
+                                           props,
+                                           isInteractive)
+
+        def repl := makeRepl(parseFunc, evalPrinter)
+
+        return repl()
+    }
+}

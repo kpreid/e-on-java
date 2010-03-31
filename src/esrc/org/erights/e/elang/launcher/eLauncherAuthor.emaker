@@ -5,11 +5,6 @@ pragma.syntax("0.8")
 # Copyright 2002 Combex, Inc. under the terms of the MIT X license
 # found at http://www.opensource.org/licenses/mit-license.html ................
 
-def makeRepl := <elang:cmd.makeRepl>
-def makeEvalPrinterAuthor := <elang:cmd.makeEvalPrinterAuthor>
-def makeEvalContextAuthor := <elang:cmd.makeEvalContextAuthor>
-
-def makeParseFuncAuthor := <elang:cmd.makeParseFuncAuthor>
 def argParser := <import:org.erights.e.tools.args.argParser>
 
 def Scope := <type:org.erights.e.elang.scope.Scope>
@@ -80,19 +75,12 @@ Other E options:
 
                 def isInteractive :=
                   argParser.getFlag("--interact", options, false)
-                def isConfined :=
-                  argParser.getFlag("--confine", options, false)
-                def isExplicit :=
-                  argParser.getFlag("--explicitIO", options, false)
                 def optRunnerKind := options.fetch("--runnerKind", fn{})
 
                 def makeVat := auths["makeVat"]
                 def seedVat := auths["seedVat"]
                 def name := fname.split("/").last()
                 def parserVat := makeVat.make("headless", `parsing $name`)
-
-                def makeParseFunc :=
-                  makeParseFuncAuthor(auths["makeELexer"])
 
                 def parseSetup := seedVat(parserVat, "<elang:launcher.makeParseSetup>(<unsafe>)")
                 def parseFunc :rcvr := parseSetup <- parseFile(fname, props, isInteractive)
@@ -103,32 +91,8 @@ Other E options:
                     makeVat.make(optRunnerKind, `evaling $name`)
                 }
 
-                def makeEvalContext := makeEvalContextAuthor(auths,
-                                                             options,
-                                                             replVat,
-                                                             isConfined,
-                                                             isExplicit)
-
-                def startReplRcvr := replVat.seed(fn{
-
-                    def startRepl(receivedArgs) :vow[boolean] {
-
-                        def makeEvalPrinter :=
-                          makeEvalPrinterAuthor(auths["systemGC"],
-                                                auths["metaout"],
-                                                auths["metaerr"])
-
-                        def evalPrinter := makeEvalPrinter(makeEvalContext,
-                                                           receivedArgs,
-                                                           props,
-                                                           isInteractive)
-
-                        def repl := makeRepl(parseFunc, evalPrinter)
-
-                        repl()
-                    }
-                })
-                return startReplRcvr <- run(args)
+                def startReplRcvr := seedVat(replVat, "<elang:launcher.makeEvalSetup>(<unsafe>)")
+                return startReplRcvr <- run(options, props, isInteractive, args, parseFunc)
             }
 
             /**
@@ -138,10 +102,6 @@ Other E options:
 
                 def isInteractive :=
                   argParser.getFlag("--interact", options, false)
-                def isConfined :=
-                  argParser.getFlag("--confine", options, false)
-                def isExplicit :=
-                  argParser.getFlag("--explicitIO", options, false)
                 def optRunnerKind := options.fetch("--runnerKind", fn{})
 
                 def makeVat := auths["makeVat"]
@@ -157,32 +117,8 @@ Other E options:
                     makeVat.make(optRunnerKind, `evaling source`)
                 }
 
-                def makeEvalContext := makeEvalContextAuthor(auths,
-                                                             options,
-                                                             replVat,
-                                                             isConfined,
-                                                             isExplicit)
-
-                def startReplRcvr := replVat.seed(fn{
-
-                    def startRepl(receivedArgs) :vow[boolean] {
-
-                        def makeEvalPrinter :=
-                          makeEvalPrinterAuthor(auths["systemGC"],
-                                                auths["metaout"],
-                                                auths["metaerr"])
-
-                        def evalPrinter := makeEvalPrinter(makeEvalContext,
-                                                           receivedArgs,
-                                                           props,
-                                                           isInteractive)
-
-                        def repl := makeRepl(parseFunc, evalPrinter)
-
-                        repl()
-                    }
-                })
-                return startReplRcvr <- run(args)
+                def startReplRcvr := seedVat(replVat, "<elang:launcher.makeEvalSetup>(<unsafe>)")
+                return startReplRcvr <- run(options, props, isInteractive, args, parseFunc)
             }
         }
     }
