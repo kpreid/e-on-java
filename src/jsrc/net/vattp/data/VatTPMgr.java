@@ -230,9 +230,10 @@ public class VatTPMgr {
             ips = single;
         }
         String suffix = ":" + netAddr.getPort();
-        String[] parts = new String[ips.length];
+        String[] parts = new String[ips.length * 2];
         for (int i = 0; i < ips.length; i++) {
-            parts[i] = ips[i].getHostAddress() + suffix;
+            parts[2 * i] = ips[i].getCanonicalHostName() + suffix;
+            parts[2 * i + 1] = ips[i].getHostAddress() + suffix;
         }
         return ConstList.fromArray(parts);
     }
