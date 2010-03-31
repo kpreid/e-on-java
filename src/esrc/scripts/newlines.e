@@ -94,7 +94,9 @@ def extensions := [
     "Makefile-w32" => true, #
     "Makefile-unix" => true, #
     "Makefile-gcj" => true, #
-    "bat" => false #
+    "bat" => false, #
+
+    "at" => false, # (don't know whether this is correct)
 ]
 
 def usage :=
