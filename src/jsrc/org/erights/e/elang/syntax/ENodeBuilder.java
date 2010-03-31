@@ -1662,7 +1662,10 @@ public class ENodeBuilder extends BaseENodeBuilder implements EBuilder {
                 body = c + ":" + body;
             }
         }
-        return call(noun(protocol + "__uriGetter"),
+        SimpleNounExpr getterNoun = new SimpleNounExpr(optSpan(uriToken),
+                idStr(protocol + "__uriGetter"),
+                null);
+        return call(getterNoun,
                     uriToken,
                     "get",
                     list(literal(body)));
