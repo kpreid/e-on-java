@@ -958,7 +958,7 @@ public class ENodeBuilder extends BaseENodeBuilder implements EBuilder {
         return escape(finalPattern("__break"),
                       sequence(kdef(varPattern(fTemp), TRUE),
                                tryx(call(coll,
-                                         NO_POSER,
+                                         coll,
                                          "iterate",
                                          list(closure)),
                                     null,
