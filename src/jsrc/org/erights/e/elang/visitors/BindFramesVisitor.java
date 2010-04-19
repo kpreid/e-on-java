@@ -232,9 +232,22 @@ public abstract class BindFramesVisitor extends BaseBindVisitor {
         } else if (body instanceof SeqExpr) {
             EExpr[] subs = ((SeqExpr)body).getSubs();
             int last = subs.length - 1;
+            // Check for { ...; return ...; null }
+            if (1 <= last && subs[last - 1] instanceof CallExpr) {
+                CallExpr possibleEjectorCall = (CallExpr) subs[last - 1];
+                EExpr simplified = killSillyReturn(pat, possibleEjectorCall);
+                if (simplified != possibleEjectorCall) {
+                    // If we simplified it, then it was an ejector call
+                    EExpr[] newSubs = new EExpr[subs.length - 1];
+                    System.arraycopy(subs, 0, newSubs, 0, last - 1);
+                    newSubs[last - 1] = simplified;
+                    // We call the constructor directly since all the parts are
+                    // still to be visited.
+                    return new SeqExpr(getOptSpan(body), newSubs, null);
+                }
+            }
+            // Check for less common { ...; return ... }
             if (0 <= last) {
-                // XXX Doesn't yet pick up the pattern which will become
-                // common: { ...; return ...; null }
                 EExpr[] newSubs = new EExpr[subs.length];
                 System.arraycopy(subs, 0, newSubs, 0, last);
                 newSubs[last] = killSillyReturn(pat, subs[last]);
