@@ -146,7 +146,7 @@ public abstract class Proxy extends Ref {
         if (checkBox()) {
             return E.callAll(((FinalSlot)myResolutionBox).get(), verb, args);
         } else {
-            T.fail("not synchronously callable");
+            T.fail("not synchronously callable (" + verb + ")");
             return null;
         }
     }

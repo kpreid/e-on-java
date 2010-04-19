@@ -102,7 +102,7 @@ class BufferingRef extends Ref {
      * Complains.
      */
     public Object callAll(String verb, Object[] args) {
-        T.fail("not synchronously callable");
+        T.fail("not synchronously callable (" + verb + ")");
         return null; //make compiler happy
     }
 

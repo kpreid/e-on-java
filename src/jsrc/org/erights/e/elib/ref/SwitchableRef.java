@@ -122,7 +122,7 @@ class SwitchableRef extends Ref {
      */
     public Object callAll(String verb, Object[] args) {
         if (myIsSwitchable) {
-            T.fail("not synchronously callable");
+            T.fail("not synchronously callable (" + verb + ")");
             return null; //make compiler happy
         } else {
             resolutionRef();

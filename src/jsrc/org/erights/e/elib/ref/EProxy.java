@@ -149,7 +149,7 @@ abstract class EProxy extends Ref {
      */
     public Object callAll(String verb, Object[] args) {
         if (null == myOptTarget) {
-            T.fail("not synchronously callable");
+            T.fail("not synchronously callable (" + verb + ")");
             return null; //make compiler happy
         } else {
             resolutionRef();
