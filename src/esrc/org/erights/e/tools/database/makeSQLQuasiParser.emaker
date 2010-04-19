@@ -1,0 +1,118 @@
+# Copyright University of Southampton IT Innovation Centre, 2010,
+# under the terms of the MIT X license, available from
+# http://www.opensource.org/licenses/mit-license.html .........................
+
+pragma.syntax("0.9")
+
+def QuasiExprParser    := <type:org.quasiliteral.base.QuasiExprParser>
+def ValueMaker         := <type:org.quasiliteral.base.QuasiExprParser>
+def first__quasiParser := <import:org.erights.e.tools.text.first__quasiParser>
+def convertHoles       := <import:org.quasiliteral.text.convertHoles>
+def makeString         := <import:java.lang.makeString>
+
+# (from java.sql.Types)
+def BINARY    := -2
+def VARBINARY := -3
+
+def makeSql__quasiParser(connection) {
+    def valueMaker(dlrTemplate :String, dlrHoles :List[int]) {
+        def upper := dlrTemplate.toUpperCase()
+        def query := upper.startsWith("SELECT ") || upper.startsWith("CALL ")
+
+        # Replace $ with ? at points indicated by dlrHoles
+        def tmpTemplate := dlrTemplate.diverge()
+        for i in dlrHoles {
+            tmpTemplate[i] := '?'
+        }
+        def ptmpl := makeString."valueOf(char[])"(tmpTemplate.snapshot())
+
+        def pstmt := connection.prepareStatement(ptmpl)
+
+        return def sqlValue implements ValueMaker {
+            to substitute(values) {
+                def metadata := pstmt.getParameterMetaData()
+                for i => v in values {
+                    def column := i + 1
+                    def columnType := metadata.getParameterType(column)
+                    if (v == null) {
+                        pstmt.setNull(column, columnType)
+                    } else if (v =~ s :String) {
+                        # Strings work with setObject but Twine doesn't, so
+                        # handle them separately.
+                        pstmt.setString(column, s)
+                    } else {
+                        #traceln(`$i => $v ($columnType)`)
+                        switch (columnType) {
+                            match ==BINARY    { pstmt.setBytes(column, v) }
+                            match ==VARBINARY { pstmt.setBytes(column, v) }
+                            match _           { pstmt.setObject(column, v) }
+                        }
+                    }
+                }
+                if (query) {
+                    var rs := pstmt.executeQuery()
+                    def columns := rs.getMetaData().getColumnCount()
+                    return def sqlResults {
+                        to iterate(cb) {
+                            try {
+                                var i := 0
+                                while (rs.next()) {
+                                    def results := [].diverge()
+                                    for c in 1..columns {
+                                        results.push(rs.getObject(c))
+                                    }
+                                    cb(i, results.snapshot())
+                                    i += 1
+                                }
+                            } finally {
+                                rs.close()
+                                rs := Ref.broken("an SQL result set can only be used once")
+                            }
+                        }
+
+                        to singleton(ifMissing) {
+                            for row in sqlResults {
+                                require(!rs.next(),
+                                    `multiple rows returned by "$ptmpl"`)
+                                return row
+                            }
+                            return ifMissing()
+                        }
+
+                        to singleton() {
+                            return sqlResults.singleton(fn { throw(
+                                `no rows returned by "$ptmpl"`)
+                            })
+                        }
+
+                        to asList() :List[List] {
+                            def results := [].diverge()
+                                for row in sqlResults {
+                                    results.push(row)
+                                }
+                            return results.snapshot()
+                        }
+                    }
+                } else {
+                    return pstmt.executeUpdate()
+                }
+            }
+        }
+    }
+
+    def cache := [].asMap().diverge()
+
+    return def sql__quasiParser implements QuasiExprParser {
+        to valueMaker(template :String, dlrHoles :List[int]) :ValueMaker {
+            if (cache.fetch(template, fn {}) =~ x :notNull) {
+                return x
+            }
+            return cache[template] := valueMaker(template, dlrHoles)
+        }
+
+        to valueMaker(oldTemplate :String) {
+            def [template, dlrHoles, []] := convertHoles(oldTemplate)
+            return sql__quasiParser.valueMaker(template, dlrHoles)
+        }
+    }
+}
