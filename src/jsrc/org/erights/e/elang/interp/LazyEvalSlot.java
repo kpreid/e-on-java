@@ -52,9 +52,6 @@ import java.io.IOException;
  * @author Mark S. Miller
  */
 public class LazyEvalSlot extends BaseSlot {
-
-    private final Object myLock;
-
     /**
      * only meaningful when myOptSource != null
      */
@@ -79,7 +76,6 @@ public class LazyEvalSlot extends BaseSlot {
      *               the time of the first get().
      */
     LazyEvalSlot(Object scope, Twine source) {
-        myLock = new Object();
         myOptScope = scope;
         myOptSource = source;
         myOptValue = null;
@@ -97,32 +93,29 @@ public class LazyEvalSlot extends BaseSlot {
         Object optScope;
         Twine optSource;
         Object optValue;
-        synchronized (myLock) {
-            optScope = myOptScope;
-            optSource = myOptSource;
-            optValue = myOptValue;
-        }
+
+        optScope = myOptScope;
+        optSource = myOptSource;
+        optValue = myOptValue;
+
         if (null != optSource) {
             Object[] promise = Ref.promise();
-            synchronized (myLock) {
-                // If it's asked for while it's doing its own evaluation, it
-                // returns a promise for what it'll evaluate to.
-                myOptValue = promise[0];
-                myOptScope = null;
-                myOptSource = null;
-            }
+
+            // If it's asked for while it's doing its own evaluation, it
+            // returns a promise for what it'll evaluate to.
+            myOptValue = promise[0];
+            myOptScope = null;
+            myOptSource = null;
             try {
                 //System.err.println("Lazy eval: " + myOptSource);
                 EExpr eExpr = (EExpr)EParser.run(optSource);
                 Scope scope = (Scope)E.as(optScope, Scope.class);
                 myOptValue = eExpr.eval(scope.withPrefix("__lazy."));
             } catch (Throwable problem) {
-                synchronized (myLock) {
-                    myOptValue = optValue;
-                    myOptScope = optScope;
-                    myOptSource = optSource;
-                    ((Resolver)promise[1]).smash(problem);
-                }
+                myOptValue = optValue;
+                myOptScope = optScope;
+                myOptSource = optSource;
+                ((Resolver)promise[1]).smash(problem);
                 throw ExceptionMgr.asSafe(problem);
             }
             ((Resolver)promise[1]).resolve(myOptValue);
