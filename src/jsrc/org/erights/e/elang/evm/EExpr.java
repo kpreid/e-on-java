@@ -50,44 +50,6 @@ public abstract class EExpr extends ENode {
 
     static private final long serialVersionUID = -7918236472800706525L;
 
-    static private class Transformer implements OneArgFunc, DeepPassByCopy {
-
-        static private final long serialVersionUID = 5695854634368095134L;
-
-        Transformer() {
-        }
-
-        public Object run(Object arg) {
-            ConstList args = (ConstList)arg;
-            EExpr eExpr = (EExpr)args.get(0);
-            ScopeLayout scopeLayout = (ScopeLayout)args.get(1);
-            VerifyEVisitor vev = new VerifyEVisitor(scopeLayout);
-            EExpr verifiedExpr = vev.xformEExpr(eExpr);
-
-            // Do variable layout and a few simple optimizations.
-            BindFramesVisitor bfv = BindFramesVisitor.make(scopeLayout);
-            EExpr realExpr = bfv.xformEExpr(verifiedExpr);
-
-            Object[] result = {realExpr,
-              bfv.getOptScopeLayout(),
-              EInt.valueOf(bfv.maxLocals())};
-            return result;
-        }
-
-        /**
-         * XXX We only say we implement this, but don't really, since we really
-         * only need to be DeepFrozen; but currently the only way to declare
-         * ourselves to be DeepFrozen is to claim to be DeepPassByCopy.
-         */
-        public Object[] getSpreadUncall() {
-            T.fail("XXX not yet implemented");
-            return null; //make compiler happy
-        }
-    }
-
-    static private final Memoizer OurTransformer =
-      new Memoizer(new Transformer(), 1000);
-
     /**
      *
      */
@@ -128,9 +90,28 @@ public abstract class EExpr extends ENode {
      *         ScopeLayout, and <li>the number of locals it needs to evaluate.
      *         </ul>
      */
-    static private Object[] transform(EExpr self, ScopeLayout scopeLayout) {
-        Object[] args = {self, scopeLayout};
-        return (Object[])((ConstList)OurTransformer.run(args)).getArray();
+    static private Object[] transform(EExpr eExpr, ScopeLayout scopeLayout) {
+        VerifyEVisitor vev = new VerifyEVisitor(scopeLayout);
+        EExpr verifiedExpr = vev.xformEExpr(eExpr);
+
+        // Do variable layout and a few simple optimizations.
+        BindFramesVisitor bfv = BindFramesVisitor.make(scopeLayout);
+        EExpr realExpr = bfv.xformEExpr(verifiedExpr);
+
+        Object[] result = {realExpr,
+          bfv.getOptScopeLayout(),
+          EInt.valueOf(bfv.maxLocals())};
+        return result;
+    }
+
+    public CompiledE compile(Scope scope) {
+        Object[] result = transform(this, scope.getScopeLayout());
+        Scope transformedScope = scope.update((ScopeLayout) result[1]);
+        int maxLocals = ((Integer)result[2]).intValue();
+        return new CompiledE(
+                (EExpr) result[0],
+                transformedScope,
+                maxLocals);
     }
 
     /**
