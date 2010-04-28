@@ -60,10 +60,11 @@ class ImportLoader extends BaseLoader implements JOSSPassByConstruction {
      * The values in the slots are either EStaticWrappers on Class objects (for
      * safe classes), PackageScopes (for packages), or whatever value a .emaker
      * file evaluated to, when interpreted in the safeScope.
-     * <p/>
-     * Must synchronize access to this
      */
     private final transient FlexMap myAlreadyImported;
+
+    private transient Thread myOptThread;
+    private transient Scope mySafeScope;
 
     /**
      *
@@ -71,6 +72,9 @@ class ImportLoader extends BaseLoader implements JOSSPassByConstruction {
     ImportLoader() {
         myAlreadyImported =
           FlexMap.fromTypes(String.class, FinalSlot.class);
+
+        Object[] safePair = ScopeSetup.safeScopePair("root$", this);
+        mySafeScope = (Scope) safePair[1];
     }
 
     /**
@@ -152,6 +156,14 @@ class ImportLoader extends BaseLoader implements JOSSPassByConstruction {
      * to treat as such).
      */
     private Object getValue(String fqName, boolean[] isConfinedPtr) {
+        if (myOptThread == null) {
+            myOptThread = Thread.currentThread();
+        } else {
+            if (myOptThread != Thread.currentThread()) {
+                throw new RuntimeException("ImportLoader called from first thread " + myOptThread + ", then from " + Thread.currentThread());
+            }
+        }
+
         if ("*".equals(fqName)) {
             isConfinedPtr[0] = true;
             return this;
@@ -191,8 +203,8 @@ class ImportLoader extends BaseLoader implements JOSSPassByConstruction {
             EExpr eExpr = (EExpr)EParser.run(eSource);
             //The fqnPrefix for the loaded defs has this fqName as its outer
             //"class".
-            Object[] safePair = ScopeSetup.safeScopePair(fqName + "$", this);
-            result = eExpr.eval((Scope)safePair[1]);
+            Scope newSafeScope = mySafeScope.withPrefix(fqName + "$");
+            result = eExpr.eval(newSafeScope);
 
             // Will be a step towards a better module system
 //            isConfinedPtr[0] = Ref.isDeepFrozen(result);
@@ -234,10 +246,7 @@ class ImportLoader extends BaseLoader implements JOSSPassByConstruction {
     public Slot getLocalSlot(String fqName) {
 //System.err.println("ImportLoader.getting: " + fqName);
         Slot result;
-        synchronized (myAlreadyImported) {
-            result =
-              (Slot)myAlreadyImported.fetch(fqName, ValueThunk.NULL_THUNK);
-        }
+        result = (Slot)myAlreadyImported.fetch(fqName, ValueThunk.NULL_THUNK);
         if (null != result) {
             //XXX Once we detect that an emaker is DeepFrozen and cache it for
             // longer, we need to also somehow check if a later ESource is
@@ -255,9 +264,7 @@ class ImportLoader extends BaseLoader implements JOSSPassByConstruction {
         Resolver resolver = (Resolver)promise[1];
 
         result = new FinalSlot(ref);
-        synchronized (myAlreadyImported) {
-            myAlreadyImported.put(fqName, result, true);
-        }
+        myAlreadyImported.put(fqName, result, true);
         Object value;
         //start with it set to false, so we'll also remove fqName if
         //getValue() throws
@@ -268,9 +275,7 @@ class ImportLoader extends BaseLoader implements JOSSPassByConstruction {
             if (!keep[0]) {
                 //keep[0] says that the stored association is itself
                 //DeepFrozen. If not, remove it.
-                synchronized (myAlreadyImported) {
-                    myAlreadyImported.removeKey(fqName, true);
-                }
+                myAlreadyImported.removeKey(fqName, true);
             }
         }
         resolver.resolve(value);
