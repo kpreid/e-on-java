@@ -22,6 +22,7 @@ Contributor(s): ______________________________________.
 import org.erights.e.develop.assertion.T;
 import org.erights.e.develop.exception.EBacktraceException;
 import org.erights.e.develop.trace.Trace;
+import org.erights.e.elang.evm.CompiledE;
 import org.erights.e.elang.evm.EExpr;
 import org.erights.e.elang.scope.Scope;
 import org.erights.e.elang.syntax.EParser;
@@ -58,10 +59,16 @@ class ImportLoader extends BaseLoader implements JOSSPassByConstruction {
 
     /**
      * The values in the slots are either EStaticWrappers on Class objects (for
-     * safe classes), PackageScopes (for packages), or whatever value a .emaker
-     * file evaluated to, when interpreted in the safeScope.
+     * safe classes), PackageScopes (for packages), or CompiledE for .emaker
+     * files compiled in the safeScope.
      */
-    private final transient FlexMap myAlreadyImported;
+    private final transient FlexMap myAlreadyCompiled;
+
+    /**
+     * To break cycles, keep track of imports that are currently in progress in
+     * our thread.
+     */
+    private final transient FlexMap myBeingImported;
 
     private transient Thread myOptThread;
     private transient Scope mySafeScope;
@@ -70,8 +77,11 @@ class ImportLoader extends BaseLoader implements JOSSPassByConstruction {
      *
      */
     ImportLoader() {
-        myAlreadyImported =
-          FlexMap.fromTypes(String.class, FinalSlot.class);
+        myAlreadyCompiled =
+          FlexMap.fromTypes(String.class, Object.class);
+
+        myBeingImported =
+          FlexMap.fromTypes(String.class, Ref.class);
 
         Object[] safePair = ScopeSetup.safeScopePair("root$", this);
         mySafeScope = (Scope) safePair[1];
@@ -149,13 +159,10 @@ class ImportLoader extends BaseLoader implements JOSSPassByConstruction {
     }
 
     /**
-     * Gets the value at fqName, and indicate whether it is itself DeepFrozen.
-     * <p/>
-     * If not found, throws an exception. Sets isConfinedPtr[0] according to
-     * whether the result is itself DeepFrozen (transitively immutable, or safe
-     * to treat as such).
+     * Gets the value at fqName.
+     * If not found, throws an exception.
      */
-    private Object getValue(String fqName, boolean[] isConfinedPtr) {
+    private Object getValue(String fqName) {
         if (myOptThread == null) {
             myOptThread = Thread.currentThread();
         } else {
@@ -165,17 +172,14 @@ class ImportLoader extends BaseLoader implements JOSSPassByConstruction {
         }
 
         if ("*".equals(fqName)) {
-            isConfinedPtr[0] = true;
             return this;
         } else if (fqName.endsWith(".*")) {
-            isConfinedPtr[0] = true;
             return new PackageLoader(this, "import:", fqName);
         }
         //prefer a compiled one.
         Object result = getOptStaticMaker(fqName, fqName);
         if (null != result) {
             warnNoMake(fqName);
-            isConfinedPtr[0] = true;
             return result;
         }
 
@@ -183,7 +187,6 @@ class ImportLoader extends BaseLoader implements JOSSPassByConstruction {
         if (null != optJFQName) {
             result = getOptStaticMaker(optJFQName, fqName);
             if (null != result) {
-                isConfinedPtr[0] = true;
 
                 if (Trace.eruntime.warning && Trace.ON) {
                     if (null != optESource(fqName)) {
@@ -204,13 +207,8 @@ class ImportLoader extends BaseLoader implements JOSSPassByConstruction {
             //The fqnPrefix for the loaded defs has this fqName as its outer
             //"class".
             Scope newSafeScope = mySafeScope.withPrefix(fqName + "$");
-            result = eExpr.eval(newSafeScope);
+            result = eExpr.compile(newSafeScope);
 
-            // Will be a step towards a better module system
-//            isConfinedPtr[0] = Ref.isDeepFrozen(result);
-            // XXX Leave it this way for now until we figure out the caching
-            // issue.
-            isConfinedPtr[0] = false;
             return result;
         }
 
@@ -236,50 +234,37 @@ class ImportLoader extends BaseLoader implements JOSSPassByConstruction {
     /**
      *
      */
-    public Object get(String uriBody) {
-        return getLocalSlot(uriBody).get();
-    }
-
-    /**
-     * Must handle cyclic imports
-     */
-    public Slot getLocalSlot(String fqName) {
-//System.err.println("ImportLoader.getting: " + fqName);
-        Slot result;
-        result = (Slot)myAlreadyImported.fetch(fqName, ValueThunk.NULL_THUNK);
-        if (null != result) {
-            //XXX Once we detect that an emaker is DeepFrozen and cache it for
-            // longer, we need to also somehow check if a later ESource is
-            // available, and, if so, use it and (perhaps?) upgrade
-            // old instances. Since we don't yet test emaker confinement, so
-            // we can't yet cache them for longer than it takes to resolve a
-            // cycle (one top-level import: request), this isn't yet an
-            // issue.
-            //XXX Since we found it, it must either be there to resolve a
-            // cycle, or it is itself DeepFrozen.
-            return result;
+    public Object get(String fqName) {
+        Object compiled = myAlreadyCompiled.fetch(fqName, ValueThunk.NULL_THUNK);
+        if (compiled == null) {
+                compiled = getValue(fqName);
+                myAlreadyCompiled.put(fqName, compiled, true);
         }
-        Object[] promise = Ref.promise();
-        Ref ref = (Ref)promise[0];
-        Resolver resolver = (Resolver)promise[1];
+        if (compiled instanceof CompiledE) {
+            /* Evaluate the compiled E. Must handle cyclic imports. */
 
-        result = new FinalSlot(ref);
-        myAlreadyImported.put(fqName, result, true);
-        Object value;
-        //start with it set to false, so we'll also remove fqName if
-        //getValue() throws
-        boolean[] keep = {false};
-        try {
-            value = getValue(fqName, keep);
-        } finally {
-            if (!keep[0]) {
-                //keep[0] says that the stored association is itself
-                //DeepFrozen. If not, remove it.
-                myAlreadyImported.removeKey(fqName, true);
+            Object alreadyImportingVow = myBeingImported.fetch(fqName, ValueThunk.NULL_THUNK);
+            if (alreadyImportingVow != null) {
+                return alreadyImportingVow;
             }
+
+            // This is the first import (by this ImportLoader) of the emaker.
+            // Store a promise while we evaluate to prevent recursion.
+            Object[] promise = Ref.promise();
+            Ref ref = (Ref)promise[0];
+            Resolver resolver = (Resolver)promise[1];
+
+            myBeingImported.put(fqName, ref, true);
+            try {
+                Object value = ((CompiledE) compiled).run();
+                resolver.resolve(value);
+                return value;
+            } finally {
+                myBeingImported.removeKey(fqName, true);
+            }
+        } else {
+            return compiled;
         }
-        resolver.resolve(value);
-        return result;
     }
 
     /**
