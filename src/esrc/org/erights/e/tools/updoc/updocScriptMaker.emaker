@@ -246,9 +246,11 @@ def updocScriptMaker {
              *
              * @param newAnswers
              * @param out
-             * @return Whether to terminate early.
+             * @return Whether the test passed, and whether to terminate early.
              */
-            to printDiffsOn(newAnswers, out) :boolean {
+            to printDiffsOn(newAnswers, out) :Tuple[boolean,boolean] {
+                var success := true
+
                 # Only prints the first time
                 var exprPrinted := false
                 def printExprOnce(expr, out) :void {
@@ -275,6 +277,7 @@ def updocScriptMaker {
                             printExprOnce(expr, out)
                             out.println(`missing new $keyword`)
                             printBlock(`original $keyword`, answer, out)
+                            success := false
                         }
                     } else if (! (answer <=> optNewAnswer)) {
                         # show differences
@@ -286,6 +289,7 @@ def updocScriptMaker {
                         printBlock(`     new $keyword`,
                                    newAnswers[keyword],
                                    out)
+                        success := false
                     }
                 }
                 for newKeyword => newAnswer in newAnswers {
@@ -299,6 +303,7 @@ def updocScriptMaker {
                         # ignore
                     } else {
                         # missing old case
+                        success := false
                         printExprOnce(expr, out)
                         out.println(`missing original $newKeyword`)
                         printBlock(`new $newKeyword`, newAnswer, out)
@@ -309,7 +314,7 @@ def updocScriptMaker {
                             # skip showing the rest of the script.
                             # XXX We instead should skip playing the rest of
                             # the script, not just showing it.
-                            return true
+                            return [success, true]
                         }
                     }
                 }
@@ -317,7 +322,7 @@ def updocScriptMaker {
                     # success
                     out.print(".")
                 }
-                return false
+                return [success, false]
             }
         }
     }

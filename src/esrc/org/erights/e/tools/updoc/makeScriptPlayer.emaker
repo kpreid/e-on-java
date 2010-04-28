@@ -46,9 +46,9 @@ def makeTestcasePlayer(testcase) :near {
          * <tt>reportResults</tt>
          *
          * @param out
-         * @return Whether to terminate early
+         * @return Whether the test passed, and whether to terminate early.
          */
-        to reportResults(out) :boolean {
+        to reportResults(out) :Tuple[boolean,boolean] {
             def parser := makeOldUpdocParser(report)
             def [newAnswers, optStackTrace] := parser.readAnswers()
             def result := testcase.printDiffsOn(newAnswers, out)
@@ -95,13 +95,20 @@ def makeSequencePlayer(sequence) :any {
          * <tt>reportResults</tt>
          *
          * @param out
+         * @return the number of failed tests
          */
-        to reportResults(out) :void {
+        to reportResults(out) :int {
+            var failures := 0
             for p in players {
-                if (p.reportResults(out)) {
-                    return
+                def [thisSuccess, abortEarly] := p.reportResults(out)
+                if (!thisSuccess) {
+                    failures += 1
+                }
+                if (abortEarly) {
+                    break
                 }
             }
+            return failures
         }
 
         /**
@@ -174,11 +181,14 @@ def makeScriptPlayer(script) :any {
          * <tt>reportResults</tt>
          *
          * @param out
+         * @return the number of failed tests
          */
-        to reportResults(out) :void {
+        to reportResults(out) :int {
+            var failures := 0
             for p in players {
-                p.reportResults(out)
+                failures += p.reportResults(out)
             }
+            return failures
         }
 
         /**
@@ -219,7 +229,7 @@ def makeScriptPlayer(script) :any {
          * @param args
          * @param props
          * @param out
-         * @return A <tt>vow</tt> that becomes <tt>null</tt> on success or
+         * @return A <tt>vow</tt> that becomes the number of failed tests or
          *         becomes broken with a problem.
          */
         to replay(evalServerPool, args, props, out) :vow {
@@ -260,8 +270,7 @@ def makeScriptPlayer(script) :any {
                 when (scriptPlayer.replayScript(vatMap)) -> done(_) :void {
                     if (release()) {
                         try {
-                            scriptPlayer.reportResults(out)
-                            resolver.resolve(null)
+                            resolver.resolve(scriptPlayer.reportResults(out))
                         } catch problem {
                             resolver.smash(problem)
                         }

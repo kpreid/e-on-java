@@ -56,7 +56,7 @@ def printBlock(keyword, str, out) :void {
  * @param hash The crypto hash of the <tt>Updoc</tt> source file
  * @param evalServerPool A ref to an <tt>evalServerPool</tt> object
  * @param out An output object for reporting results or errors
- * @return A <tt>vow</tt> that becomes <tt>null</tt> on success or
+ * @return A <tt>vow</tt> that becomes the number of failures or
  *         becomes broken with a problem
  */
 def parseAndPlay(source :Twine, hash :int, evalServerPool :rcvr, out) :vow {
@@ -128,7 +128,7 @@ def htmlAnyway(file, out) :boolean {
  * @param path The path of the file
  * @param evalServerPool A ref to an <tt>evalServerPool</tt> object
  * @param out An output object for reporting results or errors
- * @return A <tt>vow</tt> that becomes <tt>null</tt> on success or
+ * @return A <tt>vow</tt> that becomes the number of failures or
  *         becomes broken with a problem
  */
 def updocOne(file, path, evalServerPool, out) :vow {
@@ -174,12 +174,13 @@ def updocOne(file, path, evalServerPool, out) :vow {
  *
  * @param filedir A <tt>url</tt> or <tt>file</tt> or <tt>directory</tt> object
  * @param evalServerPool A ref to an <tt>evalServerPool</tt> object
- * @return A <tt>vow</tt> that becomes <tt>null</tt> on success or
+ * @return A <tt>vow</tt> that becomes the number of failures or
  *         becomes broken with a problem
  * @author Terry Stanley
  * @author Mark S. Miller
  */
 def updoc(filedir, evalServerPool :rcvr) :vow {
+    var failures := 0
     if (filedir =~ url :URL) {
         updocOne(url,
                  url.toExternalForm(),
@@ -187,12 +188,16 @@ def updoc(filedir, evalServerPool :rcvr) :vow {
                  stdout)
     } else if (filedir.isDirectory()) {
         def resultVow := oneAtATimeVow(filedir.list(), def _(_, name) :any {
-            updoc(filedir[name], evalServerPool)
+            when (def thisResult:= updoc(filedir[name], evalServerPool)) -> {
+                failures += thisResult
+            }
         })
         Ref.whenResolved(resultVow, def _(_) :void {
             hashCache.checkpoint()
         })
-        resultVow
+        when (resultVow) -> {
+            failures
+        }
     } else {
         updocOne(filedir,
                  filedir.getPath(),
@@ -263,9 +268,14 @@ def filedir := if (name =~ `@_:@_`) {
 
 #traceline("args connected")
 
-when (updoc(filedir, evalServerPool)) -> done(_) :void {
+when (updoc(filedir, evalServerPool)) -> done(failures) :void {
     stdout.println()
-    interp.exitAtTop()
+    if (failures > 0) {
+        interp.exitAtTop(`Failed tests: $failures`)
+    } else {
+        stdout.println("All tests passed.")
+        interp.exitAtTop()
+    }
 } catch problem {
     stdout.println()
     interp.exitAtTop(problem)
