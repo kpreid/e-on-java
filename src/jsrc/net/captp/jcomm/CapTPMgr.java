@@ -25,7 +25,6 @@ import net.vattp.data.NewConnectionReactor;
 import net.vattp.data.VatLocationLookup;
 import net.vattp.data.VatTPConnection;
 import net.vattp.data.VatTPMgr;
-import net.vattp.security.ESecureRandom;
 import org.erights.e.develop.exception.ExceptionMgr;
 import org.erights.e.develop.trace.Trace;
 import org.erights.e.elib.ref.ReferenceMonitor;
@@ -39,6 +38,7 @@ import org.erights.e.elib.tables.FlexMap;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.security.KeyPair;
+import java.security.SecureRandom;
 
 /**
  * Manage the interface between this vat and other vats. <p>
@@ -67,7 +67,7 @@ public class CapTPMgr implements NewConnectionReactor {
     /**
      * makes new unguessable numbers
      */
-    private final ESecureRandom myEntropy;
+    private final SecureRandom myEntropy;
 
     /**
      * for self recognition
@@ -97,7 +97,7 @@ public class CapTPMgr implements NewConnectionReactor {
     CapTPMgr(KeyPair identityKeys,
              NetConfig netConfig,
              SwissTable swissTable,
-             ESecureRandom entropy,
+             SecureRandom entropy,
              LocatorUnum locatorUnum,
              ReferenceMonitor refmon)
       throws UnknownHostException, IOException {

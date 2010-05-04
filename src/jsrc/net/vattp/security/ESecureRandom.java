@@ -56,6 +56,7 @@ public class ESecureRandom extends SecureRandom {
 
     //Constants
 
+    // XXX: move to SwissTable?
     static private final int SWISSDATA_SIZE = 20;
 
     /**
@@ -480,6 +481,8 @@ public class ESecureRandom extends SecureRandom {
     /**
      * MSM: Added this method, so this object acts as a capability for making
      * new unguessable BigIntegers that have new entropy.
+     *
+     * @deprecated: Use {@link SwissTable#nextSwiss()} instead.
      */
     public BigInteger nextSwiss() {
         byte[] swissData = new byte[SWISSDATA_SIZE];

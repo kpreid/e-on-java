@@ -30,7 +30,6 @@ import net.captp.tables.Vine;
 import net.vattp.data.Msg;
 import net.vattp.data.MsgHandler;
 import net.vattp.data.VatTPConnection;
-import net.vattp.security.ESecureRandom;
 import org.erights.e.develop.assertion.T;
 import org.erights.e.develop.exception.ExceptionMgr;
 import org.erights.e.develop.exception.EBacktraceException;
@@ -55,6 +54,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OptionalDataException;
 import java.math.BigInteger;
+import java.security.SecureRandom;
 
 /**
  * Object which manages a CapTP protocol connection to a remote vat and which
@@ -187,7 +187,7 @@ class CapTPConnection implements MsgHandler {
     /**
      * Generates new swiss numbers
      */
-    private final ESecureRandom myEntropy;
+    private final SecureRandom myEntropy;
 
     /**
      * The Questions table: these are handlers this end created and is
@@ -291,7 +291,7 @@ class CapTPConnection implements MsgHandler {
      */
     CapTPConnection(CapTPMgr capTPMgr,
                     VatTPConnection dataConn,
-                    ESecureRandom entropy) throws IOException {
+                    SecureRandom entropy) throws IOException {
         myCapTPMgr = capTPMgr;
         myDataConnection = dataConn;
         myOptProblem = null;
@@ -446,7 +446,8 @@ class CapTPConnection implements MsgHandler {
     private NewRemotePromiseDesc newRemotePromiseDesc(Object promise) {
         int importPos = myExports.bind(promise);
 
-        BigInteger rdrBase = myEntropy.nextSwiss();
+        SwissTable swiss = myCapTPMgr.getSwissTable();
+        BigInteger rdrBase = swiss.nextSwiss();
         BigInteger rdrNum = BigIntegerSugar.cryptoHash(rdrBase);
         BigInteger rdrHash = BigIntegerSugar.cryptoHash(rdrNum);
 

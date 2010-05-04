@@ -19,7 +19,6 @@ Copyright (C) 1998 Electric Communities. All Rights Reserved.
 Contributor(s): ______________________________________.
 */
 
-import net.vattp.security.ESecureRandom;
 import org.erights.e.develop.trace.Trace;
 import org.erights.e.meta.java.math.BigIntegerSugar;
 import org.erights.e.meta.java.security.PublicKeySugar;
@@ -29,6 +28,7 @@ import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
+import java.security.SecureRandom;
 
 
 /**
@@ -55,7 +55,7 @@ public class VatIdentity {
      * Make a new VatIdentity object. Constructing this object will create a
      * new keypair which will define a new identity.
      */
-    static public KeyPair generateKeyPair(ESecureRandom entropy) {
+    static public KeyPair generateKeyPair(SecureRandom entropy) {
 
         KeyPairGenerator gen = null;
         try {

@@ -3,7 +3,6 @@ package net.captp.tables;
 // Copyright 2002 Combex, Inc. under the terms of the MIT X license
 // found at http://www.opensource.org/licenses/mit-license.html ...............
 
-import net.vattp.security.ESecureRandom;
 import org.erights.e.develop.assertion.T;
 import org.erights.e.elib.base.ValueThunk;
 import org.erights.e.elib.ref.Ref;
@@ -14,6 +13,7 @@ import org.erights.e.elib.util.OneArgFunc;
 import org.erights.e.meta.java.math.BigIntegerSugar;
 
 import java.math.BigInteger;
+import java.security.SecureRandom;
 
 /**
  * A weak-value table mapping from SwissNumbers to references.
@@ -48,17 +48,19 @@ public class SwissTable {
     /**
      * Provides new unguessable SwissNumbers.
      */
-    private final ESecureRandom myEntropy;
+    private final SecureRandom myEntropy;
 
     /**
      * OneArgFuncs that handle lookup faulting.
      */
     private final FlexSet mySwissDBs;
 
+    static private final int SWISSDATA_SIZE = 20;
+
     /**
      *
      */
-    public SwissTable(ESecureRandom entropy) {
+    public SwissTable(SecureRandom entropy) {
         mySelfishToSwiss = new WeakKeyMap(Object.class, BigInteger.class);
         mySwissToRef = new WeakValueMap(BigInteger.class, Object.class);
         myEntropy = entropy;
@@ -146,7 +148,7 @@ public class SwissTable {
         BigInteger result =
           (BigInteger)mySelfishToSwiss.fetch(obj, ValueThunk.NULL_THUNK);
         if (null == result) {
-            result = myEntropy.nextSwiss();
+            result = nextSwiss();
             mySwissToRef.put(result, obj);
             mySelfishToSwiss.put(obj, result);
         }
@@ -168,7 +170,7 @@ public class SwissTable {
         if (Ref.isSelfish(ref)) {
             return getIdentity(ref);
         }
-        BigInteger result = myEntropy.nextSwiss();
+        BigInteger result = nextSwiss();
         mySwissToRef.put(result, ref);
         return result;
     }
@@ -253,6 +255,8 @@ public class SwissTable {
      * this convenience method.
      */
     public BigInteger nextSwiss() {
-        return myEntropy.nextSwiss();
+        byte[] swissData = new byte[SWISSDATA_SIZE];
+        myEntropy.nextBytes(swissData);
+        return new BigInteger(1, swissData);
     }
 }

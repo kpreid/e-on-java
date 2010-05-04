@@ -24,7 +24,6 @@ import net.vattp.data.EARL;
 import net.vattp.data.NetConfig;
 import net.vattp.data.StartUpProtocol;
 import net.vattp.data.VatIdentity;
-import net.vattp.security.ESecureRandom;
 import org.erights.e.develop.exception.ExceptionMgr;
 import org.erights.e.elib.ref.NullMonitor;
 import org.erights.e.elib.ref.Ref;
@@ -39,6 +38,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.UnknownHostException;
 import java.security.KeyPair;
+import java.security.SecureRandom;
 
 /**
  * This object represents an instance of the CapTP system, and is in the
@@ -70,7 +70,7 @@ public class Introducer extends BaseLoader implements PassByProxy {
      */
     private NetConfig myNetConfig;
 
-    private final ESecureRandom myEntropy;
+    private final SecureRandom myEntropy;
 
     private final LocatorUnum myLocatorUnum;
 
@@ -94,7 +94,7 @@ public class Introducer extends BaseLoader implements PassByProxy {
     /**
      *
      */
-    private Introducer(ConstMap optProps, ESecureRandom entropy) {
+    private Introducer(ConstMap optProps, SecureRandom entropy) {
         myNetConfig = NetConfig.make(optProps);
         myEntropy = entropy;
         myLocatorUnum = new LocatorUnum(this);
@@ -106,7 +106,7 @@ public class Introducer extends BaseLoader implements PassByProxy {
      * IdentityMgr. </ul>
      */
     static public Object[] makePair(ConstMap optProps,
-                                    ESecureRandom entropy,
+                                    SecureRandom entropy,
                                     Timer timer) {
         Introducer introducer = new Introducer(optProps, entropy);
         IdentityMgr identityMgr = new IdentityMgr(introducer, timer);
