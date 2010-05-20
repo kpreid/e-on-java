@@ -61,6 +61,10 @@ public class ReadOnlyFile extends BaseLoader
         }
     }
 
+    boolean isDeepReadOnly() {
+        return myIsTransitive;
+    }
+
     /**
      */
     public String getName() {

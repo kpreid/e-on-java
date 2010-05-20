@@ -131,8 +131,13 @@ public class FileGetter extends BaseLoader {
             String path = FileSugar.getAbsolutePath((File)obj);
             return BaseLoader.ungetToUncall(this, path);
         } else if (obj instanceof ReadOnlyFile) {
-            T.fail("XXX not yet implemented");
-            return null; // make compiler happy
+            ReadOnlyFile roFile = (ReadOnlyFile) obj;
+            String path = roFile.getAbsolutePath();
+            return new Object[] {
+                new File(path),
+                roFile.isDeepReadOnly() ? "deepReadOnly" : "shallowReadOnly",
+                new Object[] {},
+            };
         } else {
             return null;
         }
