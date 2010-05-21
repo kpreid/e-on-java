@@ -120,7 +120,7 @@ class ImportLoader extends BaseLoader implements JOSSPassByConstruction {
      * returns null if not found
      */
     private URL optResource(String rName) {
-        return ClassLoader.getSystemResource(rName);
+        return ImportLoader.class.getClassLoader().getResource(rName);
     }
 
     /**

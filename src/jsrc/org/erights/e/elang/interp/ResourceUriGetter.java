@@ -28,7 +28,7 @@ public class ResourceUriGetter extends BaseLoader {
      * &lt;resource:...&gt; expands to resource__uriGetter.get(...)
      */
     public Object get(String uriBody) {
-        URL result = ClassLoader.getSystemResource(uriBody);
+        URL result = ResourceUriGetter.class.getClassLoader().getResource(uriBody);
         T.notNull(result, "Resource not found: ", uriBody);
         return result;
     }
@@ -37,7 +37,7 @@ public class ResourceUriGetter extends BaseLoader {
      * XXX This one is unimplemented, and we should expect it to be
      * unimplemented for awhile, as it's hard.
      * <p/>
-     * The problem is, the URL returned {@link ClassLoader#getSystemResource}
+     * The problem is, the URL returned {@link ClassLoader#getResource}
      * is not one that necessarily came from that source. For example,
      * &lt;resource:scripts/eBrowser.e-awt&gt; just returns a URL that could
      * have been returned by &lt;fileURL:.../scripts/eBrowser.e-awt&gt; and can

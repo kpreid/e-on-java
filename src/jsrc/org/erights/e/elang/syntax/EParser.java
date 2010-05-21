@@ -787,7 +787,7 @@ static private void initTables() {
     try {
         String rName = "org/erights/e/elang/syntax/ParserTables.data";
         InputStream inp = 
-          ClassLoader.getSystemResourceAsStream(rName);
+          EParser.class.getClassLoader().getResourceAsStream(rName);
         if (null == inp) {
             T.fail(rName + " not found");
         }

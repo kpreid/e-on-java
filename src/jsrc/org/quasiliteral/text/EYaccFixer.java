@@ -60,7 +60,7 @@ public class EYaccFixer {
             "    if (null != yycheck) {\n" + "        return;\n" + "    }\n" +
             "    try {\n" + "        String rName = \"" + rPath + "\";\n" +
             "        InputStream inp = \n" +
-            "          ClassLoader.getSystemResourceAsStream(rName);\n" +
+            "          EParser.class.getClassLoader().getResourceAsStream(rName);\n" +
             "        if (null == inp) {\n" +
             "            T.fail(rName + \" not found\");\n" + "        }\n" +
             "        ObjectInput obInp = new ObjectInputStream(inp);\n" +

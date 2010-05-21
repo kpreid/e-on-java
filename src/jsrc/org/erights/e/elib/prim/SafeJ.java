@@ -395,7 +395,7 @@ public final class SafeJ {
                 return optResult;
             }
             String path = StringHelper.replaceAll(fqName, ".", "/") + ".safej";
-            URL optTermURL = ClassLoader.getSystemResource(path);
+            URL optTermURL = SafeJ.class.getClassLoader().getResource(path);
             if (null == optTermURL) {
                 return null;
             }
