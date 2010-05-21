@@ -15,6 +15,7 @@ def makePlace := <causeway:makePlace>
 
 def makeSearchModel(messageGraph) :near {
 
+    def bookmarks := [].diverge()
     def commands := [].diverge()
     
     def makeSearchCommand(description, places) :near {
@@ -75,11 +76,12 @@ def makeSearchModel(messageGraph) :near {
             } else {
                 bind gn := "matches"
             }
-            def description := `searchStacks(pathname: $pathname, line: $lineNo) found $n $gn`
+            def description := 
+                `searchStacks(pathname: $pathname, line: $lineNo) found $n $gn`
                                 
             def command := makeSearchCommand(description, places.snapshot())
             commands.push(command)
-            searchModel.notifyObservers(command)
+            searchModel.notifyObserversCommandAdded(command)
         }
         
         to findLostMessages(bottom) :void {
@@ -95,23 +97,40 @@ def makeSearchModel(messageGraph) :near {
                     }
                 }
             }
-            def command := makeSearchCommand("findLostMessages", 
-                                             places.snapshot())
+            def description := 
+                `findLostMessages found ${places.size()} messages`
+
+            def command := makeSearchCommand(description, places.snapshot())
             commands.push(command)
-            searchModel.notifyObservers(command)
+            searchModel.notifyObserversCommandAdded(command)
         }
         
-        to findMultiples(target, label) :void {
+        to bookmark(model) :void {      
+            if (model =~ [element, itemIndex]) {
+                def place := makePlace(element, 0, itemIndex)
+                bookmarks.push(place)
+                searchModel.notifyObserversBookmarkAdded(place)
+            }
+        }
+        
+        to findMultiples(model, label) :void {
             def places := [].diverge()        
-            if (target != null) {
-                for edge => _ in target.ins() {
-                    places.push(makePlace(edge, 0))
+            if (model != null) {
+                if (model =~ [node, itemIndex]) {
+                    if (node.isNode()) {
+                        for edge => _ in node.ins() {
+                            places.push(makePlace(edge, 0))
+                        }
+                    }
                 }
             }
-            def command := makeSearchCommand(`findMultiples for $label`, 
+            def description := 
+                `findMultiples for $label found ${places.size()} causes`
+
+            def command := makeSearchCommand(description, 
                                              places.snapshot())
             commands.push(command)
-            searchModel.notifyObservers(command)
+            searchModel.notifyObserversCommandAdded(command)
         }
         
         to getCommandList() :near {
@@ -121,7 +140,13 @@ def makeSearchModel(messageGraph) :near {
         to clearCommandList() :void {
         }
         
-       to notifyObservers(command) :void {
+        to notifyObserversBookmarkAdded(place) :void {
+            for observer in observers {
+                observer <- bookmarkAdded(place)
+            }
+        }
+
+        to notifyObserversCommandAdded(command) :void {
             for observer in observers {
                 observer <- searchCommandAdded(command)
             }

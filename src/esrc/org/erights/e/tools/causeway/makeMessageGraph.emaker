@@ -29,12 +29,11 @@ def Turn := int
 def UTurn := Tuple[VatName, Turn]
 
 # one of "org.ref_send.log.Sent", ...
-def SendingContext := String
+def LogEvent := String
 
 def CLIP := 0
 def SKIP := 1
 def KEEP := 2
-
 
 def makeWatcher() :near {
     def items := [].asSet().diverge()
@@ -52,48 +51,6 @@ def makeWatcher() :near {
     return watcher
 }
 
-def getDisplayName(vatName) :String {
-    
-    if (vatName =~ `<Vat @vn>`) {
-        if (vn =~ `@_/-/@name`) {
-            return name
-        } else {
-            return vn
-        }
-    }
-    
-    # find most specific folder name
-    def parts := vatName.split("/")
-    var i := parts.size() -1
-    while (i >= 0) {
-        def part := parts[i]
-        if (part != "") { return part }
-        i -= 1
-    }
-    return vatName
-}
-
-def getHexTriple(color) :String {
-    
-    def rgb := [].diverge()
-    
-    rgb[0] := color.getRed()
-    rgb[1] := color.getGreen()
-    rgb[2] := color.getBlue()
-    
-    var result := ""
-    
-    for c in rgb {
-        def hex := c.toString(16).toUpperCase()
-        if (hex.size() == 1) {
-            result += "0"
-        }
-        result += hex
-    }
-    
-    return result
-}
-
 def tagToColor(tag :int, normal :String) :String {
     switch (tag) {
         match ==CLIP { return "firebrick" }
@@ -101,86 +58,6 @@ def tagToColor(tag :int, normal :String) :String {
         match ==KEEP { return normal }
     }
 } 
-
-def walkDots(edge, textWriter, palette,
-             vatMap, graphWalker, watcher) :void {
-    
-    if (watcher.hasSeen(edge)) {
-        return;
-    }
-    watcher.see(edge)
-    
-    def [ovat, oturn] := edge.getOrigin().getID()
-    def [tvat, tturn] := edge.getTarget().getID()
-    
-    def oattr := vatMap.fetchDisplayAttributes(ovat)
-    def tattr := vatMap.fetchDisplayAttributes(tvat)
-    
-    # [vatDisplayName, [vatColor, colorName]]
-    
-    def oname := oattr[0]
-    def tname := tattr[0]
-    
-    # "[buyer, 100]" -> "[product, 154]";
-    
-    # Should work but doesn't. Must use color names.
-    #def ocolor := getHexTriple(oattr[1])
-    #def tcolor := getHexTriple(tattr[1])
-    #textWriter.println(`"[$oname, $oturn]" [color=#${ocolor}];`)
-    #textWriter.println(`"[$tname, $tturn]" [color=#${tcolor}];`)
-    
-    def ocolor := tagToColor(edge.getOrigin().getTag(), oattr[1][1])
-    def tcolor := tagToColor(edge.getTarget().getTag(), tattr[1][1])
-    
-    textWriter.println(`"[$oname, $oturn]" [color=$ocolor fontcolor=$ocolor];`)
-    textWriter.println(`"[$tname, $tturn]" [color=$tcolor fontcolor=$tcolor];`)
-    
-    var ep := graphWalker.getElementLabel(edge, 0)
-    if (null == ep) {
-        ep := "[]"
-    }
-    def ecolor := tagToColor(edge.getTag(), "black")
-    textWriter.println(`"[$oname, $oturn]" -> "[$tname, $tturn]" [color=$ecolor label="$ep"];`)
-    
-    for grandEdge => _ in edge.getTarget().outs() {
-        walkDots(grandEdge, textWriter, palette,
-                 vatMap, graphWalker, watcher)
-    }
-}
-
-def walk(edge, level, watcher, traceline) :void {
-    
-    if (watcher.hasSeen(edge)) {
-        return;
-    }
-    watcher.see(edge)
-    
-    def origin := edge.getOrigin()
-    def target := edge.getTarget()
-    
-    def who := origin.getID()
-    def [oname, oturn] := who
-    
-    def toWhom := target.getID()
-    def [tname, tturn] := toWhom
-    
-    def oc := `in: ${origin.getIncomingCount()}, out: ${origin.getOutgoingCount()}`
-    def tc := `in: ${target.getIncomingCount()}, out: ${target.getOutgoingCount()}`
-    
-    var indent := ""
-    for i in 0 ..! level {
-        indent += "  "
-    }
-    def doname := getDisplayName(oname)
-    def dtname := getDisplayName(tname)
-    
-    traceline(`$indent ($level) o: [$doname, $oturn] $oc t: [$dtname, $tturn] $tc`)
-    traceline(``)
-    
-    for grandEdge => _ in target.outs() {
-        walk(grandEdge, level + 1, watcher, traceline)
-    }
-}
 
 /**
  * <tt>makeMessageGraph</tt>
@@ -192,12 +69,12 @@ def makeMessageGraph(traceline) :near {
     def dag := makeDirectedGraph(traceline)
     
     def mkTurnNode(id :UTurn) :near {
-        var tag :int := KEEP
-        var gotContext := ""
+        var gotEvent := ""
         var gotStack := []
+        var optTimestamp :int := 0;
         def logs := [].diverge()
-        var optMessageID := null
-        
+        var tag :int := KEEP
+
         def turnNode extends templateNode(turnNode, id) {
 
             # A node's origin is itself.
@@ -209,21 +86,25 @@ def makeMessageGraph(traceline) :near {
                 return id[0]
             }
             
-            to setTag(newTag :int) :void {
-                tag := newTag
+            to getContext() :Tuple[LogEvent, Stack] {
+                return [gotEvent, gotStack]
             }
-            to getTag() :int {
-                return tag
-            }
-            
-            to getContext() :Tuple[SendingContext, Stack] {
-                return [gotContext, gotStack]
-            }
-            to setContext(gotCtx :SendingContext, gotStk :Stack) :void {
-                gotContext := gotCtx
-                gotStack := gotStk
+            to setContext(event :LogEvent, stack :Stack) :void {
+                gotEvent := event
+                gotStack := stack
             }
             
+            to getOptTimestamp() :int {
+                return optTimestamp
+            }
+            to setOptTimestamp(ts :int) :void {
+                optTimestamp := ts
+            }
+
+            to getOptText() :nullOk[String] {
+                return null
+            }
+
             to getLogFiles() :List {
                 return logs.snapshot()
             }
@@ -233,12 +114,12 @@ def makeMessageGraph(traceline) :near {
                 }
             }
             
-            to getOptText() :nullOk[String] {
-                return null
+            to getTag() :int {
+                return tag
             }
-
-            to setMessageID(msg :String) :void { optMessageID := msg }
-            to getMessageID() :nullOk[String] { return optMessageID }
+            to setTag(newTag :int) :void {
+                tag := newTag
+            }
 
             to __printOn(out :TextWriter) :void {
                 out.print(id)
@@ -248,31 +129,45 @@ def makeMessageGraph(traceline) :near {
     
     def mkEventArc(origin :near,
                    target :near,
-                   var sendContext :SendingContext,
+                   var sendEvent :LogEvent,
                    var sendStack :Stack) :near {
-        var anchor :int := 0
-        def logs := [].diverge()
-        var why :String := ""
-        var tag :int := KEEP
+        var inTurn :int := 0
+        var optTimestamp :int := 0;
         var optText := null
-        var optMessageID := null
-        
+        def logs := [].diverge()
+        var tag :int := KEEP
+        var why :String := ""
+
         def eventArc extends templateArc(eventArc, origin, target) {
-            to getContext() :Tuple[SendingContext, Stack] {
-                return [sendContext, sendStack]
+            to getContext() :Tuple[LogEvent, Stack] {
+                return [sendEvent, sendStack]
             }
-            to setContext(sendCtx :SendingContext, sendStk :Stack) :void {
-                sendContext := sendCtx
-                sendStack := sendStk
-            }
-            
-            to getAnchor() :int { return anchor }
-            to setAnchor(newAnchor :int) :void { anchor := newAnchor }
-            
-            to getKey() :Tuple[UTurn, int] {
-                return [eventArc.getOrigin().getID(), anchor]
+            to setContext(event :LogEvent, stack :Stack) :void {
+                sendEvent := event
+                sendStack := stack
             }
             
+            to getInTurn() :int { return inTurn }
+            to setInTurn(newInTurn :int) :void { inTurn := newInTurn }
+            
+            to getKey() :Tuple[UTurn, int] {  # for process-order sorting
+                return [eventArc.getOrigin().getID(), inTurn]
+            }
+            
+            to getOptTimestamp() :int {
+                return optTimestamp
+            }
+            to setOptTimestamp(ts :int) :void {
+                optTimestamp := ts
+            }
+            
+            to getOptText() :nullOk[String] {
+                return optText
+            }
+            to setOptText(text :String) :void {
+                optText := text
+            }
+
             to getLogFiles() :List {
                 return logs.snapshot()
             }
@@ -282,11 +177,11 @@ def makeMessageGraph(traceline) :near {
                 }
             }
             
-            to setTag(newTag :int) :void {
-                tag := newTag
-            }
             to getTag() :int {
                 return tag
+            }
+            to setTag(newTag :int) :void {
+                tag := newTag
             }
 
             to rememberWhy(reason :String) :void {
@@ -295,19 +190,58 @@ def makeMessageGraph(traceline) :near {
             to tellWhy() :String {
                 return why
             }
-            
-            to setOptText(text :String) :void {
-                optText := text
-            }
-            to getOptText() :nullOk[String] {
-                return optText
-            }
-
-            to setMessageID(msg :String) :void { optMessageID := msg }
-            to getMessageID() :nullOk[String] { return optMessageID }
         }
     }
     
+    def walkDots(edge, textWriter, palette,
+                 vatMap, graphWalker, watcher) :void {
+        
+        if (watcher.hasSeen(edge)) {
+            return;
+        }
+        watcher.see(edge)
+        
+        def [ovat, oturn] := edge.getOrigin().getID()
+        def [tvat, tturn] := edge.getTarget().getID()
+        
+        def oattr := vatMap.fetchDisplayAttributes(ovat)
+        def tattr := vatMap.fetchDisplayAttributes(tvat)
+        
+        # [vatDisplayName, [vatColor, colorName]]
+        
+        def oname := oattr[0]
+        def tname := tattr[0]
+        
+        def ocolor := tagToColor(edge.getOrigin().getTag(), oattr[1][1])
+        def tcolor := tagToColor(edge.getTarget().getTag(), tattr[1][1])
+        
+        textWriter.println(`"[$oname, $oturn]" [fontcolor=$ocolor];`)
+        textWriter.println(`"[$tname, $tturn]" [fontcolor=$tcolor];`)
+        
+        var ep := graphWalker.getElementLabel(edge, 0)
+
+        def ecolor := tagToColor(edge.getTag(), "lightslategray")
+        
+        var eattr := `color=$ecolor`
+        if (edge.getContext()[0].split(".").last() == "SentIf") {
+            eattr += ` style=dotted` # de-emphasize SentIf events
+        }
+        if (ep.startsWith(`##`)) {  # italicize Causeway comments
+            eattr += ` fontname="Times-Italic"`
+        }
+        
+        ep := E.toQuote(ep.replaceAll("\u2756", "&#10070;")) #escape for dotfile
+
+        eattr += ` label=$ep`
+        
+        textWriter.println(`"[$oname, $oturn]" -> "[$tname, $tturn]" [$eattr];`)
+        
+        for grandEdge => _ in edge.getTarget().outs() {
+            walkDots(grandEdge, textWriter, palette,
+                     vatMap, graphWalker, watcher)
+        }
+    }
+
     def messageGraph {
         
         to addTurnNode(node) :void {
@@ -324,10 +258,10 @@ def makeMessageGraph(traceline) :near {
         
         to makeEventArc(origin :near,
                         target :near,
-                        sendContext :SendingContext,
+                        sendEvent :LogEvent,
                         sendStack :Stack) :near {
             return mkEventArc(origin, target,
-                              sendContext, sendStack)
+                              sendEvent, sendStack)
         }
         
         to optGet(id) :near { return dag.optGet(id) }
@@ -342,7 +276,14 @@ def makeMessageGraph(traceline) :near {
             def textWriter := dotFile.textWriter()
             try {
                 textWriter.println(`digraph messageGraph {`)
-                #textWriter.println(`node [fontname=Helvetica, fontsize=10];`)
+                textWriter.println(`size = "8.5, 11";`)
+                
+                textWriter.println(`label = "Causeway Message Graph";`)
+                textWriter.println(`fontsize = 18;`) 
+                textWriter.println(`labelloc = t;`)
+                textWriter.println(`labeljust = r;`)
+
+                textWriter.println(`node [shape=plaintext, fontsize=12];`)
                 
                 def watcher := makeWatcher()
                 for edge => _ in root.outs() {
@@ -351,19 +292,9 @@ def makeMessageGraph(traceline) :near {
                 }
                 
                 textWriter.println(`}`)
-                textWriter.println(``)
+                
             } finally {
                 textWriter.close()
-            }
-        }
-        
-        to walkRelations(root, level, traceline) :void {
-            def [vatName, turn] := root.getID()
-            traceline(`root [${getDisplayName(vatName)}, $turn]`)
-            traceline(``)
-            def watcher := makeWatcher()
-            for edge => _ in root.outs() {
-                walk(edge, level +1, watcher, traceline)
             }
         }
     }

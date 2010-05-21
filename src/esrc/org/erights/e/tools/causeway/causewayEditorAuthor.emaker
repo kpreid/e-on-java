@@ -532,7 +532,7 @@ def causewayEditorAuthor(rezKit,
                 
                 def eHomeDir := <file>[eHome]
                 
-                def traces := [eHomeDir["/scripts/test/causeway/waterken/traces/live-expect3.log"]]
+                def traces := [eHomeDir["/scripts/test/causeway/waterken/traces/purchase_ajax.log"]]
                 def sources := eHome + "/scripts/test/causeway/waterken/sources"
                 openNewEditor(sources, traces)
             }

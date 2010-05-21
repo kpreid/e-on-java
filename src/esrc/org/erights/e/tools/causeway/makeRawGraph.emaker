@@ -27,12 +27,11 @@ def Stack := List[StackEntry]
 def VatName := String
 
 def Turn := int
-def Anchor := int
 
 def UTurn := Tuple[VatName, Turn]
 
 # one of "org.ref_send.log.Sent", ...
-def SendingContext := String
+def LogEvent := String
 
 # Turn valid trace file spans into a fully-specified SourceSpan.
 # For example,
@@ -154,13 +153,36 @@ def makeRawGraph(ttChunks,
             }
         }
         
+        # A Sent event (or a subtype e.g., SentIf, Returned) and its
+        # corresponding Got event match on message id.
+        # If Sent is seen first, make an edge from this origin to a
+        # place-holder target (bottom). Put the edge in the msgMap to
+        # be fetched by the corresponding Got.
+        # If Got is seen first, fetch the edge from the msgMap and
+        # replace the place-holder origin (top) with this origin.
+                
+        # Causeway's Find Lost Messages command finds 
+        # Sent events having no corresponding Got.
+                
+        # The edge has an event type and (optionally) a sending stack.
+        # For example, a Sent event trace object is the stack capture
+        # at the point of the message send.
+
+        # Edges represent events occurring within a turn. The Sent
+        # event inTurn value defines process order for the intra-turn
+        # event. Got events are at top of turn and always have an
+        # inTurn value of zero.
+        
+        # Messages can be transmitted multiple times when connections are 
+        # transient or temporarily dropped, so we ignore duplicates.
+        
         switch (chunk) {
             
             match term`{ "class": [ @_*,
                                      "org.ref_send.log.Sent",
                                      "org.ref_send.log.Event" ],
                              "anchor": {
-                                 "number": @{anchor :int},
+                                 "number": @{inTurn :int},
                                  "turn": {
                                      "loop": @{name :String},
                                      "number": @{turn :int}
@@ -168,6 +190,7 @@ def makeRawGraph(ttChunks,
                              },
                              ("condition": @{optCondition :List[String]})?,
                              "message": @{message :String},
+                             ("timestamp": @{optTimestamp :List[int]})?,
                              ("text": @{comment :List[String]})?,
                              ("trace": { "calls": [@optStack*] })?,
                              @_*
@@ -178,33 +201,22 @@ def makeRawGraph(ttChunks,
                 def entries := parseOptStack(optStack)
                 
                 var edge := msgMap.fetch(message, fn{null})
-                if (edge == null) {
-                    
-                    # Sent seen first.
-                    # Make the edge and put it in the msgMap.
-                    # The corresponding Got will fetch the edge from the
-                    # msgMap.
-                    # The anchor number for an edge is set by the Sent.
+                if (edge == null) {  # Sent event seen first
                     
                     edge := graph.makeEventArc(origin, bottom,
                                                subtype, entries)
-                    edge.setAnchor(anchor)
+                    edge.setInTurn(inTurn)
                     edge.addLogFile(optSpan)
-                    msgMap[message] := edge
+                    msgMap[message] := edge  # Corresponding Got will fetch edge
                     
-                } else {
-                    
-                    # Got (or something) seen first.
-                    # Fetch the edge from the msgMap.
-                    # Replace place-holder top object with origin.
-                    # Update send context with stack trace.
-                    # Update anchor number.
+                } else {  # Got event seen first
                     
                     if (edge.getOrigin() == top) {
                         edge.setOrigin(origin)
                         edge.setContext(subtype, entries)
-                        edge.setAnchor(anchor)
+                        edge.setInTurn(inTurn)
                         edge.addLogFile(optSpan)
+                        
                     } else if ((chunkMap.fetch(edge, fn{}) =~ 
                                   oldChunk :notNull) &&
                                chunk <=> oldChunk) {  # term tree compare
@@ -214,14 +226,13 @@ def makeRawGraph(ttChunks,
                             `origin conflict for $message ($subtypeName)`)
                     }
                 }
-                if (comment =~ [text]) {
-                    edge.setOptText(text)
-                } else if (entries =~ []) {
-                    if (types.contains("org.ref_send.log.Returned")) {
-                        edge.setOptText("# return ...");
-                    }
+                # If Sent event has timestamp, it belongs to the edge.
+                if (optTimestamp =~ [timestamp]) {
+                    edge.setOptTimestamp(timestamp)
                 }
-                edge.setMessageID(message)
+                
+                # Remember messages associated with a promise for
+                # hooking up Resolved events.
                 if (optCondition =~ [condition]) {
                     # TODO assert that types must include SentIf
                     def messages := condMap.fetch(condition,
@@ -229,19 +240,24 @@ def makeRawGraph(ttChunks,
                     messages.push(message)
                     condMap[condition] := messages
                 }
-                chunkMap[edge] := chunk
+                if (comment =~ [text]) {
+                    edge.setOptText(text)
+                }
+
+                chunkMap[edge] := chunk  # remember for duplicate testing
             }
             match term`{ "class": [ @_*,
                                      "org.ref_send.log.Got",
                                      "org.ref_send.log.Event" ],
                              "anchor": {
-                                 "number": @{anchor :int},
+                                 "number": @{inTurn :int},
                                  "turn": {
                                      "loop": @{name :String},
                                      "number": @{turn :int}
                                  }
                              },
                              "message": @{message :String},
+                             ("timestamp": @{optTimestamp :List[int]})?,
                              ("trace": { "calls": [@optStack*] })?,
                              @_*
                            }` {
@@ -249,23 +265,13 @@ def makeRawGraph(ttChunks,
                 def target := getOrMakeTurnNode(name, turn)
                 
                 var edge := msgMap.fetch(message, fn{null})
-                if (edge == null) {
-                    
-                    # Got seen first.
-                    # Make the edge and put it in the msgMap.
-                    # The corresponding Sent will fetch the edge from the
-                    # msgMap.
+                if (edge == null) {  # Got event seen first
                     
                     edge := graph.makeEventArc(top, target,
                                                "unknown sender", [])
-                    msgMap[message] := edge
+                    msgMap[message] := edge  # Corresponding Sent will fetch edge
                     
-                } else {
-                    
-                    # Sent (or something) seen first.
-                    # Fetch the edge from the msgMap.
-                    # Replace place-holder bottom object with target.
-                    # Update got context with stack trace.
+                } else {  # Sent event seen first
                     
                     if (edge.getTarget() == bottom) {
                         edge.setTarget(target)
@@ -282,9 +288,15 @@ def makeRawGraph(ttChunks,
                 # Create E Stack object, possibly empty, from term tree.
                 def entries := parseOptStack(optStack)
                 target.setContext(subtype, entries)
+                
+                # If Got event has timestamp, it belongs to the node.
+                if (optTimestamp =~ [timestamp]) {
+                    target.setOptTimestamp(timestamp)
+                }
+
                 target.addLogFile(optSpan)
-                target.setMessageID(message)
-                chunkMap[target] := chunk
+                
+                chunkMap[target] := chunk # remember for duplicate testing
             }
             
             match term`{ "class": [ @_*,
@@ -293,20 +305,22 @@ def makeRawGraph(ttChunks,
                              @_*
                            }` {
                 
-                resolveds.push([chunk, optSpan])
+                    # Resolved events are handled later
+                resolveds.push([chunk, optSpan, subtype, subtypeName])
             }
             
             match term`{ "class": [ @_*,
                                      "org.ref_send.log.Comment",
                                      "org.ref_send.log.Event" ],
                              "anchor": {
-                                 "number": @{anchor :int},
+                                 "number": @{inTurn :int},
                                  "turn": {
                                      "loop": @{name :String},
                                      "number": @{turn :int}
                                  }
                              },
                              ("text": @{comment :List[String]})?,
+                             ("timestamp": @{optTimestamp :List[int]})?,
                              ("trace": { "calls": [@optStack*] })?,
                              @_*
                            }` {
@@ -317,15 +331,19 @@ def makeRawGraph(ttChunks,
                 def entries := parseOptStack(optStack)
                 
                 def edge := graph.makeEventArc(origin, bottom,
-                                               "org.ref_send.log.Comment",
-                                               entries)
-                edge.setAnchor(anchor)
-                edge.addLogFile(optSpan)
+                                               subtype, entries)
+                edge.setInTurn(inTurn)
                 
+                # If Comment event has timestamp, it belongs to the edge.
+                if (optTimestamp =~ [timestamp]) {
+                    edge.setOptTimestamp(timestamp)
+                }
+
                 if (comment =~ [text]) {
                     edge.setOptText(text)
                 }
-#               chunkMap[edge] := chunk
+
+                edge.addLogFile(optSpan)
             }
             match _ {
                 traceline(`no match: $chunk`)
@@ -333,19 +351,30 @@ def makeRawGraph(ttChunks,
         }
     }
     
-    def resolvedEdges := [].diverge()
-    for [r, span] in resolveds {
+    # Now, handle the Resolved events, e.g., Fulfilled, Progressed, Rejected.
+    # For example, a SentIf record is logged with the registration of a 
+    # when-block. It is a conditional send, waiting on the resolution
+    # of a promise. If a Resolved event is seen (matching on condition) the
+    # message target has multiple causes: 1) the registration of the when-block 
+    # and 2) the resolving of the promise.
+    
+    # Earlier parsing handled SentIf events as Sent events but remembered them
+    # in the condMap. Here, we update the graph with the Resolved event
+    # as a multiple cause of the message target.
+    
+    for [r, span, st, stn] in resolveds {
         if (r =~ term`{ "class": [ @_*,
                                 "org.ref_send.log.Resolved",
                                 "org.ref_send.log.Event" ],
                         "anchor": {
-                            "number": @{anchor :int},
+                            "number": @{inTurn :int},
                             "turn": {
                                 "loop": @{name :String},
                                 "number": @{turn :int}
                             }
                         },
                         "condition": @{condition :String},
+                        ("timestamp": @{optTimestamp :List[int]})?,
                         ("text": @{comment :List[String]})?,
                         ("trace": { "calls": [@optStack*] })?,
                         @_*
@@ -364,14 +393,17 @@ def makeRawGraph(ttChunks,
                     def target := msgMap[m].getTarget()
                     
                     def edge := graph.makeEventArc(origin, target,
-                                                   "org.ref_send.log.Resolved",
-                                                   entries)
-                    resolvedEdges.push(edge)
-                    edge.setAnchor(anchor)
+                                                   st, entries)
+                    edge.setInTurn(inTurn)
+                    
+                    # If Resolved event has timestamp, it belongs to the edge.
+                    if (optTimestamp =~ [timestamp]) {
+                        edge.setOptTimestamp(timestamp)
+                    }
+                    if (comment =~ [text]) {
+                        edge.setOptText(text)
+                    }
                     edge.addLogFile(span)
-
-                    edge.setOptText("# resolved ...");
-#                   chunkMap[edge] := r
                 }
             }
         }

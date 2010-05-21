@@ -94,7 +94,17 @@ def stackWalkerAuthor(var rootDirName, <file>, <jar>, makers, traceline) :near {
             def source := file.getText()
             def lines := source.split("\n")
             if (first <= lines.size()) {
-                return lines[first -1].trim()
+                def line := lines[first -1]
+                def trimLine := line.trim()
+                def offset := line.indexOf(trimLine)
+                if (fo >= offset && fo < offset + trimLine.size()) {
+                    # \u2756 white diamond
+                    # decimal encoded for dot file &#10070;
+                    return trimLine(0, fo - offset) + "\u2756" +
+                           trimLine(fo - offset, trimLine.size())
+                } else {
+                    return trimLine
+                }
             }
         }
         return null
@@ -121,9 +131,9 @@ def stackWalkerAuthor(var rootDirName, <file>, <jar>, makers, traceline) :near {
                 }
             }
         }
+        var result := ""
         if (se =~ [[_, var topFnc], _]) {
             if (topFnc != "") {
-                var result := ""
                 while (topFnc =~ rx`(@firstPart.*)\$$[0-9]*(@lastPart.*)`) {
                     result := `$lastPart.$result`
                     topFnc := firstPart
@@ -136,7 +146,7 @@ def stackWalkerAuthor(var rootDirName, <file>, <jar>, makers, traceline) :near {
                 }
             }
         }
-        return "..."
+        return result
     }
     
     def getEntryLabel(element, entryIndex :int) :String {
@@ -299,7 +309,6 @@ def stackWalkerAuthor(var rootDirName, <file>, <jar>, makers, traceline) :near {
         
         # context menu for swtSourceCode
         [def doSearchStacks,
-         def doFindSomething,
          
          def doGoTo]
          
@@ -326,16 +335,6 @@ def stackWalkerAuthor(var rootDirName, <file>, <jar>, makers, traceline) :near {
             }
         }
         
-        bind doFindSomething extends abstractAction(doFindSomething) {
-            to run() :void {
-#                traceline("doFindSomething()")
-            }
-            to getLabel()            :String { return "&Find Something" }
-            to everEnabledReporter() :EverReporter {
-                return whenever([], fn{false})
-            }
-        }
-        
         bind doGoTo extends abstractAction(doGoTo) {
             to run() :void {
 #                traceline("doGoTo()")
@@ -347,7 +346,6 @@ def stackWalkerAuthor(var rootDirName, <file>, <jar>, makers, traceline) :near {
         }
         
         def menuAction := M.menu([doSearchStacks,
-                                  doFindSomething,
                                   M.sep(),
                                   doGoTo])
                                          
@@ -412,7 +410,9 @@ def stackWalkerAuthor(var rootDirName, <file>, <jar>, makers, traceline) :near {
             itemToModelMap.put(swtItem, [element, entryIndex], true)
             modelToItemMap.put([element, entryIndex], swtItem, true)
             
-            swtItem.setText(getEntryLabel(element, entryIndex))
+            def label := getEntryLabel(element, entryIndex)
+            swtItem.setText(label)
+            
             def [ov, ot] := element.getOrigin().getID()
             # [vatDisplayName, [vatColor, colorName]]
             def oattr := vatMap.fetchDisplayAttributes(ov)
@@ -482,6 +482,9 @@ def stackWalkerAuthor(var rootDirName, <file>, <jar>, makers, traceline) :near {
                                       fo,
                                       last,
                                       lo)
+                    } else {  # no stack
+                        swtFilename.setText("")
+                        swtSourceCode.setText("")
                     }
                 }
             }
@@ -491,7 +494,9 @@ def stackWalkerAuthor(var rootDirName, <file>, <jar>, makers, traceline) :near {
         
         def selectionObserver {
             to placeSelected(optPlace) :void {
-                if (optPlace != null && optPlace =~ [element, entryIndex]) {
+                if (null != optPlace) {
+                    def element := optPlace.getElement()
+                    def entryIndex := optPlace.getEntryIndex()
                     showStack(element, vatMap)
                     selectStackEntry(element, entryIndex)
                 }
@@ -559,18 +564,9 @@ def stackWalkerAuthor(var rootDirName, <file>, <jar>, makers, traceline) :near {
                 swtGrid`${swtStackWalkerView}:
                         ${swtSideToSide}.X.Y`
             }
-            
-            # used for labelling exported dotfiles
-            to getElementLabel(element, entryIndex) :nullOk[String] {
+        
+            to getElementLabel(element, entryIndex) :String {
                 return getEntryLabel(element, entryIndex)
-            }
-            
-            to labelItem(vatMap, element, entryIndex, swtItem) :void {
-                def oVatName := element.getOrigin().getID()[0]
-                def oAttr := vatMap.fetchDisplayAttributes(oVatName)
-                swtItem.setForeground(oAttr[1][0])
-                def msg := getEntryLabel(element, entryIndex)
-                swtItem.setText(msg)
             }
         }
         return stackWalker

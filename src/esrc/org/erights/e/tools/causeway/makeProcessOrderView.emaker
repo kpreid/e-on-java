@@ -15,92 +15,99 @@ def swtGrid__quasiParser := <swttools:swtGridQParserMaker>()
 
 def makeOutlineView := <import:org.erights.e.tools.causeway.makeOutlineView>
 
-# Useful maps for lookups in event handling.
-def itemToModelMap := [].asMap().diverge()
-def modelToItemMap := [].asMap().diverge()
-
-def buildTreeItem(swtParent, palette,
-                  element, ndx, 
-                  vatMap, graphWalker) :near {
-    def swtItem := <widget:makeTreeItem>(swtParent, 0)
-    itemToModelMap.put([swtItem, ndx], element, true)
-    modelToItemMap.put(element, [swtItem, ndx], true)
-    graphWalker.labelItem(vatMap, element, 0, swtItem)
-    return swtItem
-}
-
-def buildTree(swtParent, palette,
-              poList, ndx,
-              vatMap, graphWalker) :void {
-    
-    for node in poList {
-        def swtNodeItem := buildTreeItem(swtParent, palette,
-                                         node, ndx, 
-                                         vatMap, graphWalker)
-        for edge => _ in node.outs() {
-            buildTreeItem(swtNodeItem, palette,
-                          edge, ndx, 
-                          vatMap, graphWalker)
-        }
-    }
-}
-
-def makePOPane(swtParent, palette,
-               poList, ndx, selectionModel, 
-               vatMap, graphWalker) :near {
-    
-    def swtPane := <widget:makeComposite>(swtParent, 0)
-    def swtTree := <widget:makeTree>(swtPane,
-                                     SWT.getSINGLE() |
-                                       (SWT.getH_SCROLL() | SWT.getV_SCROLL()))
-
-    def popPalette := palette. makePOPanePalette()
-    swtPane.setForeground(popPalette.getFg())
-    swtPane.setBackground(popPalette.getBg())
-    swtPane.setFont(popPalette.getFont())
-    swtTree.setForeground(popPalette.getFg())
-    swtTree.setBackground(popPalette.getBg())
-    swtTree.setFont(popPalette.getFont())
-
-    buildTree(swtTree, palette,
-              poList, ndx, 
-              vatMap, graphWalker)
-    
-    def swtSelectionListener {
-        to widgetSelected(swtEvent) :void {
-            def swtItem := swtEvent.getItem()
-            def element := itemToModelMap.fetch([swtItem, ndx], fn{})
-            selectionModel.setOptElement(element)
-        }
-        to widgetDefaultSelected(swtEvent) :void {}
-    }
-    swtTree.addSelectionListener(swtSelectionListener)
-    
-    def pop {
-        
-        to getPane() :near { return swtPane }
-        
-        to getWidget() :near { return swtTree }
-        
-        to activate() :void {}
-        
-        to layout() :void {
-            
-            swtGrid`${swtPane}:
-                    ${swtTree}.X.Y`
-            
-            palette.zeroMargins(swtPane.getLayout())
-        }
-    }
-    return pop
-}
-
 def makeProcessOrderView(swtParent, palette,
                          abstractAction,
                          poModel, 
                          selectionModel, searchModel,
                          vatMap, graphWalker) :near {
     
+    # Useful maps for lookups in event handling.
+    def itemToModelMap := [].asMap().diverge()
+    def modelToItemMap := [].asMap().diverge()
+
+    def buildTreeItem(swtParent, palette,
+                      element, ndx, 
+                      vatMap, graphWalker) :near {
+        def swtItem := <widget:makeTreeItem>(swtParent, 0)
+        itemToModelMap.put([swtItem, ndx], element, true)
+        modelToItemMap.put(element, [swtItem, ndx], true)
+        
+        def label := graphWalker.getElementLabel(element, 0)
+        
+        def vatName := element.getOrigin().getID()[0]
+        def attr := vatMap.fetchDisplayAttributes(vatName)
+        swtItem.setForeground(attr[1][0])
+        
+        swtItem.setText(label)
+        return swtItem
+    }
+
+    def buildTree(swtParent, palette,
+                  poList, ndx,
+                  vatMap, graphWalker) :void {
+    
+        for node in poList {
+            def swtNodeItem := buildTreeItem(swtParent, palette,
+                                             node, ndx, 
+                                             vatMap, graphWalker)
+            for edge => _ in node.outs() {
+                buildTreeItem(swtNodeItem, palette,
+                              edge, ndx, 
+                              vatMap, graphWalker)
+            }
+        }
+    }
+
+    def makePOPane(swtParent, palette,
+                   poList, ndx, selectionModel, 
+                   vatMap, graphWalker) :near {
+    
+        def swtPane := <widget:makeComposite>(swtParent, 0)
+        def swtTree := <widget:makeTree>(swtPane,
+                                         SWT.getSINGLE() |
+                                           (SWT.getH_SCROLL() | SWT.getV_SCROLL()))
+
+        def popPalette := palette. makePOPanePalette()
+        swtPane.setForeground(popPalette.getFg())
+        swtPane.setBackground(popPalette.getBg())
+        swtPane.setFont(popPalette.getFont())
+        swtTree.setForeground(popPalette.getFg())
+        swtTree.setBackground(popPalette.getBg())
+        swtTree.setFont(popPalette.getFont())
+
+        buildTree(swtTree, palette,
+                  poList, ndx, 
+                  vatMap, graphWalker)
+    
+        def swtSelectionListener {
+            to widgetSelected(swtEvent) :void {
+                def swtItem := swtEvent.getItem()
+                def element := itemToModelMap.fetch([swtItem, ndx], fn{})
+                selectionModel.setOptElement(element)
+            }
+            to widgetDefaultSelected(swtEvent) :void {}
+        }
+        swtTree.addSelectionListener(swtSelectionListener)
+    
+        def pop {
+        
+            to getPane() :near { return swtPane }
+        
+            to getWidget() :near { return swtTree }
+        
+            to activate() :void {}
+        
+            to layout() :void {
+            
+                swtGrid`${swtPane}:
+                        ${swtTree}.X.Y`
+            
+                palette.zeroMargins(swtPane.getLayout())
+            }
+        }
+        return pop
+    }
+
     def swtPOView := <widget:makeComposite>(swtParent, 0)
     
     def fPalette := palette. makeFolderPalette()
@@ -109,6 +116,7 @@ def makeProcessOrderView(swtParent, palette,
     swtPOView.setBackground(fPalette.getBg())
     swtPOView.setFont(fPalette.getFont())
 
+    def getCurrentTree
     def getActionTargets
     def outlineView := makeOutlineView(swtPOView, palette,
                                        abstractAction, getActionTargets)
@@ -133,10 +141,12 @@ def makeProcessOrderView(swtParent, palette,
         swtTab.setText(vatMap.fetchDisplayAttributes(vatName)[0])
         tabKeeper[swtFolder.indexOf(swtTab)] := [swtTab, pop]
     }
+    swtFolder.setSelection(0)
     
     def selectionObserver {
         to placeSelected(optPlace) :void {
-            if (optPlace != null && optPlace =~ [element, _]) {
+            if (null != optPlace) {  # ignore null
+                def element := optPlace.getElement()
                 def tabbedItem := modelToItemMap.fetch(element, fn{})
                 if (tabbedItem != null) {
                     def [swtItem, ndx] := tabbedItem
@@ -144,13 +154,18 @@ def makeProcessOrderView(swtParent, palette,
                     def [_, pop] := tabKeeper[ndx]
                     pop.getWidget().setSelection([swtItem])
                     pop.getWidget().showItem(swtItem)
+                } else {
+                    def ct := getCurrentTree()
+                    if (null != ct) {
+                        ct.deselectAll()
+                    }
                 }
             }
         }
     }
     selectionModel.addObserver(selectionObserver)
     
-    def getCurrentTree() :near {
+    bind getCurrentTree() :near {
         def ndx := swtFolder.getSelectionIndex()
         if (ndx != -1) {
             def [_, pop] := tabKeeper[ndx]

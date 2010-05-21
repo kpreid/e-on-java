@@ -2,9 +2,12 @@ package org.waterken.purchase_promise;
 
 import java.io.Serializable;
 
+import static org.ref_send.promise.Eventual.ref;
+
 import org.ref_send.promise.Promise;
-import org.ref_send.promise.eventual.Do;
-import org.ref_send.promise.eventual.Eventual;
+import org.ref_send.promise.Do;
+import org.ref_send.promise.Eventual;
+import org.ref_send.promise.Vat;
 
 public class Buyer {
     private Buyer() {}
@@ -16,24 +19,37 @@ public class Buyer {
     /**
      * Constructs an instance.
      */
-    static public void
+    static public Promise<Product>
     make(final Eventual _) {
-        class Buy extends Do<Product,Void> implements Serializable {
+        class Buy extends Do<Product,Promise<Product>> implements Serializable {
             static private final long serialVersionUID = 1L;
             
-            public @Override Void
+            private final CreditBureau creditBureau;
+            
+            public Buy(CreditBureau creditBureau) {
+                this.creditBureau = creditBureau;
+            }
+            
+            public @Override Promise<Product>
             fulfill(final Product product) {
-                final Promise<Boolean> allOkP = new AsyncAnd(_).run(
-                    _._(product.inventory).isAvailable(partNo),
-                    _._(product.creditBureau).doCreditCheck(name),
-                    _._(product.shipper).canDeliver(profile)
-                );
-                _.when(allOkP, checkAnswers(_, product.inventory));
-                return null;
+            
+                Inventory inventory = product.inventory;
+                Shipper shipper = product.shipper;
+
+                Promise<Boolean> partP = _._(inventory).partInStock(partNo);
+                Promise<Boolean> creditP = _._(creditBureau).checkCredit(name);
+                Promise<Boolean> deliverP = _._(shipper).canDeliver(profile);
+
+                final Promise<Boolean> allOkP = 
+                    new AsyncAnd(_).run(partP, creditP, deliverP);
+                        
+                _.when(allOkP, checkAnswers(_, inventory));
+                return ref(product);
             }
         }
-        final Promise<Product> child = _.spawn("product", Product.class);
-        _.when(child, new Buy());
+        final Vat<Promise<Product>> prodVat = _.spawn("product", Product.class);
+        final Vat<CreditBureau> credVat = _.spawn("accounts", CreditBureauMaker.class);
+        return _.when(prodVat.top, new Buy(credVat.top));
     }
     
     static private Do<Boolean,Void>
@@ -42,8 +58,8 @@ public class Buyer {
             static private final long serialVersionUID = 1L;
 
             public Void
-            fulfill(Boolean allOk) {
-                if (allOk) {
+            fulfill(Boolean allOK) {
+                if (allOK) {
                     Promise<Boolean> placedP = 
                         _._(inventory).placeOrder(name, partNo);
                     _.when(placedP, tellOrderPlaced(_));

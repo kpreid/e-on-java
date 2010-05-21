@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="38.333332"
+   height="35.333332"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.47 r22583"
+   sodipodi:docname="inkscape-multiples.svg"
+   inkscape:export-filename="/Users/erights/Desktop/causeway/icons/inkscape-multiples.png"
+   inkscape:export-xdpi="40.754719"
+   inkscape:export-ydpi="40.754719">
+  <defs
+     id="defs4">
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="0 : 526.18109 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_z="744.09448 : 526.18109 : 1"
+       inkscape:persp3d-origin="372.04724 : 350.78739 : 1"
+       id="perspective10" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="1"
+     inkscape:pageshadow="2"
+     inkscape:zoom="17.660378"
+     inkscape:cx="19.166666"
+     inkscape:cy="17.666666"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1396"
+     inkscape:window-height="856"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1">
+    <inkscape:grid
+       type="xygrid"
+       id="grid2837"
+       empspacing="5"
+       visible="true"
+       enabled="true"
+       snapvisiblegridlinesonly="true" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-2.3333331,-1010.6955)">
+    <path
+       sodipodi:type="arc"
+       style="fill:#8b8bff;fill-opacity:1;stroke:#000000;stroke-opacity:1"
+       id="path2839"
+       sodipodi:cx="8"
+       sodipodi:cy="11"
+       sodipodi:rx="3"
+       sodipodi:ry="3"
+       d="M 11,11 C 11,12.656854 9.6568542,14 8,14 6.3431458,14 5,12.656854 5,11 5,9.3431458 6.3431458,8 8,8 c 1.6568542,0 3,1.3431458 3,3 z"
+       transform="matrix(1.3333333,0,0,1.3333333,-3.6666667,1000.6955)" />
+    <path
+       transform="matrix(1.3333333,0,0,1.3333333,-3.6666667,1026.6955)"
+       d="M 11,11 C 11,12.656854 9.6568542,14 8,14 6.3431458,14 5,12.656854 5,11 5,9.3431458 6.3431458,8 8,8 c 1.6568542,0 3,1.3431458 3,3 z"
+       sodipodi:ry="3"
+       sodipodi:rx="3"
+       sodipodi:cy="11"
+       sodipodi:cx="8"
+       id="path2841"
+       style="fill:#8b8bff;fill-opacity:1;stroke:#000000;stroke-opacity:1"
+       sodipodi:type="arc" />
+    <path
+       sodipodi:type="arc"
+       style="fill:#8b8bff;fill-opacity:1;stroke:#000000;stroke-opacity:1"
+       id="path2843"
+       sodipodi:cx="8"
+       sodipodi:cy="11"
+       sodipodi:rx="3"
+       sodipodi:ry="3"
+       d="M 11,11 C 11,12.656854 9.6568542,14 8,14 6.3431458,14 5,12.656854 5,11 5,9.3431458 6.3431458,8 8,8 c 1.6568542,0 3,1.3431458 3,3 z"
+       transform="matrix(1.3333333,0,0,1.3333333,25.333333,1013.6955)" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 11,11 c 9,0 2,13 21,13"
+       id="path2845"
+       transform="translate(0,1004.3622)"
+       sodipodi:nodetypes="cs" />
+    <path
+       sodipodi:nodetypes="cs"
+       id="path2847"
+       d="m 11,1041.3622 c 9,0 2,-13 21,-13"
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+  </g>
+</svg>

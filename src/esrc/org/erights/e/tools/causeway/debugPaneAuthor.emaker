@@ -94,7 +94,8 @@ def debugViewAuthor(<file>, <jar>, makers, traceline) :near {
                 
         def selectionObserver {
             to placeSelected(optPlace) :void {
-                if (optPlace != null && optPlace =~ [element, _]) {
+                if (null != optPlace) {
+                    def element := optPlace.getElement()
                     def logFiles := element.getLogFiles()
                     swtTextView.append("\n")
                     def sos := swtTextView.getCharCount()

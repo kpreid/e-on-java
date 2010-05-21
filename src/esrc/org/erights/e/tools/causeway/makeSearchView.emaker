@@ -49,13 +49,32 @@ def makeSearchView(swtParent, palette,
     swtTree.setBackground(svp.getBg())
     swtTree.setFont(svp.getFont())
     
-    def swtTop := <widget:makeTreeItem>(swtTree, 0)
-    swtTop.setText(`Search Commands & Places`)
+    def swtBookmarks := <widget:makeTreeItem>(swtTree, 0)
+    swtBookmarks.setText(`Bookmarks`)
+    def swtCommands := <widget:makeTreeItem>(swtTree, 0)
+    swtCommands.setText(`Commands`)
 
     # Useful maps for lookups in event handling.
     def itemToModelMap := [].asMap().diverge()
     def modelToItemMap := [].asMap().diverge()
     
+    def appendBookmark(swtParent, place) :near {
+    
+        def swtItem := <widget:makeTreeItem>(swtParent, 0)
+        
+        itemToModelMap.put(swtItem, place, true)
+            
+        def label := graphWalker.getElementLabel(place.getElement(), 
+                                                 place.getEntryIndex())
+        def vatName := place.getElement().getOrigin().getID()[0]
+        def attr := vatMap.fetchDisplayAttributes(vatName)
+        swtItem.setForeground(attr[1][0])
+        
+        swtItem.setText(label)
+        
+        return swtItem
+    }
+        
     def appendSearchCommand(swtCommandParent, command) :near {
     
         def swtItem := <widget:makeTreeItem>(swtCommandParent, 0)
@@ -66,10 +85,15 @@ def makeSearchView(swtParent, palette,
         for place in places {
             def swtNested := <widget:makeTreeItem>(swtItem, 0)
             itemToModelMap.put(swtNested, place, true)
-            graphWalker.labelItem(vatMap, 
-                                  place.getElement(), 
-                                  place.getEntryIndex(), 
-                                  swtNested)
+            
+            def label := graphWalker.getElementLabel(place.getElement(), 
+                                                     place.getEntryIndex())
+        
+            def vatName := place.getElement().getOrigin().getID()[0]
+            def attr := vatMap.fetchDisplayAttributes(vatName)
+            swtNested.setForeground(attr[1][0])
+        
+            swtNested.setText(label)
         }
         return swtItem
     }
@@ -79,35 +103,30 @@ def makeSearchView(swtParent, palette,
             def swtItem := swtEvent.getItem()
             def place := itemToModelMap.fetch(swtItem, fn{})
             if (place != null) {
-                selectionModel.setOptPlace([place.getElement(), 
-                                            place.getEntryIndex()])
+                selectionModel.setOptPlace(place)
             }
         }
         to widgetDefaultSelected(swtEvent) :void {}
     }
     swtTree.addSelectionListener(swtSelectionListener)
     
-    # default selection: top item selected & tree fully expanded
-    def swtItems := swtTree.getItems()
-    if (swtItems.size() > 0) {
-        swtTree.setSelection([swtItems[0]])
+    # fully expanded, but no selection on intial open
+    if (swtTree.getItemCount() > 0) {
         outlineView.expandTree(swtTree)
     }
     
     def changeObserver {
         to searchCommandAdded(command) :void {
-            def swtItems := swtTree.getItems()
-            def n := swtItems.size()
-            def swtCommandParent
-            if (n > 0) {
-                bind swtCommandParent := swtItems[n -1]
-            } else {
-                bind swtCommandParent := swtTree
-            }
-            
-            def swtCommandItem := appendSearchCommand(swtCommandParent, command)
+            def swtCommandItem := appendSearchCommand(swtCommands, command)
             # select & expand
             swtTree.setSelection([swtCommandItem])
+            outlineView.expandTree(swtTree)
+        }
+        
+        to bookmarkAdded(place) :void {
+            def swtBookmarkItem := appendBookmark(swtBookmarks, place)
+            # select & expand
+            swtTree.setSelection([swtBookmarkItem])
             outlineView.expandTree(swtTree)
         }
     }

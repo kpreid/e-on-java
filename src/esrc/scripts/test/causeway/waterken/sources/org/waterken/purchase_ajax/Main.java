@@ -8,15 +8,27 @@ import org.ref_send.promise.Do;
 import org.ref_send.promise.Eventual;
 import org.ref_send.promise.Promise;
 import org.ref_send.promise.Vat;
-import org.waterken.bang.Drum;
 
 import static org.ref_send.promise.Eventual.ref;
 
 /**
- * An introduction to eventual operations in Java.
+ * A simple distributed procedure for handling new purchase orders.
  * <p>
- * This class provides an introduction to eventual operations by using them to
- * update and query a counter held in an object of type {@link Drum}.
+ * Before an order is placed, certain conditions must be met: the item is in
+ * stock and available, the customer's account is in good standing and the 
+ * delivery options are up to date.
+ * </p>
+ * <p>
+ * An object residing in the "buyer" vat has remote references to objects
+ * residing in the "product" and "accounts" vats. The buyer queries the
+ * remote objects with asynchronous message sends, implemented as Ajax-style
+ * continuation passing. 
+ * </p>
+ * <p>
+ * The answers from the asynchronous queries must be collected and examined to
+ * verify that all requirements are satisfied before placing the order.
+ * The solution is an asynchronous adaptation of the conjunctive and operator,
+ * familiar from sequential programming, implemented by {@link AsyncAnd}.
  * </p>
  */
 public final class
@@ -47,9 +59,12 @@ Main {
                 Inventory inventory = product.inventory;
                 Shipper shipper = product.shipper;
                 
-                Callback teller =
-                    new AsyncAnd(_, 3, checkAnswers(_, inventory));
-                
+                /*
+                * To collect the three answers, teller is passed as an argument
+                * to each of the remote queries, serving as a callback function.
+                */
+                Callback teller = new AsyncAnd(_, 3, checkAnswers(_, inventory));
+
                 _._(inventory).partInStock(partNo, teller);
                 _._(creditBureau).checkCredit(name, teller);
                 _._(shipper).canDeliver(profile, teller);

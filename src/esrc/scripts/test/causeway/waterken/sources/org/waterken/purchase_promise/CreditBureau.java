@@ -4,5 +4,5 @@ import org.ref_send.promise.Promise;
 
 public interface CreditBureau {
 
-    Promise<Boolean> doCreditCheck(String name);
+    Promise<Boolean> checkCredit(String name);
 }

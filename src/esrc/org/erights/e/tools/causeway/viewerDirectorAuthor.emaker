@@ -29,8 +29,9 @@ def makeSearchModel :=
 def makeDefaultUniFilter() :near {
     var uniFilter := [].asSet().diverge()
     
-#  uniFilter.addElement("org/waterken/purchase_ajax/AsyncAnd.java")
-    
+# uniFilter.addElement("org/waterken/purchase_ajax/AsyncAnd.java")
+# uniFilter.addElement("org/waterken/purchase_promise/AsyncAnd.java")
+  
 #  uniFilter.addElement("org/erights/e/elang/cmd/cmdLoopMakerAuthor.emaker")
 #  uniFilter.addElement("org/erights/e/elang/cmd/cmdMakerMaker.emaker")
 #  uniFilter.addElement("org/erights/e/elang/cmd/controlLoopMaker.emaker")

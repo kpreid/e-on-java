@@ -10,17 +10,29 @@ pragma.syntax("0.9")
  *
  */
 
-def makePlace(element, entryIndex :int) :near {
-        
-    def place {
-        
-        to getElement() :near {
-            return element
-        }
-            
-        to getEntryIndex() :int {
-            return entryIndex
-        }
+def makePlace {
+
+    to run(element, entryIndex :int) :near {
+        return makePlace(element, entryIndex, 0)
     }
-    return place
+
+    to run(element, entryIndex :int, itemIndex :int) :near {
+        
+        def place {
+        
+            to getElement() :near {
+                return element
+            }
+            
+            to getEntryIndex() :int {
+                return entryIndex
+            }
+            
+            to getItemIndex() :int {
+                return itemIndex
+            }
+
+        }
+        return place
+    }
 }

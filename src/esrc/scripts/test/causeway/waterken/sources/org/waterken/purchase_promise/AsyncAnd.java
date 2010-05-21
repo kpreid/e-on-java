@@ -1,12 +1,14 @@
 package org.waterken.purchase_promise;
 
+import static org.ref_send.promise.Eventual.ref;
+
 import java.io.Serializable;
 
 import org.ref_send.promise.Promise;
-import org.ref_send.promise.eventual.Channel;
-import org.ref_send.promise.eventual.Do;
-import org.ref_send.promise.eventual.Eventual;
-import org.ref_send.promise.eventual.Resolver;
+import org.ref_send.promise.Channel;
+import org.ref_send.promise.Do;
+import org.ref_send.promise.Eventual;
+import org.ref_send.promise.Resolver;
 
 public class AsyncAnd implements Serializable {
     static private final long serialVersionUID = 1L;
@@ -27,14 +29,12 @@ public class AsyncAnd implements Serializable {
             if (answer) {
                 myExpected[0]--;
                 if (myExpected[0] == 0) {
-                    _.log.comment("happened: all true");
-                    myResolver.run(true);
+                    myResolver.apply(true);
                 } else {
-                    _.log.comment("leadsto: all true");
+                    myResolver.progress();
                 }
             } else {
-                _.log.comment("found a false");
-                myResolver.run(false);
+                myResolver.apply(false);
             }
             return null;
         }

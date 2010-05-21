@@ -1,11 +1,12 @@
 package org.waterken.purchase_promise;
 
+import static org.ref_send.promise.Eventual.ref;
+
 import java.io.Serializable;
 
 import org.joe_e.Struct;
-import org.ref_send.promise.Fulfilled;
 import org.ref_send.promise.Promise;
-import org.ref_send.promise.eventual.Eventual;
+import org.ref_send.promise.Eventual;
 
 public final class InventoryMaker {
     private InventoryMaker() {}
@@ -16,15 +17,13 @@ public final class InventoryMaker {
             static private final long serialVersionUID = 1L;
             
             public Promise<Boolean>
-            isAvailable(String partNo) {
-                _.log.comment("is available");
-                return Fulfilled.ref(true);
+            partInStock(String partNo) {
+                return ref(true);
             }
 
             public Promise<Boolean>
             placeOrder(String buyer, String partNo) {
-                _.log.comment("placing order");
-                return Fulfilled.ref(true);
+                return ref(true);
             }
         }
         return new InventoryX();

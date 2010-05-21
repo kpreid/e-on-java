@@ -1,0 +1,612 @@
+[ {
+    "class" : [ "org.ref_send.log.Got", "org.ref_send.log.Event" ],
+    "anchor" : {
+      "number" : 1,
+      "turn" : {
+        "loop" : "http://localhost:8080/-/buyer/product/",
+        "number" : 1
+      }
+    },
+    "message" : "http://localhost:8080/-/buyer/product/#make",
+    "timestamp" : 1274238377537,
+    "trace" : {
+      "calls" : [ {
+          "name" : "Product.make",
+          "source" : "org/waterken/purchase_ajax/Product.java"
+        } ]
+    }
+  }, {
+    "class" : [ "org.ref_send.log.Got", "org.ref_send.log.Event" ],
+    "anchor" : {
+      "number" : 1,
+      "turn" : {
+        "loop" : "http://localhost:8080/-/buyer/accounts/",
+        "number" : 1
+      }
+    },
+    "message" : "http://localhost:8080/-/buyer/accounts/#make",
+    "timestamp" : 1274238377757,
+    "trace" : {
+      "calls" : [ {
+          "name" : "CreditBureauMaker.make",
+          "source" : "org/waterken/purchase_ajax/CreditBureauMaker.java"
+        } ]
+    }
+  }, {
+    "class" : [ "org.ref_send.log.Got", "org.ref_send.log.Event" ],
+    "anchor" : {
+      "number" : 1,
+      "turn" : {
+        "loop" : "http://localhost:8080/-/buyer/",
+        "number" : 1
+      }
+    },
+    "message" : "http://localhost:8080/-/buyer/#make",
+    "timestamp" : 1274238377524,
+    "trace" : {
+      "calls" : [ {
+          "name" : "Main.make",
+          "source" : "org/waterken/purchase_ajax/Main.java"
+        } ]
+    }
+  }, {
+    "class" : [ "org.ref_send.log.Sent", "org.ref_send.log.Event" ],
+    "anchor" : {
+      "number" : 2,
+      "turn" : {
+        "loop" : "http://localhost:8080/-/buyer/",
+        "number" : 1
+      }
+    },
+    "message" : "http://localhost:8080/-/buyer/product/#make",
+    "timestamp" : 1274238377751,
+    "trace" : {
+      "calls" : [ {
+          "name" : "Main.make",
+          "source" : "org/waterken/purchase_ajax/Main.java",
+          "span" : [ [ 74 ] ]
+        } ]
+    }
+  }, {
+    "class" : [ "org.ref_send.log.Sent", "org.ref_send.log.Event" ],
+    "anchor" : {
+      "number" : 3,
+      "turn" : {
+        "loop" : "http://localhost:8080/-/buyer/",
+        "number" : 1
+      }
+    },
+    "message" : "http://localhost:8080/-/buyer/accounts/#make",
+    "timestamp" : 1274238377774,
+    "trace" : {
+      "calls" : [ {
+          "name" : "Main.make",
+          "source" : "org/waterken/purchase_ajax/Main.java",
+          "span" : [ [ 75 ] ]
+        } ]
+    }
+  }, {
+    "class" : [ "org.ref_send.log.Sent", "org.ref_send.log.Event" ],
+    "anchor" : {
+      "number" : 4,
+      "turn" : {
+        "loop" : "http://localhost:8080/-/buyer/",
+        "number" : 1
+      }
+    },
+    "message" : "lqhjpwbbeemozk-0-1",
+    "timestamp" : 1274238377816,
+    "trace" : {
+      "calls" : [ {
+          "name" : "Main.make",
+          "source" : "org/waterken/purchase_ajax/Main.java",
+          "span" : [ [ 76 ] ]
+        } ]
+    }
+  }, {
+    "class" : [ "org.ref_send.log.Got", "org.ref_send.log.Event" ],
+    "anchor" : {
+      "number" : 1,
+      "turn" : {
+        "loop" : "http://localhost:8080/-/buyer/",
+        "number" : 2
+      }
+    },
+    "message" : "lqhjpwbbeemozk-0-1",
+    "timestamp" : 1274238401735
+  }, {
+    "class" : [ "org.ref_send.log.Sent", "org.ref_send.log.Event" ],
+    "anchor" : {
+      "number" : 2,
+      "turn" : {
+        "loop" : "http://localhost:8080/-/buyer/",
+        "number" : 2
+      }
+    },
+    "message" : "http://localhost:8080/-/buyer/#t1",
+    "timestamp" : 1274238401743
+  }, {
+    "class" : [ "org.ref_send.log.Got", "org.ref_send.log.Event" ],
+    "anchor" : {
+      "number" : 1,
+      "turn" : {
+        "loop" : "http://localhost:8080/-/buyer/",
+        "number" : 3
+      }
+    },
+    "message" : "http://localhost:8080/-/buyer/#t1",
+    "timestamp" : 1274238401765
+  }, {
+    "class" : [ "org.ref_send.log.SentIf", "org.ref_send.log.Sent", "org.ref_send.log.Event" ],
+    "anchor" : {
+      "number" : 2,
+      "turn" : {
+        "loop" : "http://localhost:8080/-/buyer/",
+        "number" : 3
+      }
+    },
+    "condition" : "http://localhost:8080/-/buyer/#p3",
+    "message" : "http://localhost:8080/-/buyer/#w3",
+    "timestamp" : 1274238401768,
+    "trace" : {
+      "calls" : [ {
+          "name" : "AsyncAnd.\u003Cinit\u003E",
+          "source" : "org/waterken/purchase_ajax/AsyncAnd.java",
+          "span" : [ [ 69 ] ]
+        }, {
+          "name" : "Main.Buy.fulfill",
+          "source" : "org/waterken/purchase_ajax/Main.java",
+          "span" : [ [ 66 ] ]
+        }, {
+          "name" : "Main.Buy.fulfill",
+          "source" : "org/waterken/purchase_ajax/Main.java",
+          "span" : [ [ 48 ] ]
+        } ]
+    }
+  }, {
+    "class" : [ "org.ref_send.log.Sent", "org.ref_send.log.Event" ],
+    "anchor" : {
+      "number" : 3,
+      "turn" : {
+        "loop" : "http://localhost:8080/-/buyer/",
+        "number" : 3
+      }
+    },
+    "message" : "lqhjpwbbeemozk-2-0",
+    "timestamp" : 1274238401772,
+    "trace" : {
+      "calls" : [ {
+          "name" : "Main.Buy.fulfill",
+          "source" : "org/waterken/purchase_ajax/Main.java",
+          "span" : [ [ 68 ] ]
+        }, {
+          "name" : "Main.Buy.fulfill",
+          "source" : "org/waterken/purchase_ajax/Main.java",
+          "span" : [ [ 48 ] ]
+        } ]
+    }
+  }, {
+    "class" : [ "org.ref_send.log.Sent", "org.ref_send.log.Event" ],
+    "anchor" : {
+      "number" : 4,
+      "turn" : {
+        "loop" : "http://localhost:8080/-/buyer/",
+        "number" : 3
+      }
+    },
+    "message" : "4zvj7itl2whhsg-1-0",
+    "timestamp" : 1274238401832,
+    "trace" : {
+      "calls" : [ {
+          "name" : "Main.Buy.fulfill",
+          "source" : "org/waterken/purchase_ajax/Main.java",
+          "span" : [ [ 69 ] ]
+        }, {
+          "name" : "Main.Buy.fulfill",
+          "source" : "org/waterken/purchase_ajax/Main.java",
+          "span" : [ [ 48 ] ]
+        } ]
+    }
+  }, {
+    "class" : [ "org.ref_send.log.Sent", "org.ref_send.log.Event" ],
+    "anchor" : {
+      "number" : 5,
+      "turn" : {
+        "loop" : "http://localhost:8080/-/buyer/",
+        "number" : 3
+      }
+    },
+    "message" : "lqhjpwbbeemozk-2-1",
+    "timestamp" : 1274238401835,
+    "trace" : {
+      "calls" : [ {
+          "name" : "Main.Buy.fulfill",
+          "source" : "org/waterken/purchase_ajax/Main.java",
+          "span" : [ [ 70 ] ]
+        }, {
+          "name" : "Main.Buy.fulfill",
+          "source" : "org/waterken/purchase_ajax/Main.java",
+          "span" : [ [ 48 ] ]
+        } ]
+    }
+  }, {
+    "class" : [ "org.ref_send.log.Fulfilled", "org.ref_send.log.Resolved", "org.ref_send.log.Event" ],
+    "anchor" : {
+      "number" : 6,
+      "turn" : {
+        "loop" : "http://localhost:8080/-/buyer/",
+        "number" : 3
+      }
+    },
+    "condition" : "http://localhost:8080/-/buyer/#p1",
+    "timestamp" : 1274238401836
+  }, {
+    "class" : [ "org.ref_send.log.Rejected", "org.ref_send.log.Resolved", "org.ref_send.log.Event" ],
+    "anchor" : {
+      "number" : 7,
+      "turn" : {
+        "loop" : "http://localhost:8080/-/buyer/",
+        "number" : 3
+      }
+    },
+    "condition" : "http://localhost:8080/-/buyer/#p2",
+    "timestamp" : 1274238401843
+  }, {
+    "class" : [ "org.ref_send.log.Got", "org.ref_send.log.Event" ],
+    "anchor" : {
+      "number" : 1,
+      "turn" : {
+        "loop" : "http://localhost:8080/-/buyer/accounts/",
+        "number" : 2
+      }
+    },
+    "message" : "4zvj7itl2whhsg-1-0",
+    "timestamp" : 1274238401946,
+    "trace" : {
+      "calls" : [ {
+          "name" : "CreditBureauMaker.CreditBureauX.checkCredit",
+          "source" : "org/waterken/purchase_ajax/CreditBureauMaker.java"
+        } ]
+    }
+  }, {
+    "class" : [ "org.ref_send.log.Got", "org.ref_send.log.Event" ],
+    "anchor" : {
+      "number" : 1,
+      "turn" : {
+        "loop" : "http://localhost:8080/-/buyer/product/",
+        "number" : 2
+      }
+    },
+    "message" : "lqhjpwbbeemozk-2-0",
+    "timestamp" : 1274238401941,
+    "trace" : {
+      "calls" : [ {
+          "name" : "InventoryMaker.InventoryX.partInStock",
+          "source" : "org/waterken/purchase_ajax/InventoryMaker.java"
+        } ]
+    }
+  }, {
+    "class" : [ "org.ref_send.log.Sent", "org.ref_send.log.Event" ],
+    "anchor" : {
+      "number" : 2,
+      "turn" : {
+        "loop" : "http://localhost:8080/-/buyer/product/",
+        "number" : 2
+      }
+    },
+    "message" : "ewrigzpctikrhk-1-0",
+    "timestamp" : 1274238401948,
+    "trace" : {
+      "calls" : [ {
+          "name" : "InventoryMaker.InventoryX.partInStock",
+          "source" : "org/waterken/purchase_ajax/InventoryMaker.java",
+          "span" : [ [ 19 ] ]
+        } ]
+    }
+  }, {
+    "class" : [ "org.ref_send.log.Sent", "org.ref_send.log.Event" ],
+    "anchor" : {
+      "number" : 2,
+      "turn" : {
+        "loop" : "http://localhost:8080/-/buyer/accounts/",
+        "number" : 2
+      }
+    },
+    "message" : "wrfq2onrpihirv-1-0",
+    "timestamp" : 1274238401950,
+    "trace" : {
+      "calls" : [ {
+          "name" : "CreditBureauMaker.CreditBureauX.checkCreditScore",
+          "source" : "org/waterken/purchase_ajax/CreditBureauMaker.java",
+          "span" : [ [ 30 ] ]
+        }, {
+          "name" : "CreditBureauMaker.CreditBureauX.checkCredit",
+          "source" : "org/waterken/purchase_ajax/CreditBureauMaker.java",
+          "span" : [ [ 47 ] ]
+        } ]
+    }
+  }, {
+    "class" : [ "org.ref_send.log.Got", "org.ref_send.log.Event" ],
+    "anchor" : {
+      "number" : 1,
+      "turn" : {
+        "loop" : "http://localhost:8080/-/buyer/product/",
+        "number" : 3
+      }
+    },
+    "message" : "lqhjpwbbeemozk-2-1",
+    "timestamp" : 1274238401967,
+    "trace" : {
+      "calls" : [ {
+          "name" : "ShipperMaker.ShipperX.canDeliver",
+          "source" : "org/waterken/purchase_ajax/ShipperMaker.java"
+        } ]
+    }
+  }, {
+    "class" : [ "org.ref_send.log.Sent", "org.ref_send.log.Event" ],
+    "anchor" : {
+      "number" : 2,
+      "turn" : {
+        "loop" : "http://localhost:8080/-/buyer/product/",
+        "number" : 3
+      }
+    },
+    "message" : "ewrigzpctikrhk-1-1",
+    "timestamp" : 1274238401970,
+    "trace" : {
+      "calls" : [ {
+          "name" : "ShipperMaker.ShipperX.canDeliver",
+          "source" : "org/waterken/purchase_ajax/ShipperMaker.java",
+          "span" : [ [ 19 ] ]
+        } ]
+    }
+  }, {
+    "class" : [ "org.ref_send.log.Got", "org.ref_send.log.Event" ],
+    "anchor" : {
+      "number" : 1,
+      "turn" : {
+        "loop" : "http://localhost:8080/-/buyer/",
+        "number" : 8
+      }
+    },
+    "message" : "wrfq2onrpihirv-1-0",
+    "timestamp" : 1274238402061,
+    "trace" : {
+      "calls" : [ {
+          "name" : "AsyncAnd.run",
+          "source" : "org/waterken/purchase_ajax/AsyncAnd.java"
+        } ]
+    }
+  }, {
+    "class" : [ "org.ref_send.log.Progressed", "org.ref_send.log.Resolved", "org.ref_send.log.Event" ],
+    "anchor" : {
+      "number" : 2,
+      "turn" : {
+        "loop" : "http://localhost:8080/-/buyer/",
+        "number" : 8
+      }
+    },
+    "condition" : "http://localhost:8080/-/buyer/#p3",
+    "timestamp" : 1274238402062,
+    "trace" : {
+      "calls" : [ {
+          "name" : "AsyncAnd.run",
+          "source" : "org/waterken/purchase_ajax/AsyncAnd.java",
+          "span" : [ [ 88 ] ]
+        } ]
+    }
+  }, {
+    "class" : [ "org.ref_send.log.Got", "org.ref_send.log.Event" ],
+    "anchor" : {
+      "number" : 1,
+      "turn" : {
+        "loop" : "http://localhost:8080/-/buyer/",
+        "number" : 10
+      }
+    },
+    "message" : "ewrigzpctikrhk-1-0",
+    "timestamp" : 1274238402072,
+    "trace" : {
+      "calls" : [ {
+          "name" : "AsyncAnd.run",
+          "source" : "org/waterken/purchase_ajax/AsyncAnd.java"
+        } ]
+    }
+  }, {
+    "class" : [ "org.ref_send.log.Progressed", "org.ref_send.log.Resolved", "org.ref_send.log.Event" ],
+    "anchor" : {
+      "number" : 2,
+      "turn" : {
+        "loop" : "http://localhost:8080/-/buyer/",
+        "number" : 10
+      }
+    },
+    "condition" : "http://localhost:8080/-/buyer/#p3",
+    "timestamp" : 1274238402076,
+    "trace" : {
+      "calls" : [ {
+          "name" : "AsyncAnd.run",
+          "source" : "org/waterken/purchase_ajax/AsyncAnd.java",
+          "span" : [ [ 88 ] ]
+        } ]
+    }
+  }, {
+    "class" : [ "org.ref_send.log.Got", "org.ref_send.log.Event" ],
+    "anchor" : {
+      "number" : 1,
+      "turn" : {
+        "loop" : "http://localhost:8080/-/buyer/",
+        "number" : 11
+      }
+    },
+    "message" : "ewrigzpctikrhk-1-1",
+    "timestamp" : 1274238402080,
+    "trace" : {
+      "calls" : [ {
+          "name" : "AsyncAnd.run",
+          "source" : "org/waterken/purchase_ajax/AsyncAnd.java"
+        } ]
+    }
+  }, {
+    "class" : [ "org.ref_send.log.Fulfilled", "org.ref_send.log.Resolved", "org.ref_send.log.Event" ],
+    "anchor" : {
+      "number" : 2,
+      "turn" : {
+        "loop" : "http://localhost:8080/-/buyer/",
+        "number" : 11
+      }
+    },
+    "condition" : "http://localhost:8080/-/buyer/#p3",
+    "timestamp" : 1274238402081,
+    "trace" : {
+      "calls" : [ {
+          "name" : "AsyncAnd.run",
+          "source" : "org/waterken/purchase_ajax/AsyncAnd.java",
+          "span" : [ [ 80 ] ]
+        } ]
+    }
+  }, {
+    "class" : [ "org.ref_send.log.Got", "org.ref_send.log.Event" ],
+    "anchor" : {
+      "number" : 1,
+      "turn" : {
+        "loop" : "http://localhost:8080/-/buyer/",
+        "number" : 12
+      }
+    },
+    "message" : "http://localhost:8080/-/buyer/#w3",
+    "timestamp" : 1274238402113,
+    "trace" : {
+      "calls" : [ {
+          "name" : "AsyncAnd.DoAnswer.fulfill",
+          "source" : "org/waterken/purchase_ajax/AsyncAnd.java"
+        } ]
+    }
+  }, {
+    "class" : [ "org.ref_send.log.Sent", "org.ref_send.log.Event" ],
+    "anchor" : {
+      "number" : 2,
+      "turn" : {
+        "loop" : "http://localhost:8080/-/buyer/",
+        "number" : 12
+      }
+    },
+    "message" : "http://localhost:8080/-/buyer/#t2",
+    "timestamp" : 1274238402114,
+    "trace" : {
+      "calls" : [ {
+          "name" : "AsyncAnd.DoAnswer.fulfill",
+          "source" : "org/waterken/purchase_ajax/AsyncAnd.java",
+          "span" : [ [ 43 ] ]
+        }, {
+          "name" : "AsyncAnd.DoAnswer.fulfill",
+          "source" : "org/waterken/purchase_ajax/AsyncAnd.java",
+          "span" : [ [ 30 ] ]
+        } ]
+    }
+  }, {
+    "class" : [ "org.ref_send.log.Got", "org.ref_send.log.Event" ],
+    "anchor" : {
+      "number" : 1,
+      "turn" : {
+        "loop" : "http://localhost:8080/-/buyer/",
+        "number" : 14
+      }
+    },
+    "message" : "http://localhost:8080/-/buyer/#t2",
+    "timestamp" : 1274238402132,
+    "trace" : {
+      "calls" : [ {
+          "name" : "Main.CheckAnswers.run",
+          "source" : "org/waterken/purchase_ajax/Main.java"
+        } ]
+    }
+  }, {
+    "class" : [ "org.ref_send.log.Sent", "org.ref_send.log.Event" ],
+    "anchor" : {
+      "number" : 2,
+      "turn" : {
+        "loop" : "http://localhost:8080/-/buyer/",
+        "number" : 14
+      }
+    },
+    "message" : "lqhjpwbbeemozk-3-0",
+    "timestamp" : 1274238402133,
+    "trace" : {
+      "calls" : [ {
+          "name" : "Main.CheckAnswers.run",
+          "source" : "org/waterken/purchase_ajax/Main.java",
+          "span" : [ [ 87 ] ]
+        } ]
+    }
+  }, {
+    "class" : [ "org.ref_send.log.Got", "org.ref_send.log.Event" ],
+    "anchor" : {
+      "number" : 1,
+      "turn" : {
+        "loop" : "http://localhost:8080/-/buyer/product/",
+        "number" : 6
+      }
+    },
+    "message" : "lqhjpwbbeemozk-3-0",
+    "timestamp" : 1274238402154,
+    "trace" : {
+      "calls" : [ {
+          "name" : "InventoryMaker.InventoryX.placeOrder",
+          "source" : "org/waterken/purchase_ajax/InventoryMaker.java"
+        } ]
+    }
+  }, {
+    "class" : [ "org.ref_send.log.Sent", "org.ref_send.log.Event" ],
+    "anchor" : {
+      "number" : 2,
+      "turn" : {
+        "loop" : "http://localhost:8080/-/buyer/product/",
+        "number" : 6
+      }
+    },
+    "message" : "ewrigzpctikrhk-2-0",
+    "timestamp" : 1274238402155,
+    "trace" : {
+      "calls" : [ {
+          "name" : "InventoryMaker.InventoryX.placeOrder",
+          "source" : "org/waterken/purchase_ajax/InventoryMaker.java",
+          "span" : [ [ 24 ] ]
+        } ]
+    }
+  }, {
+    "class" : [ "org.ref_send.log.Got", "org.ref_send.log.Event" ],
+    "anchor" : {
+      "number" : 1,
+      "turn" : {
+        "loop" : "http://localhost:8080/-/buyer/",
+        "number" : 15
+      }
+    },
+    "message" : "ewrigzpctikrhk-2-0",
+    "timestamp" : 1274238402247,
+    "trace" : {
+      "calls" : [ {
+          "name" : "Main.TellOrderPlaced.run",
+          "source" : "org/waterken/purchase_ajax/Main.java"
+        } ]
+    }
+  }, {
+    "class" : [ "org.ref_send.log.Comment", "org.ref_send.log.Event" ],
+    "anchor" : {
+      "number" : 2,
+      "turn" : {
+        "loop" : "http://localhost:8080/-/buyer/",
+        "number" : 15
+      }
+    },
+    "text" : "Order placed for West Coast Buyers, 123abc",
+    "timestamp" : 1274238402247,
+    "trace" : {
+      "calls" : [ {
+          "name" : "Main.TellOrderPlaced.run",
+          "source" : "org/waterken/purchase_ajax/Main.java",
+          "span" : [ [ 102 ] ]
+        } ]
+    }
+  }

@@ -90,6 +90,9 @@ def paletteAuthor(rezKit, makers, traceline) :near {
     colorMap.put("goldenrod",
                  [rezKit.makeColor(218, 165, 32), "goldenrod"], true) # DAA520
     
+    colorMap.put("lightgray",
+                 [rezKit.makeColor(211, 211, 211), "lightgray"], true) #D3D3D3
+
     colorMap.put("lightsteelblue",
                  [rezKit.makeColor(176, 196, 222), "lightsteelblue"], true) #B0C4DE
     
@@ -185,13 +188,10 @@ def paletteAuthor(rezKit, makers, traceline) :near {
     
     def images := [].asMap().diverge()
     
-    #def multiplesURL := <resource:org/erights/e/tools/causeway/multiples.gif>
-    def multiplesURL := <resource:org/erights/e/tools/causeway/multiples-long.png>
-    def giantsCausewayURL := <resource:org/erights/e/tools/causeway/giants-causeway.jpg>
+    def multiplesURL := <resource:org/erights/e/tools/causeway/graphical.png>
     def gc300x300URL :=  <resource:org/erights/e/tools/causeway/gc300x300.jpg>
     
     images.put("multiples", rezKit.makeImage(multiplesURL.openStream()))
-    #images.put("giantsCauseway", rezKit.makeImage(giantsCausewayURL.openStream()))
     images.put("giantsCauseway", rezKit.makeImage(gc300x300URL.openStream()))
     
     def makeBasicPalette(fgName, bgName, fontName) :near {
@@ -257,6 +257,14 @@ def paletteAuthor(rezKit, makers, traceline) :near {
                     return vatColors[i]
                 }
                 return palette.getDefaultVatColor()
+            }
+            
+            to getMultiplesBg() :near {
+                def multiples := colorMap.fetch("lightgray", fn{})
+                if (multiples =~ [color, _]) {
+                    return color
+                }
+                return multiples
             }
             
             to makeWelcomeTitlePalette() :near {

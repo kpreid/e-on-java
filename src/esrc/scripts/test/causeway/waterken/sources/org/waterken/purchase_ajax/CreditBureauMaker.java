@@ -7,7 +7,6 @@ import org.ref_send.promise.Eventual;
 
 public final class
 CreditBureauMaker {
-    static public int foo;
     private CreditBureauMaker() {}
     
     static public CreditBureau
@@ -17,9 +16,6 @@ CreditBureauMaker {
             
             public boolean
             currentStatusOK(int acct) { 
-                for (long i = 0; i < 10000; i++) {
-                    for (long j = 0; j < 10000; j++) { foo = 3; }
-                }
                 return true; 
             }
             
@@ -44,6 +40,9 @@ CreditBureauMaker {
             
             public void
             checkCredit(String name, Callback tellCreditOK) {
+                /* 
+                 * Do some extra work to test stack trace logging.
+                 */
                 int acctNo = lookupAcctNo(name);
                 checkCreditScore(acctNo, tellCreditOK);
             }

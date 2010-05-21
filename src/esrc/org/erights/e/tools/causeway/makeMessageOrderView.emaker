@@ -30,8 +30,16 @@ def makeMessageOrderView(swtParent, palette,
                          vatMap, graphWalker) :near {
     
     # Useful maps for lookups in event handling.
-    def itemToModelMap := [].asMap().diverge()
-    def modelToItemMap := [].asMap().diverge()
+    
+    # each item is defined by an swt tree item & a tab index.
+    # each item maps to a model which is defined by a graph element & item index
+    # [swtItem, ndx] => [element, itemIndex]
+    
+    def itemToModelMap := [].asMap().diverge()  # one-to-one
+    
+    # a particular graph element can have multiple instances of swt tree items
+    # Map[model, List[item]]
+    def modelToItemsMap := [].asMap().diverge()  # one-to-many
     
     def seen := [].asSet().diverge()
     
@@ -45,39 +53,83 @@ def makeMessageOrderView(swtParent, palette,
         }
         seen.addElement(edge)
         
+        # filter SentIf events
+        def context := edge.getContext()
+        if (context[0] == "org.ref_send.log.SentIf") {
+            return;
+        }
+
         def swtItem := <widget:makeTreeItem>(swtParent, 0)
-        itemToModelMap.put([swtItem, ndx], edge, true)
-        modelToItemMap.put(edge, [swtItem, ndx], true)
-        graphWalker.labelItem(vatMap, edge, 0, swtItem)
         
+        def items := modelToItemsMap.fetch(edge, fn{[].diverge()})
+        items.push([swtItem, ndx])
+        modelToItemsMap[edge] := items
+        
+        itemToModelMap.put([swtItem, ndx], [edge, 0], true)
+
+        def label := graphWalker.getElementLabel(edge, 0)
+        
+        def vatName := edge.getOrigin().getID()[0]
+        def attr := vatMap.fetchDisplayAttributes(vatName)
+        swtItem.setForeground(attr[1][0])
+        
+        swtItem.setText(label)
+
         def target := edge.getTarget()
         buildTreeFromNode(swtItem, palette,
                           target, ndx,
                           vatMap, graphWalker,
-                          target.getNextIn() != edge)
+                          edge)
     }
     
     bind buildTreeFromNode(swtParent, palette,
                            node, ndx,
                            vatMap, graphWalker,
-                           skipKids :boolean) :void {
+                           edge) :void {
         
         if (node.getID()[0] == "bottom") { return }
         
+        # nodes represent Got events
         def swtGotItem := <widget:makeTreeItem>(swtParent, 0)
-        itemToModelMap.put([swtGotItem, ndx], node, true)
-        graphWalker.labelItem(vatMap, node, 0, swtGotItem)
+
+        def items := modelToItemsMap.fetch(node, fn{[].diverge()})
+        def itemIndex := items.size()
+        items[itemIndex] := [swtGotItem, ndx]
+        modelToItemsMap[node] := items
+
+        # a node (but never an edge) can have multiple causes and will
+        # be represented in the mov multiple times, by different swt items.
+        # include the itemIndex in the item-to-model map for
+        # a unique mapping, i.e., a one-to-one mapping.
         
+        itemToModelMap.put([swtGotItem, ndx], [node, itemIndex], true)
+
+        def label := graphWalker.getElementLabel(node, 0)
+        
+        def vatName := node.getOrigin().getID()[0]
+        def attr := vatMap.fetchDisplayAttributes(vatName)
+        swtGotItem.setForeground(attr[1][0])
+        
+        swtGotItem.setText(label)
+
         # check for multiple senders
         if (node.getIncomingCount() > 1) {
-            swtGotItem.setImage(palette.getImage("multiples"))
-            # if not last edge, don't show kids
-            if (skipKids) {
-                return
+            def edgeList := [].diverge()
+            for incoming => _ in node.ins() {
+                def context := incoming.getContext()
+                # filter SentIf events
+                if (context[0] != "org.ref_send.log.SentIf") {
+                    edgeList.push(incoming)
+                }
+            }
+            if (edgeList.size() > 1) {
+                swtGotItem.setImage(palette.getImage("multiples"))
+                if (edgeList[edgeList.size() -1] != edge) {
+                    # if not last edge, don't show kids
+                    return
+                }
             }
         }
-        # Only map the "real" appearance of node
-        modelToItemMap.put(node, [swtGotItem, ndx], true)
         for ge => gt in node.outs() {
             buildTreeFromEdge(swtParent, palette,
                               ge, ndx,
@@ -106,14 +158,17 @@ def makeMessageOrderView(swtParent, palette,
         buildTreeFromNode(swtTree, palette,
                           graph, ndx,
                           vatMap, graphWalker,
-                          false)
+                          null)
         
-        # handle swt user events
+        # selection begins here by handling swt user events.
+        # selectionModel supports synchronized selection across views.
         def swtSelectionListener {
             to widgetSelected(swtEvent) :void {
                 def swtItem := swtEvent.getItem()
-                def element := itemToModelMap.fetch([swtItem, ndx], fn{})
-                selectionModel.setOptElement(element)
+                def model := itemToModelMap.fetch([swtItem, ndx], fn{})
+                if (model =~ [element, itemIndex]) {
+                    selectionModel.setOptElement(element, itemIndex)
+                } 
             }
             to widgetDefaultSelected(swtEvent) :void {}
         }
@@ -138,15 +193,15 @@ def makeMessageOrderView(swtParent, palette,
         return mop
     }
     
-    
     def swtMOView := <widget:makeComposite>(swtParent, 0)
     
-    def fPalette := palette. makeFolderPalette()
+    def fPalette := palette.makeFolderPalette()
     
     swtMOView.setForeground(fPalette.getFg())
     swtMOView.setBackground(fPalette.getBg())
     swtMOView.setFont(fPalette.getFont())
     
+    def getCurrentTree
     def getActionTargets
     def outlineView := makeOutlineView(swtMOView, palette,
                                        abstractAction, getActionTargets)
@@ -177,10 +232,31 @@ def makeMessageOrderView(swtParent, palette,
     }
     
     # context menu for mop
-    [def doFindMultiples,
-     def doFindSomething,
+    [def doBookmark,
+    
+     def doFindMultiples,
      
      def doGoTo]
+    
+    bind doBookmark extends abstractAction(doBookmark) {
+        to run() :void {
+            def ndx := swtFolder.getSelectionIndex()
+            if (ndx != -1) {
+                def [_, mop] := tabKeeper[ndx]
+                def swtItems := mop.getWidget().getSelection()
+                if (swtItems.size() > 0) {
+                    def model := itemToModelMap.fetch([swtItems[0], ndx], fn{})
+                    if (model != null) {
+                        searchModel.bookmark(model)
+                    }
+                }
+            }
+        }
+        to getLabel()            :String { return "&Bookmark" }
+        to getOptTip()           :String { 
+            return "Adds a bookmark in the Search view for this tree item" 
+        }
+    }
     
     bind doFindMultiples extends abstractAction(doFindMultiples) {
         to run() :void {
@@ -189,10 +265,9 @@ def makeMessageOrderView(swtParent, palette,
                 def [_, mop] := tabKeeper[ndx]
                 def swtItems := mop.getWidget().getSelection()
                 if (swtItems.size() > 0) {
-                    def element := itemToModelMap.fetch([swtItems[0], ndx], fn{})
-                    if (element != null) {
-                        searchModel.findMultiples(element, 
-                                                  swtItems[0].getText())
+                    def model := itemToModelMap.fetch([swtItems[0], ndx], fn{})
+                    if (model != null) {
+                        searchModel.findMultiples(model, swtItems[0].getText())
                     }
                 }
             }
@@ -200,16 +275,6 @@ def makeMessageOrderView(swtParent, palette,
         to getLabel()            :String { return "&Find Multiples" }
         to getOptTip()           :String { 
             return "Finds all senders for this target" 
-        }
-    }
-    
-    bind doFindSomething extends abstractAction(doFindSomething) {
-        to run() :void {
-            #traceline("doFindSomething()")
-        }
-        to getLabel()            :String { return "&Find Something" }
-        to everEnabledReporter() :EverReporter {
-            return whenever([], fn{false})
         }
     }
     
@@ -223,8 +288,9 @@ def makeMessageOrderView(swtParent, palette,
         }
     }
     
-    def menuAction := M.menu([doFindMultiples,
-                              doFindSomething,
+    def menuAction := M.menu([doBookmark,
+                              M.sep(),
+                              doFindMultiples,
                               M.sep(),
                               doGoTo])
     
@@ -232,24 +298,63 @@ def makeMessageOrderView(swtParent, palette,
     
     def swtContextMenu := menuAction.makeMenu(mop.getWidget(), menuMap)
     
+    var multiplesSelected := false
+    var multiples := null
+    
     # participate in synchronized selection across views
     def selectionObserver {
         to placeSelected(optPlace) :void {
-            if (optPlace != null && optPlace =~ [element, _]) {
-                def tabbedItem := modelToItemMap.fetch(element, fn{})
-                if (tabbedItem != null) {
-                    def [swtItem, ndx] := tabbedItem
-                    swtFolder.setSelection(ndx)
+            if (null != optPlace) {  # ignore null
+            
+                # either something will be selected or not.
+                # in either case clear multiples selection.
+                if(multiplesSelected) {
+                    for [[item, _], bg] in multiples {
+                        item.setBackground(bg)
+                    }
+                    multiplesSelected := false
+                    multiples := null
+                }
+
+                def element := optPlace.getElement()
+                def itemIndex := optPlace.getItemIndex()
+                def items := modelToItemsMap.fetch(element, fn{null})
+                if (null != items && itemIndex < items.size()) {
+                    
+                    if (items.size() > 1) {  # multiple causes
+                        multiplesSelected := true
+                        multiples := [].diverge()
+                            
+                        for i in 0 ..! items.size() {
+                            def [item, _] := items[i]
+                            def c := item.getBackground()
+                            item.setBackground(palette.getMultiplesBg())
+                            multiples[i] := [items[i], c]
+                        }
+                    }
+                    
+                    def [swtItem, ndx] := items[itemIndex]
+                    swtFolder.setSelection(ndx)  # select tab
                     def [_, mop] := tabKeeper[ndx]
                     mop.getWidget().setSelection([swtItem])
-                    mop.getWidget().showItem(swtItem)
+                    mop.getWidget().showItem(swtItem)  # scroll into view
+                    if (multiplesSelected) { 
+                        # automatically findMultiples to simplify navigation
+                        def model := itemToModelMap.fetch(items[itemIndex], fn{})
+                        searchModel.findMultiples(model, swtItem.getText())
+                    }
+                } else {
+                    def ct := getCurrentTree()
+                    if (null != ct) {
+                        ct.deselectAll()
+                    }
                 }
             }
         }
     }
     selectionModel.addObserver(selectionObserver)
     
-    def getCurrentTree() :near {
+    bind getCurrentTree() :near {
         def ndx := swtFolder.getSelectionIndex()
         if (ndx != -1) {
             def [_, mop] := tabKeeper[ndx]
@@ -290,12 +395,14 @@ def makeMessageOrderView(swtParent, palette,
                 def selection := swtTree.getSelection()
                 if (selection.size() > 0) {
                     def ndx := swtFolder.getSelectionIndex()
-                    def element := itemToModelMap.fetch([selection[0], ndx], fn{})
-                    if (element != null) {
-                        if (element.isNode()) {
-                            return element
-                        } else {
-                            return element.getTarget()
+                    def model := itemToModelMap.fetch([selection[0], ndx], fn{})
+                    if (model != null) {
+                        if (model =~ [element, _]) {
+                            if (element.isNode()) {
+                                return element
+                            } else {
+                                return element.getTarget()
+                            }
                         }
                     }
                 }

@@ -1,11 +1,12 @@
 package org.waterken.purchase_promise;
 
+import static org.ref_send.promise.Eventual.ref;
+
 import java.io.Serializable;
 
 import org.joe_e.Struct;
-import org.ref_send.promise.Fulfilled;
 import org.ref_send.promise.Promise;
-import org.ref_send.promise.eventual.Eventual;
+import org.ref_send.promise.Eventual;
 
 public final class CreditBureauMaker {
     private CreditBureauMaker() {}
@@ -16,9 +17,8 @@ public final class CreditBureauMaker {
             static private final long serialVersionUID = 1L;
 
             public Promise<Boolean>
-            doCreditCheck(String name) {
-                _.log.comment("credit ok");
-                return Fulfilled.ref(true);
+            checkCredit(String name) {
+                return ref(true);
             }
         }
         return new CreditBureauX();
