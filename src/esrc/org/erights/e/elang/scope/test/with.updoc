@@ -1,0 +1,10 @@
+? def testSR := e`SturdyRef`
+? testSR.eval(safeScope)
+# value: SturdyRef
+? testSR.eval(safeScope.with([ "SturdyRef" => 1]))
+# value: 1
+? def val := 2
+? testSR.eval(safeScope.with([ "&SturdyRef" => &val]))
+# value: 2
+? testSR.eval(safeScope.with([ "SturdyRef" => 1, "&SturdyRef" => &val]))
+# problem: <IllegalArgumentException: two values given for slot '&SturdyRef'>

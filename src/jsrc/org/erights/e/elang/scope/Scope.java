@@ -43,6 +43,7 @@ import org.erights.e.elib.tables.EIteratable;
 import org.erights.e.elib.tables.FlexList;
 import org.erights.e.elib.tables.FlexMap;
 
+import java.util.HashSet;
 import java.io.IOException;
 import java.io.StringWriter;
 
@@ -384,5 +385,37 @@ public class Scope implements EIteratable {
         // XXX Horribly inefficient for now
         ConstMap state = getState();
         return fromState(state.with(slotName, slot), getFQNPrefix());
+    }
+
+    /** Create a new scope based on this one and extended with the given mappings.
+      * For keys starting with '&amp;', the value is used directly as
+      * the slot. For other keys, the value is wrapped in a FinalSlot.
+      * Any existing slots with these names are replaced.
+      * @throws IllegalArgumentException if a key is given twice (with and without &amp;)
+      */
+    public Scope with(ConstMap envExtra) {
+        final HashSet seen = new HashSet();
+
+        final FlexMap state = getState().diverge();
+        envExtra.iterate(new AssocFunc() {
+            public void run(Object key, Object value) {
+                String name = (String)key;
+                String slotName;
+                Slot slot;
+                if (name.startsWith("&")) {
+                    slotName = name;
+                    slot = (Slot)SlotGuard.coerce(value, null);
+                } else {
+                    slotName = "&" + name;
+                    slot = new FinalSlot(value);
+                }
+                if (seen.contains(slotName)) {
+                    throw new IllegalArgumentException("two values given for slot '" + slotName + "'");
+                }
+                seen.add(slotName);
+                state.put(slotName, slot);
+            }
+        });
+        return fromState(state.snapshot(), getFQNPrefix());
     }
 }

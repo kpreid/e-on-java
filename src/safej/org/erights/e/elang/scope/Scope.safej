@@ -25,4 +25,5 @@ class("org.erights.e.elang.scope.Scope",
               method("bindings()"),
               method("bindings(boolean)"),
               method("with(String, Object)"),
+              method("with(ConstMap)"),
               method("withSlot(String, Slot)")))
