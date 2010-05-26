@@ -10,6 +10,16 @@ import org.ref_send.promise.Do;
 import org.ref_send.promise.Eventual;
 import org.ref_send.promise.Resolver;
 
+/**
+ * An asynchronous adaptation of the conjunctive and operator.
+ * <p>
+ * This class is an asynchronous adaptation of the conjunctive and operator,
+ * familiar from seqential programming. It reports true to its callback
+ * function only if every expected answer is true. It promptly reports false
+ * if an expected answer is false, thus short-circuiting the logic.
+ * </p>
+ */
+
 public class AsyncAnd implements Serializable {
     static private final long serialVersionUID = 1L;
     
@@ -29,11 +39,24 @@ public class AsyncAnd implements Serializable {
             if (answer) {
                 myExpected[0]--;
                 if (myExpected[0] == 0) {
+                    /*
+                     * Resolve the promise with true.
+                     */
                     myResolver.apply(true);
                 } else {
+                    /*
+                     * Progress had been made in resolving the promise.
+                     * If logging is on, a Progressed event record is written.
+                     * If logging is off, this is a noop.
+                     */
                     myResolver.progress();
                 }
             } else {
+                /*
+                 * Resolve the promise with false. Notice that this 
+                 * short-circuits the logic: any remaining expected answers
+                 * are ignored.
+                 */
                 myResolver.apply(false);
             }
             return null;
@@ -41,7 +64,7 @@ public class AsyncAnd implements Serializable {
 
         @Override
         public Void reject(Exception reason) throws Exception {
-            _.log.comment("oops");
+            _.log.comment("Promise rejected.");
             myResolver.reject(reason);
             return null;
         }
@@ -57,6 +80,10 @@ public class AsyncAnd implements Serializable {
         final Channel<Boolean> result = _.defer();
         final int[] expected = {answers.length};
         for (Promise<Boolean> answerP : answers) {
+            /*
+             * Register a when-block on each promise. The block executes
+             * when the promise resolves (either fulfilled or rejected).
+             */
             _.when(answerP, new DoAnswer(expected, result.resolver));
         }
         

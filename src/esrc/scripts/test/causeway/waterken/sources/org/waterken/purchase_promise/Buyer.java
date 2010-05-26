@@ -9,6 +9,26 @@ import org.ref_send.promise.Do;
 import org.ref_send.promise.Eventual;
 import org.ref_send.promise.Vat;
 
+/**
+ * A simple distributed procedure for handling new purchase orders.
+ * <p>
+ * Before an order is placed, certain conditions must be met: the item is in
+ * stock and available, the customer's account is in good standing and the 
+ * delivery options are up to date.
+ * </p>
+ * <p>
+ * An object residing in the "buyer" vat has remote references to objects
+ * residing in the "product" and "accounts" vats. The buyer queries the
+ * remote objects with promise-based asynchronous message sends.
+* </p>
+ * <p>
+ * The answers from the asynchronous queries must be collected and examined to
+ * verify that all requirements are satisfied before placing the order.
+ * The solution is an asynchronous adaptation of the conjunctive and operator,
+ * familiar from sequential programming, implemented by {@link AsyncAnd}.
+ * </p>
+ */
+
 public class Buyer {
     private Buyer() {}
     
@@ -43,6 +63,12 @@ public class Buyer {
                 final Promise<Boolean> allOkP = 
                     new AsyncAnd(_).run(partP, creditP, deliverP);
                         
+                /*
+                 * Register a when-block on promise returned by AsyncAnd. 
+                 * The block executes when the promise resolves (either 
+                 * fulfilled or rejected).
+                 */
+
                 _.when(allOkP, checkAnswers(_, inventory));
                 return ref(product);
             }

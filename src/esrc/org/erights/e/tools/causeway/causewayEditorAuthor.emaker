@@ -129,7 +129,8 @@ def causewayEditorAuthor(rezKit,
         # menuHelp
         [def doHelpTopics,
          
-         def doWaterkenExample,
+         def doWaterkenAjaxExample,
+         def doWaterkenPromiseExample,
          def doAmbientTalkExample,
          
          def doAbout]
@@ -523,7 +524,7 @@ def causewayEditorAuthor(rezKit,
         /**
          *
          */
-        bind doWaterkenExample extends abstractAction(doWaterkenExample) {
+        bind doWaterkenAjaxExample extends abstractAction(doWaterkenAjaxExample) {
             to run() :void {
 #               for devrune
 #               def eHome := "~/e/src/esrc"
@@ -538,6 +539,30 @@ def causewayEditorAuthor(rezKit,
             }
             to getLabel()            :String {
                 return "Open Waterken Example (Ajax-style)"
+            }
+            to getOptTip()           :String {
+                return "Makes new viewer for example sources and trace log"
+            }
+        }
+        
+        /**
+         *
+         */
+        bind doWaterkenPromiseExample extends abstractAction(doWaterkenPromiseExample) {
+            to run() :void {
+#               for devrune
+#               def eHome := "~/e/src/esrc"
+                
+                def eHome := props["e.home"]
+                
+                def eHomeDir := <file>[eHome]
+                
+                def traces := [eHomeDir["/scripts/test/causeway/waterken/traces/purchase_promise.log"]]
+                def sources := eHome + "/scripts/test/causeway/waterken/sources"
+                openNewEditor(sources, traces)
+            }
+            to getLabel()            :String {
+                return "Open Waterken Example (Promises)"
             }
             to getOptTip()           :String {
                 return "Makes new viewer for example sources and trace log"
@@ -636,7 +661,8 @@ def causewayEditorAuthor(rezKit,
                    M.menu("&Help",
                           [doHelpTopics,
                            M.sep(),
-                           doWaterkenExample,
+                           doWaterkenAjaxExample,
+                           doWaterkenPromiseExample,
                            doAmbientTalkExample,
                            M.sep(),
                            doAbout])])
