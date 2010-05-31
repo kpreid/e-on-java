@@ -12,6 +12,7 @@ def DEBuilderOf := <elib:serial.DEBuilderOf>
 def deSrcKit := <elib:serial.deSrcKit>
 def makeCycleBreaker := <elib:tables.makeCycleBreaker>
 def makeAnUncaller := <elib:serial.makeAnUncaller>
+def makeAssembler := <elib:serial.makeAssembler>
 
 def defaultUncallers := makeAnUncaller.getDefaultUncallers()
 
@@ -251,6 +252,10 @@ def deSubgraphKit {
      */
     to makeBuilder(scope, caller) :near {
 
+        # The assembler, which makes sure calls happen in a valid order
+        # XXX allow caller to provide the dependency hook.
+        def assembler := makeAssembler(fn _, _ {}, caller)
+
         # The index of the next temp variable
         var nextTemp := 0
 
@@ -264,13 +269,17 @@ def deSubgraphKit {
             to getNodeType() :near { Node }
             to getRootType() :near { Root }
 
-            to buildRoot(root :Node)        :Root { root }
             to buildLiteral(value)          :Node { value }
             to buildImport(varName :String) :Node { scope[varName] }
             to buildIbid(tempIndex :int)    :Node { temps[tempIndex] }
 
+            to buildRoot(root :Node) :Root { 
+                assembler.finish()
+                root
+            }
+
             to buildCall(rec :Node, verb :String, args :List[Node]) :Node {
-                caller.call(rec, verb, args)
+                assembler.call(rec, verb, args)
             }
 
             to buildDefine(rValue :Node) :Tuple[Node, int] {

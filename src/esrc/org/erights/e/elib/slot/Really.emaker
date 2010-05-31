@@ -1,0 +1,22 @@
+/** Given a guard, produces a guard which accepts only those values which the
+  * wrapped guard passes through without coercing.
+  *
+  * Note that for an arbitrary guard, this cannot be done other than by
+  * invoking the wrapped guard and checking sameness of the result. */
+def Really {
+    # XXX add optimization for known cases, e.g. any Java class.
+    to get(coercingGuard) {
+        return def reallyGuard {
+            to coerce(specimen, optEjector) {
+                def coerced := coercingGuard.coerce(specimen, optEjector)
+                if (coerced != specimen) {
+                    # XXX unnecessary-printing efficiency problem
+                    throw.eject(optEjector, E.toQuote(coerced) +
+                      " must be same as original specimen " +
+                      E.toQuote(specimen))
+                }
+                return coerced
+            }
+        }
+    }
+}

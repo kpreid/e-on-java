@@ -1,0 +1,103 @@
+# Copyright 2010 Kevin Reid, under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+XXX TODO: Dig up the mailing list discussion for this topic.
+
+XXX linewraps
+The problem is that, depending on the order of serialization, Data-E unserialization may proceed in an order which fails to unserialize, because some reference must be near; in particular, when the recipient of a given call is an object whose creation was deferred.
+
+For example, suppose A and B refer to each other, and A is encountered first:
+
+     /-------\
+     V       |
+   +---+   +---+ 
+-->| A |-->| B |
+   +---+   +---+   
+
+Furthermore, object C is a facet of A, and B refers to A:
+
+     /-------\
+     V       |
+   +---+   +---+ 
+-->| A |-->| B |
+   +---+   +---+   
+    *^*      |
+   +---+     |
+   | C |<----/
+   +---/
+
+Then the deSubgraphKit algorithm:
+  * meets A, descends into its components
+    * meets B, descends into its components
+      * meets A again, produces a promise for A
+      * meets C, descends into its components
+        * meets A again as the receiver for C's uncall
+
+This last step is the problem. We find we have the Data-E code:
+  def t_A := makeA(makeB(t_A, t_A.makeC()))
+which will fail with not-synchronously-callable at makeC. (Note that this problem can only occur if the *recipient* of an object's uncall is another object in the subgraph, which participates in cycles, rather than being an exit or non-cyclic subgraph.)
+
+Another case is when C is not a facet of A, but is the product of makeC(_ :near); this will also fail since t_A is not near when makeC(t_A) is done. Note that unlike the previous case, this cannot be fixed 'statically' (based only on the Data-E graph structure) since it depends on the requirements for makeC's parameters.
+
+The general solution to both of these problems is to recognize that the 'order of execution' in unserialization is not part of the meaningful content of a Data-E graph; therefore, we use the *caller* hook of deSubgraphKit.makeBuilder to include a module which defers calls until they may succeed.
+
+The algorithm used is an incremental topological sort. Before each call is performed, it is examined for dependencies (such as the recipient being near). If it has any, it is deferred until those dependencies have also executed.
+
+The component which replaces E.call in unserialization is called an 'assembler', because its job is to perform the steps of assembling the subgraph from the disorganized parts (calls) in the proper order until it is complete.
+
+Testing the assembler by itself
+-------------------------------
+
+XXX review: The assembler has more general use, as speculated in the April 18 2007 mail; what should the FQN really be?
+  
+  ? def Really := <elib:slot.Really>
+  
+  ? def makeAssembler := <import:org.erights.e.elib.serial.makeAssembler>
+  # value: <makeAssembler>
+  
+  ? def setDependencyBuilder(portrayal, addDependency) {
+  >     if (portrayal =~ [list :Really[List], =="asSet", []]) {
+  >         for x in list { addDependency(x) }
+  >     }
+  > }
+
+The parameters to makeAssembler are a callback which may inspect calls and add additional dependencies on specific references (which is not invoked until the call constructing the recipient has been performed), and the caller which should be used for the underlying real calls (that this is wrapping).
+  
+  ? def a := makeAssembler(setDependencyBuilder, E)
+  # value: <assembler>
+  
+  ? def [y, s, l, x] := [a(1).next(),
+  >                      a(l).asSet(),
+  >                      a(__makeList).run(x, y),
+  >                      a(0).next()]
+  > a.finish()
+  > [y,s,l,x]
+  # value: [2, [1, 2].asSet(), [1, 2], 1]
+
+XXX test the call() based interface.
+
+  ? def l := a(["hello world", a(l).readOnly()]).diverge()
+  > a.finish()
+  > l
+  # value: ["hello world", <***CYCLE***>.readOnly()].diverge()
+
+Data-E ordering
+---------------
+
+To test Data-E, we use the problem case described at the beginning of this document.
+
+  ? def b
+  > def a := ["this is A", b]
+  > bind b := ["this is B", a, a.diverge()]
+  > a
+  # value: ["this is A", ["this is B", <***CYCLE***>, ["this is A", <***CYCLE***>].diverge()]]
+
+  ? def surgeon := <elib:serial.makeSurgeon>.withSrcKit(""); null
+  ? print(def ser := surgeon.serialize(a))
+  # stdout: def t__0 := ["this is A", ["this is B", t__0, t__0.diverge()]]
+
+  ? surgeon.unserialize(ser)
+  # value: ["this is A", ["this is B", <***CYCLE***>, ["this is A", <***CYCLE***>].diverge()]]
+
+
+XXX possibly add the default feature of using rangeSubsetOf to check if the guards of the parameters in the the recipient's alleged type are known to reject promises.

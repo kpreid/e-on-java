@@ -1,0 +1,141 @@
+# Copyright 2007 Kevin Reid, under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+pragma.syntax("0.9")
+pragma.enable("accumulator")
+
+def ESet := <type:org.erights.e.elib.tables.ESet>
+def makeQueue := <elib:vat.makeQueue>
+def makeTraversalKey := <elib:tables.makeTraversalKey>
+def Really := <elib:slot.Really>
+
+def makeImplicitCreationFlexMap(makeValue) {
+    def storage := [].asMap().diverge()
+    return def icfm extends storage {
+        to get(key) { return storage.fetch(key,
+                               fn { storage[key] := makeValue() }) }
+    }
+}
+
+/** Generalization of a standard topological sort, in that edges may be added
+  * to any node not already output. 'initialEdger' is called first, with a
+  * function of two arguments which is used to add edges at that time or later;
+  * 'output' is then called once with each node in the computed order.
+  *
+  * Throws if no progress can be made and there are nodes remaining; i.e. when
+  * there is a cycle in the graph.
+  *
+  * Implementation limitation: null may not be a node. */
+def topologicalSort(nodes :ESet, initialEdger, output) {
+    
+    # Tables of edges
+    def forwardEdges := makeImplicitCreationFlexMap(
+                          fn { [].asSet().diverge() })
+    def reverseCount := makeImplicitCreationFlexMap(fn { 0 })
+    
+    # Queue containing all elements that might have no remaining predecessors
+    def ready := makeQueue()
+    for node in nodes { ready.enqueue(node) }
+
+    def undoneNodes := nodes.diverge()
+    
+    def addEdge(from, ::"to") {
+        require(undoneNodes.contains(from))
+        require(undoneNodes.contains(::"to"))
+        forwardEdges[from].addElement(::"to")
+        reverseCount[::"to"] += 1
+    }
+    initialEdger(addEdge)
+    
+    while (ready.optDequeue() =~ node :notNull) {
+        # Output if the node is actually ready and not already done
+        if (reverseCount[node].isZero() && undoneNodes.contains(node)) {
+            output(node)
+            undoneNodes.remove(node)
+
+            for next in forwardEdges[node] {
+                # Enqueue if there now remain no predecessors
+                def remaining := reverseCount[next] -= 1
+                if (remaining.isZero()) {
+                    ready.enqueue(next)
+                }
+            }
+            forwardEdges.removeKey(node)
+        }
+    }
+    
+    if (forwardEdges.size().aboveZero()) {
+        throw(`Topological sort failed: $forwardEdges remains`)
+    }
+    require(undoneNodes.size().isZero(), 
+      "Shouldn't happen: undoneNodes has things left")
+}
+
+def check {}
+def call {}
+
+def makeAssembler(extraDependencyBuilder, subcaller) {
+    def calls := [].asMap().diverge()
+
+    def assembler {
+        to call(recipient, verb, args) {
+            def record := [def resolution, recipient, verb, args]
+            calls[makeTraversalKey(resolution)] := record
+            return resolution
+        }
+        to run(recipient) {
+            return def callBuilder match [verb, args] {
+                assembler.call(recipient, verb, args)
+            }
+        }
+        to finish() {
+            def addEdge
+            
+            def addDependency(earlier, laterKey, kind) {
+                def earlierKey := makeTraversalKey(earlier)
+                if (calls.maps(earlierKey)) {
+                    addEdge([earlierKey, call], [laterKey, kind])
+                }
+            }
+            
+            #traceln(`${calls.domain()}`)
+            topologicalSort(
+                { # set of node names used in the topo sort
+                    def nodesFlex := [].asSet().diverge()
+                    for key in calls.getKeys() {
+                         nodesFlex.addElement([key, check])
+                         nodesFlex.addElement([key, call])
+                    }
+                  nodesFlex.snapshot()
+                },
+                fn bind addEdge {
+                    # add initial edges
+                    for key => [_, recipient, _, _] in calls {
+                        addEdge([key, check], [key, call])
+                        addDependency(recipient, key, check)
+                    }
+                },
+                fn node {
+                    # process a given node
+                    switch (node) {
+                        match [key, ==check] {
+                            #traceln(`checking ${calls[key]}`)
+                            def [_, recipient, verb, args] := calls[key]
+                            
+                            extraDependencyBuilder(
+                                [recipient, verb, args],
+                                fn what { addDependency(what, key, call) })
+                        }
+                        match [key, ==call] {
+                            #traceln(`doing ${calls[key]}`)
+                            def [resolver, recipient, verb, args] := calls[key]
+                            resolver.resolve(
+                                subcaller.call(recipient, verb, args))
+                            calls.removeKey(key)
+                        }
+                    }
+                })
+        }
+    }
+    return assembler
+}
