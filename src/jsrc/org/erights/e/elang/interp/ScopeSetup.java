@@ -42,6 +42,7 @@ import org.erights.e.elib.serial.Loader;
 import org.erights.e.elib.serial.PassByConstructionAuditor;
 import org.erights.e.elib.serial.PassByCopyAuditor;
 import org.erights.e.elib.serial.PersistentAuditor;
+import org.erights.e.elib.serial.PersistentKeyHolder;
 import org.erights.e.elib.slot.AnyGuard;
 import org.erights.e.elib.slot.AuditChecker;
 import org.erights.e.elib.slot.FinalSlot;
@@ -327,6 +328,8 @@ public final class ScopeSetup {
         sm.init("__abortIncarnation", Ref.broken(E.asRTE(problemStr)));
 
         sm.init("when", safeScopeVow, "<elang:control.when>");
+
+        sm.init("persistenceSealer", PersistentKeyHolder.THE_SEALER);
 
         return sm;
     }
