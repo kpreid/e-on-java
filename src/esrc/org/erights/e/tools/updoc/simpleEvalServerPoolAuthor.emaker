@@ -15,6 +15,10 @@ def simpleEvalServerPoolAuthor(<unsafe>) :near {
 
     def simpleEvalServerPool {
 
+        to requestEvalServerSet(vatNames :List[String]) :vow {
+            return simpleEvalServerPool.requestEvalServerSet(vatNames, [].asMap())
+        }
+
         /**
          * <tt>requestEvalServerSet</tt> tries to satisfy a request for
          * access to multiple eval servers.
@@ -26,9 +30,10 @@ def simpleEvalServerPoolAuthor(<unsafe>) :near {
          * the client is responsible for rescheduling the request.
          *
          * @param vatNames Names of vats for eval servers requested.
+         * @param envExtras extra values for the environment, as for seedVat/3.
          * @return A vow for the set of eval servers requested.
          */
-        to requestEvalServerSet(vatNames :List[String]) :vow {
+        to requestEvalServerSet(vatNames :List[String], envExtras :Map) :vow {
             var result := []
             for i => vatName in vatNames {
                 def runnerKind := switch (vatName) {
@@ -38,7 +43,6 @@ def simpleEvalServerPoolAuthor(<unsafe>) :near {
                 }
                 def vat := makeVat.make(runnerKind, vatName)
                 def makeEvaluator :rcvr := seedVat(vat, `
-
 def makeEvaluatorAuthor :=
   <import:org.erights.e.tools.updoc.makeEvaluatorAuthor>
 def runeAuthor := <elang:cmd.runeAuthor>
@@ -47,9 +51,9 @@ def auths := runeAuthor.defaultAuths(<unsafe>)
 makeEvaluatorAuthor(auths["systemGC"],
                     auths,
                     [].asMap(),
-                    currentVat)
-
-                    `)
+                    currentVat,
+                    envExtras)
+                    `, [ => envExtras ])
                 result += [makeEvaluator]
             }
             result

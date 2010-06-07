@@ -55,11 +55,16 @@ def printBlock(keyword, str, out) :void {
  * @param source The text or twine of the <tt>Updoc</tt> source file
  * @param hash The crypto hash of the <tt>Updoc</tt> source file
  * @param evalServerPool A ref to an <tt>evalServerPool</tt> object
+ * @param thisDir The directory containing the script
  * @param out An output object for reporting results or errors
  * @return A <tt>vow</tt> that becomes the number of failures or
  *         becomes broken with a problem
  */
-def parseAndPlay(source :Twine, hash :int, evalServerPool :rcvr, out) :vow {
+def parseAndPlay(source :Twine, hash :int, evalServerPool :rcvr, thisDir, out) :vow {
+    def makeTraceln := <unsafe:org.erights.e.elib.debug.makeTraceln>
+    def ELoaderAuthor := <elang:interp.ELoaderAuthor>(makeTraceln)
+    def thisLoader := ELoaderAuthor(thisDir, [ "this__uriGetter" => thisLoader ], "updoc$")
+
     try {
         def oldUpdocParser := makeOldUpdocParser(source)
         def script := oldUpdocParser.readScript()
@@ -68,7 +73,7 @@ def parseAndPlay(source :Twine, hash :int, evalServerPool :rcvr, out) :vow {
             null
         } else {
             def player := makeScriptPlayer(script)
-            player.replay(evalServerPool, [], interp.getProps(), out)
+            player.replay(evalServerPool, [], interp.getProps(), thisLoader.getEnvExtras(), out)
         }
     } catch problem {
         if (problem.leaf() =~ sex :SyntaxException) {
@@ -148,7 +153,7 @@ def updocOne(file, path, evalServerPool, out) :vow {
         # to pass source info through (preserving twine-ness), then
         # switch from getText() to getTwine()
         def source := file.getTwine()
-        parseAndPlay(source, hash, evalServerPool, out)
+        parseAndPlay(source, hash, evalServerPool, <file>[file.getParent()], out)
     } else if (endsWithAny(path, [".html", ".htm"]) || htmlAnyway(file, out)) {
         out.lnPrint(`$path:`)
         def html := file.getTwine()
@@ -159,7 +164,7 @@ def updocOne(file, path, evalServerPool, out) :vow {
             out.indent("#                  ").print(problem)
             return null
         }
-        parseAndPlay(source, hash, evalServerPool, out)
+        parseAndPlay(source, hash, evalServerPool, <file>[file.getParent()], out)
     } else {
         if (__makeMap.testProp(interp.getProps(), "updoc.verbose")) {
             out.lnPrint(`ignoring $path`)

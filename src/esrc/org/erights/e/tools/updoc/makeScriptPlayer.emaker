@@ -232,13 +232,13 @@ def makeScriptPlayer(script) :any {
          * @return A <tt>vow</tt> that becomes the number of failed tests or
          *         becomes broken with a problem.
          */
-        to replay(evalServerPool, args, props, out) :vow {
+        to replay(evalServerPool, args, props, envExtras :Map, out) :vow {
             def [resultVow, resolver] := Ref.promise()
 
             def vatNames :List[String] := script.getVatNames()
 
             when (evalServerPool <-
-                    requestEvalServerSet(vatNames)) ->
+                    requestEvalServerSet(vatNames, envExtras)) ->
               done(var makers) :void {
                 def release() :boolean {
                     if (makers != null) {

@@ -12,14 +12,14 @@ def makeTextWriter := <elib:oldeio.makeTextWriter>
 def cmdMakerMaker := <elang:cmd.cmdMakerMaker>
 def makeEvalContextAuthor := <elang:cmd.makeEvalContextAuthor>
 
-def makeEvaluatorAuthor(gc, auths, options, vat) :any {
+def makeEvaluatorAuthor(gc, auths, options, vat, envExtras :Map) :any {
     
     def makeEvalContext := makeEvalContextAuthor(auths,
                                                  options,
                                                  vat,
                                                  false,      #confined
                                                  true,       #explicitIO
-                                                 [].asMap())
+                                                 envExtras)
     
     def cmdLoopMaker := <elang:cmd.cmdLoopMakerAuthor>(gc)
     

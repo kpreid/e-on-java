@@ -2,21 +2,23 @@
 # under the terms of the MIT X license, available from
 # http://www.opensource.org/licenses/mit-license.html
 
-Create our own logging system so that updoc can see the output, and use it to create makeELoader:
+Create our own logging system so that updoc can see the output, and use
+it to create makeELoader:
 
 ? def makeTraceln(fqn) { return def tracer { to run(msg) { println(`$fqn: $msg`) } } }
 ? def makeELoader := <elang:interp.ELoaderAuthor>(makeTraceln)
 
-Create a new loader for the current directory. Every file it loads will get the prefix "updoc$", and have
-myObject in its top-level environment:
+Create a new loader for the current directory. Every file it loads will
+get the prefix "updoc$", and have myObject in its top-level environment:
 
 ? def myObject { }
-? def <this> := makeELoader(<file:.>, [ => myObject, => <this> ], "updoc$")
+? def <newThis> := makeELoader(<this>.getRoot(),
+>                   [ => myObject, "this__uriGetter" => <newThis> ], "updoc$")
 # value: <loader>
 
 Use the this to load a test file. myObject is in the file's top-level environment:
 
-? def obj := <this:test/A>
+? def obj := <newThis:test/A>
 # stdout: updoc$test/A: myObject == <myObject>
 #
 
@@ -50,10 +52,20 @@ Ask the object to load something else, via its <this> loader:
 
 The loader can also be used to load other resources (e.g. icons, text files):
 
-? def <moduleDir> := <this>.getRoot()
+? def <moduleDir> := <newThis>.getRoot()
 ? <moduleDir:test/A.emaker>.getText().split("\n")[0]
 # value: "# This is A.emaker"
 
 However, it doesn't grant write access:
 ? <moduleDir:new.txt>.setText("fails")
 # problem: <NoSuchMethodException: <a ReadOnlyFile>.setText/1>
+
+An ELoader can be uncalled. This is useful for setting up new vats:
+
+? def makeVat := <unsafe:org.erights.e.elib.vat.makeVat>
+? def vat := makeVat.make("headless", "newSeedVat")
+? def seedVat := <elang:interp.seedVatAuthor>(<unsafe>)
+? def remoteA := seedVat(vat, `<this>.getRoot()["test/A.emaker"].getText().split("\n")[0]`, <this>.getEnvExtras())
+? interp.waitAtTop(remoteA)
+? remoteA
+# value: "# This is A.emaker"
