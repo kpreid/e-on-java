@@ -1,6 +1,6 @@
 #!/usr/bin/env rune
 
-pragma.syntax("0.8")
+pragma.syntax("0.9")
 
 # Copyright 2002 Combex, Inc. under the terms of the MIT X license
 # found at http://www.opensource.org/licenses/mit-license.html ................
@@ -61,64 +61,50 @@ Other E options:
      *
      */
     to run(auths) :near {
+        def <file> := auths["file__uriGetter"]
 
-        /**
-         *
-         */
-        def eLauncher {
+        def launch(props, options, parseVerb :String, src :Twine, args, name :String, srcDir) :vow[boolean] {
+            def isInteractive :=
+              argParser.getFlag("--interact", options, false)
+            def isConfined :=
+              argParser.getFlag("--confine", options, false)
+            def optRunnerKind := options.fetch("--runnerKind", fn{})
 
-            /**
-             *
-             */
-            to run(props, options, fname, args) :vow[boolean] {
-                # XXX Remove redundancy between this and interpret/4
+            def makeVat := auths["makeVat"]
+            def seedVat := auths["seedVat"]
+            def parserVat := makeVat.make("headless", `parsing $name`)
 
-                def isInteractive :=
-                  argParser.getFlag("--interact", options, false)
-                def optRunnerKind := options.fetch("--runnerKind", fn{})
+            def parseSetup := seedVat(parserVat, "<elang:launcher.makeParseSetup>(<unsafe>)")
 
-                def makeVat := auths["makeVat"]
-                def seedVat := auths["seedVat"]
-                def name := fname.split("/").last()
-                def parserVat := makeVat.make("headless", `parsing $name`)
+            def parseFunc :rcvr := E.send(parseSetup, parseVerb, [src, props, isInteractive])
 
-                def parseSetup := seedVat(parserVat, "<elang:launcher.makeParseSetup>(<unsafe>)")
-                def parseFunc :rcvr := parseSetup <- parseFile(fname, props, isInteractive)
-
-                def replVat := if (optRunnerKind == null) {
-                    makeVat.getCurrentVat()
-                } else {
-                    makeVat.make(optRunnerKind, `evaling $name`)
-                }
-
-                def startReplRcvr := seedVat(replVat, "<elang:launcher.makeEvalSetup>(<unsafe>)")
-                return startReplRcvr <- run(options, props, isInteractive, args, parseFunc)
+            def replVat := if (optRunnerKind == null) {
+                makeVat.getCurrentVat()
+            } else {
+                makeVat.make(optRunnerKind, `evaling $name`)
             }
 
-            /**
-             *
-             */
+            def envExtras := if (isConfined) {
+                [].asMap()
+            } else {
+                def ELoaderAuthor := <elang:interp.ELoaderAuthor>(auths["makeTraceln"])
+                def <this> := ELoaderAuthor(srcDir, [ => <this> ], "main")
+                <this>.getEnvExtras()
+            }
+
+            def startReplRcvr := seedVat(replVat, "<elang:launcher.makeEvalSetup>(<unsafe>, envExtras)", [ => envExtras ])
+            return startReplRcvr <- run(options, props, isInteractive, isConfined, args, parseFunc)
+        }
+
+        return def eLauncher {
+            to run(props, options, fname, args) :vow[boolean] {
+                def name := fname.split("/").last()
+                def srcDir := <file>[<file>[fname].getParent()]
+                return launch(props, options, "parseFile", fname, args, name, srcDir)
+            }
+
             to interpret(props, options, src, args) :vow[boolean] {
-
-                def isInteractive :=
-                  argParser.getFlag("--interact", options, false)
-                def optRunnerKind := options.fetch("--runnerKind", fn{})
-
-                def makeVat := auths["makeVat"]
-                def seedVat := auths["seedVat"]
-                def parserVat := makeVat.make("headless", `parsing source`)
-
-                def parseSetup := seedVat(parserVat, "<elang:launcher.makeParseSetup>(<unsafe>)")
-                def parseFunc :rcvr := parseSetup <- parseTwine(src, props, isInteractive)
-
-                def replVat := if (optRunnerKind == null) {
-                    makeVat.getCurrentVat()
-                } else {
-                    makeVat.make(optRunnerKind, `evaling source`)
-                }
-
-                def startReplRcvr := seedVat(replVat, "<elang:launcher.makeEvalSetup>(<unsafe>)")
-                return startReplRcvr <- run(options, props, isInteractive, args, parseFunc)
+                return launch(props, options, "parseTwine", src, args, "source", <file:.>)
             }
         }
     }

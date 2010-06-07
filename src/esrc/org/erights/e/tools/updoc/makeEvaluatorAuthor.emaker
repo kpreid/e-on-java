@@ -18,7 +18,8 @@ def makeEvaluatorAuthor(gc, auths, options, vat) :any {
                                                  options,
                                                  vat,
                                                  false,      #confined
-                                                 true)       #explicitIO
+                                                 true,       #explicitIO
+                                                 [].asMap())
     
     def cmdLoopMaker := <elang:cmd.cmdLoopMakerAuthor>(gc)
     

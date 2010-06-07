@@ -25,13 +25,13 @@ def eParser := <elang:syntax.makeEParser>
 def loaderAuthor {
     to run(makeTraceln) {
         return def makeLoader {
-            to run(var sourceDir, envExtras :Map, fqnPrefix :String) {
+            to run(var sourceDir, envExtras :vow[Map], fqnPrefix :String) {
                 #traceln(`creating loader for $fqnPrefix from $sourceDir`)
                 sourceDir := sourceDir.deepReadOnly()
 
                 # Contains the mappings in envExtras, but doesn't contain
                 # an updated traceln.
-                def extendedSafeScope := safeScope.with(envExtras)
+                def &extendedSafeScope := <elib:slot.makeLazySlot>(fn {safeScope.with(envExtras)})
 
                 def compiledCache := [].asMap().diverge()
 

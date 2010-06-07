@@ -61,6 +61,7 @@ def runeAuthor {
         }
         def sysProps := <unsafe:java.lang.makeSystem>.getProperties()
         def defaultProps := makeConstMap.fromProperties(sysProps)
+        def makeTraceln := <unsafe:org.erights.e.elib.debug.makeTraceln>
 
         return ["metain"          => metain,
                 "metaout"         => metaout,
@@ -71,6 +72,7 @@ def runeAuthor {
                 "makeELexer"      => makeELexer,
                 "makeFileFeeder"  => makeFileFeeder,
                 "makeScopeSetup"  => makeScopeSetup,
+                "makeTraceln"     => makeTraceln,
                 "file__uriGetter" => <file>,
                 "systemGC"        => systemGC,
                 "defaultProps"    => defaultProps]
