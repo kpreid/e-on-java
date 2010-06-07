@@ -16,22 +16,22 @@ def virtualSeedVatAuthor(makeVat, seedVat, introducer) :near {
     def virtualSeedVat {
 
         /**
-         * Like seedVat.run/2, but returns a CapTP ref rather than a
+         * Like seedVat.run/3, but returns a CapTP ref rather than a
          * boot-comm ref.
          */
-        to run(vat :Vat, privSrc :String) :rcvr {
+        to run(vat :Vat, privSrc :String, envExtras :Map) :rcvr {
             def starter := seedVat <- run(vat, `
                 def eParser := <elang:syntax.makeEParser>
                 introducer.onTheAir()
                 def starter {
                     to start(privSrc :String) :String {
                         def privExpr := eParser(privSrc)
-                        def result := privExpr.eval(privilegedScope)
+                        def result := privExpr.eval(privilegedScope.with(envExtras))
                         def sr := makeSturdyRef.temp(result)
                         return introducer.sturdyToURI(sr)
                     }
                 }
-            `)
+            `, [ => envExtras ])
             def uriVow := starter <- start(privSrc)
             def sturdyVow := when (uriVow) -> done(uri :String) :SturdyRef {
                 return introducer.sturdyFromURI(uri)
@@ -39,6 +39,11 @@ def virtualSeedVatAuthor(makeVat, seedVat, introducer) :near {
                 throw(problem)
             }
             return sturdyVow <- getRcvr()
+        }
+
+        /** Like run/3, but with envExtras as [].asMap() */
+        to run(vat :Vat, privSrc :String) :rcvr {
+            return virtualSeedVat(vat, privSrc, [].asMap())
         }
 
         /**
@@ -63,6 +68,30 @@ def seedVatAuthor(<unsafe>) :near {
     def makeVat := <unsafe:org.erights.e.elib.vat.makeVat>
     def makeVatSeeder := <unsafe:org.erights.e.elang.interp.makeVatSeeder>
 
+    def surgeon := <elib:serial.makeSurgeon>.withSrcKit("de: ").diverge()
+    surgeon.addLoader(<unsafe:org.erights.e.meta.java.io.makeFileGetter>.getTHE_ONE(), "file__uriGetter")
+    surgeon.addLoader(<unsafe>, "unsafe__uriGetter")
+
+    def makePersistentKeyHolder := <unsafe:org.erights.e.elib.serial.makePersistentKeyHolder>
+    def pBrand    := makePersistentKeyHolder.getTHE_BRAND()
+    def pUnsealer := makePersistentKeyHolder.getTHE_UNSEALER()
+    def ImportLoader := <type:org.erights.e.elang.interp.ImportLoader>
+    surgeon.addFromSafeScope()
+    def persistUncaller {
+        to optUncall(obj) :near {
+            if (Ref.isNear(obj)) {
+                if (obj.__optSealedDispatch(pBrand) =~ box :notNull) {
+                    return pUnsealer.unseal(box)
+                } else if (obj =~ _ :ImportLoader) {
+                    return [&<import>, "get", []]
+                }
+            } else {
+                return null
+            }
+        }
+    }
+    surgeon.addUncaller(persistUncaller)
+
     def seedVat {
 
         /**
@@ -71,6 +100,10 @@ def seedVatAuthor(<unsafe>) :near {
          * The privSrc is evaluated as a single expression, not as a series of
          * expressions. The <tt>interp</tt> it has in scope responds only to
          * the getProps() message.
+         * <p>
+         * envExtras will be serialised using the persistenceSealer, passed
+         * to the new vat and added to its privilegedScope. This is mainly to
+         * allow loaders for dependencies to be passed easily.
          *
          * @return A remote promise for the value of the expression.
          *         This promise is an inter-vat reference using the
@@ -78,9 +111,10 @@ def seedVatAuthor(<unsafe>) :near {
          *         PassByProxy or DeepPassByCopy, or an error will result in
          *         trying to resolve the promise.
          */
-        to run(vat :Vat, privSrc :String) :rcvr {
+        to run(vat :Vat, privSrc :String, envExtras :Map) :rcvr {
+            def envExtrasStr := surgeon.serialize(envExtras)
             def bootstrapCode := `
-                def eval(privSrc :String) {
+                def eval(privSrc :String, envExtrasStr) {
                     def eParser := <elang:syntax.makeEParser>
                     def runeAuthor := <elang:cmd.runeAuthor>
                     def auths := runeAuthor.defaultAuths(<unsafe>)
@@ -94,13 +128,26 @@ def seedVatAuthor(<unsafe>) :near {
                                                                interp.getProps(),
                                                                interp,
                                                                null)
+
+                    def surgeon := <elib:serial.makeSurgeon>.withSrcKit("de: ").diverge()
+                    surgeon.addLoader(<file>, "file__uriGetter")
+                    surgeon.addLoader(<unsafe>, "unsafe__uriGetter")
+                    surgeon.addFromSafeScope()
+
+                    def envExtras := surgeon.unserialize(envExtrasStr)
+
                     def privExpr := eParser(privSrc)
-                    return privExpr.eval(privScope)
+                    return privExpr.eval(privScope.with(envExtras))
                 }
             `
             def auths := runeAuthor.defaultAuths(<unsafe>)
             def eval := vat.seed(makeVatSeeder(bootstrapCode, auths["defaultProps"]))
-            return eval <- (privSrc)
+            return eval <- (privSrc, envExtrasStr)
+        }
+
+        /** Like run/3, but with envExtras as [].asMap() */
+        to run(vat :Vat, privSrc :String) :rcvr {
+            return seedVat(vat, privSrc, [].asMap())
         }
 
         /**
