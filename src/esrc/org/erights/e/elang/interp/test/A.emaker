@@ -1,0 +1,15 @@
+# This is A.emaker
+
+traceln(`myObject == $myObject`)
+
+def obj {
+    to loadB() {
+        def b := <this:test/B>
+        traceln("loaded B")
+        return b
+    }
+
+    to getSafeScope() {
+        return safeScope
+    }
+}

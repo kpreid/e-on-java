@@ -1,0 +1,4 @@
+traceln(`B's myObject == $myObject`)
+
+def objB {
+}

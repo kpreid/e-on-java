@@ -1,0 +1,113 @@
+# Copyright University of Southampton IT Innovation Centre, 2010,
+# under the terms of the MIT X license, available from
+# http://www.opensource.org/licenses/mit-license.html
+
+pragma.syntax("0.9")
+
+def eParser := <elang:syntax.makeEParser>
+
+/** These loaders are similar to the normal E <import> mechanism, except that
+ * they load code from a given directory rather than from classpath.
+ *
+ * You can specify extra bindings to be added to the environment (scope) of each
+ * imported file. This is useful for testing and for doing dependency injection.
+ *
+ * By convention, these bindings include the loader itself as <this>, allowing a
+ * file to import other files from the same module.
+ *
+ * envExtras should not contain objects that break confinement or confer
+ * authority, but this is not enforced. An ELoader will freely give out its
+ * envExtras.
+ *
+ * Typically, they are all E loaders
+ * themselves, giving modules access to their dependencies.
+ */
+def loaderAuthor {
+    to run(makeTraceln) {
+        return def makeLoader {
+            to run(var sourceDir, envExtras :Map, fqnPrefix :String) {
+                #traceln(`creating loader for $fqnPrefix from $sourceDir`)
+                sourceDir := sourceDir.deepReadOnly()
+
+                # Contains the mappings in envExtras, but doesn't contain
+                # an updated traceln.
+                def extendedSafeScope := safeScope.with(envExtras)
+
+                def compiledCache := [].asMap().diverge()
+
+                # There are several scope layouts:
+                # - our safeScope's layout
+                # - each loaded file's safeScope layout (with the file's FQName)
+                # - defaultScopeLayout (containing envExtras's names)
+                # - each loaded file's top-level scope layout (defaultScopeLayout + FQName)
+
+                # There are also several environments (scopes):
+                # - our safeScope (from <import>; contains our private traceln)
+                # - each loaded file's safeScope (contains the file's traceln)
+                # - each loaded file's top-level scope (the file's safeScope + envExtras' values)
+
+                # Create an extension of baseScope with the right FQName and traceln
+                # for this file. The new scope's safeScope is an extension of safeScope
+                # with the new FQName and traceln too.
+                def makeFileScope(baseScope, suffix) {
+                    def fileFQName := fqnPrefix + suffix
+                    def fileTraceln := makeTraceln(fileFQName)
+
+                    # Every file sees a different "safeScope". This doesn't
+                    # have the other envExtras, but it does have a
+                    # file-specific traceln and the file-specific FQName.
+                    def safeScopeWithTraceln := safeScope.withPrefix(fileFQName + "$").with("traceln", fileTraceln)
+
+                    # The file's top-level env is the baseScope + the
+                    # file-specific safeScopeWithTraceln and FQName.
+                    return baseScope.withPrefix(fileFQName + "$").with("safeScope", safeScopeWithTraceln).with("traceln", fileTraceln)
+                }
+
+                return def loader {
+                    to get(name) {
+                        return compiledCache.fetch(name, fn {
+                            def src := sourceDir[`$name.emaker`].getTwine()
+                            compiledCache[name] := eParser(src).compile(makeFileScope(extendedSafeScope, name))
+                        })()
+                    }
+
+                    /** Like get/1, but evaluate in an extension of baseScope rather than of safeScope. */
+                    to getWithBase(pathName, baseScope) {
+                        def i := pathName.lastIndexOf1('.')
+                        def name := pathName(0, i)
+                        def src := sourceDir[pathName].getTwine()
+                        def extendedBaseScope := baseScope.with(envExtras)
+                        return eParser(src).eval(makeFileScope(extendedBaseScope, name))
+                    }
+
+                    /** Get the (readonly) source directory. This is useful for loading icons, help files, etc. */
+                    to getRoot() {
+                        return sourceDir
+                    }
+
+                    to getEnvExtras() {
+                        return envExtras
+                    }
+
+                    to __optSealedDispatch(brand) {
+                        if (brand == persistenceSealer.getBrand()) {
+                            return persistenceSealer.seal([makeLoader, "run", [sourceDir, envExtras, fqnPrefix]])
+                        }
+                        return null
+                    }
+                }
+            }
+
+            to __optSealedDispatch(brand) {
+                if (brand == persistenceSealer.getBrand()) {
+                    return persistenceSealer.seal([loaderAuthor, "run", [makeTraceln]])
+                }
+                return null
+            }
+        }
+    }
+
+    to __optUncall() {
+        return [<import>, "get", ["org.erights.e.elang.interp.ELoaderAuthor"]]
+    }
+}

@@ -1,0 +1,59 @@
+# Copyright University of Southampton IT Innovation Centre, 2010,
+# under the terms of the MIT X license, available from
+# http://www.opensource.org/licenses/mit-license.html
+
+Create our own logging system so that updoc can see the output, and use it to create makeELoader:
+
+? def makeTraceln(fqn) { return def tracer { to run(msg) { println(`$fqn: $msg`) } } }
+? def makeELoader := <elang:interp.ELoaderAuthor>(makeTraceln)
+
+Create a new loader for the current directory. Every file it loads will get the prefix "updoc$", and have
+myObject in its top-level environment:
+
+? def myObject { }
+? def <this> := makeELoader(<file:.>, [ => myObject, => <this> ], "updoc$")
+# value: <loader>
+
+Use the this to load a test file. myObject is in the file's top-level environment:
+
+? def obj := <this:test/A>
+# stdout: updoc$test/A: myObject == <myObject>
+#
+
+However, myObject is not in A's safeScope:
+
+? obj.getSafeScope()["myObject"]
+# problem: <NullPointerException: Internal: Variable definition not found: myObject>
+
+safeScope does contain a traceln, which specific to the imported file:
+
+? obj.getSafeScope()["traceln"]("Hi")
+# stdout: updoc$test/A: Hi
+#
+
+Check the loaded object has the correct type:
+
+? obj.__getAllegedType().getFQName()
+# value: "updoc$test/A$obj"
+
+Ask the object to load something else, via its <this> loader:
+
+? def b := obj.loadB()
+# stdout: updoc$test/B: B's myObject == <myObject>
+#         updoc$test/A: loaded B
+#
+
+# value: <objB>
+
+? b.__getAllegedType().getFQName()
+# value: "updoc$test/B$objB"
+
+The loader can also be used to load other resources (e.g. icons, text files):
+
+? def <moduleDir> := <this>.getRoot()
+? <moduleDir:test/A.emaker>.getText().split("\n")[0]
+# value: "# This is A.emaker"
+
+However, it doesn't grant write access:
+? <moduleDir:new.txt>.setText("fails")
+# problem: <NoSuchMethodException: <a ReadOnlyFile>.setText/1>
