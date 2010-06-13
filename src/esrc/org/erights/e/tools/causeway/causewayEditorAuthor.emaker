@@ -129,6 +129,7 @@ def causewayEditorAuthor(rezKit,
         # menuHelp
         [def doHelpTopics,
          
+         def doWaterkenSimpleAjaxExample,
          def doWaterkenAjaxExample,
          def doWaterkenPromiseExample,
          def doAmbientTalkExample,
@@ -524,6 +525,30 @@ def causewayEditorAuthor(rezKit,
         /**
          *
          */
+        bind doWaterkenSimpleAjaxExample extends abstractAction(doWaterkenSimpleAjaxExample) {
+            to run() :void {
+#               for devrune
+#               def eHome := "~/e/src/esrc"
+                
+                def eHome := props["e.home"]
+                
+                def eHomeDir := <file>[eHome]
+                
+                def traces := [eHomeDir["/scripts/test/causeway/waterken/traces/simple_purchase_ajax.log"]]
+                def sources := eHome + "/scripts/test/causeway/waterken/sources"
+                openNewEditor(sources, traces)
+            }
+            to getLabel()            :String {
+                return "Open Waterken Example (Simple Ajax-style)"
+            }
+            to getOptTip()           :String {
+                return "Makes new viewer for example sources and trace log"
+            }
+        }
+        
+        /**
+         *
+         */
         bind doWaterkenAjaxExample extends abstractAction(doWaterkenAjaxExample) {
             to run() :void {
 #               for devrune
@@ -661,6 +686,7 @@ def causewayEditorAuthor(rezKit,
                    M.menu("&Help",
                           [doHelpTopics,
                            M.sep(),
+                           doWaterkenSimpleAjaxExample,
                            doWaterkenAjaxExample,
                            doWaterkenPromiseExample,
                            doAmbientTalkExample,
