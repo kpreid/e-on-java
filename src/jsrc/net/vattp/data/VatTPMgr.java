@@ -29,6 +29,7 @@ import org.erights.e.elib.tables.FlexList;
 import org.erights.e.elib.vat.Vat;
 
 import java.io.IOException;
+import java.net.Inet6Address;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -233,7 +234,14 @@ public class VatTPMgr {
         String[] parts = new String[ips.length * 2];
         for (int i = 0; i < ips.length; i++) {
             parts[2 * i] = ips[i].getCanonicalHostName() + suffix;
-            parts[2 * i + 1] = ips[i].getHostAddress() + suffix;
+
+            String hostPart;
+            if (ips[i] instanceof Inet6Address) {
+                hostPart = "[" + ips[i].getHostAddress() + "]";
+            } else {
+                hostPart = ips[i].getHostAddress() + suffix;
+            }
+            parts[2 * i + 1] = hostPart + suffix;
         }
         return ConstList.fromArray(parts);
     }

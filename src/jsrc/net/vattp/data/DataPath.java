@@ -296,7 +296,7 @@ class DataPath implements MsgHandler, TickReactor {
      * @param remoteVatID              the vatID of the remote vat
      * @param remoteAddr               is the dotted IP address or DNS name and
      *                                 port number of the place to try for the
-     *                                 remote vat.
+     *                                 remote vat. "[ipv6-addr]:port" for IPv6.
      * @param addressesTried           is a Hashtable of the InetAddresses
      *                                 already tried to locate the vat which
      *                                 failed due to host, rather than port
@@ -349,8 +349,9 @@ class DataPath implements MsgHandler, TickReactor {
                                                     null);
 
         myRemoteAddr = remoteAddr;
+
         // Get the port number from the address
-        int colon = remoteAddr.indexOf(':');
+        int colon = remoteAddr.lastIndexOf(':');
         if (0 <= colon) {
             myRemotePortNumber =
               Integer.parseInt(remoteAddr.substring(colon + 1));

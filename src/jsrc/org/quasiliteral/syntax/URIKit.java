@@ -57,7 +57,7 @@ public class URIKit {
         for (char c = '0'; '9' >= c; c++) {
             URICs[c] = true;
         }
-        String allowed = ";/?:@&=+$,-_.!~*'()%\\|#";
+        String allowed = ";/?:@&=+$,-_.!~*'()%\\|#[]";
         for (int i = 0; i < allowed.length(); i++) {
             URICs[allowed.charAt(i)] = true;
         }
@@ -106,6 +106,8 @@ public class URIKit {
      * In addition, by special dispensation, we allow '\\', which we normalize
      * to '/', and '|', which we normalize to ':', and '#' which is the
      * fragment indicator.
+     * <p/>
+     * RFC 2732 ("IPv6 Literal Addresses in URL's") adds [] to this set.
      * <p/>
      * {@link org.erights.e.meta.java.io.FileGetter FileGetter} also does these
      * normalizations dynamically.

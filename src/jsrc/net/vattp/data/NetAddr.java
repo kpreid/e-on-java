@@ -40,16 +40,17 @@ public class NetAddr {
     /**
      * Construct a NetAddr from a string in the form: hostname:portnumber or
      * hostname. If the :portnumber is omitted, port number 0 will be assumed.
-     * The hostname may be either a DNS name or an IP number in dotted decimal
-     * format. It may be both of these separated by a slash, in which case only
-     * the part after the slash is significant. If the significant part of the
-     * hostname is absent, then the port is associated with all local IP
-     * addresses.
+     * The hostname may be either a DNS name, an IPv4 number in dotted decimal
+     * format, or an IPv6 address. It may be two of these separated by a slash,
+     * in which case only the part after the slash is significant. If the
+     * significant part of the hostname is absent, then the port is
+     * associated with all local IP addresses.
      * <p/>
      * Examples: <pre>
      *   "the-earth.communities.com/205.162.51.187:4568"
      *   "the-earth.communities.com:4568"
      *   "205.162.51.187:4568"
+     *   "[::1]:4568"
      *   "the-earth.communities.com"
      *   ":4568"
      *   ""
@@ -64,7 +65,7 @@ public class NetAddr {
         if (optAddr == null) {
             optAddr = "";
         }
-        int colon = optAddr.indexOf(':');
+        int colon = optAddr.lastIndexOf(':');
         if (0 > colon) {
             myPortNumber = 0;
         } else {
@@ -155,7 +156,11 @@ public class NetAddr {
         if (myOptIP == null) {
             return ":" + myPortNumber;
         } else {
-            return myOptIP.getHostAddress() + ":" + myPortNumber;
+            String host = myOptIP.getHostAddress();
+            if (host.indexOf(":") != -1) {
+                host = "[" + host + "]";
+            }
+            return host + ":" + myPortNumber;
         }
     }
 }
