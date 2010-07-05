@@ -239,7 +239,7 @@ public class VatTPMgr {
             if (ips[i] instanceof Inet6Address) {
                 hostPart = "[" + ips[i].getHostAddress() + "]";
             } else {
-                hostPart = ips[i].getHostAddress() + suffix;
+                hostPart = ips[i].getHostAddress();
             }
             parts[2 * i + 1] = hostPart + suffix;
         }
