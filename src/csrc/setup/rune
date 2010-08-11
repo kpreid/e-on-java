@@ -1,0 +1,142 @@
+#!/usr/bin/env bash
+
+# Copyright 2002 Combex, Inc. under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+# E In-place Driver Script
+# Simplified version of rune-template.txt that assumes the script is
+# inside $EHOME and libraries are installed separately (e.g. by some
+# package manager)
+
+set -e
+
+
+EHOME=`dirname "$0"`/
+
+# (will search in $PATH if $RUNE_JRE_BIN is not set, which will
+# be the case if java is installed as a native package)
+JCMD="${RUNE_JRE_BIN}java"
+
+OS=`uname`
+
+# SEP is the platform dependent pathlist separator. On
+# MSWindows/cygwin/win32, it's ";". Everywhere else it's ":".
+#
+# Used to build the -cp value to passed to java.
+if [ "$OS" = "win32" ]; then
+    SEP=";"
+else
+    SEP=":"
+fi
+
+
+# The initial classpath (which is actually a pathlist -- a list of
+# filepaths).
+
+EPATH=${EHOME}e.jar
+
+
+# This function normalizes a file path so E will recognize it. In the
+# Cygwin environment, this needs to undo the funny path prefix
+# manipulation done by cygwin, such as turning "d:" into "/cygdrive/d/", or
+# "d:/cygwin/bin" into "/usr/bin". However, we still use only forward
+# slashes, not backslashes, as path separators, in order for the
+# normalized path to pass through bash without needing further escapes.
+#
+# In all other environments, this is an identity function
+
+function normalizeEPath {
+    if (type -p cygpath.exe > /dev/null); then
+        cygpath -m -- "$1"
+    else
+        echo "$1"
+    fi
+}
+
+# What to say if I'm confused
+
+function usage {
+    echo "usage: rune <s-option>* --? (<fname> <arg>*)?"
+    echo "For more usage help, say \"rune --help\""
+    exit -1
+}
+
+
+# JOPTS are options to Java
+
+declare -a JOPTS
+
+function jpush {
+    JOPTS[${#JOPTS[@]}]=$1
+}
+
+jpush "-Xfuture"
+jpush "-De.home=${EHOME}"
+
+
+# EOPTS are options to Rune
+declare -a EOPTS
+
+function epush {
+    EOPTS[${#EOPTS[@]}]=$1
+}
+
+
+# Either zero or one long
+declare -a FNAME
+
+
+EXECFLAG=exec
+
+while [ $(($# >= 1)) = 1 ]; do
+    case $1 in
+        -cpa)         shift
+                      if [ $(($# < 1)) = 1 ]; then usage; fi
+                      EPATH=${EPATH}${SEP}$1
+                      shift;;
+        -cpb)         shift
+                      if [ $(($# < 1)) = 1 ]; then usage; fi
+                      EPATH=$1${SEP}${EPATH}
+                      shift;;
+        -D*)          jpush "$1"; shift;;
+        -J*)          jpush "${1#-J}"; shift;;
+        -show)        EXECFLAG=show; shift;;
+        --)           shift;
+                      if [ $(($# < 1)) = 1 ]; then break; fi
+                      FNAME[0]=`normalizeEPath "$1"`; shift;
+                      break;;
+        --*)          epush "$1"; shift;;
+        -.*)          FNAME[0]=`normalizeEPath "$1"`; shift;
+                      break;;
+        -)            FNAME[0]=`normalizeEPath "$1"`; shift;
+                      break;;
+        -*)           usage;;
+        *)            FNAME[0]=`normalizeEPath "$1"`; shift;
+                      break;;
+    esac
+done
+
+FNAME1="${FNAME[@]}"
+
+# XXX kludge: For SWT to work on the Mac (starting with OS X 10.5), we
+# need the -XstartOnFirstThread flag for some reason. However, this
+# flag is incompatible with AWT on the Mac for some reason, so we use
+# it only if the FNAME extension is e-swt and we're on a Mac
+if [ "${FNAME1##*.}" = "e-swt" ]; then
+    if [ "$OS" = "mac" ]; then
+        jpush "-XstartOnFirstThread"
+    fi
+fi
+
+CMD=("${JCMD}" -cp "${EPATH}" "${JOPTS[@]}" \
+    org.erights.e.elang.interp.Rune "${EOPTS[@]}" \
+    "${FNAME[@]}" "$@")
+
+if [ $EXECFLAG = exec ]; then
+    command "${CMD[@]}"
+else
+    echo LD_LIBRARY_PATH=\"$LD_LIBRARY_PATH\"
+    for i in "${CMD[@]}"; do
+        echo $i
+    done
+fi

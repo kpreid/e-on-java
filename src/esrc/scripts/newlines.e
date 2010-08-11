@@ -51,6 +51,7 @@ def extensions := [
     "e-swt" => true,
     "edev" => true,
     "Makefile" => true,
+    "rune" => true,
     "mk" => true,
     "h" => true,
     "c" => true,

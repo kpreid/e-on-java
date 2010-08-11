@@ -34,6 +34,7 @@ targdir-clobber:
 setup:
 	-rm -rf $(TOP)/dist
 	mkdir -p $(TOP)/dist/bin
+	mkdir -p $(TOP)/dist/0install
 	cp -rf $(TOP)/src/bin/icons $(TOP)/dist/bin
 ifneq "$(OSDIR)" "posix"
 	cp -rf $(TOP)/src/bin/$(OSDIR) $(TOP)/dist/bin
