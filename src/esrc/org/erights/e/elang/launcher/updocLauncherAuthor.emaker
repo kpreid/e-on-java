@@ -48,9 +48,9 @@ To learn updoc, see <http://www.erights.org/elang/tools/updoc.html>.`
                 if (eHome.endsWith("/")) {
                     eHome := eHome(0, eHome.size() -1)
                 }
-                return eLauncher(props,
+                return eLauncher.interpret(props,
                                  options,
-                                 `$eHome/scripts/updoc.e`,
+                                 <resource:scripts/updoc.e>.getTwine(),
                                  [fname] + args)
             }
 
