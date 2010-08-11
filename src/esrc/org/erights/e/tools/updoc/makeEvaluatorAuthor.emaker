@@ -7,6 +7,7 @@ pragma.syntax("0.8")
 
 def EExpr := <type:org.erights.e.elang.evm.EExpr>
 def Expr := any[EExpr, Twine, <type:org.quasiliteral.term.Term>]
+def propUtils := <import:org.erights.e.tools.collect.propUtils>
 
 def makeTextWriter := <elib:oldeio.makeTextWriter>
 def cmdMakerMaker := <elang:cmd.cmdMakerMaker>
@@ -25,7 +26,12 @@ def makeEvaluatorAuthor(gc, auths, options, vat, envExtras :Map) :any {
     
     def makeEvaluator {
         to run(args, props) :any {
-            
+
+            # Show each expression before evaluating it
+            def trace := propUtils.testProp(props, "updoc.trace")
+
+            def progressOut := auths["metaout"]
+
             def [metaout, metaoutBuf] := makeTextWriter.makeBufferingPair()
             
             def cmdLoop
@@ -61,9 +67,15 @@ def makeEvaluatorAuthor(gc, auths, options, vat, envExtras :Map) :any {
                 to evaluateForReport(expr :Expr, expectProblem :boolean) :vow[Tuple[String, boolean]] {
                     cmdLoop.setShowEStack(!expectProblem)
 
+                    if (trace) {
+                        progressOut.print(`$expr`)
+                    }
                     when (evalPrint(expr)) ->
                       done(exitStatus :boolean) :Tuple[String, boolean] {
                         
+                        if (!trace) {
+                            progressOut.print(".")
+                        }
                         def transcript := metaoutBuf.snapshot()
                         metaoutBuf.setLength(0)
                         [transcript, exitStatus]
