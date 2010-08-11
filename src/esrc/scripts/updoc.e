@@ -12,14 +12,13 @@ traceline("started")
 def makeURL := <unsafe:java.net.makeURL>
 def URL := <type:java.net.URL>
 def MalformedURLException := <type:java.net.MalformedURLException>
-def SyntaxException := <type:org.quasiliteral.syntax.SyntaxException>
-
 def <tools> := <import:org.erights.e.tools.*>
 def makeHashCache := <tools:updoc.makeHashCache>
-def oneAtATimeVow := <tools:collect.oneAtATimeVow>
-def html2updoc := <tools:html.html2updoc>
-def makeOldUpdocParser := <tools:updoc.makeOldUpdocParser>
-def makeScriptPlayer := <tools:updoc.makeScriptPlayer>
+
+#introducer onTheAir()
+
+#def makeCapImporter := <import:org.erights.e.tools.args.makeCapImporter>
+def simpleEvalServerPoolAuthor := <tools:updoc.simpleEvalServerPoolAuthor>
 
 def optCacheFile :=
   if (interp.getProps().fetch("e.home", fn{}) =~ eHomeName :notNull) {
@@ -29,193 +28,9 @@ def optCacheFile :=
 }
 def hashCache := makeHashCache(optCacheFile)
 
-
-def withoutSuffix := <tools:text.withoutSuffix>
-
-/**
- * <tt>printBlock</tt>
- *
- * @param keyword
- * @param str
- * @param out
- */
-def printBlock(keyword, str, out) :void {
-    # "+ 2" for the colon and space
-    def prefix := " " * (keyword.size() + 2)
-    def shortStr := withoutSuffix(str, "\n")
-    out.indent(prefix).print(`$keyword: $shortStr`)
-    # blank line for removed newline
-    out.println()
-}
-
-/**
- * <tt>parseAndPlay</tt> parses the <tt>Updoc</tt> source then runs
- * the script and reports the results.
- *
- * @param source The text or twine of the <tt>Updoc</tt> source file
- * @param hash The crypto hash of the <tt>Updoc</tt> source file
- * @param evalServerPool A ref to an <tt>evalServerPool</tt> object
- * @param thisDir The directory containing the script
- * @param out An output object for reporting results or errors
- * @return A <tt>vow</tt> that becomes the number of failures or
- *         becomes broken with a problem
- */
-def parseAndPlay(source :Twine, hash :int, evalServerPool :rcvr, thisDir, out) :vow {
-    def makeTraceln := <unsafe:org.erights.e.elib.debug.makeTraceln>
-    def ELoaderAuthor := <elang:interp.ELoaderAuthor>(makeTraceln)
-    def thisLoader := ELoaderAuthor(thisDir, [ "this__uriGetter" => thisLoader ], "updoc$")
-
-    try {
-        def oldUpdocParser := makeOldUpdocParser(source)
-        def script := oldUpdocParser.readScript()
-        if (script.isEmpty()) {
-            hashCache.put(hash)
-            null
-        } else {
-            def player := makeScriptPlayer(script)
-            player.replay(evalServerPool, [], interp.getProps(), thisLoader.getEnvExtras(), out)
-        }
-    } catch problem {
-        if (problem.leaf() =~ sex :SyntaxException) {
-            printBlock("***script stopped by", `$sex`,
-                       out)
-        } else {
-            printBlock("***script stopped by", `$problem
-${problem.eStack()}
-
-${problem.javaStack()}`,
-                       out)
-        }
-        Ref.broken(problem)
-    }
-}
-
-def endsWithAny(name, suffixList) :boolean {
-    for suffix in suffixList {
-        if (name.endsWith(suffix)) {
-            return true
-        }
-    }
-    false
-}
-
-
-def htmlAnyway(file, out) :boolean {
-    if (file !~ _ :URL) {
-        return false
-    }
-    def path := file.toExternalForm()
-    def parts := path.split("/")
-    def last := parts[parts.size()-1]
-    if (last =~ `@_.@_`) {
-        return false
-    }
-    if (file.getText().startsWith("<!DOCTYPE html")) {
-        if (__makeMap.testProp(interp.getProps(), "updoc.verbose")) {
-            out.lnPrint(`assuming html: $path`)
-        }
-        return true
-    } else {
-        return false
-    }
-}
-
-/**
- * <tt>updocOne</tt> runs <tt>Updoc</tt> on the source of a single
- * <tt>Updoc</tt> file or on the results of an <tt>html2updoc</tt> conversion.
- * <p>
- * <tt>Updoc</tt> files must end with <tt>.updoc</tt>, <tt>.e</tt>,
- * <tt>.e-awt</tt>, <tt>.e-swt</tt>,
- * <tt>.emaker</tt>, <tt>.caplet</tt>, or <tt>.txt</tt>. <tt>HTML</tt> files
- * must end with <tt>.html</tt> or <tt>.htm</tt>. All other files are ignored.
- *
- * @param file A <tt>File</tt> or <tt>URL</tt> object
- * @param path The path of the file
- * @param evalServerPool A ref to an <tt>evalServerPool</tt> object
- * @param out An output object for reporting results or errors
- * @return A <tt>vow</tt> that becomes the number of failures or
- *         becomes broken with a problem
- */
-def updocOne(file, path, evalServerPool, out) :vow {
-    def hash := file.getCryptoHash()
-    if (hashCache.has(hash)) {
-        if (__makeMap.testProp(interp.getProps(), "updoc.verbose")) {
-            out.lnPrint(`skipping $path`)
-        }
-        null
-    } else if (endsWithAny(path, [".updoc",
-                                  ".e", ".e-awt", ".e-swt",
-                                  ".emaker",
-                                  ".caplet",
-                                  ".txt"])) {
-        out.lnPrint(`$path:`)
-        # XXX Once E is faster, and the simple__quasiParser is fixed
-        # to pass source info through (preserving twine-ness), then
-        # switch from getText() to getTwine()
-        def source := file.getTwine()
-        parseAndPlay(source, hash, evalServerPool, <file>[file.getParent()], out)
-    } else if (endsWithAny(path, [".html", ".htm"]) || htmlAnyway(file, out)) {
-        out.lnPrint(`$path:`)
-        def html := file.getTwine()
-        def source := try {
-            html2updoc(html)
-        } catch problem {
-            out.lnPrint(`can't parse $path: `)
-            out.indent("#                  ").print(problem)
-            return null
-        }
-        parseAndPlay(source, hash, evalServerPool, <file>[file.getParent()], out)
-    } else {
-        if (__makeMap.testProp(interp.getProps(), "updoc.verbose")) {
-            out.lnPrint(`ignoring $path`)
-        }
-        null
-    }
-}
-
-/**
- * <tt>updoc</tt> runs <tt>Updoc</tt> on a <tt>url</tt>, <tt>file</tt>, or
- * <tt>directory</tt>.
- *
- * @param filedir A <tt>url</tt> or <tt>file</tt> or <tt>directory</tt> object
- * @param evalServerPool A ref to an <tt>evalServerPool</tt> object
- * @return A <tt>vow</tt> that becomes the number of failures or
- *         becomes broken with a problem
- * @author Terry Stanley
- * @author Mark S. Miller
- */
-def updoc(filedir, evalServerPool :rcvr) :vow {
-    var failures := 0
-    if (filedir =~ url :URL) {
-        updocOne(url,
-                 url.toExternalForm(),
-                 evalServerPool,
-                 stdout)
-    } else if (filedir.isDirectory()) {
-        def resultVow := oneAtATimeVow(filedir.list(), def _(_, name) :any {
-            when (def thisResult:= updoc(filedir[name], evalServerPool)) -> {
-                failures += thisResult
-            }
-        })
-        Ref.whenResolved(resultVow, def _(_) :void {
-            hashCache.checkpoint()
-        })
-        when (resultVow) -> {
-            failures
-        }
-    } else {
-        updocOne(filedir,
-                 filedir.getPath(),
-                 evalServerPool,
-                 stdout)
-    }
-}
-
-#introducer onTheAir()
-
-#def makeCapImporter := <import:org.erights.e.tools.args.makeCapImporter>
-def simpleEvalServerPoolAuthor := <tools:updoc.simpleEvalServerPoolAuthor>
-
+def makeTraceln := <unsafe:org.erights.e.elib.debug.makeTraceln>
+def ELoaderAuthor := <elang:interp.ELoaderAuthor>(makeTraceln)
+def updoc := <tools:updoc.makeUpdocAuthor>(hashCache, interp.getProps(), ELoaderAuthor, stdout)
 
 #def uriGetters := [
 #    "file" => <file>,
@@ -273,7 +88,14 @@ def filedir := if (name =~ `@_:@_`) {
 
 #traceline("args connected")
 
-when (updoc(filedir, evalServerPool)) -> done(failures) :void {
+def envExtras := if (filedir =~ _ :URL) {
+    [].asMap()
+} else {
+    def thisLoader := ELoaderAuthor(<file>[filedir.getParent()], [ "this__uriGetter" => thisLoader ], "updoc$")
+    thisLoader.getEnvExtras()
+}
+
+when (updoc(filedir, evalServerPool, envExtras)) -> done(failures) :void {
     stdout.println()
     if (failures > 0) {
         interp.exitAtTop(`Failed tests: $failures`)
