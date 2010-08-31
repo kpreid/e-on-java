@@ -238,19 +238,24 @@ public class VatTPMgr {
             ips = single;
         }
         String suffix = ":" + netAddr.getPort();
-        String[] parts = new String[ips.length * 2];
+        FlexList parts = FlexList.make(ips.length * 2);
         for (int i = 0; i < ips.length; i++) {
-            parts[2 * i] = ips[i].getCanonicalHostName() + suffix;
+            parts.push(ips[i].getCanonicalHostName() + suffix);
 
             String hostPart;
             if (ips[i] instanceof Inet6Address) {
-                hostPart = "[" + ips[i].getHostAddress() + "]";
+                String ipv6addr = ips[i].getHostAddress();
+                if (ipv6addr.indexOf('%') != -1) {
+                    // This address is only valid at this host, so skip it.
+                    continue;
+                }
+                hostPart = "[" + ipv6addr + "]";
             } else {
                 hostPart = ips[i].getHostAddress();
             }
-            parts[2 * i + 1] = hostPart + suffix;
+            parts.push(hostPart + suffix);
         }
-        return ConstList.fromArray(parts);
+        return parts.snapshot();
     }
 
     /**
