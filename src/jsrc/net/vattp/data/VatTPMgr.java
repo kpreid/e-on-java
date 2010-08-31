@@ -26,6 +26,7 @@ import org.erights.e.elib.ref.Ref;
 import org.erights.e.elib.ref.Resolver;
 import org.erights.e.elib.tables.ConstList;
 import org.erights.e.elib.tables.FlexList;
+import org.erights.e.elib.tables.FlexSet;
 import org.erights.e.elib.vat.Vat;
 
 import java.io.IOException;
@@ -190,17 +191,23 @@ public class VatTPMgr {
         int len = listenPath.size();
         myListenThreads = new ListenThread[len];
         FlexList newListenPath = FlexList.fromType(String.class, len);
-        FlexList newSearchPath = FlexList.fromType(String.class, len);
+
+        // We use a Set to avoid duplicates. If we try to add an element that
+        // already exists, the order of the elements in the set doesn't change.
+        FlexSet newSearchPath = FlexSet.fromType(String.class, len);
+
         for (int i = 0; i < len; i++) {
             String optLocalAddr = (String)listenPath.get(i);
             myListenThreads[i] = new ListenThread(optLocalAddr, this, myVat);
             NetAddr netAddr = myListenThreads[i].listenAddress();
             newListenPath.push(netAddr.toString());
-            newSearchPath.append(expandPath(netAddr));
+
+            newSearchPath.addAll(expandPath(netAddr));
         }
-        newSearchPath.append(netConfig.getSearchPath());
+        newSearchPath.addAll(netConfig.getSearchPath());
+
         myNetConfig = new NetConfig(netConfig.getVLSPath(),
-                                    newSearchPath.snapshot(),
+                                    ConstList.fromArray(newSearchPath.getElements()),
                                     newListenPath.snapshot());
         if (Trace.comm.event && Trace.ON) {
             Trace.comm.eventm("VatTPMgr constructor done " + this);
