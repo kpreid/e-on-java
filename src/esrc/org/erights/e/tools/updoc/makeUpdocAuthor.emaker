@@ -50,7 +50,7 @@ def makeUpdoc(hashCache, props, ELoaderAuthor, stdout) :near {
             def script := oldUpdocParser.readScript()
             if (script.isEmpty()) {
                 hashCache.put(hash)
-                null
+                0
             } else {
                 def player := makeScriptPlayer(script)
                 player.replay(evalServerPool, [], props, envExtras, out)
@@ -117,13 +117,13 @@ def makeUpdoc(hashCache, props, ELoaderAuthor, stdout) :near {
      * @return A <tt>vow</tt> that becomes the number of failures or
      *         becomes broken with a problem
      */
-    def updocOne(file, path, evalServerPool, envExtras, out) :vow {
+    def updocOne(file, path, evalServerPool, envExtras, out) :vow[int] {
         def hash := file.getCryptoHash()
         if (hashCache.has(hash)) {
             if (__makeMap.testProp(props, "updoc.verbose")) {
                 out.lnPrint(`skipping $path`)
             }
-            null
+            0
         } else if (endsWithAny(path, [".updoc",
                                       ".e", ".e-awt", ".e-swt",
                                       ".emaker",
@@ -143,14 +143,14 @@ def makeUpdoc(hashCache, props, ELoaderAuthor, stdout) :near {
             } catch problem {
                 out.lnPrint(`can't parse $path: `)
                 out.indent("#                  ").print(problem)
-                return null
+                return 1
             }
             parseAndPlay(source, hash, evalServerPool, envExtras, out)
         } else {
             if (__makeMap.testProp(props, "updoc.verbose")) {
                 out.lnPrint(`ignoring $path`)
             }
-            null
+            0
         }
     }
 

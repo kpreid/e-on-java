@@ -27,8 +27,11 @@ https://sourceforge.net/tracker/index.php?func=detail&aid=1612335&group_id=75274
     ? eParser("foo +")
     # syntax error: Unexpected EOF
 
-    ? eParser("\"")
-    # syntax error: File ends inside string literal, \
+[ Note: we turn the exception into a value here to stop updoc mis-interpreting the blank
+line as the start of a stack-trace. ]
+
+    ? try { eParser("\"") } catch ex { ex }
+    # value: syntax error: File ends inside string literal, \
     #               unmatched openning bracket:
     #
     #   "

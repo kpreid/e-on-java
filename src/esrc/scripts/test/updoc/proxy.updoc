@@ -41,7 +41,7 @@ components together completely define the identity of a proxy.
   # value: <Far ref>
 
   ? remote.hi()
-  # problem: Failed: not synchronously callable
+  # problem: Failed: not synchronously callable (hi)
 
   ? pragma.enable("accumulator")
   > accum [] for verb in ["isBroken", "isNear", "isEventual", "isFar",
@@ -104,7 +104,7 @@ and works the same way for Ref.broken/1)
   # value: <Promise>
 
   ? remotePromise.hi()
-  # problem: Failed: not synchronously callable
+  # problem: Failed: not synchronously callable (hi)
 
   ? pragma.enable("accumulator")
   > accum [] for verb in ["isBroken", "isNear", "isEventual", "isFar",

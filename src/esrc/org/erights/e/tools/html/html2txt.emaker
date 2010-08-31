@@ -117,12 +117,6 @@ def html2txt {
 
     ? html2txt("3 < 4<b>5")
     # problem: "< 4<b>" isn't really a tag
-    #
-    #   throw("\"< 4<b>\" isn\'t really a tag")
-    #   <e object>()
-    #   org.erights.e.elang.interp.Loop@3914b3(<e object>)
-    #   <html2txt>("3 < 4<b>5")
-    #   <interp> evalPrint(e`html2txt run("3 < 4<b>5")`)
 
     ?
 

@@ -238,7 +238,7 @@ def updocScriptMaker {
             }
 
             to getExpectingProblem() :boolean {
-                return answers.maps("problem")
+                return answers.maps("problem") || answers.maps("syntax error")
             }
 
             /**

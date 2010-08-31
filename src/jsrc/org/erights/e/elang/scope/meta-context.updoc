@@ -41,14 +41,14 @@
 ? c.getSynEnv()
 # expansion: c.getSynEnv()
 
-# value: ["__makeList" => epatt`__makeList`, \
-#         "any" => epatt`any`, \
+# value: ["__makeList" => epatt`&__makeList`, \
+#         "any" => epatt`&any`, \
 #         "__return" => epatt`__return`]
 
 ? c.getSource().getSynEnv()
 # expansion: c.getSource().getSynEnv()
 
-# value: ["__makeList" => epatt`__makeList`, "any" => epatt`any`]
+# value: ["__makeList" => epatt`&__makeList`, "any" => epatt`&any`]
 
 ? c.getFQNPrefix()
 # expansion: c.getFQNPrefix()
