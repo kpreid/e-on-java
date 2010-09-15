@@ -178,14 +178,8 @@ public abstract class JavaMemberNode extends MethodNode implements EStackItem {
     public Object execute(Object optSelf, String verb, Object[] args) {
         try {
             Object result;
-            // TODO the typical case probably requires coercion (esp. ints)
-            //make the typical case faster: first try invoking without
-            //coercion. If we get into trouble, then try coercing the
-            //arguments.
             Runner.pushEStackItem(this);
             try {
-                result = innerExecute(optSelf, args);
-            } catch (IllegalArgumentException ex) {
                 Object newSelf;
                 Object[] newArgs;
                 newSelf = E.as(optSelf, receiverType());
