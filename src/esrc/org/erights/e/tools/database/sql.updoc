@@ -34,7 +34,7 @@ Insert some values:
 Update one row:
 
 ? sql`UPDATE users SET karma=1 WHERE userName='alice'`
-# value: 1
+# value: <rows changed: 1>
 
 Read all the values out:
 
@@ -84,7 +84,7 @@ This means we don't have to worry about quoting:
 
 ? def ono := "O'No! $@?"
 ? sql`INSERT INTO users (userName, karma) VALUES ($ono, -5)`
-# value: 1
+# value: <rows changed: 1>
 
 ? sql`SELECT id FROM users WHERE karma < 0`.singleton()
 # value: [3]
@@ -105,6 +105,19 @@ As a convenience, we can get all the results as a list too:
 
 ? sql`SELECT id, karma FROM users WHERE karma >= 0 ORDER BY id ASC`.asList()
 # value: [[0, 1], [1, 0], [2, 0]]
+
+The object returned from an update can also be used to get the generated keys:
+
+? def results1 := sql`INSERT INTO users (userName, karma) VALUES ('dave', 0)`
+# value: <rows changed: 1>
+? def results2 := sql`INSERT INTO users (userName, karma) VALUES ('edward', 0)`
+# value: <rows changed: 1>
+? results1.rowsChanged()
+# value: 1
+? results1.getGeneratedKeys().singleton()
+# value: [5]
+? results2.getGeneratedKeys().singleton()
+# value: [6]
 
 (for testing, we're going to change the type of a column; this seems to upset
 hsqldb if you keep the connection open)

@@ -13,6 +13,8 @@ def makeString         := <import:java.lang.makeString>
 # (from java.sql.Types)
 def BINARY    := -2
 def VARBINARY := -3
+# (from java.sql.Statement)
+def RETURN_GENERATED_KEYS := 1
 
 def makeSql__quasiParser(connection) {
     def valueMaker(dlrTemplate :String, dlrHoles :List[int]) {
@@ -26,7 +28,52 @@ def makeSql__quasiParser(connection) {
         }
         def ptmpl := makeString."valueOf(char[])"(tmpTemplate.snapshot())
 
-        def pstmt := connection.prepareStatement(ptmpl)
+        def pstmt := connection.prepareStatement(ptmpl, RETURN_GENERATED_KEYS)
+
+        def wrapResultSet(var rs) {
+            def columns := rs.getMetaData().getColumnCount()
+            return def sqlResults {
+                to iterate(cb) {
+                    try {
+                        var i := 0
+                        while (rs.next()) {
+                            def results := [].diverge()
+                            for c in 1..columns {
+                                results.push(rs.getObject(c))
+                            }
+                            cb(i, results.snapshot())
+                            i += 1
+                        }
+                    } finally {
+                        rs.close()
+                        rs := Ref.broken("an SQL result set can only be used once")
+                    }
+                }
+
+                to singleton(ifMissing) {
+                    for row in sqlResults {
+                        require(!rs.next(),
+                            `multiple rows returned by "$ptmpl"`)
+                        return row
+                    }
+                    return ifMissing()
+                }
+
+                to singleton() {
+                    return sqlResults.singleton(fn { throw(
+                        `no rows returned by "$ptmpl"`)
+                    })
+                }
+
+                to asList() :List[List] {
+                    def results := [].diverge()
+                        for row in sqlResults {
+                            results.push(row)
+                        }
+                    return results.snapshot()
+                }
+            }
+        }
 
         return def sqlValue implements ValueMaker {
             to substitute(values) {
@@ -50,51 +97,23 @@ def makeSql__quasiParser(connection) {
                     }
                 }
                 if (query) {
-                    var rs := pstmt.executeQuery()
-                    def columns := rs.getMetaData().getColumnCount()
-                    return def sqlResults {
-                        to iterate(cb) {
-                            try {
-                                var i := 0
-                                while (rs.next()) {
-                                    def results := [].diverge()
-                                    for c in 1..columns {
-                                        results.push(rs.getObject(c))
-                                    }
-                                    cb(i, results.snapshot())
-                                    i += 1
-                                }
-                            } finally {
-                                rs.close()
-                                rs := Ref.broken("an SQL result set can only be used once")
-                            }
+                    return wrapResultSet(pstmt.executeQuery())
+                } else {
+                    def nRows := pstmt.executeUpdate()
+                    def keys := pstmt.getGeneratedKeys()
+                    return def sqlUpdateResults {
+                        to rowsChanged() :int {
+                            return nRows
                         }
 
-                        to singleton(ifMissing) {
-                            for row in sqlResults {
-                                require(!rs.next(),
-                                    `multiple rows returned by "$ptmpl"`)
-                                return row
-                            }
-                            return ifMissing()
+                        to getGeneratedKeys() {
+                            return wrapResultSet(keys)
                         }
 
-                        to singleton() {
-                            return sqlResults.singleton(fn { throw(
-                                `no rows returned by "$ptmpl"`)
-                            })
-                        }
-
-                        to asList() :List[List] {
-                            def results := [].diverge()
-                                for row in sqlResults {
-                                    results.push(row)
-                                }
-                            return results.snapshot()
+                        to __printOn(out) {
+                            out.print(`<rows changed: $nRows>`)
                         }
                     }
-                } else {
-                    return pstmt.executeUpdate()
                 }
             }
         }
