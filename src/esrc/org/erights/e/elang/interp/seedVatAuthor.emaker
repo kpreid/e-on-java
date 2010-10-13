@@ -68,7 +68,7 @@ def seedVatAuthor(<unsafe>) :near {
     def makeVat := <unsafe:org.erights.e.elib.vat.makeVat>
     def makeVatSeeder := <unsafe:org.erights.e.elang.interp.makeVatSeeder>
 
-    def surgeon := <elib:serial.makeSurgeon>.withSrcKit("de: ").diverge()
+    def surgeon := <elib:serial.makeSurgeon>.withSrcKit("").diverge()
     surgeon.addLoader(<unsafe:org.erights.e.meta.java.io.makeFileGetter>.getTHE_ONE(), "file__uriGetter")
     surgeon.addLoader(<unsafe>, "unsafe__uriGetter")
 
@@ -112,6 +112,10 @@ def seedVatAuthor(<unsafe>) :near {
          *         trying to resolve the promise.
          */
         to run(vat :Vat, privSrc :String, envExtras :Map) :rcvr {
+            # Note: we serialise envExtras using the Data-E surgeon,
+            # but we unserialise by evaluating it as E code directly.
+            # This is OK, because we used the standard privilegedScope
+            # names for the exits.
             def envExtrasStr := surgeon.serialize(envExtras)
             def bootstrapCode := `
                 def eval(privSrc :String, envExtrasStr) {
@@ -129,12 +133,7 @@ def seedVatAuthor(<unsafe>) :near {
                                                                interp,
                                                                null)
 
-                    def surgeon := <elib:serial.makeSurgeon>.withSrcKit("de: ").diverge()
-                    surgeon.addLoader(<file>, "file__uriGetter")
-                    surgeon.addLoader(<unsafe>, "unsafe__uriGetter")
-                    surgeon.addFromSafeScope()
-
-                    def envExtras := surgeon.unserialize(envExtrasStr)
+                    def envExtras := eParser(envExtrasStr).eval(privScope)
 
                     def privExpr := eParser(privSrc)
                     return privExpr.eval(privScope.with(envExtras))
