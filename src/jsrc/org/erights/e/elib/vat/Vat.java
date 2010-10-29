@@ -372,11 +372,8 @@ public class Vat {
      * Must only be called from the vat's own thread, since otherwise the
      * returned promise may change as you access it (and, in particular, it
      * may briefly turn into a ViciousCycleException).
-     * <p/>
-     * XXX to be made non-public. Uses outside this package should use {@link
-     * BootRefHandler boot-refs} instead.
      */
-    Ref qSendAll(Object rec,
+    private Ref qSendAll(Object rec,
                         boolean nowFlag,
                         String verb,
                         Object[] args) {
