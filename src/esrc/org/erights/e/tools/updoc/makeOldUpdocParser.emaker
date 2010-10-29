@@ -185,6 +185,9 @@ def makeOldUpdocParser(source) :any {
                 index += 1
                 updocScriptMaker.makeVatDirective(name)
             }
+            match `??@_` {
+                throw(`unknown directive: $current`)
+            }
             match `?@_` {
                 vatNames.push("home")
                 updocScriptMaker.makeVatDirective("home")
