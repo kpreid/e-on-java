@@ -42,8 +42,6 @@ class ListenThread extends Thread {
 
     private boolean myTerminateFlag = false;
 
-    private final UserThread myUserThread;
-
     private InetAddress myOptIP = null;
 
     private final ServerSocket myListenServerSocket;
@@ -77,7 +75,6 @@ class ListenThread extends Thread {
     ListenThread(String optLocalAddr, VatTPMgr connMgr, Vat vat)
       throws UnknownHostException, IOException {
         setDaemon(true);
-        myUserThread = new UserThread(myUserThreadLock);
         myConnMgr = connMgr;
         myVat = vat;
         //Create the listen thread
@@ -143,8 +140,6 @@ class ListenThread extends Thread {
         try {
             String name = listenAddress().toString();
             setName("ListenThread-" + name);
-            myUserThread.setThreadName(name);
-            myUserThread.start();
             if (Trace.comm.debug && Trace.ON) {
                 Trace.comm.debugm("listening at " + name);
             }
@@ -233,7 +228,6 @@ class ListenThread extends Thread {
      * too. Hallelujah, amen.
      */
     void startup() {
-        myUserThread.start();
         super.start();
     }
 }
