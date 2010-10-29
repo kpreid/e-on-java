@@ -566,8 +566,22 @@ public class Vat {
      *         fails.
      */
     public Ref mergeInto(Vat other) {
-        Runnable todo = new VatRedirector(this, other.getRunner());
-        return qSendAll(todo, true, "run", E.NO_ARGS);
+        return mergeInto(other.getRunner());
+    }
+
+    private Ref mergeInto(Runner otherRunner) {
+        /* We can't use qSendAll because it's not thread-safe, and because in the
+         * case of redirecting to a DeadRunner the resulting promise will ignore
+         * any __whenMoreResolved call. Instead, we'll get the VatRedirector
+         * to resovle it in the sending (current) vat.
+         */
+        Object[] promise = Ref.promise();
+        VatRedirector todo = new VatRedirector(this, otherRunner, getCurrentVat(), (Resolver) promise[1]);
+        Throwable optProblem = qSendAllOnly(todo, true, "run", E.NO_ARGS);
+        if (optProblem != null) {
+            return Ref.broken(optProblem);
+        }
+        return Ref.toRef(promise[0]);
     }
 
     /**
@@ -582,8 +596,7 @@ public class Vat {
      */
     public Ref orderlyShutdown(Throwable problem) {
         if (myRunner instanceof HeadlessRunner) {
-            Runnable todo = new VatRedirector(this, new DeadRunner(problem));
-            return qSendAll(todo, true, "run", E.NO_ARGS);
+            return mergeInto(new DeadRunner(problem));
         } else {
             return Ref.broken(E.asRTE("Can't shutdown a " +
               E.toString(myRunner.getClass())));
@@ -621,8 +634,7 @@ public class Vat {
         if (runner == myRunner) {
             return Ref.toRef(null);
         }
-        Runnable todo = new VatRedirector(this, runner);
-        return qSendAll(todo, true, "run", E.NO_ARGS);
+        return mergeInto(runner);
     }
 
     /**
@@ -636,13 +648,14 @@ public class Vat {
          */
         private final Runner myNewRunner;
         private final Vat myVat;
+        private final Vat myResolverVat;
+        private final Resolver myResolver;
 
-        /**
-         *
-         */
-        VatRedirector(Vat vat, Runner newRunner) {
+        VatRedirector(Vat vat, Runner newRunner, Vat resolverVat, Resolver resolver) {
             myNewRunner = newRunner;
             myVat = vat;
+            myResolverVat = resolverVat;
+            myResolver = resolver;
         }
 
         /**
@@ -656,6 +669,8 @@ public class Vat {
             //This assumes that if Runner#redirect exits abruptly, then it
             //hasn't done anything. XXX This assumption is dangerous.
             myVat.myIsMergeable = false;
+
+            myResolverVat.qSendAllOnly(myResolver, false, "resolve", new Object[] {null});
         }
     }
 }
