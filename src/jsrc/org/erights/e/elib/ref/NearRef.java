@@ -20,6 +20,7 @@ Contributor(s): ______________________________________.
 */
 
 import org.erights.e.develop.assertion.T;
+import org.erights.e.develop.exception.ExceptionMgr;
 import org.erights.e.elib.oldeio.TextWriter;
 import org.erights.e.elib.prim.E;
 import org.erights.e.elib.prim.Message;
@@ -108,7 +109,10 @@ class NearRef extends Ref {
     }
 
     public void sendMsg(Message msg) {
-        Vat.getCurrentVat().qSendMsg(myTarget, msg);
+        Throwable optProblem = Vat.getCurrentVat().qSendMsg(myTarget, msg);
+        if (optProblem != null) {
+            throw ExceptionMgr.asSafe(optProblem);
+        }
     }
 
     /**

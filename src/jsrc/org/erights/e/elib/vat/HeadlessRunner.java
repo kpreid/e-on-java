@@ -229,6 +229,7 @@ final class HeadlessRunner extends Runner implements Runnable {
                 //XXX Deadlock danger -- grabbing a lock while holding a lock.
                 //But should be safe since we've already ensured we're not
                 //in a cycle.
+                //XXX Throwing away any problem that is returned here.
                 result.enqueue(optTodo);
             }
             for (int i = 0, len = deadManSwitches.length; i < len; i++) {
