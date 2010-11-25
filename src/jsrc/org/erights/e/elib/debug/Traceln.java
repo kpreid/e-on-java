@@ -3,13 +3,12 @@
 
 package org.erights.e.elib.debug;
 
-import org.erights.e.develop.format.StringHelper;
-import org.erights.e.develop.trace.Trace;
 import org.erights.e.elib.vat.StackContext;
 import org.erights.e.elib.oldeio.EPrintable;
 import org.erights.e.elib.oldeio.TextWriter;
 
 import java.io.IOException;
+import java.util.logging.Logger;
 
 /*
  ? def makeTraceln := <unsafe:org.erights.e.elib.debug.makeTraceln>
@@ -27,11 +26,8 @@ import java.io.IOException;
  * @author Mark S. Miller
  */
 public class Traceln implements EPrintable {
-
-    static private final int LIMIT = 76;
-
     private final String myHeader;
-    private final Trace myTracer;
+    private final Logger myLogger;
 
     /**
      * The header is for the purpose of secure labeling.
@@ -44,7 +40,7 @@ public class Traceln implements EPrintable {
      */
     public Traceln(String header) {
         myHeader = header;
-        myTracer = new Trace(header);
+        myLogger = Logger.getLogger(header);
     }
 
     /**
@@ -64,31 +60,11 @@ public class Traceln implements EPrintable {
     }
 
     private void traceit(String message, boolean onlyOnePosFlag) {
-        if (myTracer.warning) {
-            StackContext sc =
-              new StackContext("traceln", onlyOnePosFlag, true);
+        // TODO: check that level >= warning before formatting?
 
-            // The following logic should behave like makeQuoteln.emaker
+        StackContext sc = new StackContext(myHeader, onlyOnePosFlag, true);
 
-            StringBuffer buf = new StringBuffer(message.length() * 2);
-            buf.append("\n> ");
-            int lineStart = buf.length();
-            for (int i = 0, len = message.length(); i < len; i++) {
-                char c = message.charAt(i);
-                if ('\n' == c) {
-                    buf.append("\n> ");
-                    lineStart = buf.length();
-                } else if (LIMIT <= buf.length() - lineStart) {
-                    buf.append("\\\n> ");
-                    lineStart = buf.length();
-                    StringHelper.escapedInto(c, buf);
-                } else {
-                    StringHelper.escapedInto(c, buf);
-                }
-            }
-            buf.append('\n');
-            myTracer.warningm(buf.toString(), sc);
-        }
+        myLogger.warning(message + "\n" + sc);
     }
 
     public void __printOn(TextWriter out) throws IOException {
