@@ -312,6 +312,14 @@ public class Rune {
      *
      */
     static public void main(String[] argArray) {
+        
+        // workaround for bug in Mac OS X Leopard Java -XstartOnFirstThread (needed for swt); from http://lists.apple.com/archives/java-dev//2008/Feb/msg00179.html
+        {
+            final Thread t = Thread.currentThread();
+            if (t.getContextClassLoader() == null) {
+                t.setContextClassLoader(ClassLoader.getSystemClassLoader());
+            }
+        }
 
         final TextWriter errs =
           new TextWriter(PrintStreamWriter.stderr(), true);
