@@ -505,6 +505,12 @@ public class E {
     static public Object as(Object specimen,
                             Class targType,
                             OneArgFunc optEjector) {
+        if (targType.isInstance(specimen)) {
+            // Ref.resolution removes Deflectors. This check saves removing the Deflector
+            // and creating a new one. This is not just an optimisation; it's required
+            // if we need the same object (e.g. addListener / removeListener pairs).
+            return specimen;
+        }
         specimen = Ref.resolution(specimen);
         if (null == specimen && !targType.isPrimitive()) {
             return null;
