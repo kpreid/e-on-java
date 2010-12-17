@@ -119,19 +119,21 @@ def makeSql__quasiParser(connection) {
         }
     }
 
+    # TODO: when valueMaker/1 becomes the default, cache on that instead.
     def cache := [].asMap().diverge()
 
     return def sql__quasiParser implements QuasiExprParser {
         to valueMaker(template :String, dlrHoles :List[int]) :ValueMaker {
-            if (cache.fetch(template, fn {}) =~ x :notNull) {
-                return x
-            }
-            return cache[template] := valueMaker(template, dlrHoles)
+            return valueMaker(template, dlrHoles)
         }
 
         to valueMaker(oldTemplate :String) {
+            if (cache.fetch(oldTemplate, fn {}) =~ x :notNull) {
+                return x
+            }
+
             def [template, dlrHoles, []] := convertHoles(oldTemplate)
-            return sql__quasiParser.valueMaker(template, dlrHoles)
+            return cache[oldTemplate] := sql__quasiParser.valueMaker(template, dlrHoles)
         }
     }
 }
