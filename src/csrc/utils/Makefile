@@ -10,6 +10,11 @@ TOP=../../..
 TARGETS=eutils.a \
 	subst_test$(EXE) file_test$(EXE) prop_test$(EXE) showPath$(EXE)
 
+# Suppress "-Werror" since we're getting a new warning:
+#   "file_utils.c:113: warning: `cygwin_conv_to_full_win32_path' is deprecated 
+#    (declared at /usr/include/sys/cygwin.h:37)"
+ECCWARN=-Wall -Winline
+
 OBJECTS=error_utils.o string_utils.o file_utils.o prop_utils.o
 
 

@@ -12,6 +12,10 @@ TOP=../../..
 
 TARGETS=byaccj$(EXE)
 
+# Suppress "-Werror" since we're getting a new warning:
+#   "warning: array subscript has type `char'"
+ECCWARN=-Wall -Winline
+
 OBJECTS=closure.o \
 	error.o \
 	lalr.o \
