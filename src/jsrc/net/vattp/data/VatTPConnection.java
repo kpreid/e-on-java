@@ -992,7 +992,7 @@ public final class VatTPConnection {
      * @param reason indicates why the connection is shutting down
      */
     public void shutDownConnection(Throwable reason) {
-        myVat.requireCurrent();
+        // myVat.requireCurrent();  -- fails for a DeadRunner
         if (Trace.comm.event && Trace.ON) {
             Trace.comm.eventm("shutDownConnection " + this);
         }

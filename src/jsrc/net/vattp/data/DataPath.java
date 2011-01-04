@@ -1,5 +1,7 @@
 package net.vattp.data;
 
+import org.erights.e.elib.util.DeadManSwitch;
+import org.erights.e.elib.vat.Runner;
 /*
 The contents of this file are subject to the Electric Communities E Open
 Source Code License Version 1.0 (the "License"); you may not use this file
@@ -397,6 +399,12 @@ class DataPath implements MsgHandler, TickReactor {
             // If we are dying, shutdown the recv thread
             myRecvThread.shutdown();
         }
+
+        Runner.whenDead(new DeadManSwitch() {
+            public void __reactToLostClient(Object problem) {
+                shutDownPath();
+            }
+        });
     }
 
     /**

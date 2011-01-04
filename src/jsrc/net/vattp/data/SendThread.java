@@ -28,6 +28,7 @@ import org.erights.e.develop.assertion.T;
 import org.erights.e.develop.exception.EBacktraceIOException;
 import org.erights.e.develop.trace.Trace;
 import org.erights.e.elib.util.HexStringUtils;
+import org.erights.e.elib.vat.DeadRunnerException;
 import org.erights.e.elib.vat.SynchQueue;
 import org.erights.e.elib.vat.Vat;
 
@@ -333,6 +334,9 @@ class SendThread extends Thread {
     private void callDataPath(DataCommThunk thunk) {
         try {
             myVat.now(thunk);
+        } catch (DeadRunnerException t) {
+            Trace.comm.debugm("Can't process thunk; runner is dead", t);
+            //ignore it
         } catch (Throwable t) {
             Trace.comm
               .errorm("to=" + myRemoteAddr + " Error while calling " + thunk,

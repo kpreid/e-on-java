@@ -27,6 +27,7 @@ import net.vattp.security.MicroTime;
 import org.erights.e.develop.assertion.T;
 import org.erights.e.develop.trace.Trace;
 import org.erights.e.elib.util.HexStringUtils;
+import org.erights.e.elib.vat.DeadRunnerException;
 import org.erights.e.elib.vat.Vat;
 
 import java.io.ByteArrayInputStream;
@@ -73,7 +74,7 @@ class RecvThread extends Thread {
 
     private DataPath myDataPath;
 
-    private boolean myTerminateFlag;
+    private volatile boolean myTerminateFlag;
 
     private int myBufferLength;
 
@@ -152,6 +153,9 @@ class RecvThread extends Thread {
     private void callDataPath(DataCommThunk thunk) {
         try {
             myVat.now(thunk);
+        } catch (DeadRunnerException t) {
+            Trace.comm.debugm("Can't process thunk; runner is dead", t);
+            //ignore it
         } catch (Throwable t) {
             Trace.comm.errorm("Error while calling " + thunk, t);
             if (t instanceof VirtualMachineError) {
@@ -793,6 +797,11 @@ class RecvThread extends Thread {
      */
     void shutdown() {
         myTerminateFlag = true;
+        try {
+            myInputStream.close();
+        } catch (IOException ex) {
+            Trace.comm.errorm("Error closing socket", ex);
+        }
     }
 
     private void traceDebugMsg(byte[] msg, int off, int len, String note) {

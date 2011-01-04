@@ -27,6 +27,8 @@ import org.erights.e.elib.ref.Resolver;
 import org.erights.e.elib.tables.ConstList;
 import org.erights.e.elib.tables.FlexList;
 import org.erights.e.elib.tables.FlexSet;
+import org.erights.e.elib.util.DeadManSwitch;
+import org.erights.e.elib.vat.Runner;
 import org.erights.e.elib.vat.Vat;
 
 import java.io.IOException;
@@ -138,6 +140,8 @@ public class VatTPMgr {
 
     static final int LIVES_NOTIFY = 3;
 
+    private volatile boolean isShutdown = false;
+
     /**
      * Make a VatTPMgr listening on the specified ports.
      * <p/>
@@ -212,6 +216,13 @@ public class VatTPMgr {
         if (Trace.comm.event && Trace.ON) {
             Trace.comm.eventm("VatTPMgr constructor done " + this);
         }
+
+        vat.requireCurrent();
+        Runner.whenDead(new DeadManSwitch() {
+            public void __reactToLostClient(Object problem) {
+                shutdown();
+            }
+        });
     }
 
     /**
@@ -933,9 +944,15 @@ public class VatTPMgr {
         String remoteAddr = path.getRemoteAddress();
         Object dp = removeUnidentified(path);
         if (null == dp) {
-            Trace.comm
-              .errorm("Dieing DataPath=" + path + " not registered",
-                      new Throwable("locator"));
+            if (isShutdown) {
+                Trace.comm
+                  .debugm("Dieing DataPath=" + path + " not registered",
+                          new Throwable("locator"));
+            } else {
+                Trace.comm
+                  .errorm("Dieing DataPath=" + path + " not registered",
+                          new Throwable("locator"));
+            }
             dp = this;      // Something which isn't a resolver
         }
         if (null != problem) {
@@ -962,6 +979,53 @@ public class VatTPMgr {
         }
         if (dp instanceof Resolver) {
             ((Resolver)dp).smash(problem);
+        }
+    }
+
+    private void shutdownConnections(Enumeration optIter, Throwable reason) {
+        while (optIter.hasMoreElements()) {
+            Object value = (Object) optIter.nextElement();
+            if (value instanceof VatTPConnection) {
+                ((VatTPConnection) value).shutDownConnection(reason);
+            } else if (value instanceof DataPath) {
+                ((DataPath) value).shutDownPath();
+            } else {
+                Trace.comm.errorm("Can't shutdown unknown object type: " + value);
+            }
+        }
+    }
+
+    /* Called in myVat's runner just as it has become a DeadRunner. */
+    private void shutdown() {
+        isShutdown = true;
+
+        /* By the time we get notified that the vat is shutting down, it's already
+         * a DeadRunner, so we can't queue anything in the vat. Instead, we just
+         * close all the sockets and suppress error reports.
+         */
+        for (int i = 0, len = myListenThreads.length; i < len; i++) {
+            myListenThreads[i].shutdown();
+            myListenThreads[i] = null;
+        }
+
+        Throwable reason = new RuntimeException("Vat has shut down");
+
+        //shutdown everything. Note: for some tables we need keys, for others, elements.
+
+        if (myUnidentifiedConnections != null) {
+            shutdownConnections(myUnidentifiedConnections.keys(), reason);
+        }
+        if (myIdentifiedConnections != null) {
+            shutdownConnections(myIdentifiedConnections.elements(), reason);
+        }
+        if (myRunningDataConnections != null) {
+            shutdownConnections(myRunningDataConnections.elements(), reason);
+        }
+        if (mySuspendingConnections != null) {
+            shutdownConnections(mySuspendingConnections.elements(), reason);
+        }
+        if (myDieingConnections != null) {
+            shutdownConnections(myDieingConnections.keys(), reason);
         }
     }
 }

@@ -70,7 +70,7 @@ final class DeadRunner extends Runner {
      * @return The problem explaining why this Vat is broken.
      */
     protected Throwable enqueue(PendingEvent todo) {
-        return myProblem;
+        return new DeadRunnerException(myProblem);
     }
 
     /**

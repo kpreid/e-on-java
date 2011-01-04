@@ -585,7 +585,8 @@ public class Vat {
      * Requests this vat to <i>eventually</i> shut down once all already queued
      * events have been processed.
      * <p/>
-     * A shutdown does a merge into a {@link DeadRunner}.
+     * A shutdown runs all registered shutdown handlers, and then does a merge
+     * into a {@link DeadRunner}.
      * <p/>
      * May be called from any thead.
      *

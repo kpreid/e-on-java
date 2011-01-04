@@ -40,7 +40,7 @@ import java.net.UnknownHostException;
  */
 class ListenThread extends Thread {
 
-    private boolean myTerminateFlag = false;
+    private volatile boolean myTerminateFlag = false;
 
     private InetAddress myOptIP = null;
 
@@ -148,6 +148,9 @@ class ListenThread extends Thread {
                 try {
                     clientSocket = myListenServerSocket.accept();
                 } catch (IOException e) {
+                    if (myTerminateFlag) {
+                        break;
+                    }
                     Trace.comm.errorm("exception in ListenThread accept()", e);
                     //XXX do we really want to "continue" ???
                     continue;
@@ -166,7 +169,6 @@ class ListenThread extends Thread {
             if (Trace.comm.debug && Trace.ON) {
                 Trace.comm.debugm("I've been asked to shutdown");
             }
-            myListenServerSocket.close();
         } catch (IOException e) {
             if (Trace.comm.debug && Trace.ON) {
                 Trace.comm.debugm("caught exception", e);
@@ -207,6 +209,11 @@ class ListenThread extends Thread {
         myTerminateFlag = true;
         synchronized (myUserThreadLock) {
             myUserThreadLock.notify();
+            try {
+                myListenServerSocket.close();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
         }
     }
 
