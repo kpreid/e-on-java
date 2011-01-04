@@ -12,6 +12,11 @@ TOP=../../..
 
 TARGETS=byaccj$(EXE)
 
+# Suppress "-Werror" since we're getting now getting warnings on the
+# Mac after changing various "char" to "unsigned char" as needed to
+# avoid warnings when compiling on Windows.
+ECCWARN=-Wall -Winline
+
 OBJECTS=closure.o \
 	error.o \
 	lalr.o \
