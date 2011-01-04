@@ -9,11 +9,6 @@ TOP=../..
 
 include $(TOP)/src/build/makerules.mk
 
-ifeq "$(OSDIR)" "win32"
- DIRS=utils win32 setup
-else
-# DIRS=utils setup
- DIRS=setup
-endif
+DIRS=setup
 
 CLEANDIRS += byaccj

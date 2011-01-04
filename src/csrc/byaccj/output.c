@@ -722,9 +722,9 @@ void output_check(void)
 }
 
 
-int is_C_identifier(char *name)
+int is_C_identifier(unsigned char *name)
 {
-char *s;
+unsigned char *s;
 int c;
 
     s = name;
@@ -756,7 +756,7 @@ int c;
 void output_defines(void)
 {
 int c, i;
-char *s;
+unsigned char *s;
 
     for (i = 2; i < ntokens; ++i)
     {
@@ -848,7 +848,7 @@ FILE *in, *out;
 void output_debug(void)
 {
 int i, j, k, max;
-char **symnam, *s;
+unsigned char **symnam, *s;
 
     ++outline;
     if (jflag)  /*rwj*/
@@ -873,7 +873,7 @@ char **symnam, *s;
     else
       fprintf(code_file, "#define YYMAXTOKEN %d\n", max);
 
-    symnam = (char **) MALLOC((max+1)*sizeof(char *));
+    symnam = (unsigned char **) MALLOC((max+1)*sizeof(unsigned char *));
     if (symnam == 0) no_space();
 
     /* Note that it is  not necessary to initialize the element         */
@@ -1091,7 +1091,7 @@ char **symnam, *s;
 void output_stype(void)
 {
 int prim; /*is the Java semantic type a primitive?*/
-char filenam[128];
+unsigned char filenam[128];
 FILE *f;
   if (jflag)/*rwj*/
     {

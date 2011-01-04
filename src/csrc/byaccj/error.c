@@ -4,7 +4,7 @@
 #include "defs.h"
 
 
-void fatal(char *msg)
+void fatal(unsigned char *msg)
 {
     fprintf(stderr, "%s: f - %s\n", myname, msg);
     done(2);
@@ -18,7 +18,7 @@ void no_space(void)
 }
 
 
-void open_error(char *filename)
+void open_error(unsigned char *filename)
 {
     fprintf(stderr, "%s: f - cannot open \"%s\"\n", myname, filename);
     done(2);
@@ -33,14 +33,14 @@ void unexpected_EOF(void)
 }
 
 
-void print_pos(char *st_line,char *st_cptr)
+void print_pos(unsigned char *st_line,unsigned char *st_cptr)
 {
-char *s;
+unsigned char *s;
 
   if (st_line == 0) return;
   for (s = st_line; *s != '\n'; ++s)
     {
-         if (isprint(*s) || *s == '\t')
+      if (isprint(*s) || *s == '\t')
       putc(*s, stderr);
           else
       putc('?', stderr);
@@ -58,7 +58,7 @@ char *s;
 }
 
 
-void syntax_error(int st_lineno,char *st_line,char *st_cptr)
+void syntax_error(int st_lineno,unsigned char *st_line,unsigned char *st_cptr)
 {
     fprintf(stderr, "%s: e - line %d of \"%s\", syntax error\n",
             myname, st_lineno, input_file_name);
@@ -67,7 +67,7 @@ void syntax_error(int st_lineno,char *st_line,char *st_cptr)
 }
 
 
-void unterminated_comment(int c_lineno,char *c_line,char *c_cptr)
+void unterminated_comment(int c_lineno,unsigned char *c_line,unsigned char *c_cptr)
 {
     fprintf(stderr, "%s: e - line %d of \"%s\", unmatched /*\n",
             myname, c_lineno, input_file_name);
@@ -76,7 +76,7 @@ void unterminated_comment(int c_lineno,char *c_line,char *c_cptr)
 }
 
 
-void unterminated_string(int s_lineno,char *s_line,char *s_cptr)
+void unterminated_string(int s_lineno,unsigned char *s_line,unsigned char *s_cptr)
 {
     fprintf(stderr, "%s: e - line %d of \"%s\", unterminated string\n",
             myname, s_lineno, input_file_name);
@@ -85,7 +85,7 @@ void unterminated_string(int s_lineno,char *s_line,char *s_cptr)
 }
 
 
-void unterminated_text(int t_lineno,char *t_line,char *t_cptr)
+void unterminated_text(int t_lineno,unsigned char *t_line,unsigned char *t_cptr)
 {
     fprintf(stderr, "%s: e - line %d of \"%s\", unmatched %%{\n",
             myname, t_lineno, input_file_name);
@@ -94,7 +94,7 @@ void unterminated_text(int t_lineno,char *t_line,char *t_cptr)
 }
 
 
-void unterminated_union(int u_lineno,char *u_line,char *u_cptr)
+void unterminated_union(int u_lineno,unsigned char *u_line,unsigned char *u_cptr)
 {
     fprintf(stderr,
       "%s: e - line %d of \"%s\", unterminated %%union declaration\n",
@@ -104,7 +104,7 @@ void unterminated_union(int u_lineno,char *u_line,char *u_cptr)
 }
 
 
-void over_unionized(char *u_cptr)
+void over_unionized(unsigned char *u_cptr)
 {
     fprintf(stderr,
        "%s: e - line %d of \"%s\", too many %%union declarations\n",
@@ -114,7 +114,7 @@ void over_unionized(char *u_cptr)
 }
 
 
-void illegal_tag(int t_lineno,char *t_line,char *t_cptr)
+void illegal_tag(int t_lineno,unsigned char *t_line,unsigned char *t_cptr)
 {
     fprintf(stderr, "%s: e - line %d of \"%s\", illegal tag\n",
             myname, t_lineno, input_file_name);
@@ -123,7 +123,7 @@ void illegal_tag(int t_lineno,char *t_line,char *t_cptr)
 }
 
 
-void illegal_character(char *c_cptr)
+void illegal_character(unsigned char *c_cptr)
 {
     fprintf(stderr, "%s: e - line %d of \"%s\", illegal character\n",
             myname, lineno, input_file_name);
@@ -132,7 +132,7 @@ void illegal_character(char *c_cptr)
 }
 
 
-void used_reserved(char *s)
+void used_reserved(unsigned char *s)
 {
     fprintf(stderr,
       "%s: e - line %d of \"%s\", illegal use of reserved symbol %s\n",
@@ -141,7 +141,7 @@ void used_reserved(char *s)
 }
 
 
-void tokenized_start(char *s)
+void tokenized_start(unsigned char *s)
 {
      fprintf(stderr,
        "%s: e - line %d of \"%s\", the start symbol %s cannot be declared to be a token\n",
@@ -150,7 +150,7 @@ void tokenized_start(char *s)
 }
 
 
-void retyped_warning(char *s)
+void retyped_warning(unsigned char *s)
 {
     fprintf(stderr,
       "%s: w - line %d of \"%s\", the type of %s has been redeclared\n",
@@ -158,7 +158,7 @@ void retyped_warning(char *s)
 }
 
 
-void reprec_warning(char *s)
+void reprec_warning(unsigned char *s)
 {
     fprintf(stderr,
       "%s: w - line %d of \"%s\", the precedence of %s has been redeclared\n",
@@ -166,7 +166,7 @@ void reprec_warning(char *s)
 }
 
 
-void revalued_warning(char *s)
+void revalued_warning(unsigned char *s)
 {
     fprintf(stderr,
       "%s: w - line %d of \"%s\", the value of %s has been redeclared\n",
@@ -174,7 +174,7 @@ void revalued_warning(char *s)
 }
 
 
-void terminal_start(char *s)
+void terminal_start(unsigned char *s)
 {
     fprintf(stderr,
       "%s: e - line %d of \"%s\", the start symbol %s is a token\n",
@@ -216,7 +216,7 @@ void prec_redeclared(void)
 }
 
 
-void unterminated_action(int a_lineno,char *a_line,char *a_cptr)
+void unterminated_action(int a_lineno,unsigned char *a_line,unsigned char *a_cptr)
 {
     fprintf(stderr, "%s: e - line %d of \"%s\", unterminated action\n",
             myname, a_lineno, input_file_name);
@@ -233,7 +233,7 @@ void dollar_warning(int a_lineno,int i)
 }
 
 
-void dollar_error(int a_lineno,char *a_line,char *a_cptr)
+void dollar_error(int a_lineno,unsigned char *a_line,unsigned char *a_cptr)
 {
     fprintf(stderr, "%s: e - line %d of \"%s\", illegal $-name\n",
             myname, a_lineno, input_file_name);
@@ -250,7 +250,7 @@ void untyped_lhs(void)
 }
 
 
-void untyped_rhs(int i,char *s)
+void untyped_rhs(int i,unsigned char *s)
 {
     fprintf(stderr, "%s: e - line %d of \"%s\", $%d (%s) is untyped\n",
             myname, lineno, input_file_name, i, s);
@@ -274,14 +274,14 @@ void default_action_warning(void)
 }
 
 
-void undefined_goal(char *s)
+void undefined_goal(unsigned char *s)
 {
     fprintf(stderr, "%s: e - the start symbol %s is undefined\n", myname, s);
     done(1);
 }
 
 
-void undefined_symbol_warning(char *s)
+void undefined_symbol_warning(unsigned char *s)
 {
     fprintf(stderr, "%s: w - the symbol %s is undefined\n", myname, s);
 }

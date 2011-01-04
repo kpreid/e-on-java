@@ -116,13 +116,13 @@ struct bucket
 {
     struct bucket *link;
     struct bucket *next;
-    char *name;
-    char *tag;
+    unsigned char *name;
+    unsigned char *tag;
     short value;
     short index;
     short prec;
-    char class;
-    char assoc;
+    unsigned char class;
+    unsigned char assoc;
 };
 
 
@@ -173,52 +173,52 @@ struct action
     short symbol;
     short number;
     short prec;
-    char action_code;
-    char assoc;
-    char suppressed;
+    unsigned char action_code;
+    unsigned char assoc;
+    unsigned char suppressed;
 };
 
 
 /* global variables */
 
-extern char dflag;
-extern char lflag;
-extern char rflag;
-extern char tflag;
-extern char vflag;
-extern char jflag;  /*rwj -- for java! do we, or do we not, output java?*/
+extern unsigned char dflag;
+extern unsigned char lflag;
+extern unsigned char rflag;
+extern unsigned char tflag;
+extern unsigned char vflag;
+extern unsigned char jflag;  /*rwj -- for java! do we, or do we not, output java?*/
 
-extern char *myname;
-extern char *cptr;
-extern char *line;
+extern unsigned char *myname;
+extern unsigned char *cptr;
+extern unsigned char *line;
 extern int lineno;
 extern int outline;
 
-extern char *banner[];
-extern char *tables[];
-extern char *header[];
-extern char *body[];
-extern char *trailer[];
+extern unsigned char *banner[];
+extern unsigned char *tables[];
+extern unsigned char *header[];
+extern unsigned char *body[];
+extern unsigned char *trailer[];
 
-extern char *jbanner[];  /*rwj -- for java*/
-extern char *jtables[];
-extern char *jheader[];
-extern char *jbody[];
-extern char *jtrailer[];
+extern unsigned char *jbanner[];  /*rwj -- for java*/
+extern unsigned char *jtables[];
+extern unsigned char *jheader[];
+extern unsigned char *jbody[];
+extern unsigned char *jtrailer[];
 
-extern char *java_class_name; /*rwj -- for java!*/
-extern char *java_extend_name;
-extern char *java_implement_name;
-extern char *java_semantic_type;
+extern unsigned char *java_class_name; /*rwj -- for java!*/
+extern unsigned char *java_extend_name;
+extern unsigned char *java_implement_name;
+extern unsigned char *java_semantic_type;
 
-extern char *action_file_name;
-extern char *code_file_name;
-extern char *defines_file_name;
-extern char *input_file_name;
-extern char *output_file_name;
-extern char *text_file_name;
-extern char *union_file_name;
-extern char *verbose_file_name;
+extern unsigned char *action_file_name;
+extern unsigned char *code_file_name;
+extern unsigned char *defines_file_name;
+extern unsigned char *input_file_name;
+extern unsigned char *output_file_name;
+extern unsigned char *text_file_name;
+extern unsigned char *union_file_name;
+extern unsigned char *verbose_file_name;
 
 extern FILE *action_file;
 extern FILE *code_file;
@@ -236,24 +236,24 @@ extern int ntokens;
 extern int nvars;
 extern int ntags;
 
-extern char unionized;
-extern char line_format[];
-extern char jline_format[];/*rwj*/
+extern unsigned char unionized;
+extern unsigned char line_format[];
+extern unsigned char jline_format[];/*rwj*/
 
 extern int   start_symbol;
-extern char  **symbol_name;
+extern unsigned char  **symbol_name;
 extern short *symbol_value;
 extern short *symbol_prec;
-extern char  *symbol_assoc;
+extern unsigned char  *symbol_assoc;
 
 extern short *ritem;
 extern short *rlhs;
 extern short *rrhs;
 extern short *rprec;
-extern char  *rassoc;
+extern unsigned char  *rassoc;
 
 extern short **derives;
-extern char *nullable;
+extern unsigned char *nullable;
 
 extern bucket *first_symbol;
 extern bucket *last_symbol;
@@ -316,51 +316,51 @@ void print_closure(int n);
 void print_EFF(void);
 void print_first_derives(void);
 /*in error.c*/
-void fatal(char *msg);
+void fatal(unsigned char *msg);
 void no_space(void);
-void open_error(char *filename);
+void open_error(unsigned char *filename);
 void unexpected_EOF(void);
-void print_pos(char *st_line,char *st_cptr);
-void syntax_error(int st_lineno,char *st_line,char *st_cptr);
-void unterminated_comment(int c_lineno,char *c_line,char *c_cptr);
-void unterminated_string(int s_lineno,char *s_line,char *s_cptr);
-void unterminated_text(int t_lineno,char *t_line,char *t_cptr);
-void unterminated_union(int u_lineno,char *u_line,char *u_cptr);
-void over_unionized(char *u_cptr);
-void illegal_tag(int t_lineno,char *t_line,char *t_cptr);
-void illegal_character(char *c_cptr);
-void used_reserved(char *s);
-void tokenized_start(char *s);
-void retyped_warning(char *s);
-void reprec_warning(char *s);
-void revalued_warning(char *s);
-void terminal_start(char *s);
+void print_pos(unsigned char *st_line,unsigned char *st_cptr);
+void syntax_error(int st_lineno,unsigned char *st_line,unsigned char *st_cptr);
+void unterminated_comment(int c_lineno,unsigned char *c_line,unsigned char *c_cptr);
+void unterminated_string(int s_lineno,unsigned char *s_line,unsigned char *s_cptr);
+void unterminated_text(int t_lineno,unsigned char *t_line,unsigned char *t_cptr);
+void unterminated_union(int u_lineno,unsigned char *u_line,unsigned char *u_cptr);
+void over_unionized(unsigned char *u_cptr);
+void illegal_tag(int t_lineno,unsigned char *t_line,unsigned char *t_cptr);
+void illegal_character(unsigned char *c_cptr);
+void used_reserved(unsigned char *s);
+void tokenized_start(unsigned char *s);
+void retyped_warning(unsigned char *s);
+void reprec_warning(unsigned char *s);
+void revalued_warning(unsigned char *s);
+void terminal_start(unsigned char *s);
 void restarted_warning(void);
 void no_grammar(void);
 void terminal_lhs(int s_lineno);
 void prec_redeclared(void);
-void unterminated_action(int a_lineno,char *a_line,char *a_cptr);
+void unterminated_action(int a_lineno,unsigned char *a_line,unsigned char *a_cptr);
 void dollar_warning(int a_lineno,int i);
-void dollar_error(int a_lineno,char *a_line,char *a_cptr);
+void dollar_error(int a_lineno,unsigned char *a_line,unsigned char *a_cptr);
 void untyped_lhs(void);
-void untyped_rhs(int i,char *s);
+void untyped_rhs(int i,unsigned char *s);
 void unknown_rhs(int i);
 void default_action_warning(void);
-void undefined_goal(char *s);
-void undefined_symbol_warning(char *s);
+void undefined_goal(unsigned char *s);
+void undefined_symbol_warning(unsigned char *s);
 /*in skeleton.c*/
-void write_section(char *section[]);
+void write_section(unsigned char *section[]);
 /*in symtab.c*/
-int hash(char *name);
-bucket *make_bucket(char *name);
-bucket *lookup(char *name);
+int hash(unsigned char *name);
+bucket *make_bucket(unsigned char *name);
+bucket *lookup(unsigned char *name);
 void create_symbol_table(void);
 void free_symbol_table(void);
 void free_symbols(void);
 /*in reader.c*/
 void cachec(int c);
 void get_line(void);
-char *dup_line(void);
+unsigned char *dup_line(void);
 void skip_comment(void);
 int nextc(void);
 int keyword(void);
@@ -369,10 +369,10 @@ void copy_text(void);
 void copy_union(void);
 int hexval(int c);
 bucket *get_literal(void);
-int is_reserved(char *name);
+int is_reserved(unsigned char *name);
 bucket *get_name(void);
 int get_number(void);
-char *get_tag(void);
+unsigned char *get_tag(void);
 void declare_tokens(int assoc);
 void declare_types(void);
 void declare_start(void);
@@ -411,7 +411,7 @@ int pack_vector(int vector);
 void output_base(void);
 void output_table(void);
 void output_check(void);
-int is_C_identifier(char *name);
+int is_C_identifier(unsigned char *name);
 void output_defines(void);
 void output_stored_text(void);
 void output_debug(void);
@@ -480,8 +480,8 @@ void done(int k);
 void onintr(int);
 void set_signals(void);
 void usage(void);
-void getargs(int argc,char **argv);
-char *allocate(unsigned n);
+void getargs(int argc,unsigned char **argv);
+unsigned char *allocate(unsigned n);
 void create_file_names(void);
 void open_files(void);
 int main(int argc,char **argv);

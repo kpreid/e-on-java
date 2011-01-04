@@ -10,33 +10,33 @@
 #endif
 #include "defs.h"
 
-char dflag;
-char lflag;
-char rflag;
-char tflag;
-char vflag;
-char jflag;/*rwj -- for Java!*/
-char threadflag;/*rwj -- for Java!*/
-char *java_semantic_type;/*rwj -- for Java!*/
+unsigned char dflag;
+unsigned char lflag;
+unsigned char rflag;
+unsigned char tflag;
+unsigned char vflag;
+unsigned char jflag;/*rwj -- for Java!*/
+unsigned char threadflag;/*rwj -- for Java!*/
+unsigned char *java_semantic_type;/*rwj -- for Java!*/
 
-char *file_prefix = "y";
-char *java_class_name = "parser";       /*rwj*/
-char *java_extend_name = "";      /*rwj*/
-char *java_implement_name = "";/*rwj*/
-char *myname = "yacc";
-char *temp_form = "yacc.XXXXXXX";
+unsigned char *file_prefix = "y";
+unsigned char *java_class_name = "parser";       /*rwj*/
+unsigned char *java_extend_name = "";      /*rwj*/
+unsigned char *java_implement_name = "";/*rwj*/
+unsigned char *myname = "yacc";
+unsigned char *temp_form = "yacc.XXXXXXX";
 
 int lineno;
 int outline;
 
-char *action_file_name;
-char *code_file_name;
-char *defines_file_name;
-char *input_file_name = "";
-char *output_file_name;
-char *text_file_name;
-char *union_file_name;
-char *verbose_file_name;
+unsigned char *action_file_name;
+unsigned char *code_file_name;
+unsigned char *defines_file_name;
+unsigned char *input_file_name = "";
+unsigned char *output_file_name;
+unsigned char *text_file_name;
+unsigned char *union_file_name;
+unsigned char *verbose_file_name;
 
 FILE *action_file;      /*  a temp file, used to save actions associated    */
                         /*  with rules until the parser is written          */
@@ -58,18 +58,18 @@ int ntokens;
 int nvars;
 
 int   start_symbol;
-char  **symbol_name;
+unsigned char  **symbol_name;
 short *symbol_value;
 short *symbol_prec;
-char  *symbol_assoc;
+unsigned char  *symbol_assoc;
 
 short *ritem;
 short *rlhs;
 short *rrhs;
 short *rprec;
-char  *rassoc;
+unsigned char  *rassoc;
 short **derives;
-char *nullable;
+unsigned char *nullable;
 
 
 void done(int k)
@@ -108,10 +108,10 @@ void usage(void)
 }
 
 
-void getargs(int argc,char **argv)
+void getargs(int argc,unsigned char **argv)
 {
 int i;
-char *s;
+unsigned char *s;
 
     if (argc > 0) myname = argv[0];
     for (i = 1; i < argc; ++i)
@@ -246,9 +246,9 @@ no_more_options:;
 }
 
 
-char *allocate(unsigned n)
+unsigned char *allocate(unsigned n)
 {
-char *p;
+unsigned char *p;
 
   p = NULL;
   if (n)
@@ -262,7 +262,7 @@ char *p;
 void create_file_names(void)
 {
 int i, len;
-char *tmpdir;
+unsigned char *tmpdir;
 
     tmpdir = getenv("TMPDIR");
 #ifdef MSW  /*rwj -- make portable*/
@@ -411,7 +411,7 @@ void open_files(void)
 int main(int argc,char **argv)
 {
     set_signals();
-    getargs(argc, argv);
+    getargs(argc, (unsigned char **)argv);
     open_files();
     reader();
     lr0();

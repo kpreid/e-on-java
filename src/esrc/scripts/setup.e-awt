@@ -46,26 +46,13 @@ def optIconImage := if (props.fetch("e.swingLnF", fn{}) == "none") {
 def osname := interp.getProps().fetch("os.name", fn{})
 if (osname != null && osname.startsWith("Windows")) {
 
-    def setupWindows := <import:org.erights.e.install.win32.setupWindows>
-    setupWindows(props,
-                 interp,
-                 stderr,
-                 <file>,
-                 ehomeDir,
-                 makeCommand,
-                 <awt>,
-                 <swing>,
-                 optIconImage,
-                 HocusFocusMaker)
-
-} else {
-    # XXX This is stupid. We should do common install logic regardless.
-    println(`Unrecognized OS ${E.toQuote(osname)}, probably Ctrl-C to exit.`)
-    def readme := ehomeDir["README.txt"]
-    if (readme.exists()) {
-        println(`Then read the manual install instructions in "${
-                readme.getPath()
-            }".`)
-    }
-    interp.blockAtTop()
+    println(`Automated install on Windows no longer supported`)
 }
+
+def readme := ehomeDir["README.txt"]
+if (readme.exists()) {
+    println(`Read the manual install instructions in "${
+            readme.getPath()
+        }".`)
+}
+interp.blockAtTop()

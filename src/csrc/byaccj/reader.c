@@ -11,20 +11,20 @@
 
 #define LINESIZE 100
 
-char *cache;
+unsigned char *cache;
 int cinc, cache_size;
 
 int ntags, tagmax;
-char **tag_table;
+unsigned char **tag_table;
 
-char saw_eof, unionized;
-char *cptr, *line;
+unsigned char saw_eof, unionized;
+unsigned char *cptr, *line;
 int linesize;
 
 bucket *goal;
 int prec;
 int gensym;
-char last_was_action;
+unsigned char last_was_action;
 
 int maxitems;
 bucket **pitem;
@@ -33,10 +33,10 @@ int maxrules;
 bucket **plhs;
 
 int name_pool_size;
-char *name_pool;
+unsigned char *name_pool;
 
-char line_format[] = "#line %d \"%s\"\n";
-char jline_format[] = "//#line %d \"%s\"\n";
+unsigned char line_format[] = "#line %d \"%s\"\n";
+unsigned char jline_format[] = "//#line %d \"%s\"\n";
 
 
 void cachec(int c)
@@ -99,9 +99,9 @@ int i;
 }
 
 
-char *dup_line(void)
+unsigned char *dup_line(void)
 {
-char *p, *s, *t;
+unsigned char *p, *s, *t;
 
     if (line == 0) return (0);
     s = line;
@@ -118,11 +118,11 @@ char *p, *s, *t;
 
 void skip_comment(void)
 {
-char *s;
+unsigned char *s;
 
     int st_lineno = lineno;
-    char *st_line = dup_line();
-    char *st_cptr = st_line + (cptr - line);
+    unsigned char *st_line = dup_line();
+    unsigned char *st_cptr = st_line + (cptr - line);
 
     s = cptr + 2;
     for (;;)
@@ -148,7 +148,7 @@ char *s;
 
 int nextc(void)
 {
-char *s;
+unsigned char *s;
 
   if (line == 0)
     {
@@ -210,7 +210,7 @@ char *s;
 int keyword(void)
 {
 int c;
-    char *t_cptr = cptr;
+    unsigned char *t_cptr = cptr;
 
     c = *++cptr;
     if (isalpha(c))
@@ -306,8 +306,8 @@ int quote;
 FILE *f = text_file;
 int need_newline = 0;
 int t_lineno = lineno;
-char *t_line = dup_line();
-char *t_cptr = t_line + (cptr - line - 2);
+unsigned char *t_line = dup_line();
+unsigned char *t_cptr = t_line + (cptr - line - 2);
 
   if (*cptr == '\n')
     {
@@ -339,8 +339,8 @@ loop:
     case '"':
         {
             int s_lineno = lineno;
-            char *s_line = dup_line();
-            char *s_cptr = s_line + (cptr - line - 1);
+            unsigned char *s_line = dup_line();
+            unsigned char *s_cptr = s_line + (cptr - line - 1);
 
             quote = c;
             putc(c, f);
@@ -390,8 +390,8 @@ loop:
         if (c == '*')
         {
             int c_lineno = lineno;
-            char *c_line = dup_line();
-            char *c_cptr = c_line + (cptr - line - 1);
+            unsigned char *c_line = dup_line();
+            unsigned char *c_cptr = c_line + (cptr - line - 1);
 
             putc('*', f);
             ++cptr;
@@ -442,8 +442,8 @@ int c;
     int quote;
     int depth;
     int u_lineno = lineno;
-    char *u_line = dup_line();
-    char *u_cptr = u_line + (cptr - line - 6);
+    unsigned char *u_line = dup_line();
+    unsigned char *u_cptr = u_line + (cptr - line - 6);
 
     if (unionized) over_unionized(cptr - 6);
     unionized = 1;
@@ -489,8 +489,8 @@ loop:
     case '"':
         {
             int s_lineno = lineno;
-            char *s_line = dup_line();
-            char *s_cptr = s_line + (cptr - line - 1);
+            unsigned char *s_line = dup_line();
+            unsigned char *s_cptr = s_line + (cptr - line - 1);
 
             quote = c;
             for (;;)
@@ -546,8 +546,8 @@ loop:
         if (c == '*')
         {
             int c_lineno = lineno;
-            char *c_line = dup_line();
-            char *c_cptr = c_line + (cptr - line - 1);
+            unsigned char *c_line = dup_line();
+            unsigned char *c_cptr = c_line + (cptr - line - 1);
 
             putc('*', text_file);
             if (dflag) putc('*', union_file);
@@ -598,11 +598,11 @@ bucket *get_literal(void)
 int c, quote;
 int i;
 int n;
-char *s;
+unsigned char *s;
 bucket *bp;
 int s_lineno = lineno;
-char *s_line = dup_line();
-char *s_cptr = s_line + (cptr - line);
+unsigned char *s_line = dup_line();
+unsigned char *s_cptr = s_line + (cptr - line);
 
   quote = *cptr++;
   cinc = 0;
@@ -613,7 +613,7 @@ char *s_cptr = s_line + (cptr - line);
          if (c == '\n') unterminated_string(s_lineno, s_line, s_cptr);
          if (c == '\\')
            {
-            char *c_cptr = cptr - 1;
+            unsigned char *c_cptr = cptr - 1;
 
             c = *cptr++;
             switch (c)
@@ -731,9 +731,9 @@ char *s_cptr = s_line + (cptr - line);
 }
 
 
-int is_reserved(char *name)
+int is_reserved(unsigned char *name)
 {
-  char *s;
+  unsigned char *s;
 
     if (strcmp(name, ".") == 0 ||
             strcmp(name, "$accept") == 0 ||
@@ -779,14 +779,14 @@ int n;
 }
 
 
-char *get_tag(void)
+unsigned char *get_tag(void)
 {
 int c;
 int i;
-char *s;
+unsigned char *s;
 int t_lineno = lineno;
-char *t_line = dup_line();
-char *t_cptr = t_line + (cptr - line);
+unsigned char *t_line = dup_line();
+unsigned char *t_cptr = t_line + (cptr - line);
 
     ++cptr;
     c = nextc();
@@ -813,9 +813,9 @@ char *t_cptr = t_line + (cptr - line);
     if (ntags >= tagmax)
     {
         tagmax += 16;
-        tag_table = (char **)
-                        (tag_table ? REALLOC(tag_table, tagmax*sizeof(char *))
-                                   : MALLOC(tagmax*sizeof(char *)));
+        tag_table = (unsigned char **)
+                        (tag_table ? REALLOC(tag_table, tagmax*sizeof(unsigned char *))
+                                   : MALLOC(tagmax*sizeof(unsigned char *)));
         if (tag_table == 0) no_space();
     }
 
@@ -834,7 +834,7 @@ void declare_tokens(int assoc)
 int c;
 bucket *bp;
     int value;
-    char *tag = 0;
+    unsigned char *tag = 0;
 
     if (assoc != TOKEN) ++prec;
 
@@ -894,7 +894,7 @@ void declare_types(void)
 {
 int c;
 bucket *bp;
-    char *tag;
+    unsigned char *tag;
 
     c = nextc();
     if (c == EOF) unexpected_EOF();
@@ -1008,7 +1008,7 @@ void initialize_grammar(void)
     rprec[0] = 0;
     rprec[1] = 0;
     rprec[2] = 0;
-    rassoc = (char *) MALLOC(maxrules*sizeof(char));
+    rassoc = (unsigned char *) MALLOC(maxrules*sizeof(unsigned char));
     if (rassoc == 0) no_space();
     rassoc[0] = TOKEN;
     rassoc[1] = TOKEN;
@@ -1031,7 +1031,7 @@ void expand_rules(void)
     if (plhs == 0) no_space();
     rprec = (short *) REALLOC(rprec, maxrules*sizeof(short));
     if (rprec == 0) no_space();
-    rassoc = (char *) REALLOC(rassoc, maxrules*sizeof(char));
+    rassoc = (unsigned char *) REALLOC(rassoc, maxrules*sizeof(unsigned char));
     if (rassoc == 0) no_space();
 }
 
@@ -1040,7 +1040,7 @@ void advance_to_start(void)
 {
     register int c;
     register bucket *bp;
-    char *s_cptr;
+    unsigned char *s_cptr;
     int s_lineno;
 
     for (;;)
@@ -1184,11 +1184,11 @@ int c;
 int i, n;
 int depth;
 int quote;
-char *tag;
+unsigned char *tag;
 FILE *f = action_file;
 int a_lineno = lineno;
-char *a_line = dup_line();
-char *a_cptr = a_line + (cptr - line);
+unsigned char *a_line = dup_line();
+unsigned char *a_cptr = a_line + (cptr - line);
 
     if (last_was_action)
         insert_empty_rule();
@@ -1215,8 +1215,8 @@ loop:
         if (cptr[1] == '<')
         {
             int d_lineno = lineno;
-            char *d_line = dup_line();
-            char *d_cptr = d_line + (cptr - line);
+            unsigned char *d_line = dup_line();
+            unsigned char *d_cptr = d_line + (cptr - line);
 
             ++cptr;
             tag = get_tag();
@@ -1342,8 +1342,8 @@ loop:
     case '"':
         {
             int s_lineno = lineno;
-            char *s_line = dup_line();
-            char *s_cptr = s_line + (cptr - line - 1);
+            unsigned char *s_line = dup_line();
+            unsigned char *s_cptr = s_line + (cptr - line - 1);
 
             quote = c;
             for (;;)
@@ -1389,8 +1389,8 @@ loop:
         if (c == '*')
         {
             int c_lineno = lineno;
-            char *c_line = dup_line();
-            char *c_cptr = c_line + (cptr - line - 1);
+            unsigned char *c_line = dup_line();
+            unsigned char *c_cptr = c_line + (cptr - line - 1);
 
             putc('*', f);
             ++cptr;
@@ -1515,7 +1515,7 @@ int i;
 void pack_names(void)
 {
 bucket *bp;
-char *p, *s, *t;
+unsigned char *p, *s, *t;
 
     name_pool_size = 13;  /* 13 == sizeof("$end") + sizeof("$accept") */
     for (bp = first_symbol; bp; bp = bp->next)
@@ -1571,7 +1571,7 @@ int i, j, k, n;
     start_symbol = ntokens;
     nvars = nsyms - ntokens;
 
-    symbol_name = (char **) MALLOC(nsyms*sizeof(char *));
+    symbol_name = (unsigned char **) MALLOC(nsyms*sizeof(unsigned char *));
     if (symbol_name == 0) no_space();
     symbol_value = (short *) MALLOC(nsyms*sizeof(short));
     if (symbol_value == 0) no_space();

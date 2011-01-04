@@ -16,9 +16,9 @@ bucket *first_symbol;
 bucket *last_symbol;
 
 
-int hash(char *name)
+int hash(unsigned char *name)
 {
-char *s;
+unsigned char *s;
 int c, k;
 
   assert(name && *name);
@@ -30,7 +30,7 @@ int c, k;
 }
 
 
-bucket *make_bucket(char *name)
+bucket *make_bucket(unsigned char *name)
 {
 bucket *bp;
 
@@ -53,7 +53,7 @@ bucket *bp;
 }
 
 
-bucket *lookup(char *name)
+bucket *lookup(unsigned char *name)
 {
 bucket *bp, **bpp;
 

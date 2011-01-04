@@ -8,7 +8,7 @@
 /*  If the skeleton is changed, the banner should be changed so that    */
 /*  the altered version can easily be distinguished from the original.  */
 
-char *banner[] =
+unsigned char *banner[] =
 {
     "#ifndef lint",
     "static char yysccsid[] = \"@(#)yaccpar     1.8 (Berkeley) 01/20/90\";",
@@ -17,7 +17,7 @@ char *banner[] =
     0
 };
 
-char *jbanner[] =
+unsigned char *jbanner[] =
 {
     "//### This file created by BYACC 1.8(/Java extension  0.92)",
     "//### Java capabilities added 7 Jan 97, Bob Jamison",
@@ -31,7 +31,7 @@ char *jbanner[] =
 };
 
 
-char *tables[] =
+unsigned char *tables[] =
 {
     "extern short yylhs[];",
     "extern short yylen[];",
@@ -49,14 +49,14 @@ char *tables[] =
     0
 };
 
-char *jtables[] =
+unsigned char *jtables[] =
 {
     "extern short yylhs[];",
     0
 };
 
 
-char *header[] =
+unsigned char *header[] =
 {
     "#define yyclearin (yychar=(-1))",
     "#define yyerrok (yyerrflag=0)",
@@ -86,7 +86,7 @@ char *header[] =
     0
 };
 
-char *jheader[] =
+unsigned char *jheader[] =
 {
   "\n\n\n",
   "//#####################################################################",
@@ -168,7 +168,7 @@ char *jheader[] =
 };
 
 
-char *body[] =
+unsigned char *body[] =
 {
     "#define YYABORT goto yyabort",
     "#define YYACCEPT goto yyaccept",
@@ -314,7 +314,7 @@ char *body[] =
     0
 };
 
-char *jbody[] =
+unsigned char *jbody[] =
 {
     "//###############################################################",
     "// method: yylexdebug : check lexer state",
@@ -462,7 +462,7 @@ char *jbody[] =
 };
 
 
-char *trailer[] =
+unsigned char *trailer[] =
 {
     "    }",
     "    yyssp -= yym;",
@@ -523,7 +523,7 @@ char *trailer[] =
     0
 };
 
-char *jtrailer[] =
+unsigned char *jtrailer[] =
 {
     "//########## END OF USER-SUPPLIED ACTIONS ##########",
     "    }//switch",
@@ -588,7 +588,7 @@ char *jtrailer[] =
     0
 };
 
-char *jtrailer_nothread[] =
+unsigned char *jtrailer_nothread[] =
 {
     "//########## END OF USER-SUPPLIED ACTIONS ##########",
     "    }//switch",
@@ -637,7 +637,7 @@ char *jtrailer_nothread[] =
 };
 
 
-void write_section(char **section)
+void write_section(unsigned char **section)
 {
 int i;
 FILE *fp;
