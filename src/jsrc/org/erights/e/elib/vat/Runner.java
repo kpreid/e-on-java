@@ -288,6 +288,10 @@ public abstract class Runner {
         }
     }
 
+    static public void whenDead(Object deadManSwitch) {
+        getCurrentRunner().addDeadManSwitch(deadManSwitch);
+    }
+
     /**
      * If x.shorten() != x, then this Runner is no more, and should not be
      * used. This can happen only to {@link HeadlessRunner}s.

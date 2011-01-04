@@ -3,6 +3,8 @@ package org.erights.e.elib.vat;
 // Copyright 2002 Combex, Inc. under the terms of the MIT X license
 // found at http://www.opensource.org/licenses/mit-license.html ...............
 
+import org.erights.e.develop.trace.Trace;
+import org.erights.e.elib.prim.E;
 import org.erights.e.elib.ref.EProxyResolver;
 import org.erights.e.elib.sealing.Unsealer;
 
@@ -80,7 +82,14 @@ final class DeadRunner extends Runner {
           (BootRefHandler)EProxyResolver.getOptProxyHandler(unsealer,
                                                             deadManSwitchRef);
         if (null == optHandler) {
-            //not a boot-ref, so forget it
+            //not a boot-ref, so just invoke directly
+            try {
+                E.call(deadManSwitchRef, "__reactToLostClient", myProblem);
+            } catch (Throwable t) {
+                Trace.causality
+                    .errorm("Exception from DeadManSwitch " + deadManSwitchRef, t);
+            }
+
             return;
         }
         //host of the deadManSwitch
