@@ -7,7 +7,11 @@ pragma.syntax("0.8")
 
 def Slot := <type:org.erights.e.elib.slot.Slot>
 
-def makeLazySlot(maker) :Slot {
+def makeLazySlot(var maker) :Slot {
+    # We set maker to null when done, so make sure it isn't null
+    # at the start or we'll get confused.
+    require(maker != null)
+
     var getter := null
 
     def firstGetter() :any {
@@ -15,12 +19,14 @@ def makeLazySlot(maker) :Slot {
         getter := fn{ v }
         try {
           bind v := maker()
+          maker := null
         } catch p {
+          maker := null
           getter := Ref.broken(p)
           v__Resolver.resolve(getter, false)
           throw(p)
         } finally {
-            if (!Ref.isResolved(v)) {
+            if (maker != null) {
                 getter := Ref.broken("nonlocal exit by lazy slot's maker")
                 v__Resolver.resolve(getter, false)
             }
@@ -93,3 +99,13 @@ def makeLazySlot(maker) :Slot {
 
   ? baz.get()
   # problem: nonlocal exit by lazy slot's maker
+
+  ? # A maker that returns a promise:
+
+  ? def x
+  ? def &y := makeLazySlot(fn { x })
+  ? y
+  # value: <Promise>
+  ? bind x := 2
+  ? y
+  # value: 2
