@@ -3,6 +3,8 @@
 
 package org.erights.e.elib.debug;
 
+import org.erights.e.elib.prim.E;
+import org.erights.e.develop.exception.ThrowableSugar;
 import org.erights.e.elib.vat.StackContext;
 import org.erights.e.elib.oldeio.EPrintable;
 import org.erights.e.elib.oldeio.TextWriter;
@@ -47,8 +49,17 @@ public class Traceln implements EPrintable {
      * Outputs into the trace log an attributed message using email quoting
      * conventions.
      */
-    public void run(String message) {
-        traceit(message, true);
+    public void run(Object message) {
+        if (message instanceof Throwable) {
+            Throwable problem = (Throwable) message;
+            traceit(E.toString(problem) + ThrowableSugar.eStack(problem), true);
+        } else {
+            traceit(E.toString(message), true);
+        }
+    }
+
+    public void run(String message, Throwable problem) {
+        traceit(message + ": " + E.toString(problem) + ThrowableSugar.eStack(problem), true);
     }
 
     /**
