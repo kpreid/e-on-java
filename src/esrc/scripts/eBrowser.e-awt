@@ -69,15 +69,15 @@ setOptImportsRoot()
 
 
 
+def seedVat := <elang:interp.seedVatAuthor>(<unsafe>)
 def makeVat := <unsafe:org.erights.e.elib.vat.makeVat>
 
 def syncVat := makeVat.make("headless", "Sync Server")
 syncVat.setPriority(1)
 
-def farBrowseServerMaker :rcvr := syncVat.seed(fn{
-    <import:com.skyhunter.eBrowser.syncServerMakerAuthor>(traceline)
-})
-
+def farBrowseServerMaker :rcvr := seedVat(syncVat, `
+    def traceline(str) :void { stderr.println(str) }
+    <import:com.skyhunter.eBrowser.syncServerMakerAuthor>(traceline)`)
 
 
 # close whole app when windowSet returns to zero size
