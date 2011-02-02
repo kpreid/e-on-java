@@ -578,8 +578,9 @@ public interface EBuilder extends BaseEBuilder {
 
     /**
      * switch (eExpr) { match pattern1 { body1 } match pattern2 { body2 } }
-     * expands to { def temp = eExpr if (temp =~ pattern1) { body1 } else if
-     * (temp =~ pattern2) { body2 } else { throw("no match: " + temp) } }
+     * expands to { def temp := eExpr; escape ej { def pattern1 exit ej :=
+     * temp; body1 } catch f1 { escape ej { def pattern1 exit ej := temp;
+     * body2 } catch f2 { __switchFailed.run(temp, f1, f2) } }
      */
     EExpr switchx(Object specimen, Object matchers);
 

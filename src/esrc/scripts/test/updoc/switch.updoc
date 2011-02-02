@@ -1,0 +1,33 @@
+# Copyright 2007 Kevin Reid under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+Bug: The switch expression was using deprecated "string" + arbitrary-object to construct the match failure, which led to <ClassCastException: ConstListImpl doesn't coerce to a RuntimeException> if the specimen was a non-twine ConstList. It was also unnecessarily performing printing.
+
+In order to fix this, I (Kevin Reid) have changed E-on-Java to use the expansion E-on-CL does.
+
+  ? e`switch (x) { match [a] { b } match c { d } }`
+  # value: e`{
+  #            def specimen__1 := x
+  #            escape next__3 {
+  #                def [a] exit next__3 := specimen__1
+  #                b
+  #            } catch failure__5 {
+  #                escape next__3 {
+  #                    def c exit next__3 := specimen__1
+  #                    d
+  #                } catch failure__7 {
+  #                    __switchFailed.run(specimen__1, failure__5, failure__7)
+  #                }
+  #            }
+  #        }`
+  
+  ? e`switch ([1]) {}`
+  # value: e`{
+  #            def specimen__1 := __makeList.run(1)
+  #            __switchFailed.run(specimen__1)
+  #        }`
+
+  ? switch (1) {match ==2 {} match ==3 {}}
+  # problem: 1 did not match any option:
+  #              problem: 1 isn't 2
+  #              problem: 1 isn't 3

@@ -128,6 +128,7 @@ public class ENodeBuilder extends BaseENodeBuilder implements EBuilder {
     static final EExpr __TEST = noun("__Test");
 
     static private final EExpr __SUCHTHAT = noun("__suchThat");
+    static private final EExpr __SWITCHFAILED = noun("__switchFailed");
 
     static final LiteralExpr __RIGHT_SKIPPED =
       new LiteralExpr(null, "right side skipped", null);
@@ -1579,8 +1580,9 @@ public class ENodeBuilder extends BaseENodeBuilder implements EBuilder {
 
     /**
      * switch (eExpr) { match pattern1 { body1 } match pattern2 { body2 } }
-     * expands to { def temp = eExpr if (temp =~ pattern1) { body1 } else if
-     * (temp =~ pattern2) { body2 } else { throw("no match: " + E.toQuote(temp)) } }
+     * expands to { def temp := eExpr; escape ej { def pattern1 exit ej :=
+     * temp; body1 } catch f1 { escape ej { def pattern1 exit ej := temp;
+     * body2 } catch f2 { __switchFailed.run(temp, f1, f2) } }
      */
     public EExpr switchx(Object specimen, Object matchers) {
         EMatcher[] mtchrs =
@@ -1599,23 +1601,34 @@ public class ENodeBuilder extends BaseENodeBuilder implements EBuilder {
         NounExpr specimen = noun(varName);
         EExpr result;
 
-        if (null == optOtherwise) {
-            EExpr[] quoteArgs = {specimen};
-            EExpr quotedSpecimen = call(EE, NO_POSER, "toQuote", quoteArgs);
+        Astro ej1 = newTemp("next");
+        
+        Astro[] failures = new Astro[matchers.length];
+        for (int i = 0; i < matchers.length; i++) {
+            failures[i] = newTemp("failure");
+        }
 
-            EExpr str = literal("no match: ");
-            EExpr[] addArgs = {quotedSpecimen};
-            EExpr[] runArgs = {call(str, NO_POSER, "add", addArgs)};
-            result = call(THROW, NO_POSER, "run", runArgs);
+        if (null == optOtherwise) {
+            EExpr[] runArgs = new EExpr[failures.length + 1];
+            runArgs[0] = specimen;
+            for (int i = 0; i < failures.length; i++) {
+                runArgs[i + 1] = noun(failures[i]);
+            }
+            result = call(__SWITCHFAILED, NO_POSER, "run", runArgs);
 
         } else {
             result = optOtherwise;
         }
+
         for (int i = matchers.length - 1; 0 <= i; i--) {
-            result = ifx(matchBind(specimen,
-                                   NO_POSER,
-                                   matchers[i].getPattern()),
-                         matchers[i].getBody(),
+            result = escape(
+                         finalPattern(ej1),
+                         sequence(
+                             kerneldef(matchers[i].getPattern(), 
+                                       noun(ej1), 
+                                       specimen),
+                             matchers[i].getBody()),
+                         finalPattern(failures[i]),
                          result);
         }
         return result;

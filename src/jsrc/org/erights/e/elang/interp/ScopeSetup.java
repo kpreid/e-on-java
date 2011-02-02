@@ -158,6 +158,7 @@ public final class ScopeSetup {
         um.comp("__is", safeScopeVow, "<elang:expand.__is>");
         um.comp("__splitList", safeScopeVow, "<elang:expand.__splitList>");
         um.comp("__suchThat", safeScopeVow, "<elang:expand.__suchThat>");
+        um.comp("__switchFailed", safeScopeVow, "<elang:expand.__switchFailed>");
         um.comp("__bind", safeScopeVow, "<elang:expand.__bind>");
         um.comp("__extract", safeScopeVow, "<elang:expand.__extract>");
         um.comp("__Empty", safeScopeVow, "<elang:expand.__Empty>");

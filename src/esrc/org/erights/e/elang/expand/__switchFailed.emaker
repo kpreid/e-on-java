@@ -1,0 +1,14 @@
+# Copyright 2006-2007 Kevin Reid under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+pragma.syntax("0.9")
+
+# XXX in E-on-CL this is a user-defined exception type, which E-on-Java doesn't
+# support yet
+def makeSwitchFailure := <elang:expand.makeSwitchFailure>
+
+def switchFailed { # implements DeepFrozen
+    match [=="run", [specimen] + failures] {
+        throw(makeSwitchFailure(specimen, failures))
+    }
+}
