@@ -75,7 +75,11 @@ public class Rune {
         //noinspection AccessOfSystemProperties
         Properties sysProps = System.getProperties();
         while (1 <= args.size()) {
-            String option = (String)args.get(0);
+            Object arg = args.get(0);
+            if (!(arg instanceof String)) {
+                break;
+            }
+            String option = (String)arg;
             if (!option.startsWith("-D")) {
                 break;
             }
@@ -309,10 +313,17 @@ public class Rune {
     }
 
     /**
-     *
+     * Java program entry point. Invokes main(ConstList).
      */
     static public void main(String[] argArray) {
+        main(ConstList.fromArray(argArray));
+    }
         
+    /**
+     * 
+     */
+    static public void main(ConstList argsWithProps) {
+
         // workaround for bug in Mac OS X Leopard Java -XstartOnFirstThread (needed for swt); from http://lists.apple.com/archives/java-dev//2008/Feb/msg00179.html
         {
             final Thread t = Thread.currentThread();
@@ -326,7 +337,7 @@ public class Rune {
         try {
             TextWriter outs = new TextWriter(PrintStreamWriter.stdout(), true);
 
-            final ConstList args = doProps(ConstList.fromArray(argArray));
+            final ConstList args = doProps(argsWithProps);
 
             //noinspection AccessOfSystemProperties
             Properties sysProps = System.getProperties();

@@ -6,6 +6,9 @@ package org.erights.e.elang.interp;
 import org.erights.e.develop.exception.PrintStreamWriter;
 import org.erights.e.elib.oldeio.TextWriter;
 import org.erights.e.elib.tables.ConstList;
+import org.erights.e.elib.tables.FlexList;
+
+import java.io.File;
 
 /**
  * Used to install, and as a "rune" driver for rune-ing a spawned jvm.
@@ -89,16 +92,37 @@ public class MetaRune {
 //        return result;
 //    }
 
+    static private final String INSTALLER_PATH = "scripts/setup.e-awt";
 
     /**
-     * Call after e.home property should have been set.
+     * Find the installer E program. Call after the e.home property has been
+     * set, if it will be at all.
      */
-    static private String installerPath() {
-        String eHome = System.getProperty("e.home", ".");
-        if (!eHome.endsWith("/")) {
-            eHome += "/";
+    static private Object installerFile() {
+        String optEHome = System.getProperty("e.home");
+        if (optEHome != null) {
+            if (!optEHome.endsWith("/")) {
+                optEHome += "/";
+            }
+            return optEHome + INSTALLER_PATH;
+        } else {
+            // If we don't have an e.home, then we try fetching a resource,
+            // in the hope that we're running from our jar, which includes the
+            // installer.
+            return new InstallerLauncher();
         }
-        return eHome + "scripts/setup.e-awt";
+    }
+    
+    private class InstallerLauncher {
+        to run(ConstMap props, Object options, Object optFname, Object args) {
+            EParser.run(ResourceUriGetter.THE_ONE.get(INSTALLER_PATH)).eval(ScopeSetup.privileged("__installerMain",
+                                           null,
+                                           TextWriter altout,
+                                           TextWriter alterr,
+                                           props,
+                                           "dummyInterp",
+                                           null));
+        }
     }
 
     /**
@@ -115,21 +139,19 @@ public class MetaRune {
             ConstList argList = Rune.doProps(ConstList.fromArray(argArray));
 
             if (0 == argList.size()) {
-                String[] args = {installerPath()};
-                Rune.main(args);
+                Object[] args = {installer()};
+                Rune.main(ConstList.fromArray(args));
                 return;
             }
             Object option = argList.get(0);
             if ("--install".equals(option)) {
-                String[] args = (String[])argList.getArray(String.class);
-                args[0] = installerPath();
-                Rune.main(args);
+                FlexList args = argList.diverge();
+                args.put(0, installer());
+                Rune.main(args.snapshot());
                 return;
             }
             if ("--rune".equals(option)) {
-                argList = argList.run(1, argList.size());
-                String[] args = (String[])argList.getArray(String.class);
-                Rune.main(args);
+                Rune.main(argList.run(1, argList.size()));
                 return;
             }
             if ("--spawn".equals(option)) {
@@ -141,8 +163,7 @@ public class MetaRune {
                 return;
             }
             if ("--version".equals(option)) {
-                String[] args = (String[])argList.getArray(String.class);
-                Rune.main(args);
+                Rune.main(argList);
                 return;
             }
             errs.print("Not understood: ", argList, "\n");
