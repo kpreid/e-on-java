@@ -8,7 +8,7 @@ pragma.syntax("0.8")
 def <install> := <import:org.erights.e.install.*>
 def installToRegistry := <install:win32.installToRegistry>
 def ConstMapMaker := <elib:tables.makeConstMap>
-def substFromProps := <install:props.substFromProps>
+def copySubstFromProps := <install:props.copySubstFromProps>
 def confirm := <install:confirm>
 
 
@@ -162,21 +162,12 @@ def setupWindows(var props,
 
     # XXX Should double check whether ehome agrees with ehomeDir
 
-    def epropsTemplate := ehomeDir["eprops-template.txt"].getText()
-    def epropsFile := ehomeDir["eprops.txt"]
-    epropsFile.setText(substFromProps(epropsTemplate, props))
-
-    def runeTemplate := ehomeDir["rune-template.txt"].getText()
-    def runeFile := ehomeDir["rune"]
-    runeFile.setText(substFromProps(runeTemplate, props))
-
-    def devruneTemplate := ehomeDir["devrune-template.txt"].getText()
-    def devruneFile := ehomeDir["devrune"]
-    devruneFile.setText(substFromProps(devruneTemplate, props))
-
-    def runeBatTemplate := ehomeDir["rune-bat-template.txt"].getText()
-    def runeBatFile := ehomeDir["rune.bat"]
-    runeBatFile.setText(substFromProps(runeBatTemplate, props))
+    copySubstFromProps(props, [
+      [ehomeDir["eprops-template.txt"], ehomeDir["eprops.txt"]]
+      [ehomeDir["rune-template.txt"], def runeFile := ehomeDir["rune"]],
+      [ehomeDir["devrune-template.txt"], ehomeDir["devrune"]],
+      [ehomeDir["rune-bat-template.txt"], ehomeDir["rune.bat"]],
+    ])
 
     # XXX The following "/x86" should actually be based on the value of
     # the system property e.machdir
