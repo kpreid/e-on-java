@@ -7,6 +7,10 @@ import org.erights.e.develop.exception.PrintStreamWriter;
 import org.erights.e.elib.oldeio.TextWriter;
 import org.erights.e.elib.tables.ConstList;
 
+import java.io.IOException;
+import java.lang.Process;
+import java.lang.Runtime;
+
 /**
  * Used to install, and as a "rune" driver for rune-ing a spawned jvm.
  * <p/>
@@ -102,6 +106,32 @@ public class MetaRune {
     }
 
     /**
+     * Start a new JVM running Rune with similar configuration. argArray is
+     * interpreted as by the "rune" command; in particular, -J<jvm-option> 
+     * is accepted.
+     * 
+     * @param argArray
+     */
+    static public void spawn(ConstList runeArgs) throws IOException {
+        // XXX promised -J support doesn't exist
+        
+        ConstList execArgs = 
+          ConstList.EmptyList
+            .with("java")
+            .with("-classpath")
+            .with(System.getProperty("java.class.path"))
+            .with("org.erights.e.elang.interp.Rune")
+            .add(runeArgs);
+        System.err.println(">>> " + execArgs.toString() + " <<<\n");
+        Process p = Runtime.getRuntime().exec((String[])(execArgs.getArray(String.class)));
+        
+        // XXX copying these to this process's std streams would be better
+        p.getOutputStream().close();
+        p.getInputStream().close();
+        p.getErrorStream().close();
+    }
+
+    /**
      * @param argArray
      */
     static public void main(String[] argArray) {
@@ -133,8 +163,8 @@ public class MetaRune {
                 return;
             }
             if ("--spawn".equals(option)) {
-                errs.println("XXX Rune spawning not yet implemented");
-                System.exit(-1);
+                spawn(argList.run(1, argList.size()));
+                return;
             }
             if ("--help".equals(option)) {
                 outs.println(USAGE);

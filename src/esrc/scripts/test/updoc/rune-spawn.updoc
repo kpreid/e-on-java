@@ -1,0 +1,19 @@
+# Copyright 2008 Kevin Reid, under the terms of the MIT X license
+# found at http://www.opensource.org/licenses/mit-license.html ................
+
+MetaRune --spawn exists for the purpose of starting up another JVM process running the same E implementation.
+
+  ? traceln("first")
+  > def metaRune := <unsafe:org.erights.e.elang.interp.makeMetaRune>
+  # value: <makeMetaRune>
+  
+  ? introducer.onTheAir()
+  > def cap := makeSturdyRef.temp(def answer)
+  > null
+  
+  ? metaRune.spawn(["--src.e", "introducer.onTheAir();<" + <captp>.sturdyToURI(cap) + ">.getRcvr().resolve(`hello world`)"])
+  
+  ? interp.waitAtTop(answer); null
+  ? traceln("last")
+  > answer
+  # value: "hello world"
