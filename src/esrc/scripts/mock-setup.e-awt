@@ -1,0 +1,109 @@
+#!/usr/bin/env rune
+pragma.syntax("0.9")
+
+def [ccrName, `--`], subArgs := interp.getArgs()
+
+def cowCopyRoot := <file>[ccrName]
+
+def mkcowf {
+  to run(realFile, overlayFile) {
+    return def cowfsFile {
+      to __printOn(out) {
+        out.print("<cowfs:" + realFile.getPath() + ">")
+      }
+      to get(subpath) {
+        return mkcowf(realFile[subpath].deepReadOnly(), overlayFile[subpath])
+      }
+      to getText() { return if (overlayFile.exists()) { overlayFile.getText() } else { realFile.getText() } }
+      to getBytes() { return if (overlayFile.exists()) { overlayFile.getBytes() } else { realFile.getBytes() } }
+      to setText(text) {
+        overlayFile.setText(text)
+      }
+      to setBytes(x) {
+        overlayFile.setBytes(x)
+      }
+      to mkdir(ejector) {
+        overlayFile.mkdir(ejector)
+      }
+      to mkdirs(ejector) {
+        overlayFile.mkdirs(ejector)
+      }
+      to copyTo(dest, ejector) {
+        if (cowfsFile.isDirectory()) {
+          require(!dest.exists() || dest.isDirectory())
+          dest.mkdir(ejector)
+          for name => f in cowfsFile { f.copyTo(dest[name], ejector) }
+        } else {
+          dest.setBytes(cowfsFile.getBytes())
+        }
+      }
+      to iterate(f) {
+        realFile.iterate(fn name, file { f(name, mkcowf(file, overlayFile[name])) })
+      }
+      #to _asOverlay() { return overlayFile }
+      match msg {
+        stderr.println(`COWFS: $realFile $msg`)
+        E.callWithPair(realFile, msg)
+      }
+    }
+  }
+}
+def cowfs {
+  to get(path) {
+    #return 
+    return if (path == "~/Desktop/overlay/") { <file>[path] } else { mkcowf(<file>[path].deepReadOnly(), cowCopyRoot[path]) }
+  }
+}
+
+def mockProps := #["os.name" => "Windows Mock"] | 
+                 interp.getProps()
+def mockInterp extends interp {
+  to getProps() { return mockProps }
+  to getArgs() { return subArgs }
+}
+
+def mockMakeCommand(name) {
+  return switch (name) {
+    match `@_/winfo.exe` {
+      def winfo() {
+        return ["e.winfo.pathlist=/winfopathlistfoo/
+e.winfo.DESKTOP=/desktopfoo/
+e.winfo.PROGRAMS=/programsfoo/
+e.winfo.tempdir=/tempfoo/
+e.winfo.windowsdir=/windowsfoo/", ""]
+      }
+    }
+    match `chmod` {
+      def chmod(`+x`, path :String) {
+        if (path.startsWith("/Users/kpreid/Desktop/overlay/")) {
+          makeCommand("chmod")("+x", path)
+        } else {
+          throw("chmod elsewhere unimplemented")
+        }
+        return ["", ""]
+      }
+    }
+    match _ {
+      def genericCommand {
+        match [`run`, args] {
+          stderr.println(`COMMAND (assuming no output): $name $args`)
+          ["", ""]
+        }
+      }
+    }
+  }
+}
+
+def <moderatelySafe> := [
+  "org.erights.e.ui.awt.makeHocusFocus" => <unsafe:org.erights.e.ui.awt.makeHocusFocus>,
+  "javax.swing.makeJFrame" => <unsafe:javax.swing.makeJFrame>]
+
+def [binder, mockScope] := e`
+  pragma.syntax("0.9")
+  def rs := [def interp, def stderr, def print, def println, def <unsafe>, def <file>, def makeCommand]
+  def <awt> := <import:java.awt.*>
+  def <swing> := <import:javax.swing.*>
+  fn vs {for i => r in rs { r.resolve(vs[i]) }}
+`.evalToPair(safeScope)
+binder([mockInterp, stderr, print, println, <moderatelySafe>, cowfs, mockMakeCommand])
+e__quasiParser(<resource:scripts/setup.e-awt>.getTwine()).eval(mockScope)
