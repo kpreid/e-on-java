@@ -1,0 +1,81 @@
+Info from http://www.javaworld.com/javaworld/jw-04-2006/jw-0424-scripting.html
+
+? def eScriptEngineFactory {
+>   to getEngineName() { return "E-on-Java" }
+>   
+>   to getEngineVersion() { return interp.getProps()["e.version"] }
+>   
+>   to getExtensions() {
+>     def l := <import:java.util.makeArrayList>()
+>     l.add("e")
+>     l.add("e-awt")
+>     l.add("e-swt")
+>     l.add("updoc")
+>     l.add("emaker")
+>     l.add("eexpr")
+>     return l
+>   }
+>   
+>   to getLanguageName() { return "E" }
+>   
+>   to getLanguageVersion() { return interp.getProps()["e.version"] }
+>
+>   to getMethodCallSyntax(obj, meth, args) {
+>     stderr.println("Unimp getMethodCallSyntax")
+>     return ""
+>   }
+>   
+>   to getMimeTypes() {
+>     return <import:java.util.makeArrayList>()
+>   }
+>
+>   to getNames() {
+>     def l := <import:java.util.makeArrayList>()
+>     l.add("e")
+>     return l
+>   }
+>   
+>   to getOutputStatement(str) {
+>     stderr.println("Unimp getOutputStatement")
+>     return ""
+>   }
+>   to getParameter(key) {
+>     stderr.println("Unimp getParameter")
+>     return null
+>   }
+>   
+>   to getProgram(statements) {
+>     return "\n".rjoin(statements)
+>   }
+>   
+>   to getScriptEngine() {
+>     return def eScriptEngine {
+>       to setBindings(newBindings, scope :int) {} # XXX stub
+>     }
+>   }
+> }
+# value: <eScriptEngineFactory>
+
+The ScriptEngineManager has a global environment, so it is appropriate to have multiple instances of it.
+? def mgr := <unsafe:javax.script.makeScriptEngineManager>()
+# value: <a ScriptEngineManager>
+
+? mgr.registerEngineName("elang", eScriptEngineFactory)
+
+? def js := mgr.getEngineByName("javascript")
+# value: <a RhinoScriptEngine>
+
+? def result := js.eval("1 + 1")
+# value: 2.0
+
+? result.__getAllegedType()
+# value: float64
+
+? def result := js.eval("(function (x) { x + 1 })")
+# value: <an InterpretedFunction>
+
+? result.__getAllegedType()
+# value: InterpretedFunction
+
+? def eeng := mgr.getEngineByName("elang")
+# value: <eScriptEngine>
