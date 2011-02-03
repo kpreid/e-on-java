@@ -75,10 +75,10 @@ def makeUnevaler(uncallerList, unscopeLayout) :near {
             def Node := builder.getNodeType()
 
             def uncallers := uncallerList.snapshot()
+            def unscope := unscopeLayout.snapshot()
 
-            # We will identify temp variables by storing their index (ints)
-            # rather than their name (Strings) as unscope-values.
-            def unscope := unscopeLayout.diverge()
+            # Map from objects to temp indexes the builder knows.
+            def temps := makeCycleBreaker().diverge()
 
             def generate
 
@@ -122,26 +122,24 @@ def makeUnevaler(uncallerList, unscopeLayout) :near {
                 throw(`Can't uneval ${E.toQuote(obj)}`)
             }
 
-            /** Build a use-occurrence of a variable. */
-            def genVarUse(varID :any[String, int]) :Node {
-                if (varID =~ varName :String) {
-                    builder.buildImport(varName)
-                } else {
-                    builder.buildIbid(varID)
-                }
-            }
-
             /**
              * The internal recursive routine that will traverse the
              * subgraph and build a Data-E Node while manipulating the
              * above state.
              */
             bind generate(obj) :Node {
-                if (unscope.fetch(obj, fn{}) =~ varID :notNull) {
-                    return genVarUse(varID)
+                escape notFound {
+                  # XXX the fn is a workaround for http://www.eros-os.org/pipermail/e-lang/2005-December/011038.html
+                  def varName :String := unscope.fetch(obj, fn { notFound() })
+                  return builder.buildImport(varName)
                 }
+                if (temps.fetch(obj, fn {}) =~ tempIndex :notNull) {
+                  return builder.buildIbid(tempIndex)
+                }
+                
+                # No temp and no import; create a name for this unknown object
                 def promIndex := builder.buildPromise()
-                unscope[obj] := promIndex
+                temps[obj] := promIndex
                 def rValue := genObject(obj)
                 builder.buildDefrec(promIndex+1, rValue)
             }
