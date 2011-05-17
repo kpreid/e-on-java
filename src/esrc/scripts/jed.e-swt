@@ -40,7 +40,7 @@ def shutdown() :void {
  * @param shell The parent.
  * @return A vow for a list of Files that the user will select.
  */
-def openner(shell :Shell) :vow {
+def opener(shell :Shell) :vow {
     def dialog := <widget:makeFileDialog>(shell, SWT.getMULTI() | SWT.getOPEN())
     dialog.open()
     var optNames := dialog.getFileNames()
@@ -61,7 +61,7 @@ def runtime := <unsafe:java.lang.makeRuntime>.getRuntime()
 def abstractJed :=
   <import:org.erights.e.ui.jed.abstractJedAuthor>(currentDisplay,
                                                   makeFrame,
-                                                  openner,
+                                                  opener,
                                                   interp.getProps(),
                                                   runtime,
                                                   timer,

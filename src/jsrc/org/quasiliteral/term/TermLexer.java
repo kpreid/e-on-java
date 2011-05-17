@@ -332,9 +332,9 @@ public class TermLexer extends BaseLexer {
      */
     protected Astro charsLiteral() throws IOException, SyntaxException {
         nextChar();
-        Twine openner =
+        Twine opener =
           getSpan(myOptStartPos, myPos, "File ends inside character literal");
-        myIndenter.push(openner, '\'', 0);
+        myIndenter.push(opener, '\'', 0);
         StringBuffer buf = new StringBuffer();
         while ('\'' != myChar) {
             if (isEndOfFile()) {
@@ -519,11 +519,11 @@ public class TermLexer extends BaseLexer {
      */
     private void skipBlockComment() throws IOException, SyntaxException {
 
-        //The openner is the initial '/*'
-        Twine openner =
+        //The opener is the initial '/*'
+        Twine opener =
           getSpan(myOptStartPos, myPos, "File ends inside block comment");
         // line it up with the first '*' of '/*'
-        myIndenter.push(openner, '*', myPos - 2);
+        myIndenter.push(opener, '*', myPos - 2);
 
         String line = myOptLTwine.bare();
         int bound;

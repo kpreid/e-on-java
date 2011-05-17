@@ -37,7 +37,7 @@ def onlineHelpAuthor := <causeway:onlineHelpAuthor>
 
 def causewayEditorAuthor(rezKit,
                          abstractAction,
-                         makers, openners,
+                         makers, openers,
                          <file>, <jar>, props,
                          activate, shutdown,
                          tcr,
@@ -165,7 +165,7 @@ def causewayEditorAuthor(rezKit,
             to run() :void {
                 def waitCursor := makers["cursor"](SWT.getCURSOR_WAIT())
                 def oldEditorShell := causewayEditor.getEditorShell()
-                var optPaths :List := openners["openFile"](oldEditorShell)
+                var optPaths :List := openers["openFile"](oldEditorShell)
                 if (optPaths != []) {
                     if (rootDirName == "") {
                         doSetSourceRoot()
@@ -218,8 +218,8 @@ def causewayEditorAuthor(rezKit,
                 def waitCursor := makers["cursor"](SWT.getCURSOR_WAIT())
                 def editorShell := causewayEditor.getEditorShell()
                 
-                def dotFile := openners["exportFile"](editorShell,
-                                                      "messageGraph.gv", [])
+                def dotFile := openers["exportFile"](editorShell,
+                                                     "messageGraph.gv", [])
                 
                 if (dotFile != null) {
                     editorShell.setCursor(waitCursor)
@@ -458,8 +458,8 @@ def causewayEditorAuthor(rezKit,
          */
         bind doSetSourceRoot extends abstractAction(doSetSourceRoot) {
             to run() :void {
-                def dir := openners["openDir"](causewayEditor.getEditorShell(),
-                                               "Select the source code root directory.")
+                def dir := openers["openDir"](causewayEditor.getEditorShell(),
+                                              "Select the source code root directory.")
                 if (dir != null) {
                     rootDirName := dir.getPath()
                 }

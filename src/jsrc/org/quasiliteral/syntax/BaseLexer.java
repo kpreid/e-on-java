@@ -561,21 +561,21 @@ public abstract class BaseLexer implements LexerFace {
     protected Astro openBracket(char closer) throws IOException {
         short tagCode = (short)myChar;
         nextChar();
-        Twine openner = endToken();
-        return openBracket(tagCode, openner, closer);
+        Twine opener = endToken();
+        return openBracket(tagCode, opener, closer);
     }
 
     /**
      *
      */
-    protected Astro openBracket(short tagCode, Twine openner, char closer) {
+    protected Astro openBracket(short tagCode, Twine opener, char closer) {
         if (isRestBlank(myPos)) {
-            myIndenter.nest(openner, closer);
+            myIndenter.nest(opener, closer);
         } else {
             //Indent the next line to right after the open.
-            myIndenter.push(openner, closer, myPos);
+            myIndenter.push(opener, closer, myPos);
         }
-        return leafTag(tagCode, openner.getOptSpan());
+        return leafTag(tagCode, opener.getOptSpan());
     }
 
     /**
@@ -585,7 +585,7 @@ public abstract class BaseLexer implements LexerFace {
         char closerChar = myChar;
         nextChar();
         Twine closer = endToken();
-        //on mismatched close, throws SyntaxError at openner
+        //on mismatched close, throws SyntaxError at opener
         //on unmatched close, throws Syntax error at closer
         myIndenter.pop(closerChar, closer);
         return leafTag((short)closerChar, closer.getOptSpan());
@@ -715,9 +715,9 @@ public abstract class BaseLexer implements LexerFace {
      */
     protected Astro stringLiteral() throws IOException, SyntaxException {
         nextChar();
-        Twine openner =
+        Twine opener =
           getSpan(myOptStartPos, myPos, "File ends inside string literal");
-        myIndenter.push(openner, '"', 0);
+        myIndenter.push(opener, '"', 0);
         StringBuffer buf = new StringBuffer();
         while ('"' != myChar) {
             if (isEndOfFile()) {
@@ -739,8 +739,8 @@ public abstract class BaseLexer implements LexerFace {
         if (isEndOfFile()) {
             needMore(complaint);
         }
-        Twine openner = (Twine)myOptLTwine.run(start, bound);
-        return openner;
+        Twine opener = (Twine)myOptLTwine.run(start, bound);
+        return opener;
     }
 
     /**
@@ -752,11 +752,11 @@ public abstract class BaseLexer implements LexerFace {
     protected Astro docComment(short tagCode)
       throws IOException, SyntaxException {
 
-        //The openner is the initial '/**'
-        Twine openner =
+        //The opener is the initial '/**'
+        Twine opener =
           getSpan(myOptStartPos, myPos, "File ends inside doc-comment");
         // line it up with the first '*' of '/**'
-        myIndenter.push(openner, '*', myPos - 2);
+        myIndenter.push(opener, '*', myPos - 2);
         StringBuffer buf = new StringBuffer();
 
         String line = myOptLTwine.bare();

@@ -44,7 +44,7 @@ public interface LineFeeder {
      * @param indent      The suggested indentation level for the next line,
      *                    unless the next line begins with closer.
      * @param closer      The character that would close the most recent
-     *                    unclosed openner.
+     *                    unclosed opener.
      * @param closeIndent The suggested indentation level for the next line if
      *                    it does begin (after trimming) with closer.
      */

@@ -124,7 +124,7 @@ public abstract class QAstroArg
      * For this subtree and this index elements, 'shape' is the number of index
      * elements that have been successfully enumerated.
      * <p/>
-     * For each prefix, startShape and endShape form the openning and closing
+     * For each prefix, startShape and endShape form the opening and closing
      * brackets around calls to matchBindSlice or substSlice.
      */
     abstract void endShape(FlexList optBindings, int[] prefix, int shape);

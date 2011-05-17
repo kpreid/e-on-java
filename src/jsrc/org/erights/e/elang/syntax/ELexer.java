@@ -492,9 +492,9 @@ public class ELexer extends BaseLexer {
             //be called when we're continuing after a hole, in which
             //case there is no leading backquote.
             nextChar();
-            Twine openner =
+            Twine opener =
               getSpan(myOptStartPos, myPos, "File ends inside quasiliteral");
-            myIndenter.push(openner, '`', 0);
+            myIndenter.push(opener, '`', 0);
             return quasiPart();
         }
         case'0':
@@ -697,14 +697,14 @@ public class ELexer extends BaseLexer {
                 }
 
             } else {
-                Twine openner = endToken();
+                Twine opener = endToken();
                 //Pushes a '$' to protect the hole from the '`'
-                myIndenter.nest(openner, '$');
+                myIndenter.nest(opener, '$');
                 //interpolated '$' or '@' is neither eaten nor added to the
                 //value of the resulting QuasiOpen token.
                 return composite(EParser.QuasiOpen,
                                  buf.toString(),
-                                 openner.getOptSpan());
+                                 opener.getOptSpan());
             }
         }
     }

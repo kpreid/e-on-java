@@ -37,7 +37,7 @@ public class SyntaxException extends RuntimeException implements EPrintable {
 
     static private final long serialVersionUID = -1915268229312821277L;
 
-    private final Twine myOptOpenner;
+    private final Twine myOptOpener;
 
     private final Twine myOptLine;
 
@@ -46,18 +46,18 @@ public class SyntaxException extends RuntimeException implements EPrintable {
     private final int myBound;
 
     /**
-     * @param optOpenner optional start of syntax problem
+     * @param optOpener optional start of syntax problem
      * @param optLine    line containing error
      * @param start      index into optLine
      * @param bound      index into optLine
      */
     public SyntaxException(String msg,
-                           Twine optOpenner,
+                           Twine optOpener,
                            Twine optLine,
                            int start,
                            int bound) {
         super(msg);
-        myOptOpenner = optOpenner;
+        myOptOpener = optOpener;
         myOptLine = optLine;
         myStart = start;
         myBound = bound;
@@ -68,7 +68,7 @@ public class SyntaxException extends RuntimeException implements EPrintable {
      */
     public SyntaxException(String msg, Twine optLine) {
         super(msg);
-        myOptOpenner = null;
+        myOptOpener = null;
         myOptLine = optLine;
         myStart = 0;
         myBound = optLine == null ? 0 : optLine.size();
@@ -77,8 +77,8 @@ public class SyntaxException extends RuntimeException implements EPrintable {
     /**
      *
      */
-    public Twine getOptOpenner() {
-        return myOptOpenner;
+    public Twine getOptOpener() {
+        return myOptOpener;
     }
 
     /**
@@ -107,17 +107,17 @@ public class SyntaxException extends RuntimeException implements EPrintable {
      */
     public Twine optDamage() {
         if (null == myOptLine) {
-            if (null == myOptOpenner) {
+            if (null == myOptOpener) {
                 return null;
             } else {
-                return myOptOpenner;
+                return myOptOpener;
             }
         } else {
             Twine result = (Twine)myOptLine.run(myStart, myBound);
-            if (null == myOptOpenner) {
+            if (null == myOptOpener) {
                 return result;
             } else {
-                return (Twine)myOptOpenner.add(result);
+                return (Twine)myOptOpener.add(result);
             }
         }
     }

@@ -32,7 +32,7 @@ line as the start of a stack-trace. ]
 
     ? try { eParser("\"") } catch ex { ex }
     # value: syntax error: File ends inside string literal, \
-    #               unmatched openning bracket:
+    #               unmatched opening bracket:
     #
     #   "
     #   ^

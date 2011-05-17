@@ -148,7 +148,7 @@ public interface SmallcapsOps {
      * [],[handler] =&gt; OP_END_HANDLER =&gt; [],[]
      * <p/>
      * Drops the top handler on the handler stack. This is the closing bracket
-     * that balances an openning {@link #OP_EJECTOR_ONLY handler-introducing
+     * that balances an opening {@link #OP_EJECTOR_ONLY handler-introducing
      * op}.
      */
     int OP_END_HANDLER = 18;

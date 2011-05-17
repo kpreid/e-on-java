@@ -35,9 +35,9 @@ public class Indenter {
     private int myTOS;
 
     /**
-     * The openners are Twine for reporting located errors at close time
+     * The openers are Twine for reporting located errors at close time
      */
-    private Twine[] myOpennerStack;
+    private Twine[] myOpenerStack;
 
     /**
      * The closers -- close bracketing characters that would close the
@@ -56,7 +56,7 @@ public class Indenter {
     /**
      * Was this open bracket also a nesting?
      * <p/>
-     * I.e., was the openner the last character on its line?  If so, then its
+     * I.e., was the opener the last character on its line?  If so, then its
      * popping should also decrement myNest.
      */
     private boolean[] myNestStack;
@@ -67,8 +67,8 @@ public class Indenter {
     public Indenter() {
         myNest = 0;
         myTOS = 0;
-        myOpennerStack = new Twine[16];
-        myOpennerStack[0] = null;       //dummy initial openner
+        myOpenerStack = new Twine[16];
+        myOpenerStack[0] = null;       //dummy initial opener
         myCloserStack = new char[16];
         myCloserStack[myTOS] = 'x';     // dummy initial closer
         myIndentStack = new int[16];
@@ -88,18 +88,18 @@ public class Indenter {
     /**
      * Internal push
      */
-    private void push(Twine openner,
+    private void push(Twine opener,
                       char closerChar,
                       int indent,
                       boolean isNest) {
         myTOS++;
         if (myTOS >= myCloserStack.length) {
-            myOpennerStack = (Twine[])grow(myOpennerStack);
+            myOpenerStack = (Twine[])grow(myOpenerStack);
             myCloserStack = (char[])grow(myCloserStack);
             myIndentStack = (int[])grow(myIndentStack);
             myNestStack = (boolean[])grow(myNestStack);
         }
-        myOpennerStack[myTOS] = openner;
+        myOpenerStack[myTOS] = opener;
         myCloserStack[myTOS] = closerChar;
         myIndentStack[myTOS] = indent;
         myNestStack[myTOS] = isNest;
@@ -108,16 +108,16 @@ public class Indenter {
     /**
      * Push a nester
      */
-    public void nest(Twine openner, char closerChar) {
+    public void nest(Twine opener, char closerChar) {
         myNest++;
-        push(openner, closerChar, myNest * 4, true);
+        push(opener, closerChar, myNest * 4, true);
     }
 
     /**
      * Push a non-nester
      */
-    public void push(Twine openner, char closerChar, int indent) {
-        push(openner, closerChar, indent, false);
+    public void push(Twine opener, char closerChar, int indent) {
+        push(opener, closerChar, indent, false);
     }
 
     /**
@@ -141,10 +141,10 @@ public class Indenter {
               closer.size());
         }
         if (myCloserStack[myTOS] != closerChar) {
-            Twine openner = myOpennerStack[myTOS];
+            Twine opener = myOpenerStack[myTOS];
             throw new SyntaxException(
               "mismatch: " + myCloserStack[myTOS] + " vs " + closerChar,
-              openner,
+              opener,
               closer,
               0,
               closer.size());
@@ -164,8 +164,8 @@ public class Indenter {
             //all's fine
             return;
         }
-        throw new SyntaxException(msg + ", unmatched openning bracket: ",
-                                  myOpennerStack[myTOS]);
+        throw new SyntaxException(msg + ", unmatched opening bracket: ",
+                                  myOpenerStack[myTOS]);
     }
 
     /**

@@ -125,11 +125,11 @@ def makeCursor(style :int) :any {
     return <swt:graphics.makeCursor>(currentDisplay, style)
 }
 
-def openners := [].asMap().diverge()
+def openers := [].asMap().diverge()
 
-openners.put("openFile", openFile)
-openners.put("openDir", openDir)
-openners.put("exportFile", exportFile)
+openers.put("openFile", openFile)
+openers.put("openDir", openDir)
+openers.put("exportFile", exportFile)
 
 def makers := [].asMap().diverge()
 
@@ -149,7 +149,7 @@ def causewayEditorAuthor := <import:org.erights.e.tools.causeway.causewayEditorA
 def makeCausewayEditor := causewayEditorAuthor(rezKit,
                                                abstractAction,
                                                makers.snapshot(),
-                                               openners.snapshot(),
+                                               openers.snapshot(),
                                                <file>, <jar>,
                                                props,
                                                activate, shutdown,

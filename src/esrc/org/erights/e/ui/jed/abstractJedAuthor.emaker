@@ -47,15 +47,15 @@ def setMargins(layout, marginSize) :void {
  * @param display The current Display
  * @param makeFrame No arguments function that makes and returns a new Shell
  *                  labeled with an icon.
- * @param openner A thunk that prompts the user for files, and returns a vow
- *                for the files the user will select. This vow resolves
- *                either to a possibly empty list of File objects.
- *                XXX Currently, FileDialogs are modal, so the returned value
- *                may already be so resolved.
+ * @param opener A thunk that prompts the user for files, and returns a vow
+ *               for the files the user will select. This vow resolves
+ *               either to a possibly empty list of File objects.
+ *               XXX Currently, FileDialogs are modal, so the returned value
+ *               may already be so resolved.
  */
 def abstractJedAuthor(display,
                       makeFrame,
-                      openner,
+                      opener,
                       props,
                       runtime,
                       timer,
@@ -208,7 +208,7 @@ def abstractJedAuthor(display,
          */
         bind doOpen extends abstractAction(doOpen) {
             to run() :void {
-                when (openner(shell)) -> done(files) :void {
+                when (opener(shell)) -> done(files) :void {
                     for file in files {
                         editGroup.obtainEditor(file, self)
                     }
