@@ -43,7 +43,7 @@ public class ProcessSugar {
      */
     static public CharPipeAdapter attachStdin(Process self, Reader altin) {
         CharPipeAdapter result = new CharPipeAdapter(altin, getStdin(self));
-        result.startCopy("stdin-adapter");
+        result.startCopy("stdin-adapter"); // XXX leaks a vat
         return result;
     }
 
@@ -60,7 +60,7 @@ public class ProcessSugar {
      */
     static public CharPipeAdapter attachStdout(Process self, Writer altout) {
         CharPipeAdapter result = new CharPipeAdapter(getStdout(self), altout);
-        result.startCopy("stdout-adapter");
+        result.startCopy("stdout-adapter"); // XXX leaks a vat
         return result;
     }
 
@@ -76,8 +76,8 @@ public class ProcessSugar {
      * @return
      */
     static public CharPipeAdapter attachStderr(Process self, Writer alterr) {
-        CharPipeAdapter result = new CharPipeAdapter(getStdout(self), alterr);
-        result.startCopy("stderr-adapter");
+        CharPipeAdapter result = new CharPipeAdapter(getStderr(self), alterr);
+        result.startCopy("stderr-adapter"); // XXX leaks a vat
         return result;
     }
 
