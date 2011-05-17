@@ -14,7 +14,10 @@ import java.io.Writer;
 /**
  * Moves characters from a Reader to a Writer in a blocking loop, which should
  * be run in a separate vat & runner.
- *
+ * 
+ * The Writer is flushed whenever there does not appear to be more input
+ * immediately arriving.
+ * 
  * @author Mark S. Miller
  */
 public class CharPipeAdapter implements Thunk {
@@ -48,9 +51,13 @@ public class CharPipeAdapter implements Thunk {
     public Object run() {
         try {
             try {
-                int c;
-                while (-1 != (c = myReader.read())) {
-                    myWriter.write((char)c);
+                char[] buffer = new char[4096];
+                int count;
+                while (-1 != (count = myReader.read(buffer))) {
+                    myWriter.write(buffer, 0, count);
+                    if (count < buffer.length) {
+                        myWriter.flush();
+                    }
                 }
                 return Boolean.TRUE;
             } finally {
