@@ -120,8 +120,23 @@ public class ProcessSugar {
      *         Process#waitFor() waiting for} that process.
      */
     static public Object[] resultsVow(Process self) {
-        Vat procVat = Vat.make("headless", "process");
+        Vat procVat = Vat.make("headless", "Process resultsVow");
         Object outcomeVow = procVat.seed(self, "results", E.NO_ARGS);
+        Object[] result = {outcomeVow, procVat};
+        return result;
+    }
+    
+    /**
+     * Unlike {@link results(Process)}, does not capture stdout and stderr.
+     * 
+     * @param self
+     * @return A pair of a vow for the exit code as returned by
+     *         {@link Process#waitFor()}, and the vat which is waiting for that
+     *         process.
+     */
+    static public Object terminates(Process self) {
+        Vat procVat = Vat.make("headless", "Process terminated");
+        Object outcomeVow = procVat.seed(self, "waitFor", E.NO_ARGS);
         Object[] result = {outcomeVow, procVat};
         return result;
     }
