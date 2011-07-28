@@ -37,16 +37,16 @@ import java.util.TimeZone;
  *      >html4.0's explanation</a>
  */
 public class ETimeFormat {
-
-    static private final DateFormat SortableFormat =
-      new SimpleDateFormat("yyyy-MM-dd!HH:mm:ss.SSS%");
+    static private final ThreadLocal/*<DateFormat>*/ SortableFormat = new ThreadLocal() {
+         protected synchronized Object initialValue() {
+             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd!HH:mm:ss.SSS%");
+             TimeZone utc = TimeZone.getTimeZone("UTC");
+             format.setTimeZone(utc);
+             return format;
+         }
+     };
 
     private ETimeFormat() {
-    }
-
-    static {
-        TimeZone utc = TimeZone.getTimeZone("UTC");
-        SortableFormat.setTimeZone(utc);
     }
 
     /**
@@ -68,7 +68,7 @@ public class ETimeFormat {
      * handle either colons or underbars in its input.
      */
     static public String formatTime(long absMillis) {
-        String formatted = SortableFormat.format(new Date(absMillis));
+        String formatted = ((DateFormat) SortableFormat.get()).format(new Date(absMillis));
         return formatted.replace('!', 'T').replace('%', 'Z');
     }
 
@@ -80,6 +80,6 @@ public class ETimeFormat {
         sortableTime = sortableTime.replace('T', '!')
           .replace('Z', '%')
           .replace('_', ':');
-        return SortableFormat.parse(sortableTime).getTime();
+        return ((DateFormat) SortableFormat.get()).parse(sortableTime).getTime();
     }
 }
