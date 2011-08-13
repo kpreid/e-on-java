@@ -54,7 +54,10 @@ class CapTPReplacer extends Replacer {
      */
     public Object substitute(Object ref) {
         Object resolvedRef = Ref.resolution(ref);
-        if (resolvedRef != ref) {
+        if (resolvedRef == null) {
+            // Next branch would NullPointerException, so don't try.
+            ref = resolvedRef;
+        } else if (resolvedRef != ref) {
             /* Java serialization has given the original ref the chance to
              * writeReplace itself, but not the target. Do that now.
              */
