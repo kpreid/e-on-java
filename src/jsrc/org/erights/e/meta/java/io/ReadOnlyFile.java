@@ -15,12 +15,14 @@ import org.erights.e.elib.tables.EIteratable;
 import org.erights.e.elib.tables.Twine;
 import org.erights.e.elib.util.OneArgFunc;
 
+import java.math.BigInteger;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 
 
 /**
@@ -226,6 +228,11 @@ public class ReadOnlyFile extends BaseLoader
 
     public byte[] getBytes() throws IOException {
         return FileSugar.getBytes(myPrecious);
+    }
+
+    public BigInteger getCryptoHash()
+      throws NoSuchAlgorithmException, FileNotFoundException, IOException {
+        return FileSugar.getCryptoHash(myPrecious);
     }
 
     public void copyTo(File dest, OneArgFunc optEjector) {
