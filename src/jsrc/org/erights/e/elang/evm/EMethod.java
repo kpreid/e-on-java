@@ -174,7 +174,7 @@ public class EMethod extends ENode {
             Guard optGuard = (Guard)E.as(vg, Guard.class);
             //Evaluate forValue, unless the return guard is ":void".
             Object result = myBody.subEval(ctx, optGuard != VoidGuard.THE_ONE);
-            return optGuard.coerce(result, null);
+            return optGuard.coerce(result, ReturnGuardEjector.THE_ONE);
         }
     }
 
@@ -273,5 +273,16 @@ public class EMethod extends ENode {
         }
         out.print(" ");
         myBody.printAsBlockOn(out);
+    }
+
+    /* This is just to give a better error message when a returned value doesn't pass its guard.
+     * Otherwise, the error is often confusing because it points at the start of the function
+     * rather than the return statement.
+     */
+    private static class ReturnGuardEjector implements OneArgFunc {
+        private static final ReturnGuardEjector THE_ONE = new ReturnGuardEjector();
+        public Object run(Object problem) {
+            throw new RuntimeException("Bad return value: " + problem, E.asRTE(problem));
+        }
     }
 }
