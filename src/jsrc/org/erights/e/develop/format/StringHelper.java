@@ -95,7 +95,28 @@ public final class StringHelper {
         buf.append('\"');
         for (int i = 0; i < len; i++) {
             char c = self.charAt(i);
-            if ('\n' == c) {
+            if ('\n' == c || '\'' == c) {
+                buf.append(c);
+            } else {
+                escapedInto(c, buf);
+            }
+        }
+        buf.append('\"');
+        return buf.toString();
+    }
+
+    /**
+     * Returns a string that, when interpreted as a literal, represents the
+     * original string. Turns newlines into "\n" (useful for formats which
+     * don't allow literal newline characters, such as JSON).
+     */
+    static public String quoteIncludingNewline(String self) {
+        int len = self.length();
+        StringBuffer buf = new StringBuffer(len * 2);
+        buf.append('\"');
+        for (int i = 0; i < len; i++) {
+            char c = self.charAt(i);
+            if ('\'' == c) {
                 buf.append(c);
             } else {
                 escapedInto(c, buf);

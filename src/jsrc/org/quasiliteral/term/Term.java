@@ -396,6 +396,10 @@ public final class Term extends Termish
             } else {
                 label = "" + data;
             }
+        } else if (myOptData instanceof String) {
+            label = StringHelper.quoteIncludingNewline((String) myOptData);
+        } else if (myOptData instanceof Twine) {
+            label = StringHelper.quoteIncludingNewline(((Twine) myOptData).bare());
         } else {
             label = E.toQuote(myOptData).bare();
         }
