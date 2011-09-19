@@ -214,8 +214,9 @@ def cmdMakerMaker(cmdLoop,
                 }
                 def exitStatus := cmdLoop.getNextExitStatus()
                 def optProblem := Ref.optProblem(exitStatus)
-                if (optProblem != null) {
-                    # failure is always noisy
+                if (optProblem != null && interactive) {
+                    # failure is always noisy, unless we're interactive (in which case the repl
+                    # will report it)
                     cmdMaker.reportProblem(optProblem)
                 }
                 fn {
