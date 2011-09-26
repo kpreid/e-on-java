@@ -45,7 +45,7 @@ def makeTestcasePlayer(testcase) :near {
         /**
          * <tt>reportResults</tt>
          *
-         * @param out
+         * @param out text writer to display the results (usually stdout)
          * @return Whether the test passed, and whether to terminate early.
          */
         to reportResults(out) :Tuple[boolean,boolean] {
@@ -90,27 +90,6 @@ def makeSequencePlayer(sequence) :any {
     def players := [].diverge()
 
     def sequencePlayer {
-
-        /**
-         * <tt>reportResults</tt>
-         *
-         * @param out
-         * @return the number of failed tests
-         */
-        to reportResults(out) :int {
-            var failures := 0
-            for p in players {
-                def [thisSuccess, abortEarly] := p.reportResults(out)
-                if (!thisSuccess) {
-                    failures += 1
-                }
-                if (abortEarly) {
-                    break
-                }
-            }
-            return failures
-        }
-
         /**
          * <tt>replaySequence</tt>
          *
@@ -118,10 +97,12 @@ def makeSequencePlayer(sequence) :any {
          *                    to the <tt>evaluator</tt> for this sequence.
          * @param vatMap A <tt>ConstMap</tt> mapping from vat names
          *               to <tt>evaluator</tt> objects.
-         * @return A <tt>vow</tt> that becomes <tt>null</tt> on success
+         * @return A <tt>vow</tt> that becomes the number of failures,
          *         or becomes broken with a problem.
          */
-        to replaySequence(vatSwitcher, vatMap) :vow {
+        to replaySequence(vatSwitcher, vatMap, out) :vow {
+            var failures := 0
+
             def [resultVow, resolver] := Ref.promise()
 
             def testcases := sequence.getTestcases()
@@ -134,12 +115,20 @@ def makeSequencePlayer(sequence) :any {
             def doReplay(i) :void {
                 if (i < players.size()) {
                     when (players[i].replay(evaluator)) -> done(_) :void {
-                        doReplay(i + 1)
+                        def [thisSuccess, abortEarly] := players[i].reportResults(out)
+                        if (!thisSuccess) {
+                            failures += 1
+                        }
+                        if (abortEarly) {
+                            resolver.resolve(failures)
+                        } else {
+                            doReplay(i + 1)
+                        }
                     } catch problem {
                         resolver.smash(problem)
                     }
                 } else {
-                    resolver.resolve(null)
+                    resolver.resolve(failures)
                 }
             }
             doReplay(0)
@@ -151,15 +140,16 @@ def makeSequencePlayer(sequence) :any {
          *
          * @param vatMap A <tt>ConstMap</tt> mapping from vat names
          *               to <tt>evaluator</tt> objects.
+         * @param out text writer to display the results (usually stdout)
          * @return A <tt>vow</tt> that becomes <tt>null</tt> on success
          *         or becomes broken with a problem.
          */
-        to replay(vatMap) :vow {
+        to replay(vatMap, out) :vow {
 
             def vatName := sequence.getVatDirective().getVatName()
             def switcher := makeVatSwitcher(vatName)
 
-            sequencePlayer.replaySequence(switcher, vatMap)
+            sequencePlayer.replaySequence(switcher, vatMap, out)
         }
     }
 }
@@ -176,30 +166,17 @@ def makeScriptPlayer(script) :any {
     def players := [].diverge()
 
     def scriptPlayer {
-
-        /**
-         * <tt>reportResults</tt>
-         *
-         * @param out
-         * @return the number of failed tests
-         */
-        to reportResults(out) :int {
-            var failures := 0
-            for p in players {
-                failures += p.reportResults(out)
-            }
-            return failures
-        }
-
         /**
          * <tt>replayScript</tt>
          *
          * @param vatMap A <tt>ConstMap</tt> mapping from vat names
          *               to <tt>evaluator</tt> objects.
-         * @return A <tt>vow</tt> that becomes <tt>null</tt> on success or
+         * @return A <tt>vow</tt> that becomes the number of failed tests or
          *         becomes broken with a problem.
          */
-        to replayScript(vatMap) :vow {
+        to replayScript(vatMap, out) :vow {
+            var failures := 0
+
             def [resultVow, resolver] := Ref.promise()
 
             def sequences := script.getSequences()
@@ -209,13 +186,14 @@ def makeScriptPlayer(script) :any {
 
             def doReplay(i) :void {
                 if (i < players.size()) {
-                    when (players[i].replay(vatMap)) -> done(_) :void {
+                    when (def scriptFailures := players[i].replay(vatMap, out)) -> {
+                        failures := scriptFailures
                         doReplay(i + 1)
                     } catch problem {
                         resolver.smash(problem)
                     }
                 } else {
-                    resolver.resolve(null)
+                    resolver.resolve(failures)
                 }
             }
             doReplay(0)
@@ -228,7 +206,7 @@ def makeScriptPlayer(script) :any {
          * @param evalServerPool
          * @param args
          * @param props
-         * @param out
+         * @param out text writer to display the results (usually stdout)
          * @return A <tt>vow</tt> that becomes the number of failed tests or
          *         becomes broken with a problem.
          */
@@ -267,13 +245,9 @@ def makeScriptPlayer(script) :any {
                     })
                 }
 
-                when (scriptPlayer.replayScript(vatMap)) -> done(_) :void {
+                when (def scriptFailures := scriptPlayer.replayScript(vatMap, out)) -> {
                     if (release()) {
-                        try {
-                            resolver.resolve(scriptPlayer.reportResults(out))
-                        } catch problem {
-                            resolver.smash(problem)
-                        }
+                        resolver.resolve(scriptFailures)
                     }
                 } catch problem {
                     if (release()) {
