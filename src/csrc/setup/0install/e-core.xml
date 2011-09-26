@@ -20,6 +20,12 @@ E is a scripting language designed for writing secure distributed programs.</des
           <arg>org.erights.e.elang.interp.Rune</arg>
         </runner>
       </command>
+      <command name="updoc" path='scripts/updoc.e'>
+        <runner interface="http://repo.roscidus.com/java/openjdk-6-jre">
+          <arg>-De.home=$EHOME</arg>
+          <arg>org.erights.e.elang.interp.Rune</arg>
+        </runner>
+      </command>
 
       <environment insert="" mode="replace" name="EHOME"/>
       <environment insert="e.jar" name="CLASSPATH"/>
