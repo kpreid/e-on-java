@@ -835,7 +835,8 @@ public abstract class BaseLexer implements LexerFace {
             if (('E' == myChar) || ('e' == myChar)) {
                 nextChar();
                 floating = true;
-                if ('-' == myChar) {
+                // note: JSON allows "e", "e-" and "e+"
+                if ('-' == myChar || '+' == myChar) {
                     nextChar();
                 }
                 if (!digits(10)) {
