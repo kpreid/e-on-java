@@ -17,6 +17,7 @@ e.enable.easy-return=true
 e.enable.easy-when=true
 e.enable.escape-handler=true
 e.enable.exporter=true
+e.enable.for-must-match=allow
 e.enable.importer=true
 e.enable.meta-scope=true
 e.enable.noun-string=true

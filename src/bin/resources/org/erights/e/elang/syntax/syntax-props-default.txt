@@ -393,6 +393,12 @@ e.enable.thunk=allow
 
 e.enable.hard-when=allow
 
+
+################ New as of 0.9.4 #######################
+
+# The pattern in a for-loop must match every item or an error is thrown.
+e.enable.for-must-match=allow
+
 ################ Discontinued Switches ####################
 
 
